@@ -1,12 +1,7 @@
 {
   "unit": "unit-2096",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002096/2022-01-18a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002096/2022-09-26a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002096/2024-09-23a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002096/2025-09-22a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002096",
@@ -597,7 +592,7 @@
             {
               "id": "fit-2022",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -1094,7 +1089,7 @@
             {
               "id": "fit-2023",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -1645,6 +1640,10 @@
                   "test": "Complement C4",
                   "loinc": "4498-2",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
                   "value": 5
                 },
                 {
@@ -2213,7 +2212,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -2440,6 +2439,10 @@
                   "test": "Complement C4",
                   "loinc": "4498-2",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
                   "value": 6
                 },
                 {
@@ -2943,7 +2946,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             }
@@ -3729,7 +3732,7 @@
         "code": "197805",
         "display": "ibuprofen 400 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3737,6 +3740,10 @@
         "code": "4498-2",
         "display": "Complement C4 [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 14,
+          "high": 48
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Cryoglobulin": {

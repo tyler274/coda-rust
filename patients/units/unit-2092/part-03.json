@@ -278,7 +278,7 @@
             {
               "id": "fit-2026",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "Colorectal cancer screening"
             }
@@ -476,7 +476,10 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
-                  "value": 50
+                  "value": 50,
+                  "range": {
+                    "high": 100
+                  }
                 }
               ]
             },
@@ -488,19 +491,31 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.48
+                  "value": 7.48,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 32
+                  "value": 32,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Oxygen partial pressure in arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
-                  "value": 70
+                  "value": 70,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
                 }
               ]
             },

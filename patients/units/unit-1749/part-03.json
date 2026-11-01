@@ -1,0 +1,285 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001749",
+      "events": [
+        {
+          "id": "2025-01-01a",
+          "kind": "hospital_admission",
+          "start": "2025-01-01T09:20",
+          "end": "2025-01-04T11:40",
+          "service": "Obstetrics & Gynecology",
+          "reason": "labor at 39 weeks with vulvar lesions",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "resolved", "onset": "2024-04-17", "note": "delivered 01/01/2025 by cesarean"},
+            {"label": "Herpesviral vulvovaginitis", "icd10": "A60.04", "action": "diagnosed", "onset": "2024-12-25", "note": "active genital HSV at term"}
+          ],
+          "vitals": {"temp_c": 37.2, "bp": [120, 78]},
+          "measure": ["hr", "rr", "spo2"],
+          "labs": [
+            {"panel": null, "collected": "2025-01-01T09:50", "resulted": "2025-01-01T15:10", "results": [{"test": "Herpes simplex virus 2 DNA [Presence] in Genital specimen by NAA with probe detection", "loinc": "91858-1", "text": "Detected"}]}
+          ],
+          "procedures": [
+            {"procedure": "Cesarean section", "snomed": "11466000", "performed": "2025-01-01T11:05"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Labor and delivery discharge summary", "author": "obstetrics", "date": "2025-01-08T10:15",
+             "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/01/2025 09:20   Discharged 01/04/2025 11:40\nPatient: Grace Paquette   DOB 11/02/1992\n\nPresentation: 32-year-old G3P2002 at 39w0d with contractions every five minutes for the past two hours. About a week ago painful blisters appeared on the vulva. She has known recurrent genital herpes, quiet for more than a year, and took no antiviral prophylaxis in this pregnancy. Pregnancy otherwise routine. Her first birth was vaginal; her second (01/2024) was vaginal with a repaired third-degree laceration.\n\nOn arrival: T 37.2 C (99.0 F), BP 120/78. Fetal tracing category I.\nExam: clusters of vesicles and shallow ulcerations over both labia majora. Speculum exam: cervix free of lesions. Lesion swab sent for HSV PCR; HSV-2 detected.\n\nCourse: With active genital lesions in labor, cesarean delivery was recommended and she agreed. Primary low transverse cesarean under spinal anesthesia; liveborn infant handed to the newborn team. Uncomplicated surgery and recovery. She restarted her own valacyclovir 500 mg twice daily for 3 days on postoperative day 1 for the outbreak; lesions crusting at discharge.\n\nDischarge diagnoses: term pregnancy delivered by primary low transverse cesarean; active genital HSV at term (HSV-2). History of third-degree laceration, healed.\nAllergies: NKDA.\nFollow-up: incision check 2 weeks, postpartum visit 6 weeks.\n\ncc: Primary care"}
+          ]
+        },
+        {
+          "id": "2025-01-07a",
+          "kind": "telephone",
+          "start": "2025-01-07T11:00",
+          "reason": "post-discharge check",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Post-delivery call", "author": "RN", "date": "2025-01-07T11:00",
+             "body": "Pt called to let us know - baby came 1/1 by C-section because she had an outbreak when labor started. Home since Saturday. Finished the 3 days of valacyclovir, sores almost gone. Incision sore, no redness or drainage, no fever. Walking around the house. Hospital will send summary. Postpartum appt with PCP set for Feb."}
+          ]
+        },
+        {
+          "id": "2025-02-11a",
+          "kind": "office_visit",
+          "start": "2025-02-11T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum follow-up",
+          "conditions": [
+            {"label": "Herpesviral vulvovaginitis", "icd10": "A60.04", "action": "resolved", "onset": "2024-12-25"}
+          ],
+          "state": {"weight_kg": 67.1, "labs": {"Hemoglobin": 12.3}},
+          "measure": ["bp", "hr", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 2}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2025-02-11T15:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Postpartum Follow-up", "author": "PCP", "date": "2025-02-11T16:10",
+             "body": "6 wks after primary LTCS 1/1/25 for an HSV outbreak in labor (PCR HSV-2). Saw OB for the incision check; postpartum OB visit next week.\n\nFeels well. Sores healed within about 10 days, nothing since. Incision comfortable. Bowel control normal, no leakage. Mood good, PHQ-9 2. Plans to go back to teaching after February break.\n\nExam: Well. Low transverse incision healed, no erythema. Abdomen soft. Heart and lungs normal.\n\nA/P\n1. HSV outbreak at term - resolved. Back to episodic valacyclovir; she has tablets at home.\n2. Hx 3rd-degree laceration 2024 - stable, no symptoms.\n3. S/p cesarean - healing well.\nPhysical in the fall."}
+          ]
+        },
+        {
+          "id": "2025-03-19a",
+          "kind": "pharmacy",
+          "start": "2025-03-19T09:05",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Medication Refill", "title": "Valacyclovir refill request", "author": "RN", "date": "2025-03-19T09:05",
+             "body": "Electronic request from pharmacy: valacyclovir 500 mg #18. Last filled 10/2022, used in January. Episodic use, on list. Approved per PCP protocol, 1 refill."}
+          ]
+        },
+        {
+          "id": "2025-05-08a",
+          "kind": "portal_message",
+          "start": "2025-05-08T21:10",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {"label": "Supervision of normal pregnancy", "action": "diagnosed", "onset": "2025-04-17"}
+          ],
+          "orders": [
+            {"id": "ob-2025", "action": "placed", "order": "Obstetrics referral", "category": "referral", "to": "Obstetrics", "reason": "prenatal care; prior cesarean 01/2025"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Pregnant again", "author": "patient", "date": "2025-05-08T21:10",
+             "body": "Hi - positive test this evening, LMP was 4/3. Not exactly the plan but here we are! Can you put in the OB referral again please?"},
+            {"type": "Patient Message", "title": "RE: Pregnant again", "author": "PCP", "date": "2025-05-09T07:20",
+             "body": "Congratulations, Grace. Referral to your OB group is in. Since the C-section was only in January, they'll want to see you soon to talk through the plan. Hold the valacyclovir unless they say otherwise."}
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "outside_records",
+          "start": "2025-05-28T13:30",
+          "reason": "obstetrics new patient letter",
+          "orders": [
+            {"id": "ob-2025", "action": "done", "date": "2025-05-28T13:30"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: new OB visit", "author": "obstetrics", "date": "2025-05-28T13:30",
+             "body": "OUTSIDE OBSTETRICS GROUP\nNew OB visit 05/27/2025\n\nG4P3003 at 7w6d by LMP 04/03/2025, ultrasound concordant; EDD 01/08/2026. Single intrauterine pregnancy.\n\nHistory: vaginal births 2017 and 01/2024 (third-degree laceration, repaired); primary low transverse cesarean 01/2025 for active HSV in labor. Interpregnancy interval about 3 months. Recurrent genital HSV. NKDA.\nPrenatal labs drawn, unremarkable.\n\nDelivery options after cesarean to be discussed at the next visit.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "outside_records",
+          "start": "2025-07-16T10:45",
+          "reason": "obstetrics counseling letter",
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: delivery planning", "author": "obstetrics", "date": "2025-07-16T10:45",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 07/15/2025, 14w6d\n\nWe discussed trial of labor after cesarean versus elective repeat cesarean. One prior low transverse cesarean (operative report reviewed), plus two prior vaginal births. We reviewed the benefits of a successful vaginal birth and the risks of a trial of labor, including uterine rupture. Ms. Paquette chooses a trial of labor after cesarean; she will labor on our unit with continuous fetal monitoring. Consent signed; plan to revisit near term.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T07:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 70.4, "labs": {"Hemoglobin": 11.6}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 1}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-09-23T08:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-09-23T07:35"},
+            {"procedure": "Venipuncture", "performed": "2025-09-23T08:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Preventive Visit", "author": "PCP", "date": "2025-09-23T08:10",
+             "body": "Annual. 32F, G4P3, 24w6d, EDD 1/8/26. OB says all routine. She and OB have settled on a trial of labor after the January cesarean.\nNo HSV outbreaks since January. Bowels normal.\nNo alcohol. Mood ok, a lot going on with three kids, PHQ-2 1. School year started.\n\nExam: Gravid, fundus about umbilicus. Heart RRR, lungs clear, no edema.\n\nA/P\n- Preventive: CBC for OB. Flu and COVID in a couple of weeks at a nurse visit; Tdap with OB in the third trimester. Pap/HPV due next year - after delivery.\n- Episodic valacyclovir on hold in pregnancy.\nNext physical fall 2026."},
+            {"type": "Patient Message", "title": "Blood count", "author": "PCP", "date": "2025-09-24T13:00",
+             "body": "Blood count normal for where you are in the pregnancy. Sent to OB."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-07T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T15:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-07T15:35"}
+          ],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Immunizations", "author": "RN", "date": "2025-10-07T15:50",
+             "body": "27 wks. Well, afebrile. Trivalent flu L arm, 2025-26 Pfizer COVID R arm. 15 min observation, tolerated. Record printed for her OB folder."}
+          ]
+        },
+        {
+          "id": "2025-11-19a",
+          "kind": "portal_message",
+          "start": "2025-11-19T19:25",
+          "reason": "leave paperwork",
+          "documents": [
+            {"type": "Patient Message", "title": "Leave forms", "author": "patient", "date": "2025-11-19T19:25",
+             "body": "The district wants a medical certification from my doctor for maternity leave starting in late December. OB says they only do the delivery part and the district also needs my primary. Do I need to come in for that?"},
+            {"type": "Patient Message", "title": "RE: Leave forms", "author": "front desk", "date": "2025-11-20T08:40",
+             "body": "Hi Grace, the doctor would like a quick visit to go over the form. We have Tuesday 12/2 at 3:45. Bring the form with you. You're booked - reply if that time doesn't work."}
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "outside_records",
+          "start": "2025-11-26T09:10",
+          "reason": "obstetrics prenatal update",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2025-11-18T16:00"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: prenatal update", "author": "obstetrics", "date": "2025-11-26T09:10",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPrenatal visit 11/18/2025, 32w5d\n\nDoing well. Growth on track, BP normal. Tdap given. She continues to plan a trial of labor after cesarean; reviewed signs of labor and when to come in. Weekly visits from 36 weeks.\n\nObstetrics attending"}
+          ]
+        },
+        {
+          "id": "2025-12-02a",
+          "kind": "office_visit",
+          "start": "2025-12-02T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "maternity leave paperwork",
+          "state": {"weight_kg": 73.8},
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [
+            {"procedure": "Office visit, established patient, straightforward MDM", "performed": "2025-12-02T15:45"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-12-02T16:05",
+             "body": "Here with the district leave certification. 34w6d, G4P3, EDD 1/8/26, prenatal care with OB, planning TOLAC.\n\nFeels well. Busy end of semester. No HSV symptoms.\n\nVitals normal. Comfortable, no edema.\n\nForm completed: pregnancy with expected delivery in early January; leave from 12/22/2025, expected 12 weeks; certifying provider for delivery and recovery details is OB. Copy scanned.\n\nWe'll see her after the baby comes. Call with anything."}
+          ]
+        },
+        {
+          "id": "2025-12-04a",
+          "kind": "telephone",
+          "start": "2025-12-04T10:30",
+          "reason": "forms",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Forms faxed", "author": "front desk", "date": "2025-12-04T10:30",
+             "body": "Leave certification signed and faxed to the district HR number she gave. Confirmation page scanned. Left her a VM."}
+          ]
+        },
+        {
+          "id": "2026-01-01a",
+          "kind": "hospital_admission",
+          "start": "2026-01-01T01:50",
+          "end": "2026-01-05T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "labor at term, trial of labor after cesarean",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-01T02:10", "results": [{"test": "Hemoglobin", "value": 12.1}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-01T08:40", "results": [{"test": "Hemoglobin", "value": 7.8}, {"test": "White Blood Cells"}, {"test": "Platelets"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-01-05T06:00", "results": [{"test": "Hemoglobin", "value": 8.6}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Cesarean section", "snomed": "11466000", "performed": "2026-01-01T07:06"},
+            {"procedure": "Repair of current obstetric laceration of uterus", "snomed": "9724000", "performed": "2026-01-01T07:20"},
+            {"procedure": "Transfusion of red blood cells", "snomed": "116863004", "performed": "2026-01-01T07:45"}
+          ],
+          "documents": [
+            {"type": "Discharge Summary", "title": "Labor and delivery / ICU discharge summary", "author": "obstetrics", "date": "2026-01-09T14:20",
+             "body": "REGIONAL MEDICAL CENTER - LABOR & DELIVERY\nDischarge Summary\nAdmitted 01/01/2026 01:50   Discharged 01/05/2026 11:30\nPatient: Grace Paquette   DOB 11/02/1992\n\nAdmission: 33-year-old G4P3003 at 39w0d in spontaneous labor, attempting a trial of labor after one prior low transverse cesarean (01/2025, for active HSV). Other births vaginal (2017; 01/2024 with a repaired third-degree laceration). Recurrent genital HSV, no lesions on admission. Uncomplicated pregnancy. NKDA. Admission hemoglobin 12.1.\n\nCourse: Contractions every 2 to 3 minutes. She reached complete dilation and had been at 10 cm with the vertex at +1 station for about an hour when the fetal heart rate fell abruptly from a baseline of 140 to 60 and did not recover for more than 3 minutes. At the same time she reported sudden, sharp lower abdominal pain. The uterus was firm, tense and tender; vaginal bleeding was minimal. Uterine rupture suspected and emergency cesarean called.\n\nOperative findings: rupture through the prior low transverse scar with hemoperitoneum. Liveborn infant delivered and handed to the neonatal team. The uterine defect was repaired in two layers; the uterus was preserved. Estimated blood loss 1,700 mL. Two units of packed red cells transfused.\n\nPostoperative: transferred to the ICU for overnight monitoring after the hemorrhage; hemodynamically stable, hemoglobin 7.8 after surgery. Transferred to postpartum floor 01/02. Ambulating, tolerating diet, incision clean. Hemoglobin 8.6 on 01/05.\n\nDischarge diagnoses: uterine rupture during trial of labor after cesarean; emergency repeat cesarean with repair of uterine rupture; acute blood loss requiring transfusion. Recurrent genital HSV.\nDischarge medications: ferrous sulfate 325 mg by mouth once daily for 3 months.\nCounseling: any future pregnancy must be delivered by planned cesarean before the onset of labor; she should not labor again. Recommend early prenatal care if she conceives.\nFollow-up: incision check 1 to 2 weeks; postpartum visit with CBC at 6 weeks.\n\ncc: Primary care"},
+            {"type": "Progress Notes", "title": "Outside records reviewed", "author": "PCP", "date": "2026-01-09T17:50",
+             "body": "Hospital summary reviewed: TOLAC 1/1 ended in uterine rupture at the old scar, emergency cesarean and repair, uterus kept, 2 u PRBC, a night in the ICU. Hgb 8.6 at discharge, on iron per OB. OB following postpartum. Filed. Will reach out to her."}
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "portal_message",
+          "start": "2026-01-12T10:05",
+          "reason": "checking in after delivery",
+          "documents": [
+            {"type": "Patient Message", "title": "Checking in", "author": "PCP", "date": "2026-01-12T10:05",
+             "body": "Grace, I read the hospital summary and I'm so sorry it was such a frightening delivery. I hope you and the baby are settling in at home. OB will see you for the incision and your six-week visit and recheck your blood count. Once you're up to it, I'd like to see you here too - no rush, just let the front desk know."},
+            {"type": "Patient Message", "title": "RE: Checking in", "author": "patient", "date": "2026-01-12T18:40",
+             "body": "Thank you, that means a lot. We're home and doing okay - still pretty wiped out and the incision is sore but getting better every day. Taking the iron. I'll call once things calm down."}
+          ]
+        },
+        {
+          "id": "2026-02-11a",
+          "kind": "outside_records",
+          "start": "2026-02-11T11:00",
+          "reason": "obstetrics postpartum visit letter",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-02-10T09:15", "results": [{"test": "Hemoglobin", "value": 11.0}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Obstetrics: postpartum visit", "author": "obstetrics", "date": "2026-02-11T11:00",
+             "body": "OUTSIDE OBSTETRICS GROUP\nPostpartum visit 02/10/2026\n\nMs. Paquette is six weeks after emergency cesarean with repair of a uterine rupture. Incision well healed. Lochia resolved. Energy improving. Hemoglobin today 11.0, up from 8.6 at discharge; finish the 3-month iron course.\n\nWe again reviewed that any future pregnancy requires a scheduled cesarean before labor begins and early prenatal care.\nMood screen negative. Cleared for usual activity.\n\nObstetrics attending"},
+            {"type": "Progress Notes", "title": "Outside records reviewed", "author": "PCP", "date": "2026-02-12T07:30",
+             "body": "OB postpartum note: healed, Hgb 11.0. Filed."}
+          ]
+        },
+        {
+          "id": "2026-03-17a",
+          "kind": "pharmacy",
+          "start": "2026-03-17T08:50",
+          "reason": "refill request",
+          "documents": [
+            {"type": "Medication Refill", "title": "Valacyclovir refill request", "author": "RN", "date": "2026-03-17T08:50",
+             "body": "Pharmacy e-request: valacyclovir 500 mg tab, 1 BID x3 days at outbreak onset, #18. On active list, episodic. Approved 1 refill per protocol. Pt not seen since 12/2025 - flag to schedule."}
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T20:15",
+          "reason": "scheduling",
+          "documents": [
+            {"type": "Patient Message", "title": "Physical", "author": "patient", "date": "2026-06-09T20:15",
+             "body": "Hi, I know I owe you a visit. Summer is chaos with four kids home. Could I do my physical in the fall? I'll call in August once I know my teaching schedule."},
+            {"type": "Patient Message", "title": "RE: Physical", "author": "front desk", "date": "2026-06-10T09:00",
+             "body": "Of course - just call or message when you know your schedule and we'll find a morning that works."}
+          ]
+        }
+      ]
+    }
+  ]
+}

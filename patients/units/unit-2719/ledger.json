@@ -1,9 +1,7 @@
 {
   "unit": "unit-2719",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002719/2018-05-22a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002719",
@@ -257,22 +255,13 @@
               "performed": "2018-05-22T09:00"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records-2018",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "new patient"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
               "title": "New Patient Visit",
               "date": "2018-05-22T11:30",
               "author": "PCP",
-              "body": "46F joining us after her old office stopped taking her plan. Works as an administrative assistant at an insurance agency office in town, sits most of the day.\n\nHTN for several years per her, on lisinopril 10 daily, no side effects, home cuff readings in the 120s. No other chronic problems. No surgeries. NKDA.\n\nFHx: mom with high blood pressure, maternal aunt had breast cancer at 54, sister treated for depression.\nSHx: smokes roughly a pack a week, has for about 20 years. Says she really wants to stop and has tried cutting down on her own. Drinks once or twice a month at most. Single, lives alone.\n\nROS negative.\n\nExam: well appearing. BP and vitals as charted. Thyroid not enlarged, no nodules felt. Heart RRR without murmur, lungs clear. Breasts symmetric without masses, no axillary nodes. Abdomen soft. No edema. Skin clear.\n\nA/P\n1. Essential HTN, controlled on lisinopril 10. Continue. BMP today.\n2. Tobacco: about 3 pack-years. Talked through quit options including patch or medication; she wants to try a quit date first, will let me know. Not in range for lung screening.\n3. Health maintenance: CBC, CMP, fasting lipids, one-time hep C and HIV screen today. Signed release for the old office so we get her last mammogram and Pap. Mammogram due in the fall. Colon screening discussed, she wants to wait a bit.\nPHQ-2 negative.\nRTC 6 months, sooner as needed."
+              "body": "46F joining us after her old office stopped taking her plan. Works as an administrative assistant at an insurance agency office in town, sits most of the day.\n\nHTN for several years per her, on lisinopril 10 daily, no side effects, home cuff readings in the 120s. No other chronic problems. No surgeries. NKDA.\n\nFHx: mom with high blood pressure, maternal aunt had breast cancer at 54, sister treated for depression.\nSHx: smokes roughly a pack a week, has for about 20 years. Says she really wants to stop and has tried cutting down on her own. Drinks once or twice a month at most. Single, lives alone.\n\nROS negative.\n\nExam: well appearing. BP and vitals as charted. Thyroid not enlarged, no nodules felt. Heart RRR without murmur, lungs clear. Breasts symmetric without masses, no axillary nodes. Abdomen soft. No edema. Skin clear.\n\nA/P\n1. Essential HTN, controlled on lisinopril 10. Continue. BMP today.\n2. Tobacco: about 3 pack-years. Talked through quit options including patch or medication; she wants to try a quit date first, will let me know. Not in range for lung screening.\n3. Health maintenance: CBC, CMP, fasting lipids, one-time hep C and HIV screen today. Signed release for the old office so we get her last mammogram and Pap. Mammogram due in the fall. Colon screening discussed, she wants to wait a bit.\nPHQ-2 negative.\nRTC 6 months, sooner as needed. Records request, prior primary care."
             },
             {
               "type": "Progress Notes",
@@ -309,13 +298,6 @@
             {
               "vaccine": "Tdap",
               "date": "2016-04-12T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records-2018",
-              "action": "done",
-              "date": "2018-06-05T10:00"
             }
           ],
           "documents": [
@@ -2055,7 +2037,7 @@
             {
               "id": "gi-referral-2022",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal screening, age 50"
@@ -4028,12 +4010,18 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 7.8
                 },
                 {
                   "test": "Cancer antigen 15-3",
                   "loinc": "6875-9",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 30
+                  },
                   "value": 64
                 }
               ]
@@ -4317,13 +4305,13 @@
         "code": "308979",
         "display": "carbamazepine 200 MG Oral Tablet",
         "ingredient": "carbamazepine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methimazole 10 MG Oral Tablet": {
         "code": "197941",
         "display": "methimazole 10 MG Oral Tablet",
         "ingredient": "methimazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4331,12 +4319,18 @@
         "code": "6875-9",
         "display": "Cancer Ag 15-3 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 30
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carcinoembryonic antigen": {
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

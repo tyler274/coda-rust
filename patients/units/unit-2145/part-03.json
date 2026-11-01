@@ -1,0 +1,141 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002145",
+      "events": [
+        {
+          "id": "2025-04-21a",
+          "kind": "pharmacy",
+          "start": "2025-04-21T09:05",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2025-04-21T09:05",
+              "body": "Pharmacy e-request: sertraline 100 mg and naltrexone 50 mg, 90-day supply each. Seen 12/16. Sent per PCP standing approval. Reminder to schedule summer physical left on voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-14a",
+          "kind": "annual_physical",
+          "start": "2025-07-14T08:20",
+          "end": "2025-07-14T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-07-14T09:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-07-14T09:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Hematocrit"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2025-07-14T09:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-07-14T09:00", "results": [{"test": "Hepatitis C Viral Load, PCR", "text": "Not detected"}]}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "social": [{"item": "Tobacco smoking status", "value": "Former smoker"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-07-14T08:20"},
+            {"procedure": "Venipuncture", "performed": "2025-07-14T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-07-14T09:10",
+              "body": "Annual exam, 44M.\n\nInterval: hep C reinfection treated last year, cured per hepatology in December. Feels well. Working full time, on his feet a lot, no joint or back trouble. Still in his program, attends regularly; no use. Naltrexone and sertraline daily. Vitamin D OTC. No tobacco since 2021, no alcohol.\n\nROS negative: no fatigue, bruising, bleeding, weight change, chest pain, dyspnea, bowel change or blood in stool.\n\nExam: vitals as charted. NAD. Sclerae anicteric. Oropharynx clear. Neck supple, no thyromegaly or nodes. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, no liver or spleen edge felt. Healed scars RLQ and left thigh. Extremities without edema. Skin no rash or bruising. Mood euthymic.\nPHQ-9 2.\n\nA/P:\n1. Preventive: CMP, CBC, lipids today. Yearly HCV RNA per hepatology. Turning 45 this year; colon screening discussed, he prefers stool testing, FIT kit given with instructions. Tdap 2023, up to date. Flu and COVID in October.\n2. OUD in sustained remission: continue naltrexone 50 mg.\n3. PTSD: stable on sertraline 100 mg.\nFollow-up in about 6 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "portal_message",
+          "start": "2025-07-16T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical labs",
+              "author": "PCP",
+              "date": "2025-07-16T12:30",
+              "body": "Brian, your labs from Monday are all normal, including blood counts, liver and kidney tests and cholesterol. The hepatitis C test is still negative. Please drop off the stool kit when you can."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical labs",
+              "author": "patient",
+              "date": "2025-07-16T19:48",
+              "body": "Thanks! Will do the kit this week."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-28a",
+          "kind": "lab_only",
+          "start": "2025-07-28T10:00",
+          "labs": [
+            {"panel": null, "collected": "2025-07-25T07:00", "resulted": "2025-07-28T10:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}
+          ],
+          "orders": [
+            {"id": "fit-2025", "action": "done", "date": "2025-07-28T10:00"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "FIT result",
+              "author": "PCP",
+              "date": "2025-07-28T13:15",
+              "body": "FIT negative. Repeat in one year. Patient notified through the portal."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-20a",
+          "kind": "nurse_visit",
+          "start": "2025-10-20T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-20T16:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-20T16:47"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-20T16:45"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2025-10-20T17:00",
+              "body": "Here for the 2025-26 flu and COVID doses. No illness today. Given L and R deltoid. Tolerated, observed 15 minutes. Reminded him his follow-up with PCP is due in December."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-08a",
+          "kind": "office_visit",
+          "start": "2025-12-08T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "telephone",
+          "start": "2025-12-09T09:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed appointment",
+              "author": "front desk",
+              "date": "2025-12-09T09:15",
+              "body": "Called re: missed visit yesterday. He got held over at work and forgot to call. Rebooked for 1/12 at 4:00. Has enough of both meds until then."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

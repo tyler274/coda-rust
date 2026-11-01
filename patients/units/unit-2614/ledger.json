@@ -1,9 +1,7 @@
 {
   "unit": "unit-2614",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002614/2023-10-10a: lab order \"Semen analysis\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002614",
@@ -954,6 +952,7 @@
               "action": "placed",
               "order": "Semen analysis",
               "category": "lab",
+              "loinc": "13361-1",
               "reason": "trying to conceive without success"
             }
           ],
@@ -995,6 +994,9 @@
                   "test": "Semen volume",
                   "loinc": "3160-9",
                   "unit": "mL",
+                  "range": {
+                    "low": 1.4
+                  },
                   "value": 2.6
                 },
                 {
@@ -1915,13 +1917,14 @@
                 },
                 {
                   "test": "Follicle Stimulating Hormone",
-                  "unit": "mIU/mL",
+                  "unit": "m[IU]/mL",
                   "value": 15
                 },
                 {
                   "test": "Luteinizing hormone",
                   "loinc": "10501-5",
-                  "unit": "mIU/mL",
+                  "unit": "m[IU]/mL",
+                  "range": {},
                   "value": 14
                 }
               ]
@@ -2409,18 +2412,29 @@
       "Luteinizing hormone": {
         "code": "10501-5",
         "display": "Lutropin [Units/volume] in Serum or Plasma",
-        "unit": "mIU/mL",
+        "unit": "m[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Semen volume": {
         "code": "3160-9",
         "display": "Volume of Semen",
         "unit": "mL",
+        "range": {
+          "low": 1.4
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Spermatozoa, motile": {
         "code": "13942-8",
         "display": "Spermatozoa Motile [Presence] in Semen by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Semen analysis": {
+        "code": "13361-1",
+        "display": "Semen analysis panel",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

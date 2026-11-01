@@ -1,10 +1,7 @@
 {
   "unit": "unit-2644",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): lab \"Variant lymphocytes/100 leukocytes in Blood by Manual count\" LOINC 735-6 not found",
-    "left text-only (not verified): lab \"Opening pressure of Cerebral spinal fluid\" LOINC 8247-5 not found"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002644",
@@ -527,8 +524,11 @@
               "results": [
                 {
                   "test": "Variant lymphocytes/100 leukocytes in Blood by Manual count",
-                  "loinc": "735-6",
+                  "loinc": "735-1",
                   "unit": "%",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 20
                 }
               ]
@@ -817,39 +817,49 @@
               "collected": "2026-01-12T20:05",
               "results": [
                 {
-                  "test": "Opening pressure of Cerebral spinal fluid",
-                  "loinc": "8247-5",
-                  "unit": "mm[H2O]",
-                  "value": 170
-                },
-                {
                   "test": "Leukocytes [#/volume] in Cerebral spinal fluid",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 130
                 },
                 {
                   "test": "Lymphocytes/100 leukocytes in Cerebral spinal fluid",
                   "loinc": "26479-6",
                   "unit": "%",
+                  "range": {},
                   "value": 92
                 },
                 {
                   "test": "Erythrocytes [#/volume] in Cerebral spinal fluid",
                   "loinc": "26454-9",
                   "unit": "/uL",
+                  "range": {
+                    "high": 0
+                  },
                   "value": 5
                 },
                 {
                   "test": "Protein [Mass/volume] in Cerebral spinal fluid",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 76
                 },
                 {
                   "test": "Glucose [Mass/volume] in Cerebral spinal fluid",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 64
                 },
                 {
@@ -1170,12 +1180,19 @@
         "code": "26454-9",
         "display": "Erythrocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "high": 0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Glucose [Mass/volume] in Cerebral spinal fluid": {
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Gram stain, Cerebral spinal fluid": {
@@ -1192,24 +1209,38 @@
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lymphocytes/100 leukocytes in Cerebral spinal fluid": {
         "code": "26479-6",
         "display": "Lymphocytes/Leukocytes in Cerebrospinal Fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein [Mass/volume] in Cerebral spinal fluid": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Variant lymphocytes/100 leukocytes in Blood by Manual count": {
+        "code": "735-1",
+        "display": "Variant lymphocytes/Leukocytes in Blood by Manual count",
+        "unit": "%",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Variant lymphocytes/100 leukocytes in Blood by Manual count\" LOINC 735-6 not found",
-      "lab \"Opening pressure of Cerebral spinal fluid\" LOINC 8247-5 not found"
-    ]
+    }
   }
 }

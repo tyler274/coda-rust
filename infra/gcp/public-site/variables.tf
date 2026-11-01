@@ -78,39 +78,23 @@ variable "release_sha" {
 }
 
 variable "physician_app_url" {
-  description = "Fixed physician HTTPS upstream origin for /physician; no physician backend or target IAM is provisioned here."
+  description = "Fixed physician HTTPS upstream origin for /physician. Set it only where the site offers physician sign-in: it mounts /physician, renders the Sign in link and gives the runtime its proxy signing identity, so operators provision runtime self-signJwt and physician-only IAP access first. Null means no Sign in link and no /physician mount. No physician backend or target IAM is provisioned here."
   type        = string
+  default     = null
   validation {
-    condition     = can(regex("^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?/?$", var.physician_app_url))
+    condition     = var.physician_app_url == null ? true : can(regex("^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?/?$", var.physician_app_url))
     error_message = "Deployed physician_app_url must be a fixed HTTPS origin without credentials, path, query, or fragment."
   }
 }
 
-variable "physician_proxy_enabled" {
-  description = "Opt in only after operators provision runtime self-signJwt and physician-only IAP access. No production activation is implicit."
-  type        = bool
-  default     = false
-  nullable    = false
-}
-
-variable "certificate_ids" {
-  description = "Existing global Compute SSL certificate self-links, required only for production. Staging uses native IAP; its optional domain mapping manages TLS automatically."
+variable "domains" {
+  description = "Production hostnames the load balancer serves (apex first). Certificate Manager issues one Google-managed certificate for them through DNS authorization, so it can be active before traffic moves; the operator adds the certificate_dns_records CNAMEs. Staging uses its domain mapping instead and sets none."
   type        = list(string)
   default     = []
   nullable    = false
-}
-
-variable "doppler_token_secret_id" {
-  description = "Existing Secret Manager secret containing only a read-only, environment-scoped DOPPLER_TOKEN; never its value."
-  type        = string
-}
-
-variable "doppler_token_secret_version" {
-  description = "Existing immutable numeric secret version. Rotation is an explicit revision change."
-  type        = string
   validation {
-    condition     = can(regex("^[1-9][0-9]*$", var.doppler_token_secret_version))
-    error_message = "Pin a numeric DOPPLER_TOKEN secret version, not latest."
+    condition     = alltrue([for domain in var.domains : can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", domain))])
+    error_message = "domains must be lowercase hostnames without scheme, port, path or wildcard."
   }
 }
 

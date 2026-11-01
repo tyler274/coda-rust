@@ -1,12 +1,7 @@
 {
   "unit": "unit-1969",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001969/2019-09-12a: procedure order \"Outside records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00001969/2022-03-25a: lab order \"Basic metabolic panel 2 weeks after ACE inhibitor start\" names no one catalog lab, panel, study or procedure",
-    "MRN00001969/2024-06-06a: lab order \"CBC recheck in 3 months\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): lab \"Methylmalonic Acid\" LOINC 13964-7 not found; closest real codes: 111143-4 Methylmalonate [Measurement] in Urine; 110569-1 Methylmalonate/Creatinine [Measurement] in Urine; 2630-2 Methylmalonate [Mass/volume] in Urine; 29342-3 Methylmalonate [Mass/time] in 24 hour Urine; 29877-8 Methylmalonate [Presence] in Urine"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001969",
@@ -330,15 +325,6 @@
               "date": "2019-09-12T08:55"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Outside records request, prior primary care",
-              "category": "procedure",
-              "reason": "Establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -417,13 +403,6 @@
           "start": "2019-11-05T13:15",
           "service": "Internal Medicine — Primary Care",
           "reason": "Prior practice records",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2019-11-05T13:15"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -936,7 +915,7 @@
             {
               "id": "colo-2021",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "Colorectal cancer screening, average risk"
@@ -1249,7 +1228,7 @@
                 },
                 {
                   "test": "Glucose",
-                  "value": 87
+                  "value": 98
                 },
                 {
                   "test": "Calcium",
@@ -1375,7 +1354,7 @@
             {
               "id": "bmp-lis",
               "action": "placed",
-              "order": "Basic metabolic panel 2 weeks after ACE inhibitor start",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "Lisinopril start"
             }
@@ -1583,7 +1562,7 @@
                 },
                 {
                   "test": "Glucose",
-                  "value": 84
+                  "value": 158
                 },
                 {
                   "test": "Calcium",
@@ -2164,7 +2143,7 @@
                 },
                 {
                   "test": "Glucose",
-                  "value": 88
+                  "value": 152
                 },
                 {
                   "test": "Calcium",
@@ -2872,6 +2851,10 @@
                   "test": "Reticulocytes",
                   "loinc": "17849-1",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 1.0
                 }
               ]
@@ -2891,8 +2874,12 @@
                 },
                 {
                   "test": "Methylmalonic Acid",
-                  "loinc": "13964-7",
+                  "loinc": "13964-2",
                   "unit": "umol/L",
+                  "range": {
+                    "low": 0.0,
+                    "high": 0.4
+                  },
                   "value": 0.21
                 }
               ]
@@ -2967,7 +2954,7 @@
             {
               "id": "cbc-recheck-2024",
               "action": "placed",
-              "order": "CBC recheck in 3 months",
+              "order": "Complete Blood Count (CBC)",
               "category": "lab",
               "reason": "Folate deficiency anemia"
             }
@@ -4470,10 +4457,24 @@
       }
     },
     "labs": {
+      "Methylmalonic Acid": {
+        "code": "13964-2",
+        "display": "Methylmalonate [Moles/volume] in Serum or Plasma",
+        "unit": "umol/L",
+        "range": {
+          "low": 0.0,
+          "high": 0.4
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "Reticulocytes": {
         "code": "17849-1",
         "display": "Reticulocytes/Erythrocytes in Blood by Automated count",
         "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 1.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine Crystals": {
@@ -4481,9 +4482,6 @@
         "display": "Crystals [type] in Urine sediment by Light microscopy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "lab \"Methylmalonic Acid\" LOINC 13964-7 not found; closest real codes: 111143-4 Methylmalonate [Measurement] in Urine; 110569-1 Methylmalonate/Creatinine [Measurement] in Urine; 2630-2 Methylmalonate [Mass/volume] in Urine; 29342-3 Methylmalonate [Mass/time] in 24 hour Urine; 29877-8 Methylmalonate [Presence] in Urine"
-    ]
+    }
   }
 }

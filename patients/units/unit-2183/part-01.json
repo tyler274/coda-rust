@@ -61,7 +61,7 @@
               {"test": "Microalbumin/Creatinine Ratio"},
               {"test": "Hepatitis C Antibody", "text": "Nonreactive"},
               {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
-              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 72}
+              {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 72, "range": {"low": 50, "high": 100}}
             ]}
           ],
           "surveys": [{"survey": "PHQ-9 total score", "value": 3}, {"survey": "AUDIT-C total score", "value": 6}],
@@ -72,7 +72,7 @@
           ],
           "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2018-10-17T09:00"}],
           "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2018-10-17T10:00"}],
-          "orders": [{"id": "records-prior-pcp", "action": "placed", "order": "Request outside records from prior primary care office", "category": "procedure", "reason": "establish care"}],
+          "orders": [],
           "documents": [
             {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2018-10-17T10:05", "body": "63M here to set up care. Prior PCP retired. Brought a bag of bottles, which helped.\n\nHeart: two heart attacks. First in 2014, cathed and stented then; that was also when he put the cigarettes down for good. Second this past August, kept a few days at a regional hospital and sent home on the same pills, no new stent per his account. No chest pain since. Follows with an outside cardiology group.\nDiabetes since roughly 2003, on insulin for years. Glargine 24 units at night plus metformin 1000 twice a day. Checks sugars when he remembers, mostly 140s to 180s fasting. Feet have been numb and tingly for a while.\nBP and cholesterol on lisinopril, metoprolol, atorvastatin 40.\nCOPD: uses albuterol a few times a month, mostly cold air or heavy yard work. No hospital stays for breathing.\nSeizures: complex partial spells as a younger man, none in many years on valproic acid 500 twice daily. Drives. Prior PCP refilled it.\n\nSocial: retired construction foreman, on disability. Married, wife at home. Former smoker, about 40 pack-years, quit 2014. Alcohol: 2 to 3 drinks every night, mostly whiskey. No drugs.\nFamily: father had his first MI at 58. Mother has type 2 diabetes. Sister with high blood pressure.\nAllergies: none known.\n\nExam: well-appearing heavyset man. Heart regular, no murmur. Lungs with mildly prolonged expiration, no wheeze. Abdomen soft. No leg swelling. Feet: skin intact, monofilament reduced over both soles, pulses palpable.\n\nA/P:\n1. CAD s/p MI x2, stent 2014. Aspirin, metoprolol, atorvastatin 40, lisinopril. Keep cardiology.\n2. T2DM with neuropathy, on insulin. A1c and kidney labs today. Foot care reviewed.\n3. HTN, at goal today.\n4. Hyperlipidemia: lipid panel today.\n5. COPD: albuterol PRN. Will get spirometry on file, none in what he brought.\n6. Seizure history: valproic acid, level and CBC/LFTs today.\n7. Alcohol: AUDIT-C 6. Talked plainly about drinking with his heart and his seizure med. He's thinking about it, not ready to set a date.\n8. Health maintenance: flu shot today. Hep C and HIV once. Requesting records from the old office for colonoscopy and the cath reports.\n\nRTC 3 months."}
           ]
@@ -91,7 +91,7 @@
           "kind": "outside_records",
           "start": "2018-10-26T11:15",
           "reason": "prior primary care records",
-          "orders": [{"id": "records-prior-pcp", "action": "done", "date": "2018-10-26T11:15"}],
+          "orders": [],
           "documents": [
             {"type": "Outside Records", "title": "Prior primary care records (summary)", "author": "MA", "date": "2018-10-26T11:15", "body": "86 pages faxed by the prior PCP office. Abstracted for the chart:\n- 2014: MI at a regional hospital, cardiac cath with PCI and stent. Discharge summary and cath report included.\n- 08/2018: second MI, regional hospital, managed medically. Discharge summary included; meds unchanged on discharge.\n- Seizure disorder: complex partial seizures, on valproic acid long term, no events documented in the notes we have.\n- Colonoscopy 2016: normal to the cecum, no polyps, 10-year recall.\n- Diabetes: insulin glargine since about 2012 per the notes.\n- Immunizations: Pneumovax listed years ago, no date.\nScanned to Media. PCP to review."}
           ]
@@ -185,7 +185,7 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "chronic care follow-up",
           "measure": ["bp", "hr", "spo2", "weight_kg"],
-          "labs": [{"panel": null, "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 66}]}, {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin"}]}],
+          "labs": [{"panel": null, "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin A1c"}, {"test": "Microalbumin/Creatinine Ratio"}, {"test": "Valproate", "loinc": "4086-5", "unit": "ug/mL", "value": 66, "range": {"low": 50, "high": 100}}]}, {"panel": "Complete Blood Count (CBC)", "collected": "2019-09-18T11:40", "results": [{"test": "Hemoglobin"}]}],
           "surveys": [{"survey": "AUDIT-C total score", "value": 0}],
           "social": [{"item": "History of alcohol use", "value": "Former heavy use, abstinent since June 2019"}],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2019-09-18T11:00"}, {"procedure": "Immunization administration", "performed": "2019-09-18T11:35"}],

@@ -1,0 +1,129 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002289",
+      "events": [
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T09:10",
+          "documents": [
+            {"type": "Refill Request", "title": "Refill: atorvastatin", "author": "MA", "date": "2024-02-20T09:10",
+             "body": "Atorvastatin 40 mg, 90-day supply requested by pharmacy. Approved, 1 refill. Aspirin is OTC, he buys it himself."}
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "outside_records",
+          "start": "2024-04-08T13:20",
+          "reason": "oncology treatment summary",
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology Treatment Summary", "author": "oncology", "date": "2024-04-08T13:20",
+             "body": "Outside oncology group, summary to PCP.\nDx: small cell lung cancer, extensive stage, malignant R pleural effusion (11/2023).\nTreatment: carboplatin/etoposide plus atezolizumab, cycle 1 12/11/2023, 4 cycles completed 3/2024. Now on atezolizumab every 4 weeks as maintenance.\nNext restaging in about 3 months.\nAllergies: NKDA. Other meds: atorvastatin, aspirin."}
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "state": {"weight_kg": 78.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2024-04-16T10:05"}],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-04-16T09:30"},
+            {"procedure": "Immunization administration", "performed": "2024-04-16T10:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2024-04-16T10:15",
+             "body": "Check-in. Finished four rounds of chemo with immunotherapy in March, now getting atezolizumab monthly at the cancer center. Energy coming back slowly, eating fine, lost a few pounds over the winter. Still brings up sputum in the mornings, less on most days; doing the PEP device.\n\nMeds: atorvastatin 40, aspirin 81, plus atezolizumab via oncology.\n\nExam: thin but well. Clubbing. Crackles at both bases, unchanged. Heart regular, no edema.\n\nA/P\n1. ES-SCLC on maintenance immunotherapy, per oncology summary of 4/8.\n2. Bronchiectasis, asbestosis: stable.\n3. HLD: continue statin.\n4. Shingrix #2 today, ok with oncology.\nFollow up in the summer, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment Cancelled", "author": "front desk", "date": "2024-07-22T11:45",
+             "body": "Wife called, infusion got moved to tomorrow and they can't do both. Cancelled 7/23. She'll call back to rebook after his scans."}
+          ]
+        },
+        {
+          "id": "2024-09-14a",
+          "kind": "hospital_admission",
+          "start": "2024-09-14T08:40",
+          "end": "2024-09-20T13:00",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "dyspnea, cough, positional chest pain",
+          "vitals": [{"time": "2024-09-14T08:45", "bp": [100, 60], "hr": 110, "rr": 22, "spo2": 92}],
+          "conditions": [
+            {"label": "Malignant pericardial effusion", "icd10": "I31.31", "action": "diagnosed", "onset": "2024-09-10"},
+            {"label": "Cardiac tamponade", "icd10": "I31.4", "action": "diagnosed", "onset": "2024-09-14"}
+          ],
+          "reports": [
+            {"study": "Transthoracic echocardiogram", "performed": "2024-09-14T10:15",
+             "text": "Large circumferential pericardial effusion. Right ventricular diastolic collapse and exaggerated respiratory variation in mitral inflow, consistent with tamponade physiology. Left ventricular systolic function normal by visual estimate. No significant valvular disease.",
+             "conclusion": "Large pericardial effusion with echocardiographic evidence of cardiac tamponade."}
+          ],
+          "procedures": [
+            {"procedure": "Pericardiocentesis", "snomed": "309849004", "performed": "2024-09-14T12:30"},
+            {"procedure": "Thoracentesis", "snomed": "91602002", "performed": "2024-09-06T10:00"},
+            {"procedure": "Talc pleurodesis", "snomed": "302450005", "performed": "2024-09-18T11:00"}
+          ],
+          "documents": [
+            {"type": "ED Notes", "title": "Emergency Department Note", "author": "emergency medicine", "date": "2024-09-23T09:00",
+             "body": "Regional hospital ED, 9/14/2024.\nSCLC, extensive stage, recurrent R pleural effusion, tapped at the cancer center about a week ago with relief; now short of breath again, coughing, chest pain worse lying flat. No injury.\nBP 100/60, HR 110, RR 22, SpO2 92% RA.\nJVP up, heart sounds muffled.\nBedside then formal echo: large pericardial effusion, tamponade.\nPericardiocentesis by cardiology, fluid sent; cytology malignant cells.\nAdmitted. NKDA.\nAddendum: R effusion reaccumulated; talc pleurodesis done 9/18 before discharge 9/20."}
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "office_visit",
+          "start": "2024-09-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [{"label": "Cardiac tamponade", "icd10": "I31.4", "action": "resolved"}],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Transitional care management, high complexity", "performed": "2024-09-26T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Post-Hospital Visit", "author": "PCP", "date": "2024-09-26T10:50",
+             "body": "Here with wife after a 6-day stay. Only the brief ED note has come over; history from them.\n\nTimeline per pt: fluid taken off the R lung at the cancer center on 9/6, felt better for a few days, then breathless, coughing, chest pain lying down. ED found a large fluid collection around the heart pressing on it; drained, fluid had cancer cells. While in, the R lung fluid came back and they did a talc procedure to seal it on 9/18.\n\nNow: breathing much better, lying flat again, no chest pain, walking the house without stopping.\n\nExam: vitals as charted, not tachycardic today. Heart sounds normal, no rub. Reduced sounds R base, crackles both bases as before. No JVD. No edema.\n\nA/P\n1. Malignant pericardial effusion with tamponade, drained. Tamponade resolved. Oncology plans to continue atezolizumab, repeat echo per them.\n2. Recurrent malignant R pleural effusion, s/p pleurodesis.\n3. Return precautions reviewed: breathlessness, chest pain, lightheadedness -> ED.\nRequested full discharge summary from hospital."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:30",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2024-10-08T13:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T13:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-08T13:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Immunization Visit", "author": "RN", "date": "2024-10-08T13:55",
+             "body": "Flu (high dose) R arm, COVID L arm. Oncology ok'd, timed between infusions. Tolerated. Observed 15 min."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "annual_physical",
+          "start": "2024-12-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "state": {"weight_kg": 77.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Annual wellness visit, initial", "performed": "2024-12-10T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2024-12-10T09:50",
+             "body": "AWV. Feels he has been holding steady since September. Monthly atezolizumab continues. Morning sputum unchanged. No falls, managing stairs at home slowly. Wife handles appointments.\n\nPHQ-2: 1, feels down some days, no loss of interest; declines counseling for now.\nHealth care proxy: wife; MOLST discussion started, he wants to think it over with his oncologist.\n\nVitals stable. Weight 77. Exam: chest as before, heart regular, no edema.\n\nPlan: meds unchanged (atorvastatin 40, aspirin 81). Vaccines up to date this season. Follow up in spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

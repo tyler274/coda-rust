@@ -1,10 +1,7 @@
 {
   "unit": "unit-1821",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\"",
-    "left text-only (not verified): lab \"IgM\" LOINC 2472-4 not found; closest real codes: 55849-4 Cryoglobulin.IgM.monoclonal [Presence] in Serum; 81205-7 Cryoglobulin IgA and IgG and IgM and C3 panel - Serum; 88455-1 California encephalitis virus Ab.IgG and IgM panel - Serum by Immunofluorescence; 9443-3 IgM lymphocytes/Lymphocytes in Leukocytes; 74870-7 IgM.kappa/IgM.lambda [Mass Ratio] in Serum or Plasma"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001821",
@@ -61,6 +58,7 @@
             },
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1507,18 +1505,30 @@
                   "test": "IgG",
                   "loinc": "2465-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 800,
+                    "high": 1500
+                  },
                   "value": 1040
                 },
                 {
                   "test": "IgA",
                   "loinc": "2458-8",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 90,
+                    "high": 325
+                  },
                   "value": 212
                 },
                 {
                   "test": "IgM",
-                  "loinc": "2472-4",
+                  "loinc": "2472-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 45,
+                    "high": 150
+                  },
                   "value": 118
                 }
               ]
@@ -1879,13 +1889,13 @@
         "code": "896762",
         "display": "labetalol hydrochloride 200 MG Oral Tablet",
         "ingredient": "labetalol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "ofloxacin 3 MG/ML Otic Solution": {
         "code": "242446",
         "display": "ofloxacin 3 MG/ML Otic Solution",
         "ingredient": "ofloxacin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1903,12 +1913,30 @@
         "code": "2458-8",
         "display": "IgA [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 90,
+          "high": 325
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "IgG": {
         "code": "2465-3",
         "display": "IgG [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 800,
+          "high": 1500
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "IgM": {
+        "code": "2472-9",
+        "display": "IgM [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "range": {
+          "low": 45,
+          "high": 150
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sputum culture": {
@@ -1928,10 +1956,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin Oral Tablet\"",
-      "lab \"IgM\" LOINC 2472-4 not found; closest real codes: 55849-4 Cryoglobulin.IgM.monoclonal [Presence] in Serum; 81205-7 Cryoglobulin IgA and IgG and IgM and C3 panel - Serum; 88455-1 California encephalitis virus Ab.IgG and IgM panel - Serum by Immunofluorescence; 9443-3 IgM lymphocytes/Lymphocytes in Leukocytes; 74870-7 IgM.kappa/IgM.lambda [Mass Ratio] in Serum or Plasma"
-    ]
+    }
   }
 }

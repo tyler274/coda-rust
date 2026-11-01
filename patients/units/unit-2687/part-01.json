@@ -1,0 +1,244 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002687",
+      "given": "Ramon",
+      "family": "Negron",
+      "birth_date": "1991-10-24",
+      "address_line": "112 Granby Rd, Apt 2",
+      "phone": "+1-518-555-0109",
+      "email": "ramon.negron@example.test",
+      "marital_status": "single",
+      "summary": "Healthy agricultural pest control technician who joined in 2023 and was last seen for a physical in September 2024. After that he had two outside organophosphate poisonings (ED 2025, ICU 2026) that reach the practice only as late records and portal messages.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Scheduling",
+              "author": "front desk",
+              "date": "2023-08-08T10:12",
+              "body": "Caller is a 31 y/o man looking for a primary doctor; has not had one since his old family practice. Medicaid, card info taken and eligibility verified. No acute issues, just wants a checkup. Booked new patient physical 8/22 at 8:40. Asked him to come fasting for labs and to bring any vaccine records he has. Records release form for his prior family practice sent by email."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 74.0, "height_cm": 172.0, "labs": {"Hemoglobin A1c": 5.3, "Low Density Lipoprotein": 92, "Glucose": 89}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Agricultural pest control technician"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T09:20", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T09:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-08-22T09:20", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": null, "collected": "2023-08-22T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-08-22T09:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-22T09:15"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2023-08-22T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-08-22T09:15"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T09:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2023-08-22T09:30",
+              "body": "31 y/o man, new to the practice. Last regular care was with a family practice through his early twenties; nothing since. Feels well. No meds, no supplements. No drug allergies.\n\nPMH: none.\nPSH: tonsils out as a kid, around age 8.\nFH: dad has type 2 diabetes. Mom has high blood pressure. Nothing else he knows of.\nSocial: works for a pest control outfit that services farms, mixing and spraying for the growing season, lighter work in winter. Never smoked, never vaped. Drinks rarely, maybe a beer or two a month. No drugs.\n\nROS: negative across the board. No chest pain, breathing trouble, GI or urinary complaints, no headaches, mood fine.\nPHQ-2: 0.\n\nExam: vitals in flowsheet. Well appearing. HEENT: tonsillar fossae empty, oropharynx clear, TMs normal. Neck supple, no nodes, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin: no rashes. Extremities without edema. Neuro grossly intact.\n\nA/P: healthy adult, establishing care.\n- Screening: CBC, CMP, lipids, A1c (dad's diabetes), one-time HIV and hep C. Drawn today.\n- Tdap given today; he has no record of one as an adult.\n- Asked what he works with. Says the crew uses respirators and gloves when spraying and the company runs safety training each spring. Encouraged him to keep using the gear.\n- Flu and COVID once the fall supply is in. Annual physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2023-08-25T16:05",
+              "body": "Hi Ramon, everything from Tuesday came back normal: blood counts, kidney and liver function, cholesterol, sugar and A1c all fine. HIV and hepatitis C screens negative. Nothing to do except come back for the vaccines this fall. Good to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T11:30",
+          "procedures": [
+            {"procedure": "Tonsillectomy, under age 12", "performed": "2000-05-16T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Family Practice Records",
+              "author": "front desk",
+              "date": "2023-09-05T11:30",
+              "body": "Records received by fax from his prior family practice, 38 pages, covering 1996 through 2014.\n\nContents: well-child and adolescent visits; childhood immunization series complete; tonsillectomy in spring 2000, recovered without problems; sports physicals in his teens, normal. Last visit 2014, an adult physical with normal exam. No chronic problems, no medications, no drug allergies listed.\n\nScanned to chart and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "nurse_visit",
+          "start": "2023-10-17T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fall vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-17T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-17T16:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-17T16:25"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2023-10-17T16:40",
+              "body": "In after work for flu and COVID. Feeling well, no fever, no reactions to past vaccines. Flu vaccine to left deltoid, COVID to right deltoid. VIS given. Observed 15 minutes, no reaction. Advised acetaminophen if the arm aches."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "portal_message",
+          "start": "2024-03-12T07:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Vaccine Record",
+              "author": "patient",
+              "date": "2024-03-12T07:48",
+              "body": "Hi, my job is doing paperwork before the season starts and they want proof of my tetanus shot. Can you send me something I can print? Thanks"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Vaccine Record",
+              "author": "MA",
+              "date": "2024-03-12T11:20",
+              "body": "Hi Ramon, your immunization record is attached as a PDF. It shows the Tdap from last August along with your fall flu and COVID shots. Let us know if your employer needs a different form."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-09a",
+          "kind": "portal_message",
+          "start": "2024-08-09T09:00",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Annual Physical Due",
+              "author": "MA",
+              "date": "2024-08-09T09:00",
+              "body": "Hi Ramon, it's been about a year since your last physical. We have you down for August 30 at 8:00. Please come fasting. Reply here or call if that time no longer works."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Annual Physical Due",
+              "author": "patient",
+              "date": "2024-08-09T19:42",
+              "body": "ok that works"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-30a",
+          "kind": "annual_physical",
+          "start": "2024-08-30T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "telephone",
+          "start": "2024-09-03T13:35",
+          "reason": "reschedule missed physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment Follow-up",
+              "author": "front desk",
+              "date": "2024-09-03T13:35",
+              "body": "Called pt re: no-show 8/30. He says the crew got called out early that morning and he forgot to call. Rebooked physical for 9/27 at 7:40, first slot, so he can get to a job site after. Fasting reminder given."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-27a",
+          "kind": "annual_physical",
+          "start": "2024-09-27T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"weight_kg": 75.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-09-27T08:05", "results": [{"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-09-27T08:05", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2024-09-27T08:05", "results": [{"test": "Hemoglobin A1c"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-09-27T08:10"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-09-27T07:40"},
+            {"procedure": "Immunization administration", "performed": "2024-09-27T08:10"},
+            {"procedure": "Venipuncture", "performed": "2024-09-27T08:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-09-27T08:20",
+              "body": "Annual exam. 32 y/o, well. Busy season winding down. No complaints today. No ER or urgent care visits this year. Still no meds. No drug allergies.\n\nSocial unchanged: never smoker, rare beer, works farm pest control. Uses respirator and gloves on the job per him.\nFH: father T2DM, mother HTN.\nPHQ-2 0.\n\nExam: vitals reviewed. Up a kilo from last year. Comfortable. Eyes, ears, throat normal. No lymphadenopathy. Heart RRR without murmur. Lungs clear bilaterally. Abdomen soft, nontender. Skin clear. No edema. Normal gait and strength.\n\nA/P: healthy 32 y/o male.\n- CMP, lipids, A1c today given family history.\n- Flu shot given. COVID update is optional for him this year; he passed.\n- Return 1 yr, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "portal_message",
+          "start": "2024-10-01T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-10-01T12:15",
+              "body": "Ramon, your labs from Friday are all within the normal range, A1c included, so no sign of diabetes. See you next year for your physical."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

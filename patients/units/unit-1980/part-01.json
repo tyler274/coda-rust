@@ -258,14 +258,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -295,12 +288,7 @@
           "kind": "outside_records",
           "start": "2021-10-05T10:10",
           "orders": [
-            {
-              "id": "prior-records-2021",
-              "action": "done",
-              "date": "2021-10-05T10:10"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Outside Records",
@@ -509,9 +497,13 @@
                 },
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
-                  "value": 141
+                  "value": 141,
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  }
                 }
               ]
             }
@@ -593,9 +585,13 @@
               "results": [
                 {
                   "test": "Zinc",
-                  "loinc": "5763-0",
+                  "loinc": "5763-8",
                   "unit": "ug/dL",
-                  "value": 137
+                  "value": 137,
+                  "range": {
+                    "low": 75,
+                    "high": 140
+                  }
                 }
               ]
             }

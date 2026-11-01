@@ -1,0 +1,153 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002145",
+      "given": "Brian",
+      "family": "Barrett",
+      "birth_date": "1981-03-25",
+      "address_line": "17 Cooke Avenue, Apt 2",
+      "phone": "+1-508-555-0109",
+      "email": "brian.barrett@example.test",
+      "marital_status": "single",
+      "summary": "Warehouse logistics coordinator in long-term recovery from opioid use disorder on naltrexone, with PTSD on sertraline and hepatitis C cured in 2021. Reinfected with hepatitis C in 2024 and cured again with sofosbuvir/velpatasvir; in spring 2026 develops pancytopenia, referred to hematology, where a marrow shows aplastic anemia.",
+      "events": [
+        {
+          "id": "2023-07-11a",
+          "kind": "telephone",
+          "start": "2023-07-11T10:20",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-07-11T10:20",
+              "body": "Caller wants to transfer his primary care here. Has Medicaid, card info taken. Prior PCP office is retiring their panel. Takes three daily meds, says he will bring the bottles. Booked new patient visit 7/17 at 8:40. Release of information form emailed for his old office records."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "establish_care",
+          "start": "2023-07-17T08:40",
+          "end": "2023-07-17T09:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "History of hepatitis C infection", "icd10": "Z86.19", "action": "history", "onset": "2021-01-01", "note": "treated with antiviral therapy in 2021, cured"},
+            {"label": "Opioid use disorder, in sustained remission", "icd10": "F11.21", "action": "diagnosed"},
+            {"label": "History of intravenous drug use", "icd10": "Z87.898", "action": "history"},
+            {"label": "Post-traumatic stress disorder", "action": "diagnosed"}
+          ],
+          "medications": [
+            {"drug": "naltrexone hydrochloride 50 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Opioid use disorder, in sustained remission"},
+            {"drug": "sertraline 100 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 100, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Post-traumatic stress disorder"},
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "historical", "sig": "Take 2000 units by mouth daily", "dose": {"value": 0.05, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 84.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-07-17T09:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Albumin"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-17T09:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-07-17T09:30", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-07-17T09:30", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2023-07-17T09:30", "results": [{"test": "Hepatitis C Viral Load, PCR", "text": "Not detected"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Does not drink alcohol"},
+            {"item": "Occupation", "value": "Warehouse logistics coordinator"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2023-07-17T09:25"}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-07-17T08:40"},
+            {"procedure": "Immunization administration", "performed": "2023-07-17T09:25"},
+            {"procedure": "Venipuncture", "performed": "2023-07-17T09:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-07-17T09:35",
+              "body": "42-year-old man transferring care; his former primary care office is closing its panel. Came with his pill bottles.\n\nHepatitis C: diagnosed years ago in the setting of injection use. Treated with a 12-week antiviral course in 2021 through his old office, told he was cured. No symptoms now.\n\nOpioid use disorder: in sustained remission. No injection or other use in years by his account. Goes to his recovery program meetings several times a week. Naltrexone 50 mg daily by mouth, takes it every morning, no side effects. Old prescriber was the prior PCP; I will take it over.\n\nPTSD: on sertraline 100 mg for years. Sleep is ok most nights, occasional bad stretch around anniversaries.\n\nAlso takes vitamin D3 2000 units daily on his own.\n\nPSH: appendectomy at 16. Left femur ORIF at 28 after a car crash, no hardware problems.\nFH: father had alcohol use disorder with cirrhosis. Mother has hypertension and hypothyroidism. Younger brother has hepatitis C.\nSH: logistics coordinator at a warehouse, day shift. Smoked for years, quit in 2021. No alcohol. Single.\nAllergies: no known drug allergies.\n\nExam: well appearing, pleasant. Vitals as charted. Sclerae anicteric. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, healed RLQ scar, no organomegaly. Old lateral thigh scar on the left. No edema. Skin without track marks or rash. Mood good, affect full.\n\nPHQ-9 4.\n\nAssessment/plan:\n1. History of hepatitis C, treated 2021: checking HCV RNA to confirm cure on our end. Requesting old records.\n2. OUD in sustained remission: continue naltrexone 50 mg daily. Encouraged him to keep going to meetings.\n3. PTSD: stable on sertraline 100 mg, continue.\n4. Health maintenance: CMP, CBC, lipids, HIV screen today. Tdap given (none on record). Colon screening at 45.\nRTC 4-5 months, sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-19a",
+          "kind": "portal_message",
+          "start": "2023-07-19T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "author": "PCP",
+              "date": "2023-07-19T16:05",
+              "body": "Hi Brian, all of your bloodwork from Monday looks good. Kidney and liver tests are normal, blood counts are normal, cholesterol is fine. The hepatitis C virus test came back not detected, which confirms the 2021 treatment worked. HIV screen negative. Nothing to change. Take care."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T11:40",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "author": "outside primary care",
+              "date": "2023-07-25T11:40",
+              "body": "Records packet from the patient's previous primary care office, received by fax, 38 pages.\n\nProblem list on their last summary: hepatitis C (treated), opioid use disorder in remission, PTSD.\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: none known.\n\nHepatitis C: genotype and baseline labs from 2021 in the packet. 12-week antiviral regimen completed in 2021. Post-treatment viral load undetectable, documented as sustained virologic response.\n\nOther: tobacco cessation counseling 2021, patient quit that year. Routine metabolic panels and blood counts 2021-2022 within normal limits.\n\nReviewed and filed by PCP. Consistent with history given at visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "nurse_visit",
+          "start": "2023-10-16T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["hr"],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-16T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-16T16:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2023-10-16T16:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "author": "RN",
+              "date": "2023-10-16T16:50",
+              "body": "Came in after his shift for flu and the 2023-24 COVID shot. No fever today, no prior vaccine reactions. Flu L deltoid, COVID R deltoid. VIS given. Waited 15 minutes, felt fine, left."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-11a",
+          "kind": "office_visit",
+          "start": "2023-12-11T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up recovery and PTSD",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-12-11T15:20"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-12-11T15:50",
+              "body": "Routine check-in. Work busy with the holiday freight volume, long days but manageable. Still at meetings, three a week. Taking naltrexone daily without missed doses. No cravings to speak of. Sertraline steady; sleeping alright.\n\nVitals as charted. Calm, good eye contact, organized.\nPHQ-9 3.\n\nA/P: OUD in sustained remission, continue naltrexone 50 mg. PTSD stable, continue sertraline 100 mg. 90-day refills sent. Physical next summer."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 //! The physician's remembered panel choices: whether the sidebar and the
 //! schedule are collapsed. They belong to the physician, not the session, so
 //! they live in this browser's localStorage under the physician's id and
-//! outlive sign-out (physician.mmd, {panel} preference, M8).
+//! outlive sign-out.
 // Storage is browser-only; native builds read every panel as expanded.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 

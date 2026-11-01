@@ -1,0 +1,197 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001800",
+      "given": "Paige",
+      "family": "Howland",
+      "birth_date": "1995-06-28",
+      "address_line": "29 Lyman Hill Road, Apt 3",
+      "phone": "+1-860-555-0177",
+      "email": "paige.howland@example.test",
+      "marital_status": "single",
+      "summary": "Graduate student who joined the practice at 24 in 2019 with a past college depressive episode. Schizoaffective disorder, depressive type is diagnosed by psychiatry in 2022, then body dysmorphic disorder; sertraline from late 2022. Two ED visits for suicidal ideation (2025, 2026) each lead to an inpatient psychiatric stay; paliperidone is added in 2026.",
+      "events": [
+        {
+          "id": "2019-08-06a",
+          "kind": "telephone",
+          "start": "2019-08-06T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2019-08-06T10:12",
+             "body": "Caller is moving here this month to start a graduate program and wants a primary care doctor nearby. Private insurance card info taken. No urgent issues. Booked new patient appt 8/20 at 9:00. Asked her to bring any old records or the name of her last office so we can request them."}
+          ]
+        },
+        {
+          "id": "2019-08-20a",
+          "kind": "establish_care",
+          "start": "2019-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, moderate", "action": "history", "onset": "2016-02-01", "note": "college, counseling only, resolved"},
+            {"label": "Major depressive disorder, single episode, moderate", "action": "resolved", "note": "resolved by summer 2016"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0, "bp": [112, 70]},
+          "vitals": {"weight_kg": 61.0, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "temp_c"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "Occupation", "value": "Graduate student"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2019-08-20T09:40", "resulted": "2019-08-22T07:30", "results": [
+              {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"},
+              {"test": "Hepatitis C Antibody", "text": "Nonreactive"}
+            ]}
+          ],
+          "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-08-20T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-08-20T09:50",
+             "body": "24-year-old woman, new to the area, here to set up primary care. Starting a graduate program this fall. Feels well, no complaints today.\n\nPMH: one episode of depression in college (2016). Saw the campus counselor weekly for most of a semester, never took medication, and says it lifted by that summer. No symptoms since. No hospitalizations.\nPSH: none.\nMeds: none. No supplements.\nAllergies: no known drug allergies.\nFamily: mother has major depression; one maternal aunt with bipolar disorder; one maternal uncle with schizophrenia. No early heart disease or cancers she knows of.\nSocial: grad student, lives with a roommate. Never smoked, does not drink, no drug use. Walks a lot.\nGYN: regular cycles. Last Pap 2017 at her old office, normal per pt.\n\nROS negative across systems. Mood good. Sleep fine.\n\nExam: well appearing, pleasant, good eye contact. HEENT normal, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Skin clear. Neuro grossly intact. Affect bright and appropriate.\n\nPHQ-9: 3.\n\nPlan:\n- Records release signed for her prior office.\n- One-time HIV and hep C screen drawn today.\n- Flu shot when it arrives in October, nurse visit.\n- Pap due next year; can do at a physical in the winter.\n- Talked through the family psych history; she knows to reach out early if her mood dips again.\nRTC for physical in about 6 months."}
+          ]
+        },
+        {
+          "id": "2019-08-22a",
+          "kind": "portal_message",
+          "start": "2019-08-22T12:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2019-08-22T12:05",
+             "body": "Hi Paige, both screening tests (HIV and hepatitis C) came back negative. Nothing more needed. Nice meeting you this week."}
+          ]
+        },
+        {
+          "id": "2019-09-03a",
+          "kind": "outside_records",
+          "start": "2019-09-03T14:20",
+          "immunizations": [
+            {"vaccine": "HPV, quadrivalent", "date": "2007-09-12T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2007-11-20T10:00"},
+            {"vaccine": "HPV, quadrivalent", "date": "2008-03-18T10:00"},
+            {"vaccine": "Tdap", "date": "2015-08-11T10:00"}
+          ],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2017-04-06T10:00", "text": "Specimen adequate for evaluation. Endocervical/transformation zone component present. Negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-09-03T14:20",
+             "body": "Faxed records (14 pages) from patient's previous family medicine office, covering 2012 to 2018. Includes immunization record and 2017 Pap. Abstracted: HPV x3 2007-2008, Tdap 8/2015, Pap 4/2017 NILM. Office notes are routine well visits and a sprained wrist in 2013. Counseling for low mood in 2016 was through her college, not this office. Routed to PCP."},
+            {"type": "Progress Notes", "title": "Records review", "author": "PCP", "date": "2019-09-04T08:10",
+             "body": "Reviewed old records. Immunizations entered. Pap 2017 normal, next due 2020. Nothing else to act on."}
+          ]
+        },
+        {
+          "id": "2019-10-10a",
+          "kind": "nurse_visit",
+          "start": "2019-10-10T16:30",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-10T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-10T16:35"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2019-10-10T16:40",
+             "body": "Flu vaccine given L deltoid, lot recorded. No prior reactions. Tolerated well, waited in clinic a few minutes, no problems."}
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "annual_physical",
+          "start": "2020-02-11T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2020-02-11T09:05", "issued": "2020-02-17T15:00", "text": "Specimen adequate. Transformation zone component present. Negative for intraepithelial lesion or malignancy. No organisms identified.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-02-11T08:40"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-02-11T09:30",
+             "body": "Yearly exam. First semester went well, a lot of reading, a lab job on campus. Sleeping 7 hours. Mood good, no recurrence of the college depression. No new meds. Still not smoking or drinking.\n\nExam: well, NAD. HEENT normal. Neck supple. Heart RRR without murmur. Lungs clear. Breasts without masses. Abdomen benign. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Skin normal. Mood and affect normal.\n\nPHQ-9 2.\n\nA/P: healthy 24F.\n- Pap today (last 2017).\n- Flu done this season. Immunizations otherwise current.\n- Next physical in a year."}
+          ]
+        },
+        {
+          "id": "2020-02-18a",
+          "kind": "portal_message",
+          "start": "2020-02-18T11:40",
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2020-02-18T11:40",
+             "body": "Your Pap smear was normal. Next one in three years."}
+          ]
+        },
+        {
+          "id": "2020-10-06a",
+          "kind": "nurse_visit",
+          "start": "2020-10-06T15:10",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-06T15:15"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-06T15:15"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2020-10-06T15:20",
+             "body": "Masked, screened at door, no COVID symptoms or exposures. Flu vaccine R deltoid. Tolerated without issue."}
+          ]
+        },
+        {
+          "id": "2021-03-16a",
+          "kind": "annual_physical",
+          "start": "2021-03-16T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 4}],
+          "procedures": [{"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-03-16T10:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-03-16T10:55",
+             "body": "Here for yearly. Classes remote most of this year, which she finds isolating, but she says she is managing. Has a COVID vaccine appointment at a pharmacy next month. No health complaints.\n\nExam: unremarkable. Heart and lungs normal, abdomen soft, no thyroid enlargement, skin clear. Calm, organized, appropriate.\n\nPHQ-9 4, mostly tiredness and some trouble concentrating.\n\nPlan: routine. Encouraged getting outside and keeping a schedule while remote. Pap not due until 2023. COVID vaccine as planned. Physical again in about a year; she'd prefer December after the semester."}
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "outside_records",
+          "start": "2021-05-04T09:00",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-09T13:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-30T13:45"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy COVID vaccine record", "author": "MA", "date": "2021-05-04T09:00",
+             "body": "Pt sent a photo of her vaccine card through the portal. Pfizer dose 1 4/9/21, dose 2 4/30/21, both at a retail pharmacy. Entered into immunization history and state registry checked, matches."}
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T16:00",
+          "reason": "flu vaccine",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-10-19T16:05"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2021-10-19T16:05"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Flu vaccine", "author": "RN", "date": "2021-10-19T16:10",
+             "body": "Flu vaccine L deltoid. Quiet today, said she was tired from the semester. Reminded her of the physical booked in December."}
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "annual_physical",
+          "start": "2021-12-14T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2021-12-14T14:20",
+             "body": "No show for 1:40 physical. Called cell, went to voicemail, left message to call back and reschedule."}
+          ]
+        },
+        {
+          "id": "2022-01-11a",
+          "kind": "portal_message",
+          "start": "2022-01-11T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Reschedule your physical", "author": "front desk", "date": "2022-01-11T09:30",
+             "body": "Hi Paige, we missed you in December. Please call or reply here to book your yearly physical when it works for you."}
+          ]
+        }
+      ]
+    }
+  ]
+}

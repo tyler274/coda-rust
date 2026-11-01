@@ -1,0 +1,4518 @@
+{
+  "unit": "unit-2299",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002299",
+      "given": "Howard",
+      "family": "Finn",
+      "birth_date": "1955-05-16",
+      "address_line": "18 Grove Hill Rd, Leeds, MA 01053",
+      "phone": "+1-508-555-0152",
+      "email": "howard.finn@example.test",
+      "marital_status": "married",
+      "summary": "Retired construction foreman with COPD on home oxygen, metastatic non-small cell lung cancer under outside oncology, and prior DVT with post-thrombotic syndrome on warfarin. Joins in 2021, quits smoking in 2022, then has a run of postoperative and thrombotic emergencies (wound dehiscence, three pulmonary emboli, two hypercapnic COPD admissions) and a cardiac tamponade after his last practice visit. Outside records reach the practice unevenly.",
+      "events": [
+        {
+          "id": "2021-08-10a",
+          "kind": "telephone",
+          "start": "2021-08-10T10:22",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient scheduling call",
+              "date": "2021-08-10T10:22",
+              "author": "front desk",
+              "body": "Wife phoned on his behalf. Their old doctor retired and they heard about the membership model from a neighbor. He has lung cancer treated at an outside oncology office and is on oxygen at home, takes warfarin. Booked a 60 minute new patient slot 8/24 at 9:00. Asked her to bring all pill bottles and the oxygen company's name. Membership packet emailed. Records release form sent for the prior primary care office."
+            }
+          ]
+        },
+        {
+          "id": "2021-08-24a",
+          "kind": "establish_care",
+          "start": "2021-08-24T09:00",
+          "end": "2021-08-24T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "onset": "2014-06-01",
+              "note": "severe, on continuous home oxygen; outside pulmonology"
+            },
+            {
+              "label": "Chronic respiratory failure with hypoxia",
+              "action": "history",
+              "onset": "2018-03-01",
+              "note": "home O2 2 L/min continuous by nasal cannula",
+              "icd10": "J96.11"
+            },
+            {
+              "label": "Dependence on supplemental oxygen",
+              "action": "history",
+              "onset": "2018-03-01"
+            },
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "history",
+              "onset": "2020-11-01",
+              "note": "metastatic non-small cell lung cancer, outside oncology"
+            },
+            {
+              "label": "Secondary malignant neoplasm of unspecified site",
+              "action": "history",
+              "onset": "2020-11-01",
+              "icd10": "C79.9"
+            },
+            {
+              "label": "History of deep vein thrombosis",
+              "action": "history",
+              "onset": "2019-04-01"
+            },
+            {
+              "label": "Postthrombotic syndrome without complications of unspecified extremity",
+              "action": "history",
+              "onset": "2019-10-01",
+              "icd10": "I87.009"
+            },
+            {
+              "label": "Long-term current use of anticoagulants",
+              "action": "history",
+              "onset": "2019-04-01"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history",
+              "onset": "2012-01-01"
+            },
+            {
+              "label": "Long term (current) use of systemic steroids",
+              "action": "history",
+              "onset": "2019-01-01"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "1975-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "warfarin sodium 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily or as directed by INR; goal INR 2.0-3.0",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "history of DVT"
+            },
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            },
+            {
+              "drug": "prednisone 5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "COPD maintenance, per pulmonology"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              88
+            ],
+            "hr": 64,
+            "spo2": 94,
+            "weight_kg": 76.9,
+            "height_cm": 178.5
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.77
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 51
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 134
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-08-24T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction foreman"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, high MDM",
+              "performed": "2021-08-24T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2021-08-24T10:40",
+              "author": "PCP",
+              "body": "66M here with his wife to establish. Previous PCP retired this summer.\n\nPULM: COPD for years, on continuous O2 2 L by cannula since 2018; followed by an outside pulmonology group, who keep him on tiotropium daily, albuterol as needed and prednisone 5 mg daily as a maintenance dose. Walks the driveway and around the house with the portable concentrator. No hospital stays for his lungs in the past year by his account.\n\nONC: Lung cancer found Nov 2020 at an outside oncology group, already spread at diagnosis (non-small cell). Port placed then. Had chemo plus immunotherapy, now on pembrolizumab every 3 weeks through the port. Says the last scan was 'holding steady.' Tolerating it.\n\nHEME: Leg clot 2019, has stayed on warfarin since, goal 2-3. Leg aches and feels heavy by evening, wears knee-high stockings most days (post-thrombotic). INRs had been done at the old office; would like us to take that over.\n\nHTN on amlodipine 10.\n\nTOBACCO: still smoking, about half a pack a day, down from much more; 40 pack-years. We talked plainly about cigarettes and oxygen in the same room. He knows. Not ready to set a date yet but willing to talk again.\nAlcohol a drink or two a week. Retired construction foreman. Lives with wife.\nFHx: father lung cancer, mother COPD, brother had a DVT.\nNKDA.\n\nExam: thin, pleasant, nasal cannula in place, speaking full sentences. BP and SpO2 as charted on 2 L. Lungs: distant breath sounds, prolonged expiration, no crackles. Heart regular. Port right upper chest, clean. Legs: compression stockings on; no pitting today, mild brownish skin change at the ankles.\n\nA/P\n- COPD/chronic hypoxemic resp failure on home O2: continue regimen; pulm to keep managing.\n- Metastatic NSCLC: per oncology; will request their notes.\n- Hx DVT with PTS on warfarin: we will manage INR, nurse visit monthly to start. INR today.\n- HTN: fine today, continue.\n- Tobacco: revisit at each visit.\n- Labs today, HCV and HIV once. Prior PCP records requested.\nBack in ~3 months; INR check in 4 weeks."
+            }
+          ],
+          "state": {
+            "bp": [
+              136,
+              84
+            ],
+            "spo2": 92,
+            "weight_kg": 77.5,
+            "height_cm": 178.0,
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.4
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2021-08-27a",
+          "kind": "portal_message",
+          "start": "2021-08-27T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your lab results",
+              "date": "2021-08-27T16:05",
+              "author": "PCP",
+              "body": "Hi Howard, everything from Tuesday came back fine: kidney and liver tests, blood counts, cholesterol all reasonable. INR was 2.4, right where we want it, so stay on 5 mg daily. Hep C and HIV screens negative. Our nurse will see you in about four weeks for the next INR."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-08a",
+          "kind": "outside_records",
+          "start": "2021-09-08T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2021-09-08T11:30",
+              "author": "front desk",
+              "body": "Received by fax, 46 pages, covering 2015-2021 from his former primary care office. Highlights abstracted for PCP:\n- Colonoscopy 2017: normal, no polyps.\n- Left over to us: DVT treated 2019, warfarin indefinitely; INR log through June 2021, mostly 2-3.\n- COPD, home oxygen ordered 2018.\n- Hypertension on amlodipine 10 mg.\n- Lung cancer diagnosed Nov 2020, care at oncology.\n- Immunizations: influenza yearly; two COVID mRNA doses spring 2021; no pneumococcal conjugate on file; no Shingrix; last tetanus 2010.\nFiled to media."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-21a",
+          "kind": "nurse_visit",
+          "start": "2021-09-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-09-21T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-09-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2021-09-21T09:55",
+              "author": "RN",
+              "body": "In for INR. No bleeding, no bruising beyond usual, no missed doses, no new meds. Diet unchanged. Result in range, continue warfarin 5 mg every day. Next check in 4 weeks, booked."
+            }
+          ]
+        },
+        {
+          "id": "2021-09-28a",
+          "kind": "outside_records",
+          "start": "2021-09-28T14:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology progress letter",
+              "date": "2021-09-28T14:10",
+              "author": "oncology",
+              "body": "Outside oncology group — letter to new primary care physician, visit of 9/2/2021.\n\nMr. Finn is a 66-year-old man with stage IV non-small cell lung cancer diagnosed November 2020. Implanted port placed at diagnosis. He received four cycles of carboplatin, pemetrexed and pembrolizumab and has continued on pembrolizumab maintenance every three weeks. Restaging CT chest, abdomen and pelvis in August shows stable disease without new lesions. Tolerating treatment without immune-related toxicity; thyroid and liver tests normal on our labs.\n\nOther: COPD on 2 L home oxygen, prednisone 5 mg daily, warfarin for prior DVT. Allergies: NKDA.\n\nPlan: continue pembrolizumab every 3 weeks; port flushed with each infusion; CT every 3 months. We strongly support smoking cessation.\n\nThank you for sharing his care."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "nurse_visit",
+          "start": "2021-10-19T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, influenza vaccine",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-10-19T10:05",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-19T10:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-19T10:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2021-10-19T10:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR and flu vaccine",
+              "date": "2021-10-19T10:25",
+              "author": "RN",
+              "body": "INR drawn, in goal. No bleeding. Same dose. High-dose flu given left deltoid, tolerated, VIS given. Oncology aware he is getting flu shot (pt asked them last week, ok with immunotherapy). Next INR 4-5 wks, ties in with his 11/16 visit."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "office_visit",
+          "start": "2021-11-16T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "vitals": {
+            "bp": [
+              140,
+              85
+            ],
+            "hr": 75,
+            "spo2": 93,
+            "weight_kg": 77.5
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-11-16T14:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-11-16T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-16T14:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2021-11-16T14:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-16T14:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2021-11-16T15:02",
+              "author": "PCP",
+              "body": "S: Doing about the same. Breathing at baseline, using albuterol once or twice a day, more on cold mornings. Getting pembrolizumab q3wk, oncology says scans stable. Legs ache in the evenings, stockings help. Still smoking, ~8-10 a day. Says his wife wants him to quit more than he does. We spent a few minutes on what has worked for others; he'll think about patch vs. medication.\n\nO: Vitals reviewed. Cannula on 2 L. Breath sounds diminished throughout, no wheeze today. RRR. No leg edema with stockings.\n\nA/P:\n1. COPD on home O2 - stable. Continue.\n2. NSCLC - per onc.\n3. Warfarin/hx DVT - INR today; monthly RN checks working well.\n4. HTN - acceptable.\n5. Tobacco - pre-contemplative-to-contemplative. Revisit in Feb.\n6. Vaccines: PCV20 today, COVID booster today.\nRTC 3 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-12-14a",
+          "kind": "nurse_visit",
+          "start": "2021-12-14T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2021-12-14T09:20",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-12-14T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2021-12-14T09:35",
+              "author": "RN",
+              "body": "INR check. Reports no bleeding, no falls. Holiday eating coming up; reviewed keeping greens steady rather than cutting them out. In range, no change. Return mid-January."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-18a",
+          "kind": "nurse_visit",
+          "start": "2022-01-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-01-18T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.8
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 22.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-01-18T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR slightly low",
+              "date": "2022-01-18T10:00",
+              "author": "RN",
+              "body": "INR a little under goal today. He thinks he may have skipped a dose over New Year's. No new meds, no antibiotics. Per PCP standing protocol: take 7.5 mg (1.5 tabs) tonight only, then resume 5 mg daily. Recheck 2 weeks. Pt repeated back instructions."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "INR recheck reminder",
+              "date": "2022-01-31T11:15",
+              "author": "MA",
+              "body": "Called to remind of INR recheck tomorrow. Spoke with wife, she will bring him."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 1.8
+            }
+          }
+        },
+        {
+          "id": "2022-02-01a",
+          "kind": "nurse_visit",
+          "start": "2022-02-01T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR recheck",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-02-01T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-02-01T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR recheck",
+              "date": "2022-02-01T09:50",
+              "author": "RN",
+              "body": "Back in range. 5 mg daily. Seeing PCP 2/15, will do next INR with that visit if due, otherwise March."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.5
+            }
+          }
+        },
+        {
+          "id": "2022-02-15a",
+          "kind": "office_visit",
+          "start": "2022-02-15T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up; wants to quit smoking",
+          "medications": [
+            {
+              "drug": "24 HR nicotine 0.875 MG/HR Transdermal System",
+              "action": "start",
+              "sig": "Apply 1 patch to skin daily; remove old patch",
+              "dose": {
+                "value": 21,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Transdermal",
+              "course": "chronic",
+              "reason": "smoking cessation"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 82,
+            "spo2": 91,
+            "weight_kg": 77.0
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-02-15T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up / tobacco",
+              "date": "2022-02-15T11:10",
+              "author": "PCP",
+              "body": "Came in today saying he is done with cigarettes. No single reason, just tired of it. Smoking 8-10/day. Prefers the patch, does not want a pill.\n\nBreathing at baseline. No hemoptysis. Onc infusions continue without trouble.\n\nExam: vitals as charted, on 2 L. Lungs diminished, scattered end-expiratory wheeze that clears with cough. Heart RRR. Legs in stockings, no edema.\n\nPlan:\n- Nicotine patch 21 mg daily starting on his quit day (he picked 3/1). Plan 6 weeks at 21 then step down. Gum not needed per pt.\n- Quitline number given. RN to call the week after.\n- Again: no smoking anywhere near the oxygen.\n- COPD, HTN, warfarin unchanged."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-03-08a",
+          "kind": "telephone",
+          "start": "2022-03-08T15:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Quit check-in",
+              "date": "2022-03-08T15:40",
+              "author": "RN",
+              "body": "Called pt one week after his quit date. Patch on daily, mild skin itch where it sits, rotating spots. Has not smoked since 3/1. Cravings worst after dinner, chewing on a straw. Encouraged. No vivid dreams. Will see him for INR on the 22nd."
+            }
+          ]
+        },
+        {
+          "id": "2022-03-22a",
+          "kind": "nurse_visit",
+          "start": "2022-03-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-03-22T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-03-22T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2022-03-22T09:55",
+              "author": "RN",
+              "body": "INR in goal on 5 mg. No bleeding. Three weeks smoke free, proud of it, wife came in too. Reminded that quitting can nudge warfarin levels a bit, which is part of why we are checking. Next in 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-26a",
+          "kind": "pharmacy",
+          "start": "2022-04-26T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "date": "2022-04-26T08:50",
+              "author": "MA",
+              "body": "Pharmacy request: tiotropium capsules 90-day and prednisone 5 mg 90-day. Pulmonology usually writes these but pt asked us to take over refills since he sees us more. PCP approved both, 90-day with 3 refills."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-10a",
+          "kind": "nurse_visit",
+          "start": "2022-05-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-05-10T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-05-10T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2022-05-10T09:50",
+              "author": "RN",
+              "body": "INR in range. Stepped down to the 14 mg patch two weeks ago, still not smoking. No bleeding or new meds. Continue 5 mg. Next with PCP visit in June."
+            }
+          ]
+        },
+        {
+          "id": "2022-05-31a",
+          "kind": "outside_records",
+          "start": "2022-05-31T13:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology follow-up letter",
+              "date": "2022-05-31T13:20",
+              "author": "oncology",
+              "body": "Outside oncology group, visit of 5/12/2022 (letter received 5/31).\n\nStage IV NSCLC on pembrolizumab maintenance, now about 18 months from diagnosis. CT chest/abdomen/pelvis 5/5: stable disease, no new lesions. ECOG 1-2, limited mainly by his lungs. He has quit smoking since March, which we applaud. Labs today unremarkable including TSH.\n\nPlan: continue pembrolizumab q3 weeks to complete two years of therapy, anticipated November 2022, then surveillance imaging. Meds and allergies (NKDA) reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-14a",
+          "kind": "office_visit",
+          "start": "2022-06-14T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "resolved"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2022-03-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "24 HR nicotine 0.875 MG/HR Transdermal System",
+              "action": "stop",
+              "reason": "taper complete, abstinent"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              80
+            ],
+            "hr": 63,
+            "spo2": 94,
+            "weight_kg": 78.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-06-14T14:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-06-14T14:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 298
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.97
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.1
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-06-14T14:15",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-06-14T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2022-06-14T14:20",
+              "author": "PCP",
+              "body": "Smoke free since 3/1. Finished the 7 mg patch last week and stopped it; occasional urge, no slips. Cough a little looser if anything. Breathing at his baseline on 2 L, no ED visits. Oncology says stable; immunotherapy to finish in Nov.\n\nExam: vitals as charted. Lungs diminished, no wheeze. RRR. Stockings on; legs without edema.\n\nA/P: Tobacco use disorder in early remission - congratulated. COPD stable. HTN ok. Warfarin, INR today. CMP/CBC today. RTC Sept for wellness visit."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2022-06-15T08:40",
+              "author": "PCP",
+              "body": "CMP, CBC unremarkable. INR in range. Released to portal with a short note."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-07-19a",
+          "kind": "nurse_visit",
+          "start": "2022-07-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-07-19T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-07-19T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2022-07-19T09:50",
+              "author": "RN",
+              "body": "INR in goal. Heat has kept him indoors. No bleeding. Same dose, 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-30a",
+          "kind": "nurse_visit",
+          "start": "2022-08-30T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-08-30T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-30T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2022-08-30T09:45",
+              "author": "RN",
+              "body": "INR in range, 5 mg daily. Small bruise on the forearm from bumping the truck door, otherwise nothing. Wellness visit 9/27."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-27a",
+          "kind": "annual_physical",
+          "start": "2022-09-27T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              131,
+              80
+            ],
+            "hr": 62,
+            "spo2": 92,
+            "weight_kg": 78.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-09-27T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 182
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 47
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 114
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-09-27T09:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2022-09-27T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-09-27T09:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-09-27T09:45"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-09-27T09:46"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2022-09-27T10:15",
+              "author": "PCP",
+              "body": "Initial Medicare AWV.\nFunctional: independent in ADLs; wife does most driving now; uses a rollator outside and portable O2. No falls this year. Hearing ok. Home has grab bars, rugs taken up.\nMood: PHQ-2 0.\nCognition: clock draw normal, 3/3 recall.\nTobacco: former since 3/2022. Alcohol 1-2/wk.\nAdvance care: has a health care proxy (wife); discussed goals briefly; wants full treatment for now and will talk with oncology about longer-term wishes.\nScreening: colonoscopy 2017 normal; given metastatic cancer, will not pursue further colon screening. No AAA screen needed - he gets CT imaging every 3 months.\nVaccines: Tdap and Shingrix #1 today; #2 in 2-6 mo. Flu with next INR.\nExam: unchanged, lungs diminished, no edema.\nLipids and INR drawn.\nPersonalized plan printed for him."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-25a",
+          "kind": "nurse_visit",
+          "start": "2022-10-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, vaccines",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-10-25T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-10-25T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-25T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2022-10-25T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-25T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR, flu and COVID booster",
+              "date": "2022-10-25T10:00",
+              "author": "RN",
+              "body": "INR in goal, no dose change. High-dose flu R deltoid, bivalent COVID L deltoid. Observed, no reaction. Next INR with his December visit."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "vitals": {
+            "bp": [
+              142,
+              83
+            ],
+            "hr": 66,
+            "spo2": 91,
+            "weight_kg": 77.5
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2022-12-06T11:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-06T11:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-12-06T11:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2022-12-06T11:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2022-12-06T11:50",
+              "author": "PCP",
+              "body": "Had his last pembrolizumab infusion in November - two years done. Oncology moving to scans every 3 months; keeping the port and flushing it. He is relieved and a bit nervous about being off treatment.\nStill not smoking (9 months). Breathing unchanged. Arm sore 2 days after the first shingles shot.\n\nExam: as before; diminished breath sounds, no edema.\nA/P: COPD stable on current regimen. NSCLC off therapy, surveillance per onc. HTN ok. INR today. Shingrix #2 today, series complete. RTC 3-4 mo."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-10a",
+          "kind": "outside_records",
+          "start": "2023-01-10T10:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology letter - completion of immunotherapy",
+              "date": "2023-01-10T10:45",
+              "author": "oncology",
+              "body": "Outside oncology group, visit of 11/29/2022 (received 1/10/2023).\n\nMr. Finn completed two years of pembrolizumab with his final dose 11/8/2022. CT chest/abdomen/pelvis 11/21: stable disease, no new lesions. No immune-related adverse effects over the course. Port to remain, flushed every 6-8 weeks at our infusion area.\n\nPlan: observation with CT every 3 months and visit with each scan. Call with new cough change, weight loss, bone pain or neurologic symptoms.\n\nMeds reviewed: tiotropium, albuterol, warfarin, amlodipine 10 mg, prednisone 5 mg, home oxygen 2 L. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "nurse_visit",
+          "start": "2023-01-24T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-01-24T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-01-24T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-01-24T09:50",
+              "author": "RN",
+              "body": "INR in range. No bleeding, no new meds. Continue 5 mg. 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-07a",
+          "kind": "nurse_visit",
+          "start": "2023-03-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-03-07T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-03-07T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-03-07T09:50",
+              "author": "RN",
+              "body": "INR at goal. Pt mentions both ankles have been puffier the last few weeks, worse by evening, more than his usual leg heaviness. No chest pain, no change in breathing. Booked with PCP 3/29; told to call sooner if one leg swells more than the other or he gets short of breath."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "office_visit",
+          "start": "2023-03-29T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "swelling of both legs; ? medication side effect",
+          "conditions": [
+            {
+              "label": "Edema of lower extremity",
+              "action": "diagnosed",
+              "onset": "2023-02-15"
+            },
+            {
+              "label": "Adverse effect of calcium-channel blockers, initial encounter",
+              "action": "diagnosed",
+              "onset": "2023-02-15",
+              "note": "amlodipine-related ankle edema",
+              "icd10": "T46.1X5A"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "amlodipine 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "peripheral edema"
+            },
+            {
+              "drug": "amlodipine 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hypertension"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              77
+            ],
+            "hr": 60,
+            "spo2": 92,
+            "weight_kg": 76.8
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-03-29T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit - leg swelling",
+              "date": "2023-03-29T10:50",
+              "author": "PCP",
+              "body": "67M with COPD on 2 L O2, metastatic NSCLC under surveillance, prior DVT with post-thrombotic legs on warfarin, HTN on amlodipine 10.\n\nCC: both ankles swollen x ~6 weeks. He read online that his blood pressure pill can do this and wants to know if that is it. Swelling is symmetric, softens overnight, worse after sitting. No orthopnea beyond his usual, no PND, breathing unchanged, no calf pain, no redness. Weight steady.\n\nExam: vitals as charted, SpO2 on 2 L at his usual. JVP not elevated. Lungs diminished, no crackles. Heart regular, no gallop. Both lower legs with symmetric 1-2+ pitting to mid-shin over the stocking line; calves soft, non-tender, no cords. Old hyperpigmentation at ankles unchanged.\n\nA/P\n1. Bilateral ankle edema, most consistent with dihydropyridine CCB effect at 10 mg on top of chronic venous changes. Symmetric, no heart failure signs, no one-sided findings to suggest a new clot (and he is therapeutic). Reduce amlodipine to 5 mg daily. Legs up when sitting, keep stockings. Recheck at post-op visit; home BP log in the meantime.\n2. HTN: watching on the lower dose.\n3. Surgery: he has gallbladder surgery booked with an outside general surgery group for 5/23. We do not have their consult note; requested. He needs warfarin hold instructions from the surgeon - asked him to have their office call us or send them.\n4. COPD, NSCLC: no change.\nRTC after surgery."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Surgery and warfarin",
+              "date": "2023-04-11T19:12",
+              "author": "patient",
+              "body": "The surgeon's nurse called. They want me off the warfarin 5 days before May 23rd and they will tell me when to restart. Is that ok with you? Ankles a little better already on the half pill. BP at home 130s-140s over 80s. - Howard"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Surgery and warfarin",
+              "date": "2023-04-12T08:31",
+              "author": "PCP",
+              "body": "That plan is fine. Last dose would be the evening of May 17. Let the surgical team guide the restart, and come in for an INR about a week after you resume. Glad the swelling is easing and your home pressures look good."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-25a",
+          "kind": "nurse_visit",
+          "start": "2023-04-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-04-25T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-25T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-04-25T09:45",
+              "author": "RN",
+              "body": "INR in goal. Reviewed hold dates for May surgery, written on a card for him. Ankles visibly less puffy."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "ed_visit",
+          "start": "2023-05-30T11:40",
+          "end": "2023-05-30T19:30",
+          "service": "Emergency Medicine",
+          "reason": "abdominal pain after recent surgery",
+          "conditions": [
+            {
+              "label": "Disruption or dehiscence of closure of internal operation (surgical) wound of abdominal wall muscle or fascia, initial encounter",
+              "action": "diagnosed",
+              "onset": "2023-05-30",
+              "icd10": "T81.321A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-05-30T11:50",
+              "bp": [
+                130,
+                85
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 36.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-05-30T12:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 11.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.24
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 319
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-05-30T12:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 18
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 82
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT abdomen and pelvis with contrast",
+              "performed": "2023-05-30T13:10",
+              "text": "Indication: pain and bulge at recent upper abdominal incision, postoperative day 7. Technique: axial CT abdomen and pelvis with IV contrast. Findings: Postsurgical change of cholecystectomy. Defect in the fascial layer of the anterior abdominal wall at the incision with loops of small bowel protruding through it into the subcutaneous plane. No free intraperitoneal air beyond expected postoperative change. Liver, spleen, pancreas, kidneys and adrenals unremarkable. No hydronephrosis. Aorta normal caliber. Bowel proximal to the defect not dilated. Lung bases: emphysematous change.",
+              "conclusion": "Fascial dehiscence of the recent abdominal incision with protrusion of bowel loops through the defect."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Cholecystectomy",
+              "snomed": "38102005",
+              "performed": "2023-05-23T08:00"
+            },
+            {
+              "procedure": "Closure of abdominal wall dehiscence",
+              "snomed": "80173001",
+              "performed": "2023-05-30T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record (received)",
+              "date": "2023-06-05T14:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, date of service 5/30/2023. Faxed to PCP 6/5.\n\nHPI: 68-year-old man, one week out from an open cholecystectomy (started laparoscopic, converted), with COPD on 2 L home O2, metastatic lung cancer and prior DVT on warfarin (held for surgery). Was trying to lift a heavy box in the garage this morning when he felt something give way in his belly, followed at once by severe pain.\n\nAllergies: NKDA. Meds: tiotropium, albuterol, warfarin (on hold), amlodipine 10 mg, prednisone 5 mg, O2 2 L.\n\nExam: afebrile; BP 130/85, HR 110, RR 22. Abdomen distended; bulge at the incision, tender, not reducible with gentle pressure; no redness or pus at the wound. Hypoactive bowel sounds.\n\nLabs: WBC 11.0, Hgb 13.2, creatinine 1.0, BUN 18, lytes normal.\nCT A/P: fascial defect with bowel loops through it.\n\nImpression: deep fascial dehiscence of the operative wound.\nDisposition: general surgery consulted in the ED, to OR this afternoon for closure; admitted to surgery. Operative and inpatient records to follow from the surgical service."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-operative follow-up",
+          "conditions": [
+            {
+              "label": "Edema of lower extremity",
+              "action": "resolved"
+            },
+            {
+              "label": "Adverse effect of calcium-channel blockers, initial encounter",
+              "action": "resolved",
+              "icd10": "T46.1X5A"
+            },
+            {
+              "label": "Disruption or dehiscence of closure of internal operation (surgical) wound of abdominal wall muscle or fascia, initial encounter",
+              "action": "resolved",
+              "icd10": "T81.321A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              141,
+              76
+            ],
+            "hr": 74,
+            "spo2": 91,
+            "weight_kg": 76.5
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-06-13T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-06-13T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-op follow-up",
+              "date": "2023-06-13T14:25",
+              "author": "PCP",
+              "body": "Seen after the gallbladder operation and the return trip. Per pt and the ED fax: incision came apart at the fascia a week out when he lifted a box; closed in the OR the same day; home after 3 nights. Surgeon restarted warfarin on discharge. Lifting restriction 6 weeks, abdominal binder. Pain controlled with acetaminophen; no opioids left. Eating fine, BMs normal.\n\nWe have the ED record only - operative note, consult note and discharge summary not received. Second request faxed.\n\nExam: vitals as charted. Midline-upper abdominal incision healing, staples out, no erythema or drainage, binder on. Lungs diminished, unchanged. Legs: ankle swelling gone, stockings on.\n\nA/P\n1. S/p cholecystectomy c/b fascial dehiscence, repaired. Healing. Lifting limits reinforced.\n2. Amlodipine edema - resolved on 5 mg. BP acceptable on the lower dose; keep 5 mg.\n3. Warfarin resumed - INR today.\n4. COPD, NSCLC - unchanged.\nRTC 3 mo."
+            }
+          ],
+          "state": {
+            "bp": [
+              138,
+              84
+            ]
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "nurse_visit",
+          "start": "2023-07-18T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-07-18T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-07-18T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-07-18T09:50",
+              "author": "RN",
+              "body": "INR in range. Incision fine. No bleeding. Same dose. 6 wks."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-25a",
+          "kind": "outside_records",
+          "start": "2023-07-25T15:30",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance letter",
+              "date": "2023-07-25T15:30",
+              "author": "oncology",
+              "body": "Outside oncology group, visit 7/11/2023.\n\nStage IV NSCLC, off pembrolizumab since November 2022. CT 7/6: stable disease, no new lesions; postsurgical change of the recent cholecystectomy and abdominal wall repair noted. Port flushed. Continue CT every 3 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-29a",
+          "kind": "nurse_visit",
+          "start": "2023-08-29T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-08-29T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-29T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-08-29T09:45",
+              "author": "RN",
+              "body": "INR in goal. Nothing new reported. Same dose, recheck in 6 weeks with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-17a",
+          "kind": "ed_visit",
+          "start": "2023-09-17T07:20",
+          "end": "2023-09-17T13:00",
+          "service": "Emergency Medicine",
+          "reason": "shortness of breath and chest pain after surgery",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2023-09-17",
+              "note": "bilateral segmental, postoperative",
+              "icd10": "I26.99"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2023-09-17T07:30",
+              "bp": [
+                92,
+                64
+              ],
+              "hr": 115,
+              "rr": 28,
+              "temp_c": 37.2,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-09-17T07:45",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
+                  "value": 7.47
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
+                  "value": 29
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
+                  "value": 62
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT angiogram chest, pulmonary embolism protocol",
+              "loinc": "88322-3",
+              "performed": "2023-09-17T08:40",
+              "text": "Indication: acute dyspnea and pleuritic pain, post-prostatectomy day 6. Technique: CT pulmonary angiogram with IV contrast. Findings: Filling defects in multiple segmental pulmonary arteries of both lungs. Main and lobar pulmonary arteries opacify normally. Heart size normal, no pericardial effusion. Emphysematous change. No pleural effusion. Port catheter tip at the cavoatrial junction.",
+              "conclusion": "Acute bilateral segmental pulmonary emboli."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Radical prostatectomy",
+              "snomed": "26294005",
+              "performed": "2023-09-11T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record (received)",
+              "date": "2023-09-25T10:15",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, date of service 9/17/2023 (received 9/25).\n\nHPI: 68M, six days after an open radical prostatectomy at an outside urology group, discharged home 3 days ago and mostly in a chair since. Woke with sudden breathlessness and sharp chest pain on breathing in. Known DVT history; warfarin had been stopped for the operation and not yet restarted. COPD on 2 L at home; metastatic lung cancer.\n\nAllergies: NKDA. Smoking: 40 pack-years, former.\n\nExam: T 37.2 C, BP 92/64, HR 115, RR 28, SpO2 88% on room air. Neck veins distended. Lungs clear. Loud P2.\nABG (room air): pH 7.47 / PaCO2 29 / PaO2 62.\nCTPA: multiple bilateral segmental filling defects.\n\nImpression: acute pulmonary embolism, postoperative.\nPlan: heparin infusion, oxygen, admit to medicine; urology aware; warfarin to be resumed with overlap. Discharge summary to follow."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-26a",
+          "kind": "office_visit",
+          "start": "2023-09-26T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pulmonary embolism",
+          "vitals": {
+            "bp": [
+              147,
+              83
+            ],
+            "hr": 69,
+            "spo2": 92,
+            "weight_kg": 77.0
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-09-26T11:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-09-26T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2023-09-26T11:55",
+              "author": "PCP",
+              "body": "Here with wife. Honestly first we heard of the prostate operation was the ED fax yesterday - the urology group arranged it and the warfarin hold directly with him. He was home 3 days, then the PE on 9/17. Heparin then warfarin restarted in hospital; home 9/21 on warfarin 5 mg. No discharge summary or urology records here yet; requested both today.\n\nNow: breathing back close to his usual, still tires on the stairs. No chest pain now. No hemoptysis. Catheter out; urology following.\n\nExam: vitals as charted; on 2 L, sats at his baseline. Lungs diminished, no rub. HR regular. Calves soft, no new asymmetry.\n\nA/P\n1. Acute PE, provoked (post-op, warfarin held) on background of cancer and prior DVT. Back on warfarin; INR today, then weekly x2.\n2. S/p radical prostatectomy - per urology.\n3. COPD on O2 - continue.\n4. HTN - fine on amlodipine 5.\nDiscussed: any future surgery, we want to hear about it beforehand so the anticoagulation plan is coordinated."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, vaccines",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-10-10T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-10-10T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-10T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T09:42"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-10T09:44"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR and vaccines",
+              "date": "2023-10-10T10:05",
+              "author": "RN",
+              "body": "Weekly INRs after the PE have been steady; today in goal again. Back to monthly. Flu (high dose), updated COVID and RSV given - PCP ok'd all three today given his lungs. Tolerated."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-31a",
+          "kind": "annual_physical",
+          "start": "2023-10-31T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              131,
+              93
+            ],
+            "hr": 61,
+            "spo2": 91,
+            "weight_kg": 77.2
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-10-31T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 53
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 141
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2023-10-31T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2023-10-31T09:55",
+              "author": "PCP",
+              "body": "Subsequent AWV. Rough year: gallbladder surgery with wound breakdown, then prostate surgery and a PE. He is getting back to puttering in the garage, nothing heavy. Wife manages pill box.\nFalls: none. Uses rollator outdoors.\nPHQ-2: 1 (some days down after the hospital). Not depressed by his account; sleeping ok.\nCognition: no concerns from him or wife.\nAdvance directive: proxy on file; unchanged.\nVaccines current for the season. Shingrix and pneumococcal complete.\nLipids today.\nList reconciled: tiotropium, albuterol prn, warfarin 5, amlodipine 5, prednisone 5, O2 2 L."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-21a",
+          "kind": "nurse_visit",
+          "start": "2023-11-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-11-21T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-11-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2023-11-21T09:50",
+              "author": "RN",
+              "body": "INR in range, 5 mg. No bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "office_visit",
+          "start": "2023-12-19T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "action": "resolved",
+              "icd10": "I26.99"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2023-09-17"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              134,
+              83
+            ],
+            "hr": 60,
+            "spo2": 93,
+            "weight_kg": 78.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-19T11:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 306
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.66
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-19T11:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 72
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2023-12-19T11:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.6
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 31.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-12-19T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2023-12-19T11:20",
+              "author": "PCP",
+              "body": "Doing better than this time of the fall. Breathing at his usual, albuterol most mornings. No chest pain. Urology records still have not come despite two requests; pt says his urologist is happy with him.\nExam: vitals as charted. Lungs diminished, no wheeze. RRR. No edema.\nA/P: COPD on O2, stable. PE on warfarin, continuing indefinitely. HTN ok on 5 mg. NSCLC on surveillance. Labs today. RTC 3 mo."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2023-12-20T07:55",
+              "author": "PCP",
+              "body": "CBC, CMP normal. INR 2s. Portal note sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-01-30a",
+          "kind": "nurse_visit",
+          "start": "2024-01-30T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-01-30T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-01-30T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2024-01-30T09:50",
+              "author": "RN",
+              "body": "INR in goal. Cold has kept him in. No bleeding. Continue. Next early March."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "INR reschedule",
+              "date": "2024-03-04T09:10",
+              "author": "front desk",
+              "body": "Pt called, snowed in, moved INR from 3/5 to 3/26."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-19a",
+          "kind": "ed_visit",
+          "start": "2024-03-19T15:10",
+          "end": "2024-03-19T21:00",
+          "service": "Emergency Medicine",
+          "reason": "worsening shortness of breath and cough",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2024-03-16"
+            },
+            {
+              "label": "Acute respiratory failure with hypercapnia",
+              "action": "diagnosed",
+              "onset": "2024-03-19",
+              "note": "without altered mental status, per ED",
+              "icd10": "J96.02"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-03-19T15:20",
+              "bp": [
+                145,
+                90
+              ],
+              "hr": 110,
+              "rr": 22,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-19T15:35",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
+                  "value": 7.28
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
+                  "value": 82
+                },
+                {
+                  "test": "Oxygen partial pressure in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
+                  "value": 60
+                },
+                {
+                  "test": "Bicarbonate in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Management of noninvasive mechanical ventilation",
+              "snomed": "430191008",
+              "performed": "2024-03-19T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record (received)",
+              "date": "2024-03-21T12:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, date of service 3/19/2024.\n\nHPI: 68M with COPD on 2 L home oxygen and metastatic lung cancer, previously seen here for a PE and for leg swelling. Three days of more breathlessness and a productive cough; can't manage his usual daily tasks, sleeping more than usual. Denies chest pain, fever, chills. Uses tiotropium, albuterol and prednisone 5 mg; warfarin, amlodipine, O2 2 L.\nAllergies: NKDA.\n\nExam: RR 22, HR 110, BP 145/90, SpO2 88% on room air. Somnolent, rouses to voice. Diffuse wheeze, poor air entry throughout.\nABG: pH 7.28, PaCO2 82, PaO2 60, HCO3 30.\n\nImpression: COPD exacerbation with acute hypercapnic respiratory failure without altered mental status.\nPlan: BiPAP, nebulized albuterol/ipratropium, IV methylprednisolone, antibiotic; admit to step-down."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-26a",
+          "kind": "outside_records",
+          "start": "2024-03-26T09:40",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days, then resume 5 mg daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            },
+            {
+              "drug": "doxycycline hyclate 100 MG Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth twice daily for 5 days",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary (received)",
+              "date": "2024-03-26T09:40",
+              "author": "hospital medicine",
+              "body": "Regional hospital, admitted 3/19/2024, discharged 3/24/2024.\n\nDiagnosis: acute exacerbation of COPD with acute hypercapnic respiratory failure.\nCourse: BiPAP overnight in step-down with improvement in mental alertness and CO2 by the next morning; weaned to his home 2 L by day 3. Nebulized bronchodilators, IV methylprednisolone 2 days then oral prednisone, doxycycline. Chest x-ray without pneumonia. INR therapeutic throughout on home warfarin.\n\nDischarge medications: prednisone 40 mg daily x5 days then back to 5 mg daily; doxycycline 100 mg BID x5 days; continue tiotropium, albuterol, warfarin 5 mg, amlodipine 10 mg, O2 2 L continuous.\nAllergies: NKDA.\nFollow-up: PCP within 1 week; pulmonology."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-28a",
+          "kind": "office_visit",
+          "start": "2024-03-28T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge, COPD exacerbation",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            },
+            {
+              "label": "Acute respiratory failure with hypercapnia",
+              "action": "resolved",
+              "icd10": "J96.02"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              137,
+              82
+            ],
+            "hr": 63,
+            "spo2": 92,
+            "weight_kg": 77.0
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-03-28T14:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-03-28T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "date": "2024-03-28T14:45",
+              "author": "PCP",
+              "body": "Reviewed discharge summary. Admitted 3/19-3/24 for COPD flare with high CO2, BiPAP overnight. On day 4 of the prednisone burst, finished doxycycline. Feels about 80% of baseline; walking room to room fine on 2 L.\nNote the discharge list says amlodipine 10 - he takes 5, our list is correct; told him to keep taking 5.\nExam: vitals as charted. Scattered expiratory wheeze, moving air better than he describes. No accessory muscle use. No edema.\nA/P\n1. AECOPD w/ hypercapnic resp failure, resolving. Finish burst, back to prednisone 5. Pulmonology follow-up he has in April.\n2. Antibiotic course with warfarin - INR today.\n3. Reviewed when to call: more sleepiness, morning headaches, sats lower than usual."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-05-07a",
+          "kind": "nurse_visit",
+          "start": "2024-05-07T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-05-07T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-05-07T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2024-05-07T09:50",
+              "author": "RN",
+              "body": "INR in goal. Breathing back to usual per pt. Same dose."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-18a",
+          "kind": "office_visit",
+          "start": "2024-06-18T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "vitals": {
+            "bp": [
+              138,
+              83
+            ],
+            "hr": 64,
+            "spo2": 91,
+            "weight_kg": 77.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-18T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 302
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.92
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-06-18T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 15
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-06-18T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.5
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 30.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-06-18T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2024-06-18T14:20",
+              "author": "PCP",
+              "body": "Quarterly. Back at baseline since the March admission. Pulmonology saw him in April, no regimen change. Oncology scan in May stable per pt (letter pending).\nExam: vitals as charted. Lungs diminished, no wheeze. No edema.\nA/P: stable on current list. Labs and INR today. Oxygen supplier recertification form signed. RTC 3 mo."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Oxygen recertification",
+              "date": "2024-06-18T15:05",
+              "author": "MA",
+              "body": "Home oxygen certificate of medical necessity signed by PCP, faxed to the oxygen supplier with last saturation readings. Confirmation received."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "nurse_visit",
+          "start": "2024-07-23T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-07-23T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-07-23T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2024-07-23T09:45",
+              "author": "RN",
+              "body": "INR in range on 5 mg. No issues."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "outside_records",
+          "start": "2024-08-13T16:20",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance letter",
+              "date": "2024-08-13T16:20",
+              "author": "oncology",
+              "body": "Outside oncology group, visits of 5/14 and 8/6/2024 (combined letter).\n\nStage IV NSCLC on observation since completing pembrolizumab in 11/2022. CTs in May and July: stable disease, no new lesions. Interval COPD admission in March noted. Port flushed. Continue every-3-month imaging. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-20a",
+          "kind": "ed_visit",
+          "start": "2024-09-20T02:40",
+          "end": "2024-09-20T08:00",
+          "service": "Emergency Medicine",
+          "reason": "worsening shortness of breath, cough, unable to lie flat",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "diagnosed",
+              "onset": "2024-09-17"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-20T02:50",
+              "hr": 112,
+              "rr": 32,
+              "temp_c": 37.8,
+              "spo2": 85
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2024-09-20T03:15",
+              "text": "Portable AP chest. Lungs hyperinflated with flattened diaphragms. No focal consolidation, no pleural effusion, no pneumothorax. Heart size normal. Right chest port, catheter tip at the cavoatrial junction.",
+              "conclusion": "Hyperinflation without focal infiltrate."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Management of noninvasive mechanical ventilation",
+              "snomed": "430191008",
+              "performed": "2024-09-20T03:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record (received late)",
+              "date": "2024-10-08T11:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, date of service 9/20/2024 (sent after second PCP request).\n\nHPI: 69M, severe COPD on 2 L home O2 and metastatic lung cancer, six months after his last COPD exacerbation. Low-grade fever and tiredness for 3 days; in the past day much more short of breath and can't sleep lying down. Wife says the cough is worse, bringing up yellow-green phlegm.\nAllergies: NKDA.\n\nExam: alert, worn out, using neck and shoulder muscles to breathe. RR 32, HR 112, T 37.8 C, SpO2 85% on room air. Expiratory wheezes both sides, reduced air entry at the bases. No JVD. No leg edema.\nArterial gas: abnormal acid-base status (see lab system).\nCXR: hyperinflation, no focal infiltrate.\n\nImpression: COPD exacerbation.\nPlan: started on noninvasive positive pressure ventilation in the department; nebs, steroids, antibiotics; admitted to the ICU step-down."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "pharmacy",
+          "start": "2024-09-26T09:05",
+          "medications": [
+            {
+              "drug": "prednisone 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily for 5 days",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            },
+            {
+              "drug": "azithromycin 250 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets on day 1, then 1 tablet daily on days 2-5",
+              "dose": {
+                "value": 250,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "COPD exacerbation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call - new fills",
+              "date": "2024-09-26T09:05",
+              "author": "RN",
+              "body": "Pharmacist called: filled hospital discharge Rxs yesterday for prednisone 40 mg x5 days and a 5-day azithromycin pack. Flagging azithro with warfarin. We had not known he was admitted. Called home - wife confirms he was in the hospital since 9/20 for his lungs, on the mask machine, home 9/25. Post-discharge visit booked 9/30 with INR."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-30a",
+          "kind": "office_visit",
+          "start": "2024-09-30T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-discharge, COPD exacerbation",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease with acute exacerbation",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 68,
+            "spo2": 92,
+            "weight_kg": 77.6
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-09-30T10:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, moderate complexity",
+              "performed": "2024-09-30T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-discharge visit",
+              "date": "2024-09-30T10:45",
+              "author": "PCP",
+              "body": "Second COPD admission this year (9/20-9/25). No records from the hospital yet; history from pt and wife and the pharmacy fill. Fever and green sputum for a few days, then couldn't lie flat; put on the BiPAP-type mask in the ED, ICU step-down a couple of nights, no intubation. Home on prednisone 40 x5 and a Z-pack, both finished yesterday.\nToday: tired, sleeping in the recliner still out of habit but can lie flatter. Cough improving, sputum clearer. No fever.\nExam: vitals as charted, on 2 L. Mild expiratory wheeze, no crackles. No edema. No JVD.\nA/P\n1. AECOPD, second this year - resolving. Back on prednisone 5. Asked pulmonology to see him sooner; ED record and discharge summary requested.\n2. Azithro + warfarin - INR today.\n3. Flu/COVID next nurse visit."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "nurse_visit",
+          "start": "2024-10-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check, vaccines",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-10-22T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-10-22T09:35"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-22T09:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-22T09:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-22T09:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "INR and vaccines",
+              "date": "2024-10-22T09:55",
+              "author": "RN",
+              "body": "INR in goal. High-dose flu and updated COVID given. Discharge summary from September still not received; third request faxed to hospital records."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "annual_physical",
+          "start": "2024-12-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              132,
+              84
+            ],
+            "hr": 62,
+            "spo2": 93,
+            "weight_kg": 76.7
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-12-10T09:45",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 180
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 130
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2024-12-10T09:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.7
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 32.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2024-12-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-12-10T09:55",
+              "author": "PCP",
+              "body": "AWV. Two COPD admissions this year; does the breathing exercises pulmonology showed him. Independent in ADLs, wife helps with IADLs and driving. No falls. PHQ-2 0. Cognition grossly intact.\nGoals of care revisited: still wants hospital care including the mask machine; would not want a breathing tube long-term. Proxy (wife) aware. Will bring a written copy next time.\nVaccines up to date for this season. Lipids and INR today.\nNo change to meds."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "nurse_visit",
+          "start": "2025-01-21T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-01-21T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-01-21T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2025-01-21T09:50",
+              "author": "RN",
+              "body": "INR in goal. No bleeding. Continue 5 mg daily. Next 2/25."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "nurse_visit",
+          "start": "2025-02-25T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed INR visit",
+              "date": "2025-02-25T11:20",
+              "author": "MA",
+              "body": "No-show for 9:30 INR. Called home twice, left voicemail asking him to call and rebook. Letter mailed."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-03-30a",
+          "kind": "hospital_admission",
+          "start": "2025-03-30T16:20",
+          "end": "2025-04-04T12:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "massive pulmonary embolism",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism with acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2025-03-30",
+              "note": "massive PE with hypotension and RV dysfunction; warfarin missed for a week",
+              "icd10": "I26.09"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-30T16:30",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 28,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-03-30T16:45",
+              "results": [
+                {
+                  "test": "Troponin I, High Sensitivity",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-30T16:45",
+              "results": [
+                {
+                  "test": "Natriuretic peptide B",
+                  "loinc": "30934-4",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-30T16:45",
+              "results": [
+                {
+                  "test": "Fibrin D-dimer FEU",
+                  "loinc": "48065-7",
+                  "text": "Elevated"
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-03-30T16:45",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.2
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 14.6
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-03-30T17:05",
+              "text": "Limited bedside study in the ICU. Right ventricle dilated with reduced free-wall motion. Left ventricle small, hyperdynamic. No pericardial effusion. Valves not assessed in detail.",
+              "conclusion": "Right ventricular dilation and hypokinesis."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-03-30T16:40",
+              "text": "Sinus tachycardia, rate about 120. Right bundle branch block. No acute ST elevation.",
+              "conclusion": "Sinus tachycardia with right bundle branch block."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Thrombolytic therapy",
+              "snomed": "426347000",
+              "performed": "2025-03-30T17:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "ICU / hospital discharge summary (received)",
+              "date": "2025-04-07T10:30",
+              "author": "pulmonary critical care",
+              "body": "Regional hospital, Pulmonary & Critical Care. Admitted 3/30/2025, discharged 4/4/2025.\n\nPresentation: 69-year-old man with COPD on home oxygen and prior PE who had not taken warfarin for the past week. Two hours of sudden breathlessness and pleuritic chest pain; lightheaded with a near-faint earlier that day. BP 85/50, HR 120, RR 28, SpO2 88% on room air. JVP raised; breath sounds reduced, no wheeze or crackles.\nTroponin I, BNP and D-dimer all elevated. INR 1.2. Bedside echo: dilated, hypokinetic RV. ECG: sinus tachycardia, RBBB.\n\nDiagnosis: massive pulmonary embolism.\nCourse: systemic alteplase given in the ICU with improvement in blood pressure within hours; heparin infusion after, bridged to warfarin. No bleeding complications. Weaned to home 2 L.\n\nDischarge: warfarin 5 mg daily, INR 2.1 on day of discharge; continue tiotropium, albuterol, prednisone 5 mg, amlodipine 10 mg, O2 2 L. NKDA.\nFollow-up: PCP INR within 4 days; adherence counseling given."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "office_visit",
+          "start": "2025-04-08T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "post-ICU follow-up, pulmonary embolism",
+          "vitals": {
+            "bp": [
+              136,
+              87
+            ],
+            "hr": 65,
+            "spo2": 92,
+            "weight_kg": 77.4
+          },
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-04-08T11:40",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-04-08T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ICU visit",
+              "date": "2025-04-08T11:55",
+              "author": "PCP",
+              "body": "Summary reviewed. Massive PE 3/30 after a week without warfarin; given clot-busting drug in the ICU, home 4/4 on warfarin 5 mg. He missed the February INR visit too. He does not give a clear reason for stopping the pills - 'just got off track.' Wife now setting out pills with his morning coffee and checking the box.\nNow: winded with exertion more than before, no chest pain, no lightheadedness, no bleeding.\nExam: vitals as charted, on 2 L. Lungs diminished. HR regular. Calves soft.\nA/P\n1. Massive PE, recurrent VTE off anticoagulation. Warfarin 5 mg daily; INR today then weekly x3. Stressed not to skip doses again; pill box plan in place.\n2. COPD on O2 - unchanged.\n3. HTN - lower readings since discharge; keep amlodipine 5 for now.\nRTC 2 mo."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Prothrombin Time-International Normalized Ratio": 2.3
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-04-22a",
+          "kind": "nurse_visit",
+          "start": "2025-04-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-04-22T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-04-22T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2025-04-22T09:50",
+              "author": "RN",
+              "body": "INR in goal for the second week. Pill box checked - no missed slots. Moving to every 4 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "nurse_visit",
+          "start": "2025-05-20T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-05-20T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.4
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 29.3
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-20T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2025-05-20T09:45",
+              "author": "RN",
+              "body": "INR in range. No bleeding. Continue."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "office_visit",
+          "start": "2025-06-17T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "chronic care follow-up",
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism with acute cor pulmonale",
+              "action": "resolved",
+              "icd10": "I26.09"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              131,
+              88
+            ],
+            "hr": 58,
+            "spo2": 92,
+            "weight_kg": 77.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-17T14:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 317
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.94
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-06-17T14:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.1
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 86
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 66
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-06-17T14:10",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.3
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 28.1
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-06-17T14:20",
+              "author": "PCP",
+              "body": "Recovered from the spring PE about as well as could be hoped; walking the yard again with the portable tank. Taking warfarin every day, wife confirms. Breathing at his usual.\nExam: vitals as charted. Lungs diminished, no wheeze. RRR. Stockings on; no edema.\nA/P: COPD/home O2 stable. Recurrent VTE on warfarin - adherent. HTN fine. NSCLC surveillance per oncology. Labs today. RTC Aug/Sept, INR every 4 wks in between."
+            },
+            {
+              "type": "Result Note",
+              "title": "Lab review",
+              "date": "2025-06-18T08:10",
+              "author": "PCP",
+              "body": "CBC, CMP unremarkable; INR therapeutic. Portal note sent."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-08a",
+          "kind": "outside_records",
+          "start": "2025-07-08T14:45",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance letter",
+              "date": "2025-07-08T14:45",
+              "author": "oncology",
+              "body": "Outside oncology group, visit 6/24/2025.\n\nStage IV NSCLC on observation. CT chest/abdomen/pelvis 6/19: stable disease, no new lesions. Recent massive PE in March noted, on warfarin. Port flushed. Next CT in 3 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "nurse_visit",
+          "start": "2025-07-22T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "labs": [
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-07-22T09:35",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 2.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 25.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-07-22T09:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Anticoagulation nurse visit",
+              "date": "2025-07-22T09:45",
+              "author": "RN",
+              "body": "INR in goal. Next 8/19."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "nurse_visit",
+          "start": "2025-08-19T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "INR check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "INR visit cancelled",
+              "date": "2025-08-18T16:02",
+              "author": "front desk",
+              "body": "Wife called to cancel tomorrow's INR, says he has 'a lot of appointments this month' and will call to reschedule. Offered 8/26 or 9/2; she will call back."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-09-20a",
+          "kind": "hospital_admission",
+          "start": "2025-09-20T18:05",
+          "end": "2025-09-27T13:00",
+          "service": "Hematology & Oncology",
+          "reason": "saddle pulmonary embolus with hematemesis",
+          "conditions": [
+            {
+              "label": "Saddle embolus of pulmonary artery without acute cor pulmonale",
+              "action": "diagnosed",
+              "onset": "2025-09-20",
+              "icd10": "I26.92"
+            },
+            {
+              "label": "Hematemesis",
+              "action": "diagnosed",
+              "onset": "2025-09-20",
+              "note": "active upper GI bleeding with the saddle PE",
+              "icd10": "K92.0"
+            },
+            {
+              "label": "Acute embolism and thrombosis of unspecified deep veins of right proximal lower extremity",
+              "action": "diagnosed",
+              "onset": "2025-09-20",
+              "icd10": "I82.4Y1"
+            },
+            {
+              "label": "Acute posthemorrhagic anemia",
+              "action": "diagnosed",
+              "onset": "2025-09-20",
+              "icd10": "D62"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Injectable Solution",
+              "action": "historical",
+              "sig": "Inject subcutaneously as directed by orthopedics after hip surgery",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "postoperative, warfarin held"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-09-20T18:15",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 110,
+              "rr": 28,
+              "spo2": 89
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-09-20T18:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 23.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 255
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 2.57
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2025-09-20T18:30",
+              "results": [
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 1.1
+                },
+                {
+                  "test": "Prothrombin Time",
+                  "value": 13.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-09-20T18:30",
+              "results": [
+                {
+                  "test": "Activated partial thromboplastin time",
+                  "loinc": "14979-9",
+                  "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
+                  "value": 30
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-09-20T18:45",
+              "text": "Portable AP chest. Hyperinflated lungs. No consolidation to suggest pneumonia. No pneumothorax. No effusion. Right chest port in place.",
+              "conclusion": "No pneumonia or pneumothorax."
+            },
+            {
+              "study": "Lower extremity venous duplex",
+              "performed": "2025-09-20T19:30",
+              "text": "Right lower extremity. Noncompressible proximal deep vein with echogenic intraluminal thrombus and absent augmentation. Calf veins limited by swelling. Left not examined.",
+              "conclusion": "Acute proximal deep vein thrombosis, right leg."
+            },
+            {
+              "study": "CT angiogram chest, pulmonary embolism protocol",
+              "loinc": "88322-3",
+              "performed": "2025-09-20T20:10",
+              "text": "CT pulmonary angiogram with IV contrast. Large filling defect straddling the bifurcation of the main pulmonary artery and extending into both main pulmonary arteries. Emphysema. No consolidation. No pericardial effusion. Port catheter tip at the cavoatrial junction.",
+              "conclusion": "Large saddle pulmonary embolus."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Total hip arthroplasty",
+              "performed": "2025-09-04T08:00"
+            },
+            {
+              "procedure": "Transfusion of red blood cells",
+              "snomed": "116863004",
+              "performed": "2025-09-20T21:00"
+            },
+            {
+              "procedure": "Percutaneous insertion of inferior vena cava filter",
+              "snomed": "397913009",
+              "performed": "2025-09-21T10:30"
+            },
+            {
+              "procedure": "Esophagogastroduodenoscopy",
+              "snomed": "76009000",
+              "performed": "2025-09-21T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "Admission history and physical (received)",
+              "date": "2025-09-29T15:20",
+              "author": "hematology oncology",
+              "body": "Regional hospital, Hematology & Oncology service. Admission 9/20/2025. Sent to PCP 9/29.\n\nHPI: 70-year-old man with COPD and metastatic NSCLC, six months after a massive PE. Recent right hip replacement at an outside orthopedic group; warfarin stopped for the operation and enoxaparin begun after it. For a week has had a productive cough with yellow sputum, which he put down to his COPD. Today sudden breathlessness and pleuritic chest pain, then vomited blood.\nMeds: tiotropium, albuterol as needed, enoxaparin since surgery, warfarin (on hold), amlodipine 10 mg, prednisone 5 mg, O2 2 L. NKDA.\n\nExam: RR 28, SpO2 89% on room air, HR 110, BP 135/85. Right leg swollen and tender over the deep veins.\nLabs: Hgb 7.8, Hct 23.4, platelets 255, INR 1.1, aPTT 30.\nCXR: no pneumonia or pneumothorax. Right leg duplex: proximal DVT. CTPA: large saddle embolus.\n\nAssessment: saddle pulmonary embolus with active GI bleeding; acute right proximal DVT.\nPlan: hold all anticoagulation; transfuse; urgent GI endoscopy; IR for IVC filter; ICU monitoring. Resume anticoagulation when bleeding controlled. Discharge summary to follow."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "office_visit",
+          "start": "2025-10-07T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Hematemesis",
+              "action": "resolved",
+              "icd10": "K92.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "enoxaparin sodium 100 MG/ML Injectable Solution",
+              "action": "stop",
+              "reason": "stopped in hospital; on warfarin"
+            },
+            {
+              "drug": "omeprazole 40 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "after upper GI bleed"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              153,
+              78
+            ],
+            "hr": 53,
+            "spo2": 91,
+            "weight_kg": 77.0
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-07T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 310
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.35
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-10-07T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-hospital visit",
+              "date": "2025-10-07T11:25",
+              "author": "PCP",
+              "body": "Here with wife. We received only the admission H&P (9/29). From them and the H&P: right hip replaced in early September at an outside orthopedic group - we were not told beforehand; ortho stopped warfarin and gave him enoxaparin shots. 9/20 he coughed for a week, then sudden breathlessness and vomited blood; big clot across both lung arteries and a new right leg DVT. Given 2 units of blood, scoped (told the bleeding spot was treated, no report here), and had a filter put in the big vein. Warfarin restarted before he left 9/27 once the bleeding stopped; shots stopped. Started on omeprazole 40 daily. The hospital's anticoagulation clinic is now checking his INR and dosing - first check was 10/2.\n\nNow: no further vomiting of blood, stools normal color. Short of breath at his baseline. Right leg still a bit swollen, less sore. Walking with a cane after the hip.\n\nExam: vitals as charted, on 2 L. Pale conjunctivae. Lungs diminished. RRR. Right leg mildly fuller than left, non-tender. Hip incision healed.\n\nA/P\n1. Saddle PE + right DVT with GI bleed, s/p IVC filter; back on warfarin via hospital anticoag clinic. We will stop our INR visits to avoid double dosing; asked them to fax results.\n2. Anemia from bleed - Hgb 10.4 today, up from 7.8. Recheck next visit.\n3. GI bleed - continue omeprazole; GI follow-up per hospital.\n4. Hip replacement - ortho following; records requested.\n5. Discharge summary and endoscopy report requested."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "nurse_visit",
+          "start": "2025-10-21T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-21T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-21T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-21T10:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccines",
+              "date": "2025-10-21T10:20",
+              "author": "RN",
+              "body": "High-dose flu and this season's COVID given, firm pressure 2 min each site given warfarin. No bruising before he left. INR now managed by the hospital clinic; last value they gave him was in range."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-24a",
+          "kind": "office_visit",
+          "start": "2025-11-24T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after September admission",
+          "vitals": {
+            "bp": [
+              137,
+              84
+            ],
+            "hr": 68,
+            "spo2": 93,
+            "weight_kg": 78.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-24T14:40",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 34.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-11-24T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up",
+              "date": "2025-11-24T14:50",
+              "author": "PCP",
+              "body": "Two months after the saddle PE and GI bleed. No more blood in vomit or stool. Breathing at his usual on 2 L. Off the cane around the house; ortho pleased with the hip per pt. Anticoag clinic adjusting warfarin, he says INRs in range; we have one faxed value from them only.\nDischarge summary, endoscopy and ortho records still not received despite requests.\n\nExam: vitals as charted. Color better. Lungs diminished, no wheeze. Right leg minimally fuller than left, soft. Stockings on.\n\nA/P\n1. Recurrent VTE with saddle PE, IVC filter, on warfarin (hospital clinic).\n2. Anemia after GI bleed, Hgb 11.6 today - improving.\n3. COPD on home O2 - stable; prednisone 5, tiotropium.\n4. HTN - fine on amlodipine 5.\n5. NSCLC - oncology scan due December.\nRTC 3 months; he will call to book after the holidays."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "portal_message",
+          "start": "2025-11-26T12:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-11-26T12:15",
+              "author": "PCP",
+              "body": "Howard - your blood count is still climbing back (11.6), which is what we want after the bleeding. Keep taking the omeprazole. Please call before the end of February to set up your next visit. Happy Thanksgiving to you both."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T08:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "date": "2026-01-13T08:40",
+              "author": "MA",
+              "body": "Pharmacy requests 90-day refills: tiotropium capsules, prednisone 5 mg, omeprazole 40 mg. Approved by PCP. Warfarin refills come from the anticoagulation clinic."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "outside_records",
+          "start": "2026-02-17T13:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Oncology surveillance letter",
+              "date": "2026-02-17T13:05",
+              "author": "oncology",
+              "body": "Outside oncology group, visit 12/16/2025 (received 2/17/2026).\n\nStage IV NSCLC on observation since 11/2022. CT 12/9: stable disease, no new lesions; IVC filter in place. September admission for saddle PE and GI bleeding noted; on warfarin, managed by the anticoagulation clinic. Port flushed. Continue CT every 3 months. NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-02a",
+          "kind": "hospital_admission",
+          "start": "2026-04-02T07:50",
+          "end": "2026-04-09T11:00",
+          "service": "Cardiology",
+          "reason": "collapse at home",
+          "vitals": [
+            {
+              "time": "2026-04-02T08:00",
+              "bp": [
+                80,
+                50
+              ],
+              "hr": 118,
+              "rr": 24
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2026-04-02T08:40",
+              "text": "Urgent study. Pericardial effusion surrounding the heart with right atrial and right ventricular diastolic collapse and marked respiratory variation in mitral inflow. Left ventricle small and hyperdynamic. Inferior vena cava plethoric.",
+              "conclusion": "Pericardial effusion with tamponade physiology."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Pericardiocentesis",
+              "snomed": "309849004",
+              "performed": "2026-04-02T09:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-06a",
+          "kind": "portal_message",
+          "start": "2026-04-06T20:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Howard in the hospital",
+              "date": "2026-04-06T20:41",
+              "author": "patient",
+              "body": "This is his wife writing on Howard's account. He collapsed at home Thursday morning and went by ambulance. They said fluid around his heart was squeezing it and drained it with a needle. He is in the cardiac unit, more awake now. I wanted you to know. They have not said when he can come home."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Howard in the hospital",
+              "date": "2026-04-07T08:12",
+              "author": "RN",
+              "body": "Thank you for letting us know, and we are sorry you are both going through this. Dr. has been told. Please call the office once he has a discharge date so we can set up a visit soon after, and ask the hospital to send us his summary."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "outside_records",
+          "start": "2026-05-12T10:10",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Cardiology discharge summary (received)",
+              "date": "2026-05-12T10:10",
+              "author": "cardiology",
+              "body": "Regional hospital, Cardiology. Admitted 4/2/2026, discharged 4/9/2026.\n\nPresentation: 70-year-old man with metastatic lung cancer, severe COPD on home oxygen and recent massive PE and GI bleeding, brought in after collapsing at home; drowsy on arrival. BP 80/50, HR 118, RR 24. Distended neck veins, muffled heart sounds, weak thready pulse, cool extremities with slow capillary refill; systolic pressure fell 15 mm Hg on inspiration. Lungs clear. No leg edema.\n\nDiagnoses: cardiac tamponade with cardiogenic shock.\nCourse: urgent echo showed a pericardial effusion with tamponade physiology. Emergent pericardiocentesis in the cath lab with prompt rise in blood pressure and improved alertness. Drain removed day 3. Monitored in CCU then telemetry.\n\nDischarge medications (as listed): tiotropium, albuterol, warfarin 5 mg (INR goal 2-3), amlodipine 10 mg, prednisone 5 mg, O2 2 L continuous. NKDA.\nFollow-up: cardiology 2 weeks with repeat echo; oncology; PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-16a",
+          "kind": "pharmacy",
+          "start": "2026-06-16T09:25",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "date": "2026-06-16T09:25",
+              "author": "MA",
+              "body": "Request for amlodipine 5 mg 90-day. Approved x1 by PCP. Note to pt via pharmacy: due for a visit, please call to schedule."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute embolism and thrombosis of unspecified deep veins of right proximal lower extremity|I82.4Y1": {
+        "code": "I82.4Y1",
+        "display": "Acute embolism and thrombosis of unspecified deep veins of right proximal lower extremity",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute posthemorrhagic anemia|D62": {
+        "code": "D62",
+        "display": "Acute posthemorrhagic anemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Acute respiratory failure with hypercapnia|J96.02": {
+        "code": "J96.02",
+        "display": "Acute respiratory failure with hypercapnia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Adverse effect of calcium-channel blockers, initial encounter|T46.1X5A": {
+        "code": "T46.1X5A",
+        "display": "Adverse effect of calcium-channel blockers, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Chronic respiratory failure with hypoxia|J96.11": {
+        "code": "J96.11",
+        "display": "Chronic respiratory failure with hypoxia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Disruption or dehiscence of closure of internal operation (surgical) wound of abdominal wall muscle or fascia, initial encounter|T81.321A": {
+        "code": "T81.321A",
+        "display": "Disruption or dehiscence of closure of internal operation (surgical) wound of abdominal wall muscle or fascia, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hematemesis|K92.0": {
+        "code": "K92.0",
+        "display": "Hematemesis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Other pulmonary embolism with acute cor pulmonale|I26.09": {
+        "code": "I26.09",
+        "display": "Other pulmonary embolism with acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Other pulmonary embolism without acute cor pulmonale|I26.99": {
+        "code": "I26.99",
+        "display": "Other pulmonary embolism without acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Postthrombotic syndrome without complications of unspecified extremity|I87.009": {
+        "code": "I87.009",
+        "display": "Postthrombotic syndrome without complications of unspecified extremity",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Saddle embolus of pulmonary artery without acute cor pulmonale|I26.92": {
+        "code": "I26.92",
+        "display": "Saddle embolus of pulmonary artery without acute cor pulmonale",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Secondary malignant neoplasm of unspecified site|C79.9": {
+        "code": "C79.9",
+        "display": "Secondary malignant neoplasm of unspecified site",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "enoxaparin sodium 100 MG/ML Injectable Solution": {
+        "code": "854255",
+        "display": "enoxaparin sodium 100 MG/ML Injectable Solution",
+        "ingredient": "enoxaparin",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Activated partial thromboplastin time": {
+        "code": "14979-9",
+        "display": "aPTT in Platelet poor plasma by Coagulation assay",
+        "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Bicarbonate in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide partial pressure in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Fibrin D-dimer FEU": {
+        "code": "48065-7",
+        "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Natriuretic peptide B": {
+        "code": "30934-4",
+        "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen partial pressure in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT angiogram chest, pulmonary embolism protocol": {
+        "code": "88322-3",
+        "display": "CT Chest W contrast IV and CT angiogram Pulmonary arteries for pulmonary embolus W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Cholecystectomy": {
+        "code": "38102005",
+        "display": "Cholecystectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Closure of abdominal wall dehiscence": {
+        "code": "80173001",
+        "display": "Closure of abdominal wall dehiscence",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Esophagogastroduodenoscopy": {
+        "code": "76009000",
+        "display": "Esophagogastroduodenoscopy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Management of noninvasive mechanical ventilation": {
+        "code": "430191008",
+        "display": "Management of noninvasive mechanical ventilation",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Percutaneous insertion of inferior vena cava filter": {
+        "code": "397913009",
+        "display": "Percutaneous insertion of inferior vena cava filter",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Pericardiocentesis": {
+        "code": "309849004",
+        "display": "Pericardiocentesis",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Radical prostatectomy": {
+        "code": "26294005",
+        "display": "Radical prostatectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Thrombolytic therapy": {
+        "code": "426347000",
+        "display": "Thrombolytic therapy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Transfusion of red blood cells": {
+        "code": "116863004",
+        "display": "Transfusion of red blood cells",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

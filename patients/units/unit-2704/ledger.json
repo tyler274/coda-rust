@@ -1,10 +1,7 @@
 {
   "unit": "unit-2704",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002704/2024-06-05a: imaging order \"Diagnostic mammogram, right, with ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00002704/2024-06-05a: referral to \"Breast Surgery\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002704",
@@ -520,7 +517,7 @@
             {
               "id": "colo-2023",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal cancer screening"
@@ -889,7 +886,14 @@
             {
               "id": "diag-mammo-2024",
               "action": "placed",
-              "order": "Diagnostic mammogram, right, with ultrasound",
+              "order": "Diagnostic mammogram",
+              "category": "imaging",
+              "reason": "palpable right breast mass with skin retraction"
+            },
+            {
+              "id": "diag-mammo-2024-2",
+              "action": "placed",
+              "order": "Breast ultrasound",
               "category": "imaging",
               "reason": "palpable right breast mass with skin retraction"
             },
@@ -933,6 +937,11 @@
           "orders": [
             {
               "id": "diag-mammo-2024",
+              "action": "done",
+              "date": "2024-06-10T09:30"
+            },
+            {
+              "id": "diag-mammo-2024-2",
               "action": "done",
               "date": "2024-06-10T09:30"
             }
@@ -2117,6 +2126,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 }
               ]
@@ -2526,25 +2539,25 @@
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "docetaxel 20 MG/ML Injectable Solution": {
         "code": "1001405",
         "display": "docetaxel 20 MG/ML Injectable Solution",
         "ingredient": "docetaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tamoxifen 20 MG Oral Tablet": {
         "code": "313195",
         "display": "tamoxifen 20 MG Oral Tablet",
         "ingredient": "tamoxifen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "trastuzumab 150 MG Injection": {
         "code": "1922509",
         "display": "trastuzumab 150 MG Injection",
         "ingredient": "trastuzumab",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2552,6 +2565,10 @@
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Estradiol": {

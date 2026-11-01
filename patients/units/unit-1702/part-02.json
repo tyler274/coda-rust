@@ -1,0 +1,712 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001702",
+      "events": [
+        {
+          "id": "2024-01-03a",
+          "kind": "outside_records",
+          "start": "2024-01-03T10:50",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "author": "gastroenterology",
+              "date": "2024-01-03T10:50",
+              "body": "Outside gastroenterology group\nVisit date: 12/18/2023\nRiley Fenton, 34F (DOB 11/21/1989)\nReferred for: positive tissue transglutaminase IgA\n\nMs. Fenton is a 34-year-old with autoimmune polyendocrine syndrome type 2 (Addison disease, Hashimoto hypothyroidism) who comes at the request of her primary care physician. She describes intermittent abdominal pain and bloating that are clearly worse after meals, sometimes with diarrhea. She has seen no blood in the stool and has had no fevers or weight loss. She remains on a normal diet.\n\nPMH: as above; remote iron deficiency anemia treated with oral iron. PSH: none.\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, levothyroxine.\nAllergies: no known drug allergies.\nFamily history: noncontributory to the GI question.\nSocial: does not smoke or drink.\n\nExam: abdomen soft and non-distended, with mild tenderness in both lower quadrants; no rebound or guarding. No hepatosplenomegaly.\n\nData: tTG-IgA 86 U/mL with normal total IgA (11/2023, PCP). Today: hemoglobin 13.2 g/dL, WBC 7,000, platelets 250,000, TSH 2.5, albumin 4.5 g/dL, CRP 2 mg/L.\n\nAssessment: postprandial pain and bloating with a strongly positive tTG in a patient with polyglandular autoimmunity. Celiac disease is likely. Normal albumin, hemoglobin and CRP are reassuring against a more serious inflammatory process, which was her main worry.\n\nPlan: upper endoscopy with duodenal biopsies, scheduled 1/9. Continue a gluten-containing diet until then. If confirmed, strict gluten-free diet and dietitian referral.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "procedure_visit",
+          "start": "2024-01-09T07:30",
+          "end": "2024-01-09T09:15",
+          "service": "Gastroenterology",
+          "reason": "Upper endoscopy with duodenal biopsies",
+          "procedures": [
+            {"procedure": "Upper endoscopy with biopsy", "performed": "2024-01-09T08:05"}
+          ]
+        },
+        {
+          "id": "2024-01-19a",
+          "kind": "outside_records",
+          "start": "2024-01-19T15:20",
+          "conditions": [
+            {"label": "Celiac disease", "action": "diagnosed", "onset": "2024-01-09"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2024-01-09T08:05", "issued": "2024-01-12T11:00", "text": "Specimen A: duodenal bulb, biopsies x2. Specimen B: second portion of duodenum, biopsies x4. Microscopic: small bowel mucosa with partial villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes (greater than 40 per 100 enterocytes). No granulomas, no dysplasia, no organisms.", "conclusion": "Duodenum, biopsies: partial villous atrophy with intraepithelial lymphocytosis, Marsh 3a, consistent with celiac disease in the setting of positive serology."}
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "author": "gastroenterology",
+              "date": "2024-01-19T15:20",
+              "body": "Procedure: esophagogastroduodenoscopy with biopsy, 01/09/2024, outside endoscopy unit.\nIndication: positive tTG-IgA, postprandial bloating.\nSedation: monitored anesthesia care. Hydrocortisone dose doubled the morning of the procedure per her endocrinologist.\nFindings: normal esophagus. Normal stomach. Duodenal bulb and second portion grossly unremarkable. Biopsies taken from bulb and D2.\nComplications: none.\nPathology (01/12): Marsh 3a changes, consistent with celiac disease.\nRecommendations: strict lifelong gluten-free diet; referral to our dietitian placed; repeat tTG in 6 to 12 months to confirm adherence.\nAllergies: NKDA.\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "author": "PCP",
+              "date": "2024-01-19T17:05",
+              "body": "EGD + path reviewed: celiac confirmed, Marsh 3a. Added to problem list. GI arranging dietitian. Iron and vitamin D at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "portal_message",
+          "start": "2024-01-22T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gluten question",
+              "author": "patient",
+              "date": "2024-01-22T20:14",
+              "body": "Hi, so it's official, celiac. Quick question - do I need to worry about gluten in my hydrocortisone or thyroid pills? The dietitian said to ask my pharmacy and my doctor."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gluten question",
+              "author": "PCP",
+              "date": "2024-01-23T07:30",
+              "body": "Good question. The generic hydrocortisone, fludrocortisone and levothyroxine you're on are gluten-free per the manufacturers' statements your pharmacy pulled for me. If the pharmacy ever switches the maker, ask them to check again. Let's see you in February to go over how the diet is going and check iron and vitamin D."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Celiac follow-up",
+          "state": {"bp": [106, 66], "weight_kg": 65.2},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Iron Studies", "collected": "2024-02-20T16:25", "results": [{"test": "Iron"}, {"test": "Total Iron-Binding Capacity"}, {"test": "Ferritin"}]},
+            {"panel": null, "collected": "2024-02-20T16:25", "results": [{"test": "25-hydroxy Vitamin D", "value": 34}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-02-20T16:25", "results": [{"test": "Hemoglobin"}, {"test": "Mean Corpuscular Volume"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2024-02-20T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2024-02-20T16:30",
+              "body": "Six weeks gluten-free after the EGD. Bloating noticeably less, stools more formed. Had one accidental exposure at a staff lunch, sore and crampy for a day. Dietitian visit done, husband doing the shopping with her. Thyroid and adrenal meds unchanged and taken.\n\nExam: vitals as charted, weight stable. Abdomen soft, nontender today.\n\nA/P\n- Celiac disease: early response to diet. Iron studies, vitamin D, CBC today given the past iron deficiency. GI to recheck tTG later this year; I'll add it to her physical if they haven't.\n- APS-2: hypothyroid and adrenal stable.\nPhysical in August."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "portal_message",
+          "start": "2024-02-23T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron and vitamin D",
+              "author": "PCP",
+              "date": "2024-02-23T11:40",
+              "body": "Iron stores, vitamin D and your blood count are all normal - nothing to add. Keep up the diet."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "White patches on skin",
+          "orders": [
+            {"id": "derm-referral-2024", "action": "placed", "order": "Dermatology referral", "category": "referral", "to": "Dermatology", "reason": "Depigmented patches hands and face; sister with vitiligo"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-05-14T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "author": "PCP",
+              "date": "2024-05-14T16:40",
+              "body": "Video from her classroom after dismissal, identity verified.\n\nNoticed pale patches on the backs of both hands and one near her right temple over the winter, getting a little bigger. They don't itch or hurt. Her sister has vitiligo and she thinks this looks the same.\n\nOn camera: several well-defined paler patches on dorsal hands and right temple, no redness or scale visible. Limited by video.\n\nA/P: Depigmented patches, likely vitiligo given her autoimmune history and family history. Dermatology referral for confirmation and treatment options. Sunscreen on the patches meanwhile."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "specialist_visit",
+          "start": "2024-06-17T10:00",
+          "service": "Dermatology",
+          "reason": "Depigmented patches",
+          "labs": [
+            {"panel": null, "collected": "2024-06-17T10:40", "results": [
+              {"test": "Thyroid Stimulating Hormone", "value": 3.5},
+              {"test": "Fasting Glucose", "value": 88},
+              {"test": "Antinuclear Antibodies", "text": "Negative"}
+            ]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-06-17T10:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "derm-referral-2024", "action": "done", "date": "2024-06-17T10:00"}
+          ]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "outside_records",
+          "start": "2024-06-28T09:30",
+          "conditions": [
+            {"label": "Vitiligo", "action": "diagnosed", "onset": "2024-06-17"}
+          ],
+          "medications": [
+            {"drug_text": "tacrolimus 0.001 MG/MG Topical Ointment", "action": "historical", "sig": "Apply a thin layer to the white patches on face and hands twice daily", "frequency": "BID", "route": "Topical", "course": "chronic", "reason": "Vitiligo"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "author": "dermatology",
+              "date": "2024-06-28T09:30",
+              "body": "Outside dermatology office - new patient consultation, 6/17/2024\n\nRiley Fenton, age 34. Referred by her PCP for white patches.\n\nShe has autoimmune polyendocrine syndrome type 2 (Addison disease, Hashimoto hypothyroidism) and celiac disease diagnosed this January. Over the past several months she has developed white spots that are slowly enlarging; they cause no symptoms. Sister has vitiligo.\n\nMedications: hydrocortisone, fludrocortisone, levothyroxine. NKDA.\n\nExamination: multiple flat depigmented macules with sharp, well-defined borders on the dorsal hands and the face (right temple). No scale, no erythema, no atrophy. Wood's lamp makes the patches stand out sharply from the surrounding skin.\n\nLabs today: TSH 3.5, fasting glucose 88, ANA negative, CBC within normal limits.\n\nImpression: nonsegmental vitiligo.\n\nPlan: tacrolimus 0.1% ointment twice daily to facial and hand patches. Broad-spectrum sunscreen. Discussed phototherapy as a later option if response is slow. Return in 6 months or as needed.\n\nAllergies: NKDA. cc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "author": "PCP",
+              "date": "2024-06-28T12:15",
+              "body": "Derm: vitiligo confirmed; tacrolimus ointment started by derm. Lists updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"bp": [110, 72], "weight_kg": 65.0, "labs": {"Tissue Transglutaminase IgA": 11}},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": null, "collected": "2024-08-20T09:45", "results": [{"test": "Tissue Transglutaminase IgA", "value": 11}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T09:45", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Albumin"}]},
+            {"panel": "CBC with Differential", "collected": "2024-08-20T09:45", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-08-20T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2024-08-20T10:10",
+              "body": "Yearly exam before school starts. 34F.\n\nYear in review: celiac confirmed in January, strict GF since, GI symptoms basically gone. Vitiligo diagnosed in June, using tacrolimus on face and hands, too early to tell. Levothyroxine nightly, hydrocortisone/fludrocortisone unchanged. No adrenal sick days.\n\nMeds: levothyroxine 112 mcg qHS, hydrocortisone 20 mg AM/10 mg PM, fludrocortisone 0.1 mg, tacrolimus 0.1% oint BID. NKDA.\nNever smoker, no alcohol. PHQ-2: 1.\n\nExam: vitals as charted. Depigmented macules dorsal hands and right temple. Thyroid mildly enlarged, smooth. Cardiopulmonary normal. Abdomen soft, nontender. Joints without swelling. No edema.\n\nA/P\n1. Celiac disease - tTG today to check the diet.\n2. APS-2 / hypothyroidism / Addison's - CMP today; endo has her TSH.\n3. Vitiligo - per derm.\n4. HM: Pap current to 2027. Flu/COVID in October."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Celiac antibody",
+              "author": "PCP",
+              "date": "2024-08-22T14:05",
+              "body": "Your celiac antibody is down to 11 from 86 last fall - under the cutoff of 15, which tells us the gluten-free diet is working. Electrolytes, kidney, liver and blood count are normal. Have a good start to the year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:40",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-09T15:45"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-09T15:47"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-09T15:45"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "MA",
+              "date": "2024-10-09T16:00",
+              "body": "2024-25 flu (L) and COVID (R) given, lot numbers in the MAR. No issues after 15 minutes. Reminded about extra hydrocortisone if feverish."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Joint pain and fatigue",
+          "state": {"bp": [112, 70], "weight_kg": 64.6},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "orders": [
+            {"id": "rheum-referral-2024", "action": "placed", "order": "Rheumatology referral", "category": "referral", "to": "Rheumatology", "reason": "Symmetric small-joint hand and knee pain with morning stiffness and swelling"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-11-19T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-11-19T16:45",
+              "body": "S: Since around June her hands and both knees ache, worst in the morning - takes her a good while to be able to make a fist, and holding a dry-erase marker is hard first period. Eases by lunchtime. Tired again. No rash, no fever, no recent illness or injury. Thyroid and adrenal routine unchanged, still GF.\n\nO: Vitals as charted. Puffy, tender knuckles and middle finger joints on both hands. Knees without effusion, nontender.\n\nA/P: Symmetric inflammatory-sounding small-joint arthritis with morning stiffness, several months - needs rheumatology. Referral placed, asked for the next opening. She'd rather they draw the inflammatory labs so she isn't stuck twice. Acetaminophen as needed meanwhile; avoids NSAIDs on her own."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "specialist_visit",
+          "start": "2024-12-31T09:30",
+          "service": "Rheumatology",
+          "reason": "Polyarthralgia",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-12-31T10:20", "results": [{"test": "Hemoglobin", "value": 12.1}]},
+            {"panel": null, "collected": "2024-12-31T10:20", "results": [
+              {"test": "Erythrocyte Sedimentation Rate", "value": 45},
+              {"test": "C Reactive Protein", "value": 24},
+              {"test": "Rheumatoid Factor", "text": "Positive"},
+              {"test": "Cyclic Citrullinated Peptide Antibody", "text": "Positive"},
+              {"test": "Thyroid Stimulating Hormone", "value": 2.5},
+              {"test": "Hepatitis B Surface Antigen", "text": "Negative"},
+              {"test": "Hepatitis C Antibody", "text": "Negative"},
+              {"test": "Pregnancy Test, Urine", "text": "Negative"}
+            ]}
+          ],
+          "orders": [
+            {"id": "rheum-referral-2024", "action": "done", "date": "2024-12-31T09:30"}
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T10:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "author": "RN",
+              "date": "2025-01-14T10:35",
+              "body": "Pharmacist called: new rx for methotrexate 2.5 mg, 6 tabs once weekly, and folic acid 1 mg daily from an outside rheumatologist, first filled 1/2. Their interaction check flagged it against her chart and they wanted to confirm we're aware. We had no rheum note on file. Told them PCP would review. Message sent to patient."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Rheumatology visit",
+              "author": "PCP",
+              "date": "2025-01-14T12:20",
+              "body": "Hi Riley - your pharmacy let us know about the methotrexate. We haven't gotten the rheumatologist's note yet. Can you tell me what they found and the plan? I'll ask them to send it."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "portal_message",
+          "start": "2025-01-16T07:50",
+          "conditions": [
+            {"label": "Rheumatoid arthritis", "action": "diagnosed", "onset": "2024-12-31"}
+          ],
+          "medications": [
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 6 tablets (15 mg) by mouth once a week on the same day", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "Rheumatoid arthritis"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "With methotrexate"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Rheumatology visit",
+              "author": "patient",
+              "date": "2025-01-16T07:50",
+              "body": "Sorry, should've told you! Saw rheum on New Year's Eve. They said rheumatoid arthritis, both blood tests for it positive and inflammation up. Methotrexate 6 pills every Sunday plus folic acid every day. They did a pregnancy test and hepatitis tests first and talked to me about not getting pregnant on it - we're not trying right now anyway. Labs every few months, they said you can draw them."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "List update",
+              "author": "PCP",
+              "date": "2025-01-16T08:30",
+              "body": "RA added per patient report; methotrexate 15 mg weekly and folic acid 1 mg added (outside rx). Records request faxed to rheumatology. Will draw CBC/CMP q3mo per their plan once the order arrives."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "outside_records",
+          "start": "2025-02-25T13:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "author": "rheumatology",
+              "date": "2025-02-25T13:10",
+              "body": "Outside rheumatology practice\nDate of service: 12/31/2024\nPatient: Riley Fenton (DOB 11/21/1989)\n\nHistory: 35-year-old teacher with APS type 2 (Addison disease, Hashimoto hypothyroidism), celiac disease and vitiligo seen earlier this year, referred for joint pain. For six months she has had fatigue and pain in the hands and knees, symmetric, with stiffness each morning. No recent infection or trauma.\n\nMedications: hydrocortisone 20 mg AM and 10 mg PM, fludrocortisone 0.1 mg daily, tacrolimus ointment. NKDA.\nFamily: mother T1DM and Hashimoto; sister vitiligo; maternal aunt adrenal insufficiency.\nSocial: never smoker, no alcohol.\n\nExam: synovitis with swelling and tenderness of the MCP and PIP joints of both hands. Knees without effusion. No rheumatoid nodules. Skin with vitiligo of hands and face.\n\nLabs: Hgb 12.1, ESR 45 mm/hr, CRP 24 mg/L, RF positive, anti-CCP positive, TSH 2.5. Hepatitis B surface antigen negative, hepatitis C antibody negative. Urine hCG negative.\n\nAssessment: seropositive rheumatoid arthritis, active.\n\nPlan: methotrexate 15 mg orally once weekly with folic acid 1 mg daily. Not attempting pregnancy at present; counseled that methotrexate is teratogenic and must be stopped at least 3 months before trying, and that reliable contraception is needed while on it - she and her husband will use contraception. Avoid alcohol (she does not drink). CBC with differential and CMP every 4 weeks for 3 months, then every 3 months; PCP office may draw. Return in 3 months.\n\ncc: primary care"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "author": "PCP",
+              "date": "2025-02-25T16:40",
+              "body": "Rheum letter (12/31) arrived today, about 8 weeks late. Consistent with what she told us. Standing CBC/CMP order entered for q3mo; first monthly draws were done at rheum's lab per patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "lab_only",
+          "start": "2025-03-25T07:15",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-03-25T07:15", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Absolute Neutrophil Count"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-03-25T07:15", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Albumin"}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2025-03-25T07:15"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Methotrexate monitoring",
+              "author": "PCP",
+              "date": "2025-03-25T15:00",
+              "body": "CBC and CMP normal, liver enzymes normal on methotrexate. Copy to rheumatology. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "office_visit",
+          "start": "2025-05-28T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up autoimmune conditions",
+          "state": {"bp": [108, 70], "weight_kg": 65.1, "labs": {"Thyroid Stimulating Hormone": 1.9, "Free Thyroxine": 1.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2025-05-28T16:30", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.9}, {"test": "Free Thyroxine", "value": 1.2}]},
+            {"panel": "CBC with Differential", "collected": "2025-05-28T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-05-28T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-28T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-05-28T16:40",
+              "body": "Five months on methotrexate. Mornings much easier, she can grip again. Energy improved. Still GF, tTG was normal last summer. Adrenal fine, no sick days this winter.\n\nMeds: levothyroxine 112 mcg, hydrocortisone 20/10, fludrocortisone 0.1, methotrexate 15 mg weekly, folic acid 1 mg, tacrolimus oint. NKDA.\n\nExam: vitals as charted. No synovitis in the hands today. Thyroid smooth, mildly full. Heart regular. Skin: depigmented macules hands and right temple.\n\nA/P\n1. RA - better on MTX. CBC/CMP today for monitoring.\n2. Hypothyroidism - TSH/free T4 today (endo visit delayed to fall on their end).\n3. Addison's - BMP portion of CMP.\n4. Celiac, vitiligo - stable.\nPhysical in August; discuss pneumonia and shingles vaccines then since she's on methotrexate."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-30a",
+          "kind": "portal_message",
+          "start": "2025-05-30T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2025-05-30T09:10",
+              "body": "All normal: thyroid (TSH 1.9, free T4 1.2), blood counts and liver tests on the methotrexate, sodium and potassium. Enjoy the end of the school year."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hair coming out",
+              "author": "patient",
+              "date": "2025-06-10T21:05",
+              "body": "Weird one. For about a week I'm finding clumps of hair on my pillow and my husband found a totally bald round spot on the back of my head, and now I see another one. Doesn't hurt or itch. Is this the methotrexate?? My dermatologist can see me the 30th, should I go to that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hair coming out",
+              "author": "PCP",
+              "date": "2025-06-11T07:25",
+              "body": "Methotrexate can thin hair a little all over, but round, completely bald patches sound more like alopecia areata, another autoimmune condition that travels with the ones you have. Your dermatologist is the right person and the 30th is fine. If you notice a rash, sores, or the patches becoming red or scaly before then, let me know and I'll see you."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T11:00",
+          "service": "Dermatology",
+          "reason": "Patchy hair loss",
+          "procedures": [
+            {"procedure": "Intralesional injection of skin", "snomed": "27581000", "performed": "2025-06-30T11:25"}
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "outside_records",
+          "start": "2025-07-10T10:20",
+          "conditions": [
+            {"label": "Alopecia areata", "action": "diagnosed", "onset": "2025-06-30"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "author": "dermatology",
+              "date": "2025-07-10T10:20",
+              "body": "Outside dermatology office - follow-up visit 6/30/2025\n\nRiley Fenton, 35. Known to us for vitiligo. Three weeks of hair shedding: handfuls on the pillow in the mornings and several round areas of complete hair loss on the scalp. No pain, itch or burning. Thyroid tests from her PCP last month were normal.\n\nMeds: hydrocortisone, fludrocortisone, levothyroxine, methotrexate 15 mg weekly with folic acid, tacrolimus ointment. NKDA.\n\nExam: three sharply circumscribed round patches of alopecia on the scalp, smooth skin, no erythema, scale or scarring. No lymphadenopathy. Nails: no pitting or onycholysis. Known vitiligo macules on hands and face, stable; the rest of the skin is unremarkable.\n\nImpression: alopecia areata, patchy.\n\nProcedure: after verbal consent, intralesional triamcinolone acetonide 10 mg/mL was injected into the three patches, about 0.1 mL per site, total 1.2 mL. Tolerated well.\n\nPlan: repeat injections every 4 to 6 weeks as needed. Continue tacrolimus to vitiligo. Return 6 weeks.\n\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "author": "PCP",
+              "date": "2025-07-10T12:30",
+              "body": "Alopecia areata per derm, intralesional steroid started there. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "state": {"bp": [112, 70], "weight_kg": 64.8},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-08-26T09:50", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-26T09:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-26T09:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-08-26T09:55"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-08-26T09:57"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2025-08-26T09:00"},
+            {"procedure": "Immunization administration", "performed": "2025-08-26T09:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2025-08-26T10:15",
+              "body": "Annual, 35F. Back to school next week.\n\nInterval: alopecia areata diagnosed by derm in June, treated with injections there. RA well controlled on methotrexate - rheum follow-up in May was fine per pt. GF diet, no GI symptoms. Adrenal: no sick days. Levothyroxine nightly.\n\nMeds: levothyroxine 112 mcg, hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg, methotrexate 15 mg weekly, folic acid 1 mg, tacrolimus 0.1% oint. NKDA.\nNever smoker, no alcohol. PHQ-9: 3.\n\nExam: vitals as charted. Scalp: patches as described by derm. Depigmented macules hands. Thyroid mildly full, smooth. Heart regular, lungs clear. No synovitis. No edema.\n\nA/P\n1. RA on methotrexate - CBC/CMP today.\n2. APS-2 (Addison's, Hashimoto) - CMP; TSH normal in May.\n3. Celiac, vitiligo, alopecia areata - stable, per specialists.\n4. Lipids today.\n5. Immunizations: on methotrexate, so PCV20 today and first Shingrix today; second Shingrix in 2-6 months. Flu/COVID in October.\nReturn in 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "office_visit",
+          "start": "2025-09-30T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations",
+          "state": {"bp": [124, 72], "weight_kg": 62.0, "labs": {"Thyroid Stimulating Hormone": 0.01, "Free Thyroxine": 2.6}},
+          "vitals": {"hr": 104, "weight_kg": 62.0},
+          "measure": ["bp", "temp_c", "spo2"],
+          "medications": [
+            {"drug": "levothyroxine sodium 0.112 MG Oral Tablet", "action": "stop", "reason": "Thyrotoxicosis"},
+            {"drug": "propranolol hydrochloride 20 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth twice daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Palpitations, thyrotoxicosis"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-09-30T16:25", "resulted": "2025-10-01T08:40", "results": [{"test": "Thyroid Stimulating Hormone", "text": "<0.01"}, {"test": "Free Thyroxine", "value": 2.6}]},
+            {"panel": "CBC with Differential", "collected": "2025-09-30T16:25", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-09-30T16:25", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-09-30T16:05", "text": "Sinus tachycardia, rate 104. Normal axis. PR, QRS and QT intervals normal. No ST or T wave changes.", "conclusion": "Sinus tachycardia, otherwise normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-09-30T15:45"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2025-09-30T16:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2025-09-30T16:50",
+              "body": "S: Heart racing on and off for about a month, worse when teaching, sometimes lying in bed. Too warm in rooms where everyone else is fine, sweating more. Lost about 3 kg without trying. Hands a bit shaky writing on the board. No chest pain, no fainting, no shortness of breath at rest. Taking levothyroxine 112 mcg as always - no extra doses, no new supplements, no biotin. Hydrocortisone and fludrocortisone unchanged. Methotrexate weekly.\n\nO: HR 104 regular, BP as charted. Weight 62 kg (65 in August). Warm, slightly damp skin. Fine tremor of outstretched hands. Thyroid diffusely enlarged, nontender. Lungs clear. ECG sinus tach, no arrhythmia.\n\nA/P: Clinical thyrotoxicosis on a dose of levothyroxine she's been stable on for 2+ years. Overreplacement doesn't fit a steady dose. With an enlarged gland and her autoimmune background I'm worried she's turned hyperthyroid on her own (Graves can follow Hashimoto). TSH, free T4 today. Holding levothyroxine as of today. Propranolol 20 mg twice daily for the racing heart; check pulse before doses and skip if under 60 or lightheaded. Adrenal: no change. Urgent endocrinology - will call them tomorrow with the numbers. CBC/CMP with today's draw for MTX."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "portal_message",
+          "start": "2025-10-01T12:30",
+          "orders": [
+            {"id": "endo-referral-2025", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Thyrotoxicosis off levothyroxine question; TSH <0.01, free T4 2.6"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid results",
+              "author": "PCP",
+              "date": "2025-10-01T12:30",
+              "body": "Riley, your thyroid is now overactive: TSH under 0.01 and free T4 2.6. Stay off the levothyroxine. I spoke with your endocrinologist's office and they will see you October 21; they'll want to repeat the levels off the pill and check the antibody that tells us whether this is Graves. Keep taking the propranolol. If your heart races and won't settle, you get chest pain or feel faint, go to the ED. Blood counts and liver tests were normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid results",
+              "author": "patient",
+              "date": "2025-10-01T18:11",
+              "body": "Ok. The propranolol already helps, heart isn't pounding in class. See them the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T15:35",
+          "reason": "Flu and COVID vaccines",
+          "measure": ["hr", "bp"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-08T15:40"},
+            {"vaccine": "COVID-19, mRNA, Moderna, updated formula", "date": "2025-10-08T15:42"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-10-08T15:40"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-10-08T16:00",
+              "body": "Flu and 2025-26 COVID given. Pulse checked at pt's request since starting propranolol, recorded. No reaction at 15 min. Shingrix #2 due in November - booked 11/4."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "specialist_visit",
+          "start": "2025-10-21T14:00",
+          "service": "Endocrinology",
+          "reason": "Thyrotoxicosis",
+          "orders": [
+            {"id": "endo-referral-2025", "action": "done", "date": "2025-10-21T14:00"}
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "portal_message",
+          "start": "2025-10-23T19:40",
+          "conditions": [
+            {"label": "Graves disease", "action": "diagnosed", "onset": "2025-10-21"}
+          ],
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (20 mg) by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Graves disease"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo visit update",
+              "author": "patient",
+              "date": "2025-10-23T19:40",
+              "body": "Update from endo: they said it's Graves now on top of the Hashimoto, the antibody that stimulates the thyroid came back positive and my levels were still high after 3 weeks off levothyroxine. Started methimazole 20 mg a day (picked it up today) and stay on the propranolol. They want to take the whole thyroid out - surgery is set for late January when school has a break. They said they'd send you a note."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo visit update",
+              "author": "PCP",
+              "date": "2025-10-24T07:15",
+              "body": "Thanks for filling me in - that's a lot in one year. Methimazole and Graves are on your chart now. One important thing with methimazole: if you get a sore throat, mouth sores or a fever, stop it and get a blood count the same day - call us or go to urgent care. Also don't skip doses, the thyroid can bounce back hard. I'll watch for their letter."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "nurse_visit",
+          "start": "2025-11-04T15:30",
+          "reason": "Shingrix dose 2",
+          "immunizations": [
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2025-11-04T15:35"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2025-11-04T15:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2025-11-04T15:50",
+              "body": "Second Shingrix, R deltoid. Series complete. Pt says palpitations much better on methimazole and propranolol. Endo letter still not received - pt to ask them to fax it."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T07:20",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2025-11-18T07:20", "results": [{"test": "White Blood Cells"}, {"test": "Absolute Neutrophil Count"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-18T07:20", "results": [{"test": "Creatinine"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2025-11-18T07:20"}
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "author": "PCP",
+              "date": "2025-11-18T14:10",
+              "body": "Quarterly methotrexate labs, now also on methimazole: white count and neutrophils normal, liver enzymes normal. cc rheum."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "hospital_admission",
+          "start": "2025-12-24T04:10",
+          "end": "2025-12-29T13:30",
+          "service": "Internal Medicine",
+          "reason": "Thyroid storm",
+          "vitals": [
+            {"time": "2025-12-24T04:15", "temp_c": 39.8, "hr": 132, "bp": [155, 95], "rr": 28},
+            {"time": "2025-12-25T08:00", "temp_c": 37.9, "hr": 96, "bp": [128, 78], "rr": 18},
+            {"time": "2025-12-29T09:00", "temp_c": 36.8, "hr": 78, "bp": [116, 72], "rr": 16}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2025-12-24T04:30", "results": [
+              {"test": "Total T3", "loinc": "3053-6", "unit": "ng/dL", "value": 260, "range": {"low": 80, "high": 180}},
+              {"test": "Total T4", "loinc": "3026-2", "unit": "ug/dL", "value": 18, "range": {"low": 5, "high": 12}},
+              {"test": "Thyroid Stimulating Hormone", "text": "<0.01"}
+            ]},
+            {"panel": "CBC with Differential", "collected": "2025-12-24T04:30", "results": [{"test": "White Blood Cells", "value": 16.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-12-24T04:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Creatinine"}]},
+            {"panel": "Urinalysis", "collected": "2025-12-24T05:10", "results": [{"test": "Urine Leukocyte Esterase"}, {"test": "Urine Nitrite"}]},
+            {"panel": null, "collected": "2025-12-24T04:35", "resulted": "2025-12-29T07:00", "results": [{"test": "Blood Culture", "text": "No growth at 5 days"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2025-12-24T04:20", "text": "Atrial fibrillation with rapid ventricular response, ventricular rate about 140. Normal axis. No acute ST elevation.", "conclusion": "Atrial fibrillation with rapid ventricular response."},
+            {"study": "Chest X-ray, 1 view", "performed": "2025-12-24T05:00", "text": "Portable AP view. Lungs clear. No effusion or pneumothorax. Heart size normal. Mediastinum not widened.", "conclusion": "No acute cardiopulmonary process."},
+            {"study": "12-lead ECG", "performed": "2025-12-26T07:30", "text": "Sinus rhythm, rate 88. Normal intervals. No ST changes.", "conclusion": "Sinus rhythm."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2025-12-24T04:10"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2025-12-24T08:00"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2025-12-29T12:00"}
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -46,8 +46,7 @@
           "measure": ["bp", "hr", "rr", "temp_c", "weight_kg"],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-05-02T11:20"}],
           "orders": [
-            {"id": "cxr-2025", "action": "placed", "order": "Chest X-ray, 2 views, in 4-5 weeks", "category": "imaging", "reason": "follow-up right pleural effusion"},
-            {"id": "ed-records-2025", "action": "placed", "order": "Records request, emergency department 4/25/2025", "category": "procedure", "reason": "post-ED follow-up"}
+            {"id": "cxr-2025", "action": "placed", "order": "Chest X-ray, 2 views", "category": "imaging", "reason": "follow-up right pleural effusion"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Post-ED Visit", "author": "PCP", "date": "2025-05-02T11:55",
@@ -58,7 +57,7 @@
           "id": "2025-05-20a",
           "kind": "outside_records",
           "start": "2025-05-20T14:40",
-          "orders": [{"id": "ed-records-2025", "action": "done", "date": "2025-05-20T14:40"}],
+          "orders": [],
           "vitals": [
             {"time": "2025-04-25T19:42", "bp": [145, 90], "hr": 88, "rr": 20, "spo2": 94}
           ],
@@ -194,9 +193,9 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2025-11-03T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-11-03T10:00", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
             {"panel": null, "collected": "2025-11-03T11:30", "results": [
-              {"test": "Leukocytes in Cerebral spinal fluid", "loinc": "26465-5", "unit": "/uL", "value": 3},
-              {"test": "Protein in Cerebral spinal fluid", "loinc": "2880-3", "unit": "mg/dL", "value": 45},
-              {"test": "Glucose in Cerebral spinal fluid", "loinc": "2342-4", "unit": "mg/dL", "value": 60}
+              {"test": "Leukocytes in Cerebral spinal fluid", "loinc": "26465-5", "unit": "/uL", "value": 3, "range": {"low": 0, "high": 5}},
+              {"test": "Protein in Cerebral spinal fluid", "loinc": "2880-3", "unit": "mg/dL", "value": 45, "range": {"low": 15, "high": 45}},
+              {"test": "Glucose in Cerebral spinal fluid", "loinc": "2342-4", "unit": "mg/dL", "value": 60, "range": {"low": 50, "high": 75}}
             ]}
           ],
           "documents": [

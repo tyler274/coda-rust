@@ -73,15 +73,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "records-hosp-2024-09b",
-              "action": "placed",
-              "order": "Records request, hospital admission 9/27-10/1/2024 (second request)",
-              "category": "referral",
-              "to": "Outside hospital health information management",
-              "reason": "catheterization report and discharge summary never received"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -174,7 +166,11 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
-                  "value": 900
+                  "value": 900,
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  }
                 }
               ]
             },
@@ -358,15 +354,7 @@
             }
           ],
           "orders": [
-            {
-              "id": "records-hosp-2025-04",
-              "action": "placed",
-              "order": "Records request, hospital admission 4/25-4/29/2025",
-              "category": "referral",
-              "to": "Outside hospital health information management",
-              "reason": "acute pancreatitis admission"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -390,12 +378,7 @@
           "start": "2025-05-27T10:50",
           "reason": "hospital discharge summary received",
           "orders": [
-            {
-              "id": "records-hosp-2025-04",
-              "action": "done",
-              "date": "2025-05-27T10:50"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -683,19 +666,31 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
-                  "value": 7.32
+                  "value": 7.32,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
                 },
                 {
                   "test": "Carbon dioxide partial pressure in arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
-                  "value": 32
+                  "value": 32,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
                 },
                 {
                   "test": "Bicarbonate in arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
-                  "value": 18
+                  "value": 18,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
                 }
               ]
             },
@@ -926,9 +921,8 @@
             {
               "id": "bmp-2025-12",
               "action": "placed",
-              "order": "Basic metabolic panel in 5 weeks",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
-              "to": "Laboratory",
               "reason": "acute kidney injury"
             }
           ],

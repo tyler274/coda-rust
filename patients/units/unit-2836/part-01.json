@@ -1,0 +1,314 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002836",
+      "given": "Svetlana",
+      "family": "Foley",
+      "birth_date": "1953-07-31",
+      "address_line": "18 Silverwood Terrace",
+      "phone": "+1-802-555-0168",
+      "email": "svetlana.foley@example.test",
+      "marital_status": "single",
+      "summary": "Retired school librarian who joined in 2016 with hypertension, lipids and a treated 2014 left breast cancer on letrozole. Primary hyperparathyroidism and pseudogout in 2019, bone metastases in 2020, thiazide gout, giant cell arteritis, two hypercalcemia crises in 2024, then chemotherapy, palliative care and a passive wish to die followed by the practice into 2026.",
+      "events": [
+        {
+          "id": "2016-03-21a",
+          "kind": "telephone",
+          "start": "2016-03-21T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient intake call", "author": "front desk", "date": "2016-03-21T10:40", "body": "Caller would like to transfer her primary care here. Says her previous internist cut back to part-time and she wants a doctor she can reach. 62, has Medicare-age questions but is not there yet. Explained the membership model and the annual fee; she had read the brochure. New patient slot booked for April 12 at 9:00. Asked her to sign a records release for her old office and to bring all pill bottles. Release form emailed."}
+          ]
+        },
+        {
+          "id": "2016-04-12a",
+          "kind": "establish_care",
+          "start": "2016-04-12T09:00",
+          "end": "2016-04-12T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Essential hypertension", "action": "history", "onset": "2007-06-01"},
+            {"label": "Hyperlipidemia", "action": "history", "onset": "2009-03-01"},
+            {"label": "History of breast cancer", "action": "history", "onset": "2014-02-01", "note": "left breast, mastectomy and sentinel node biopsy 2014, adjuvant chemotherapy, then letrozole"},
+            {"label": "Bilateral primary osteoarthritis of knee", "action": "history", "onset": "2012-01-01"},
+            {"label": "Osteoporosis", "action": "history", "onset": "2013-01-01", "note": "per prior DXA; no medication"},
+            {"label": "Personal history of urinary calculi", "icd10": "Z87.442", "action": "history", "onset": "2010-01-01", "note": "calcium oxalate stone, passed"}
+          ],
+          "medications": [
+            {"drug": "lisinopril 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "hydrochlorothiazide 25 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning", "dose": {"value": 25, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hypertension"},
+            {"drug": "atorvastatin 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth at bedtime", "dose": {"value": 20, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperlipidemia"},
+            {"drug_text": "letrozole 2.5 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 2.5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "breast cancer, adjuvant; prescribed by oncology"},
+            {"drug_text": "acetaminophen 325 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (650 mg) by mouth every 6 hours as needed for joint pain", "dose": {"value": 650, "unit": "mg"}, "frequency": "Q6H PRN", "route": "Oral", "course": "chronic", "reason": "osteoarthritis"}
+          ],
+          "allergies": [
+            {"substance": "Penicillin", "reaction": "Anaphylaxis", "severity": "severe", "criticality": "high", "type": "allergy"},
+            {"substance": "Iodinated contrast media", "reaction": "Hives", "severity": "moderate", "criticality": "low", "type": "allergy"}
+          ],
+          "state": {"weight_kg": 56.0, "height_cm": 163.0, "labs": {"Calcium": 10.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "1-2 glasses of wine per week"},
+            {"item": "Occupation", "value": "Retired high school librarian"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2016-04-12T09:00"},
+            {"procedure": "Modified radical mastectomy of left breast", "snomed": "726437009", "performed": "2014-03-10T08:00"},
+            {"procedure": "Total abdominal hysterectomy with bilateral salpingo-oophorectomy", "snomed": "116144002", "performed": "2003-09-16T08:00"},
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "1998-05-19T08:00"},
+            {"procedure": "Venipuncture", "performed": "2016-04-12T10:00"},
+            {"procedure": "Immunization administration", "performed": "2016-04-12T10:00"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2016-04-12T10:00"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2016-04-12T10:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2016-04-12T10:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2016-04-12T10:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2016-04-12T10:00", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2016", "action": "placed", "order": "Diagnostic mammogram", "category": "imaging", "reason": "right breast surveillance after left mastectomy"}
+          ],
+          "documents": [
+            {"type": "History and Physical", "title": "New Patient Visit", "author": "PCP", "date": "2016-04-12T09:00", "body": "62-year-old retired high school librarian transferring care. Organized historian; brought a typed list and her bottles.\n\nPROBLEMS SHE BRINGS\n- Hypertension for close to ten years, on lisinopril 20 and HCTZ 25. Home readings in the 120s-130s.\n- High cholesterol, atorvastatin 20 since about 2009, no muscle complaints.\n- Left breast cancer found in early 2014: left modified radical mastectomy with sentinel node biopsy, then adjuvant chemo (she does not recall the drug names), then letrozole 2.5 daily, which she still takes. Followed by an outside oncology group once a year. No new lumps, no bone pain.\n- Knee arthritis, both sides, aching on stairs; acetaminophen 650 as needed works well enough. Hands stiff in the mornings in winter.\n- Osteoporosis on a DXA at her old office a few years back. Never took a medication for it; she is fuzzy on why.\n- One calcium oxalate kidney stone around 2010, passed on its own, none since.\n\nSURGERIES: hysterectomy with both ovaries out at 50 (2003); laparoscopic gallbladder removal at 45 (1998); the mastectomy above.\n\nALLERGIES: penicillin - throat closed as a young woman, treated in an ER. IV contrast - hives after a CT years ago.\n\nFAMILY: mother had invasive breast cancer at 62 and has died. Father had high blood pressure, longstanding gout and kept forming kidney stones. Sister has severe osteoporosis with compression fractures of the spine.\n\nSOCIAL: lives alone, never married. Quit cigarettes around 1996 after roughly 10 pack-years. A glass or two of wine a week. Volunteers at the town library book sale.\n\nROS otherwise negative.\n\nEXAM: well, slender. Vitals as charted. Mastectomy scar healed, chest wall smooth. Right breast without mass, right axilla clear. Heart regular, no murmur. Lungs clear. Abdomen soft, healed port sites. Knees with mild crepitus, no effusion. No edema. Neuro grossly normal.\n\nASSESSMENT / PLAN\n1. Hypertension - at goal on current pair. Continue. CMP today.\n2. Hyperlipidemia - continue atorvastatin 20, lipid panel.\n3. Breast cancer history - on letrozole through her oncologist. Right diagnostic mammogram this summer; will get her oncology letters.\n4. OA knees - acetaminophen, stay active.\n5. Osteoporosis - will review the old DXA when records come; revisit treatment then.\n6. Remote stone - fluids.\n7. Health maintenance: Tdap today. One-time hepatitis C and HIV screening with her blood work. Colonoscopy reportedly 2015, awaiting records.\nRelease for prior records signed. Return in about 6 months."}
+          ]
+        },
+        {
+          "id": "2016-04-14a",
+          "kind": "portal_message",
+          "start": "2016-04-14T16:20",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2016-04-14T16:20", "body": "Svetlana, your blood work from Tuesday looks fine. Kidney function, potassium and sugar are normal; cholesterol is where it should be on the atorvastatin. Calcium is at the top of normal, nothing to act on. Hepatitis C and HIV screens were negative. No changes."}
+          ]
+        },
+        {
+          "id": "2016-04-26a",
+          "kind": "outside_records",
+          "start": "2016-04-26T11:00",
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2015-06-23T08:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2016-04-26T11:00", "body": "41 pages received by fax from the patient's former internal medicine office. Summary prepared for the PCP:\n- Colonoscopy June 2015, normal, no polyps; next due in 10 years.\n- Right breast mammogram 2015: benign.\n- DXA report (date partly cut off on fax, appears 2013): osteoporosis range at the spine. No treatment note attached.\n- Problem list: hypertension, hyperlipidemia, breast cancer s/p left mastectomy, osteoarthritis, nephrolithiasis history.\n- Medication list matches what she brought.\nFiled under Outside Records. Flagged for PCP review."},
+            {"type": "Progress Notes", "title": "Outside records reviewed", "author": "PCP", "date": "2016-04-28T08:10", "body": "Old chart reviewed. Colonoscopy 2015 normal, repeat 2025. Mammogram normal. DXA confirms osteoporosis; nothing documented about why no treatment was started. Will raise at a future visit."}
+          ]
+        },
+        {
+          "id": "2016-06-07a",
+          "kind": "outside_records",
+          "start": "2016-06-07T14:30",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology survivorship visit", "author": "oncology", "date": "2016-06-07T14:30", "body": "OUTSIDE ONCOLOGY GROUP - SURVIVORSHIP CLINIC\nVisit of 05/31/2016. Copy to new primary care physician.\n\nMs. Foley is now two years out from left modified radical mastectomy with sentinel node biopsy for hormone receptor-positive invasive ductal carcinoma, followed by adjuvant chemotherapy and letrozole. She is tolerating letrozole with mild joint aching. No new breast, chest wall or bone symptoms.\n\nExam: left chest wall flat, well healed, no nodularity. Right breast and both axillae negative. No supraclavicular nodes.\n\nPlan: continue letrozole 2.5 mg daily. Annual right breast imaging through primary care is fine with us. Return in one year.\n\nAllergies on file: penicillin (anaphylaxis), iodinated contrast (urticaria)."}
+          ]
+        },
+        {
+          "id": "2016-07-12a",
+          "kind": "imaging",
+          "start": "2016-07-12T13:15",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2016-07-12T13:15", "text": "RIGHT DIAGNOSTIC MAMMOGRAM. History: left mastectomy 2014 for breast cancer. Comparison: 2015 outside study. Breast composition: scattered areas of fibroglandular density. No mass, suspicious calcification or architectural distortion in the right breast. Right axilla unremarkable.", "conclusion": "Negative right mammogram. BI-RADS 1. Annual follow-up."}
+          ],
+          "orders": [{"id": "mammo-2016", "action": "done", "date": "2016-07-12T13:15"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Result note", "author": "PCP", "date": "2016-07-13T07:50", "body": "Right mammogram negative. Letter sent."}
+          ]
+        },
+        {
+          "id": "2016-10-11a",
+          "kind": "nurse_visit",
+          "start": "2016-10-11T10:20",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2016-10-11T10:25"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2016-10-11T10:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2016-10-11T10:20", "body": "Here for seasonal flu vaccine. No fever today, no prior reactions to flu shots. Penicillin and contrast allergies noted, not relevant. Given IM left deltoid, lot and VIS documented. Waited 15 minutes, fine."}
+          ]
+        },
+        {
+          "id": "2016-11-08a",
+          "kind": "office_visit",
+          "start": "2016-11-08T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "blood pressure and cholesterol follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2016-11-08T14:00"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2016-11-08T14:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up", "author": "PCP", "date": "2016-11-08T14:00", "body": "S: Six-month check. Feels well. Home BP log averages 126/78. Taking all meds; knees grumble with the cold weather, acetaminophen a couple of times a week. Saw her oncologist in May, letrozole continues.\nO: Vitals as charted. Heart and lungs normal. No edema.\nA/P: HTN controlled on lisinopril/HCTZ - BMP for potassium and kidney function on the diuretic. Lipids done in April, fine. We talked about osteoporosis treatment; she wants to read about it before deciding and will bring it up at her physical. RTC spring."}
+          ]
+        },
+        {
+          "id": "2017-02-21a",
+          "kind": "pharmacy",
+          "start": "2017-02-21T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request", "author": "MA", "date": "2017-02-21T09:05", "body": "Fax from her pharmacy requesting 90-day supplies of lisinopril 20, hydrochlorothiazide 25 and atorvastatin 20 for her new Part D plan. Last visit November, BMP normal. Sent per protocol with 3 refills each."}
+          ]
+        },
+        {
+          "id": "2017-05-09a",
+          "kind": "annual_physical",
+          "start": "2017-05-09T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2017-05-09T08:30"},
+            {"procedure": "Venipuncture", "performed": "2017-05-09T09:15"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2017-05-09T09:15", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Albumin"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2017-05-09T09:15", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2017-05-09T09:15", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}, {"test": "Platelets"}]}
+          ],
+          "orders": [
+            {"id": "mammo-2017", "action": "placed", "order": "Diagnostic mammogram", "category": "imaging", "reason": "right breast surveillance"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2017-05-09T08:30", "body": "Yearly exam, 63. No new complaints. Walking 30 minutes most days, joined a chair yoga class.\nPHQ-2 negative. Falls: none. Sleeps well.\nMeds unchanged, adherent. Allergies: PCN (anaphylaxis), IV contrast (hives).\nExam: vitals as charted. HEENT normal. Neck without thyroid enlargement. Heart RRR. Lungs clear. Right breast and axilla without mass; left chest wall healed. Abdomen soft. Knees with crepitus, full motion. Skin unremarkable.\nPlan: fasting labs today. Mammogram July. Colonoscopy not due until 2025. Bone health: she has decided against a pill for now and prefers weight-bearing exercise and diet; documented that she understands the fracture risk, especially with her sister's history. Revisit yearly. Flu shot in October."}
+          ]
+        },
+        {
+          "id": "2017-06-13a",
+          "kind": "outside_records",
+          "start": "2017-06-13T10:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology follow-up letter", "author": "oncology", "date": "2017-06-13T10:00", "body": "Dear colleague,\nI saw Ms. Foley for her annual survivorship visit on June 6. She remains without evidence of recurrence by history and examination. Arthralgias on letrozole are mild and she wishes to continue. Given her risk profile we have discussed staying on the aromatase inhibitor beyond five years and she is agreeable. Continue letrozole 2.5 mg daily; we will see her next year.\nMedications per our list: letrozole, lisinopril, hydrochlorothiazide, atorvastatin, acetaminophen as needed.\nWith thanks,\nOutside oncology group"}
+          ]
+        },
+        {
+          "id": "2017-07-18a",
+          "kind": "imaging",
+          "start": "2017-07-18T10:40",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2017-07-18T10:40", "text": "RIGHT MAMMOGRAM. Status post left mastectomy. Compared with 2016. Scattered fibroglandular density. No suspicious mass, calcifications or distortion. Skin and nipple normal.", "conclusion": "BI-RADS 1, negative. Routine annual imaging."}
+          ],
+          "orders": [{"id": "mammo-2017", "action": "done", "date": "2017-07-18T10:40"}]
+        },
+        {
+          "id": "2017-10-10a",
+          "kind": "nurse_visit",
+          "start": "2017-10-10T15:10",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2017-10-10T15:15"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2017-10-10T15:15"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Flu shot", "author": "MA", "date": "2017-10-10T15:10", "body": "Flu vaccine given right deltoid. Screening questions negative. Tolerated without issue. Reminded her about her November follow-up."}
+          ]
+        },
+        {
+          "id": "2017-11-14a",
+          "kind": "office_visit",
+          "start": "2017-11-14T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "knee pain, routine follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2017-11-14T11:20"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office visit", "author": "PCP", "date": "2017-11-14T11:20", "body": "Knees have been achier since she started helping box books for the library sale; stiffness after sitting, better once moving, no swelling or locking. Using acetaminophen 650 most days, no more than three doses.\nBP fine at home and today.\nExam: knees cool, bony crepitus both sides, no effusion, ligaments stable. Gait normal.\nImpression: OA flare from extra lifting. Avoid NSAIDs long term with the ACE inhibitor and diuretic. Continue acetaminophen within the daily limit, quad strengthening handout, ice after activity. Will consider PT if not better by spring. Follow up in four months."}
+          ]
+        },
+        {
+          "id": "2018-03-06a",
+          "kind": "office_visit",
+          "start": "2018-03-06T09:40",
+          "appointment": "no-show",
+          "reason": "routine follow-up"
+        },
+        {
+          "id": "2018-03-06b",
+          "kind": "telephone",
+          "start": "2018-03-06T12:15",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2018-03-06T12:15", "body": "Called about this morning's missed visit. Pt apologized, the snowstorm cleanup had her driveway blocked and she forgot to call. Rebooked for March 20."}
+          ]
+        },
+        {
+          "id": "2018-03-20a",
+          "kind": "office_visit",
+          "start": "2018-03-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hypertension follow-up",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2018-03-20T09:40"}],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2018-03-20T10:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "HTN follow-up", "author": "PCP", "date": "2018-03-20T09:40", "body": "Rescheduled visit. Knees improved since the book sale ended; doing the exercises a few times a week. BP well controlled. No dizziness on standing.\nExam: vitals as charted; heart regular, lungs clear, no edema.\nPlan: continue current regimen, BMP today. Turning 65 in July - schedule the Welcome to Medicare visit in August, pneumococcal vaccine then."}
+          ]
+        },
+        {
+          "id": "2018-06-19a",
+          "kind": "outside_records",
+          "start": "2018-06-19T13:00",
+          "documents": [
+            {"type": "Consult Note", "title": "Oncology annual letter", "author": "oncology", "date": "2018-06-19T13:00", "body": "OUTSIDE ONCOLOGY GROUP. Visit 06/12/2018.\nFour years from diagnosis of left breast IDC, ER-positive, on extended letrozole. Feels well. No bone pain, cough or headaches. Exam without chest wall or nodal findings. Plan: letrozole continues; yearly visits. Please keep the right breast mammogram going."}
+          ]
+        },
+        {
+          "id": "2018-07-17a",
+          "kind": "imaging",
+          "start": "2018-07-17T14:20",
+          "reports": [
+            {"study": "Diagnostic mammogram", "performed": "2018-07-17T14:20", "text": "Right breast, CC and MLO with spot views as needed. Prior left mastectomy. Compared with 2016 and 2017. Breast tissue scattered fibroglandular. No new density, mass or suspicious microcalcification.", "conclusion": "Benign-appearing, BI-RADS 1. Return in 12 months."}
+          ]
+        },
+        {
+          "id": "2018-08-07a",
+          "kind": "annual_physical",
+          "start": "2018-08-07T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Welcome to Medicare visit",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Initial preventive physical examination (Welcome to Medicare)", "performed": "2018-08-07T08:00"},
+            {"procedure": "Venipuncture", "performed": "2018-08-07T08:50"},
+            {"procedure": "Immunization administration", "performed": "2018-08-07T08:55"}
+          ],
+          "immunizations": [{"vaccine": "Pneumococcal conjugate PCV13", "date": "2018-08-07T08:55"}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-08-07T08:50", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Calcium"}, {"test": "Glucose"}, {"test": "Alkaline Phosphatase"}]},
+            {"panel": "Lipid Panel", "collected": "2018-08-07T08:50", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Initial Preventive Physical Examination", "author": "PCP", "date": "2018-08-07T08:00", "body": "Welcome to Medicare visit, just turned 65.\nFunctional: independent in all activities, drives, manages her own finances and pills. No falls. Hearing and vision adequate (glasses for reading). Home safety reviewed, grab bars already in the tub.\nMood: PHQ-2 0. Cognition: conversant, sharp, no concerns raised.\nAdvance directive: has a health care proxy form at home, not yet signed; encouraged her to complete and bring a copy.\nMeds and allergies reconciled, unchanged.\nExam: vitals as charted, BMI normal. Heart, lungs, abdomen normal. Right breast without mass.\nScreening plan written out for her: mammogram yearly (done July, negative), colonoscopy 2025, PCV13 today and PPSV23 next year, Shingrix at the pharmacy (two doses), flu in October. Bone density - again offered treatment for osteoporosis; still declines medication. CMP and lipids today."}
+          ]
+        },
+        {
+          "id": "2018-08-09a",
+          "kind": "portal_message",
+          "start": "2018-08-09T11:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2018-08-09T11:30", "body": "Labs from your Medicare visit are all in range - kidneys, liver, sugar and cholesterol. Calcium again at the high edge of normal; we'll keep an eye on it each year."},
+            {"type": "Patient Message", "title": "RE: Results", "author": "patient", "date": "2018-08-09T19:02", "body": "Thank you. I'll get the shingles shot at the drugstore next month."}
+          ]
+        },
+        {
+          "id": "2018-09-18a",
+          "kind": "pharmacy",
+          "start": "2018-09-18T16:00",
+          "immunizations": [{"vaccine": "Zoster recombinant (Shingrix)", "date": "2018-09-18T16:00"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "front desk", "date": "2018-09-20T09:00", "body": "Community pharmacy reports Shingrix dose 1 given 9/18/2018, left deltoid. Second dose due in 2-6 months. Entered into immunization history."}
+          ]
+        },
+        {
+          "id": "2018-10-09a",
+          "kind": "nurse_visit",
+          "start": "2018-10-09T10:00",
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-09T10:05"}],
+          "immunizations": [{"vaccine": "Influenza, high-dose, quadrivalent", "date": "2018-10-09T10:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Influenza vaccine", "author": "RN", "date": "2018-10-09T10:00", "body": "High-dose flu vaccine for age 65+. Arm still a little sore from Shingrix last month, otherwise fine. Given right deltoid. No reaction during observation."}
+          ]
+        }
+      ]
+    }
+  ]
+}

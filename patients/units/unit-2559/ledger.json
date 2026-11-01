@@ -474,12 +474,14 @@
                   "test": "Leukocytes in synovial fluid",
                   "loinc": "26466-3",
                   "unit": "/uL",
+                  "range": {},
                   "value": 60000
                 },
                 {
                   "test": "Neutrophils/100 leukocytes in synovial fluid",
                   "loinc": "26518-1",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
@@ -2082,24 +2084,37 @@
                   "test": "Leukocytes in cerebrospinal fluid",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 150
                 },
                 {
                   "test": "Lymphocytes/100 leukocytes in cerebrospinal fluid",
                   "loinc": "26479-6",
                   "unit": "%",
+                  "range": {},
                   "value": 80
                 },
                 {
                   "test": "Protein in cerebrospinal fluid",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 100
                 },
                 {
                   "test": "Glucose in cerebrospinal fluid",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 20
                 },
                 {
@@ -2366,7 +2381,7 @@
         "code": "311347",
         "display": "linezolid 600 MG Oral Tablet",
         "ingredient": "linezolid",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2379,6 +2394,10 @@
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Gram stain, cerebrospinal fluid": {
@@ -2395,18 +2414,24 @@
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Leukocytes in synovial fluid": {
         "code": "26466-3",
         "display": "Leukocytes [#/volume] in Body fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lymphocytes/100 leukocytes in cerebrospinal fluid": {
         "code": "26479-6",
         "display": "Lymphocytes/Leukocytes in Cerebrospinal Fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Mycobacterial culture, cerebrospinal fluid": {
@@ -2423,12 +2448,17 @@
         "code": "26518-1",
         "display": "Deprecated Polymorphonuclear cells/100 leukocytes in Body fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein in cerebrospinal fluid": {
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Synovial fluid culture": {

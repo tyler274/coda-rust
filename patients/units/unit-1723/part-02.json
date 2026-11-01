@@ -93,9 +93,9 @@
          "text": "1:64"
         },
         {
-         "test": "Treponema pallidum antibody, EIA",
-         "loinc": "63464-3",
-         "text": "Reactive"
+          "test": "Treponema pallidum antibody, EIA",
+          "loinc": "47236-5",
+          "text": "Reactive"
         },
         {
          "test": "HIV-1/2 Antigen and Antibody",
@@ -136,11 +136,11 @@
      "reason": "Syphilis follow-up plan",
      "orders": [
       {
-       "id": "rpr-6mo",
-       "action": "placed",
-       "order": "RPR with titer at 6 months",
-       "category": "lab",
-       "reason": "secondary syphilis treated 3/24/2025"
+        "id": "rpr-6mo",
+        "action": "placed",
+        "order": "Rapid Plasma Reagin",
+        "category": "lab",
+        "reason": "secondary syphilis treated 3/24/2025"
       }
      ],
      "documents": [
@@ -215,9 +215,9 @@
      ],
      "orders": [
       {
-       "id": "rpr-6mo",
-       "action": "done",
-       "date": "2025-09-29T09:55"
+        "id": "rpr-6mo",
+        "action": "done",
+        "date": "2025-09-29T09:55"
       }
      ],
      "reports": [
@@ -420,28 +420,44 @@
        "collected": "2025-12-21T07:05",
        "results": [
         {
-         "test": "pH of arterial blood",
-         "loinc": "2744-1",
-         "unit": "[pH]",
-         "value": 7.32
+          "test": "pH of arterial blood",
+          "loinc": "2744-1",
+          "unit": "[pH]",
+          "value": 7.32,
+          "range": {
+            "low": 7.38,
+            "high": 7.44
+          }
         },
         {
-         "test": "PaCO2",
-         "loinc": "2019-8",
-         "unit": "mm[Hg]",
-         "value": 50
+          "test": "PaCO2",
+          "loinc": "2019-8",
+          "unit": "mm[Hg]",
+          "value": 50,
+          "range": {
+            "low": 38,
+            "high": 42
+          }
         },
         {
-         "test": "PaO2",
-         "loinc": "2703-7",
-         "unit": "mm[Hg]",
-         "value": 60
+          "test": "PaO2",
+          "loinc": "2703-7",
+          "unit": "mm[Hg]",
+          "value": 60,
+          "range": {
+            "low": 75,
+            "high": 100
+          }
         },
         {
-         "test": "Bicarbonate, arterial",
-         "loinc": "1960-4",
-         "unit": "mmol/L",
-         "value": 26
+          "test": "Bicarbonate, arterial",
+          "loinc": "1960-4",
+          "unit": "mmol/L",
+          "value": 26,
+          "range": {
+            "low": 23,
+            "high": 26
+          }
         }
        ]
       }

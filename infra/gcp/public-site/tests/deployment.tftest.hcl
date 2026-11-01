@@ -1,18 +1,15 @@
 mock_provider "google" {}
 
 variables {
-  project_id                   = "coda-health-staging"
-  project_number               = "134570912572"
-  image                        = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  release_sha                  = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-  physician_app_url            = "https://physician.example.test"
-  doppler_token_secret_id      = "public-site-stg-doppler-token"
-  doppler_token_secret_version = "1"
+  project_id        = "coda-health-staging"
+  project_number    = "134570912572"
+  image             = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  release_sha       = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  physician_app_url = "https://physician.example.test"
 }
 
 run "staging_proxy_uses_own_identity" {
   command = plan
-  variables { physician_proxy_enabled = true }
   override_resource {
     target = google_service_account.site
     values = { email = "public-site-staging@coda-health-staging.iam.gserviceaccount.com" }
@@ -22,12 +19,21 @@ run "staging_proxy_uses_own_identity" {
     error_message = "The proxy must use its own runtime identity and fixed physician upstream."
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.template[0].timeout == "300s" && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE,PHYSICIAN_PROXY_SERVICE_ACCOUNT")
-    error_message = "SSE needs a bounded 300s service timeout and Doppler must preserve the proxy identity."
+    condition     = google_cloud_run_v2_service.site.template[0].timeout == "300s"
+    error_message = "SSE needs a bounded 300s service timeout."
   }
   assert {
     condition     = google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled && google_iap_web_cloud_run_service_iam_binding.team[0].members == toset(["group:gcp-engineering@codahealth.ai"])
     error_message = "Proxying must not weaken the public staging IAP gate."
+  }
+}
+
+run "no_upstream_means_no_physician_entry" {
+  command = plan
+  variables { physician_app_url = null }
+  assert {
+    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT") && !contains([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : e.name], "PHYSICIAN_APP_URL")
+    error_message = "Without a physician upstream the site gets neither the upstream nor a signing identity, so it offers no sign-in."
   }
 }
 
@@ -57,7 +63,7 @@ run "staging_origin_is_protected" {
     error_message = "Staging must expose run.app only behind native IAP with invoker IAM checks enabled."
   }
   assert {
-    condition     = length(google_cloud_run_v2_service_iam_member.load_balancer) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
+    condition     = length(google_compute_global_forwarding_rule.http) == 0 && length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 1 && google_cloud_run_v2_service_iam_binding.iap_invoker[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.iap_invoker[0].members == toset(["serviceAccount:service-134570912572@gcp-sa-iap.iam.gserviceaccount.com"])
     error_message = "Only the existing project's IAP service agent may invoke staging; never allUsers or CI."
   }
   assert {
@@ -77,8 +83,8 @@ run "staging_origin_is_protected" {
     error_message = "Staging must not provision any ALB, NEG, CDN, IP or TLS frontend."
   }
   assert {
-    condition     = output.load_balancer_ip == null && !output.cdn_enabled && length(var.certificate_ids) == 0
-    error_message = "Staging must need no external certificate, reserved address or CDN."
+    condition     = output.load_balancer_ip == null && !output.cdn_enabled && length(var.domains) == 0 && length(google_certificate_manager_certificate.site) == 0 && length(google_certificate_manager_certificate_map_entry.site) == 0
+    error_message = "Staging must need no load-balancer certificate, reserved address or CDN."
   }
   assert {
     condition     = local.runtime_env.APP_ENV == "staging" && local.runtime_env.PUBLIC_SITE_LISTEN_ADDR == "0.0.0.0:8080" && local.runtime_env.PUBLIC_SITE_IAP_AUDIENCE == "/projects/134570912572/locations/us-east1/services/public-site-staging" && output.iap_audience == local.runtime_env.PUBLIC_SITE_IAP_AUDIENCE
@@ -89,8 +95,8 @@ run "staging_origin_is_protected" {
     error_message = "The expected IAP assertion audience must reach the deployed container."
   }
   assert {
-    condition     = contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "stg") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA,PUBLIC_SITE_IAP_AUDIENCE")
-    error_message = "Doppler must preserve the deployment-controlled IAP audience and environment."
+    condition     = google_cloud_run_v2_service.site.template[0].containers[0].command == null && google_cloud_run_v2_service.site.template[0].containers[0].args == null && alltrue([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : length(e.value_source) == 0])
+    error_message = "The site reads no secrets: Cloud Run runs the image entrypoint with plain settings only."
   }
   assert {
     condition     = google_cloud_run_v2_service.site.template[0].scaling[0].min_instance_count == 0 && google_cloud_run_v2_service.site.template[0].scaling[0].max_instance_count == 10 && google_cloud_run_v2_service.site.template[0].max_instance_request_concurrency == 1000
@@ -99,10 +105,6 @@ run "staging_origin_is_protected" {
   assert {
     condition     = google_cloud_run_v2_service.site.template[0].containers[0].startup_probe[0].tcp_socket[0].port == 8080 && length(google_cloud_run_v2_service.site.template[0].containers[0].startup_probe[0].http_get) == 0
     error_message = "Startup must retain the TCP 8080 probe, not an unauthenticated HTTP bypass."
-  }
-  assert {
-    condition     = one([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : e.value_source[0].secret_key_ref[0].version if e.name == "DOPPLER_TOKEN"]) == "1"
-    error_message = "Only the pinned Doppler service token is injected from Secret Manager."
   }
 }
 
@@ -122,20 +124,21 @@ run "staging_url_is_protected_service_uri" {
 run "production_respects_origin_cache_headers" {
   command = plan
   assert {
-    condition     = !var.physician_proxy_enabled && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT")
-    error_message = "Production proxy signing requires separate explicit operator activation."
+    condition     = !contains(keys(local.runtime_env), "PHYSICIAN_APP_URL") && !contains(keys(local.runtime_env), "PHYSICIAN_PROXY_SERVICE_ACCOUNT")
+    error_message = "Production offers no physician sign-in until a physician upstream is deliberately configured."
   }
   variables {
-    environment     = "production"
-    certificate_ids = ["projects/public-site-test/global/sslCertificates/test"]
+    environment       = "production"
+    domains           = ["codahealth.ai", "www.codahealth.ai"]
+    physician_app_url = null
   }
   assert {
-    condition     = google_cloud_run_v2_service.site.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" && google_cloud_run_v2_service.site.default_uri_disabled && !google_cloud_run_v2_service.site.iap_enabled && !google_cloud_run_v2_service.site.invoker_iam_disabled
-    error_message = "Production must retain ALB-only ingress and its disabled run.app endpoint without IAP."
+    condition     = google_cloud_run_v2_service.site.ingress == "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER" && google_cloud_run_v2_service.site.default_uri_disabled && !google_cloud_run_v2_service.site.iap_enabled && google_cloud_run_v2_service.site.invoker_iam_disabled
+    error_message = "Production must retain ALB-only ingress and its disabled run.app endpoint without IAP; the ALB reaches it with the invoker check off."
   }
   assert {
-    condition     = length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 0 && length(google_iap_web_cloud_run_service_iam_binding.team) == 0 && google_cloud_run_v2_service_iam_member.load_balancer[0].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_member.load_balancer[0].member == "allUsers"
-    error_message = "Production must retain its public ALB invoker grant and have no staging IAP bindings."
+    condition     = length(google_cloud_run_v2_service_iam_binding.iap_invoker) == 0 && length(google_iap_web_cloud_run_service_iam_binding.team) == 0
+    error_message = "Production has no staging IAP bindings and no invoker grant: the organization forbids allUsers."
   }
   assert {
     condition     = google_compute_backend_service.site[0].enable_cdn && google_compute_backend_service.site[0].cdn_policy[0].cache_mode == "USE_ORIGIN_HEADERS" && !google_compute_backend_service.site[0].cdn_policy[0].negative_caching && output.cdn_enabled
@@ -146,12 +149,20 @@ run "production_respects_origin_cache_headers" {
     error_message = "Production Cloud Run requires a serverless NEG behind the global external ALB."
   }
   assert {
-    condition     = length(google_compute_url_map.site) == 1 && length(google_compute_global_address.site) == 1 && google_compute_global_forwarding_rule.https[0].port_range == "443" && google_compute_global_forwarding_rule.https[0].load_balancing_scheme == "EXTERNAL_MANAGED" && google_compute_global_forwarding_rule.https[0].network_tier == "PREMIUM" && google_compute_ssl_policy.site[0].min_tls_version == "TLS_1_2" && google_compute_ssl_policy.site[0].profile == "MODERN" && google_compute_target_https_proxy.site[0].ssl_certificates == tolist(var.certificate_ids)
+    condition     = length(google_compute_url_map.site) == 1 && length(google_compute_global_address.site) == 1 && google_compute_global_forwarding_rule.https[0].port_range == "443" && google_compute_global_forwarding_rule.https[0].load_balancing_scheme == "EXTERNAL_MANAGED" && google_compute_global_forwarding_rule.https[0].network_tier == "PREMIUM" && google_compute_ssl_policy.site[0].min_tls_version == "TLS_1_2" && google_compute_ssl_policy.site[0].profile == "MODERN" && google_compute_target_https_proxy.site[0].certificate_map == "//certificatemanager.googleapis.com/${google_certificate_manager_certificate_map.site[0].id}"
     error_message = "Production must retain its reserved IP and HTTPS/TLS frontend."
   }
   assert {
-    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "prd") && contains(google_cloud_run_v2_service.site.template[0].containers[0].args, "--preserve-env=PUBLIC_SITE_LISTEN_ADDR,PHYSICIAN_APP_URL,APP_ENV,RELEASE_SHA") && output.iap_audience == null && output.staging_url == null
-    error_message = "Production must retain its runtime and Doppler configuration without a staging IAP audience or preview URL."
+    condition     = google_certificate_manager_certificate.site[0].managed[0].domains == tolist(["codahealth.ai", "www.codahealth.ai"]) && length(google_certificate_manager_certificate.site[0].managed[0].dns_authorizations) == 2 && google_certificate_manager_dns_authorization.site["www.codahealth.ai"].domain == "www.codahealth.ai" && google_certificate_manager_certificate_map_entry.site["codahealth.ai"].hostname == "codahealth.ai" && google_certificate_manager_certificate_map_entry.site["www.codahealth.ai"].hostname == "www.codahealth.ai"
+    error_message = "Apex and www must share one DNS-authorized managed certificate, each with its own map entry."
+  }
+  assert {
+    condition     = google_compute_global_forwarding_rule.http[0].port_range == "80" && google_compute_global_forwarding_rule.http[0].ip_address == google_compute_global_forwarding_rule.https[0].ip_address && google_compute_url_map.http_redirect[0].default_url_redirect[0].https_redirect && google_compute_url_map.http_redirect[0].default_url_redirect[0].redirect_response_code == "PERMANENT_REDIRECT" && !google_compute_url_map.http_redirect[0].default_url_redirect[0].strip_query
+    error_message = "Production HTTP must 308 to HTTPS on the same address, keeping the query, as Vercel does."
+  }
+  assert {
+    condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && google_cloud_run_v2_service.site.template[0].containers[0].command == null && google_cloud_run_v2_service.site.template[0].containers[0].args == null && alltrue([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : length(e.value_source) == 0]) && output.iap_audience == null && output.staging_url == null
+    error_message = "Production runs the image entrypoint with plain settings, without a staging IAP audience or preview URL."
   }
 }
 
@@ -171,12 +182,21 @@ run "audience_tracks_service_inputs" {
   }
 }
 
-run "reject_production_without_certificate" {
+run "reject_production_without_domains" {
   command = plan
   variables {
     environment = "production"
   }
-  expect_failures = [google_compute_target_https_proxy.site]
+  expect_failures = [google_certificate_manager_certificate.site]
+}
+
+run "reject_domain_with_scheme_or_wildcard" {
+  command = plan
+  variables {
+    environment = "production"
+    domains     = ["https://codahealth.ai", "*.codahealth.ai"]
+  }
+  expect_failures = [var.domains]
 }
 
 run "reject_project_id_as_project_number" {
@@ -309,12 +329,4 @@ run "reject_inverted_scaling" {
     max_instances = 10
   }
   expect_failures = [google_cloud_run_v2_service.site]
-}
-
-run "reject_unpinned_secret" {
-  command = plan
-  variables {
-    doppler_token_secret_version = "latest"
-  }
-  expect_failures = [var.doppler_token_secret_version]
 }

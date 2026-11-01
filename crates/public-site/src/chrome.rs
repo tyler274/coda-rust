@@ -1,4 +1,4 @@
-use crate::{Route, route::Shell, site};
+use crate::{Config, Route, route::Shell, site};
 use dioxus::prelude::*;
 
 /// Shared server-rendered layout. Ordinary anchors deliberately need no JS router.
@@ -31,6 +31,7 @@ pub fn Chrome() -> Element {
 
 #[component]
 fn Nav() -> Element {
+    let sign_in = use_context::<Config>().physician_sign_in;
     rsx! {
         nav { class: "nav", "aria-label": "Main navigation",
             div { class: "nav-in",
@@ -40,7 +41,9 @@ fn Nav() -> Element {
                 div { class: "nav-links",
                     a { href: "/#physicians", "For physicians" }
                     a { href: "/#patients", "For patients" }
-                    a { href: "/physician/", "Sign in" }
+                    if sign_in {
+                        a { href: "/physician/", "Sign in" }
+                    }
                 }
                 a { class: "btn btn-sm", href: site::contact_mailto(), "Partner with us" }
             }

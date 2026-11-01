@@ -1,0 +1,658 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00001787",
+   "events": [
+    {
+     "id": "2022-01-05a",
+     "kind": "portal_message",
+     "start": "2022-01-05T06:41",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Positive test",
+       "author": "patient",
+       "date": "2022-01-05T06:41",
+       "body": "Two positive home tests this morning. Last period started December 14. I know what the PH team said. I'm calling them when they open at 8 but wanted you to know first. What do I do with my medicines?"
+      }
+     ]
+    },
+    {
+     "id": "2022-01-05b",
+     "kind": "telephone",
+     "start": "2022-01-05T08:20",
+     "reason": "positive pregnancy test",
+     "conditions": [
+      {
+       "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+       "icd10": "O09.90",
+       "action": "diagnosed",
+       "onset": "2021-12-14"
+      }
+     ],
+     "orders": [
+      {
+       "id": "mfm-referral-2022",
+       "action": "placed",
+       "order": "Maternal-fetal medicine referral",
+       "category": "referral",
+       "to": "Obstetrics",
+       "reason": "pregnancy with pulmonary arterial hypertension"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Call re: pregnancy",
+       "author": "PCP",
+       "date": "2022-01-05T08:45",
+       "body": "Called her back. About 3 weeks from LMP 12/14/21. She feels well, breathing unchanged. She already left a message with the PH center.\n\nMedications: keep taking tadalafil and risperidone until the PH team and her psychiatrist say otherwise, do not stop either on her own. Continue prenatal vitamin. Icatibant: keep it for attacks and let OB know if she needs it.\n\nPlaced urgent referral to maternal-fetal medicine at the hospital that works with the PH center; called their intake line myself to flag PAH. She will message psychiatry and endocrinology today. She asked whether we would still be her doctor through this: yes, we'll stay in the loop for everything outside the pregnancy."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "specialist_visit",
+     "start": "2022-02-08T13:00",
+     "service": "Maternal-Fetal Medicine",
+     "reason": "initial high-risk pregnancy visit",
+     "orders": [
+      {
+       "id": "mfm-referral-2022",
+       "action": "done",
+       "date": "2022-02-08T13:00"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Obstetric ultrasound, transvaginal",
+       "loinc": "80865-9",
+       "performed": "2022-02-08T13:20",
+       "text": "Single intrauterine gestation. Cardiac activity present. Crown-rump length consistent with 8 weeks 0 days, concordant with LMP. Adnexa unremarkable. No free fluid.",
+       "conclusion": "Viable single intrauterine pregnancy, about 8 weeks."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Maternal-fetal medicine consultation",
+       "author": "maternal-fetal medicine",
+       "date": "2022-02-11T16:00",
+       "body": "Maternal-fetal medicine, regional hospital. Visit 02/08/2022.\n\nG1, about 8 weeks by LMP 12/14/2021, confirmed by ultrasound today. Pulmonary arterial hypertension, functional class II on tadalafil 40 mg daily; schizophrenia stable on risperidone 4 mg; hereditary angioedema with icatibant as needed; PCOS; 3 mm prolactin-secreting microadenoma off treatment.\n\nCounseled together with the PH center by phone about the substantial maternal risk in PAH, including the option of ending the pregnancy. She wishes to continue.\n\nPlan: co-management with the PH center, visits every 2 to 4 weeks; continue tadalafil, risperidone and prenatal vitamin; serial echocardiography; delivery planning at our hospital with cardiac anesthesia; HAE plan to be written with the delivery team. Endocrinology: no routine prolactin checks in pregnancy; report headache or visual change. Cc: PCP, PH center, psychiatry."
+      }
+     ]
+    },
+    {
+     "id": "2022-04-19a",
+     "kind": "outside_records",
+     "start": "2022-04-19T15:30",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prenatal visit note",
+       "author": "maternal-fetal medicine",
+       "date": "2022-04-19T15:30",
+       "body": "Maternal-fetal medicine visit 04/19/2022, about 18 weeks. Feels well; breathing at baseline, class II. BP normal. Anatomy scan normal. Echo with the PH team stable. Continue tadalafil, risperidone, prenatal vitamin. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-28a",
+     "kind": "outside_records",
+     "start": "2022-06-28T15:00",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2022-06-28T10:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prenatal visit note",
+       "author": "maternal-fetal medicine",
+       "date": "2022-06-28T15:00",
+       "body": "Maternal-fetal medicine prenatal visit 06/28/2022, 28 weeks. Doing well; PH symptoms stable, class II. BP normal. Fetal growth appropriate. Tdap given today. Continue current plan. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-12a",
+     "kind": "outside_records",
+     "start": "2022-07-12T09:45",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Psychiatry update",
+       "author": "psychiatry",
+       "date": "2022-07-12T09:45",
+       "body": "Outpatient psychiatry, visit 07/06/2022. Third trimester, no psychotic symptoms on risperidone 4 mg. We made a postpartum plan: protected sleep blocks with her husband covering nights, visit within two weeks of delivery, early call for any sleeplessness or suspicious thinking. Cc: PCP, MFM."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-17a",
+     "kind": "hospital_admission",
+     "start": "2022-08-17T03:40",
+     "end": "2022-08-20T13:00",
+     "service": "Labor and Delivery",
+     "reason": "severe-range blood pressure at 35 weeks",
+     "conditions": [
+      {
+       "label": "Severe pre-eclampsia, third trimester",
+       "icd10": "O14.13",
+       "action": "diagnosed",
+       "onset": "2022-08-17"
+      },
+      {
+       "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+       "icd10": "O09.90",
+       "action": "resolved"
+      }
+     ],
+     "vitals": [
+      {
+       "time": "2022-08-17T03:45",
+       "bp": [
+        164,
+        108
+       ],
+       "hr": 96
+      },
+      {
+       "time": "2022-08-17T04:05",
+       "bp": [
+        166,
+        110
+       ],
+       "hr": 94
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-08-17T04:10",
+       "results": [
+        {
+         "test": "Platelets"
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-08-17T04:10",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-08-17T04:20",
+       "results": [
+        {
+          "test": "Protein/Creatinine ratio, urine",
+          "loinc": "2890-2",
+          "unit": "mg/mg",
+          "value": 1.4,
+          "range": {
+            "high": 0.2
+          }
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Induction of labor",
+       "snomed": "236958009",
+       "performed": "2022-08-17T07:00"
+      },
+      {
+       "procedure": "Vaginal delivery",
+       "snomed": "177184002",
+       "performed": "2022-08-17T21:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Obstetric discharge summary",
+       "author": "obstetrics",
+       "date": "2022-08-23T10:00",
+       "body": "Regional hospital, labor and delivery. Admitted 08/17/2022, discharged 08/20/2022.\n\nG1 at 35 weeks 1 day with pulmonary arterial hypertension on tadalafil, presented overnight for a blood pressure check; blood pressure 164/108 and 166/110 fifteen minutes apart. Urine protein/creatinine 1.4. Platelets and liver enzymes normal.\n\nDiagnosis: preeclampsia with severe features.\n\nCourse: magnesium sulfate for seizure prophylaxis through 24 hours postpartum; IV labetalol for severe-range pressures. Cardiac anesthesia and the PH team present; early epidural. Induction of labor, then vaginal delivery of a liveborn infant. No hemodynamic deterioration. Pressures under 140/90 by day 3 without oral agents.\n\nDischarge medications: tadalafil 40 mg daily, risperidone 4 mg nightly, prenatal vitamin, icatibant as needed. No antihypertensive.\nFollow-up: BP check with primary care within 10 days; PH center in 6 weeks; postpartum obstetric visit at 6 weeks. Return for headache, visual change or BP 160/110 or higher."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-23a",
+     "kind": "telephone",
+     "start": "2022-08-23T14:30",
+     "reason": "postpartum check",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Postpartum call",
+       "author": "RN",
+       "date": "2022-08-23T14:45",
+       "body": "Called after the discharge summary arrived. Home since Saturday with the baby. Home cuff readings 120s to 130s over 80s. No headache, no vision change, breathing at her baseline, no leg swelling. Sleeping in shifts with her husband. Taking all meds including risperidone. Booked BP visit Monday 8/29."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-29a",
+     "kind": "office_visit",
+     "start": "2022-08-29T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "postpartum blood pressure check",
+     "conditions": [
+      {
+       "label": "Severe pre-eclampsia, third trimester",
+       "icd10": "O14.13",
+       "action": "resolved"
+      },
+      {
+       "label": "History of preeclampsia",
+       "action": "diagnosed",
+       "onset": "2022-08-17"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       124,
+       80
+      ]
+     },
+     "state": {
+      "weight_kg": 74.5
+     },
+     "measure": [
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 5
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-08-29T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Postpartum BP Visit",
+       "author": "PCP",
+       "date": "2022-08-29T11:40",
+       "body": "Twelve days after delivery at 35 weeks for preeclampsia with severe features. Brought the baby, who is feeding well.\n\nNo headache, no visual symptoms, no RUQ pain. Breathing at her usual. Tired in the ordinary newborn way. Sleep in pieces but she and her husband are trading nights, which her psychiatrist specifically wanted. No unusual thoughts; seeing psychiatry next week. PHQ-9 5.\n\nBP 124/80 today. Lungs clear, loud P2 as before, no edema.\n\nA/P\n- Preeclampsia resolved; now history of severe preeclampsia, which raises her future cardiovascular risk and recurrence risk in any later pregnancy. Added to the problem list. Yearly BP and metabolic checks matter more now.\n- PAH: PH center visit in October.\n- Postpartum mood: low score, close psychiatry follow-up planned.\n- Contraception: she will discuss with OB at 6 weeks."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-04a",
+     "kind": "outside_records",
+     "start": "2022-10-04T10:10",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Postpartum visit",
+       "author": "obstetrics",
+       "date": "2022-10-04T10:10",
+       "body": "Postpartum visit 09/28/2022, 6 weeks after delivery for severe preeclampsia. BP normal. Mood good. Exam normal. Contraception discussed in light of PAH; she declines a method. Future pregnancies: early care, preeclampsia risk reviewed. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-08a",
+     "kind": "specialist_visit",
+     "start": "2022-11-08T09:30",
+     "service": "Pulmonary Hypertension Center",
+     "reason": "PAH follow-up after delivery",
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-11-08T09:35",
+       "results": [
+        {
+         "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+         "value": 260
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "PH center follow-up",
+       "author": "pulmonary hypertension",
+       "date": "2022-11-11T15:15",
+       "body": "Regional pulmonary hypertension center. Visit 11/08/2022. Eleven weeks postpartum after preterm delivery for severe preeclampsia. PAH tolerated the pregnancy without decompensation. Functional class II. NT-proBNP 260. Exam: loud P2, no edema, JVP not raised. Continue tadalafil 40 mg daily. A further pregnancy would again carry high risk; she has not chosen a contraceptive method. Annual follow-up. Cc: PCP, MFM."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-06a",
+     "kind": "annual_physical",
+     "start": "2022-12-06T07:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual physical",
+     "state": {
+      "weight_kg": 71.5
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "temp_c",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-12-06T07:55",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        }
+       ]
+      },
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2022-12-06T07:55",
+       "results": [
+        {
+         "test": "Creatinine"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-12-06T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin A1c"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-12-06T07:55",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      }
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-9 total score",
+       "value": 3
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2022-12-06T08:05"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-12-06T08:08"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Preventive visit, established patient, 18-39",
+       "performed": "2022-12-06T07:30"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2022-12-06T07:55"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-12-06T08:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Physical",
+       "author": "PCP",
+       "date": "2022-12-06T08:50",
+       "body": "Yearly visit, a bit late this year with the baby. Back at work since November.\n\nInterval: delivery in August as documented, BP normal since. PH center in November: class II, stable on tadalafil. Psychiatry: stable through postpartum, no psychotic symptoms. Endocrinology to recheck prolactin when she is done nursing. No HAE attacks during or since the pregnancy.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: BP normal. Heart regular, loud P2. Lungs clear. No edema. Weight down toward her baseline.\n\nA/P\n- History of severe preeclampsia: BP normal today; yearly lipids and A1c drawn.\n- PAH, schizophrenia, prolactinoma: per specialists.\n- Flu and bivalent COVID today."
+      }
+     ]
+    },
+    {
+     "id": "2022-12-08a",
+     "kind": "portal_message",
+     "start": "2022-12-08T17:20",
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "Annual labs",
+       "author": "PCP",
+       "date": "2022-12-08T17:20",
+       "body": "Cholesterol, A1c, kidney and liver tests all normal."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-17a",
+     "kind": "outside_records",
+     "start": "2023-01-17T09:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "Psychiatry update",
+       "author": "psychiatry",
+       "date": "2023-01-17T09:00",
+       "body": "Outpatient psychiatry, visit 01/10/2023. Five months postpartum, she remains free of psychotic symptoms on risperidone 4 mg nightly. Mood good. Protected sleep plan with her husband worked well. Binge eating episodes rare. Continue current treatment; return in 3 months."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-14a",
+     "kind": "pharmacy",
+     "start": "2023-02-14T10:25",
+     "documents": [
+      {
+       "type": "Pharmacy Note",
+       "title": "Prior authorization: icatibant",
+       "author": "MA",
+       "date": "2023-02-14T10:25",
+       "body": "Yearly icatibant PA renewal. No attacks in the past year, plan still approves on-demand supply. Approved 2/15."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-30a",
+     "kind": "portal_message",
+     "start": "2023-05-30T07:15",
+     "conditions": [
+      {
+       "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+       "icd10": "O09.90",
+       "action": "diagnosed",
+       "onset": "2023-04-25"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ob-referral-2023",
+       "action": "placed",
+       "order": "Obstetrics referral",
+       "category": "referral",
+       "to": "Obstetrics & Gynecology",
+       "reason": "pregnancy with PAH and prior severe preeclampsia"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Pregnant again",
+       "author": "patient",
+       "date": "2023-05-30T07:15",
+       "body": "Positive test again. LMP April 25. Feeling fine. PH center already knows. Can you send the referral to the same high-risk OB group?"
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Pregnant again",
+       "author": "PCP",
+       "date": "2023-05-30T09:30",
+       "body": "Referral sent to the same group and marked urgent; I mentioned the PAH and the preeclampsia last time. Keep all your medicines going as before unless the PH team or psychiatry changes something. Let me know when your first visit is booked."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-20a",
+     "kind": "specialist_visit",
+     "start": "2023-06-20T09:15",
+     "service": "Obstetrics & Gynecology",
+     "reason": "first prenatal visit",
+     "orders": [
+      {
+       "id": "ob-referral-2023",
+       "action": "done",
+       "date": "2023-06-20T09:15"
+      }
+     ],
+     "vitals": {
+      "bp": [
+       120,
+       78
+      ],
+      "hr": 72,
+      "weight_kg": 70.8
+     },
+     "state": {
+      "weight_kg": 70.8
+     },
+     "reports": [
+      {
+       "study": "Obstetric ultrasound, transvaginal",
+       "loinc": "80865-9",
+       "performed": "2023-06-20T09:40",
+       "text": "Single intrauterine pregnancy with cardiac activity. Crown-rump length corresponds to 8 weeks. Ovaries unremarkable. No subchorionic collection.",
+       "conclusion": "Viable intrauterine pregnancy at 8 weeks."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Initial prenatal visit",
+       "author": "obstetrics",
+       "date": "2023-06-23T11:00",
+       "body": "High-risk obstetrics group, regional hospital. Visit 06/20/2023.\n\n33-year-old G2P0101 presenting for first prenatal care at 8 weeks by LMP. Prior delivery 10 months ago at 35 weeks for severe preeclampsia. Also PCOS, prolactin-secreting microadenoma, pulmonary arterial hypertension and hereditary angioedema; schizophrenia, stable.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, prenatal vitamin, icatibant 30 mg SC as needed. NKDA. No surgeries.\nFH: father schizophrenia; mother and brother HAE; mother PCOS.\nSH: never smoker, no alcohol, teacher.\n\nBP 120/78, HR 72, BMI 26. Exam unremarkable.\nTransvaginal ultrasound: viable intrauterine pregnancy at 8 weeks.\n\nPlan: co-management with the PH center as in her first pregnancy; dating confirmed; routine first trimester labs; return in 6 weeks. Cc: PCP, PH center."
+      }
+     ]
+    },
+    {
+     "id": "2023-08-01a",
+     "kind": "specialist_visit",
+     "start": "2023-08-01T10:00",
+     "service": "Obstetrics & Gynecology",
+     "reason": "prenatal visit, 14 weeks",
+     "vitals": {
+      "temp_c": 36.7,
+      "hr": 80,
+      "bp": [
+       114,
+       72
+      ],
+      "weight_kg": 72.3
+     },
+     "state": {
+      "weight_kg": 72.3
+     },
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Prenatal visit",
+       "author": "obstetrics",
+       "date": "2023-08-03T13:30",
+       "body": "High-risk obstetrics group. Visit 08/01/2023, 14 weeks 0 days.\n\nFeels the pregnancy is going smoothly. Some tiredness and a little queasiness first thing in the morning, no vomiting. Eating normally; weight gain as expected for dates.\nNo palpitations, tremor, temperature intolerance, constipation, hair loss or skin changes.\nFH: her mother developed hypothyroidism in her fifties.\nSH: lives with her husband and their baby; teaching; no tobacco or alcohol.\nMeds: risperidone 4 mg, tadalafil 40 mg, prenatal vitamin, icatibant as needed.\n\nT 36.7 C (98.1 F), pulse 80, BP 114/72.\nExam: well. Thyroid normal in size, nontender. Heart regular. Lungs clear. Fundal height appropriate.\n\nPlan: routine care, anatomy scan at 20 weeks, PH center review this month. Cc: PCP."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-19a",
+     "kind": "outside_records",
+     "start": "2023-09-19T14:00",
+     "documents": [
+      {
+       "type": "Letter",
+       "title": "PH center pregnancy review",
+       "author": "pulmonary hypertension",
+       "date": "2023-09-19T14:00",
+       "body": "Regional pulmonary hypertension center, visit 09/12/2023. 20 weeks pregnant. Functional class II, no decompensation. Continue tadalafil 40 mg daily. Delivery planning with obstetrics and cardiac anesthesia, target 37 weeks. Cc: PCP, OB."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T15:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "flu and COVID vaccines",
+     "immunizations": [
+      {
+       "vaccine": "Influenza, quadrivalent, injectable",
+       "date": "2023-10-10T15:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T15:38"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T15:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Immunizations",
+       "author": "RN",
+       "date": "2023-10-10T15:50",
+       "body": "24 weeks pregnant, OB recommends both. Inactivated flu L deltoid, updated COVID R deltoid. No prior reactions. Observed 15 min, fine. Tdap planned at OB in a few weeks."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-07a",
+     "kind": "outside_records",
+     "start": "2023-11-07T16:00",
+     "immunizations": [
+      {
+       "vaccine": "Tdap",
+       "date": "2023-11-07T10:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Prenatal visit note",
+       "author": "obstetrics",
+       "date": "2023-11-07T16:00",
+       "body": "High-risk obstetrics visit 11/07/2023, 28 weeks. Blood pressures normal throughout so far; no proteinuria. Fetal growth on track. PH center: stable class II on tadalafil. Tdap given. Delivery plan: scheduled induction at 37 weeks with cardiac anesthesia and the PH team available; HAE attack plan on file with the delivery unit. Cc: PCP."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

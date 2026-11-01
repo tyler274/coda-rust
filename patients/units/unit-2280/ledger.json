@@ -1,13 +1,7 @@
 {
   "unit": "unit-2280",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002280/2020-08-20a: procedure order \"Records request, prior primary care and specialists\" names no one catalog lab, panel, study or procedure",
-    "MRN00002280/2023-12-01a: imaging order \"MRI liver with gadolinium, multiphase\" names no one catalog lab, panel, study or procedure",
-    "MRN00002280/2023-12-01a: referral to \"Transplant Hepatology\" names no catalog specialty",
-    "MRN00002280/2024-08-23a: imaging order \"MRI abdomen with gadolinium, pancreas protocol\" names no one catalog lab, panel, study or procedure",
-    "MRN00002280/2024-08-23a: procedure order \"Endoscopic ultrasound with fine-needle aspiration\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002280",
@@ -518,15 +512,6 @@
               "performed": "2020-08-20T09:00"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Records request, prior primary care and specialists",
-              "category": "procedure",
-              "reason": "transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -586,13 +571,6 @@
           "id": "2020-08-27a",
           "kind": "outside_records",
           "start": "2020-08-27T11:30",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2020-08-27T11:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1418,6 +1396,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.8
                 }
               ]
@@ -1858,6 +1839,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.9
                 }
               ]
@@ -1902,6 +1886,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 6.4
                 }
               ]
@@ -2352,6 +2339,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.3
                 }
               ]
@@ -2382,6 +2372,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 6.1
                 }
               ]
@@ -2899,6 +2892,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 7.3
                 }
               ]
@@ -3407,6 +3403,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.1
                 }
               ]
@@ -3437,6 +3436,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 7.9
                 }
               ]
@@ -4202,6 +4204,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 400
                 }
               ]
@@ -4221,6 +4226,7 @@
               "action": "placed",
               "order": "MRI liver with gadolinium, multiphase",
               "category": "imaging",
+              "loinc": "30670-4",
               "reason": "new liver mass, AFP 400"
             },
             {
@@ -4228,7 +4234,7 @@
               "action": "placed",
               "order": "Liver transplant evaluation referral",
               "category": "referral",
-              "to": "Transplant Hepatology",
+              "to": "Gastroenterology",
               "reason": "Child-Pugh C cirrhosis with suspected HCC"
             }
           ],
@@ -4701,6 +4707,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.4
                 }
               ]
@@ -4998,12 +5007,19 @@
                   "test": "Cancer Antigen 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 120
                 },
                 {
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 5.2
                 }
               ]
@@ -5020,6 +5036,7 @@
               "action": "placed",
               "order": "MRI abdomen with gadolinium, pancreas protocol",
               "category": "imaging",
+              "loinc": "36385-3",
               "reason": "CA 19-9 120, weight loss, migratory thrombophlebitis"
             },
             {
@@ -5027,6 +5044,7 @@
               "action": "placed",
               "order": "Endoscopic ultrasound with fine-needle aspiration",
               "category": "procedure",
+              "snomed": "200461000146101",
               "reason": "suspected pancreatic neoplasm"
             }
           ],
@@ -6498,49 +6516,49 @@
         "code": "200328",
         "display": "capecitabine 500 MG Oral Tablet",
         "ingredient": "capecitabine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone 4 MG Oral Tablet": {
         "code": "197582",
         "display": "dexamethasone 4 MG Oral Tablet",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lactulose 667 MG/ML Oral Solution": {
         "code": "391937",
         "display": "lactulose 667 MG/ML Oral Solution",
         "ingredient": "lactulose",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxycodone hydrochloride 5 MG Oral Tablet": {
         "code": "1049621",
         "display": "oxycodone hydrochloride 5 MG Oral Tablet",
         "ingredient": "oxycodone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pentoxifylline 400 MG Extended Release Oral Tablet": {
         "code": "312301",
         "display": "pentoxifylline 400 MG Extended Release Oral Tablet",
         "ingredient": "pentoxifylline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rifaximin 550 MG Oral Tablet": {
         "code": "856664",
         "display": "rifaximin 550 MG Oral Tablet",
         "ingredient": "rifaximin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "spironolactone 100 MG Oral Tablet": {
         "code": "198222",
         "display": "spironolactone 100 MG Oral Tablet",
         "ingredient": "spironolactone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "zoledronic acid 0.8 MG/ML Injectable Solution": {
         "code": "351114",
@@ -6554,18 +6572,28 @@
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Cancer Antigen 19-9": {
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carcinoembryonic Antigen": {
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile toxin A+B": {
@@ -6585,10 +6613,27 @@
         "display": "MR Abdomen WO and W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
       },
+      "MRI abdomen with gadolinium, pancreas protocol": {
+        "code": "36385-3",
+        "display": "MR Pancreas WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "MRI liver with gadolinium, multiphase": {
+        "code": "30670-4",
+        "display": "MR Liver WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "MRI thoracic spine without contrast": {
         "code": "24980-5",
         "display": "MR Thoracic spine",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Endoscopic ultrasound with fine-needle aspiration": {
+        "code": "200461000146101",
+        "display": "Endoscopic ultrasonography guided fine needle aspiration",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

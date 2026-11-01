@@ -1079,7 +1079,7 @@
           "service": "Radiology",
           "reports": [
             {
-              "study": "CT chest",
+              "study": "CT chest with contrast",
               "loinc": "24628-0",
               "performed": "2023-08-21T10:15",
               "text": "Indication: staging, newly diagnosed ascending colon adenocarcinoma.\nTechnique: CT of the chest with IV contrast, obtained with the abdomen and pelvis.\nFindings: No pulmonary nodules or masses. No mediastinal, hilar or axillary adenopathy. No effusion. Heart and great vessels normal in caliber.",
@@ -2071,6 +2071,9 @@
                   "test": "P/Q-type voltage-gated calcium channel antibody",
                   "loinc": "94349-8",
                   "unit": "nmol/L",
+                  "range": {
+                    "high": 0.02
+                  },
                   "value": 0.42
                 }
               ]
@@ -2326,6 +2329,10 @@
                   "test": "Activated partial thromboplastin time",
                   "loinc": "14979-9",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 47
                 }
               ]
@@ -2338,6 +2345,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 88
                 }
               ]
@@ -2350,6 +2361,9 @@
                   "test": "D-dimer",
                   "loinc": "48065-7",
                   "unit": "ug/mL",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 18.4
                 }
               ]
@@ -2419,6 +2433,10 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 162
                 }
               ]
@@ -2515,7 +2533,7 @@
         "code": "312935",
         "display": "sennosides, USP 8.6 MG Oral Tablet",
         "ingredient": "sennosides",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2523,29 +2541,50 @@
         "code": "14979-9",
         "display": "aPTT in Platelet poor plasma by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
         "unit": "ug/mL",
+        "range": {
+          "high": 0.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "P/Q-type voltage-gated calcium channel antibody": {
         "code": "94349-8",
         "display": "Voltage-gated calcium channel P/Q type binding IgG+IgM Ab [Moles/volume] in Serum by Immunoassay",
         "unit": "nmol/L",
+        "range": {
+          "high": 0.02
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Schistocytes": {
         "code": "800-3",
         "display": "Schistocytes [Presence] in Blood by Light microscopy",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT chest with contrast": {
+        "code": "24628-0",
+        "display": "CT Chest W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

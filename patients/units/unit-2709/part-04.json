@@ -284,21 +284,24 @@
        "collected": "2026-02-02T09:00",
        "results": [
         {
-         "test": "B-type natriuretic peptide",
-         "loinc": "30934-4",
-         "unit": "pg/mL",
-         "value": 580
+          "test": "B-type natriuretic peptide",
+          "loinc": "30934-4",
+          "unit": "pg/mL",
+          "value": 580,
+          "range": {
+            "high": 100
+          }
         }
        ]
       }
      ],
      "orders": [
       {
-       "id": "bmp-recheck",
-       "action": "placed",
-       "order": "Basic metabolic panel in one week",
-       "category": "lab",
-       "reason": "potassium and creatinine recheck"
+        "id": "bmp-recheck",
+        "action": "placed",
+        "order": "Basic Metabolic Panel (BMP)",
+        "category": "lab",
+        "reason": "potassium and creatinine recheck"
       }
      ],
      "documents": [
@@ -345,9 +348,9 @@
      ],
      "orders": [
       {
-       "id": "bmp-recheck",
-       "action": "done",
-       "date": "2026-02-10T08:10"
+        "id": "bmp-recheck",
+        "action": "done",
+        "date": "2026-02-10T08:10"
       }
      ],
      "procedures": [
@@ -467,11 +470,18 @@
      "start": "2026-03-10T07:40",
      "orders": [
       {
-       "id": "dx-breast-imaging",
-       "action": "placed",
-       "order": "Diagnostic mammogram and left breast ultrasound",
-       "category": "imaging",
-       "reason": "BI-RADS 0 screening mammogram"
+        "id": "dx-breast-imaging",
+        "action": "placed",
+        "order": "Diagnostic mammogram",
+        "category": "imaging",
+        "reason": "BI-RADS 0 screening mammogram"
+      },
+      {
+        "id": "dx-breast-imaging-2",
+        "action": "placed",
+        "order": "Breast ultrasound",
+        "category": "imaging",
+        "reason": "BI-RADS 0 screening mammogram"
       }
      ],
      "reports": [
@@ -498,9 +508,14 @@
      "start": "2026-03-17T09:00",
      "orders": [
       {
-       "id": "dx-breast-imaging",
-       "action": "done",
-       "date": "2026-03-17T09:00"
+        "id": "dx-breast-imaging",
+        "action": "done",
+        "date": "2026-03-17T09:00"
+      },
+      {
+        "id": "dx-breast-imaging-2",
+        "action": "done",
+        "date": "2026-03-17T09:00"
       }
      ],
      "reports": [

@@ -18,9 +18,13 @@ pub(crate) struct SimulationState {
     inner: Arc<Mutex<SimulationInner>>,
 }
 
+/// One chat turn: who wrote it, when someone did, and the words.
+type Turn = (Option<&'static str>, String);
+
 struct SimulationInner {
     session: SimulationSession,
-    chats: HashMap<(String, String), Vec<String>>,
+    /// Each chat's turns, by workspace and chat.
+    chats: HashMap<(String, String), Vec<Turn>>,
     as_of: i64,
 }
 
@@ -179,7 +183,10 @@ pub(crate) async fn snapshot(
         .cloned()
         .unwrap_or_default()
         .into_iter()
-        .map(|text| json!({ "text": text }))
+        .map(|(kind, text)| match kind {
+            Some(kind) => json!({ "kind": kind, "text": text }),
+            None => json!({ "text": text }),
+        })
         .collect::<Vec<_>>();
     Json(json!({
         "snapshot": { "conversation": turns }
@@ -356,11 +363,13 @@ pub(crate) async fn command(
             guard.session.record_physician_touch();
             guard.as_of += 1;
             let entry = guard.chats.entry((ws_id, chat_id)).or_default();
-            entry.push(text);
-            entry.push(
+            entry.push((Some("physician"), text));
+            // The simulation's own acknowledgement: neither the physician's words nor Coda's.
+            entry.push((
+                None,
                 "Recorded in local simulation. Undecided medication recommendations remain held out of the active plan until approved."
                     .to_owned(),
-            );
+            ));
             Json(json!({
                 "outcome": "accepted",
                 "simulation": status_json(&guard.session),

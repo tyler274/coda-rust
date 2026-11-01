@@ -1,10 +1,7 @@
 {
   "unit": "unit-1816",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001816/2022-09-14a: procedure order \"Records request, prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001816",
@@ -71,6 +68,7 @@
             },
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -316,15 +314,6 @@
               "date": "2022-09-14T09:12"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-pcp-records",
-              "action": "placed",
-              "order": "Records request, prior primary care office",
-              "category": "procedure",
-              "reason": "Transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -374,13 +363,6 @@
           "id": "2022-10-05a",
           "kind": "outside_records",
           "start": "2022-10-05T10:30",
-          "orders": [
-            {
-              "id": "prior-pcp-records",
-              "action": "done",
-              "date": "2022-10-05T10:30"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -2880,6 +2862,9 @@
                   "test": "Protein/Creatinine [Mass Ratio] in Urine",
                   "loinc": "2890-2",
                   "unit": "mg/mg",
+                  "range": {
+                    "high": 0.2
+                  },
                   "value": 3.5
                 },
                 {
@@ -3105,13 +3090,13 @@
         "code": "311040",
         "display": "insulin aspart, human 100 UNT/ML Injectable Solution",
         "ingredient": "insulin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methimazole 10 MG Oral Tablet": {
         "code": "197941",
         "display": "methimazole 10 MG Oral Tablet",
         "ingredient": "methimazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3119,6 +3104,9 @@
         "code": "2890-2",
         "display": "Protein/Creatinine [Mass Ratio] in Urine",
         "unit": "mg/mg",
+        "range": {
+          "high": 0.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -3128,9 +3116,6 @@
         "display": "US for pregnancy",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Vitamins Oral Tablet\""
-    ]
+    }
   }
 }

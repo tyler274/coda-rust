@@ -1,10 +1,7 @@
 {
   "unit": "unit-2237",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002237/2023-08-14a: imaging order \"Abdominal aortic ultrasound screening\" names no one catalog lab, panel, study or procedure",
-    "MRN00002237/2023-08-14a: procedure order \"Request records from prior primary care and cardiology\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002237",
@@ -314,13 +311,8 @@
               "action": "placed",
               "order": "Abdominal aortic ultrasound screening",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "Male former smoker age 65-75"
-            },
-            {
-              "id": "records-2023",
-              "action": "placed",
-              "order": "Request records from prior primary care and cardiology",
-              "category": "procedure"
             }
           ],
           "documents": [
@@ -359,13 +351,6 @@
           "kind": "outside_records",
           "start": "2023-08-29T14:10",
           "reason": "Prior primary care and cardiology records received",
-          "orders": [
-            {
-              "id": "records-2023",
-              "action": "done",
-              "date": "2023-08-29T14:10"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -1569,6 +1554,9 @@
                   "test": "Natriuretic peptide B",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 1480
                 },
                 {
@@ -1960,7 +1948,7 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -1968,6 +1956,16 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Abdominal aortic ultrasound screening": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

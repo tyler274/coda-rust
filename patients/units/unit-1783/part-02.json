@@ -1,0 +1,365 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001783",
+      "events": [
+        {
+          "id": "2024-05-28a",
+          "kind": "portal_message",
+          "start": "2024-05-28T19:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Question about getting pregnant",
+              "author": "patient",
+              "date": "2024-05-28T19:40",
+              "body": "Hi, it's been over a year now that we've been trying and nothing yet. My periods are still regular. You mentioned last summer to check in if it got to a year. Should I come in or go straight to a gynecologist?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about getting pregnant",
+              "author": "front desk",
+              "date": "2024-05-29T08:15",
+              "body": "Hi Nicole, the doctor would like to see you first to go over things and send the referral. We have June 11 at 3:30 open, does that work? Reply here and we'll lock it in."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Question about getting pregnant",
+              "author": "patient",
+              "date": "2024-05-29T12:02",
+              "body": "Yes that works, thank you."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-11a",
+          "kind": "office_visit",
+          "start": "2024-06-11T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "unable to conceive",
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-06-11T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral",
+              "action": "placed",
+              "order": "Obstetrics & Gynecology referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "infertility evaluation"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2024-06-11T16:15",
+              "body": "28 y/o here because she and her husband have not conceived after about 13 months of regular unprotected intercourse.\n\nCycles regular, every 28-30 days, flow normal. No bleeding between periods. Never had a sexually transmitted infection, never had pelvic or abdominal surgery, has never been told she has endometriosis. No galactorrhea, no change in hair or skin, no heat or cold intolerance. Weight stable. Husband has not had any testing yet.\n\nMeds: none. Allergies: none to medications.\n\nExam: BP and pulse as charted, weight unchanged from last year. Thyroid normal size, no nodules. No hirsutism or acne. Abdomen soft, nontender.\n\nA/P: Infertility, >12 months, regular cycles, no obvious risk factors. Discussed that the workup involves both partners. Referral to Ob/Gyn for evaluation; they will likely coordinate hormone testing around her cycle, imaging, and a semen analysis for her husband, so I am not duplicating labs here. She is comfortable with that plan."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-09a",
+          "kind": "lab_only",
+          "start": "2024-07-09T07:45",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-07-09T07:45",
+              "resulted": "2024-07-10T14:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone"
+                },
+                {
+                  "test": "Prolactin"
+                },
+                {
+                  "test": "Follicle Stimulating Hormone"
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "value": 5.6,
+                  "range": {}
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 44,
+                  "range": {}
+                }
+              ]
+            }
+          ],
+          "state": {
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9,
+              "Prolactin": 11.3,
+              "Follicle Stimulating Hormone": 6.3
+            }
+          }
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "specialist_visit",
+          "start": "2024-07-16T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "infertility consultation",
+          "conditions": [
+            {
+              "label": "Female infertility",
+              "action": "diagnosed",
+              "onset": "2024-05-15",
+              "note": "unexplained so far; HSG pending"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clomiphene citrate 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily on cycle days 5 through 9",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "ovulation induction"
+            }
+          ],
+          "orders": [
+            {
+              "id": "obgyn-referral",
+              "action": "done",
+              "date": "2024-07-16T10:30"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Pelvic ultrasound",
+              "performed": "2024-07-16T10:50",
+              "text": "Transvaginal technique. Uterus anteverted, normal in size and contour, homogeneous myometrium. Endometrium thin and uniform, appropriate for early follicular phase. Right and left ovaries normal in size, each with several small antral follicles. No adnexal mass. No free fluid.",
+              "conclusion": "Normal uterus and ovaries; small antral follicles bilaterally."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "author": "gynecology",
+              "date": "2024-07-19T09:00",
+              "body": "OUTSIDE OB/GYN GROUP - CONSULTATION LETTER\nVisit date: 07/16/2024\nReason for referral: infertility\n\nThank you for asking us to see Ms. Rousseau, a 28-year-old nulligravida. She and her partner have had 14 months of unprotected intercourse without a pregnancy. Menses every 28 to 30 days. No STI history, no prior pelvic surgery and no known endometriosis.\n\nMedications: none. Allergies: no known drug allergies.\nFamily history: maternal grandmother with type 2 diabetes; mother hypothyroid; father hypertensive. No relatives with infertility, endometriosis or early menopause.\nSocial: never smoker, no alcohol, works as a high school math teacher.\n\nExamination: normal general, breast, abdominal and pelvic exam.\n\nData: Day-3 bloodwork drawn here last week shows normal TSH, prolactin, FSH and LH. Her partner's semen analysis was normal. Transvaginal ultrasound in our office today: normal uterus, both ovaries normal with small antral follicles.\n\nImpression: female infertility, unexplained on the evaluation so far. Tubal patency still needs to be confirmed.\n\nPlan: hysterosalpingogram scheduled for the next follicular window. Assuming the tubes are open, she will start clomiphene citrate 50 mg on cycle days 5-9 to promote ovulation, with timed intercourse. Prescription sent. Follow-up in about two months.\n\nAllergies: NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Consult letter reviewed",
+              "author": "PCP",
+              "date": "2024-07-19T15:05",
+              "body": "Gyn consult reviewed. Infertility added to problem list. Clomiphene cycles planned after HSG. Will let gyn manage."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-29a",
+          "kind": "imaging",
+          "start": "2024-07-29T08:30",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "Hysterosalpingogram",
+              "loinc": "25022-5",
+              "performed": "2024-07-29T08:30",
+              "issued": "2024-07-29T13:10",
+              "text": "Indication: infertility. Cycle day 8, negative pregnancy test confirmed by the ordering office. After sterile preparation the cervix was cannulated and water-soluble contrast instilled under fluoroscopy. The uterine cavity is normal in size and shape with smooth margins and no filling defect. Both fallopian tubes fill promptly along their full length with free intraperitoneal spill bilaterally. No complications.",
+              "conclusion": "Normal hysterosalpingogram. Bilateral tubal patency."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Hysterosalpingogram",
+              "author": "radiology",
+              "date": "2024-07-30T09:20",
+              "body": "Copy of outside HSG report received from the gynecology office. Normal uterine cavity, both tubes patent with free spill. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "specialist_visit",
+          "start": "2024-09-17T11:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "infertility follow-up",
+          "conditions": [
+            {
+              "label": "Dysmenorrhea",
+              "icd10": "N94.6",
+              "action": "diagnosed",
+              "onset": "2024-09-17",
+              "note": "mild cramps with menses, no treatment"
+            },
+            {
+              "label": "Clomiphene citrate challenge testing indication",
+              "icd10": "Z31.41",
+              "action": "diagnosed",
+              "onset": "2024-09-17"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "clomiphene citrate 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (100 mg) by mouth daily on cycle days 5 through 9 for the challenge test",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "clomiphene citrate challenge test"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology follow-up",
+              "author": "gynecology",
+              "date": "2024-09-20T10:30",
+              "body": "OUTSIDE OB/GYN GROUP - FOLLOW-UP LETTER\nVisit date: 09/17/2024\n\nMs. Rousseau came back to review her fertility evaluation and to plan ovarian reserve testing. Per her intake the couple has been trying for 14 months. Cycles remain regular at about 29 days. She gets mild cramping with her periods; no abnormal bleeding and no pelvic pain otherwise. She completed two cycles of clomiphene 50 mg since July without conceiving.\n\nAllergies: NKDA. She does not smoke or drink; BMI in the healthy range.\nExam today unremarkable.\n\nResults to date: baseline TSH, prolactin, FSH, LH and estradiol all normal. HSG 07/29: normal cavity, both tubes patent. Husband's semen analysis within normal limits.\n\nAssessment:\n1. Unexplained infertility.\n2. Dysmenorrhea, mild, not needing treatment.\n3. Indication for clomiphene citrate challenge testing to assess ovarian reserve.\n\nPlan: clomiphene citrate challenge test with her next cycle. Day-3 FSH and estradiol, clomiphene 100 mg on days 5 through 9, then day-10 FSH. We will send results and discuss next steps."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up letter reviewed",
+              "author": "PCP",
+              "date": "2024-09-20T16:40",
+              "body": "Gyn f/u letter reviewed. HSG normal, unexplained infertility. Mild dysmenorrhea added. Challenge test next cycle. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-07a",
+          "kind": "lab_only",
+          "start": "2024-10-07T07:30",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-07T07:30",
+              "resulted": "2024-10-08T11:00",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 6.8
+                },
+                {
+                  "test": "Estradiol",
+                  "loinc": "2243-4",
+                  "unit": "pg/mL",
+                  "value": 38,
+                  "range": {}
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2024-10-14a",
+          "kind": "lab_only",
+          "start": "2024-10-14T07:35",
+          "service": "Obstetrics & Gynecology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-10-14T07:35",
+              "resulted": "2024-10-15T10:40",
+              "results": [
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 7.4
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T13:00",
+          "conditions": [
+            {
+              "label": "Clomiphene citrate challenge testing indication",
+              "icd10": "Z31.41",
+              "action": "resolved",
+              "onset": "2024-09-17",
+              "note": "challenge test completed, normal"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Gynecology results letter",
+              "author": "gynecology",
+              "date": "2024-10-22T13:00",
+              "body": "OUTSIDE OB/GYN GROUP - RESULTS\n\nClomiphene citrate challenge test, October 2024:\n- Cycle day 3 (10/07): FSH 6.8 IU/L, estradiol 38 pg/mL\n- Cycle day 10 (10/14), after clomiphene 100 mg days 5-9: FSH 7.4 IU/L\n\nInterpretation: normal response; no evidence of diminished ovarian reserve.\n\nI reviewed these with Ms. Rousseau by phone. We talked about further clomiphene ovulation-induction cycles. She would like to wait for now and will call our office when she is ready to resume. No medications at this time. NKDA."
+            },
+            {
+              "type": "Progress Notes",
+              "title": "Results letter reviewed",
+              "author": "PCP",
+              "date": "2024-10-23T07:50",
+              "body": "Challenge test normal. Pausing treatment by her choice, gyn to resume when she calls. Testing item closed on problem list."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-29a",
+          "kind": "nurse_visit",
+          "start": "2024-10-29T15:45",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-29T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2024-10-29T15:52"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-29T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine administration",
+              "author": "RN",
+              "date": "2024-10-29T16:05",
+              "body": "Seasonal flu (trivalent this year) and updated COVID vaccine administered IM, left and right deltoids. No acute complaints. Observed briefly, left ambulatory and well."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

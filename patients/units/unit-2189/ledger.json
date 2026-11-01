@@ -1,12 +1,7 @@
 {
   "unit": "unit-2189",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002189/2020-06-16a: procedure order \"Records request, prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002189/2023-01-19a: procedure order \"Interventional radiology microwave ablation\" names no one catalog lab, panel, study or procedure",
-    "MRN00002189/2023-01-19a: referral to \"Transplant Hepatology\" names no catalog specialty",
-    "MRN00002189/2024-02-08a: imaging order \"CT abdomen and pelvis, pancreas protocol\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002189",
@@ -388,15 +383,6 @@
               "performed": "2020-06-16T10:15"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Records request, prior primary care practice",
-              "category": "procedure",
-              "reason": "transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -442,13 +428,6 @@
           "start": "2020-06-23T14:00",
           "service": "Health Information Management",
           "reason": "Records from prior primary care practice",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2020-06-23T14:00"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -623,6 +602,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 3.9
                 }
               ]
@@ -783,6 +765,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.4
                 }
               ]
@@ -1184,6 +1169,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.1
                 }
               ]
@@ -1572,6 +1560,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.7
                 }
               ]
@@ -1916,6 +1907,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 18
                 }
               ]
@@ -1952,7 +1946,8 @@
               "action": "placed",
               "order": "Interventional radiology microwave ablation",
               "category": "procedure",
-              "to": "Interventional Radiology",
+              "to": "Radiology",
+              "snomed": "609232008",
               "reason": "hepatocellular carcinoma"
             },
             {
@@ -1960,7 +1955,7 @@
               "action": "placed",
               "order": "Liver transplant evaluation referral",
               "category": "referral",
-              "to": "Transplant Hepatology",
+              "to": "Gastroenterology",
               "reason": "hepatocellular carcinoma within criteria"
             }
           ],
@@ -2448,6 +2443,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.2
                 }
               ]
@@ -2794,6 +2792,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.8
                 }
               ]
@@ -2980,6 +2981,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 150
                 }
               ]
@@ -2996,6 +3001,7 @@
               "action": "placed",
               "order": "CT abdomen and pelvis, pancreas protocol",
               "category": "imaging",
+              "loinc": "24858-3",
               "reason": "epigastric pain, weight loss, jaundice, elevated CA 19-9"
             }
           ],
@@ -3262,6 +3268,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 64
                 }
               ]
@@ -3686,6 +3696,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 58
                 }
               ]
@@ -3891,12 +3905,19 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 61
                 },
                 {
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.0
                 }
               ]
@@ -4122,24 +4143,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.28
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 60
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 55
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 26
                 }
               ]
@@ -4627,12 +4664,19 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 70
                 },
                 {
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.6
                 }
               ]
@@ -5082,12 +5126,19 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 66
                 },
                 {
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.3
                 }
               ]
@@ -5497,12 +5548,19 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 73
                 },
                 {
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 5.1
                 }
               ]
@@ -5776,19 +5834,19 @@
         "code": "630208",
         "display": "albuterol 0.83 MG/ML Inhalation Solution",
         "ingredient": "albuterol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clindamycin hydrochloride 300 MG Oral Capsule": {
         "code": "284215",
         "display": "clindamycin 300 MG Oral Capsule",
         "ingredient": "clindamycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxygen 100 % Gas for Inhalation": {
         "code": "542304",
         "display": "oxygen 100 % Gas for Inhalation",
         "ingredient": "oxygen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler": {
         "code": "866048",
@@ -5800,13 +5858,13 @@
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 125 MG Oral Capsule": {
         "code": "313570",
         "display": "vancomycin 125 MG Oral Capsule",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5814,24 +5872,39 @@
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Bicarbonate in Arterial blood": {
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CA 19-9": {
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile toxin A+B [Presence] in Stool by Immunoassay": {
@@ -5843,13 +5916,35 @@
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "CT abdomen and pelvis, pancreas protocol": {
+        "code": "24858-3",
+        "display": "CT Pancreas W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Interventional radiology microwave ablation": {
+        "code": "609232008",
+        "display": "Percutaneous microwave ablation of lesion of liver",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

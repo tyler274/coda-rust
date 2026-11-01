@@ -1,0 +1,5274 @@
+{
+  "unit": "unit-1702",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001702",
+      "given": "Riley",
+      "family": "Fenton",
+      "birth_date": "1989-11-21",
+      "address_line": "212 Montgomery Street, Apt 2",
+      "phone": "+1-347-555-0172",
+      "email": "riley.fenton@example.test",
+      "marital_status": "married",
+      "summary": "Elementary school teacher with Addison disease who joins in 2022; Hashimoto hypothyroidism completes autoimmune polyendocrine syndrome type 2, then celiac disease, vitiligo, rheumatoid arthritis and alopecia areata follow. In 2025 she converts to Graves disease, has thyroid storm and a thyroidectomy, and in July 2026 an adrenal crisis on the morning of a planned cholecystectomy.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient inquiry",
+              "date": "2022-08-02T10:20",
+              "author": "front desk",
+              "body": "Caller would like to transfer her primary care here; her old office is dropping her plan's network for membership and she'd rather have a doctor she can text. Teacher, so wants a summer slot. Booked new patient visit 8/16 at 9:00. Membership packet emailed. Records release sent for her prior primary-care office and she says her adrenal doctor is with an outside endocrinology group, she'll bring her med bottles."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-16a",
+          "kind": "establish_care",
+          "start": "2022-08-16T09:00",
+          "end": "2022-08-16T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care; adrenal insufficiency",
+          "conditions": [
+            {
+              "label": "Addison disease",
+              "action": "history",
+              "onset": "2015-06-01",
+              "note": "Primary adrenal insufficiency, diagnosed elsewhere in her mid-twenties; followed by outside endocrinology."
+            },
+            {
+              "label": "Iron deficiency anemia",
+              "action": "history",
+              "onset": "2018-01-01",
+              "note": "Past episode treated with oral iron by prior office; completed."
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (20 mg) by mouth every morning and 1 tablet (10 mg) every evening",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            },
+            {
+              "drug_text": "fludrocortisone acetate 0.1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 0.1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              103,
+              69
+            ],
+            "hr": 63,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 64.5,
+            "height_cm": 166.3
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-16T10:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 31
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 97
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-16T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 217
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.52
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:10",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-16T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Never"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2022-08-16T09:50",
+              "text": "Specimen: liquid-based cervical cytology with high-risk HPV co-test. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative. Routine co-testing interval."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-16T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-08-16T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-08-16T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-16T10:05",
+              "author": "PCP",
+              "body": "32F teacher transferring care.\n\nAdrenal: primary adrenal insufficiency diagnosed in her mid-20s (per pt; records requested). Managed by an outside endocrinology group, seen about yearly. On hydrocortisone 20 mg on waking and 10 mg around 4 pm, fludrocortisone 0.1 mg daily. Knows to double hydrocortisone with fever; has never needed the ED for it.\n\nOther hx: iron deficiency anemia some years ago, took ferrous sulfate for several months at the old office, finished, no repeat that she knows of. No surgeries. No hospitalizations.\n\nMeds as above. NKDA.\n\nFamily: mother has type 1 diabetes and Hashimoto. Sister with vitiligo. Maternal aunt also has adrenal insufficiency.\n\nSocial: married, teaches second grade. Never smoked, doesn't drink. Walks most evenings.\n\nROS: energy so-so by late afternoon, which she puts down to the job. Otherwise negative.\n\nExam: well appearing. Vitals as charted, BMI ~24. Skin normal color, no hyperpigmentation of creases or gums. Thyroid not enlarged to my exam. Heart RRR, lungs clear, abdomen soft. No edema.\n\nA/P\n1. Primary adrenal insufficiency - stable on current replacement. CMP today for Na/K. Continue meds; refills here are fine, endo sets doses. Asked her to keep her endo visits.\n2. Hx iron deficiency anemia - CBC today.\n3. Health maintenance - Pap with HPV collected today. HIV and hep C screen once. Tdap given (last one she can't recall). Flu/COVID at a fall nurse visit.\nReturn for physical next summer or sooner as needed."
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              68
+            ],
+            "weight_kg": 65.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-18a",
+          "kind": "portal_message",
+          "start": "2022-08-18T16:40",
+          "conditions": [
+            {
+              "label": "Iron deficiency anemia",
+              "action": "resolved",
+              "note": "Past episode; CBC normal 2022-08-16."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Results from your visit",
+              "date": "2022-08-18T16:40",
+              "author": "PCP",
+              "body": "Hi Riley - your sodium and potassium look right where they should on your fludrocortisone, kidney and liver numbers are normal, and your blood count is normal with no sign of the old anemia. HIV and hepatitis C screens were negative. The Pap and HPV test were both normal, so that's done for five years. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-07a",
+          "kind": "outside_records",
+          "start": "2022-09-07T11:15",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2022-09-07T11:15",
+              "author": "medical records",
+              "body": "42 pages received by fax from the patient's previous primary-care office, covering about six years. Summary for the chart:\n- Primary adrenal insufficiency on hydrocortisone and fludrocortisone, managed by outside endocrinology; copies of two endocrine letters, both stable.\n- Iron deficiency anemia on an older CBC, treated with oral iron; follow-up CBC normal.\n- Annual exams with normal BMPs and CBCs. Prior cervical cytology normal.\n- Allergies: none known.\nFiled to media. Nothing outstanding."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-12a",
+          "kind": "nurse_visit",
+          "start": "2022-10-12T15:45",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-12T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-12T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-12T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2022-10-12T16:10",
+              "author": "RN",
+              "body": "In after school for flu (L deltoid) and bivalent COVID booster (R deltoid). Reviewed: she knows to take her stress dose of hydrocortisone if she runs a fever afterward. Waited 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "office_visit",
+          "start": "2022-12-06T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Fatigue, hair changes",
+          "vitals": {
+            "bp": [
+              98,
+              67
+            ],
+            "hr": 65,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 65.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-06T16:20",
+              "resulted": "2022-12-07T09:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 16.8
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2022-12-06T16:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-06T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 218
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-12-06T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-12-06T16:35",
+              "author": "PCP",
+              "body": "S: Tired for most of the past year even with 8 hours of sleep; she had chalked it up to work but it's worse this fall. Hair feels coarse and is breaking. Husband says her eyes look puffy in the mornings. Constipated more days than not. No fever, no neck pain, has not lost weight. Taking hydrocortisone and fludrocortisone every day, no missed doses, no salt craving or dizziness.\n\nO: Vitals as charted. Skin dry, a little cool. Thyroid feels diffusely enlarged and firm, no discrete nodule, not tender. Heart regular. Reflexes slow to relax at the ankles.\n\nA/P: Fatigue with dry skin, hair change and a goiter. With her Addison disease and her mother's Hashimoto, autoimmune hypothyroidism is first on the list. TSH, free T4 today; BMP and CBC to make sure the adrenal side and the old anemia aren't part of it. Will message results. If the thyroid is off I'll ask her endocrinologist to see her sooner rather than at her spring visit."
+            }
+          ],
+          "state": {
+            "bp": [
+              106,
+              68
+            ],
+            "weight_kg": 65.6,
+            "labs": {
+              "Free Thyroxine": 0.5,
+              "Thyroid Stimulating Hormone": 16.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-07a",
+          "kind": "portal_message",
+          "start": "2022-12-07T12:10",
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "TSH 16.8, free T4 0.5, goiter; known Addison disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid results",
+              "date": "2022-12-07T12:10",
+              "author": "PCP",
+              "body": "Riley, your thyroid is underactive: TSH 16.8 (high) and free T4 0.5 (low). That fits how you've been feeling. Electrolytes and blood count were fine. I've sent a referral and called your endocrinology office; they can see you on the 21st instead of March. Because thyroid and adrenal treatment interact, I'd like them to start the thyroid medicine. Hang in there."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid results",
+              "date": "2022-12-07T19:02",
+              "author": "patient",
+              "body": "Thank you!! honestly relieved there's a reason. I'll be there on the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-21a",
+          "kind": "specialist_visit",
+          "start": "2022-12-21T10:30",
+          "service": "Endocrinology",
+          "reason": "Hypothyroidism; primary adrenal insufficiency",
+          "vitals": {
+            "bp": [
+              110,
+              70
+            ],
+            "hr": 54,
+            "weight_kg": 65.3
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-12-21T11:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 18
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.4
+                },
+                {
+                  "test": "Total T3",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
+                  "value": 60
+                },
+                {
+                  "test": "Thyroglobulin antibody",
+                  "loinc": "15210-8",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2022",
+              "action": "done",
+              "date": "2022-12-21T10:30"
+            }
+          ]
+        },
+        {
+          "id": "2023-01-05a",
+          "kind": "outside_records",
+          "start": "2023-01-05T09:40",
+          "conditions": [
+            {
+              "label": "Hashimoto thyroiditis",
+              "action": "diagnosed",
+              "onset": "2022-12-21"
+            },
+            {
+              "label": "Hypothyroidism",
+              "action": "diagnosed",
+              "onset": "2022-12-21"
+            },
+            {
+              "label": "Autoimmune polyglandular failure",
+              "action": "diagnosed",
+              "onset": "2022-12-21",
+              "note": "Autoimmune polyendocrine syndrome type 2: Addison disease with Hashimoto thyroiditis.",
+              "icd10": "E31.0"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.112 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 112,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hashimoto hypothyroidism"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2023-01-05T09:40",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group\nDate of visit: 12/21/2022\nRe: Riley Fenton, DOB 11/21/1989\n\nThank you for moving Ms. Fenton up. She has been fatigued for roughly a year in spite of adequate sleep, and describes coarser, brittle hair, some puffiness around the eyes and constipation. She has had no fever, weight loss or anterior neck pain. Her adrenal replacement is unchanged: hydrocortisone 20 mg in the morning and 10 mg in the afternoon, fludrocortisone 0.1 mg daily. She takes nothing else. No drug allergies.\n\nFamily history is notable for type 1 diabetes and Hashimoto disease in her mother, vitiligo in a sister and primary adrenal insufficiency in a maternal aunt. Never smoker, no alcohol. Teaches elementary school.\n\nExam: pulse 54, BP 110/70, BMI 24. Skin dry and cool. The thyroid is diffusely enlarged and firm, nontender, with no nodules felt. Deep tendon reflexes show a delayed relaxation phase, clearest at the ankle.\n\nLabs today: TSH 18 uIU/mL, free T4 0.4 ng/dL, total T3 60 ng/dL. Anti-thyroglobulin antibody positive. Serum cholesterol elevated, as expected with this degree of hypothyroidism; we will not treat it until she is euthyroid.\n\nImpression: Hashimoto thyroiditis with overt hypothyroidism. Together with her Addison disease this is autoimmune polyendocrine syndrome type 2. Her adrenal replacement was already in place, which is the order we want before thyroid hormone.\n\nPlan: levothyroxine 112 mcg daily, on an empty stomach, apart from food and other pills. Continue current hydrocortisone and fludrocortisone. TSH in 6 to 8 weeks. Given the syndrome, we would screen periodically for other autoimmune conditions; she is aware her family history is relevant.\n\nAllergies: NKDA.\ncc: primary care"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "date": "2023-01-05T13:00",
+              "author": "PCP",
+              "body": "Endo letter reviewed. Hashimoto hypothyroidism, APS-2 with her Addison's. Levothyroxine 112 started by endo, added to our list. Endo following TSH."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-08a",
+          "kind": "pharmacy",
+          "start": "2023-02-08T08:55",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "date": "2023-02-08T08:55",
+              "author": "MA",
+              "body": "eRx renewal requests for hydrocortisone 10 mg tabs (#90, 2 qAM + 1 qPM) and fludrocortisone 0.1 mg (#90). Last BMP 12/6 normal. Sent to PCP queue.\n\nPCP: approved x 90 days with 3 refills each."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-21a",
+          "kind": "office_visit",
+          "start": "2023-03-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up hypothyroidism and adrenal insufficiency",
+          "vitals": {
+            "bp": [
+              120,
+              56
+            ],
+            "hr": 67,
+            "spo2": 97,
+            "weight_kg": 65.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-03-21T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-03-21T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2023-03-21T16:40",
+              "author": "PCP",
+              "body": "Check-in 3 months after starting levothyroxine. Energy a little better. Honest that she forgets the levothyroxine a couple of mornings a week - the hydrocortisone is habit, the new pill isn't, and she takes it with coffee on the way out the door. Endo drew a TSH in February; she doesn't know the number and it isn't in our system.\n\nExam: vitals as charted. Thyroid still full. Heart regular.\n\nA/P: Hypothyroidism, partly treated, adherence the main issue. Talked through taking it at bedtime or keeping it next to the hydrocortisone, 30-60 min before coffee. Phone alarm set during the visit. BMP for the adrenal side today. Will ask endo for their February labs. Physical in August."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              70
+            ],
+            "weight_kg": 66.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-05-09a",
+          "kind": "office_visit",
+          "start": "2023-05-09T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up",
+          "documents": [
+            {
+              "type": "Administrative Note",
+              "title": "Missed appointment",
+              "date": "2023-05-09T16:30",
+              "author": "front desk",
+              "body": "No-show for 3:40 follow-up. Texted; she replied that a parent conference ran over and she forgot to call. Not rebooked at her request, will see us at the August physical."
+            }
+          ],
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "specialist_visit",
+          "start": "2023-06-26T09:15",
+          "service": "Gynecology",
+          "reason": "Irregular menses, difficulty conceiving",
+          "vitals": {
+            "weight_kg": 67.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-06-26T10:00",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 12
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 0.7
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 29
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              103,
+              67
+            ],
+            "hr": 56,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 66.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 3.1
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 14
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 76
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 202
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-08-22T09:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 178
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 60
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 94
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 99
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 118
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T10:05",
+              "author": "PCP",
+              "body": "Annual exam, 33F.\n\nInterval: saw a gynecologist in late June for cycles spacing out to every 2-3 months and a year of trying for a pregnancy. She says they found her thyroid way off again (TSH 12) and a mildly high prolactin they thought came from the thyroid, and asked that we recheck both in about two months. We don't have their letter yet - requested again today. Since then: levothyroxine every night at bedtime, pill organizer next to the hydrocortisone, hasn't missed since. Feels more like herself. Weight up a bit over the spring, holding now.\n\nAdrenal: no sick days this year. Endo visit due fall.\n\nMeds: levothyroxine 112 mcg qHS, hydrocortisone 20/10, fludrocortisone 0.1. NKDA.\nSocial unchanged. Never smoker, no alcohol.\nPHQ-2 0.\n\nExam: vitals as charted. Skin less dry than in the spring. Thyroid mildly enlarged, smooth. Heart, lungs normal. Abdomen benign. Reflexes normal today. No edema.\n\nA/P\n1. Hashimoto hypothyroidism / APS-2 - TSH and prolactin today at gyn's request. CMP for Na/K.\n2. Lipids today; endo noted cholesterol was up when she was hypothyroid.\n3. Irregular cycles / trying to conceive - per gyn, the plan hinges on the thyroid; they'll take it from here once they see the numbers.\n4. HM: Pap 2022 normal. Flu/COVID in October.\nReturn 6 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              70
+            ],
+            "weight_kg": 66.4,
+            "labs": {
+              "Prolactin": 14,
+              "Thyroid Stimulating Hormone": 3.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-08-24a",
+          "kind": "portal_message",
+          "start": "2023-08-24T13:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your physical labs",
+              "date": "2023-08-24T13:25",
+              "author": "PCP",
+              "body": "Good news: TSH is 3.1 now, in range, and prolactin came back at 14, which is normal - so the gynecologist's hunch that the thyroid was behind it looks right. Cholesterol is normal now that the thyroid is treated. Sodium/potassium, kidney, liver and blood count all normal. I'm faxing these to your gynecologist. Keep doing exactly what you're doing with the bedtime dose."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T14:05",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gynecology consultation",
+              "date": "2023-09-12T14:05",
+              "author": "gynecology",
+              "body": "Outside gynecology practice\nDate of service: 06/26/2023\nPatient: Riley Fenton, 33 y.o.\n\nReason for visit: menstrual irregularity and difficulty conceiving.\n\nHPI: Ms. Fenton has APS type 2 with Hashimoto thyroiditis, diagnosed this past winter, and Addison disease. For about six months her periods have come only every two to three months. She and her husband have been trying to conceive for a year without success. She also notes tiredness, some weight gain and feeling cold. She acknowledges she has not been taking her levothyroxine reliably.\n\nMedications: levothyroxine 112 mcg daily (missed often), hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily. Allergies: NKDA.\nFamily: mother with T1DM and Hashimoto; sister vitiligo; maternal aunt adrenal insufficiency.\nSocial: teacher; never smoker; no alcohol.\n\nExam: vitals within normal limits. Weight 67 kg. Skin dry. Reflexes with a slowed relaxation phase.\n\nLabs: TSH 12 mIU/L (0.4-4.0), free T4 0.7 ng/dL (0.9-1.7), prolactin 29 ng/mL (4-23).\n\nAssessment: oligomenorrhea and subfertility in the setting of undertreated primary hypothyroidism. The mild prolactin elevation is most likely secondary to the hypothyroidism.\n\nPlan: daily levothyroxine adherence reviewed at length. Repeat TSH and prolactin in about 8 weeks through her primary care physician. We will reassess cycles and fertility once she is euthyroid; she will call us.\n\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "date": "2023-09-12T17:20",
+              "author": "PCP",
+              "body": "Gyn letter from June finally here. Matches what pt told us. Our 8/22 recheck (TSH 3.1, PRL 14) already faxed to them. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-11a",
+          "kind": "nurse_visit",
+          "start": "2023-10-11T15:30",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-11T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-11T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2023-10-11T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2023-10-11T15:55",
+              "author": "RN",
+              "body": "Flu vaccine L arm, 2023-24 COVID R arm. Tolerated both. Stress-dose reminder given for any fever. Observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "office_visit",
+          "start": "2023-11-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Abdominal pain and bloating",
+          "vitals": {
+            "bp": [
+              113,
+              63
+            ],
+            "hr": 67,
+            "temp_c": 37.1,
+            "spo2": 98,
+            "weight_kg": 65.6
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-11-14T16:35",
+              "resulted": "2023-11-16T14:00",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 86
+                },
+                {
+                  "test": "Immunoglobulin A",
+                  "loinc": "2458-8",
+                  "unit": "mg/dL",
+                  "range": {
+                    "low": 90,
+                    "high": 325
+                  },
+                  "value": 210
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-11-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-11-14T16:45",
+              "author": "PCP",
+              "body": "CC: belly pain and bloating, on and off since late spring.\n\nCrampy lower belly pain and bloating, worse after eating, especially big meals. Some days loose stools. No blood, no black stools, no fever, weight steady. No travel, no new meds. Thyroid pills every night, adrenal meds as usual. She wondered about celiac herself because of all the autoimmune things.\n\nExam: well, vitals as charted. Abdomen soft, not distended, mildly tender low on both sides, no rebound, no guarding, no masses. \n\nA/P: Postprandial pain and bloating with loose stools in a woman with APS-2 - celiac disease is high on the list. tTG-IgA and total IgA today; she has NOT gone gluten-free yet, and I asked her not to until this is sorted. Will refer to GI if positive."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              68
+            ],
+            "weight_kg": 65.8,
+            "labs": {
+              "Tissue Transglutaminase IgA": 86
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-11-17a",
+          "kind": "portal_message",
+          "start": "2023-11-17T08:15",
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "placed",
+              "order": "Gastroenterology referral",
+              "category": "referral",
+              "to": "Gastroenterology",
+              "reason": "tTG IgA 86 U/mL with normal total IgA; bloating, postprandial pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Celiac blood test",
+              "date": "2023-11-17T08:15",
+              "author": "PCP",
+              "body": "Riley - the celiac antibody (tTG-IgA) is positive at 86; anything over 15 is positive, and your total IgA is normal so the test is reliable. This strongly points to celiac disease. The standard next step is an endoscopy with small bowel biopsies by GI, and it only works if you're still eating gluten, so please keep eating normally until then. Referral is in; they should call within the week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Celiac blood test",
+              "date": "2023-11-17T12:48",
+              "author": "patient",
+              "body": "Ugh, not surprised. Will keep eating bread for now lol. GI called already, Dec 18."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-18a",
+          "kind": "specialist_visit",
+          "start": "2023-12-18T13:00",
+          "service": "Gastroenterology",
+          "reason": "Abdominal pain, bloating; positive tTG",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-12-18T13:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-12-18T13:45",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 2
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-12-18T13:45",
+              "results": [
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.6
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 80
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "gi-referral-2023",
+              "action": "done",
+              "date": "2023-12-18T13:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-03a",
+          "kind": "outside_records",
+          "start": "2024-01-03T10:50",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Gastroenterology consultation",
+              "date": "2024-01-03T10:50",
+              "author": "gastroenterology",
+              "body": "Outside gastroenterology group\nVisit date: 12/18/2023\nRiley Fenton, 34F (DOB 11/21/1989)\nReferred for: positive tissue transglutaminase IgA\n\nMs. Fenton is a 34-year-old with autoimmune polyendocrine syndrome type 2 (Addison disease, Hashimoto hypothyroidism) who comes at the request of her primary care physician. She describes intermittent abdominal pain and bloating that are clearly worse after meals, sometimes with diarrhea. She has seen no blood in the stool and has had no fevers or weight loss. She remains on a normal diet.\n\nPMH: as above; remote iron deficiency anemia treated with oral iron. PSH: none.\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, levothyroxine.\nAllergies: no known drug allergies.\nFamily history: noncontributory to the GI question.\nSocial: does not smoke or drink.\n\nExam: abdomen soft and non-distended, with mild tenderness in both lower quadrants; no rebound or guarding. No hepatosplenomegaly.\n\nData: tTG-IgA 86 U/mL with normal total IgA (11/2023, PCP). Today: hemoglobin 13.2 g/dL, WBC 7,000, platelets 250,000, TSH 2.5, albumin 4.5 g/dL, CRP 2 mg/L.\n\nAssessment: postprandial pain and bloating with a strongly positive tTG in a patient with polyglandular autoimmunity. Celiac disease is likely. Normal albumin, hemoglobin and CRP are reassuring against a more serious inflammatory process, which was her main worry.\n\nPlan: upper endoscopy with duodenal biopsies, scheduled 1/9. Continue a gluten-containing diet until then. If confirmed, strict gluten-free diet and dietitian referral.\n\ncc: PCP"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "procedure_visit",
+          "start": "2024-01-09T07:30",
+          "end": "2024-01-09T09:15",
+          "service": "Gastroenterology",
+          "reason": "Upper endoscopy with duodenal biopsies",
+          "procedures": [
+            {
+              "procedure": "Upper endoscopy with biopsy",
+              "performed": "2024-01-09T08:05"
+            }
+          ]
+        },
+        {
+          "id": "2024-01-19a",
+          "kind": "outside_records",
+          "start": "2024-01-19T15:20",
+          "conditions": [
+            {
+              "label": "Celiac disease",
+              "action": "diagnosed",
+              "onset": "2024-01-09"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2024-01-09T08:05",
+              "text": "Specimen A: duodenal bulb, biopsies x2. Specimen B: second portion of duodenum, biopsies x4. Microscopic: small bowel mucosa with partial villous atrophy, crypt hyperplasia and increased intraepithelial lymphocytes (greater than 40 per 100 enterocytes). No granulomas, no dysplasia, no organisms.",
+              "conclusion": "Duodenum, biopsies: partial villous atrophy with intraepithelial lymphocytosis, Marsh 3a, consistent with celiac disease in the setting of positive serology.",
+              "issued": "2024-01-12T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Upper endoscopy report",
+              "date": "2024-01-19T15:20",
+              "author": "gastroenterology",
+              "body": "Procedure: esophagogastroduodenoscopy with biopsy, 01/09/2024, outside endoscopy unit.\nIndication: positive tTG-IgA, postprandial bloating.\nSedation: monitored anesthesia care. Hydrocortisone dose doubled the morning of the procedure per her endocrinologist.\nFindings: normal esophagus. Normal stomach. Duodenal bulb and second portion grossly unremarkable. Biopsies taken from bulb and D2.\nComplications: none.\nPathology (01/12): Marsh 3a changes, consistent with celiac disease.\nRecommendations: strict lifelong gluten-free diet; referral to our dietitian placed; repeat tTG in 6 to 12 months to confirm adherence.\nAllergies: NKDA.\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "date": "2024-01-19T17:05",
+              "author": "PCP",
+              "body": "EGD + path reviewed: celiac confirmed, Marsh 3a. Added to problem list. GI arranging dietitian. Iron and vitamin D at next visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "portal_message",
+          "start": "2024-01-22T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gluten question",
+              "date": "2024-01-22T20:14",
+              "author": "patient",
+              "body": "Hi, so it's official, celiac. Quick question - do I need to worry about gluten in my hydrocortisone or thyroid pills? The dietitian said to ask my pharmacy and my doctor."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gluten question",
+              "date": "2024-01-23T07:30",
+              "author": "PCP",
+              "body": "Good question. The generic hydrocortisone, fludrocortisone and levothyroxine you're on are gluten-free per the manufacturers' statements your pharmacy pulled for me. If the pharmacy ever switches the maker, ask them to check again. Let's see you in February to go over how the diet is going and check iron and vitamin D."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "office_visit",
+          "start": "2024-02-20T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Celiac follow-up",
+          "vitals": {
+            "bp": [
+              98,
+              64
+            ],
+            "hr": 68,
+            "spo2": 97,
+            "weight_kg": 66.1
+          },
+          "labs": [
+            {
+              "panel": "Iron Studies",
+              "collected": "2024-02-20T16:25",
+              "results": [
+                {
+                  "test": "Iron",
+                  "value": 91
+                },
+                {
+                  "test": "Total Iron-Binding Capacity",
+                  "value": 309
+                },
+                {
+                  "test": "Ferritin",
+                  "value": 108
+                },
+                {
+                  "test": "Transferrin Saturation",
+                  "value": 29
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-02-20T16:25",
+              "results": [
+                {
+                  "test": "25-hydroxy Vitamin D",
+                  "value": 34
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-02-20T16:25",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 245
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2024-02-20T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-02-20T16:30",
+              "author": "PCP",
+              "body": "Six weeks gluten-free after the EGD. Bloating noticeably less, stools more formed. Had one accidental exposure at a staff lunch, sore and crampy for a day. Dietitian visit done, husband doing the shopping with her. Thyroid and adrenal meds unchanged and taken.\n\nExam: vitals as charted, weight stable. Abdomen soft, nontender today.\n\nA/P\n- Celiac disease: early response to diet. Iron studies, vitamin D, CBC today given the past iron deficiency. GI to recheck tTG later this year; I'll add it to her physical if they haven't.\n- APS-2: hypothyroid and adrenal stable.\nPhysical in August."
+            }
+          ],
+          "state": {
+            "bp": [
+              106,
+              66
+            ],
+            "weight_kg": 65.2
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-02-23a",
+          "kind": "portal_message",
+          "start": "2024-02-23T11:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Iron and vitamin D",
+              "date": "2024-02-23T11:40",
+              "author": "PCP",
+              "body": "Iron stores, vitamin D and your blood count are all normal - nothing to add. Keep up the diet."
+            }
+          ]
+        },
+        {
+          "id": "2024-05-14a",
+          "kind": "telehealth_visit",
+          "start": "2024-05-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "White patches on skin",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2024-05-14T16:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "placed",
+              "order": "Dermatology referral",
+              "category": "referral",
+              "to": "Dermatology",
+              "reason": "Depigmented patches hands and face; sister with vitiligo"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2024-05-14T16:40",
+              "author": "PCP",
+              "body": "Video from her classroom after dismissal, identity verified.\n\nNoticed pale patches on the backs of both hands and one near her right temple over the winter, getting a little bigger. They don't itch or hurt. Her sister has vitiligo and she thinks this looks the same.\n\nOn camera: several well-defined paler patches on dorsal hands and right temple, no redness or scale visible. Limited by video.\n\nA/P: Depigmented patches, likely vitiligo given her autoimmune history and family history. Dermatology referral for confirmation and treatment options. Sunscreen on the patches meanwhile."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-17a",
+          "kind": "specialist_visit",
+          "start": "2024-06-17T10:00",
+          "service": "Dermatology",
+          "reason": "Depigmented patches",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-06-17T10:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 3.5
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Antinuclear Antibodies",
+                  "text": "Negative"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-06-17T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "derm-referral-2024",
+              "action": "done",
+              "date": "2024-06-17T10:00"
+            }
+          ]
+        },
+        {
+          "id": "2024-06-28a",
+          "kind": "outside_records",
+          "start": "2024-06-28T09:30",
+          "conditions": [
+            {
+              "label": "Vitiligo",
+              "action": "diagnosed",
+              "onset": "2024-06-17"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tacrolimus 0.001 MG/MG Topical Ointment",
+              "action": "historical",
+              "sig": "Apply a thin layer to the white patches on face and hands twice daily",
+              "frequency": "BID",
+              "route": "Topical",
+              "course": "chronic",
+              "reason": "Vitiligo"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology consultation",
+              "date": "2024-06-28T09:30",
+              "author": "dermatology",
+              "body": "Outside dermatology office - new patient consultation, 6/17/2024\n\nRiley Fenton, age 34. Referred by her PCP for white patches.\n\nShe has autoimmune polyendocrine syndrome type 2 (Addison disease, Hashimoto hypothyroidism) and celiac disease diagnosed this January. Over the past several months she has developed white spots that are slowly enlarging; they cause no symptoms. Sister has vitiligo.\n\nMedications: hydrocortisone, fludrocortisone, levothyroxine. NKDA.\n\nExamination: multiple flat depigmented macules with sharp, well-defined borders on the dorsal hands and the face (right temple). No scale, no erythema, no atrophy. Wood's lamp makes the patches stand out sharply from the surrounding skin.\n\nLabs today: TSH 3.5, fasting glucose 88, ANA negative, CBC within normal limits.\n\nImpression: nonsegmental vitiligo.\n\nPlan: tacrolimus 0.1% ointment twice daily to facial and hand patches. Broad-spectrum sunscreen. Discussed phototherapy as a later option if response is slow. Return in 6 months or as needed.\n\nAllergies: NKDA. cc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "date": "2024-06-28T12:15",
+              "author": "PCP",
+              "body": "Derm: vitiligo confirmed; tacrolimus ointment started by derm. Lists updated."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "annual_physical",
+          "start": "2024-08-20T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              108,
+              72
+            ],
+            "hr": 59,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 65.2
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-20T09:45",
+              "results": [
+                {
+                  "test": "Tissue Transglutaminase IgA",
+                  "value": 11
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-08-20T09:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 99
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2024-08-20T09:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 232
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.82
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-20T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-20T10:10",
+              "author": "PCP",
+              "body": "Yearly exam before school starts. 34F.\n\nYear in review: celiac confirmed in January, strict GF since, GI symptoms basically gone. Vitiligo diagnosed in June, using tacrolimus on face and hands, too early to tell. Levothyroxine nightly, hydrocortisone/fludrocortisone unchanged. No adrenal sick days.\n\nMeds: levothyroxine 112 mcg qHS, hydrocortisone 20 mg AM/10 mg PM, fludrocortisone 0.1 mg, tacrolimus 0.1% oint BID. NKDA.\nNever smoker, no alcohol. PHQ-2: 1.\n\nExam: vitals as charted. Depigmented macules dorsal hands and right temple. Thyroid mildly enlarged, smooth. Cardiopulmonary normal. Abdomen soft, nontender. Joints without swelling. No edema.\n\nA/P\n1. Celiac disease - tTG today to check the diet.\n2. APS-2 / hypothyroidism / Addison's - CMP today; endo has her TSH.\n3. Vitiligo - per derm.\n4. HM: Pap current to 2027. Flu/COVID in October."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              72
+            ],
+            "weight_kg": 65.0,
+            "labs": {
+              "Tissue Transglutaminase IgA": 11
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T14:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Celiac antibody",
+              "date": "2024-08-22T14:05",
+              "author": "PCP",
+              "body": "Your celiac antibody is down to 11 from 86 last fall - under the cutoff of 15, which tells us the gluten-free diet is working. Electrolytes, kidney, liver and blood count are normal. Have a good start to the year."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T15:40",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-09T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-09T15:45"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-09T15:47"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2024-10-09T16:00",
+              "author": "MA",
+              "body": "2024-25 flu (L) and COVID (R) given, lot numbers in the MAR. No issues after 15 minutes. Reminded about extra hydrocortisone if feverish."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "office_visit",
+          "start": "2024-11-19T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Joint pain and fatigue",
+          "vitals": {
+            "bp": [
+              117,
+              75
+            ],
+            "hr": 60,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 64.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-11-19T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2024",
+              "action": "placed",
+              "order": "Rheumatology referral",
+              "category": "referral",
+              "to": "Rheumatology",
+              "reason": "Symmetric small-joint hand and knee pain with morning stiffness and swelling"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-11-19T16:45",
+              "author": "PCP",
+              "body": "S: Since around June her hands and both knees ache, worst in the morning - takes her a good while to be able to make a fist, and holding a dry-erase marker is hard first period. Eases by lunchtime. Tired again. No rash, no fever, no recent illness or injury. Thyroid and adrenal routine unchanged, still GF.\n\nO: Vitals as charted. Puffy, tender knuckles and middle finger joints on both hands. Knees without effusion, nontender.\n\nA/P: Symmetric inflammatory-sounding small-joint arthritis with morning stiffness, several months - needs rheumatology. Referral placed, asked for the next opening. She'd rather they draw the inflammatory labs so she isn't stuck twice. Acetaminophen as needed meanwhile; avoids NSAIDs on her own."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 64.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-12-31a",
+          "kind": "specialist_visit",
+          "start": "2024-12-31T09:30",
+          "service": "Rheumatology",
+          "reason": "Polyarthralgia",
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-12-31T10:20",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.01
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 231
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-12-31T10:20",
+              "results": [
+                {
+                  "test": "Erythrocyte Sedimentation Rate",
+                  "value": 45
+                },
+                {
+                  "test": "C Reactive Protein",
+                  "value": 24
+                },
+                {
+                  "test": "Rheumatoid Factor",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Cyclic Citrullinated Peptide Antibody",
+                  "text": "Positive"
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "rheum-referral-2024",
+              "action": "done",
+              "date": "2024-12-31T09:30"
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "pharmacy",
+          "start": "2025-01-14T10:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pharmacy call",
+              "date": "2025-01-14T10:35",
+              "author": "RN",
+              "body": "Pharmacist called: new rx for methotrexate 2.5 mg, 6 tabs once weekly, and folic acid 1 mg daily from an outside rheumatologist, first filled 1/2. Their interaction check flagged it against her chart and they wanted to confirm we're aware. We had no rheum note on file. Told them PCP would review. Message sent to patient."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Rheumatology visit",
+              "date": "2025-01-14T12:20",
+              "author": "PCP",
+              "body": "Hi Riley - your pharmacy let us know about the methotrexate. We haven't gotten the rheumatologist's note yet. Can you tell me what they found and the plan? I'll ask them to send it."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "portal_message",
+          "start": "2025-01-16T07:50",
+          "conditions": [
+            {
+              "label": "Rheumatoid arthritis",
+              "action": "diagnosed",
+              "onset": "2024-12-31"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "methotrexate 2.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 6 tablets (15 mg) by mouth once a week on the same day",
+              "dose": {
+                "value": 15,
+                "unit": "mg"
+              },
+              "frequency": "WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Rheumatoid arthritis"
+            },
+            {
+              "drug": "folic acid 1 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 1,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "With methotrexate"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "RE: Rheumatology visit",
+              "date": "2025-01-16T07:50",
+              "author": "patient",
+              "body": "Sorry, should've told you! Saw rheum on New Year's Eve. They said rheumatoid arthritis, both blood tests for it positive and inflammation up. Methotrexate 6 pills every Sunday plus folic acid every day. They did a pregnancy test and hepatitis tests first and talked to me about not getting pregnant on it - we're not trying right now anyway. Labs every few months, they said you can draw them."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "List update",
+              "date": "2025-01-16T08:30",
+              "author": "PCP",
+              "body": "RA added per patient report; methotrexate 15 mg weekly and folic acid 1 mg added (outside rx). Records request faxed to rheumatology. Will draw CBC/CMP q3mo per their plan once the order arrives."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "outside_records",
+          "start": "2025-02-25T13:10",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology consultation",
+              "date": "2025-02-25T13:10",
+              "author": "rheumatology",
+              "body": "Outside rheumatology practice\nDate of service: 12/31/2024\nPatient: Riley Fenton (DOB 11/21/1989)\n\nHistory: 35-year-old teacher with APS type 2 (Addison disease, Hashimoto hypothyroidism), celiac disease and vitiligo seen earlier this year, referred for joint pain. For six months she has had fatigue and pain in the hands and knees, symmetric, with stiffness each morning. No recent infection or trauma.\n\nMedications: hydrocortisone 20 mg AM and 10 mg PM, fludrocortisone 0.1 mg daily, tacrolimus ointment. NKDA.\nFamily: mother T1DM and Hashimoto; sister vitiligo; maternal aunt adrenal insufficiency.\nSocial: never smoker, no alcohol.\n\nExam: synovitis with swelling and tenderness of the MCP and PIP joints of both hands. Knees without effusion. No rheumatoid nodules. Skin with vitiligo of hands and face.\n\nLabs: Hgb 12.1, ESR 45 mm/hr, CRP 24 mg/L, RF positive, anti-CCP positive, TSH 2.5. Hepatitis B surface antigen negative, hepatitis C antibody negative. Urine hCG negative.\n\nAssessment: seropositive rheumatoid arthritis, active.\n\nPlan: methotrexate 15 mg orally once weekly with folic acid 1 mg daily. Not attempting pregnancy at present; counseled that methotrexate is teratogenic and must be stopped at least 3 months before trying, and that reliable contraception is needed while on it - she and her husband will use contraception. Avoid alcohol (she does not drink). CBC with differential and CMP every 4 weeks for 3 months, then every 3 months; PCP office may draw. Return in 3 months.\n\ncc: primary care"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "date": "2025-02-25T16:40",
+              "author": "PCP",
+              "body": "Rheum letter (12/31) arrived today, about 8 weeks late. Consistent with what she told us. Standing CBC/CMP order entered for q3mo; first monthly draws were done at rheum's lab per patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "lab_only",
+          "start": "2025-03-25T07:15",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-03-25T07:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-03-25T07:15",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 60
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-03-25T07:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Methotrexate monitoring",
+              "date": "2025-03-25T15:00",
+              "author": "PCP",
+              "body": "CBC and CMP normal, liver enzymes normal on methotrexate. Copy to rheumatology. Portal note sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-28a",
+          "kind": "office_visit",
+          "start": "2025-05-28T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Follow-up autoimmune conditions",
+          "vitals": {
+            "bp": [
+              102,
+              76
+            ],
+            "hr": 65,
+            "spo2": 97,
+            "weight_kg": 65.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-28T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-05-28T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 239
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.41
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.6
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-28T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.85
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 30
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-28T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-05-28T16:40",
+              "author": "PCP",
+              "body": "Five months on methotrexate. Mornings much easier, she can grip again. Energy improved. Still GF, tTG was normal last summer. Adrenal fine, no sick days this winter.\n\nMeds: levothyroxine 112 mcg, hydrocortisone 20/10, fludrocortisone 0.1, methotrexate 15 mg weekly, folic acid 1 mg, tacrolimus oint. NKDA.\n\nExam: vitals as charted. No synovitis in the hands today. Thyroid smooth, mildly full. Heart regular. Skin: depigmented macules hands and right temple.\n\nA/P\n1. RA - better on MTX. CBC/CMP today for monitoring.\n2. Hypothyroidism - TSH/free T4 today (endo visit delayed to fall on their end).\n3. Addison's - BMP portion of CMP.\n4. Celiac, vitiligo - stable.\nPhysical in August; discuss pneumonia and shingles vaccines then since she's on methotrexate."
+            }
+          ],
+          "state": {
+            "bp": [
+              108,
+              70
+            ],
+            "weight_kg": 65.1,
+            "labs": {
+              "Free Thyroxine": 1.2,
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-30a",
+          "kind": "portal_message",
+          "start": "2025-05-30T09:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-05-30T09:10",
+              "author": "PCP",
+              "body": "All normal: thyroid (TSH 1.9, free T4 1.2), blood counts and liver tests on the methotrexate, sodium and potassium. Enjoy the end of the school year."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "portal_message",
+          "start": "2025-06-10T21:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hair coming out",
+              "date": "2025-06-10T21:05",
+              "author": "patient",
+              "body": "Weird one. For about a week I'm finding clumps of hair on my pillow and my husband found a totally bald round spot on the back of my head, and now I see another one. Doesn't hurt or itch. Is this the methotrexate?? My dermatologist can see me the 30th, should I go to that?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hair coming out",
+              "date": "2025-06-11T07:25",
+              "author": "PCP",
+              "body": "Methotrexate can thin hair a little all over, but round, completely bald patches sound more like alopecia areata, another autoimmune condition that travels with the ones you have. Your dermatologist is the right person and the 30th is fine. If you notice a rash, sores, or the patches becoming red or scaly before then, let me know and I'll see you."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-30a",
+          "kind": "specialist_visit",
+          "start": "2025-06-30T11:00",
+          "service": "Dermatology",
+          "reason": "Patchy hair loss",
+          "procedures": [
+            {
+              "procedure": "Intralesional injection of skin",
+              "snomed": "27581000",
+              "performed": "2025-06-30T11:25"
+            }
+          ]
+        },
+        {
+          "id": "2025-07-10a",
+          "kind": "outside_records",
+          "start": "2025-07-10T10:20",
+          "conditions": [
+            {
+              "label": "Alopecia areata",
+              "action": "diagnosed",
+              "onset": "2025-06-30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Dermatology follow-up",
+              "date": "2025-07-10T10:20",
+              "author": "dermatology",
+              "body": "Outside dermatology office - follow-up visit 6/30/2025\n\nRiley Fenton, 35. Known to us for vitiligo. Three weeks of hair shedding: handfuls on the pillow in the mornings and several round areas of complete hair loss on the scalp. No pain, itch or burning. Thyroid tests from her PCP last month were normal.\n\nMeds: hydrocortisone, fludrocortisone, levothyroxine, methotrexate 15 mg weekly with folic acid, tacrolimus ointment. NKDA.\n\nExam: three sharply circumscribed round patches of alopecia on the scalp, smooth skin, no erythema, scale or scarring. No lymphadenopathy. Nails: no pitting or onycholysis. Known vitiligo macules on hands and face, stable; the rest of the skin is unremarkable.\n\nImpression: alopecia areata, patchy.\n\nProcedure: after verbal consent, intralesional triamcinolone acetonide 10 mg/mL was injected into the three patches, about 0.1 mL per site, total 1.2 mL. Tolerated well.\n\nPlan: repeat injections every 4 to 6 weeks as needed. Continue tacrolimus to vitiligo. Return 6 weeks.\n\ncc: PCP"
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside letter reviewed",
+              "date": "2025-07-10T12:30",
+              "author": "PCP",
+              "body": "Alopecia areata per derm, intralesional steroid started there. Problem list updated."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-26a",
+          "kind": "annual_physical",
+          "start": "2025-08-26T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              124,
+              67
+            ],
+            "hr": 66,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 65.0
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-08-26T09:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Platelets",
+                  "value": 280
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.6
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-26T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 10.0
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-08-26T09:50",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 177
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 58
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 97
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 119
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-26T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-08-26T09:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-08-26T09:55"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-08-26T09:57"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-26T10:15",
+              "author": "PCP",
+              "body": "Annual, 35F. Back to school next week.\n\nInterval: alopecia areata diagnosed by derm in June, treated with injections there. RA well controlled on methotrexate - rheum follow-up in May was fine per pt. GF diet, no GI symptoms. Adrenal: no sick days. Levothyroxine nightly.\n\nMeds: levothyroxine 112 mcg, hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg, methotrexate 15 mg weekly, folic acid 1 mg, tacrolimus 0.1% oint. NKDA.\nNever smoker, no alcohol. PHQ-9: 3.\n\nExam: vitals as charted. Scalp: patches as described by derm. Depigmented macules hands. Thyroid mildly full, smooth. Heart regular, lungs clear. No synovitis. No edema.\n\nA/P\n1. RA on methotrexate - CBC/CMP today.\n2. APS-2 (Addison's, Hashimoto) - CMP; TSH normal in May.\n3. Celiac, vitiligo, alopecia areata - stable, per specialists.\n4. Lipids today.\n5. Immunizations: on methotrexate, so PCV20 today and first Shingrix today; second Shingrix in 2-6 months. Flu/COVID in October.\nReturn in 3-4 months."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 64.8
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-09-30a",
+          "kind": "office_visit",
+          "start": "2025-09-30T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Palpitations",
+          "medications": [
+            {
+              "drug": "levothyroxine sodium 0.112 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Thyrotoxicosis"
+            },
+            {
+              "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Palpitations, thyrotoxicosis"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              78
+            ],
+            "hr": 104,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-09-30T16:25",
+              "resulted": "2025-10-01T08:40",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 2.6
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-30T16:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 259
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.55
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-09-30T16:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.83
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 70
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-09-30T16:05",
+              "text": "Sinus tachycardia, rate 104. Normal axis. PR, QRS and QT intervals normal. No ST or T wave changes.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-09-30T15:45"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-09-30T16:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-09-30T16:50",
+              "author": "PCP",
+              "body": "S: Heart racing on and off for about a month, worse when teaching, sometimes lying in bed. Too warm in rooms where everyone else is fine, sweating more. Lost about 3 kg without trying. Hands a bit shaky writing on the board. No chest pain, no fainting, no shortness of breath at rest. Taking levothyroxine 112 mcg as always - no extra doses, no new supplements, no biotin. Hydrocortisone and fludrocortisone unchanged. Methotrexate weekly.\n\nO: HR 104 regular, BP as charted. Weight 62 kg (65 in August). Warm, slightly damp skin. Fine tremor of outstretched hands. Thyroid diffusely enlarged, nontender. Lungs clear. ECG sinus tach, no arrhythmia.\n\nA/P: Clinical thyrotoxicosis on a dose of levothyroxine she's been stable on for 2+ years. Overreplacement doesn't fit a steady dose. With an enlarged gland and her autoimmune background I'm worried she's turned hyperthyroid on her own (Graves can follow Hashimoto). TSH, free T4 today. Holding levothyroxine as of today. Propranolol 20 mg twice daily for the racing heart; check pulse before doses and skip if under 60 or lightheaded. Adrenal: no change. Urgent endocrinology - will call them tomorrow with the numbers. CBC/CMP with today's draw for MTX."
+            }
+          ],
+          "state": {
+            "bp": [
+              124,
+              72
+            ],
+            "weight_kg": 62.0,
+            "labs": {
+              "Free Thyroxine": 2.6,
+              "Thyroid Stimulating Hormone": 0.01
+            }
+          },
+          "measure": [
+            "bp",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "portal_message",
+          "start": "2025-10-01T12:30",
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "Thyrotoxicosis off levothyroxine question; TSH <0.01, free T4 2.6"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid results",
+              "date": "2025-10-01T12:30",
+              "author": "PCP",
+              "body": "Riley, your thyroid is now overactive: TSH under 0.01 and free T4 2.6. Stay off the levothyroxine. I spoke with your endocrinologist's office and they will see you October 21; they'll want to repeat the levels off the pill and check the antibody that tells us whether this is Graves. Keep taking the propranolol. If your heart races and won't settle, you get chest pain or feel faint, go to the ED. Blood counts and liver tests were normal."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Thyroid results",
+              "date": "2025-10-01T18:11",
+              "author": "patient",
+              "body": "Ok. The propranolol already helps, heart isn't pounding in class. See them the 21st."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "nurse_visit",
+          "start": "2025-10-08T15:35",
+          "reason": "Flu and COVID vaccines",
+          "vitals": {
+            "bp": [
+              132,
+              73
+            ],
+            "hr": 56
+          },
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-08T15:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T15:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-08T15:42"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-10-08T16:00",
+              "author": "RN",
+              "body": "Flu and 2025-26 COVID given. Pulse checked at pt's request since starting propranolol, recorded. No reaction at 15 min. Shingrix #2 due in November - booked 11/4."
+            }
+          ],
+          "measure": [
+            "hr",
+            "bp"
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "specialist_visit",
+          "start": "2025-10-21T14:00",
+          "service": "Endocrinology",
+          "reason": "Thyrotoxicosis",
+          "orders": [
+            {
+              "id": "endo-referral-2025",
+              "action": "done",
+              "date": "2025-10-21T14:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-10-23a",
+          "kind": "portal_message",
+          "start": "2025-10-23T19:40",
+          "conditions": [
+            {
+              "label": "Graves disease",
+              "action": "diagnosed",
+              "onset": "2025-10-21"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (20 mg) by mouth daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Endo visit update",
+              "date": "2025-10-23T19:40",
+              "author": "patient",
+              "body": "Update from endo: they said it's Graves now on top of the Hashimoto, the antibody that stimulates the thyroid came back positive and my levels were still high after 3 weeks off levothyroxine. Started methimazole 20 mg a day (picked it up today) and stay on the propranolol. They want to take the whole thyroid out - surgery is set for late January when school has a break. They said they'd send you a note."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Endo visit update",
+              "date": "2025-10-24T07:15",
+              "author": "PCP",
+              "body": "Thanks for filling me in - that's a lot in one year. Methimazole and Graves are on your chart now. One important thing with methimazole: if you get a sore throat, mouth sores or a fever, stop it and get a blood count the same day - call us or go to urgent care. Also don't skip doses, the thyroid can bounce back hard. I'll watch for their letter."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-04a",
+          "kind": "nurse_visit",
+          "start": "2025-11-04T15:30",
+          "reason": "Shingrix dose 2",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-04T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-11-04T15:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "date": "2025-11-04T15:50",
+              "author": "RN",
+              "body": "Second Shingrix, R deltoid. Series complete. Pt says palpitations much better on methimazole and propranolol. Endo letter still not received - pt to ask them to fax it."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "lab_only",
+          "start": "2025-11-18T07:20",
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-11-18T07:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 6
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-18T07:20",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-18T07:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Monitoring labs",
+              "date": "2025-11-18T14:10",
+              "author": "PCP",
+              "body": "Quarterly methotrexate labs, now also on methimazole: white count and neutrophils normal, liver enzymes normal. cc rheum."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-24a",
+          "kind": "hospital_admission",
+          "start": "2025-12-24T04:10",
+          "end": "2025-12-29T13:30",
+          "service": "Internal Medicine",
+          "reason": "Thyroid storm",
+          "vitals": [
+            {
+              "time": "2025-12-24T04:15",
+              "bp": [
+                155,
+                95
+              ],
+              "hr": 132,
+              "rr": 28,
+              "temp_c": 39.8
+            },
+            {
+              "time": "2025-12-25T08:00",
+              "bp": [
+                128,
+                78
+              ],
+              "hr": 96,
+              "rr": 18,
+              "temp_c": 37.9
+            },
+            {
+              "time": "2025-12-29T09:00",
+              "bp": [
+                116,
+                72
+              ],
+              "hr": 78,
+              "rr": 16,
+              "temp_c": 36.8
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-12-24T04:30",
+              "results": [
+                {
+                  "test": "Total T3",
+                  "loinc": "3053-6",
+                  "unit": "ng/dL",
+                  "range": {
+                    "low": 80,
+                    "high": 180
+                  },
+                  "value": 260
+                },
+                {
+                  "test": "Total T4",
+                  "loinc": "3026-2",
+                  "unit": "ug/dL",
+                  "range": {
+                    "low": 5,
+                    "high": 12
+                  },
+                  "value": 18
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "text": "<0.01"
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-12-24T04:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 236
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.0
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 64
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-24T04:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 98
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.76
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 104
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-12-24T05:10",
+              "results": [
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.017
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.6
+                },
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-12-24T04:35",
+              "resulted": "2025-12-29T07:00",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth at 5 days"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-12-24T04:20",
+              "text": "Atrial fibrillation with rapid ventricular response, ventricular rate about 140. Normal axis. No acute ST elevation.",
+              "conclusion": "Atrial fibrillation with rapid ventricular response."
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-12-24T05:00",
+              "text": "Portable AP view. Lungs clear. No effusion or pneumothorax. Heart size normal. Mediastinum not widened.",
+              "conclusion": "No acute cardiopulmonary process."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-12-26T07:30",
+              "text": "Sinus rhythm, rate 88. Normal intervals. No ST changes.",
+              "conclusion": "Sinus rhythm."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-12-24T04:10"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-12-24T08:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-12-29T12:00"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-30a",
+          "kind": "portal_message",
+          "start": "2025-12-30T10:05",
+          "conditions": [
+            {
+              "label": "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm",
+              "action": "diagnosed",
+              "onset": "2025-12-24",
+              "icd10": "E05.01"
+            },
+            {
+              "label": "Paroxysmal atrial fibrillation",
+              "action": "diagnosed",
+              "onset": "2025-12-24"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose increased at hospital discharge"
+            },
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (20 mg) by mouth twice daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Graves disease"
+            },
+            {
+              "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Dose changed at hospital discharge"
+            },
+            {
+              "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 20,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Thyrotoxicosis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2025-12-30T10:05",
+              "author": "patient",
+              "body": "Hi - wanted you to know I was admitted on the 24th, home yesterday. I'd run out of methimazole right as break started and figured a few days wouldn't matter, it was about a week. Woke up with my heart going crazy, fever, couldn't breathe right, my husband says I wasn't making sense. They said thyroid storm and my heart was in afib, I was in the ICU 2 days. Heart back to normal rhythm. Now methimazole 20 twice a day and propranolol 3 times a day, hydrocortisone back to normal. Surgery still Jan 27. Do you need to see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2025-12-30T12:40",
+              "author": "PCP",
+              "body": "I'm so glad you're home and okay. Yes - let's see you next week, Tuesday 1/6 at 4. We'll check your rhythm and a blood count and liver tests on the higher methimazole. I've updated your medication list from what you wrote and requested the hospital records. Please don't let the methimazole run out again - set refills to auto at the pharmacy. Same rules: fever, sore throat or mouth sores, get a blood count that day."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "office_visit",
+          "start": "2026-01-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, thyroid storm",
+          "conditions": [
+            {
+              "label": "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm",
+              "action": "resolved",
+              "icd10": "E05.01"
+            },
+            {
+              "label": "Paroxysmal atrial fibrillation",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              109,
+              67
+            ],
+            "hr": 78,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 61.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-01-06T16:35",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 8.0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 5.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.68
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 63
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 27
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-01-06T16:35",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 29
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-01-06T16:15",
+              "text": "Normal sinus rhythm, rate 76. Normal axis and intervals. No ST or T wave abnormality.",
+              "conclusion": "Normal sinus rhythm. Normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-01-06T16:00"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-01-06T16:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-01-06T16:50",
+              "author": "PCP",
+              "body": "Post-hospital visit. Admitted 12/24-12/29 to a regional hospital with thyroid storm after about a week without methimazole; AF with RVR on arrival, back in sinus within 2 days per patient. Discharge summary not yet received - history from patient.\n\nNow: feels washed out but much better. No palpitations since discharge. No fever, sore throat or mouth sores. Taking methimazole 20 mg BID, propranolol 20 mg TID, hydrocortisone 20/10 (stress doses stopped at discharge), fludrocortisone, methotrexate weekly and folic acid. Off levothyroxine since September.\n\nExam: HR 78 regular. BP as charted. Weight down to 61. Fine tremor gone. Thyroid enlarged, nontender. Heart regular without murmur. Lungs clear.\n\nECG: normal sinus rhythm.\n\nA/P\n1. Thyroid storm, resolved; Graves disease on methimazole - CBC with diff and liver tests today on the higher dose. Total thyroidectomy with surgery 1/27. Stressed no missed doses.\n2. Paroxysmal AF during storm - in sinus today; was triggered by thyrotoxicosis. No anticoagulation per hospital; agree (CHA2DS2-VASc 1 for sex alone).\n3. Addison's - perioperative stress dosing will be planned by surgery/endo; she knows to ask.\n4. RA - methotrexate continues; rheum aware of surgery."
+            }
+          ],
+          "state": {
+            "bp": [
+              114,
+              70
+            ],
+            "weight_kg": 61.4
+          },
+          "measure": [
+            "bp",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "outside_records",
+          "start": "2026-01-08T11:30",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-01-08T11:30",
+              "author": "hospital medicine",
+              "body": "Regional hospital - Discharge Summary\nAdmitted: 12/24/2025 via the emergency department. Discharged: 12/29/2025.\nPatient: Riley Fenton, 36F\n\nPrincipal diagnosis: thyroid storm due to Graves disease.\nSecondary: atrial fibrillation with rapid ventricular response, resolved; autoimmune polyendocrine syndrome type 2 with primary adrenal insufficiency; rheumatoid arthritis; celiac disease; vitiligo; alopecia areata.\n\nPresentation: two days of palpitations, breathlessness and fever. She had been without methimazole for about a week; she continued her hydrocortisone. In the ED: T 39.8 C, HR 132, BP 155/95, RR 28. Agitated and intermittently confused. Skin warm and moist, fine tremor, enlarged nontender thyroid with an audible bruit. ECG: atrial fibrillation with rapid ventricular response.\n\nLabs: total T3 260 ng/dL, total T4 18 ug/dL, TSH <0.01, WBC 16,000. Electrolytes and creatinine normal. Urinalysis negative. Blood cultures no growth. Portable chest film clear.\n\nCourse: admitted to the ICU. Treated with propranolol, propylthiouracil, potassium iodide given an hour after the first PTU dose, IV fluids, cooling and stress-dose IV hydrocortisone, which also covered her adrenal insufficiency. Converted to sinus rhythm on hospital day 2 with rate control. Given a CHA2DS2-VASc score of 1, anticoagulation was not started. Mental status cleared by day 2. Transferred to the floor on 12/26; switched back to methimazole and oral hydrocortisone, tapered to her usual dose by discharge.\n\nDischarge medications: methimazole 20 mg twice daily; propranolol 20 mg three times daily; hydrocortisone 20 mg AM / 10 mg PM; fludrocortisone 0.1 mg daily; methotrexate 15 mg weekly; folic acid 1 mg daily; tacrolimus 0.1% ointment; levothyroxine 112 mcg daily (home list).\n\nAllergies: NKDA.\n\nFollow-up: PCP in 1 week; endocrinology as scheduled; total thyroidectomy planned for late January."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "date": "2026-01-08T14:00",
+              "author": "PCP",
+              "body": "Discharge summary reviewed, matches pt's account. Their med list still carries levothyroxine from an old home list - she has been off it since 9/30 and is not taking it. Our list is correct."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08b",
+          "kind": "portal_message",
+          "start": "2026-01-08T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2026-01-08T15:20",
+              "author": "PCP",
+              "body": "Your white count, neutrophils and liver tests are normal on the methimazole. One note: the hospital paperwork lists levothyroxine - you should NOT be taking it right now, which I think you know. Good luck on the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "procedure_visit",
+          "start": "2026-01-27T07:00",
+          "end": "2026-01-28T11:00",
+          "service": "General Surgery",
+          "reason": "Total thyroidectomy for Graves disease",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-01-28T05:30",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 87
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Total thyroidectomy",
+              "snomed": "24443003",
+              "performed": "2026-01-27T08:10"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "outside_records",
+          "start": "2026-02-10T09:15",
+          "medications": [
+            {
+              "drug_text": "methimazole 10 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Total thyroidectomy"
+            },
+            {
+              "drug": "propranolol hydrochloride 20 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Total thyroidectomy"
+            },
+            {
+              "drug": "levothyroxine sodium 0.112 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily on an empty stomach",
+              "dose": {
+                "value": 112,
+                "unit": "ug"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Postthyroidectomy hypothyroidism"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-01-27T08:10",
+              "text": "Specimen: thyroid, total thyroidectomy (right and left lobes with isthmus). Sections show diffuse follicular hyperplasia with papillary infoldings and scalloped colloid, and a patchy background lymphocytic infiltrate with germinal centers. No nodules. Parathyroid tissue not identified. No malignancy.",
+              "conclusion": "Thyroid, total thyroidectomy: diffuse hyperplasia consistent with Graves disease, with lymphocytic thyroiditis. Negative for malignancy.",
+              "issued": "2026-01-30T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: total thyroidectomy",
+              "date": "2026-02-10T09:15",
+              "author": "general surgery",
+              "body": "Outside surgery service, regional hospital\nDate of operation: 01/27/2026\nPreoperative diagnosis: Graves disease, status post thyroid storm.\nProcedure: total thyroidectomy.\nAnesthesia: general.\nPreparation: methimazole continued; potassium iodide drops for 10 days before surgery. Stress-dose IV hydrocortisone at induction and for 24 hours for primary adrenal insufficiency, then back to her home dose.\nFindings: diffusely enlarged, vascular gland. Both recurrent laryngeal nerves identified and preserved. Parathyroids identified and preserved in situ.\nEBL: minimal. Complications: none.\nPostoperative: overnight observation. Calcium normal the next morning. Voice normal. Discharged 01/28.\nDischarge medications: levothyroxine 112 mcg daily; stop methimazole and propranolol. Continue hydrocortisone 20/10, fludrocortisone 0.1, methotrexate and folic acid.\nFollow-up: surgical clinic 2 weeks; endocrinology TSH in 6 weeks.\nAllergies: NKDA."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "date": "2026-02-10T12:45",
+              "author": "PCP",
+              "body": "Op note and path reviewed: total thyroidectomy 1/27, benign. Methimazole and propranolol off, levothyroxine 112 back on. List updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-thyroidectomy follow-up",
+          "vitals": {
+            "bp": [
+              106,
+              72
+            ],
+            "hr": 70,
+            "spo2": 96,
+            "weight_kg": 63.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-10T16:30",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                },
+                {
+                  "test": "Free Thyroxine",
+                  "value": 1.3
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-03-10T16:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.3
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 241
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 65
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 26
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-03-10T16:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 28
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 73
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-03-10T15:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2026-03-10T16:40",
+              "author": "PCP",
+              "body": "Six weeks after total thyroidectomy. Feels steadier than she has in a year: no palpitations, sleeping, back at work since early February. Voice normal, no tingling around the mouth or in the fingers. Levothyroxine 112 mcg nightly. Endo asked us to draw the 6-week TSH so she doesn't make another trip.\n\nExam: vitals as charted, weight coming back up. Low collar incision well healed. Heart regular. No tremor.\n\nA/P\n1. Postthyroidectomy hypothyroidism (Graves, prior Hashimoto) - TSH and free T4 today, results to endo.\n2. Addison's - stable, CMP today.\n3. RA on methotrexate - quarterly CBC/CMP today.\n4. Celiac, vitiligo, alopecia - no change.\nPhysical in August."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              68
+            ],
+            "weight_kg": 63.2,
+            "labs": {
+              "Free Thyroxine": 1.3,
+              "Thyroid Stimulating Hormone": 2.1
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid level after surgery",
+              "date": "2026-03-12T08:20",
+              "author": "PCP",
+              "body": "TSH 2.1 and free T4 1.3 - right on target with 112 mcg, so no dose change. Calcium, blood counts and liver tests normal. I've sent these to your endocrinologist."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain after meals",
+          "vitals": {
+            "bp": [
+              115,
+              76
+            ],
+            "hr": 57,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 64.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-21T16:40",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 65
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.86
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-21T16:40",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-04-21T16:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2026",
+              "action": "placed",
+              "order": "Right upper quadrant ultrasound",
+              "category": "imaging",
+              "reason": "Postprandial right upper abdominal pain"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-04-21T16:45",
+              "author": "PCP",
+              "body": "S: Since about February, maybe six episodes of pain under the right ribs starting 30-60 min after a heavier or fattier meal (a GF pizza night, a rich dinner out), lasting 2-3 hours then gone. No fever, no yellowing, urine and stools normal colors. Not like her old celiac bloating - she's careful with gluten and tTG was normal. Between episodes she feels fine. Adrenal meds unchanged; no vomiting so no missed doses.\n\nO: Afebrile, vitals as charted. Abdomen soft, nontender today, no organomegaly, no mass. No jaundice.\n\nA/P: Episodic postprandial RUQ pain, pain-free between attacks - biliary colic is most likely. CMP (liver tests) and lipase today, RUQ ultrasound this week. If gallstones, surgery referral. Reviewed: if pain lasts more than 6 hours, fever or vomiting, she's to go to the ED and take her stress dose of hydrocortisone if she can keep it down."
+            }
+          ],
+          "state": {
+            "bp": [
+              112,
+              70
+            ],
+            "weight_kg": 64.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "imaging",
+          "start": "2026-04-24T08:30",
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-04-24T08:30",
+              "text": "Technique: grayscale and color flow sonography of the right upper quadrant.\nGallbladder: multiple mobile echogenic shadowing stones, the largest about 1.1 cm. Gallbladder wall not thickened. No pericholecystic fluid.\nBile ducts: common bile duct 4 mm. No intrahepatic biliary dilatation.\nLiver: normal size and echotexture, no focal lesion.\nPancreas: visualized head and body unremarkable.\nRight kidney: normal, no hydronephrosis.",
+              "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis. Normal-caliber bile duct."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ruq-us-2026",
+              "action": "done",
+              "date": "2026-04-24T08:30"
+            }
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T12:15",
+          "conditions": [
+            {
+              "label": "Cholelithiasis",
+              "action": "diagnosed",
+              "onset": "2026-04-24"
+            }
+          ],
+          "orders": [
+            {
+              "id": "surg-referral-2026",
+              "action": "placed",
+              "order": "General Surgery referral",
+              "category": "referral",
+              "to": "General Surgery",
+              "reason": "Symptomatic cholelithiasis; primary adrenal insufficiency needs perioperative stress dosing"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "date": "2026-04-27T12:15",
+              "author": "PCP",
+              "body": "The ultrasound shows gallstones, and no sign of an inflamed gallbladder. Your liver tests and lipase were normal. Since the stones are causing attacks, the usual fix is having the gallbladder removed laparoscopically. I've referred you to general surgery and noted that you'll need stress-dose steroids around the operation. Until then, smaller, lower-fat meals tend to help."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ultrasound result",
+              "date": "2026-04-27T17:30",
+              "author": "patient",
+              "body": "Figures. Can I wait for summer to do it? I can't miss the end of the year with my class."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ultrasound result",
+              "date": "2026-04-28T07:05",
+              "author": "PCP",
+              "body": "Many people do time it for a break - talk it over with the surgeon. If you have an attack that won't quit, fever or vomiting before then, don't wait."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "portal_message",
+          "start": "2026-05-27T19:20",
+          "orders": [
+            {
+              "id": "surg-referral-2026",
+              "action": "done",
+              "date": "2026-05-27T19:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gallbladder surgery date",
+              "date": "2026-05-27T19:20",
+              "author": "patient",
+              "body": "Saw the surgeon last week. Laparoscopic gallbladder removal is booked for July 1, first day of summer for me. They said they'd coordinate steroids with endo. Do you need anything from them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gallbladder surgery date",
+              "date": "2026-05-28T07:40",
+              "author": "PCP",
+              "body": "Sounds like a good plan. I'll ask their office for the consult note. If they want a pre-op exam from us, just book it. Remember to bring your hydrocortisone schedule to pre-op."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "hospital_admission",
+          "start": "2026-07-01T05:40",
+          "end": "2026-07-06T12:00",
+          "service": "General Surgery",
+          "reason": "Adrenal crisis; symptomatic cholelithiasis",
+          "vitals": [
+            {
+              "time": "2026-07-01T05:45",
+              "bp": [
+                85,
+                50
+              ],
+              "hr": 120,
+              "rr": 22,
+              "temp_c": 38.5
+            },
+            {
+              "time": "2026-07-01T07:30",
+              "bp": [
+                88,
+                54
+              ],
+              "hr": 112,
+              "rr": 20,
+              "temp_c": 38.1
+            },
+            {
+              "time": "2026-07-01T11:00",
+              "bp": [
+                108,
+                66
+              ],
+              "hr": 92,
+              "rr": 16,
+              "temp_c": 37.4
+            },
+            {
+              "time": "2026-07-06T08:00",
+              "bp": [
+                112,
+                70
+              ],
+              "hr": 74,
+              "rr": 14,
+              "temp_c": 36.7
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-01T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 130
+                },
+                {
+                  "test": "Potassium",
+                  "value": 5.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 55
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.84
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-01T06:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 3
+                },
+                {
+                  "test": "Lipase",
+                  "value": 27
+                }
+              ]
+            },
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-01T06:00",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 268
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.67
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.1
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 62
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 28
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-07-01T06:00",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-02T05:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.8
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Surgical pathology report",
+              "performed": "2026-07-03T09:40",
+              "text": "Specimen: gallbladder, laparoscopic cholecystectomy. Gallbladder containing multiple yellow-tan faceted stones. Wall without acute inflammation. No dysplasia or malignancy.",
+              "conclusion": "Gallbladder with cholelithiasis. Negative for malignancy.",
+              "issued": "2026-07-07T10:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-01T05:40"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-07-01T10:00"
+            },
+            {
+              "procedure": "Laparoscopic cholecystectomy",
+              "performed": "2026-07-03T09:40"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-07-06T11:00"
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telephone",
+          "start": "2026-07-08T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "date": "2026-07-08T10:15",
+              "author": "RN",
+              "body": "Called pt 2 days after discharge. She came to the ED the morning of her gallbladder surgery after 2 days of vomiting and not keeping her pills down; told it was an adrenal crisis. Surgery done 7/3. Home 7/6. Today: eating, no vomiting, port sites clean, pain controlled with acetaminophen. Back on hydrocortisone 20/10 after the hospital taper, fludrocortisone, levothyroxine, methotrexate (restarting this weekend per surgeon), folic acid. Has an emergency hydrocortisone injection kit now and the hospital's sick-day sheet. Reviewed: if vomiting and can't keep hydrocortisone down, use the injection and go to the ED. Follow-up booked 7/31 (first slot she could make). Discharge summary requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "outside_records",
+          "start": "2026-07-20T14:30",
+          "conditions": [
+            {
+              "label": "Addisonian crisis",
+              "action": "diagnosed",
+              "onset": "2026-07-01",
+              "icd10": "E27.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "hydrocortisone 100 MG Injection",
+              "action": "historical",
+              "sig": "Inject 100 mg into the thigh muscle once for vomiting or inability to take oral hydrocortisone, then go to the emergency department",
+              "dose": {
+                "value": 100,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Intramuscular",
+              "course": "chronic",
+              "reason": "Primary adrenal insufficiency, emergency use"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "date": "2026-07-20T14:30",
+              "author": "general surgery",
+              "body": "Regional hospital - Discharge Summary\nAdmission: 07/01/2026 (via ED). Discharge: 07/06/2026.\nPatient: Riley Fenton, 36F. Allergies: NKDA.\n\nDiagnoses: adrenal crisis in known primary adrenal insufficiency (APS type 2); symptomatic cholelithiasis, status post laparoscopic cholecystectomy 07/03/2026.\nOther: Graves disease s/p total thyroidectomy 01/2026, on levothyroxine; rheumatoid arthritis; celiac disease; vitiligo; alopecia areata.\n\nHistory: she was scheduled for elective laparoscopic cholecystectomy on the morning of 7/1. She presented to the ED instead with severe abdominal pain and vomiting; for two days she had been unable to keep down her medicines, including hydrocortisone.\n\nED: BP 85/50, HR 120, T 38.5 C. Abdomen diffusely tender, no rebound or guarding. Sodium 130, potassium 5.5, glucose 55 mg/dL, 8 AM cortisol 3 ug/dL drawn before steroid. Liver tests and lipase normal. Blood pressure remained low after 2 L of normal saline.\n\nCourse: hydrocortisone 100 mg IV given, IV dextrose for the low glucose, and further saline. Blood pressure, glucose and mental status recovered within hours. Admitted on hydrocortisone 50 mg IV every 6 hours. The operation was postponed. Sodium and potassium normalized by the next morning. Laparoscopic cholecystectomy performed 07/03 under stress-dose coverage without complication. Pathology: cholelithiasis, benign. Hydrocortisone tapered to her home dose by 07/05. Tolerating diet at discharge.\n\nDischarge medications: hydrocortisone 20 mg every morning and 10 mg every evening; fludrocortisone 0.1 mg daily; levothyroxine 112 mcg daily; methotrexate 15 mg weekly (resume after one missed week); folic acid 1 mg daily; tacrolimus 0.1% ointment. NEW: hydrocortisone 100 mg injection kit for emergency use.\n\nPatient education: sick-day rules given in writing - double or triple oral hydrocortisone for fever or illness; if vomiting or unable to take tablets, inject 100 mg IM and come to the ED. Medical alert identification advised.\n\nFollow-up: PCP 2-4 weeks; surgery clinic 2 weeks; endocrinology."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "date": "2026-07-20T16:10",
+              "author": "PCP",
+              "body": "Discharge summary reviewed. Adrenal crisis from 2 days of vomiting/missed hydrocortisone, then lap chole 7/3. Emergency hydrocortisone kit added to list. Follow-up 7/31."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, adrenal crisis and cholecystectomy",
+          "conditions": [
+            {
+              "label": "Addisonian crisis",
+              "action": "resolved",
+              "icd10": "E27.2"
+            },
+            {
+              "label": "Cholelithiasis",
+              "action": "resolved"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              108,
+              67
+            ],
+            "hr": 60,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 64.8
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-07-31T11:10",
+              "resulted": "2026-07-31T17:30",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 271
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 38.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 61
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 29
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 3
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 0
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 4.7
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-07-31T11:10",
+              "resulted": "2026-07-31T17:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 17
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 77
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-07-31T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2026-07-31T11:20",
+              "author": "PCP",
+              "body": "36F, four weeks after the July admission (adrenal crisis on the morning of her planned cholecystectomy; lap chole 7/3; discharge summary reviewed 7/20).\n\nSince home: eating normally, no more RUQ attacks, no nausea or vomiting. Energy back to baseline. No lightheadedness or salt craving. Restarted methotrexate on schedule. Has the injection kit in her bag and one at home; husband watched the teaching video with her.\n\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, levothyroxine 112 mcg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, tacrolimus 0.1% oint, hydrocortisone 100 mg IM kit for emergencies. NKDA.\n\nExam: vitals as charted, BP normal sitting. Well hydrated. Port sites healed. Abdomen soft, nontender. No hyperpigmentation.\n\nA/P\n1. Adrenal crisis, resolved; Addison disease (APS-2) - went over sick-day rules again with her in writing: stress-dose for fever over 38 or a bad illness, injection plus ED if she's vomiting. Med alert bracelet ordered by pt. CMP today.\n2. Cholelithiasis s/p cholecystectomy - recovered.\n3. Postthyroidectomy hypothyroidism on 112 mcg - TSH normal in March; endo following.\n4. RA on methotrexate - CBC/CMP today (due anyway).\n5. Celiac, vitiligo, alopecia areata - stable.\nPhysical normally in August; with all of this she'd rather wait until fall break. She'll book."
+            }
+          ],
+          "state": {
+            "bp": [
+              110,
+              70
+            ],
+            "weight_kg": 63.6
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Friday",
+              "date": "2026-08-03T08:45",
+              "author": "PCP",
+              "body": "Everything from Friday is normal - sodium, potassium and glucose look good on your usual hydrocortisone and fludrocortisone, and blood counts and liver tests are fine on methotrexate."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "date": "2026-08-18T09:05",
+              "author": "MA",
+              "body": "Renewal requests: levothyroxine 112 mcg #90 and fludrocortisone 0.1 mg #90. Labs 7/31 normal. Routed to PCP.\n\nPCP: both approved, 90 days x 3 refills. Methotrexate is rheum's - pharmacy redirected there."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letter for school nurse",
+              "date": "2026-08-24T14:30",
+              "author": "patient",
+              "body": "Hi! Teachers go back next week. Our school nurse wants a letter from you saying what to do if I get sick at school and that she can give me the hydrocortisone shot. Could you write one? Thank you."
+            },
+            {
+              "type": "Letter",
+              "title": "Letter for school health office",
+              "date": "2026-08-25T16:10",
+              "author": "PCP",
+              "body": "To the school nurse:\n\nMs. Riley Fenton is my patient. She has primary adrenal insufficiency and takes daily hydrocortisone. In an emergency her body cannot make the stress hormone it needs.\n\nIf she is vomiting and cannot keep down her tablets, has a severe illness or injury, or appears confused, faint or very weak, she or you should give her emergency hydrocortisone 100 mg by intramuscular injection in the outer thigh (she carries the kit) and call 911. Tell the responders she has adrenal insufficiency and has received hydrocortisone.\n\nShe has my permission to keep the kit with her at school. Please call our office with any questions.\n\nPrimary care physician"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Addisonian crisis|E27.2": {
+        "code": "E27.2",
+        "display": "Addisonian crisis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Autoimmune polyglandular failure|E31.0": {
+        "code": "E31.0",
+        "display": "Autoimmune polyglandular failure",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm|E05.01": {
+        "code": "E05.01",
+        "display": "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "fludrocortisone acetate 0.1 MG Oral Tablet": {
+        "code": "313979",
+        "display": "fludrocortisone acetate 0.1 MG Oral Tablet",
+        "ingredient": "fludrocortisone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "hydrocortisone 10 MG Oral Tablet": {
+        "code": "197782",
+        "display": "hydrocortisone 10 MG Oral Tablet",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "hydrocortisone 100 MG Injection": {
+        "code": "238755",
+        "display": "hydrocortisone 100 MG Injection",
+        "ingredient": "hydrocortisone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "methimazole 10 MG Oral Tablet": {
+        "code": "197941",
+        "display": "methimazole 10 MG Oral Tablet",
+        "ingredient": "methimazole",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "tacrolimus 0.001 MG/MG Topical Ointment": {
+        "code": "314266",
+        "display": "tacrolimus 0.001 MG/MG Topical Ointment",
+        "ingredient": "tacrolimus",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Immunoglobulin A": {
+        "code": "2458-8",
+        "display": "IgA [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "range": {
+          "low": 90,
+          "high": 325
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Thyroglobulin antibody": {
+        "code": "15210-8",
+        "display": "Thyroglobulin Ab [Presence] in Serum",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Total T3": {
+        "code": "3053-6",
+        "display": "Triiodothyronine (T3) [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "range": {
+          "low": 80,
+          "high": 180
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Total T4": {
+        "code": "3026-2",
+        "display": "Thyroxine (T4) [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "range": {
+          "low": 5,
+          "high": 12
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Intralesional injection of skin": {
+        "code": "27581000",
+        "display": "Intralesional injection of skin",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Total thyroidectomy": {
+        "code": "24443003",
+        "display": "Total thyroidectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

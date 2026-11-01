@@ -54,7 +54,7 @@
           ],
           "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 0}],
           "procedures": [{"procedure": "Office visit, new patient, high MDM", "performed": "2020-06-16T09:00"}, {"procedure": "Venipuncture", "performed": "2020-06-16T10:15"}],
-          "orders": [{"id": "prior-records", "action": "placed", "order": "Records request, prior primary care practice", "category": "procedure", "reason": "transfer of care"}],
+          "orders": [],
           "documents": [
             {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2020-06-16T10:10", "body": "68M here to establish. Previous PCP retired; wife found us through a neighbor. Came in on his portable tank, 2 L.\n\nLungs: told he has COPD several years back, on continuous O2 2 L by concentrator at home since about 2017, portable for outings. Uses tiotropium every morning and salmeterol twice a day, nebulized albuterol a couple of times a week, more in winter. Gets winded with a flight of stairs, gets the mail fine. No recent steroid bursts that he recalls.\n\nLiver: alcohol-related cirrhosis found on an ultrasound in 2018. Has not had a drink since January 2019. Sees an outside hepatology group twice a year for ultrasound and AFP. Says he was told there were no varices on a scope. Never had fluid or confusion.\n\nBP and sugar: on lisinopril 20, HCTZ 25 and metformin 1000 bid for years. Does not check sugars at home.\n\nC. diff 2019 - hospitalized about a week at an outside hospital, \"the worst I've ever felt.\" No recurrence.\n\nSmoking about 45 pack-years, quit 2014, went back to it for a few months in 2019 and stopped again. Alcohol as above, 4-6 drinks a day for decades before quitting. Retired construction foreman. Married, wife Ingrid.\nFHx: father COPD and lung cancer. Mother T2DM. Brother cirrhosis.\nPSH: none. NKDA.\n\nExam: thin, pleasant, mildly dyspneic after walking from the lot, speaking full sentences. BP and SpO2 as charted, on 2 L. No scleral icterus. Distant breath sounds, no wheeze. RRR, no murmur. Abdomen soft, nontender, no ascites appreciated. No asterixis. No edema.\n\nA/P\n1. COPD with chronic hypoxemic resp failure on 2 L - continue current inhalers and O2. Will take over DME orders once records are in.\n2. Alcoholic cirrhosis, compensated, abstinent - continue hepatology surveillance. Check hep B status for vaccination; will need hep A/B.\n3. HTN - at goal. Continue lisinopril/HCTZ.\n4. T2DM - A1c today.\n5. Hx severe C. diff - noted. Avoid unnecessary antibiotics.\n6. Screening: HCV, HIV today. Asking for prior colonoscopy report.\n\nLabs today. Records request sent. RTC 3 months."}
           ]
@@ -65,7 +65,7 @@
           "start": "2020-06-23T14:00",
           "service": "Health Information Management",
           "reason": "Records from prior primary care practice",
-          "orders": [{"id": "prior-records", "action": "done", "date": "2020-06-23T14:00"}],
+          "orders": [],
           "documents": [
             {"type": "Outside Records", "title": "Prior Practice Records Summary", "author": "PCP", "date": "2020-06-23T16:30", "body": "Records from his prior internist, 41 pages, reviewed.\n\n- 2018 abdominal ultrasound: nodular liver contour consistent with cirrhosis, no focal mass, no ascites. Cirrhosis attributed to alcohol.\n- 2019 upper endoscopy (outside GI): no esophageal or gastric varices.\n- 2019 discharge summary, outside hospital: severe C. difficile colitis, treated, discharged after 7 days.\n- 2018 colonoscopy: complete exam, no polyps.\n- Home oxygen started 2017 by his prior pulmonary provider, 2 L continuous.\n- Med list matches what he told me. Allergies: none.\n\nNothing else actionable. Colon screening done; with his other issues I do not plan to repeat it."}
           ]
@@ -117,7 +117,7 @@
           "start": "2020-10-20T13:00",
           "service": "Hepatology",
           "reason": "Cirrhosis surveillance",
-          "labs": [{"panel": null, "collected": "2020-10-20T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 3.9}]}],
+          "labs": [{"panel": null, "collected": "2020-10-20T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 3.9, "range": {"high": 10}}]}],
           "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2020-10-20T12:00", "text": "Liver: coarsened echotexture with a nodular contour. No focal hepatic mass. Portal vein patent with hepatopetal flow. Gallbladder without stones. Common bile duct 4 mm. No ascites.", "conclusion": "Cirrhotic liver morphology. No focal liver lesion."}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2020-10-26T09:00", "body": "Outside hepatology follow-up, visit date 10/20/2020.\n\nThank you for allowing us to continue seeing Mr. Lindqvist for alcohol-associated cirrhosis. He remains abstinent since January 2019. No ascites, bleeding or confusion.\n\nSurveillance ultrasound today shows a cirrhotic liver without focal lesion. AFP 3.9. Child-Pugh class A.\n\nRecommendations: continue abstinence; surveillance ultrasound and AFP every 6 months; hepatitis A/B vaccination, which we understand you have started. Variceal screening was negative in 2019; we will repeat endoscopy in the future as indicated.\n\nAllergies: NKDA.\n\nHepatology"}
@@ -182,7 +182,7 @@
           "start": "2021-04-20T13:30",
           "service": "Hepatology",
           "reason": "Cirrhosis surveillance",
-          "labs": [{"panel": null, "collected": "2021-04-20T13:00", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.4}]}],
+          "labs": [{"panel": null, "collected": "2021-04-20T13:00", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.4, "range": {"high": 10}}]}],
           "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2021-04-20T12:30", "text": "Nodular liver surface and heterogeneous echotexture, unchanged. No focal mass. Patent portal vein. No ascites. Gallbladder unremarkable.", "conclusion": "Stable cirrhotic liver. No focal lesion."}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2021-04-23T10:00", "body": "Hepatology visit 4/20/2021. Mr. Lindqvist remains well from a liver standpoint and abstinent. Ultrasound shows no focal lesion; AFP 4.4. Compensated, Child-Pugh A. Hep A/B series completed in your office - thank you. Continue 6-month surveillance. NKDA.\n\nHepatology"}
@@ -277,7 +277,7 @@
           "start": "2021-10-19T13:00",
           "service": "Hepatology",
           "reason": "Cirrhosis surveillance",
-          "labs": [{"panel": null, "collected": "2021-10-19T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.1}]}],
+          "labs": [{"panel": null, "collected": "2021-10-19T12:30", "results": [{"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 4.1, "range": {"high": 10}}]}],
           "reports": [{"study": "Right upper quadrant ultrasound", "performed": "2021-10-19T12:00", "text": "Cirrhotic morphology with nodular contour. No focal liver mass. Portal vein patent. No ascites. Gallbladder normal.", "conclusion": "No focal liver lesion. Stable cirrhosis."}],
           "documents": [
             {"type": "Consult Note", "title": "Hepatology Follow-up Letter", "author": "hepatology", "date": "2021-10-25T09:30", "body": "Hepatology follow-up 10/19/2021. Interval diagnosis of IPF noted; we agree with avoiding antifibrotics given hepatic metabolism. Liver compensated, abstinent. Ultrasound without focal lesion, AFP 4.1. Continue 6-month surveillance. NKDA.\n\nHepatology"}

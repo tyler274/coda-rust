@@ -1,10 +1,7 @@
 {
   "unit": "unit-2243",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002243/2024-02-12a: referral to \"Cardiac Rehabilitation\" names no catalog specialty",
-    "MRN00002243/2026-01-10b: procedure order \"14-day ambulatory cardiac monitor\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002243",
@@ -3291,18 +3288,27 @@
                   "test": "Troponin I",
                   "loinc": "10839-9",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 0.04
+                  },
                   "value": 0.08
                 },
                 {
                   "test": "Creatine kinase MB",
                   "loinc": "32673-6",
                   "unit": "U/L",
+                  "range": {
+                    "high": 25
+                  },
                   "value": 10
                 },
                 {
                   "test": "Myoglobin",
                   "loinc": "2639-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 90
                 }
               ]
@@ -4031,18 +4037,27 @@
                   "test": "Troponin I",
                   "loinc": "10839-9",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 0.04
+                  },
                   "value": 8.0
                 },
                 {
                   "test": "Creatine kinase MB",
                   "loinc": "32673-6",
                   "unit": "U/L",
+                  "range": {
+                    "high": 25
+                  },
                   "value": 50
                 },
                 {
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 80
                 }
               ]
@@ -6035,7 +6050,7 @@
             {
               "id": "event-monitor-2026",
               "action": "placed",
-              "order": "14-day ambulatory cardiac monitor",
+              "order": "Holter monitor",
               "category": "procedure",
               "to": "Cardiology",
               "reason": "Central retinal artery occlusion, evaluate for atrial fibrillation"
@@ -6497,19 +6512,19 @@
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pramipexole dihydrochloride 0.25 MG Oral Tablet": {
         "code": "859040",
         "display": "pramipexole dihydrochloride 0.25 MG Oral Tablet",
         "ingredient": "pramipexole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "rasagiline 1 MG Oral Tablet": {
         "code": "608328",
         "display": "rasagiline 1 MG Oral Tablet",
         "ingredient": "rasagiline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -6517,24 +6532,36 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Creatine kinase MB": {
         "code": "32673-6",
         "display": "Creatine kinase.MB [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "high": 25
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Myoglobin": {
         "code": "2639-3",
         "display": "Myoglobin [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Troponin I": {
         "code": "10839-9",
         "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 0.04
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

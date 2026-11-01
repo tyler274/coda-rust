@@ -1,0 +1,4780 @@
+{
+  "unit": "unit-1787",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001787",
+      "given": "Michelle",
+      "family": "Mazur",
+      "birth_date": "1989-11-03",
+      "address_line": "41 Cold Spring Road",
+      "phone": "+1-201-555-0198",
+      "email": "michelle.mazur@example.test",
+      "marital_status": "married",
+      "summary": "Schoolteacher in Belchertown with schizophrenia stable on risperidone and hereditary angioedema, who over ten years with the practice is diagnosed with PCOS, binge eating disorder, a prolactin-secreting microadenoma and pulmonary arterial hypertension, and has two high-risk pregnancies, the first ending in severe preeclampsia. Last seen after an ED visit for a lip and tongue attack of HAE; allergy referral open.",
+      "events": [
+        {
+          "id": "2016-08-30a",
+          "kind": "telephone",
+          "start": "2016-08-30T10:12",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient request",
+              "date": "2016-08-30T10:12",
+              "author": "front desk",
+              "body": "Caller is a 26 y/o teacher, recently moved to Belchertown, looking for a primary care doctor. Explained membership and that insurance still covers labs, specialists and meds. She would like to sign up. Booked new patient visit 9/13 at 8:00 so she can be done before school pickup duty. Release signed over the phone for her old primary care office; request faxed today. She mentioned a psychiatrist she already sees and that she carries an injectable for a swelling condition, will bring the box."
+            }
+          ]
+        },
+        {
+          "id": "2016-09-13a",
+          "kind": "establish_care",
+          "start": "2016-09-13T08:00",
+          "end": "2016-09-13T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {
+              "label": "Schizophrenia",
+              "action": "history",
+              "onset": "2011-03-01",
+              "note": "followed by outside psychiatry; stable"
+            },
+            {
+              "label": "Hereditary angioedema",
+              "action": "history",
+              "onset": "2005-06-01",
+              "note": "C1 inhibitor deficiency; mother and brother affected"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "risperidone 4 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 4,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "schizophrenia; prescribed by psychiatry"
+            },
+            {
+              "drug_text": "3 ML icatibant 10 MG/ML Prefilled Syringe",
+              "action": "historical",
+              "sig": "Inject 30 mg under the skin at onset of an attack; may repeat in 6 hours, no more than 3 doses in 24 hours",
+              "dose": {
+                "value": 30,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Subcutaneous",
+              "course": "chronic",
+              "reason": "acute hereditary angioedema attacks"
+            },
+            {
+              "drug_text": "prenatal vitamin Oral Tablet",
+              "uncoded": true,
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "supplement, over the counter"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              63
+            ],
+            "hr": 79,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 96,
+            "weight_kg": 73.4,
+            "height_cm": 164.6
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2016-09-13T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.1
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.54
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 42.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 213
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2016-09-13T08:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.77
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 96
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2016-09-13T08:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 110
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 201
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 66
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 124
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 135
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2016-09-13T08:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "None"
+            },
+            {
+              "item": "Occupation",
+              "value": "Schoolteacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2016-09-13T08:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2016-09-13T08:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2016-09-13T09:40",
+              "author": "PCP",
+              "body": "26-year-old woman, elementary school teacher, joining the practice after a move to Belchertown.\n\nPMH\n1. Schizophrenia. First episode in her early twenties. Sees an outside psychiatrist every few months who writes her risperidone. She describes herself as well; no voices or paranoia in years, sleeping fine, working full time. Insight good.\n2. Hereditary angioedema, C1 inhibitor deficiency. Diagnosed as a teenager, worked up after her mother and brother were diagnosed. Gets a swollen hand or a belly attack a few times a year, never her throat so far. Uses icatibant at home and it works within a couple of hours. Has not seen an immunologist since college and would like us to handle refills.\nNo surgeries.\n\nMeds: risperidone 4 mg daily; icatibant 30 mg SC prn attack; prenatal vitamin daily (OTC, takes it 'to be safe').\nAllergies: none to medications.\nFH: father with schizophrenia. Mother and younger brother with HAE.\nSH: teaches 2nd grade. Married. Never smoked, no alcohol, no drugs. Walks most evenings.\nGYN: periods present, not always regular. No contraception.\n\nROS otherwise negative.\n\nExam: well-appearing, calm, appropriate, linear thought. HEENT normal, no lip or tongue swelling today. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender. Extremities without edema. Skin without rash.\n\nA/P\n- Schizophrenia, stable on risperidone per psychiatry. Will get a release so their notes come here. Baseline metabolic labs given the antipsychotic: A1c, lipids, CMP, CBC.\n- HAE: will take over icatibant refills. Reviewed attack plan; ED for any throat tightness, voice change or trouble swallowing even if she has injected.\n- Prevention: HIV and hep C screening today. Pap history to come with old records. Flu shot next nurse visit once supply arrives.\n- BMI 27. Discussed activity and food choices briefly.\nRTC 1 year, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 73.5,
+            "height_cm": 165.0,
+            "labs": {
+              "Fasting Glucose": 86,
+              "Hemoglobin A1c": 5.2,
+              "Thyroid Stimulating Hormone": 1.8
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2016-09-16a",
+          "kind": "portal_message",
+          "start": "2016-09-16T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2016-09-16T16:05",
+              "author": "PCP",
+              "body": "Hi Michelle, all of your blood work from Tuesday came back in the normal range: blood count, kidney and liver tests, sugar (A1c), thyroid and cholesterol. HIV and hepatitis C screens were negative. Since risperidone can nudge weight, sugar and cholesterol over time, we'll repeat the sugar and cholesterol once a year. Nice to meet you."
+            }
+          ]
+        },
+        {
+          "id": "2016-09-26a",
+          "kind": "outside_records",
+          "start": "2016-09-26T11:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records from prior primary care office",
+              "date": "2016-09-26T11:30",
+              "author": "MA",
+              "body": "38 pages received by fax from previous primary care office. Highlights abstracted for the PCP:\n- Pap smear 04/2015: negative for intraepithelial lesion or malignancy.\n- Tdap 2014.\n- HAE noted on problem list since adolescence; icatibant last filled 06/2016.\n- Schizophrenia, managed by psychiatry; risperidone 4 mg.\n- No surgeries, no drug allergies.\nOriginals filed under media."
+            }
+          ]
+        },
+        {
+          "id": "2016-10-18a",
+          "kind": "nurse_visit",
+          "start": "2016-10-18T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2016-10-18T15:45"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2016-10-18T15:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization",
+              "date": "2016-10-18T15:50",
+              "author": "RN",
+              "body": "In after school for influenza vaccine. Screening questions negative, no egg or vaccine reactions. Given L deltoid IM, lot logged. VIS given. Waited 15 minutes, fine."
+            }
+          ]
+        },
+        {
+          "id": "2016-12-06a",
+          "kind": "outside_records",
+          "start": "2016-12-06T09:15",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2016-12-06T09:15",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit of 11/29/2016.\n\nDear colleague, thank you for taking on Ms. Mazur's primary care. I have followed her for schizophrenia for several years. She remains in sustained remission of positive symptoms on risperidone 4 mg at bedtime, with good function at work and at home. No extrapyramidal symptoms; AIMS 0. She knows to call if sleep falls apart or suspiciousness returns, her early signs. I see her every three months. I appreciate the yearly glucose and lipid monitoring on your end.\n\nOutpatient psychiatrist"
+            }
+          ]
+        },
+        {
+          "id": "2017-02-07a",
+          "kind": "pharmacy",
+          "start": "2017-02-07T13:20",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2017-02-07T13:20",
+              "author": "MA",
+              "body": "Specialty pharmacy faxed the annual prior authorization form for icatibant. Completed with diagnosis of hereditary angioedema type I, attack frequency a few per year, home use. PCP signed. Approval returned same afternoon, good for 12 months. Pt aware her refill ships Thursday."
+            }
+          ]
+        },
+        {
+          "id": "2017-04-11a",
+          "kind": "portal_message",
+          "start": "2017-04-11T07:02",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hand swelling",
+              "date": "2017-04-11T07:02",
+              "author": "patient",
+              "body": "Woke up with my right hand puffed up like a glove. It's one of my attacks, no hives, nothing in my throat. I gave myself the shot at 6 and it's already starting to go down. I have one syringe left, could you send a refill so I have two again?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hand swelling",
+              "date": "2017-04-11T08:15",
+              "author": "PCP",
+              "body": "Glad it's settling. Refill sent to the specialty pharmacy. Same rule as always: anything with your lips, tongue, throat or voice, go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2017-06-13a",
+          "kind": "outside_records",
+          "start": "2017-06-13T10:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2017-06-13T10:00",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit of 06/06/2017. Ms. Mazur continues well on risperidone 4 mg nightly. End of the school year stress handled without symptoms. Mood euthymic, no psychotic features. No movement side effects. Plan unchanged; return in three months."
+            }
+          ]
+        },
+        {
+          "id": "2017-10-24a",
+          "kind": "annual_physical",
+          "start": "2017-10-24T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              135,
+              72
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 73.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2017-10-24T07:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 112
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 201
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 118
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 136
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2017-10-24T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.82
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 100
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2017-10-24T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2017-10-24T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2017-10-24T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2017-10-24T07:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2017-10-24T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2017-10-24T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2017-10-24T08:30",
+              "author": "PCP",
+              "body": "Here before school for her yearly visit.\n\nInterval: three swelling episodes this year, two hands and one belly, all treated at home with icatibant, none involving the face. Psychiatry following, doing well. Cycles still unpredictable, sometimes 6 to 8 weeks apart; not trying to conceive, not avoiding it either.\n\nMeds: risperidone 4 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 2.\n\nExam: comfortable. HEENT, neck normal. Heart RRR, no murmur. Lungs clear. Abdomen benign. No edema. Skin: a few comedones along the jaw.\n\nPlan\n- Metabolic monitoring for risperidone: A1c, lipids, CMP drawn.\n- HAE: two syringes on hand, confirmed.\n- Cycles: she would rather watch for now. Revisit if they space out further.\n- Flu vaccine given. Pap up to date (2015).\nSee in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2017-10-26a",
+          "kind": "portal_message",
+          "start": "2017-10-26T12:40",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2017-10-26T12:40",
+              "author": "PCP",
+              "body": "Michelle, sugar, cholesterol, kidney and liver tests are all normal again this year. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2018-01-30a",
+          "kind": "pharmacy",
+          "start": "2018-01-30T09:50",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2018-01-30T09:50",
+              "author": "MA",
+              "body": "Annual icatibant PA renewal faxed by specialty pharmacy. Completed and signed by PCP. Approved 2/1, pharmacy aware."
+            }
+          ]
+        },
+        {
+          "id": "2018-05-22a",
+          "kind": "office_visit",
+          "start": "2018-05-22T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "facial hair, acne, irregular periods",
+          "vitals": {
+            "bp": [
+              127,
+              71
+            ],
+            "hr": 75,
+            "weight_kg": 73.7
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2018-05-22T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2018",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "hirsutism, acne and oligomenorrhea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2018-05-22T16:20",
+              "author": "PCP",
+              "body": "28 y/o here about darker, coarser hair on her upper lip and chin over the past year that she now has to remove every morning, plus breakouts along the jawline that drugstore washes and creams have not touched. Periods have spread further apart, now sometimes two months between, occasionally a skipped month. Wonders if something hormonal is going on and whether it matters for having kids someday. No headaches, no vision change, no nipple discharge.\n\nExam: coarse terminal hairs upper lip and chin, mild papular acne along the mandible. Thyroid normal. Abdomen soft.\n\nA/P: hirsutism with acne and oligomenorrhea, PCOS most likely. Her mother sounds like she had similar features. Given the HAE (estrogen products can provoke attacks) and the risperidone, I'd like endocrinology to do the workup and own the treatment choice. Referral placed. She will keep a period calendar."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-07-02a",
+          "kind": "specialist_visit",
+          "start": "2018-07-02T10:00",
+          "service": "Endocrinology",
+          "reason": "hirsutism, acne, irregular menses",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-07-02T10:40",
+              "results": [
+                {
+                  "test": "Fasting Glucose",
+                  "value": 84
+                },
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2018",
+              "action": "done",
+              "date": "2018-07-02T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology consultation",
+              "date": "2018-07-06T14:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Date of service 07/02/2018. Reason: referred by her primary care physician for unwanted hair and acne.\n\nHPI: Ms. Mazur, 28, reports roughly twelve months of increasingly coarse hair on the upper lip and chin that she removes daily, and a flare of acne along the jaw that over-the-counter topicals have not improved. Menses have become erratic, at times every second month, at times absent. She is worried about long-term consequences and about her fertility. She denies galactorrhea, headache and visual symptoms. Not using contraception.\n\nPMH: schizophrenia on risperidone 4 mg daily; hereditary angioedema with icatibant as needed. No surgeries.\nMeds: risperidone 4 mg daily, icatibant 30 mg SC prn, prenatal vitamin. NKDA.\nFH: her mother had the same pattern of facial hair and acne in her twenties. Father schizophrenia. Mother and brother HAE.\n\nExam: BMI 27. Mild facial acne. Excess terminal hair on the upper lip and a periumbilical escutcheon. Pelvic examination normal. Remainder unremarkable.\n\nOffice testing: fasting glucose normal. Urine hCG negative.\n\nImpression: clinical hyperandrogenism with oligomenorrhea; polycystic ovary syndrome is suspected. Need to exclude nonclassic CAH, thyroid disease and hyperprolactinemia, and document the androgen level.\n\nPlan: total testosterone, DHEA-S, 17-hydroxyprogesterone (early morning), TSH and prolactin next week. Will review results by phone visit.\n\nCc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2018-07-09a",
+          "kind": "lab_only",
+          "start": "2018-07-09T07:45",
+          "service": "Endocrinology",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2018-07-09T07:45",
+              "results": [
+                {
+                  "test": "Testosterone, Total",
+                  "value": 71
+                },
+                {
+                  "test": "Dehydroepiandrosterone sulfate",
+                  "loinc": "2191-5",
+                  "unit": "ug/dL",
+                  "range": {},
+                  "value": 212
+                },
+                {
+                  "test": "17-Hydroxyprogesterone",
+                  "loinc": "1668-3",
+                  "unit": "ng/dL",
+                  "range": {},
+                  "value": 88
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Prolactin",
+                  "value": 31
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Lab Report",
+              "title": "Outside lab results",
+              "date": "2018-07-11T09:00",
+              "author": "endocrinology",
+              "body": "Results from outside endocrinology, copied to primary care. Total testosterone 71 ng/dL (H). DHEA-S 212 mcg/dL. 17-OH progesterone 88 ng/dL. TSH within range. Prolactin 31 ng/mL (H). Endocrinology will contact the patient."
+            }
+          ]
+        },
+        {
+          "id": "2018-08-13a",
+          "kind": "specialist_visit",
+          "start": "2018-08-13T11:30",
+          "service": "Endocrinology",
+          "reason": "results review",
+          "conditions": [
+            {
+              "label": "Polycystic ovary syndrome",
+              "action": "diagnosed",
+              "onset": "2017-06-01"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2018-08-16T10:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Telephone follow-up 08/13/2018.\n\nResults reviewed with Ms. Mazur. Total testosterone mildly elevated at 71. DHEA-S and early-morning 17-OHP normal, so no adrenal source or nonclassic CAH. TSH normal. Prolactin 31, a modest rise in keeping with risperidone; no symptoms of a pituitary process, no imaging needed now.\n\nAssessment: polycystic ovary syndrome by Rotterdam criteria (oligo-ovulation with clinical and biochemical hyperandrogenism, mimics excluded).\n\nDiscussion: the usual first-line combined hormonal pill is not a good fit because estrogen can worsen hereditary angioedema. She does not want a medication right now. We talked about laser or electrolysis for the facial hair, steady activity and food habits, and the yearly glucose screening her PCP already does. On fertility: ovulation is irregular, so conception may take longer, but many women with PCOS conceive; she should let us know when she is ready to try.\n\nFollow up as needed. Cc: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2018-10-23a",
+          "kind": "annual_physical",
+          "start": "2018-10-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              72
+            ],
+            "hr": 80,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 74.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2018-10-23T07:50",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 109
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 121
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2018-10-23T07:50",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.74
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 16
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 8
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 78
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2018-10-23T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2018-10-23T07:50",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 214
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2018-10-23T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2018-10-23T07:50"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2018-10-23T08:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2018-10-23T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2018-10-23T08:35",
+              "author": "PCP",
+              "body": "Yearly visit.\n\nSince last year: saw endocrinology this summer, now carries a diagnosis of PCOS. Their letter is in the chart: no pill because of the HAE; she is looking into laser treatment for her lip and chin. Cycles still every 5 to 9 weeks. Two hand attacks this year, home icatibant. Psychiatry steady.\n\nMeds unchanged: risperidone 4 mg, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: well. Heart and lungs normal. Abdomen soft. No edema. Mild jawline acne.\n\nA/P\n- PCOS: A1c and lipids today, matters more now with both PCOS and an antipsychotic.\n- Schizophrenia: stable, psych following.\n- HAE: refills current.\n- Flu shot today. Pap due next year at 30, will do cotesting then."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2018-10-25a",
+          "kind": "portal_message",
+          "start": "2018-10-25T13:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2018-10-25T13:20",
+              "author": "PCP",
+              "body": "A1c, cholesterol, kidney and liver tests normal. Keep up the evening walks."
+            }
+          ]
+        },
+        {
+          "id": "2018-12-04a",
+          "kind": "outside_records",
+          "start": "2018-12-04T09:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2018-12-04T09:40",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit of 11/27/2018. Doing well; new PCOS diagnosis noted from endocrinology, and we discussed that risperidone can raise prolactin, which may contribute to cycle changes. She prefers to stay on risperidone given years of stability, and I agree. No psychotic symptoms. Continue 4 mg nightly. Next visit February."
+            }
+          ]
+        },
+        {
+          "id": "2019-03-19a",
+          "kind": "portal_message",
+          "start": "2019-03-19T21:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Belly attack",
+              "date": "2019-03-19T21:48",
+              "author": "patient",
+              "body": "Had one of my stomach attacks this afternoon, the cramping kind, came on during recess duty. Used icatibant at 3:30 and by dinner it was mostly gone. No swelling anywhere else. That leaves me with one pen. Can you send another to the specialty pharmacy?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Belly attack",
+              "date": "2019-03-20T08:22",
+              "author": "RN",
+              "body": "Sorry you had a rough afternoon. Refill request sent to the PCP and approved, the pharmacy will call you to set up delivery. If belly pain does not ease after a dose, or you get a second wave, please call us or go to the ED."
+            }
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "office_visit",
+          "start": "2019-05-14T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "eating episodes",
+          "vitals": {
+            "bp": [
+              123,
+              70
+            ],
+            "hr": 75,
+            "weight_kg": 73.4
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 4
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2019-05-14T16:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2019-05-14T16:45",
+              "author": "PCP",
+              "body": "Came in wanting to talk about food. Since around the holidays she has had evenings where she eats far past full, fast, alone, and feels she cannot stop; afterward she feels awful about it. Roughly once a week, sometimes more. No vomiting, no laxatives, no punishing workouts afterward. Not restricting during the day beyond skipping lunch on busy days. Mood otherwise okay, PHQ-9 4. No voices or suspiciousness, sleeping normally, adherent to risperidone.\n\nExam: weight steady compared with fall. Otherwise not examined in detail.\n\nA/P: recurrent episodes that sound like binge eating. Her psychiatrist knows her best and can sort out diagnosis and whether therapy or medication fits alongside the risperidone. With her permission I sent a message to psychiatry today; she has a visit with them in July and will raise it herself as well. Not starting anything here."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-07-01a",
+          "kind": "specialist_visit",
+          "start": "2019-07-01T13:00",
+          "service": "Psychiatry",
+          "reason": "eating episodes",
+          "conditions": [
+            {
+              "label": "Binge eating disorder",
+              "action": "diagnosed",
+              "onset": "2019-01-01",
+              "icd10": "F50.819"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-06-24T08:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.26
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 242
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-06-24T08:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 107
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 194
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 125
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 132
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-06-24T08:10",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.8
+                },
+                {
+                  "test": "Fasting Glucose",
+                  "value": 94
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Psychiatry follow-up",
+              "date": "2019-07-05T11:15",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry. Date of service 07/01/2019.\n\nMs. Mazur, 29, followed here for schizophrenia, was diagnosed with PCOS by endocrinology last summer. For about six months she has had episodes at least weekly of eating a clearly larger amount than most people would in the same situation, with a sense of being unable to stop, followed by intense distress and guilt. She does not purge, use laxatives or exercise to compensate.\n\nPsychotic symptoms remain in remission on risperidone 4 mg nightly. Mood mildly low around the episodes only.\nBMI 27. Exam unremarkable.\nLabs from 06/24: CBC, TSH, fasting glucose and lipid profile all within normal limits.\nFH: father schizophrenia; mother and brother hereditary angioedema; mother PCOS.\nNever smoker, no alcohol. Teacher.\n\nAssessment: binge eating disorder; schizophrenia in sustained remission.\n\nPlan: referral to a therapist in our group for CBT focused on binge eating, weekly to start. I am not recommending lisdexamfetamine given her psychotic illness. Continue risperidone 4 mg. Return in 3 months. Cc: primary care."
+            }
+          ]
+        },
+        {
+          "id": "2019-11-12a",
+          "kind": "annual_physical",
+          "start": "2019-11-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 69,
+            "rr": 15,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 73.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-11-12T08:05",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 116
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-11-12T08:05",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-11-12T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-11-12T07:55",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-11-12T08:05",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2019-11-12T07:55",
+              "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation; transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV: not detected.",
+              "conclusion": "NILM, HPV negative.",
+              "issued": "2019-11-18T14:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2019-11-12T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-11-12T08:05"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-11-12T08:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2019-11-12T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2019-11-12T08:50",
+              "author": "PCP",
+              "body": "Just turned 30. Yearly exam with first co-test.\n\nInterval: psychiatry diagnosed binge eating disorder in July and she has been in weekly CBT since August; episodes down to every couple of weeks. Psychotic symptoms quiet. One belly attack in March treated at home. PCOS unchanged, cycles 5 to 8 weeks.\n\nMeds: risperidone 4 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: well. Thyroid normal. Breasts without masses. Heart regular, lungs clear. Abdomen soft. Pelvic: normal external genitalia, cervix without lesions, Pap with HPV collected. No edema.\n\nA/P\n- Cervical screening: co-test sent.\n- BED, schizophrenia: per psychiatry, doing well.\n- PCOS + antipsychotic: A1c, lipids, CMP today.\n- Flu vaccine given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2019-11-19a",
+          "kind": "portal_message",
+          "start": "2019-11-19T12:10",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and labs",
+              "date": "2019-11-19T12:10",
+              "author": "PCP",
+              "body": "Your Pap was normal and HPV was not found, so the next one is due in five years. A1c, cholesterol and chemistries are normal too."
+            }
+          ]
+        },
+        {
+          "id": "2019-12-10a",
+          "kind": "outside_records",
+          "start": "2019-12-10T09:30",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2019-12-10T09:30",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 12/03/2019. Psychosis in remission on risperidone 4 mg nightly. Binge eating: in weekly CBT with our therapist since August; episodes have dropped from weekly to about twice a month. Mood stable. Continue plan; return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2020-02-11a",
+          "kind": "pharmacy",
+          "start": "2020-02-11T10:35",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2020-02-11T10:35",
+              "author": "MA",
+              "body": "Yearly PA renewal for icatibant from the specialty pharmacy. Insurer now wants attack count for the past 12 months: 3 per chart and portal messages. Submitted, approved 2/12. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-12T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "nipple discharge, irregular periods, headaches",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2020-05-12T15:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "endo-referral-2020",
+              "action": "placed",
+              "order": "Endocrinology referral",
+              "category": "referral",
+              "to": "Endocrinology",
+              "reason": "galactorrhea, oligomenorrhea, new headaches"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2020-05-12T16:10",
+              "author": "PCP",
+              "body": "Video visit; she is at home, teaching remotely this spring.\n\nOver about six months her cycles have become more irregular than her usual PCOS pattern, and she has noticed milky fluid from both nipples, sometimes on her bra without squeezing. In the past couple of months, new frontal headaches a few times a week. Vision normal, no double vision. No new medications; risperidone unchanged. She has not done a pregnancy test lately.\n\nObserved: alert, well, speech normal. Full extraocular movements on screen, no facial asymmetry.\n\nA/P: galactorrhea with oligomenorrhea and headaches. On risperidone, which raises prolactin, but the new headaches make me want a pituitary evaluation. She already knows the endocrinologist from 2018; referral back sent today, asked for a prompt slot. Pregnancy test to be done with their labs. Go to the ED for vision loss or a sudden severe headache."
+            }
+          ]
+        },
+        {
+          "id": "2020-06-26a",
+          "kind": "specialist_visit",
+          "start": "2020-06-26T09:30",
+          "service": "Endocrinology",
+          "reason": "galactorrhea, irregular menses, headaches",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-06-26T10:15",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 220
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.5
+                },
+                {
+                  "test": "Follicle Stimulating Hormone",
+                  "value": 4.2
+                },
+                {
+                  "test": "Luteinizing hormone",
+                  "loinc": "10501-5",
+                  "unit": "m[IU]/mL",
+                  "range": {},
+                  "value": 3.8
+                },
+                {
+                  "test": "Beta-hCG, serum",
+                  "loinc": "21198-7",
+                  "unit": "m[IU]/mL",
+                  "text": "<5"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri-2020",
+              "action": "placed",
+              "order": "MRI pituitary with and without contrast",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2020-06-30T15:20",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Date of service 06/26/2020.\n\nKnown to me with PCOS since 2018. Sent back by her PCP: for six months, cycles more irregular, galactorrhea, and recently headaches. No visual disturbance. Remains on risperidone 4 mg daily.\n\nBP 120/78, HR 72, BMI 26.\nNeuro: cranial nerves intact, visual fields full to confrontation, no focal deficit.\n\nLabs today: prolactin 220 ng/mL. TSH 2.5 mIU/L. FSH 4.2 and LH 3.8 mIU/mL. Serum beta-hCG under 5.\n\nAssessment: prolactin of 220 is higher than risperidone alone usually produces, and with headaches a lactotroph adenoma needs to be excluded.\nPlan: dedicated pituitary MRI with and without contrast. Will call with results and treatment plan. Cc: primary care; psychiatry."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.8
+          }
+        },
+        {
+          "id": "2020-07-08a",
+          "kind": "imaging",
+          "start": "2020-07-08T18:20",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "MRI pituitary with and without contrast",
+              "loinc": "24879-9",
+              "performed": "2020-07-08T18:20",
+              "text": "Indication: hyperprolactinemia, headaches. Technique: thin-section sagittal and coronal T1 and T2 imaging of the sella before and after gadolinium, with dynamic coronal post-contrast sequence; limited axial images of the brain. Findings: 3 mm hypoenhancing focus in the left aspect of the anterior pituitary on dynamic images, consistent with a microadenoma. Gland height normal. Infundibulum midline. Optic chiasm normal in position and signal, no contact. Cavernous sinuses normal. Visualized brain parenchyma normal.",
+              "conclusion": "3 mm pituitary microadenoma. No mass effect.",
+              "issued": "2020-07-09T10:40"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri-2020",
+              "action": "done",
+              "date": "2020-07-08T18:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Pituitary MRI",
+              "date": "2020-07-09T10:40",
+              "author": "radiology",
+              "body": "Outside imaging center report received, copied to PCP. 3 mm pituitary microadenoma; chiasm clear."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-17a",
+          "kind": "specialist_visit",
+          "start": "2020-07-17T14:00",
+          "service": "Endocrinology",
+          "reason": "MRI results",
+          "conditions": [
+            {
+              "label": "Prolactinoma",
+              "action": "diagnosed",
+              "onset": "2020-01-01"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1/2 tablet (0.25 mg) by mouth twice weekly",
+              "dose": {
+                "value": 0.25,
+                "unit": "mg"
+              },
+              "frequency": "TWICE WEEKLY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "prolactinoma; prescribed by endocrinology"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology telephone follow-up",
+              "date": "2020-07-17T16:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Telephone visit 07/17/2020.\n\nReviewed MRI: 3 mm microadenoma, no chiasmal contact. With prolactin 220 and symptoms, diagnosis is a prolactin-secreting microadenoma, likely amplified by risperidone.\n\nI spoke with her psychiatrist before this call. Given years of stability, we agreed not to change the antipsychotic. Start cabergoline at a low dose, 0.25 mg twice weekly, and watch closely for any return of psychotic symptoms, which dopamine agonists can provoke. She and her husband know the warning signs and will call psychiatry first.\n\nRecheck prolactin in 3 months. No visual field testing needed for a lesion this size. Cc: PCP, psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2020-07-20a",
+          "kind": "telephone",
+          "start": "2020-07-20T12:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication list update",
+              "date": "2020-07-20T12:15",
+              "author": "RN",
+              "body": "Endocrinology letter received: 3 mm prolactin-secreting microadenoma, cabergoline 0.25 mg twice weekly started 7/17. Called pt to reconcile. She picked it up Saturday, took the first half-tablet with dinner, mild nausea only. Psychiatry aware. Med list updated."
+            }
+          ]
+        },
+        {
+          "id": "2020-10-16a",
+          "kind": "specialist_visit",
+          "start": "2020-10-16T08:45",
+          "service": "Endocrinology",
+          "reason": "prolactinoma follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2020-10-16T08:45",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 38
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2020-10-20T09:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Visit 10/16/2020.\n\nThree months on cabergoline 0.25 mg twice weekly. Nipple discharge has stopped. Headaches gone since August. Cycles now every 5 to 6 weeks. Psychiatry reports no change in mental status; she feels herself. No nausea or dizziness on the drug.\n\nProlactin 38 ng/mL, down from 220.\n\nPlan: continue current dose. Prolactin again in 5 months. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2020-11-10a",
+          "kind": "annual_physical",
+          "start": "2020-11-10T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              81
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 71.0
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2020-11-10T07:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 193
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 64
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 129
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2020-11-10T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.67
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 120
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2020-11-10T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.4
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2020-11-10T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.9
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.44
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 41.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 269
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.1
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2020-11-10T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2020-11-10T07:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2020-11-10T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2020-11-10T08:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2020-11-10T08:40",
+              "author": "PCP",
+              "body": "Masked visit, screening negative at the door.\n\nInterval: endocrinology found a 3 mm prolactin-secreting microadenoma in July; on cabergoline 0.25 mg twice weekly, prolactin now 38, discharge and headaches resolved. Psychiatry aware and she has been stable. CBT for binge eating ongoing by video, episodes uncommon now. Back in the classroom with hybrid teaching.\n\nMeds: risperidone 4 mg daily, cabergoline 0.25 mg twice weekly (endo), icatibant prn, prenatal vitamin.\nPHQ-9 2.\n\nExam: well. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema.\n\nA/P\n- Prolactinoma: per endocrinology.\n- Metabolic monitoring: labs today.\n- Flu vaccine given. COVID vaccine once available to teachers.\n- Medication list updated with cabergoline."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2020-11-12a",
+          "kind": "portal_message",
+          "start": "2020-11-12T11:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2020-11-12T11:05",
+              "author": "PCP",
+              "body": "Michelle, your labs from Tuesday are all normal, including sugar and cholesterol."
+            }
+          ]
+        },
+        {
+          "id": "2021-01-12a",
+          "kind": "outside_records",
+          "start": "2021-01-12T10:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2021-01-12T10:20",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, telehealth visit 01/05/2021. Six months on low-dose cabergoline with no change in mental state; no hallucinations, no paranoid thinking, sleep regular. Binge eating episodes now less than monthly after CBT; she is tapering therapy to every other week. Continue risperidone 4 mg nightly. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2021-02-09a",
+          "kind": "pharmacy",
+          "start": "2021-02-09T14:40",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2021-02-09T14:40",
+              "author": "MA",
+              "body": "Icatibant PA renewal submitted; one attack in the past year documented. Approved 2/10."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-12a",
+          "kind": "specialist_visit",
+          "start": "2021-03-12T10:30",
+          "service": "Endocrinology",
+          "reason": "prolactinoma follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-03-12T10:30",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 19
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2021-03-15T13:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Visit 03/12/2021. Doing well on cabergoline 0.25 mg twice weekly. No galactorrhea or headache. Cycles roughly monthly. Prolactin 19 ng/mL, normal. Continue; recheck in 6 months. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-03-29a",
+          "kind": "portal_message",
+          "start": "2021-03-29T19:30",
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-04T15:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-03-25T15:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "COVID vaccine",
+              "date": "2021-03-29T19:30",
+              "author": "patient",
+              "body": "Got both Pfizer shots at the pharmacy through the teacher program, 3/4 and 3/25. Just a sore arm and a tired day after the second. Uploading a photo of my card."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: COVID vaccine",
+              "date": "2021-03-30T08:10",
+              "author": "MA",
+              "body": "Thanks, both doses entered in your record."
+            }
+          ]
+        },
+        {
+          "id": "2021-05-18a",
+          "kind": "office_visit",
+          "start": "2021-05-18T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "shortness of breath",
+          "vitals": {
+            "bp": [
+              122,
+              72
+            ],
+            "hr": 75,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 96,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-05-18T16:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.34
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 233
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2021-05-18T15:50"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-05-18T16:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2021",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "progressive exertional dyspnea"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2021-05-18T16:50",
+              "author": "PCP",
+              "body": "Since around December she gets winded going up the stairs at school, and it has crept up so that the second flight now stops her. Assumed she was out of shape from the remote year, but walking more has not helped. No chest pain, no palpitations, sleeps flat, ankles not swollen. No cough, no wheeze, no fever. Never smoked. No throat or face swelling. COVID vaccinated in March, no known infection.\n\nExam: comfortable at rest, speaking full sentences. Heart regular, no murmur heard. Lungs clear throughout. No calf tenderness, no edema. Walked the hallway with me, no desaturation by finger probe.\n\nA/P: progressive exertional dyspnea in a young never-smoker with a normal resting exam. Anemia is the quick thing to exclude: CBC today. Otherwise this needs a proper cardiopulmonary evaluation; referral to pulmonology placed, they can arrange imaging and echo together. ED for chest pain, fainting or breathlessness at rest."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-05-19a",
+          "kind": "portal_message",
+          "start": "2021-05-19T13:05",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Blood count",
+              "date": "2021-05-19T13:05",
+              "author": "PCP",
+              "body": "Blood count is normal, so this is not anemia. Pulmonology has your referral; their office should call you within the week."
+            }
+          ]
+        },
+        {
+          "id": "2021-06-21a",
+          "kind": "specialist_visit",
+          "start": "2021-06-21T09:00",
+          "service": "Pulmonology",
+          "reason": "progressive dyspnea",
+          "conditions": [
+            {
+              "label": "Pulmonary hypertension",
+              "action": "diagnosed",
+              "onset": "2020-12-01"
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2021-06-21T09:40",
+              "text": "PA and lateral views. Prominent central pulmonary arteries with dilation of the main pulmonary artery segment. Heart size within normal limits. Lungs clear, no effusion or pneumothorax. Bones unremarkable.",
+              "conclusion": "Prominent pulmonary vasculature and enlarged main pulmonary artery, suggesting pulmonary hypertension."
+            },
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2021-06-21T10:30",
+              "text": "Left ventricle normal in size, wall thickness and systolic function; no regional wall motion abnormality. Right ventricular hypertrophy. Valves structurally normal. No pericardial effusion. Atrial septum intact by color Doppler.",
+              "conclusion": "Right ventricular hypertrophy with structurally and functionally normal left ventricle."
+            },
+            {
+              "study": "12-lead ECG",
+              "performed": "2021-06-21T09:20",
+              "text": "Sinus rhythm. Right axis deviation. Normal intervals.",
+              "conclusion": "Right axis deviation."
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral-2021",
+              "action": "done",
+              "date": "2021-06-21T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology consultation",
+              "date": "2021-06-24T17:00",
+              "author": "pulmonology",
+              "body": "Outside pulmonary group. Seen 06/21/2021 at the request of her primary care physician.\n\nHPI: 31-year-old teacher with six months of worsening breathlessness. It began with stairs and now occurs walking on level ground at a normal pace. No chest pain, palpitations, orthopnea or leg swelling.\nPMH: schizophrenia, hereditary angioedema, PCOS, binge eating disorder, prolactin-secreting microadenoma.\nMeds: risperidone 4 mg daily, cabergoline 0.25 mg twice weekly, icatibant prn, prenatal vitamin. NKDA.\nFH: a sister died suddenly in her early thirties of what the family was told was an undiagnosed heart problem.\nSH: never smoker; no drug use; no occupational or environmental exposures.\n\nExam: mildly tachypneic at rest. JVP elevated. S1 normal, loud palpable P2, no murmur or rub. Lungs clear. No edema, no cyanosis or clubbing.\n\nStudies today: chest film shows prominent pulmonary vasculature and a dilated main PA. Echo shows RV hypertrophy and a normal LV. ECG with right axis deviation.\n\nImpression: pulmonary hypertension, precapillary pattern suspected given the normal left heart. Her sister's death raises concern for a heritable form.\n\nPlan: urgent referral to the regional pulmonary hypertension center for right heart catheterization and full workup. Advised no heavy exertion until seen. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-13a",
+          "kind": "specialist_visit",
+          "start": "2021-07-13T07:30",
+          "end": "2021-07-13T15:00",
+          "service": "Pulmonary Hypertension Center",
+          "reason": "pulmonary hypertension evaluation",
+          "medications": [
+            {
+              "drug_text": "tadalafil 20 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 2 tablets (40 mg) by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "pulmonary arterial hypertension; prescribed by PH center"
+            },
+            {
+              "drug_text": "cabergoline 0.5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "stopped by PH center as an ergot-derived agent"
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-07-13T07:40",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 410
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right heart catheterization",
+              "loinc": "18745-0",
+              "performed": "2021-07-13T09:30",
+              "text": "Right internal jugular venous access under ultrasound guidance. Resting hemodynamics: RA mean 7 mmHg, PA mean 41 mmHg, PA wedge 9 mmHg, cardiac output 4.6 L/min by thermodilution, PVR 7.0 Wood units. Inhaled nitric oxide vasoreactivity test negative. No complications.",
+              "conclusion": "Precapillary pulmonary hypertension; vasoreactivity negative."
+            },
+            {
+              "study": "Ventilation-perfusion lung scan",
+              "loinc": "39942-8",
+              "performed": "2021-07-13T12:00",
+              "text": "Ventilation and perfusion images in standard projections. Perfusion is homogeneous with no segmental or subsegmental defects. Ventilation normal.",
+              "conclusion": "No mismatched perfusion defects; chronic thromboembolic disease not suggested."
+            },
+            {
+              "study": "Spirometry",
+              "performed": "2021-07-13T13:30",
+              "text": "FEV1, FVC and FEV1/FVC within normal limits. No bronchodilator response.",
+              "conclusion": "Normal spirometry."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Right heart catheterization",
+              "snomed": "40403005",
+              "performed": "2021-07-13T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonary hypertension center evaluation",
+              "date": "2021-07-19T12:00",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center. Evaluation 07/13/2021.\n\nReferred by outside pulmonology with dyspnea, RV hypertrophy and a dilated PA. WHO functional class III.\n\nRight heart cath: RA 7, mPAP 41, PAWP 9, CO 4.6, PVR 7.0 WU; negative vasoreactivity. V/Q scan without mismatched defects. Spirometry normal. NT-proBNP 410 pg/mL. Six-minute walk 410 m without desaturation.\n\nDiagnosis: pulmonary arterial hypertension, intermediate risk. Her sister's sudden death is noted.\n\nTreatment: initial dual oral therapy would be usual, but endothelin receptor antagonists are teratogenic and she tells us she hopes to have children. Starting tadalafil 40 mg daily alone, with close follow-up. Cabergoline stopped as a precaution because ergot-derived dopamine agonists have been linked to pulmonary and valvular disease; at her dose a causal role is unlikely, and her endocrinologist agrees.\n\nPregnancy: we explained plainly that pregnancy with PAH carries a serious risk to her life and recommended reliable contraception; estrogen-free options were reviewed because of her HAE. She understands and does not want contraception at this time. If she becomes pregnant she should contact us immediately.\n\nReturn in 3 months. Cc: PCP, outside pulmonology, endocrinology."
+            }
+          ]
+        },
+        {
+          "id": "2021-07-20a",
+          "kind": "pharmacy",
+          "start": "2021-07-20T11:00",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Medication list update",
+              "date": "2021-07-20T11:00",
+              "author": "RN",
+              "body": "PH center letter received. Tadalafil 40 mg daily started 7/13 through their specialty pharmacy; first shipment delivered per pt. Cabergoline stopped. Med list reconciled. Pt reminded: no nitroglycerin-type medicines with tadalafil, and to tell any ED that she takes it."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-19a",
+          "kind": "specialist_visit",
+          "start": "2021-10-19T10:00",
+          "service": "Pulmonary Hypertension Center",
+          "reason": "PAH follow-up",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-19T10:05",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 240
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "PH center follow-up",
+              "date": "2021-10-22T09:30",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center. Visit 10/19/2021. Three months on tadalafil 40 mg daily. Climbing one flight now without stopping; teaching full days. Mild headache the first two weeks, gone. Functional class II. Six-minute walk 455 m (from 410). NT-proBNP 240 (from 410). Continue tadalafil. We again discussed pregnancy risk and contraception; her position is unchanged. Next visit in about a year, sooner if symptoms change. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-26a",
+          "kind": "specialist_visit",
+          "start": "2021-10-26T08:30",
+          "service": "Endocrinology",
+          "reason": "prolactinoma off treatment",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2021-10-26T08:30",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 48
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2021-10-28T14:10",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Visit 10/26/2021. Cabergoline was stopped in July by the PH center. Off treatment, prolactin is 48 ng/mL, a modest rise partly from risperidone. No galactorrhea, no headaches, cycles about every 5 weeks. With a 3 mm lesion and no symptoms, observation is reasonable. Recheck in 6 to 12 months, sooner with symptoms or pregnancy. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2021-11-16a",
+          "kind": "annual_physical",
+          "start": "2021-11-16T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              125,
+              76
+            ],
+            "hr": 71,
+            "rr": 13,
+            "temp_c": 36.6,
+            "spo2": 99,
+            "weight_kg": 71.1
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 114
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 202
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 65
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 117
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 137
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.75
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 86
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-11-16T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.4
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.38
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Platelets",
+                  "value": 227
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-11-16T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-11-16T07:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-11-16T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-11-16T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-11-16T08:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-11-16T08:45",
+              "author": "PCP",
+              "body": "Big year. Pulmonology found pulmonary hypertension in June; PH center cath in July confirmed pulmonary arterial hypertension and she has been on tadalafil 40 mg since. Breathing much better, one flight without stopping, class II per their October note. Cabergoline was stopped; endocrinology is watching the prolactin (48 in October) without treatment. Psychiatry stable, binge episodes rare.\n\nWe talked about pregnancy. She has heard the PH team's warning clearly and still hopes for a child; she is not using contraception. I told her I respect the decision, that she should call the PH team and us the day of any positive test, and that I'd help set up a high-risk OB right away.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: comfortable, no tachypnea at rest. Heart regular, loud P2. Lungs clear. No edema.\n\nA/P\n- PAH: per PH center.\n- Metabolic labs today.\n- Flu and COVID booster given today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-11-18a",
+          "kind": "portal_message",
+          "start": "2021-11-18T16:50",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2021-11-18T16:50",
+              "author": "PCP",
+              "body": "All normal: cholesterol, A1c, kidney and liver tests."
+            }
+          ]
+        },
+        {
+          "id": "2022-01-05a",
+          "kind": "portal_message",
+          "start": "2022-01-05T06:41",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Positive test",
+              "date": "2022-01-05T06:41",
+              "author": "patient",
+              "body": "Two positive home tests this morning. Last period started December 14. I know what the PH team said. I'm calling them when they open at 8 but wanted you to know first. What do I do with my medicines?"
+            }
+          ]
+        },
+        {
+          "id": "2022-01-05b",
+          "kind": "telephone",
+          "start": "2022-01-05T08:20",
+          "reason": "positive pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2021-12-14",
+              "icd10": "O09.90"
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2022",
+              "action": "placed",
+              "order": "Maternal-fetal medicine referral",
+              "category": "referral",
+              "to": "Obstetrics",
+              "reason": "pregnancy with pulmonary arterial hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call re: pregnancy",
+              "date": "2022-01-05T08:45",
+              "author": "PCP",
+              "body": "Called her back. About 3 weeks from LMP 12/14/21. She feels well, breathing unchanged. She already left a message with the PH center.\n\nMedications: keep taking tadalafil and risperidone until the PH team and her psychiatrist say otherwise, do not stop either on her own. Continue prenatal vitamin. Icatibant: keep it for attacks and let OB know if she needs it.\n\nPlaced urgent referral to maternal-fetal medicine at the hospital that works with the PH center; called their intake line myself to flag PAH. She will message psychiatry and endocrinology today. She asked whether we would still be her doctor through this: yes, we'll stay in the loop for everything outside the pregnancy."
+            }
+          ]
+        },
+        {
+          "id": "2022-02-08a",
+          "kind": "specialist_visit",
+          "start": "2022-02-08T13:00",
+          "service": "Maternal-Fetal Medicine",
+          "reason": "initial high-risk pregnancy visit",
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, transvaginal",
+              "loinc": "80865-9",
+              "performed": "2022-02-08T13:20",
+              "text": "Single intrauterine gestation. Cardiac activity present. Crown-rump length consistent with 8 weeks 0 days, concordant with LMP. Adnexa unremarkable. No free fluid.",
+              "conclusion": "Viable single intrauterine pregnancy, about 8 weeks."
+            }
+          ],
+          "orders": [
+            {
+              "id": "mfm-referral-2022",
+              "action": "done",
+              "date": "2022-02-08T13:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Maternal-fetal medicine consultation",
+              "date": "2022-02-11T16:00",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-fetal medicine, regional hospital. Visit 02/08/2022.\n\nG1, about 8 weeks by LMP 12/14/2021, confirmed by ultrasound today. Pulmonary arterial hypertension, functional class II on tadalafil 40 mg daily; schizophrenia stable on risperidone 4 mg; hereditary angioedema with icatibant as needed; PCOS; 3 mm prolactin-secreting microadenoma off treatment.\n\nCounseled together with the PH center by phone about the substantial maternal risk in PAH, including the option of ending the pregnancy. She wishes to continue.\n\nPlan: co-management with the PH center, visits every 2 to 4 weeks; continue tadalafil, risperidone and prenatal vitamin; serial echocardiography; delivery planning at our hospital with cardiac anesthesia; HAE plan to be written with the delivery team. Endocrinology: no routine prolactin checks in pregnancy; report headache or visual change. Cc: PCP, PH center, psychiatry."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-19a",
+          "kind": "outside_records",
+          "start": "2022-04-19T15:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal visit note",
+              "date": "2022-04-19T15:30",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-fetal medicine visit 04/19/2022, about 18 weeks. Feels well; breathing at baseline, class II. BP normal. Anatomy scan normal. Echo with the PH team stable. Continue tadalafil, risperidone, prenatal vitamin. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-06-28a",
+          "kind": "outside_records",
+          "start": "2022-06-28T15:00",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2022-06-28T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal visit note",
+              "date": "2022-06-28T15:00",
+              "author": "maternal-fetal medicine",
+              "body": "Maternal-fetal medicine prenatal visit 06/28/2022, 28 weeks. Doing well; PH symptoms stable, class II. BP normal. Fetal growth appropriate. Tdap given today. Continue current plan. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "outside_records",
+          "start": "2022-07-12T09:45",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2022-07-12T09:45",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 07/06/2022. Third trimester, no psychotic symptoms on risperidone 4 mg. We made a postpartum plan: protected sleep blocks with her husband covering nights, visit within two weeks of delivery, early call for any sleeplessness or suspicious thinking. Cc: PCP, MFM."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-17a",
+          "kind": "hospital_admission",
+          "start": "2022-08-17T03:40",
+          "end": "2022-08-20T13:00",
+          "service": "Labor and Delivery",
+          "reason": "severe-range blood pressure at 35 weeks",
+          "conditions": [
+            {
+              "label": "Severe pre-eclampsia, third trimester",
+              "action": "diagnosed",
+              "onset": "2022-08-17",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "resolved",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2022-08-17T03:45",
+              "bp": [
+                164,
+                108
+              ],
+              "hr": 96
+            },
+            {
+              "time": "2022-08-17T04:05",
+              "bp": [
+                166,
+                110
+              ],
+              "hr": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-17T04:10",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.32
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.2
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2022-08-17T04:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 82
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-17T04:20",
+              "results": [
+                {
+                  "test": "Protein/Creatinine ratio, urine",
+                  "loinc": "2890-2",
+                  "unit": "mg/mg",
+                  "range": {
+                    "high": 0.2
+                  },
+                  "value": 1.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Induction of labor",
+              "snomed": "236958009",
+              "performed": "2022-08-17T07:00"
+            },
+            {
+              "procedure": "Vaginal delivery",
+              "snomed": "177184002",
+              "performed": "2022-08-17T21:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2022-08-23T10:00",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 08/17/2022, discharged 08/20/2022.\n\nG1 at 35 weeks 1 day with pulmonary arterial hypertension on tadalafil, presented overnight for a blood pressure check; blood pressure 164/108 and 166/110 fifteen minutes apart. Urine protein/creatinine 1.4. Platelets and liver enzymes normal.\n\nDiagnosis: preeclampsia with severe features.\n\nCourse: magnesium sulfate for seizure prophylaxis through 24 hours postpartum; IV labetalol for severe-range pressures. Cardiac anesthesia and the PH team present; early epidural. Induction of labor, then vaginal delivery of a liveborn infant. No hemodynamic deterioration. Pressures under 140/90 by day 3 without oral agents.\n\nDischarge medications: tadalafil 40 mg daily, risperidone 4 mg nightly, prenatal vitamin, icatibant as needed. No antihypertensive.\nFollow-up: BP check with primary care within 10 days; PH center in 6 weeks; postpartum obstetric visit at 6 weeks. Return for headache, visual change or BP 160/110 or higher."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "telephone",
+          "start": "2022-08-23T14:30",
+          "reason": "postpartum check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum call",
+              "date": "2022-08-23T14:45",
+              "author": "RN",
+              "body": "Called after the discharge summary arrived. Home since Saturday with the baby. Home cuff readings 120s to 130s over 80s. No headache, no vision change, breathing at her baseline, no leg swelling. Sleeping in shifts with her husband. Taking all meds including risperidone. Booked BP visit Monday 8/29."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-29a",
+          "kind": "office_visit",
+          "start": "2022-08-29T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "postpartum blood pressure check",
+          "conditions": [
+            {
+              "label": "Severe pre-eclampsia, third trimester",
+              "action": "resolved",
+              "icd10": "O14.13"
+            },
+            {
+              "label": "History of preeclampsia",
+              "action": "diagnosed",
+              "onset": "2022-08-17"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              80
+            ],
+            "hr": 72,
+            "spo2": 96,
+            "weight_kg": 75.2
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 5
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2022-08-29T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Postpartum BP Visit",
+              "date": "2022-08-29T11:40",
+              "author": "PCP",
+              "body": "Twelve days after delivery at 35 weeks for preeclampsia with severe features. Brought the baby, who is feeding well.\n\nNo headache, no visual symptoms, no RUQ pain. Breathing at her usual. Tired in the ordinary newborn way. Sleep in pieces but she and her husband are trading nights, which her psychiatrist specifically wanted. No unusual thoughts; seeing psychiatry next week. PHQ-9 5.\n\nBP 124/80 today. Lungs clear, loud P2 as before, no edema.\n\nA/P\n- Preeclampsia resolved; now history of severe preeclampsia, which raises her future cardiovascular risk and recurrence risk in any later pregnancy. Added to the problem list. Yearly BP and metabolic checks matter more now.\n- PAH: PH center visit in October.\n- Postpartum mood: low score, close psychiatry follow-up planned.\n- Contraception: she will discuss with OB at 6 weeks."
+            }
+          ],
+          "state": {
+            "weight_kg": 74.5
+          },
+          "measure": [
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "outside_records",
+          "start": "2022-10-04T10:10",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Postpartum visit",
+              "date": "2022-10-04T10:10",
+              "author": "obstetrics",
+              "body": "Postpartum visit 09/28/2022, 6 weeks after delivery for severe preeclampsia. BP normal. Mood good. Exam normal. Contraception discussed in light of PAH; she declines a method. Future pregnancies: early care, preeclampsia risk reviewed. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-08a",
+          "kind": "specialist_visit",
+          "start": "2022-11-08T09:30",
+          "service": "Pulmonary Hypertension Center",
+          "reason": "PAH follow-up after delivery",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-08T09:35",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 260
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "PH center follow-up",
+              "date": "2022-11-11T15:15",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center. Visit 11/08/2022. Eleven weeks postpartum after preterm delivery for severe preeclampsia. PAH tolerated the pregnancy without decompensation. Functional class II. NT-proBNP 260. Exam: loud P2, no edema, JVP not raised. Continue tadalafil 40 mg daily. A further pregnancy would again carry high risk; she has not chosen a contraceptive method. Annual follow-up. Cc: PCP, MFM."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "annual_physical",
+          "start": "2022-12-06T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              123,
+              75
+            ],
+            "hr": 86,
+            "rr": 15,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-12-06T07:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 111
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 195
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 110
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 133
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-12-06T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 98
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 18
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 83
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-12-06T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-12-06T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.6
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.36
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 257
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2022-12-06T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-12-06T07:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-12-06T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-12-06T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-12-06T08:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2022-12-06T08:50",
+              "author": "PCP",
+              "body": "Yearly visit, a bit late this year with the baby. Back at work since November.\n\nInterval: delivery in August as documented, BP normal since. PH center in November: class II, stable on tadalafil. Psychiatry: stable through postpartum, no psychotic symptoms. Endocrinology to recheck prolactin when she is done nursing. No HAE attacks during or since the pregnancy.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: BP normal. Heart regular, loud P2. Lungs clear. No edema. Weight down toward her baseline.\n\nA/P\n- History of severe preeclampsia: BP normal today; yearly lipids and A1c drawn.\n- PAH, schizophrenia, prolactinoma: per specialists.\n- Flu and bivalent COVID today."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-12-08a",
+          "kind": "portal_message",
+          "start": "2022-12-08T17:20",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2022-12-08T17:20",
+              "author": "PCP",
+              "body": "Cholesterol, A1c, kidney and liver tests all normal."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-17a",
+          "kind": "outside_records",
+          "start": "2023-01-17T09:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2023-01-17T09:00",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 01/10/2023. Five months postpartum, she remains free of psychotic symptoms on risperidone 4 mg nightly. Mood good. Protected sleep plan with her husband worked well. Binge eating episodes rare. Continue current treatment; return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "pharmacy",
+          "start": "2023-02-14T10:25",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2023-02-14T10:25",
+              "author": "MA",
+              "body": "Yearly icatibant PA renewal. No attacks in the past year, plan still approves on-demand supply. Approved 2/15."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-30a",
+          "kind": "portal_message",
+          "start": "2023-05-30T07:15",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "diagnosed",
+              "onset": "2023-04-25",
+              "icd10": "O09.90"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "pregnancy with PAH and prior severe preeclampsia"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant again",
+              "date": "2023-05-30T07:15",
+              "author": "patient",
+              "body": "Positive test again. LMP April 25. Feeling fine. PH center already knows. Can you send the referral to the same high-risk OB group?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant again",
+              "date": "2023-05-30T09:30",
+              "author": "PCP",
+              "body": "Referral sent to the same group and marked urgent; I mentioned the PAH and the preeclampsia last time. Keep all your medicines going as before unless the PH team or psychiatry changes something. Let me know when your first visit is booked."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-20a",
+          "kind": "specialist_visit",
+          "start": "2023-06-20T09:15",
+          "service": "Obstetrics & Gynecology",
+          "reason": "first prenatal visit",
+          "vitals": {
+            "bp": [
+              120,
+              78
+            ],
+            "hr": 72,
+            "weight_kg": 70.8
+          },
+          "reports": [
+            {
+              "study": "Obstetric ultrasound, transvaginal",
+              "loinc": "80865-9",
+              "performed": "2023-06-20T09:40",
+              "text": "Single intrauterine pregnancy with cardiac activity. Crown-rump length corresponds to 8 weeks. Ovaries unremarkable. No subchorionic collection.",
+              "conclusion": "Viable intrauterine pregnancy at 8 weeks."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral-2023",
+              "action": "done",
+              "date": "2023-06-20T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Initial prenatal visit",
+              "date": "2023-06-23T11:00",
+              "author": "obstetrics",
+              "body": "High-risk obstetrics group, regional hospital. Visit 06/20/2023.\n\n33-year-old G2P0101 presenting for first prenatal care at 8 weeks by LMP. Prior delivery 10 months ago at 35 weeks for severe preeclampsia. Also PCOS, prolactin-secreting microadenoma, pulmonary arterial hypertension and hereditary angioedema; schizophrenia, stable.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, prenatal vitamin, icatibant 30 mg SC as needed. NKDA. No surgeries.\nFH: father schizophrenia; mother and brother HAE; mother PCOS.\nSH: never smoker, no alcohol, teacher.\n\nBP 120/78, HR 72, BMI 26. Exam unremarkable.\nTransvaginal ultrasound: viable intrauterine pregnancy at 8 weeks.\n\nPlan: co-management with the PH center as in her first pregnancy; dating confirmed; routine first trimester labs; return in 6 weeks. Cc: PCP, PH center."
+            }
+          ],
+          "state": {
+            "weight_kg": 70.8
+          }
+        },
+        {
+          "id": "2023-08-01a",
+          "kind": "specialist_visit",
+          "start": "2023-08-01T10:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "prenatal visit, 14 weeks",
+          "vitals": {
+            "bp": [
+              114,
+              72
+            ],
+            "hr": 80,
+            "temp_c": 36.7,
+            "weight_kg": 72.3
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Prenatal visit",
+              "date": "2023-08-03T13:30",
+              "author": "obstetrics",
+              "body": "High-risk obstetrics group. Visit 08/01/2023, 14 weeks 0 days.\n\nFeels the pregnancy is going smoothly. Some tiredness and a little queasiness first thing in the morning, no vomiting. Eating normally; weight gain as expected for dates.\nNo palpitations, tremor, temperature intolerance, constipation, hair loss or skin changes.\nFH: her mother developed hypothyroidism in her fifties.\nSH: lives with her husband and their baby; teaching; no tobacco or alcohol.\nMeds: risperidone 4 mg, tadalafil 40 mg, prenatal vitamin, icatibant as needed.\n\nT 36.7 C (98.1 F), pulse 80, BP 114/72.\nExam: well. Thyroid normal in size, nontender. Heart regular. Lungs clear. Fundal height appropriate.\n\nPlan: routine care, anatomy scan at 20 weeks, PH center review this month. Cc: PCP."
+            }
+          ],
+          "state": {
+            "weight_kg": 72.3
+          }
+        },
+        {
+          "id": "2023-09-19a",
+          "kind": "outside_records",
+          "start": "2023-09-19T14:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "PH center pregnancy review",
+              "date": "2023-09-19T14:00",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center, visit 09/12/2023. 20 weeks pregnant. Functional class II, no decompensation. Continue tadalafil 40 mg daily. Delivery planning with obstetrics and cardiac anesthesia, target 37 weeks. Cc: PCP, OB."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "nurse_visit",
+          "start": "2023-10-10T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-10T15:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-10T15:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-10T15:38"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunizations",
+              "date": "2023-10-10T15:50",
+              "author": "RN",
+              "body": "24 weeks pregnant, OB recommends both. Inactivated flu L deltoid, updated COVID R deltoid. No prior reactions. Observed 15 min, fine. Tdap planned at OB in a few weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-07a",
+          "kind": "outside_records",
+          "start": "2023-11-07T16:00",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2023-11-07T10:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prenatal visit note",
+              "date": "2023-11-07T16:00",
+              "author": "obstetrics",
+              "body": "High-risk obstetrics visit 11/07/2023, 28 weeks. Blood pressures normal throughout so far; no proteinuria. Fetal growth on track. PH center: stable class II on tadalafil. Tdap given. Delivery plan: scheduled induction at 37 weeks with cardiac anesthesia and the PH team available; HAE attack plan on file with the delivery unit. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-09a",
+          "kind": "hospital_admission",
+          "start": "2024-01-09T06:30",
+          "end": "2024-01-11T12:30",
+          "service": "Labor and Delivery",
+          "reason": "scheduled induction at 37 weeks",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+              "action": "resolved",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              77
+            ],
+            "hr": 83,
+            "spo2": 96
+          },
+          "procedures": [
+            {
+              "procedure": "Induction of labor",
+              "snomed": "236958009",
+              "performed": "2024-01-09T08:00"
+            },
+            {
+              "procedure": "Vaginal delivery",
+              "snomed": "177184002",
+              "performed": "2024-01-09T23:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric discharge summary",
+              "date": "2024-01-16T09:30",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 01/09/2024, discharged 01/11/2024.\n\nG2P0101 at 37 weeks 0 days admitted for planned induction given pulmonary arterial hypertension and prior preterm delivery for severe preeclampsia. Blood pressures normal throughout the pregnancy and the admission; no features of preeclampsia this time.\n\nCourse: cervical ripening and oxytocin; early epidural with cardiac anesthesia following; PH team consulted daily. Vaginal delivery of a liveborn infant late on 01/09. Uneventful recovery, no hemodynamic concerns, no angioedema.\n\nDischarge medications unchanged: tadalafil 40 mg daily, risperidone 4 mg nightly, prenatal vitamin, icatibant as needed.\nFollow-up: PCP or OB BP check in 1 to 2 weeks; PH center in 3 months; postpartum visit at 6 weeks."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2024-01-22a",
+          "kind": "telephone",
+          "start": "2024-01-22T13:10",
+          "reason": "postpartum check",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Postpartum call",
+              "date": "2024-01-22T13:25",
+              "author": "RN",
+              "body": "Two weeks after delivery. She and the baby are home and well; the older one is adjusting. Home BP readings normal all week. No headache or visual change, breathing as usual, no swelling. OB is doing her BP check at their postpartum visit, so no visit here needed now. Psychiatry appointment already set for next week."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-27a",
+          "kind": "outside_records",
+          "start": "2024-02-27T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Postpartum visit",
+              "date": "2024-02-27T11:00",
+              "author": "obstetrics",
+              "body": "Postpartum visit 02/20/2024, 6 weeks after induced vaginal delivery at 37 weeks. BP normal. Mood good. Exam normal. Contraception again discussed given PAH; she declines. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-03-12a",
+          "kind": "specialist_visit",
+          "start": "2024-03-12T09:00",
+          "service": "Endocrinology",
+          "reason": "prolactinoma after pregnancy",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-03-12T09:00",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 46
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri-2024",
+              "action": "placed",
+              "order": "MRI pituitary with and without contrast",
+              "category": "imaging"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2024-03-14T12:00",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Visit 03/12/2024. Two pregnancies since her last visit with us, most recent delivery 01/09/2024; not breastfeeding now. No headaches, no visual symptoms, no galactorrhea. Prolactin 46 ng/mL. Will repeat pituitary MRI to confirm stability after two pregnancies. A dopamine agonist is not planned given PAH; observation if the lesion is stable. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-09a",
+          "kind": "imaging",
+          "start": "2024-04-09T17:45",
+          "service": "Radiology",
+          "reports": [
+            {
+              "study": "MRI pituitary with and without contrast",
+              "loinc": "24879-9",
+              "performed": "2024-04-09T17:45",
+              "text": "Comparison 07/08/2020. Thin-section sellar protocol before and after gadolinium with dynamic coronal imaging. The left-sided hypoenhancing focus in the anterior pituitary again measures 3 mm. Gland height normal for age. Stalk midline. Optic chiasm normal. Cavernous sinuses unremarkable.",
+              "conclusion": "Stable 3 mm pituitary microadenoma.",
+              "issued": "2024-04-10T11:20"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pituitary-mri-2024",
+              "action": "done",
+              "date": "2024-04-09T17:45"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Pituitary MRI",
+              "date": "2024-04-10T11:20",
+              "author": "radiology",
+              "body": "Outside imaging report filed. Microadenoma unchanged at 3 mm since 2020."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-23a",
+          "kind": "specialist_visit",
+          "start": "2024-04-23T10:15",
+          "service": "Pulmonary Hypertension Center",
+          "reason": "PAH follow-up after second delivery",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-04-23T10:20",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 220
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "PH center follow-up",
+              "date": "2024-04-26T14:40",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center. Visit 04/23/2024. Three months after a planned induction and uncomplicated vaginal delivery at 37 weeks. Functional class II. Six-minute walk 470 m. NT-proBNP 220. Loud P2, no edema. Continue tadalafil 40 mg daily. We reviewed again that pregnancy remains high risk; she is not using contraception. Next review in a year. Cc: PCP, OB."
+            }
+          ]
+        },
+        {
+          "id": "2024-06-04a",
+          "kind": "portal_message",
+          "start": "2024-06-04T20:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Swelling and refill",
+              "date": "2024-06-04T20:10",
+              "author": "patient",
+              "body": "First attack in ages, left hand, after carrying the car seat around all day. Gave a dose at 5 and it's going down. Both my syringes are past their date anyway, can I get two new ones?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Swelling and refill",
+              "date": "2024-06-05T07:30",
+              "author": "PCP",
+              "body": "Sent two to the specialty pharmacy. Glad it responded. Face or throat involvement still means the ED."
+            }
+          ]
+        },
+        {
+          "id": "2024-07-16a",
+          "kind": "outside_records",
+          "start": "2024-07-16T09:20",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2024-07-16T09:20",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 07/09/2024. Six months postpartum, stable. No psychotic symptoms; sleeping when the baby allows. Binge episodes rare. Risperidone 4 mg nightly continues."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-12a",
+          "kind": "annual_physical",
+          "start": "2024-11-12T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical with Pap",
+          "vitals": {
+            "bp": [
+              138,
+              77
+            ],
+            "hr": 78,
+            "rr": 17,
+            "temp_c": 36.5,
+            "spo2": 98,
+            "weight_kg": 70.9
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-11-12T08:00",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 115
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-12T08:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 117
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 20
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-12T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.3
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.45
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.5
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 249
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.3
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-11-12T07:50",
+              "results": [
+                {
+                  "test": "High-risk HPV DNA",
+                  "text": "Not detected"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap) with HPV",
+              "performed": "2024-11-12T07:50",
+              "text": "Liquid-based cervical specimen, satisfactory, endocervical/transformation zone cells present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.",
+              "conclusion": "NILM; HPV not detected.",
+              "issued": "2024-11-18T15:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-11-12T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-11-12T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-11-12T08:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-11-12T08:10"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-12T08:12"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-11-12T08:55",
+              "author": "PCP",
+              "body": "First yearly visit here since 2022; the 2023 pregnancy kept her with OB.\n\nInterval: second baby delivered 1/9 at 37 weeks by planned induction, no preeclampsia this time. PH center April: class II, walk distance up, tadalafil unchanged. Endocrinology: prolactin 46, MRI stable at 3 mm, watching without medication. Psychiatry: stable. One hand attack in June, home icatibant.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant 30 mg SC prn, prenatal vitamin.\nPHQ-9 2.\n\nExam: BP normal. Thyroid normal. Breasts without masses. Heart regular, loud P2. Lungs clear. Abdomen soft. Pelvic normal, co-test collected. No edema.\n\nA/P\n- Cervical screening co-test.\n- History of severe preeclampsia plus antipsychotic: lipids, A1c, CMP, CBC.\n- PAH, prolactinoma, schizophrenia, BED: per specialists, all stable.\n- Flu and COVID today."
+            }
+          ],
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "portal_message",
+          "start": "2024-11-19T12:45",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Pap and labs",
+              "date": "2024-11-19T12:45",
+              "author": "PCP",
+              "body": "Michelle, your Pap is normal with no HPV, next one in 2029. Cholesterol, A1c, blood count, kidney and liver numbers are normal."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-21a",
+          "kind": "outside_records",
+          "start": "2025-01-21T10:00",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2025-01-21T10:00",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 01/14/2025. One year after her second delivery, no relapse of psychosis. Managing two young children and a full teaching load. Binge eating episodes infrequent; she uses CBT skills on her own. Risperidone 4 mg nightly continues. No EPS. Return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "pharmacy",
+          "start": "2025-03-11T11:20",
+          "documents": [
+            {
+              "type": "Pharmacy Note",
+              "title": "Prior authorization: icatibant",
+              "date": "2025-03-11T11:20",
+              "author": "MA",
+              "body": "Insurer changed specialty pharmacies for the new plan year; icatibant needed a new PA. Submitted with HAE type I diagnosis and attack history. Approved 3/13. New pharmacy contacted pt to set up shipping."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "specialist_visit",
+          "start": "2025-05-13T09:00",
+          "service": "Pulmonary Hypertension Center",
+          "reason": "PAH annual review",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-05-13T09:05",
+              "results": [
+                {
+                  "test": "N-terminal Pro-B-Type Natriuretic Peptide",
+                  "value": 190
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2025-05-13T10:00",
+              "text": "Comparison 2021. Left ventricle normal in size and systolic function. Right ventricular hypertrophy, unchanged. Valves normal. No pericardial effusion.",
+              "conclusion": "Stable right ventricular hypertrophy; normal left ventricle."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "PH center annual review",
+              "date": "2025-05-16T13:00",
+              "author": "pulmonary hypertension",
+              "body": "Regional pulmonary hypertension center. Visit 05/13/2025. Functional class II, working full time, keeping up with two toddlers. NT-proBNP 190. Echo: RV hypertrophy unchanged, LV normal. Low-risk profile on tadalafil 40 mg daily; continue. Annual review. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "specialist_visit",
+          "start": "2025-06-17T08:15",
+          "service": "Endocrinology",
+          "reason": "prolactinoma surveillance",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-06-17T08:15",
+              "results": [
+                {
+                  "test": "Prolactin",
+                  "value": 41
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Endocrinology follow-up",
+              "date": "2025-06-19T10:30",
+              "author": "endocrinology",
+              "body": "Outside endocrinology group. Visit 06/17/2025. Asymptomatic. Cycles irregular in her PCOS pattern. Prolactin 41 ng/mL, stable. Continue observation; prolactin yearly, MRI only for symptoms or a rising level. Cc: PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "annual_physical",
+          "start": "2025-09-23T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2025-09-22T16:05",
+              "author": "front desk",
+              "body": "Pt called, both kids home sick, cannot make 7:30 tomorrow. Rebooked for November."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "annual_physical",
+          "start": "2025-11-18T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "vitals": {
+            "bp": [
+              122,
+              75
+            ],
+            "hr": 77,
+            "rr": 14,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 70.8
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2025-11-18T07:55",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 106
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 190
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 62
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 109
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 128
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-11-18T07:55",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.71
+                },
+                {
+                  "test": "Sodium",
+                  "value": 138
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 97
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 113
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 6
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 71
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-18T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 4.9
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-18T07:55",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.53
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 234
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-11-18T07:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-11-18T07:55"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-11-18T08:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-18T08:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-11-18T08:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-11-18T08:45",
+              "author": "PCP",
+              "body": "Rescheduled from September.\n\nInterval: PH center May, low risk, echo stable. Endocrinology June, prolactin 41, observing. Psychiatry steady. No swelling attacks this year. Kids healthy now.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant prn, prenatal vitamin.\nPHQ-9 3.\n\nExam: BP normal. Heart regular, loud P2. Lungs clear. No edema. Skin: mild jawline acne.\n\nA/P\n- Metabolic labs for risperidone and preeclampsia history.\n- HAE: two in-date syringes confirmed.\n- Pap next 2029.\n- Flu and COVID today."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-20a",
+          "kind": "portal_message",
+          "start": "2025-11-20T16:30",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Annual labs",
+              "date": "2025-11-20T16:30",
+              "author": "PCP",
+              "body": "All of Tuesday's labs are normal. See you next fall unless something comes up sooner."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "outside_records",
+          "start": "2026-01-20T10:40",
+          "documents": [
+            {
+              "type": "Letter",
+              "title": "Psychiatry update",
+              "date": "2026-01-20T10:40",
+              "author": "psychiatry",
+              "body": "Outpatient psychiatry, visit 01/13/2026. Remains well on risperidone 4 mg nightly; no psychotic symptoms in many years. Binge eating disorder in good control. Continue; return in 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "portal_message",
+          "start": "2026-02-10T18:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Tadalafil shipment",
+              "date": "2026-02-10T18:05",
+              "author": "patient",
+              "body": "The specialty pharmacy says they need a new prescription for tadalafil. Is that you or the PH center?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Tadalafil shipment",
+              "date": "2026-02-11T08:40",
+              "author": "RN",
+              "body": "That one is the PH center's prescription. I called their nurse line this morning and they sent it; the pharmacy should reach you today."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-03a",
+          "kind": "ed_visit",
+          "start": "2026-07-03T14:20",
+          "end": "2026-07-03T21:00",
+          "service": "Emergency Medicine",
+          "reason": "lip and tongue swelling",
+          "vitals": {
+            "bp": [
+              126,
+              63
+            ],
+            "hr": 80,
+            "rr": 13,
+            "temp_c": 36.9,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-07-03T14:45",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.42
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 230
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-07-03T14:45",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.73
+                },
+                {
+                  "test": "Glucose",
+                  "value": 93
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-03T14:45",
+              "results": [
+                {
+                  "test": "C1 esterase inhibitor",
+                  "loinc": "4477-6",
+                  "unit": "mg/dL",
+                  "range": {
+                    "low": 21,
+                    "high": 39
+                  },
+                  "value": 6
+                },
+                {
+                  "test": "Complement C4",
+                  "loinc": "4498-2",
+                  "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
+                  "value": 5
+                },
+                {
+                  "test": "Tryptase",
+                  "loinc": "21582-2",
+                  "unit": "ng/mL",
+                  "range": {
+                    "high": 11.5
+                  },
+                  "value": 4.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-07-03T14:35",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-07-03T14:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Note",
+              "title": "Emergency department record",
+              "date": "2026-07-07T10:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital emergency department. Seen 07/03/2026.\n\nCC: lip and tongue swelling.\n\nHPI: 36-year-old woman with hereditary angioedema (C1 inhibitor deficiency) and pulmonary arterial hypertension on tadalafil arrives with two hours of steadily increasing swelling of the lips and tongue. No injury, no dental work, nothing new in her medicine list. She has had attacks before, in her hands and abdomen with severe abdominal pain, without clear trigger and settling over days, but never her mouth. No hives, itch or rash with any episode. She had not yet injected; her syringes were at home.\nPMH: HAE; PAH; schizophrenia; PCOS; binge eating disorder; pituitary microadenoma; prior severe preeclampsia. No surgeries.\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, prenatal vitamin, icatibant 30 mg SC as needed. NKDA.\nFH: mother and brother with HAE.\nSH: never smoker, no alcohol, teacher.\n\nExam: vital signs stable. Marked nonpitting edema of the lips and tongue, no erythema or warmth. No stridor, no drooling, voice normal, no respiratory distress. Lungs clear. Abdomen soft, nontender, no organomegaly. No urticaria.\n\nLabs: CBC and electrolytes normal. C1 inhibitor 6 mg/dL (low). C4 5 mg/dL (low). Tryptase 4.1 ng/mL (normal). Urine hCG negative.\n\nMDM: bradykinin-mediated angioedema from known HAE, not histaminergic. Airway watched closely with ENT aware.\nTreatment: icatibant 30 mg SC at 14:50. Swelling improving by 17:00, tongue near baseline at 20:30. Observed 6 hours, no airway compromise.\n\nDisposition: discharged home. Follow up with primary care this week and with allergy/immunology to discuss preventive therapy. Return immediately for throat tightness, voice change or trouble swallowing. Advised to carry icatibant at all times."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-07-06a",
+          "kind": "telephone",
+          "start": "2026-07-06T09:30",
+          "reason": "post-ED call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED call",
+              "date": "2026-07-06T09:50",
+              "author": "RN",
+              "body": "Pt called to let us know she went to the ED Friday for lip and tongue swelling, first time in her mouth. Got icatibant there, sent home that night. Today lips back to normal, no throat symptoms. Has two syringes at home and will keep one in her bag. ED records requested. Offered visit this week; she is away with family until August and asked for the first week back. Booked 8/6. Told her to use her icatibant and go to the nearest ED for any recurrence in the mouth or throat."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-06a",
+          "kind": "office_visit",
+          "start": "2026-08-06T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for angioedema",
+          "vitals": {
+            "bp": [
+              123,
+              79
+            ],
+            "hr": 82,
+            "rr": 17,
+            "spo2": 96,
+            "weight_kg": 71.3
+          },
+          "labs": [
+            {
+              "panel": "Lipid Panel",
+              "collected": "2026-08-06T11:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 100
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 185
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 63
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 111
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 122
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-08-06T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin A1c",
+                  "value": 5.2
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-06T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-06T11:10"
+            }
+          ],
+          "orders": [
+            {
+              "id": "allergy-referral-2026",
+              "action": "placed",
+              "order": "Allergy and Immunology referral",
+              "category": "referral",
+              "to": "Allergy and Immunology",
+              "reason": "hereditary angioedema with first oropharyngeal attack; long-term prophylaxis"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-08-06T11:30",
+              "author": "PCP",
+              "body": "Follow-up after the 7/3 ED visit for lip and tongue swelling. ED record reviewed: C1 inhibitor and C4 low, tryptase normal, treated with icatibant and observed, no airway compromise.\n\nNo further attacks since. She had not had an episode involving her mouth before, and it frightened her. Carries a syringe in her school bag now and has one at home. Before that, one hand attack in 2024 and none in 2025.\n\nMeds: risperidone 4 mg daily, tadalafil 40 mg daily, icatibant 30 mg SC prn, prenatal vitamin. NKDA.\n\nExam: no lip, tongue or facial swelling. Oropharynx normal. Heart regular, loud P2. Lungs clear. No edema.\n\nA/P\n- Hereditary angioedema with a first oropharyngeal attack. Laryngeal risk is the concern now. She has not seen an immunologist in years; referral to allergy and immunology to discuss long-term prophylaxis and a written action plan. Continue icatibant on demand. ED for any throat symptoms even after injecting.\n- Lipids and A1c today (annual risperidone monitoring, due anyway).\n- PAH, prolactinoma, schizophrenia: stable with specialists.\nPhysical in November."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "portal_message",
+          "start": "2026-08-07T15:15",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Lab results",
+              "date": "2026-08-07T15:15",
+              "author": "PCP",
+              "body": "Cholesterol and A1c from yesterday are normal. The allergy office has your referral."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "portal_message",
+          "start": "2026-08-18T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy appointment",
+              "date": "2026-08-18T12:30",
+              "author": "patient",
+              "body": "The allergy office called. Their first new patient opening is October 6 but they put me on the cancellation list. Do they need anything else from you?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy appointment",
+              "date": "2026-08-18T14:05",
+              "author": "front desk",
+              "body": "We faxed your ED record and last visit note with the referral, so they should have what they need. If you get an earlier slot, just let us know."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-17a",
+          "kind": "annual_physical",
+          "start": "2026-11-17T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Binge eating disorder|F50.819": {
+        "code": "F50.819",
+        "display": "Binge eating disorder, unspecified",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe pre-eclampsia, third trimester|O14.13": {
+        "code": "O14.13",
+        "display": "Severe pre-eclampsia, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy, unspecified, unspecified trimester|O09.90": {
+        "code": "O09.90",
+        "display": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "3 ML icatibant 10 MG/ML Prefilled Syringe": {
+        "code": "1148141",
+        "display": "3 ML icatibant 10 MG/ML Prefilled Syringe",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "cabergoline 0.5 MG Oral Tablet": {
+        "code": "199703",
+        "display": "cabergoline 0.5 MG Oral Tablet",
+        "ingredient": "cabergoline",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "risperidone 4 MG Oral Tablet": {
+        "code": "314211",
+        "display": "risperidone 4 MG Oral Tablet",
+        "ingredient": "risperidone",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "tadalafil 20 MG Oral Tablet": {
+        "code": "2123194",
+        "display": "Pulmonary Hypertension tadalafil 20 MG Oral Tablet",
+        "ingredient": "tadalafil",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "17-Hydroxyprogesterone": {
+        "code": "1668-3",
+        "display": "17-Hydroxyprogesterone [Mass/volume] in Serum or Plasma",
+        "unit": "ng/dL",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Beta-hCG, serum": {
+        "code": "21198-7",
+        "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "C1 esterase inhibitor": {
+        "code": "4477-6",
+        "display": "Complement C1 esterase inhibitor [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "range": {
+          "low": 21,
+          "high": 39
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Complement C4": {
+        "code": "4498-2",
+        "display": "Complement C4 [Mass/volume] in Serum or Plasma",
+        "unit": "mg/dL",
+        "range": {
+          "low": 14,
+          "high": 48
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Dehydroepiandrosterone sulfate": {
+        "code": "2191-5",
+        "display": "Dehydroepiandrosterone sulfate (DHEA-S) [Mass/volume] in Serum or Plasma",
+        "unit": "ug/dL",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Luteinizing hormone": {
+        "code": "10501-5",
+        "display": "Lutropin [Units/volume] in Serum or Plasma",
+        "unit": "m[IU]/mL",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Protein/Creatinine ratio, urine": {
+        "code": "2890-2",
+        "display": "Protein/Creatinine [Mass Ratio] in Urine",
+        "unit": "mg/mg",
+        "range": {
+          "high": 0.2
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Tryptase": {
+        "code": "21582-2",
+        "display": "Tryptase [Mass/volume] in Serum or Plasma",
+        "unit": "ng/mL",
+        "range": {
+          "high": 11.5
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "MRI pituitary with and without contrast": {
+        "code": "24879-9",
+        "display": "MR Pituitary and Sella turcica WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Obstetric ultrasound, transvaginal": {
+        "code": "80865-9",
+        "display": "US transvaginal for pregnancy",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Right heart catheterization": {
+        "code": "18745-0",
+        "display": "Cardiac catheterization study",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ventilation-perfusion lung scan": {
+        "code": "39942-8",
+        "display": "NM Lung Ventilation and Perfusion",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Induction of labor": {
+        "code": "236958009",
+        "display": "Induction of labor",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Right heart catheterization": {
+        "code": "40403005",
+        "display": "Catheterization of right heart",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Vaginal delivery": {
+        "code": "177184002",
+        "display": "Normal delivery procedure",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

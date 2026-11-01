@@ -1215,6 +1215,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 900
                 }
               ]
@@ -3539,24 +3542,40 @@
                   "test": "pH of arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.42
                 },
                 {
                   "test": "Arterial pCO2",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 44
                 },
                 {
                   "test": "Arterial pO2",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 72
                 },
                 {
                   "test": "Arterial bicarbonate",
                   "loinc": "1960-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -4651,37 +4670,37 @@
         "code": "1665060",
         "display": "cefazolin 2000 MG Injection",
         "ingredient": "cefazolin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "entacapone 200 MG Oral Tablet": {
         "code": "317094",
         "display": "entacapone 200 MG Oral Tablet",
         "ingredient": "entacapone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "nitroglycerin 0.4 MG Sublingual Tablet": {
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pramipexole dihydrochloride 0.75 MG 24HR Extended Release Oral Tablet": {
         "code": "901546",
         "display": "24 HR pramipexole dihydrochloride 0.75 MG Extended Release Oral Tablet",
         "ingredient": "pramipexole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pramipexole dihydrochloride 1.5 MG 24HR Extended Release Oral Tablet": {
         "code": "901550",
         "display": "24 HR pramipexole dihydrochloride 1.5 MG Extended Release Oral Tablet",
         "ingredient": "pramipexole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tafamidis 61 MG Oral Capsule": {
         "code": "2168534",
         "display": "tafamidis 61 MG Oral Capsule",
         "ingredient": "tafamidis",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4689,24 +4708,39 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Arterial pCO2": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Arterial pO2": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "B-type natriuretic peptide": {
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Wound culture": {
@@ -4718,6 +4752,10 @@
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

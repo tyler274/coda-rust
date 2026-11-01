@@ -65,7 +65,7 @@
           "surveys": [{"survey": "GAD-7 total score", "value": 8}],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2022-06-13T13:40"}],
           "orders": [
-            {"id": "dx-mammo-2022", "action": "placed", "order": "Diagnostic mammogram, bilateral, and right breast ultrasound", "category": "imaging", "reason": "palpable right breast mass"}
+            {"id": "dx-mammo-2022", "action": "placed", "order": "Diagnostic mammogram", "category": "imaging", "reason": "palpable right breast mass"}, {"id": "dx-mammo-2022-2", "action": "placed", "order": "Breast ultrasound", "category": "imaging", "reason": "palpable right breast mass"}
           ],
           "documents": [
             {"type": "Progress Notes", "title": "Office Visit - breast lump", "author": "PCP", "date": "2022-06-13T14:15", "body": "Found a lump in her right breast in the shower about a month ago. Has not changed since. Not painful. No discharge from the nipple, no skin dimpling or redness. She has been checking it every day and admits she is scared - mother's cancer, plus her own thyroid cancer last year. Sleeping less. GAD-7 8.\nExam: firm mass about 1.5 cm R breast upper outer quadrant, does not move freely, nontender. No skin changes, no nipple retraction. No axillary or supraclavicular nodes. L breast normal.\nA/P\n1. Palpable R breast mass. Diagnostic mammogram + targeted ultrasound, marked urgent. Explained most lumps at her age turn out benign but this one needs imaging and likely a biopsy.\n2. Situational anxiety around the lump. Talked it through; she'd rather not start anything, has her sister for support. Will move quickly so she's not waiting. Message me anytime."}
@@ -81,8 +81,8 @@
             {"study": "Breast ultrasound", "performed": "2022-06-21T10:30", "text": "Targeted right breast ultrasound at the palpable site. At 10 o'clock, 6 cm from the nipple: oval, circumscribed, hypoechoic solid mass, parallel orientation, 1.6 x 1.0 x 1.2 cm. No posterior shadowing. Right axilla: normal lymph nodes.", "conclusion": "1.6 cm solid mass, right breast 10 o'clock, corresponding to the palpable finding. BI-RADS 4A: low suspicion for malignancy. Ultrasound-guided core biopsy recommended."}
           ],
           "orders": [
-            {"id": "dx-mammo-2022", "action": "done", "date": "2022-06-21T10:30"},
-            {"id": "breast-bx-2022", "action": "placed", "order": "Ultrasound-guided core biopsy, right breast", "category": "procedure", "reason": "BI-RADS 4A mass"}
+            {"id": "dx-mammo-2022", "action": "done", "date": "2022-06-21T10:30"}, {"id": "dx-mammo-2022-2", "action": "done", "date": "2022-06-21T10:30"},
+            {"id": "breast-bx-2022", "action": "placed", "order": "Ultrasound-guided core biopsy, right breast", "category": "procedure", "reason": "BI-RADS 4A mass", "snomed": "432550005"}
           ]
         },
         {
@@ -112,7 +112,7 @@
             {"type": "Telephone Encounter", "title": "Biopsy result call", "author": "PCP", "date": "2022-07-01T14:10", "body": "Called with path: fibroadenoma, benign. She cried with relief. Follow-up ultrasound in 6 months per radiology, then yearly mammograms. Ordered."}
           ],
           "orders": [
-            {"id": "breast-us-6mo", "action": "placed", "order": "Right breast ultrasound, 6-month follow-up", "category": "imaging", "reason": "fibroadenoma after biopsy"}
+            {"id": "breast-us-6mo", "action": "placed", "order": "Breast ultrasound", "category": "imaging", "reason": "fibroadenoma after biopsy"}
           ]
         },
         {
@@ -245,7 +245,7 @@
           "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
           "surveys": [{"survey": "PHQ-2 total score", "value": 1}, {"survey": "GAD-7 total score", "value": 4}],
           "labs": [
-            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-14T08:40", "results": [{"test": "Potassium"}, {"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-14T08:40", "results": [{"test": "Potassium", "value": 4.3}, {"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-14T08:40", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
             {"panel": "Lipid Panel", "collected": "2023-03-14T08:40", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
             {"panel": null, "collected": "2023-03-14T08:40", "results": [{"test": "Thyroid Stimulating Hormone"}]}

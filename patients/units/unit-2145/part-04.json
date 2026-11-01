@@ -1,0 +1,227 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002145",
+      "events": [
+        {
+          "id": "2026-01-12a",
+          "kind": "office_visit",
+          "start": "2026-01-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2026-01-12T16:00"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-01-12T16:25",
+              "body": "Rescheduled from December. Doing fine. Got through the busy season at the warehouse. Meetings twice a week now with the new shift schedule. No use, no cravings. Sleep fine. Takes both meds every day.\n\nVitals as charted. Well appearing, anicteric, no bruising seen. Mood good.\nPHQ-9 3.\n\nA/P: OUD in sustained remission, continue naltrexone 50 mg. PTSD stable, continue sertraline 100 mg. Refills x 90 days with 1 refill. Physical with yearly HCV RNA and FIT in July."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01a",
+          "kind": "office_visit",
+          "start": "2026-05-01T10:40",
+          "end": "2026-05-01T11:25",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "fatigue, bruising, nosebleeds",
+          "conditions": [
+            {"label": "Pancytopenia", "icd10": "D61.818", "action": "diagnosed", "onset": "2026-03-16"}
+          ],
+          "state": {"labs": {"Hemoglobin": 8.6, "White Blood Cells": 2.4, "Platelets": 24}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-01T11:10", "resulted": "2026-05-01T15:20", "results": [
+              {"test": "White Blood Cells", "value": 2.4},
+              {"test": "Hemoglobin", "value": 8.6},
+              {"test": "Hematocrit"},
+              {"test": "Mean Corpuscular Volume"},
+              {"test": "Platelets", "value": 24}
+            ]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-05-01T11:10", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": null, "collected": "2026-05-01T11:10", "resulted": "2026-05-04T09:30", "results": [{"test": "Hepatitis C Viral Load, PCR", "text": "Not detected"}]}
+          ],
+          "orders": [
+            {"id": "hematology-referral", "action": "placed", "order": "Hematology referral", "category": "referral", "to": "Hematology", "reason": "pancytopenia, urgent"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-05-01T10:40"},
+            {"procedure": "Venipuncture", "performed": "2026-05-01T11:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Acute Visit",
+              "author": "PCP",
+              "date": "2026-05-01T11:30",
+              "body": "Texted this morning asking to be seen, came in same day.\n\nAbout six weeks of getting more and more tired, worse the last couple of weeks, dragging through his shifts. Bruises on his legs and arms he doesn't remember getting. Nosebleeds several times, stop with pressure in 10-15 minutes. No fever, no night sweats, no weight loss. No dark or bloody stools, no blood in urine. No new meds or supplements; still just naltrexone, sertraline, vitamin D. No alcohol. Denies any use.\n\nExam: vitals as charted, afebrile. Pale conjunctivae. Sclerae anicteric. No blood in nares now, no oral bleeding. Scattered petechiae over both shins, a few small bruises on the forearms. No cervical, axillary or inguinal nodes. Abdomen soft, nontender, liver and spleen not enlarged. Heart regular. Lungs clear.\n\nA/P: fatigue with bruising and epistaxis, concern for low counts. CBC, CMP and HCV RNA drawn now, will call this afternoon. Bleeding precautions reviewed: no aspirin or ibuprofen, soft toothbrush, ED for a nosebleed that won't stop or any heavy bleeding. Continue current meds.\n\nAddendum 15:40: CBC WBC 2.4, Hgb 8.6, plt 24. Pancytopenia. Called patient (see phone note). Urgent hematology referral placed, office asked for the earliest new patient slot. CMP unremarkable."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-01b",
+          "kind": "telephone",
+          "start": "2026-05-01T15:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Lab result call",
+              "author": "PCP",
+              "date": "2026-05-01T15:45",
+              "body": "Called him with today's CBC. All three cell lines are low, platelets 24. Explained this needs a hematologist to look for the cause, likely including a bone marrow test. Urgent referral in. Repeated bleeding precautions and when to go to the ED. He understands, asked whether this could be the hep C back; told him the virus test is still pending and I will let him know. He will stay off ladders at work for now."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-04a",
+          "kind": "portal_message",
+          "start": "2026-05-04T10:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hepatitis C test and hematology",
+              "author": "PCP",
+              "date": "2026-05-04T10:05",
+              "body": "Brian, the hepatitis C virus test from Friday came back not detected, so this isn't the hep C returning. Our referral coordinator confirmed your hematology appointment for Monday 5/18 in the morning; they'll mail details. Call us or go to the ED if bleeding is hard to stop."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hepatitis C test and hematology",
+              "author": "patient",
+              "date": "2026-05-04T12:41",
+              "body": "Ok thank you, that's a relief. I'll be there the 18th."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-18a",
+          "kind": "specialist_visit",
+          "start": "2026-05-18T09:00",
+          "service": "Hematology & Oncology",
+          "reason": "pancytopenia",
+          "state": {"labs": {"Hemoglobin": 8.2, "White Blood Cells": 2.1, "Platelets": 20}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-05-18T09:25", "results": [
+              {"test": "White Blood Cells", "value": 2.1},
+              {"test": "Hemoglobin", "value": 8.2},
+              {"test": "Hematocrit"},
+              {"test": "Platelets", "value": 20}
+            ]},
+            {"panel": null, "collected": "2026-05-18T09:25", "results": [{"test": "Reticulocytes", "loinc": "17849-1", "unit": "%", "value": 0.5, "range": {"low": 0.5, "high": 1.5}}]},
+            {"panel": null, "collected": "2026-05-18T09:25", "results": [{"test": "Peripheral blood smear", "loinc": "104701-8", "text": "No blasts or abnormal cells. Red cells, white cells and platelets all reduced in number."}]},
+            {"panel": null, "collected": "2026-05-18T09:25", "results": [{"test": "Vitamin B12", "value": 512}]},
+            {"panel": null, "collected": "2026-05-18T09:25", "results": [{"test": "Folate", "value": 11.8}]}
+          ],
+          "orders": [
+            {"id": "hematology-referral", "action": "done", "date": "2026-05-18T09:00"}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Consultation",
+              "author": "hematology",
+              "date": "2026-05-20T13:30",
+              "body": "Outside hematology and oncology clinic. New patient consultation, seen 5/18/2026. Letter to the referring physician.\n\nReason for referral: pancytopenia.\n\nHistory: 45-year-old man with two months of worsening tiredness, bruising that comes easily and recurring nosebleeds. He has had no fevers, sweats or weight loss. Hepatitis C was treated and cured in 2021; he was reinfected in 2024, seen in an emergency department that May, and was cured again with a 12-week course. His opioid use disorder has been in sustained remission and he has PTSD.\n\nPast surgical: appendectomy at 16; left femur fixation at 28 after a car accident.\nMedications: naltrexone 50 mg daily, sertraline 100 mg daily, vitamin D3 2000 units daily.\nAllergies: none known.\nFamily: father with alcohol use disorder and cirrhosis; mother with hypertension and hypothyroidism; younger brother with hepatitis C.\nSocial: former smoker, quit 5 years ago. No alcohol. Works as a warehouse logistics coordinator.\n\nExam: pale. Petechiae scattered over the lower legs. No palpable lymph nodes. Liver and spleen not enlarged.\n\nLabs today: hemoglobin 8.2 g/dL, WBC 2.1 x10^9/L, platelets 20 x10^9/L, reticulocytes 0.5%. I reviewed the smear: no blasts and no abnormal forms; all three lines are sparse. B12 512 pg/mL and folate 11.8 ng/mL, both normal. Your HCV RNA on 5/1 was undetectable.\n\nImpression: pancytopenia with an inappropriately low reticulocyte count and a bland smear, pointing to underproduction. A marrow failure process is the main consideration, and a marrow examination is needed.\n\nPlan:\n1. Bone marrow aspirate and biopsy, scheduled 5/27, with cytogenetics and flow cytometry including a PNH screen.\n2. Bleeding precautions; avoid NSAIDs and aspirin.\n3. Follow up after the biopsy results.\n\nThank you for this referral."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "procedure_visit",
+          "start": "2026-05-27T08:30",
+          "service": "Hematology & Oncology",
+          "reason": "bone marrow biopsy",
+          "procedures": [
+            {"procedure": "Bone marrow biopsy, needle or trocar", "snomed": "56241004", "performed": "2026-05-27T09:00"}
+          ],
+          "reports": [
+            {"study": "Bone marrow biopsy pathology report", "loinc": "66119-9", "performed": "2026-05-27T09:00", "issued": "2026-05-29T16:00", "text": "Specimen: right posterior iliac crest aspirate and core biopsy. Core length adequate for evaluation. Cellularity approximately 15%, markedly hypocellular for age. Trilineage hematopoiesis is reduced: scattered erythroid islands, sparse granulocytic precursors, rare megakaryocytes. No dysplasia in the lineages present. Blasts not increased. No fibrosis on reticulin stain. No granulomas, lymphoid aggregates or metastatic infiltrate. Iron stores present. Cytogenetics: 46,XY normal male karyotype in 20 metaphases. Peripheral blood flow cytometry: no PNH clone detected.", "conclusion": "Markedly hypocellular marrow (about 15%) with reduced trilineage hematopoiesis, without dysplasia, increased blasts, fibrosis or infiltrate. Normal karyotype. No PNH clone."}
+          ],
+          "documents": [
+            {
+              "type": "Pathology Report",
+              "title": "Bone Marrow Pathology",
+              "author": "pathology",
+              "date": "2026-06-01T10:20",
+              "body": "Outside pathology report received by fax from the hematology clinic. Bone marrow aspirate and core biopsy performed 5/27/2026, final report 5/29.\n\nFinal diagnosis: markedly hypocellular marrow, about 15% cellularity, with reduced trilineage hematopoiesis. No dysplasia, no increase in blasts, no fibrosis, no infiltrating process. Karyotype 46,XY. No PNH clone by flow cytometry.\n\nFiled to chart for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-08a",
+          "kind": "specialist_visit",
+          "start": "2026-06-08T10:30",
+          "service": "Hematology & Oncology",
+          "reason": "bone marrow results",
+          "state": {"labs": {"Hemoglobin": 8.0, "White Blood Cells": 2.0, "Platelets": 18}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-06-08T10:10", "results": [
+              {"test": "White Blood Cells", "value": 2.0},
+              {"test": "Hemoglobin", "value": 8.0},
+              {"test": "Platelets", "value": 18}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2026-06-10T11:45",
+              "body": "Outside hematology and oncology clinic. Follow-up visit 6/8/2026, letter to PCP.\n\nThe marrow came back markedly hypocellular at about 15% with no dysplasia, no excess blasts, a normal karyotype and no PNH clone. Taken with his counts, this is aplastic anemia. By count criteria it is non-severe. Given his hepatitis C reinfection two years ago, a post-hepatitis mechanism is likely.\n\nToday: hemoglobin 8.0, WBC 2.0, platelets 18. Still tired, a nosebleed last week that stopped at home. No infections.\n\nWe talked through the options. Because his counts are low enough to put him at risk, we are starting treatment now:\n- Cyclosporine 200 mg by mouth twice daily.\n- Eltrombopag 150 mg by mouth once daily, on an empty stomach, apart from dairy and minerals.\nWe will draw counts, cyclosporine levels, kidney function and liver tests here every one to two weeks at first. Platelet transfusion if he bleeds or platelets fall under 10. He has our clinic's after-hours number.\n\nHe should keep taking naltrexone and sertraline. Please let us know of any new prescriptions, given cyclosporine interactions.\n\nNext visit in about 8 weeks, with lab checks in between."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "pharmacy",
+          "start": "2026-07-20T08:35",
+          "documents": [
+            {
+              "type": "Pharmacy Communication",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2026-07-20T08:35",
+              "body": "E-refill request, naltrexone 50 mg and sertraline 100 mg, 90 days. Last PCP visit 5/1. Approved by PCP and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "specialist_visit",
+          "start": "2026-08-10T10:00",
+          "service": "Hematology & Oncology",
+          "reason": "aplastic anemia follow-up",
+          "state": {"labs": {"Hemoglobin": 9.0, "White Blood Cells": 2.6, "Platelets": 31}},
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2026-08-10T09:40", "results": [
+              {"test": "White Blood Cells", "value": 2.6},
+              {"test": "Hemoglobin", "value": 9.0},
+              {"test": "Platelets", "value": 31}
+            ]}
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Hematology Follow-up",
+              "author": "hematology",
+              "date": "2026-08-12T14:10",
+              "body": "Outside hematology and oncology clinic. Follow-up 8/10/2026.\n\nNon-severe aplastic anemia, two months into cyclosporine 200 mg twice daily and eltrombopag 150 mg daily. Taking both as directed and tolerating them. Nosebleeds are less frequent. No transfusion has been needed.\n\nCBC today: hemoglobin 9.0, WBC 2.6, platelets 31.\n\nAssessment: early, modest improvement. Continue both medications at current doses. Labs here every 2 weeks. Return in 6 weeks.\n\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-14a",
+          "kind": "office_visit",
+          "start": "2026-09-14T15:40",
+          "reason": "follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ]
+}

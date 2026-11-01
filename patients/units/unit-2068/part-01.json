@@ -274,13 +274,6 @@
        "category": "referral",
        "to": "Hematology",
        "reason": "microcytic anemia with iron loading, lymphocytosis"
-      },
-      {
-       "id": "records-prior-hosp",
-       "action": "placed",
-       "order": "Outside records request",
-       "category": "procedure",
-       "reason": "prior admissions 2018-2020"
       }
      ],
      "documents": [
@@ -326,12 +319,7 @@
      "kind": "outside_records",
      "start": "2021-10-12T14:00",
      "orders": [
-      {
-       "id": "records-prior-hosp",
-       "action": "done",
-       "date": "2021-10-12T14:00"
-      }
-     ],
+      ],
      "documents": [
       {
        "type": "Outside Records",
@@ -370,17 +358,17 @@
      ],
      "medications": [
       {
-       "drug_text": "pyridoxine hydrochloride 100 MG Oral Tablet",
-       "action": "start",
-       "sig": "Take 1 tablet by mouth daily",
-       "dose": {
-        "value": 100,
-        "unit": "mg"
-       },
-       "frequency": "DAILY",
-       "route": "Oral",
-       "course": "chronic",
-       "reason": "Sideroblastic anemia"
+        "drug_text": "vitamin B6 100 MG Oral Tablet",
+        "action": "start",
+        "sig": "Take 1 tablet by mouth daily",
+        "dose": {
+          "value": 100,
+          "unit": "mg"
+        },
+        "frequency": "DAILY",
+        "route": "Oral",
+        "course": "chronic",
+        "reason": "Sideroblastic anemia"
       }
      ],
      "orders": [
@@ -457,11 +445,11 @@
        "reason": "cirrhosis surveillance"
       },
       {
-       "id": "fit-2021",
-       "action": "placed",
-       "order": "Fecal immunochemical test",
-       "category": "lab",
-       "reason": "colorectal cancer screening"
+        "id": "fit-2021",
+        "action": "placed",
+        "order": "Fecal Immunochemical Test",
+        "category": "lab",
+        "reason": "colorectal cancer screening"
       }
      ],
      "documents": [
@@ -509,9 +497,9 @@
      "start": "2021-11-29T10:00",
      "orders": [
       {
-       "id": "fit-2021",
-       "action": "done",
-       "date": "2021-11-29T10:00"
+        "id": "fit-2021",
+        "action": "done",
+        "date": "2021-11-29T10:00"
       }
      ],
      "labs": [
@@ -680,10 +668,13 @@
        "collected": "2022-01-02T14:10",
        "results": [
         {
-         "test": "B-type natriuretic peptide",
-         "loinc": "30934-4",
-         "unit": "pg/mL",
-         "value": 900
+          "test": "B-type natriuretic peptide",
+          "loinc": "30934-4",
+          "unit": "pg/mL",
+          "value": 900,
+          "range": {
+            "high": 100
+          }
         },
         {
          "test": "Troponin I, High Sensitivity"
@@ -1038,11 +1029,11 @@
      "start": "2022-06-03T14:20",
      "orders": [
       {
-       "id": "inr-start-2022",
-       "action": "placed",
-       "order": "Prothrombin time with INR",
-       "category": "lab",
-       "reason": "warfarin started 5/31"
+        "id": "inr-start-2022",
+        "action": "placed",
+        "order": "Prothrombin Time with INR",
+        "category": "lab",
+        "reason": "warfarin started 5/31"
       }
      ],
      "documents": [
@@ -1160,9 +1151,9 @@
      ],
      "orders": [
       {
-       "id": "inr-start-2022",
-       "action": "done",
-       "date": "2022-06-16T16:10"
+        "id": "inr-start-2022",
+        "action": "done",
+        "date": "2022-06-16T16:10"
       }
      ],
      "documents": [

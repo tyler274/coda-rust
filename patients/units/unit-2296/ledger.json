@@ -1,10 +1,7 @@
 {
   "unit": "unit-2296",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002296/2021-10-05a: imaging order \"Abdominal aortic ultrasound\" names no one catalog lab, panel, study or procedure",
-    "MRN00002296/2023-03-07a: procedure order \"Home oxygen concentrator and portable system, 2 L/min continuous\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002296",
@@ -1000,6 +997,7 @@
               "action": "placed",
               "order": "Abdominal aortic ultrasound",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "AAA screening, male smoker 65-75"
             }
           ],
@@ -1352,6 +1350,9 @@
                   "test": "Natriuretic peptide B",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 250
                 }
               ]
@@ -2262,6 +2263,7 @@
               "action": "placed",
               "order": "Home oxygen concentrator and portable system, 2 L/min continuous",
               "category": "procedure",
+              "snomed": "426990007",
               "reason": "resting hypoxemia with secondary polycythemia and cor pulmonale"
             }
           ],
@@ -4086,6 +4088,10 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
                   "value": 200
                 }
               ]
@@ -4098,36 +4104,42 @@
                   "test": "Pleural fluid pH",
                   "loinc": "2750-8",
                   "unit": "[pH]",
+                  "range": {},
                   "value": 7.1
                 },
                 {
                   "test": "Pleural fluid glucose",
                   "loinc": "2346-5",
                   "unit": "mg/dL",
+                  "range": {},
                   "value": 30
                 },
                 {
                   "test": "Pleural fluid LDH",
                   "loinc": "2530-4",
                   "unit": "U/L",
+                  "range": {},
                   "value": 600
                 },
                 {
                   "test": "Pleural fluid protein",
                   "loinc": "2882-9",
                   "unit": "g/dL",
+                  "range": {},
                   "value": 4.5
                 },
                 {
                   "test": "Pleural fluid WBC",
                   "loinc": "26466-3",
                   "unit": "/uL",
+                  "range": {},
                   "value": 20000
                 },
                 {
                   "test": "Pleural fluid neutrophils",
                   "loinc": "26519-9",
                   "unit": "%",
+                  "range": {},
                   "value": 90
                 },
                 {
@@ -4378,13 +4390,13 @@
         "code": "312172",
         "display": "oxygen 99 % Gas for Inhalation",
         "ingredient": "oxygen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tiotropium 0.018 MG Inhalation Powder": {
         "code": "485032",
         "display": "tiotropium 0.018 MG Inhalation Powder",
         "ingredient": "tiotropium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4397,12 +4409,19 @@
         "code": "2532-0",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Natriuretic peptide B": {
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid Gram stain": {
@@ -4414,12 +4433,14 @@
         "code": "2530-4",
         "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Pleural fluid",
         "unit": "U/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid WBC": {
         "code": "26466-3",
         "display": "Leukocytes [#/volume] in Body fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid culture": {
@@ -4431,32 +4452,48 @@
         "code": "2346-5",
         "display": "Glucose [Mass/volume] in Pleural fluid",
         "unit": "mg/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid neutrophils": {
         "code": "26519-9",
         "display": "Granulocytes/Leukocytes in Pleural fluid",
         "unit": "%",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid pH": {
         "code": "2750-8",
         "display": "pH of Pleural fluid",
         "unit": "[pH]",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Pleural fluid protein": {
         "code": "2882-9",
         "display": "Protein [Mass/volume] in Pleural fluid",
         "unit": "g/dL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
     "reports": {
+      "Abdominal aortic ultrasound": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "CT neck with contrast": {
         "code": "24836-9",
         "display": "CT Nasopharynx and Neck W contrast IV",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Home oxygen concentrator and portable system, 2 L/min continuous": {
+        "code": "426990007",
+        "display": "Home oxygen therapy",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }

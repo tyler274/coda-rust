@@ -6,6 +6,9 @@ use std::net::SocketAddr;
 #[derive(Clone, Debug, PartialEq)]
 pub struct Config {
     pub listen_addr: SocketAddr,
+    /// Whether the nav offers "Sign in". The binary sets it from
+    /// `RuntimeConfig::physician_proxy`, so the link exists exactly when `/physician/` does.
+    pub physician_sign_in: bool,
 }
 
 impl Default for Config {
@@ -14,6 +17,7 @@ impl Default for Config {
             listen_addr: DEFAULT_LISTEN_ADDR
                 .parse()
                 .expect("constant socket address"),
+            physician_sign_in: false,
         }
     }
 }

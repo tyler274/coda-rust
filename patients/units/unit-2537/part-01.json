@@ -1,0 +1,222 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002537",
+      "given": "Henry",
+      "family": "Silva",
+      "birth_date": "1995-09-05",
+      "address_line": "118 Cottage St, Apt 2",
+      "phone": "+1-508-555-0146",
+      "email": "henry.silva@example.test",
+      "marital_status": "single",
+      "summary": "Construction worker in his late twenties with depression on sertraline and untreated hyperuricemia. Allopurinol in 2024 caused interstitial nephritis with kidney injury that recovered; in 2025 a high-voltage injury needed forearm and hand fasciotomy, and a house fire six months later brought 40% burns complicated by culture-negative septic shock.",
+      "events": [
+        {
+          "id": "2022-06-21a",
+          "kind": "telephone",
+          "start": "2022-06-21T10:40",
+          "reason": "new patient request",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New Patient Intake Call", "author": "front desk", "date": "2022-06-21T10:52", "body": "Caller is Henry Silva, 26, wants to move his primary care here. Says his old office is too far now that he works out of the Amherst yard and he can never get a same-day slot. Only med is sertraline, prescribed by the old office. Membership info emailed. Booked new patient physical 7/12 at 8:00. Gave him the records release form to sign so we can pull his chart."}
+          ]
+        },
+        {
+          "id": "2022-07-12a",
+          "kind": "establish_care",
+          "start": "2022-07-12T08:00",
+          "end": "2022-07-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {"label": "Major depressive disorder, single episode, unspecified", "icd10": "F32.9", "action": "history", "onset": "2020-02-01", "note": "diagnosed by prior primary care office; stable on sertraline"},
+            {"label": "Nicotine dependence, cigarettes", "action": "diagnosed", "onset": "2013-06-01"}
+          ],
+          "medications": [
+            {"drug": "sertraline 50 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 50, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "depression"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 84.0, "height_cm": 180.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 6},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"},
+            {"item": "Occupation", "value": "Construction worker"},
+            {"item": "History of alcohol use", "value": "Social, 2-3 drinks per week"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-07-12T08:50", "results": [{"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-07-12T08:50", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
+            {"panel": "Lipid Panel", "collected": "2022-07-12T08:50", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-07-12T08:50", "resulted": "2022-07-13T14:20", "results": [{"test": "Uric Acid", "value": 8.4}]},
+            {"panel": null, "collected": "2022-07-12T08:50", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-07-12T08:50", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-07-12T08:00"},
+            {"procedure": "Appendectomy", "snomed": "80146002", "performed": "2010-04-01T12:00"}
+          ],
+          "documents": [
+            {"type": "History and Physical Notes", "title": "New Patient Visit", "author": "PCP", "date": "2022-07-12T12:15", "body": "26 y/o man transferring care, wants a doctor he can actually reach.\n\nMood: Diagnosed with depression at his old practice in early 2020 after a rough winter, low energy, sleeping too much, pulled away from friends. Started sertraline then, dose went up once and has sat at 50 mg since. Feels it works. Some flat weeks in the winter but nothing like before. Never seen psychiatry or counseling, open to it if things slide. No SI now or ever. PHQ-9 6 today.\n\nPMH: depression as above. PSH: appendix out at 14, no complications. Meds: sertraline 50 mg daily. Allergies: none to meds.\n\nFamily: Dad has gout, flares a couple times a year, and has also been treated for depression. Mom has high blood pressure and type 2 diabetes. One older brother, healthy.\n\nSocial: Works construction, mostly framing and site work. Smokes a pack a day, started around 18. Has thought about quitting, says not this summer with the overtime. Drinks socially, 2-3 beers a week, AUDIT-C 3. No drug use. Lives in Amherst, single.\n\nROS: negative except as above. No joint pain or swelling.\n\nExam: Well-appearing. Vitals as charted. HEENT normal. Neck supple, no thyroid enlargement. Heart regular, no murmur. Lungs clear bilaterally. Abdomen soft, nontender, healed RLQ scar. Extremities without edema, joints normal. Skin normal. Neuro grossly intact. Affect a little reserved, appropriate, linear.\n\nAssessment/plan:\n1. Depression, stable on sertraline 50 mg. Continue. Will take over prescribing. Recheck mood in 6 months.\n2. Tobacco, 1 ppd. Talked about the lungs and the heart; he knows. Offered patch/gum or a medication when he's ready. Revisit next visit.\n3. Health maintenance: CMP, CBC, lipids. One-time HIV and hep C screens, he agrees. Adding uric acid since he asked about his dad's gout.\n4. Records release signed, requesting prior office records.\n\nFollow up in 6 months, sooner if needed."}
+          ]
+        },
+        {
+          "id": "2022-07-14a",
+          "kind": "portal_message",
+          "start": "2022-07-14T09:05",
+          "reason": "lab results",
+          "conditions": [
+            {"label": "Hyperuricemia", "action": "diagnosed", "onset": "2022-07-12"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Lab Results", "author": "PCP", "date": "2022-07-14T09:05", "body": "Henry, your blood work looks good overall. Kidney and liver tests, blood counts and cholesterol are all normal, and the HIV and hepatitis C screens are negative.\n\nThe one number that stands out is your uric acid at 8.4, a bit above the normal range. That's the substance that causes gout, which fits with your dad. You've never had a gout attack, so there's nothing to treat right now. Cutting back on beer and sugary drinks helps, and staying hydrated on hot job sites. We'll recheck it once a year.\n\nTalk soon."}
+          ]
+        },
+        {
+          "id": "2022-07-26a",
+          "kind": "outside_records",
+          "start": "2022-07-26T11:30",
+          "reason": "prior primary care records",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-05-09T10:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from Prior Primary Care Office", "author": "outside primary care", "date": "2022-07-26T11:30", "body": "Records received covering 2015 through 2022.\n\nProblem list: Depression, onset early 2020. Tobacco use.\nSurgical: Appendectomy, age 14.\nMedications: Sertraline 25 mg daily started 02/2020, increased to 50 mg daily 04/2020, unchanged since.\nAllergies: NKDA.\nImmunizations: Tdap 05/2017. Influenza most seasons.\nVisits: Annual physicals 2018 and 2021, normal exams. 2021 labs: CBC and metabolic panel normal. Smoking cessation discussed each year, declined.\nFamily history: father gout and depression; mother hypertension and type 2 diabetes.\n\nFiled. Reviewed by PCP, consistent with intake history."}
+          ]
+        },
+        {
+          "id": "2022-08-24a",
+          "kind": "pharmacy",
+          "start": "2022-08-24T15:10",
+          "reason": "refill",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Sertraline Refill", "author": "RN", "date": "2022-08-24T15:10", "body": "E-request from pharmacy for sertraline 50 mg. Last fill from the old office ran out. Switched to 90-day supply with 3 refills under PCP per new patient plan. Sent."}
+          ]
+        },
+        {
+          "id": "2022-10-20a",
+          "kind": "nurse_visit",
+          "start": "2022-10-20T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-20T07:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-20T07:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-20T07:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccine Visit", "author": "RN", "date": "2022-10-20T07:50", "body": "Came in before his shift. Screening questions negative. Flu vaccine L deltoid, bivalent COVID booster R deltoid. Lot numbers in the immunization record. Stayed 15 min, no reaction. VIS given."}
+          ]
+        },
+        {
+          "id": "2023-01-24a",
+          "kind": "office_visit",
+          "start": "2023-01-24T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "mood and tobacco follow-up",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 5}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-24T16:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2023-01-24T17:05", "body": "S: 6-month check. Work slow for the winter, laid off two weeks over the holidays, back now. Mood okay, PHQ-9 5. Sleeping fine. Taking sertraline daily, no side effects he notices. Still a pack a day. Says he cut back for a week in December and was miserable. Doesn't want a medication yet, would rather try on his own in the spring.\n\nO: Vitals as charted. Comfortable, good eye contact. Lungs clear. Heart regular.\n\nA/P:\n- Depression: stable, continue sertraline 50.\n- Tobacco: gave quitline number and a handout. Patches available any time, he only has to message.\n- Physical in the summer with labs, including uric acid recheck."}
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "pharmacy",
+          "start": "2023-04-19T11:25",
+          "reason": "refill",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Sertraline Refill", "author": "MA", "date": "2023-04-19T11:25", "body": "Pharmacy request, sertraline 50 mg #90. Seen in January, on protocol. Approved per standing order, 1 refill. PCP cosigned."}
+          ]
+        },
+        {
+          "id": "2023-07-20a",
+          "kind": "annual_physical",
+          "start": "2023-07-20T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Administrative Note", "title": "Missed Appointment", "author": "front desk", "date": "2023-07-20T09:10", "body": "No call, no show for 8:00 physical. Left voicemail. He texted back at lunch, got pulled to a job across the river at 6 am and forgot. Rebooked 8/10."}
+          ]
+        },
+        {
+          "id": "2023-08-10a",
+          "kind": "annual_physical",
+          "start": "2023-08-10T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {"labs": {"Uric Acid": 8.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4},
+            {"survey": "AUDIT-C total score", "value": 3}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Current every day smoker"}
+          ],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-10T08:20", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-10T08:20", "results": [{"test": "Low Density Lipoprotein"}, {"test": "Triglycerides"}]},
+            {"panel": null, "collected": "2023-08-10T08:20", "results": [{"test": "Uric Acid", "value": 8.9}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-10T07:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-08-10T09:30", "body": "Annual exam, 27 y/o M. Rescheduled from last month.\n\nInterval: Busy summer, long days in the heat. Mood good, PHQ-9 4, sertraline daily. No joint pain, never a swollen toe or ankle. Smoking about a pack a day, some days less. Alcohol unchanged.\n\nROS: no chest pain, no shortness of breath on the job, no cough beyond a morning clear-throat. No GI or urinary symptoms.\n\nExam: Vitals as charted. Well, tanned, fit. HEENT normal, dentition fine. Neck no nodes. Heart RRR no murmur. Lungs clear, no wheeze. Abdomen soft, nontender. No edema. Joints of hands and feet normal, no tophi. Skin: no suspicious lesions. Mood/affect normal.\n\nA/P:\n1. Health maintenance: CMP, lipids, uric acid today. Vaccines: flu and COVID at a nurse visit when the fall stock comes in.\n2. Hyperuricemia: no attacks. Recheck level; diet and water discussed again.\n3. Depression: in a good stretch. Continue sertraline 50.\n4. Tobacco: still not ready. We talked through what quitting on a job site looks like (breaks are smoke breaks). Will keep asking.\n\nRTC 1 year, or 6 months for mood."}
+          ]
+        },
+        {
+          "id": "2023-08-11a",
+          "kind": "portal_message",
+          "start": "2023-08-11T12:40",
+          "reason": "lab results",
+          "documents": [
+            {"type": "Patient Message", "title": "Results from Your Physical", "author": "PCP", "date": "2023-08-11T12:40", "body": "Hi Henry, labs from yesterday: kidney, liver, sugar and cholesterol all normal. Uric acid 8.9, a little higher than last year but no gout and nothing to start. Keep up the water on site. See you in the fall for shots."}
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "nurse_visit",
+          "start": "2023-10-19T07:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-19T07:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-19T07:27"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-19T07:25"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Vaccine Visit", "author": "RN", "date": "2023-10-19T07:45", "body": "Flu (L arm) and 2023-24 COVID (R arm). No prior reactions. Observed 15 minutes, fine. He asked about patches for quitting, gave the handout again and told him to message PCP when he picks a date."}
+          ]
+        },
+        {
+          "id": "2023-12-13a",
+          "kind": "pharmacy",
+          "start": "2023-12-13T14:05",
+          "reason": "refill",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Sertraline Refill", "author": "RN", "date": "2023-12-13T14:05", "body": "Refill request sertraline 50 mg, 90 days. Seen 8/2023. Sent with 1 refill. Reminder to book mood check after the new year."}
+          ]
+        }
+      ]
+    }
+  ]
+}

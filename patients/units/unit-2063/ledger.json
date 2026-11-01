@@ -1,9 +1,7 @@
 {
   "unit": "unit-2063",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002063/2024-11-05a: referral to \"Diabetes Education\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002063",
@@ -313,6 +311,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13
                 }
               ]
@@ -1027,6 +1029,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 15
                 }
               ]
@@ -1665,6 +1671,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14
                 }
               ]
@@ -2221,6 +2231,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 12
                 }
               ]
@@ -2788,6 +2802,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 15
                 }
               ]
@@ -3067,7 +3085,7 @@
               "action": "placed",
               "order": "Diabetes self-management education and support group referral",
               "category": "referral",
-              "to": "Diabetes Education",
+              "to": "Nutrition",
               "reason": "ongoing support for lifestyle change"
             }
           ],
@@ -3336,6 +3354,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14
                 }
               ]
@@ -3775,6 +3797,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 32
                 }
               ]
@@ -3925,6 +3951,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 17
                 }
               ]
@@ -3979,6 +4009,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14
                 }
               ]
@@ -4341,7 +4375,7 @@
         "code": "855671",
         "display": "phenytoin sodium 100 MG Extended Release Oral Capsule",
         "ingredient": "phenytoin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4349,6 +4383,10 @@
         "code": "3968-5",
         "display": "Phenytoin [Mass/volume] in Serum or Plasma",
         "unit": "ug/mL",
+        "range": {
+          "low": 10,
+          "high": 20
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Stool culture": {

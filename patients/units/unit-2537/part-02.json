@@ -1,0 +1,208 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002537",
+      "events": [
+        {
+          "id": "2024-05-09a",
+          "kind": "portal_message",
+          "start": "2024-05-09T20:14",
+          "reason": "stopped smoking",
+          "documents": [
+            {"type": "Patient Message", "title": "Quit", "author": "patient", "date": "2024-05-09T20:14", "body": "hey doc, figured you'd want to know. I stopped smoking 2 weeks ago. Cold turkey, no patches. Guys on the crew still smoke so it's hard at lunch but so far so good"},
+            {"type": "Patient Message", "title": "RE: Quit", "author": "PCP", "date": "2024-05-10T07:48", "body": "Henry, that's great news, the best thing you could do for your health. The first month is the hardest. If cravings get bad, patches or gum are fine to add, just tell me. Let's do a quick video check in June."}
+          ]
+        },
+        {
+          "id": "2024-06-12a",
+          "kind": "telehealth_visit",
+          "start": "2024-06-12T17:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "tobacco cessation and mood check",
+          "conditions": [
+            {"label": "Nicotine dependence, cigarettes", "action": "resolved"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2024-04-25"}
+          ],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 4}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"}
+          ],
+          "procedures": [
+            {"procedure": "Telehealth visit, established patient, low MDM", "performed": "2024-06-12T17:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2024-06-12T17:55", "body": "Video, he's in his truck after work, verified DOB.\n\nNo cigarettes since about 4/25, roughly seven weeks. Chewing a lot of sunflower seeds. Irritable the first ten days, better now. Not vaping. Mood fine, PHQ-9 4. Still on sertraline 50 daily.\n\nA/P: Former smoker now. Problem list updated. Congratulated him. Not a candidate for lung screening at his age. Physical in October."}
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "pharmacy",
+          "start": "2024-08-22T09:30",
+          "reason": "refill",
+          "documents": [
+            {"type": "Refill Encounter", "title": "Sertraline Refill", "author": "MA", "date": "2024-08-22T09:30", "body": "Sertraline 50 mg #90 request. Last visit 6/12. Approved per protocol, 1 refill, PCP to cosign."}
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "lab_only",
+          "start": "2024-10-09T07:10",
+          "reason": "labs before physical",
+          "state": {"labs": {"Uric Acid": 9.5}},
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-10-09T07:10", "results": [{"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-10-09T07:10", "results": [{"test": "Hemoglobin"}]},
+            {"panel": "Lipid Panel", "collected": "2024-10-09T07:10", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-10-09T07:10", "results": [{"test": "Uric Acid", "value": 9.5}]}
+          ],
+          "procedures": [
+            {"procedure": "Venipuncture", "performed": "2024-10-09T07:10"}
+          ]
+        },
+        {
+          "id": "2024-10-16a",
+          "kind": "annual_physical",
+          "start": "2024-10-16T08:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "medications": [
+            {"drug": "allopurinol 300 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 300, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "hyperuricemia"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2024-10-16T08:40"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2024-10-16T08:00"},
+            {"procedure": "Immunization administration", "performed": "2024-10-16T08:40"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2024-10-16T10:10", "body": "29 y/o M, yearly exam.\n\nInterval: Still off cigarettes since April, proud of it. Put on a couple of pounds. Mood steady, PHQ-9 3, sertraline 50 daily. No joint pain or swelling ever. His dad had another bad gout flare this summer and Henry is worried he's next.\n\nLabs from 10/9 reviewed: CMP normal, creatinine normal. CBC normal. Lipids fine. Uric acid 9.5, up again (8.4 in 2022, 8.9 last year).\n\nExam: Vitals as charted. Well. HEENT normal. Neck no nodes. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Feet and hands: no swelling, no tophi. Skin normal. Mood/affect normal.\n\nA/P:\n1. Hyperuricemia, rising, no gout. Long talk. He wants to treat it given his father. Starting allopurinol 300 mg daily. Reviewed: stop and call for rash, fever, or any swelling. Recheck uric acid and kidney function in 2-3 months.\n2. Depression: stable, continue sertraline.\n3. Former smoker: keep it up.\n4. Flu shot given today. He declined the COVID booster this year.\n\nRTC 3 months."}
+          ]
+        },
+        {
+          "id": "2024-10-31a",
+          "kind": "office_visit",
+          "start": "2024-10-31T11:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ankle swelling and fatigue",
+          "conditions": [
+            {"label": "Acute kidney failure, unspecified", "icd10": "N17.9", "action": "diagnosed", "onset": "2024-10-27"},
+            {"label": "Acute tubulo-interstitial nephritis", "icd10": "N10", "action": "diagnosed", "onset": "2024-10-27", "note": "suspected allopurinol-related; urine culture sent"}
+          ],
+          "medications": [
+            {"drug": "allopurinol 300 MG Oral Tablet", "action": "stop", "reason": "suspected drug-induced interstitial nephritis"}
+          ],
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-10-31T11:55", "resulted": "2024-10-31T14:40", "results": [{"test": "Creatinine", "value": 2.3}, {"test": "Blood Urea Nitrogen", "value": 34}]},
+            {"panel": "Urinalysis", "collected": "2024-10-31T11:50", "resulted": "2024-10-31T13:15", "results": [
+              {"test": "Urine Protein", "text": "1+"},
+              {"test": "Urine Blood", "text": "1+"},
+              {"test": "Urine Red Blood Cells", "value": 8},
+              {"test": "Urine White Blood Cells", "value": 2},
+              {"test": "Urine Nitrite", "text": "Negative"},
+              {"test": "Urine Leukocyte Esterase", "text": "Negative"}
+            ]},
+            {"panel": null, "collected": "2024-10-31T11:50", "resulted": "2024-11-02T09:30", "results": [{"test": "Urine Culture", "text": "No growth at 48 hours"}]}
+          ],
+          "orders": [
+            {"id": "renal-us-2024", "action": "placed", "order": "Renal ultrasound", "category": "imaging", "reason": "acute kidney injury"},
+            {"id": "neph-ref-2024", "action": "placed", "order": "Nephrology referral", "category": "referral", "to": "Nephrology", "reason": "acute kidney injury, suspected allopurinol interstitial nephritis"},
+            {"id": "bmp-recheck-2024", "action": "placed", "order": "Basic Metabolic Panel (BMP)", "category": "lab", "reason": "creatinine recheck in 1 week"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, high MDM", "performed": "2024-10-31T11:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Same-Day Visit: Leg Swelling", "author": "PCP", "date": "2024-10-31T16:45", "body": "S: Texted this morning, ankles puffy since the weekend and he's been wiped out at work, dragging by noon. Socks leave deep marks. Started allopurinol 300 on 10/16, so about two weeks in; has taken it daily. No rash, no fever, no burning or urgency with urination, no flank or back pain. No new NSAIDs or supplements. No chest pain or shortness of breath.\n\nO: Vitals normal, as charted. Looks tired, not ill. No rash anywhere. Heart regular. Lungs clear. Abdomen soft, no CVA tenderness. Bilateral pitting edema of the lower legs. No joint swelling.\n\nLabs (drawn today, back this afternoon): creatinine 2.3 (normal on 10/9), BUN 34. UA: protein 1+, blood 1+, RBC 8/hpf, WBC 2/hpf; no RBC casts and no bacteria on micro; nitrite and leukocyte esterase negative. Urine culture pending.\n\nA/P:\n1. Acute kidney injury two weeks after starting allopurinol, with edema, mild proteinuria and microscopic hematuria, bland for infection. Most likely drug-induced acute interstitial nephritis. Allopurinol stopped today. Called him at 3 pm with the numbers and told him to take no more.\n2. Culture sent to be complete. Renal ultrasound this week. Repeat BMP in 1 week. Nephrology referral, asked for a prompt slot.\n3. Avoid ibuprofen/naproxen, keep drinking water. Light duty if he can get it; work note given.\n4. Return precautions: less urine, shortness of breath, worse swelling, fever, rash: call same day.\n5. Allopurinol not to be restarted."}
+          ]
+        },
+        {
+          "id": "2024-11-04a",
+          "kind": "telephone",
+          "start": "2024-11-04T09:15",
+          "reason": "urine culture result",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Result Call", "author": "RN", "date": "2024-11-04T09:25", "body": "Per PCP, called pt: urine culture no growth, no infection. Ankles a bit less puffy, still tired. Urinating normally. Off allopurinol since Thursday. Confirmed US tomorrow 2:30 and labs Thursday. He knows to call with any decrease in urine or new swelling."}
+          ]
+        },
+        {
+          "id": "2024-11-05a",
+          "kind": "imaging",
+          "start": "2024-11-05T14:30",
+          "reason": "acute kidney injury",
+          "orders": [
+            {"id": "renal-us-2024", "action": "done", "date": "2024-11-05T14:30"}
+          ],
+          "reports": [
+            {"study": "Renal ultrasound", "performed": "2024-11-05T14:30", "text": "INDICATION: Acute kidney injury.\nTECHNIQUE: Grayscale and color flow sonography of both kidneys and the bladder.\nFINDINGS: Right kidney 11.4 cm, left kidney 11.7 cm in length. Normal cortical thickness and echogenicity. No hydronephrosis. No calculi. No solid or cystic mass. Normal color flow. Bladder decompressed, unremarkable.", "conclusion": "Normal renal ultrasound. No hydronephrosis."}
+          ]
+        },
+        {
+          "id": "2024-11-07a",
+          "kind": "lab_only",
+          "start": "2024-11-07T07:05",
+          "reason": "creatinine recheck",
+          "orders": [
+            {"id": "bmp-recheck-2024", "action": "done", "date": "2024-11-07T07:05"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-07T07:05", "resulted": "2024-11-07T12:10", "results": [{"test": "Creatinine", "value": 1.7}, {"test": "Blood Urea Nitrogen", "value": 25}]}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "BMP Result", "author": "PCP", "date": "2024-11-07T13:00", "body": "Creatinine down to 1.7 from 2.3, BUN 25. Ultrasound normal. Moving the right way off allopurinol. Message sent to pt. Nephrology on the 20th."}
+          ]
+        },
+        {
+          "id": "2024-11-20a",
+          "kind": "specialist_visit",
+          "start": "2024-11-20T13:00",
+          "service": "Nephrology",
+          "reason": "acute kidney injury",
+          "orders": [
+            {"id": "neph-ref-2024", "action": "done", "date": "2024-11-20T13:00"}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-11-20T12:30", "results": [{"test": "Creatinine", "value": 1.3}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Nephrology Consultation", "author": "nephrology", "date": "2024-11-22T10:15", "body": "OUTSIDE NEPHROLOGY GROUP, consultation letter\nVisit 11/20/2024. Reason: acute kidney injury.\n\nDear colleague, thank you for asking me to see Mr. Silva, 29, a construction worker with depression on sertraline and hyperuricemia.\n\nHe started allopurinol 300 mg daily on 10/16. Two weeks later he developed bilateral leg edema and fatigue, and your labs showed creatinine 2.3 from a normal baseline, BUN 34, and a urinalysis with mild proteinuria and microscopic hematuria without casts, pyuria or bacteria. Culture negative. Renal ultrasound normal. Allopurinol was stopped 10/31 and creatinine was 1.7 a week later.\n\nToday he feels close to normal. Edema nearly gone. No rash, fever or joint pain.\nMeds: sertraline 50 mg daily. Allergies: NKDA.\nExam: BP normal. No rash. Trace ankle edema. Otherwise unremarkable.\nLabs today: creatinine 1.3.\n\nImpression: Acute interstitial nephritis, most likely allopurinol-induced, recovering after withdrawal of the drug. With steady improvement I would not biopsy and would not give steroids.\n\nRecommendations: avoid allopurinol permanently. Avoid NSAIDs while recovering. Repeat creatinine in 3 weeks; I expect it to normalize. If his uric acid needs treatment in future it should be discussed with us first. No routine nephrology follow-up needed unless creatinine fails to return to baseline.\n\nSincerely, consulting nephrologist"}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "office_visit",
+          "start": "2024-12-10T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "kidney follow-up",
+          "conditions": [
+            {"label": "Acute kidney failure, unspecified", "icd10": "N17.9", "action": "resolved"},
+            {"label": "Acute tubulo-interstitial nephritis", "icd10": "N10", "action": "resolved"}
+          ],
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [
+            {"survey": "PHQ-9 total score", "value": 3}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-12-10T15:40", "resulted": "2024-12-10T15:55", "results": [{"test": "Creatinine", "value": 1.0}, {"test": "Blood Urea Nitrogen", "value": 15}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2024-12-10T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up: Kidney Injury", "author": "PCP", "date": "2024-12-10T16:40", "body": "S: Swelling gone for about two weeks. Energy back, working full days again since mid-November. No rash. Has stayed off allopurinol and off ibuprofen. Saw nephrology 11/20, letter reviewed: allopurinol-related interstitial nephritis, no biopsy, avoid allopurinol.\n\nO: Vitals as charted. No edema. Heart and lungs normal.\nBMP drawn just before the visit: creatinine 1.0, BUN 15. Back to his baseline.\n\nA/P:\n1. AKI / acute interstitial nephritis from allopurinol: resolved. Allopurinol is off his list for good; told him to say so at any pharmacy or ER.\n2. Hyperuricemia: no gout. Leaving it untreated for now.\n3. Depression: fine, PHQ-9 3.\n\nPhysical next fall."}
+          ]
+        }
+      ]
+    }
+  ]
+}

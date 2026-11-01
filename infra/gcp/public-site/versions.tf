@@ -6,10 +6,12 @@ terraform {
       version = "= 7.43.0"
     }
   }
-  # Partial GCS backend. Staging state is owned by this root:
+  # Partial GCS backend, one state per environment:
   #   tofu init -backend-config=backend/staging.gcs.tfbackend
+  #   tofu init -backend-config=backend/production.gcs.tfbackend
   # Mocked tests and validation use `tofu init -backend=false` and need no
-  # credentials. Never apply with local state; never initialize production here.
+  # credentials. Never apply with local state. Production applies only from a
+  # reviewed saved plan with Dev's authorization.
   backend "gcs" {}
 }
 

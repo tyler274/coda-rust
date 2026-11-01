@@ -213,14 +213,13 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let message = "Review the discharge summary before the follow-up visit";
     // There is no Save button: typing saves itself once the physician
     // pauses, confirms beside the composer, and an edit clears the mark.
-    let notice =
-        r#"document.querySelector('.composer-actions .composer-notice')?.textContent ?? ''"#;
+    let notice = r#"document.querySelector('.composer-context [role=status]')?.textContent ?? ''"#;
     let buttons = browser
-        .eval("[...document.querySelectorAll('.composer-actions button')].map(b => b.textContent.trim())")
+        .eval("[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())")
         .await;
     assert_eq!(
         buttons.pointer("/result/result/value"),
-        Some(&serde_json::json!(["Send", "Dictate"])),
+        Some(&serde_json::json!(["Dictate", "Send"])),
         "the composer still offers a manual Save: {buttons}"
     );
     browser.type_composer(message).await;
@@ -232,7 +231,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let edited = browser
         .eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, box.value + ' ');
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => resolve({notice}), 200);
@@ -247,11 +246,11 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     browser
         .eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => {{
-                const send = [...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send');
+                const send = [...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send');
                 send.click();
                 resolve(true);
             }}, 100);
@@ -633,7 +632,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.wait_for_text("Mary Louis", Duration::from_secs(20))
         .await;
     let bearer = tab
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -846,7 +845,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await;
     assert_eq!(removed.recovery_keys().await.len(), 1);
     let removed_bearer = removed
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -904,7 +903,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     tab.wait_for_text("Mary Louis", Duration::from_secs(20))
         .await;
     let bearer = tab
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await
         .pointer("/result/result/value")
         .and_then(|value| value.as_str())
@@ -923,7 +922,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
             .unwrap()
     };
     let ctrl_enter = r#"(() => {
-        const box = document.querySelector('textarea.composer');
+        const box = document.querySelector('textarea.composer-input');
         box.focus();
         box.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', ctrlKey: true, bubbles: true}));
         return true;
@@ -981,7 +980,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     )
     .await;
     tab.eval(
-        "[...document.querySelectorAll('.composer-actions button')].find(b => b.textContent.trim() === 'Send').click()",
+        "[...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send').click()",
     )
     .await;
     let answered = tab.held_request("POST").await;
@@ -1258,19 +1257,22 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
 fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) -> axum::Router {
     let runtime = public_site::runtime::RuntimeConfig {
         environment: "local".into(),
-        physician_proxy: public_site::proxy::ProxyConfig::new(
-            &format!("http://{upstream}"),
-            &format!("http://{public}"),
-            None,
-            false,
-            false,
-        )
-        .unwrap(),
+        physician_proxy: Some(
+            public_site::proxy::ProxyConfig::new(
+                &format!("http://{upstream}"),
+                &format!("http://{public}"),
+                None,
+                false,
+                false,
+            )
+            .unwrap(),
+        ),
         ..Default::default()
     };
     public_site::server::router_with_options(
         public_site::prerender(&public_site::Config {
             listen_addr: public,
+            physician_sign_in: true,
         }),
         runtime,
         [],
@@ -1384,7 +1386,14 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     browser
         .wait_for_text("Staging Physician", Duration::from_secs(10))
         .await;
-    // A newly mailed link must be redeemed even when a browser session exists.
+    // A newly mailed link signs in once, after sign-out. (Opened while you are
+    // signed in, your own link keeps your session; sign_in_model covers that.)
+    browser
+        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
+        .await;
+    browser
+        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .await;
     reqwest::Client::new()
         .post(format!("http://{address}/physician/auth/sign-in"))
         .header("Origin", format!("http://{address}"))
@@ -1516,7 +1525,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         "Mary Louis is not on Dr. Clinic Admin's panel yet and must not appear on Today:\n{today_dom}"
     );
 
-    // Reload through the real proxy: sessionStorage must restore the bearer
+    // Reload through the real proxy: localStorage must restore the bearer
     // session rather than rely on the prior in-memory client.
     browser.call("Page.reload", serde_json::json!({})).await;
     tokio::time::sleep(Duration::from_millis(250)).await;
@@ -1524,7 +1533,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
         .await;
     let session = browser
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await;
     let token = session
         .pointer("/result/result/value")
@@ -1627,7 +1636,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Sign in to Coda", Duration::from_secs(10))
         .await;
     let stored = browser
-        .eval("sessionStorage.getItem('coda.physician.session')")
+        .eval("localStorage.getItem('coda.physician.session')")
         .await;
     assert_eq!(
         stored.pointer("/result/result/value"),
@@ -1650,14 +1659,14 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
         .await;
 
-    // 7. Deactivating the physician account terminates SSE through the proxy and returns the browser to SignInScreen.
+    // 7. Deactivating the physician account terminates SSE through the proxy, signs the browser out and says why.
     assert!(store.deactivate("admin@clinic-a.test").await);
     let revoked_dom = browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
+        .wait_for_text("No access to this practice", Duration::from_secs(10))
         .await;
     assert!(
-        revoked_dom.contains("Work email") && !revoked_dom.contains("Mary Louis"),
-        "revoking session/account must terminate SSE and return to SignInScreen:\n{revoked_dom}"
+        revoked_dom.contains("Use a different email") && !revoked_dom.contains("Mary Louis"),
+        "removing access must terminate SSE and show No access:\n{revoked_dom}"
     );
 
     proxy.abort();
@@ -2250,7 +2259,7 @@ impl CdpBrowser {
     async fn type_composer(&mut self, text: &str) {
         self.eval(&format!(
             r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer');
+            const box = document.querySelector('textarea.composer-input');
             Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
             box.dispatchEvent(new Event('input', {{bubbles: true}}));
             setTimeout(() => resolve(true), 100);
@@ -2263,7 +2272,7 @@ impl CdpBrowser {
     /// The composer's text, and the mark beside it.
     async fn composer(&mut self) -> (String, String) {
         let value = self
-            .eval("[document.querySelector('textarea.composer')?.value ?? null, document.querySelector('.composer-actions .composer-notice')?.textContent ?? '']")
+            .eval("[document.querySelector('textarea.composer-input')?.value ?? null, document.querySelector('.composer-context [role=status]')?.textContent ?? '']")
             .await;
         let pair = &value["result"]["result"]["value"];
         (
@@ -2309,7 +2318,7 @@ impl CdpBrowser {
     /// The conflict the composer shows: the newer revision and its text.
     async fn conflict(&mut self) -> Option<(u64, String)> {
         let value = self
-            .eval("(() => { const c = document.querySelector('.composer-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('.composer-conflict-text')?.textContent ?? ''] : null; })()")
+            .eval("(() => { const c = document.querySelector('.draft-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('pre')?.textContent ?? ''] : null; })()")
             .await;
         let pair = value.pointer("/result/result/value")?.as_array()?.clone();
         Some((pair[0].as_u64()?, pair[1].as_str()?.to_owned()))
@@ -2335,7 +2344,7 @@ impl CdpBrowser {
     async fn click_conflict(&mut self, label: &str) {
         let clicked = self
             .eval(&format!(
-                "(() => {{ const b = [...document.querySelectorAll('.composer-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
+                "(() => {{ const b = [...document.querySelectorAll('.draft-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
                 serde_json::to_string(label).unwrap()
             ))
             .await;
@@ -2467,14 +2476,14 @@ impl CdpBrowser {
 
     async fn search_for(&mut self, query: &str) {
         self.eval(&format!(r#"(() => {{
-            const input = document.querySelector('input.dialog-search');
+            const input = document.querySelector('.search-field input');
             Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
             input.dispatchEvent(new Event('input', {{bubbles: true}}));
         }})()"#, serde_json::to_string(query).unwrap())).await;
     }
 
     async fn dialog_text(&mut self) -> String {
-        self.eval("document.querySelector('section.dialog')?.innerText ?? ''")
+        self.eval("document.querySelector('dialog.dialog')?.innerText ?? ''")
             .await
             .pointer("/result/result/value")
             .and_then(|v| v.as_str())

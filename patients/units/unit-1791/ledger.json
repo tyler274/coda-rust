@@ -1,9 +1,7 @@
 {
   "unit": "unit-1791",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001791/2022-02-21a: referral to \"Hematology & Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001791",
@@ -930,18 +928,29 @@
                   "test": "Hemoglobin A/Hemoglobin.total in Blood",
                   "loinc": "4546-8",
                   "unit": "%",
+                  "range": {
+                    "low": 95,
+                    "high": 98
+                  },
                   "value": 97
                 },
                 {
                   "test": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis",
                   "loinc": "4552-6",
                   "unit": "%",
+                  "range": {
+                    "low": 1.5,
+                    "high": 3.5
+                  },
                   "value": 2.5
                 },
                 {
                   "test": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis",
                   "loinc": "32682-7",
                   "unit": "%",
+                  "range": {
+                    "high": 2
+                  },
                   "value": 0.5
                 }
               ]
@@ -1352,12 +1361,20 @@
                   "test": "aPTT in Platelet poor plasma by Coagulation assay",
                   "loinc": "3173-2",
                   "unit": "s",
+                  "range": {
+                    "low": 25,
+                    "high": 35
+                  },
                   "value": 30
                 },
                 {
                   "test": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 400
                 }
               ]
@@ -1732,7 +1749,7 @@
               "action": "placed",
               "order": "Hematology referral",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Hematology",
               "reason": "pancytopenia, urgent"
             }
           ],
@@ -1828,6 +1845,10 @@
                   "test": "Reticulocytes/100 erythrocytes in Blood",
                   "loinc": "4679-7",
                   "unit": "%",
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  },
                   "value": 0.5
                 },
                 {
@@ -3597,24 +3618,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide [Partial pressure] in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 50
                 },
                 {
                   "test": "Oxygen [Partial pressure] in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 60
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "meq/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -3776,7 +3813,7 @@
         "code": "903857",
         "display": "pyridostigmine bromide 60 MG Oral Tablet",
         "ingredient": "pyridostigmine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3789,6 +3826,10 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "meq/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Blood group antibody screen [Presence] in Serum or Plasma": {
@@ -3800,30 +3841,49 @@
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hemoglobin A/Hemoglobin.total in Blood": {
         "code": "4546-8",
         "display": "Hemoglobin A/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "low": 95,
+          "high": 98
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis": {
         "code": "4552-6",
         "display": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis",
         "unit": "%",
+        "range": {
+          "low": 1.5,
+          "high": 3.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis": {
         "code": "32682-7",
         "display": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis",
         "unit": "%",
+        "range": {
+          "high": 2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Morphology [Interpretation] in Blood Narrative": {
@@ -3835,6 +3895,10 @@
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Parvovirus B19 DNA [#/volume] (viral load) in Serum or Plasma by NAA with probe detection": {
@@ -3856,18 +3920,30 @@
         "code": "4679-7",
         "display": "Reticulocytes/Erythrocytes in Blood",
         "unit": "%",
+        "range": {
+          "low": 0.5,
+          "high": 1.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "aPTT in Platelet poor plasma by Coagulation assay": {
         "code": "3173-2",
         "display": "aPTT in Blood by Coagulation assay",
         "unit": "s",
+        "range": {
+          "low": 25,
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

@@ -1,11 +1,7 @@
 {
   "unit": "unit-2868",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002868/2021-09-13a: procedure order \"Outside records request (prior PCP, cancer center)\" names no one catalog lab, panel, study or procedure",
-    "MRN00002868/2022-03-08a: referral to \"Physical Therapy - Lymphedema\" names no catalog specialty",
-    "MRN00002868/2025-10-20a: referral to \"Sarcoma Oncology\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002868",
@@ -309,16 +305,6 @@
               "performed": "2021-09-13T09:00"
             }
           ],
-          "orders": [
-            {
-              "id": "rec-req-2021",
-              "action": "placed",
-              "order": "Outside records request (prior PCP, cancer center)",
-              "category": "procedure",
-              "to": "Medical Records",
-              "reason": "establish care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -362,13 +348,6 @@
           "id": "2021-09-27a",
           "kind": "outside_records",
           "start": "2021-09-27T11:20",
-          "orders": [
-            {
-              "id": "rec-req-2021",
-              "action": "done",
-              "date": "2021-09-27T11:20"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -639,7 +618,7 @@
               "action": "placed",
               "order": "Lymphedema therapy referral",
               "category": "referral",
-              "to": "Physical Therapy - Lymphedema",
+              "to": "Physical Therapy",
               "reason": "chronic RUE lymphedema, sleeve refit"
             }
           ],
@@ -1887,6 +1866,10 @@
                   "test": "5-Hydroxyindoleacetate, 24 hour urine",
                   "loinc": "1695-6",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "low": 2,
+                    "high": 9
+                  },
                   "value": 86
                 }
               ]
@@ -1900,6 +1883,9 @@
                   "test": "Chromogranin A",
                   "loinc": "9811-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 93
+                  },
                   "value": 412
                 }
               ]
@@ -2503,6 +2489,10 @@
                   "test": "5-Hydroxyindoleacetate, 24 hour urine",
                   "loinc": "1695-6",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "low": 2,
+                    "high": 9
+                  },
                   "value": 34
                 }
               ]
@@ -3033,7 +3023,7 @@
               "action": "placed",
               "order": "Sarcoma oncology referral",
               "category": "referral",
-              "to": "Sarcoma Oncology",
+              "to": "Oncology",
               "reason": "angiosarcoma right chest wall"
             }
           ],
@@ -3619,13 +3609,13 @@
         "code": "749814",
         "display": "0.5 ML lanreotide 240 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "paclitaxel 6 MG/ML Injectable Solution": {
         "code": "312199",
         "display": "paclitaxel 6 MG/ML Injectable Solution",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3633,12 +3623,19 @@
         "code": "1695-6",
         "display": "5-Hydroxyindoleacetate [Mass/time] in 24 hour Urine",
         "unit": "mg/(24.h)",
+        "range": {
+          "low": 2,
+          "high": 9
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Chromogranin A": {
         "code": "9811-1",
         "display": "Chromogranin A [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 93
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

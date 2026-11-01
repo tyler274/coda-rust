@@ -1,0 +1,401 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002277",
+      "events": [
+        {
+          "id": "2026-02-09a",
+          "kind": "ed_visit",
+          "start": "2026-02-09T14:20",
+          "end": "2026-02-09T21:40",
+          "service": "Emergency Medicine",
+          "reason": "fever, chills, productive cough",
+          "vitals": [
+            {
+              "time": "2026-02-09T14:30",
+              "bp": [
+                135,
+                85
+              ],
+              "hr": 102,
+              "rr": 22,
+              "temp_c": 39.2,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-02-09T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 80
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 10
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-02-09T14:50",
+              "results": [
+                {
+                  "test": "Glucose",
+                  "value": 180
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2026-02-12T10:05",
+              "body": "REGIONAL MEDICAL CENTER - EMERGENCY DEPARTMENT\nVisit date: 2026-02-09\nPatient: Russell Abbott, 66 M. Allergies: NKDA.\n\nCC: fever and productive cough x2 days.\nHPI: COPD, T2DM, stage IIIB NSCLC treated with chemoradiation last spring, on a targeted-therapy trial; seen by his oncologist in October for cough and dyspnea. Two days of high fevers with rigors and cough bringing up yellow sputum.\nMeds: metformin, tiotropium, albuterol prn, study drug.\nVitals on arrival: T 39.2 C, BP 135/85, HR 102, RR 22, SpO2 92% RA.\nExam: decreased breath sounds and dullness to percussion over the right lower lobe.\nLabs: WBC 18.0 (80% neutrophils, 10% lymphocytes), Hgb 14, Plt 250, glucose 180.\nCXR: dense right lower lobe consolidation.\nImpression: Right lower lobe pneumonia in a patient after recent cancer therapy; concern for an opportunistic organism. Admitted to medicine for IV antibiotics and pulmonary consult for bronchoscopic sampling."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-24a",
+          "kind": "office_visit",
+          "start": "2026-02-24T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, pneumonia",
+          "conditions": [
+            {
+              "label": "Opportunistic pulmonary infection",
+              "icd10": "J18.9",
+              "action": "diagnosed",
+              "onset": "2026-02-09",
+              "note": "right lower lobe; diagnosed by bronchoscopic lavage during 2/9-2/13 admission; organism per hospital records"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-24T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-02-24T10:40",
+              "body": "Seen after his admission 2/9 to 2/13 for right lower lobe pneumonia. We have the ED note only; discharge summary requested.\n\nHis account: IV antibiotics, then a bronchoscopy on the second day where they 'washed out the lung' for cultures. The team told him it was an unusual infection of the kind people get after cancer treatment. Home on pills he is finishing this week (bottle at home, can't recall the name). Fevers gone since before discharge. Cough much less. Breathing back near his usual.\n\nMeds: metformin, tiotropium, albuterol prn; study drug per oncology; antibiotic course ending.\n\nExam: afebrile, comfortable. Lungs: diminished at bases, no wheeze. RRR.\n\nA/P\n1. Opportunistic pulmonary infection, RLL, improving. Finish course. Added to problem list. Front desk to call the hospital again for the discharge summary and culture results.\n2. NSCLC on trial: oncology aware of the admission per him.\n3. T2DM, COPD: no changes.\nCall for fever, worse breathing."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "portal_message",
+          "start": "2026-03-10T12:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Antibiotics Finished",
+              "author": "patient",
+              "date": "2026-03-10T12:30",
+              "body": "Took the last of the antibiotic pills Saturday. No fever and the cough is about gone. Did you ever get the hospital papers?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Antibiotics Finished",
+              "author": "MA",
+              "date": "2026-03-10T15:10",
+              "body": "Glad you're feeling better! We've asked the hospital twice and are still waiting on the discharge paperwork. We'll keep after it."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "pharmacy",
+          "start": "2026-04-14T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Tiotropium Refill",
+              "author": "MA",
+              "date": "2026-04-14T08:50",
+              "body": "Electronic request: tiotropium 18 mcg capsules with inhaler, 90-day. Seen 2/24. Sent to PCP queue; approved."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13a",
+          "kind": "ed_visit",
+          "start": "2026-05-13T09:40",
+          "end": "2026-05-13T17:30",
+          "service": "Emergency Medicine",
+          "reason": "fever, productive cough, worsening shortness of breath",
+          "vitals": [
+            {
+              "time": "2026-05-13T09:50",
+              "bp": [
+                90,
+                60
+              ],
+              "rr": 28,
+              "temp_c": 38.7,
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-05-13T10:05",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.25,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 60,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "value": 55,
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  }
+                },
+                {
+                  "test": "Bicarbonate [Moles/volume] in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "value": 22,
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  }
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-13T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 18.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-05-13T10:05",
+              "results": [
+                {
+                  "test": "Lactate",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Emergency Department Note",
+              "author": "emergency medicine",
+              "date": "2026-05-15T11:20",
+              "body": "REGIONAL MEDICAL CENTER - EMERGENCY DEPARTMENT\nVisit date: 2026-05-13\nPatient: Russell Abbott, 66 M. Allergies: NKDA.\n\nCC: fever, cough, worsening dyspnea x3 days.\nHPI: Stage IIIB NSCLC after chemoradiation, COPD, T2DM. Admitted here in February for right lower lobe pneumonia. Three days of fever, productive cough and increasing breathlessness.\nMeds: metformin, tiotropium, albuterol prn.\nTriage: RR 28, T 38.7 C, BP 90/60, SpO2 88% RA.\nExam: tachypneic. Crackles in both lung fields.\nABG: pH 7.25 / PaCO2 60 / PaO2 55 / HCO3 22.\nWBC 18.0. Lactate 5.\nBlood cultures drawn, pending at time of this note.\nCourse: supplemental oxygen, broad-spectrum IV antibiotics, normal saline boluses for hypotension.\nDisposition: admitted to the ICU."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-13b",
+          "kind": "hospital_admission",
+          "start": "2026-05-13T17:30",
+          "end": "2026-05-21T12:00",
+          "service": "Critical Care",
+          "reason": "pneumonia with hypotension and hypoxemia",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2026-06-02T09:15",
+              "body": "REGIONAL MEDICAL CENTER - DISCHARGE SUMMARY (abbreviated)\nAdmitted: 2026-05-13 (ICU)   Discharged: 2026-05-21\nPatient: Russell Abbott, DOB 1959-11-25. Allergies: NKDA.\n\nPrincipal problem: recurrent pulmonary infection with hypotension and hypoxemia.\nHospital course: Admitted from the ED to the ICU and treated with IV antibiotics and oxygen. Received large volumes of normal saline for blood pressure support early in the stay and developed a hyperchloremic non-anion-gap metabolic acidosis attributed to the saline. Maintenance fluid changed to a balanced crystalloid with correction of the acidosis. Transferred to the floor, completed IV antibiotics, and weaned to room air before discharge.\nOther problems: COPD, type 2 diabetes, stage IIIB NSCLC followed by oncology.\nDischarge medications: metformin 1000 mg BID, tiotropium 18 mcg daily, albuterol prn. Study drug per oncology.\nFollow-up: primary care, oncology."
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis",
+              "icd10": "E87.21",
+              "action": "diagnosed",
+              "onset": "2026-05-13",
+              "note": "after large-volume normal saline in the ICU"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-26a",
+          "kind": "telephone",
+          "start": "2026-05-26T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2026-05-26T09:45",
+              "body": "Called after his ICU stay 5/13-5/21 (wife let us know he was home). Says he's tired but eating and moving around the house. No fever since discharge. Taking his usual three meds. Has oncology this week. Booked with PCP on the first open day that fits around his cancer center visits, 6/23. Told him to call sooner for fever, worse breathing or confusion. Hospital paperwork not received yet; requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "office_visit",
+          "start": "2026-06-23T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Hyperchloremic metabolic acidosis",
+              "icd10": "E87.21",
+              "action": "resolved",
+              "note": "corrected in hospital after change to balanced crystalloid; BMP 6/23 drawn to confirm"
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-06-23T14:15",
+              "results": [
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-23T14:15",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-06-23T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-06-23T14:20",
+              "body": "Follow-up after ICU admission 5/13-5/21 for a second pulmonary infection. Discharge summary (received 6/2) reviewed: hypotension and hypoxemia on arrival, IV antibiotics, and a hyperchloremic metabolic acidosis from the saline resuscitation that corrected once fluids were switched; home on room air.\n\nToday: no fevers. Energy slowly coming back; walking to the mailbox and back, then more each week. Cough quiet. Appetite fair; down about 3 kg since December. Oncology has seen him since discharge; he says the trial team is continuing his study medication.\n\nMeds: metformin 1000 BID, tiotropium daily, albuterol prn.\n\nExam: thin, comfortable at rest, speaking full sentences. Lungs: diminished at bases, no crackles today. RRR. No edema.\n\nA/P\n1. Recent ICU stay for pulmonary infection: clinically recovered. CBC today.\n2. Hyperchloremic metabolic acidosis: resolved in hospital. BMP today to confirm chloride and bicarbonate are back to normal. Marked resolved.\n3. Opportunistic pulmonary infection: kept on the list; ask oncology for their read on follow-up imaging.\n4. T2DM: continue metformin, A1c at the September visit.\n5. COPD: continue tiotropium and albuterol as needed.\n6. Weight: encouraged protein with each meal.\nRTC September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-24a",
+          "kind": "portal_message",
+          "start": "2026-06-24T17:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2026-06-24T17:05",
+              "body": "Russell, yesterday's labs look good: chloride and bicarbonate are back in the normal range, kidney function is normal, and your white count is normal. Keep building up your walking. See you in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "pharmacy",
+          "start": "2026-07-14T09:20",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Metformin Refill",
+              "author": "MA",
+              "date": "2026-07-14T09:20",
+              "body": "Pharmacy refill: metformin 1000 mg #180, 90 days. Last visit 6/23. Approved per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "outside_records",
+          "start": "2026-08-18T11:00",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Diabetic Eye Exam",
+              "author": "optometry",
+              "date": "2026-08-18T11:00",
+              "body": "OUTSIDE OPTOMETRY PRACTICE\nAnnual dilated diabetic eye exam, date of exam 2026-08-06.\nPatient: Russell Abbott, DOB 1959-11-25. Allergies: NKDA.\nVA 20/25 OU corrected. Fundus: no diabetic retinopathy either eye. Return 12 months.\nCopy to primary care."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-22a",
+          "kind": "office_visit",
+          "start": "2026-09-22T10:00",
+          "appointment": "booked",
+          "reason": "diabetes and COPD follow-up"
+        }
+      ]
+    }
+  ]
+}

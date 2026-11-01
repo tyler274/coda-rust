@@ -1,0 +1,622 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002752",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "portal_message",
+          "start": "2025-01-21T07:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Refill before trip",
+              "author": "patient",
+              "date": "2025-01-21T07:52",
+              "body": "Hi, I leave for a work trip on the 3rd and I'm down to my last pack of the pill. Could you send a refill a little early so I have enough while I'm away?\n\nMA reply: sent to your pharmacy, 3 packs. Safe travels."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-14a",
+          "kind": "ed_visit",
+          "start": "2025-04-14T17:05",
+          "end": "2025-04-14T23:40",
+          "service": "Emergency Medicine",
+          "reason": "Sudden shortness of breath",
+          "vitals": [
+            {
+              "time": "2025-04-14T17:12",
+              "temp_c": 37.0,
+              "bp": [
+                106,
+                68
+              ],
+              "hr": 114,
+              "rr": 28,
+              "spo2": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-14T17:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2025-04-14T18:20"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-14T17:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ],
+              "resulted": "2025-04-14T18:20"
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:30",
+              "results": [
+                {
+                  "test": "Fibrin D-dimer FEU",
+                  "loinc": "48065-7",
+                  "unit": "mg/L",
+                  "value": 2.4,
+                  "range": {
+                    "high": 0.5
+                  }
+                }
+              ],
+              "resulted": "2025-04-14T18:20"
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:25",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.48,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
+                },
+                {
+                  "test": "Carbon dioxide partial pressure in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "value": 31,
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  }
+                }
+              ],
+              "resulted": "2025-04-14T18:15"
+            },
+            {
+              "panel": null,
+              "collected": "2025-04-14T17:30",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ],
+              "resulted": "2025-04-14T18:20"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-04-14T17:15",
+              "text": "Sinus tachycardia, rate 114. Normal axis and intervals. No ST-segment or T-wave abnormality.",
+              "conclusion": "Sinus tachycardia, otherwise normal ECG.",
+              "issued": "2025-04-14T17:50"
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-04-14T17:50",
+              "text": "PA and lateral views. Lungs clear. No effusion or pneumothorax. Heart size and mediastinum normal.",
+              "conclusion": "Normal chest radiograph.",
+              "issued": "2025-04-14T18:25"
+            },
+            {
+              "study": "CT pulmonary angiography",
+              "loinc": "88322-3",
+              "performed": "2025-04-14T19:20",
+              "text": "CT angiogram of the chest with IV contrast, pulmonary embolism protocol. Adequate opacification of the pulmonary arteries. Filling defect in a right segmental pulmonary artery consistent with acute embolus. Main and lobar arteries patent. Heart size normal. Lungs clear. No pleural effusion.",
+              "conclusion": "Acute right segmental pulmonary embolism.",
+              "issued": "2025-04-14T19:55"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "icd10": "I26.99",
+              "action": "diagnosed",
+              "onset": "2025-04-14",
+              "note": "Right segmental, after a 12-hour flight"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Pulmonary embolism, planned 3 months"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-14T17:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-05-06T10:15",
+              "body": "Regional hospital emergency department. Date of service 04/14/2025. Received by fax 05/06/2025 at the practice's request.\n\nCC: shortness of breath, lightheaded.\n\nHPI: 40F, came in after getting short of breath on the walk from the parking lot to the front door. Onset abrupt, with a racing heart and the feeling she could not get a full breath, no better sitting down. Denies fever, cough, sputum. Flew home from Australia within the last day or two, about 12 hours in the air.\n\nPMH: migraine, mild depression, irregular cycles, smoker. No surgeries. Meds: combined oral contraceptive daily. Allergies: none to medications.\nFH: DVT in her mother at 45; father hypertensive; paternal uncle had a PE.\nSH: about a pack a day for 20 years.\n\nTriage: 37.0 C, 106/68, pulse 114, RR 28, 91% RA.\nExam: breathing fast, somewhat anxious. Lungs clear to auscultation.\n\nWorkup: ABG with pH 7.48 and PaCO2 31. D-dimer 2.4 mg/L FEU (ref < 0.50). CBC and BMP unremarkable. Urine hCG negative. CXR clear. ECG sinus tachycardia only. CTA chest: acute right segmental PE.\n\nCourse/MDM: hemodynamically stable throughout, breathing easier and comfortable at rest by the time of disposition. Low-risk features for outpatient care. First dose of apixaban given in the department.\n\nDx: acute pulmonary embolism, right segmental.\nDispo: home. Apixaban 10 mg BID x 7 days, then 5 mg BID, for 3 months. Follow up with PCP within a week. Return for chest pain, worse breathing, fainting or bleeding."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-16a",
+          "kind": "portal_message",
+          "start": "2025-04-16T08:31",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit Monday",
+              "author": "patient",
+              "date": "2025-04-16T08:31",
+              "body": "Wanted you to know I ended up in the ER Monday night. I'd just gotten back from Sydney and couldn't catch my breath walking in from the car. They did a CT and found a blood clot in my lung. They sent me home on apixaban and said to see you this week or next. I'm doing ok, still winded on stairs. Do you need anything from the hospital?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit Monday",
+              "author": "PCP",
+              "date": "2025-04-16T12:40",
+              "body": "Thanks for letting me know, and I'm glad you're home. Keep taking the apixaban exactly as prescribed, two tablets twice a day for the first week and then one twice a day. Front desk will get you in next week, and we'll send for the ER records. If you get chest pain, worsening shortness of breath, fainting, or any bleeding that won't stop, go back to the ER."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-17a",
+          "kind": "pharmacy",
+          "start": "2025-04-17T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Medication fill history reviewed",
+              "author": "MA",
+              "date": "2025-04-17T09:10",
+              "body": "Pulled the external fill history ahead of next week's visit. Apixaban 5 mg starter pack filled 4/14 late evening, prescriber is the ED physician. Pill packs last filled 2/2025. Added apixaban to the med list as an outside prescription."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-23a",
+          "kind": "office_visit",
+          "start": "2025-04-23T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, pulmonary embolism",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-04-23T13:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "author": "PCP",
+              "date": "2025-04-23T14:05",
+              "body": "Seen 9 days after the ED visit for a right segmental PE found by CT after a long flight home from Australia. We do not have the ED chart yet; history from her and the fill record.\n\nBreathing much better, only short of breath on a fast flight of stairs now, resolving. No chest pain, no hemoptysis. No leg pain or swelling. Finished the 7-day loading phase Monday and is on apixaban 5 mg twice daily. No bleeding, no bruising beyond a small spot on the shin. Periods regular.\n\nVitals as recorded, saturation normal at rest. Comfortable. Heart regular without murmur. Lungs clear. Calves soft, no swelling or tenderness.\n\nA/P: Acute PE after air travel. Continue apixaban 5 mg BID for a total of 3 months, through about mid-July. Bleeding precautions and NSAID avoidance reviewed; acetaminophen for headaches while on it. Calf exercises and walking the aisle on flights. Records requested from the hospital. Smoking: discussed again in the context of clots; she says she will try. Follow up in July."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "telephone",
+          "start": "2025-05-06T15:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Hospital records reviewed",
+              "author": "PCP",
+              "date": "2025-05-06T15:20",
+              "body": "ED record from 4/14 arrived today after the second request, scanned to the chart. Reviewed: matches what she reported. CTA shows a right segmental embolus, no other findings; discharged on apixaban for 3 months. No change to the plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-22a",
+          "kind": "office_visit",
+          "start": "2025-07-22T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Pulmonary embolism follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 6
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "icd10": "I26.99",
+              "action": "resolved",
+              "onset": "2025-04-14"
+            },
+            {
+              "label": "History of pulmonary embolism",
+              "action": "diagnosed",
+              "onset": "2025-04-14"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "stop",
+              "reason": "Three-month course completed"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-07-22T16:20",
+              "results": [
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-07-22T15:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up visit",
+              "author": "PCP",
+              "date": "2025-07-22T16:25",
+              "body": "Three months out from her April PE. Back to her usual activity, walks most evenings, no exertional symptoms. No chest pain, no palpitations, no leg symptoms. Took apixaban without missed doses; last tablet this week. No bleeding.\nHeadaches about the same, acetaminophen working. Mood okay, PHQ-9 6.\nStill smoking, down a little, maybe 15 a day some days.\n\nVitals as recorded. Lungs clear, heart regular, no leg swelling.\n\nA/P:\n1. PE, provoked by long-haul travel: completed 3 months of apixaban. Stopping today. CBC today.\n2. Travel precautions for future flights: aisle seat, walk every hour or two, hydrate, calf pumps.\n3. Tobacco: counseled; she is not ready for medication.\n4. Physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "pharmacy",
+          "start": "2025-08-19T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: oral contraceptive",
+              "author": "MA",
+              "date": "2025-08-19T10:05",
+              "body": "Electronic request from the pharmacy for her pill packs, 3-month supply. Approved per standing refill, sent."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-01a",
+          "kind": "ed_visit",
+          "start": "2025-10-01T18:25",
+          "end": "2025-10-02T02:10",
+          "service": "Emergency Medicine",
+          "reason": "Shortness of breath and palpitations",
+          "vitals": [
+            {
+              "time": "2025-10-01T18:30",
+              "rr": 28,
+              "hr": 112,
+              "spo2": 92
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-10-01T18:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ],
+              "resulted": "2025-10-01T19:40"
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-10-01T18:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                }
+              ],
+              "resulted": "2025-10-01T19:40"
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:50",
+              "results": [
+                {
+                  "test": "Fibrin D-dimer FEU",
+                  "loinc": "48065-7",
+                  "unit": "mg/L",
+                  "value": 3.1,
+                  "range": {
+                    "high": 0.5
+                  }
+                }
+              ],
+              "resulted": "2025-10-01T19:40"
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:45",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "value": 7.47,
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  }
+                }
+              ],
+              "resulted": "2025-10-01T19:35"
+            },
+            {
+              "panel": null,
+              "collected": "2025-10-01T18:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Negative"
+                }
+              ],
+              "resulted": "2025-10-01T19:40"
+            }
+          ],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-10-01T18:35",
+              "text": "Sinus tachycardia at 112. Normal axis, normal intervals, no acute ST or T-wave changes.",
+              "conclusion": "Sinus tachycardia, otherwise unremarkable.",
+              "issued": "2025-10-01T19:10"
+            },
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-10-01T19:05",
+              "text": "Frontal and lateral views. No infiltrate, pleural effusion or consolidation. Normal cardiomediastinal silhouette. No pneumothorax.",
+              "conclusion": "No acute cardiopulmonary process.",
+              "issued": "2025-10-01T19:40"
+            },
+            {
+              "study": "CT pulmonary angiography",
+              "loinc": "88322-3",
+              "performed": "2025-10-01T20:40",
+              "text": "CT angiogram of the chest, pulmonary embolism protocol. Good contrast bolus. Acute filling defect in a left lower lobe segmental pulmonary artery. The previously described right segmental clot is not seen. Main pulmonary artery normal in caliber. Lungs clear. No effusion.",
+              "conclusion": "Acute left lower lobe segmental pulmonary embolism.",
+              "issued": "2025-10-01T21:15"
+            }
+          ],
+          "conditions": [
+            {
+              "label": "Other pulmonary embolism without acute cor pulmonale",
+              "icd10": "I26.99",
+              "action": "diagnosed",
+              "onset": "2025-10-01",
+              "note": "Recurrent, left lower lobe segmental, after a 10-hour flight"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "apixaban 5 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets by mouth twice daily for 7 days, then 1 tablet twice daily",
+              "dose": {
+                "value": 5,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Recurrent pulmonary embolism, planned 3 months"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-10-01T18:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2025-10-21T11:00",
+              "body": "Emergency department, regional hospital. Visit 10/01/2025, record released to PCP 10/21/2025.\n\nChief complaint: SOB, palpitations x 1 hr.\n\n41-year-old woman with a PE this past April, treated, on an oral contraceptive, presenting with breathlessness and a pounding heartbeat that started about an hour ago going up stairs and has gotten worse since; now lightheaded and anxious. No chest pain, cough, fever or recent illness. Just returned from South America, roughly 10 hours of flying.\nHx: migraine, mild depression, irregular menses, tobacco use. On ethinyl estradiol/norgestimate for about 8 years for her cycles. NKDA. Mother DVT age 45, father HTN, paternal uncle PE. 20 pack-years. Works as a travel agent.\n\nVS on arrival: RR 28, HR 112, SpO2 92% RA.\nExam: anxious, mildly diaphoretic. JVP not elevated. Heart sounds normal. Lungs clear bilaterally, no wheezes, crackles or rhonchi. Calves soft and nontender, symmetric.\n\nData: ABG pH 7.47. D-dimer 3.1 mg/L FEU. CBC, BMP normal. Urine hCG negative. CXR without infiltrate, effusion or consolidation. ECG sinus tach, otherwise unremarkable. CTA: acute LLL segmental PE.\n\nImpression: recurrent acute pulmonary embolism, left lower lobe segmental. Hemodynamically stable through her stay; comfortable at rest on room air before discharge.\nPlan: apixaban 10 mg BID x 7 days then 5 mg BID, 3 months. PCP follow-up this week. Return precautions given."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "telephone",
+          "start": "2025-10-02T11:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call after ED visit",
+              "author": "RN",
+              "date": "2025-10-02T11:15",
+              "body": "Pt called this morning. Was in the ED last night, another clot in the lung, sent home around 2 am on apixaban again. Breathing better than last night, a little tight with walking around the house. No chest pain, no fainting, no bleeding. Has the starter pack and took this morning's dose. Booked with PCP next Wednesday. Reviewed reasons to go back in. Message to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-08a",
+          "kind": "office_visit",
+          "start": "2025-10-08T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, recurrent pulmonary embolism",
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-08T10:20"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-08T10:22"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-08T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-ED visit",
+              "author": "PCP",
+              "date": "2025-10-08T10:30",
+              "body": "Back one week after an ED visit on 10/1 for a second pulmonary embolism, this time on the left per her, again right after a long flight (South America). ED record not received yet; requested.\n\nFeels nearly back to normal. Mild breathlessness on hills only. No chest pain, palpitations settled. No leg symptoms. On day 8 of apixaban, switching to 1 tablet twice daily today as instructed. No bleeding.\n\nVitals as recorded. Not short of breath in conversation. Heart regular. Lungs clear. No calf asymmetry or tenderness.\n\nA/P:\n1. Second PE, again travel-associated: apixaban 5 mg BID, 3-month course per ED, through early January. Bleeding precautions again. Travel precautions reinforced; she has a trip in November and will keep it short-haul if she can.\n2. Tobacco: discussed.\n3. Flu and COVID vaccines given today.\nRecheck in January."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-21a",
+          "kind": "telephone",
+          "start": "2025-10-21T14:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Second ED record received",
+              "author": "PCP",
+              "date": "2025-10-21T14:45",
+              "body": "Records from the 10/1 ED visit arrived and are in the chart. CTA showed a new left lower lobe segmental embolus; the April right-sided clot is no longer seen. Discharged on 3 months of apixaban, which is what we are doing. Plan unchanged."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-18a",
+          "kind": "portal_message",
+          "start": "2025-11-18T19:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Flying on apixaban",
+              "author": "patient",
+              "date": "2025-11-18T19:12",
+              "body": "Quick question, I have a 5 hour flight to the West Coast next week. Is it ok to fly while I'm on the blood thinner? Anything else I should do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Flying on apixaban",
+              "author": "PCP",
+              "date": "2025-11-19T08:20",
+              "body": "Yes, you can fly. Being on apixaban is actually the best protection you could have for that trip. Keep taking it on schedule (set an alarm for the time change), get up and walk every hour or so, do ankle pumps in your seat, and drink water. Enjoy the trip."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "pharmacy",
+          "start": "2025-12-09T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill request: apixaban",
+              "author": "MA",
+              "date": "2025-12-09T09:30",
+              "body": "Pharmacy asking for a refill of apixaban 5 mg BID. Per the October note the course runs through early January. Sent a 30-day supply, no refills, to bridge to her January visit."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -5,7 +5,7 @@ description: "Verify the physician site's hosted-shape chat journeys on a dispos
 
 # Verify the physician scale stack
 
-Follow the [shared principles](../../../verification/README.md#principles). The design
+See [Coda verification](../../../verification/README.md). The design
 lives in [book/src/physician-site.md#scaling-across-instances](../../../book/src/physician-site.md)
 and [book/src/gcp.md](../../../book/src/gcp.md); the feature map is
 [features/README.md](features/README.md). This recipe drives the real Rust binaries over
@@ -14,6 +14,18 @@ Google credentials or a model key: the worker answers with the fixed text `Noted
 
 Every command runs inside the nix dev shell from the worktree root. If direnv is not
 active, prefix with `nix develop --command`.
+
+## When a change needs this
+
+Run the matching [feature](features/README.md) when a change touches:
+
+- `crates/physician-sample/src/live.rs` (chat snapshots, events and `resume_durable`) or
+  `crates/physician-sample/src/bin/physician-worker.rs`.
+- `crates/physician-bus` (cross-instance fan-out and resync).
+- `crates/local-product/src/runtime.rs` (durable chat runs and their failed attempts).
+- The conversation renderer in `crates/physician-app/src/lib.rs` or `src/shell.rs`.
+- `scripts/physician-scale-stack.py`, this skill's driver, or the `fanout`, `try_again`,
+  `worker` and `scale` tests in `crates/physician-sample/tests`.
 
 ## Launch
 
@@ -182,6 +194,5 @@ mail is proof delivery. Those remain unverified here and are proved only in stag
 [book/src/gcp.md](../../../book/src/gcp.md). The inline fallback for a site without
 `PHYSICIAN_CHAT_TOPIC` is not on this stack; `crates/physician-sample` tests cover it.
 Gmail push wake is proved only as a controlled emulator test against a Gmail stand-in
-(`crates/gmail/tests/push_wake.rs`, recorded under Channel sync in
-[infrastructure-gaps.md](../../../verification/physician-experience/infrastructure-gaps.md)).
+(`crates/gmail/tests/push_wake.rs`).
 It has no feature file: nothing a physician sees changes until the product's Gmail intake exists.

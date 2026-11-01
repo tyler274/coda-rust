@@ -510,6 +510,7 @@
                   "test": "Insulin-like growth factor I",
                   "loinc": "2484-4",
                   "unit": "ng/mL",
+                  "range": {},
                   "value": 584
                 }
               ]
@@ -1172,6 +1173,7 @@
                   "test": "Insulin-like growth factor I",
                   "loinc": "2484-4",
                   "unit": "ng/mL",
+                  "range": {},
                   "value": 248
                 }
               ]
@@ -1367,7 +1369,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 180
                 },
                 {
@@ -1426,7 +1427,7 @@
                 },
                 {
                   "test": "Glucose",
-                  "value": 181
+                  "value": 160
                 },
                 {
                   "test": "Calcium",
@@ -1710,7 +1711,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 232
                 },
                 {
@@ -1900,7 +1900,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 268
                 },
                 {
@@ -1935,6 +1934,7 @@
                   "test": "Insulin-like growth factor I",
                   "loinc": "2484-4",
                   "unit": "ng/mL",
+                  "range": {},
                   "value": 205
                 }
               ]
@@ -2741,7 +2741,6 @@
               "results": [
                 {
                   "test": "CD4 Count",
-                  "unit": "cells/uL",
                   "value": 241
                 },
                 {
@@ -2845,6 +2844,7 @@
                   "test": "Insulin-like growth factor I",
                   "loinc": "2484-4",
                   "unit": "ng/mL",
+                  "range": {},
                   "value": 198
                 }
               ]
@@ -2983,6 +2983,9 @@
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 900
                 }
               ]
@@ -3829,7 +3832,7 @@
         "code": "308867",
         "display": "calcitriol 0.00025 MG Oral Capsule",
         "ingredient": "calcitriol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "epoetin alfa 4000 UNT/ML Injectable Solution": {
         "code": "239999",
@@ -3847,19 +3850,19 @@
         "code": "749206",
         "display": "sevelamer carbonate 800 MG Oral Tablet",
         "ingredient": "sevelamer",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet": {
         "code": "198334",
         "display": "sulfamethoxazole 400 MG / trimethoprim 80 MG Oral Tablet",
         "ingredient": "sulfamethoxazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vancomycin 1000 MG Injection": {
         "code": "1807513",
         "display": "vancomycin 1000 MG Injection",
         "ingredient": "vancomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3867,12 +3870,16 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Insulin-like growth factor I": {
         "code": "2484-4",
         "display": "Insulin-like growth factor-I [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

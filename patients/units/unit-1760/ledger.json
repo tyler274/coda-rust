@@ -1,15 +1,7 @@
 {
   "unit": "unit-1760",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001760/2023-06-27a: procedure \"Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions\" not in catalog and has no snomed (text only)",
-    "MRN00001760/2025-10-19b: procedure \"Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy\" not in catalog and has no snomed (text only)",
-    "MRN00001760/2019-08-20a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00001760/2023-08-22a: procedure order \"Return visit in 6 months, pelvic pain follow-up\" names no one catalog lab, panel, study or procedure",
-    "MRN00001760/2024-10-14a: lab order \"Chlamydia and gonorrhea NAAT, retest in 3 months\" names no one catalog lab, panel, study or procedure",
-    "MRN00001760/2025-10-21a: procedure order \"Request ED and hospital records\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin with folic acid Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001760",
@@ -284,15 +276,6 @@
               "date": "2019-08-20T09:25"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -343,13 +326,6 @@
           "kind": "outside_records",
           "start": "2019-09-10T11:20",
           "reason": "Records from prior primary care office",
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2019-09-10T11:20"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -630,6 +606,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with folic acid Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1488,6 +1465,9 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
+                  "range": {
+                    "high": 35
+                  },
                   "value": 58
                 }
               ]
@@ -1552,6 +1532,7 @@
           "procedures": [
             {
               "procedure": "Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions",
+              "snomed": "713174005",
               "performed": "2023-06-27T08:15"
             }
           ],
@@ -1761,15 +1742,6 @@
               "performed": "2023-08-22T08:55"
             }
           ],
-          "orders": [
-            {
-              "id": "fu-feb-2024",
-              "action": "placed",
-              "order": "Return visit in 6 months, pelvic pain follow-up",
-              "category": "procedure",
-              "reason": "endometriosis after laparoscopy"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1846,13 +1818,6 @@
           "kind": "portal_message",
           "start": "2024-02-20T16:30",
           "reason": "Missed visit",
-          "orders": [
-            {
-              "id": "fu-feb-2024",
-              "action": "cancelled",
-              "date": "2024-02-20T16:30"
-            }
-          ],
           "documents": [
             {
               "type": "Patient Message",
@@ -2103,7 +2068,14 @@
             {
               "id": "ct-retest",
               "action": "placed",
-              "order": "Chlamydia and gonorrhea NAAT, retest in 3 months",
+              "order": "Chlamydia trachomatis NAAT",
+              "category": "lab",
+              "reason": "test of reinfection"
+            },
+            {
+              "id": "ct-retest-2",
+              "action": "placed",
+              "order": "Neisseria gonorrhoeae NAAT",
               "category": "lab",
               "reason": "test of reinfection"
             }
@@ -2179,6 +2151,11 @@
           "orders": [
             {
               "id": "ct-retest",
+              "action": "done",
+              "date": "2025-01-21T07:40"
+            },
+            {
+              "id": "ct-retest-2",
               "action": "done",
               "date": "2025-01-21T07:40"
             }
@@ -2533,6 +2510,9 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 2850
                 },
                 {
@@ -2616,6 +2596,7 @@
           "procedures": [
             {
               "procedure": "Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy",
+              "snomed": "63596003",
               "performed": "2025-10-19T20:40"
             }
           ],
@@ -2641,15 +2622,6 @@
           "kind": "portal_message",
           "start": "2025-10-21T10:15",
           "reason": "Hospital stay",
-          "orders": [
-            {
-              "id": "records-er-oct25",
-              "action": "placed",
-              "order": "Request ED and hospital records",
-              "category": "procedure",
-              "reason": "ED visit and surgery 10/19"
-            }
-          ],
           "documents": [
             {
               "type": "Patient Message",
@@ -2679,13 +2651,6 @@
           "kind": "telephone",
           "start": "2025-10-22T14:30",
           "reason": "Post-discharge call",
-          "orders": [
-            {
-              "id": "records-er-oct25",
-              "action": "done",
-              "date": "2025-10-22T14:30"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -2966,13 +2931,13 @@
         "code": "1358762",
         "display": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet",
         "ingredient": "ethinyl",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "metronidazole 500 MG Oral Tablet": {
         "code": "311681",
         "display": "metronidazole 500 MG Oral Tablet",
         "ingredient": "metronidazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2985,17 +2950,32 @@
         "code": "10334-1",
         "display": "Cancer Ag 125 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "high": 35
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "hCG, quantitative": {
         "code": "21198-7",
         "display": "Choriogonadotropin.beta subunit [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"prenatal multivitamin with folic acid Oral Tablet\""
-    ]
+    "procedures": {
+      "Laparoscopic right salpingectomy for ruptured tubal ectopic pregnancy": {
+        "code": "63596003",
+        "display": "Laparoscopic treatment of ectopic pregnancy with salpingectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Laparoscopy with excision of endometriosis implants and lysis of pelvic adhesions": {
+        "code": "713174005",
+        "display": "Laparoscopic excision of pelvic endometriosis",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

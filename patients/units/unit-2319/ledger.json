@@ -1,9 +1,7 @@
 {
   "unit": "unit-2319",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002319/2022-09-08a: imaging order \"PET-CT skull base to mid-thigh\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002319",
@@ -533,6 +531,7 @@
               "action": "placed",
               "order": "PET-CT skull base to mid-thigh",
               "category": "imaging",
+              "loinc": "81554-8",
               "reason": "Lung-RADS 4B left upper lobe nodule"
             },
             {
@@ -1257,6 +1256,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 412
                 }
               ]
@@ -1344,6 +1346,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 188
                 }
               ]
@@ -1534,6 +1539,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4
                 }
               ]
@@ -3824,25 +3832,25 @@
         "code": "313782",
         "display": "acetaminophen 325 MG Oral Tablet",
         "ingredient": "acetaminophen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "bleomycin 30 UNT Injection": {
         "code": "1726676",
         "display": "bleomycin 30 UNT Injection",
         "ingredient": "bleomycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "cisplatin 1 MG/ML Injectable Solution": {
         "code": "309311",
         "display": "cisplatin 1 MG/ML Injectable Solution",
         "ingredient": "cisplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "etoposide 20 MG/ML Injectable Solution": {
         "code": "310248",
         "display": "etoposide 20 MG/ML Injectable Solution",
         "ingredient": "etoposide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxygen 1000 MG/ML Gas for Inhalation": {
         "code": "542304",
@@ -3854,7 +3862,7 @@
         "code": "616289",
         "display": "sunitinib 50 MG Oral Capsule",
         "ingredient": "sunitinib",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3862,6 +3870,9 @@
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -3874,6 +3885,11 @@
       "MRI abdomen and pelvis without and with contrast": {
         "code": "97392-5",
         "display": "MR Abdomen and Pelvis WO and W contrast IV",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "PET-CT skull base to mid-thigh": {
+        "code": "81554-8",
+        "display": "PET+CT Guidance for localization of tumor of Skull base to mid-thigh-- W 18F-FDG IV",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "PET-CT, skull base to mid-thigh": {

@@ -11,7 +11,7 @@ import unittest
 
 LAUNCHER = Path(__file__).with_name("run_review.py")
 FAKE_CLI = r'''
-import json, os, sys
+import hashlib, json, os, sys
 from pathlib import Path
 name = Path(sys.argv[0]).name
 root = Path(os.environ["TEST_ROOT"])
@@ -53,6 +53,37 @@ if case == "exit_failure":
 report = "CHANGES_REQUIRED: One contract violation. See owner.py:12."
 session = "unexpected-new-session" if case == "wrong_session" else f"test-{name}-session"
 if name == "codex":
+    run_dir = Path(sys.argv[sys.argv.index("--output-last-message") + 1]).parent
+else:
+    config = json.loads(sys.argv[sys.argv.index("--mcp-config") + 1])
+    run_dir = Path(config["mcpServers"]["reviewer"]["args"][-1])
+run = json.loads((run_dir / "run.json").read_text())
+if case != "missing_access":
+    with (run_dir / "tool-calls.jsonl").open("a") as tools:
+        for target in run["targets"]:
+            parts = target["url"].split("/")
+            repository = "/".join(parts[3:5])
+            tools.write(json.dumps({"tool": "github_read", "repository": repository,
+                "endpoint": f"repos/{repository}/pulls/{parts[-1]}"}) + "\n")
+            tools.write(json.dumps({"tool": "read_file", "repository": repository,
+                "path": "owner.py", "ref": target["head_sha"], "blob_sha": "e" * 40}) + "\n")
+            draft = {"pr_url": target["url"], "head_sha": target["head_sha"],
+                "base_sha": target["base_sha"], "kind": "review", "body": report,
+                "comments": [], "reply_to": None, "event": "COMMENT"}
+            draft_id = hashlib.sha256(json.dumps(draft, sort_keys=True,
+                separators=(",", ":")).encode()).hexdigest()
+            folder = run_dir / "publications"
+            folder.mkdir(exist_ok=True)
+            (folder / f"{draft_id}.json").write_text(json.dumps(draft, indent=2) + "\n")
+            if case != "missing_publication" and not (case == "partial_publication" and target == run["targets"][-1]):
+                receipt = {"tool": "publish", "pr_url": target["url"],
+                    "url": target["url"] + "#pullrequestreview-99",
+                    "author": "coda-pr-reviewer[bot]", "reviewed_head_sha": target["head_sha"],
+                    "draft_id": draft_id, "reviewer_run": str(run_dir / "run.json"),
+                    "reviewer_session_id": run.get("resume_session_id")}
+                tools.write(json.dumps(receipt) + "\n")
+                (folder / f"{draft_id}.receipt.json").write_text(json.dumps(receipt))
+if name == "codex":
     print(json.dumps({"type": "thread.started", "thread_id": session}))
     if case == "native_failure":
         print(json.dumps({"type": "turn.failed", "error": {"message": "Access unavailable"}}))
@@ -68,7 +99,7 @@ else:
 
 
 class LauncherContract(unittest.TestCase):
-    def run_case(self, engine, case="success", extra=()):
+    def run_case(self, engine, case="success", extra=(), app_config=False):
         scratch = Path.cwd() / "work"
         scratch.mkdir(exist_ok=True)
         temporary = tempfile.TemporaryDirectory(prefix="review-launcher-test-", dir=scratch)
@@ -82,20 +113,24 @@ class LauncherContract(unittest.TestCase):
             program.chmod(0o755)
         context = root / "context.md"
         context.write_text("User decision: preserve the existing workflow.\nSource: supplied request.")
+        config = root / "reviewer-app.json"
+        config.write_text(json.dumps({"app_id": 1, "installation_id": 2,
+                                      "private_key_command": ["key-helper"]}))
         output = root / "run"
         env = dict(os.environ, PATH=str(binary) + os.pathsep + os.environ["PATH"],
                    TEST_ROOT=str(root), CASE=case)
         result = subprocess.run(
             [sys.executable, str(LAUNCHER), "--pr", "https://github.com/example/project/pull/7",
              "--workspace", str(root), "--engine", engine, "--output-dir", str(output),
-             "--context-file", str(context), *extra],
+             "--context-file", str(context),
+             *(["--github-app-config", str(config)] if app_config else []), *extra],
             capture_output=True, text=True, env=env, timeout=20,
         )
         return result, json.loads((output / "run.json").read_text()), root
 
-    def resume_case(self, root, prior="run", output="followup", case="success", extra=()):
+    def resume_case(self, root, prior="run", output="followup", case="success", extra=(), head=None):
         env = dict(os.environ, PATH=str(root / "bin") + os.pathsep + os.environ["PATH"],
-                   TEST_ROOT=str(root), CASE=case, HEAD_SHA="d" * 40)
+                   TEST_ROOT=str(root), CASE=case, HEAD_SHA=head or "d" * 40)
         result = subprocess.run(
             [sys.executable, str(LAUNCHER), "--resume-from", str(root / prior / "run.json"),
              "--output-dir", str(root / output), *extra],
@@ -109,10 +144,21 @@ class LauncherContract(unittest.TestCase):
         if call["engine"] == "codex":
             self.assertEqual(args[args.index("--sandbox") + 1], "read-only")
             self.assertIn('approval_policy="never"', args)
+            mcp = next(value for value in args if value.startswith("mcp_servers="))
+            self.assertIn("reviewer_tools.py", mcp)
+            self.assertIn("default_tools_approval_mode", mcp)
         else:
-            self.assertEqual(args[args.index("--permission-mode") + 1], "plan")
+            self.assertIn("--strict-mcp-config", args)
+            self.assertEqual(args[args.index("--permission-mode") + 1], "dontAsk")
             self.assertEqual(args[args.index("--permission-prompts") + 1], "none")
-            self.assertEqual(args[args.index("--tools") + 1], "Read,Glob,Grep,Bash")
+            self.assertEqual(args[args.index("--tools") + 1], "Read,Glob,Grep")
+            config = json.loads(args[args.index("--mcp-config") + 1])
+            self.assertIn("reviewer_tools.py", config["mcpServers"]["reviewer"]["args"][0])
+            self.assertEqual(
+                args[args.index("--allowedTools") + 1].split(","),
+                ["mcp__reviewer__github_read", "mcp__reviewer__read_file",
+                 "mcp__reviewer__prepare_publication", "mcp__reviewer__publish"],
+            )
 
     def test_fresh_process_receives_pr_and_sourced_context_and_returns_full_review(self):
         for engine in ("codex", "claude"):
@@ -308,6 +354,46 @@ class LauncherContract(unittest.TestCase):
         self.assertEqual(record["status"], "prepared")
         self.assertTrue((root / "run" / "request.md").is_file())
         self.assertFalse((root / "calls.jsonl").exists())
+
+    def test_missing_direct_reviewer_access_cannot_be_reported_as_completed(self):
+        result, record, _ = self.run_case("codex", "missing_access")
+        self.assertEqual(result.returncode, 3)
+        self.assertEqual(record["status"], "access_unverified")
+        self.assertEqual(record["missing_direct_access"],
+                         ["https://github.com/example/project/pull/7"])
+
+    def test_review_and_followup_publish_without_a_separate_approval_invocation(self):
+        for engine in ("codex", "claude"):
+            with self.subTest(engine=engine):
+                result, first, root = self.run_case(engine, app_config=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(len(first["publication_drafts"]), 1)
+                self.assertEqual(len(first["github_publications"]), 1)
+                result, published = self.resume_case(root)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(published["session_id"], first["session_id"])
+                self.assertEqual(published["resume_session_id"], first["session_id"])
+                self.assertEqual(published["github_app_config"], first["github_app_config"])
+                self.assertEqual(len(published["github_publications"]), 1)
+                self.assertEqual(len(published["publication_drafts"]), 1)
+                receipt = published["github_publications"][0]
+                self.assertEqual(receipt["author"], "coda-pr-reviewer[bot]")
+                self.assertEqual(receipt["reviewer_session_id"], first["session_id"])
+                self.assertEqual(len((root / "calls.jsonl").read_text().splitlines()), 2)
+
+    def test_missing_or_partial_publication_is_reported_and_can_resume(self):
+        for case in ("missing_publication", "partial_publication"):
+            with self.subTest(case=case):
+                second = "https://github.com/example/project/pull/8"
+                result, first, root = self.run_case("codex", case, extra=("--pr", second))
+                self.assertEqual(result.returncode, 3, result.stderr)
+                self.assertEqual(first["status"], "publication_unverified")
+                self.assertIn(second, first["missing_publications"])
+                self.assertEqual(len(first["publication_drafts"]), 2)
+                result, resumed = self.resume_case(root)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(resumed["session_id"], first["session_id"])
+                self.assertEqual(resumed["missing_publications"], [])
 
     def test_resume_dry_run_does_not_send_a_followup(self):
         result, first, root = self.run_case("claude")

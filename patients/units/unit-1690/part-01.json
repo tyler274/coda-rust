@@ -69,7 +69,8 @@
               "frequency": "DAILY",
               "route": "Oral",
               "course": "chronic",
-              "reason": "Iron deficiency anemia; planning pregnancy"
+              "reason": "Iron deficiency anemia; planning pregnancy",
+              "uncoded": true
             },
             {
               "drug_text": "docusate sodium 100 MG Oral Capsule",
@@ -304,7 +305,14 @@
             {
               "id": "tsh-2024-10",
               "action": "placed",
-              "order": "TSH and free T4",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Hypothyroidism in early pregnancy"
+            },
+            {
+              "id": "tsh-2024-10-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
               "category": "lab",
               "reason": "Hypothyroidism in early pregnancy"
             }
@@ -349,6 +357,11 @@
           "orders": [
             {
               "id": "tsh-2024-10",
+              "action": "done",
+              "date": "2024-10-07T08:15"
+            },
+            {
+              "id": "tsh-2024-10-2",
               "action": "done",
               "date": "2024-10-07T08:15"
             }

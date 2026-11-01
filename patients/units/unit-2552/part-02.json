@@ -1,0 +1,1173 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002552",
+      "events": [
+        {
+          "id": "2023-03-21a",
+          "kind": "portal_message",
+          "start": "2023-03-21T20:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Physical",
+              "author": "patient",
+              "date": "2023-03-21T20:14",
+              "body": "Hi, I never rebooked my physical from last fall, sorry. I'm home until at least the summer now. Any openings in early April? Mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Physical",
+              "author": "front desk",
+              "date": "2023-03-22T09:02",
+              "body": "Hi Henry, you're booked for Tuesday April 4 at 8:20. Please come fasting if you can, the doctor will likely order bloodwork."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-04a",
+          "kind": "annual_physical",
+          "start": "2023-04-04T08:20",
+          "end": "2023-04-04T09:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-04-04T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-04-04T09:10",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-04-04T09:10",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-04T09:10",
+              "resulted": "2023-04-06T11:30",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Reactive. HIV-1 antibody positive on supplemental differentiation assay; HIV-2 antibody negative."
+                },
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "orders": [
+            {
+              "id": "hiv-screen",
+              "action": "placed",
+              "order": "HIV-1/2 Antigen and Antibody",
+              "category": "lab"
+            },
+            {
+              "id": "hcv-screen",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
+              "category": "lab"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-04-04T08:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-04-04T09:05",
+              "body": "33M, physical, last seen 9/2021. Home since winter, planning his next posting for later in the year. Feels well. No fevers, weight steady, no cough. Sleeping fine. Running 3x a week.\n\nNo meds. NKDA. Still not smoking, no alcohol.\nPHQ-2 0.\n\nExam: Vitals in flowsheet. Well appearing. Oropharynx clear, no thrush. No cervical, axillary or inguinal adenopathy. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, no spleen tip. Skin clear. Neuro nonfocal.\n\nA/P\n- Routine labs: CBC, CMP, lipids.\n- One-time HIV and hepatitis C screening recommended for all adults; he agrees. Added to today's draw.\n- Vaccines: Tdap 2021, flu given last fall. Will review others once labs are back.\n- RTC 1 yr."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-06a",
+          "kind": "telephone",
+          "start": "2023-04-06T12:40",
+          "conditions": [
+            {
+              "label": "Human immunodeficiency virus disease",
+              "action": "diagnosed",
+              "onset": "2023-04-06"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hiv-screen",
+              "action": "done",
+              "date": "2023-04-06T11:30"
+            },
+            {
+              "id": "hcv-screen",
+              "action": "done",
+              "date": "2023-04-06T11:30"
+            },
+            {
+              "id": "cxr-2023",
+              "action": "placed",
+              "order": "Chest X-ray, 2 views",
+              "category": "imaging",
+              "reason": "new HIV diagnosis, baseline before TB testing"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Result discussion",
+              "author": "PCP",
+              "date": "2023-04-06T12:55",
+              "body": "Called pt directly with the HIV screen: 4th generation test reactive, confirmed HIV-1 on the differentiation assay. HCV antibody negative. Other labs from the physical normal.\n\nHe was quiet at first, then had good questions. Explained that this is a treatable chronic infection, that most people on one pill a day reach an undetectable level and live a normal lifespan, and that undetectable means no sexual transmission. He is not in a relationship now; advised condoms and informing any recent partners, offered help with partner notification through the health department, he will think about it.\n\nPlan: baseline labs tomorrow (CD4, viral load, genotype, hep B serologies, RPR), TB skin test placed Monday and read Wednesday, chest film Wednesday. Office visit 4/21 to go over everything and start treatment. Will also set up Infectious Disease. He knows to call before then with any questions; gave him my cell."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-07a",
+          "kind": "lab_only",
+          "start": "2023-04-07T07:50",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-07T07:55",
+              "resulted": "2023-04-10T15:20",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 350
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 55000
+                },
+                {
+                  "test": "Hepatitis B Surface Antigen",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Hepatitis B Surface Antibody",
+                  "text": "Positive, immune"
+                },
+                {
+                  "test": "Rapid Plasma Reagin",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-04-07T07:55",
+              "resulted": "2023-04-17T10:05",
+              "results": [
+                {
+                  "test": "HIV-1 genotype resistance",
+                  "loinc": "48558-1",
+                  "text": "No major resistance mutations detected in reverse transcriptase, protease or integrase. Susceptible to all integrase inhibitors and NRTIs tested."
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-04-07T07:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Baseline HIV labs",
+              "author": "PCP",
+              "date": "2023-04-10T16:00",
+              "body": "CD4 350, viral load 55,000. Hep B surface antigen negative, surface antibody positive (vaccinated, immune). RPR nonreactive. Genotype still pending. Will review all at the 4/21 visit."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-11a",
+          "kind": "portal_message",
+          "start": "2023-04-11T21:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Questions before my visit",
+              "author": "patient",
+              "date": "2023-04-11T21:30",
+              "body": "A few questions for the 21st so I don't forget: will I be on this for life, can I still travel for work, and is there anything I should avoid until I start the medicine? Also do I need to tell my employer?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Questions before my visit",
+              "author": "PCP",
+              "date": "2023-04-12T07:45",
+              "body": "All good questions and we'll go through each one on the 21st. Short answers: treatment is long term, yes you can keep working and traveling once things are settled, and no, you are not required to tell your employer. Nothing to avoid before the visit. Write down anything else that comes up."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-17a",
+          "kind": "nurse_visit",
+          "start": "2023-04-17T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "TB skin test placement",
+          "procedures": [
+            {
+              "procedure": "Mantoux test",
+              "snomed": "424489006",
+              "performed": "2023-04-17T08:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "PPD placement",
+              "author": "RN",
+              "date": "2023-04-17T08:40",
+              "body": "Tuberculin 5 TU placed intradermally L volar forearm, good wheal raised. No prior positive test per pt; never had BCG that he knows of. Return Wednesday morning for the read."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-19a",
+          "kind": "nurse_visit",
+          "start": "2023-04-19T08:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "TB skin test read",
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2023-04-19T08:45",
+              "results": [
+                {
+                  "test": "Tuberculin skin test induration, 48 hours",
+                  "loinc": "23537-4",
+                  "value": 7,
+                  "unit": "mm",
+                  "range": {}
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "PPD read",
+              "author": "RN",
+              "date": "2023-04-19T08:50",
+              "body": "Read at 48 hours: 7 mm of induration, measured transversely, L forearm. Some faint redness beyond the edge, not counted. With his new HIV diagnosis this counts as a positive test. Routed to PCP. Pt walked to radiology for his chest film after the read."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-19b",
+          "kind": "imaging",
+          "start": "2023-04-19T09:30",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2023-04-19T09:30",
+              "issued": "2023-04-19T13:10",
+              "text": "PA and lateral views of the chest. No prior studies. Heart size and mediastinal contours are within normal limits. No hilar or mediastinal lymph node enlargement. Lungs are clear without consolidation, nodule, cavitation or upper lobe scarring. No pleural effusion or pneumothorax. Osseous structures intact.",
+              "conclusion": "No radiographic evidence of active or prior pulmonary tuberculosis. Normal chest."
+            }
+          ],
+          "orders": [
+            {
+              "id": "cxr-2023",
+              "action": "done",
+              "date": "2023-04-19T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2023-04-21a",
+          "kind": "office_visit",
+          "start": "2023-04-21T10:00",
+          "end": "2023-04-21T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new HIV diagnosis, start treatment",
+          "conditions": [
+            {
+              "label": "Latent tuberculosis",
+              "action": "diagnosed",
+              "onset": "2023-04-19"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "bictegravir 50 MG / emtricitabine 200 MG / tenofovir alafenamide 25 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "HIV infection"
+            },
+            {
+              "drug_text": "isoniazid 300 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily for 9 months",
+              "dose": {
+                "value": 300,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "latent tuberculosis"
+            },
+            {
+              "drug_text": "vitamin B6 50 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily while taking isoniazid",
+              "dose": {
+                "value": 50,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "neuropathy prevention on isoniazid"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-04-21T10:55"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-04-21T10:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "id-referral",
+              "action": "placed",
+              "order": "Infectious Disease referral",
+              "category": "referral",
+              "to": "Infectious Disease",
+              "reason": "new HIV infection, co-management"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, high MDM",
+              "performed": "2023-04-21T10:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-04-21T10:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: new HIV",
+              "author": "PCP",
+              "date": "2023-04-21T11:20",
+              "body": "33M here to go over his new HIV result and start treatment. Screen from his 4/4 physical was reactive and confirmed as HIV-1 by differentiation.\n\nHe has had time to read. No symptoms: denies cough, fevers, sweats at night or any weight change. No sores, rashes, swallowing trouble or diarrhea. Today he told me he injected drugs for a stretch in his early twenties, shared equipment at times, has not used in many years and has no cravings; he had not mentioned it before. No current partner. Mood ok, has told one close friend.\n\nMeds: none. NKDA.\n\nExam: comfortable. No thrush or oral lesions. No lymphadenopathy. Heart and lungs normal. Abdomen soft, no hepatosplenomegaly. Skin without lesions. Neuro nonfocal. Exam unremarkable.\n\nData:\n- CD4 350, HIV RNA 55,000 copies/mL (4/7)\n- Genotype: no major resistance mutations\n- HBsAg neg, HBsAb pos (immune); HCV Ab neg; RPR nonreactive\n- CMP, CBC, lipids from 4/4 normal\n- PPD 7 mm at 48 h (4/19), positive for someone with HIV\n- CXR 4/19: clear, nothing to suggest active TB\n\nA/P\n1. HIV-1 infection, new, CD4 350, no opportunistic infection. Start bictegravir/emtricitabine/tenofovir alafenamide one tablet daily today; no resistance, hep B immune, renal function normal. Talked through taking it at the same time every day, what to do with a missed dose, and that most people suppress within a few months. Not yet at a CD4 level that calls for PJP prophylaxis. Referral to Infectious Disease for co-management; I will keep doing his primary care. Viral load and CD4 again in about 8 weeks.\n2. Latent TB infection: positive PPD, no symptoms, clear film. Isoniazid 300 mg daily for 9 months with pyridoxine 50 mg. No interaction concern with his ART. Monthly symptom check and LFTs for now; told him to stop and call for nausea, dark urine, yellow eyes or numb feet.\n3. Past injection drug use, remote: no current use. Naloxone not needed per his account; he declines. Will revisit.\n4. Vaccines: PCV20 and first MenACWY today. Second MenACWY in 8 weeks. Flu in the fall.\n5. Prevention counseling, condoms, partner services info given again.\nRTC 3 months, sooner for any problem."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-24a",
+          "kind": "pharmacy",
+          "start": "2023-04-24T14:10",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Prior authorization approved",
+              "author": "RN",
+              "date": "2023-04-24T14:10",
+              "body": "MassHealth prior auth for bictegravir/emtricitabine/tenofovir alafenamide approved through 4/2024. Pharmacy had dispensed a 3-day emergency supply Friday; full 30-day fill picked up today along with isoniazid and B6. Pt aware."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-16a",
+          "kind": "specialist_visit",
+          "start": "2023-05-16T13:30",
+          "service": "Infectious Disease",
+          "reason": "new HIV infection",
+          "orders": [
+            {
+              "id": "id-referral",
+              "action": "done",
+              "date": "2023-05-16T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease consultation",
+              "author": "infectious disease",
+              "date": "2023-05-18T09:00",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC — CONSULTATION\nDate of service: 05/16/2023\nReferring: primary care\n\nThank you for referring Mr. Dabrowski, 33, newly diagnosed HIV-1 on screening, baseline CD4 350 and viral load 55,000, no resistance on genotype. Started on bictegravir/emtricitabine/tenofovir alafenamide 4/21 with isoniazid and pyridoxine for latent TB (PPD 7 mm, clear chest film).\n\nHe reports taking every dose so far, no side effects beyond mild loose stools the first week, now resolved. No symptoms of active TB.\nAllergies: NKDA.\n\nExam: well, no thrush, no adenopathy, no hepatosplenomegaly, skin clear.\n\nImpression and plan:\n1. HIV-1, early on ART, tolerating well. Agree with regimen. VL and CD4 at 8 weeks, then every 3 months until suppressed. Ok to draw at your office.\n2. LTBI on 9 months INH. Please continue monthly LFTs while on INH.\n3. Hep B immune, no need for vaccination. Hep A and zoster vaccination can be discussed at a later visit.\n4. Follow up here in 3 months.\n\nWe appreciate being involved in his care."
+            }
+          ]
+        },
+        {
+          "id": "2023-05-19a",
+          "kind": "lab_only",
+          "start": "2023-05-19T08:10",
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-05-19T08:12",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-05-19T08:12"
+            }
+          ]
+        },
+        {
+          "id": "2023-05-22a",
+          "kind": "portal_message",
+          "start": "2023-05-22T10:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Liver tests",
+              "author": "PCP",
+              "date": "2023-05-22T10:30",
+              "body": "Henry, your liver tests a month into isoniazid are normal. Keep going with both pills. Next check is when you come in for the second meningitis shot in June."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Liver tests",
+              "author": "patient",
+              "date": "2023-05-22T18:47",
+              "body": "Thanks. ID doctor was great btw. All good here."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-23a",
+          "kind": "nurse_visit",
+          "start": "2023-06-23T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccine and labs",
+          "immunizations": [
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2023-06-23T09:20"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2023-06-23T09:25",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-23T09:25",
+              "resulted": "2023-06-26T11:40",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 362
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 140
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-23T09:20"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-06-23T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine and lab draw",
+              "author": "RN",
+              "date": "2023-06-23T09:35",
+              "body": "Second MenACWY given L deltoid. Drew LFTs, CD4 and viral load as ordered. INH symptom check: no nausea, no abdominal pain, no dark urine, no tingling in hands or feet. Taking all three meds daily per pt. Mentions he is heading out west for a few weeks of backpacking in late summer; reminded him to bring enough pills and keep them with him."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-26a",
+          "kind": "portal_message",
+          "start": "2023-06-26T13:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Viral load",
+              "author": "PCP",
+              "date": "2023-06-26T13:15",
+              "body": "Great news: your viral load dropped from 55,000 to 140 in two months, and the CD4 is holding at 362. Liver tests normal again. This is exactly the direction we want. Copy sent to the ID clinic. Have a good trip, and don't skip doses on the road."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-18a",
+          "kind": "pharmacy",
+          "start": "2023-07-18T09:40",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill",
+              "author": "MA",
+              "date": "2023-07-18T09:40",
+              "body": "Refill request from pharmacy for isoniazid 300 mg and vitamin B6 50 mg, #30 each. Month 3 of 9. Approved per PCP standing plan. ART refilled on schedule last week per fill history."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-15a",
+          "kind": "hospital_admission",
+          "start": "2023-10-15T15:40",
+          "end": "2023-10-30T11:30",
+          "service": "Emergency Medicine",
+          "reason": "headache, fevers, trouble concentrating",
+          "conditions": [
+            {
+              "label": "Cryptococcal meningitis",
+              "icd10": "B45.1",
+              "action": "diagnosed",
+              "onset": "2023-09-24"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "fluconazole 200 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 2 tablets (400 mg) by mouth once daily",
+              "dose": {
+                "value": 400,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "cryptococcal meningitis, after induction"
+            },
+            {
+              "drug": "sulfamethoxazole 800 MG / trimethoprim 160 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth once daily",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "PJP prophylaxis, CD4 below 200"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2023-10-15T16:05",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                },
+                {
+                  "test": "Neutrophils %"
+                },
+                {
+                  "test": "Lymphocytes %"
+                },
+                {
+                  "test": "Monocytes %"
+                },
+                {
+                  "test": "Eosinophils %"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-10-15T16:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                },
+                {
+                  "test": "Albumin"
+                },
+                {
+                  "test": "Total Protein"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-15T18:30",
+              "resulted": "2023-10-15T20:10",
+              "results": [
+                {
+                  "test": "CSF India ink preparation",
+                  "loinc": "638-7",
+                  "text": "Encapsulated budding yeast seen"
+                },
+                {
+                  "test": "CSF cryptococcal antigen titer",
+                  "loinc": "9819-4",
+                  "text": "Positive, titer 1:1024"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-15T18:30",
+              "resulted": "2023-10-20T09:15",
+              "results": [
+                {
+                  "test": "CSF fungal culture",
+                  "loinc": "569-4",
+                  "text": "Cryptococcus neoformans"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-10-16T05:30",
+              "resulted": "2023-10-17T14:00",
+              "results": [
+                {
+                  "test": "CD4 Count",
+                  "value": 170
+                },
+                {
+                  "test": "HIV-1 RNA Viral Load",
+                  "value": 3400
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-22T05:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-10-22T05:30",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-10-29T05:30",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "CT head without contrast",
+              "performed": "2023-10-15T16:40",
+              "issued": "2023-10-15T17:05",
+              "text": "Noncontrast axial images of the head. No intracranial hemorrhage. No mass lesion or mass effect. Ventricles and sulci are normal in size for age; no hydrocephalus. Gray-white differentiation preserved. Basal cisterns patent. Calvarium and visualized sinuses unremarkable.",
+              "conclusion": "No mass lesion or hydrocephalus. No acute intracranial abnormality. Safe to proceed with lumbar puncture from an imaging standpoint."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2023-10-15T15:40"
+            },
+            {
+              "procedure": "Lumbar puncture",
+              "snomed": "277762005",
+              "performed": "2023-10-15T18:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2023-10-15T22:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2023-10-30T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency department record",
+              "author": "emergency medicine",
+              "date": "2023-10-17T08:00",
+              "body": "REGIONAL MEDICAL CENTER — EMERGENCY DEPARTMENT\nDate of visit: 10/15/2023\n\nCC: headache x3 wks\n\nHPI: 33 yo M with HIV on bictegravir/emtricitabine/TAF since April and latent TB on INH, sent in by a friend. About three weeks of headache that keeps getting worse, low-grade fevers on and off, and trouble focusing at work; now and then his vision blurs. It started a few days after he got back from several weeks of backpacking in the Pacific Northwest, staying in hostels and hiking in forest. Down about 5 kg in the past month. Admits he ran out of pills partway through the trip and went a few weeks without ART before refilling.\n\nPMH: HIV (dx 4/2023), latent TB, remote vivax malaria. PSH: appendectomy.\nMeds: bictegravir/emtricitabine/TAF daily, isoniazid 300 mg, pyridoxine 50 mg.\nAllergies: NKDA.\nSH: aid worker. Former smoker, no EtOH. Remote IVDU.\nFH: father HTN, mother DM2.\n\nExam: afebrile here, vitals otherwise per flowsheet. Alert, oriented x3 but slow to answer. Mild neck stiffness on flexion. Fundi: bilateral disc swelling, papilledema. Pupils equal and reactive, EOM full, no focal weakness, gait not tested. Lungs clear, heart regular. No rash.\n\nCT head without contrast: no mass, no hydrocephalus.\nLP (see procedure note): opening pressure elevated; fluid clear. Cell count lymphocyte predominant, protein high, glucose low for serum. India ink: encapsulated yeast. CSF crypto Ag positive 1:1024.\n\nImpression: cryptococcal meningitis in HIV with raised intracranial pressure.\nPlan: ID consulted from the ED. Liposomal amphotericin B plus flucytosine started. Therapeutic LP as needed for pressure. Admit to medicine."
+            },
+            {
+              "type": "Procedure Note",
+              "title": "Lumbar puncture",
+              "author": "emergency medicine",
+              "date": "2023-10-17T08:00",
+              "body": "REGIONAL MEDICAL CENTER — PROCEDURE NOTE\nDate: 10/15/2023\nProcedure: lumbar puncture. Indication: suspected meningitis, CT head without mass. Consent obtained. Left lateral decubitus, L3-4 interspace, sterile prep, 1% lidocaine, 20G spinal needle, clear CSF on first pass. Opening pressure elevated. Fluid removed for studies and to relieve pressure. No complications. Tubes to lab for cell count, protein, glucose, Gram stain, India ink, cryptococcal antigen and fungal culture."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2023-10-31T10:20",
+              "body": "REGIONAL MEDICAL CENTER — DISCHARGE SUMMARY\nAdmitted 10/15/2023, discharged 10/30/2023\nAttending: hospital medicine; consultant: infectious disease\n\nDiagnosis: cryptococcal meningitis (C. neoformans) with elevated intracranial pressure, in HIV-1 infection with CD4 170.\nOther: HIV-1, viral load 3,400 after a gap in ART during travel; latent TB on isoniazid.\n\nCourse: Presented with three weeks of headache, low-grade fevers, slowed thinking and blurred vision, 5 kg weight loss. CT head without mass or hydrocephalus. CSF lymphocytic with high protein and low glucose, India ink positive, CSF cryptococcal antigen 1:1024; fungal culture grew Cryptococcus neoformans. Treated with liposomal amphotericin B and flucytosine for a two-week induction. Needed repeat therapeutic lumbar punctures in the first week for pressure; headache and papilledema improved, mentation back to baseline by day 6. Renal function and potassium monitored closely on amphotericin and stayed acceptable with supplementation; counts stable on flucytosine. ART continued throughout per ID, with adherence counseling. Isoniazid and pyridoxine continued.\n\nDischarge exam: alert, fully oriented, normal speech, no neck stiffness, no focal deficits.\n\nDischarge medications:\n- fluconazole 400 mg by mouth daily (consolidation, NEW)\n- trimethoprim-sulfamethoxazole DS 1 tab daily (PJP prophylaxis, CD4 <200, NEW)\n- bictegravir/emtricitabine/tenofovir alafenamide 1 tab daily (continue)\n- isoniazid 300 mg daily (continue)\n- pyridoxine 50 mg daily (continue)\nAllergies: NKDA.\n\nFollow-up: ID clinic in 2 weeks; primary care within 1 week; return for worsening headache, vision change, confusion or fever."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-16a",
+          "kind": "telephone",
+          "start": "2023-10-16T09:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Admission notification",
+              "author": "front desk",
+              "date": "2023-10-16T09:10",
+              "body": "Call from the regional medical center case manager: pt admitted overnight from their ED, being treated for meningitis. Asked that PCP be listed as primary care on their record and that records be sent on discharge. Routed to PCP and RN."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Admission notification",
+              "author": "PCP",
+              "date": "2023-10-16T12:20",
+              "body": "Spoke with the inpatient team. Cryptococcal meningitis on CSF, induction started, ID on board. Gave them his recent viral load and CD4 from June and his med list. Will see him within a week of discharge."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-01a",
+          "kind": "telephone",
+          "start": "2023-11-01T11:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2023-11-01T11:00",
+              "body": "Called pt two days after discharge. Discharge summary received and scanned. He is home, a friend is staying with him this week. Mild tiredness, no headache since the weekend, no fever, vision clear. Has fluconazole and TMP-SMX filled, along with his HIV pill, INH and B6; reviewed each, he has a pill box now. Confirmed visit Friday 11/3 at 2:00 and ID on 11/14."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-03a",
+          "kind": "office_visit",
+          "start": "2023-11-03T14:00",
+          "end": "2023-11-03T14:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, cryptococcal meningitis",
+          "state": {
+            "weight_kg": 71.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-03T14:50",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Chloride"
+                },
+                {
+                  "test": "Bicarbonate"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Calcium"
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-11-03T14:50",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Red Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-11-03T14:40"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-11-03T14:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-11-03T14:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-11-03T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2023-11-03T15:10",
+              "body": "Seen after a 15-day admission 10/15 to 10/30 for cryptococcal meningitis. Discharge summary reviewed in full.\n\nHe feels a lot better. No headache in a week. Thinking is clear, reading again without trouble. Vision normal. Appetite back, weight up a little since discharge. No fevers. Some fatigue in the afternoons. Owns that he let the ART lapse on the trip and is embarrassed about it; using a weekly pill box and phone alarm now.\n\nMeds reconciled with the discharge list: bictegravir/emtricitabine/TAF daily; fluconazole 400 mg daily (new); TMP-SMX DS daily (new, CD4 170 in hospital); isoniazid 300 mg and B6 50 mg (INH course ends late January). NKDA.\n\nExam: alert, oriented, fluent, good recall of the hospital course. No meningismus. Pupils equal, EOM full, no nystagmus, face symmetric, strength and gait normal. Fundi not well seen without dilation. Heart and lungs normal. Small healed bruise at the low back LP site, no tenderness.\n\nA/P\n1. Cryptococcal meningitis, after induction, on fluconazole 400 mg. Clinically back to baseline. ID visit 11/14 is the key next step; they will set the fluconazole plan. Warning signs reviewed: return of headache, vision change, confusion.\n2. HIV-1 with CD4 170 at admission after an adherence gap. Back on daily ART. TMP-SMX for PJP prophylaxis. BMP and CBC today for renal function and counts on the new meds.\n3. Latent TB on INH, month 7, tolerating.\n4. Flu and updated COVID vaccines given today.\nRTC late January when the INH course finishes, sooner if needed."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "specialist_visit",
+          "start": "2023-11-14T10:30",
+          "service": "Infectious Disease",
+          "reason": "follow-up after cryptococcal meningitis",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Infectious Disease follow-up",
+              "author": "infectious disease",
+              "date": "2023-11-16T12:00",
+              "body": "OUTSIDE INFECTIOUS DISEASE CLINIC — FOLLOW-UP LETTER\nDate of service: 11/14/2023\n\nSeen two weeks after discharge for cryptococcal meningitis (C. neoformans, CSF CrAg 1:1024, final culture confirmed) treated with liposomal amphotericin B and flucytosine induction.\n\nDoing well, headache resolved, no visual complaints, back at part-time work. Reports full adherence to ART since discharge; pill box in use.\n\nExam: normal mental status, no meningismus, no focal findings.\n\nPlan:\n1. Cryptococcal meningitis: continue fluconazole 400 mg daily.\n2. HIV: continue bictegravir/emtricitabine/TAF. Repeat VL and CD4 with your January labs.\n3. Continue TMP-SMX DS daily until CD4 has been above 200 for at least 3 months on suppressed viral load.\n4. INH: finish the 9-month course.\nReturn here in 4 months.\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "pharmacy",
+          "start": "2023-12-12T09:20",
+          "documents": [
+            {
+              "type": "Pharmacy",
+              "title": "Refill request",
+              "author": "MA",
+              "date": "2023-12-12T09:20",
+              "body": "Electronic request for fluconazole 200 mg tabs, 2 daily, #60. Matches current list and ID plan; sent to PCP queue and approved with 2 refills."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

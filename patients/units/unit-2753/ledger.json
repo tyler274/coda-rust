@@ -3,11 +3,7 @@
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
   "warnings": [
     "MRN00002753/2020-07-14a: reaction \"GI intolerance; ineffective\" not in catalog (text only)",
-    "MRN00002753/2020-07-14a: reaction \"Ineffective\" not in catalog (text only)",
-    "MRN00002753/2023-10-29a: procedure \"Arthroscopy of right knee\" not in catalog and has no snomed (text only)",
-    "MRN00002753/2021-04-20a: referral to \"Pain Management\" names no catalog specialty",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
-    "left text-only (not verified): drug \"parenteral nutrition\""
+    "MRN00002753/2020-07-14a: reaction \"Ineffective\" not in catalog (text only)"
   ],
   "patients": [
     {
@@ -145,6 +141,7 @@
             },
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -157,6 +154,7 @@
             },
             {
               "drug_text": "parenteral nutrition",
+              "uncoded": true,
               "action": "historical",
               "sig": "Infuse via central line over 12 hours nightly per home infusion regimen",
               "frequency": "NIGHTLY",
@@ -1021,6 +1019,10 @@
                   "test": "Lamotrigine, trough",
                   "loinc": "74944-0",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 2.5,
+                    "high": 15
+                  },
                   "value": 4.8
                 }
               ]
@@ -1169,7 +1171,7 @@
               "action": "placed",
               "order": "Pain management referral",
               "category": "referral",
-              "to": "Pain Management",
+              "to": "Pain Medicine",
               "reason": "Chronic low back pain, worsening"
             }
           ],
@@ -2384,6 +2386,10 @@
                   "test": "Amylase",
                   "loinc": "1798-8",
                   "unit": "U/L",
+                  "range": {
+                    "low": 25,
+                    "high": 125
+                  },
                   "value": 90
                 }
               ]
@@ -3405,6 +3411,7 @@
             },
             {
               "procedure": "Arthroscopy of right knee",
+              "snomed": "309431009",
               "performed": "2023-10-24T08:00"
             }
           ],
@@ -3516,6 +3523,10 @@
                   "test": "Lamotrigine, trough",
                   "loinc": "74944-0",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 2.5,
+                    "high": 15
+                  },
                   "value": 8.1
                 }
               ]
@@ -4887,7 +4898,11 @@
                 {
                   "test": "Osmolality, serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 238
                 }
               ]
@@ -4899,7 +4914,11 @@
                 {
                   "test": "Osmolality, urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 420
                 }
               ]
@@ -4912,6 +4931,7 @@
                   "test": "Sodium, urine",
                   "loinc": "2955-3",
                   "unit": "mmol/L",
+                  "range": {},
                   "value": 54
                 }
               ]
@@ -5704,49 +5724,49 @@
         "code": "854238",
         "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "24 HR bupropion hydrochloride 150 MG Extended Release Oral Tablet": {
         "code": "993541",
         "display": "24 HR bupropion hydrochloride 150 MG Extended Release Oral Tablet",
         "ingredient": "hr",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "alprazolam 0.25 MG Oral Tablet": {
         "code": "308047",
         "display": "alprazolam 0.25 MG Oral Tablet",
         "ingredient": "alprazolam",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "aripiprazole 5 MG Oral Tablet": {
         "code": "402131",
         "display": "aripiprazole 5 MG Oral Tablet",
         "ingredient": "aripiprazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "diphenhydramine hydrochloride 25 MG Oral Capsule": {
         "code": "1049909",
         "display": "diphenhydramine hydrochloride 25 MG Oral Capsule",
         "ingredient": "diphenhydramine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "norethindrone acetate 1 MG / ethinyl estradiol 0.02 MG Oral Tablet": {
         "code": "1358762",
         "display": "ethinyl estradiol 0.02 MG / norethindrone acetate 1 MG Oral Tablet",
         "ingredient": "norethindrone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sertraline 100 MG Oral Tablet": {
         "code": "312938",
         "display": "sertraline 100 MG Oral Tablet",
         "ingredient": "sertraline",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "vedolizumab 300 MG Injection": {
         "code": "1538137",
         "display": "vedolizumab 300 MG Injection",
         "ingredient": "vedolizumab",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5754,6 +5774,10 @@
         "code": "1798-8",
         "display": "Amylase [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 25,
+          "high": 125
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Drugs of abuse screen, urine": {
@@ -5765,24 +5789,37 @@
         "code": "74944-0",
         "display": "lamoTRIgine [Mass/volume] in Serum or Plasma --trough",
         "unit": "ug/mL",
+        "range": {
+          "low": 2.5,
+          "high": 15
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Sodium, urine": {
         "code": "2955-3",
         "display": "Sodium [Moles/volume] in Urine",
         "unit": "mmol/L",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -5805,9 +5842,12 @@
         "receipt": "tx.fhir.org SNOMED CT"
       }
     },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\"",
-      "drug \"parenteral nutrition\""
-    ]
+    "procedures": {
+      "Arthroscopy of right knee": {
+        "code": "309431009",
+        "display": "Arthroscopy of knee",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

@@ -1,11 +1,7 @@
 {
   "unit": "unit-1743",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001743/2024-10-29a: procedure order \"Outside records request: September 2024 hospital admission\" names no one catalog lab, panel, study or procedure",
-    "MRN00001743/2025-12-11a: procedure order \"Outside records request: December 2025 hospital admission\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin with folic acid Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001743",
@@ -48,6 +44,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with folic acid Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -225,6 +222,9 @@
                   "test": "Protein/Creatinine ratio, urine",
                   "loinc": "2890-2",
                   "unit": "mg/mg",
+                  "range": {
+                    "high": 0.2
+                  },
                   "value": 0.4
                 }
               ]
@@ -237,6 +237,9 @@
                   "test": "Protein, 24 hour urine",
                   "loinc": "2889-4",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 350
                 }
               ]
@@ -503,16 +506,6 @@
               "date": "2024-10-29T10:17"
             }
           ],
-          "orders": [
-            {
-              "id": "rec-req-2024",
-              "action": "placed",
-              "order": "Outside records request: September 2024 hospital admission",
-              "category": "procedure",
-              "to": "Regional hospital health information management",
-              "reason": "preeclampsia admission and delivery"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -567,13 +560,6 @@
           "kind": "outside_records",
           "start": "2024-12-10T09:40",
           "reason": "Hospital records received: September 2024 admission",
-          "orders": [
-            {
-              "id": "rec-req-2024",
-              "action": "done",
-              "date": "2024-12-10T09:40"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1333,16 +1319,6 @@
               "performed": "2025-12-11T11:55"
             }
           ],
-          "orders": [
-            {
-              "id": "rec-req-2025",
-              "action": "placed",
-              "order": "Outside records request: December 2025 hospital admission",
-              "category": "procedure",
-              "to": "Regional hospital health information management",
-              "reason": "abruption and delivery"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1390,13 +1366,6 @@
           "kind": "outside_records",
           "start": "2026-01-08T14:20",
           "reason": "Hospital records received: December 2025 admission",
-          "orders": [
-            {
-              "id": "rec-req-2025",
-              "action": "done",
-              "date": "2026-01-08T14:20"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1741,17 +1710,20 @@
         "code": "2889-4",
         "display": "Protein [Mass/time] in 24 hour Urine",
         "unit": "mg/(24.h)",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Protein/Creatinine ratio, urine": {
         "code": "2890-2",
         "display": "Protein/Creatinine [Mass Ratio] in Urine",
         "unit": "mg/mg",
+        "range": {
+          "high": 0.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin with folic acid Oral Tablet\""
-    ]
+    }
   }
 }

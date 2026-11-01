@@ -1,11 +1,7 @@
 {
   "unit": "unit-1843",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001843/2026-04-03a: procedure order \"Records request, obstetrics\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"multivitamin Oral Tablet\"",
-    "left text-only (not verified): drug \"prenatal multivitamin Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001843",
@@ -42,6 +38,7 @@
           "medications": [
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -339,12 +336,19 @@
                   "test": "Hemoglobin A2/Hemoglobin.total in Blood",
                   "loinc": "4551-8",
                   "unit": "%",
+                  "range": {
+                    "low": 1.5,
+                    "high": 3.5
+                  },
                   "value": 5.4
                 },
                 {
                   "test": "Hemoglobin F/Hemoglobin.total in Blood",
                   "loinc": "4576-5",
                   "unit": "%",
+                  "range": {
+                    "high": 2
+                  },
                   "value": 2.3
                 }
               ]
@@ -951,7 +955,11 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 260
                 }
               ]
@@ -1396,10 +1404,12 @@
           "medications": [
             {
               "drug_text": "multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "stop"
             },
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -1683,16 +1693,6 @@
               "performed": "2026-04-03T09:50"
             }
           ],
-          "orders": [
-            {
-              "id": "ob-records",
-              "action": "placed",
-              "order": "Records request, obstetrics",
-              "category": "procedure",
-              "to": "Obstetrics & Gynecology",
-              "reason": "prenatal records"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1752,13 +1752,6 @@
           "kind": "outside_records",
           "start": "2026-04-16T10:10",
           "reason": "OB records received",
-          "orders": [
-            {
-              "id": "ob-records",
-              "action": "done",
-              "date": "2026-04-16T10:10"
-            }
-          ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -1823,18 +1816,29 @@
         "code": "4551-8",
         "display": "Hemoglobin A2/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "low": 1.5,
+          "high": 3.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hemoglobin F/Hemoglobin.total in Blood": {
         "code": "4576-5",
         "display": "Hemoglobin F/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "high": 2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
@@ -1844,10 +1848,6 @@
         "display": "Genetic analysis report",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"multivitamin Oral Tablet\"",
-      "drug \"prenatal multivitamin Oral Tablet\""
-    ]
+    }
   }
 }

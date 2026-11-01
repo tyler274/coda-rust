@@ -143,10 +143,14 @@
        "collected": "2024-06-03T09:05",
        "results": [
         {
-         "test": "Reticulocytes",
-         "value": 1.0,
-         "loinc": "17849-1",
-         "unit": "%"
+          "test": "Reticulocytes",
+          "value": 1.0,
+          "loinc": "17849-1",
+          "unit": "%",
+          "range": {
+            "low": 0.5,
+            "high": 1.5
+          }
         }
        ],
        "resulted": "2024-06-03T15:30"
@@ -164,10 +168,14 @@
          "value": 400
         },
         {
-         "test": "Methylmalonic Acid",
-         "value": 0.21,
-         "loinc": "13964-7",
-         "unit": "umol/L"
+          "test": "Methylmalonic Acid",
+          "value": 0.21,
+          "loinc": "13964-2",
+          "unit": "umol/L",
+          "range": {
+            "low": 0.0,
+            "high": 0.4
+          }
         }
        ],
        "resulted": "2024-06-05T17:45"
@@ -224,11 +232,11 @@
      ],
      "orders": [
       {
-       "id": "cbc-recheck-2024",
-       "action": "placed",
-       "order": "CBC recheck in 3 months",
-       "category": "lab",
-       "reason": "Folate deficiency anemia"
+        "id": "cbc-recheck-2024",
+        "action": "placed",
+        "order": "Complete Blood Count (CBC)",
+        "category": "lab",
+        "reason": "Folate deficiency anemia"
       }
      ],
      "documents": [
@@ -320,9 +328,9 @@
      ],
      "orders": [
       {
-       "id": "cbc-recheck-2024",
-       "action": "done",
-       "date": "2024-09-10T07:45"
+        "id": "cbc-recheck-2024",
+        "action": "done",
+        "date": "2024-09-10T07:45"
       }
      ],
      "immunizations": [

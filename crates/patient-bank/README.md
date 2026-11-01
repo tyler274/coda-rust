@@ -20,8 +20,9 @@ patients/units/<unit>/
   -> ledger.json               the clinical source of truth, written only by `check`
   -> build                     bank/patients/<MRN>/<Family>.ndjson, bank/calendar/
                                Appointment.ndjson (visits from today on), manifest.json
-  -> validate                  HL7 schema, ids, references, codes, times, and what the
-                               charts repeat from one another; validation.json
+  -> validate                  HL7 schema, ids, references, codes, times, the tool's
+                               contract (codes, units, ranges), and what the charts
+                               repeat from one another; validation.json
 ```
 
 ```bash
@@ -30,7 +31,7 @@ cargo run -q -p patient-bank -- brief|check|preview <unit>
 cargo run -q -p patient-bank -- find icd10|loinc|snomed|rxnorm <words>
 cargo run -q -p patient-bank -- build
 cargo run -q -p patient-bank -- validate [--schema <HL7 fhir.schema.json R4 4.0.1>]
-cargo run -q -p patient-bank -- catalog
+cargo run -q -p patient-bank -- catalog [--cms-rvu <CMS PPRRVU*.txt>]
 ```
 
 Authoring runs `data/author-workflow.js` through Claude Code's Workflow tool with
@@ -56,11 +57,17 @@ the terminology cache, the bank and the schema live under the ignored
   are run.
 - **Codes.** `data/catalog.json` holds verified ICD-10-CM, LOINC, RxNorm, SNOMED,
   CVX and CPT codes. A concept is added by writing its label and code there and
-  running `catalog`, which reads every entry back from its official service. `check`
-  verifies any extra condition code, drug text, lab or study LOINC, or allergen or
-  procedure SNOMED concept an author proposes and stores the answer in the ledger,
-  so build and validate need no network. `find` searches those same services, so
-  authors look codes up instead of recalling them.
+  running `catalog`, which reads every entry back from its official service (CPT,
+  which has none, from the `PPRRVU*.txt` of a CMS physician fee schedule relative
+  value file release, kept as `target/patient-bank/PPRRVU.txt`), every
+  lab unit from UCUM, and requires each measured lab's reference range with its
+  source (ABIM's January 2026 table, or coda-gym's; an empty range says the source
+  gives none). `check` verifies any extra condition code, drug text, lab, study or
+  order LOINC and UCUM unit, or allergen, procedure or order SNOMED concept an
+  author proposes and stores the answer in the ledger, so build and validate need
+  no network. A code that does not verify fails check; only a drug RxNorm has no
+  concept for stays text, marked `uncoded` by its author. `find` searches those
+  same services, so authors look codes up instead of recalling them.
 - **Repeats.** Authors write alone, so they fall back on the same defaults.
   `repeats.rs` finds the names and phrases a few charts share (the practice's own
   templates are shared by many and do not count) and lab values far more common
@@ -73,7 +80,9 @@ the terminology cache, the bank and the schema live under the ignored
   only when the seed says so, nothing stops, resolves or closes before it started,
   "no known drug allergies" is not recorded while a drug allergy is listed, results
   come after their draw, and every calculated test is what a lab's formula gives.
-  It does not judge how a chart reads; the author's reread of `chart.txt` does.
+  Every coded field takes a verified code, every referral a catalog specialty and
+  every lab the catalog lacks its own reference range. It does not judge how a chart
+  reads; the author's reread of `chart.txt` does.
 - **Numbers.** `measure` makes every number the chart shows, at `check`, and
   writes it into the ledger. A contact's vitals and each draw's results read the
   patient's level (set in `state`, or the patient's own normal) plus the scatter a

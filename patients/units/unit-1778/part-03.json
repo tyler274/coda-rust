@@ -216,7 +216,10 @@
                   "test": "Cancer Antigen 125",
                   "loinc": "10334-1",
                   "unit": "U/mL",
-                  "value": 61
+                  "value": 61,
+                  "range": {
+                    "high": 35
+                  }
                 }
               ]
             }
@@ -282,7 +285,8 @@
               "order": "Hysterosalpingogram",
               "category": "imaging",
               "to": "Radiology",
-              "reason": "infertility"
+              "reason": "infertility",
+              "loinc": "25022-5"
             },
             {
               "id": "emb-2026",
@@ -290,7 +294,8 @@
               "order": "Endometrial biopsy, luteal phase",
               "category": "procedure",
               "to": "Gynecology",
-              "reason": "infertility, luteal function"
+              "reason": "infertility, luteal function",
+              "snomed": "386802000"
             }
           ],
           "documents": [
@@ -342,7 +347,7 @@
               "action": "placed",
               "order": "Reproductive endocrinology referral",
               "category": "referral",
-              "to": "Reproductive Endocrinology and Infertility",
+              "to": "Gynecology",
               "reason": "infertility with endometriosis, normal workup"
             }
           ],

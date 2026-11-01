@@ -179,8 +179,9 @@ fn element(html: &str, open: &str, close: &str) -> String {
 }
 
 /// Every document against the page production serves for it: head metadata and
-/// icons, the visible text of main and footer, and which compiled stylesheet it
+/// icons, the visible text of nav, main and footer, and which compiled stylesheet it
 /// uses. The served snapshot is the oracle, never a re-derivation from source.
+/// Pages render without a physician upstream, as production does: no Sign in.
 #[test]
 fn every_document_matches_what_production_serves() {
     let pages = prerender(&Config::default());
@@ -245,6 +246,11 @@ fn every_document_matches_what_production_serves() {
             element(&port_main, "<main", "</main>"),
             original_main,
             "{path} main"
+        );
+        assert_eq!(
+            element(port, "<nav", "</nav>"),
+            element(&original, "<nav", "</nav>"),
+            "{path} nav"
         );
         assert_eq!(
             element(port, "<footer", "</footer>"),

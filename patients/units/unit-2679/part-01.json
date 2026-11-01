@@ -1,0 +1,249 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002679",
+      "given": "Silas",
+      "family": "Nolan",
+      "birth_date": "2001-02-20",
+      "address_line": "27 Chestnut Ridge Road",
+      "phone": "+1-347-555-0137",
+      "email": "silas.nolan@example.test",
+      "marital_status": "single",
+      "summary": "Tall, thin graduate student and half-pack-a-day smoker with one prior right spontaneous pneumothorax who joins the practice in 2024. He then has two right tension pneumothoraces (April and November 2025) and a right pneumothorax after a central line in January 2026; the practice last saw him in August 2025 and learns of the later stays from his messages and late, partial records.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "new patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "author": "front desk",
+              "date": "2024-08-27T10:12",
+              "body": "Caller is a 23 y/o grad student looking for a primary care doctor close to campus. Has student health insurance through the university, card info taken. Says he has no regular doctor right now, only student health for colds. Mentions he had a collapsed lung a couple of years ago and was told to keep a doctor who knows about it. Booked new patient visit Tue 9/10 at 8:40. Asked him to bring any hospital paperwork he has and the name of the hospital so we can send for records. Welcome packet emailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "History of spontaneous pneumothorax",
+              "icd10": "Z87.09",
+              "action": "diagnosed",
+              "onset": "2022-03-08",
+              "note": "one prior right-sided episode, needle decompression then chest tube at an outside hospital"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2019-06-01",
+              "note": "about 1/2 ppd since age 18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nicotine 2 MG Chewing Gum",
+              "action": "start",
+              "sig": "Chew 1 piece slowly as needed for cigarette cravings, park between cheek and gum; no more than 24 pieces a day",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "nicotine dependence"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "state": {
+            "height_cm": 188.0,
+            "weight_kg": 68.0,
+            "labs": {
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Hematocrit"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Aspartate Aminotransferase"
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol"
+                },
+                {
+                  "test": "High Density Lipoprotein"
+                },
+                {
+                  "test": "Triglycerides"
+                },
+                {
+                  "test": "Low Density Lipoprotein"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T09:15"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T09:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2024-09-10T08:40",
+              "body": "NEW PATIENT VISIT\n\n23 y/o man, first year of a graduate program, here to set up primary care. No acute concerns today.\n\nPulmonary history: In March 2022 he had a right-sided spontaneous pneumothorax. Recalls sudden chest pain and trouble breathing, was taken to a hospital where they put a needle in the right chest first and then a chest tube; home after a few days. Only episode. No breathing problems since. He does not have the hospital records; release signed today and request sent to that hospital.\n\nTobacco: smokes about half a pack a day, started around 18, so roughly 5 years (~2.5 pack-years). Keeps nicotine gum on hand and chews a 2 mg piece when cravings hit, mostly in the lab where he can't step out. Has never tried a formal quit. Knows smoking is tied to the lung collapsing again. Not ready to pick a date; would like the gum covered rather than buying it.\n\nAlcohol: a drink or two a month, socially. No drugs.\n\nPMH: right spontaneous pneumothorax 2022 as above. Otherwise none.\nPSH: right needle decompression and right chest tube (2022).\nMeds: nicotine gum 2 mg PRN.\nAllergies: none to medications.\nFamily: father has had the same thing, collapsed lungs more than once. Paternal grandmother has Birt-Hogg-Dubé syndrome. He doesn't know more than the name.\nSocial: single, grad student, lives off campus.\n\nROS: no cough, no chest pain, no shortness of breath on stairs or exertion. Otherwise negative.\n\nExam: vitals as charted. Tall, slender, comfortable. HEENT unremarkable. Neck supple, trachea midline. Lungs clear, breath sounds equal both sides, normal percussion. Healed small scar right lateral chest wall. Heart regular, no murmur. Abdomen soft, nontender. Skin without rashes. Extremities warm, no edema. Mood and affect normal.\n\nPHQ-2 0. AUDIT-C 1.\n\nAssessment/plan:\n1. History of spontaneous pneumothorax, right, one prior episode. Reviewed warning signs: sudden one-sided chest pain or breathlessness means the ED, not a call to the office. Records requested.\n2. Nicotine dependence, cigarettes. Advised quitting, explained it is the single biggest thing he can do for his lungs. Not ready for a date yet; precontemplative-to-contemplative. Nicotine gum 2 mg prescribed so insurance covers it. Revisit in a few months.\n3. Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screens drawn today. Flu vaccine given, left deltoid.\n\nFollow-up: tobacco check-in after the new year, video is fine."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "author": "PCP",
+              "date": "2024-09-12T16:48",
+              "body": "Hi Silas, everything from Tuesday's blood work came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do here. Talk in January about the smoking."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T11:30",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Hospital Discharge Summary (March 2022)",
+              "author": "outside hospital",
+              "date": "2024-10-22T11:30",
+              "body": "Received by fax from an outside hospital in response to our records request. Original dates of service 03/08/2022 to 03/11/2022.\n\nDISCHARGE SUMMARY\nPatient: Nolan, Silas  DOB 02/20/2001\nAdmit 03/08/2022  Discharge 03/11/2022\nAllergies: NKDA\n\nDiagnosis: Right spontaneous pneumothorax.\n\nHospital course: 21-year-old male student brought in with acute right chest pain and dyspnea. Needle decompression of the right chest performed in the emergency department, followed by placement of a right chest tube. Admitted to the surgical floor. Tube to suction then water seal; air leak resolved. Follow-up chest film showed the right lung re-expanded and the tube was removed on hospital day 3. Tolerated diet, ambulating, pain controlled with acetaminophen.\n\nSmoker; cessation advised.\n\nDischarge meds: none new.\nInstructions: no air travel or scuba diving until cleared; return for chest pain or shortness of breath. Follow up with primary care in 1 to 2 weeks.\n\n--\nFiled to chart. Reviewed. Matches what he told me at his first visit. Nothing new."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

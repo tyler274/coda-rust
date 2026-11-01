@@ -110,7 +110,10 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
-                  "value": 1850
+                  "value": 1850,
+                  "range": {
+                    "high": 5
+                  }
                 }
               ],
               "resulted": "2025-02-04T08:50"
@@ -137,7 +140,10 @@
                   "test": "hCG, quantitative",
                   "loinc": "21198-7",
                   "unit": "m[IU]/mL",
-                  "value": 3420
+                  "value": 3420,
+                  "range": {
+                    "high": 5
+                  }
                 }
               ]
             }
@@ -253,7 +259,8 @@
               "frequency": "DAILY",
               "route": "Oral",
               "course": "chronic",
-              "reason": "Pregnancy"
+              "reason": "Pregnancy",
+              "uncoded": true
             }
           ],
           "labs": [
@@ -953,7 +960,8 @@
             {
               "drug_text": "prenatal multivitamin Oral Tablet",
               "action": "stop",
-              "reason": "No longer needed"
+              "reason": "No longer needed",
+              "uncoded": true
             }
           ],
           "state": {

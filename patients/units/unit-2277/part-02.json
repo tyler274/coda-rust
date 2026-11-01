@@ -1,0 +1,161 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002277",
+      "events": [
+        {
+          "id": "2025-01-21a",
+          "kind": "imaging",
+          "start": "2025-01-21T07:45",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2025-01-21T07:45", "issued": "2025-01-21T15:20", "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING (ANNUAL)\nIndication: 65-year-old former smoker, 30 pack-years, quit 2015. Annual screening.\nTechnique: Low-dose helical CT of the chest without contrast.\nComparison: 2023-10-17.\nFindings: New spiculated solid mass in the right lower lobe measuring 4.1 cm in greatest dimension (mean diameter on axial and coronal images), not present on the prior study. Enlarged mediastinal lymph nodes, new since the prior. No pleural effusion. Remaining lungs without new nodules. Heart normal in size. Visualized upper abdomen unremarkable. No destructive osseous lesion.", "conclusion": "New 4.1 cm spiculated right lower lobe mass with enlarged mediastinal lymph nodes, highly suspicious for malignancy. Lung-RADS 4X. Tissue sampling and pulmonary evaluation recommended. Findings called to the ordering office at 15:15."}
+          ],
+          "orders": [{"id": "ldct-2024", "action": "done", "date": "2025-01-21T07:45"}]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "telephone",
+          "start": "2025-01-22T08:10",
+          "orders": [
+            {"id": "pulm-referral", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "Lung-RADS 4X right lower lobe mass with mediastinal adenopathy; urgent"}
+          ],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CT Result Call", "author": "PCP", "date": "2025-01-22T08:25", "body": "Called Mr. Abbott this morning with yesterday's CT, wife on speaker at his request. Explained there is a new mass in the lower right lung with enlarged glands in the center of the chest, and that this looks like it could be a cancer and needs a biopsy to know. He was quiet, then asked good questions; said he half expected it after his father. Urgent pulmonology referral placed, and our staff will call the pulmonary office directly today. Visit with me next Tuesday to go over everything in person. He has my cell."}
+          ]
+        },
+        {
+          "id": "2025-01-28a",
+          "kind": "office_visit",
+          "start": "2025-01-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "abnormal screening CT",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-28T11:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-01-28T11:45", "body": "Here with his wife to talk through the CT. No cough, no blood, no weight loss he's noticed, no bone pain. Breathing at his baseline.\n\nPulmonology has him on 2/4 for consultation, likely bronchoscopy the following week. Reviewed what the next steps usually are: tissue diagnosis, staging of the chest glands, then a plan with oncology. Answered questions about what the treatment might look like without getting ahead of the biopsy.\n\nExam: lungs diminished at bases, no focal crackles or wheeze. No supraclavicular nodes. RRR.\n\nA/P\n- Lung mass, Lung-RADS 4X: pulmonology workup underway. Asked them to copy us on results.\n- COPD, T2DM: unchanged, continue meds.\n- Spent most of the visit on counseling. He'll message with anything."}
+          ]
+        },
+        {
+          "id": "2025-03-06a",
+          "kind": "outside_records",
+          "start": "2025-03-06T10:40",
+          "procedures": [
+            {"procedure": "Bronchoscopy with transbronchial lung biopsy", "snomed": "243685008", "performed": "2025-02-11T08:30"},
+            {"procedure": "Mediastinoscopy and lymph node sampling", "snomed": "238325002", "performed": "2025-02-20T07:30"}
+          ],
+          "orders": [{"id": "pulm-referral", "action": "done", "date": "2025-03-06T10:40"}],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology New Patient Letter", "author": "oncology", "date": "2025-03-06T10:40", "body": "OUTSIDE CANCER CENTER, THORACIC ONCOLOGY\nDate of visit: 2025-02-27\nRe: Russell Abbott, DOB 1959-11-25\nAllergies: NKDA\n\nThank you for sending this pleasant 65-year-old with COPD and type 2 diabetes, found on screening CT to have a right lower lobe mass with mediastinal adenopathy. Bronchoscopy with transbronchial biopsy on 2/11 showed non-small cell carcinoma. Mediastinoscopy on 2/20 sampled the mediastinal nodes, which were involved. Clinical stage IIIB; not a surgical candidate.\n\nWe discussed definitive concurrent chemotherapy with radiation, starting 3/3, about 7 weeks. Home medications (metformin, tiotropium, albuterol) continue. He will be seen weekly during treatment.\n\nWe will keep you informed."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "telehealth_visit",
+          "start": "2025-03-11T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in during cancer treatment",
+          "conditions": [
+            {"label": "Malignant neoplasm of lung", "action": "diagnosed", "onset": "2025-02-11", "note": "Stage IIIB non-small cell lung cancer; concurrent chemoradiation from 2025-03-03"}
+          ],
+          "procedures": [{"procedure": "Telehealth visit, established patient, moderate MDM", "performed": "2025-03-11T16:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2025-03-11T16:30", "body": "Video from his kitchen; confirmed name and DOB. Second week of chemoradiation, getting through it; oncology sees him weekly. Eating a bit less than usual. Breathing at baseline, rescue inhaler a few times a week.\n\nSugars: not checking. Discussed checking a fasting sugar a few mornings a week during treatment since he's eating less on metformin; he has an old meter and will dig it out.\n\nOncology letter reviewed: stage IIIB NSCLC after bronchoscopic biopsy and mediastinoscopy. Added to problem list.\n\nA/P\n- Lung cancer on chemoradiation, managed by oncology.\n- T2DM: continue metformin; call if sugars run under 80 or he can't keep food down.\n- COPD stable.\nIn-person after treatment wraps up."}
+          ]
+        },
+        {
+          "id": "2025-04-29a",
+          "kind": "portal_message",
+          "start": "2025-04-29T19:12",
+          "documents": [
+            {"type": "Patient Message", "title": "Done With Treatment", "author": "patient", "date": "2025-04-29T19:12", "body": "Finished the last radiation on Friday the 25th and they rang the bell for me. Morning sugars on the meter have been in the range you said was fine. When should I come see you?"},
+            {"type": "Patient Message", "title": "RE: Done With Treatment", "author": "PCP", "date": "2025-04-30T08:05", "body": "Congratulations on getting through it. Let's give it about six weeks for your energy to come back and see you in early June; the front desk will reach out."}
+          ]
+        },
+        {
+          "id": "2025-06-10a",
+          "kind": "office_visit",
+          "start": "2025-06-10T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after chemoradiation; diabetes",
+          "state": {"weight_kg": 86.0, "labs": {"Hemoglobin A1c": 7.0}},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "temp_c"],
+          "labs": [
+            {"panel": null, "collected": "2025-06-10T10:00", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-06-10T10:00", "results": [{"test": "Creatinine"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-06-10T10:00", "results": [{"test": "Hemoglobin"}]}
+          ],
+          "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-06-10T09:30"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Follow-up Visit", "author": "PCP", "date": "2025-06-10T10:10", "body": "First in-person since finishing chemoradiation on 4/25. Feels close to himself again. Down about 7 kg since joining, most of it during treatment; appetite returning. Breathing at baseline. Oncology sees him every few months with scans.\n\nMeds: metformin 1000 BID, tiotropium daily, albuterol prn.\n\nExam: thinner. Lungs diminished at bases, no crackles. RRR. No edema.\n\nA/P\n- NSCLC stage IIIB, completed concurrent chemoradiation; surveillance per oncology.\n- T2DM: A1c, CMP today. Weight loss may bring sugars down; continue metformin for now.\n- CBC with today's draw.\n- COPD stable.\nAWV in December; vaccines in October."}
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "outside_records",
+          "start": "2025-08-19T14:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Diabetic Eye Exam", "author": "optometry", "date": "2025-08-19T14:00", "body": "OUTSIDE OPTOMETRY PRACTICE\nAnnual dilated diabetic eye examination, date of exam 2025-08-07.\nPatient: Russell Abbott, DOB 1959-11-25. Allergies: NKDA.\nVA 20/25 each eye with correction, stable. Fundus: no diabetic retinopathy in either eye.\nPlan: return in one year.\nCopy to primary care."}
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T10:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, high-dose, trivalent", "date": "2025-10-07T10:20"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2025-10-07T10:22"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2025-10-07T10:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunization Visit", "author": "RN", "date": "2025-10-07T10:40", "body": "Here for fall vaccines. Oncology OK'd vaccines, per patient. Afebrile, feeling well. High-dose flu L deltoid, updated COVID R deltoid. Observed 15 min, tolerated well."}
+          ]
+        },
+        {
+          "id": "2025-10-27a",
+          "kind": "specialist_visit",
+          "start": "2025-10-27T13:00",
+          "service": "Hematology & Oncology",
+          "reason": "lung cancer surveillance; new cough and dyspnea",
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-10-27T12:30", "results": [
+              {"test": "White Blood Cells", "value": 12.0},
+              {"test": "Hemoglobin", "value": 13.2},
+              {"test": "Platelets", "value": 250}
+            ]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-10-27T12:30", "results": [
+              {"test": "Sodium", "value": 140},
+              {"test": "Potassium", "value": 4.2},
+              {"test": "Creatinine", "value": 1.0}
+            ]}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Oncology Clinic Note", "author": "oncology", "date": "2025-11-04T09:30", "body": "OUTSIDE CANCER CENTER, THORACIC ONCOLOGY - CLINIC NOTE\nDate of visit: 2025-10-27\nRe: Russell Abbott, 65, DOB 1959-11-25. Allergies: NKDA.\n\nStage IIIB NSCLC, six months out from concurrent chemoradiation. Comes in for surveillance and mentions a cough and more breathlessness that have come on recently.\nMeds: metformin 1000 mg BID, tiotropium 18 mcg daily, albuterol prn.\nVitals stable. Breath sounds reduced over the right lower lung field.\nLabs today: WBC 12.0, Hgb 13.2, Plt 250, Na 140, K 4.2, Cr 1.0.\nCXR: new consolidation in the right lower lobe.\n\nPlan: After discussion with our research team he has enrolled in a clinical trial comparing two new targeted agents for NSCLC. Study treatment and visits per protocol through our research office.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "annual_physical",
+          "start": "2025-12-09T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "state": {"weight_kg": 85.0, "labs": {"Hemoglobin A1c": 7.2}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": null, "collected": "2025-12-09T09:40", "results": [{"test": "Hemoglobin A1c"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-12-09T09:40", "results": [{"test": "Creatinine"}]},
+            {"panel": "Lipid Panel", "collected": "2025-12-09T09:40", "results": [{"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2025-12-09T09:40", "results": [{"test": "Microalbumin/Creatinine Ratio"}]}
+          ],
+          "procedures": [{"procedure": "Annual wellness visit, subsequent", "performed": "2025-12-09T09:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Wellness Visit", "author": "PCP", "date": "2025-12-09T09:50", "body": "Subsequent AWV. Oncology clinic note from 10/27 reviewed: new right lower lobe consolidation on chest x-ray, and he has joined a trial of a targeted agent through the cancer center, which he describes as 'blind, so I don't know which pill I'm on.' He is following with their research team; study medication is dispensed there. Says he's taking it every day as told.\n\nFunctional status: independent, still drives, walks the dog shorter loops. No falls. PHQ-2 1 ('some days I'm down about all this'), declines counseling for now, knows how to reach us.\nAdvance care planning: proxy remains his wife; he's thinking about his wishes and will talk with his oncologist too.\n\nVitals as charted, weight stable since June.\nExam: lungs without wheeze. RRR. Feet intact, monofilament normal.\n\nPlan\n- Labs: A1c, CMP, lipids, UACR.\n- Vaccines current for the season.\n- Eye exam done in August.\n- Diabetes and COPD regimen unchanged.\nRTC 3-4 months."}
+          ]
+        }
+      ]
+    }
+  ]
+}

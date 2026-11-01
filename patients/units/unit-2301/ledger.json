@@ -1,0 +1,1757 @@
+{
+  "unit": "unit-2301",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002301",
+      "given": "Robert",
+      "family": "Davidson",
+      "birth_date": "1957-11-14",
+      "address_line": "31 Overlook Drive, Florence, MA 01062",
+      "phone": "+1-978-555-0133",
+      "email": "robert.davidson@example.test",
+      "marital_status": "divorced",
+      "summary": "Retired construction foreman with COPD, hypertension and hyperlipidemia who joined the practice in late 2024. Acute acalculous cholecystitis in September 2025 treated without surgery; in March 2026 a long ICU stay for ARDS with tracheostomy, a second acalculous cholecystitis drained percutaneously, rehab, and home by June. Not seen in the office since October 2025; post-hospital visit booked.",
+      "events": [
+        {
+          "id": "2024-11-19a",
+          "kind": "establish_care",
+          "start": "2024-11-19T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, transferring care",
+          "conditions": [
+            {
+              "label": "Chronic obstructive pulmonary disease",
+              "action": "history",
+              "note": "GOLD Group C per prior practice"
+            },
+            {
+              "label": "Essential hypertension",
+              "action": "history"
+            },
+            {
+              "label": "Hyperlipidemia",
+              "action": "history"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "history",
+              "onset": "2023-10-01",
+              "note": "48 pack-years, quit 2023"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "tiotropium 0.018 MG Inhalation Powder",
+              "action": "historical",
+              "sig": "Inhale contents of 1 capsule once daily",
+              "dose": {
+                "value": 18,
+                "unit": "mcg"
+              },
+              "frequency": "DAILY",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "60 ACTUAT fluticasone propionate 0.25 MG/ACTUAT / salmeterol 0.05 MG/ACTUAT Dry Powder Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1 puff twice daily, rinse mouth after",
+              "dose": {
+                "value": 1,
+                "unit": "puff"
+              },
+              "frequency": "BID",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "NDA020983 60 ACTUAT albuterol 0.09 MG/ACTUAT Metered Dose Inhaler",
+              "action": "historical",
+              "sig": "Inhale 1 to 2 puffs every 4 to 6 hours as needed for shortness of breath",
+              "dose": {
+                "value": 90,
+                "unit": "mcg"
+              },
+              "frequency": "Q4-6H PRN",
+              "route": "Inhalation",
+              "course": "chronic",
+              "reason": "COPD"
+            },
+            {
+              "drug": "lisinopril 10 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 10,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hypertension"
+            },
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "Hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "Sulfonamide antibiotics",
+              "reaction": "Rash",
+              "severity": "mild",
+              "criticality": "low",
+              "type": "allergy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              76
+            ],
+            "hr": 71,
+            "spo2": 98,
+            "weight_kg": 86.1,
+            "height_cm": 178.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-11-19T10:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 85
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.1
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-11-19T10:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.6
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 285
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-11-19T10:15",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 165
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 117
+                }
+              ]
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired construction foreman"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Social, 1-2 drinks per week"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-11-19T09:20"
+            },
+            {
+              "procedure": "Appendectomy",
+              "snomed": "80146002",
+              "performed": "1972-07-01T12:00"
+            },
+            {
+              "procedure": "Inguinal hernia repair",
+              "performed": "2019-04-10T08:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-11-19T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-11-19T10:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-19T10:07"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "placed",
+              "order": "Low-dose CT chest for lung cancer screening",
+              "category": "imaging",
+              "reason": "48 pack-years, quit 2023"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-11-19T10:30",
+              "author": "PCP",
+              "body": "67 yo retired construction foreman, new to us. Had been seeing a doctor in another town for years and wants someone closer to home in Florence. Signed release for the old office's records today.\n\nMain issue is COPD. Prior office called it GOLD Group C; he does not have his spirometry with him. Uses tiotropium capsule every morning and the fluticasone/salmeterol disk morning and night. Albuterol a couple times a week, mostly carrying things up stairs or in cold air. Gets winded on a long flight of stairs but walks his usual loop around the neighborhood fine. No hospitalizations for breathing that he can recall. No cough with blood, no fevers.\n\nBP on lisinopril 10 for years, no side effects. Atorvastatin 40 and aspirin 81 for cholesterol, started by the prior doctor.\n\nPMH: COPD, HTN, hyperlipidemia.\nPSH: appendix out at 14. Left inguinal hernia repaired at 61.\nMeds: tiotropium 18 mcg inhaled daily; fluticasone/salmeterol 250/50 one inhalation twice daily; albuterol 90 mcg 1-2 puffs q4-6h prn; lisinopril 10 mg daily; atorvastatin 40 mg daily; aspirin 81 mg daily.\nAllergies: sulfa drugs, rash.\nFH: father had a heart attack at 68. Mother had COPD. Brother had an ischemic stroke at 66.\nSH: smoked for decades, about 48 pack-years, quit in 2023 and has stayed off. A drink or two a week, social. Divorced, lives alone. Spent his career running crews on commercial jobs.\n\nExam: well appearing, talking in full sentences. Lungs with mildly diminished air movement throughout, no wheeze, no crackles. Heart regular, no murmur. No edema. Abdomen soft, nontender, healed RLQ and left groin scars.\n\nA/P\n1. COPD, stable on LAMA plus ICS/LABA. Inhaler technique reviewed, capsule device done correctly. Continue.\n2. HTN, controlled today. Continue lisinopril 10.\n3. Hyperlipidemia. Continue atorvastatin 40, aspirin 81. CMP, CBC, lipids drawn.\n4. Lung cancer screening: qualifies on pack-years and quit date. Low-dose CT ordered.\n5. High-dose flu and updated COVID given. RSV vaccine at a nurse visit next month. Pneumococcal and shingles to sort out once old records are in.\nReturn for Medicare wellness visit in the winter."
+            }
+          ],
+          "state": {
+            "weight_kg": 86.2,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-11-22a",
+          "kind": "portal_message",
+          "start": "2024-11-22T08:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2024-11-22T08:40",
+              "author": "PCP",
+              "body": "Robert, kidney and liver numbers are normal, blood count normal, and the cholesterol is where it should be on the atorvastatin. Nothing to change. The CT scheduling office will call you about the lung screening scan."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-06a",
+          "kind": "outside_records",
+          "start": "2024-12-06T13:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2024-12-06T13:10",
+              "author": "outside primary care",
+              "body": "Records received by fax from the patient's previous primary care office, covering several years of visits.\n\nProblem list on their summary: COPD (GOLD Group C), hypertension, hyperlipidemia. Former tobacco use.\nMedications: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergy: sulfa (rash).\nScreening: colonoscopy 2018, no polyps, repeat interval 10 years.\nNo spirometry report included in the packet.\n\nScanned to the chart. PCP reviewed; lists match what he gave us."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-17a",
+          "kind": "nurse_visit",
+          "start": "2024-12-17T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "RSV vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-12-17T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2024-12-17T14:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Vaccine",
+              "date": "2024-12-17T14:20",
+              "author": "RN",
+              "body": "Here for RSV vaccine per PCP plan (age plus COPD). Screening questions negative, no prior RSV dose. Arexvy given L deltoid, lot recorded. Waited 15 min, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "imaging",
+          "start": "2025-01-14T11:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-01-14T11:30",
+              "text": "Indication: annual lung cancer screening, 67-year-old former smoker, 48 pack-years, quit 2023. Technique: low-dose helical CT of the chest without contrast. Findings: no pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal, no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-01-14T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Low-Dose CT Lung Screening",
+              "date": "2025-01-14T15:10",
+              "author": "radiology",
+              "body": "Outpatient imaging center report. Low-dose chest CT for lung cancer screening. No nodules. Lung-RADS 1. Recommend repeat screening in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "portal_message",
+          "start": "2025-01-16T12:05",
+          "reason": "CT result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening scan",
+              "date": "2025-01-16T12:05",
+              "author": "PCP",
+              "body": "Good news on the CT, no spots on the lungs at all. We repeat this once a year, so next one around January. See you in February for the wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "annual_physical",
+          "start": "2025-02-25T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "vitals": {
+            "bp": [
+              109,
+              69
+            ],
+            "hr": 73,
+            "spo2": 98,
+            "weight_kg": 85.8
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-25T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-02-25T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-25T09:20"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-02-25T09:20"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-25T09:22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "US Abdominal Aorta for screening",
+              "category": "imaging",
+              "reason": "male 65-75, former smoker"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "date": "2025-02-25T09:45",
+              "author": "PCP",
+              "body": "AWV. Feels about the same as in the fall, breathing steady through the winter so far, albuterol maybe twice a week. No falls. Independent in all ADLs and IADLs, drives, does his own shopping. Hearing fine in the room. Sleeps ok.\n\nScreens: PHQ-2 0. AUDIT-C 2. No safety concerns at home. Advance directive: does not have one, took the packet home.\n\nPrevention review:\n- Colonoscopy 2018 normal at prior office, next 2028.\n- Lung CT January, Lung-RADS 1. Next due January.\n- Hep C never checked, drawn today.\n- AAA screen: male, former smoker, never done. Ultrasound ordered.\n- Pneumococcal: no record of any dose. PCV20 today.\n- Shingrix dose 1 today, dose 2 at May visit.\n- RSV done in December. Flu and COVID done in November.\n\nVitals as charted. Lungs with distant breath sounds, no wheeze. Heart regular. No edema.\n\nCOPD, HTN, lipids all stable on current regimen. No changes. Follow-up in about 3 months."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T16:20",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hepatitis C test",
+              "date": "2025-02-27T16:20",
+              "author": "PCP",
+              "body": "Hep C screen came back negative. That one never needs repeating unless something changes. The vascular lab should be calling about the aorta ultrasound."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "imaging",
+          "start": "2025-03-11T10:00",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "US Abdominal Aorta for screening",
+              "loinc": "79374-5",
+              "performed": "2025-03-11T10:00",
+              "text": "Screening ultrasound of the abdominal aorta. The aorta is visualized from the diaphragm to the bifurcation. Maximal anteroposterior diameter of the infrarenal aorta measured outer wall to outer wall is within normal limits. No aneurysm. Common iliac arteries normal caliber where seen.",
+              "conclusion": "No abdominal aortic aneurysm. No further screening needed."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2025-03-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "AAA Screening Ultrasound",
+              "date": "2025-03-11T13:40",
+              "author": "radiology",
+              "body": "Screening aortic ultrasound: normal caliber aorta, no aneurysm. One-time screen complete. Reviewed by PCP, result released to patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "pharmacy",
+          "start": "2025-04-08T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2025-04-08T10:15",
+              "author": "MA",
+              "body": "Pharmacy refill request for tiotropium capsules and fluticasone/salmeterol 250/50. Prior office's prescriptions ran out. Sent under PCP with 90-day supply and 3 refills each. Patient aware via voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and blood pressure follow-up",
+          "vitals": {
+            "bp": [
+              117,
+              67
+            ],
+            "hr": 72,
+            "spo2": 97,
+            "weight_kg": 87.2
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-20T14:15",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 24
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 94
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-20T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-20T14:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-05-20T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-05-20T14:25",
+              "author": "PCP",
+              "body": "S: Routine check. Breathing good this spring, had the windows open, no flares. Rescue inhaler once or twice a week. Taking everything. Felt a little achy for a day after the first Shingrix.\n\nO: vitals as charted. Lungs diminished at bases equally, no wheeze or crackles. RRR. Ext no edema.\n\nA/P: COPD stable. HTN controlled. Shingrix #2 today, series done. BMP on lisinopril. RTC fall with flu shot."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "portal_message",
+          "start": "2025-07-29T07:55",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Albuterol",
+              "date": "2025-07-29T07:55",
+              "author": "patient",
+              "body": "Can I get a new albuterol sent over, the one in the truck is almost empty and the other one expired. Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Albuterol",
+              "date": "2025-07-29T11:30",
+              "author": "RN",
+              "body": "Sent two inhalers so you can keep one in the truck. Let us know if you find you're using it more than a few times a week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "ed_visit",
+          "start": "2025-09-23T10:40",
+          "end": "2025-09-23T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever and right upper quadrant pain",
+          "conditions": [
+            {
+              "label": "Acute cholecystitis",
+              "action": "diagnosed",
+              "onset": "2025-09-21",
+              "note": "acalculous",
+              "icd10": "K81.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 71,
+            "rr": 16,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 31
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 200
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.8
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 91
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-09-23T12:20",
+              "text": "Indication: fever, right upper quadrant pain. The gallbladder is distended with a thickened wall and pericholecystic fluid. No gallstones or sludge-layering stones are seen. Common bile duct is normal in caliber. Liver normal in size and echotexture without focal lesion. Right kidney unremarkable. Pancreas head unremarkable where seen.",
+              "conclusion": "Gallbladder wall thickening, distension and pericholecystic fluid without gallstones, consistent with acute acalculous cholecystitis.",
+              "issued": "2025-09-23T12:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-23T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2025-09-29T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, visit date 9/23/2025. Received by fax 9/29.\n\nCC: fever x2 days, RUQ abdominal pain.\n\nHPI: 67M with COPD, HTN, hyperlipidemia. Two days of fevers at home and steady pain under the right ribs. No prior gallbladder trouble.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol prn, lisinopril 10, atorvastatin 40, aspirin 81. Allergy: sulfa (rash). Former smoker, quit 2023.\n\nExam: uncomfortable, grimaces and tender when the right upper quadrant is pressed. Lungs without wheeze. Heart regular.\n\nLabs: WBC 15.0, Hgb 12.2, plt 250. AST 80, ALT 75, alk phos 200, T bili 1.8, D bili 1.2.\nRUQ US: distended gallbladder, thick wall, pericholecystic fluid, no stones.\n\nImpression: acute acalculous cholecystitis. IV antibiotics started, surgery paged. Admitted to medicine."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "rr"
+          ]
+        },
+        {
+          "id": "2025-09-23b",
+          "kind": "hospital_admission",
+          "start": "2025-09-23T16:30",
+          "end": "2025-09-26T12:10",
+          "service": "Hospital Medicine",
+          "reason": "Acute acalculous cholecystitis",
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food for 7 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute cholecystitis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-09-23T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-09-26T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2025-09-29T09:35",
+              "author": "hospital medicine",
+              "body": "Regional hospital, medicine service. Admitted 9/23/2025, discharged 9/26/2025.\n\nDiagnosis: acute acalculous cholecystitis.\n\nCourse: Admitted from the ED with fever, RUQ tenderness and leukocytosis; ultrasound with a distended, thick-walled gallbladder, pericholecystic fluid and no stones. Treated with IV antibiotics and bowel rest, then diet. General surgery saw him on admission and recommended nonoperative management given his COPD; no interval cholecystectomy planned unless symptoms return. Fever resolved within a day, pain improved steadily, eating by day 2.\n\nDischarge medications: amoxicillin-clavulanate 875/125 mg twice daily for 7 more days (new). Continue tiotropium, fluticasone/salmeterol, albuterol as needed, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg.\nAllergies: sulfa drugs (rash).\n\nFollow-up: PCP within 1 to 2 weeks with CBC and liver tests. Return for fever, worsening pain, jaundice or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "telephone",
+          "start": "2025-09-29T14:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "date": "2025-09-29T14:15",
+              "author": "RN",
+              "body": "Called pt after hospital discharge for gallbladder infection. Home since Friday. No fever since leaving. Soreness under the right ribs much better, eating light. Taking the antibiotic twice a day with food, no problems with it. Breathing at baseline. Reviewed reasons to go back to the ED. Appointment made Thursday with PCP, labs that day."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "office_visit",
+          "start": "2025-10-02T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, cholecystitis",
+          "vitals": {
+            "bp": [
+              125,
+              64
+            ],
+            "hr": 68,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 85.4
+          },
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-02T10:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 238
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.04
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.1
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 59
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 8
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 3.5
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-10-02T10:55",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 87
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.6
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.1
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.2
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.6
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-02T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-10-02T11:10",
+              "author": "PCP",
+              "body": "Seen after 3-night admission 9/23-9/26 for acute acalculous cholecystitis, treated with antibiotics, no surgery. Discharge summary and ED record reviewed.\n\nNow: no fevers, appetite back, only a faint ache under the right ribs if he presses there. Two more days of amoxicillin-clavulanate. Breathing unchanged from baseline, no extra albuterol use in the hospital or since.\n\nExam: afebrile, vitals as charted. Not jaundiced. Abdomen soft, very mild RUQ tenderness, no guarding, negative Murphy. Lungs as usual, diminished, no wheeze.\n\nA/P\nAcute acalculous cholecystitis, improving. Finish antibiotic. CBC and liver panel today to make sure the counts and bilirubin have come back down. Surgery's plan is no operation unless it recurs; reviewed what a recurrence would feel like.\nCOPD, HTN stable. Keep the October 24 visit for flu shot and COVID."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T15:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "date": "2025-10-03T15:40",
+              "author": "PCP",
+              "body": "White count and liver tests are all back to normal. Exactly what we wanted to see after the gallbladder infection. See you on the 24th."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "office_visit",
+          "start": "2025-10-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and hypertension follow-up, vaccines",
+          "conditions": [
+            {
+              "label": "Acute cholecystitis",
+              "action": "resolved",
+              "onset": "2025-09-21",
+              "icd10": "K81.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              74
+            ],
+            "hr": 61,
+            "spo2": 97,
+            "weight_kg": 86.4
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-24T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-24T09:30"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-24T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-24T09:32"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2025-10-24T09:50",
+              "author": "PCP",
+              "body": "S: Back to himself after the September gallbladder episode. No RUQ pain since finishing the antibiotic, eating everything. Breathing about the same as the spring, albuterol a few times a week now that it is colder. No sputum change, no fevers.\nMeds reviewed, unchanged: tiotropium daily, fluticasone/salmeterol bid, albuterol prn, lisinopril 10, atorvastatin 40, aspirin 81.\n\nO: vitals as charted. Abdomen soft, nontender. Lungs diminished at bases, no wheeze or crackles. Heart regular.\n\nA/P\n1. Acute acalculous cholecystitis, resolved. Labs normalized 10/2.\n2. COPD, stable. Continue current inhalers.\n3. HTN controlled.\n4. Hyperlipidemia on atorvastatin, lipids due at the January visit.\n5. Flu (high-dose) and COVID given.\nRTC January, fasting labs then. Lung CT due January as well."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-12a",
+          "kind": "telephone",
+          "start": "2026-01-12T16:05",
+          "reason": "Appointment cancellation",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled Appointment",
+              "date": "2026-01-12T16:05",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow's 3-month follow-up, roads are bad out his way and he'd rather not drive in it. Says he feels fine. Offered February dates, he will call back once he checks his calendar."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "office_visit",
+          "start": "2026-01-13T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and hypertension follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "pharmacy",
+          "start": "2026-02-10T09:25",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-02-10T09:25",
+              "author": "MA",
+              "body": "Electronic requests from his pharmacy for lisinopril 10 mg and atorvastatin 40 mg, 90 days. Last BP in October controlled, last labs normal. Approved by PCP x1 with a note on the bottle to book his overdue follow-up."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-20a",
+          "kind": "hospital_admission",
+          "start": "2026-03-20T05:50",
+          "end": "2026-05-27T11:00",
+          "service": "Pulmonary & Critical Care",
+          "reason": "Acute hypoxemic respiratory failure",
+          "vitals": [
+            {
+              "time": "2026-03-20T08:30",
+              "spo2": 88
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2026-03-20T08:20",
+              "resulted": "2026-03-20T08:35",
+              "results": [
+                {
+                  "test": "pH of Arterial blood",
+                  "loinc": "2744-1",
+                  "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
+                  "value": 7.32
+                },
+                {
+                  "test": "Carbon dioxide [Partial pressure] in Arterial blood",
+                  "loinc": "2019-8",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
+                  "value": 50
+                },
+                {
+                  "test": "Oxygen [Partial pressure] in Arterial blood",
+                  "loinc": "2703-7",
+                  "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
+                  "value": 58
+                },
+                {
+                  "test": "Bicarbonate [Moles/volume] in Arterial blood",
+                  "loinc": "1960-4",
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
+                  "value": 24
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-03-20T07:10",
+              "text": "Portable AP chest, intubated patient. Endotracheal tube tip above the carina. Bilateral airspace infiltrates. No pneumothorax. Heart size not enlarged.",
+              "conclusion": "Bilateral infiltrates consistent with acute respiratory distress syndrome.",
+              "issued": "2026-03-20T07:40"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Insertion of endotracheal tube",
+              "snomed": "112798008",
+              "performed": "2026-03-20T06:30"
+            },
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-03-20T09:00"
+            },
+            {
+              "procedure": "Temporary tracheostomy",
+              "snomed": "43988005",
+              "performed": "2026-04-03T10:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-27T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "History and Physical",
+              "title": "ICU Admission Note",
+              "date": "2026-05-29T10:00",
+              "author": "critical care",
+              "body": "Regional hospital medical ICU. Date of service 3/20/2026. Received with the discharge packet 5/29.\n\nReason for admission: acute hypoxemic respiratory failure.\n\n68-year-old man with COPD (GOLD Group C), hypertension and hyperlipidemia, seen in this hospital's ED about six months ago for acute cholecystitis. Brought in with worsening shortness of breath and low oxygen; intubated in the ED and moved to the ICU on mechanical ventilation.\n\nHome medications: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg. Allergy: sulfa drugs (rash). Former smoker, 48 pack-years, quit 2023. Social alcohol.\n\nVentilator: volume control, tidal volume 450 mL, rate 16, FiO2 60%, PEEP 5 cm H2O. SpO2 only 88% on these settings.\nExam: sedated on the ventilator. Crackles in both lungs, breath sounds decreased at both bases. Heart regular. No leg edema.\nABG on FiO2 0.60: pH 7.32, PaCO2 50, PaO2 58, HCO3 24.\nChest film: bilateral infiltrates consistent with ARDS.\n\nAssessment: ARDS with refractory hypoxemia on underlying COPD.\nPlan: low tidal volume ventilation, PEEP titration upward, prone positioning if oxygenation does not improve, sedation, ICU care."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2026-05-29T10:05",
+              "author": "critical care",
+              "body": "Regional hospital. Admitted 3/20/2026, discharged 5/27/2026 to an inpatient rehabilitation facility.\n\nDiagnoses: acute respiratory distress syndrome with refractory hypoxemia; acute hypoxic respiratory failure; prolonged mechanical ventilation; acute acalculous cholecystitis (4/28), treated with percutaneous cholecystostomy. Chronic: COPD, hypertension, hyperlipidemia.\n\nCourse:\nRespiratory. Intubated on arrival for hypoxemia, SpO2 88% on FiO2 60% and PEEP 5. ABG pH 7.32 / PaCO2 50 / PaO2 58 / HCO3 24. Bilateral infiltrates on chest film. Managed with lung-protective ventilation, PEEP titrated up, and several prone positioning sessions for refractory hypoxemia. A specific precipitant was not established. Oxygenation improved slowly, but he could not be weaned, and a tracheostomy was placed 4/3. Liberated from the ventilator 5/11. Decannulated 5/19, stoma covered and healing.\nBiliary. On ICU day 40 (4/28) he developed fever, leukocytosis and new RUQ tenderness. Ultrasound showed a thick-walled gallbladder with pericholecystic fluid and no stones. General surgery consulted; interventional radiology placed a percutaneous cholecystostomy drain 4/29, and IV antibiotics were given. Fever resolved within two days. Drain remains in place at discharge, to be studied by IR in about 6 weeks.\n\nDischarge medications: home regimen resumed unchanged: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: sulfa drugs (rash).\n\nFollow-up: interventional radiology drain check in about 6 weeks; primary care after rehab discharge."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-24a",
+          "kind": "telephone",
+          "start": "2026-03-24T11:20",
+          "reason": "Hospital notification",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Call from Hospital Case Manager",
+              "date": "2026-03-24T11:20",
+              "author": "RN",
+              "body": "ICU case manager from the regional hospital called to let us know pt was admitted 3/20 with respiratory failure, on a ventilator in the ICU. Asked for his medication list and recent notes, faxed. They will send records at discharge. Routed to PCP."
+            },
+            {
+              "type": "Telephone Encounter",
+              "title": "RE: Call from Hospital Case Manager",
+              "date": "2026-03-24T15:00",
+              "author": "PCP",
+              "body": "Noted. Please flag the chart so we catch the discharge summary and set up a hospital follow-up when he's out."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-28a",
+          "kind": "specialist_visit",
+          "start": "2026-04-28T14:30",
+          "service": "General Surgery",
+          "reason": "Fever and new right upper quadrant pain in the ICU",
+          "vitals": [
+            {
+              "time": "2026-04-28T14:30",
+              "temp_c": 38.9
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 16.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 210
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Neutrophils %",
+                  "value": 60
+                },
+                {
+                  "test": "Lymphocytes %",
+                  "value": 30
+                },
+                {
+                  "test": "Monocytes %",
+                  "value": 7
+                },
+                {
+                  "test": "Eosinophils %",
+                  "value": 2
+                },
+                {
+                  "test": "Basophils %",
+                  "value": 1
+                },
+                {
+                  "test": "Absolute Neutrophil Count",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 120
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.2
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 0.2
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-28T13:10",
+              "results": [
+                {
+                  "test": "Lipase",
+                  "value": 22
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2026-04-28T15:40",
+              "text": "Portable bedside study in the ICU. Indication: fever, leukocytosis, right upper quadrant pain. Gallbladder wall is thickened with pericholecystic fluid. No gallstones. Common bile duct normal in caliber. Liver normal in echotexture without focal lesion.",
+              "conclusion": "Thickened gallbladder wall with pericholecystic fluid, no gallstones; acalculous cholecystitis.",
+              "issued": "2026-04-28T16:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Percutaneous cholecystostomy and drainage using ultrasound guidance",
+              "snomed": "442833003",
+              "performed": "2026-04-29T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "General Surgery Consultation",
+              "date": "2026-05-29T10:10",
+              "author": "general surgery",
+              "body": "Regional hospital general surgery, inpatient consult in the medical ICU, 4/28/2026. Received with the discharge packet.\n\nAsked to see for fever and RUQ pain. 68M, ICU day 40 for ARDS, trached and on the ventilator. Over the last 24 hours temperature to 38.9, rising white count, new pain on RUQ exam. Had an episode of acalculous cholecystitis last September managed without surgery.\n\nExam: sedated on the ventilator. Grimaces with pressure over the right upper quadrant. Murphy sign can't be judged with sedation. Abdomen otherwise soft, not distended.\nLabs: WBC 16.0, Hgb 13.2, plt 210. AST 70, ALT 65, alk phos 120, T bili 1.2. Lipase 22.\nUS: no stones, thick gallbladder wall, pericholecystic fluid.\n\nImpression: acute acalculous cholecystitis in a critically ill ventilated patient. Not an operative candidate now.\nRecommend: IV antibiotics; IR percutaneous cholecystostomy. We will follow.\n\nAddendum 4/29: IR placed an ultrasound-guided cholecystostomy drain. Tolerated without complication."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "hospital_admission",
+          "start": "2026-05-27T14:00",
+          "end": "2026-06-17T11:00",
+          "service": "Physical Medicine & Rehabilitation",
+          "reason": "Rehabilitation after critical illness",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Inpatient Rehabilitation Discharge Summary",
+              "date": "2026-06-19T09:15",
+              "author": "physical medicine and rehabilitation",
+              "body": "Inpatient rehabilitation facility, admitted 5/27/2026 from the regional hospital ICU, discharged home 6/17/2026.\n\nReason for admission: debility after a prolonged ICU stay for ARDS with tracheostomy (decannulated 5/19) and a percutaneous cholecystostomy drain for acalculous cholecystitis.\n\nCourse: daily physical and occupational therapy. Progressed from a walker to walking household and short community distances without a device. Stairs with one rail. Self-care independent by discharge. Trach stoma closed. Cholecystostomy drain flushed daily, output low and clear, no fevers. Breathing at rest comfortable on room air throughout.\n\nDischarge medications: unchanged home regimen: tiotropium 18 mcg daily, fluticasone/salmeterol 250/50 twice daily, albuterol as needed, lisinopril 10 mg daily, atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: sulfa (rash).\n\nFollow-up: IR drain check scheduled 7/8; PCP within 2 weeks; home exercise program."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-18a",
+          "kind": "portal_message",
+          "start": "2026-06-18T19:45",
+          "reason": "Home from rehab",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Home now",
+              "date": "2026-06-18T19:45",
+              "author": "patient",
+              "body": "Got home from the rehab place yesterday. They said to see you in a couple weeks. Also need refills on the two inhalers, I'm down to a few days. Still have the tube in my side until the radiology appointment."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Home now",
+              "date": "2026-06-19T09:05",
+              "author": "front desk",
+              "body": "Welcome home. You're booked with your doctor July 14 at 11:00. Refill request sent to the nurse."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-22a",
+          "kind": "pharmacy",
+          "start": "2026-06-22T10:40",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Inhaler Refills",
+              "date": "2026-06-22T10:40",
+              "author": "RN",
+              "body": "Tiotropium capsules and fluticasone/salmeterol 250/50 refilled, 90 days, per PCP. Rehab summary reviewed, regimen unchanged from before admission. Pharmacy confirmed ready for pickup."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "procedure_visit",
+          "start": "2026-07-08T09:30",
+          "service": "Interventional Radiology",
+          "reason": "Cholecystostomy drain check",
+          "reports": [
+            {
+              "study": "Cholangiogram via cholecystostomy catheter",
+              "loinc": "86376-1",
+              "performed": "2026-07-08T09:45",
+              "text": "Contrast injected through the existing cholecystostomy catheter. The gallbladder fills without filling defect. The cystic duct is patent and contrast flows into the common bile duct and on into the duodenum. No leak.",
+              "conclusion": "Patent cystic duct. Catheter removed.",
+              "issued": "2026-07-08T11:30"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Removal of tube cholecystostomy",
+              "snomed": "75639003",
+              "performed": "2026-07-08T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Procedure Note",
+              "title": "Interventional Radiology Procedure Letter",
+              "date": "2026-07-10T14:20",
+              "author": "interventional radiology",
+              "body": "Interventional radiology, regional hospital. Date of procedure 7/8/2026.\n\nDrain study through the percutaneous cholecystostomy placed 4/29. Patient has felt well, no fevers or right-sided pain since rehab. Cholangiogram: cystic duct open, free flow into the duodenum, no leak. Catheter removed intact; dry dressing on the site. Keep it covered for 48 hours. Call for fever, pain or drainage from the site.\n\nAllergies: sulfa (rash). No change to his medications."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-13a",
+          "kind": "telephone",
+          "start": "2026-07-13T15:30",
+          "reason": "Appointment cancellation",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancelled Appointment",
+              "date": "2026-07-13T15:30",
+              "author": "front desk",
+              "body": "Pt called to cancel tomorrow, his ride fell through and he is not driving yet after the hospital stay. Doing ok otherwise. Asked him to call back with a date when he has transportation; gave him the number for the senior van."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-14a",
+          "kind": "office_visit",
+          "start": "2026-07-14T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-04a",
+          "kind": "portal_message",
+          "start": "2026-08-04T08:10",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Rescheduling",
+              "date": "2026-08-04T08:10",
+              "author": "patient",
+              "body": "Sorry about missing last month. Radiology took the tube out and I'm getting around better. Can we pick a day in early September, mornings are best."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Rescheduling",
+              "date": "2026-08-04T10:25",
+              "author": "front desk",
+              "body": "Booked for Thursday, September 3 at 9:20 with your doctor. We'll send a reminder the day before."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-03a",
+          "kind": "office_visit",
+          "start": "2026-09-03T09:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute cholecystitis|K81.0": {
+        "code": "K81.0",
+        "display": "Acute cholecystitis",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "tiotropium 0.018 MG Inhalation Powder": {
+        "code": "485032",
+        "display": "tiotropium 0.018 MG Inhalation Powder",
+        "ingredient": "tiotropium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Bicarbonate [Moles/volume] in Arterial blood": {
+        "code": "1960-4",
+        "display": "Bicarbonate [Moles/volume] in Arterial blood",
+        "unit": "mmol/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Carbon dioxide [Partial pressure] in Arterial blood": {
+        "code": "2019-8",
+        "display": "Carbon dioxide [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Oxygen [Partial pressure] in Arterial blood": {
+        "code": "2703-7",
+        "display": "Oxygen [Partial pressure] in Arterial blood",
+        "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "pH of Arterial blood": {
+        "code": "2744-1",
+        "display": "pH of Arterial blood",
+        "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Cholangiogram via cholecystostomy catheter": {
+        "code": "86376-1",
+        "display": "RF Biliary ducts Views W contrast via existing catheter",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "US Abdominal Aorta for screening": {
+        "code": "79374-5",
+        "display": "US Abdominal Aorta for screening",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Appendectomy": {
+        "code": "80146002",
+        "display": "Appendectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Insertion of endotracheal tube": {
+        "code": "112798008",
+        "display": "Insertion of endotracheal tube",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Percutaneous cholecystostomy and drainage using ultrasound guidance": {
+        "code": "442833003",
+        "display": "Percutaneous cholecystostomy and drainage using ultrasound guidance",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Removal of tube cholecystostomy": {
+        "code": "75639003",
+        "display": "Removal of tube cholecystostomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Temporary tracheostomy": {
+        "code": "43988005",
+        "display": "Temporary tracheostomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

@@ -131,11 +131,18 @@
      ],
      "orders": [
       {
-       "id": "bmp-recheck-2022",
-       "action": "placed",
-       "order": "Basic metabolic panel and urine albumin/creatinine in 3 months",
-       "category": "lab",
-       "reason": "new reduced kidney function"
+        "id": "bmp-recheck-2022",
+        "action": "placed",
+        "order": "Basic Metabolic Panel (BMP)",
+        "category": "lab",
+        "reason": "new reduced kidney function"
+      },
+      {
+        "id": "bmp-recheck-2022-2",
+        "action": "placed",
+        "order": "Microalbumin/Creatinine Ratio",
+        "category": "lab",
+        "reason": "new reduced kidney function"
       }
      ],
      "procedures": [
@@ -196,19 +203,20 @@
      ],
      "labs": [
       {
-       "panel": "Basic Metabolic Panel (BMP)",
-       "collected": "2022-05-17T09:45",
-       "results": [
-        {
-         "test": "Creatinine"
-        },
-        {
-         "test": "Potassium"
-        },
-        {
-         "test": "Bicarbonate"
-        }
-       ]
+        "panel": "Basic Metabolic Panel (BMP)",
+        "collected": "2022-05-17T09:45",
+        "results": [
+          {
+            "test": "Creatinine",
+            "value": 1.75
+          },
+          {
+            "test": "Potassium"
+          },
+          {
+            "test": "Bicarbonate"
+          }
+        ]
       },
       {
        "panel": "Complete Blood Count (CBC)",
@@ -242,9 +250,14 @@
      ],
      "orders": [
       {
-       "id": "bmp-recheck-2022",
-       "action": "done",
-       "date": "2022-05-17T09:45"
+        "id": "bmp-recheck-2022",
+        "action": "done",
+        "date": "2022-05-17T09:45"
+      },
+      {
+        "id": "bmp-recheck-2022-2",
+        "action": "done",
+        "date": "2022-05-17T09:45"
       }
      ],
      "procedures": [
@@ -515,10 +528,14 @@
        "collected": "2022-10-17T14:50",
        "results": [
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 120
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 120,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }
@@ -772,10 +789,14 @@
        "collected": "2023-01-17T09:00",
        "results": [
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 28
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 28,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }
@@ -950,10 +971,14 @@
        "collected": "2023-07-18T09:30",
        "results": [
         {
-         "test": "CA 19-9",
-         "loinc": "24108-3",
-         "unit": "U/mL",
-         "value": 19
+          "test": "CA 19-9",
+          "loinc": "24108-3",
+          "unit": "U/mL",
+          "value": 19,
+          "range": {
+            "low": 0,
+            "high": 37
+          }
         }
        ]
       }

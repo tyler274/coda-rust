@@ -24,7 +24,7 @@
           "reason": "new patient visit, establish care",
           "conditions": [{"label": "Alpha-thalassemia trait", "icd10": "D56.3", "action": "history", "onset": "2019-01-10", "note": "found on testing during first pregnancy"}],
           "medications": [
-            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic"},
+            {"drug_text": "prenatal multivitamin Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "uncoded": true},
             {"drug": "folic acid 1 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "alpha-thalassemia trait"}
           ],
           "allergies": [{"substance": "No known drug allergies"}],
@@ -43,7 +43,7 @@
           "social": [{"item": "Tobacco smoking status", "value": "Never smoker"}, {"item": "History of alcohol use", "value": "None"}, {"item": "Occupation", "value": "Kindergarten teacher"}],
           "reports": [{"study": "Cervical cytology (Pap)", "performed": "2021-06-08T09:10", "issued": "2021-06-16T14:00", "text": "Specimen: cervical, liquid-based. Adequacy: satisfactory for evaluation, transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy.", "conclusion": "NILM."}],
           "procedures": [{"procedure": "Preventive visit, new patient, 18-39", "performed": "2021-06-08T08:40"}],
-          "orders": [{"id": "rec-prior-2021", "action": "placed", "order": "Outside records request, prior primary care and OB", "category": "procedure", "reason": "establishing care"}],
+          "orders": [],
           "documents": [{"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2021-06-08T09:25",
             "body": "27 y/o F here to establish care. Teaches kindergarten. Switching from her old PCP, last physical about 2 yrs ago with her old PCP.\n\nPMH: alpha-thalassemia trait, told during her pregnancy in 2019. No other medical problems. Never told of a heart murmur.\nOB: G1P1, term vaginal delivery 2019, no complications.\nPSH: none other.\nMeds: prenatal vitamin daily, folic acid 1 mg daily, started by her OB and she kept taking them; may want another child at some point.\nAllergies: NKDA.\nFH: mother has rheumatic heart disease. Alpha-thal trait in her immediate family. Mother's pregnancies were all fine.\nSH: lives with partner and their 2 y/o. Never smoker, no alcohol, no drugs. Both she and partner were born outside the US.\n\nROS: negative, no dyspnea, palpitations, edema, heavy menses.\n\nExam: well appearing. Vitals as recorded. HEENT nl, thyroid not enlarged. Heart RRR, S1 S2 normal, no murmurs. Lungs clear. Abd soft NT. Pelvic: normal external genitalia, cervix without lesions, Pap collected. Ext warm without edema. Skin no rashes.\n\nA/P\n1. Preventive: Pap today. CBC, CMP, lipids, TSH, iron studies to sort out trait vs iron. HIV and hep C once, she agreed. PHQ-2 0.\n2. Alpha-thal trait: expect mild microcytosis, ferritin to make sure no iron deficiency on top. Continue folic acid, I'll take over the Rx.\n3. Records: release signed for old PCP and OB, want the 2019 hemoglobin workup.\n4. Flu this fall. COVID primary series done in the spring per her card.\nRTC 1 yr or sooner."}]
         },
@@ -70,7 +70,7 @@
             {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-03-30T15:00"},
             {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-20T15:00"}
           ],
-          "orders": [{"id": "rec-prior-2021", "action": "done", "date": "2021-06-22T11:30"}],
+          "orders": [],
           "documents": [{"type": "Outside Records", "title": "Prior primary care and obstetric records", "author": "outside obstetrics", "date": "2021-06-22T11:30",
             "body": "Records received from prior PCP and prior obstetric practice (34 pages), scanned.\n\nObstetric summary, 2019: G1, prenatal course without complications. Initial CBC with microcytosis, ferritin normal. Hemoglobin electrophoresis: normal pattern, HbA2 and HbF within reference range. Alpha-globin gene analysis: two-gene deletion on one chromosome, consistent with alpha-thalassemia trait. Spontaneous vaginal delivery at 39 weeks, 2019, uncomplicated. Postpartum visit normal. Tdap given 3/2019 at 30 weeks.\n\nPrior primary care: 2018 Pap normal. MMR x2 in childhood per school record. COVID vaccine x2 spring 2021 (pharmacy card). Allergies: none known. Medications: prenatal vitamin, folic acid 1 mg daily.\n\nPCP review: trait confirmed by gene testing, nothing else new. Partner's testing not in these records."}]
         },

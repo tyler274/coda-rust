@@ -207,7 +207,7 @@
                 },
                 {
                   "test": "Fasting Glucose",
-                  "value": 131
+                  "value": 124
                 },
                 {
                   "test": "Microalbumin/Creatinine Ratio",
@@ -260,7 +260,7 @@
             {
               "id": "colo-2019",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "Average-risk colorectal cancer screening, age 50"
@@ -2575,12 +2575,20 @@
                   "test": "Complement C3",
                   "loinc": "4485-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  },
                   "value": 62
                 },
                 {
                   "test": "Complement C4",
                   "loinc": "4498-2",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
                   "value": 24
                 }
               ]
@@ -2594,6 +2602,9 @@
                   "test": "Antistreptolysin O titer",
                   "loinc": "5370-2",
                   "unit": "[IU]/mL",
+                  "range": {
+                    "high": 200
+                  },
                   "value": 640
                 }
               ]
@@ -3154,6 +3165,10 @@
                   "test": "Complement C3",
                   "loinc": "4485-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  },
                   "value": 112
                 }
               ]
@@ -3309,18 +3324,29 @@
         "code": "5370-2",
         "display": "Streptolysin O Ab [Units/volume] in Serum or Plasma",
         "unit": "[IU]/mL",
+        "range": {
+          "high": 200
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Complement C3": {
         "code": "4485-9",
         "display": "Complement C3 [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 100,
+          "high": 233
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Complement C4": {
         "code": "4498-2",
         "display": "Complement C4 [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 14,
+          "high": 48
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine RBC casts": {

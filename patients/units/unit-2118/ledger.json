@@ -1,11 +1,7 @@
 {
   "unit": "unit-2118",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002118/2024-03-04a: lab order \"Serum and urine osmolality\" names no one catalog lab, panel, study or procedure",
-    "MRN00002118/2025-06-17a: referral to \"Home infusion agency\" names no catalog specialty",
-    "MRN00002118/2025-10-08a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002118",
@@ -306,6 +302,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -543,6 +543,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -823,6 +827,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -1006,6 +1014,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -1293,6 +1305,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -1453,18 +1469,30 @@
                   "test": "Serum osmolality",
                   "loinc": "2692-2",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 302
                 },
                 {
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 148
                 },
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -1484,8 +1512,17 @@
             {
               "id": "osm-labs-2024",
               "action": "placed",
-              "order": "Serum and urine osmolality",
+              "order": "Serum osmolality",
               "category": "lab",
+              "loinc": "2692-2",
+              "reason": "polyuria and polydipsia"
+            },
+            {
+              "id": "osm-labs-2024-2",
+              "action": "placed",
+              "order": "Urine osmolality",
+              "category": "lab",
+              "loinc": "2695-5",
               "reason": "polyuria and polydipsia"
             }
           ],
@@ -1517,6 +1554,11 @@
           "orders": [
             {
               "id": "osm-labs-2024",
+              "action": "done",
+              "date": "2024-03-05T08:30"
+            },
+            {
+              "id": "osm-labs-2024-2",
               "action": "done",
               "date": "2024-03-05T08:30"
             }
@@ -1578,6 +1620,10 @@
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 152
                 }
               ]
@@ -1591,6 +1637,10 @@
                   "test": "Urine osmolality",
                   "loinc": "2695-5",
                   "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 163
                 }
               ]
@@ -1875,6 +1925,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -2167,6 +2221,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -2313,6 +2371,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -2435,7 +2497,7 @@
               "action": "placed",
               "order": "Home infusion nursing, IV hydration",
               "category": "referral",
-              "to": "Home infusion agency",
+              "to": "Home Health",
               "reason": "dehydration from gastroenteritis with nephrogenic diabetes insipidus"
             }
           ],
@@ -2558,18 +2620,30 @@
                   "test": "pH, arterial",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "pCO2, arterial",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 40
                 },
                 {
                   "test": "pO2, arterial",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 98
                 }
               ]
@@ -3030,6 +3104,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -3063,7 +3141,7 @@
             {
               "id": "fit-2026",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening at age 45"
             }
@@ -3548,19 +3626,19 @@
         "code": "1807639",
         "display": "1000 ML sodium chloride 9 MG/ML Injection",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "desmopressin acetate 0.004 MG/ML Injectable Solution": {
         "code": "849501",
         "display": "desmopressin acetate 0.004 MG/ML Injectable Solution",
         "ingredient": "desmopressin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lithium carbonate 300 MG Oral Capsule": {
         "code": "197889",
         "display": "lithium carbonate 300 MG Oral Capsule",
         "ingredient": "lithium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3573,36 +3651,72 @@
         "code": "14334-7",
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
+        "range": {
+          "low": 0.6,
+          "high": 1.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Serum osmolality": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
         "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Urine osmolality": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
         "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pCO2, arterial": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH, arterial": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pO2, arterial": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Serum osmolality": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

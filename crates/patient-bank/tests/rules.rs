@@ -806,6 +806,112 @@ fn a_draw_keeps_its_derived_members_and_set_levels_consistent() {
 }
 
 #[test]
+fn a_procedure_code_for_an_age_band_fits_the_patient() {
+    // born 1976-03-02: a tonsillectomy in 1984 was at 8, one in 2006 at 30
+    let at = |label: &str, when: &str| {
+        let p = patient(json!([visit(
+            "e1",
+            "2024-01-03T09:00",
+            json!({"procedures": [{"procedure": label, "performed": when}],
+                "documents": [{"type": "Progress Notes", "author": "PCP", "body": "History."}]})
+        )]));
+        errors_for(seed(), p)
+            .into_iter()
+            .any(|e| e.contains("is coded for ages"))
+    };
+    assert!(!at("Tonsillectomy, under age 12", "1984-06-01T09:00"));
+    assert!(at("Tonsillectomy, under age 12", "2006-06-01T09:00"));
+    assert!(!at("Tonsillectomy, age 12 or over", "2006-06-01T09:00"));
+    assert!(at("Preventive visit, new patient, 65+", "2024-01-03T09:00"));
+}
+
+#[test]
+fn one_specimen_has_one_glucose() {
+    // entries collected together are one specimen: their fasting glucose and a
+    // panel's glucose are one reading, stated or read by code
+    let draw = |fasting: serde_json::Value, panel: serde_json::Value| {
+        patient(json!([visit(
+            "e1",
+            "2024-01-03T07:10",
+            json!({"labs": [
+                {"panel": null, "collected": "2024-01-03T07:10", "results": [fasting]},
+                {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T07:10",
+                    "results": panel},
+                {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-01-03T16:00",
+                    "results": [{"test": "Creatinine"}]}
+            ]})
+        )]))
+    };
+    let glucose = |p: &patient_bank::ledger::Patient, k: usize, test: &str| {
+        (p.events[0].labs[k].results.iter())
+            .find(|r| r.test == test)
+            .and_then(|r| r.value.as_ref())
+            .map(patient_bank::ledger::num)
+    };
+    let cases = [
+        // stated fasting, panel glucose left out or named without a value
+        (
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Creatinine"}]),
+        ),
+        (
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Glucose"}]),
+        ),
+        // stated panel glucose, fasting named without a value
+        (
+            json!({"test": "Fasting Glucose"}),
+            json!([{"test": "Glucose", "value": 158}]),
+        ),
+    ];
+    for (fasting, panel) in cases {
+        let (p, errors) = measure::apply(&seed(), &draw(fasting, panel), &catalog());
+        assert!(errors.is_empty(), "{errors:?}");
+        assert_eq!(glucose(&p, 0, "Fasting Glucose"), Some(158.0));
+        assert_eq!(glucose(&p, 1, "Glucose"), Some(158.0));
+        assert_ne!(
+            glucose(&p, 2, "Glucose"),
+            Some(158.0),
+            "a later draw reads its own"
+        );
+    }
+    // neither stated: code reads the level once for both
+    let mut leveled = draw(
+        json!({"test": "Fasting Glucose"}),
+        json!([{"test": "Glucose"}]),
+    );
+    leveled.events[0].state =
+        serde_json::from_value(json!({"labs": {"Fasting Glucose": 131}})).expect("state");
+    let (p, errors) = measure::apply(&seed(), &leveled, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    assert!(glucose(&p, 0, "Fasting Glucose").is_some());
+    assert_eq!(glucose(&p, 0, "Fasting Glucose"), glucose(&p, 1, "Glucose"));
+    // a pending panel is not back yet: its glucose stays empty
+    let mut waiting = draw(
+        json!({"test": "Fasting Glucose", "value": 158}),
+        json!([{"test": "Glucose"}]),
+    );
+    waiting.events[0].labs[1].pending = true;
+    let (p, errors) = measure::apply(&seed(), &waiting, &catalog());
+    assert!(errors.is_empty(), "{errors:?}");
+    assert_eq!(glucose(&p, 1, "Glucose"), None);
+    // two stated values for one specimen is an error, not a choice
+    let (_, errors) = measure::apply(
+        &seed(),
+        &draw(
+            json!({"test": "Fasting Glucose", "value": 158}),
+            json!([{"test": "Glucose", "value": 140}]),
+        ),
+        &catalog(),
+    );
+    assert!(
+        errors
+            .iter()
+            .any(|e| e.contains("one specimen gives glucose"))
+    );
+}
+
+#[test]
 fn a_stated_calculated_test_fixes_its_open_input_and_every_lab_formula_holds() {
     let lipids = |results: serde_json::Value| {
         patient(json!([visit(
@@ -985,13 +1091,16 @@ fn a_patients_own_normal_stays_in_range() {
 
 #[test]
 fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
-    let draw = |loinc: serde_json::Value| {
+    let draw_with = |loinc: serde_json::Value, range: Option<serde_json::Value>| {
+        let mut result =
+            json!({"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500});
+        if let Some(range) = range {
+            result["range"] = range;
+        }
         patient(json!([visit(
             "e1",
             "2024-01-01T09:00",
-            json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
-                {"test": "Calcitonin", "loinc": loinc, "unit": "pg/mL", "value": 500}
-            ]}],
+            json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [result]}],
             "allergies": [{"substance": "Dust mites", "snomed": "260147004", "category": "environment"}],
             "procedures": [{"procedure": "Cesarean section", "snomed": "11466000",
                 "performed": "2024-01-01T09:30"}],
@@ -1000,10 +1109,22 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             "documents": [{"type": "Progress Notes", "author": "PCP", "body": "Calcitonin sent."}]})
         )]))
     };
+    let draw = |loinc: serde_json::Value| draw_with(loinc, Some(json!({"high": 10})));
     let unknown = |e: &Vec<String>| e.iter().any(|x| x.contains("unknown lab test"));
     assert!(unknown(&errors_for(seed(), draw(json!(null)))));
     let p = draw(json!("1992-7"));
     assert!(!unknown(&errors_for(seed(), p.clone())));
+    // a measured test the catalog lacks states its reference range, or that none applies
+    let unranged = |e: &Vec<String>| e.iter().any(|x| x.contains("give its reference range"));
+    assert!(unranged(&errors_for(
+        seed(),
+        draw_with(json!("1992-7"), None)
+    )));
+    assert!(!unranged(&errors_for(seed(), p.clone())));
+    assert!(!unranged(&errors_for(
+        seed(),
+        draw_with(json!("1992-7"), Some(json!({})))
+    )));
 
     let catalog = Catalog::load(&paths::catalog()).expect("catalog");
     let mut terms = Terms::default();
@@ -1012,17 +1133,17 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
         patient_bank::ledger::VerifiedCode {
             code: "1992-7".into(),
             display: "Calcitonin [Mass/volume] in Serum or Plasma".into(),
-            ingredient: None,
             unit: Some("pg/mL".into()),
+            range: p.events[0].labs[0].results[0].range.clone(),
             receipt: "test".into(),
+            ..Default::default()
         },
     );
     let snomed = |code: &str, display: &str| patient_bank::ledger::VerifiedCode {
         code: code.into(),
         display: display.into(),
-        ingredient: None,
-        unit: None,
         receipt: "test".into(),
+        ..Default::default()
     };
     terms
         .allergens
@@ -1056,6 +1177,47 @@ fn a_concept_the_catalog_lacks_is_coded_by_its_verified_code() {
             .any(|o| o.code.coding.iter().any(|c| c.code == "1992-7")),
         "the verified test renders with its LOINC code"
     );
+    // the author's one-sided range renders as given and flags the value above it
+    let calcitonin = (chart.observations.iter())
+        .find(|o| o.code.coding.iter().any(|c| c.code == "1992-7"))
+        .expect("calcitonin");
+    let range = &calcitonin.reference_range[0];
+    assert!(range.low.is_none() && range.high.is_some());
+    assert!((calcitonin.interpretation.iter()).any(|i| i.coding.iter().any(|c| c.code == "H")));
+    // each result keeps the range stated for it, not the first one its name was given
+    let other = draw_with(json!("1992-7"), Some(json!({"high": 600})));
+    let chart2 = Renderer {
+        catalog: &catalog.with_terms(&terms),
+        terms: &terms,
+    }
+    .render(&seed(), &other, at("2024-02-01T00:00"))
+    .0;
+    let calcitonin = (chart2.observations.iter())
+        .find(|o| o.code.coding.iter().any(|c| c.code == "1992-7"))
+        .expect("calcitonin");
+    let high = calcitonin.reference_range[0].high.as_ref().expect("high");
+    assert_eq!(
+        serde_json::to_value(high).expect("json")["value"].as_f64(),
+        Some(600.0)
+    );
+    assert!(calcitonin.interpretation.is_empty());
+    // the catalog gives its own labs' ranges
+    let stated = patient(json!([visit(
+        "e1",
+        "2024-01-01T09:00",
+        json!({"labs": [{"panel": null, "collected": "2024-01-01T09:00", "results": [
+            {"test": "Hemoglobin A1c", "value": 6.1, "range": {"high": 7}},
+            {"test": "C Reactive Protein", "value": 2.5, "unit": "mg/dL"}
+        ]}]})
+    )]));
+    let errors = errors_for(seed(), stated);
+    assert!(
+        errors
+            .iter()
+            .any(|e| e.contains("in the catalog, which gives its range"))
+    );
+    // and their units: a value in another unit would render under the catalog's
+    assert!(errors.iter().any(|e| e.contains("which gives its unit")));
     let coded = |codes: Vec<&patient_bank::fhir::CodeableConcept>, code: &str| {
         codes
             .iter()

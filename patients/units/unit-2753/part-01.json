@@ -134,25 +134,27 @@
        "reason": "Contraception"
       },
       {
-       "drug_text": "multivitamin Oral Tablet",
-       "action": "historical",
-       "sig": "Take 1 tablet by mouth daily",
-       "dose": {
-        "value": 1,
-        "unit": "tablet"
-       },
-       "frequency": "DAILY",
-       "route": "Oral",
-       "course": "chronic"
+        "drug_text": "multivitamin Oral Tablet",
+        "action": "historical",
+        "sig": "Take 1 tablet by mouth daily",
+        "dose": {
+          "value": 1,
+          "unit": "tablet"
+        },
+        "frequency": "DAILY",
+        "route": "Oral",
+        "course": "chronic",
+        "uncoded": true
       },
       {
-       "drug_text": "parenteral nutrition",
-       "action": "historical",
-       "sig": "Infuse via central line over 12 hours nightly per home infusion regimen",
-       "frequency": "NIGHTLY",
-       "route": "Intravenous",
-       "course": "chronic",
-       "reason": "Short bowel syndrome"
+        "drug_text": "parenteral nutrition",
+        "action": "historical",
+        "sig": "Infuse via central line over 12 hours nightly per home infusion regimen",
+        "frequency": "NIGHTLY",
+        "route": "Intravenous",
+        "course": "chronic",
+        "reason": "Short bowel syndrome",
+        "uncoded": true
       },
       {
        "drug_text": "vedolizumab 300 MG Injection",
@@ -791,10 +793,14 @@
        "collected": "2021-03-08T15:45",
        "results": [
         {
-         "test": "Lamotrigine, trough",
-         "loinc": "74944-0",
-         "unit": "ug/mL",
-         "value": 4.8
+          "test": "Lamotrigine, trough",
+          "loinc": "74944-0",
+          "unit": "ug/mL",
+          "value": 4.8,
+          "range": {
+            "low": 2.5,
+            "high": 15
+          }
         }
        ]
       }
@@ -895,12 +901,12 @@
      ],
      "orders": [
       {
-       "id": "pain-2021",
-       "action": "placed",
-       "order": "Pain management referral",
-       "category": "referral",
-       "to": "Pain Management",
-       "reason": "Chronic low back pain, worsening"
+        "id": "pain-2021",
+        "action": "placed",
+        "order": "Pain management referral",
+        "category": "referral",
+        "to": "Pain Medicine",
+        "reason": "Chronic low back pain, worsening"
       }
      ],
      "procedures": [

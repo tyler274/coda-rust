@@ -4,17 +4,16 @@
 #![deny(missing_docs)]
 
 mod composer;
-mod icons;
 mod local_draft;
 mod panels;
 mod shell;
+mod status;
 mod tabs;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
 use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAnswer};
 use dioxus::prelude::*;
-use icons::{Icon, IconName};
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
@@ -31,13 +30,18 @@ use shell::{
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_message, format_waited, keyboard_command,
     need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
-use ui::{CommandNotice, CommandStage, EmptyState, ErrorState, ReadNotice, TextButton};
+use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
+use ui::{
+    ActionRow, Author, Button, ButtonVariant, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
+    StatusLine, Tone,
+};
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
 const UPDATES_LOADING: &str = "Loading updates…";
@@ -83,7 +87,9 @@ const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
+const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
+const SHOW_SESSION_PROMPT: &str = "document.getElementById('session-prompt')?.showModal()";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
 /// send is missing or fails, and never returns the code.
@@ -96,56 +102,107 @@ enum Place {
     Workspace,
 }
 
+/// The session belongs to this browser, so it lives in localStorage: a new tab,
+/// or Coda reopened, opens the workspace while the session lasts. Beside it
+/// is the email it was signed in with, so a sign-in link can tell whether it
+/// is yours without asking the server, and how many times this browser has
+/// signed out, so a tab that catches up late knows a sign-out came between.
 #[cfg(target_arch = "wasm32")]
 const SESSION_STORAGE_KEY: &str = "coda.physician.session";
-
 #[cfg(target_arch = "wasm32")]
-fn read_stored_session() -> Option<String> {
+const SESSION_OWNER_KEY: &str = "coda.physician.session.email";
+#[cfg(target_arch = "wasm32")]
+const SIGN_OUTS_KEY: &str = "coda.physician.sign_outs";
+
+/// Calls `method` on this browser's localStorage. Denied or missing storage is `None`.
+#[cfg(target_arch = "wasm32")]
+fn local_storage(method: &str, args: &[&str]) -> Option<wasm_bindgen::JsValue> {
     use wasm_bindgen::JsCast;
     let window = web_sys::window()?;
-    let storage = js_sys::Reflect::get(&window, &"sessionStorage".into()).ok()?;
+    let storage = js_sys::Reflect::get(&window, &"localStorage".into()).ok()?;
     if storage.is_null() || storage.is_undefined() {
         return None;
     }
-    let get_item = js_sys::Reflect::get(&storage, &"getItem".into())
+    let function = js_sys::Reflect::get(&storage, &method.into())
         .ok()?
         .dyn_into::<js_sys::Function>()
         .ok()?;
-    get_item
-        .call1(&storage, &SESSION_STORAGE_KEY.into())
-        .ok()?
+    let args: js_sys::Array = args
+        .iter()
+        .map(|arg| wasm_bindgen::JsValue::from_str(arg))
+        .collect();
+    function.apply(&storage, &args).ok()
+}
+
+#[cfg(target_arch = "wasm32")]
+fn stored(key: &str) -> Option<String> {
+    local_storage("getItem", &[key])?
         .as_string()
         .filter(|value| !value.trim().is_empty())
 }
 
 #[cfg(target_arch = "wasm32")]
-fn write_stored_session(session: Option<&str>) {
-    use wasm_bindgen::JsCast;
-    let Some(window) = web_sys::window() else {
-        return;
-    };
-    let Ok(storage) = js_sys::Reflect::get(&window, &"sessionStorage".into()) else {
-        return;
-    };
-    if storage.is_null() || storage.is_undefined() {
-        return;
+fn read_stored_session() -> Option<String> {
+    stored(SESSION_STORAGE_KEY)
+}
+
+/// Whether this browser still stores `session`.
+#[cfg(target_arch = "wasm32")]
+fn still_stored(session: &str) -> bool {
+    read_stored_session().as_deref() == Some(session)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn still_stored(_session: &str) -> bool {
+    true
+}
+
+/// The email the stored session was signed in with.
+#[cfg(target_arch = "wasm32")]
+fn read_stored_owner() -> Option<String> {
+    stored(SESSION_OWNER_KEY)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn read_stored_owner() -> Option<String> {
+    None
+}
+
+#[cfg(target_arch = "wasm32")]
+fn store_session(session: &str, email: &str) {
+    local_storage("setItem", &[SESSION_STORAGE_KEY, session]);
+    local_storage("setItem", &[SESSION_OWNER_KEY, email.trim()]);
+}
+
+/// Forgets `session` if this browser still stores it; a newer one stays.
+#[cfg(target_arch = "wasm32")]
+fn forget_stored_session(session: &str) {
+    if read_stored_session().as_deref() == Some(session) {
+        local_storage("removeItem", &[SESSION_STORAGE_KEY]);
+        local_storage("removeItem", &[SESSION_OWNER_KEY]);
     }
-    match session {
-        Some(token) if !token.trim().is_empty() => {
-            if let Ok(set_item) = js_sys::Reflect::get(&storage, &"setItem".into())
-                && let Ok(func) = set_item.dyn_into::<js_sys::Function>()
-            {
-                let _ = func.call2(&storage, &SESSION_STORAGE_KEY.into(), &token.into());
-            }
-        }
-        _ => {
-            if let Ok(remove_item) = js_sys::Reflect::get(&storage, &"removeItem".into())
-                && let Ok(func) = remove_item.dyn_into::<js_sys::Function>()
-            {
-                let _ = func.call1(&storage, &SESSION_STORAGE_KEY.into());
-            }
-        }
-    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn forget_stored_session(_session: &str) {}
+
+/// How many times this browser has signed out.
+#[cfg(target_arch = "wasm32")]
+fn read_sign_outs() -> u64 {
+    stored(SIGN_OUTS_KEY)
+        .and_then(|count| count.parse().ok())
+        .unwrap_or(0)
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+fn read_sign_outs() -> u64 {
+    0
+}
+
+#[cfg(target_arch = "wasm32")]
+fn count_sign_out() {
+    let count = (read_sign_outs() + 1).to_string();
+    local_storage("setItem", &[SIGN_OUTS_KEY, &count]);
 }
 
 // Count consecutive failed/short streams, not successful Cloud Run rotations.
@@ -224,7 +281,7 @@ fn follow_workspace_events(
     mut workspace_attempt: Signal<u32>,
     mut snapshot_attempt: Signal<u32>,
     selected: Signal<Option<String>>,
-) {
+) -> dioxus::core::Task {
     let url = format!(
         "{}/patient-workspaces/events?after=0",
         base_url.trim_end_matches('/')
@@ -361,7 +418,7 @@ fn follow_workspace_events(
             }
             next_delay = retry.next_delay_ms(Some(clock.now() - started_at));
         }
-    });
+    })
 }
 
 #[cfg(target_arch = "wasm32")]
@@ -438,114 +495,215 @@ fn refusal(error: &physician_client::HttpError) -> Option<Refusal> {
 }
 
 /// The tab's sign-in state, owned by [`PhysicianRoot`] and changed only here.
+/// Every change names the bearer it is about, because a request can finish
+/// after this browser has moved on to a newer session.
 #[derive(Clone, Copy, PartialEq)]
 struct SessionState {
+    /// Presents this tab's bearer on every read.
+    client: Signal<PhysicianClient>,
     signed_in: Signal<bool>,
-    /// The sign-in prompt covers the open page (physician.mmd: Session expired,
-    /// sign in to continue). Nothing underneath changes.
+    /// The sign-in prompt covers the open page when the session expires.
+    /// Nothing underneath changes.
     expired: Signal<bool>,
     whoami_name: Signal<String>,
     whoami: Signal<Option<WhoamiResponse>>,
+    /// Whose session this tab holds: the email the browser stored beside it
+    /// when the tab took it, or the link's email when the tab signed in.
+    owner: Signal<Option<String>>,
     /// Bumped when another physician signs in here: the shell starts over at Today.
     generation: Signal<u32>,
+    /// Bumped when this tab takes a newer session of yours in place: the shell
+    /// reads with it.
+    taken: Signal<u32>,
+    /// The browser's sign-out count when this tab last caught up; another
+    /// count means a sign-out came between.
+    sign_outs_seen: Signal<u64>,
+    /// The patient and conversation the page was opened at. The shell opens
+    /// there once someone signs in; sign-out and another physician's sign-in
+    /// forget them.
+    held_link: Signal<(String, String)>,
+    /// The mailed link this page was opened at, until this tab is signed in,
+    /// by the link or by following another tab.
+    sign_in_link: Signal<Option<SignInLink>>,
+    /// The practice removed this physician's access; the sign-in page says so.
+    removed: Signal<bool>,
 }
 
 impl SessionState {
-    /// Back to the sign-in page.
-    fn sign_out(mut self) {
-        #[cfg(target_arch = "wasm32")]
-        write_stored_session(None);
+    /// The bearer this tab presents now.
+    fn bearer(self) -> Option<String> {
+        self.client.peek().session().get()
+    }
+
+    /// Back to the sign-in page, forgetting where this tab was.
+    fn sign_out(self, ended: Option<&str>) {
+        self.forget_place();
+        self.no_session(ended);
+    }
+
+    /// Back to the sign-in page, still holding the link the page was opened
+    /// at. `ended` leaves this tab and the browser, unless a newer session
+    /// already replaced it.
+    fn no_session(self, ended: Option<&str>) {
+        if let Some(ended) = ended {
+            self.client.peek().session().clear_if(ended);
+            forget_stored_session(ended);
+        }
+        self.no_session_here();
+    }
+
+    /// Back to the sign-in page in this tab only.
+    fn no_session_here(mut self) {
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
+        self.removed.set(false);
         self.signed_in.set(false);
         self.whoami_name.set(String::new());
         self.whoami.set(None);
+        self.owner.set(None);
     }
 
-    /// A refused read. An ended session covers a page this tab already showed
-    /// with the sign-in prompt; a tab that showed nothing yet was reopened after
-    /// the session ended, so it shows the sign-in page, as removed access does.
-    fn refused(mut self, refusal: Refusal, shown: bool) {
+    /// Drops the held patient link, from this tab and its address.
+    fn forget_place(mut self) {
+        self.held_link.set(Default::default());
+        write_address(None, None);
+    }
+
+    /// Signs this browser out: forgets the session it stores, or this tab's
+    /// own when it stores none, counts the sign-out so a tab that catches up
+    /// late knows one came between, and tells every other tab. Coda is asked
+    /// to end that session, and nothing waits on its answer. This tab forgets
+    /// where it was and shows the sign-in page.
+    fn end(self) {
+        let client = self.client.peek().clone();
+        #[cfg(target_arch = "wasm32")]
+        let ending = read_stored_session().or_else(|| client.session().get());
+        #[cfg(not(target_arch = "wasm32"))]
+        let ending = client.session().get();
+        #[cfg(target_arch = "wasm32")]
+        {
+            if let Some(ending) = &ending {
+                forget_stored_session(ending);
+            }
+            count_sign_out();
+            let mut seen = self.sign_outs_seen;
+            seen.set(read_sign_outs());
+            tabs::announce();
+        }
+        client.session().clear();
+        if let Some(ending) = ending.clone() {
+            // The root owns the request, so no screen change drops it.
+            dioxus::core::spawn_forever(async move {
+                let _ = client.sign_out(&ending).await;
+            });
+        }
+        self.sign_out(ending.as_deref());
+    }
+
+    /// A read made with `presented` was refused. A refusal of a session this
+    /// tab no longer holds is about the past and changes nothing. An ended
+    /// session covers a page this tab already showed with the sign-in prompt;
+    /// a tab that showed nothing yet was opened without a session, so it shows
+    /// the sign-in page and keeps the patient link it was opened at. Removed
+    /// access signs out and says "No access to this practice".
+    fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
+        if self.bearer() != presented {
+            return;
+        }
+        let presented = presented.as_deref();
         match refusal {
             Refusal::SessionEnded if shown => {
-                #[cfg(target_arch = "wasm32")]
-                write_stored_session(None);
+                if let Some(presented) = presented {
+                    forget_stored_session(presented);
+                }
                 self.expired.set(true);
             }
-            _ => self.sign_out(),
+            Refusal::SessionEnded => self.no_session(presented),
+            Refusal::AccessRemoved => {
+                self.sign_out(presented);
+                self.removed.set(true);
+            }
         }
     }
 
-    /// Another tab's sign-in news.
+    /// Follows the session this browser stores. Another tab's news only says
+    /// that it changed, so late or reordered news can never move this tab to
+    /// an older session. With nothing stored, a signed-in tab signs out,
+    /// keeping its place. A signed-out tab, which a workspace still opening
+    /// with no session is too, takes the stored session and keeps the patient
+    /// link it was opened at. Your own tab takes it where it was, reading with
+    /// it at once. Only a sign-out that came between makes a tab forget where
+    /// it was: a waiting tab opens at Today, and a signed-in one, opening or
+    /// not, like a tab that was another physician's, starts over at Today.
     #[cfg(target_arch = "wasm32")]
-    fn hear(mut self, news: tabs::TabNews, client: PhysicianClient) {
-        if !*self.signed_in.peek() {
-            // A signed-out tab picks up this browser's sign-in, as sign-out
-            // reaches every tab. It keeps what it was opening, so the tab
-            // that opened a Coda link lands on its patient when the emailed
-            // link is opened elsewhere (sign-in.mmd, Patient link).
-            if let tabs::TabNews::SignedIn { session, .. } = news {
-                client.session().set(session.clone());
-                write_stored_session(Some(&session));
-                self.signed_in.set(true);
+    fn catch_up(mut self) {
+        let client = self.client.peek().clone();
+        let signed_in = *self.signed_in.peek();
+        let sign_outs = read_sign_outs();
+        let missed_a_sign_out = sign_outs != *self.sign_outs_seen.peek();
+        self.sign_outs_seen.set(sign_outs);
+        if missed_a_sign_out {
+            self.forget_place();
+        }
+        let Some(stored) = read_stored_session() else {
+            client.session().clear();
+            if signed_in {
+                self.no_session_here();
+            }
+            return;
+        };
+        if signed_in
+            && !missed_a_sign_out
+            && client.session().get().as_deref() == Some(stored.as_str())
+        {
+            return;
+        }
+        let opening_signed_out = client.session().get().is_none();
+        client.session().set(stored);
+        let owner = read_stored_owner();
+        if !signed_in {
+            self.sign_in_link.set(None);
+            self.owner.set(owner);
+            self.signed_in.set(true);
+            return;
+        }
+        if opening_signed_out && !missed_a_sign_out {
+            // The workspace reads again with the session it took.
+            self.owner.set(owner);
+            *self.taken.write() += 1;
+            return;
+        }
+        let yours = owner.as_ref().is_some_and(|owner| {
+            self.owner
+                .peek()
+                .as_ref()
+                .is_some_and(|mine| mine.eq_ignore_ascii_case(owner))
+        });
+        if yours && !missed_a_sign_out {
+            // Lifting the prompt re-reads the page; otherwise re-read in place.
+            if *self.expired.peek() {
+                self.expired.set(false);
+            } else {
+                *self.taken.write() += 1;
             }
             return;
         }
-        match news {
-            tabs::TabNews::SignedOut => {
-                spawn(async move {
-                    let _ = client.sign_out().await;
-                    self.sign_out();
-                });
-            }
-            tabs::TabNews::SignedIn {
-                physician_id,
-                session,
-            } => {
-                let mine = self
-                    .whoami
-                    .peek()
-                    .as_ref()
-                    .map(|account| account.physician_id.clone());
-                if mine.as_deref() == Some(physician_id.as_str()) {
-                    // Your own link: a covered page picks up where it was;
-                    // an open one changes nothing.
-                    if *self.expired.peek() {
-                        client.session().set(session.clone());
-                        write_stored_session(Some(&session));
-                        self.expired.set(false);
-                    }
-                    return;
-                }
-                if mine.is_none() {
-                    return;
-                }
-                // Another physician's link: this session ends and theirs
-                // starts at Today; nothing of yours carries over.
-                spawn(async move {
-                    let _ = client.sign_out().await;
-                    local_draft::forget_everything();
-                    client.session().set(session.clone());
-                    write_stored_session(Some(&session));
-                    self.whoami_name.set(String::new());
-                    self.whoami.set(None);
-                    self.expired.set(false);
-                    *self.generation.write() += 1;
-                });
-            }
-        }
+        // Someone this tab can't name as you, or you after a sign-out: the tab
+        // starts at Today and nothing from before carries over.
+        local_draft::forget_everything();
+        self.forget_place();
+        self.whoami_name.set(String::new());
+        self.whoami.set(None);
+        self.owner.set(owner);
+        self.expired.set(false);
+        *self.generation.write() += 1;
     }
 }
 
 /// Signing out ends this session and reaches this browser's other Coda tabs.
-fn sign_out_everywhere(client: PhysicianClient, session: SessionState) {
-    spawn(async move {
-        let _ = client.sign_out().await;
-        #[cfg(target_arch = "wasm32")]
-        tabs::announce(&tabs::TabNews::SignedOut);
-        session.sign_out();
-    });
+fn sign_out_everywhere(session: SessionState) {
+    session.end();
 }
 
 #[component]
@@ -557,21 +715,23 @@ pub fn PhysicianRoot(
     open_chat: String,
     sign_in: Option<SignInLink>,
 ) -> Element {
-    // A mailed link is redeemed even when this browser already has a session.
-    // Otherwise the first `/today` read handles the auth gate.
+    // A mailed link goes through the sign-in screen even when this browser
+    // already has a session. Otherwise the workspace opens, and its first
+    // `/today` read handles the auth gate.
     let mut signed_in = use_signal(|| sign_in.is_none());
     let mut whoami_name = use_signal(String::new);
     let mut whoami = use_signal(|| None::<WhoamiResponse>);
+    #[cfg(target_arch = "wasm32")]
+    let owner = use_signal(|| read_stored_session().and_then(|_| read_stored_owner()));
+    #[cfg(not(target_arch = "wasm32"))]
+    let owner = use_signal(|| None::<String>);
     let expired = use_signal(|| false);
     let generation = use_signal(|| 0u32);
-    let session = SessionState {
-        signed_in,
-        expired,
-        whoami_name,
-        whoami,
-        generation,
-    };
-    let mut pending_sign_in = use_signal(|| sign_in);
+    let taken = use_signal(|| 0u32);
+    let sign_outs_seen = use_signal(read_sign_outs);
+    let held_link = use_signal(|| (open_patient.clone(), open_chat.clone()));
+    let mut removed = use_signal(|| false);
+    let mut sign_in_link = use_signal(|| sign_in);
     // The bearer session rides the client, so one client is built once.
     let client = use_signal(|| {
         let client = PhysicianClient::new(base_url.clone());
@@ -581,38 +741,40 @@ pub fn PhysicianRoot(
         }
         client
     });
+    let session = SessionState {
+        client,
+        signed_in,
+        expired,
+        whoami_name,
+        whoami,
+        owner,
+        generation,
+        taken,
+        sign_outs_seen,
+        held_link,
+        sign_in_link,
+        removed,
+    };
     // Other tabs' sign-in news arrives outside the Dioxus runtime, so it
     // re-enters this scope before touching the session.
     #[cfg(target_arch = "wasm32")]
     use_hook(move || {
         let runtime = dioxus::core::Runtime::current();
         let scope = dioxus::core::current_scope_id();
-        std::rc::Rc::new(tabs::listen(move |news| {
-            runtime.in_scope(scope, || session.hear(news, client.peek().clone()));
+        std::rc::Rc::new(tabs::listen(move || {
+            runtime.in_scope(scope, || session.catch_up());
         }))
-    });
-    #[cfg(target_arch = "wasm32")]
-    use_effect(move || {
-        if pending_sign_in.peek().is_some() {
-            return;
-        }
-        let client = client.read().clone();
-        spawn(async move {
-            if let Err(error) = client.today().await
-                && refusal(&error).is_some()
-            {
-                session.sign_out();
-            }
-        });
     });
     if !signed_in() {
         rsx! {
-            style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+            ui::Stylesheet { app: SHELL_STYLES }
             SignInScreen {
                 client,
-                link: pending_sign_in(),
+                session,
+                link: sign_in_link(),
                 on_signed_in: move |who: Option<WhoamiResponse>| {
-                    pending_sign_in.set(None);
+                    sign_in_link.set(None);
+                    removed.set(false);
                     let name = who
                         .as_ref()
                         .map(|account| account.display_name.clone())
@@ -628,13 +790,14 @@ pub fn PhysicianRoot(
         // keyed list replaces the shell when the key changes; a lone keyed
         // component is diffed in place and keeps its state.
         let shell = generation();
+        let (open_patient, open_chat) = held_link();
         rsx! {
             for shell in std::iter::once(shell) {
                 PhysicianShell {
                     key: "{shell}",
                     base_url: base_url.clone(),
-                    open_patient: if shell == 0 { open_patient.clone() } else { String::new() },
-                    open_chat: if shell == 0 { open_chat.clone() } else { String::new() },
+                    open_patient: open_patient.clone(),
+                    open_chat: open_chat.clone(),
                     client,
                     session,
                 }
@@ -733,25 +896,36 @@ fn PhysicianShell(
             past_work_open.set(false);
         }
     });
-    // Signing in again under the prompt re-reads the page in place; the stream
-    // restarts on the new session (an ended one stops on its refusal).
+    // Signing in again under the prompt, or taking a newer session of yours
+    // from another tab, re-reads the page in place, and the stream restarts on
+    // the session now held. The prompt stops the stream.
+    let taken = session.taken;
     let mut was_expired = use_signal(|| false);
+    let mut read_with = use_signal(|| *taken.peek());
     use_effect(move || {
         let now_expired = expired();
-        if *was_expired.peek() && !now_expired {
+        let now_taken = taken();
+        if (*was_expired.peek() && !now_expired) || *read_with.peek() != now_taken {
             *today_attempt.write() += 1;
             *workspace_attempt.write() += 1;
             *snapshot_attempt.write() += 1;
         }
         was_expired.set(now_expired);
+        read_with.set(now_taken);
     });
     #[cfg(target_arch = "wasm32")]
+    let mut stream = use_signal(|| None::<dioxus::core::Task>);
+    #[cfg(target_arch = "wasm32")]
     use_effect(move || {
+        let _taken = taken();
+        if let Some(task) = stream.write().take() {
+            task.cancel();
+        }
         if expired() {
             return;
         }
         let session = client.read().session().get();
-        follow_workspace_events(
+        let task = follow_workspace_events(
             &base_url,
             session,
             today_attempt,
@@ -759,6 +933,7 @@ fn PhysicianShell(
             snapshot_attempt,
             selected,
         );
+        stream.set(Some(task));
     });
     let _whoami_load = use_resource(move || {
         let _attempt = today_attempt();
@@ -780,6 +955,7 @@ fn PhysicianShell(
     let today = use_resource(move || {
         let _attempt = today_attempt();
         let client = client.read().clone();
+        let presented = client.session().get();
         async move {
             match client.today().await {
                 Ok(response) => {
@@ -788,7 +964,7 @@ fn PhysicianShell(
                 }
                 Err(error) => {
                     if let Some(refused) = refusal(&error) {
-                        session.refused(refused, *shown.peek());
+                        session.refused(refused, *shown.peek(), presented);
                     }
                     Err(())
                 }
@@ -849,6 +1025,7 @@ fn PhysicianShell(
     let workspace = use_resource(move || {
         let _attempt = workspace_attempt();
         let client = client.read().clone();
+        let presented = client.session().get();
         let open_id = selected();
         async move {
             let answer = match open_id.clone() {
@@ -865,7 +1042,7 @@ fn PhysicianShell(
                     // the shell, so nothing of it stays either way.
                     Err(error) => {
                         if let Some(refused) = refusal(&error) {
-                            session.refused(refused, *shown.peek());
+                            session.refused(refused, *shown.peek(), presented);
                         } else if matches!(
                             error,
                             physician_client::HttpError::Status { status: 404, .. }
@@ -1216,10 +1393,10 @@ fn PhysicianShell(
     };
     let patient_gone = selected.read().is_some() && *gone.read() == *selected.read();
     let patient_read = match (workspace_answer, &workspace_current) {
-        (Some(Err(())), Some(Ok(_))) => ui::ReadStage::Stale,
-        (_, Some(Ok(_))) => ui::ReadStage::Showing,
-        (_, Some(Err(()))) => ui::ReadStage::Unavailable,
-        (_, None) => ui::ReadStage::Loading,
+        (Some(Err(())), Some(Ok(_))) => ReadStage::Stale,
+        (_, Some(Ok(_))) => ReadStage::Showing,
+        (_, Some(Err(()))) => ReadStage::Unavailable,
+        (_, None) => ReadStage::Loading,
     };
     let chats = chat_view(
         selected.read().as_deref(),
@@ -1311,7 +1488,7 @@ fn PhysicianShell(
         }
     );
     rsx! {
-        style { "{ui::STYLESHEET}{SHELL_STYLES}" }
+        ui::Stylesheet { app: SHELL_STYLES }
         if app_collapsed() {
             button {
                 class: "coda-restore",
@@ -1322,21 +1499,27 @@ fn PhysicianShell(
             }
         }
         if expired() {
-            // Covers and hides the page; nothing underneath changes.
-            div {
+            // Covers and hides the page; nothing underneath changes. A modal opened last, it
+            // stands over any dialog left open, which stays as it was. Only signing in or out
+            // closes it.
+            dialog {
+                id: "session-prompt",
                 class: "session-prompt",
-                role: "dialog",
-                aria_modal: "true",
                 aria_label: "Sign in to continue",
+                "closedby": "none",
+                onmounted: move |_| {
+                    document::eval(SHOW_SESSION_PROMPT);
+                },
                 SignInScreen {
                     client,
+                    session,
                     link: None,
                     resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
                     on_signed_in: move |_| {
                         let mut expired = expired;
                         expired.set(false);
                     },
-                    on_sign_out: move |_| sign_out_everywhere(client.read().clone(), session),
+                    on_sign_out: move |_| sign_out_everywhere(session),
                 }
             }
         }
@@ -1347,22 +1530,6 @@ fn PhysicianShell(
             tabindex: "0",
             onkeydown: move |event| {
                 let key = event.key().to_string();
-                if key == "Escape" {
-                    event.prevent_default();
-                    if search_open() {
-                        search_open.set(false);
-                        editing.set(false);
-                    } else if shortcuts_open() {
-                        shortcuts_open.set(false);
-                    } else if connections_open() {
-                        connections_open.set(false);
-                    } else if past_work_open() {
-                        past_work_open.set(false);
-                    } else if reading.read().is_some() {
-                        reading.set(None);
-                    }
-                    return;
-                }
                 if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
                     event.prevent_default();
                     let client = client.read().clone();
@@ -1433,27 +1600,28 @@ fn PhysicianShell(
                             onclick: move |_| place.set(Place::Today),
                             img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "Coda Health" }
                         }
-                        button {
-                            class: "icon-button sidebar-collapse",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-collapse",
                             aria_label: "Collapse navigation",
                             onclick: move |_| remember(Panel::Sidebar, true),
                             Icon { name: IconName::SidebarCollapse }
                         }
-                        button {
-                            class: "icon-button sidebar-expand",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-expand",
                             aria_label: "Expand navigation",
                             onclick: move |_| remember(Panel::Sidebar, false),
                             Icon { name: IconName::SidebarExpand }
                         }
                     }
-                    nav { class: "sidebar-primary", aria_label: "Primary",
-                        button {
+                    nav { class: "sidebar-primary selection-host", aria_label: "Primary",
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Open Today",
-                            aria_current: if place() == Place::Today { "page" } else { "" },
+                            aria_current: (place() == Place::Today).then_some("page"),
                             onclick: move |_| {
                                 place.set(Place::Today);
                             },
@@ -1464,17 +1632,15 @@ fn PhysicianShell(
                             }
                             strong { class: "item-text", "Today" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
-                            aria_current: if place() == Place::Updates { "page" } else { "" },
+                            aria_current: (place() == Place::Updates).then_some("page"),
                             onclick: move |_| place.set(Place::Updates),
                             Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }
                         }
-                        button {
+                        NavigationRow {
                             class: "sidebar-nav-item",
-                            r#type: "button",
                             aria_label: "Find patient",
                             onclick: move |_| search_open.set(true),
                             Icon { name: IconName::Search }
@@ -1494,9 +1660,9 @@ fn PhysicianShell(
                                 p { class: "sidebar-empty", "Not on your panel" }
                             } else {
                                 if !matches!(chats, ChatView::Closed | ChatView::Pending | ChatView::Unavailable) {
-                                    button {
-                                        class: "control-secondary sidebar-new-conversation",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
+                                        class: "sidebar-new-conversation",
                                         onclick: move |_| start_chat(),
                                         Icon { name: IconName::Plus }
                                         "{NEW_CONVERSATION}"
@@ -1510,9 +1676,8 @@ fn PhysicianShell(
                                     ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
                                     ChatView::Chats(lines) => rsx! {
                                         for line in lines {
-                                            button {
+                                            NavigationRow {
                                                 class: "sidebar-conversation-link",
-                                                r#type: "button",
                                                 onclick: {
                                                     let id = line.id.clone();
                                                     move |_| open_chat.set(Some(id.clone()))
@@ -1545,23 +1710,23 @@ fn PhysicianShell(
                             span { class: "sidebar-physician", "{whoami_name}" }
                         }
                         if connection_accounts {
-                            button {
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Quiet,
                                 onclick: move |_| connections_open.set(true),
                                 Icon { name: IconName::Users }
                                 "{CONNECTIONS}"
                             }
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             onclick: move |_| shortcuts_open.set(true),
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
-                        button {
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             aria_label: "Sign out of Coda",
-                            onclick: move |_| sign_out_everywhere(client.read().clone(), session),
+                            onclick: move |_| sign_out_everywhere(session),
                             Icon { name: IconName::Users }
                             "Sign out"
                         }
@@ -1569,9 +1734,9 @@ fn PhysicianShell(
                 }
             }
             main { class: "glass-stage",
-                button {
+                Button {
+                    variant: ButtonVariant::Quiet,
                     class: "stage-minimize",
-                    r#type: "button",
                     onclick: move |_| app_collapsed.set(true),
                     "Collapse Coda"
                 }
@@ -1916,7 +2081,10 @@ fn PhysicianShell(
                 state: search_state.clone(),
                 on_retry: move |_| *search_attempt.write() += 1,
                 on_query: move |value: String| query.set(value),
-                on_close: move |_| search_open.set(false),
+                on_close: move |_| {
+                    search_open.set(false);
+                    editing.set(false);
+                },
                 on_open: move |id: String| {
                     selected.set(Some(id));
                     place.set(Place::Workspace);
@@ -2040,11 +2208,8 @@ struct CommandSlot {
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
 /// can say there is no calendar or no visit to show.
-fn schedule_unanswered(schedule: ui::ReadStage) -> bool {
-    matches!(
-        schedule,
-        ui::ReadStage::Loading | ui::ReadStage::Unavailable
-    )
+fn schedule_unanswered(schedule: ReadStage) -> bool {
+    matches!(schedule, ReadStage::Loading | ReadStage::Unavailable)
 }
 
 /// One read as the page shows it. A failed refresh keeps the last answer.
@@ -2197,12 +2362,14 @@ mod command_answer_tests {
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
+    session: SessionState,
     link: Option<SignInLink>,
     on_signed_in: EventHandler<Option<WhoamiResponse>>,
     resume_email: Option<String>,
     on_sign_out: Option<EventHandler<()>>,
 ) -> Element {
     let resuming = resume_email.is_some();
+    let mut removed = session.removed;
     let mut email = use_signal(|| {
         link.as_ref()
             .map(|link| link.email.clone())
@@ -2212,6 +2379,8 @@ fn SignInScreen(
     let mut stage = use_signal(|| {
         if link.is_some() {
             SignInStage::SigningIn
+        } else if *removed.peek() {
+            SignInStage::NoAccess
         } else {
             SignInStage::Email
         }
@@ -2227,11 +2396,12 @@ fn SignInScreen(
                 Ok(verified) => {
                     #[cfg(target_arch = "wasm32")]
                     {
-                        write_stored_session(Some(&verified.session));
-                        tabs::announce(&tabs::TabNews::SignedIn {
-                            physician_id: verified.physician_id.clone(),
-                            session: verified.session.clone(),
-                        });
+                        store_session(&verified.session, &link.email);
+                        let mut owner = session.owner;
+                        owner.set(Some(link.email.trim().to_owned()));
+                        let mut seen = session.sign_outs_seen;
+                        seen.set(read_sign_outs());
+                        tabs::announce();
                     }
                     #[cfg(not(target_arch = "wasm32"))]
                     let _ = verified;
@@ -2255,9 +2425,45 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
+    // While this browser holds another physician's session, the link signs
+    // the browser out before it is redeemed. Your own link changes nothing
+    // while your session stands, and signs you back in once it has ended;
+    // when Coda can't say which, your session stays and the link is not used.
+    // Either way the session must still be the one this browser stores when
+    // Coda answers; otherwise the link is redeemed.
     use_effect(move || {
         if let Some(link) = link.clone() {
-            verify_link(link);
+            let held = client.peek().clone();
+            let yours = read_stored_owner()
+                .is_some_and(|owner| owner.eq_ignore_ascii_case(link.email.trim()));
+            if held.session().is_some() && !yours {
+                session.end();
+                verify_link(link);
+                return;
+            }
+            let checked = held.session().get();
+            spawn(async move {
+                if let Some(checked) = checked {
+                    match held.whoami().await {
+                        Ok(account)
+                            if account.email.eq_ignore_ascii_case(link.email.trim())
+                                && still_stored(&checked) =>
+                        {
+                            on_signed_in.call(Some(account));
+                            return;
+                        }
+                        Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {}
+                        Ok(_) => session.end(),
+                        Err(failure) if refusal(&failure).is_some() => {}
+                        Err(_) if still_stored(&checked) => {
+                            on_signed_in.call(None);
+                            return;
+                        }
+                        Err(_) => {}
+                    }
+                }
+                verify_link(link);
+            });
         }
     });
 
@@ -2340,12 +2546,15 @@ fn SignInScreen(
                             }
                         },
                         SignInStage::NoAccess => rsx! {
-                            p { class: "sign-in-sub", "{NO_ACCESS}" }
+                            p { class: "sign-in-sub",
+                                if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
+                            }
                             div { class: "sign-in-actions",
                                 button {
                                     class: "sign-in-text-action",
                                     r#type: "button",
                                     onclick: move |_| {
+                                        removed.set(false);
                                         email.set(String::new());
                                         stage.set(SignInStage::Email);
                                     },
@@ -2554,7 +2763,7 @@ fn TodaySurface(
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     schedule_empty: String,
     schedule_collapsed: bool,
@@ -2594,7 +2803,7 @@ fn TodaySurface(
             header { class: "today-heading",
                 h1 { "Today" }
                 if need_you > 0 {
-                    span { class: "count", span { class: "count-value", "{need_you}" } " {words}" }
+                    Count { value: need_you, words }
                 }
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
@@ -2687,13 +2896,13 @@ fn SimulationPanel(
             }
             div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
                 for scenario in sim.scenarios.iter() {
-                    button {
-                        class: if scenario.key == sim.active_scenario_key {
-                            "control-secondary is-active-scenario"
+                    Button {
+                        variant: if scenario.key == sim.active_scenario_key {
+                            ButtonVariant::Primary
                         } else {
-                            "control-secondary"
+                            ButtonVariant::Secondary
                         },
-                        r#type: "button",
+                        compact: true,
                         "data-scenario-key": "{scenario.key}",
                         onclick: {
                             let key = scenario.key.clone();
@@ -2705,9 +2914,8 @@ fn SimulationPanel(
             }
             div { class: "simulation-panel-patients", aria_label: "Synthetic panel patients",
                 for patient in sim.panel_patients.iter() {
-                    button {
-                        class: "control-secondary",
-                        r#type: "button",
+                    Button {
+                        compact: true,
                         "data-panel-patient": "{patient.patient_workspace_id}",
                         onclick: {
                             let id = patient.patient_workspace_id.clone();
@@ -2733,24 +2941,20 @@ fn TodayRows(
         div { class: "today-list",
             for (index, row) in rows.iter().enumerate() {
                 article { class: "today-row",
-                    button {
+                    NavigationRow {
                         class: if focused == Some(index) { "today-row-open is-keyboard-focus" } else { "today-row-open" },
-                        r#type: "button",
                         onclick: {
                             let row = row.clone();
                             move |_| on_open.call(row.clone())
                         },
                         span { class: "today-row-line",
                             span { class: "today-row-heading",
-                                span { class: "live-dot", aria_hidden: "true" }
+                                LiveDot {}
                                 strong { class: "today-row-who", "{row.patient}" }
                                 if row.now {
                                     span { class: "urgency-now", "{NEEDS_YOU_NOW}" }
                                 }
-                                span { class: "state-pill",
-                                    Icon { name: IconName::Alert }
-                                    "{row.did}"
-                                }
+                                StatePill { tone: row_tone(&row.kind), icon: row_icon(&row.kind), "{row.did}" }
                             }
                             if let Some(waited) = format_waited(&row.waiting_since, &server_now) {
                                 time { class: "today-row-waited", datetime: "{row.waiting_since}", "{waited}" }
@@ -2762,9 +2966,8 @@ fn TodayRows(
                     }
                     if row.resume_work_item_id.is_some() {
                         div { class: "today-row-action",
-                            button {
-                                class: "control-secondary",
-                                r#type: "button",
+                            Button {
+                                compact: true,
                                 onclick: {
                                     let row = row.clone();
                                     move |_| on_resume.call(row.clone())
@@ -2783,7 +2986,7 @@ fn TodayRows(
 fn ScheduleRail(
     visits: Vec<VisitLine>,
     title: &'static str,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_retry: EventHandler,
     empty: String,
     collapsed: bool,
@@ -2794,41 +2997,37 @@ fn ScheduleRail(
 ) -> Element {
     let count = visits.len();
     let rail_class = if collapsed {
-        "schedule-rail is-collapsed"
+        "schedule-rail card is-collapsed"
     } else {
-        "schedule-rail"
+        "schedule-rail card"
     };
     rsx! {
         aside { class: "{rail_class}", aria_label: "{title}",
             if collapsed {
-                button {
+                NavigationRow {
                     class: "schedule-rail-expand",
-                    r#type: "button",
                     aria_expanded: "false",
                     aria_label: "Show {title}",
                     onclick: move |_| on_collapsed.call(false),
-                    span { class: "icon-tile", aria_hidden: "true",
-                        Icon { name: IconName::Calendar }
-                    }
+                    IconTile { name: IconName::Calendar }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } }
+                        Count { value: count }
                     }
                 }
             }
             div { class: "schedule-rail-body",
             header { class: "card-header",
-                span { class: "icon-tile", aria_hidden: "true",
-                    Icon { name: IconName::Calendar }
-                }
-                div { class: "card-title",
+                IconTile { name: IconName::Calendar }
+                div { class: "card-title title-with-count",
                     h2 { "{title}" }
                     if count > 0 {
-                        span { class: "count", span { class: "count-value", "{count}" } " left" }
+                        Count { value: count, words: "left" }
                     }
                 }
-                button {
-                    class: "icon-button schedule-rail-collapse",
-                    r#type: "button",
+                Button {
+                    variant: ButtonVariant::Quiet,
+                    icon_only: true,
+                    class: "schedule-rail-collapse",
                     aria_expanded: "true",
                     aria_label: "Collapse {title}",
                     onclick: move |_| on_collapsed.call(true),
@@ -2843,11 +3042,11 @@ fn ScheduleRail(
                 retry: TRY_AGAIN,
                 on_retry,
             }
-            if visits.is_empty() && read == ui::ReadStage::Showing {
+            if visits.is_empty() && read == ReadStage::Showing {
                 p { class: "schedule-rail-empty", "{empty}" }
             }
             for (index, visit) in visits.iter().enumerate() {
-                button {
+                NavigationRow {
                     class: if focused == Some(index) {
                         "schedule-visit is-next is-keyboard-focus"
                     } else if index == 0 {
@@ -2855,7 +3054,6 @@ fn ScheduleRail(
                     } else {
                         "schedule-visit"
                     },
-                    r#type: "button",
                     onclick: {
                         let visit = visit.clone();
                         move |_| on_open.call(visit.clone())
@@ -2915,7 +3113,7 @@ fn UpdatesSurface(state: ReadView<Vec<serde_json::Value>>, on_retry: EventHandle
 #[component]
 fn PatientSurface(
     gone: bool,
-    read: ui::ReadStage,
+    read: ReadStage,
     on_go_today: EventHandler,
     name: String,
     workspace: Option<PatientWorkspaceResponse>,
@@ -2923,7 +3121,7 @@ fn PatientSurface(
     visits: Vec<VisitLine>,
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
-    schedule: ui::ReadStage,
+    schedule: ReadStage,
     on_schedule_retry: EventHandler,
     focused: Option<i32>,
     chats: ChatView,
@@ -3048,8 +3246,8 @@ fn PatientSurface(
         // Nothing of the patient shows, not even the name.
         return rsx! {
             div { class: "reading-workspace patient-page",
-                ErrorState { message: PATIENT_GONE }
-                TextButton { label: GO_TO_TODAY, quiet: true, on_press: on_go_today }
+                StatusLine { message: PATIENT_GONE, alert: true }
+                NavigationControl { onclick: move |_| on_go_today.call(()), "{GO_TO_TODAY}" }
             }
         };
     }
@@ -3060,17 +3258,18 @@ fn PatientSurface(
                     h1 { class: "workspace-title", "{heading_name}" }
                     div { class: "patient-identity-actions",
                         if past_work && !clinic_demographic {
-                            button {
-                                class: "control-secondary past-work-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                class: "past-work-button",
                                 onclick: move |_| on_open_past_work.call(()),
                                 "Past work"
                             }
                         }
                         if is_admin && workspace.is_some() && !clinic_demographic {
-                            button {
-                                class: "control-secondary remove-panel-button",
-                                r#type: "button",
+                            Button {
+                                compact: true,
+                                danger: true,
+                                class: "remove-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_remove_panel.call(()),
                                 if panel_busy { "Updating…" } else { "Remove from panel" }
@@ -3161,7 +3360,7 @@ fn PatientSurface(
                                 label { class: "panel-physician-label",
                                     "Physician panel"
                                     select {
-                                        class: "panel-physician-select",
+                                        class: "panel-physician-select field",
                                         aria_label: "Physician panel",
                                         value: "{target_physician_id}",
                                         onchange: move |event| on_select_physician.call(event.value()),
@@ -3174,9 +3373,9 @@ fn PatientSurface(
                                     }
                                 }
                             }
-                            button {
-                                class: "sign-in-primary assign-panel-button",
-                                r#type: "button",
+                            Button {
+                                variant: ButtonVariant::Primary,
+                                class: "assign-panel-button",
                                 disabled: panel_busy,
                                 onclick: move |_| on_assign_panel.call(()),
                                 if panel_busy { "Assigning…" } else { "Assign to panel" }
@@ -3196,9 +3395,8 @@ fn PatientSurface(
                         "Scenario: {sim.active_scenario_label} · {sim.investor_metric.physician_touched_items} touches across {sim.investor_metric.panel_size} patients"
                     }
                     if !replies.is_empty() {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-action": "admit-corrected-labs",
                             disabled: work_busy,
                             onclick: move |_| on_admit_corrected_labs.call(()),
@@ -3244,7 +3442,7 @@ fn PatientSurface(
                             "data-reply-state": "superseded_by_correction",
                             div { class: "simulation-card-header",
                                 strong { "{superseded.headline}" }
-                                span { class: "state-pill", "Superseded by corrected labs" }
+                                StatePill { "Superseded by corrected labs" }
                             }
                             if let Some(reason) = superseded.superseded_reason {
                                 p { class: "patient-synopsis-meta", "{reason}" }
@@ -3257,18 +3455,18 @@ fn PatientSurface(
                 if let Some(heading) = work_heading(&run) {
                     section { class: "patient-section", aria_label: "Current work",
                         h2 { "Current work" }
-                        button {
+                        NavigationRow {
                             class: "today-row-open",
-                            r#type: "button",
                             onclick: {
                                 let heading = heading.clone();
                                 let preparation = visits
                                     .first()
                                     .and_then(|visit| visit.preparation.clone());
+                                let ended_cause = run.ended_cause.clone();
                                 move |_| {
                                     let body = preparation
                                         .clone()
-                                        .or_else(|| work_end_reason(run.ended_cause.as_deref()).map(str::to_owned))
+                                        .or_else(|| work_end_reason(ended_cause.as_deref()).map(str::to_owned))
                                         .unwrap_or_default();
                                     on_read.call((heading.clone(), body));
                                 }
@@ -3333,9 +3531,8 @@ fn PatientSurface(
                             "data-recommendation-id": "{rec.recommendation_id}",
                             div { class: "simulation-card-header",
                                 strong { "{rec.medication} — Held (undecided)" }
-                                button {
-                                    class: "control-secondary",
-                                    r#type: "button",
+                                Button {
+                                    compact: true,
                                     "data-decide-recommendation": "{rec.recommendation_id}",
                                     disabled: work_busy,
                                     onclick: {
@@ -3399,15 +3596,14 @@ fn PatientSurface(
             section { class: "patient-section", aria_label: "Conversation",
                 h2 { "Conversation" }
                 match chats {
-                    ChatView::Closed => rsx! { EmptyState { message: WORKSPACE_CLOSED.to_owned() } },
+                    ChatView::Closed => rsx! { EmptyLine { message: WORKSPACE_CLOSED.to_owned() } },
                     ChatView::Pending => rsx! {},
                     // The page's own read line says the patient couldn't open.
                     ChatView::Unavailable => rsx! {},
                     ChatView::Empty => rsx! {
                         p { class: "sidebar-empty", "{WORKSPACE_EMPTY}" }
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             onclick: move |_| on_new_chat.call(()),
                             Icon { name: IconName::Plus }
                             "{NEW_CONVERSATION}"
@@ -3415,9 +3611,8 @@ fn PatientSurface(
                     },
                     ChatView::Chats(lines) => rsx! {
                         for line in lines {
-                            button {
+                            NavigationRow {
                                 class: "sidebar-conversation-link",
-                                r#type: "button",
                                 onclick: {
                                     let id = line.id.clone();
                                     move |_| on_open_chat.call(id.clone())
@@ -3443,50 +3638,55 @@ fn PatientSurface(
                             if let Some(target) = line.resume {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
-                                    button {
-                                        class: "control-secondary",
-                                        r#type: "button",
+                                    Button {
+                                        compact: true,
                                         disabled: conversation_resume_busy,
                                         onclick: move |_| on_conversation_resume.call(target.clone()),
                                         "{TRY_AGAIN}"
                                     }
+                                }
+                            } else if line.author == Some(Author::Person) {
+                                ui::Message { author: Author::Person, by: "You",
+                                    FormattedMessage { text: line.text }
+                                }
+                            } else if line.author == Some(Author::Assistant) {
+                                ui::Message { author: Author::Assistant, by: "Coda",
+                                    FormattedMessage { text: line.text }
                                 }
                             } else {
                                 FormattedMessage { text: line.text }
                             }
                         }
                         {conversation_resume_notice}
-                        textarea {
-                            class: "composer",
+                        ui::Composer {
+                            label: "Message",
                             placeholder: "Write a message",
-                            value: "{draft}",
-                            aria_label: "Message",
-                            onfocus: move |_| on_editing.call(true),
-                            onblur: move |_| {
-                                on_editing.call(false);
-                                on_draft_blur.call(());
+                            value: draft.clone(),
+                            on_input: move |text| on_draft.call(text),
+                            on_submit: move |_| on_send.call(()),
+                            on_editing: move |editing| {
+                                on_editing.call(editing);
+                                if !editing {
+                                    on_draft_blur.call(());
+                                }
                             },
-                            oninput: move |event| on_draft.call(event.value()),
-                        }
-                        div { class: "composer-actions",
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_send.call(()), "Send" }
-                            button { class: "control-secondary", r#type: "button", onclick: move |_| on_dictate.call(()), "Dictate" }
-                            if !notice.is_empty() {
-                                span { class: "composer-notice", role: "status", "{notice}" }
-                            }
-                        }
-                        if let Some(newer) = conflict {
-                            div { class: "composer-conflict", role: "alert", "data-revision": "{newer.revision}",
-                                p { "{DRAFT_CONFLICT}" }
-                                blockquote { class: "composer-conflict-text", "{newer.text}" }
-                                p { class: "quiet-line",
-                                    if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                            status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                            notices: conflict.map(|newer| rsx! {
+                                DraftConflict {
+                                    message: DRAFT_CONFLICT,
+                                    saved: newer.text,
+                                    "data-revision": "{newer.revision}",
+                                    p { class: "quiet-line",
+                                        if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                                    }
+                                    ActionRow {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                        Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                    }
                                 }
-                                div { class: "composer-actions",
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
-                                    button { class: "control-secondary", r#type: "button", onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
-                                }
-                            }
+                            }),
+                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
+                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
                         }
                         if recovery_unavailable {
                             p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
@@ -3539,19 +3739,17 @@ fn SearchDialog(
         .map(|patient| patient.patient_workspace_id.clone());
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Find patient", onclick: move |event| event.stop_propagation(),
-                h2 { "Find patient" }
-                input {
-                    class: "dialog-search",
-                    r#type: "search",
+        Dialog { close_label: "Close", title: "Find patient", on_close,
+                SearchField {
+                    label: "Search your panel",
                     placeholder: "Name, DOB or phone",
-                    value: "{query}",
+                    clear_label: "Clear search",
+                    value: query.clone(),
                     autofocus: true,
                     onfocus: move |_| on_editing.call(true),
                     onblur: move |_| on_editing.call(false),
-                    oninput: move |event| on_query.call(event.value()),
-                    onkeydown: move |event| {
+                    on_input: move |words| on_query.call(words),
+                    onkeydown: move |event: KeyboardEvent| {
                         if event.key().to_string() == "Enter" {
                             event.stop_propagation();
                             if let Some(id) = first.clone() {
@@ -3569,14 +3767,13 @@ fn SearchDialog(
                     on_retry,
                 }
                 if none {
-                    EmptyState { message: SEARCH_NONE }
+                    EmptyLine { message: SEARCH_NONE }
                 }
                 ul { class: "dialog-results",
                     for (index, patient) in results.iter().enumerate() {
                         li {
-                            button {
+                            NavigationRow {
                                 class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                r#type: "button",
                                 onclick: {
                                     let id = patient.patient_workspace_id.clone();
                                     move |_| on_open.call(id.clone())
@@ -3587,7 +3784,6 @@ fn SearchDialog(
                         }
                     }
                 }
-            }
         }
     }
 }
@@ -3595,9 +3791,7 @@ fn SearchDialog(
 #[component]
 fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Connections", onclick: move |event| event.stop_propagation(),
-                h2 { "{CONNECTIONS}" }
+        Dialog { close_label: "Close", title: CONNECTIONS, on_close,
                 if failed {
                     p { "{TODAY_UNAVAILABLE}" }
                 } else if lines.is_empty() {
@@ -3607,8 +3801,6 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
                         p { class: "today-connection", "{line}" }
                     }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3655,21 +3847,15 @@ fn source_reading(chip: SourceChip) -> OpenReading {
 
 #[component]
 fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element {
-    let name = chip_name(&chip);
+    let label = chip_name(&chip);
     let index = chip.index;
     if chip.open {
         rsx! {
-            button {
-                class: "citation-chip",
-                r#type: "button",
-                aria_label: "{name}",
-                onclick: move |_| on_open.call(chip.clone()),
-                "[{index}]"
-            }
+            ui::CitationChip { index, label, onclick: move |_| on_open.call(chip.clone()) }
         }
     } else {
         rsx! {
-            span { class: "citation-chip", aria_label: "{name}", "[{index}]" }
+            ui::CitationChip { index, label }
         }
     }
 }
@@ -3682,9 +3868,9 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
         && reading.unavailable.is_none();
     let citation = reading.eyebrow.is_some();
     let section_class = if citation {
-        "dialog reader citation-inspection"
+        "reader citation-inspection"
     } else {
-        "dialog reader"
+        "reader"
     };
     let title = reading.title.clone();
     let eyebrow = reading.eyebrow.clone();
@@ -3692,14 +3878,8 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
     let unavailable = reading.unavailable.clone();
     let link_label = reading.link_label.clone();
     let link_uri = reading.link_uri.clone();
-    let label = if citation { "Citation" } else { "Reader" };
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "{section_class}", aria_label: "{label}", onclick: move |event| event.stop_propagation(),
-                if let Some(eyebrow) = eyebrow {
-                    span { class: "citation-eyebrow", "{eyebrow}" }
-                }
-                h2 { "{title}" }
+        Dialog { close_label: "Close", class: "{section_class}", title, subtitle: eyebrow, on_close,
                 if quiet {
                     p { "Nothing is open to read." }
                 }
@@ -3715,8 +3895,6 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
                 if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
                     a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
                 }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -3724,18 +3902,13 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
 #[component]
 fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section {
-                class: "dialog past-work-dialog",
-                aria_label: "Past work",
-                onclick: move |event| event.stop_propagation(),
-                h2 { id: "past-work-title", "Past work" }
-                if !patient.is_empty() {
-                    p { class: "patient-synopsis-meta", "{patient}" }
-                }
-                p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
+        Dialog {
+            close_label: "Close",
+            class: "past-work-dialog",
+            title: "Past work",
+            subtitle: (!patient.is_empty()).then_some(patient),
+            on_close,
+            p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
         }
     }
 }
@@ -3829,7 +4002,7 @@ fn ReplyReviewCard(
             aria_label: "{label}",
             div { class: "simulation-card-header",
                 strong { "{headline}" }
-                span { class: "state-pill", "{urgency}" }
+                StatePill { tone: Tone::Warning, "{urgency}" }
             }
             p { class: "patient-synopsis-meta", "{label}" }
             FormattedMessage { text: draft.clone() }
@@ -3844,9 +4017,8 @@ fn ReplyReviewCard(
             if can_copy || can_close {
                 div { class: "reply-review-actions",
                     if can_copy {
-                        button {
-                            class: "sign-in-primary",
-                            r#type: "button",
+                        Button {
+                            variant: ButtonVariant::Primary,
                             "data-reply-action": "copy",
                             disabled: busy,
                             onclick: move |_| {
@@ -3860,9 +4032,8 @@ fn ReplyReviewCard(
                         }
                     }
                     if can_close {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "no-reply-needed",
                             disabled: busy,
                             onclick: {
@@ -3880,7 +4051,7 @@ fn ReplyReviewCard(
             if can_revise {
                 div { class: "reply-review-ask",
                     input {
-                        class: "reply-review-instruction",
+                        class: "reply-review-instruction field",
                         r#type: "text",
                         placeholder: "{REPLY_TELL_CODA}",
                         aria_label: "{REPLY_TELL_CODA}",
@@ -3901,9 +4072,8 @@ fn ReplyReviewCard(
                         },
                     }
                     if !instruction.read().trim().is_empty() && !busy {
-                        button {
-                            class: "control-secondary",
-                            r#type: "button",
+                        Button {
+                            compact: true,
                             "data-reply-action": "revise",
                             aria_label: "{REPLY_ASK}",
                             onclick: {
@@ -3958,9 +4128,7 @@ fn copy_text_wasm(text: &str) -> bool {
 #[component]
 fn ShortcutsDialog(on_close: EventHandler) -> Element {
     rsx! {
-        div { class: "dialog-backdrop", onclick: move |_| on_close.call(()),
-            section { class: "dialog", aria_label: "Keyboard shortcuts", onclick: move |event| event.stop_propagation(),
-                h2 { "Keyboard shortcuts" }
+        Dialog { close_label: "Close", title: "Keyboard shortcuts", on_close,
                 div { class: "shortcut", span { "Search your panel" } kbd { "/  ⌘ K" } }
                 div { class: "shortcut", span { "Move between patients or conversations" } kbd { "J  K" } }
                 div { class: "shortcut", span { "Open the focused item" } kbd { "Enter" } }
@@ -3968,8 +4136,6 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
                 p { "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
-                button { class: "control-secondary", r#type: "button", onclick: move |_| on_close.call(()), "Close" }
-            }
         }
     }
 }
@@ -4286,6 +4452,9 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    /// Who wrote it, when the server says: the physician or Coda. A turn that
+    /// doesn't say shows without a speaker rather than as either.
+    author: Option<Author>,
     resume: Option<WorkResumeTarget>,
 }
 
@@ -4301,7 +4470,16 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .resume_target
                 .clone()
                 .filter(|_| turn.kind.as_deref() == Some("mechanical"));
-            Some(ConversationLine { text, resume })
+            let author = match turn.kind.as_deref() {
+                Some("physician") => Some(Author::Person),
+                Some("model") => Some(Author::Assistant),
+                _ => None,
+            };
+            Some(ConversationLine {
+                text,
+                author,
+                resume,
+            })
         })
         .collect()
 }
@@ -4405,6 +4583,7 @@ fn now_millis() -> u128 {
 mod conversation_line_tests {
     use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
     use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+    use ui::Author;
 
     #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
@@ -4441,13 +4620,35 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    author: Some(Author::Person),
                     resume: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    author: None,
                     resume: Some(target()),
                 },
             ]
+        );
+    }
+
+    #[test]
+    fn only_a_turn_that_names_its_writer_gets_a_speaker() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?" },
+                { "kind": "model", "text": "Her heart rate allows it." },
+                { "text": "Recorded in local simulation." },
+            ] }
+        }))
+        .unwrap();
+        let authors: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.author)
+            .collect();
+        assert_eq!(
+            authors,
+            vec![Some(Author::Person), Some(Author::Assistant), None]
         );
     }
 

@@ -535,19 +535,31 @@
                   "test": "Immunoglobulin G",
                   "loinc": "2465-3",
                   "unit": "mg/dL",
-                  "value": 1040
+                  "value": 1040,
+                  "range": {
+                    "low": 800,
+                    "high": 1500
+                  }
                 },
                 {
                   "test": "Immunoglobulin A",
                   "loinc": "2458-8",
                   "unit": "mg/dL",
-                  "value": 210
+                  "value": 210,
+                  "range": {
+                    "low": 90,
+                    "high": 325
+                  }
                 },
                 {
                   "test": "Immunoglobulin M",
                   "loinc": "2472-9",
                   "unit": "mg/dL",
-                  "value": 115
+                  "value": 115,
+                  "range": {
+                    "low": 45,
+                    "high": 150
+                  }
                 }
               ]
             }
@@ -563,7 +575,8 @@
           "procedures": [
             {
               "procedure": "Bronchoscopy with bronchoalveolar lavage",
-              "performed": "2025-12-29T15:10"
+              "performed": "2025-12-29T15:10",
+              "snomed": "397397002"
             }
           ],
           "medications": [],

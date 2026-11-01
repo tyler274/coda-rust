@@ -1,0 +1,186 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002615",
+      "given": "Min-jun",
+      "family": "Tanaka",
+      "birth_date": "2005-12-12",
+      "address_line": "62 Dorset Street, Apt 2",
+      "phone": "+1-860-555-0142",
+      "email": "min-jun.tanaka@example.test",
+      "marital_status": "single",
+      "summary": "Healthy undergraduate who joined the practice at 18. Three heterophile-positive mononucleosis illnesses in 2025-2026, the last complicated by mild Coombs-positive hemolytic anemia and thrombocytopenia that hematology observed and that resolved by April 2026.",
+      "events": [
+        {
+          "id": "2023-12-20a",
+          "kind": "telephone",
+          "start": "2023-12-20T14:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Request",
+              "author": "front desk",
+              "date": "2023-12-20T14:12",
+              "body": "Caller is 18 as of last week, has been seeing a pediatrician and was told to find an adult doctor. High school senior. No current concerns, just wants to get set up. Student health plan through his university, card info taken. Offered Jan 3 at 10:00 for a new patient physical, he accepted. Asked him to have the pediatric office send records; release form emailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-03a",
+          "kind": "establish_care",
+          "start": "2024-01-03T10:00",
+          "end": "2024-01-03T10:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 68.2, "height_cm": 175.3},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [
+            {"survey": "PHQ-2 total score", "value": 0},
+            {"survey": "AUDIT-C total score", "value": 1}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social use, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Undergraduate student"},
+            {"item": "Electronic cigarette status", "value": "Never used"}
+          ],
+          "labs": [
+            {"panel": "Lipid Panel", "collected": "2024-01-03T10:55", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-01-03T10:55", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-01-03T10:55", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-01-03T10:45"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2024-01-03T10:00"},
+            {"procedure": "Immunization administration", "performed": "2024-01-03T10:45"},
+            {"procedure": "Venipuncture", "performed": "2024-01-03T10:55"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "author": "PCP",
+              "date": "2024-01-03T10:00",
+              "body": "New patient, 18, high school senior, coming over from his pediatric office. Starts college in the fall and expects to live on campus. Feels well. No chronic problems, no hospitalizations, no surgeries. Takes nothing regularly, no supplements.\n\nAllergies: none to medications.\n\nFamily: maternal uncle had nasopharyngeal cancer, diagnosed at 42. Paternal grandfather had stomach cancer. Parents healthy as far as he knows.\n\nSocial: senior in high school, lives with his parents. Never smoked, no vaping. Drinks rarely, a drink or two a month at most. No drug use. Sleep is irregular around exams. Exercises, plays pickup basketball.\n\nROS: negative in full.\n\nExam: Well-appearing young man. Vitals as recorded. HEENT normal, oropharynx clear. Neck supple, no lymphadenopathy, thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin clear. Neuro grossly normal. Mood bright.\n\nScreens: PHQ-2 0. AUDIT-C 1.\n\nAssessment/plan:\n1. Adult preventive care. One-time lipid check, HIV and hepatitis C screening today.\n2. Vaccines: pediatric records requested; per his recollection he finished the usual teen shots. Discussed meningococcal B ahead of dorm living, he wants it, first dose given today, second in about a month.\n3. Counseled on sun protection, alcohol, sleep, helmet use on his bike.\nYearly physical. Call or message with anything."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-05a",
+          "kind": "portal_message",
+          "start": "2024-01-05T08:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Lab Results",
+              "author": "PCP",
+              "date": "2024-01-05T08:40",
+              "body": "Hi Min-jun, cholesterol panel looks great, and the HIV and hepatitis C screens were negative. Nothing to repeat for years. Nurse will reach out about the second meningococcal B shot."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Lab Results",
+              "author": "patient",
+              "date": "2024-01-05T12:16",
+              "body": "Thanks! Does the second one have to be a full month later? I have exams the first week of February."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Your Lab Results",
+              "author": "RN",
+              "date": "2024-01-05T13:02",
+              "body": "At least a month after the first dose, so any time from Feb 3 on. We have late-afternoon nurse slots, so it won't cut into school."
+            }
+          ]
+        },
+        {
+          "id": "2024-01-17a",
+          "kind": "outside_records",
+          "start": "2024-01-17T11:30",
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2017-01-09T09:30"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2017-01-09T09:30"},
+            {"vaccine": "HPV, 9-valent", "date": "2017-01-09T09:30"},
+            {"vaccine": "HPV, 9-valent", "date": "2017-08-14T10:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-06-02T15:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-06-23T15:00"},
+            {"vaccine": "Meningococcal conjugate MenACWY", "date": "2022-01-10T16:20"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Pediatric Practice",
+              "author": "front desk",
+              "date": "2024-01-17T11:30",
+              "body": "Received by fax from patient's pediatric practice, 14 pages. Includes well-child visits through age 17, growth charts and immunization record.\n\nSummary from the pediatric problem list: no active problems. No surgeries. No medications. NKDA.\n\nImmunizations on file: infant and childhood series complete including MMR x2, varicella x2, hepatitis B x3, hepatitis A x2, polio. Tdap, MenACWY and HPV 9-valent dose 1 at the 11-year visit (Jan 2017), HPV dose 2 Aug 2017, COVID primary series June 2021, MenACWY booster Jan 2022.\n\nLast well visit Feb 2023: normal exam, vision and hearing screens normal, adolescent depression screen negative.\n\nFiled to chart; immunization history entered. Routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-07a",
+          "kind": "nurse_visit",
+          "start": "2024-02-07T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "MenB dose 2",
+          "measure": ["temp_c"],
+          "immunizations": [{"vaccine": "Meningococcal B, recombinant (MenB-4C)", "date": "2024-02-07T16:35"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-02-07T16:35"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Immunization",
+              "author": "RN",
+              "date": "2024-02-07T16:30",
+              "body": "Here after school for second MenB dose, 5 weeks after the first. Afebrile, no reaction to dose 1 other than a sore arm overnight. Given IM left deltoid, lot and expiration recorded. Observed 15 minutes, tolerated well. Series complete."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "portal_message",
+          "start": "2024-08-12T21:04",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "School Health Form",
+              "author": "patient",
+              "date": "2024-08-12T21:04",
+              "body": "Hi, my university needs the health form signed before move-in on the 28th. I uploaded it. It's mostly the vaccine part and a line saying I was seen in the last year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: School Health Form",
+              "author": "PCP",
+              "date": "2024-08-13T12:30",
+              "body": "Done. Filled in your vaccine dates from the pediatric record plus the MenB series from this winter, signed, and attached it back here. Have a good semester. Flu and COVID shots are available here starting late September if you're around."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-09a",
+          "kind": "nurse_visit",
+          "start": "2024-10-09T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "seasonal vaccines",
+          "measure": ["temp_c"],
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-09T17:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-09T17:06"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2024-10-09T17:05"}],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit - Seasonal Vaccines",
+              "author": "RN",
+              "date": "2024-10-09T17:00",
+              "body": "Home for fall break. Requests this season's flu and COVID shots. Feels well, no fever. Flu vaccine right deltoid, COVID left deltoid. VIS reviewed. Waited 15 minutes, fine on leaving."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

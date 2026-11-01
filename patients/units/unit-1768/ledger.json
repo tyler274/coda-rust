@@ -1,9 +1,7 @@
 {
   "unit": "unit-1768",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001768/2022-12-07a: lab order \"Pre-biologic screening labs (QuantiFERON, hepatitis B serologies)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001768",
@@ -1528,8 +1526,30 @@
             {
               "id": "prebiologic-labs-2022",
               "action": "placed",
-              "order": "Pre-biologic screening labs (QuantiFERON, hepatitis B serologies)",
+              "order": "Quantiferon-TB Gold",
               "category": "lab",
+              "reason": "Before infliximab"
+            },
+            {
+              "id": "prebiologic-labs-2022-2",
+              "action": "placed",
+              "order": "Hepatitis B Surface Antigen",
+              "category": "lab",
+              "reason": "Before infliximab"
+            },
+            {
+              "id": "prebiologic-labs-2022-3",
+              "action": "placed",
+              "order": "Hepatitis B Surface Antibody",
+              "category": "lab",
+              "reason": "Before infliximab"
+            },
+            {
+              "id": "prebiologic-labs-2022-4",
+              "action": "placed",
+              "order": "Hepatitis B core antibody",
+              "category": "lab",
+              "loinc": "16933-4",
               "reason": "Before infliximab"
             }
           ],
@@ -1603,6 +1623,21 @@
           "orders": [
             {
               "id": "prebiologic-labs-2022",
+              "action": "done",
+              "date": "2022-12-10T11:00"
+            },
+            {
+              "id": "prebiologic-labs-2022-2",
+              "action": "done",
+              "date": "2022-12-10T11:00"
+            },
+            {
+              "id": "prebiologic-labs-2022-3",
+              "action": "done",
+              "date": "2022-12-10T11:00"
+            },
+            {
+              "id": "prebiologic-labs-2022-4",
               "action": "done",
               "date": "2022-12-10T11:00"
             }
@@ -2579,6 +2614,9 @@
                   "test": "Fecal calprotectin",
                   "loinc": "38445-3",
                   "unit": "ug/g",
+                  "range": {
+                    "high": 50
+                  },
                   "value": 250
                 }
               ]
@@ -4372,13 +4410,13 @@
         "code": "310994",
         "display": "infliximab 100 MG Injection",
         "ingredient": "infliximab",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "mesalamine 800 MG Delayed Release Oral Tablet": {
         "code": "833234",
         "display": "mesalamine 800 MG Delayed Release Oral Tablet",
         "ingredient": "mesalamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4396,6 +4434,9 @@
         "code": "38445-3",
         "display": "Calprotectin [Mass/mass] in Stool",
         "unit": "ug/g",
+        "range": {
+          "high": 50
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis B core antibody, total": {
@@ -4418,6 +4459,11 @@
       "Colonoscopy": {
         "code": "18746-8",
         "display": "Colonoscopy study",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hepatitis B core antibody": {
+        "code": "16933-4",
+        "display": "Hepatitis B virus core Ab [Presence] in Serum",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

@@ -76,11 +76,11 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-04T06:30", "results": [{"test": "Hemoglobin", "value": 9.2}, {"test": "Platelets", "value": 250}]},
             {"panel": "Prothrombin Time with INR", "collected": "2023-07-04T06:30", "results": [{"test": "Prothrombin Time", "value": 12}]},
-            {"panel": null, "collected": "2023-07-04T06:30", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 38}]},
+            {"panel": null, "collected": "2023-07-04T06:30", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 38, "range": {"low": 25, "high": 35}}]},
             {"panel": null, "collected": "2023-07-04T06:30", "results": [{"test": "Fibrinogen", "loinc": "3255-7", "text": "Within normal limits"}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2023-07-04T09:15", "results": [{"test": "Hemoglobin", "value": 8}, {"test": "Hematocrit", "value": 24}, {"test": "Platelets", "value": 250}]},
             {"panel": "Prothrombin Time with INR", "collected": "2023-07-04T09:15", "results": [{"test": "Prothrombin Time", "value": 12}]},
-            {"panel": null, "collected": "2023-07-04T09:15", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 30}]}
+            {"panel": null, "collected": "2023-07-04T09:15", "results": [{"test": "Activated partial thromboplastin time", "loinc": "14979-9", "unit": "s", "value": 30, "range": {"low": 25, "high": 35}}]}
           ],
           "reports": [
             {"study": "Pelvic ultrasound", "performed": "2023-07-04T07:20", "text": "Transabdominal and transvaginal views. Postpartum uterus, enlarged as expected for day 3 after vaginal delivery, normal in orientation. Endometrial cavity contains a small amount of fluid; no echogenic mass and no internal vascularity to suggest retained placental tissue. Ovaries unremarkable. No free fluid.", "conclusion": "No sonographic evidence of retained products of conception."}
@@ -133,7 +133,7 @@
             {"label": "Supervision of high risk pregnancy", "icd10": "O09.90", "action": "resolved", "onset": "2022-10-08"}
           ],
           "orders": [
-            {"id": "cbc-2023-07", "action": "placed", "order": "CBC", "category": "lab", "reason": "Postpartum blood-loss anemia"}
+            {"id": "cbc-2023-07", "action": "placed", "order": "Complete Blood Count (CBC)", "category": "lab", "reason": "Postpartum blood-loss anemia"}
           ],
           "procedures": [{"procedure": "Transitional care management, moderate complexity", "performed": "2023-07-19T13:40"}],
           "documents": [
@@ -192,7 +192,7 @@
           ],
           "orders": [
             {"id": "endo-ref-2023", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Low morning cortisol and low free T4 after postpartum hemorrhage"},
-            {"id": "repeat-am-labs-2023", "action": "placed", "order": "Repeat morning cortisol and BMP", "category": "lab", "reason": "Low cortisol, hyponatremia"}
+            {"id": "repeat-am-labs-2023", "action": "placed", "order": "Cortisol, AM", "category": "lab", "reason": "Low cortisol, hyponatremia"}, {"id": "repeat-am-labs-2023-2", "action": "placed", "order": "Basic Metabolic Panel (BMP)", "category": "lab", "reason": "Low cortisol, hyponatremia"}
           ],
           "documents": [
             {"type": "Result Note", "title": "Results - 8/14 labs", "author": "PCP", "date": "2023-08-16T12:20", "body": "Na 130, K 5.2. AM cortisol 3. TSH 0.5 with free T4 0.7 (low). Prolactin 5. Hgb 10.3, ferritin 11.\n\nSodium low and cortisol and free T4 both low with a TSH that isn't elevated - in the setting of her hemorrhage this needs endocrinology. Referral placed, asked for a soon appointment. Repeat AM cortisol and BMP in 1-2 weeks. Hgb improving.\n\nSpoke with pt by phone, explained results and that endocrinology will evaluate her pituitary function. She has the referral number."}

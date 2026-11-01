@@ -1,0 +1,183 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002082",
+      "events": [
+        {
+          "id": "2022-03-28a",
+          "kind": "annual_physical",
+          "start": "2022-03-28T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; questions about lung cancer risk",
+          "vitals": {"bp": [130, 85], "hr": 78, "rr": 16},
+          "measure": ["spo2", "temp_c", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}, {"survey": "AUDIT-C total score", "value": 2}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-03-28T08:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-03-28T08:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2022-03-28T08:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-03-28T08:05", "results": [{"test": "Hemoglobin A1c", "value": 5.4}]}
+          ],
+          "orders": [
+            {"id": "ldct-2022", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "Heavy smoker with COPD, shared decision"},
+            {"id": "fit-2022", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Colorectal cancer screening"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2022-03-28T07:30"},
+            {"procedure": "Venipuncture", "performed": "2022-03-28T08:05"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2022-03-28T08:50", "body": "45M here for his physical. Feels fine, no complaints, but he has something on his mind: a buddy of his, 52, who smoked about the way Derek does, was just diagnosed with lung cancer. Wants to know straight up how much more likely he is to get it than someone who never smoked.\n\nBreathing: same as last year. Albuterol a few times a week. No exacerbations. No cough change, no hemoptysis, no weight loss, no night sweats.\nTobacco: still about a pack a day, roughly 30 pack-years.\nFamily: father COPD. No parent or sibling with cancer; a paternal uncle had lung cancer.\n\nMeds: tiotropium 18 mcg daily, albuterol prn. Allergies: none known.\n\nVitals: BP 130/85, HR 78, RR 16.\nExam: unremarkable. Lungs without wheeze or crackles, heart regular, abdomen benign, no clubbing, no edema, no adenopathy.\n\nA/P\n1. Lung cancer risk. Long talk. Told him plainly that heavy smoking raises lung cancer risk many times over compared with never-smokers, that the risk keeps climbing with each pack-year, and that quitting is the single thing that lowers it. He asked about a CT scan like his friend had. The screening guideline starts at 50 and he is 45; we went over what a CT can and can't do, false alarms, radiation. Given his ~30 pack-years, COPD and his uncle, we agreed to do a low-dose CT now - understanding he's under the usual age and insurance may push back. Ordered; will send prior auth.\n2. Tobacco: he says this scare has him thinking. Not ready for medication yet. Will message me if he wants to start.\n3. COPD: stable, continue.\n4. Colorectal screening: 45 now - FIT kit given.\n5. Labs today.\nRTC 1 year, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2022-04-01a",
+          "kind": "telephone",
+          "start": "2022-04-01T14:00",
+          "reason": "Prior authorization",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Prior auth - low-dose chest CT", "author": "MA", "date": "2022-04-01T14:00", "body": "Insurer called back re: prior authorization for low-dose CT chest. Peer note from PCP about smoking history and COPD was accepted. APPROVED, valid 6 months. Radiology scheduling number given to patient by voicemail."}
+          ]
+        },
+        {
+          "id": "2022-04-11a",
+          "kind": "lab_only",
+          "start": "2022-04-11T09:00",
+          "reason": "FIT returned",
+          "labs": [{"panel": null, "collected": "2022-04-08T06:00", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "orders": [{"id": "fit-2022", "action": "done", "date": "2022-04-11T09:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT result", "author": "PCP", "date": "2022-04-11T15:20", "body": "FIT negative. Repeat yearly. Portal note sent."}
+          ]
+        },
+        {
+          "id": "2022-06-08a",
+          "kind": "portal_message",
+          "start": "2022-06-08T20:14",
+          "reason": "Scheduling the chest CT",
+          "documents": [
+            {"type": "Patient Message", "title": "CT scan", "author": "patient", "date": "2022-06-08T20:14", "body": "Hey doc, haven't done the CT yet. We're in the middle of a big job in Palmer, 6 days a week til end of August. Can it wait til September? The approval said 6 months."},
+            {"type": "Patient Message", "title": "RE: CT scan", "author": "PCP", "date": "2022-06-09T07:48", "body": "September is fine since you feel well - but please do book it before the approval runs out at the end of September. Call me sooner if you notice any cough change, blood, or weight loss."}
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "imaging",
+          "start": "2022-09-12T15:30",
+          "reason": "Low-dose CT chest",
+          "reports": [
+            {"study": "Low-dose CT chest for lung cancer screening", "performed": "2022-09-12T15:30", "text": "TECHNIQUE: Low-dose helical CT of the chest without intravenous contrast.\nCOMPARISON: None.\nFINDINGS: Lungs: 6 mm solid non-calcified nodule in the right lower lobe (mean diameter on lung windows). No other pulmonary nodules. No consolidation. Airways are patent. Pleura: no effusion or pneumothorax. Mediastinum and hila: no lymphadenopathy. Heart normal in size; no pericardial effusion. Visualized upper abdomen unremarkable. Bones: no aggressive lesion.", "conclusion": "6 mm solid right lower lobe nodule. Lung-RADS 3, probably benign. Recommend 6-month low-dose CT."}
+          ],
+          "orders": [{"id": "ldct-2022", "action": "done", "date": "2022-09-12T15:30"}],
+          "documents": [
+            {"type": "Imaging Report", "title": "Low-dose CT chest", "author": "radiology", "date": "2022-09-12T18:05", "body": "Outside imaging center report received electronically. 6 mm solid non-calcified nodule right lower lobe, Lung-RADS 3. No adenopathy. Recommendation: low-dose CT in 6 months."}
+          ]
+        },
+        {
+          "id": "2022-09-13a",
+          "kind": "telephone",
+          "start": "2022-09-13T12:10",
+          "reason": "CT result",
+          "conditions": [{"label": "Pulmonary nodule", "action": "diagnosed", "onset": "2022-09-12", "note": "6 mm solid RLL nodule, Lung-RADS 3"}],
+          "orders": [{"id": "pulm-2022", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "6 mm RLL nodule in heavy smoker with COPD"}],
+          "documents": [
+            {"type": "Telephone Encounter", "title": "CT result call", "author": "PCP", "date": "2022-09-13T12:25", "body": "Called him on his lunch break. CT shows a single 6 mm nodule in the right lower lung. Explained that most spots this size are not cancer, that the radiologist's category means a repeat scan in about 6 months, and that given his history I'd like a lung specialist to see him and own the follow-up. He was quiet, then asked if he should quit now. Yes. Pulmonology referral placed, marked soon."}
+          ]
+        },
+        {
+          "id": "2022-09-28a",
+          "kind": "specialist_visit",
+          "start": "2022-09-28T10:00",
+          "service": "Pulmonology",
+          "reason": "Pulmonary nodule on low-dose CT",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "orders": [{"id": "pulm-2022", "action": "done", "date": "2022-09-28T10:00"}],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonology consultation", "author": "pulmonology", "date": "2022-10-03T09:30", "body": "PULMONARY MEDICINE - OUTPATIENT CONSULTATION\nDate of visit: 09/28/2022\nReferred by: primary care, for a pulmonary nodule.\n\nMr. Plante is a 45-year-old construction worker with COPD on tiotropium and an active smoking history of about 30 pack-years. In March he talked with his PCP about his lung cancer risk after a friend was diagnosed, and a low-dose CT on 09/12/2022 showed a 6 mm solid, non-calcified right lower lobe nodule. He has no symptoms today. He is anxious and wants to know the odds that this is cancer.\n\nMeds: tiotropium 18 mcg inhaled daily; albuterol HFA as needed.\nAllergies: none known.\nFamily history: father with COPD; paternal uncle with lung cancer.\nSocial: current smoker, about 30 pack-years. Occasional alcohol.\n\nExam: comfortable, no distress. Lungs clear without wheeze. Cardiac regular. No clubbing or adenopathy.\n\nImaging reviewed: single 6 mm solid nodule, right lower lobe, smooth. No adenopathy.\n\nImpression:\n1. Solitary pulmonary nodule, 6 mm, right lower lobe. I explained that how likely a nodule is to be cancer depends on the person screened as much as the scan - his age, his smoking history and the size and shape of the nodule all go into it. Most nodules this size turn out to be benign, but with his exposure I consider this one concerning and want it watched closely.\n2. COPD, stable on LAMA.\n3. Tobacco use - cessation strongly advised.\n\nPlan: repeat low-dose CT chest in 6 months. Return after that scan. Continue current inhalers.\n\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2022-10-19a",
+          "kind": "nurse_visit",
+          "start": "2022-10-19T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-19T16:25"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-19T16:27"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-19T16:25"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Vaccines", "author": "RN", "date": "2022-10-19T16:40", "body": "Flu (L arm) and bivalent COVID booster (R arm) given. Screening questions negative. Observed 15 minutes, left feeling fine."}
+          ]
+        },
+        {
+          "id": "2023-03-29a",
+          "kind": "annual_physical",
+          "start": "2023-03-29T07:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-03-29T08:00", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]},
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-03-29T08:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Lipid Panel", "collected": "2023-03-29T08:00", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "orders": [{"id": "fit-2023", "action": "placed", "order": "Fecal Immunochemical Test", "category": "lab", "reason": "Colorectal cancer screening"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2023-03-29T07:30"},
+            {"procedure": "Venipuncture", "performed": "2023-03-29T08:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2023-03-29T08:45", "body": "Annual. 46 y/o. Doing ok. Winter was slow at work, he's been on indoor jobs. Breathing unchanged, rescue inhaler 2-3x/wk. No exacerbations. Cut back a little, maybe 3/4 ppd, but still smoking.\nROS: no cough change, no hemoptysis, no weight loss, no chest pain.\n\nMeds: tiotropium, albuterol prn. NKDA.\nExam: vitals as charted. Well. Lungs without wheeze or crackles. Heart RRR. Abd soft. No edema or clubbing.\n\nA/P\n- COPD: stable, continue.\n- Pulmonary nodule: followed by pulmonology.\n- Tobacco: congratulated on cutting back; encouraged to keep going. Declines pharmacotherapy again.\n- CRC screening: FIT kit.\n- Labs today. Flu and COVID in the fall.\nRTC 6 mo COPD follow-up."}
+          ]
+        },
+        {
+          "id": "2023-04-12a",
+          "kind": "lab_only",
+          "start": "2023-04-12T09:00",
+          "reason": "FIT returned",
+          "labs": [{"panel": null, "collected": "2023-04-10T06:30", "results": [{"test": "Fecal Immunochemical Test", "text": "Negative"}]}],
+          "orders": [{"id": "fit-2023", "action": "done", "date": "2023-04-12T09:00"}],
+          "documents": [
+            {"type": "Result Note", "title": "FIT and physical labs", "author": "PCP", "date": "2023-04-12T12:15", "body": "FIT negative. Physical labs from 3/29 normal across the board. Portal message sent."}
+          ]
+        },
+        {
+          "id": "2023-09-20a",
+          "kind": "office_visit",
+          "start": "2023-09-20T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up",
+          "appointment": "no-show",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "No-show", "author": "front desk", "date": "2023-09-20T16:30", "body": "Pt did not arrive for 4:00 COPD follow-up. Left voicemail to reschedule. Texted the booking link."}
+          ]
+        },
+        {
+          "id": "2023-10-04a",
+          "kind": "office_visit",
+          "start": "2023-10-04T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD follow-up, vaccines",
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "social": [{"item": "Tobacco smoking status", "value": "Current every day smoker"}],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-04T16:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-04T16:31"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-10-04T16:00"},
+            {"procedure": "Immunization administration", "performed": "2023-10-04T16:30"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit - COPD", "author": "PCP", "date": "2023-10-04T16:40", "body": "Rebooked after missing 9/20 - got stuck on a job site, forgot to call.\nS: Breathing about baseline. A few heavy days this summer with the heat. No sputum change, no fever, no urgent care. About 3/4 ppd.\nO: Vitals as charted, room air sat normal. Lungs: fair air entry, no wheeze, no crackles. No edema.\nA/P: COPD stable on tiotropium/albuterol. Refills current. Smoking counseling, ~3 min; he isn't ready. Flu and updated COVID vaccines given today.\nPhysical in the spring."}
+          ]
+        }
+      ]
+    }
+  ]
+}

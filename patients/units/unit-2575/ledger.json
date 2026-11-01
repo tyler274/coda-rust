@@ -1,9 +1,7 @@
 {
   "unit": "unit-2575",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002575/2026-04-17a: lab order \"Fasting lipid panel and hemoglobin A1c\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002575",
@@ -910,7 +908,14 @@
             {
               "id": "june-labs",
               "action": "placed",
-              "order": "Fasting lipid panel and hemoglobin A1c",
+              "order": "Lipid Panel",
+              "category": "lab",
+              "reason": "antipsychotic metabolic monitoring at about three months"
+            },
+            {
+              "id": "june-labs-2",
+              "action": "placed",
+              "order": "Hemoglobin A1c",
               "category": "lab",
               "reason": "antipsychotic metabolic monitoring at about three months"
             }
@@ -1004,6 +1009,11 @@
               "id": "june-labs",
               "action": "done",
               "date": "2026-06-11T08:10"
+            },
+            {
+              "id": "june-labs-2",
+              "action": "done",
+              "date": "2026-06-11T08:10"
             }
           ]
         },
@@ -1076,7 +1086,7 @@
         "code": "312831",
         "display": "risperidone 2 MG Oral Tablet",
         "ingredient": "risperidone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     }
   }

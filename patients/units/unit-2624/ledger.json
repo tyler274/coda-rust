@@ -1,0 +1,2107 @@
+{
+  "unit": "unit-2624",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002624",
+      "given": "Jacob",
+      "family": "Healey",
+      "birth_date": "1997-08-23",
+      "address_line": "27 Silver Street, Apt 3",
+      "phone": "+1-603-555-0134",
+      "email": "jacob.healey@example.test",
+      "marital_status": "partnered",
+      "summary": "Young man with severe alcohol, cocaine and tobacco use disorders who joined in 2019 and comes in irregularly. Antisocial personality disorder diagnosed at a 2022 ED visit after an arrest; a 2023 ED visit for intoxication, a 2024 visit after a minor car accident, and a 2026 ED visit for small-volume hematemesis attributed to stress-related mucosal disease.",
+      "events": [
+        {
+          "id": "2019-08-27a",
+          "kind": "telephone",
+          "start": "2019-08-27T10:12",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2019-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller would like to start care with us. 22 y/o, no PCP for a few years, says the last office he went to was \"a while back\" and he doesn't remember the name. MassHealth card on file, copy requested at visit. No meds he can think of besides OTC aspirin. Scheduled new patient appt 9/10 at 9:40. Intake forms emailed."
+            }
+          ]
+        },
+        {
+          "id": "2019-09-10a",
+          "kind": "establish_care",
+          "start": "2019-09-10T09:40",
+          "end": "2019-09-10T10:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient visit",
+          "conditions": [
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "history",
+              "onset": "2016-06-01"
+            },
+            {
+              "label": "Severe alcohol use disorder",
+              "action": "history",
+              "onset": "2016-01-01",
+              "icd10": "F10.20"
+            },
+            {
+              "label": "Cocaine use disorder",
+              "action": "history",
+              "onset": "2017-01-01",
+              "icd10": "F14.20"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "aspirin 325 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily (self-directed, over the counter)",
+              "dose": {
+                "value": 325,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "headaches; takes it to head off hangovers"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              71
+            ],
+            "hr": 69,
+            "rr": 16,
+            "temp_c": 36.7,
+            "spo2": 97,
+            "weight_kg": 78.7,
+            "height_cm": 177.0
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2019-09-10T10:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.81
+                },
+                {
+                  "test": "Glucose",
+                  "value": 82
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 128
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 93
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2019-09-10T10:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 289
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.71
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2019-09-10T10:40",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 100
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 104
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 124
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:40",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Non-reactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2019-09-10T10:40",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Non-reactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Daily heavy drinking; binges 5-6 nights a week, 10-15 drinks each"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed; intermittent construction laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2019-09-10T09:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2019-09-10T10:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2019-09-10T10:40"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2019-09-10T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2019-09-10T10:35",
+              "author": "PCP",
+              "body": "22M establishing care. Has not had a regular doctor since his teens. No specific complaint today; came in because his partner wanted him to \"get checked out.\"\n\nPMH: no chronic medical illness he knows of. Gets headaches a few times a week, usually the morning after drinking, and takes a regular-strength aspirin (325) most days on his own for those and \"so the hangover isn't as bad.\" No GI symptoms.\nPSH: none.\nMeds: aspirin 325 mg OTC daily. No Rx meds.\nAllergies: NKDA.\n\nSubstance use, in his words fairly matter-of-fact:\n- Cigarettes since about 18, a pack a day, roughly 3 yrs. No quit attempts.\n- Alcohol: drinks every day; most nights of the week (5 or 6) it turns into a binge, which he puts at 10-15 drinks. Denies withdrawal shakes or seizures. Doesn't see the drinking as a problem.\n- Cocaine: intranasal, mostly on weekends with friends, for a couple of years. No injection use, no other drugs.\nAUDIT-C 11.\n\nFH: father has alcohol use disorder and has been incarcerated several times. Mother treated for major depression and generalized anxiety. Older brother with opioid use disorder.\nSH: lives with his partner. Picks up construction labor when it's available, otherwise out of work. MassHealth.\n\nROS otherwise negative. PHQ-9 2.\n\nExam: Well-appearing young man, relaxed, somewhat guarded about details. Vitals as charted. HEENT normal, no scleral icterus. Neck supple. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no hepatomegaly. Skin: several tattoos on forearms. No tremor. Neuro grossly nonfocal.\n\nA/P\n1. Severe alcohol use disorder. Long talk about amount and pattern; he is not interested in cutting down at this point and declines a referral to treatment. Gave written info and our number. Will keep asking.\n2. Cocaine use disorder. Same conversation; declines.\n3. Nicotine dependence, cigarettes. Advised to quit; precontemplative.\n4. Headaches, using daily aspirin. Advised it isn't a great habit with this much alcohol (stomach), would rather he cut the drinking. He'll \"think about it.\"\n5. Health maintenance: CMP, CBC, lipids, one-time HCV and HIV screens today. Tdap given (no record of one since childhood).\n\nRTC 3-4 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.5,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2019-09-13a",
+          "kind": "portal_message",
+          "start": "2019-09-13T16:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2019-09-13T16:05",
+              "author": "PCP",
+              "body": "Jacob, your blood work from Tuesday came back fine: kidney and liver numbers normal, blood counts normal, cholesterol fine. Hepatitis C and HIV screens were both negative. Nothing to do on these. The bigger health issue for you is still the drinking and smoking, and my door is open whenever you want to talk about it. See you in a few months."
+            }
+          ]
+        },
+        {
+          "id": "2020-01-30a",
+          "kind": "office_visit",
+          "start": "2020-01-30T14:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2020-05-20a",
+          "kind": "telehealth_visit",
+          "start": "2020-05-20T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "check-in",
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2020-05-20T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Visit",
+              "date": "2020-05-20T11:25",
+              "author": "PCP",
+              "body": "Video check-in; we reached out after the missed January appointment. He's at his apartment, identity verified by DOB.\n\nNo construction work since March with everything shut down. Says he's \"bored mostly.\" Drinking is the same or a little more, hard to pin down; AUDIT-C 12. Still a pack a day. Cocaine \"not much lately,\" which he puts down to not seeing friends. No chest pain, no breathing trouble, no GI bleeding, no fevers. Still uses aspirin for headaches.\n\nNo distress on camera, speech normal, conversational.\n\nA/P: Alcohol, cocaine and tobacco use disorders, unchanged. Not ready to change any of it; declines counseling referral again. Reviewed signs of withdrawal that should send him to the ED if he ever stops abruptly. Asked him to come in for a physical in the fall."
+            }
+          ]
+        },
+        {
+          "id": "2021-10-27a",
+          "kind": "annual_physical",
+          "start": "2021-10-27T08:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "physical",
+          "vitals": {
+            "bp": [
+              121,
+              73
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 78.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2021-10-27T09:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 23
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 123
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 81
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2021-10-27T09:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Platelets",
+                  "value": 287
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.7
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2021-10-27T08:20"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2021-10-27T08:55"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2021-10-27T09:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-04-20T13:00"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+              "date": "2021-05-11T13:00"
+            },
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2021-10-27T08:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2021-10-27T09:00",
+              "author": "PCP",
+              "body": "24M for a physical; first time in the office since 2019 (one missed visit, one video visit in between).\n\nInterval: no illnesses, no ED visits. Got both Pfizer shots at a pharmacy this spring (April and May, he showed the card). Working again on and off, framing and demo crews.\n\nHabits: still about a pack a day, now ~5 years. Drinking daily with binges most nights; AUDIT-C 11. Cocaine \"sometimes, weekends.\" Aspirin most mornings. No hematemesis, melena, abdominal pain. No withdrawal symptoms.\nPHQ-9 1.\n\nExam: Healthy-appearing. Vitals as recorded. Eyes and oropharynx normal. No lymphadenopathy. Heart RRR without murmur. Lungs clear. Abdomen soft, nontender, liver edge not felt. Extremities normal. Skin with tattoos, no spider angiomata. No tremor.\n\nA/P\n- Severe alcohol use disorder / cocaine use disorder: discussed again in plain terms. He listens politely and says he has it handled. Offered referral to outpatient substance use treatment; declined.\n- Nicotine dependence: advised to quit. Not interested.\n- Labs today: CMP and CBC.\n- Flu shot given. COVID series entered from his card.\nRTC 1 yr, sooner if he's ready to work on any of this."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2021-10-29a",
+          "kind": "portal_message",
+          "start": "2021-10-29T12:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2021-10-29T12:40",
+              "author": "PCP",
+              "body": "Hi Jacob, labs from Wednesday look good. Liver tests, kidneys, electrolytes and blood counts are all in the normal range. No changes needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-04-08a",
+          "kind": "office_visit",
+          "start": "2022-04-08T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2022-06-16a",
+          "kind": "office_visit",
+          "start": "2022-06-16T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "routine follow-up",
+          "vitals": {
+            "bp": [
+              119,
+              66
+            ],
+            "hr": 72,
+            "spo2": 96,
+            "weight_kg": 79.3
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2022-06-16T13:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2022-06-16T14:05",
+              "author": "PCP",
+              "body": "S: Rescheduled from April (he cancelled that morning, said he had a job). Here for a routine check, nothing bothering him. Working steadily on a roofing crew this spring, which he says will likely end in the fall. Smoking unchanged, 1 ppd. Drinking: \"the usual,\" daily, heavy most nights; AUDIT-C 11. Cocaine on weekends. Still takes aspirin most days. No abdominal pain, no blood in vomit or stool, no chest pain.\n\nO: Vitals as charted. Alert, cooperative, short answers. Lungs clear, heart regular. Abdomen benign. No tremor.\n\nA/P: Alcohol, cocaine and tobacco use disorders, no change, precontemplative on all three. Brief intervention done, he isn't taking up a referral. Asked him again to give the daily aspirin a rest given how much he drinks. Physical in the fall."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2022-11-23a",
+          "kind": "ed_visit",
+          "start": "2022-11-23T01:50",
+          "end": "2022-11-23T07:30",
+          "service": "Emergency Medicine",
+          "reason": "brought in by police",
+          "conditions": [
+            {
+              "label": "Antisocial personality disorder",
+              "action": "diagnosed",
+              "onset": "2022-11-23",
+              "icd10": "F60.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              70
+            ],
+            "hr": 76,
+            "rr": 14,
+            "temp_c": 37.0,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2022-11-23T02:15",
+              "results": [
+                {
+                  "test": "Ethanol, blood",
+                  "loinc": "5640-8",
+                  "unit": "mg/dL",
+                  "range": {
+                    "high": 10
+                  },
+                  "value": 80,
+                  "resulted": "2022-11-23T02:55"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-11-23T02:30",
+              "results": [
+                {
+                  "test": "Cocaine and metabolite screen, urine",
+                  "loinc": "42241-0",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2022-11-23T01:50"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received 2023-03-06)",
+              "date": "2023-03-06T11:20",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nVisit date: 11/23/2022, arrival 01:50, by police\nPatient: Jacob Healey, 25 M\nAllergies: NKDA\nHome meds: aspirin 325 mg daily (OTC)\n\nCC: Medical clearance; police report pt was apprehended breaking into a parked car.\n\nHPI: 25 yo M with heavy alcohol, cocaine and tobacco use brought in by police for medical evaluation. Pt calm and talkative. Asked about the incident he says the only thing he feels bad about is that he got caught; no expression of regret toward the car owner. Mother arrived during the visit and gave collateral: he was suspended from school repeatedly before age 15 for fighting with other students and for stealing from his teachers. By his own account and per police, prior arrests for theft, assault and drug charges. Denies SI/HI. Denies injury tonight.\n\nSocial: cigarettes 1 ppd, ~6 yrs. Daily alcohol with binges most nights, 10-15 drinks. Cocaine, intranasal. Intermittent construction work, currently not working.\nFamily: father with alcohol use disorder, multiple incarcerations; mother with depression and anxiety; brother with opioid use disorder.\n\nExam: VS within normal range (see flowsheet). Alert, oriented x3, not ataxic, speech clear. Affect flat and indifferent; shows no concern for others affected. Multiple tattoos with violent imagery on arms and chest. Old scars across the knuckles of both hands. No acute injuries. Heart and lungs normal. Abdomen soft.\n\nLabs: blood alcohol 80 mg/dL (0.08%). Urine drug screen positive for cocaine.\n\nBehavioral health evaluation (ED behavioral health clinician): longstanding pattern since childhood of rule-breaking, aggression, theft and disregard for others, persisting into adulthood with arrests; lack of remorse on interview. No psychosis, no mood episode, no acute danger to self or others. Impression: antisocial personality disorder. Co-occurring severe alcohol use disorder and cocaine use disorder. Resources for substance use treatment provided; pt not interested.\n\nED course: observed, no intervention needed. Medically cleared.\nDiagnoses: antisocial personality disorder; alcohol use; cocaine use.\nDisposition: discharged 07:30.\n\n[Faxed to PCP office 03/06/2023 in response to records request]"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-01-09a",
+          "kind": "office_visit",
+          "start": "2023-01-09T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, recent ED visit",
+          "vitals": {
+            "bp": [
+              135,
+              76
+            ],
+            "hr": 76,
+            "spo2": 97,
+            "weight_kg": 78.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2023-01-09T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-01-09T10:50",
+              "author": "PCP",
+              "body": "25M, overdue follow-up (physical last fall never got booked).\n\nMentions in passing that he was \"at the ER for a few hours\" around Thanksgiving after \"a thing with the cops.\" Vague on details; says he was checked over and let go and that nothing medical happened. We have no record of it. He agrees to us requesting it.\n\nOtherwise feels fine. Smoking a pack a day. Drinking daily, binges most nights; AUDIT-C 11. Cocaine \"here and there.\" Still on daily aspirin. No GI bleeding symptoms. PHQ-9 3, denies feeling down.\n\nExam: Vitals as charted. NAD. Heart and lungs normal. Abdomen nontender.\n\nA/P\n1. ED visit Nov 2022: records request sent to the hospital ED (release signed today).\n2. Alcohol / cocaine / tobacco use disorders: unchanged; brief counseling; declines referral and is clear he doesn't want to revisit it every visit.\n3. Physical with labs later this year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-01-09b",
+          "kind": "telephone",
+          "start": "2023-01-09T14:10",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2023-01-09T14:10",
+              "author": "front desk",
+              "body": "Faxed request + signed release to the hospital's HIM department for ED record of 11/22-11/23/2022. Confirmation page received. Will scan when it comes in."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "telephone",
+          "start": "2023-02-14T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request Follow-up",
+              "date": "2023-02-14T09:30",
+              "author": "front desk",
+              "body": "No ED record received yet from January request. Called HIM, they have no request on file. Re-faxed request and release, gave direct fax number."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-06a",
+          "kind": "outside_records",
+          "start": "2023-03-06T11:20",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Outside Records Received",
+              "date": "2023-03-06T11:25",
+              "author": "front desk",
+              "body": "ED record from 11/23/2022 received by fax (5 pages). Scanned to Media and routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-03-08a",
+          "kind": "telephone",
+          "start": "2023-03-08T17:15",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Record Review",
+              "date": "2023-03-08T17:15",
+              "author": "PCP",
+              "body": "Reviewed the November ED record. Brought in by police for medical evaluation after a car break-in; BAL 0.08%, urine positive for cocaine; no injuries. ED behavioral health clinician documented a long pattern back to childhood (school suspensions for fighting and stealing before 15 per his mother), multiple arrests, and lack of remorse, and gave an impression of antisocial personality disorder. Added to problem list. It fits with how disengaged he is from any talk about the drinking. No medical follow-up needed from the visit itself. Will keep the door open on substance use treatment."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-31a",
+          "kind": "ed_visit",
+          "start": "2023-07-31T22:40",
+          "end": "2023-08-01T05:15",
+          "service": "Emergency Medicine",
+          "reason": "alcohol intoxication",
+          "conditions": [
+            {
+              "label": "Acute alcohol intoxication",
+              "action": "diagnosed",
+              "onset": "2023-07-31",
+              "icd10": "F10.220"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              127,
+              71
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.4,
+            "spo2": 98
+          },
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2023-07-31T22:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Visit Summary",
+              "date": "2023-08-07T09:10",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT, ED visit summary to PCP\nDate of service: 07/31/2023 22:40 to 08/01/2023 05:15\nPatient: Jacob Healey, 25 M. Allergies: NKDA. Meds: aspirin 325 mg daily OTC.\n\nChief complaint: intoxication; brought in by partner.\n\nHPI: Second visit here this year (previously 11/2022, brought by police). Partner found him at home drunk this evening and was worried because he has a job interview first thing tomorrow. Pt states he finished a full bottle of whiskey over the evening. Explains he wanted to calm his nerves ahead of the interview, that plenty of people drink and he isn't harming anybody, that drinking makes it easier for him to be around people, and that the pressure of looking for work earns him a night off now and then. Does not think his drinking is a problem and believes he could stop if he decided to. No other ingestion reported tonight. Denies SI. No trauma.\n\nPMH: antisocial personality disorder; severe alcohol use disorder; cocaine use disorder; tobacco use (1 ppd x 7 yrs).\nFH: father alcohol use disorder (incarcerations); mother MDD and GAD; brother OUD.\n\nExam: Vital signs within normal limits. Smells of alcohol; intoxicated but alert and redirectable. Otherwise unremarkable: pupils equal and reactive, no head trauma, heart and lungs normal, abdomen soft, moving all extremities.\n\nCourse: monitored in the ED, PO fluids, no medications required. Clinically sober and tolerating PO by morning.\n\nImpression: acute alcohol intoxication in a patient with severe alcohol use disorder.\nDisposition: discharged home with partner. Substance use treatment resources given. Follow up with PCP.\n\n[Received by fax 08/07/2023]"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:45",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-ED Outreach",
+              "date": "2023-08-08T10:45",
+              "author": "RN",
+              "body": "Per PCP, called re: ED visit 7/31 for intoxication. Pt answered, said he's fine and \"it was blown out of proportion.\" Agreed to a follow-up visit; booked 8/22 at 3:20. Asked about any shakes, sweats or confusion since; denies."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "office_visit",
+          "start": "2023-08-22T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2023-08-23a",
+          "kind": "telephone",
+          "start": "2023-08-23T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Missed Appointment",
+              "date": "2023-08-23T09:05",
+              "author": "front desk",
+              "body": "Pt did not come to 8/22 appt. Left voicemail to reschedule. Also sent portal reminder."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-18a",
+          "kind": "office_visit",
+          "start": "2023-10-18T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit",
+          "conditions": [
+            {
+              "label": "Acute alcohol intoxication",
+              "action": "resolved",
+              "icd10": "F10.220"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              119,
+              71
+            ],
+            "hr": 77,
+            "spo2": 97,
+            "weight_kg": 79.3
+          },
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2023-10-18T16:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-18T16:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-18T16:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2023-10-18T16:30",
+              "author": "PCP",
+              "body": "26M, finally in after the July ED visit (missed the August appointment).\n\nED summary reviewed with him: drank a full bottle of whiskey the night before a job interview, partner brought him in, observed overnight and sent home. Frames that night the same way the ED did: he needed to relax, everyone drinks. Still believes he can stop when he wants. Hasn't tried.\n\nCurrent use: daily, binges 5-6 nights/wk at 10-15 drinks; AUDIT-C 12. Cocaine at parties. Cigarettes 1 ppd, ~7 yrs. Aspirin most mornings. No withdrawal symptoms, no GI bleeding, no chest pain.\n\nExam: Vitals as charted. Alert, a little irritable with the topic. No tremor, no asterixis. Heart regular. Lungs clear. Abdomen soft, nontender, no hepatomegaly.\n\nA/P\n1. Acute intoxication (ED 7/31): resolved.\n2. Severe alcohol use disorder: I was direct that this was the second ED trip in a year. Offered outpatient program referral and a follow-up just for this; declined both.\n3. Cocaine use disorder and nicotine dependence: unchanged, counseled.\n4. Antisocial personality disorder: per ED evaluation; no treatment plan, noted.\n5. Flu vaccine given.\nPhysical in spring."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-11a",
+          "kind": "annual_physical",
+          "start": "2024-04-11T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "physical",
+          "vitals": {
+            "bp": [
+              126,
+              71
+            ],
+            "hr": 78,
+            "rr": 14,
+            "temp_c": 36.5,
+            "spo2": 97,
+            "weight_kg": 78.4
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-04-11T09:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 86
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 116
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 13
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-04-11T09:20",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Platelets",
+                  "value": 275
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-04-11T09:20",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 173
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 50
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 103
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 102
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 123
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Unemployed; intermittent construction laborer"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-04-11T08:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-04-11T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-04-11T09:15",
+              "author": "PCP",
+              "body": "26 y/o man, yearly exam. No new concerns. No ED visits since last July.\n\nUse: cigarettes 1 ppd (since 2016, ~8 yrs). Alcohol daily, heavy binges most nights; AUDIT-C 11. Cocaine \"less than before\" by his account, still at parties. Aspirin 325 most days for headaches. No GI bleeding, no abdominal pain.\nPHQ-9 2.\nBetween construction jobs right now; expects to be back on a crew this summer.\n\nExam: Well developed, no distress. Vitals as charted. HEENT normal. Neck without adenopathy or thyromegaly. Heart regular rate and rhythm, no murmurs. Lungs clear bilaterally. Abdomen soft, nontender, nondistended, no organomegaly. Skin: tattoos, knuckle scars, no rashes. Neuro nonfocal. No tremor.\n\nA/P\n- Health maintenance: CMP, CBC, lipid panel. Tdap current (2019). Declines flu discussion until fall.\n- Severe alcohol use disorder, cocaine use disorder, nicotine dependence: counseled; not ready to change; declines referral.\n- Antisocial personality disorder: on list.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-04-15a",
+          "kind": "portal_message",
+          "start": "2024-04-15T11:50",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-04-15T11:50",
+              "author": "PCP",
+              "body": "Jacob, your labs are all normal this year, including liver tests, blood counts and cholesterol. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-18a",
+          "kind": "telephone",
+          "start": "2024-09-18T08:35",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Phone Call",
+              "date": "2024-09-18T08:35",
+              "author": "RN",
+              "body": "Pt called. Was a passenger in a friend's car yesterday evening that slid on a wet road into a guardrail; airbag went off. Says he is completely fine: no head strike, no neck or back pain, no chest or belly pain, walking normally. Did not go to the ER and doesn't want to. Partner wants him looked at. Reviewed red flags (worsening headache, vomiting, confusion, chest/abdominal pain) -> ED. Earliest he can come is 10/1 because of work; booked."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-01a",
+          "kind": "office_visit",
+          "start": "2024-10-01T17:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after motor vehicle accident",
+          "conditions": [
+            {
+              "label": "Occupational stress",
+              "action": "diagnosed",
+              "onset": "2024-09-01",
+              "icd10": "Z56.6"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              70
+            ],
+            "hr": 76,
+            "rr": 14,
+            "spo2": 97,
+            "weight_kg": 78.7
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 3
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-10-01T17:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2024-10-01T17:35",
+              "author": "PCP",
+              "body": "27M, seen two weeks after a minor car accident (9/17). He was the passenger; his friend was driving in the rain, lost traction and they slid into a barrier. He remembers the screech of the tires and the airbag going off. Walked away without a scratch and still has no pain anywhere. Did not seek care that night.\n\nHe allows that it was \"pretty scary\" in the moment but keeps coming back to the fact that nobody got hurt. Since then he's had his head down: he is on a construction job with a project deadline coming up and has been putting in overtime, and in whatever time is left he's studying for the state construction licensing exam. Asked how he's processing the accident, he says he'll deal with it when there's time and right now there are more important things to focus on. No intrusive memories or flashbacks, no nightmares, isn't avoiding cars or rides, not jumpy or on guard. Sleep short because of work and studying, not because of the accident. PHQ-9 3.\n\nPrior ED visits Nov 2022 (police, legal) and Jul 2023 (intoxication), reviewed. Still smoking 1 ppd, drinking most nights though \"less on work nights.\" Aspirin as before.\n\nExam: Vitals as charted. No bruising or seat-belt marks. Neck and spine nontender with full ROM. Chest wall and abdomen nontender. Neuro nonfocal.\nMental status: calm and cooperative, good eye contact, affect appropriate to content, speech normal. Thought process linear. No psychotic features, no signs of mania, mood described as \"fine\" and not depressed.\n\nA/P\n1. MVA as passenger, no injury. Normal exam. No imaging needed.\n2. Stress around work deadlines and the licensing exam. He's coping by setting the accident aside, which seems to be working for now; no symptoms of acute stress disorder or PTSD. Occupational stress noted. Talked about sleep, and that alcohol will not help either the stress or the exam. Will reach out if anything about the accident starts to bother him.\n3. Substance use: unchanged, brief counseling.\nFlu shot at a nurse visit this month."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-23a",
+          "kind": "nurse_visit",
+          "start": "2024-10-23T16:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-23T16:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-23T16:35"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "date": "2024-10-23T16:45",
+              "author": "RN",
+              "body": "Here for influenza vaccine. Screening questions negative, no prior reactions. Given IM L deltoid, lot recorded. VIS provided. Observed 15 min, no reaction."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-12a",
+          "kind": "annual_physical",
+          "start": "2025-05-12T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "physical",
+          "conditions": [
+            {
+              "label": "Occupational stress",
+              "action": "resolved",
+              "icd10": "Z56.6"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              69
+            ],
+            "hr": 55,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 78.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-05-12T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 24
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Potassium",
+                  "value": 3.9
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 114
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 98
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-05-12T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 256
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.99
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.2
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-05-12T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-05-12T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-05-12T09:35",
+              "author": "PCP",
+              "body": "27M, yearly physical.\n\nThe work stress from last fall has settled; he says that stretch is behind him and he's sleeping normally. Nothing further about the accident. No new symptoms.\n\nUse: 1 ppd, ~9 yrs now. Drinking every day, binges most nights, AUDIT-C 12. Cocaine occasionally. Aspirin most days. No hematemesis, melena or abdominal pain. PHQ-9 1.\n\nExam: Vitals as charted. Normal HEENT. Heart RRR, no murmur. Lungs clear. Abdomen soft, nontender, liver not enlarged. No edema. Skin unremarkable apart from tattoos. No tremor.\n\nA/P\n1. Occupational stress: resolved, off the list.\n2. Severe alcohol use disorder / cocaine use disorder / nicotine dependence: counseled again, no change in readiness; declines referral.\n3. Antisocial personality disorder: no change.\n4. CMP, CBC today. Flu shot in the fall.\nRTC 1 yr."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-14a",
+          "kind": "portal_message",
+          "start": "2025-05-14T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-05-14T15:20",
+              "author": "PCP",
+              "body": "Labs from Monday are normal across the board. Talk soon."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-17a",
+          "kind": "nurse_visit",
+          "start": "2025-10-17T11:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-17T11:15"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-17T11:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit",
+              "date": "2025-10-17T11:25",
+              "author": "MA",
+              "body": "Walk-in for flu vaccine. No contraindications. Administered R deltoid IM. Tolerated well, left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-30a",
+          "kind": "ed_visit",
+          "start": "2026-01-30T10:25",
+          "end": "2026-01-30T15:40",
+          "service": "Emergency Medicine",
+          "reason": "vomiting with blood",
+          "conditions": [
+            {
+              "label": "Stress-related mucosal disease",
+              "action": "diagnosed",
+              "onset": "2026-01-30",
+              "icd10": "K29.01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              126,
+              75
+            ],
+            "hr": 74,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 96
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-01-30T10:50",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.8
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 274
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            },
+            {
+              "panel": "Prothrombin Time with INR",
+              "collected": "2026-01-30T10:50",
+              "results": [
+                {
+                  "test": "Prothrombin Time",
+                  "value": 11.0
+                },
+                {
+                  "test": "Prothrombin Time-International Normalized Ratio",
+                  "value": 0.9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-01-30T10:25"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record (received 2026-03-19)",
+              "date": "2026-03-19T13:40",
+              "author": "emergency medicine",
+              "body": "AREA HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 01/30/2026, 10:25 to 15:40\nPatient: Jacob Healey, 28 M. Allergies: NKDA.\nHome meds: aspirin 325 mg daily, OTC.\n\nCC: nausea, vomiting, blood in vomit.\n\nHPI: 28 yo M with antisocial personality disorder and severe alcohol and cocaine use disorders, seen here before for intoxication and a legal matter. Began vomiting early this morning, multiple times; the last episode had a small amount of bright red blood mixed in. Was at a party last night, drank heavily and used drugs including cocaine. Has a bad headache going back several days and has been taking his aspirin regularly through it. No abdominal pain. No black or bloody stools.\n\nSocial: smokes 1 ppd (~10 yrs). Heavy daily alcohol with frequent binges. Cocaine.\n\nExam: Well-appearing, no distress. Hemodynamically stable, vitals per flowsheet. Mucous membranes moist. Heart regular, lungs clear. Abdomen soft, nontender, no rebound, no guarding.\n\nLabs: CBC normal, hemoglobin normal. PT/INR normal.\n\nCourse: no further hematemesis during 5 hours of observation; tolerated oral fluids.\n\nImpression: stress-related mucosal disease (acute mucosal injury of the stomach) with small-volume hematemesis, in the setting of binge alcohol, cocaine and aspirin use. Low risk; outpatient management.\n\nPlan: omeprazole 40 mg by mouth daily for 8 weeks (Rx sent). Stop aspirin and avoid NSAIDs such as ibuprofen and naproxen. Stop alcohol and cocaine. Return for repeat or larger-volume bleeding, black stools, dizziness or fainting, or abdominal pain. Follow up with PCP within 1 week.\n\n[Faxed 03/19/2026 at PCP office request]"
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-02-03a",
+          "kind": "portal_message",
+          "start": "2026-02-03T21:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "ER visit",
+              "date": "2026-02-03T21:14",
+              "author": "patient",
+              "body": "hey doc i was in the ER friday for throwing up, there was some blood in it. they said my stomach lining is irritated and gave me omeprazole. they said to follow up with you this week. im fine now"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit",
+              "date": "2026-02-04T08:30",
+              "author": "RN",
+              "body": "Thanks for letting us know, Jacob. The doctor wants to see you this week. We have Thursday 2/5 at 4:40, I'll hold it for you. If you vomit blood again, have black stools, or feel faint, go straight back to the ER. Keep taking the omeprazole and please don't take aspirin or ibuprofen for now."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: ER visit",
+              "date": "2026-02-04T12:02",
+              "author": "patient",
+              "body": "thursday works"
+            }
+          ]
+        },
+        {
+          "id": "2026-02-05a",
+          "kind": "office_visit",
+          "start": "2026-02-05T16:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit for hematemesis",
+          "medications": [
+            {
+              "drug": "omeprazole 40 MG Delayed Release Oral Capsule",
+              "action": "historical",
+              "sig": "Take 1 capsule by mouth daily before breakfast for 8 weeks",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "short",
+              "reason": "stress-related mucosal disease (ED prescription)"
+            },
+            {
+              "drug_text": "aspirin 325 MG Oral Tablet",
+              "action": "stop",
+              "reason": "hematemesis; NSAID avoidance"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              121,
+              74
+            ],
+            "hr": 70,
+            "spo2": 98,
+            "weight_kg": 79.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-02-05T17:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 43.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.65
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 94
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.6
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "AUDIT-C total score",
+              "value": 12
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-02-05T16:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-02-05T17:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-02-05T17:20",
+              "author": "PCP",
+              "body": "28M seen after ED visit 1/30. No ED paperwork with him and nothing sent to us; history is his.\n\nWent to a party Thursday night, drank a lot and used cocaine. Woke up Friday morning vomiting, several times, and the last one had some bright red blood in it, \"not a lot.\" He'd had a headache for a few days before and was taking his aspirin through it. ED did blood work which he was told was normal, watched him for a few hours, told him the stomach lining was irritated (he recalls \"stress-related\" something), started omeprazole 40 daily for 8 weeks and told him no aspirin. Since then: no further vomiting, no blood, no black stools, no abdominal pain, no lightheadedness. Taking the omeprazole every morning. Headache gone. Has not had aspirin since.\n\nDrinking slowed a little this week, back to most nights; AUDIT-C 12. Smoking 1 ppd.\n\nExam: Vitals as charted. Conjunctivae pink. Heart regular. Lungs clear. Abdomen soft, nontender, normal bowel sounds.\n\nA/P\n1. Hematemesis, small volume, ED dx stress-related mucosal disease with alcohol, cocaine and aspirin. Stable. Finish omeprazole 40 mg daily x 8 wks (ED Rx, on med list). Repeat CBC today. Requesting the ED record.\n2. Aspirin: stopped, off his list for good.\n3. Severe alcohol use disorder: this one got more traction than usual. Offered naltrexone, explained what it does and what it would mean with his drinking; also offered an addiction medicine referral. He thought about it and said no to both for now. Return precautions for bleeding reviewed.\n4. Cocaine use disorder, nicotine dependence: counseled.\nRTC after the omeprazole course, or sooner."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-02-06a",
+          "kind": "portal_message",
+          "start": "2026-02-06T13:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-02-06T13:10",
+              "author": "PCP",
+              "body": "Jacob, your blood count from yesterday is normal, no sign of blood loss. Keep going with the omeprazole and stay off the aspirin."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-06b",
+          "kind": "telephone",
+          "start": "2026-02-06T14:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2026-02-06T14:30",
+              "author": "front desk",
+              "body": "Requested ED record for 1/30/2026 from hospital HIM by fax, release on file from 2023 expired; pt signed new release at visit 2/5."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "telephone",
+          "start": "2026-03-10T10:00",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request Follow-up",
+              "date": "2026-03-10T10:00",
+              "author": "front desk",
+              "body": "ED record for 1/30 still not received. Called HIM; request is in the queue. Re-sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "outside_records",
+          "start": "2026-03-19T13:40",
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Outside Record Review",
+              "date": "2026-03-20T08:15",
+              "author": "PCP",
+              "body": "ED record from 1/30 received and reviewed. Matches his account: small-volume hematemesis after binge drinking, cocaine and several days of aspirin; well and hemodynamically stable; CBC and PT/INR normal; ED impression stress-related mucosal disease; omeprazole 40 mg daily x 8 weeks, stop aspirin. Nothing further to act on. Our CBC 2/5 normal."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-30a",
+          "kind": "portal_message",
+          "start": "2026-03-30T19:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "omeprazole",
+              "date": "2026-03-30T19:48",
+              "author": "patient",
+              "body": "finished the omeprazole last week. no more blood or anything. do i need more"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: omeprazole",
+              "date": "2026-03-31T07:55",
+              "author": "PCP",
+              "body": "Glad to hear it. No need to continue it if you're feeling fine. Keep avoiding aspirin and ibuprofen. If you get burning, vomiting or any blood, call us. Please book a check-in in the next few months."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-02a",
+          "kind": "office_visit",
+          "start": "2026-06-02T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-07a",
+          "kind": "office_visit",
+          "start": "2026-08-07T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "conditions": [
+            {
+              "label": "Stress-related mucosal disease",
+              "action": "resolved",
+              "icd10": "K29.01"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              62
+            ],
+            "hr": 68,
+            "rr": 14,
+            "spo2": 98,
+            "weight_kg": 78.6
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-08-07T14:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.87
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 21
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 121
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.0
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-08-07T14:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 297
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.84
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 45.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.2
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.3
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 11
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2026-08-07T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2026-08-07T14:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2026-08-07T14:35",
+              "author": "PCP",
+              "body": "28M (29 later this month), follow-up; cancelled in June.\n\nGI: nothing since February. Finished the 8 weeks of omeprazole in late March. No heartburn, no vomiting, no blood, no dark stools. Has stayed off aspirin.\n\nUse: cigarettes 1 ppd (~10 yrs). Drinking daily, binges most nights, AUDIT-C 11, \"same as always.\" Cocaine \"now and then.\" PHQ-9 2.\n\nExam: Vitals as charted. Comfortable. Heart RRR. Lungs clear. Abdomen soft, nontender, no hepatosplenomegaly. No tremor.\n\nA/P\n1. Stress-related mucosal disease (ED 1/2026): resolved. No PPI needed. Stay off NSAIDs/aspirin.\n2. Severe alcohol use disorder: revisited naltrexone and referral; still a no. Will keep offering.\n3. Cocaine use disorder: on list.\n4. Nicotine dependence: advised to quit; not ready.\n5. Antisocial personality disorder: no change.\n6. CMP, CBC today.\nFollow-up booked 11/12; flu shot then if not before."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-08-10a",
+          "kind": "portal_message",
+          "start": "2026-08-10T12:25",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2026-08-10T12:25",
+              "author": "PCP",
+              "body": "Hi Jacob, Friday's labs are normal: blood count, kidney and liver tests all fine. See you in November."
+            }
+          ]
+        },
+        {
+          "id": "2026-11-12a",
+          "kind": "office_visit",
+          "start": "2026-11-12T10:20",
+          "reason": "routine follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Acute alcohol intoxication|F10.220": {
+        "code": "F10.220",
+        "display": "Alcohol dependence with intoxication, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Antisocial personality disorder|F60.2": {
+        "code": "F60.2",
+        "display": "Antisocial personality disorder",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cocaine use disorder|F14.20": {
+        "code": "F14.20",
+        "display": "Cocaine dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Occupational stress|Z56.6": {
+        "code": "Z56.6",
+        "display": "Other physical and mental strain related to work",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe alcohol use disorder|F10.20": {
+        "code": "F10.20",
+        "display": "Alcohol dependence, uncomplicated",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Stress-related mucosal disease|K29.01": {
+        "code": "K29.01",
+        "display": "Acute gastritis with bleeding",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "aspirin 325 MG Oral Tablet": {
+        "code": "198467",
+        "display": "aspirin 325 MG Delayed Release Oral Tablet",
+        "ingredient": "aspirin",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Cocaine and metabolite screen, urine": {
+        "code": "42241-0",
+        "display": "Cocaine+Benzoylecgonine [Presence] in Urine by Screen method",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Ethanol, blood": {
+        "code": "5640-8",
+        "display": "Ethanol [Mass/volume] in Blood",
+        "unit": "mg/dL",
+        "range": {
+          "high": 10
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
+  }
+}

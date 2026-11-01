@@ -1726,12 +1726,19 @@
                   "test": "Arterial pH",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.14
                 },
                 {
                   "test": "Beta-hydroxybutyrate",
                   "loinc": "6873-4",
                   "unit": "mmol/L",
+                  "range": {
+                    "high": 0.4
+                  },
                   "value": 6.4
                 },
                 {
@@ -2537,18 +2544,30 @@
                   "test": "CSF white blood cells",
                   "loinc": "26465-5",
                   "unit": "/uL",
+                  "range": {
+                    "low": 0,
+                    "high": 5
+                  },
                   "value": 11
                 },
                 {
                   "test": "CSF protein",
                   "loinc": "2880-3",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 15,
+                    "high": 45
+                  },
                   "value": 49
                 },
                 {
                   "test": "CSF glucose",
                   "loinc": "2342-4",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 50,
+                    "high": 75
+                  },
                   "value": 71
                 },
                 {
@@ -2975,7 +2994,7 @@
         "code": "861487",
         "display": "clobetasol propionate 0.5 MG/ML Topical Solution",
         "ingredient": "clobetasol",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methylprednisolone sodium succinate 1000 MG Injection": {
         "code": "1743726",
@@ -2994,18 +3013,29 @@
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Beta-hydroxybutyrate": {
         "code": "6873-4",
         "display": "Beta hydroxybutyrate [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
+        "range": {
+          "high": 0.4
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF glucose": {
         "code": "2342-4",
         "display": "Glucose [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 50,
+          "high": 75
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF oligoclonal bands": {
@@ -3017,12 +3047,20 @@
         "code": "2880-3",
         "display": "Protein [Mass/volume] in Cerebrospinal Fluid",
         "unit": "mg/dL",
+        "range": {
+          "low": 15,
+          "high": 45
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CSF white blood cells": {
         "code": "26465-5",
         "display": "Leukocytes [#/volume] in Cerebrospinal Fluid",
         "unit": "/uL",
+        "range": {
+          "low": 0,
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "MOG antibody, serum": {

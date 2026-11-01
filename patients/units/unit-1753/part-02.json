@@ -36,7 +36,7 @@
               {"test": "Leukocytes, vaginal wet prep", "loinc": "12226-7", "text": "Rare"},
               {"test": "Clue cells, vaginal wet prep", "loinc": "20502-1", "text": "None seen"},
               {"test": "Trichomonas vaginalis, vaginal wet prep", "loinc": "14367-7", "text": "Not seen"},
-              {"test": "Vaginal fluid pH", "loinc": "48037-6", "value": 4.5, "unit": "[pH]"}
+              {"test": "Vaginal fluid pH", "loinc": "48037-6", "value": 4.5, "unit": "[pH]", "range": {"low": 3.8, "high": 4.5}}
             ]}
           ],
           "conditions": [{"label": "Physiologic leukorrhea", "icd10": "N89.8", "action": "diagnosed", "onset": "2020-05-01"}],
@@ -174,7 +174,7 @@
             {"label": "High risk sexual behavior", "icd10": "Z72.51", "action": "diagnosed"},
             {"label": "Syphilis screening negative", "icd10": "Z11.3", "action": "resolved", "note": "superseded by the October 2021 diagnosis"}
           ],
-          "orders": [{"id": "rpr-6mo", "action": "placed", "order": "Rapid plasma reagin, 6-month post-treatment", "category": "lab", "reason": "early syphilis follow-up"}],
+          "orders": [{"id": "rpr-6mo", "action": "placed", "order": "Rapid Plasma Reagin", "category": "lab", "reason": "early syphilis follow-up"}],
           "procedures": [{"procedure": "Office visit, established patient, moderate MDM", "performed": "2021-11-02T14:00"}],
           "documents": [
             {"type": "Progress Notes", "title": "Post-ED Follow-up", "author": "PCP", "date": "2021-11-02T14:45",

@@ -1,0 +1,227 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001694",
+      "given": "Zoe",
+      "family": "Tremblay",
+      "birth_date": "1997-04-22",
+      "address_line": "38 Laurel Park Road",
+      "phone": "+1-917-555-0169",
+      "email": "zoe.tremblay@example.test",
+      "marital_status": "married",
+      "summary": "A 25-year-old teacher with myasthenia gravis on pyridostigmine and a history of gestational hypertension joins in 2022. Her second pregnancy ends in severe preeclampsia at 34 weeks with induced delivery, then a delayed postpartum preeclampsia five weeks later, managed by obstetrics without magnesium because of her myasthenia.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2022-08-02T10:20",
+              "body": "Caller would like to join as a new member. Teaches 2nd grade, looking for an office closer to her school, and wants to be set up before classes begin. Has myasthenia gravis, followed by an outside neurology group, which she wants to keep. Membership packet emailed. New patient visit booked for 8/23 at 9:00. Asked her to bring her medication bottles and the name of her previous primary care office so we can request records."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {"label": "Myasthenia gravis without exacerbation", "action": "history"},
+            {"label": "History of gestational hypertension", "icd10": "Z87.59", "action": "history", "onset": "2021-01-01", "note": "first pregnancy, term delivery"}
+          ],
+          "medications": [
+            {"drug_text": "pyridostigmine bromide 60 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 60, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "myasthenia gravis"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 61.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2022-08-23T10:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-08-23T10:05", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-08-23T10:05", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-08-23T10:05", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2022-08-23T10:05", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-08-23T10:05", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional social drinking"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2022-08-23T09:00"},
+            {"procedure": "Venipuncture", "performed": "2022-08-23T10:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-08-23T10:40",
+              "body": "25 yo F, elementary school teacher, establishing care.\n\nMyasthenia gravis: diagnosed before she moved here, managed by an outside neurology group that she will keep seeing about once a year. On pyridostigmine 60 mg three times a day. Feels well controlled. Denies droopy lids, double vision, trouble swallowing or chewing, or shortness of breath. No crises, no hospital stays for it. No prior surgery.\n\nOB: G1P1. One pregnancy, delivered at term in 2021. Developed gestational hypertension in that pregnancy, monitored to delivery, no complications; BP back to normal afterward and never treated since.\n\nMeds: pyridostigmine 60 mg TID.\nAllergies: none to drugs.\nFHx: mother had preeclampsia in pregnancy. A maternal cousin has lupus.\nSHx: never smoker. Drinks a glass of wine socially, a few times a month. One toddler at home. Teaches second grade.\n\nROS: negative except as above.\n\nExam: vitals as recorded. Well appearing. No ptosis at rest or with sustained upgaze for 60 seconds, EOM full without diplopia. Facial strength symmetric. Neck flexion and shoulder abduction 5/5 with repetition. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Reflexes 2+ and symmetric.\n\nAssessment / plan:\n1. Myasthenia gravis, stable on pyridostigmine. Neurology continues to direct care. Will request their most recent note. Reviewed that some common drugs can worsen MG and asked her to remind any prescriber.\n2. History of gestational hypertension. BP acceptable on a single reading today. Discussed that it matters for future pregnancies and long term; check yearly.\n3. Health maintenance: baseline CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screening, she agrees. Last cervical cytology was with her prenatal care in 2021; records requested from her prior office. Flu and COVID vaccines when the fall supply arrives.\n\nReturn for a physical next summer."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent bloodwork",
+              "author": "PCP",
+              "date": "2022-08-25T16:45",
+              "body": "Hi Zoe, all of the labs from Tuesday look good: blood counts, kidney and liver tests, thyroid, and cholesterol are normal, and the HIV and hepatitis C screens are negative. Nothing to change. Nice meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "outside_records",
+          "start": "2022-09-08T13:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care office records",
+              "author": "outside primary care",
+              "date": "2022-09-08T13:10",
+              "body": "Transfer of records, prior primary care office, covering 2019 to 2022.\n\nProblem list: myasthenia gravis (followed by neurology); gestational hypertension, 2021 pregnancy.\nMedications: pyridostigmine 60 mg PO TID.\nAllergies: NKDA.\n\nObstetric summary (from prenatal records on file): pregnancy in 2021 complicated by gestational hypertension in the third trimester, managed with monitoring; delivered at term without complication. Postpartum BP normal at follow-up.\n\nCervical cytology, 2021 (with prenatal care): negative for intraepithelial lesion or malignancy.\n\nImmunizations on file: childhood series complete; influenza yearly.\n\nFiled to chart; PCP reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-13T15:50"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-13T15:52"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2022-10-13T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "RN",
+              "date": "2022-10-13T16:10",
+              "body": "In after school for vaccines. Screening questions negative, not pregnant. Influenza quadrivalent IM left deltoid; COVID bivalent booster IM right deltoid. Observed 15 minutes, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "specialist_visit",
+          "start": "2022-11-17T14:00",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "author": "neurology",
+              "date": "2022-11-22T09:30",
+              "body": "Outside neurology group, follow-up visit of 11/17/2022.\n\nDear colleague,\n\nI saw Ms. Tremblay today for her yearly myasthenia gravis visit. She has had a quiet year. No ptosis, diplopia, dysarthria, dysphagia or breathing trouble, and she is managing a full teaching load without fatigue beyond the ordinary.\n\nMedications: pyridostigmine 60 mg three times daily. Allergies: NKDA.\n\nExamination: alert, fluent speech. No ptosis after sustained upgaze. Extraocular movements full. Facial, bulbar and neck strength normal. Limb strength 5/5 throughout without fatigability on repeated testing. Reflexes symmetric.\n\nImpression: myasthenia gravis, clinically stable on pyridostigmine.\n\nPlan: continue pyridostigmine 60 mg three times daily. Return in a year, sooner with any weakness. She knows to call before starting a new antibiotic or any drug flagged for MG.\n\nThank you for allowing me to share in her care."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "pharmacy",
+          "start": "2023-02-14T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: pyridostigmine",
+              "author": "RN",
+              "date": "2023-02-14T11:05",
+              "body": "Electronic request from the patient's pharmacy for pyridostigmine 60 mg, #270 for 90 days. Neurology's last letter has her on the same dose. Per PCP, ok to refill here between neurology visits. Sent with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "measure": ["bp", "hr", "spo2", "temp_c", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-08-22T09:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 1}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-08-22T08:30"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T09:10"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-08-22T09:25",
+              "body": "26 yo F for her yearly exam, a week before school starts.\n\nInterval: no illnesses. MG unchanged, still pyridostigmine 60 mg TID, saw neurology last November and is due again this fall. No weakness, no diplopia, swallowing fine. Not planning another pregnancy this year.\n\nMeds: pyridostigmine 60 mg TID. NKDA.\nSocial: never smoker, wine occasionally. Exercises with a stroller walk most evenings.\nPHQ-9: 1.\n\nExam: vitals as recorded, BP normal. No ptosis, EOM full. HEENT normal. Thyroid not enlarged. Heart RRR. Lungs clear. Abdomen benign. No edema. Strength full and symmetric. Skin clear.\n\nA/P:\n- MG, stable. Neurology to continue.\n- History of gestational hypertension, BP normal today.\n- Prevention: cervical cytology due 2024 (normal 2021). CBC today. Flu and updated COVID vaccine at a nurse visit in October.\n\nOne year."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-12T16:05"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-12T16:07"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-12T16:05"}
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "author": "MA",
+              "date": "2023-10-12T16:20",
+              "body": "Flu (quadrivalent) L deltoid and 2023-24 COVID R deltoid. Denies pregnancy, no fever today. Waited 15 min, tolerated well. Updated record."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "specialist_visit",
+          "start": "2023-11-14T13:30",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "author": "neurology",
+              "date": "2023-11-20T10:15",
+              "body": "Outside neurology group. Visit date 11/14/2023.\n\nMs. Tremblay returns for routine follow-up of myasthenia gravis. Another stable year: no ocular, bulbar or respiratory symptoms and no exacerbations. Takes pyridostigmine 60 mg TID with no GI side effects to speak of.\n\nAllergies: NKDA.\n\nExam: no ptosis or diplopia with prolonged gaze testing. Normal facial and neck flexor strength. Limbs 5/5 without fatigue on repetition. Gait normal.\n\nAssessment: myasthenia gravis, stable.\nPlan: no change; pyridostigmine 60 mg TID. Follow up in 12 months. If she considers another pregnancy, she should let us know beforehand so we can review her medications.\n\ncc: primary care"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,14 +1,7 @@
 {
   "unit": "unit-2708",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002708/2019-08-12a: procedure order \"Request records from prior primary care office\" names no one catalog lab, panel, study or procedure",
-    "MRN00002708/2022-11-28a: lab order \"Plasma free metanephrines\" names no one catalog lab, panel, study or procedure",
-    "MRN00002708/2024-02-12a: referral to \"Hepatology\" names no catalog specialty",
-    "MRN00002708/2024-11-08a: lab order \"Hepatic function panel in 4 weeks\" names no one catalog lab, panel, study or procedure",
-    "MRN00002708/2026-02-02a: imaging order \"Abdominal ultrasound and AFP\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"pyridoxine hydrochloride 50 MG Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002708",
@@ -298,15 +291,6 @@
               "date": "2019-08-12T09:52"
             }
           ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "procedure",
-              "reason": "Transfer of care"
-            }
-          ],
           "documents": [
             {
               "type": "History and physical note",
@@ -360,13 +344,6 @@
           "id": "2019-08-20a",
           "kind": "outside_records",
           "start": "2019-08-20T11:05",
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2019-08-20T11:05"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -779,7 +756,7 @@
             {
               "id": "colonoscopy-2020",
               "action": "placed",
-              "order": "Screening colonoscopy",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "Colorectal cancer screening, age 48"
@@ -1812,7 +1789,14 @@
             {
               "id": "pmets-2022",
               "action": "placed",
-              "order": "Plasma free metanephrines",
+              "order": "Metanephrine, Free, Plasma",
+              "category": "lab",
+              "reason": "Paroxysmal headache, palpitations, diaphoresis with hypertension"
+            },
+            {
+              "id": "pmets-2022-2",
+              "action": "placed",
+              "order": "Normetanephrine, Free, Plasma",
               "category": "lab",
               "reason": "Paroxysmal headache, palpitations, diaphoresis with hypertension"
             }
@@ -1854,6 +1838,11 @@
           "orders": [
             {
               "id": "pmets-2022",
+              "action": "done",
+              "date": "2022-12-01T12:15"
+            },
+            {
+              "id": "pmets-2022-2",
               "action": "done",
               "date": "2022-12-01T12:15"
             },
@@ -2992,7 +2981,7 @@
               "action": "placed",
               "order": "Hepatology referral",
               "category": "referral",
-              "to": "Hepatology",
+              "to": "Gastroenterology",
               "reason": "Chronic hepatitis C with mixed cryoglobulinemia, antiviral treatment"
             }
           ],
@@ -3618,7 +3607,7 @@
             {
               "id": "lft-inh-2024",
               "action": "placed",
-              "order": "Hepatic function panel in 4 weeks",
+              "order": "Hepatic Panel (LFT)",
               "category": "lab",
               "reason": "Isoniazid monitoring"
             }
@@ -5373,8 +5362,16 @@
             {
               "id": "hcc-us-2026",
               "action": "placed",
-              "order": "Abdominal ultrasound and AFP",
+              "order": "Abdominal ultrasound",
               "category": "imaging",
+              "reason": "Liver cancer surveillance, cirrhosis"
+            },
+            {
+              "id": "hcc-us-2026-2",
+              "action": "placed",
+              "order": "Alpha-1-Fetoprotein",
+              "category": "imaging",
+              "loinc": "1834-1",
               "reason": "Liver cancer surveillance, cirrhosis"
             }
           ],
@@ -5524,6 +5521,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 4.1
                 }
               ]
@@ -5540,6 +5540,11 @@
           "orders": [
             {
               "id": "hcc-us-2026",
+              "action": "done",
+              "date": "2026-03-09T13:40"
+            },
+            {
+              "id": "hcc-us-2026-2",
               "action": "done",
               "date": "2026-03-09T13:40"
             }
@@ -5887,43 +5892,49 @@
         "code": "854238",
         "display": "0.6 ML enoxaparin sodium 100 MG/ML Prefilled Syringe",
         "ingredient": "ml",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone 0.1 MG/ML Oral Solution": {
         "code": "309686",
         "display": "dexamethasone 0.1 MG/ML Oral Solution",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "doxazosin 2 MG Oral Tablet": {
         "code": "197626",
         "display": "doxazosin 2 MG Oral Tablet",
         "ingredient": "doxazosin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "isoniazid 300 MG Oral Tablet": {
         "code": "197832",
         "display": "isoniazid 300 MG Oral Tablet",
         "ingredient": "isoniazid",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "osimertinib 80 MG Oral Tablet": {
         "code": "1721581",
         "display": "osimertinib 80 MG Oral Tablet",
         "ingredient": "osimertinib",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "pyridoxine hydrochloride 50 MG Oral Tablet": {
+        "code": "639566",
+        "display": "vitamin B6 50 MG Oral Tablet",
+        "ingredient": "pyridoxine",
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet": {
         "code": "1799212",
         "display": "sofosbuvir 400 MG / velpatasvir 100 MG Oral Tablet",
         "ingredient": "sofosbuvir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "spironolactone 100 MG Oral Tablet": {
         "code": "198222",
         "display": "spironolactone 100 MG Oral Tablet",
         "ingredient": "spironolactone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5931,11 +5942,18 @@
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"pyridoxine hydrochloride 50 MG Oral Tablet\""
-    ]
+    "reports": {
+      "Alpha-1-Fetoprotein": {
+        "code": "1834-1",
+        "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    }
   }
 }

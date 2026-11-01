@@ -1,11 +1,7 @@
 {
   "unit": "unit-2605",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002605/2023-01-09a: lab order \"CBC with differential, iron studies, hemoglobin electrophoresis\" names no one catalog lab, panel, study or procedure",
-    "MRN00002605/2024-01-17a: lab order \"CRP, ESR, HLA-B27\" names no one catalog lab, panel, study or procedure",
-    "MRN00002605/2024-01-17a: imaging order \"Sacroiliac joint radiographs\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002605",
@@ -583,8 +579,23 @@
             {
               "id": "anemia-labs",
               "action": "placed",
-              "order": "CBC with differential, iron studies, hemoglobin electrophoresis",
+              "order": "CBC with Differential",
               "category": "lab",
+              "reason": "microcytic anemia without response to iron"
+            },
+            {
+              "id": "anemia-labs-2",
+              "action": "placed",
+              "order": "Iron Studies",
+              "category": "lab",
+              "reason": "microcytic anemia without response to iron"
+            },
+            {
+              "id": "anemia-labs-3",
+              "action": "placed",
+              "order": "Hemoglobin electrophoresis",
+              "category": "lab",
+              "loinc": "43113-0",
               "reason": "microcytic anemia without response to iron"
             }
           ],
@@ -709,12 +720,19 @@
                   "test": "Hemoglobin A2/Hemoglobin.total in Blood",
                   "loinc": "4551-8",
                   "unit": "%",
+                  "range": {
+                    "low": 1.5,
+                    "high": 3.5
+                  },
                   "value": 5.4
                 },
                 {
                   "test": "Hemoglobin F/Hemoglobin.total in Blood",
                   "loinc": "4576-5",
                   "unit": "%",
+                  "range": {
+                    "high": 2
+                  },
                   "value": 1.8
                 }
               ]
@@ -729,6 +747,16 @@
           "orders": [
             {
               "id": "anemia-labs",
+              "action": "done",
+              "date": "2023-01-19T14:30"
+            },
+            {
+              "id": "anemia-labs-2",
+              "action": "done",
+              "date": "2023-01-19T14:30"
+            },
+            {
+              "id": "anemia-labs-3",
               "action": "done",
               "date": "2023-01-19T14:30"
             }
@@ -971,8 +999,23 @@
             {
               "id": "inflam-labs",
               "action": "placed",
-              "order": "CRP, ESR, HLA-B27",
+              "order": "C Reactive Protein",
               "category": "lab",
+              "reason": "inflammatory low back pain"
+            },
+            {
+              "id": "inflam-labs-2",
+              "action": "placed",
+              "order": "Erythrocyte Sedimentation Rate",
+              "category": "lab",
+              "reason": "inflammatory low back pain"
+            },
+            {
+              "id": "inflam-labs-3",
+              "action": "placed",
+              "order": "HLA-B27",
+              "category": "lab",
+              "loinc": "4821-5",
               "reason": "inflammatory low back pain"
             },
             {
@@ -980,6 +1023,7 @@
               "action": "placed",
               "order": "Sacroiliac joint radiographs",
               "category": "imaging",
+              "loinc": "37650-9",
               "reason": "inflammatory low back pain"
             }
           ],
@@ -1043,6 +1087,16 @@
           "orders": [
             {
               "id": "inflam-labs",
+              "action": "done",
+              "date": "2024-01-25T11:20"
+            },
+            {
+              "id": "inflam-labs-2",
+              "action": "done",
+              "date": "2024-01-25T11:20"
+            },
+            {
+              "id": "inflam-labs-3",
               "action": "done",
               "date": "2024-01-25T11:20"
             }
@@ -2156,13 +2210,13 @@
         "code": "310965",
         "display": "ibuprofen 200 MG Oral Tablet",
         "ingredient": "ibuprofen",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "sulfasalazine 500 MG Oral Tablet": {
         "code": "198232",
         "display": "sulfasalazine 500 MG Oral Tablet",
         "ingredient": "sulfasalazine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2175,12 +2229,19 @@
         "code": "4551-8",
         "display": "Hemoglobin A2/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "low": 1.5,
+          "high": 3.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hemoglobin F/Hemoglobin.total in Blood": {
         "code": "4576-5",
         "display": "Hemoglobin F/Hemoglobin.total in Blood",
         "unit": "%",
+        "range": {
+          "high": 2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis B virus core Ab [Presence] in Serum or Plasma": {
@@ -2190,6 +2251,21 @@
       }
     },
     "reports": {
+      "HLA-B27": {
+        "code": "4821-5",
+        "display": "HLA-B27 [Presence]",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Hemoglobin electrophoresis": {
+        "code": "43113-0",
+        "display": "Hemoglobin electrophoresis panel in Blood",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sacroiliac joint radiographs": {
+        "code": "37650-9",
+        "display": "XR Sacroiliac Joint Ferguson",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "XR Sacroiliac Joint 3 Views": {
         "code": "37648-3",
         "display": "XR Sacroiliac Joint 3 Views",

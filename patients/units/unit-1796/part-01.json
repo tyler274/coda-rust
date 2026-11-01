@@ -18,15 +18,7 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "New membership enrollment; requesting visit",
           "orders": [
-            {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Request records from prior primary care office",
-              "category": "referral",
-              "to": "Prior primary care office",
-              "reason": "new patient"
-            }
-          ],
+            ],
           "documents": [
             {
               "type": "Telephone Encounter",
@@ -146,14 +138,16 @@
               "action": "placed",
               "order": "Stool culture, routine enteric pathogens",
               "category": "lab",
-              "reason": "watery diarrhea after travel"
+              "reason": "watery diarrhea after travel",
+              "loinc": "625-4"
             },
             {
               "id": "stool-afb-0730",
               "action": "placed",
               "order": "Stool modified acid-fast stain (Cryptosporidium/Cyclospora)",
               "category": "lab",
-              "reason": "watery diarrhea after travel"
+              "reason": "watery diarrhea after travel",
+              "loinc": "10656-7"
             }
           ],
           "procedures": [
@@ -266,12 +260,7 @@
           "service": "Internal Medicine — Primary Care",
           "reason": "Prior primary care records",
           "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2025-08-20T14:30"
-            }
-          ],
+            ],
           "immunizations": [
             {
               "vaccine": "Tdap",

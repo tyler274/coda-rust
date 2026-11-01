@@ -61,7 +61,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             },
@@ -171,7 +175,11 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
-                  "value": 1.2
+                  "value": 1.2,
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             },
@@ -274,9 +282,17 @@
             {
               "id": "li-standing",
               "action": "placed",
-              "order": "Standing order: BMP and serum lithium every 3 months",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "lithium nephrotoxicity"
+            },
+            {
+              "id": "li-standing-2",
+              "action": "placed",
+              "order": "Lithium",
+              "category": "lab",
+              "reason": "lithium nephrotoxicity",
+              "loinc": "14334-7"
             }
           ],
           "documents": [
@@ -335,7 +351,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }
@@ -447,7 +467,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 },
                 {
                   "test": "Thyroid Stimulating Hormone"
@@ -669,7 +693,11 @@
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
-                  "unit": "mmol/L"
+                  "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  }
                 }
               ]
             }

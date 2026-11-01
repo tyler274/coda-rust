@@ -1,10 +1,7 @@
 {
   "unit": "unit-2025",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002025/2023-06-14a: lab order \"BMP, serum and urine osmolality, urinalysis, lithium level\" names no one catalog lab, panel, study or procedure",
-    "MRN00002025/2026-04-17a: lab order \"BMP, hepatic panel, lithium level\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002025",
@@ -300,6 +297,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -521,6 +522,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -639,6 +644,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.6
                 }
               ]
@@ -967,6 +975,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -1000,8 +1012,39 @@
             {
               "id": "lab-2023-06-19",
               "action": "placed",
-              "order": "BMP, serum and urine osmolality, urinalysis, lithium level",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
+              "reason": "Polyuria and thirst"
+            },
+            {
+              "id": "lab-2023-06-19-2",
+              "action": "placed",
+              "order": "Serum osmolality",
+              "category": "lab",
+              "loinc": "2692-2",
+              "reason": "Polyuria and thirst"
+            },
+            {
+              "id": "lab-2023-06-19-3",
+              "action": "placed",
+              "order": "Urine osmolality",
+              "category": "lab",
+              "loinc": "2695-5",
+              "reason": "Polyuria and thirst"
+            },
+            {
+              "id": "lab-2023-06-19-4",
+              "action": "placed",
+              "order": "Urinalysis",
+              "category": "lab",
+              "reason": "Polyuria and thirst"
+            },
+            {
+              "id": "lab-2023-06-19-5",
+              "action": "placed",
+              "order": "Lithium",
+              "category": "lab",
+              "loinc": "14334-7",
               "reason": "Polyuria and thirst"
             }
           ],
@@ -1136,19 +1179,31 @@
                 {
                   "test": "Osmolality of Serum or Plasma",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 300
                 },
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 150
                 },
                 {
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -1163,6 +1218,26 @@
           "orders": [
             {
               "id": "lab-2023-06-19",
+              "action": "done",
+              "date": "2023-06-19T16:40"
+            },
+            {
+              "id": "lab-2023-06-19-2",
+              "action": "done",
+              "date": "2023-06-19T16:40"
+            },
+            {
+              "id": "lab-2023-06-19-3",
+              "action": "done",
+              "date": "2023-06-19T16:40"
+            },
+            {
+              "id": "lab-2023-06-19-4",
+              "action": "done",
+              "date": "2023-06-19T16:40"
+            },
+            {
+              "id": "lab-2023-06-19-5",
               "action": "done",
               "date": "2023-06-19T16:40"
             }
@@ -1268,7 +1343,11 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 150
                 }
               ]
@@ -1280,7 +1359,11 @@
                 {
                   "test": "Osmolality of Urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 162
                 }
               ]
@@ -1447,6 +1530,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.1
                 }
               ]
@@ -1547,6 +1633,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.9
                 }
               ]
@@ -1827,6 +1917,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -2113,6 +2207,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -2218,6 +2316,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.8
                 }
               ]
@@ -2476,6 +2577,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -2667,6 +2772,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -2727,6 +2836,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.6
                 }
               ]
@@ -2930,6 +3042,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 },
                 {
@@ -2990,6 +3106,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.0
                 }
               ]
@@ -3104,6 +3223,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -3366,6 +3489,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -3501,6 +3628,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.9
                 }
               ]
@@ -3535,6 +3666,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.7
                 }
               ]
@@ -3800,6 +3934,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 },
                 {
@@ -3855,6 +3993,9 @@
                   "test": "Carcinoembryonic antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.5
                 }
               ]
@@ -4077,6 +4218,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.7
                 }
               ]
@@ -4201,8 +4346,23 @@
             {
               "id": "lab-2026-04-24",
               "action": "placed",
-              "order": "BMP, hepatic panel, lithium level",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
+              "reason": "Atorvastatin dose increase; lithium monitoring"
+            },
+            {
+              "id": "lab-2026-04-24-2",
+              "action": "placed",
+              "order": "Hepatic Panel (LFT)",
+              "category": "lab",
+              "reason": "Atorvastatin dose increase; lithium monitoring"
+            },
+            {
+              "id": "lab-2026-04-24-3",
+              "action": "placed",
+              "order": "Lithium",
+              "category": "lab",
+              "loinc": "14334-7",
               "reason": "Atorvastatin dose increase; lithium monitoring"
             },
             {
@@ -4323,6 +4483,10 @@
                   "test": "Lithium",
                   "loinc": "14334-7",
                   "unit": "mmol/L",
+                  "range": {
+                    "low": 0.6,
+                    "high": 1.2
+                  },
                   "value": 0.8
                 }
               ]
@@ -4337,6 +4501,16 @@
           "orders": [
             {
               "id": "lab-2026-04-24",
+              "action": "done",
+              "date": "2026-04-24T15:30"
+            },
+            {
+              "id": "lab-2026-04-24-2",
+              "action": "done",
+              "date": "2026-04-24T15:30"
+            },
+            {
+              "id": "lab-2026-04-24-3",
               "action": "done",
               "date": "2026-04-24T15:30"
             }
@@ -4491,37 +4665,37 @@
         "code": "317110",
         "display": "24 HR isosorbide mononitrate 30 MG Extended Release Oral Tablet",
         "ingredient": "hr",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "amiloride hydrochloride 5 MG Oral Tablet": {
         "code": "977880",
         "display": "amiloride hydrochloride 5 MG Oral Tablet",
         "ingredient": "amiloride",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "lithium carbonate 300 MG Oral Capsule": {
         "code": "197889",
         "display": "lithium carbonate 300 MG Oral Capsule",
         "ingredient": "lithium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "moxifloxacin 5 MG/ML Ophthalmic Solution": {
         "code": "403818",
         "display": "moxifloxacin 5 MG/ML Ophthalmic Solution",
         "ingredient": "moxifloxacin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "nitroglycerin 0.4 MG Sublingual Tablet": {
         "code": "198039",
         "display": "nitroglycerin 0.4 MG Sublingual Tablet",
         "ingredient": "nitroglycerin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "prednisolone acetate 10 MG/ML Ophthalmic Suspension": {
         "code": "1376336",
         "display": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
         "ingredient": "prednisolone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4529,24 +4703,56 @@
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Lithium": {
         "code": "14334-7",
         "display": "Lithium [Moles/volume] in Serum or Plasma",
         "unit": "mmol/L",
+        "range": {
+          "low": 0.6,
+          "high": 1.2
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Serum or Plasma": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality of Urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Lithium": {
+        "code": "14334-7",
+        "display": "Lithium [Moles/volume] in Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Serum osmolality": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Urine osmolality": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

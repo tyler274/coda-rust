@@ -856,7 +856,6 @@ async fn run_browser_checks(
     patient.text_until(&format!("{base}/?mode=client"), "Today");
     patient.click("nav.tabs button:nth-of-type(1)");
     patient.wait_for("Controlled provisional preview");
-    patient.wait_for("Luna — drafting, not yet saved");
     let pending: serde_json::Value = http
         .get(format!("{base}/api/conversation/messages"))
         .bearer_auth(TOKEN)

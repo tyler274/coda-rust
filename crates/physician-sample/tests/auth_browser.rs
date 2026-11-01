@@ -6,17 +6,20 @@
 //! and the steps hold at desktop, phone, and reduced-motion viewports.
 //! Book: `book/src/physician-site.md`.
 
-use std::path::PathBuf;
-use std::sync::OnceLock;
 use std::time::{Duration, Instant};
 
 mod common;
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
+mod required_auth;
 
 use devtools::{Browser, DESKTOP, PHONE};
+use required_auth::{STAGING_EMAIL, spawn_required_server};
 
-const STAGING_EMAIL: &str = "physician@codahealth.test";
+/// What a tab tells the others when the browser's session changes. It names no
+/// session: each tab reads what the browser stores.
+const TELL_THE_OTHER_TABS: &str = "new BroadcastChannel('coda.physician.session')\
+     .postMessage(JSON.stringify({ from: 'another-tab', kind: 'changed' }))";
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
@@ -117,7 +120,7 @@ fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
 
 /// Ends the page's session on the server, as expiry does; the page is not told.
 const END_THE_SESSION: &str = "fetch('/auth/sign-out', { method: 'POST', headers: { \
-     Authorization: 'Bearer ' + sessionStorage.getItem('coda.physician.session') } }); 'sent'";
+     Authorization: 'Bearer ' + localStorage.getItem('coda.physician.session') } }); 'sent'";
 
 /// The prompt covers the page, hides it from assistive technology, and takes
 /// it out of the tab order.
@@ -127,13 +130,16 @@ const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app
      return !!prompt && !!shell && prompt.contains(top) \
          && shell.getAttribute('aria-hidden') === 'true' && shell.hasAttribute('inert'); })()";
 
+const FIND_PATIENT_OPEN: &str = "[...document.querySelectorAll('dialog[open]')]\
+     .some((dialog) => dialog.innerText.includes('Find patient'))";
+
 const RESUMED_ON_THE_PATIENT: &str = "!document.querySelector('.session-prompt') \
      && !document.querySelector('.glass-app').hasAttribute('inert') \
      && document.body.innerText.includes('Patient summary')";
 
-/// What another tab sends after redeeming its link: a fresh session for
-/// `physician`, minted here through the same proof sign-in.
-fn another_tab_signs_in(physician: &str) -> String {
+/// Another tab redeems a link: a fresh session for the staging account,
+/// stored with `owner` as its owner. `then` runs once it is stored.
+fn another_tab_stores_a_session(owner: &str, then: &str) -> String {
     format!(
         "(async () => {{ \
            const post = (path, body) => fetch(path, {{ method: 'POST', \
@@ -142,10 +148,16 @@ fn another_tab_signs_in(physician: &str) -> String {
            const issued = await post('/auth/sign-in', {{ email: '{STAGING_EMAIL}' }}); \
            const verified = await post('/auth/verify', \
              {{ email: '{STAGING_EMAIL}', token: issued.token }}); \
-           new BroadcastChannel('coda.physician.session').postMessage(JSON.stringify({{ \
-             from: 'another-tab', kind: 'signed_in', \
-             physician_id: {physician}, session: verified.session }})); }})(); 'sent'"
+           window.__minted = verified.session; \
+           localStorage.setItem('coda.physician.session', verified.session); \
+           localStorage.setItem('coda.physician.session.email', '{owner}'); \
+           {then}; }})(); 'sent'"
     )
+}
+
+/// Another tab signs `owner` in and tells this one.
+fn another_tab_signs_in(owner: &str) -> String {
+    another_tab_stores_a_session(owner, TELL_THE_OTHER_TABS)
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
@@ -159,14 +171,14 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     // Other tabs hear this tab's sign-in.
     browser.page().evaluate(
         "window.__news = []; new BroadcastChannel('coda.physician.session').onmessage = \
-         event => window.__news.push(JSON.parse(event.data).kind); 'listening'",
+         event => window.__news.push(JSON.parse(event.data)); 'listening'",
     );
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
     browser.wait_for("Mary Louis");
     wait_until(
         &mut browser,
-        "window.__news.includes('signed_in')",
+        "window.__news.some((news) => news.kind === 'changed')",
         "the sign-in reaching other tabs",
     );
     browser.click(r#"button[aria-label="Open Mary Louis"]"#);
@@ -198,18 +210,52 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     wait_until(&mut browser, COVERED, "the prompt covering the page again");
     browser
         .page()
-        .evaluate(&another_tab_signs_in("'staging-physician'"));
+        .evaluate(&another_tab_signs_in(STAGING_EMAIL));
     wait_until(
         &mut browser,
         RESUMED_ON_THE_PATIENT,
         "resuming on another tab's link",
     );
 
-    // Another tab's sign-out reaches this one.
-    browser.page().evaluate(
-        "new BroadcastChannel('coda.physician.session').postMessage(JSON.stringify(\
-         { from: 'another-tab', kind: 'signed_out' })); 'sent'",
+    // A dialog open when the session ends stays open beneath the prompt, and
+    // is still open once signing in again resumes the page. It opens by a real
+    // click, as a person opens it, since the browser treats Escape differently
+    // over a dialog no gesture opened.
+    let at = browser.page().evaluate(
+        "(() => { const r = document.querySelector('button[aria-label=\"Find patient\"]').getBoundingClientRect(); \
+         return [r.x + r.width / 2, r.y + r.height / 2]; })()",
     );
+    for kind in ["mousePressed", "mouseReleased"] {
+        browser.page().call_session(
+            "Input.dispatchMouseEvent",
+            serde_json::json!({ "type": kind, "x": at[0], "y": at[1], "button": "left", "clickCount": 1 }),
+        );
+    }
+    wait_until(&mut browser, FIND_PATIENT_OPEN, "Find patient opening");
+    browser.page().evaluate(END_THE_SESSION);
+    wait_until(&mut browser, COVERED, "the prompt covering an open dialog");
+    // Escape never dismisses the prompt, even pressed again without other input.
+    for _ in 0..3 {
+        for kind in ["keyDown", "keyUp"] {
+            browser.page().call_session(
+                "Input.dispatchKeyEvent",
+                serde_json::json!({ "type": kind, "key": "Escape", "code": "Escape", "windowsVirtualKeyCode": 27 }),
+            );
+        }
+    }
+    wait_until(&mut browser, COVERED, "the prompt still up after Escape");
+    browser.click(".session-prompt .sign-in-primary");
+    wait_until(
+        &mut browser,
+        &format!("{RESUMED_ON_THE_PATIENT} && {FIND_PATIENT_OPEN}"),
+        "resuming with Find patient still open",
+    );
+
+    // Another tab's sign-out reaches this one.
+    browser.page().evaluate(&format!(
+        "{END_THE_SESSION}; localStorage.removeItem('coda.physician.session'); \
+         localStorage.removeItem('coda.physician.session.email'); {TELL_THE_OTHER_TABS}; 'sent'"
+    ));
     let text = browser.wait_for("Sign in to Coda");
     assert!(
         !text.contains("Patient summary"),
@@ -219,206 +265,74 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn another_physicians_sign_in_starts_this_tab_over_at_today() {
+async fn a_sign_out_answered_after_you_signed_in_again_elsewhere_keeps_the_new_session() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
     let mut browser = Browser::launch();
     browser.resize(DESKTOP);
-    browser.text_until(&base, "Sign in to Coda");
+    sign_in(&mut browser, &base);
+    browser.wait_for("Staging Physician");
+    let first = stored_session(&mut browser).expect("signed in");
+    // Hold this tab's sign-out request.
+    browser.page().evaluate(
+        "const send = window.fetch.bind(window); \
+         window.fetch = (input, init) => \
+           String(input.url || input).includes('/auth/sign-out') \
+             ? new Promise((resolve) => { window.__release = () => resolve(send(input, init)); }) \
+             : send(input, init); 'held'",
+    );
+    browser.click(r#"button[aria-label="Sign out of Coda"]"#);
+    wait_until(&mut browser, "!!window.__release", "the sign-out request");
+    // Meanwhile you sign in again in another tab.
+    browser
+        .page()
+        .evaluate(&another_tab_signs_in(STAGING_EMAIL));
+    wait_until(
+        &mut browser,
+        "!!window.__minted && localStorage.getItem('coda.physician.session') === window.__minted",
+        "the new sign-in",
+    );
+    let renewed = stored_session(&mut browser).expect("renewed session");
+    assert_ne!(renewed, first);
+    std::thread::sleep(Duration::from_millis(500));
+    browser.page().evaluate("window.__release(); 'released'");
+    std::thread::sleep(Duration::from_secs(1));
+    assert_eq!(stored_session(&mut browser), Some(renewed.clone()));
+    assert_eq!(whoami_status(&mut browser, &renewed), 200);
+    assert!(
+        browser
+            .body_text()
+            .is_some_and(|text| !text.contains("Sign in to Coda") && text.contains("Mary Louis")),
+        "the late sign-out undid the new sign-in"
+    );
+}
+
+fn sign_in(browser: &mut Browser, base: &str) {
+    browser.text_until(base, "Sign in to Coda");
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
     browser.wait_for("Mary Louis");
-    browser.click(r#"button[aria-label="Open Mary Louis"]"#);
-    browser.wait_for("Patient summary");
-    // The news names someone else; the tab ends its own session and starts
-    // over at Today on the session it was handed.
+}
+
+/// The session this browser holds.
+fn stored_session(browser: &mut Browser) -> Option<String> {
     browser
         .page()
-        .evaluate(&another_tab_signs_in("'another-physician'"));
-    wait_until(
-        &mut browser,
-        "!document.body.innerText.includes('Patient summary') \
-         && document.body.innerText.includes('Mary Louis')",
-        "starting over at Today",
-    );
+        .evaluate("localStorage.getItem('coda.physician.session')")
+        .as_str()
+        .map(str::to_owned)
 }
 
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-#[ignore = "browser qualification; run explicitly with --ignored"]
-async fn a_signed_out_tab_holding_a_patient_link_lands_on_it_when_another_tab_signs_in() {
-    let server = spawn_required_server().await;
-    let base = format!("http://{}", server.address);
-    let mut browser = Browser::launch();
-    browser.resize(DESKTOP);
-    // A Coda link to Mary Louis (local-product's MARY_WORKSPACE_ID) opened while signed out.
-    browser.text_until(
-        &format!("{base}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"),
-        "Sign in to Coda",
-    );
-    // The emailed link carries no patient and is opened in another tab; this
-    // tab picks up the sign-in and lands where its own link pointed.
+/// What the server answers `session` now.
+fn whoami_status(browser: &mut Browser, session: &str) -> u64 {
+    browser.page().evaluate(&format!(
+        "window.__whoami = 0; fetch('/auth/whoami', {{ headers: {{ Authorization: 'Bearer {session}' }} }}) \
+           .then(r => {{ window.__whoami = r.status; }}); 'sent'"
+    ));
+    wait_until(browser, "window.__whoami > 0", "the server's answer");
     browser
         .page()
-        .evaluate(&another_tab_signs_in("'staging-physician'"));
-    browser.wait_for("Patient summary");
-}
-
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-#[ignore = "browser qualification; run explicitly with --ignored"]
-async fn a_link_that_no_longer_grants_access_opens_no_access() {
-    let server = spawn_required_server().await;
-    // The server's refusal is proved in its own tests; this stands in for it so
-    // the page's answer is exercised in the browser.
-    let refusing = refusing_verifier().await;
-    let mut browser = Browser::launch();
-    browser.resize(DESKTOP);
-    let url = format!(
-        "http://{}/?api=http://{refusing}&email={STAGING_EMAIL}&code=codas-held",
-        server.address
-    );
-    let text = browser.text_until(&url, "No access to this practice");
-    assert!(
-        text.contains("no longer gives you access to this practice")
-            && !text.contains("Mary Louis"),
-        "the no-access page was wrong:\n{text}"
-    );
-    browser.click(".sign-in-text-action");
-    browser.wait_for("Work email");
-}
-
-/// Answers `/auth/verify` the way the server answers a held link whose account
-/// lost access, with the CORS a cross-port `?api=` page needs.
-async fn refusing_verifier() -> std::net::SocketAddr {
-    use axum::http::{StatusCode, header};
-    use axum::response::IntoResponse;
-    let cors = || {
-        [
-            (header::ACCESS_CONTROL_ALLOW_ORIGIN, "*"),
-            (header::ACCESS_CONTROL_ALLOW_HEADERS, "*"),
-            (header::ACCESS_CONTROL_ALLOW_METHODS, "*"),
-        ]
-    };
-    let app = axum::Router::new().route(
-        "/auth/verify",
-        axum::routing::post(move || async move {
-            (
-                StatusCode::FORBIDDEN,
-                cors(),
-                axum::Json(serde_json::json!({
-                    "detail": "This sign-in link no longer gives access to this practice.",
-                    "reason": "no_access",
-                })),
-            )
-                .into_response()
-        })
-        .options(move || async move { (StatusCode::NO_CONTENT, cors()).into_response() }),
-    );
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-    address
-}
-
-/// Boots the recorded practice with `PHYSICIAN_AUTH=required`. The server
-/// seeds its staging account and panel itself on the memory store. Its
-/// physician session is a temporary file and its execution is offline replay.
-async fn spawn_required_server() -> common::IsolatedServer {
-    let site = shared_site();
-    common::serve_isolated(|| {
-        // SAFETY: `serve_isolated` holds its start lock while this runs.
-        unsafe {
-            std::env::set_var("PHYSICIAN_SITE_DIR", &site);
-            std::env::set_var("PHYSICIAN_AUTH", "required");
-            std::env::remove_var("PHYSICIAN_DATABASE_URL");
-            std::env::remove_var("PHYSICIAN_UPSTREAM");
-        }
-    })
-    .await
-}
-
-/// Builds the WASM site once for this test binary; the two browser tests
-/// would otherwise race two cargo builds over one output directory.
-fn shared_site() -> PathBuf {
-    static SITE: OnceLock<PathBuf> = OnceLock::new();
-    SITE.get_or_init(build_site).clone()
-}
-
-fn build_site() -> PathBuf {
-    let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let target = std::env::temp_dir().join("coda-physician-wasm");
-    let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
-    let mut cargo =
-        std::process::Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
-    cargo_without_parent_package(&mut cargo);
-    let status = cargo
-        .current_dir(&workspace)
-        .env("CARGO_TARGET_DIR", &target)
-        .env_remove("PHYSICIAN_API_URL")
-        .args([
-            "build",
-            "-p",
-            "physician-app",
-            "--target",
-            "wasm32-unknown-unknown",
-            "--features",
-            "web",
-        ])
-        .status()
-        .expect("cargo build");
-    assert!(status.success(), "physician-app wasm build failed");
-    std::fs::create_dir_all(workspace.join("target/physician-web")).unwrap();
-    let status = std::process::Command::new(wasm_bindgen())
-        .args([
-            "--target",
-            "web",
-            "--out-dir",
-            workspace.join("target/physician-web").to_str().unwrap(),
-            wasm.to_str().unwrap(),
-        ])
-        .status()
-        .expect("wasm-bindgen");
-    assert!(status.success(), "wasm-bindgen failed");
-    workspace.join("target/physician-web")
-}
-
-fn cargo_without_parent_package(command: &mut std::process::Command) {
-    command.env_clear();
-    // LD_LIBRARY_PATH rides along: the tools on PATH (for example the lld
-    // that links wasm) resolve their own shared libraries through it.
-    for key in [
-        "PATH",
-        "HOME",
-        "USER",
-        "RUSTUP_HOME",
-        "CARGO_HOME",
-        "RUSTUP_TOOLCHAIN",
-        "TMPDIR",
-        "LD_LIBRARY_PATH",
-    ] {
-        if let Some(value) = std::env::var_os(key) {
-            command.env(key, value);
-        }
-    }
-}
-
-fn wasm_bindgen() -> PathBuf {
-    if let Some(path) = std::env::var_os("WASM_BINDGEN") {
-        return PathBuf::from(path);
-    }
-    if let Some(path) = find_on_path("wasm-bindgen") {
-        return path;
-    }
-    let local =
-        std::env::var_os("HOME").map(|home| PathBuf::from(home).join(".local/bin/wasm-bindgen"));
-    if let Some(path) = local.filter(|path| path.is_file()) {
-        return path;
-    }
-    panic!("wasm-bindgen 0.2.129 is required to build the physician page");
-}
-
-fn find_on_path(name: &str) -> Option<PathBuf> {
-    let paths = std::env::var_os("PATH")?;
-    std::env::split_paths(&paths)
-        .map(|dir| dir.join(name))
-        .find(|path| path.is_file())
+        .evaluate("window.__whoami")
+        .as_u64()
+        .expect("status")
 }

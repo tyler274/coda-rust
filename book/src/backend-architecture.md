@@ -50,6 +50,16 @@ record's source kind, connection and note label are fixed when it is created.
   ([privacy recovery](privacy-recovery.md)) deletes base rows and their
   retained revisions, and remains authoritative.
 
+The patient-owned doctor workspace and explicit sending to a connected practice
+are MVP scope. The live cross-product connection is not yet fully integrated;
+[Accounts and practice connection](front-door.md#implementation-and-remaining-gaps)
+owns that implementation boundary. External public-page and link sharing is
+parked for post-MVP. The current binary still mounts the publication routes in
+`doctor_routes`, including HTML, PDF and SMART Health Link retrieval. Retaining
+those routes neither qualifies external sharing for MVP nor restores PDF download
+to product scope. Parked product scope does not disable a route or resolve its
+security findings.
+
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must
 not import the physician `local-product`; [operating invariants](agent-contracts.md)
@@ -133,5 +143,4 @@ Duet owner suites `conversation_proof`, `provisional_stream`, `skills_accounting
 Loop consolidation preserves the current admitted capabilities, not completion
 of the saved-routine journey or full D1 acceptance. These suites and image smoke tests establish their
 exercised persistence/startup paths, not sign-in, installed-client or clinical
-qualification. Historical dependency-upgrade proof remains in
-[PR #36](https://github.com/Coda-Health/coda-rust/pull/36).
+qualification.

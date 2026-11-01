@@ -1,0 +1,151 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002798",
+      "given": "Fatou",
+      "family": "Diallo",
+      "birth_date": "1983-05-07",
+      "address_line": "41 Pochassic Street",
+      "phone": "+1-802-555-0155",
+      "email": "fatou.diallo@example.test",
+      "marital_status": "single",
+      "summary": "Forty-one-year-old administrative assistant with limited cutaneous systemic sclerosis, Raynaud and GERD who joins in August 2024 with new exertional breathlessness. Pulmonology finds probable SSc-associated PAH in December 2024 and confirms it by right heart catheterization in December 2025, starting bosentan after her last practice visit.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "New patient call", "author": "front desk", "date": "2024-08-12T10:20",
+             "body": "Caller would like to transfer her primary care here. Her old doctor's office closed its panel to adult transfers after the physician left. Has BCBS PPO, card info taken. Has scleroderma, sees a rheumatologist about once a year. Booked new patient appt 8/20 at 8:40, fasting labs same morning ok. Asked her to sign the release for her old office so we can get records."}
+          ]
+        },
+        {
+          "id": "2024-08-20a",
+          "kind": "establish_care",
+          "start": "2024-08-20T08:40",
+          "end": "2024-08-20T09:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care; short of breath on stairs",
+          "conditions": [
+            {"label": "Systemic sclerosis, limited cutaneous subtype", "icd10": "M34.1", "action": "diagnosed", "onset": "2019-06-01", "note": "Diagnosed about 2019; followed by outside rheumatology about yearly, no medication."},
+            {"label": "Raynaud phenomenon", "action": "diagnosed", "onset": "2019-06-01", "note": "Mild; cold avoidance and gloves."},
+            {"label": "Gastroesophageal reflux disease without esophagitis", "action": "diagnosed", "onset": "2019-06-01", "note": "Mild; managed with meal timing and raising head of bed."}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "procedures": [
+            {"procedure": "Appendectomy", "snomed": "80146002", "performed": "1998-09-10T09:00"},
+            {"procedure": "Cesarean section", "snomed": "11466000", "performed": "2011-10-20T08:00"},
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2024-08-20T08:40"},
+            {"procedure": "Venipuncture", "performed": "2024-08-20T08:35"}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Administrative assistant"}
+          ],
+          "state": {"weight_kg": 68.0, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.74}},
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-20T08:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-08-20T08:35", "results": [{"test": "Creatinine"}, {"test": "Blood Urea Nitrogen"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2024-08-20T08:35", "results": [{"test": "Low Density Lipoprotein"}, {"test": "High Density Lipoprotein"}]},
+            {"panel": null, "collected": "2024-08-20T08:35", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2024-08-20T08:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2024-08-20T08:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "orders": [
+            {"id": "pulm-ref-2024", "action": "placed", "order": "Pulmonology referral", "category": "referral", "to": "Pulmonology", "reason": "exertional dyspnea and dry cough in limited systemic sclerosis"},
+            {"id": "mammo-2024", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2024-08-20T10:15",
+             "body": "41F new to the practice, transferring from a practice that is no longer taking her plan's adult patients.\n\nCC: getting winded on stairs.\n\nHPI: For about two months she has noticed she has to pause halfway up the stairs at work (office is on the 2nd floor) and she has had a dry, tickly cough over the same stretch, no sputum. No chest pain, no orthopnea, no PND, no leg swelling. No fevers. No recent change in her skin tightness or her joints that she can tell. Has never smoked.\n\nPMH:\n- Limited cutaneous systemic sclerosis, diagnosed ~2019 by rheumatology; she goes back once a year, never put on a medication for it.\n- Raynaud's: fingers turn white then blue in the cold, worse in winter. Wears gloves, runs warm water. Has not wanted a pill for it.\n- Reflux: mild, mostly with late dinners. Eats earlier and raised the head of the bed; rarely bothers her now.\nPSH: appendectomy at 15; C-section at 28.\nMeds: none.\nAllergies: NKDA.\nFH: mother with rheumatoid arthritis, father with hypertension, sister with autoimmune thyroiditis.\nSH: works as an administrative assistant. Never smoker. A drink or two a month socially. No drug use.\n\nExam: Vitals per flowsheet. Well appearing, speaking full sentences. Lungs clear to auscultation, no crackles. Heart regular, no murmur appreciated. No JVD. Abdomen soft, nontender, well-healed scars. Hands: no digital ulcers today, cap refill brisk. No edema.\n\nAssessment / plan:\n1. Exertional dyspnea and dry cough, ~2 months, in a patient with limited SSc. Lungs sound clear and she is not hypoxic at rest, but SSc puts her at risk for both lung fibrosis and pulmonary hypertension and she needs a proper workup. Referral to pulmonology placed; CBC and kidney function today will go with the referral. Call if this gets worse before she is seen.\n2. Limited SSc, Raynaud, GERD: stable, non-drug measures, continue rheumatology yearly. Will request rheum notes.\n3. Health maintenance: baseline CBC, CMP, lipids, TSH (sister with thyroid disease). HIV and hep C screening, she agrees. Mammogram ordered, last one 2022 per her. Pap 2022 per her, awaiting records. Flu/COVID in October.\n4. PHQ-2 negative.\n\nRTC after pulm sees her."}
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "portal_message",
+          "start": "2024-08-21T16:05",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2024-08-21T16:05",
+             "body": "Hi Fatou, your blood work from yesterday all came back normal: blood counts, kidney and liver tests, cholesterol and thyroid. HIV and hepatitis C screens were negative. I'm sending the counts and kidney numbers along to pulmonology with your referral. The referral coordinator will call you with a date."}
+          ]
+        },
+        {
+          "id": "2024-08-28a",
+          "kind": "outside_records",
+          "start": "2024-08-28T13:30",
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2022-06-14T10:00", "text": "Satisfactory for evaluation; transformation zone component present. Negative for intraepithelial lesion or malignancy. High-risk HPV not detected.", "conclusion": "NILM, HPV negative."},
+            {"study": "Screening mammogram, bilateral", "performed": "2022-07-11T09:30", "text": "Bilateral CC and MLO views. Scattered areas of fibroglandular density. No suspicious mass, calcification or architectural distortion.", "conclusion": "BI-RADS 1, negative."}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2019-03-05T11:00"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2024-08-28T13:30",
+             "body": "Faxed records received from her former primary care office, 22 pages: visit notes 2019-2023, immunization record (Tdap 3/2019), Pap/HPV 6/2022 negative, screening mammogram 7/2022 negative. No rheumatology notes in the packet. Scanned to the chart and routed to the PCP."}
+          ]
+        },
+        {
+          "id": "2024-09-17a",
+          "kind": "imaging",
+          "start": "2024-09-17T07:50",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2024-09-17T07:50", "text": "Bilateral craniocaudal and mediolateral oblique views with tomosynthesis. Compared with 2022. Breasts show scattered fibroglandular density. No mass, suspicious calcification or distortion in either breast. Skin and nipples unremarkable.", "conclusion": "BI-RADS 1: negative. Routine screening recommended."}
+          ],
+          "orders": [
+            {"id": "mammo-2024", "action": "done", "date": "2024-09-17T07:50"}
+          ],
+          "documents": [
+            {"type": "Result Note", "title": "Mammogram result", "author": "PCP", "date": "2024-09-18T12:10",
+             "body": "Screening mammogram negative, BI-RADS 1. Letter to patient via portal. Next in 2 years."}
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T16:30",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2024-10-08T16:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2024-10-08T16:37"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2024-10-08T16:35"}
+          ],
+          "documents": [
+            {"type": "Nurse Note", "title": "Immunizations", "author": "RN", "date": "2024-10-08T16:50",
+             "body": "Here after work for vaccines. Screening questions negative, no prior reactions. Flu L deltoid, COVID R deltoid. Waited 15 min, fine. VIS given. Pulm appt is Dec 2, she says breathing about the same."}
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "telephone",
+          "start": "2024-11-19T11:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Pulmonology office request", "author": "RN", "date": "2024-11-19T11:05",
+             "body": "Pulmonary office called ahead of her 12/2 consult asking for our referral note and recent labs. Faxed the 8/20 note, CBC and CMP. Confirmed receipt by phone."}
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "outside_records",
+          "start": "2024-12-10T09:15",
+          "orders": [
+            {"id": "pulm-ref-2024", "action": "done", "date": "2024-12-10T09:15"}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary & Critical Care consultation", "author": "pulmonology", "date": "2024-12-10T09:15",
+             "body": "Pulmonary & Critical Care, outpatient consultation. Seen 12/02/2024. Thank you for sending Ms. Diallo.\n\nReason: shortness of breath on exertion and dry cough, now about six months.\n\nShe describes a steady decline in what she can do over half a year: stairs and brisk walking bring on breathlessness, with a nonproductive cough alongside. No chest pain, no orthopnea, no paroxysmal nocturnal dyspnea. She has not seen any recent change in her skin or joints. Background of limited cutaneous systemic sclerosis (about five years), Raynaud phenomenon and reflux. Prior appendectomy and cesarean section. No daily medications. NKDA. Lifelong nonsmoker, rare alcohol, works in an office. Mother with RA, father with HTN, sister with autoimmune thyroid disease.\n\nExam: BP 130/80, pulse 88, respirations 18, SpO2 96% on room air. Chest clear throughout, without crackles, wheezes or rhonchi. P2 is accentuated. No peripheral edema.\n\nData: the CBC and renal function from your office in August are normal.\nTransthoracic echo (our lab): LV normal in size with normal systolic function. RV hypertrophy. Estimated RV systolic pressure 55 mmHg.\nPFTs: FEV1 and FEV1/FVC within normal limits; diffusing capacity reduced.\n\nImpression: Preserved spirometry with an isolated drop in DLCO, a loud P2 and an elevated RVSP with RV hypertrophy. In limited SSc this pattern points to pulmonary arterial hypertension associated with her connective tissue disease. This needs right heart catheterization to confirm and to measure the pressures before any therapy.\n\nPlan: right heart catheterization to be arranged through our office. Follow-up in clinic after.\n\nAllergies: NKDA.\ncc: primary care"}
+          ]
+        }
+      ]
+    }
+  ]
+}

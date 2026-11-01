@@ -1,0 +1,856 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002207",
+   "events": [
+    {
+     "id": "2020-03-24a",
+     "kind": "portal_message",
+     "start": "2020-03-24T11:15",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "April appointment",
+       "author": "patient",
+       "date": "2020-03-24T11:15",
+       "body": "With everything going on I'd rather not sit in a waiting room. Can my April 2nd appointment be done over the computer? Sugars are fine and I have plenty of pills."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: April appointment",
+       "author": "front desk",
+       "date": "2020-03-24T13:02",
+       "body": "Yes - we've switched you to a video visit at the same time. You'll get a link by email the morning of. If you have a home BP cuff, please take a reading before we start."
+      }
+     ]
+    },
+    {
+     "id": "2020-04-02a",
+     "kind": "telehealth_visit",
+     "start": "2020-04-02T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and hypertension follow-up (video)",
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, moderate MDM",
+       "performed": "2020-04-02T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video visit",
+       "author": "PCP",
+       "date": "2020-04-02T10:25",
+       "body": "Video from his kitchen. Home cuff this morning 128/78, pulse 74. Fasting sugars 118-145 over two weeks, no lows. Anticoag clinic switched him to drive-up fingersticks; last INR 3.0 by his report.\nStaying home, walking the property, starting seed trays. No chest pain, palpitations or breathlessness.\nA/P: stable on current regimen. Labs deferred until summer unless something changes. 90-day refills sent. Video again in July."
+      }
+     ]
+    },
+    {
+     "id": "2020-05-12a",
+     "kind": "pharmacy",
+     "start": "2020-05-12T08:50",
+     "documents": [
+      {
+       "type": "Refill Request",
+       "title": "90-day refills",
+       "author": "MA",
+       "date": "2020-05-12T08:50",
+       "body": "Mail-order pharmacy asking for 90-day supplies of metformin 1000 mg, lisinopril 20 mg, amlodipine 5 mg, atorvastatin 40 mg and metoprolol succinate 100 mg. All on active list. Sent. Warfarin comes from the cardiology clinic - not ours to fill."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-16a",
+     "kind": "telehealth_visit",
+     "start": "2020-07-16T14:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Follow-up (video)",
+     "orders": [
+      {
+       "id": "a1c-2020-07",
+       "action": "placed",
+       "order": "Hemoglobin A1c",
+       "category": "lab"
+      },
+      {
+       "id": "bmp-2020-07",
+       "action": "placed",
+       "order": "Basic Metabolic Panel (BMP)",
+       "category": "lab"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Telehealth visit, established patient, low MDM",
+       "performed": "2020-07-16T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Video visit",
+       "author": "PCP",
+       "date": "2020-07-16T14:50",
+       "body": "Second video visit. Home BPs 120s-130s/70s. Sugars creeping up a bit - more baking, less walking in the heat. Feels well otherwise.\nPlan: A1c and BMP at the lab next week. Fall wellness visit in person if things allow."
+      }
+     ]
+    },
+    {
+     "id": "2020-07-20a",
+     "kind": "lab_only",
+     "start": "2020-07-20T07:45",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.7
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-07-20T07:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.7
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-07-20T07:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Glucose"
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "a1c-2020-07",
+       "action": "done",
+       "date": "2020-07-20T07:45"
+      },
+      {
+       "id": "bmp-2020-07",
+       "action": "done",
+       "date": "2020-07-20T07:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-07-21T17:20",
+       "body": "Your A1c went up to 7.7 from 7.5 in December. Not alarming, but let's get back to the walking once it cools off. Kidney function and potassium fine. We'll recheck in the fall."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-07a",
+     "kind": "annual_physical",
+     "start": "2020-10-07T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2020-10-07T10:05",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-10-07T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2020-10-07T10:05",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-10-07T10:05",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2020-10-07T10:05",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2020-10-07T10:10"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2020",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2020-10-07T09:30"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2020-10-07T10:10"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-10-07T10:05"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2020-10-07T10:20",
+       "body": "Masked visit, first time in the office since winter.\nNo falls, independent, still driving. Recall 3/3. PHQ-2 0. Lives in his own house, stairs no problem.\nHas noticed his heart 'fluttering' now and then over the past several weeks, a few minutes at a time, and gets winded sooner on the hill behind the house. No chest pain, no fainting. Cardiology visit is already booked for November - will let them weigh in.\nExam: irregular, rate 80s, valve click crisp. Lungs clear. No edema. Feet normal.\nPrevention: flu today. Lung CT this month. Eye exam - didn't go this year, will book.\nLabs drawn."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-10-09T15:10",
+       "body": "Your wellness labs: A1c 7.6, kidney function normal, cholesterol unchanged, blood count normal. Mention the fluttering to cardiology next month."
+      }
+     ]
+    },
+    {
+     "id": "2020-10-21a",
+     "kind": "imaging",
+     "start": "2020-10-21T08:15",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2020-10-21T08:15",
+       "text": "Comparison: 10/24/2019. Low-dose non-contrast technique. No pulmonary nodules. Lungs clear. No effusion. Postsurgical changes of aortic valve replacement and coronary stent, unchanged. No adenopathy.",
+       "conclusion": "Lung-RADS 1. Annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2020",
+       "action": "done",
+       "date": "2020-10-21T08:15"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT",
+       "author": "PCP",
+       "date": "2020-10-22T09:30",
+       "body": "Negative screen, Lung-RADS 1. Next due fall 2021."
+      }
+     ]
+    },
+    {
+     "id": "2020-11-23a",
+     "kind": "specialist_visit",
+     "start": "2020-11-23T13:40",
+     "service": "Cardiology",
+     "reason": "Atrial fibrillation follow-up",
+     "vitals": {
+      "bp": [
+       142,
+       88
+      ],
+      "hr": 88,
+      "spo2": 97
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2020-11-23T13:20",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        },
+        {
+         "test": "Platelets",
+         "value": 250
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2020-11-23T13:20",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        }
+       ]
+      },
+      {
+       "panel": "Prothrombin Time with INR",
+       "collected": "2020-11-23T13:20",
+       "results": [
+        {
+         "test": "Prothrombin Time-International Normalized Ratio",
+         "value": 2.8
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2020-11-23T13:50",
+       "text": "Atrial fibrillation, ventricular rate 86. Normal axis. QRS narrow. Inferior Q waves, unchanged. No acute ST changes.",
+       "conclusion": "Atrial fibrillation, ventricular rate 86."
+      }
+     ],
+     "documents": [
+      {
+       "type": "Consult Note",
+       "title": "Cardiology follow-up letter",
+       "author": "cardiology",
+       "date": "2020-12-02T10:00",
+       "body": "Outside cardiology group - office follow-up, seen 11/23/2020.\nRe: William Howland, DOB 05/02/1952.\n\nDear colleague,\nI saw Mr. Howland for scheduled follow-up of his atrial fibrillation and mechanical aortic prosthesis. For about two months he has had brief spells of palpitations and some mild breathlessness climbing hills. He has had no chest pain, lightheadedness or syncope.\n\nMedications: warfarin 7.5 mg daily (per our anticoagulation clinic), metoprolol succinate 100 mg daily, lisinopril 20 mg daily, amlodipine 5 mg daily, metformin 1000 mg twice daily, insulin glargine 24 units at bedtime, atorvastatin 40 mg daily. Allergies: no known drug allergies.\n\nExam: BP 142/88, pulse 88 and irregularly irregular, saturation 97% on room air. First heart sound varies beat to beat and the second sound changes in intensity; crisp prosthetic closing click; no murmur or gallop.\nLabs today: hemoglobin 14.2, platelets 250, creatinine 1.1, INR 2.8.\nECG: atrial fibrillation, ventricular rate 86.\n\nImpression: atrial fibrillation with adequate rate control; mechanical AVR on warfarin with INR in range; history of inferior MI with RCA stent.\nPlan: continue current medications without change. Anticoagulation clinic continues dosing to a goal of 2.5-3.5. Return to clinic in 6 months, sooner if symptoms change.\n\nSincerely,\nCardiology"
+      }
+     ]
+    },
+    {
+     "id": "2020-12-17a",
+     "kind": "office_visit",
+     "start": "2020-12-17T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2020-12-17T11:20",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2020-12-17T11:00"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2020-12-17T11:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2020-12-17T11:30",
+       "body": "Cardiology letter from 11/23 reviewed: AF rate OK, INR 2.8, no changes, back in 6 months. He says the fluttering is the same - occasional, short, tolerable.\nSugars better since he got back to walking in the fall.\nExam: irregular rhythm, rate ok, click. Lungs clear. No edema.\nA1c today. Continue all meds. Will watch for COVID vaccine eligibility for his age group - expect January."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2020-12-18T10:20",
+       "body": "A1c down to 7.4. Good work on the walks."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-16a",
+     "kind": "ed_visit",
+     "start": "2021-02-16T14:50",
+     "end": "2021-02-16T19:40",
+     "service": "Emergency Medicine",
+     "reason": "Palpitations and shortness of breath",
+     "vitals": [
+      {
+       "time": "2021-02-16T14:55",
+       "bp": [
+        150,
+        90
+       ],
+       "hr": 130,
+       "spo2": 96
+      },
+      {
+       "time": "2021-02-16T17:30",
+       "hr": 92
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-02-16T15:10",
+       "results": [
+        {
+         "test": "Hemoglobin",
+         "value": 14.2
+        },
+        {
+         "test": "White Blood Cells",
+         "value": 7.2
+        },
+        {
+         "test": "Platelets",
+         "value": 230
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-02-16T15:10",
+       "results": [
+        {
+         "test": "Creatinine",
+         "value": 1.1
+        },
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 18
+        },
+        {
+         "test": "Glucose",
+         "value": 160
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-02-16T15:10",
+       "results": [
+        {
+         "test": "Thyroid Stimulating Hormone",
+         "value": 2.5
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "12-lead ECG",
+       "performed": "2021-02-16T14:58",
+       "text": "No discernible P waves. Irregularly irregular narrow-complex rhythm with variable, rapid ventricular response, rate about 130. No acute ST elevation.",
+       "conclusion": "Atrial fibrillation with rapid ventricular response."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2021-02-16T14:50"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Note",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2021-03-24T09:40",
+       "body": "Regional hospital emergency department. Visit 02/16/2021. Faxed to PCP on request.\n\nCC: racing heart, short of breath.\nHPI: 68-year-old man with atrial fibrillation and a mechanical aortic valve, last seen by his cardiologist about three months ago, who felt his heart start racing two hours before arrival while he was potting seedlings at home, with breathlessness. No chest pain. No syncope or presyncope.\nMeds: warfarin, metoprolol succinate, lisinopril, amlodipine, metformin, insulin glargine, atorvastatin. Allergies: NKDA.\nExam: BP 150/90, HR 130 irregularly irregular, SpO2 96% RA. No crackles. No leg swelling.\nLabs: Hgb 14.2, WBC 7.2, plt 230, Cr 1.1, BUN 18, glucose 160, TSH 2.5.\nECG: no P waves, irregular rapid ventricular response.\nCourse: IV metoprolol, two doses. Rate settled to the 90s and stayed there. Symptoms resolved.\nImpression: atrial fibrillation with rapid ventricular response.\nDisposition: home, home medications unchanged. Follow up with cardiology and PCP this week."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-17a",
+     "kind": "portal_message",
+     "start": "2021-02-17T08:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Went to the ER yesterday",
+       "author": "patient",
+       "date": "2021-02-17T08:05",
+       "body": "Heads up - my heart took off yesterday afternoon while I was repotting, felt like it was going 200 and I couldn't catch my breath. Went to the ER. They gave me something in the IV and it calmed down and they sent me home that evening. They said see you and cardiology. Feeling OK today, a little washed out."
+      },
+      {
+       "type": "Patient Message",
+       "title": "RE: Went to the ER yesterday",
+       "author": "RN",
+       "date": "2021-02-17T09:30",
+       "body": "Glad it settled. Dr. wants to see you next week - booked Wed 2/24 at 2:40. If the racing comes back, or any chest pain or fainting, go straight back to the ED. We've asked the hospital to send their notes."
+      }
+     ]
+    },
+    {
+     "id": "2021-02-24a",
+     "kind": "office_visit",
+     "start": "2021-02-24T14:40",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, atrial fibrillation with rapid rate",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-01-22T10:00"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-02-12T10:00"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-02-24T14:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-ED visit",
+       "author": "PCP",
+       "date": "2021-02-24T15:10",
+       "body": "Seen in the ED on 2/16 for AF with a fast rate - his account; ED notes not here yet. Felt it start while potting seedlings. IV medicine in the ED, home that night. Since then back to his usual - an occasional flutter, nothing sustained. No chest pain, no fainting. Taking metoprolol every morning; did not miss doses before the episode. Anticoag clinic checked him Friday, in range per him.\nCOVID vaccines: both Pfizer doses at the community clinic, 1/22 and 2/12. Entered.\nExam: rate 70s today, irregular. Valve click crisp. Lungs clear. No edema.\nA/P: AF with one episode of RVR, now controlled on metoprolol 100. No changes from me; cardiology to see him next month. Records requested again from the ED."
+      }
+     ]
+    },
+    {
+     "id": "2021-05-27a",
+     "kind": "office_visit",
+     "start": "2021-05-27T09:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes and hypertension follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2021-05-27T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2021-05-27T09:45",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Potassium"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2021-05-27T09:20"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-05-27T09:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Office visit",
+       "author": "PCP",
+       "date": "2021-05-27T09:55",
+       "body": "ED record from February came in 3/24 - IV metoprolol, rate controlled, home on same meds, TSH 2.5. Matches his story. No repeat episodes since.\nBack in the garden. Sugars 110s-150s.\nExam: BP fine. Irregular, rate 70s, click. Lungs clear. Feet intact, pulses good.\nA1c and BMP today. Eye exam scheduled next month. RTC fall for wellness."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-05-28T13:00",
+       "body": "A1c 7.5, kidney function and potassium normal. Nothing new."
+      }
+     ]
+    },
+    {
+     "id": "2021-06-22a",
+     "kind": "outside_records",
+     "start": "2021-06-22T12:40",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2021-06-22T12:40",
+       "body": "Optometry, dilated fundus exam 06/15/2021. Insulin-treated type 2 diabetes. Allergies: NKDA.\nBest corrected 20/25 right, 20/25 left. Pressures normal. Mild nuclear lens changes both eyes. Retina: no diabetic retinopathy, no macular edema.\nReturn 12 months."
+      }
+     ]
+    },
+    {
+     "id": "2021-09-30a",
+     "kind": "annual_physical",
+     "start": "2021-09-30T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Annual wellness visit",
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": "Comprehensive Metabolic Panel (CMP)",
+       "collected": "2021-09-30T10:35",
+       "results": [
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2021-09-30T10:35",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2021-09-30T10:35",
+       "results": [
+        {
+         "test": "Low Density Lipoprotein"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-30T10:35",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2021-09-30T10:35",
+       "results": [
+        {
+         "test": "Microalbumin/Creatinine Ratio"
+        }
+       ]
+      }
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2021-09-30T10:40"
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2021-09-30T10:00"
+      },
+      {
+       "procedure": "Immunization administration",
+       "performed": "2021-09-30T10:40"
+      },
+      {
+       "procedure": "Venipuncture",
+       "performed": "2021-09-30T10:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2021-09-30T10:55",
+       "body": "Wellness visit. Independent, no falls, recall intact, PHQ-2 0. Brought the proxy form this time - scanned.\nHeart: no further runs since February. Cardiology in the spring kept everything the same, he says.\nDiabetes: no lows. Eye exam in June clean.\nExam: irregular, controlled; mechanical click; lungs clear; no edema; feet normal.\nPrevention: flu today. COVID booster - eligible now, will get it at his pharmacy. Lung CT next month.\nLabs drawn. Continue current regimen."
+      },
+      {
+       "type": "Patient Message",
+       "title": "Lab results",
+       "author": "PCP",
+       "date": "2021-10-01T14:45",
+       "body": "Annual labs fine: A1c 7.4, normal kidney and liver tests and blood count, urine protein normal."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-14a",
+     "kind": "pharmacy",
+     "start": "2021-10-14T15:00",
+     "immunizations": [
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original",
+       "date": "2021-10-14T15:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Immunization Record",
+       "title": "Pharmacy immunization report",
+       "author": "MA",
+       "date": "2021-10-15T09:15",
+       "body": "State registry / pharmacy notice: COVID-19 Pfizer booster given 10/14/2021 at a community pharmacy. Added to immunization history."
+      }
+     ]
+    },
+    {
+     "id": "2021-10-28a",
+     "kind": "imaging",
+     "start": "2021-10-28T08:45",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2021-10-28T08:45",
+       "text": "Comparison: 10/21/2020. Low-dose technique without contrast. No nodules. No consolidation or effusion. Prosthetic aortic valve and coronary stent again seen. No adenopathy.",
+       "conclusion": "Lung-RADS 1. Annual screening."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2021",
+       "action": "done",
+       "date": "2021-10-28T08:45"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Result Note",
+       "title": "LDCT 2021",
+       "author": "PCP",
+       "date": "2021-10-29T07:55",
+       "body": "Lung-RADS 1. Patient informed."
+      }
+     ]
+    },
+    {
+     "id": "2021-12-09a",
+     "kind": "office_visit",
+     "start": "2021-12-09T13:20",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "Diabetes follow-up",
+     "appointment": "no-show"
+    },
+    {
+     "id": "2021-12-10a",
+     "kind": "telephone",
+     "start": "2021-12-10T09:05",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Missed appointment",
+       "author": "front desk",
+       "date": "2021-12-10T09:05",
+       "body": "Called about yesterday's missed visit. He had it written down for next week. Apologetic. Rebooked for Feb 10 - he's away visiting over the holidays and wanted after New Year's anyway. No issues to report."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

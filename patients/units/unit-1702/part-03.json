@@ -1,0 +1,438 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001702",
+      "events": [
+        {
+          "id": "2025-12-30a",
+          "kind": "portal_message",
+          "start": "2025-12-30T10:05",
+          "conditions": [
+            {"label": "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm", "icd10": "E05.01", "action": "diagnosed", "onset": "2025-12-24"},
+            {"label": "Paroxysmal atrial fibrillation", "action": "diagnosed", "onset": "2025-12-24"}
+          ],
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "stop", "reason": "Dose increased at hospital discharge"},
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "historical", "sig": "Take 2 tablets (20 mg) by mouth twice daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "Graves disease"},
+            {"drug": "propranolol hydrochloride 20 MG Oral Tablet", "action": "stop", "reason": "Dose changed at hospital discharge"},
+            {"drug": "propranolol hydrochloride 20 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth three times daily", "dose": {"value": 20, "unit": "mg"}, "frequency": "TID", "route": "Oral", "course": "chronic", "reason": "Thyrotoxicosis"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "author": "patient",
+              "date": "2025-12-30T10:05",
+              "body": "Hi - wanted you to know I was admitted on the 24th, home yesterday. I'd run out of methimazole right as break started and figured a few days wouldn't matter, it was about a week. Woke up with my heart going crazy, fever, couldn't breathe right, my husband says I wasn't making sense. They said thyroid storm and my heart was in afib, I was in the ICU 2 days. Heart back to normal rhythm. Now methimazole 20 twice a day and propranolol 3 times a day, hydrocortisone back to normal. Surgery still Jan 27. Do you need to see me?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "author": "PCP",
+              "date": "2025-12-30T12:40",
+              "body": "I'm so glad you're home and okay. Yes - let's see you next week, Tuesday 1/6 at 4. We'll check your rhythm and a blood count and liver tests on the higher methimazole. I've updated your medication list from what you wrote and requested the hospital records. Please don't let the methimazole run out again - set refills to auto at the pharmacy. Same rules: fever, sore throat or mouth sores, get a blood count that day."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-06a",
+          "kind": "office_visit",
+          "start": "2026-01-06T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, thyroid storm",
+          "conditions": [
+            {"label": "Thyrotoxicosis with diffuse goiter with thyrotoxic crisis or storm", "icd10": "E05.01", "action": "resolved"},
+            {"label": "Paroxysmal atrial fibrillation", "action": "resolved"}
+          ],
+          "state": {"bp": [114, 70], "weight_kg": 61.4},
+          "vitals": {"hr": 78},
+          "measure": ["bp", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-01-06T16:35", "results": [{"test": "White Blood Cells"}, {"test": "Absolute Neutrophil Count"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-01-06T16:35", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Bilirubin, Total"}]}
+          ],
+          "reports": [
+            {"study": "12-lead ECG", "performed": "2026-01-06T16:15", "text": "Normal sinus rhythm, rate 76. Normal axis and intervals. No ST or T wave abnormality.", "conclusion": "Normal sinus rhythm. Normal ECG."}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-01-06T16:00"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-01-06T16:15"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-01-06T16:50",
+              "body": "Post-hospital visit. Admitted 12/24-12/29 to a regional hospital with thyroid storm after about a week without methimazole; AF with RVR on arrival, back in sinus within 2 days per patient. Discharge summary not yet received - history from patient.\n\nNow: feels washed out but much better. No palpitations since discharge. No fever, sore throat or mouth sores. Taking methimazole 20 mg BID, propranolol 20 mg TID, hydrocortisone 20/10 (stress doses stopped at discharge), fludrocortisone, methotrexate weekly and folic acid. Off levothyroxine since September.\n\nExam: HR 78 regular. BP as charted. Weight down to 61. Fine tremor gone. Thyroid enlarged, nontender. Heart regular without murmur. Lungs clear.\n\nECG: normal sinus rhythm.\n\nA/P\n1. Thyroid storm, resolved; Graves disease on methimazole - CBC with diff and liver tests today on the higher dose. Total thyroidectomy with surgery 1/27. Stressed no missed doses.\n2. Paroxysmal AF during storm - in sinus today; was triggered by thyrotoxicosis. No anticoagulation per hospital; agree (CHA2DS2-VASc 1 for sex alone).\n3. Addison's - perioperative stress dosing will be planned by surgery/endo; she knows to ask.\n4. RA - methotrexate continues; rheum aware of surgery."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08a",
+          "kind": "outside_records",
+          "start": "2026-01-08T11:30",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "hospital medicine",
+              "date": "2026-01-08T11:30",
+              "body": "Regional hospital - Discharge Summary\nAdmitted: 12/24/2025 via the emergency department. Discharged: 12/29/2025.\nPatient: Riley Fenton, 36F\n\nPrincipal diagnosis: thyroid storm due to Graves disease.\nSecondary: atrial fibrillation with rapid ventricular response, resolved; autoimmune polyendocrine syndrome type 2 with primary adrenal insufficiency; rheumatoid arthritis; celiac disease; vitiligo; alopecia areata.\n\nPresentation: two days of palpitations, breathlessness and fever. She had been without methimazole for about a week; she continued her hydrocortisone. In the ED: T 39.8 C, HR 132, BP 155/95, RR 28. Agitated and intermittently confused. Skin warm and moist, fine tremor, enlarged nontender thyroid with an audible bruit. ECG: atrial fibrillation with rapid ventricular response.\n\nLabs: total T3 260 ng/dL, total T4 18 ug/dL, TSH <0.01, WBC 16,000. Electrolytes and creatinine normal. Urinalysis negative. Blood cultures no growth. Portable chest film clear.\n\nCourse: admitted to the ICU. Treated with propranolol, propylthiouracil, potassium iodide given an hour after the first PTU dose, IV fluids, cooling and stress-dose IV hydrocortisone, which also covered her adrenal insufficiency. Converted to sinus rhythm on hospital day 2 with rate control. Given a CHA2DS2-VASc score of 1, anticoagulation was not started. Mental status cleared by day 2. Transferred to the floor on 12/26; switched back to methimazole and oral hydrocortisone, tapered to her usual dose by discharge.\n\nDischarge medications: methimazole 20 mg twice daily; propranolol 20 mg three times daily; hydrocortisone 20 mg AM / 10 mg PM; fludrocortisone 0.1 mg daily; methotrexate 15 mg weekly; folic acid 1 mg daily; tacrolimus 0.1% ointment; levothyroxine 112 mcg daily (home list).\n\nAllergies: NKDA.\n\nFollow-up: PCP in 1 week; endocrinology as scheduled; total thyroidectomy planned for late January."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "author": "PCP",
+              "date": "2026-01-08T14:00",
+              "body": "Discharge summary reviewed, matches pt's account. Their med list still carries levothyroxine from an old home list - she has been off it since 9/30 and is not taking it. Our list is correct."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-08b",
+          "kind": "portal_message",
+          "start": "2026-01-08T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2026-01-08T15:20",
+              "body": "Your white count, neutrophils and liver tests are normal on the methimazole. One note: the hospital paperwork lists levothyroxine - you should NOT be taking it right now, which I think you know. Good luck on the 27th."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "procedure_visit",
+          "start": "2026-01-27T07:00",
+          "end": "2026-01-28T11:00",
+          "service": "General Surgery",
+          "reason": "Total thyroidectomy for Graves disease",
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-01-28T05:30", "results": [{"test": "Calcium"}, {"test": "Sodium"}, {"test": "Potassium"}]}
+          ],
+          "procedures": [
+            {"procedure": "Total thyroidectomy", "snomed": "24443003", "performed": "2026-01-27T08:10"}
+          ]
+        },
+        {
+          "id": "2026-02-10a",
+          "kind": "outside_records",
+          "start": "2026-02-10T09:15",
+          "medications": [
+            {"drug_text": "methimazole 10 MG Oral Tablet", "action": "stop", "reason": "Total thyroidectomy"},
+            {"drug": "propranolol hydrochloride 20 MG Oral Tablet", "action": "stop", "reason": "Total thyroidectomy"},
+            {"drug": "levothyroxine sodium 0.112 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily on an empty stomach", "dose": {"value": 112, "unit": "ug"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Postthyroidectomy hypothyroidism"}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-01-27T08:10", "issued": "2026-01-30T14:00", "text": "Specimen: thyroid, total thyroidectomy (right and left lobes with isthmus). Sections show diffuse follicular hyperplasia with papillary infoldings and scalloped colloid, and a patchy background lymphocytic infiltrate with germinal centers. No nodules. Parathyroid tissue not identified. No malignancy.", "conclusion": "Thyroid, total thyroidectomy: diffuse hyperplasia consistent with Graves disease, with lymphocytic thyroiditis. Negative for malignancy."}
+          ],
+          "documents": [
+            {
+              "type": "Operative Note",
+              "title": "Operative report: total thyroidectomy",
+              "author": "general surgery",
+              "date": "2026-02-10T09:15",
+              "body": "Outside surgery service, regional hospital\nDate of operation: 01/27/2026\nPreoperative diagnosis: Graves disease, status post thyroid storm.\nProcedure: total thyroidectomy.\nAnesthesia: general.\nPreparation: methimazole continued; potassium iodide drops for 10 days before surgery. Stress-dose IV hydrocortisone at induction and for 24 hours for primary adrenal insufficiency, then back to her home dose.\nFindings: diffusely enlarged, vascular gland. Both recurrent laryngeal nerves identified and preserved. Parathyroids identified and preserved in situ.\nEBL: minimal. Complications: none.\nPostoperative: overnight observation. Calcium normal the next morning. Voice normal. Discharged 01/28.\nDischarge medications: levothyroxine 112 mcg daily; stop methimazole and propranolol. Continue hydrocortisone 20/10, fludrocortisone 0.1, methotrexate and folic acid.\nFollow-up: surgical clinic 2 weeks; endocrinology TSH in 6 weeks.\nAllergies: NKDA."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "author": "PCP",
+              "date": "2026-02-10T12:45",
+              "body": "Op note and path reviewed: total thyroidectomy 1/27, benign. Methimazole and propranolol off, levothyroxine 112 back on. List updated."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "office_visit",
+          "start": "2026-03-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-thyroidectomy follow-up",
+          "state": {"bp": [110, 68], "weight_kg": 63.2, "labs": {"Thyroid Stimulating Hormone": 2.1, "Free Thyroxine": 1.3}},
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": null, "collected": "2026-03-10T16:30", "results": [{"test": "Thyroid Stimulating Hormone", "value": 2.1}, {"test": "Free Thyroxine", "value": 1.3}]},
+            {"panel": "CBC with Differential", "collected": "2026-03-10T16:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-03-10T16:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Calcium"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-03-10T15:50"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2026-03-10T16:40",
+              "body": "Six weeks after total thyroidectomy. Feels steadier than she has in a year: no palpitations, sleeping, back at work since early February. Voice normal, no tingling around the mouth or in the fingers. Levothyroxine 112 mcg nightly. Endo asked us to draw the 6-week TSH so she doesn't make another trip.\n\nExam: vitals as charted, weight coming back up. Low collar incision well healed. Heart regular. No tremor.\n\nA/P\n1. Postthyroidectomy hypothyroidism (Graves, prior Hashimoto) - TSH and free T4 today, results to endo.\n2. Addison's - stable, CMP today.\n3. RA on methotrexate - quarterly CBC/CMP today.\n4. Celiac, vitiligo, alopecia - no change.\nPhysical in August."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-12a",
+          "kind": "portal_message",
+          "start": "2026-03-12T08:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Thyroid level after surgery",
+              "author": "PCP",
+              "date": "2026-03-12T08:20",
+              "body": "TSH 2.1 and free T4 1.3 - right on target with 112 mcg, so no dose change. Calcium, blood counts and liver tests normal. I've sent these to your endocrinologist."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-21a",
+          "kind": "office_visit",
+          "start": "2026-04-21T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Upper abdominal pain after meals",
+          "state": {"bp": [112, 70], "weight_kg": 64.0},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-04-21T16:40", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}, {"test": "Sodium"}, {"test": "Potassium"}]},
+            {"panel": null, "collected": "2026-04-21T16:40", "results": [{"test": "Lipase", "value": 31}]}
+          ],
+          "orders": [
+            {"id": "ruq-us-2026", "action": "placed", "order": "Right upper quadrant ultrasound", "category": "imaging", "reason": "Postprandial right upper abdominal pain"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-04-21T16:00"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2026-04-21T16:45",
+              "body": "S: Since about February, maybe six episodes of pain under the right ribs starting 30-60 min after a heavier or fattier meal (a GF pizza night, a rich dinner out), lasting 2-3 hours then gone. No fever, no yellowing, urine and stools normal colors. Not like her old celiac bloating - she's careful with gluten and tTG was normal. Between episodes she feels fine. Adrenal meds unchanged; no vomiting so no missed doses.\n\nO: Afebrile, vitals as charted. Abdomen soft, nontender today, no organomegaly, no mass. No jaundice.\n\nA/P: Episodic postprandial RUQ pain, pain-free between attacks - biliary colic is most likely. CMP (liver tests) and lipase today, RUQ ultrasound this week. If gallstones, surgery referral. Reviewed: if pain lasts more than 6 hours, fever or vomiting, she's to go to the ED and take her stress dose of hydrocortisone if she can keep it down."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-24a",
+          "kind": "imaging",
+          "start": "2026-04-24T08:30",
+          "reports": [
+            {"study": "Right upper quadrant ultrasound", "performed": "2026-04-24T08:30", "text": "Technique: grayscale and color flow sonography of the right upper quadrant.\nGallbladder: multiple mobile echogenic shadowing stones, the largest about 1.1 cm. Gallbladder wall not thickened. No pericholecystic fluid.\nBile ducts: common bile duct 4 mm. No intrahepatic biliary dilatation.\nLiver: normal size and echotexture, no focal lesion.\nPancreas: visualized head and body unremarkable.\nRight kidney: normal, no hydronephrosis.", "conclusion": "Cholelithiasis without sonographic evidence of acute cholecystitis. Normal-caliber bile duct."}
+          ],
+          "orders": [
+            {"id": "ruq-us-2026", "action": "done", "date": "2026-04-24T08:30"}
+          ]
+        },
+        {
+          "id": "2026-04-27a",
+          "kind": "portal_message",
+          "start": "2026-04-27T12:15",
+          "conditions": [
+            {"label": "Cholelithiasis", "action": "diagnosed", "onset": "2026-04-24"}
+          ],
+          "orders": [
+            {"id": "surg-referral-2026", "action": "placed", "order": "General Surgery referral", "category": "referral", "to": "General Surgery", "reason": "Symptomatic cholelithiasis; primary adrenal insufficiency needs perioperative stress dosing"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Ultrasound result",
+              "author": "PCP",
+              "date": "2026-04-27T12:15",
+              "body": "The ultrasound shows gallstones, and no sign of an inflamed gallbladder. Your liver tests and lipase were normal. Since the stones are causing attacks, the usual fix is having the gallbladder removed laparoscopically. I've referred you to general surgery and noted that you'll need stress-dose steroids around the operation. Until then, smaller, lower-fat meals tend to help."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ultrasound result",
+              "author": "patient",
+              "date": "2026-04-27T17:30",
+              "body": "Figures. Can I wait for summer to do it? I can't miss the end of the year with my class."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Ultrasound result",
+              "author": "PCP",
+              "date": "2026-04-28T07:05",
+              "body": "Many people do time it for a break - talk it over with the surgeon. If you have an attack that won't quit, fever or vomiting before then, don't wait."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-27a",
+          "kind": "portal_message",
+          "start": "2026-05-27T19:20",
+          "orders": [
+            {"id": "surg-referral-2026", "action": "done", "date": "2026-05-27T19:20"}
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Gallbladder surgery date",
+              "author": "patient",
+              "date": "2026-05-27T19:20",
+              "body": "Saw the surgeon last week. Laparoscopic gallbladder removal is booked for July 1, first day of summer for me. They said they'd coordinate steroids with endo. Do you need anything from them?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Gallbladder surgery date",
+              "author": "PCP",
+              "date": "2026-05-28T07:40",
+              "body": "Sounds like a good plan. I'll ask their office for the consult note. If they want a pre-op exam from us, just book it. Remember to bring your hydrocortisone schedule to pre-op."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-01a",
+          "kind": "hospital_admission",
+          "start": "2026-07-01T05:40",
+          "end": "2026-07-06T12:00",
+          "service": "General Surgery",
+          "reason": "Adrenal crisis; symptomatic cholelithiasis",
+          "vitals": [
+            {"time": "2026-07-01T05:45", "temp_c": 38.5, "hr": 120, "bp": [85, 50], "rr": 22},
+            {"time": "2026-07-01T07:30", "temp_c": 38.1, "hr": 112, "bp": [88, 54], "rr": 20},
+            {"time": "2026-07-01T11:00", "temp_c": 37.4, "hr": 92, "bp": [108, 66], "rr": 16},
+            {"time": "2026-07-06T08:00", "temp_c": 36.7, "hr": 74, "bp": [112, 70], "rr": 14}
+          ],
+          "labs": [
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-01T06:00", "results": [{"test": "Sodium", "value": 130}, {"test": "Potassium", "value": 5.5}, {"test": "Glucose", "value": 55}, {"test": "Creatinine"}, {"test": "Bicarbonate"}]},
+            {"panel": null, "collected": "2026-07-01T06:00", "results": [{"test": "Cortisol, AM", "value": 3}, {"test": "Lipase", "value": 27}]},
+            {"panel": "CBC with Differential", "collected": "2026-07-01T06:00", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Hepatic Panel (LFT)", "collected": "2026-07-01T06:00", "results": [{"test": "Aspartate Aminotransferase"}, {"test": "Alanine Aminotransferase"}, {"test": "Alkaline Phosphatase"}, {"test": "Bilirubin, Total"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2026-07-02T05:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}]}
+          ],
+          "reports": [
+            {"study": "Surgical pathology report", "performed": "2026-07-03T09:40", "issued": "2026-07-07T10:00", "text": "Specimen: gallbladder, laparoscopic cholecystectomy. Gallbladder containing multiple yellow-tan faceted stones. Wall without acute inflammation. No dysplasia or malignancy.", "conclusion": "Gallbladder with cholelithiasis. Negative for malignancy."}
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, high MDM", "performed": "2026-07-01T05:40"},
+            {"procedure": "Initial hospital inpatient care", "performed": "2026-07-01T10:00"},
+            {"procedure": "Laparoscopic cholecystectomy", "performed": "2026-07-03T09:40"},
+            {"procedure": "Hospital discharge day management, 30 minutes or less", "performed": "2026-07-06T11:00"}
+          ]
+        },
+        {
+          "id": "2026-07-08a",
+          "kind": "telephone",
+          "start": "2026-07-08T10:15",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-discharge call",
+              "author": "RN",
+              "date": "2026-07-08T10:15",
+              "body": "Called pt 2 days after discharge. She came to the ED the morning of her gallbladder surgery after 2 days of vomiting and not keeping her pills down; told it was an adrenal crisis. Surgery done 7/3. Home 7/6. Today: eating, no vomiting, port sites clean, pain controlled with acetaminophen. Back on hydrocortisone 20/10 after the hospital taper, fludrocortisone, levothyroxine, methotrexate (restarting this weekend per surgeon), folic acid. Has an emergency hydrocortisone injection kit now and the hospital's sick-day sheet. Reviewed: if vomiting and can't keep hydrocortisone down, use the injection and go to the ED. Follow-up booked 7/31 (first slot she could make). Discharge summary requested."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-20a",
+          "kind": "outside_records",
+          "start": "2026-07-20T14:30",
+          "conditions": [
+            {"label": "Addisonian crisis", "icd10": "E27.2", "action": "diagnosed", "onset": "2026-07-01"}
+          ],
+          "medications": [
+            {"drug_text": "hydrocortisone 100 MG Injection", "action": "historical", "sig": "Inject 100 mg into the thigh muscle once for vomiting or inability to take oral hydrocortisone, then go to the emergency department", "dose": {"value": 100, "unit": "mg"}, "frequency": "PRN", "route": "Intramuscular", "course": "chronic", "reason": "Primary adrenal insufficiency, emergency use"}
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital discharge summary",
+              "author": "general surgery",
+              "date": "2026-07-20T14:30",
+              "body": "Regional hospital - Discharge Summary\nAdmission: 07/01/2026 (via ED). Discharge: 07/06/2026.\nPatient: Riley Fenton, 36F. Allergies: NKDA.\n\nDiagnoses: adrenal crisis in known primary adrenal insufficiency (APS type 2); symptomatic cholelithiasis, status post laparoscopic cholecystectomy 07/03/2026.\nOther: Graves disease s/p total thyroidectomy 01/2026, on levothyroxine; rheumatoid arthritis; celiac disease; vitiligo; alopecia areata.\n\nHistory: she was scheduled for elective laparoscopic cholecystectomy on the morning of 7/1. She presented to the ED instead with severe abdominal pain and vomiting; for two days she had been unable to keep down her medicines, including hydrocortisone.\n\nED: BP 85/50, HR 120, T 38.5 C. Abdomen diffusely tender, no rebound or guarding. Sodium 130, potassium 5.5, glucose 55 mg/dL, 8 AM cortisol 3 ug/dL drawn before steroid. Liver tests and lipase normal. Blood pressure remained low after 2 L of normal saline.\n\nCourse: hydrocortisone 100 mg IV given, IV dextrose for the low glucose, and further saline. Blood pressure, glucose and mental status recovered within hours. Admitted on hydrocortisone 50 mg IV every 6 hours. The operation was postponed. Sodium and potassium normalized by the next morning. Laparoscopic cholecystectomy performed 07/03 under stress-dose coverage without complication. Pathology: cholelithiasis, benign. Hydrocortisone tapered to her home dose by 07/05. Tolerating diet at discharge.\n\nDischarge medications: hydrocortisone 20 mg every morning and 10 mg every evening; fludrocortisone 0.1 mg daily; levothyroxine 112 mcg daily; methotrexate 15 mg weekly (resume after one missed week); folic acid 1 mg daily; tacrolimus 0.1% ointment. NEW: hydrocortisone 100 mg injection kit for emergency use.\n\nPatient education: sick-day rules given in writing - double or triple oral hydrocortisone for fever or illness; if vomiting or unable to take tablets, inject 100 mg IM and come to the ED. Medical alert identification advised.\n\nFollow-up: PCP 2-4 weeks; surgery clinic 2 weeks; endocrinology."
+            },
+            {
+              "type": "Administrative Note",
+              "title": "Outside records reviewed",
+              "author": "PCP",
+              "date": "2026-07-20T16:10",
+              "body": "Discharge summary reviewed. Adrenal crisis from 2 days of vomiting/missed hydrocortisone, then lap chole 7/3. Emergency hydrocortisone kit added to list. Follow-up 7/31."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-31a",
+          "kind": "office_visit",
+          "start": "2026-07-31T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, adrenal crisis and cholecystectomy",
+          "conditions": [
+            {"label": "Addisonian crisis", "icd10": "E27.2", "action": "resolved"},
+            {"label": "Cholelithiasis", "action": "resolved"}
+          ],
+          "state": {"bp": [110, 70], "weight_kg": 63.6},
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2026-07-31T11:10", "resulted": "2026-07-31T17:30", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2026-07-31T11:10", "resulted": "2026-07-31T17:30", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Glucose"}, {"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2026-07-31T10:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2026-07-31T11:20",
+              "body": "36F, four weeks after the July admission (adrenal crisis on the morning of her planned cholecystectomy; lap chole 7/3; discharge summary reviewed 7/20).\n\nSince home: eating normally, no more RUQ attacks, no nausea or vomiting. Energy back to baseline. No lightheadedness or salt craving. Restarted methotrexate on schedule. Has the injection kit in her bag and one at home; husband watched the teaching video with her.\n\nMeds: hydrocortisone 20 mg AM / 10 mg PM, fludrocortisone 0.1 mg daily, levothyroxine 112 mcg daily, methotrexate 15 mg weekly, folic acid 1 mg daily, tacrolimus 0.1% oint, hydrocortisone 100 mg IM kit for emergencies. NKDA.\n\nExam: vitals as charted, BP normal sitting. Well hydrated. Port sites healed. Abdomen soft, nontender. No hyperpigmentation.\n\nA/P\n1. Adrenal crisis, resolved; Addison disease (APS-2) - went over sick-day rules again with her in writing: stress-dose for fever over 38 or a bad illness, injection plus ED if she's vomiting. Med alert bracelet ordered by pt. CMP today.\n2. Cholelithiasis s/p cholecystectomy - recovered.\n3. Postthyroidectomy hypothyroidism on 112 mcg - TSH normal in March; endo following.\n4. RA on methotrexate - CBC/CMP today (due anyway).\n5. Celiac, vitiligo, alopecia areata - stable.\nPhysical normally in August; with all of this she'd rather wait until fall break. She'll book."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-03a",
+          "kind": "portal_message",
+          "start": "2026-08-03T08:45",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Labs from Friday",
+              "author": "PCP",
+              "date": "2026-08-03T08:45",
+              "body": "Everything from Friday is normal - sodium, potassium and glucose look good on your usual hydrocortisone and fludrocortisone, and blood counts and liver tests are fine on methotrexate."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-18a",
+          "kind": "pharmacy",
+          "start": "2026-08-18T09:05",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Electronic refill request",
+              "author": "MA",
+              "date": "2026-08-18T09:05",
+              "body": "Renewal requests: levothyroxine 112 mcg #90 and fludrocortisone 0.1 mg #90. Labs 7/31 normal. Routed to PCP.\n\nPCP: both approved, 90 days x 3 refills. Methotrexate is rheum's - pharmacy redirected there."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-24a",
+          "kind": "portal_message",
+          "start": "2026-08-24T14:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Letter for school nurse",
+              "author": "patient",
+              "date": "2026-08-24T14:30",
+              "body": "Hi! Teachers go back next week. Our school nurse wants a letter from you saying what to do if I get sick at school and that she can give me the hydrocortisone shot. Could you write one? Thank you."
+            },
+            {
+              "type": "Letter",
+              "title": "Letter for school health office",
+              "author": "PCP",
+              "date": "2026-08-25T16:10",
+              "body": "To the school nurse:\n\nMs. Riley Fenton is my patient. She has primary adrenal insufficiency and takes daily hydrocortisone. In an emergency her body cannot make the stress hormone it needs.\n\nIf she is vomiting and cannot keep down her tablets, has a severe illness or injury, or appears confused, faint or very weak, she or you should give her emergency hydrocortisone 100 mg by intramuscular injection in the outer thigh (she carries the kit) and call 911. Tell the responders she has adrenal insufficiency and has received hydrocortisone.\n\nShe has my permission to keep the kit with her at school. Please call our office with any questions.\n\nPrimary care physician"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -542,7 +542,7 @@
             {
               "id": "colonoscopy-2024",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal cancer screening"
@@ -1483,12 +1483,16 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 800
                 },
                 {
                   "test": "Hepatitis B virus DNA",
                   "loinc": "42595-9",
                   "unit": "[IU]/mL",
+                  "range": {},
                   "value": 38600
                 }
               ]
@@ -1805,12 +1809,16 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 760
                 },
                 {
                   "test": "Hepatitis B virus DNA",
                   "loinc": "42595-9",
                   "unit": "[IU]/mL",
+                  "range": {},
                   "value": 210
                 }
               ]
@@ -2147,6 +2155,9 @@
                   "test": "Alpha-1-Fetoprotein",
                   "loinc": "1834-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 10
+                  },
                   "value": 820
                 },
                 {
@@ -2274,13 +2285,13 @@
         "code": "198222",
         "display": "spironolactone 100 MG Oral Tablet",
         "ingredient": "spironolactone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "tenofovir disoproxil fumarate 300 MG Oral Tablet": {
         "code": "349251",
         "display": "tenofovir disoproxil fumarate 300 MG Oral Tablet",
         "ingredient": "tenofovir",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -2288,6 +2299,9 @@
         "code": "1834-1",
         "display": "Alpha-1-Fetoprotein [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 10
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Hepatitis B core antibody": {
@@ -2309,6 +2323,7 @@
         "code": "42595-9",
         "display": "Hepatitis B virus DNA [Units/volume] (viral load) in Serum or Plasma by NAA with probe detection",
         "unit": "[IU]/mL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     },

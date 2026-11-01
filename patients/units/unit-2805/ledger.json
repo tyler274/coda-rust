@@ -1,12 +1,7 @@
 {
   "unit": "unit-2805",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002805/2022-06-21a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002805/2023-06-14a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002805/2024-06-18a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure",
-    "MRN00002805/2025-09-11a: procedure order \"Records request: hospital discharge summary and surgical pathology\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002805",
@@ -317,7 +312,7 @@
             {
               "id": "fit-2022",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             },
@@ -735,7 +730,7 @@
             {
               "id": "fit-2023",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             },
@@ -1179,7 +1174,7 @@
             {
               "id": "fit-2024",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening"
             },
@@ -1610,6 +1605,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 2.4
                 }
               ]
@@ -1679,15 +1677,6 @@
               "performed": "2025-09-11T12:20"
             }
           ],
-          "orders": [
-            {
-              "id": "records-hosp",
-              "action": "placed",
-              "order": "Records request: hospital discharge summary and surgical pathology",
-              "category": "procedure",
-              "reason": "right hemicolectomy 8/28/25"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -1709,13 +1698,6 @@
               "text": "Specimen: right colon and terminal ileum, laparoscopic right hemicolectomy. Tumor site: ascending colon. Histologic type: adenocarcinoma, moderately differentiated. Tumor penetrates to the surface of the visceral peritoneum (pT4a). Proximal, distal and radial margins negative. Lymph nodes: 2 of 23 positive (pN1b). Mismatch repair immunohistochemistry: MLH1, PMS2, MSH2 and MSH6 retained (intact).",
               "conclusion": "Adenocarcinoma of the ascending colon, pT4a pN1b, margins negative, MMR proficient. AJCC stage IIIB.",
               "issued": "2025-09-03T15:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-hosp",
-              "action": "done",
-              "date": "2025-10-07T14:20"
             }
           ],
           "documents": [
@@ -1997,13 +1979,11 @@
                 {
                   "test": "Clostridioides difficile toxin A+B, stool",
                   "loinc": "34468-9",
-                  "unit": "",
                   "text": "Negative"
                 },
                 {
                   "test": "Occult blood, stool",
                   "loinc": "2335-8",
-                  "unit": "",
                   "text": "Negative"
                 }
               ]
@@ -2091,6 +2071,9 @@
                   "test": "Carcinoembryonic Antigen",
                   "loinc": "2039-6",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 2.5
+                  },
                   "value": 1.6
                 }
               ]
@@ -2150,7 +2133,7 @@
         "code": "200328",
         "display": "capecitabine 500 MG Oral Tablet",
         "ingredient": "capecitabine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "oxaliplatin 5 MG/ML Injectable Solution": {
         "code": "1736776",
@@ -2164,18 +2147,19 @@
         "code": "2039-6",
         "display": "Carcinoembryonic Ag [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 2.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Clostridioides difficile toxin A+B, stool": {
         "code": "34468-9",
         "display": "Clostridioides difficile toxin A+B [Presence] in Stool by Immunoassay",
-        "unit": "",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Occult blood, stool": {
         "code": "2335-8",
         "display": "Hemoglobin [Presence] in Stool from gastrointestinal",
-        "unit": "",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

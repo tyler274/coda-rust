@@ -1,0 +1,239 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002151",
+      "given": "Craig",
+      "family": "Roy",
+      "birth_date": "1970-05-19",
+      "address_line": "27 Petticoat Hill Road, Williamsburg, MA 01096",
+      "phone": "+1-917-555-0113",
+      "email": "craig.roy@example.test",
+      "marital_status": "single",
+      "summary": "Former construction worker on disability for seropositive erosive rheumatoid arthritis, with remote treated TB, asbestos exposure, and tobacco and alcohol use both stopped in 2023. Etanercept in 2024 was followed by recurrent cavitary pulmonary TB treated by the health department; he moved to rituximab and in 2026 had pneumococcal pneumonia seen in an outside ED.",
+      "events": [
+        {
+          "id": "2023-08-08a",
+          "kind": "telephone",
+          "start": "2023-08-08T10:20",
+          "reason": "new patient scheduling",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "author": "front desk",
+              "date": "2023-08-08T10:20",
+              "body": "Caller wants to transfer his primary care here. Says his old doctor's office in the valley closed its panel to Medicare disability patients and he wants someone closer to home. Sees an outside rheumatology group for RA, wants to keep them. Booked new-patient slot 8/22 at 9:00. Asked him to bring his pill bottles and any records he has. Records release form mailed."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "establish_care",
+          "start": "2023-08-22T09:00",
+          "end": "2023-08-22T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Rheumatoid arthritis with rheumatoid factor of multiple sites without organ or systems involvement", "icd10": "M05.79", "action": "diagnosed", "onset": "2022-03-01", "note": "seropositive, erosive; followed by outside rheumatology"},
+            {"label": "Personal history of tuberculosis", "action": "diagnosed", "onset": "2004-01-01", "note": "pulmonary, treated and completed in his thirties per patient"},
+            {"label": "Contact with and (suspected) exposure to asbestos", "icd10": "Z77.090", "action": "diagnosed", "onset": "1995-01-01", "note": "occupational, construction"},
+            {"label": "History of tobacco dependence", "action": "diagnosed", "onset": "2023-06-01", "note": "30 pack-years, quit about June 2023"},
+            {"label": "Alcohol use disorder, in remission", "action": "diagnosed", "onset": "2023-06-01", "note": "in remission since about June 2023"},
+            {"label": "Obesity, unspecified", "action": "diagnosed", "onset": "2023-08-22"},
+            {"label": "Long term (current) use of systemic steroids", "action": "diagnosed", "onset": "2022-03-01", "note": "prednisone 5 mg daily"}
+          ],
+          "medications": [
+            {"drug": "methotrexate 2.5 MG Oral Tablet", "action": "start", "sig": "Take 6 tablets (15 mg) by mouth once weekly on the same day each week", "dose": {"value": 15, "unit": "mg"}, "frequency": "WEEKLY", "route": "Oral", "course": "chronic", "reason": "rheumatoid arthritis"},
+            {"drug": "folic acid 1 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 1, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "with methotrexate"},
+            {"drug": "prednisone 5 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily with breakfast", "dose": {"value": 5, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "rheumatoid arthritis"},
+            {"drug_text": "calcium carbonate 1500 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet (600 mg calcium) by mouth twice daily", "dose": {"value": 1500, "unit": "mg"}, "frequency": "BID", "route": "Oral", "course": "chronic", "reason": "bone protection on prednisone"},
+            {"drug": "cholecalciferol 0.05 MG Oral Capsule", "action": "start", "sig": "Take 1 capsule (2000 units) by mouth daily", "dose": {"value": 2000, "unit": "[iU]"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "bone protection on prednisone"}
+          ],
+          "allergies": [
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"bp": [126, 80], "weight_kg": 112.6, "height_cm": 178.0},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-08-22T10:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-08-22T10:10", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}, {"test": "Albumin"}]},
+            {"panel": "Lipid Panel", "collected": "2023-08-22T10:10", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2023-08-22T10:10", "results": [{"test": "Hemoglobin A1c", "value": 5.6}, {"test": "Hepatitis C Antibody", "text": "Nonreactive"}, {"test": "25-hydroxy Vitamin D", "value": 34}]}
+          ],
+          "surveys": [
+            {"survey": "AUDIT-C total score", "value": 0},
+            {"survey": "PHQ-2 total score", "value": 0}
+          ],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Former smoker"},
+            {"item": "History of alcohol use", "value": "Former heavy use, none since about June 2023"},
+            {"item": "Occupation", "value": "Construction worker, on medical disability"}
+          ],
+          "immunizations": [
+            {"vaccine": "Tdap", "date": "2023-08-22T10:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, new patient, moderate MDM", "performed": "2023-08-22T09:00"},
+            {"procedure": "Immunization administration", "performed": "2023-08-22T10:00"},
+            {"procedure": "Venipuncture", "performed": "2023-08-22T10:10"}
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "placed", "order": "Low-dose CT chest for lung cancer screening", "category": "imaging", "reason": "30 pack-years, quit 2023"},
+            {"id": "dxa-2023", "action": "placed", "order": "DXA bone density, hip and spine", "category": "imaging", "reason": "long-term prednisone"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2023-08-22T09:00",
+              "body": "53 y/o man, former construction worker, transferring primary care. Here to set up and get his preventive care sorted.\n\nRA: seropositive, erosive, diagnosed spring 2022 by an outside rheumatology group, who he keeps seeing every few months. On methotrexate 15 mg once a week (six 2.5 mg tabs, takes them Sunday nights), folic acid daily, prednisone 5 mg daily since diagnosis. Calcium and vitamin D for the steroid. Hands are stiff for about an hour on waking, manageable most days. Went on disability from the building trades because he can't grip tools for a full shift.\n\nTB: had pulmonary TB in his early thirties, around 2004. Says he took pills for six months through the health department and was told he was cured. No records of that.\n\nAsbestos: decades of demolition and renovation work, often around old insulation and pipe wrap, rarely with a mask.\n\nTobacco: 30 pack-years, stopped in June, about two months ago. No patch or meds, just quit. Alcohol: drank heavily for years, he calls it a long-term problem. Stopped at the same time. Not in a program. No withdrawal symptoms now, no cravings he can't manage.\n\nFamily: father COPD, mother thyroid disease (autoimmune), brother lung cancer.\nAllergies: none to medications.\nNo surgeries.\n\nROS: no cough, fevers, sweats or weight loss. No dyspnea. No GI symptoms.\n\nExam: BP and vitals as recorded. Large man, comfortable. Lungs clear throughout, no crackles. Heart regular, no murmur. Abdomen soft, no hepatomegaly. Hands: boggy synovial thickening over several MCPs on both sides, mild tenderness, full fist possible but slow. Wrists without effusion. No nodules. Skin unremarkable.\n\nA/P:\n1. RA - on MTX/folate/pred per rheum. CBC and CMP today, we can share the monitoring draws with rheum.\n2. Remote TB, treated. Noted.\n3. Former tobacco, 30 pack-years, quit 2 mo ago. Eligible for lung screening; ordered LDCT. Congratulated on quitting.\n4. Alcohol use disorder, early remission. AUDIT-C 0 since June. Offered counseling resources, he declines for now.\n5. Obesity, BMI 35.5. Discussed.\n6. Chronic prednisone - DXA ordered, on calcium/D. Vitamin D level today.\n7. HM: Tdap today. Lipids, A1c, hep C screen. Will request prior records for colonoscopy date. Flu/COVID/pneumococcal/shingles at a nurse visit in early October.\n\nRTC 3-4 months."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-25a",
+          "kind": "portal_message",
+          "start": "2023-08-25T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "author": "PCP",
+              "date": "2023-08-25T16:40",
+              "body": "Hi Craig, your labs from Tuesday look fine. Blood counts and liver tests are normal, which is what we want on methotrexate. Kidney function normal. Cholesterol is acceptable, A1c 5.6 (no diabetes), hepatitis C screen negative, vitamin D 34 which is fine on your current supplement. No changes. The CT and bone density scheduling desk should call you this week."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-05a",
+          "kind": "outside_records",
+          "start": "2023-09-05T11:00",
+          "labs": [
+            {"panel": null, "collected": "2022-03-08T08:30", "results": [{"test": "Rheumatoid Factor", "value": 84}, {"test": "Cyclic Citrullinated Peptide Antibody", "value": 142}]}
+          ],
+          "procedures": [
+            {"procedure": "Colonoscopy, screening, average risk", "performed": "2021-04-13T08:00"}
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care records",
+              "author": "front desk",
+              "date": "2023-09-05T11:00",
+              "body": "Records received by fax from prior primary care office, 41 pages. Summary of relevant items:\n- Screening colonoscopy 04/13/2021: normal to the cecum, no polyps. Repeat in 10 years.\n- 03/2022 notes: hand and wrist pain, morning stiffness; labs 03/08/2022 rheumatoid factor 84 IU/mL (high), anti-CCP 142 U/mL (strongly positive). Referred to rheumatology, RA confirmed there.\n- Past history lists pulmonary TB treated in early 2000s, per patient.\n- Smoking and alcohol counseling at several visits.\nScanned under Media, routed to PCP."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-12a",
+          "kind": "outside_records",
+          "start": "2023-09-12T14:15",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Rheumatology follow-up letter",
+              "author": "rheumatology",
+              "date": "2023-09-12T14:15",
+              "body": "OUTSIDE RHEUMATOLOGY PRACTICE\nVisit date: 09/07/2023\nRe: Craig Roy, DOB 05/19/1970\n\nDear colleague,\n\nThank you for taking over Mr. Roy's primary care. I saw him for his regular follow-up of seropositive erosive rheumatoid arthritis. He describes morning stiffness of about an hour and intermittent MCP swelling. On examination today there was mild synovitis at both second and third MCPs.\n\nMedications: methotrexate 15 mg weekly, folic acid 1 mg daily, prednisone 5 mg daily, calcium carbonate 600 mg twice daily, vitamin D3 2000 IU daily.\nAllergies: NKDA.\n\nImpression: RA with ongoing low-grade synovitis, stable on the current program. He would like to avoid escalation for now. We will continue methotrexate and low-dose prednisone and revisit in 3 to 4 months. Please continue to share CBC and liver tests every 3 months.\n\nWith regards,\nRheumatology"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-10-03T13:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-10-03T13:37"},
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2023-10-03T13:39"},
+            {"vaccine": "Zoster recombinant (Shingrix)", "date": "2023-10-03T13:41"}
+          ],
+          "procedures": [
+            {"procedure": "Immunization administration", "performed": "2023-10-03T13:35"}
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization visit",
+              "author": "RN",
+              "date": "2023-10-03T13:30",
+              "body": "Here for vaccines per PCP plan. Screening questions negative, no fever today. On methotrexate and prednisone, no live vaccines given. Administered flu (L deltoid), COVID 2023-24 (R deltoid), PCV20 (L deltoid, separate site) and Shingrix #1 (R deltoid, separate site). Observed 15 minutes, tolerated well. Shingrix #2 due in 2-6 months, nurse visit booked for January. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-17a",
+          "kind": "imaging",
+          "start": "2023-10-17T08:15",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2023-10-17T08:15",
+              "text": "LOW-DOSE CT CHEST, LUNG CANCER SCREENING\nIndication: Former smoker, 30 pack-years, quit 2023. Baseline screen.\nTechnique: Low-dose helical CT of the chest without contrast.\nFindings: No pulmonary nodules. No consolidation or interstitial abnormality. Airways patent. No pleural effusion, thickening or pleural plaques. Heart size normal. No mediastinal or hilar adenopathy. Upper abdomen unremarkable on limited views.",
+              "conclusion": "Lung-RADS 1: negative. Continue annual screening in 12 months."
+            },
+            {
+              "study": "DXA bone density, hip and spine",
+              "performed": "2023-10-17T09:00",
+              "text": "DXA BONE DENSITOMETRY\nIndication: Long-term glucocorticoid use.\nLumbar spine L1-L4: T-score -0.7.\nLeft femoral neck: T-score -0.9.\nLeft total hip: within normal range.",
+              "conclusion": "Normal bone density."
+            }
+          ],
+          "orders": [
+            {"id": "ldct-2023", "action": "done", "date": "2023-10-17T08:15"},
+            {"id": "dxa-2023", "action": "done", "date": "2023-10-17T09:00"}
+          ]
+        },
+        {
+          "id": "2023-10-20a",
+          "kind": "portal_message",
+          "start": "2023-10-20T09:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "CT and bone density",
+              "author": "PCP",
+              "date": "2023-10-20T09:05",
+              "body": "Craig - good news on both scans. The lung screening CT shows no nodules and nothing worrisome; we repeat it once a year. Bone density is normal even with the prednisone. Keep the calcium and vitamin D going."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: CT and bone density",
+              "author": "patient",
+              "date": "2023-10-20T12:48",
+              "body": "Thanks doc. Relieved about the lungs given my brother. Still not smoking."
+            }
+          ]
+        },
+        {
+          "id": "2023-12-12a",
+          "kind": "office_visit",
+          "start": "2023-12-12T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up, RA and medication monitoring",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2023-12-12T11:05", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-12-12T11:05", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, low MDM", "performed": "2023-12-12T10:40"},
+            {"procedure": "Venipuncture", "performed": "2023-12-12T11:05"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2023-12-12T10:40",
+              "body": "S: Doing OK. Hands about the same, worse on cold mornings. Taking MTX every Sunday, no missed doses, no mouth sores. Still off cigarettes and alcohol, six months now; says the hardest part is evenings. Saw rheum in Sept, no changes.\nO: Vitals as charted. Lungs clear. MCPs mildly puffy both hands, no warmth. No edema.\nA/P: RA stable on current regimen. Monitoring CBC/CMP today, will forward to rheum. Tobacco and alcohol remission holding, encouraged. Shingrix #2 next month. RTC 3 months."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

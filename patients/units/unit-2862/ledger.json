@@ -1,10 +1,7 @@
 {
   "unit": "unit-2862",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002862/2023-03-22a: lab order \"Digoxin level\" names no one catalog lab, panel, study or procedure",
-    "MRN00002862/2026-02-19a: lab order \"PT/INR, every 4 weeks\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002862",
@@ -295,6 +292,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -570,6 +571,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -1087,6 +1092,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -1589,6 +1598,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -2184,6 +2197,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 2.5
                 }
               ]
@@ -2295,6 +2312,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 0.9
                 }
               ]
@@ -2389,6 +2410,7 @@
               "action": "placed",
               "order": "Digoxin level",
               "category": "lab",
+              "loinc": "10535-3",
               "reason": "Digoxin restarted after toxicity"
             }
           ],
@@ -2415,6 +2437,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.1
                 }
               ]
@@ -2847,6 +2873,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -3024,6 +3054,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -3388,6 +3422,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.1
                 }
               ]
@@ -3884,6 +3922,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -4053,6 +4095,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.5
                 }
               ]
@@ -4625,6 +4671,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 0.9
                 }
               ]
@@ -4802,6 +4852,10 @@
                   "test": "Digoxin",
                   "loinc": "10535-3",
                   "unit": "ng/mL",
+                  "range": {
+                    "low": 0.5,
+                    "high": 2.0
+                  },
                   "value": 1.0
                 }
               ]
@@ -4877,7 +4931,7 @@
             {
               "id": "inr-standing-2026",
               "action": "placed",
-              "order": "PT/INR, every 4 weeks",
+              "order": "Prothrombin Time with INR",
               "category": "lab",
               "reason": "Warfarin monitoring"
             }
@@ -5016,18 +5070,27 @@
                   "test": "Troponin I",
                   "loinc": "10839-9",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 0.04
+                  },
                   "value": 0.04
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
-                  "unit": "ng/mL FEU",
+                  "unit": "ng/mL{FEU}",
+                  "range": {
+                    "high": 500
+                  },
                   "value": 780
                 },
                 {
                   "test": "B-type natriuretic peptide",
                   "loinc": "30934-4",
                   "unit": "pg/mL",
+                  "range": {
+                    "high": 100
+                  },
                   "value": 200
                 }
               ]
@@ -5148,37 +5211,37 @@
         "code": "833528",
         "display": "amiodarone hydrochloride 200 MG Oral Tablet",
         "ingredient": "amiodarone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "benztropine mesylate 1 MG Oral Tablet": {
         "code": "885213",
         "display": "benztropine mesylate 1 MG Oral Tablet",
         "ingredient": "benztropine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "digoxin 0.125 MG Oral Tablet": {
         "code": "197604",
         "display": "digoxin 0.125 MG Oral Tablet",
         "ingredient": "digoxin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "magnesium oxide 400 MG Oral Tablet": {
         "code": "198741",
         "display": "magnesium oxide 400 MG Oral Tablet",
         "ingredient": "magnesium",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methimazole 10 MG Oral Tablet": {
         "code": "197941",
         "display": "methimazole 10 MG Oral Tablet",
         "ingredient": "methimazole",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "prednisolone acetate 10 MG/ML Ophthalmic Suspension": {
         "code": "1376336",
         "display": "prednisolone acetate 10 MG/ML Ophthalmic Suspension",
         "ingredient": "prednisolone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5186,24 +5249,44 @@
         "code": "30934-4",
         "display": "Natriuretic peptide B [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
-        "unit": "ng/mL FEU",
+        "unit": "ng/mL{FEU}",
+        "range": {
+          "high": 500
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Digoxin": {
         "code": "10535-3",
         "display": "Digoxin [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "low": 0.5,
+          "high": 2.0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Troponin I": {
         "code": "10839-9",
         "display": "Troponin I.cardiac [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 0.04
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Digoxin level": {
+        "code": "10535-3",
+        "display": "Digoxin [Mass/volume] in Serum or Plasma",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

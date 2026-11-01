@@ -1,0 +1,165 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002798",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "office_visit",
+          "start": "2025-01-14T15:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after pulmonology consult",
+          "conditions": [
+            {"label": "Pulmonary arterial hypertension associated with systemic sclerosis", "icd10": "I27.21", "action": "diagnosed", "onset": "2024-12-02", "note": "Probable per pulmonology on echo (RVSP 55, RVH) and isolated low DLCO; right heart cath pending."}
+          ],
+          "measure": ["bp", "hr", "rr", "spo2", "weight_kg"],
+          "immunizations": [
+            {"vaccine": "Pneumococcal conjugate PCV20", "date": "2025-01-14T16:00"}
+          ],
+          "procedures": [
+            {"procedure": "Office visit, established patient, moderate MDM", "performed": "2025-01-14T15:20"},
+            {"procedure": "Immunization administration", "performed": "2025-01-14T16:00"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Office Visit", "author": "PCP", "date": "2025-01-14T16:20",
+             "body": "Here to go over the pulmonary consult from 12/2.\n\nS: Breathing about where it was in the summer, maybe a touch worse on cold mornings walking in from the lot. Cough still dry, off and on. No chest pain, no fainting, no swelling. Raynaud acting up with the weather as usual, managing with gloves. Reflux quiet.\nPulm letter reviewed with her: echo shows a thickened right ventricle with estimated RV systolic pressure 55, LV normal; PFTs with normal airflow but low diffusing capacity. Their read is probable pulmonary arterial hypertension from her scleroderma, to be confirmed by right heart cath. She has not heard about a cath date yet.\n\nO: Vitals per flowsheet. Comfortable at rest. Lungs clear. Heart regular, loud P2. No JVD. No edema. Fingertips without ulcers.\n\nA/P:\n1. Probable PAH associated with SSc. Added to problem list. Cath pending through pulmonology; she will call their office this week for the date. Explained what the cath measures and why they want numbers before choosing medication. Avoid heavy exertion that leaves her lightheaded; call or go to the ED for chest pain, fainting or new leg swelling.\n2. PCV20 today given chronic heart/lung disease.\n3. SSc / Raynaud / GERD: unchanged plan.\nRTC 4 months."}
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T07:42",
+          "documents": [
+            {"type": "Patient Communication", "title": "Fingers in the cold", "author": "patient", "date": "2025-03-11T07:42",
+             "body": "Good morning. My fingers went completely white for like 20 minutes waiting for the bus yesterday and again this morning, then purple, then they burned when they warmed up. They are fine now. Is this normal for my Raynaud or should I come in? No sores on them."},
+            {"type": "Patient Communication", "title": "Re: Fingers in the cold", "author": "PCP", "date": "2025-03-11T12:30",
+             "body": "That sequence (white, then purple, then red and burning as blood flow returns) is the typical pattern, and a cold March wait at a bus stop is exactly what sets it off. Keep using the gloves, add hand warmers in your pockets, and keep your core warm too since that helps the hands. If you ever get a sore or a dark spot on a fingertip that doesn't go away, send a photo or come in that day. If the attacks keep getting more frequent we can talk about a medication then."}
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "4-month follow-up",
+          "appointment": "no-show"
+        },
+        {
+          "id": "2025-05-21a",
+          "kind": "telephone",
+          "start": "2025-05-21T09:30",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Missed appointment", "author": "front desk", "date": "2025-05-21T09:30",
+             "body": "Called re: missed 5/20 appt. She said a work deadline ran late and she forgot to call. Rather than a separate visit she asked to fold it into her yearly physical. Booked 8/1 at 9:00, fasting labs."}
+          ]
+        },
+        {
+          "id": "2025-08-01a",
+          "kind": "annual_physical",
+          "start": "2025-08-01T09:00",
+          "end": "2025-08-01T09:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly physical",
+          "measure": ["bp", "hr", "rr", "spo2", "temp_c", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2025-08-01T08:50", "results": [{"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2025-08-01T08:50", "results": [{"test": "Creatinine"}, {"test": "Alanine Aminotransferase"}, {"test": "Aspartate Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2025-08-01T08:50", "results": [{"test": "Low Density Lipoprotein"}]}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2025-08-01T09:00"},
+            {"procedure": "Venipuncture", "performed": "2025-08-01T08:50"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2025-08-01T11:40",
+             "body": "42F, yearly exam; missed May follow-up so covering both today.\n\nInterval: Breathing has crept the wrong way since winter. Now stops on the landing at work every time instead of some of the time, and is more tired by the end of the day. Cough unchanged, dry. No chest pain, no syncope, no orthopnea, no swelling. The right heart cath has not happened yet; pulm's office had her on a list and she has a pulmonary follow-up booked in December. Raynaud quieter with summer. Reflux fine.\nMeds: none. Allergies: NKDA.\nPHQ-9: 2.\n\nExam: Vitals per flowsheet. NAD. HEENT unremarkable. Neck supple, no JVD, no thyromegaly. Lungs clear, no crackles at the bases. Heart regular, P2 loud, no murmur. Abdomen soft, nontender. Extremities: no edema, fingertips intact. Skin otherwise unremarkable.\n\nA/P:\n1. PAH associated with SSc, probable, cath pending. Symptoms are slowly worse. Asked her to call pulmonology on Monday, tell them what she told me, and ask to come in sooner than December. If anything changes quickly, chest pain, fainting, swelling, she calls us or goes in.\n2. Limited SSc, Raynaud, GERD: no change.\n3. Health maintenance: CBC, CMP, lipids today. Mammogram 9/2024 negative, next fall 2026. Pap 2022 negative with HPV, due 2027. Tdap 2019. PCV20 done. Flu this fall at her pharmacy is fine, send us the record.\nRTC in one year, sooner after pulmonology."}
+          ]
+        },
+        {
+          "id": "2025-08-04a",
+          "kind": "portal_message",
+          "start": "2025-08-04T13:15",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lab results", "author": "PCP", "date": "2025-08-04T13:15",
+             "body": "Fatou, Friday's labs are normal across the board: blood counts, kidney and liver function, cholesterol. Did you get through to pulmonology about an earlier appointment?"},
+            {"type": "Patient Communication", "title": "Re: Lab results", "author": "patient", "date": "2025-08-04T18:02",
+             "body": "Thank you! I called, they said December is the first opening with my doctor there but they put me on the cancellation list."}
+          ]
+        },
+        {
+          "id": "2025-10-14a",
+          "kind": "pharmacy",
+          "start": "2025-10-14T17:40",
+          "immunizations": [
+            {"vaccine": "Influenza, trivalent, injectable", "date": "2025-10-14T17:40"}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Pharmacy immunization record", "author": "pharmacy", "date": "2025-10-16T08:10",
+             "body": "Immunization administered at retail pharmacy: influenza vaccine, trivalent, 0.5 mL IM left deltoid, 10/14/2025. Patient-reported allergies: none. Notification to primary care."}
+          ]
+        },
+        {
+          "id": "2025-12-11a",
+          "kind": "portal_message",
+          "start": "2025-12-11T20:26",
+          "documents": [
+            {"type": "Patient Communication", "title": "Update from lung doctor", "author": "patient", "date": "2025-12-11T20:26",
+             "body": "Hi, wanted to let you know I saw pulmonary on Tuesday. They did the heart catheter and it showed the pressures in my lung arteries are high, and they said the pressure on the left side is normal so it is from the scleroderma. They are starting me on a pill called bosentan, half dose for a month then full dose. I have to get liver blood tests every month through them. They said they would send you a letter."},
+            {"type": "Patient Communication", "title": "Re: Update from lung doctor", "author": "PCP", "date": "2025-12-12T08:05",
+             "body": "Thanks for letting me know, Fatou. Bosentan is a standard first medicine for this, and the monthly liver tests are part of taking it, so please keep up with those through pulmonology. I'll watch for their letter. Let us know if you have side effects or anything new."}
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "pharmacy",
+          "start": "2025-12-16T10:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Medication fill history", "author": "pharmacy", "date": "2025-12-16T10:00",
+             "body": "Fill history query (payer claims): bosentan 62.5 mg tablet, #56, take 1 tablet twice daily, 28-day supply, filled 12/16/2025 via specialty pharmacy. Prescriber: pulmonology."}
+          ]
+        },
+        {
+          "id": "2026-01-13a",
+          "kind": "pharmacy",
+          "start": "2026-01-13T10:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Medication fill history", "author": "pharmacy", "date": "2026-01-13T10:00",
+             "body": "Fill history query (payer claims): bosentan 125 mg tablet, #60, take 1 tablet twice daily, 30-day supply, filled 01/13/2026 via specialty pharmacy. Prescriber: pulmonology."}
+          ]
+        },
+        {
+          "id": "2026-01-27a",
+          "kind": "outside_records",
+          "start": "2026-01-27T14:20",
+          "documents": [
+            {"type": "Consult Note", "title": "Pulmonary & Critical Care follow-up", "author": "pulmonology", "date": "2026-01-27T14:20",
+             "body": "Pulmonary & Critical Care, return visit 12/09/2025.\n\nBack about a year after her first evaluation. Over that year her breathlessness and tiredness have slowly progressed; stairs wind her and walking fast occasionally makes her feel lightheaded. No daily medications. Never smoker.\n\nExam: lungs clear; jugular venous pressure elevated; P2 loud.\nChest radiograph: prominent central pulmonary arteries; lungs clear.\nRight heart catheterization: pulmonary arterial pressures elevated, wedge pressure normal.\n\nAssessment: pulmonary arterial hypertension, precapillary, associated with limited cutaneous systemic sclerosis.\nPlan: begin bosentan 62.5 mg twice daily for 4 weeks, then 125 mg twice daily. Monthly liver function testing through our office. Return in 3 months.\n\nAllergies: NKDA.\ncc: primary care"}
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "portal_message",
+          "start": "2026-03-19T12:48",
+          "documents": [
+            {"type": "Patient Communication", "title": "Lung doctor follow up", "author": "patient", "date": "2026-03-19T12:48",
+             "body": "Quick update, I had my follow up with pulmonary on Tuesday. They are keeping me on the bosentan and said my liver tests have all been normal so far. Next visit with them is in the summer."},
+            {"type": "Patient Communication", "title": "Re: Lung doctor follow up", "author": "RN", "date": "2026-03-19T15:10",
+             "body": "Thank you for the update, I've passed it to your doctor and noted it in your chart."}
+          ]
+        },
+        {
+          "id": "2026-06-23a",
+          "kind": "portal_message",
+          "start": "2026-06-23T09:00",
+          "documents": [
+            {"type": "Patient Communication", "title": "Physical due", "author": "front desk", "date": "2026-06-23T09:00",
+             "body": "Hi Fatou, our records show your yearly physical is coming due (last one 8/1/2025). Reply here or call to pick a time."},
+            {"type": "Patient Communication", "title": "Re: Physical due", "author": "patient", "date": "2026-06-24T21:14",
+             "body": "Thanks, things are busy at work through the summer. I'll call in September to set it up."}
+          ]
+        }
+      ]
+    }
+  ]
+}

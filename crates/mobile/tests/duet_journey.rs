@@ -71,14 +71,23 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         "the recorded thread did not render:\n{text}"
     );
 
-    // A cited source opens the retained note from the stub.
+    // The message's one Sources button opens its sources in a sheet; a source opens the
+    // retained note from the stub in a sheet over it, and closing that returns to the list.
+    browser.click("button.sources-button");
+    wait_for_selector(
+        &mut browser,
+        r#"dialog.dialog-sheet[open] button[aria-label="Open source Sleep note"]"#,
+    );
     browser.click(r#"button[aria-label="Open source Sleep note"]"#);
     let text = browser.wait_for("About seven hours, from the sleep note.");
     assert!(
         text.contains("Sleep note"),
         "the source sheet did not name the citation:\n{text}"
     );
-    browser.click(r#"button[aria-label="Close source"]"#);
+    browser.click(r#"dialog.dialog-sheet:last-of-type button[aria-label="Close"]"#);
+    wait_for_gone(&mut browser, "p.source-text");
+    browser.click(r#"dialog.dialog-sheet button[aria-label="Close"]"#);
+    wait_for_gone(&mut browser, "dialog.dialog-sheet");
 
     // For my doctor lays the saved page out with the letter layout.
     browser.click(r#"button[aria-label="Open For my doctor"]"#);
@@ -109,7 +118,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.wait_for("About seven hours.");
 
     // A send is accepted by the stub and the user line lands on the page.
-    browser.type_into(".duet-composer-field", SEND_TEXT);
+    browser.type_into(".composer-input", SEND_TEXT);
     browser.click(".duet-send");
     let text = browser.wait_for(SEND_TEXT);
     assert!(
@@ -209,6 +218,20 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
         text.contains("How did I sleep?"),
         "the client mode did not load the thread:\n{text}"
     );
+}
+
+fn wait_for_gone(browser: &mut Browser, selector: &str) {
+    let deadline = std::time::Instant::now() + Duration::from_secs(10);
+    while std::time::Instant::now() < deadline {
+        let found = browser
+            .page()
+            .evaluate(&format!("Boolean(document.querySelector({selector:?}))"));
+        if found.as_bool() == Some(false) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    panic!("{selector} stayed open");
 }
 
 fn wait_for_selector(browser: &mut Browser, selector: &str) {

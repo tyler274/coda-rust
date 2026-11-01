@@ -1,0 +1,1144 @@
+{
+ "patients": [
+  {
+   "mrn": "MRN00002224",
+   "events": [
+    {
+     "id": "2022-01-11a",
+     "kind": "office_visit",
+     "start": "2022-01-11T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "diabetes and blood pressure follow-up",
+     "state": {
+      "weight_kg": 84.0,
+      "labs": {
+       "Hemoglobin A1c": 7.6
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-01-11T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening resumed after treated TB"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-01-11T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-01-11T10:35",
+       "body": "Winter check. Weight back to 84 kg. Dialysis steady, rides mostly reliable. A1c in September was 7.9; sugar log since then fasting 110s-180s. Two readings in the 70s late morning, felt fine, ate. No lows needing help.\n\nExam: BP R arm as charted. Lungs clear. No edema. AVF thrill/bruit. Feet intact.\n\nA/P\nT2DM - A1c today; no change.\nHTN - at his usual on lisinopril 5.\nLung screening - resume annual LDCT; radiology to compare with the 2021 film.\nRTC 4 months."
+      }
+     ],
+     "vitals": {
+      "weight_kg": 84.0
+     }
+    },
+    {
+     "id": "2022-02-08a",
+     "kind": "imaging",
+     "start": "2022-02-08T13:00",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2022-02-08T13:00",
+       "text": "Annual low-dose screening CT, compared with February 2019 and the May 2021 chest radiograph. New since 2019: linear scarring at the right apex, consistent with prior granulomatous infection in this patient with treated tuberculosis. No solid or part-solid nodules. No consolidation or cavitation. No adenopathy. Coronary calcification, mild.",
+       "conclusion": "Lung-RADS 2, benign appearance. Right apical post-inflammatory scarring. Continue annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2022",
+       "action": "done",
+       "date": "2022-02-08T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "LDCT lung screening",
+       "author": "radiology",
+       "date": "2022-02-08T16:45",
+       "body": "Lung-RADS 2. Right apical scarring from treated TB; no nodule of concern. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2022-02-10a",
+     "kind": "portal_message",
+     "start": "2022-02-10T08:40",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "CT result",
+       "author": "PCP",
+       "date": "2022-02-10T08:40",
+       "body": "Your screening CT shows some scar at the top of the right lung where the TB was - that's expected and harmless. No spots that worry us. Next one in a year. Your A1c from January was 7.6, a little better."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-07a",
+     "kind": "ed_visit",
+     "start": "2022-05-07T09:20",
+     "end": "2022-05-07T13:10",
+     "service": "Emergency Medicine",
+     "reason": "dizziness and palpitations on morning walks",
+     "vitals": [
+      {
+       "time": "2022-05-07T09:25",
+       "bp": [
+        130,
+        80
+       ],
+       "hr": 98
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hypoglycemia without coma",
+       "icd10": "E11.649",
+       "action": "diagnosed",
+       "onset": "2022-05-07",
+       "note": "severe hypoglycemia, capillary glucose 60"
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.2
+      }
+     },
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-05-07T09:28",
+       "results": [
+        {
+          "test": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+          "loinc": "41653-7",
+          "unit": "mg/dL",
+          "value": 60,
+          "range": {
+            "low": 70,
+            "high": 99
+          }
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-07T09:55",
+       "results": [
+        {
+          "test": "Glucose [Mass/volume] in Capillary blood by Glucometer",
+          "loinc": "41653-7",
+          "unit": "mg/dL",
+          "value": 118,
+          "range": {
+            "low": 70,
+            "high": 99
+          }
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2022-05-07T09:40",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.2
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "glucose 0.4 MG/MG Oral Gel",
+       "action": "start",
+       "sig": "15 g by mouth once",
+       "dose": {
+        "value": 15,
+        "unit": "g"
+       },
+       "frequency": "ONCE",
+       "route": "Oral",
+       "course": "short",
+       "reason": "hypoglycemia"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, moderate MDM",
+       "performed": "2022-05-07T09:20"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2022-06-02T10:15",
+       "body": "Community hospital ED - physician record, visit 05/07/2022 (faxed on request).\n\nCC: lightheaded with heart racing while out walking this morning.\nHPI: 70 y/o man, ESRD on HD MWF, T2DM on basal-bolus insulin, anemia, remote TB (treated). For about two weeks has had spells of dizziness and a pounding heartbeat during his morning walk, happening more often. Today's episode was worse and a neighbor drove him in. Took glargine last night as usual and lispro with a small breakfast.\nMeds per patient: insulin glargine, insulin lispro sliding scale, metformin, lisinopril, sevelamer, aspirin, atorvastatin.\nAllergies: NKDA.\nSH: former smoker, 40 pk-yr. No alcohol. Retired postal worker.\n\nTriage: BP 130/80, HR 98. Diaphoretic, anxious, alert and oriented.\nPOC glucose at arrival during symptoms: 60.\n\nCourse: glucose gel 15 g by mouth then juice and crackers. Symptoms resolved within 15 minutes. Repeat POC glucose 118. HbA1c 7.2%. Observed through lunch, glucose stable.\n\nImpression: symptomatic severe hypoglycemia, insulin-treated diabetes.\nDisposition: home with daughter. Eat before walking; carry fast sugar. Follow up with PCP this week to review insulin."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-09a",
+     "kind": "telephone",
+     "start": "2022-05-09T12:10",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Patient report: ED visit",
+       "author": "RN",
+       "date": "2022-05-09T12:10",
+       "body": "Pt called. Went to the ED Saturday - got dizzy, heart pounding, sweaty while walking before breakfast-ish; sugar was 60 there. Treated with glucose, sent home. Feels fine now. Had a few similar spells the past 2 weeks he hadn't checked. Sugars since: 98-160. Advised to eat before walks and check before heading out. Visit booked 5/17. ED record requested."
+      }
+     ]
+    },
+    {
+     "id": "2022-05-17a",
+     "kind": "office_visit",
+     "start": "2022-05-17T09:30",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "ED follow-up, low blood sugar",
+     "conditions": [
+      {
+       "label": "Type 2 diabetes mellitus with hypoglycemia without coma",
+       "icd10": "E11.649",
+       "action": "resolved",
+       "onset": "2022-05-07"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-05-17T09:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "ED Follow-up",
+       "author": "PCP",
+       "date": "2022-05-17T10:05",
+       "body": "Seen after the 5/7 ED visit for a low sugar (60) while walking. ED record not yet here; history from him and his meter. Since then he eats toast before his walk and checks first. No further spells. Meter download: fasting 100-165, one 72 late morning on a dialysis day.\n\nExam: BP R arm as charted. Comfortable. Heart regular, lungs clear, no edema.\n\nA/P\nHypoglycemia episode, resolved. Reviewed the warning signs and treatment with sugar tabs or juice; he will keep a source in his jacket. Insulin doses unchanged.\nT2DM - A1c 7.2 in the ED per his discharge paper.\nRTC August."
+      }
+     ]
+    },
+    {
+     "id": "2022-06-21a",
+     "kind": "outside_records",
+     "start": "2022-06-21T12:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2022-06-21T12:00",
+       "body": "Diabetic eye exam 6/14/2022, dilated. No diabetic retinopathy. No macular edema. Cataracts mild. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2022-07-19a",
+     "kind": "pharmacy",
+     "start": "2022-07-19T13:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Prior authorization - insulin lispro",
+       "author": "MA",
+       "date": "2022-07-19T13:20",
+       "body": "Plan now requires PA for lispro pens. Submitted with diagnosis, insulin history and recent A1c. Approved for 12 months. Pharmacy notified."
+      }
+     ]
+    },
+    {
+     "id": "2022-08-16a",
+     "kind": "office_visit",
+     "start": "2022-08-16T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.3,
+       "Low Density Lipoprotein": 76,
+       "Hemoglobin": 10.8
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2022-08-16T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.3
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2022-08-16T10:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 76
+        }
+       ]
+      },
+      {
+       "panel": "Hepatic Panel (LFT)",
+       "collected": "2022-08-16T10:30",
+       "results": [
+        {
+         "test": "Aspartate Aminotransferase"
+        },
+        {
+         "test": "Alanine Aminotransferase"
+        },
+        {
+         "test": "Alkaline Phosphatase"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2022-08-16T10:30",
+       "results": [
+        {
+         "test": "White Blood Cells"
+        },
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Platelets"
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2022-08-16T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2022-08-16T10:30",
+       "body": "No more low spells. ED note from May arrived in June - reviewed; it lists metformin, which he has never taken here (not appropriate on dialysis); confirmed with him he takes no metformin. Dialysis three days a week. Rides less reliable this summer - county service cut routes; his daughter fills in.\n\nExam: BP R arm as charted. Lungs clear, no edema. Feet: no lesions, sensation intact.\n\nA/P\nT2DM - A1c, lipids, LFTs, CBC today. Same insulin.\nTransportation - gave him the Medicaid ride benefit number as a backup.\nRTC fall, flu and COVID booster at nurse visit."
+      }
+     ]
+    },
+    {
+     "id": "2022-10-11a",
+     "kind": "nurse_visit",
+     "start": "2022-10-11T13:30",
+     "reason": "vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2022-10-11T13:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+       "date": "2022-10-11T13:38"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2022-10-11T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2022-10-11T13:50",
+       "body": "High-dose flu and bivalent COVID booster, right arm. Tolerated."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-09a",
+     "kind": "ed_visit",
+     "start": "2022-11-09T05:40",
+     "end": "2022-11-09T11:30",
+     "service": "Emergency Medicine",
+     "reason": "worsening shortness of breath, orthopnea",
+     "vitals": [
+      {
+       "time": "2022-11-09T05:45",
+       "temp_c": 36.8,
+       "bp": [
+        172,
+        94
+       ],
+       "hr": 106,
+       "rr": 28,
+       "spo2": 86
+      },
+      {
+       "time": "2022-11-09T06:20",
+       "spo2": 95
+      }
+     ],
+     "conditions": [
+      {
+       "label": "Acute pulmonary edema",
+       "icd10": "J81.0",
+       "action": "diagnosed",
+       "onset": "2022-11-07",
+       "note": "volume overload after two missed dialysis sessions"
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "10 ML furosemide 10 MG/ML Injection",
+       "action": "start",
+       "sig": "IV once in the ED",
+       "route": "Intravenous",
+       "frequency": "ONCE",
+       "course": "short",
+       "reason": "acute pulmonary edema"
+      }
+     ],
+     "reports": [
+      {
+       "study": "Chest X-ray, 1 view",
+       "performed": "2022-11-09T06:00",
+       "text": "Portable AP chest. Enlarged cardiac silhouette. Bilateral perihilar alveolar opacities. No pneumothorax. Costophrenic angles partly obscured.",
+       "conclusion": "Cardiomegaly with bilateral perihilar alveolar infiltrates, consistent with pulmonary edema."
+      },
+      {
+       "study": "12-lead ECG",
+       "performed": "2022-11-09T05:55",
+       "text": "Sinus tachycardia, rate 106. Voltage criteria for left ventricular hypertrophy. No acute ST elevation.",
+       "conclusion": "Sinus tachycardia; left ventricular hypertrophy."
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2022-11-09T05:40"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2022-11-28T09:30",
+       "body": "Community hospital ED record, date of service 11/09/2022.\n\nCC: can't catch his breath.\nHPI: 71 y/o man, ESRD on HD, T2DM, HTN, anemia of CKD, history of treated TB and a hypoglycemic episode this spring. Breathing has worsened over two days; now winded crossing a room and has spent the last two nights sitting up in a recliner because lying flat is impossible. Weight up about 5 lb and passing less urine this week. Missed his last two dialysis sessions (Friday and Monday) - his ride fell through both times.\nMeds: glargine 24 u qhs, lispro sliding scale, lisinopril 5, sevelamer 800 with meals, aspirin 81, atorvastatin 40.\nAllergies: NKDA.\n\nTriage: T 36.8, BP 172/94, HR 106, RR 28, SpO2 86% RA.\nExam: uncomfortable, dyspneic, speaking in short phrases. JVD to 10 cm above the sternal angle. Diffuse crackles both lungs. S3 present. Moderate pitting edema both legs. L AVF with thrill.\nABG on room air: hypoxemia with a widened A-a gradient.\nCXR: enlarged cardiac silhouette, bilateral perihilar alveolar infiltrates. ECG: sinus tachycardia, LVH.\n\nCourse: nasal cannula 4 L, SpO2 95%. Furosemide IV given. Nephrology called; emergent hemodialysis with ultrafiltration arranged.\nImpression: acute pulmonary edema from volume overload, missed hemodialysis.\nDisposition: admitted to medicine for urgent dialysis."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-14a",
+     "kind": "telephone",
+     "start": "2022-11-14T10:45",
+     "procedures": [
+      {
+       "procedure": "Ultrafiltration",
+       "snomed": "182750009",
+       "performed": "2022-11-09T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Dialysis unit call",
+       "author": "RN",
+       "date": "2022-11-14T10:45",
+       "body": "Dialysis unit nurse called. Mr. Washington was admitted 11/9 with fluid on the lungs after missing two treatments (no ride). Had urgent dialysis in the hospital with 3.5 L removed, oxygen weaned, discharged 11/11. Back on his usual MWF schedule today, at his target weight, breathing comfortably. Unit social worker setting up a standing ride with a backup. Hospital discharge summary not sent to us - requested from the hospital. Post-hospital visit booked 11/21."
+      }
+     ]
+    },
+    {
+     "id": "2022-11-21a",
+     "kind": "office_visit",
+     "start": "2022-11-21T13:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up",
+     "conditions": [
+      {
+       "label": "Acute pulmonary edema",
+       "icd10": "J81.0",
+       "action": "resolved",
+       "onset": "2022-11-07"
+      }
+     ],
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, moderate complexity",
+       "performed": "2022-11-21T13:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital Visit",
+       "author": "PCP",
+       "date": "2022-11-21T13:40",
+       "body": "Seen after admission 11/9-11/11 for pulmonary edema after two missed dialysis sessions. Discharge summary still not received despite request; ED record not yet in. History from patient, daughter and the dialysis unit's call.\nBreathing back to normal, sleeping flat on one pillow. No chest pain. Dialysis on schedule since 11/14; unit says he's at target weight. Med list unchanged; no new prescriptions from the hospital.\nRides: unit social worker set a standing ride plus his daughter as backup. He knows that missing even one session is dangerous - if no ride, call the unit and us the same morning.\n\nExam: BP R arm as charted. No JVD. Lungs clear. Regular rhythm, no gallop today. No leg edema. AVF thrill.\n\nA/P\nAcute pulmonary edema from missed dialysis - resolved.\nESRD on HD - per nephrology.\nMed reconciliation done.\nRTC February."
+      }
+     ]
+    },
+    {
+     "id": "2023-01-24a",
+     "kind": "telephone",
+     "start": "2023-01-24T09:50",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Ride check",
+       "author": "RN",
+       "date": "2023-01-24T09:50",
+       "body": "Follow-up call after November's missed sessions. Standing ride to dialysis has worked every treatment since. He has the unit's number and ours for any ride failure."
+      }
+     ]
+    },
+    {
+     "id": "2023-02-14a",
+     "kind": "office_visit",
+     "start": "2023-02-14T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.5
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-02-14T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.5
+        }
+       ]
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "placed",
+       "order": "Low-dose CT chest for lung cancer screening",
+       "category": "imaging",
+       "reason": "annual screening"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, moderate MDM",
+       "performed": "2023-02-14T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-02-14T10:30",
+       "body": "No missed dialysis since November; the standing ride is working. Breathing fine. Sugars stable, no lows. ED record from November received; hospital summary never arrived - not chasing further, course known from the dialysis unit.\n\nExam: BP R arm as charted. Lungs clear. No edema.\n\nA/P: T2DM - A1c today. HTN - usual range. Lung screen due - LDCT ordered. RTC June for AWV."
+      }
+     ]
+    },
+    {
+     "id": "2023-03-07a",
+     "kind": "imaging",
+     "start": "2023-03-07T13:30",
+     "reports": [
+      {
+       "study": "Low-dose CT chest for lung cancer screening",
+       "performed": "2023-03-07T13:30",
+       "text": "Annual low-dose screening CT compared with 2/8/2022. Linear right apical scarring, unchanged. No pulmonary nodules. No consolidation or effusion. Mild coronary calcification.",
+       "conclusion": "Lung-RADS 2, stable benign right apical scarring. Annual screening in 12 months."
+      }
+     ],
+     "orders": [
+      {
+       "id": "ldct-2023",
+       "action": "done",
+       "date": "2023-03-07T13:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Imaging Report",
+       "title": "LDCT lung screening",
+       "author": "radiology",
+       "date": "2023-03-07T17:00",
+       "body": "Lung-RADS 2, stable apical scarring. Annual follow-up."
+      }
+     ]
+    },
+    {
+     "id": "2023-04-18a",
+     "kind": "outside_records",
+     "start": "2023-04-18T10:00",
+     "labs": [
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-04-10T06:15",
+       "results": [
+        {
+         "test": "Potassium"
+        },
+        {
+         "test": "Bicarbonate"
+        },
+        {
+         "test": "Blood Urea Nitrogen"
+        },
+        {
+         "test": "Creatinine"
+        },
+        {
+         "test": "Calcium"
+        }
+       ]
+      },
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-04-10T06:15",
+       "results": [
+        {
+         "test": "Hemoglobin"
+        },
+        {
+         "test": "Hematocrit"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-04-10T06:15",
+       "results": [
+        {
+         "test": "Phosphorus",
+         "value": 5.2,
+         "unit": "mg/dL"
+        },
+        {
+         "test": "Albumin",
+         "value": 3.7,
+         "unit": "g/dL"
+        }
+       ]
+      }
+     ],
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Dialysis unit monthly labs",
+       "author": "nephrology",
+       "date": "2023-04-18T10:00",
+       "body": "Dialysis unit quarterly summary faxed. April pre-treatment labs attached. Attendance 100% since December. Epoetin dose unchanged. No access problems."
+      }
+     ]
+    },
+    {
+     "id": "2023-05-30a",
+     "kind": "pharmacy",
+     "start": "2023-05-30T15:40",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Refill authorization",
+       "author": "MA",
+       "date": "2023-05-30T15:40",
+       "body": "90-day refills: glargine, lispro, pen needles, strips, lisinopril, atorvastatin, aspirin. Next visit 6/13 on file."
+      }
+     ]
+    },
+    {
+     "id": "2023-06-13a",
+     "kind": "annual_physical",
+     "start": "2023-06-13T09:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "annual wellness visit",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.4
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "surveys": [
+      {
+       "survey": "PHQ-2 total score",
+       "value": 0
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-06-13T09:45",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.4
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Annual wellness visit, subsequent",
+       "performed": "2023-06-13T09:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Annual Wellness Visit",
+       "author": "PCP",
+       "date": "2023-06-13T09:50",
+       "body": "AWV.\nFunction: independent at home; daughter helps with shopping. No falls. Gait steady, gets up from chair without arms. PHQ-2 0. Recall 3/3.\nMeds reviewed: glargine 24 qhs, lispro scale, lisinopril 5, sevelamer 800 with meals, aspirin 81, atorvastatin 40; epoetin at dialysis.\nExam: BP R arm as charted. Lungs clear. No edema. Feet: no ulcers, monofilament intact.\nPrevention: colonoscopy 2015 normal, due 2025. LDCT March Lung-RADS 2. Shingrix, pneumococcal, Tdap done. Flu/COVID this fall; RSV vaccine discussed - he'd like it in the fall too.\nA1c today."
+      }
+     ]
+    },
+    {
+     "id": "2023-07-11a",
+     "kind": "outside_records",
+     "start": "2023-07-11T12:00",
+     "documents": [
+      {
+       "type": "Outside Records",
+       "title": "Diabetic eye examination",
+       "author": "optometry",
+       "date": "2023-07-11T12:00",
+       "body": "Diabetic eye exam 7/5/2023. Dilated. No diabetic retinopathy either eye. Cataracts progressing slowly, not yet surgical. Recall 1 year."
+      }
+     ]
+    },
+    {
+     "id": "2023-09-12a",
+     "kind": "office_visit",
+     "start": "2023-09-12T10:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "routine follow-up",
+     "state": {
+      "labs": {
+       "Hemoglobin A1c": 7.6,
+       "Low Density Lipoprotein": 74
+      }
+     },
+     "measure": [
+      "bp",
+      "hr",
+      "spo2",
+      "weight_kg"
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-09-12T10:30",
+       "results": [
+        {
+         "test": "Hemoglobin A1c",
+         "value": 7.6
+        }
+       ]
+      },
+      {
+       "panel": "Lipid Panel",
+       "collected": "2023-09-12T10:30",
+       "results": [
+        {
+         "test": "Total Cholesterol"
+        },
+        {
+         "test": "High Density Lipoprotein"
+        },
+        {
+         "test": "Triglycerides"
+        },
+        {
+         "test": "Low Density Lipoprotein",
+         "value": 74
+        }
+       ]
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Office visit, established patient, low MDM",
+       "performed": "2023-09-12T10:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Follow-up Visit",
+       "author": "PCP",
+       "date": "2023-09-12T10:30",
+       "body": "Doing well. Summer was quiet. No lows. Dialysis on schedule.\nBP R arm as charted. Lungs clear, no edema.\nA/P: T2DM - A1c and lipids today; no changes. Vaccines at October nurse visit. RTC January."
+      }
+     ]
+    },
+    {
+     "id": "2023-10-10a",
+     "kind": "nurse_visit",
+     "start": "2023-10-10T13:30",
+     "reason": "vaccines",
+     "measure": [
+      "temp_c"
+     ],
+     "immunizations": [
+      {
+       "vaccine": "Influenza, high-dose, quadrivalent",
+       "date": "2023-10-10T13:35"
+      },
+      {
+       "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+       "date": "2023-10-10T13:37"
+      },
+      {
+       "vaccine": "RSV, adjuvanted (Arexvy)",
+       "date": "2023-10-10T13:39"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Immunization administration",
+       "performed": "2023-10-10T13:35"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Nurse Note",
+       "title": "Vaccine visit",
+       "author": "RN",
+       "date": "2023-10-10T13:55",
+       "body": "Flu high-dose, updated COVID and RSV vaccine given per PCP order - right deltoid x2 and right thigh (left arm is his fistula). VIS given. Watched 15 minutes, no problems."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-23a",
+     "kind": "ed_visit",
+     "start": "2023-11-23T14:30",
+     "end": "2023-11-23T19:00",
+     "service": "Emergency Medicine",
+     "reason": "fever and chills after dialysis",
+     "vitals": [
+      {
+       "time": "2023-11-23T14:35",
+       "temp_c": 38.7,
+       "bp": [
+        95,
+        60
+       ],
+       "hr": 102,
+       "rr": 18
+      }
+     ],
+     "state": {
+      "labs": {
+       "Hemoglobin": 10.2
+      }
+     },
+     "labs": [
+      {
+       "panel": "Complete Blood Count (CBC)",
+       "collected": "2023-11-23T14:50",
+       "results": [
+        {
+         "test": "White Blood Cells",
+         "value": 12.0
+        },
+        {
+         "test": "Hemoglobin",
+         "value": 10.2
+        },
+        {
+         "test": "Platelets",
+         "value": 220
+        }
+       ]
+      },
+      {
+       "panel": "Basic Metabolic Panel (BMP)",
+       "collected": "2023-11-23T14:50",
+       "results": [
+        {
+         "test": "Blood Urea Nitrogen",
+         "value": 45
+        },
+        {
+         "test": "Creatinine",
+         "value": 5.6
+        }
+       ]
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "vancomycin 1000 MG Injection",
+       "action": "start",
+       "sig": "1 g IV once",
+       "dose": {
+        "value": 1000,
+        "unit": "mg"
+       },
+       "frequency": "ONCE",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "suspected access-related bacteremia"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Emergency department visit, high MDM",
+       "performed": "2023-11-23T14:30"
+      }
+     ],
+     "documents": [
+      {
+       "type": "ED Notes",
+       "title": "Emergency department record",
+       "author": "emergency medicine",
+       "date": "2023-12-04T11:15",
+       "body": "Community hospital ED - physician note, 11/23/2023 (Thanksgiving).\n\nCC: fever and shaking chills.\nHPI: 72 y/o man on maintenance HD with prior TB (treated) and pulmonary edema last year. Fever and chills for two days; they began a few hours after his Tuesday treatment (holiday-week schedule at his unit). No cough, no dysuria, nothing localizing.\nMeds: glargine 24 u qhs, lispro sliding scale, lisinopril 5, sevelamer 800 with meals, aspirin 81, atorvastatin 40.\nAllergies: NKDA.\n\nVitals: T 38.7 C (101.7 F), BP 95/60, HR 102, RR 18.\nExam: ill-appearing but alert. Left arm AV fistula healed, no redness, warmth or tenderness over the access; thrill present. Lungs clear. No murmur appreciated. Abdomen soft.\nLabs: WBC 12.0 (4.5-11.0), Hgb 10.2, platelets 220, BUN 45, creatinine 5.6 (baseline 5.2). Blood cultures x2 drawn before antibiotics.\n\nCourse: IV fluid bolus with care given ESRD; BP improved. Vancomycin 1 g IV.\nImpression: sepsis, suspected dialysis access-related bacteremia.\nDisposition: admitted to medicine."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-23b",
+     "kind": "hospital_admission",
+     "start": "2023-11-23T19:00",
+     "end": "2023-11-28T13:00",
+     "service": "Internal Medicine — Inpatient",
+     "reason": "sepsis, access-related bacteremia",
+     "conditions": [
+      {
+       "label": "Sepsis due to Methicillin susceptible Staphylococcus aureus",
+       "icd10": "A41.01",
+       "action": "diagnosed",
+       "onset": "2023-11-21",
+       "note": "vascular access-related bacteremia"
+      }
+     ],
+     "labs": [
+      {
+       "panel": null,
+       "collected": "2023-11-23T14:50",
+       "resulted": "2023-11-25T08:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "Staphylococcus aureus, methicillin-susceptible, 2 of 2 sets"
+        }
+       ]
+      },
+      {
+       "panel": null,
+       "collected": "2023-11-25T06:00",
+       "resulted": "2023-11-30T06:00",
+       "results": [
+        {
+         "test": "Blood Culture",
+         "text": "No growth at 5 days"
+        }
+       ]
+      }
+     ],
+     "reports": [
+      {
+       "study": "Transthoracic echocardiogram",
+       "performed": "2023-11-24T11:00",
+       "text": "Normal left ventricular size. LVEF 55-60%. Mild concentric left ventricular hypertrophy. No valvular vegetations seen. No significant valvular stenosis or regurgitation. Normal right ventricular size and function. No pericardial effusion.",
+       "conclusion": "No echocardiographic evidence of endocarditis. Preserved LV function; mild concentric LVH."
+      }
+     ],
+     "medications": [
+      {
+       "drug_text": "cefazolin 2000 MG Injection",
+       "action": "start",
+       "sig": "2 g IV after each hemodialysis through 12/22/2023",
+       "dose": {
+        "value": 2000,
+        "unit": "mg"
+       },
+       "frequency": "three times weekly after dialysis",
+       "route": "Intravenous",
+       "course": "short",
+       "reason": "MSSA bacteremia"
+      }
+     ],
+     "procedures": [
+      {
+       "procedure": "Initial hospital inpatient care",
+       "performed": "2023-11-23T19:00"
+      },
+      {
+       "procedure": "Hospital discharge day management, 30 minutes or less",
+       "performed": "2023-11-28T12:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Discharge Summary",
+       "title": "Hospital discharge summary",
+       "author": "hospital medicine",
+       "date": "2024-01-10T09:00",
+       "body": "DISCHARGE SUMMARY - community hospital medicine service. Admitted 11/23/2023, discharged 11/28/2023. (Sent on request.)\n\nPrincipal diagnosis: sepsis due to methicillin-susceptible Staphylococcus aureus bacteremia, related to vascular access.\nOther: ESRD on HD via L AVF; type 2 diabetes on insulin; hypertension; anemia of CKD; history of treated pulmonary TB.\n\nHospital course: Admitted from the ED febrile and hypotensive. Blood cultures from 11/23 grew MSSA in 2 of 2 sets. Fistula examined daily - no erythema, fluctuance or tenderness; vascular surgery reviewed, no drainable collection, source presumed cannulation-related. Vancomycin changed to cefazolin once susceptibilities returned. Repeat cultures 11/25 no growth. TTE 11/24: normal LV size, EF 55-60%, mild concentric LVH, no vegetations. Fever resolved by hospital day 2; BP normal off fluids. Dialysis continued on schedule in hospital.\n\nDischarge medications: cefazolin 2 g IV after each dialysis through 12/22/2023 (given at the dialysis unit). Home medications unchanged: glargine 24 units qhs, lispro sliding scale, lisinopril 5 mg, sevelamer 800 mg with meals, aspirin 81 mg, atorvastatin 40 mg.\nAllergies: NKDA.\nFollow-up: PCP within 1-2 weeks; dialysis unit to monitor."
+      }
+     ]
+    },
+    {
+     "id": "2023-11-27a",
+     "kind": "telephone",
+     "start": "2023-11-27T09:20",
+     "documents": [
+      {
+       "type": "Telephone Encounter",
+       "title": "Daughter call: hospitalized",
+       "author": "RN",
+       "date": "2023-11-27T09:20",
+       "body": "Daughter called: her father has been in the hospital since Thanksgiving with a blood infection from his dialysis access. Fever gone, expected home tomorrow on IV antibiotics at dialysis. She'll bring him in after discharge. Booked post-hospital visit 12/6. Records requested from the hospital."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-06a",
+     "kind": "office_visit",
+     "start": "2023-12-06T11:00",
+     "service": "Internal Medicine — Primary Care",
+     "reason": "post-hospital follow-up, bacteremia",
+     "measure": [
+      "bp",
+      "hr",
+      "rr",
+      "spo2",
+      "temp_c",
+      "weight_kg"
+     ],
+     "procedures": [
+      {
+       "procedure": "Transitional care management, high complexity",
+       "performed": "2023-12-06T11:00"
+      }
+     ],
+     "documents": [
+      {
+       "type": "Progress Notes",
+       "title": "Post-hospital Visit",
+       "author": "PCP",
+       "date": "2023-12-06T11:45",
+       "body": "Here with daughter after admission 11/23-11/28 for sepsis from a staph bloodstream infection tied to his dialysis access. ED record arrived 12/4; discharge summary not yet. Per patient and the discharge paperwork he brought: MSSA, switched to cefazolin, which the dialysis unit gives after each treatment until 12/22. Heart ultrasound in hospital was ok. No fevers since he left, appetite returning, tired.\n\nExam: afebrile, BP R arm as charted. Alert. L AVF: no redness, warmth or tenderness, good thrill. Heart regular, no murmur. Lungs clear. No edema.\n\nA/P\nMSSA access-related bacteremia with sepsis - on cefazolin at HD through 12/22. Call for any fever or change at the fistula.\nMed reconciliation: no other changes.\nRTC February."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-19a",
+     "kind": "portal_message",
+     "start": "2023-12-19T17:05",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Antibiotics at dialysis",
+       "author": "patient",
+       "date": "2023-12-19T17:05",
+       "body": "Daughter writing - Dad asked me to tell you the dialysis nurses say he has 2 more antibiotic treatments, last one Friday the 22nd. No fever. Arm looks fine."
+      }
+     ]
+    },
+    {
+     "id": "2023-12-20a",
+     "kind": "portal_message",
+     "start": "2023-12-20T08:45",
+     "documents": [
+      {
+       "type": "Patient Message",
+       "title": "Re: Antibiotics at dialysis",
+       "author": "PCP",
+       "date": "2023-12-20T08:45",
+       "body": "Thanks for the update - glad he's doing well. Call us right away for any fever, chills or redness around the fistula. We'll see him in February."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

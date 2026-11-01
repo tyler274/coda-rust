@@ -895,19 +895,26 @@
                 {
                   "test": "Smith antibody",
                   "loinc": "5355-3",
-                  "unit": "",
                   "text": "Positive"
                 },
                 {
                   "test": "Complement C3",
                   "loinc": "4485-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  },
                   "value": 62
                 },
                 {
                   "test": "Complement C4",
                   "loinc": "4498-2",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
                   "value": 7
                 }
               ]
@@ -1650,12 +1657,20 @@
                   "test": "Complement C3",
                   "loinc": "4485-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  },
                   "value": 48
                 },
                 {
                   "test": "Complement C4",
                   "loinc": "4498-2",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 14,
+                    "high": 48
+                  },
                   "value": 5
                 },
                 {
@@ -3455,6 +3470,10 @@
                   "test": "Complement C3",
                   "loinc": "4485-9",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 100,
+                    "high": 233
+                  },
                   "value": 58
                 }
               ]
@@ -3875,9 +3894,7 @@
               "collected": "2024-08-18T14:30",
               "results": [
                 {
-                  "test": "Glucose, serum",
-                  "loinc": "2345-7",
-                  "unit": "mg/dL",
+                  "test": "Glucose",
                   "value": 98
                 }
               ]
@@ -5909,7 +5926,7 @@
         "code": "200060",
         "display": "mycophenolate mofetil 500 MG Oral Tablet",
         "ingredient": "mycophenolate",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5917,24 +5934,25 @@
         "code": "4485-9",
         "display": "Complement C3 [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
+        "range": {
+          "low": 100,
+          "high": 233
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Complement C4": {
         "code": "4498-2",
         "display": "Complement C4 [Mass/volume] in Serum or Plasma",
         "unit": "mg/dL",
-        "receipt": "NLM Clinical Tables LOINC"
-      },
-      "Glucose, serum": {
-        "code": "2345-7",
-        "display": "Glucose [Mass/volume] in Serum or Plasma",
-        "unit": "mg/dL",
+        "range": {
+          "low": 14,
+          "high": 48
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Smith antibody": {
         "code": "5355-3",
         "display": "Smith extractable nuclear Ab [Presence] in Serum by Counterimmunoelectrophoresis (CIE)",
-        "unit": "",
         "receipt": "NLM Clinical Tables LOINC"
       },
       "dsDNA antibody": {

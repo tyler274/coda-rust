@@ -1321,6 +1321,10 @@
                   "test": "Corticotropin",
                   "loinc": "2141-0",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 60
+                  },
                   "value": 22
                 }
               ]
@@ -1333,6 +1337,10 @@
                   "test": "Cortisol free 24 hour urine",
                   "loinc": "2147-7",
                   "unit": "ug/(24.h)",
+                  "range": {
+                    "low": 4,
+                    "high": 50
+                  },
                   "value": 350
                 }
               ]
@@ -1776,7 +1784,7 @@
             {
               "id": "colonoscopy-2021",
               "action": "placed",
-              "order": "Screening colonoscopy referral",
+              "order": "Colonoscopy, screening, average risk",
               "category": "referral",
               "to": "Gastroenterology",
               "reason": "average-risk colorectal cancer screening, age 46"
@@ -4743,7 +4751,7 @@
         "code": "313212",
         "display": "tenecteplase 50 MG Injection",
         "ingredient": "tenecteplase",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4751,12 +4759,20 @@
         "code": "2141-0",
         "display": "Corticotropin [Mass/volume] in Plasma",
         "unit": "pg/mL",
+        "range": {
+          "low": 10,
+          "high": 60
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Cortisol free 24 hour urine": {
         "code": "2147-7",
         "display": "Cortisol Free [Mass/time] in 24 hour Urine",
         "unit": "ug/(24.h)",
+        "range": {
+          "low": 4,
+          "high": 50
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

@@ -36,10 +36,10 @@
           "vitals": [{"time": "2025-02-11T03:00", "rr": 28, "spo2": 88}],
           "labs": [
             {"panel": null, "collected": "2025-02-11T03:15", "results": [
-              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.28},
-              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 60},
-              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 55},
-              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 26}
+              {"test": "pH of Arterial blood", "loinc": "2744-1", "unit": "[pH]", "value": 7.28, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "Carbon dioxide partial pressure in Arterial blood", "loinc": "2019-8", "unit": "mm[Hg]", "value": 60, "range": {"low": 38, "high": 42}},
+              {"test": "Oxygen partial pressure in Arterial blood", "loinc": "2703-7", "unit": "mm[Hg]", "value": 55, "range": {"low": 75, "high": 100}},
+              {"test": "Bicarbonate in Arterial blood", "loinc": "1960-4", "unit": "mmol/L", "value": 26, "range": {"low": 23, "high": 26}}
             ]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-11T03:15", "results": [{"test": "Sodium", "value": 138}, {"test": "Potassium", "value": 4.2}, {"test": "Chloride", "value": 100}, {"test": "Blood Urea Nitrogen", "value": 18}, {"test": "Creatinine", "value": 1.0}]},
             {"panel": "Complete Blood Count (CBC)", "collected": "2025-02-11T03:15", "results": [{"test": "White Blood Cells", "value": 15.0}, {"test": "Hemoglobin"}, {"test": "Platelets"}]}
@@ -129,7 +129,7 @@
           "start": "2025-05-13T11:00",
           "service": "Oncology",
           "reason": "Pancreatic cancer surveillance",
-          "labs": [{"panel": null, "collected": "2025-05-13T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 70}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.6}]}],
+          "labs": [{"panel": null, "collected": "2025-05-13T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 70, "range": {"low": 0, "high": 37}}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.6, "range": {"high": 10}}]}],
           "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2025-05-06T09:00", "text": "Multiphase study. Treated pancreatic head mass unchanged in size. Biliary stent in place without ductal dilation. Colon now of normal wall thickness. Liver: ablation zone without enhancement; no new hepatic lesion. No ascites, no adenopathy.", "conclusion": "Stable pancreatic head mass. No HCC recurrence. No metastatic disease."}],
           "documents": [
             {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2025-05-15T12:00", "body": "Medical oncology 05/13/2025. Two hospitalizations this winter (pneumonia with respiratory failure; fulminant C. difficile) noted; recovered. CT 5/6 stable pancreatic head mass, no liver recurrence, no metastases. CA 19-9 70, essentially stable. AFP 5.6. Surveillance every 6 months. NKDA. Avoid clindamycin per recent C. difficile.\nMedical Oncology"}
@@ -216,7 +216,7 @@
           "start": "2025-11-18T11:00",
           "service": "Oncology",
           "reason": "Pancreatic cancer surveillance",
-          "labs": [{"panel": null, "collected": "2025-11-18T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 66}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.3}]}],
+          "labs": [{"panel": null, "collected": "2025-11-18T10:15", "results": [{"test": "CA 19-9", "loinc": "24108-3", "unit": "U/mL", "value": 66, "range": {"low": 0, "high": 37}}, {"test": "Alpha-1-Fetoprotein", "loinc": "1834-1", "unit": "ng/mL", "value": 5.3, "range": {"high": 10}}]}],
           "reports": [{"study": "CT abdomen and pelvis with contrast", "performed": "2025-11-11T09:00", "text": "Multiphase study. Pancreatic head mass with post-radiation change, unchanged. Biliary stent in place. No biliary dilation. Liver: no new lesion; ablation zone unchanged. No ascites or adenopathy.", "conclusion": "Stable. No HCC recurrence. No metastatic disease."}],
           "documents": [
             {"type": "Consult Note", "title": "Oncology Follow-up", "author": "oncology", "date": "2025-11-20T12:00", "body": "Medical oncology 11/18/2025. Feels well for him. CT 11/11 stable; CA 19-9 66; AFP 5.3. Twenty months after SBRT with stable disease, which is better than we usually see; we discussed that this can change. Next surveillance in 6 months. NKDA.\nMedical Oncology"}

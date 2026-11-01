@@ -18,7 +18,7 @@
           "vitals": {"bp": [145, 90]},
           "labs": [
             {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Albumin", "value": 2.1}]},
-            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "g/(24.h)", "value": 4.2}]},
+            {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "g/(24.h)", "value": 4.2, "range": {"high": 0.1}}]},
             {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Creatinine"}]},
             {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Fasting Glucose", "value": 130}]},
             {"panel": null, "collected": "2024-01-08T13:40", "results": [{"test": "Hemoglobin A1c", "value": 7.2}]},
@@ -115,7 +115,7 @@
             {"panel": "Urinalysis", "collected": "2024-07-16T11:20", "results": [{"test": "Urine Protein", "text": "4+"}, {"test": "Urine Blood", "text": "1+"}, {"test": "Urine Glucose", "text": "Negative"}]},
             {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2024-07-16T11:30", "resulted": "2024-07-17T07:30", "results": [{"test": "Creatinine", "value": 3.2}, {"test": "Albumin"}, {"test": "Potassium"}, {"test": "Bicarbonate"}]},
             {"panel": "CBC with Differential", "collected": "2024-07-16T11:30", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]},
-            {"panel": null, "collected": "2024-07-16T11:30", "resulted": "2024-07-17T09:00", "results": [{"test": "CD4 Count", "value": 180, "unit": "cells/uL"}]},
+            {"panel": null, "collected": "2024-07-16T11:30", "resulted": "2024-07-17T09:00", "results": [{"test": "CD4 Count", "value": 180}]},
             {"panel": null, "collected": "2024-07-16T11:30", "results": [{"test": "Hemoglobin A1c"}]}
           ],
           "procedures": [{"procedure": "Office visit, established patient, high MDM", "performed": "2024-07-16T11:00"}],
@@ -133,7 +133,7 @@
           ],
           "orders": [
             {"id": "id-referral-2024", "action": "placed", "order": "Infectious disease referral, re-engagement", "category": "referral", "to": "Infectious Disease", "reason": "HIV off ART 6 months, CD4 180, skin infection"},
-            {"id": "lab-2024-08", "action": "placed", "order": "Repeat BMP and CBC end of August", "category": "lab", "reason": "AKI on CKD"}
+            {"id": "lab-2024-08", "action": "placed", "order": "Basic Metabolic Panel (BMP)", "category": "lab", "reason": "AKI on CKD"}, {"id": "lab-2024-08-2", "action": "placed", "order": "Complete Blood Count (CBC)", "category": "lab", "reason": "AKI on CKD"}
           ],
           "documents": [
             {"type": "Telephone Encounter", "title": "Creatinine and CD4 results", "author": "PCP", "date": "2024-07-17T10:40", "body": "Creatinine 3.2 (was 1.6-1.9). CD4 180. Potassium ok.\n\nAKI on CKD. Spoke with nephrology on call: they will move up his appointment; agree with restarting ART promptly through ID, keep up the furosemide, recheck labs. No urgent admission needed with normal potassium and no symptoms.\n\nCalled pt with all of this. He has not taken any ibuprofen. ID referral faxed marked urgent; clinic nurse will call him. Lab recheck end of August, video visit right after."},
@@ -163,7 +163,7 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2024-08-29T08:20", "results": [{"test": "Hemoglobin"}, {"test": "White Blood Cells"}]}
           ],
           "procedures": [{"procedure": "Venipuncture", "performed": "2024-08-29T08:20"}],
-          "orders": [{"id": "lab-2024-08", "action": "done", "date": "2024-08-29T16:00"}]
+          "orders": [{"id": "lab-2024-08", "action": "done", "date": "2024-08-29T16:00"}, {"id": "lab-2024-08-2", "action": "done", "date": "2024-08-29T16:00"}]
         },
         {
           "id": "2024-09-02a",

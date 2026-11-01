@@ -1,0 +1,752 @@
+{
+  "unit": "unit-1943",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001943",
+      "given": "Juniper",
+      "family": "Foster",
+      "birth_date": "2005-08-03",
+      "address_line": "14 Brierwood Lane",
+      "phone": "+1-774-555-0171",
+      "email": "juniper.foster@example.test",
+      "marital_status": "single",
+      "summary": "Healthy college student who joined the practice at 19. Two reflex fainting episodes a year apart, both seen in an outside ED with normal exams and ECGs; the second came after her last practice visit and reached the chart only by message and late ED record.",
+      "events": [
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T14:05",
+          "reason": "new patient request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2024-08-12T14:05",
+              "author": "front desk",
+              "body": "Caller is 19, home in Haydenville for the summer, heading back to campus for sophomore year. Has been seeing her pediatrician and was told it was time to move to adult care. Student health plan card on file. No current problems, no meds. Booked new patient physical 8/21 at 9:40. Release form emailed so we can pull her pediatric records."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-21a",
+          "kind": "establish_care",
+          "start": "2024-08-21T09:40",
+          "end": "2024-08-21T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient physical",
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              125,
+              76
+            ],
+            "hr": 76,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 59.0,
+            "height_cm": 165.5
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2024-08-21T10:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-08-21T10:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "College student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, new patient, 18-39",
+              "performed": "2024-08-21T09:40"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-08-21T10:25"
+            }
+          ],
+          "orders": [
+            {
+              "id": "hiv-screen-2024",
+              "action": "placed",
+              "order": "HIV-1/2 Antigen and Antibody",
+              "category": "lab"
+            },
+            {
+              "id": "hcv-screen-2024",
+              "action": "placed",
+              "order": "Hepatitis C Antibody",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Preventive Visit",
+              "date": "2024-08-21T10:30",
+              "author": "PCP",
+              "body": "Juniper is a 19 year old woman establishing adult primary care. Grew up locally and saw a pediatric practice until this summer. Going into her second year of college as a biology major; sings in the college choir and says rehearsals are most of her social life.\n\nNo ongoing health problems. Takes nothing daily, no supplements. No drug allergies. Never had surgery. Periods regular.\n\nFamily: mother treated for an underactive thyroid, father has high blood pressure. Asked specifically: nobody in the family has died suddenly young or has a known heart rhythm condition.\n\nSocial: never smoked, does not drink, no vaping. Lives in a dorm during the year, home with her parents in summer.\n\nROS: negative across systems. Denies chest pain, fainting, racing heartbeat, shortness of breath with singing or exertion.\n\nExam: well, relaxed young woman. Vitals in flowsheet, BP in normal range. HEENT unremarkable, TMs clear. Neck supple, thyroid not enlarged, no nodes. Heart regular, no murmur, rub or gallop. Lungs clear throughout. Abdomen soft, nontender, no organomegaly. Skin clear. Neuro grossly nonfocal, gait normal. Mood and affect bright. PHQ-2 is 0.\n\nAssessment and plan:\n1. Adult preventive care. Healthy. One-time HIV and hepatitis C screens drawn today. Pediatric vaccine record requested; will reconcile when it comes. Flu and COVID shots once the fall vaccine is in; she can come by on a school break. Cervical screening begins at 21, not yet.\n2. Reviewed how to reach us from campus by portal or phone.\n\nNext yearly exam in about a year."
+            }
+          ],
+          "state": {
+            "weight_kg": 59.0,
+            "height_cm": 165.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-08-22a",
+          "kind": "portal_message",
+          "start": "2024-08-22T16:40",
+          "orders": [
+            {
+              "id": "hiv-screen-2024",
+              "action": "done",
+              "date": "2024-08-22T16:40"
+            },
+            {
+              "id": "hcv-screen-2024",
+              "action": "done",
+              "date": "2024-08-22T16:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Screening results",
+              "date": "2024-08-22T16:40",
+              "author": "PCP",
+              "body": "Hi Juniper, both screening tests from yesterday came back negative. These are once-in-adulthood tests, so nothing further is needed. Good luck with the semester."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "outside_records",
+          "start": "2024-09-10T11:15",
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2016-09-08T10:00"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2016-09-08T10:00"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2016-09-08T10:00"
+            },
+            {
+              "vaccine": "HPV, 9-valent",
+              "date": "2017-03-21T15:30"
+            },
+            {
+              "vaccine": "Meningococcal conjugate MenACWY",
+              "date": "2021-08-19T09:20"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-07-11T14:00"
+            },
+            {
+              "vaccine": "Meningococcal B, recombinant (MenB-4C)",
+              "date": "2023-08-15T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Pediatric practice records",
+              "date": "2024-09-10T11:15",
+              "author": "pediatrics",
+              "body": "Records from prior pediatric practice, 2005 through 2024, 61 pages.\n\nWell-child and adolescent visits yearly with normal growth and development. No chronic diagnoses, no hospitalizations, no surgery. No known drug allergies. No regular medications.\n\nImmunization record: primary infant and childhood series complete including MMR and varicella x2. Adolescent doses: Tdap and first HPV and MenACWY at 11; second HPV the following spring; MenACWY booster at 16; MenB two doses before college.\n\nLast well visit 2024 (age 18): normal exam, sports and camp forms completed.\n\nPCP review: immunizations entered. Nothing outstanding except seasonal flu and COVID."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-27a",
+          "kind": "nurse_visit",
+          "start": "2024-11-27T11:00",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2024-11-27T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-11-27T11:08"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2024-11-27T11:20",
+              "author": "RN",
+              "body": "Home for Thanksgiving. Screening questions negative, feeling well, no prior vaccine reactions. Influenza given L deltoid, COVID given R deltoid, lot numbers in MAR. Waited 15 minutes, no problems. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-22a",
+          "kind": "portal_message",
+          "start": "2025-01-22T20:12",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Immunization record",
+              "date": "2025-01-22T20:12",
+              "author": "patient",
+              "body": "Hi, the student health office says my file is missing this fall's flu shot. Could you send me a copy of my vaccine record? Thank you!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Immunization record",
+              "date": "2025-01-23T09:30",
+              "author": "MA",
+              "body": "Hi Juniper, your full immunization record including the November flu and COVID doses is attached as a PDF. You can also print it any time from the Health Summary tab."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-26a",
+          "kind": "ed_visit",
+          "start": "2025-05-26T13:20",
+          "end": "2025-05-26T17:45",
+          "service": "Emergency Medicine",
+          "reason": "fainted while giving a class presentation",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 70,
+            "rr": 17,
+            "temp_c": 37.0,
+            "spo2": 96
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2025-05-26T13:35",
+              "text": "Normal sinus rhythm. Normal axis and intervals. No pre-excitation, no QT prolongation. No ST or T wave abnormality.",
+              "conclusion": "Normal sinus rhythm, normal ECG."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2025-05-26T13:20"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2025-05-26T13:35"
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-05-27a",
+          "kind": "portal_message",
+          "start": "2025-05-27T08:52",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "I passed out yesterday",
+              "date": "2025-05-27T08:52",
+              "author": "patient",
+              "body": "Hi, I wanted to let you know I fainted yesterday while I was presenting in class and ended up in the ER. They did an EKG and said it was normal and to follow up with my doctor. I feel totally fine today. Do I need to come in?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: I passed out yesterday",
+              "date": "2025-05-27T10:15",
+              "author": "RN",
+              "body": "Hi Juniper, glad you're feeling okay. Yes, the doctor would like to see you after any ER visit for fainting. I've booked you for Wednesday 6/4 at 2:00. If you faint again, or have chest pain, a pounding or racing heart, or fainting during exercise before then, go back to the ER. Could you sign the release in your inbox so we can get the ER notes?"
+            }
+          ]
+        },
+        {
+          "id": "2025-06-04a",
+          "kind": "office_visit",
+          "start": "2025-06-04T14:00",
+          "end": "2025-06-04T14:35",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "ED follow-up, fainting",
+          "conditions": [
+            {
+              "label": "Syncope",
+              "action": "diagnosed",
+              "onset": "2025-05-26",
+              "note": "single reflex-type faint during a class presentation; ED ECG normal"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              70
+            ],
+            "hr": 69,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 98,
+            "weight_kg": 58.4
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-06-04T14:30",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 14.7
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 291
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.76
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 44.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.9
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 10.0
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-06-04T14:30",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 142
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.5
+                },
+                {
+                  "test": "Glucose",
+                  "value": 99
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.79
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 25
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 110
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 15
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-06-04T14:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-06-04T14:30"
+            }
+          ],
+          "orders": [
+            {
+              "id": "cbc-2025",
+              "action": "placed",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab"
+            },
+            {
+              "id": "bmp-2025",
+              "action": "placed",
+              "order": "Basic Metabolic Panel (BMP)",
+              "category": "lab"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit: ED Follow-up",
+              "date": "2025-06-04T14:40",
+              "author": "PCP",
+              "body": "Here after an ER visit 5/26 for a faint. ER records not received yet; request faxed again today. History from Juniper:\n\nShe was standing at the front of the room for a class presentation and had been anxious about it all morning. Partway in she felt hot, queasy and lightheaded and was sweating through her shirt, then woke up on the floor. Her roommate, who was in the class, told her she was out well under a minute and was talking normally soon after she was laid flat. No tongue bite, no incontinence, no confusion afterward. No injury. The ER told her the heart tracing was normal and sent her home the same afternoon.\n\nNo episodes before this one and none since. No chest pain, palpitations or breathlessness, and never any lightheadedness with running or singing. Eating and drinking normally. No meds. No family history of sudden death or rhythm problems (rechecked).\n\nExam: comfortable. Vitals per flowsheet. Lying and standing pressures checked: no drop in pressure, pulse rise within normal. Heart regular, no murmur at rest or with standing. Lungs clear. Neuro nonfocal. No injury marks.\n\nAssessment: syncope, single episode, with a classic warning phase (warmth, nausea, sweating) in an emotional trigger, quick full recovery, normal ER ECG and normal exam today. Fits a reflex (vasovagal) faint. Nothing here points to a cardiac cause.\n\nPlan:\n- CBC and BMP today to make sure there is no anemia or salt problem behind it.\n- Talked through triggers: stress, heat, standing still, skipping meals. Keep fluids up, eat before big events.\n- When the warning feeling starts: sit or lie down right away, legs up if she can; leg crossing and fist clenching can buy time.\n- Return sooner or go to the ER for fainting with exertion, chest pain, a racing heart before passing out, or an injury.\n- Will review the ER chart when it arrives."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-06-05a",
+          "kind": "portal_message",
+          "start": "2025-06-05T12:10",
+          "orders": [
+            {
+              "id": "cbc-2025",
+              "action": "done",
+              "date": "2025-06-05T12:10"
+            },
+            {
+              "id": "bmp-2025",
+              "action": "done",
+              "date": "2025-06-05T12:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your blood work",
+              "date": "2025-06-05T12:10",
+              "author": "PCP",
+              "body": "Hi Juniper, yesterday's labs are all normal: no anemia, and your salts, sugar and kidney numbers are fine. That fits with what we talked about. Keep up the water and the snacks before presentations."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-16a",
+          "kind": "outside_records",
+          "start": "2025-07-16T09:45",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Regional hospital ED record, 5/26/2025",
+              "date": "2025-07-16T09:45",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 05/26/2025\nPatient: Juniper Foster, 19 F\n\nCC: syncope during a class presentation.\n\nHPI: 19 yo F brought in by her roommate after passing out while speaking in front of her class. Describes being very anxious beforehand. Immediately prior: lightheaded, nauseated, felt overheated, profuse sweating. Roommate reports LOC less than 1 minute with rapid recovery once supine.\n\nPMH: none. Meds: none. Allergies: NKDA.\nFamily hx: mother hypothyroidism, father HTN. No FHx of sudden cardiac death or inherited arrhythmia.\nSocial: college sophomore, biology, choir. Never smoker. No EtOH.\n\nVitals: BP 120/75, HR 70, afebrile.\nExam: well appearing. CV and full exam unremarkable.\nECG: NSR, no abnormalities.\n\nED course / impression: syncope with typical prodrome and emotional trigger, benign evaluation.\nDisposition: discharged home. Follow up with PCP.\n\nPCP review 7/16: matches her account at the 6/4 visit. Nothing new. Filed."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-17a",
+          "kind": "portal_message",
+          "start": "2025-09-17T21:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Choir question",
+              "date": "2025-09-17T21:30",
+              "author": "patient",
+              "body": "Hi! Our fall concert has us standing on risers for about an hour. I haven't fainted again but I'm a little nervous about it. Is there anything I should do?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Choir question",
+              "date": "2025-09-18T07:55",
+              "author": "PCP",
+              "body": "Good question. Drink a full bottle of water and eat something salty in the hour before, keep your knees soft rather than locked, and shift your weight or rise on your toes between pieces. If the hot, queasy feeling starts, sit down on the riser even mid-song; your director will understand. Let me know if anything happens."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "nurse_visit",
+          "start": "2025-10-24T15:30",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-10-24T15:34"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-24T15:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Vaccine visit",
+              "date": "2025-10-24T15:55",
+              "author": "RN",
+              "body": "In for seasonal vaccines on a Friday afternoon off from class. Given her history of fainting, vaccines given seated and she stayed seated for the observation period. Flu L deltoid, COVID R deltoid. Felt fine, no lightheadedness. Left after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-17a",
+          "kind": "annual_physical",
+          "start": "2025-12-17T08:40",
+          "reason": "yearly exam",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment cancelled",
+              "date": "2025-12-15T13:20",
+              "author": "front desk",
+              "body": "Pt called, finals run through the 19th and she won't be home in time. Moved physical to 12/31 at 10:00."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2025-12-31a",
+          "kind": "annual_physical",
+          "start": "2025-12-31T10:00",
+          "end": "2025-12-31T10:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "yearly exam",
+          "vitals": {
+            "bp": [
+              130,
+              67
+            ],
+            "hr": 77,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 58.5
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-12-31T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Preventive Visit",
+              "date": "2025-12-31T10:45",
+              "author": "PCP",
+              "body": "Juniper, 20, home on winter break, here for her yearly exam.\n\nInterval: one faint in May (ER, normal ECG, reflex pattern), seen here in June with normal labs. No further faints or near-faints since. Got through the fall choir concert on the risers using the tips we discussed. Flu and COVID done in October.\n\nMeds: none. Allergies: none to drugs. Family history unchanged.\nSocial: still never smoked, no alcohol. Says the semester was stressful but finished well. Sleep okay most nights.\nROS: no chest pain, palpitations, exertional symptoms, headaches or GI complaints. Periods regular.\n\nExam: well. Vitals in flowsheet, normal. Eyes, ears and throat unremarkable. Thyroid normal size, no nodes. Heart regular without murmur. Lungs clear. Abdomen soft and nontender. Skin without rashes. Neuro normal. PHQ-2 is 1, no concerns raised.\n\nAssessment and plan:\n1. Preventive: up to date on vaccines. No labs needed this year. Cervical screening starts after she turns 21; we'll start it at next year's exam.\n2. Syncope, one episode in May, none since: keep using the prevention steps. Same return precautions.\n\nSee her next winter break or sooner as needed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-01-07a",
+          "kind": "portal_message",
+          "start": "2026-01-07T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for school",
+              "date": "2026-01-07T19:05",
+              "author": "patient",
+              "body": "Hi, the residence office wants a health form signed for spring housing. I uploaded it here. Sorry for the hassle!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for school",
+              "date": "2026-01-08T11:40",
+              "author": "MA",
+              "body": "No hassle at all. The doctor signed it using your exam from 12/31 and it's attached here as a PDF."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "ed_visit",
+          "start": "2026-05-11T11:10",
+          "end": "2026-05-11T15:20",
+          "service": "Emergency Medicine",
+          "reason": "fainted standing in a lecture room",
+          "vitals": {
+            "bp": [
+              120,
+              75
+            ],
+            "hr": 70,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98
+          },
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-05-11T11:25",
+              "text": "Sinus rhythm at a normal rate. PR, QRS and QTc within normal limits. No pre-excitation. No ischemic changes.",
+              "conclusion": "Normal sinus rhythm with no abnormalities."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, moderate MDM",
+              "performed": "2026-05-11T11:10"
+            },
+            {
+              "procedure": "Electrocardiogram, 12-lead, with interpretation",
+              "performed": "2026-05-11T11:25"
+            }
+          ],
+          "measure": [
+            "temp_c",
+            "rr",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fainted again",
+              "date": "2026-05-12T09:20",
+              "author": "patient",
+              "body": "Hi, I fainted again yesterday. It was in a packed lecture hall that was really hot and I'd been standing at the back. Same feeling as last time, got hot and woozy and my vision went narrow. They took me to the ER, the EKG was normal again and they sent me home. I'm okay today, just embarrassed. Finals start next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fainted again",
+              "date": "2026-05-12T12:35",
+              "author": "PCP",
+              "body": "Hi Juniper, sorry that happened, and nothing to be embarrassed about. I'm glad the ER visit was reassuring. I'd like to see you in person to go over both episodes. Please book with the front desk; if it has to wait until after the summer, keep doing the fluids and sit down at the first warning sign. Go straight to the ER for fainting during exercise, chest pain, or a racing heart beforehand."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Fainted again",
+              "date": "2026-05-12T18:02",
+              "author": "patient",
+              "body": "Thank you. I am away until late August so I booked the first Wednesday in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "outside_records",
+          "start": "2026-06-29T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Regional hospital ED record, 5/11/2026",
+              "date": "2026-06-29T10:30",
+              "author": "emergency medicine",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 05/11/2026\nPatient: Juniper Foster, 20 F\n\nCC: syncope.\n\nHPI: 20 yo F with one prior ED visit for syncope about a year ago (passed out giving a presentation in front of her class, typical prodrome). Today was standing in an overcrowded, warm lecture room when she became lightheaded and nauseated, with a sensation of warmth and tunnel vision, then lost consciousness. Denies chest pain, SOB or palpitations before the event.\n\nPMH: syncope 2025. Meds: none. Allergies: NKDA.\nFamily hx: mother hypothyroidism, father HTN; no sudden cardiac death or inherited arrhythmia.\nSocial: college student, biology, choir. Never smoker. No EtOH.\n\nVitals: BP 120/75, HR 70.\nExam: well hydrated. Heart, lungs and neuro exam normal.\nECG: NSR, no abnormalities.\n\nImpression: recurrent syncope, situational trigger (heat, prolonged standing).\nDisposition: home, PCP follow-up.\n\nReceived and scanned 6/29. Routed to PCP; she has a visit booked 9/2."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T14:20",
+          "reason": "follow-up after May fainting episode; yearly exam",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {}
+}

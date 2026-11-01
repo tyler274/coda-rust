@@ -1,0 +1,280 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001908",
+      "given": "Lisa",
+      "family": "O'Brien",
+      "birth_date": "1990-03-15",
+      "address_line": "37 Quarry Hill Terrace, Apt 2",
+      "phone": "+1-774-555-0153",
+      "email": "lisa.obrien@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher with lifelong atopy (eczema, allergic rhinitis) and recurrent HSV-1 cold sores, who had intraoperative anaphylaxis as a child and again at a 2025 nevus excision, later traced to latex. HSV keratitis of the right eye in October 2025 healed without sequelae.",
+      "events": [
+        {
+          "id": "2022-08-16a",
+          "kind": "telephone",
+          "start": "2022-08-16T15:40",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Inquiry",
+              "author": "front desk",
+              "date": "2022-08-16T15:40",
+              "body": "Caller is a teacher, 32, moving her care here from her old primary office; wants to get set up before the school year gets busy. Explained the membership and that insurance still covers labs and specialists. She is fine with that. New patient appointment scheduled for 9/8 at 8:00 AM. Records release form emailed for her prior office. Asked her to bring all medication bottles, including creams and nasal spray."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "establish_care",
+          "start": "2022-09-08T08:00",
+          "end": "2022-09-08T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "establish care",
+          "conditions": [
+            {"label": "Atopic dermatitis", "action": "diagnosed", "onset": "1992-06-01", "note": "since early childhood; moderate, well controlled with topical steroid"},
+            {"label": "Allergic rhinitis", "action": "diagnosed", "onset": "2004-04-01", "note": "seasonal (tree pollen) and perennial (dust mite)"},
+            {"label": "Recurrent herpes simplex labialis", "icd10": "B00.1", "action": "diagnosed", "onset": "2008-01-01", "note": "two to three cold sores a year, episodic valacyclovir"},
+            {"label": "Personal history of anaphylaxis", "icd10": "Z87.892", "action": "diagnosed", "onset": "1998-07-01", "note": "intraoperative reaction during tonsillectomy and adenoidectomy at age 8; trigger never identified"}
+          ],
+          "medications": [
+            {"drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment", "action": "historical", "sig": "Apply a thin layer to affected areas twice daily as needed for eczema", "frequency": "BID PRN", "route": "Topical", "course": "chronic", "reason": "atopic dermatitis"},
+            {"drug": "cetirizine hydrochloride 10 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth once daily as needed for allergy symptoms", "dose": {"value": 10, "unit": "mg"}, "frequency": "DAILY PRN", "route": "Oral", "course": "chronic", "reason": "allergic rhinitis"},
+            {"drug": "fluticasone propionate 0.05 MG/ACTUAT Metered Dose Nasal Spray", "action": "historical", "sig": "1 spray in each nostril once daily", "frequency": "DAILY", "route": "Nasal", "course": "chronic", "reason": "allergic rhinitis"},
+            {"drug": "valacyclovir 1000 MG Oral Tablet", "action": "historical", "sig": "Take 1 g by mouth at the first sign of a cold sore, then 1 g 12 hours later", "dose": {"value": 1000, "unit": "mg"}, "frequency": "PRN", "route": "Oral", "course": "chronic", "reason": "recurrent herpes labialis"}
+          ],
+          "allergies": [
+            {"substance": "Dust mites", "snomed": "260147004", "category": "environment", "reaction": "Itching", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "Tree pollen", "snomed": "782576004", "category": "environment", "reaction": "Itching", "severity": "mild", "criticality": "low", "type": "allergy"},
+            {"substance": "No known drug allergies"}
+          ],
+          "state": {"weight_kg": 62.8, "height_cm": 165.0},
+          "measure": ["bp", "hr", "spo2", "weight_kg", "height_cm"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Occasional, two drinks a month or fewer"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "procedures": [
+            {"procedure": "Tonsillectomy and adenoidectomy", "snomed": "28913000", "performed": "1998-07-01T09:00"},
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2022-09-08T08:00"}
+          ],
+          "orders": [
+            {"id": "est-cbc", "action": "placed", "order": "CBC with Differential", "category": "lab"},
+            {"id": "est-cmp", "action": "placed", "order": "Comprehensive Metabolic Panel (CMP)", "category": "lab"},
+            {"id": "est-lipid", "action": "placed", "order": "Lipid Panel", "category": "lab"},
+            {"id": "est-hiv", "action": "placed", "order": "HIV-1/2 Antigen and Antibody", "category": "lab"},
+            {"id": "est-hcv", "action": "placed", "order": "Hepatitis C Antibody", "category": "lab"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "author": "PCP",
+              "date": "2022-09-08T09:10",
+              "body": "NEW PATIENT, ESTABLISHING CARE\n\n32-year-old woman, elementary school teacher, transferring from her previous primary office. No acute complaints today. Wants one place to call when her allergies or skin act up.\n\nHISTORY\nEczema since she was a toddler. These days it is mostly hands and the creases of the elbows in winter, and the mometasone ointment keeps it quiet; she uses it a few days at a time, not continuously. Moisturizes with a fragrance-free cream.\nAllergies: itchy watery eyes and congestion every spring with the trees, plus a year-round stuffy nose she was told was dust mite. Daily fluticasone, cetirizine on bad days.\nCold sores since her teens, roughly two or three a year. Keeps valacyclovir at home and starts it at the first tingle.\nAt 8 she had her tonsils and adenoids out and had a severe allergic reaction in the OR. Her mother was told it was anaphylaxis but no one ever told them what caused it. She has never had testing. No reactions to any medicine since that she knows of.\n\nPSH: T&A age 8 (reaction as above).\nMeds: mometasone 0.1% ointment BID PRN; cetirizine 10 mg daily PRN; fluticasone nasal 1 spray each side daily; valacyclovir 1 g at prodrome then 1 g 12 h later.\nAllergies: dust mite and tree pollen (rhinitis). No known drug allergies.\nFamily: mother asthma and hay fever; father eczema; younger sister also gets cold sores.\nSocial: teaches elementary school. Never smoked. A glass of wine once or twice a month. Walks most evenings.\n\nROS: negative except as above. No wheeze or asthma symptoms of her own.\n\nEXAM\nWell appearing. HEENT: TMs clear, mild pale nasal turbinates, oropharynx clear, lips without lesions. Neck supple, no nodes, thyroid normal. Lungs clear. Heart regular, no murmur. Abdomen soft, nontender. Skin: a few faint dry patches at both antecubital fossae, no excoriation or weeping. No edema.\n\nASSESSMENT AND PLAN\n1. Atopic dermatitis, quiet right now. Continue mometasone in short bursts, daily emollient.\n2. Allergic rhinitis, perennial with spring flares. Continue fluticasone daily and cetirizine as needed.\n3. Recurrent herpes labialis. Episodic valacyclovir, refills on file.\n4. History of anaphylaxis during childhood surgery, cause unknown. Advised she tell any surgeon or dentist about it before a procedure.\n5. Health maintenance: baseline CBC, CMP, lipids; one-time HIV and hepatitis C screening, which she agrees to. Requesting records from her prior office, including her last Pap and immunizations. PHQ-2 negative.\nLab draw Monday morning. Follow up for a physical next year or sooner as needed."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-12a",
+          "kind": "lab_only",
+          "start": "2022-09-12T07:30",
+          "reason": "screening labs",
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2022-09-12T07:35", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}, {"test": "Eosinophils %"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2022-09-12T07:35", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2022-09-12T07:35", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2022-09-12T07:35", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2022-09-12T07:35", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "procedures": [{"procedure": "Venipuncture", "performed": "2022-09-12T07:35"}],
+          "orders": [
+            {"id": "est-cbc", "action": "done", "date": "2022-09-12T07:35"},
+            {"id": "est-cmp", "action": "done", "date": "2022-09-12T07:35"},
+            {"id": "est-lipid", "action": "done", "date": "2022-09-12T07:35"},
+            {"id": "est-hiv", "action": "done", "date": "2022-09-12T07:35"},
+            {"id": "est-hcv", "action": "done", "date": "2022-09-12T07:35"}
+          ]
+        },
+        {
+          "id": "2022-09-14a",
+          "kind": "portal_message",
+          "start": "2022-09-14T17:05",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your Recent Labs",
+              "author": "PCP",
+              "date": "2022-09-14T17:05",
+              "body": "Hi Lisa, everything from Monday came back fine: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to change. Nice meeting you last week."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-04a",
+          "kind": "outside_records",
+          "start": "2022-10-04T11:20",
+          "reason": "prior primary care records",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Records From Prior Primary Care Office",
+              "author": "MA",
+              "date": "2022-10-04T11:20",
+              "body": "Records received by fax from the patient's previous primary care office, 41 pages, 2016 to 2022. Abstracted:\n- Cervical cytology with HPV co-test 06/2021: negative for intraepithelial lesion, HPV negative. Next due 2026.\n- Tdap 03/2019.\n- Problem list: eczema, allergic rhinitis, recurrent cold sores, remote anaphylaxis during childhood surgery.\n- Medications match what she brought to her first visit.\n- Allergies listed as dust mite and tree pollen.\nNo childhood surgical records in the packet. Placed in chart for PCP review."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "flu and COVID vaccines",
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2022-10-13T15:35"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent", "date": "2022-10-13T15:37"}
+          ],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2022-10-13T15:35"}],
+          "documents": [
+            {
+              "type": "Nurse Note",
+              "title": "Immunization Visit",
+              "author": "RN",
+              "date": "2022-10-13T15:50",
+              "body": "Came after school for vaccines. No fever or illness today. Screening questions negative; history of childhood OR reaction noted, no prior vaccine reactions. Influenza vaccine left deltoid, bivalent COVID booster right deltoid. Observed 15 minutes, no reaction. VIS given."
+            }
+          ]
+        },
+        {
+          "id": "2022-12-06a",
+          "kind": "pharmacy",
+          "start": "2022-12-06T09:15",
+          "reason": "refill request",
+          "medications": [
+            {"drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment", "action": "stop", "reason": "replaced by practice prescription"},
+            {"drug_text": "mometasone furoate 0.001 MG/MG Topical Ointment", "action": "start", "sig": "Apply a thin layer to affected areas twice daily as needed for eczema flares, up to 2 weeks at a time", "frequency": "BID PRN", "route": "Topical", "course": "chronic", "reason": "atopic dermatitis"}
+          ],
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2022-12-06T09:15",
+              "body": "Pharmacy request for mometasone 0.1% ointment, 45 g; old prescriber is her prior office. Routed to PCP. Approved, 45 g with 2 refills, transferred to our prescriber."
+            }
+          ]
+        },
+        {
+          "id": "2023-01-26a",
+          "kind": "office_visit",
+          "start": "2023-01-26T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "eczema flare",
+          "measure": ["bp", "hr", "weight_kg"],
+          "procedures": [{"procedure": "Office visit, established patient, low MDM", "performed": "2023-01-26T15:45"}],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "author": "PCP",
+              "date": "2023-01-26T16:20",
+              "body": "S: Hands cracking and itchy since the holidays, worse with all the handwashing in the classroom and the dry heat at school. Elbow creases flaring too. Using the mometasone most nights for about a week, which helps, but it comes back when she stops. No oozing, no crusting, no fever. Sleep a little broken by the itch.\nO: Vitals as charted. Dorsal hands with dry, lichenified erythematous plaques and a few fissures over the knuckles; both antecubital fossae with mild erythema and scale. No vesicles, no honey crust, no pustules.\nA: Atopic dermatitis, winter flare, hands and flexures. No sign of infection.\nP: Mometasone twice daily for two weeks, then weekends only for a few weeks. Heavy plain ointment after every wash and cotton gloves over it at night. Keep a fragrance-free hand cream at her desk. If the hands are not better in three weeks, message me and we can talk about dermatology."
+            }
+          ]
+        },
+        {
+          "id": "2023-04-20a",
+          "kind": "portal_message",
+          "start": "2023-04-20T19:22",
+          "reason": "allergy season refills",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Allergy Refills",
+              "author": "patient",
+              "date": "2023-04-20T19:22",
+              "body": "Hi, the trees are out and I am a mess. Could you send refills of the nasal spray and the cetirizine? My hands are fine now, the gloves trick worked. Thanks!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Allergy Refills",
+              "author": "PCP",
+              "date": "2023-04-21T07:48",
+              "body": "Done, both sent with a year of refills. During the worst of the pollen it is fine to take the cetirizine every day rather than as needed. Glad the hands settled."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "office_visit",
+          "start": "2023-06-13T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "appointment": "cancelled",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "author": "front desk",
+              "date": "2023-06-12T12:10",
+              "body": "Patient called to cancel tomorrow's 4:00. End-of-year events at school, and she says she feels well. Will book her physical for September."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-21a",
+          "kind": "annual_physical",
+          "start": "2023-09-21T07:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual physical",
+          "measure": ["bp", "hr", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2023-09-21T08:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2023-09-21T08:20", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2023-09-21T08:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Low Density Lipoprotein"}]}
+          ],
+          "immunizations": [
+            {"vaccine": "Influenza, quadrivalent, injectable", "date": "2023-09-21T08:30"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula", "date": "2023-09-21T08:32"}
+          ],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2023-09-21T07:40"},
+            {"procedure": "Venipuncture", "performed": "2023-09-21T08:20"},
+            {"procedure": "Immunization administration", "performed": "2023-09-21T08:30"}
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "author": "PCP",
+              "date": "2023-09-21T08:45",
+              "body": "PREVENTIVE VISIT\n\nInterval: good year. One mild cold sore in the spring that she caught early with valacyclovir. Hands stayed decent since the winter flare. Allergies typical for the spring, controlled on the spray. No ER visits, no new meds.\n\nCurrent meds: mometasone 0.1% ointment PRN, cetirizine 10 mg PRN, fluticasone nasal daily, valacyclovir episodic.\nAllergies: dust mite, tree pollen. NKDA.\nSocial: back in the classroom. Never smoker, rare alcohol. Walking most evenings.\n\nROS negative in detail. Periods regular.\n\nExam: Vitals as charted. Pleasant, well. HEENT normal, lips clear. Neck without adenopathy or thyromegaly. Lungs clear. Heart RRR, no murmur. Abdomen benign. Skin with faint dryness of the knuckles only. Neuro grossly intact. Mood bright.\n\nA/P:\n- Adult preventive care: PHQ-2 0. Pap/HPV co-test was negative in 2021; next one due 2026. Tdap 2019, current. Flu and updated COVID given today.\n- Atopic dermatitis, controlled. Same plan; start the night-glove routine early this winter.\n- Allergic rhinitis, stable.\n- Recurrent cold sores, infrequent. Valacyclovir refilled.\n- Remote anaphylaxis, cause unknown. Reminded her to flag it before any procedure.\n- CBC, CMP and lipids drawn today. Physical again in a year."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-25a",
+          "kind": "portal_message",
+          "start": "2023-09-25T12:30",
+          "reason": "lab results",
+          "documents": [
+            {
+              "type": "Result Note",
+              "title": "Physical Labs",
+              "author": "PCP",
+              "date": "2023-09-25T12:30",
+              "body": "Lisa, labs from Thursday's physical were all normal, cholesterol included. See you next year, or anytime you need us."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

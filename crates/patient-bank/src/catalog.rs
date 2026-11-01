@@ -26,6 +26,8 @@ pub const LOINC: &str = "http://loinc.org";
 pub const RXNORM: &str = "http://www.nlm.nih.gov/research/umls/rxnorm";
 pub const SNOMED: &str = "http://snomed.info/sct";
 pub const CPT: &str = "http://www.ama-assn.org/go/cpt";
+/// Where every catalog CPT code is confirmed.
+const CMS_RVU: &str = "CMS physician fee schedule relative value file";
 pub const HCPCS: &str = "https://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets";
 pub const CVX: &str = "http://hl7.org/fhir/sid/cvx";
 
@@ -79,6 +81,13 @@ impl Catalog {
             display: Some(v.display.clone()),
             receipt: Some(v.receipt.clone()),
             unit: v.unit.clone(),
+            range: v.range.as_ref().map(|r| {
+                [("low", &r.low), ("high", &r.high)]
+                    .into_iter()
+                    .filter_map(|(k, n)| Some((k.to_string(), Value::Number(n.clone()?))))
+                    .collect()
+            }),
+            range_source: v.range.as_ref().map(|_| "the author".into()),
             ..Entry::default()
         };
         for (section, system, verified) in [
@@ -107,10 +116,7 @@ impl Catalog {
             OrderCategory::Imaging => [&self.reports, &self.labs, &self.panels, &self.procedures],
             OrderCategory::Procedure => [&self.procedures, &self.reports, &self.labs, &self.panels],
         };
-        sections
-            .into_iter()
-            .find_map(|s| s.get(what))
-            .filter(|e| e.display.is_some())
+        sections.into_iter().find_map(|s| s.get(what))
     }
 
     /// An allergy entry's FHIR category (the catalog's, else the entry's own), and
@@ -171,14 +177,16 @@ pub struct Entry {
     pub display: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub receipt: Option<String>,
-    /// CPT: `fixture` (display from the Roger fixture) or `recalled` (no display).
+    /// A procedure's source: `hcpcs` (NLM Clinical Tables) or `cpt` (CMS's relative
+    /// value file).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub provenance: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ingredient: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub unit: Option<String>,
-    /// Lab reference range from coda-gym: `low`, `high`, `low_f`, `high_f`.
+    /// Lab reference range (`low`, `high`, `low_f`, `high_f`; either end alone is
+    /// one-sided, and an empty range says the source gives none), from `range_source`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub range: Option<BTreeMap<String, Value>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -188,6 +196,9 @@ pub struct Entry {
     /// A "no known" allergen: the allergen category it says the patient has none of.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub negates: Option<String>,
+    /// The ages a procedure's code is for (CPT's own band, both ends included).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ages: Option<[i64; 2]>,
     /// Panel members, in reporting order.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub members: Vec<String>,
@@ -202,8 +213,8 @@ pub enum Category {
 }
 
 impl Entry {
-    /// A lab's reference range for this sex, when both ends are numbers.
-    pub fn reference_range(&self, female: bool) -> Option<(f64, f64)> {
+    /// A lab's reference range for this sex: either end alone is a one-sided range.
+    pub fn reference_range(&self, female: bool) -> Option<(Option<f64>, Option<f64>)> {
         let range = self.range.as_ref()?;
         let end = |plain: &str, f: &str| {
             let v = if female {
@@ -213,7 +224,8 @@ impl Entry {
             };
             number(v.or_else(|| range.get(plain))?)
         };
-        Some((end("low", "low_f")?, end("high", "high_f")?))
+        let (low, high) = (end("low", "low_f"), end("high", "high_f"));
+        (low.is_some() || high.is_some()).then_some((low, high))
     }
 }
 
@@ -468,9 +480,11 @@ impl Lookup {
                 && part(p, "code").is_some_and(|c| c["valueCode"] == "inactive")
                 && part(p, "value").is_some_and(|v| v["valueBoolean"] == true)
         });
+        // the current fully specified name; a retired one can lack the semantic tag
         let fsn = params.iter().find_map(|p| {
             let fully = part(p, "use")?["valueCoding"]["code"] == "900000000000003001";
-            (p["name"] == "designation" && fully)
+            let retired = part(p, "status").is_some_and(|s| s["valueCode"] == "inactive");
+            (p["name"] == "designation" && fully && !retired)
                 .then(|| part(p, "value")?["valueString"].as_str().map(String::from))?
         })?;
         let tag = fsn.rsplit_once('(')?.1.trim_end_matches(')');
@@ -518,6 +532,30 @@ impl Lookup {
                     .unwrap_or_default()
             })
             .collect())
+    }
+
+    /// Whether `code` is a valid UCUM unit, by tx.fhir.org.
+    pub fn ucum(&mut self, code: &str) -> Result<bool> {
+        let url = format!(
+            "https://tx.fhir.org/r4/CodeSystem/$validate-code?{}",
+            urlencode(&[("url", "http://unitsofmeasure.org"), ("code", code)])
+        );
+        let params = self.get(&url, "application/fhir+json")?;
+        Ok(params["parameter"].as_array().is_some_and(|ps| {
+            ps.iter()
+                .any(|p| p["name"] == "result" && p["valueBoolean"] == true)
+        }))
+    }
+
+    /// The active RxNorm concept whose name, or a source's name for it, is exactly
+    /// `text`.
+    pub fn rxnorm_exact(&mut self, text: &str) -> Result<Option<String>> {
+        let url = format!(
+            "https://rxnav.nlm.nih.gov/REST/rxcui.json?{}",
+            urlencode(&[("name", text), ("search", "0")])
+        );
+        let found = self.get(&url, "application/json")?;
+        Ok(found["idGroup"]["rxnormId"][0].as_str().map(String::from))
     }
 
     /// RxNav's approximate matches for a free-text drug, best first (rxcuis).
@@ -640,10 +678,10 @@ fn confirm(problems: &mut Vec<String>, what: &str, label: &str, e: &mut Entry, d
 /// Verify every entry of `data/catalog.json` against its official service again and
 /// write it back with the services' displays. A concept is added by writing its
 /// label and code (a drug: its exact RxNorm name and ingredient; a report: its
-/// v2-0074 section; a procedure: `hcpcs`, `fixture` or `recalled`) and running
+/// v2-0074 section; a procedure: `hcpcs` or `cpt`) and running
 /// this. Prints the counts and every problem; when any entry is not confirmed it
 /// writes nothing and returns 1.
-pub fn build(roger: &Path) -> Result<i32> {
+pub fn build(rvu: &Path) -> Result<i32> {
     let mut look = Lookup::shared()?;
     let mut problems: Vec<String> = Vec::new();
     let mut c = Catalog::load(&paths::catalog())?;
@@ -713,6 +751,16 @@ pub fn build(roger: &Path) -> Result<i32> {
             e.range = Some(range);
             e.range_source = Some("coda-gym lab_reference_ranges.xlsx".into());
         }
+        // a measured test is shown in a UCUM unit beside its range; an empty range
+        // says the cited source gives none
+        if let Some(unit) = &e.unit {
+            if !look.ucum(unit)? {
+                problems.push(format!("lab {label:?}: unit {unit:?} is not UCUM"));
+            }
+            if e.range.is_none() || e.range_source.is_none() {
+                problems.push(format!("lab {label:?}: no reference range and no source"));
+            }
+        }
     }
     for (label, e) in &mut c.panels {
         e.system = LOINC.into();
@@ -752,26 +800,24 @@ pub fn build(roger: &Path) -> Result<i32> {
         }
     }
 
-    // CPT has no public verification service. Codes harvested from the Coda Agents
-    // Roger fixture keep that fixture's display; recalled codes carry no display
-    // rather than an unverified one.
-    let fixture = roger.join("Procedure.ndjson");
-    let mut fixture_display: HashMap<String, String> = HashMap::new();
-    match fs::read_to_string(&fixture) {
+    // CPT has no public terminology service; CMS publishes every payable code with
+    // its short descriptor in the physician fee schedule's relative value file.
+    let mut cms: HashMap<String, String> = HashMap::new();
+    match fs::read_to_string(rvu) {
         Ok(text) => {
-            for line in text.lines() {
-                let r: Value = serde_json::from_str(line)?;
-                let coding = &r["code"]["coding"][0];
-                if let (Some(code), Some(display)) =
-                    (coding["code"].as_str(), coding["display"].as_str())
+            // fixed width: code, modifier, then a 50-character descriptor; the
+            // unmodified row is the code itself
+            for line in text.lines().filter(|l| !l.starts_with("HDR")) {
+                if let (Some(code), Some("  "), Some(d)) =
+                    (line.get(0..5), line.get(5..7), line.get(7..57))
                 {
-                    fixture_display.insert(code.into(), display.into());
+                    cms.insert(code.into(), d.trim().into());
                 }
             }
         }
         Err(_) => problems.push(format!(
-            "Roger fixture not found at {}; pass --roger-fixture",
-            fixture.display()
+            "CMS relative value file not found at {}; pass --cms-rvu",
+            rvu.display()
         )),
     }
     for (label, e) in &mut c.procedures {
@@ -783,17 +829,14 @@ pub fn build(roger: &Path) -> Result<i32> {
                 let d = look.hcpcs(&e.code)?;
                 confirm(&mut problems, "procedure", label, e, d);
             }
-            Some("fixture") => {
+            Some("cpt" | CMS_RVU) => {
                 e.system = CPT.into();
-                let d = fixture_display.get(&e.code).cloned();
+                e.provenance = Some(CMS_RVU.into());
+                let d = cms.get(&e.code).cloned();
                 confirm(&mut problems, "procedure", label, e, d);
             }
-            Some("recalled") => {
-                e.system = CPT.into();
-                e.display = None;
-            }
             other => problems.push(format!(
-                "procedure {label:?}: provenance {other:?} is not hcpcs, fixture or recalled"
+                "procedure {label:?}: provenance {other:?} is not hcpcs or cpt"
             )),
         }
     }

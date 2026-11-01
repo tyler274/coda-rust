@@ -1,0 +1,102 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001943",
+      "events": [
+        {
+          "id": "2026-01-07a",
+          "kind": "portal_message",
+          "start": "2026-01-07T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Form for school",
+              "author": "patient",
+              "date": "2026-01-07T19:05",
+              "body": "Hi, the residence office wants a health form signed for spring housing. I uploaded it here. Sorry for the hassle!"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Form for school",
+              "author": "MA",
+              "date": "2026-01-08T11:40",
+              "body": "No hassle at all. The doctor signed it using your exam from 12/31 and it's attached here as a PDF."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-11a",
+          "kind": "ed_visit",
+          "start": "2026-05-11T11:10",
+          "end": "2026-05-11T15:20",
+          "service": "Emergency Medicine",
+          "reason": "fainted standing in a lecture room",
+          "vitals":
+            {"bp": [120, 75], "hr": 70},
+          "measure": ["temp_c", "rr", "spo2"],
+          "reports": [
+            {
+              "study": "12-lead ECG",
+              "performed": "2026-05-11T11:25",
+              "text": "Sinus rhythm at a normal rate. PR, QRS and QTc within normal limits. No pre-excitation. No ischemic changes.",
+              "conclusion": "Normal sinus rhythm with no abnormalities."
+            }
+          ],
+          "procedures": [
+            {"procedure": "Emergency department visit, moderate MDM", "performed": "2026-05-11T11:10"},
+            {"procedure": "Electrocardiogram, 12-lead, with interpretation", "performed": "2026-05-11T11:25"}
+          ]
+        },
+        {
+          "id": "2026-05-12a",
+          "kind": "portal_message",
+          "start": "2026-05-12T09:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fainted again",
+              "author": "patient",
+              "date": "2026-05-12T09:20",
+              "body": "Hi, I fainted again yesterday. It was in a packed lecture hall that was really hot and I'd been standing at the back. Same feeling as last time, got hot and woozy and my vision went narrow. They took me to the ER, the EKG was normal again and they sent me home. I'm okay today, just embarrassed. Finals start next week."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fainted again",
+              "author": "PCP",
+              "date": "2026-05-12T12:35",
+              "body": "Hi Juniper, sorry that happened, and nothing to be embarrassed about. I'm glad the ER visit was reassuring. I'd like to see you in person to go over both episodes. Please book with the front desk; if it has to wait until after the summer, keep doing the fluids and sit down at the first warning sign. Go straight to the ER for fainting during exercise, chest pain, or a racing heart beforehand."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: RE: Fainted again",
+              "author": "patient",
+              "date": "2026-05-12T18:02",
+              "body": "Thank you. I am away until late August so I booked the first Wednesday in September."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-29a",
+          "kind": "outside_records",
+          "start": "2026-06-29T10:30",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Regional hospital ED record, 5/11/2026",
+              "author": "emergency medicine",
+              "date": "2026-06-29T10:30",
+              "body": "REGIONAL HOSPITAL EMERGENCY DEPARTMENT\nDate of service: 05/11/2026\nPatient: Juniper Foster, 20 F\n\nCC: syncope.\n\nHPI: 20 yo F with one prior ED visit for syncope about a year ago (passed out giving a presentation in front of her class, typical prodrome). Today was standing in an overcrowded, warm lecture room when she became lightheaded and nauseated, with a sensation of warmth and tunnel vision, then lost consciousness. Denies chest pain, SOB or palpitations before the event.\n\nPMH: syncope 2025. Meds: none. Allergies: NKDA.\nFamily hx: mother hypothyroidism, father HTN; no sudden cardiac death or inherited arrhythmia.\nSocial: college student, biology, choir. Never smoker. No EtOH.\n\nVitals: BP 120/75, HR 70.\nExam: well hydrated. Heart, lungs and neuro exam normal.\nECG: NSR, no abnormalities.\n\nImpression: recurrent syncope, situational trigger (heat, prolonged standing).\nDisposition: home, PCP follow-up.\n\nReceived and scanned 6/29. Routed to PCP; she has a visit booked 9/2."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-02a",
+          "kind": "office_visit",
+          "start": "2026-09-02T14:20",
+          "appointment": "booked",
+          "reason": "follow-up after May fainting episode; yearly exam"
+        }
+      ]
+    }
+  ]
+}

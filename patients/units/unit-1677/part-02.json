@@ -788,12 +788,12 @@
      ],
      "orders": [
       {
-       "id": "breast-us-2020",
-       "action": "placed",
-       "order": "Breast ultrasound, right",
-       "category": "imaging",
-       "to": "Radiology",
-       "reason": "palpable right breast mass, lactating"
+        "id": "breast-us-2020",
+        "action": "placed",
+        "order": "Breast ultrasound",
+        "category": "imaging",
+        "to": "Radiology",
+        "reason": "palpable right breast mass, lactating"
       }
      ],
      "documents": [
@@ -814,9 +814,9 @@
      "reason": "Palpable right breast mass, lactating",
      "orders": [
       {
-       "id": "breast-us-2020",
-       "action": "done",
-       "date": "2020-06-05T09:30"
+        "id": "breast-us-2020",
+        "action": "done",
+        "date": "2020-06-05T09:30"
       }
      ],
      "reports": [
@@ -914,10 +914,13 @@
        "collected": "2020-08-18T16:40",
        "results": [
         {
-         "test": "Choriogonadotropin, quantitative",
-         "loinc": "19080-1",
-         "unit": "m[IU]/mL",
-         "value": 2500
+          "test": "Choriogonadotropin, quantitative",
+          "loinc": "19080-1",
+          "unit": "m[IU]/mL",
+          "value": 2500,
+          "range": {
+            "high": 5
+          }
         }
        ]
       }
@@ -941,8 +944,9 @@
      "reason": "Ruptured left tubal pregnancy",
      "procedures": [
       {
-       "procedure": "Laparoscopic salpingectomy",
-       "performed": "2020-08-18T18:45"
+        "procedure": "Laparoscopic salpingectomy",
+        "performed": "2020-08-18T18:45",
+        "snomed": "315059002"
       }
      ],
      "medications": [

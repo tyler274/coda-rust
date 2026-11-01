@@ -1,0 +1,1321 @@
+{
+  "unit": "unit-2679",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002679",
+      "given": "Silas",
+      "family": "Nolan",
+      "birth_date": "2001-02-20",
+      "address_line": "27 Chestnut Ridge Road",
+      "phone": "+1-347-555-0137",
+      "email": "silas.nolan@example.test",
+      "marital_status": "single",
+      "summary": "Tall, thin graduate student and half-pack-a-day smoker with one prior right spontaneous pneumothorax who joins the practice in 2024. He then has two right tension pneumothoraces (April and November 2025) and a right pneumothorax after a central line in January 2026; the practice last saw him in August 2025 and learns of the later stays from his messages and late, partial records.",
+      "events": [
+        {
+          "id": "2024-08-27a",
+          "kind": "telephone",
+          "start": "2024-08-27T10:12",
+          "reason": "new patient intake",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Intake Call",
+              "date": "2024-08-27T10:12",
+              "author": "front desk",
+              "body": "Caller is a 23 y/o grad student looking for a primary care doctor close to campus. Has student health insurance through the university, card info taken. Says he has no regular doctor right now, only student health for colds. Mentions he had a collapsed lung a couple of years ago and was told to keep a doctor who knows about it. Booked new patient visit Tue 9/10 at 8:40. Asked him to bring any hospital paperwork he has and the name of the hospital so we can send for records. Welcome packet emailed."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-10a",
+          "kind": "establish_care",
+          "start": "2024-09-10T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, establish care",
+          "conditions": [
+            {
+              "label": "History of spontaneous pneumothorax",
+              "action": "diagnosed",
+              "onset": "2022-03-08",
+              "note": "one prior right-sided episode, needle decompression then chest tube at an outside hospital",
+              "icd10": "Z87.09"
+            },
+            {
+              "label": "Nicotine dependence, cigarettes",
+              "action": "diagnosed",
+              "onset": "2019-06-01",
+              "note": "about 1/2 ppd since age 18"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "nicotine 2 MG Chewing Gum",
+              "action": "start",
+              "sig": "Chew 1 piece slowly as needed for cigarette cravings, park between cheek and gum; no more than 24 pieces a day",
+              "dose": {
+                "value": 2,
+                "unit": "mg"
+              },
+              "frequency": "PRN",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "nicotine dependence"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              71
+            ],
+            "hr": 65,
+            "rr": 17,
+            "temp_c": 36.8,
+            "spo2": 97,
+            "weight_kg": 68.0,
+            "height_cm": 188.2
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 226
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.31
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 90
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.6
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.8
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 25
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 108
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.1
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 163
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 49
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 90
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 96
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 114
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2024-09-10T09:25",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Graduate student"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2024-09-10T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-09-10T09:15"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2024-09-10T09:25"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-09-10T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2024-09-10T08:40",
+              "author": "PCP",
+              "body": "NEW PATIENT VISIT\n\n23 y/o man, first year of a graduate program, here to set up primary care. No acute concerns today.\n\nPulmonary history: In March 2022 he had a right-sided spontaneous pneumothorax. Recalls sudden chest pain and trouble breathing, was taken to a hospital where they put a needle in the right chest first and then a chest tube; home after a few days. Only episode. No breathing problems since. He does not have the hospital records; release signed today and request sent to that hospital.\n\nTobacco: smokes about half a pack a day, started around 18, so roughly 5 years (~2.5 pack-years). Keeps nicotine gum on hand and chews a 2 mg piece when cravings hit, mostly in the lab where he can't step out. Has never tried a formal quit. Knows smoking is tied to the lung collapsing again. Not ready to pick a date; would like the gum covered rather than buying it.\n\nAlcohol: a drink or two a month, socially. No drugs.\n\nPMH: right spontaneous pneumothorax 2022 as above. Otherwise none.\nPSH: right needle decompression and right chest tube (2022).\nMeds: nicotine gum 2 mg PRN.\nAllergies: none to medications.\nFamily: father has had the same thing, collapsed lungs more than once. Paternal grandmother has Birt-Hogg-Dubé syndrome. He doesn't know more than the name.\nSocial: single, grad student, lives off campus.\n\nROS: no cough, no chest pain, no shortness of breath on stairs or exertion. Otherwise negative.\n\nExam: vitals as charted. Tall, slender, comfortable. HEENT unremarkable. Neck supple, trachea midline. Lungs clear, breath sounds equal both sides, normal percussion. Healed small scar right lateral chest wall. Heart regular, no murmur. Abdomen soft, nontender. Skin without rashes. Extremities warm, no edema. Mood and affect normal.\n\nPHQ-2 0. AUDIT-C 1.\n\nAssessment/plan:\n1. History of spontaneous pneumothorax, right, one prior episode. Reviewed warning signs: sudden one-sided chest pain or breathlessness means the ED, not a call to the office. Records requested.\n2. Nicotine dependence, cigarettes. Advised quitting, explained it is the single biggest thing he can do for his lungs. Not ready for a date yet; precontemplative-to-contemplative. Nicotine gum 2 mg prescribed so insurance covers it. Revisit in a few months.\n3. Health maintenance: CBC, CMP, lipids, one-time HIV and hep C screens drawn today. Flu vaccine given, left deltoid.\n\nFollow-up: tobacco check-in after the new year, video is fine."
+            }
+          ],
+          "state": {
+            "weight_kg": 68.0,
+            "height_cm": 188.0,
+            "labs": {
+              "Low Density Lipoprotein": 94
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2024-09-12a",
+          "kind": "portal_message",
+          "start": "2024-09-12T16:48",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2024-09-12T16:48",
+              "author": "PCP",
+              "body": "Hi Silas, everything from Tuesday's blood work came back normal: blood counts, kidney and liver tests, cholesterol, and the HIV and hepatitis C screens were both negative. Nothing to do here. Talk in January about the smoking."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-22a",
+          "kind": "outside_records",
+          "start": "2024-10-22T11:30",
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Outside Hospital Discharge Summary (March 2022)",
+              "date": "2024-10-22T11:30",
+              "author": "outside hospital",
+              "body": "Received by fax from an outside hospital in response to our records request. Original dates of service 03/08/2022 to 03/11/2022.\n\nDISCHARGE SUMMARY\nPatient: Nolan, Silas  DOB 02/20/2001\nAdmit 03/08/2022  Discharge 03/11/2022\nAllergies: NKDA\n\nDiagnosis: Right spontaneous pneumothorax.\n\nHospital course: 21-year-old male student brought in with acute right chest pain and dyspnea. Needle decompression of the right chest performed in the emergency department, followed by placement of a right chest tube. Admitted to the surgical floor. Tube to suction then water seal; air leak resolved. Follow-up chest film showed the right lung re-expanded and the tube was removed on hospital day 3. Tolerated diet, ambulating, pain controlled with acetaminophen.\n\nSmoker; cessation advised.\n\nDischarge meds: none new.\nInstructions: no air travel or scuba diving until cleared; return for chest pain or shortness of breath. Follow up with primary care in 1 to 2 weeks.\n\n--\nFiled to chart. Reviewed. Matches what he told me at his first visit. Nothing new."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-14a",
+          "kind": "telehealth_visit",
+          "start": "2025-01-14T16:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "tobacco check-in",
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-01-14T16:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2025-01-14T16:20",
+              "author": "PCP",
+              "body": "Video, he's in his apartment, identity verified.\n\nSmoking check-in as planned. Still about 10 cigarettes a day. Uses the gum a few times a week, mainly long days in the lab. Says winter break made it worse, more downtime. Thought about quitting over the holidays but didn't set anything.\n\nNo chest pain, no shortness of breath, no cough.\n\nWe talked through what a quit attempt could look like: pick a day after midterms, gum on a schedule rather than only when desperate, tell his roommates. He'll think about a date. Gum refills are on file.\n\nA/P: Nicotine dependence, cigarettes, contemplative. Continue gum 2 mg PRN. Recheck at his physical in late summer, sooner if he wants help with a quit date."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-18a",
+          "kind": "pharmacy",
+          "start": "2025-02-18T09:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2025-02-18T09:05",
+              "author": "MA",
+              "body": "Pharmacy requesting refill of nicotine 2 mg gum, 100 count box. Last filled in September. Approved per standing plan, 2 refills."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24a",
+          "kind": "ed_visit",
+          "start": "2025-04-24T11:52",
+          "end": "2025-04-24T14:30",
+          "service": "Emergency Medicine",
+          "reason": "right chest pain and shortness of breath",
+          "vitals": [
+            {
+              "time": "2025-04-24T11:55",
+              "bp": [
+                102,
+                66
+              ],
+              "hr": 112,
+              "rr": 26,
+              "temp_c": 37.1,
+              "spo2": 91
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-04-24T12:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 5.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.8
+                },
+                {
+                  "test": "Platelets",
+                  "value": 244
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.49
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 48.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.4
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-04-24T12:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.95
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 115
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-24T12:06",
+              "text": "Portable AP chest. Large right pneumothorax. The mediastinum is shifted to the left. Left lung clear. No pleural effusion on the left. Osseous structures intact.",
+              "conclusion": "Large right pneumothorax with leftward mediastinal shift.",
+              "issued": "2025-04-24T12:19"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-04-24T12:58",
+              "text": "Portable AP chest after right chest tube placement. Tube tip projects over the right apex. Right lung re-expanded. Mediastinum midline. Left lung clear.",
+              "conclusion": "Right chest tube in place with the right lung re-expanded.",
+              "issued": "2025-04-24T13:20"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-04-24T11:52"
+            },
+            {
+              "procedure": "Needle chest decompression for tension pneumothorax",
+              "snomed": "1290622004",
+              "performed": "2025-04-24T12:02"
+            },
+            {
+              "procedure": "Insertion of pleural tube drain",
+              "snomed": "264957007",
+              "performed": "2025-04-24T12:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-24b",
+          "kind": "hospital_admission",
+          "start": "2025-04-24T14:30",
+          "end": "2025-04-27T11:15",
+          "service": "General Surgery",
+          "reason": "right tension pneumothorax with chest tube",
+          "reports": [
+            {
+              "study": "Chest X-ray, 2 views",
+              "performed": "2025-04-27T07:40",
+              "text": "PA and lateral chest after removal of the right chest tube. Right lung fully expanded. No residual pneumothorax. No effusion. Heart and mediastinum normal.",
+              "conclusion": "No pneumothorax after tube removal.",
+              "issued": "2025-04-27T08:35"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-04-24T14:30"
+            },
+            {
+              "procedure": "Intercostal drain removal",
+              "snomed": "238356005",
+              "performed": "2025-04-26T15:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-04-27T11:15"
+            }
+          ]
+        },
+        {
+          "id": "2025-04-28a",
+          "kind": "portal_message",
+          "start": "2025-04-28T08:14",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Was in the hospital",
+              "date": "2025-04-28T08:14",
+              "author": "patient",
+              "body": "Hi, wanted to let you know my right lung collapsed again on Thursday. I was walking fast to class and it hit all at once. They did the needle and a chest tube again and kept me until Sunday. I'm home and feel ok, a bit sore. They said to see my primary doctor in a week or so."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Was in the hospital",
+              "date": "2025-04-28T12:31",
+              "author": "PCP",
+              "body": "Sorry to hear it, Silas, glad you're home. Front desk will reach out to get you in next week. Any new chest pain or trouble breathing, go straight back to the ED. We'll ask the hospital to send their notes."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-06a",
+          "kind": "office_visit",
+          "start": "2025-05-06T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospitalization for pneumothorax",
+          "conditions": [
+            {
+              "label": "Spontaneous tension pneumothorax",
+              "action": "diagnosed",
+              "onset": "2025-04-24",
+              "note": "right; ED needle decompression and chest tube, admitted 4/24-4/27",
+              "icd10": "J93.0"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              77
+            ],
+            "hr": 65,
+            "rr": 16,
+            "temp_c": 36.6,
+            "spo2": 97,
+            "weight_kg": 68.0
+          },
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-05-06T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "date": "2025-05-06T10:20",
+              "author": "PCP",
+              "body": "Post-hospital visit. No records from the hospital yet; history is from him.\n\nOn 4/24 he was walking quickly to a class when he got sudden sharp pain on the right side of his chest and couldn't catch his breath. Taken to the ED. He was told his lung was fully down and pushing on the middle of his chest, so they put a needle in first and then a chest tube. Admitted, tube came out on day 3, discharged Sunday 4/27. Second right-sided collapse; first was 2022.\n\nSince home: soreness at the tube site, improving, using nothing for it now. Breathing back to his normal. Walks to campus without trouble. No fever, no cough.\n\nStill smoking, about half a pack. He knows. Says the hospital told him the same thing.\n\nExam: vitals as charted. Comfortable, speaking full sentences. Trachea midline. Lungs clear with equal breath sounds both sides, resonant. Right lateral tube site healing, clean and dry, no redness. Heart regular.\n\nA/P:\n1. Right tension pneumothorax 4/24/25, second right-sided episode. Clinically resolved. Added to problem list. Requested ED and inpatient records again. Reviewed: return to ED for any sudden chest pain or breathlessness; no flying until the hospital team clears him.\n2. Nicotine dependence, cigarettes. Strongly advised stopping; each cigarette makes another collapse more likely. Still not ready to set a date. Continue nicotine gum.\n\nRTC late August for his physical."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-05-07a",
+          "kind": "telephone",
+          "start": "2025-05-07T09:30",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2025-05-07T09:30",
+              "author": "front desk",
+              "body": "Faxed second request to the hospital's health information department for the 4/24/25 ED note, chest x-ray reports and discharge summary. Patient's signed release from 9/2024 attached. Told it can take 4 to 6 weeks."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-19a",
+          "kind": "outside_records",
+          "start": "2025-06-19T14:05",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record (April 24, 2025)",
+              "date": "2025-06-19T14:05",
+              "author": "emergency medicine",
+              "body": "Received from the hospital emergency department by fax, second request. Date of service 04/24/2025.\n\nEMERGENCY DEPARTMENT PROVIDER NOTE\n\nCC: right-sided chest pain, dyspnea.\n\nHPI: 24M, graduate student, with a prior right spontaneous pneumothorax, brought in after abrupt sharp right chest pain and breathlessness that came on as he hurried to class this morning. Pain is worse with each breath in and did not ease when he stopped walking. Denies trauma.\n\nPMH: right spontaneous pneumothorax 2022. Nicotine dependence.\nPSH: right needle decompression and right chest tube (2022).\nMeds: nicotine gum 2 mg PRN cravings.\nAllergies: NKDA.\nFH: father with repeated spontaneous pneumothoraces; paternal grandmother with Birt-Hogg-Dubé syndrome.\nSH: smokes 1/2 ppd for 6 years. Alcohol 1-2 drinks per month. Graduate student.\n\nTriage vitals: T 98.7 F, HR 112, RR 26, BP 102/66, SpO2 91% RA.\n\nExam: tall, thin young man, anxious, visibly dyspneic. No breath sounds on the right; right hemithorax hyperresonant. Trachea deviated to the left. Left lung clear. Tachycardic, regular.\n\nMDM: presentation consistent with right tension pneumothorax. Portable chest film: large right pneumothorax with the mediastinum shifted to the left. Needle decompression, right 2nd intercostal space midclavicular line, with a rush of air and prompt improvement. Right chest tube placed under local anesthesia, 5th intercostal space anterior axillary line, without complication. Repeat film: tube in good position, lung re-expanded. CBC and BMP unremarkable.\n\nDx: right tension pneumothorax.\nDispo: admitted to the general surgery service.\n\n----\n\nDISCHARGE SUMMARY\nAdmit 04/24/2025  Discharge 04/27/2025\nDiagnosis: right tension pneumothorax, recurrent right-sided.\nCourse: chest tube to suction then water seal; air leak stopped on hospital day 2. Tube removed 04/26. Upright PA and lateral film 04/27: lung fully expanded, no residual pneumothorax. Ambulating, comfortable.\nAllergies: NKDA.\nDischarge meds: nicotine polacrilex gum 2 mg as needed.\nInstructions: smoking cessation; no air travel for at least 2 weeks and until cleared; return for chest pain or shortness of breath. Follow up with PCP in 1 week.\n\n--\nScanned. Reviewed by PCP; consistent with what he reported on 5/6."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-29a",
+          "kind": "annual_physical",
+          "start": "2025-08-29T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual preventive visit",
+          "vitals": {
+            "bp": [
+              130,
+              74
+            ],
+            "hr": 63,
+            "rr": 16,
+            "temp_c": 37.0,
+            "spo2": 98,
+            "weight_kg": 68.5,
+            "height_cm": 187.1
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-29T09:40",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.9
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 252
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.29
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.1
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.6
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.9
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2025-08-29T09:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.9
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 109
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.8
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 69
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.4
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 2
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Current every day smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "1-2 drinks per month"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-29T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-29T09:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-29T09:00",
+              "author": "PCP",
+              "body": "ANNUAL PHYSICAL\n\n24 y/o here for yearly exam before fall semester starts.\n\nInterval: right tension pneumothorax in April, hospital records now received and reviewed. No breathing trouble since. Back to walking everywhere. No chest pain, no cough, no wheeze.\n\nSmoking: still 1/2 ppd, about 6 years now. Gum maybe twice a week. He says the April scare made him cut down for a few weeks and then it crept back. Still won't commit to a date; would rather try on his own first.\n\nAlcohol: unchanged, a couple of drinks a month. No drugs. Sleep ok. Mood good; PHQ-9 2.\n\nMeds: nicotine gum 2 mg PRN. Allergies: NKDA.\n\nROS otherwise negative.\n\nExam: vitals as charted. Tall, thin, well appearing. HEENT normal, dentition fine. Neck no adenopathy, thyroid normal, trachea midline. Lungs clear and equal bilaterally. Old tube scars right lateral chest, well healed. Heart RRR, no murmur. Abdomen soft, no organomegaly. Genitourinary deferred by patient. Skin no concerning lesions. Extremities normal. Neuro grossly intact.\n\nA/P:\n1. Preventive: CBC and CMP today. HIV and hep C already screened last year. Lipids done last year, normal; not repeating. Flu vaccine not in yet, he'll get one this fall.\n2. Nicotine dependence, cigarettes: advised to quit again, gum continued, offered to set a date any time by message.\n3. History of spontaneous pneumothorax, now two right-sided episodes including tension pneumothorax in April. Same ED precautions.\n\nReturn in a year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2025-09-02a",
+          "kind": "portal_message",
+          "start": "2025-09-02T13:22",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2025-09-02T13:22",
+              "author": "PCP",
+              "body": "Silas, Friday's blood counts and chemistry panel are all in the normal range. Good luck with the semester."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-01a",
+          "kind": "ed_visit",
+          "start": "2025-11-01T15:34",
+          "end": "2025-11-01T18:05",
+          "service": "Emergency Medicine",
+          "reason": "right chest pain and severe shortness of breath",
+          "vitals": [
+            {
+              "time": "2025-11-01T15:36",
+              "bp": [
+                92,
+                58
+              ],
+              "hr": 122,
+              "rr": 28,
+              "spo2": 86
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-11-01T15:55",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.1
+                },
+                {
+                  "test": "Platelets",
+                  "value": 266
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.31
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 46.2
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.6
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-01T15:55",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.06
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 83
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.7
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 101
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-01T15:47",
+              "text": "Portable AP chest. Large right pneumothorax. Mediastinal structures shifted toward the left. Left lung clear.",
+              "conclusion": "Large right pneumothorax with mediastinal shift to the left.",
+              "issued": "2025-11-01T15:58"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-11-01T16:45",
+              "text": "Portable AP chest. Interval placement of a right chest tube. Right lung re-expanded. Mediastinum returned to midline. Left lung clear.",
+              "conclusion": "Right lung re-expanded with chest tube in place.",
+              "issued": "2025-11-01T17:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-11-01T15:34"
+            },
+            {
+              "procedure": "Needle chest decompression for tension pneumothorax",
+              "snomed": "1290622004",
+              "performed": "2025-11-01T15:41"
+            },
+            {
+              "procedure": "Insertion of pleural tube drain",
+              "snomed": "264957007",
+              "performed": "2025-11-01T16:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-01b",
+          "kind": "hospital_admission",
+          "start": "2025-11-01T18:05",
+          "end": "2025-11-05T12:40",
+          "service": "General Surgery",
+          "reason": "recurrent right tension pneumothorax with chest tube",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-11-01T18:05"
+            },
+            {
+              "procedure": "Intercostal drain removal",
+              "snomed": "238356005",
+              "performed": "2025-11-04T10:30"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-11-05T12:40"
+            }
+          ]
+        },
+        {
+          "id": "2025-11-10a",
+          "kind": "portal_message",
+          "start": "2025-11-10T21:47",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung again",
+              "date": "2025-11-10T21:47",
+              "author": "patient",
+              "body": "It happened again on the 1st, same side. Worse than April, I could barely breathe. Needle and chest tube again and I was in until Wednesday. I'm ok now. Should I come in? Finals start soon so it would have to be after the semester if that's alright."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung again",
+              "date": "2025-11-11T08:55",
+              "author": "PCP",
+              "body": "Thanks for letting me know, and I'm sorry you went through that again. Yes, I'd like to see you. After finals is fine as long as you're breathing normally; if anything changes before then, ED right away. I'll ask the hospital for the records from this stay. Front desk can book you for January."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Lung again",
+              "date": "2025-11-11T10:20",
+              "author": "front desk",
+              "body": "Hi Silas, our January schedule opens next week. Reply here or call when you know your exam dates and we'll find a time."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-12a",
+          "kind": "telephone",
+          "start": "2025-11-12T11:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Records Request",
+              "date": "2025-11-12T11:05",
+              "author": "front desk",
+              "body": "Records request faxed to hospital HIM for ED visit and inpatient stay 11/1 to 11/5/25. Asked specifically for the discharge summary this time."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "outside_records",
+          "start": "2025-12-16T10:40",
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Outside Emergency Department Record (November 1, 2025)",
+              "date": "2025-12-16T10:40",
+              "author": "emergency medicine",
+              "body": "Received from the hospital emergency department. Date of service 11/01/2025. Discharge summary for the inpatient stay not included; re-requested.\n\nED PROVIDER NOTE\n\nCC: acute right chest pain, severe dyspnea.\n\nHPI: 24-year-old man known to us from an April visit for right pneumothorax, now about 6 months later with sudden sharp right-sided chest pain and marked breathlessness that started while walking. No injury. No recent illness or fever.\n\nPMH: right spontaneous pneumothorax 2022; right tension pneumothorax 04/2025. Nicotine dependence.\nPSH: right needle decompression and chest tube (prior episodes).\nMeds: nicotine gum 2 mg PRN.\nAllergies: NKDA.\nFH: father, recurrent spontaneous pneumothorax. Paternal grandmother, Birt-Hogg-Dubé syndrome.\nSH: current smoker, 1/2 ppd x 6 years. 1-2 drinks/month. Graduate student.\n\nVitals on arrival: BP 92/58, HR 122, RR 28, SpO2 86% RA.\n\nExam: distressed. JVD present. Right hemithorax hyperresonant, breath sounds markedly reduced on the right, tactile fremitus decreased on the right. Left side clear to auscultation.\n\nMDM: tension physiology. Portable film: large right pneumothorax, mediastinum shifted left. Immediate needle decompression right 2nd ICS MCL with improvement in pressure and saturation, then right chest tube 5th ICS AAL. Post-procedure film: right lung re-expanded, mediastinum midline. CBC, BMP within normal range.\n\nDx: recurrent right tension pneumothorax.\nDispo: admit to general surgery.\n\n--\nScanned to chart. PCP reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23a",
+          "kind": "ed_visit",
+          "start": "2026-01-23T19:10",
+          "end": "2026-01-23T23:45",
+          "service": "Emergency Medicine",
+          "reason": "shortness of breath after central line placement",
+          "vitals": [
+            {
+              "time": "2026-01-23T20:32",
+              "bp": [
+                92,
+                58
+              ],
+              "hr": 118,
+              "rr": 24,
+              "spo2": 91
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-01-23T20:48",
+              "text": "Portable AP chest. Right subclavian central venous catheter with tip in the superior vena cava. Right pneumothorax. Mediastinum midline. Left lung clear. No effusion.",
+              "conclusion": "Right pneumothorax following right subclavian central line placement.",
+              "issued": "2026-01-23T21:02"
+            },
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2026-01-23T22:15",
+              "text": "Portable AP chest. Interval placement of a small-bore right pleural catheter. Right lung re-expanded. Central line unchanged, tip in the superior vena cava.",
+              "conclusion": "Right lung re-expanded after pleural catheter placement.",
+              "issued": "2026-01-23T22:34"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-01-23T19:10"
+            },
+            {
+              "procedure": "Catheterization of subclavian vein",
+              "snomed": "405430002",
+              "performed": "2026-01-23T20:15"
+            },
+            {
+              "procedure": "Insertion of pleural tube drain",
+              "snomed": "264957007",
+              "performed": "2026-01-23T21:40"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-23b",
+          "kind": "hospital_admission",
+          "start": "2026-01-23T23:45",
+          "end": "2026-01-26T13:10",
+          "service": "General Surgery",
+          "reason": "right pneumothorax after central line, pleural catheter",
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-01-23T23:45"
+            },
+            {
+              "procedure": "Intercostal drain removal",
+              "snomed": "238356005",
+              "performed": "2026-01-25T16:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-01-26T13:10"
+            }
+          ]
+        },
+        {
+          "id": "2026-01-28a",
+          "kind": "portal_message",
+          "start": "2026-01-28T19:03",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hospital again",
+              "date": "2026-01-28T19:03",
+              "author": "patient",
+              "body": "Sorry I never booked the January appointment. I ended up back in the ER on Friday the 23rd. They were putting a line in a vein under my collarbone and partway through I got short of breath, and the x-ray showed my right lung was down again. Small tube this time, home Monday. I'm ok, just tired. I'll set up a visit once things calm down."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Hospital again",
+              "date": "2026-01-29T07:48",
+              "author": "PCP",
+              "body": "Thank you for telling me. I'm glad you're home. I'd still like to see you in person when you can; please don't let it slide too long. Same rule as always for sudden chest pain or breathlessness. We'll request the records from this visit too."
+            }
+          ]
+        },
+        {
+          "id": "2026-02-17a",
+          "kind": "pharmacy",
+          "start": "2026-02-17T11:26",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "date": "2026-02-17T11:26",
+              "author": "MA",
+              "body": "eRx request in from his pharmacy, nicotine gum 2 mg, 100 pieces. Not seen since 8/29 but on the active list. Approved x1 by PCP with a note to the patient to schedule."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-10a",
+          "kind": "outside_records",
+          "start": "2026-03-10T15:18",
+          "documents": [
+            {
+              "type": "Procedures",
+              "title": "Outside ED Procedure Note: Central Venous Catheter (January 23, 2026)",
+              "date": "2026-03-10T15:18",
+              "author": "emergency medicine",
+              "body": "Received from the hospital in response to our January request. Only the procedure note and radiology report were sent; the ED provider note and discharge summary were not included.\n\nPROCEDURE NOTE: CENTRAL VENOUS CATHETER\nDate: 01/23/2026\nIndication: central venous access.\nAllergies: NKDA.\nConsent obtained. Site: right subclavian vein. Sterile prep and full barrier precautions. Local lidocaine. Vein accessed with return of dark nonpulsatile blood, guidewire passed, triple-lumen catheter placed over the wire and secured. All ports aspirate and flush.\n\nComplication: shortly after placement the patient reported mild shortness of breath. Anxious. BP 92/58, HR 118, RR 24, SpO2 91% on room air. Decreased breath sounds on the right. No JVD. Portable chest film ordered.\n\nAddendum: chest film shows a right pneumothorax; line tip in the SVC. Small-bore right pleural catheter placed by surgery with re-expansion on repeat film. Admitted.\n\nIMPRESSION: right pneumothorax following right subclavian central venous catheter placement (postprocedural).\n\n--\nScanned to chart. PCP reviewed. Reason for the line not stated in what was sent."
+            },
+            {
+              "type": "Imaging",
+              "title": "Outside Chest X-ray Report (January 23, 2026)",
+              "date": "2026-03-10T15:18",
+              "author": "radiology",
+              "body": "PORTABLE CHEST, 1 VIEW, 01/23/2026 20:48\nIndication: dyspnea after central line.\nFindings: right subclavian central venous catheter, tip in the superior vena cava. Right pneumothorax. Mediastinum midline. Left lung clear.\nImpression: right pneumothorax after right subclavian line.\n\nPORTABLE CHEST, 1 VIEW, 01/23/2026 22:15\nFindings: small-bore right pleural catheter. Right lung re-expanded. Line unchanged.\nImpression: re-expansion."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-13a",
+          "kind": "telephone",
+          "start": "2026-04-13T16:50",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Cancellation",
+              "date": "2026-04-13T16:50",
+              "author": "front desk",
+              "body": "Patient phoned, can't make the 4/14 3:40 follow-up; away for a work trip with his program. Will message to rebook. Reminded him the doctor wants to see him after the January stay."
+            }
+          ]
+        },
+        {
+          "id": "2026-04-14a",
+          "kind": "office_visit",
+          "start": "2026-04-14T15:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after hospital stays",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:09",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Appointment",
+              "date": "2026-08-11T12:09",
+              "author": "patient",
+              "body": "Hi, I had to cancel back in April because of a conference. Can I get a time in early September? Mornings are best, before 11."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Appointment",
+              "date": "2026-08-11T14:37",
+              "author": "front desk",
+              "body": "You're booked Thursday 9/10 at 9:20 with your doctor. Please bring a list of anything you've been given since your last visit here."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T09:20",
+          "reason": "follow-up after hospital stays",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "History of spontaneous pneumothorax|Z87.09": {
+        "code": "Z87.09",
+        "display": "Personal history of other diseases of the respiratory system",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Spontaneous tension pneumothorax|J93.0": {
+        "code": "J93.0",
+        "display": "Spontaneous tension pneumothorax",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "nicotine 2 MG Chewing Gum": {
+        "code": "314119",
+        "display": "nicotine 2 MG Chewing Gum",
+        "ingredient": "nicotine",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "procedures": {
+      "Catheterization of subclavian vein": {
+        "code": "405430002",
+        "display": "Catheterization of subclavian vein",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Insertion of pleural tube drain": {
+        "code": "264957007",
+        "display": "Insertion of pleural tube drain",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Intercostal drain removal": {
+        "code": "238356005",
+        "display": "Intercostal drain removal",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Needle chest decompression for tension pneumothorax": {
+        "code": "1290622004",
+        "display": "Needle chest decompression",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

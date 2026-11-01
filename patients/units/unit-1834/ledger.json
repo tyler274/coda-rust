@@ -970,6 +970,9 @@
                   "test": "Calcium 24 hour urine",
                   "loinc": "6874-2",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "high": 250
+                  },
                   "value": 340
                 }
               ]
@@ -1289,12 +1292,20 @@
                   "test": "1,25-dihydroxyvitamin D",
                   "loinc": "62290-2",
                   "unit": "pg/mL",
+                  "range": {
+                    "low": 15,
+                    "high": 60
+                  },
                   "value": 96
                 },
                 {
                   "test": "Angiotensin converting enzyme",
                   "loinc": "2742-5",
                   "unit": "U/L",
+                  "range": {
+                    "low": 8,
+                    "high": 53
+                  },
                   "value": 104
                 }
               ]
@@ -1308,6 +1319,9 @@
                   "test": "Calcium 24 hour urine",
                   "loinc": "6874-2",
                   "unit": "mg/(24.h)",
+                  "range": {
+                    "high": 250
+                  },
                   "value": 360
                 }
               ]
@@ -4169,6 +4183,7 @@
                   "test": "Synovial fluid leukocytes",
                   "loinc": "26469-7",
                   "unit": "/uL",
+                  "range": {},
                   "value": 16400
                 },
                 {
@@ -4358,7 +4373,7 @@
         "code": "1188426",
         "display": "carboxymethylcellulose sodium 5 MG/ML Ophthalmic Solution",
         "ingredient": "carboxymethylcellulose",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -4366,18 +4381,29 @@
         "code": "62290-2",
         "display": "1,25-Dihydroxyvitamin D [Mass/volume] in Serum or Plasma",
         "unit": "pg/mL",
+        "range": {
+          "low": 15,
+          "high": 60
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Angiotensin converting enzyme": {
         "code": "2742-5",
         "display": "Angiotensin converting enzyme [Enzymatic activity/volume] in Serum or Plasma",
         "unit": "U/L",
+        "range": {
+          "low": 8,
+          "high": 53
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Calcium 24 hour urine": {
         "code": "6874-2",
         "display": "Calcium [Mass/time] in 24 hour Urine",
         "unit": "mg/(24.h)",
+        "range": {
+          "high": 250
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Synovial fluid Gram stain": {
@@ -4399,6 +4425,7 @@
         "code": "26469-7",
         "display": "Leukocytes [#/volume] in Synovial fluid",
         "unit": "/uL",
+        "range": {},
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

@@ -1,9 +1,7 @@
 {
   "unit": "unit-2234",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002234/2022-09-13a: imaging order \"Abdominal ultrasound, aorta (AAA screen)\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002234",
@@ -364,6 +362,7 @@
               "action": "placed",
               "order": "Abdominal ultrasound, aorta (AAA screen)",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male ever-smoker age 65-75"
             }
           ],
@@ -4335,6 +4334,13 @@
         "code": "Z91.89",
         "display": "Other specified personal risk factors, not elsewhere classified",
         "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "reports": {
+      "Abdominal ultrasound, aorta (AAA screen)": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
       }
     }
   }

@@ -1,19 +1,19 @@
 :root {
+  color-scheme: light dark;
   color: var(--ink);
   background: var(--surface);
   font-family: var(--sans);
   font-synthesis: none;
-  /* Three tiers, after Material Web's token system (github.com/material-components/material-web, Apache-2.0):
-     a palette of raw tones, which only this file names; system roles, which every component reads; and component
+  /* Three tiers: a palette of raw tones, which only this file names; system roles, which every component reads; and component
      tokens, which a component declares for itself from the roles. A component never names a tone. */
   /* Palette. */
   --ref-green-30: #0b4a3d;
   --ref-green-40: #126c5a;
   --ref-green-90: #d4eadd;
   --ref-green-95: #e5f2ea;
+  --ref-chart-green: #1f7a52;
   --ref-amber-30: #6b4408;
   --ref-amber-40: #946115;
-  --ref-amber-80: #ddc38d;
   --ref-amber-95: #fbf0db;
   --ref-red-30: #7a2b20;
   --ref-red-40: #9a3e31;
@@ -29,23 +29,64 @@
   --ref-neutral-97: #f6f7f5;
   --ref-neutral-100: #fff;
   --ref-shadow: 23 43 32;
+  /* Dark tones: the native dark neutrals, a black base and charcoal layers, and the greens, ambers, reds
+     and teal at their light tones, each at least 4.5:1 on the charcoal card. */
+  --ref-night-0: #000;
+  --ref-night-11: #1c1c1e;
+  --ref-night-14: #232325;
+  --ref-night-17: #2c2c2e;
+  --ref-night-23: #3a3a3c;
+  --ref-night-66: #a3abb4;
+  --ref-night-89: #dfe3e7;
+  --ref-night-96: #f3f4f6;
+  --ref-green-20: #08362c;
+  --ref-green-dark-container: #1c3b34;
+  --ref-green-dark-highlight: #28534a;
+  --ref-green-80: #89d2c3;
+  --ref-green-92: #d3eee9;
+  --ref-chart-green-dark: #2e9e6b;
+  --ref-amber-dark-container: #392c18;
+  --ref-amber-85: #dfbf90;
+  --ref-amber-93: #f5e9d6;
+  --ref-red-20: #3d110b;
+  --ref-red-dark-container: #391d18;
+  --ref-red-75: #df9b90;
+  --ref-red-92: #f5dad6;
+  --ref-teal-80: #90dfd8;
   /* Roles: colour in pairs, a fill and what reads on it. Primary is the one green: the filled action, ready and done. */
   --primary: var(--ref-green-40);
   --on-primary: var(--ref-neutral-100);
   --primary-container: var(--ref-green-95);
   --on-primary-container: var(--ref-green-30);
   --primary-outline: color-mix(in srgb, var(--primary) 22%, transparent);
-  /* Warning: what Coda flags for the physician. Error: what failed or conflicts. */
+  /* Warning: what is flagged. Error: what failed or conflicts. */
   --warning: var(--ref-amber-40);
   --warning-container: var(--ref-amber-95);
   --on-warning-container: var(--ref-amber-30);
-  --warning-outline: var(--ref-amber-80);
   --error: var(--ref-red-40);
   --on-error: var(--ref-neutral-100);
   --error-container: var(--ref-red-95);
   --on-error-container: var(--ref-red-30);
   --error-outline: var(--ref-red-80);
   --tertiary: var(--ref-teal-45);
+  /* Data: measurements and their charts, in the chart green, a yellower green than the action's, so a chart
+     never reads as a control or a verdict; the track holds what a value is compared with; a tile of data stands on its
+     container. */
+  --data: var(--ref-chart-green);
+  --data-track: var(--primary-container);
+  --data-container: color-mix(in srgb, var(--primary-container) 55%, var(--surface-lowest));
+  --on-data-container: var(--on-primary-container);
+  /* A series' weights: one data hue, never an invented opacity. Quiet marks stand
+     back while others are emphasized or pinned, a filling bucket sits between quiet and full, a spread is a wash behind
+     its line, and the scrub rule marks what is pinned. What a series is compared with is a dashed line in the action
+     green, the dash its second cue. */
+  --data-quiet: color-mix(in srgb, var(--data) 35%, transparent);
+  --data-partial: color-mix(in srgb, var(--data) 48%, transparent);
+  --data-line-quiet: color-mix(in srgb, var(--data) 50%, transparent);
+  --data-band: color-mix(in srgb, var(--data) 14%, transparent);
+  --data-wash: color-mix(in srgb, var(--data) 10%, transparent);
+  --data-scrub: color-mix(in srgb, var(--data) 55%, transparent);
+  --data-reference: var(--primary);
   /* Text on any surface: names and titles, running words, and details. */
   --ink: var(--ref-neutral-15);
   --body: var(--ref-neutral-25);
@@ -62,29 +103,30 @@
   /* A cited passage, marked where it reads. */
   --highlight: var(--ref-green-90);
   --scrim: rgb(var(--ref-shadow) / .32);
-  /* States: an overlay of the element's own text colour, never a second colour per component (Material's state layer). */
+  /* States: an overlay of the element's own text colour, never a second colour per component. */
   --state-hover: .08;
-  --state-focus: .12;
   --state-pressed: .12;
-  /* Elevation: five levels, each a contact shadow and an ambient one (Material's elevation), softened to the reference
-     cards. A resting control 1, a resting card 2, a floating control or a hovered card 3, a popover 4, a dialog 5. */
+  /* Elevation: five levels, each a contact shadow and a soft ambient one:
+     a resting control 1, a resting card 2, a floating control or a hovered card 3, a popover 4, a dialog 5. */
   --elevation-1: 0 1px 2px rgb(var(--ref-shadow) / .06), 0 1px 3px rgb(var(--ref-shadow) / .04);
   --elevation-2: 0 1px 2px rgb(var(--ref-shadow) / .04), 0 4px 14px rgb(var(--ref-shadow) / .06);
   --elevation-3: 0 2px 4px rgb(var(--ref-shadow) / .05), 0 10px 28px rgb(var(--ref-shadow) / .1);
   --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .05), 0 18px 44px rgb(var(--ref-shadow) / .13);
   --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .06), 0 26px 72px rgb(var(--ref-shadow) / .17);
-  /* Focus: one ring that follows its element's corners, grows in, then settles (Material's focus ring). */
+  /* Focus: one ring that follows its element's corners, grows in, then settles. */
   --focus-ring-width: 3px;
   --focus-ring-active-width: 7px;
   --focus-ring-offset: 2px;
   --focus-ring-color: color-mix(in srgb, var(--primary) 72%, transparent);
   --ease-emphasized: cubic-bezier(.2, 0, 0, 1);
   --sans: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  /* Type roles: Material's type scale at Coda's sizes (Dev, 2026-09-30). A role is a whole setting, weight, size and line;
+  /* Type roles: one type scale at Coda's sizes. A role is a whole setting, weight, size and line;
      every host names one and composes none of its own. Colour stays the host's: ink heads, body words, muted details.
-     Headline medium: a page's own title (Today, a patient's page). Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
+     Headline medium: a page's own title. Title large: dialog and reader titles. Title medium: a card's or section's title. Title small: a row's or list's name.
      Body large: prose to read. Body medium: interface words and a row's text. Body small: times and supporting details.
-     Label large: every control. Label medium: state pills and small headings. */
+     Label large: every control. Label medium: state pills and small headings. Label small: a tab bar's labels under their icons.
+     Overline: label small in capitals, naming what a card holds ("Original record").
+     Value: a measurement's figure, its unit in body text beside it; large on its own page, medium in a tile or card. */
   --weight-regular: 400;
   --weight-strong: 600;
   --type-headline-md: var(--weight-strong) 28px/36px var(--sans);
@@ -97,23 +139,26 @@
   --type-body-sm: var(--weight-regular) 13px/18px var(--sans);
   --type-label-lg: var(--weight-strong) 14px/20px var(--sans);
   --type-label-md: var(--weight-strong) 13px/18px var(--sans);
-  /* Only the headline and the large title tighten. */
+  --type-label-sm: var(--weight-strong) 11px/16px var(--sans);
+  --overline-tracking: .1em;
+  --type-value-lg: var(--weight-regular) 44px/48px var(--sans);
+  --type-value-md: var(--weight-regular) 28px/32px var(--sans);
+  /* Only the headline, the large title and values tighten. */
   --title-tracking: -.02em;
   /* Code in prose: monospace at the prose's own size. */
   --type-code: .9em/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
   /* A reading dialog reads at the page's one content width; it widens only while a source reads beside it. */
   --reader-dialog-inline-size: calc(var(--measure) + 2 * var(--page-gutter));
-  --reader-source-inline-size: max(84vi, var(--reader-dialog-inline-size));
-  /* A reader's pinned row below its top inset: one-line title, patient, bottom inset and edge. */
+  /* A reader's pinned row below its top inset: one-line title, subject, bottom inset and edge. */
   --source-reading-ratio: minmax(0, 3fr) minmax(0, 2fr);
   --page-gutter: clamp(16px, 1.5vw, 24px);
-  /* A page's one content width: about 105 characters of content text, however wide the window (Dev, 2026-09-29). */
+  /* A page's one content width: about 105 characters of content text, however wide the window. */
   --measure: 50rem;
-  /* The page's side column (Today's schedule, a patient's briefings), beside the measure where it fits. */
+  /* The page's side column, beside the measure where it fits. */
   --side-column-width: 19rem;
   /* A side panel collapsed to its rail: its tile, with room around it. */
   --side-rail-width: calc(var(--tile-size) + 2 * var(--space-3));
-  /* One spacing rhythm on a 4px grid; components use the roles below, never raw px (coda-app DuetLayoutTokens pattern). */
+  /* One spacing rhythm on a 4px grid; components use the roles below, never raw px. */
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -129,15 +174,13 @@
   /* Lines: a hairline divides; a stroke marks (focus, a quote's edge, a key's base). */
   --hairline: 1px;
   --stroke: 2px;
-  /* A row's leading edge: new, or needing the physician now. */
+  /* A row's leading edge: new, or needing the person now. */
   --unread-dot: 8px;
   /* A touch target: the hit area every control reaches where the pointer is coarse, whatever its visible size. */
   --target: 44px;
   /* Marks beside words follow the words' size, so an icon or ring set in a label is a label's size. */
   --icon-size: 1.15em;
-  --icon-hero: 36px;
   --tile-size: 32px;
-  --dot: 7px;
   --avatar-sm: 30px;
   --avatar-md: 36px;
   --avatar-lg: 42px;
@@ -145,22 +188,17 @@
   /* Frames the shell and its overlays stand in. Overlays are fixed, so their percentages are the window's. */
   --sidebar-width: 244px;
   --sidebar-rail-width: 56px;
-  --drawer-width: min(19rem, calc(100% - var(--target)));
   --dialog-width: 40rem;
   --dialog-margin: max(var(--space-6), 7dvh);
   --dialog-max-height: calc(100dvh - 2 * var(--dialog-margin));
   --popover-width: 22.5rem;
   --popover-max-height: 26rem;
-  --orb-size: 64px;
-  --orb-gutter: var(--page-gutter);
-  /* The orb and the gap before what stands beside or above it (its now line, its preview). */
-  --orb-reach: calc(var(--orb-size) + var(--space-3));
   /* A column narrower than 40rem is compact: rows stack their parts, headers wrap. Container queries state it in rem
      (a query cannot read a token); only the shell asks the window, at 56.25rem, where the sidebar becomes a drawer. */
   --control-height: 36px;
   /* A compact control, and every row reserved to hold one, so a state that brings a control in never moves the page. */
   --control-compact-height: 32px;
-  /* Shape (Material's scale): small for keys and marks, medium for rows, tiles and inner panels, large for cards,
+  /* Shape: small for keys and marks, medium for rows, tiles and inner panels, large for cards,
      extra-large for dialogs and sheets, full for every control and pill; the composer keeps its field shape. */
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -168,10 +206,10 @@
   --radius-xl: 28px;
   --radius-pill: 999px;
   --radius-field: 22px;
-  /* Motion roles, one duration each (coda-app DuetMotion): press; control change, which every exit uses so exits are
+  /* Motion roles, one duration each: press; control change, which every exit uses so exits are
      always shorter than entries; arrival; step (panes, sheets, layout). Every host names a role, as with type. */
   --motion-press: 120ms;
-  --motion-control: 140ms;
+  --motion-control: 140ms; /* ui::EXIT_MS removes a settling surface after this; change both together. */
   --motion-arrive: 260ms;
   --motion-step: 340ms;
   /* The focus ring's grow and settle, together. */
@@ -187,4 +225,57 @@
   --ease-out: cubic-bezier(.2,.7,.25,1);
   --ease-in-out: cubic-bezier(.45,0,.2,1);
   --ease-exit: cubic-bezier(.4,0,1,1);
+  /* Springs: each a whole timing, its settle time and curve, sampled from a damped spring (mass 1, stiffness (2pi / response)^2, damping 4pi x damping fraction / response) until it rests
+     within 0.05% of its travel. Send is the person's message rising from the composer (response .35, damping .8, a
+     slight overshoot); arrive is content arriving (smooth, .24); step is a pane or sheet taking its place (smooth, .35).
+     A host names one for a transform, as `transform var(--spring-step)`. Exits keep the shorter eases. */
+  --spring-send: 491ms linear(0, 0.022, 0.077, 0.153, 0.241, 0.334, 0.426, 0.515, 0.596, 0.67, 0.736, 0.793, 0.841, 0.881, 0.915, 0.942, 0.963, 0.979, 0.992, 1.001, 1.007, 1.011, 1.014, 1.015, 1.015, 1.015, 1.014, 1.013, 1.011, 1.01, 1.008, 1.007, 1.006, 1.005, 1.004, 1.003, 1.002, 1.002, 1.001, 1.001, 1);
+  --spring-arrive: 382ms linear(0, 0.026, 0.09, 0.173, 0.264, 0.355, 0.442, 0.522, 0.594, 0.657, 0.713, 0.76, 0.801, 0.835, 0.864, 0.888, 0.908, 0.925, 0.939, 0.95, 0.96, 0.967, 0.973, 0.978, 0.983, 0.986, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 0.999, 1);
+  --spring-step: 557ms linear(0, 0.026, 0.09, 0.173, 0.264, 0.355, 0.442, 0.522, 0.594, 0.657, 0.713, 0.76, 0.801, 0.835, 0.864, 0.888, 0.908, 0.925, 0.939, 0.95, 0.96, 0.967, 0.973, 0.978, 0.983, 0.986, 0.989, 0.991, 0.993, 0.994, 0.995, 0.996, 0.997, 0.998, 0.998, 0.998, 0.999, 0.999, 0.999, 0.999, 1);
+}
+/* Without linear() easing a spring falls back to the role it stands in for. */
+@supports not (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-send: var(--motion-step) var(--ease-emphasized);
+    --spring-arrive: var(--motion-arrive) var(--ease-out);
+    --spring-step: var(--motion-step) var(--ease-out);
+  }
+}
+/* Dark: the same roles on the native dark neutrals. The canvas is black; cards, dialogs and panels step up through the
+   charcoal layers, so each level still reads above the one it stands on. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ref-shadow: 0 0 0;
+    --primary: var(--ref-green-80);
+    --on-primary: var(--ref-green-20);
+    --primary-container: var(--ref-green-dark-container);
+    --on-primary-container: var(--ref-green-92);
+    --data: var(--ref-chart-green-dark);
+    --warning: var(--ref-amber-85);
+    --warning-container: var(--ref-amber-dark-container);
+    --on-warning-container: var(--ref-amber-93);
+    --error: var(--ref-red-75);
+    --on-error: var(--ref-red-20);
+    --error-container: var(--ref-red-dark-container);
+    --on-error-container: var(--ref-red-92);
+    --error-outline: var(--ref-red-40);
+    --tertiary: var(--ref-teal-80);
+    --ink: var(--ref-night-96);
+    --body: var(--ref-night-89);
+    --muted: var(--ref-night-66);
+    --surface: var(--ref-night-0);
+    --surface-lowest: var(--ref-night-11);
+    --surface-low: var(--ref-night-14);
+    --surface-high: var(--ref-night-17);
+    --surface-highest: var(--ref-night-23);
+    --outline: rgb(243 244 246 / .22);
+    --outline-variant: rgb(243 244 246 / .12);
+    --highlight: var(--ref-green-dark-highlight);
+    --scrim: rgb(0 0 0 / .6);
+    --elevation-1: 0 1px 2px rgb(var(--ref-shadow) / .5);
+    --elevation-2: 0 1px 2px rgb(var(--ref-shadow) / .4), 0 4px 14px rgb(var(--ref-shadow) / .4);
+    --elevation-3: 0 2px 4px rgb(var(--ref-shadow) / .4), 0 10px 28px rgb(var(--ref-shadow) / .5);
+    --elevation-4: 0 4px 8px rgb(var(--ref-shadow) / .4), 0 18px 44px rgb(var(--ref-shadow) / .55);
+    --elevation-5: 0 8px 16px rgb(var(--ref-shadow) / .45), 0 26px 72px rgb(var(--ref-shadow) / .6);
+  }
 }

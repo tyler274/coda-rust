@@ -1,0 +1,12 @@
+[Unit]
+Description=Native Codex desktop with the private workstation bridge transport
+After=graphical-session.target
+
+[Service]
+Type=simple
+EnvironmentFile=%t/coda-desktop-session.env
+Environment=CODEX_CLI_PATH=@HOME@/.local/share/coda-engineering/slack-bridge/codex-for-desktop
+ExecStart=@HOME@/.local/share/coda-engineering/slack-bridge/.venv/bin/python @HOME@/.local/share/coda-engineering/slack-bridge/desktop_with_keyring.py
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=30

@@ -1,12 +1,7 @@
 {
   "unit": "unit-1677",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001677/2020-08-18b: procedure \"Laparoscopic salpingectomy\" not in catalog and has no snomed (text only)",
-    "MRN00001677/2016-09-14a: procedure order \"Outside records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00001677/2020-06-02a: imaging order \"Breast ultrasound, right\" names no one catalog lab, panel, study or procedure",
-    "left text-only (not verified): drug \"prenatal multivitamin with folic acid 1 MG Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001677",
@@ -308,15 +303,6 @@
               "performed": "2016-09-14T09:00"
             }
           ],
-          "orders": [
-            {
-              "id": "rec-prior-pcp",
-              "action": "placed",
-              "order": "Outside records request, prior primary care",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -360,13 +346,6 @@
           "id": "2016-09-28a",
           "kind": "outside_records",
           "start": "2016-09-28T11:05",
-          "orders": [
-            {
-              "id": "rec-prior-pcp",
-              "action": "done",
-              "date": "2016-09-28T11:05"
-            }
-          ],
           "documents": [
             {
               "type": "Outside Records",
@@ -750,6 +729,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with folic acid 1 MG Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -2309,7 +2289,7 @@
             {
               "id": "breast-us-2020",
               "action": "placed",
-              "order": "Breast ultrasound, right",
+              "order": "Breast ultrasound",
               "category": "imaging",
               "to": "Radiology",
               "reason": "palpable right breast mass, lactating"
@@ -2460,6 +2440,9 @@
                   "test": "Choriogonadotropin, quantitative",
                   "loinc": "19080-1",
                   "unit": "m[IU]/mL",
+                  "range": {
+                    "high": 5
+                  },
                   "value": 2500
                 }
               ]
@@ -2535,6 +2518,7 @@
           "procedures": [
             {
               "procedure": "Laparoscopic salpingectomy",
+              "snomed": "315059002",
               "performed": "2020-08-18T18:45"
             }
           ],
@@ -3008,6 +2992,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with folic acid 1 MG Oral Tablet",
+              "uncoded": true,
               "action": "stop",
               "reason": "Weaned; no current pregnancy plans"
             }
@@ -4236,6 +4221,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with folic acid 1 MG Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -5283,13 +5269,13 @@
         "code": "562508",
         "display": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
         "ingredient": "amoxicillin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "etonogestrel 68 MG Drug Implant": {
         "code": "389221",
         "display": "etonogestrel 68 MG Drug Implant",
         "ingredient": "etonogestrel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "methadone hydrochloride 10 MG/ML Oral Concentrate": {
         "code": "991147",
@@ -5301,13 +5287,13 @@
         "code": "314154",
         "display": "olanzapine 10 MG Oral Tablet",
         "ingredient": "olanzapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "olanzapine 5 MG Oral Tablet": {
         "code": "312078",
         "display": "olanzapine 5 MG Oral Tablet",
         "ingredient": "olanzapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -5315,11 +5301,18 @@
         "code": "19080-1",
         "display": "Choriogonadotropin [Units/volume] in Serum or Plasma",
         "unit": "m[IU]/mL",
+        "range": {
+          "high": 5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
-    "rejected": [
-      "drug \"prenatal multivitamin with folic acid 1 MG Oral Tablet\""
-    ]
+    "procedures": {
+      "Laparoscopic salpingectomy": {
+        "code": "315059002",
+        "display": "Laparoscopic salpingectomy",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
   }
 }

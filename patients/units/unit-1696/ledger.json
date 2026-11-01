@@ -1,9 +1,7 @@
 {
   "unit": "unit-1696",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "left text-only (not verified): drug \"prenatal multivitamin with iron Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001696",
@@ -1437,6 +1435,7 @@
           "medications": [
             {
               "drug_text": "prenatal multivitamin with iron Oral Tablet",
+              "uncoded": true,
               "action": "start",
               "sig": "Take 1 tablet by mouth daily",
               "frequency": "DAILY",
@@ -2936,9 +2935,6 @@
         "display": "Pre-existing type 1 diabetes mellitus, in pregnancy, unspecified trimester",
         "receipt": "NLM Clinical Tables ICD-10-CM"
       }
-    },
-    "rejected": [
-      "drug \"prenatal multivitamin with iron Oral Tablet\""
-    ]
+    }
   }
 }

@@ -144,10 +144,14 @@ a prescription is a medication action, and a resulted lab is a lab result.
 
 - **Codes.** Use the catalog labels in the vocabulary file exactly. For anything
   it lacks, give the standard code and check verifies it: a condition's `icd10`, a
-  drug's `drug_text` (generic name, strength and form), a lab result's `loinc` and
-  `unit`, a report's `loinc`, an allergen's or procedure's `snomed`. Look codes up
-  with `patient-bank find icd10|loinc|snomed|rxnorm WORDS`, never from memory. An
-  allergen the catalog lacks also gives its `category` (food, medication,
+  drug's `drug_text` (generic name, strength and form), a lab result's `loinc`,
+  UCUM `unit` and reference `range` (`{"low": 70, "high": 99}`, either end alone
+  for a one-sided range, `{}` when none applies, as for a body-fluid count), a report's or a lab or imaging order's `loinc`, an
+  allergen's, procedure's or procedure order's `snomed`. Look codes up with
+  `patient-bank find icd10|loinc|snomed|rxnorm WORDS`, never from memory; a code
+  that does not verify fails check. Only a product RxNorm has no concept for (a
+  generic multivitamin or prenatal vitamin) stays text, marked `"uncoded": true`.
+  An allergen the catalog lacks also gives its `category` (food, medication,
   environment or biologic). "No known drug allergies" is an allergen that holds
   until a drug allergy is recorded; never record it while one is listed.
 - **Numbers come from code.** You record where the patient's body is, and code
@@ -159,10 +163,15 @@ a prescription is a medication action, and a resulted lab is a lab result.
   never set is the patient's own normal. Give `measure` on each contact that takes
   vitals, and name the tests in each draw without values. Code reads each one the
   way a cuff, a scale or an analyzer would, with its usual scatter. Write a value
-  yourself for every number build-req gives (code would scatter it) and for what no
-  level can give: a qualitative result (`"text"`), a culture, a one-off number.
+  yourself for every number build-req gives and every result a note, letter or
+  message reports (code would scatter it, and the chart would contradict itself),
+  and for what no level can give: a qualitative result (`"text"`), a culture, a
+  one-off number.
 - **Labs.** A panel lists only the members you mean; code fills the rest and
-  derives eGFR, CBC indices and the differential's remainder. A calculated test you
+  derives eGFR, CBC indices and the differential's remainder. In an ED visit or a
+  hospital stay, state each value the illness moves (a white count of 16.2, a
+  left-shifted differential, a urinalysis with nitrite); code fills the rest from
+  the patient's usual levels. A calculated test you
   state (total cholesterol, non-HDL, eGFR, transferrin saturation, PT) fixes the
   input you leave out, so give the test or its inputs; check rejects a set no
   lab's formula gives. Give `"resulted"` (on

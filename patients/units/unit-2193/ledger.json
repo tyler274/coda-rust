@@ -1,12 +1,7 @@
 {
   "unit": "unit-2193",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002193/2021-09-21a: procedure order \"Records request, prior primary care\" names no one catalog lab, panel, study or procedure",
-    "MRN00002193/2021-09-21a: imaging order \"Abdominal aortic ultrasound, screening\" names no one catalog lab, panel, study or procedure",
-    "MRN00002193/2024-02-20a: procedure order \"Records request, ophthalmology\" names no one catalog lab, panel, study or procedure",
-    "MRN00002193/2025-03-04a: lab order \"Fecal immunochemical test\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002193",
@@ -309,17 +304,11 @@
           ],
           "orders": [
             {
-              "id": "prior-records",
-              "action": "placed",
-              "order": "Records request, prior primary care",
-              "category": "procedure",
-              "reason": "establishing care"
-            },
-            {
               "id": "aaa-us",
               "action": "placed",
               "order": "Abdominal aortic ultrasound, screening",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male 65-75 who has smoked"
             }
           ],
@@ -510,13 +499,6 @@
             {
               "vaccine": "Zoster recombinant (Shingrix)",
               "date": "2022-02-16T10:30"
-            }
-          ],
-          "orders": [
-            {
-              "id": "prior-records",
-              "action": "done",
-              "date": "2022-02-16T10:00"
             }
           ],
           "documents": [
@@ -714,7 +696,7 @@
                 },
                 {
                   "test": "Glucose",
-                  "value": 91
+                  "value": 98
                 },
                 {
                   "test": "Calcium",
@@ -1592,22 +1574,13 @@
               "performed": "2024-02-20T11:00"
             }
           ],
-          "orders": [
-            {
-              "id": "eye-records",
-              "action": "placed",
-              "order": "Records request, ophthalmology",
-              "category": "procedure",
-              "reason": "12/27/23 consult note"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
               "title": "Follow-up",
               "date": "2024-02-20T11:30",
               "author": "PCP",
-              "body": "Saw the eye specialist right after Christmas. Per pt: 'macular degeneration, the dry kind, both eyes.' Given an Amsler grid for the fridge; no shots, recheck in the summer. No letter here yet - requested.\n\nOtherwise: calves the same, walks most days. Breathing steady, albuterol a few times a week. No hospital visits.\n\nVitals per flowsheet, BP fine. Lungs with prolonged expiration, no crackles. Heart regular. Feet warm, no lesions.\n\nA/P\n- AMD, dry, bilateral - per patient report, added to problem list. Amsler daily. Another reason to stop smoking; he heard that from the eye doctor too.\n- COPD, PAD, HTN - stable, no changes.\nRTC summer."
+              "body": "Saw the eye specialist right after Christmas. Per pt: 'macular degeneration, the dry kind, both eyes.' Given an Amsler grid for the fridge; no shots, recheck in the summer. No letter here yet - requested.\n\nOtherwise: calves the same, walks most days. Breathing steady, albuterol a few times a week. No hospital visits.\n\nVitals per flowsheet, BP fine. Lungs with prolonged expiration, no crackles. Heart regular. Feet warm, no lesions.\n\nA/P\n- AMD, dry, bilateral - per patient report, added to problem list. Amsler daily. Another reason to stop smoking; he heard that from the eye doctor too.\n- COPD, PAD, HTN - stable, no changes.\nRTC summer. Records request, ophthalmology."
             }
           ],
           "measure": [
@@ -1622,13 +1595,6 @@
           "id": "2024-03-05a",
           "kind": "outside_records",
           "start": "2024-03-05T10:30",
-          "orders": [
-            {
-              "id": "eye-records",
-              "action": "done",
-              "date": "2024-03-05T10:30"
-            }
-          ],
           "documents": [
             {
               "type": "Result Note",
@@ -1988,7 +1954,7 @@
             {
               "id": "fit-2025",
               "action": "placed",
-              "order": "Fecal immunochemical test",
+              "order": "Fecal Immunochemical Test",
               "category": "lab",
               "reason": "colorectal cancer screening, colonoscopy 2015 normal"
             }
@@ -2679,6 +2645,9 @@
                   "test": "P/Q-type voltage-gated calcium channel antibody",
                   "loinc": "33980-4",
                   "unit": "nmol/L",
+                  "range": {
+                    "high": 0.02
+                  },
                   "value": 0.41
                 }
               ]
@@ -3358,13 +3327,13 @@
         "code": "2106343",
         "display": "amifampridine 10 MG Oral Tablet",
         "ingredient": "amifampridine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "carboplatin 10 MG/ML Injectable Solution": {
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "durvalumab 50 MG/ML Injectable Solution": {
         "code": "1919515",
@@ -3376,7 +3345,7 @@
         "code": "310248",
         "display": "etoposide 20 MG/ML Injectable Solution",
         "ingredient": "etoposide",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -3384,10 +3353,18 @@
         "code": "33980-4",
         "display": "Voltage-gated calcium channel P/Q type binding Ab [Moles/volume] in Serum",
         "unit": "nmol/L",
+        "range": {
+          "high": 0.02
+        },
         "receipt": "NLM Clinical Tables LOINC"
       }
     },
     "reports": {
+      "Abdominal aortic ultrasound, screening": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
+        "receipt": "NLM Clinical Tables LOINC"
+      },
       "MRI brain without and with gadolinium": {
         "code": "24590-2",
         "display": "MR Brain",

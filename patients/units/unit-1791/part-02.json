@@ -57,9 +57,9 @@
           "labs": [
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-05-20T10:10", "results": [{"test": "Hemoglobin", "value": 11}, {"test": "Hematocrit", "value": 33}, {"test": "Mean Corpuscular Volume", "value": 70}]},
             {"panel": null, "collected": "2021-05-20T10:10", "resulted": "2021-05-24T15:00", "results": [
-              {"test": "Hemoglobin A/Hemoglobin.total in Blood", "loinc": "4546-8", "value": 97, "unit": "%"},
-              {"test": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis", "loinc": "4552-6", "value": 2.5, "unit": "%"},
-              {"test": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis", "loinc": "32682-7", "value": 0.5, "unit": "%"}
+              {"test": "Hemoglobin A/Hemoglobin.total in Blood", "loinc": "4546-8", "value": 97, "unit": "%", "range": {"low": 95, "high": 98}},
+              {"test": "Hemoglobin A2/Hemoglobin.total in Blood by Electrophoresis", "loinc": "4552-6", "value": 2.5, "unit": "%", "range": {"low": 1.5, "high": 3.5}},
+              {"test": "Hemoglobin F/Hemoglobin.total in Blood by Electrophoresis", "loinc": "32682-7", "value": 0.5, "unit": "%", "range": {"high": 2}}
             ]}
           ],
           "reports": [
@@ -173,8 +173,8 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2021-08-16T08:20", "results": [{"test": "Hemoglobin", "value": 12.2}, {"test": "Platelets", "value": 250}]},
             {"panel": "Prothrombin Time with INR", "collected": "2021-08-16T08:20", "results": [{"test": "Prothrombin Time", "value": 12}]},
             {"panel": null, "collected": "2021-08-16T08:20", "results": [
-              {"test": "aPTT in Platelet poor plasma by Coagulation assay", "loinc": "3173-2", "value": 30, "unit": "s"},
-              {"test": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay", "loinc": "3255-7", "value": 400, "unit": "mg/dL"}
+              {"test": "aPTT in Platelet poor plasma by Coagulation assay", "loinc": "3173-2", "value": 30, "unit": "s", "range": {"low": 25, "high": 35}},
+              {"test": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay", "loinc": "3255-7", "value": 400, "unit": "mg/dL", "range": {"low": 200, "high": 400}}
             ]}
           ],
           "reports": [

@@ -1,10 +1,7 @@
 {
   "unit": "unit-2228",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002228/2017-09-12a: imaging order \"Abdominal aorta ultrasound, AAA screening\" names no one catalog lab, panel, study or procedure",
-    "MRN00002228/2024-05-09a: procedure order \"Records request: hospital discharge summary and echocardiogram, 04/2024 admission\" names no one catalog lab, panel, study or procedure"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002228",
@@ -360,6 +357,7 @@
               "action": "placed",
               "order": "Abdominal aorta ultrasound, AAA screening",
               "category": "imaging",
+              "loinc": "69276-4",
               "reason": "male former smoker age 65-75"
             }
           ],
@@ -3026,12 +3024,19 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 138
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
                   "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 4.6
                 }
               ]
@@ -3111,6 +3116,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 210
                 }
               ]
@@ -3411,18 +3420,29 @@
                   "test": "Fibrinogen",
                   "loinc": "3255-7",
                   "unit": "mg/dL",
+                  "range": {
+                    "low": 200,
+                    "high": 400
+                  },
                   "value": 296
                 },
                 {
                   "test": "D-dimer",
                   "loinc": "48065-7",
                   "unit": "ug/mL{FEU}",
+                  "range": {
+                    "high": 0.5
+                  },
                   "value": 0.42
                 },
                 {
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 31
                 }
               ]
@@ -3642,6 +3662,10 @@
                   "test": "CA 19-9",
                   "loinc": "24108-3",
                   "unit": "U/mL",
+                  "range": {
+                    "low": 0,
+                    "high": 37
+                  },
                   "value": 24
                 }
               ]
@@ -3882,24 +3906,40 @@
                   "test": "pH of Arterial blood",
                   "loinc": "2744-1",
                   "unit": "[pH]",
+                  "range": {
+                    "low": 7.38,
+                    "high": 7.44
+                  },
                   "value": 7.32
                 },
                 {
                   "test": "Carbon dioxide partial pressure in Arterial blood",
                   "loinc": "2019-8",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 38,
+                    "high": 42
+                  },
                   "value": 50
                 },
                 {
                   "test": "Oxygen partial pressure in Arterial blood",
                   "loinc": "2703-7",
                   "unit": "mm[Hg]",
+                  "range": {
+                    "low": 75,
+                    "high": 100
+                  },
                   "value": 58
                 },
                 {
                   "test": "Bicarbonate in Arterial blood",
                   "loinc": "1960-4",
                   "unit": "meq/L",
+                  "range": {
+                    "low": 23,
+                    "high": 26
+                  },
                   "value": 24
                 }
               ]
@@ -4101,15 +4141,6 @@
             {
               "procedure": "Transitional care management, moderate complexity",
               "performed": "2024-05-09T10:30"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-0424",
-              "action": "placed",
-              "order": "Records request: hospital discharge summary and echocardiogram, 04/2024 admission",
-              "category": "procedure",
-              "reason": "post-hospital reconciliation"
             }
           ],
           "documents": [
@@ -4487,6 +4518,9 @@
                   "test": "CK-MB",
                   "loinc": "13969-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 5.0
+                  },
                   "value": 9.4
                 }
               ]
@@ -4499,6 +4533,9 @@
                   "test": "CK-MB",
                   "loinc": "13969-1",
                   "unit": "ng/mL",
+                  "range": {
+                    "high": 5.0
+                  },
                   "value": 81
                 }
               ]
@@ -6182,48 +6219,85 @@
         "code": "1960-4",
         "display": "Bicarbonate [Moles/volume] in Arterial blood",
         "unit": "meq/L",
+        "range": {
+          "low": 23,
+          "high": 26
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CA 19-9": {
         "code": "24108-3",
         "display": "Cancer Ag 19-9 [Units/volume] in Serum or Plasma",
         "unit": "U/mL",
+        "range": {
+          "low": 0,
+          "high": 37
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "CK-MB": {
         "code": "13969-1",
         "display": "Creatine kinase.MB [Mass/volume] in Serum or Plasma",
         "unit": "ng/mL",
+        "range": {
+          "high": 5.0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Carbon dioxide partial pressure in Arterial blood": {
         "code": "2019-8",
         "display": "Carbon dioxide [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 38,
+          "high": 42
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "D-dimer": {
         "code": "48065-7",
         "display": "Fibrin D-dimer FEU [Mass/volume] in Platelet poor plasma",
         "unit": "ug/mL{FEU}",
+        "range": {
+          "high": 0.5
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Fibrinogen": {
         "code": "3255-7",
         "display": "Fibrinogen [Mass/volume] in Platelet poor plasma by Coagulation assay",
         "unit": "mg/dL",
+        "range": {
+          "low": 200,
+          "high": 400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Oxygen partial pressure in Arterial blood": {
         "code": "2703-7",
         "display": "Oxygen [Partial pressure] in Arterial blood",
         "unit": "mm[Hg]",
+        "range": {
+          "low": 75,
+          "high": 100
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "pH of Arterial blood": {
         "code": "2744-1",
         "display": "pH of Arterial blood",
         "unit": "[pH]",
+        "range": {
+          "low": 7.38,
+          "high": 7.44
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "reports": {
+      "Abdominal aorta ultrasound, AAA screening": {
+        "code": "69276-4",
+        "display": "US Abdominal Aorta",
         "receipt": "NLM Clinical Tables LOINC"
       }
     }

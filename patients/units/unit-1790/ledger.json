@@ -1,11 +1,7 @@
 {
   "unit": "unit-1790",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00001790/2019-08-28a: lab order \"CBC with differential, folate, B12, CMP, vitamin D\" names no one catalog lab, panel, study or procedure",
-    "MRN00001790/2022-11-15a: referral to \"Behavioral Health\" names no catalog specialty",
-    "left text-only (not verified): drug \"Prenatal Vitamins Oral Tablet\""
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00001790",
@@ -107,6 +103,7 @@
             },
             {
               "drug_text": "Prenatal Vitamins Oral Tablet",
+              "uncoded": true,
               "action": "historical",
               "sig": "Take 1 tablet by mouth daily",
               "dose": {
@@ -660,6 +657,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14.1
                 }
               ]
@@ -1065,7 +1066,11 @@
                 {
                   "test": "Osmolality, serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 300
                 }
               ]
@@ -1077,7 +1082,11 @@
                 {
                   "test": "Osmolality, urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 150
                 }
               ]
@@ -1289,7 +1298,35 @@
             {
               "id": "anemia-labs-2019",
               "action": "placed",
-              "order": "CBC with differential, folate, B12, CMP, vitamin D",
+              "order": "CBC with Differential",
+              "category": "lab",
+              "reason": "Fatigue, gum bleeding"
+            },
+            {
+              "id": "anemia-labs-2019-2",
+              "action": "placed",
+              "order": "Folate",
+              "category": "lab",
+              "reason": "Fatigue, gum bleeding"
+            },
+            {
+              "id": "anemia-labs-2019-3",
+              "action": "placed",
+              "order": "Vitamin B12",
+              "category": "lab",
+              "reason": "Fatigue, gum bleeding"
+            },
+            {
+              "id": "anemia-labs-2019-4",
+              "action": "placed",
+              "order": "Comprehensive Metabolic Panel (CMP)",
+              "category": "lab",
+              "reason": "Fatigue, gum bleeding"
+            },
+            {
+              "id": "anemia-labs-2019-5",
+              "action": "placed",
+              "order": "25-hydroxy Vitamin D",
               "category": "lab",
               "reason": "Fatigue, gum bleeding"
             }
@@ -1493,6 +1530,26 @@
           "orders": [
             {
               "id": "anemia-labs-2019",
+              "action": "done",
+              "date": "2019-09-03T07:45"
+            },
+            {
+              "id": "anemia-labs-2019-2",
+              "action": "done",
+              "date": "2019-09-03T07:45"
+            },
+            {
+              "id": "anemia-labs-2019-3",
+              "action": "done",
+              "date": "2019-09-03T07:45"
+            },
+            {
+              "id": "anemia-labs-2019-4",
+              "action": "done",
+              "date": "2019-09-03T07:45"
+            },
+            {
+              "id": "anemia-labs-2019-5",
               "action": "done",
               "date": "2019-09-03T07:45"
             }
@@ -2003,6 +2060,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.6
                 }
               ]
@@ -2350,7 +2411,11 @@
                 {
                   "test": "Osmolality, serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 280
                 }
               ]
@@ -2417,6 +2482,10 @@
                   "test": "24 hour urine volume",
                   "loinc": "3167-4",
                   "unit": "L",
+                  "range": {
+                    "low": 0.8,
+                    "high": 2.0
+                  },
                   "value": 4.5
                 }
               ]
@@ -2954,6 +3023,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 14.0
                 }
               ]
@@ -3169,7 +3242,7 @@
               "action": "placed",
               "order": "Behavioral health referral",
               "category": "referral",
-              "to": "Behavioral Health",
+              "to": "Psychiatry",
               "reason": "Recurrent major depression, counseling"
             }
           ],
@@ -3306,7 +3379,11 @@
                 {
                   "test": "Osmolality, serum",
                   "loinc": "2692-2",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
                   "value": 302
                 }
               ]
@@ -3318,7 +3395,11 @@
                 {
                   "test": "Osmolality, urine",
                   "loinc": "2695-5",
-                  "unit": "mOsm/kg",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
                   "value": 68
                 }
               ]
@@ -3514,6 +3595,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.1
                 }
               ]
@@ -4005,6 +4090,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.5
                 }
               ]
@@ -5150,6 +5239,10 @@
                   "test": "Phenytoin",
                   "loinc": "3968-5",
                   "unit": "ug/mL",
+                  "range": {
+                    "low": 10,
+                    "high": 20
+                  },
                   "value": 13.8
                 }
               ]
@@ -6365,43 +6458,43 @@
         "code": "308429",
         "display": "atovaquone 150 MG/ML Oral Suspension",
         "ingredient": "atovaquone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "clindamycin 300 MG Oral Capsule": {
         "code": "284215",
         "display": "clindamycin 300 MG Oral Capsule",
         "ingredient": "clindamycin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "desmopressin acetate 0.1 MG Oral Tablet": {
         "code": "849515",
         "display": "desmopressin acetate 0.1 MG Oral Tablet",
         "ingredient": "desmopressin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "leucovorin calcium 5 MG Oral Tablet": {
         "code": "197863",
         "display": "leucovorin 5 MG Oral Tablet",
         "ingredient": "leucovorin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "olanzapine 10 MG Oral Tablet": {
         "code": "314154",
         "display": "olanzapine 10 MG Oral Tablet",
         "ingredient": "olanzapine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "phenytoin sodium 100 MG Extended Release Oral Capsule": {
         "code": "855671",
         "display": "phenytoin sodium 100 MG Extended Release Oral Capsule",
         "ingredient": "phenytoin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "pyrimethamine 25 MG Oral Tablet": {
         "code": "198182",
         "display": "pyrimethamine 25 MG Oral Tablet",
         "ingredient": "pyrimethamine",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "labs": {
@@ -6409,24 +6502,40 @@
         "code": "3167-4",
         "display": "Volume of 24 hour Urine",
         "unit": "L",
+        "range": {
+          "low": 0.8,
+          "high": 2.0
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, serum": {
         "code": "2692-2",
         "display": "Osmolality of Serum or Plasma",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Osmolality, urine": {
         "code": "2695-5",
         "display": "Osmolality of Urine",
-        "unit": "mOsm/kg",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Phenytoin": {
         "code": "3968-5",
         "display": "Phenytoin [Mass/volume] in Serum or Plasma",
         "unit": "ug/mL",
+        "range": {
+          "low": 10,
+          "high": 20
+        },
         "receipt": "NLM Clinical Tables LOINC"
       },
       "Toxoplasma gondii IgG antibody": {
@@ -6441,9 +6550,6 @@
         "display": "MR Brain",
         "receipt": "NLM Clinical Tables LOINC"
       }
-    },
-    "rejected": [
-      "drug \"Prenatal Vitamins Oral Tablet\""
-    ]
+    }
   }
 }

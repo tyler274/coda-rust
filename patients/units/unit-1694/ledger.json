@@ -1,0 +1,2062 @@
+{
+  "unit": "unit-1694",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00001694",
+      "given": "Zoe",
+      "family": "Tremblay",
+      "birth_date": "1997-04-22",
+      "address_line": "38 Laurel Park Road",
+      "phone": "+1-917-555-0169",
+      "email": "zoe.tremblay@example.test",
+      "marital_status": "married",
+      "summary": "A 25-year-old teacher with myasthenia gravis on pyridostigmine and a history of gestational hypertension joins in 2022. Her second pregnancy ends in severe preeclampsia at 34 weeks with induced delivery, then a delayed postpartum preeclampsia five weeks later, managed by obstetrics without magnesium because of her myasthenia.",
+      "events": [
+        {
+          "id": "2022-08-02a",
+          "kind": "telephone",
+          "start": "2022-08-02T10:20",
+          "reason": "New patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New patient call",
+              "date": "2022-08-02T10:20",
+              "author": "front desk",
+              "body": "Caller would like to join as a new member. Teaches 2nd grade, looking for an office closer to her school, and wants to be set up before classes begin. Has myasthenia gravis, followed by an outside neurology group, which she wants to keep. Membership packet emailed. New patient visit booked for 8/23 at 9:00. Asked her to bring her medication bottles and the name of her previous primary care office so we can request records."
+            }
+          ]
+        },
+        {
+          "id": "2022-08-23a",
+          "kind": "establish_care",
+          "start": "2022-08-23T09:00",
+          "end": "2022-08-23T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Establish care",
+          "conditions": [
+            {
+              "label": "Myasthenia gravis without exacerbation",
+              "action": "history"
+            },
+            {
+              "label": "History of gestational hypertension",
+              "action": "history",
+              "onset": "2021-01-01",
+              "note": "first pregnancy, term delivery",
+              "icd10": "Z87.59"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "pyridostigmine bromide 60 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 60,
+                "unit": "mg"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "myasthenia gravis"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              129,
+              88
+            ],
+            "hr": 80,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 60.4,
+            "height_cm": 164.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.8
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.5
+                },
+                {
+                  "test": "Platelets",
+                  "value": 331
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.72
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 86
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.6
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.3
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.64
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 19
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 22
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 126
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.6
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "Total Cholesterol",
+                  "value": 169
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 57
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 101
+                },
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 92
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 112
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 1.9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2022-08-23T10:05",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Never smoker"
+            },
+            {
+              "item": "History of alcohol use",
+              "value": "Occasional social drinking"
+            },
+            {
+              "item": "Occupation",
+              "value": "Elementary school teacher"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2022-08-23T09:00"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2022-08-23T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2022-08-23T10:40",
+              "author": "PCP",
+              "body": "25 yo F, elementary school teacher, establishing care.\n\nMyasthenia gravis: diagnosed before she moved here, managed by an outside neurology group that she will keep seeing about once a year. On pyridostigmine 60 mg three times a day. Feels well controlled. Denies droopy lids, double vision, trouble swallowing or chewing, or shortness of breath. No crises, no hospital stays for it. No prior surgery.\n\nOB: G1P1. One pregnancy, delivered at term in 2021. Developed gestational hypertension in that pregnancy, monitored to delivery, no complications; BP back to normal afterward and never treated since.\n\nMeds: pyridostigmine 60 mg TID.\nAllergies: none to drugs.\nFHx: mother had preeclampsia in pregnancy. A maternal cousin has lupus.\nSHx: never smoker. Drinks a glass of wine socially, a few times a month. One toddler at home. Teaches second grade.\n\nROS: negative except as above.\n\nExam: vitals as recorded. Well appearing. No ptosis at rest or with sustained upgaze for 60 seconds, EOM full without diplopia. Facial strength symmetric. Neck flexion and shoulder abduction 5/5 with repetition. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Reflexes 2+ and symmetric.\n\nAssessment / plan:\n1. Myasthenia gravis, stable on pyridostigmine. Neurology continues to direct care. Will request their most recent note. Reviewed that some common drugs can worsen MG and asked her to remind any prescriber.\n2. History of gestational hypertension. BP acceptable on a single reading today. Discussed that it matters for future pregnancies and long term; check yearly.\n3. Health maintenance: baseline CBC, CMP, lipids, TSH. One-time HIV and hepatitis C screening, she agrees. Last cervical cytology was with her prenatal care in 2021; records requested from her prior office. Flu and COVID vaccines when the fall supply arrives.\n\nReturn for a physical next summer."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.0,
+            "height_cm": 165.0,
+            "labs": {
+              "Thyroid Stimulating Hormone": 1.9
+            }
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2022-08-25a",
+          "kind": "portal_message",
+          "start": "2022-08-25T16:45",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Your recent bloodwork",
+              "date": "2022-08-25T16:45",
+              "author": "PCP",
+              "body": "Hi Zoe, all of the labs from Tuesday look good: blood counts, kidney and liver tests, thyroid, and cholesterol are normal, and the HIV and hepatitis C screens are negative. Nothing to change. Nice meeting you."
+            }
+          ]
+        },
+        {
+          "id": "2022-09-08a",
+          "kind": "outside_records",
+          "start": "2022-09-08T13:10",
+          "reason": "Records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior primary care office records",
+              "date": "2022-09-08T13:10",
+              "author": "outside primary care",
+              "body": "Transfer of records, prior primary care office, covering 2019 to 2022.\n\nProblem list: myasthenia gravis (followed by neurology); gestational hypertension, 2021 pregnancy.\nMedications: pyridostigmine 60 mg PO TID.\nAllergies: NKDA.\n\nObstetric summary (from prenatal records on file): pregnancy in 2021 complicated by gestational hypertension in the third trimester, managed with monitoring; delivered at term without complication. Postpartum BP normal at follow-up.\n\nCervical cytology, 2021 (with prenatal care): negative for intraepithelial lesion or malignancy.\n\nImmunizations on file: childhood series complete; influenza yearly.\n\nFiled to chart; PCP reviewed."
+            }
+          ]
+        },
+        {
+          "id": "2022-10-13a",
+          "kind": "nurse_visit",
+          "start": "2022-10-13T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2022-10-13T15:50"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2022-10-13T15:50"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, bivalent",
+              "date": "2022-10-13T15:52"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2022-10-13T16:10",
+              "author": "RN",
+              "body": "In after school for vaccines. Screening questions negative, not pregnant. Influenza quadrivalent IM left deltoid; COVID bivalent booster IM right deltoid. Observed 15 minutes, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2022-11-17a",
+          "kind": "specialist_visit",
+          "start": "2022-11-17T14:00",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2022-11-22T09:30",
+              "author": "neurology",
+              "body": "Outside neurology group, follow-up visit of 11/17/2022.\n\nDear colleague,\n\nI saw Ms. Tremblay today for her yearly myasthenia gravis visit. She has had a quiet year. No ptosis, diplopia, dysarthria, dysphagia or breathing trouble, and she is managing a full teaching load without fatigue beyond the ordinary.\n\nMedications: pyridostigmine 60 mg three times daily. Allergies: NKDA.\n\nExamination: alert, fluent speech. No ptosis after sustained upgaze. Extraocular movements full. Facial, bulbar and neck strength normal. Limb strength 5/5 throughout without fatigability on repeated testing. Reflexes symmetric.\n\nImpression: myasthenia gravis, clinically stable on pyridostigmine.\n\nPlan: continue pyridostigmine 60 mg three times daily. Return in a year, sooner with any weakness. She knows to call before starting a new antibiotic or any drug flagged for MG.\n\nThank you for allowing me to share in her care."
+            }
+          ]
+        },
+        {
+          "id": "2023-02-14a",
+          "kind": "pharmacy",
+          "start": "2023-02-14T11:05",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: pyridostigmine",
+              "date": "2023-02-14T11:05",
+              "author": "RN",
+              "body": "Electronic request from the patient's pharmacy for pyridostigmine 60 mg, #270 for 90 days. Neurology's last letter has her on the same dose. Per PCP, ok to refill here between neurology visits. Sent with 1 refill."
+            }
+          ]
+        },
+        {
+          "id": "2023-08-22a",
+          "kind": "annual_physical",
+          "start": "2023-08-22T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "vitals": {
+            "bp": [
+              128,
+              79
+            ],
+            "hr": 74,
+            "temp_c": 36.5,
+            "spo2": 100,
+            "weight_kg": 61.7
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-08-22T09:10",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 300
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.43
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 39.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.5
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-9 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2023-08-22T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2023-08-22T09:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2023-08-22T09:25",
+              "author": "PCP",
+              "body": "26 yo F for her yearly exam, a week before school starts.\n\nInterval: no illnesses. MG unchanged, still pyridostigmine 60 mg TID, saw neurology last November and is due again this fall. No weakness, no diplopia, swallowing fine. Not planning another pregnancy this year.\n\nMeds: pyridostigmine 60 mg TID. NKDA.\nSocial: never smoker, wine occasionally. Exercises with a stroller walk most evenings.\nPHQ-9: 1.\n\nExam: vitals as recorded, BP normal. No ptosis, EOM full. HEENT normal. Thyroid not enlarged. Heart RRR. Lungs clear. Abdomen benign. No edema. Strength full and symmetric. Skin clear.\n\nA/P:\n- MG, stable. Neurology to continue.\n- History of gestational hypertension, BP normal today.\n- Prevention: cervical cytology due 2024 (normal 2021). CBC today. Flu and updated COVID vaccine at a nurse visit in October.\n\nOne year."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-12a",
+          "kind": "nurse_visit",
+          "start": "2023-10-12T16:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu and COVID vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-12T16:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, quadrivalent, injectable",
+              "date": "2023-10-12T16:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-12T16:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Immunizations",
+              "date": "2023-10-12T16:20",
+              "author": "MA",
+              "body": "Flu (quadrivalent) L deltoid and 2023-24 COVID R deltoid. Denies pregnancy, no fever today. Waited 15 min, tolerated well. Updated record."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-14a",
+          "kind": "specialist_visit",
+          "start": "2023-11-14T13:30",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2023-11-20T10:15",
+              "author": "neurology",
+              "body": "Outside neurology group. Visit date 11/14/2023.\n\nMs. Tremblay returns for routine follow-up of myasthenia gravis. Another stable year: no ocular, bulbar or respiratory symptoms and no exacerbations. Takes pyridostigmine 60 mg TID with no GI side effects to speak of.\n\nAllergies: NKDA.\n\nExam: no ptosis or diplopia with prolonged gaze testing. Normal facial and neck flexor strength. Limbs 5/5 without fatigue on repetition. Gait normal.\n\nAssessment: myasthenia gravis, stable.\nPlan: no change; pyridostigmine 60 mg TID. Follow up in 12 months. If she considers another pregnancy, she should let us know beforehand so we can review her medications.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2024-08-12a",
+          "kind": "telephone",
+          "start": "2024-08-12T09:40",
+          "reason": "Reschedule physical",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Scheduling",
+              "date": "2024-08-12T09:40",
+              "author": "front desk",
+              "body": "Pt has a teacher training day tomorrow that she forgot about. Moved her physical from 8/13 to 8/27 at 8:15. Reminder that she is due for a Pap this year; she is fine doing it at that visit."
+            }
+          ]
+        },
+        {
+          "id": "2024-08-13a",
+          "kind": "annual_physical",
+          "start": "2024-08-13T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-08-27a",
+          "kind": "annual_physical",
+          "start": "2024-08-27T08:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical with Pap",
+          "vitals": {
+            "bp": [
+              123,
+              80
+            ],
+            "hr": 71,
+            "temp_c": 37.0,
+            "spo2": 97,
+            "weight_kg": 61.8
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "reports": [
+            {
+              "study": "Cervical cytology (Pap)",
+              "performed": "2024-08-27T08:40",
+              "text": "Specimen: ThinPrep, cervical. Specimen adequacy: satisfactory for evaluation; transformation zone component present. General categorization: negative for intraepithelial lesion or malignancy. No organisms identified.",
+              "conclusion": "Negative for intraepithelial lesion or malignancy.",
+              "issued": "2024-09-03T08:00"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2024-08-27T08:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2024-08-27T09:05",
+              "author": "PCP",
+              "body": "27 yo here for yearly physical and cervical screening.\n\nDoing well. Busy summer with her little one. MG stable, no weakness or visual symptoms; neurology visit last November unchanged, next one this fall. Takes pyridostigmine 60 mg three times daily, refills through us.\n\nNKDA. Never smoker, rare alcohol.\nPHQ-2 0.\n\nExam: BP normal, other vitals as charted. No ptosis, EOM full. Neck supple, no thyroid enlargement. Heart regular without murmur. Lungs clear. Breasts without masses, no axillary nodes. Abdomen soft, nontender. Pelvic: normal external genitalia, cervix without lesions, Pap collected. No edema.\n\nA/P\n- Health maintenance: Pap sent (last one normal in 2021). Flu shot in October. Labs not needed this year.\n- MG: stable, continue current dose.\n- Hx gestational HTN: normotensive.\n\nSee her next summer."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-09-03a",
+          "kind": "portal_message",
+          "start": "2024-09-03T12:15",
+          "reason": "Pap result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pap result",
+              "date": "2024-09-03T12:15",
+              "author": "PCP",
+              "body": "Zoe, your Pap came back normal. At your age the next one is due in three years. Hope the first week of school went smoothly."
+            }
+          ]
+        },
+        {
+          "id": "2024-10-10a",
+          "kind": "nurse_visit",
+          "start": "2024-10-10T15:50",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Flu vaccine",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-10T15:55"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2024-10-10T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Nurse Visit: Influenza Vaccine",
+              "date": "2024-10-10T16:05",
+              "author": "MA",
+              "body": "Influenza vaccine (trivalent) given IM L deltoid, lot logged. Declined COVID today, will think about it. No reaction after 15 minutes."
+            }
+          ]
+        },
+        {
+          "id": "2024-11-19a",
+          "kind": "specialist_visit",
+          "start": "2024-11-19T14:15",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis follow-up",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Follow-up Letter",
+              "date": "2024-11-26T08:50",
+              "author": "neurology",
+              "body": "Outside neurology group. Date of service: 11/19/2024.\n\nRe: Zoe Tremblay, DOB 4/22/1997\n\nSeen for annual review of myasthenia gravis. She reports no fluctuating weakness, no ptosis, no diplopia and no chewing or swallowing fatigue. Pyridostigmine 60 mg three times a day continues to suit her. NKDA.\n\nOn examination she has no ptosis after one minute of upgaze, full eye movements, normal speech, and full strength in neck flexors, deltoids, hip flexors and grip, without decrement on repetition.\n\nImpression: myasthenia gravis, in good control on symptomatic therapy alone.\n\nRecommendations: continue pyridostigmine 60 mg TID. Annual follow-up. We again talked about a future pregnancy; she would like to try in the next year and will contact us before then so we can plan."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "portal_message",
+          "start": "2025-03-11T19:30",
+          "reason": "Question about medication and pregnancy",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Mestinon and pregnancy",
+              "date": "2025-03-11T19:30",
+              "author": "patient",
+              "body": "Hi, we are hoping to try for a second baby later this year. Is it ok to stay on my Mestinon? I took it the whole time last pregnancy but I want to double check. Thanks, Zoe"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Mestinon and pregnancy",
+              "date": "2025-03-12T07:50",
+              "author": "PCP",
+              "body": "Good question. Pyridostigmine is generally continued through pregnancy, and stopping it would carry more risk for your MG than staying on it. Please let your neurologist know your plans too, since they will want to coordinate with obstetrics. We can go over the rest of preconception planning at your physical this summer."
+            }
+          ]
+        },
+        {
+          "id": "2025-08-19a",
+          "kind": "annual_physical",
+          "start": "2025-08-19T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical, preconception",
+          "medications": [
+            {
+              "drug_text": "prenatal multivitamin Oral Tablet",
+              "uncoded": true,
+              "action": "start",
+              "sig": "Take 1 tablet by mouth daily",
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "planning pregnancy"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              124,
+              72
+            ],
+            "hr": 86,
+            "temp_c": 36.9,
+            "spo2": 98,
+            "weight_kg": 62.5
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-08-19T09:15",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 13.6
+                },
+                {
+                  "test": "Platelets",
+                  "value": 308
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.64
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 40.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.3
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.3
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-08-19T09:15",
+              "results": [
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.0
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Preventive visit, established patient, 18-39",
+              "performed": "2025-08-19T08:30"
+            },
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-08-19T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Physical",
+              "date": "2025-08-19T09:30",
+              "author": "PCP",
+              "body": "28 yo F, yearly exam. She plans to start trying for a second pregnancy this fall.\n\nMG: stable, pyridostigmine 60 mg TID, no symptoms. Neurology aware of pregnancy plans per patient.\nPrior pregnancy: gestational hypertension, term delivery.\nNKDA. Never smoker; drinks only occasionally and will stop when trying.\nPHQ-2: 0.\n\nExam: vitals as recorded, BP normal. Weight stable. No ptosis. Thyroid normal. Heart and lungs normal. Abdomen soft. No edema. Neuro nonfocal.\n\nPlan\n- Preconception: start a prenatal vitamin with folic acid daily now. Continue pyridostigmine. Once pregnant, let us know and we will get her to obstetrics early, given her MG and prior gestational hypertension. CBC and TSH today.\n- Pap up to date (2024 normal).\n- Flu vaccine this fall.\n\nNext physical in a year or sooner with news."
+            }
+          ],
+          "state": {
+            "weight_kg": 61.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "temp_c",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-08-21a",
+          "kind": "portal_message",
+          "start": "2025-08-21T13:20",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab results",
+              "date": "2025-08-21T13:20",
+              "author": "PCP",
+              "body": "Blood count and thyroid test are both normal. Good baseline going in."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "portal_message",
+          "start": "2025-10-07T06:50",
+          "reason": "Home pregnancy test",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Pregnant!",
+              "date": "2025-10-07T06:50",
+              "author": "patient",
+              "body": "Good morning! Two lines on a home test today. My last period started September 4. Feeling fine, a little tired. What should I do next?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Pregnant!",
+              "date": "2025-10-07T08:10",
+              "author": "PCP",
+              "body": "Congratulations! Keep taking the prenatal vitamin and pyridostigmine. Our front desk will offer you a short visit this week to confirm and get the obstetrics referral going. Call right away for bleeding or severe cramping."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-09a",
+          "kind": "office_visit",
+          "start": "2025-10-09T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Positive home pregnancy test",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "diagnosed",
+              "onset": "2025-09-04",
+              "note": "LMP 2025-09-04, EDD 2026-06-11",
+              "icd10": "O09.90"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              116,
+              78
+            ],
+            "hr": 80,
+            "weight_kg": 62.0
+          },
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-10-09T15:50",
+              "results": [
+                {
+                  "test": "Pregnancy Test, Urine",
+                  "text": "Positive"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-09T15:45"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "placed",
+              "order": "Obstetrics referral",
+              "category": "referral",
+              "to": "Obstetrics & Gynecology",
+              "reason": "early pregnancy; myasthenia gravis and prior gestational hypertension"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Office Visit",
+              "date": "2025-10-09T16:20",
+              "author": "PCP",
+              "body": "S: Positive home test 10/7. LMP 9/4/25, regular cycles, so about 5 weeks today; EDD by dates 6/11/26. Mild fatigue and breast tenderness. No bleeding, no pain. Taking prenatal vitamin since August and pyridostigmine 60 mg TID. No MG symptoms.\n\nO: BP normal, vitals as charted. Well appearing. Abdomen soft, nontender. Urine hCG positive in office.\n\nA/P: Intrauterine pregnancy not yet confirmed, about 5 weeks by LMP. Second pregnancy; first had gestational hypertension. Myasthenia gravis on pyridostigmine.\n- Referral to obstetrics placed, flagged for early high-risk scheduling.\n- Continue prenatal vitamin and pyridostigmine.\n- She will update neurology this week.\n- Nausea and bleeding precautions reviewed."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-10-28a",
+          "kind": "specialist_visit",
+          "start": "2025-10-28T13:00",
+          "service": "Neurology",
+          "reason": "Myasthenia gravis, pregnancy planning",
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Neurology Letter: Pregnancy Counseling",
+              "date": "2025-11-03T11:40",
+              "author": "neurology",
+              "body": "Outside neurology group. Visit of 10/28/2025.\n\nMs. Tremblay is now about 7 weeks pregnant and came in to plan her myasthenia care through pregnancy and delivery. She remains symptom free on pyridostigmine 60 mg three times a day. Exam today is normal, with no ptosis, diplopia or fatigable weakness.\n\nRecommendations, shared with her and copied to obstetrics and primary care:\n1. Continue pyridostigmine 60 mg TID throughout pregnancy and the postpartum period. Breastfeeding is compatible.\n2. Several medications can worsen myasthenia and should be avoided or used only after discussion with us, most importantly magnesium sulfate, as well as aminoglycosides, fluoroquinolones and macrolides. If magnesium would otherwise be indicated, please call neurology; alternatives exist.\n3. Labor itself is usually unaffected, but she should alert the delivery team to her diagnosis on arrival.\n4. We will see her postpartum or sooner with any weakness.\n\nAllergies: NKDA."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "specialist_visit",
+          "start": "2025-11-25T10:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Routine prenatal visit and vaccination counseling",
+          "vitals": {
+            "bp": [
+              116,
+              72
+            ],
+            "hr": 68,
+            "weight_kg": 64.0
+          },
+          "immunizations": [
+            {
+              "vaccine": "Influenza, trivalent, injectable",
+              "date": "2025-11-25T10:55"
+            }
+          ],
+          "orders": [
+            {
+              "id": "ob-referral",
+              "action": "done",
+              "date": "2025-11-25T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2025-12-03T14:00",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology practice. Prenatal visit, 11/25/2025.\n\nG2P1, 11 weeks 5 days by LMP of 9/4/2025, EDD 6/11/2026. Seen on referral from primary care.\n\nSo far this pregnancy has been uneventful. She is taking her prenatal vitamins every day and has no concerns today. Her main question was about the coming flu season and how best to protect herself and the baby.\n\nPMH: myasthenia gravis, followed by neurology (their counseling letter reviewed). Gestational hypertension in her first pregnancy, which went to term and delivered without problems.\nPSH: none.\nMedications: pyridostigmine 60 mg PO TID.\nAllergies: NKDA.\nFamily history: mother had preeclampsia; a maternal cousin with lupus.\nSocial: teacher; never smoker; no alcohol since conception.\n\nVitals within normal limits, BP normal. General exam unremarkable.\n\nPlan:\n- Inactivated influenza vaccine given today; safe at any point in pregnancy. Discussed that Tdap is recommended between 27 and 36 weeks to pass protection to the newborn; plan for it at the early third-trimester visit.\n- Neurology recommendations noted on her chart, including avoidance of magnesium sulfate.\n- Routine prenatal care; return in 4 weeks.\n\ncc: primary care"
+            }
+          ],
+          "state": {
+            "weight_kg": 63.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-12-16a",
+          "kind": "pharmacy",
+          "start": "2025-12-16T10:30",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: pyridostigmine",
+              "date": "2025-12-16T10:30",
+              "author": "RN",
+              "body": "Pharmacy requested pyridostigmine 60 mg TID, 90-day supply. Same dose per neurology's October letter. Approved and sent."
+            }
+          ]
+        },
+        {
+          "id": "2026-01-20a",
+          "kind": "pharmacy",
+          "start": "2026-01-20T09:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: prenatal vitamin",
+              "date": "2026-01-20T09:15",
+              "author": "MA",
+              "body": "Pharmacy fax for prenatal vitamin, 90 tablets with 3 refills, so her insurance covers it. PCP signed. Pharmacy notified."
+            }
+          ]
+        },
+        {
+          "id": "2026-03-19a",
+          "kind": "specialist_visit",
+          "start": "2026-03-19T15:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Prenatal visit, 28 weeks",
+          "vitals": {
+            "bp": [
+              124,
+              68
+            ],
+            "hr": 78,
+            "weight_kg": 71.0
+          },
+          "immunizations": [
+            {
+              "vaccine": "Tdap",
+              "date": "2026-03-19T15:55"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Prenatal Visit",
+              "date": "2026-03-26T10:20",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology practice. Prenatal visit 3/19/2026.\n\nG2P1 at 28w0d. Feeling well, good fetal movement, no headaches, no visual change, no swelling. Myasthenia quiet on pyridostigmine 60 mg TID. Prenatal vitamin daily.\n\nBP normal today. Fundal height appropriate. Fetal heart tones present and normal. No edema.\n\nTdap given today, left deltoid, for newborn pertussis protection.\n\nPlan: routine visits every 2 weeks from here. Reviewed warning signs of preeclampsia given her history (severe headache, visual change, right upper abdominal pain, sudden swelling) and to go to labor and delivery or the ED if they occur.\n\nAllergies: NKDA.\ncc: primary care"
+            }
+          ],
+          "state": {
+            "weight_kg": 70.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-04-30a",
+          "kind": "ed_visit",
+          "start": "2026-04-30T07:40",
+          "end": "2026-04-30T10:30",
+          "service": "Emergency Medicine",
+          "reason": "Severe headache and flashing lights in vision",
+          "conditions": [
+            {
+              "label": "Severe preeclampsia without HELLP features",
+              "action": "diagnosed",
+              "onset": "2026-04-29",
+              "icd10": "O14.13"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              158,
+              102
+            ],
+            "hr": 82,
+            "rr": 17,
+            "temp_c": 37.1,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-04-30T08:05",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "2+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.018
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.0
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-04-30T08:00",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.2
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.7
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 63
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-04-30T08:00",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.0
+                },
+                {
+                  "test": "Platelets",
+                  "value": 180
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.08
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 35.9
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 88
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.4
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.4
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-04-30T08:00",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
+                  "value": 171
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-04-30T07:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-05-04T11:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED. Seen 4/30/2026, arrived 07:40.\n\nCC: severe headache, flashing lights in vision.\n\nHPI: 29 yo G2P1 at 34w0d (EDD 6/11/26) with myasthenia gravis on pyridostigmine and gestational hypertension in her prior pregnancy. Headache began yesterday, now severe and not relieved by acetaminophen at home; since last night she sees flashing lights. Pressures had been normal at prenatal visits, most recently in early April per patient. Good fetal movement. No bleeding, no leakage of fluid, no contractions.\n\nMeds: pyridostigmine 60 mg PO TID; prenatal vitamin daily.\nAllergies: NKDA.\nPSH: none.\nFHx: mother with preeclampsia; maternal cousin with SLE.\nSH: teacher, never smoker, no alcohol in pregnancy.\n\nExam: BP 158/102. Uncomfortable, photophobic. 2+ pitting edema of the lower extremities. DTRs brisk with clonus at the ankles. No focal weakness, no ptosis. Gravid abdomen, nontender, including RUQ. Fetal heart tracing reassuring on monitor per L&D nurse.\n\nResults: UA protein 2+. Creatinine 1.2 mg/dL (elevated). AST 70 U/L, ALT 80 U/L (elevated). Platelets 180 K/uL. Hgb 12.0 g/dL. LDH 171 U/L, within range.\n\nMDM: new hypertension with headache, visual symptoms, proteinuria, rising creatinine and transaminases at 34 weeks: preeclampsia with severe features. Platelets and LDH do not suggest HELLP. OB at bedside; patient's neurology plan on file advises against magnesium sulfate. Neurology called and agrees magnesium should be avoided; levetiracetam recommended for seizure prophylaxis.\n\nDx: severe preeclampsia without HELLP features, 34 weeks.\nDisposition: admitted to labor and delivery for stabilization and delivery."
+            }
+          ],
+          "state": {
+            "labs": {
+              "Hemoglobin": 12.0
+            }
+          },
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-04-30b",
+          "kind": "hospital_admission",
+          "start": "2026-04-30T10:30",
+          "end": "2026-05-03T13:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Severe preeclampsia at 34 weeks, delivery",
+          "conditions": [
+            {
+              "label": "Supervision of high risk pregnancy",
+              "action": "resolved",
+              "note": "delivered 2026-05-01 at 34w1d",
+              "icd10": "O09.90"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "levetiracetam 500 MG Oral Tablet",
+              "action": "start",
+              "sig": "500 mg by mouth twice daily until 24 hours after delivery",
+              "dose": {
+                "value": 500,
+                "unit": "mg"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "seizure prophylaxis, magnesium avoided in myasthenia gravis"
+            },
+            {
+              "drug_text": "1 ML hydralazine hydrochloride 20 MG/ML Injection",
+              "action": "start",
+              "sig": "5 to 10 mg IV as needed for severe-range blood pressure",
+              "route": "Intravenous",
+              "course": "short",
+              "reason": "severe-range blood pressure"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-05-03T05:30",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 1.0
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 45
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 52
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 102
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 89
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 78
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 11
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.5
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.3
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 75
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-05-03T05:30",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 168
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 7.2
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.78
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.4
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-04-30T10:30"
+            },
+            {
+              "procedure": "Oxytocin induction of labor",
+              "snomed": "177135005",
+              "performed": "2026-04-30T14:00"
+            },
+            {
+              "procedure": "Vaginal delivery of fetus",
+              "snomed": "700000006",
+              "performed": "2026-05-01T03:12"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-05-03T12:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Obstetric Discharge Summary",
+              "date": "2026-05-04T11:05",
+              "author": "obstetrics",
+              "body": "Regional hospital, labor and delivery. Admitted 4/30/2026, discharged 5/3/2026.\n\nAdmitting diagnosis: preeclampsia with severe features at 34w0d, no HELLP features. Background: myasthenia gravis on pyridostigmine; gestational hypertension in first pregnancy.\n\nCourse: admitted from the ED. Magnesium sulfate was not used because of myasthenia gravis, per neurology; levetiracetam 500 mg twice daily was given for seizure prophylaxis and continued for 24 hours after delivery. Severe-range pressures were treated with IV hydralazine as needed. Labor was induced with oxytocin and she had a vaginal delivery of a liveborn infant on 5/1/2026 at 03:12, at 34w1d. Headache and visual symptoms resolved after delivery. No myasthenic weakness at any point; pyridostigmine continued on schedule. Postpartum pressures settled into the 130s to low 140s over 80s to 90s without oral agents.\n\nLabs at discharge (5/3): creatinine 1.0 mg/dL, AST 45 U/L, ALT 52 U/L, platelets 168 K/uL.\n\nDischarge medications: pyridostigmine 60 mg PO TID; prenatal vitamin daily. No antihypertensive.\nAllergies: NKDA.\n\nInstructions: home BP twice daily with the provided cuff. Return for BP 160/110 or higher, headache, visual change, RUQ pain, shortness of breath. OB BP check within a week. Notify neurology of any weakness.\n\ncc: primary care, neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-05-05a",
+          "kind": "telehealth_visit",
+          "start": "2026-05-05T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Post-discharge check after delivery",
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, moderate MDM",
+              "performed": "2026-05-05T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Telehealth Visit",
+              "date": "2026-05-05T11:35",
+              "author": "PCP",
+              "body": "Video visit, patient at home, ID verified, consents to video.\n\nPostpartum day 4. Admitted 4/30 from the ED at 34 weeks with severe preeclampsia without HELLP features (BP 158/102, protein 2+, Cr 1.2, AST 70, ALT 80, plt 180). Magnesium avoided because of her MG; levetiracetam and IV hydralazine; induced and delivered vaginally 5/1. Discharge labs improved (Cr 1.0, AST 45, ALT 52, plt 168). Home yesterday on no BP medication. ED record and discharge summary reviewed.\n\nToday: headache gone, vision normal, no RUQ pain, no shortness of breath. Mild leg swelling improving. Home cuff readings since discharge 126-138 / 80-88. MG: no weakness, swallowing normal, on pyridostigmine 60 mg TID. Sleeping in pieces with a newborn but mood good; PHQ-2 0.\n\nExam (video): comfortable, speaking in full sentences, no ptosis, normal facial movement.\n\nA/P\n1. Severe preeclampsia without HELLP features, delivered. Pressures acceptable off medication. Keep checking twice daily. Any reading 160/110 or higher, or a headache, vision change or upper belly pain, go to L&D/ED directly; risk persists for several weeks after delivery. OB BP check later this week as planned.\n2. Myasthenia gravis: stable; continue pyridostigmine. Neurology to see postpartum.\n3. Prior gestational hypertension and now preeclampsia: long-term cardiovascular risk is higher; yearly BP, lipids and glucose here.\n\nPhysical with us in late summer or early fall."
+            }
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "portal_message",
+          "start": "2026-05-19T21:10",
+          "reason": "Home blood pressure log",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "BP log",
+              "date": "2026-05-19T21:10",
+              "author": "patient",
+              "body": "Two weeks of readings attached. Mostly 124 to 132 over 78 to 86. OB checked me last week and was happy. No headaches. Should I keep checking every day?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: BP log",
+              "date": "2026-05-20T07:40",
+              "author": "PCP",
+              "body": "These look reassuring. Please keep checking once a day until your six-week postpartum visit with OB, and don't hesitate to go in if a reading is 160/110 or above or a bad headache comes on."
+            }
+          ]
+        },
+        {
+          "id": "2026-06-04a",
+          "kind": "ed_visit",
+          "start": "2026-06-04T18:20",
+          "end": "2026-06-04T22:10",
+          "service": "Emergency Medicine",
+          "reason": "Headache, visual disturbance, right upper abdominal pain",
+          "vitals": {
+            "bp": [
+              160,
+              110
+            ],
+            "hr": 70,
+            "rr": 15,
+            "temp_c": 36.7,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Urinalysis",
+              "collected": "2026-06-04T18:45",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "3+"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 6.1
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-04T18:40",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 70
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 65
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.5
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 89
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-04T18:40",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 110
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.9
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 4.23
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 36.8
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 87
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 28.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.2
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 13.0
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.4
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2026-06-04T18:40",
+              "results": [
+                {
+                  "test": "Lactate dehydrogenase",
+                  "loinc": "2532-0",
+                  "unit": "U/L",
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  },
+                  "value": 186
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2026-06-04T18:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "date": "2026-06-09T09:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 6/4/2026.\n\nChief complaint: headache with visual disturbance and pain under the right ribs.\n\nHistory: 29 yo, 34 days after a vaginal delivery at 34 weeks for severe preeclampsia (5/1/2026). Home pressures had been in the 120s-130s. Today developed a headache, spots in her vision and right upper quadrant pain. Known myasthenia gravis, well controlled on pyridostigmine.\n\nMeds: pyridostigmine 60 mg PO TID, prenatal vitamin 1 tab daily. NKDA. PSH: none. FHx: mother had preeclampsia; maternal cousin with SLE. SH: teacher, never smoker, no current alcohol.\n\nExam: BP 160/110. Alert, oriented, no ptosis. Lungs clear. RUQ tender without guarding. Lower extremities with 2+ edema. Reflexes brisk.\n\nData: urine protein 3+. Creatinine 0.9 mg/dL. Platelets 110 K/uL. AST 70 U/L, ALT 65 U/L. LDH 186 U/L, no hemolysis pattern.\n\nAssessment: delayed postpartum preeclampsia with severe features, no HELLP features.\n\nCourse here: OB consulted. Magnesium sulfate was raised for seizure prophylaxis; after a call with on-call neurology it was not given because of her myasthenia, and levetiracetam was started instead. IV hydralazine for BP. Admitted to the postpartum unit under OB."
+            }
+          ],
+          "measure": [
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2026-06-04b",
+          "kind": "hospital_admission",
+          "start": "2026-06-04T22:10",
+          "end": "2026-06-07T11:30",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum preeclampsia with severe features",
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2026-06-07T05:45",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 44
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 41
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.66
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 101
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 12
+                },
+                {
+                  "test": "Glucose",
+                  "value": 92
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 122
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 12
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.4
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 7.2
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 94
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.8
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2026-06-07T05:45",
+              "results": [
+                {
+                  "test": "Platelets",
+                  "value": 142
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.7
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.89
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 11.6
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 34.6
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 89
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.8
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 33.5
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.7
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2026-06-04T22:10"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2026-06-07T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Postpartum Readmission Discharge Summary",
+              "date": "2026-06-09T09:35",
+              "author": "obstetrics",
+              "body": "Regional hospital, postpartum unit. Admission 6/4/2026 to 6/7/2026.\n\nDiagnosis: postpartum preeclampsia with severe features, without HELLP features, 34 days after delivery.\nComorbidity: myasthenia gravis.\n\nHospital course: magnesium sulfate withheld in view of myasthenia gravis, on neurology's advice. Levetiracetam 500 mg twice daily for 24 hours. IV hydralazine for severe-range pressures overnight, then nifedipine ER 30 mg daily started with good control. Headache, visual symptoms and RUQ pain resolved by hospital day 2. Strength remained normal throughout.\n\nDischarge labs (6/7): platelets 142 K/uL, AST 44 U/L, ALT 41 U/L.\n\nDischarge medications: nifedipine ER 30 mg PO daily (new); pyridostigmine 60 mg PO TID; prenatal vitamin daily.\nAllergies: NKDA.\n\nFollow-up: OB in 1 week for BP check, then her postpartum visit. Continue home BP log. Return precautions given.\n\ncc: primary care, neurology"
+            }
+          ]
+        },
+        {
+          "id": "2026-06-09a",
+          "kind": "portal_message",
+          "start": "2026-06-09T14:05",
+          "reason": "Readmission update",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Back in the hospital",
+              "date": "2026-06-09T14:05",
+              "author": "patient",
+              "body": "Wanted you to know I was readmitted last week, my pressure went up again with a headache. They put me on nifedipine. OB is following me. Do I need to see you too?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Back in the hospital",
+              "date": "2026-06-09T17:30",
+              "author": "PCP",
+              "body": "Thanks for telling me, and I'm sorry you had to go back in. I have the hospital records now. OB is the right team to adjust the nifedipine over the next few weeks, so no separate visit with me right now. Let's keep the fall physical on the calendar so we can look at your blood pressure together once things settle."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-09a",
+          "kind": "specialist_visit",
+          "start": "2026-07-09T09:00",
+          "service": "Obstetrics & Gynecology",
+          "reason": "Postpartum visit",
+          "vitals": {
+            "bp": [
+              116,
+              74
+            ],
+            "hr": 73
+          },
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Obstetrics Postpartum Visit",
+              "date": "2026-07-14T15:10",
+              "author": "obstetrics",
+              "body": "Outside obstetrics and gynecology practice. Postpartum visit, 7/9/2026, about 10 weeks after delivery and 5 weeks after readmission for postpartum preeclampsia.\n\nFeeling well. No headaches or visual symptoms. Home BP 110s-120s/70s on nifedipine ER 30 mg. MG stable on pyridostigmine.\n\nBP 116/74 today. Exam: no edema; abdomen soft; perineum healed.\n\nPlan:\n- Stop nifedipine. Check home BP a few times a week for a month and call for readings at or above 140/90.\n- Counseled that preeclampsia and prior gestational hypertension raise her long-term risk of hypertension and cardiovascular disease; she should have blood pressure checked at least yearly with primary care.\n- Continue pyridostigmine; neurology aware.\n\nAllergies: NKDA.\ncc: primary care"
+            }
+          ],
+          "measure": [
+            "hr"
+          ]
+        },
+        {
+          "id": "2026-07-22a",
+          "kind": "pharmacy",
+          "start": "2026-07-22T10:50",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill: pyridostigmine",
+              "date": "2026-07-22T10:50",
+              "author": "RN",
+              "body": "Electronic refill request, pyridostigmine 60 mg TID x 90 days. Dose unchanged in the June discharge summary. Approved per PCP."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T12:30",
+          "reason": "Scheduling",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Fall physical",
+              "date": "2026-08-11T12:30",
+              "author": "patient",
+              "body": "Can I get my physical on a Thursday morning in September? School starts at the end of the month, but I can take a personal morning for it."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Fall physical",
+              "date": "2026-08-11T15:15",
+              "author": "front desk",
+              "body": "You're booked for 9/17 at 8:30. Please bring your home blood pressure readings."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-17a",
+          "kind": "annual_physical",
+          "start": "2026-09-17T08:30",
+          "reason": "Annual physical and postpartum follow-up",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "History of gestational hypertension|Z87.59": {
+        "code": "Z87.59",
+        "display": "Personal history of other complications of pregnancy, childbirth and the puerperium",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Severe preeclampsia without HELLP features|O14.13": {
+        "code": "O14.13",
+        "display": "Severe pre-eclampsia, third trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Supervision of high risk pregnancy|O09.90": {
+        "code": "O09.90",
+        "display": "Supervision of high risk pregnancy, unspecified, unspecified trimester",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "1 ML hydralazine hydrochloride 20 MG/ML Injection": {
+        "code": "966571",
+        "display": "1 ML hydralazine hydrochloride 20 MG/ML Injection",
+        "ingredient": "ml",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      },
+      "pyridostigmine bromide 60 MG Oral Tablet": {
+        "code": "903857",
+        "display": "pyridostigmine bromide 60 MG Oral Tablet",
+        "ingredient": "pyridostigmine",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Lactate dehydrogenase": {
+        "code": "2532-0",
+        "display": "Lactate dehydrogenase [Enzymatic activity/volume] in Serum or Plasma",
+        "unit": "U/L",
+        "range": {
+          "low": 80,
+          "high": 225
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Oxytocin induction of labor": {
+        "code": "177135005",
+        "display": "Oxytocin induction of labor",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Vaginal delivery of fetus": {
+        "code": "700000006",
+        "display": "Vaginal delivery of fetus",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

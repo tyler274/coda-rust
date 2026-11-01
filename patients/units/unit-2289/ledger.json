@@ -1,0 +1,2211 @@
+{
+  "unit": "unit-2289",
+  "model": "claude-opus-5-5 (Claude Code workflow subagent)",
+  "warnings": [],
+  "patients": [
+    {
+      "mrn": "MRN00002289",
+      "given": "William",
+      "family": "Casey",
+      "birth_date": "1957-11-16",
+      "address_line": "212 Brookline Ave",
+      "phone": "+1-774-555-0175",
+      "email": "william.casey@example.test",
+      "marital_status": "married",
+      "summary": "Retired shipyard worker, 90 pack-year former smoker with asbestos exposure, who joins in 2023 for a chronic productive cough; bronchiectasis and asbestosis are found, then extensive-stage small cell lung cancer presenting with hypercalcemia. Chemoimmunotherapy, malignant pleural and pericardial effusions, a port infection, SIADH and a central airway mass follow, mostly seen through sparse outside notes.",
+      "events": [
+        {
+          "id": "2023-06-06a",
+          "kind": "telephone",
+          "start": "2023-06-06T10:20",
+          "reason": "new patient inquiry",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "New Patient Call",
+              "date": "2023-06-06T10:20",
+              "author": "front desk",
+              "body": "Caller wants to transfer his primary care here; his old doctor retired this spring and he hasn't connected with whoever took over. Medicare. Booked new patient appt 6/13 at 9:00. Release signed by fax for his old office notes and med list. Told him to bring his pill bottles."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-12a",
+          "kind": "outside_records",
+          "start": "2023-06-12T14:05",
+          "reason": "records from prior primary care office",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Prior Primary Care Records",
+              "date": "2023-06-12T14:05",
+              "author": "outside primary care",
+              "body": "Faxed packet, 9 pages, from his previous family practice.\n\nMedication list: atorvastatin 40 mg daily; aspirin 81 mg daily.\nAllergies: NKDA.\nProblem list: hyperlipidemia; tobacco use, quit 2021; occupational asbestos exposure (shipyard).\n\nApril 2023 sick visit: fever, productive cough, crackles at the right base; treated as community-acquired pneumonia with an oral antibiotic course, improved at phone follow-up. Not admitted.\n\nOlder visits note repeated winter chest infections treated with antibiotics. No colonoscopy on file.\n\nScanned to chart."
+            }
+          ]
+        },
+        {
+          "id": "2023-06-13a",
+          "kind": "establish_care",
+          "start": "2023-06-13T09:00",
+          "end": "2023-06-13T10:05",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "new patient, chronic cough",
+          "conditions": [
+            {
+              "label": "Hyperlipidemia",
+              "action": "diagnosed",
+              "onset": "2014-05-01"
+            },
+            {
+              "label": "Asbestos exposure",
+              "action": "diagnosed",
+              "onset": "1983-06-01",
+              "note": "30 years in naval shipyards",
+              "icd10": "Z77.090"
+            },
+            {
+              "label": "History of tobacco dependence",
+              "action": "diagnosed",
+              "onset": "2021-03-01",
+              "note": "90 pack-years, quit 2021"
+            },
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "history",
+              "onset": "2023-04-10",
+              "note": "outpatient, treated by prior office"
+            },
+            {
+              "label": "Community-acquired pneumonia",
+              "action": "resolved"
+            }
+          ],
+          "medications": [
+            {
+              "drug": "atorvastatin 40 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 40,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "hyperlipidemia"
+            },
+            {
+              "drug": "aspirin 81 MG Delayed Release Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth daily",
+              "dose": {
+                "value": 81,
+                "unit": "mg"
+              },
+              "frequency": "DAILY",
+              "route": "Oral",
+              "course": "chronic"
+            }
+          ],
+          "allergies": [
+            {
+              "substance": "No known drug allergies"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              128,
+              79
+            ],
+            "hr": 68,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 81.6,
+            "height_cm": 178.2
+          },
+          "labs": [
+            {
+              "panel": "Comprehensive Metabolic Panel (CMP)",
+              "collected": "2023-06-13T10:10",
+              "results": [
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 26
+                },
+                {
+                  "test": "Sodium",
+                  "value": 139
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Glucose",
+                  "value": 90
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 90
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                },
+                {
+                  "test": "Albumin",
+                  "value": 4.3
+                },
+                {
+                  "test": "Total Protein",
+                  "value": 6.9
+                },
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 27
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 84
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 0.5
+                }
+              ]
+            },
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2023-06-13T10:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 15.4
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.5
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 5.18
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 47.1
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 91
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 29.7
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.7
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.7
+                },
+                {
+                  "test": "Platelets",
+                  "value": 304
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Lipid Panel",
+              "collected": "2023-06-13T10:10",
+              "results": [
+                {
+                  "test": "Low Density Lipoprotein",
+                  "value": 105
+                },
+                {
+                  "test": "High Density Lipoprotein",
+                  "value": 48
+                },
+                {
+                  "test": "Triglycerides",
+                  "value": 104
+                },
+                {
+                  "test": "Total Cholesterol",
+                  "value": 174
+                },
+                {
+                  "test": "Non-HDL Cholesterol",
+                  "value": 126
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-06-13T10:10",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                },
+                {
+                  "test": "HIV-1/2 Antigen and Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 1
+            }
+          ],
+          "social": [
+            {
+              "item": "Tobacco smoking status",
+              "value": "Former smoker"
+            },
+            {
+              "item": "Occupation",
+              "value": "Retired naval shipyard worker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, new patient, moderate MDM",
+              "performed": "2023-06-13T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-06-13T10:00"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2023-06-13T10:00"
+            },
+            {
+              "vaccine": "Tdap",
+              "date": "2023-06-13T10:00"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "placed",
+              "order": "Pulmonology referral",
+              "category": "referral",
+              "to": "Pulmonology",
+              "reason": "years of daily purulent sputum, frequent chest infections, clubbing"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "New Patient Visit",
+              "date": "2023-06-13T10:05",
+              "author": "PCP",
+              "body": "65M establishing care. Previous PCP retired; records from that office reviewed.\n\nMain issue is his cough. Every morning he brings up a lot of thick yellow-green phlegm, often with a bad smell, mostly in the first hour after he gets up. Says he has had a chest infection that needed antibiotics most years for about five years; the last one in April was called pneumonia and treated at home with pills. Feels back to his usual now. No fevers, sweats or weight change.\n\nPMH: high cholesterol on atorvastatin. Took aspirin on old doctor's advice, brother has heart disease.\nMeds: atorvastatin 40 mg daily, aspirin 81 mg daily.\nAllergies: none to medicines.\nFamily: father died of lung cancer at 68, smoked heavily. Mother had emphysema. Brother with coronary disease.\nSocial: married, lives with wife. Thirty years at the naval shipyard, retired at 55; worked around insulation and lagging, asbestos exposure for years. Smoked about two packs a day for roughly 45 years (90 pk-yr), finally quit in 2021 after several tries. A beer once or twice a month. Walks now and then.\n\nExam: BP and vitals as charted. Comfortable, no distress. Clubbing of the fingers. Lungs with scattered rhonchi over both bases, clear after cough in part, no wheeze. Heart regular, no murmur. Abdomen soft. No edema.\n\nA/P\n1. Chronic productive cough with recurrent infections, clubbing, heavy smoking and asbestos history. Needs a pulmonary evaluation and CT. Referral to pulmonology placed.\n2. Hyperlipidemia: continue atorvastatin 40. Lipids today.\n3. Former smoker, asbestos exposure: pulmonology will steer imaging.\n4. Health maintenance: PCV20 and Tdap today. Hep C and HIV screening with labs. CMP, CBC, lipids.\nRTC early September for his wellness visit."
+            }
+          ],
+          "state": {
+            "weight_kg": 82.0,
+            "height_cm": 178.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg",
+            "height_cm"
+          ]
+        },
+        {
+          "id": "2023-06-15a",
+          "kind": "portal_message",
+          "start": "2023-06-15T16:40",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lab Results",
+              "date": "2023-06-15T16:40",
+              "author": "PCP",
+              "body": "Mr. Casey, everything from Tuesday came back fine: kidney and liver tests, blood count, and the hepatitis C and HIV screens are negative. Your cholesterol numbers look good on the atorvastatin, so no change. Pulmonology should call you to set up the visit; let us know if you don't hear in two weeks."
+            }
+          ]
+        },
+        {
+          "id": "2023-07-17a",
+          "kind": "specialist_visit",
+          "start": "2023-07-17T13:30",
+          "service": "Pulmonology",
+          "reason": "chronic productive cough",
+          "conditions": [
+            {
+              "label": "Bronchiectasis",
+              "action": "diagnosed",
+              "onset": "2018-06-01"
+            }
+          ],
+          "orders": [
+            {
+              "id": "pulm-referral",
+              "action": "done",
+              "date": "2023-07-17T13:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Consultation",
+              "date": "2023-07-24T09:15",
+              "author": "pulmonology",
+              "body": "Outside pulmonary group. Date of visit 7/17/2023. Thank you for asking us to see Mr. Casey.\n\nReason: daily purulent sputum.\nHe raises a large volume of foul, yellow-green sputum each morning, heaviest right after waking. About five years of recurrent respiratory infections, each needing antibiotics. No weight loss, fevers or night sweats.\n\nHistory: hyperlipidemia. Ex-smoker, 90 pack-years, quit 2021. Shipyard work with asbestos exposure. Meds atorvastatin 40, aspirin 81. NKDA.\n\nExam: digital clubbing. Scattered rhonchi over both lung bases. No wheeze.\n\nCT chest 7/11/2023 (reviewed): thick-walled, dilated bronchi in both lower lobes with mucus plugging and cystic change.\n\nImpression: bronchiectasis, bilateral lower lobes.\n\nPlan: daily airway clearance with an oscillating PEP device, twice a day, technique taught today. Treat flares with antibiotics early. Will see him again in October.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2023-08-21a",
+          "kind": "pharmacy",
+          "start": "2023-08-21T08:50",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: atorvastatin",
+              "date": "2023-08-21T08:50",
+              "author": "MA",
+              "body": "Pharmacy e-request for atorvastatin 40 mg #90. Last lipids 6/13 fine. Sent 90 days, 1 refill, per protocol."
+            }
+          ]
+        },
+        {
+          "id": "2023-09-08a",
+          "kind": "annual_physical",
+          "start": "2023-09-08T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "health maintenance",
+          "vitals": {
+            "bp": [
+              127,
+              70
+            ],
+            "hr": 71,
+            "rr": 19,
+            "temp_c": 36.4,
+            "spo2": 97,
+            "weight_kg": 82.9
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial preventive physical examination (Welcome to Medicare)",
+              "performed": "2023-09-08T10:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-09-08T11:10"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2023-09-08T11:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Welcome to Medicare Visit",
+              "date": "2023-09-08T11:20",
+              "author": "PCP",
+              "body": "Preventive visit. 65-year-old man, seen by pulmonology in July for his cough, told he has bronchiectasis; doing the flutter device most mornings. Nothing new bothering him today.\n\nMeds: atorvastatin 40, aspirin 81. Allergies none.\nFunction: independent, drives, no falls. Hearing and vision okay for him. PHQ-2 negative.\n\nVitals in normal range. Exam: well appearing. Clubbing as before. Chest with a few coarse sounds at the bases. Heart regular. Abdomen benign. Skin unremarkable.\n\nCounseling: we talked about what is most likely to threaten his health over the coming years. With 90 pack-years, decades of asbestos and his father's lung cancer, lung cancer is the big one, more than his heart. Pulmonology has a CT planned for October, which will cover the screening question, so I am not ordering a separate low-dose CT now. He knows to call for coughing up blood, weight loss or new chest pain.\n\nShingrix #1 today, #2 in 2 to 6 months. Flu/COVID/RSV when supplies are in, nurse visit.\nAdvance directive packet given."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-10-03a",
+          "kind": "nurse_visit",
+          "start": "2023-10-03T14:00",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2023-10-03T14:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, quadrivalent",
+              "date": "2023-10-03T14:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2023-10-03T14:07"
+            },
+            {
+              "vaccine": "RSV, adjuvanted (Arexvy)",
+              "date": "2023-10-03T14:09"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2023-10-03T14:25",
+              "author": "RN",
+              "body": "High-dose flu L deltoid, updated COVID R deltoid, RSV L deltoid lower site. Screening questions negative. Waited 15 min, no reaction. VIS sheets given."
+            }
+          ]
+        },
+        {
+          "id": "2023-10-10a",
+          "kind": "specialist_visit",
+          "start": "2023-10-10T09:45",
+          "service": "Pulmonology",
+          "reason": "cough and dyspnea follow-up",
+          "conditions": [
+            {
+              "label": "Asbestosis",
+              "action": "diagnosed",
+              "onset": "2023-10-10"
+            },
+            {
+              "label": "Suspected malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2023-10-06",
+              "note": "right hilar fullness on HRCT",
+              "icd10": "R91.8"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Consult Note",
+              "title": "Pulmonology Follow-up",
+              "date": "2023-10-17T11:30",
+              "author": "pulmonology",
+              "body": "Outside pulmonary group, follow-up 10/10/2023.\n\nBack after the July consult; his PCP saw him in September. Ongoing cough, and over the last couple of months he gets winded sooner on hills and stairs. No chest pain, no blood in the sputum, weight steady.\n\nExam: fine inspiratory crackles at both bases. Clubbing.\n\nChest x-ray: interstitial fibrotic change with pleural plaques.\nHRCT 10/6/2023: diffuse subpleural reticulation with honeycombing. Separately, soft tissue fullness at the right hilum, not well characterized on a non-contrast study; contrast-enhanced CT advised.\nPFTs: restrictive pattern.\n\nImpression:\n1. Asbestosis with pleural plaques, on top of his known lower-lobe bronchiectasis.\n2. Right hilar abnormality, suspicious for a malignancy given his history.\n\nPlan: we spent time on what to expect over the long term: the fibrosis tends to progress slowly, and with his asbestos and smoking history his risks of lung cancer and of mesothelioma are both well above average. Contrast CT chest ordered, first opening is late November. Continue airway clearance.\n\ncc: primary care"
+            }
+          ]
+        },
+        {
+          "id": "2023-10-19a",
+          "kind": "telephone",
+          "start": "2023-10-19T12:40",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Pulmonology Letter Review",
+              "date": "2023-10-19T12:55",
+              "author": "PCP",
+              "body": "Called pt after reading the pulm note. Went over the scarring from asbestos, and that the CT also showed something at the right side of the chest center that needs a dye CT to sort out. He had heard the same from pulm and is booked for late November. Asked if it could go sooner; he would rather keep the date, his wife has a procedure the week before. Offered to push for an earlier slot anyway, he declined. Added to problem list. Call if any blood in sputum, weight loss, or he feels worse."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-18a",
+          "kind": "hospital_admission",
+          "start": "2023-11-18T15:20",
+          "end": "2023-11-24T12:00",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "confusion, fatigue, constipation",
+          "conditions": [
+            {
+              "label": "Hypercalcemia",
+              "action": "diagnosed",
+              "onset": "2023-11-14",
+              "icd10": "E83.52"
+            },
+            {
+              "label": "Malignant neoplasm of lung",
+              "action": "diagnosed",
+              "onset": "2023-11-18",
+              "note": "small cell carcinoma, right hilar, extensive stage, stage IV"
+            },
+            {
+              "label": "Malignant pleural effusion",
+              "action": "diagnosed",
+              "onset": "2023-11-18",
+              "note": "right",
+              "icd10": "J91.0"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-18T15:50",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 13.9
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.88
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 95
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2023-11-18T15:50",
+              "results": [
+                {
+                  "test": "Phosphorus",
+                  "value": 1.9
+                },
+                {
+                  "test": "Parathyroid Hormone, Intact",
+                  "value": 9
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-24T06:00",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 10.2
+                },
+                {
+                  "test": "Sodium",
+                  "value": 141
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 15
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.92
+                },
+                {
+                  "test": "Glucose",
+                  "value": 95
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 92
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 9
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Percutaneous needle biopsy of lung, CT-guided",
+              "snomed": "287465001",
+              "performed": "2023-11-21T10:30"
+            },
+            {
+              "procedure": "Thoracentesis",
+              "snomed": "91602002",
+              "performed": "2023-11-22T14:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2023-11-27T08:30",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 11/18/2023.\nCC: confused, tired, constipated x several days, per wife.\nPt slow to answer, lethargic. Dry mucous membranes, mildly dry. Reflexes sluggish, cannot keep attention on serial tasks. Nonfocal otherwise.\nCa 13.9, phos 1.9, PTH low (9).\nCXR: 4.5 cm R hilar mass.\nImp: hypercalcemia, low PTH, hilar mass, concern for malignancy. IV NS started. Admit to medicine.\nAllergies: NKDA."
+            },
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "date": "2023-11-27T08:35",
+              "author": "hospital medicine",
+              "body": "Admitted 11/18/2023, discharged 11/24/2023.\nDx: hypercalcemia due to malignancy; small cell lung cancer, extensive stage (stage IV) with malignant right pleural effusion.\n\nCourse: IV saline and zoledronic acid 4 mg IV x1; mental status cleared by day 3. Contrast CT chest: right hilar mass, small right effusion. CT abd/pelvis and MRI brain without metastatic disease. CT-guided transthoracic needle biopsy 11/21: small cell carcinoma. Diagnostic right thoracentesis 11/22: cytology positive for malignant cells. Ca 10.2 on day of discharge.\n\nDischarge meds: atorvastatin 40 daily, aspirin 81 daily (unchanged).\nAllergies: NKDA.\nFollow-up: oncology consult arranged for early December; PCP within 1 week."
+            }
+          ]
+        },
+        {
+          "id": "2023-11-28a",
+          "kind": "office_visit",
+          "start": "2023-11-28T11:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Hypercalcemia",
+              "action": "resolved",
+              "icd10": "E83.52"
+            },
+            {
+              "label": "Suspected malignant neoplasm of lung",
+              "action": "resolved",
+              "note": "biopsy confirmed small cell carcinoma",
+              "icd10": "R91.8"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              138,
+              75
+            ],
+            "hr": 66,
+            "rr": 18,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 81.0
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2023-11-28T11:40",
+              "results": [
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Sodium",
+                  "value": 140
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.1
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.99
+                },
+                {
+                  "test": "Glucose",
+                  "value": 94
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 10
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2023-11-28T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2023-11-28T12:10",
+              "author": "PCP",
+              "body": "Seen with his wife, 4 days after discharge. Discharge summary reviewed (received 11/27).\n\nHe came in with confusion and constipation; calcium was 13.9 and a 4.5 cm right hilar mass was found. Biopsy showed small cell carcinoma, and the fluid around the right lung had cancer cells, so it is extensive stage. He got fluids and a dose of zoledronic acid and cleared quickly.\n\nToday he is sharp, oriented, bowels moving. Some fatigue. Wife is taking notes and doing the driving.\n\nExam: alert, appropriate. Lungs: crackles at bases as before, slightly reduced sounds at R base. Heart regular. No edema.\n\nA/P\n1. Small cell lung cancer, extensive stage, malignant R pleural effusion. Oncology consult 12/4. We talked about how treatment usually goes and that I'll stay involved. They asked good questions; both understandably shaken.\n2. Hypercalcemia: resolved. BMP today. Call for confusion, constipation, vomiting.\n3. Bronchiectasis, asbestosis: keep up airway clearance.\n4. HLD: continue atorvastatin, aspirin.\nWill touch base after he meets oncology."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2023-12-19a",
+          "kind": "portal_message",
+          "start": "2023-12-19T19:05",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Update from wife",
+              "date": "2023-12-19T19:05",
+              "author": "patient",
+              "body": "Hi, this is Bill's wife writing for him. He started treatment on the 11th: carboplatin and etoposide with atezolizumab, every three weeks. The cancer doctor said four rounds then the immune drug alone. He's tired but managing. Just wanted you to know. Do we still need the second shingles shot?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Update from wife",
+              "date": "2023-12-20T08:15",
+              "author": "PCP",
+              "body": "Thank you for letting me know, I'm glad the first round went okay. Let's hold the second shingles shot until his counts settle; we can give it at his spring visit. Message any time."
+            }
+          ]
+        },
+        {
+          "id": "2024-02-20a",
+          "kind": "pharmacy",
+          "start": "2024-02-20T09:10",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: atorvastatin",
+              "date": "2024-02-20T09:10",
+              "author": "MA",
+              "body": "Atorvastatin 40 mg, 90-day supply requested by pharmacy. Approved, 1 refill. Aspirin is OTC, he buys it himself."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-08a",
+          "kind": "outside_records",
+          "start": "2024-04-08T13:20",
+          "reason": "oncology treatment summary",
+          "documents": [
+            {
+              "type": "Outside Records",
+              "title": "Oncology Treatment Summary",
+              "date": "2024-04-08T13:20",
+              "author": "oncology",
+              "body": "Outside oncology group, summary to PCP.\nDx: small cell lung cancer, extensive stage, malignant R pleural effusion (11/2023).\nTreatment: carboplatin/etoposide plus atezolizumab, cycle 1 12/11/2023, 4 cycles completed 3/2024. Now on atezolizumab every 4 weeks as maintenance.\nNext restaging in about 3 months.\nAllergies: NKDA. Other meds: atorvastatin, aspirin."
+            }
+          ]
+        },
+        {
+          "id": "2024-04-16a",
+          "kind": "office_visit",
+          "start": "2024-04-16T09:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "vitals": {
+            "bp": [
+              124,
+              65
+            ],
+            "hr": 66,
+            "rr": 16,
+            "temp_c": 36.5,
+            "spo2": 96,
+            "weight_kg": 77.6
+          },
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2024-04-16T09:30"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-04-16T10:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2024-04-16T10:05"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "date": "2024-04-16T10:15",
+              "author": "PCP",
+              "body": "Check-in. Finished four rounds of chemo with immunotherapy in March, now getting atezolizumab monthly at the cancer center. Energy coming back slowly, eating fine, lost a few pounds over the winter. Still brings up sputum in the mornings, less on most days; doing the PEP device.\n\nMeds: atorvastatin 40, aspirin 81, plus atezolizumab via oncology.\n\nExam: thin but well. Clubbing. Crackles at both bases, unchanged. Heart regular, no edema.\n\nA/P\n1. ES-SCLC on maintenance immunotherapy, per oncology summary of 4/8.\n2. Bronchiectasis, asbestosis: stable.\n3. HLD: continue statin.\n4. Shingrix #2 today, ok with oncology.\nFollow up in the summer, sooner as needed."
+            }
+          ],
+          "state": {
+            "weight_kg": 78.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-07-23a",
+          "kind": "office_visit",
+          "start": "2024-07-23T14:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Cancelled",
+              "date": "2024-07-22T11:45",
+              "author": "front desk",
+              "body": "Wife called, infusion got moved to tomorrow and they can't do both. Cancelled 7/23. She'll call back to rebook after his scans."
+            }
+          ],
+          "appointment": "cancelled"
+        },
+        {
+          "id": "2024-09-14a",
+          "kind": "hospital_admission",
+          "start": "2024-09-14T08:40",
+          "end": "2024-09-20T13:00",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "dyspnea, cough, positional chest pain",
+          "conditions": [
+            {
+              "label": "Malignant pericardial effusion",
+              "action": "diagnosed",
+              "onset": "2024-09-10",
+              "icd10": "I31.31"
+            },
+            {
+              "label": "Cardiac tamponade",
+              "action": "diagnosed",
+              "onset": "2024-09-14",
+              "icd10": "I31.4"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2024-09-14T08:45",
+              "bp": [
+                100,
+                60
+              ],
+              "hr": 110,
+              "rr": 22,
+              "spo2": 92
+            }
+          ],
+          "reports": [
+            {
+              "study": "Transthoracic echocardiogram",
+              "performed": "2024-09-14T10:15",
+              "text": "Large circumferential pericardial effusion. Right ventricular diastolic collapse and exaggerated respiratory variation in mitral inflow, consistent with tamponade physiology. Left ventricular systolic function normal by visual estimate. No significant valvular disease.",
+              "conclusion": "Large pericardial effusion with echocardiographic evidence of cardiac tamponade."
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Pericardiocentesis",
+              "snomed": "309849004",
+              "performed": "2024-09-14T12:30"
+            },
+            {
+              "procedure": "Thoracentesis",
+              "snomed": "91602002",
+              "performed": "2024-09-06T10:00"
+            },
+            {
+              "procedure": "Talc pleurodesis",
+              "snomed": "302450005",
+              "performed": "2024-09-18T11:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2024-09-23T09:00",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 9/14/2024.\nSCLC, extensive stage, recurrent R pleural effusion, tapped at the cancer center about a week ago with relief; now short of breath again, coughing, chest pain worse lying flat. No injury.\nBP 100/60, HR 110, RR 22, SpO2 92% RA.\nJVP up, heart sounds muffled.\nBedside then formal echo: large pericardial effusion, tamponade.\nPericardiocentesis by cardiology, fluid sent; cytology malignant cells.\nAdmitted. NKDA.\nAddendum: R effusion reaccumulated; talc pleurodesis done 9/18 before discharge 9/20."
+            }
+          ]
+        },
+        {
+          "id": "2024-09-26a",
+          "kind": "office_visit",
+          "start": "2024-09-26T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Cardiac tamponade",
+              "action": "resolved",
+              "icd10": "I31.4"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              64
+            ],
+            "hr": 61,
+            "rr": 17,
+            "temp_c": 36.7,
+            "spo2": 98,
+            "weight_kg": 78.6
+          },
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2024-09-26T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2024-09-26T10:50",
+              "author": "PCP",
+              "body": "Here with wife after a 6-day stay. Only the brief ED note has come over; history from them.\n\nTimeline per pt: fluid taken off the R lung at the cancer center on 9/6, felt better for a few days, then breathless, coughing, chest pain lying down. ED found a large fluid collection around the heart pressing on it; drained, fluid had cancer cells. While in, the R lung fluid came back and they did a talc procedure to seal it on 9/18.\n\nNow: breathing much better, lying flat again, no chest pain, walking the house without stopping.\n\nExam: vitals as charted, not tachycardic today. Heart sounds normal, no rub. Reduced sounds R base, crackles both bases as before. No JVD. No edema.\n\nA/P\n1. Malignant pericardial effusion with tamponade, drained. Tamponade resolved. Oncology plans to continue atezolizumab, repeat echo per them.\n2. Recurrent malignant R pleural effusion, s/p pleurodesis.\n3. Return precautions reviewed: breathlessness, chest pain, lightheadedness -> ED.\nRequested full discharge summary from hospital."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2024-10-08a",
+          "kind": "nurse_visit",
+          "start": "2024-10-08T13:30",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2024-10-08T13:35"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2024-10-08T13:35"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2024-10-08T13:37"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2024-10-08T13:55",
+              "author": "RN",
+              "body": "Flu (high dose) R arm, COVID L arm. Oncology ok'd, timed between infusions. Tolerated. Observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2024-12-10a",
+          "kind": "annual_physical",
+          "start": "2024-12-10T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit",
+          "vitals": {
+            "bp": [
+              129,
+              75
+            ],
+            "hr": 70,
+            "rr": 17,
+            "temp_c": 36.6,
+            "spo2": 98,
+            "weight_kg": 77.1
+          },
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, initial",
+              "performed": "2024-12-10T09:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness Visit",
+              "date": "2024-12-10T09:50",
+              "author": "PCP",
+              "body": "AWV. Feels he has been holding steady since September. Monthly atezolizumab continues. Morning sputum unchanged. No falls, managing stairs at home slowly. Wife handles appointments.\n\nPHQ-2: 1, feels down some days, no loss of interest; declines counseling for now.\nHealth care proxy: wife; MOLST discussion started, he wants to think it over with his oncologist.\n\nVitals stable. Weight 77. Exam: chest as before, heart regular, no edema.\n\nPlan: meds unchanged (atorvastatin 40, aspirin 81). Vaccines up to date this season. Follow up in spring."
+            }
+          ],
+          "state": {
+            "weight_kg": 77.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T18:30",
+          "procedures": [
+            {
+              "procedure": "Implantation of venous access port",
+              "snomed": "80402001",
+              "performed": "2025-02-25T08:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Scan results and port",
+              "date": "2025-02-27T18:30",
+              "author": "patient",
+              "body": "Writing for Bill again. His February scans showed the cancer is growing, so they stopped the atezolizumab. He had a port put in on Tuesday the 25th. He goes in on March 8 to start carboplatin and etoposide again, they want to keep him in the hospital for the first round. No changes to his other pills."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Scan results and port",
+              "date": "2025-02-28T08:05",
+              "author": "PCP",
+              "body": "Thanks for the update. Sorry the scans weren't better news. Keep the port site clean and dry for now, and call oncology or us for fever, redness or swelling there. I'll check in after his stay."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-08a",
+          "kind": "hospital_admission",
+          "start": "2025-03-08T09:00",
+          "end": "2025-03-18T14:00",
+          "service": "Oncology",
+          "reason": "scheduled chemotherapy admission",
+          "conditions": [
+            {
+              "label": "Catheter-related bloodstream infection",
+              "action": "diagnosed",
+              "onset": "2025-03-08",
+              "icd10": "T80.211A"
+            }
+          ],
+          "vitals": [
+            {
+              "time": "2025-03-10T21:30",
+              "bp": [
+                110,
+                70
+              ],
+              "hr": 110,
+              "rr": 22,
+              "temp_c": 38.9,
+              "spo2": 94
+            }
+          ],
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-10T21:45",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 12.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.37
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 31.0
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 92
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.3
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.9
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.8
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 9.0
+                }
+              ]
+            },
+            {
+              "panel": "Urinalysis",
+              "collected": "2025-03-10T21:50",
+              "results": [
+                {
+                  "test": "Urine Protein",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Leukocyte Esterase",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Nitrite",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Color",
+                  "text": "Yellow"
+                },
+                {
+                  "test": "Urine Clarity",
+                  "text": "Clear"
+                },
+                {
+                  "test": "Urine Specific Gravity",
+                  "value": 1.016
+                },
+                {
+                  "test": "Urine pH",
+                  "value": 5.5
+                },
+                {
+                  "test": "Urine Glucose",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Ketones",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine Blood",
+                  "text": "Negative"
+                },
+                {
+                  "test": "Urine White Blood Cells",
+                  "value": 1
+                },
+                {
+                  "test": "Urine Red Blood Cells",
+                  "value": 1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-10T21:45",
+              "resulted": "2025-03-12T07:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "Coagulase-negative staphylococci, port and peripheral sets"
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-03-14T06:00",
+              "resulted": "2025-03-17T07:30",
+              "results": [
+                {
+                  "test": "Blood Culture",
+                  "text": "No growth"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Chest X-ray, 1 view",
+              "performed": "2025-03-10T22:20",
+              "text": "Portable AP view. Right chest port with catheter tip at the cavoatrial junction. No focal infiltrate or consolidation. Post-pleurodesis change at the right base. No pneumothorax.",
+              "conclusion": "No infiltrate or consolidation."
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Oncology Discharge Summary",
+              "date": "2025-03-20T10:40",
+              "author": "oncology",
+              "body": "Inpatient oncology, admitted 3/8/2025, discharged 3/18/2025. Age 67.\nAdmitted for C1 carboplatin/etoposide (rechallenge) via port placed 2/25.\nHD3: T 38.9, rigors, dyspnea. BP 110/70, HR 110, RR 22, SpO2 94% RA. No cough, sputum or urinary sx. Port site mildly tender, no erythema or drainage. Lungs clear.\nWBC 12.0, Hgb 10.2, plt 250. UA neg. CXR no infiltrate.\nBlood cx port + peripheral: coag-negative staph. Dx catheter-related bloodstream infection.\nVancomycin IV, 14-day course with antibiotic lock, port retained. Repeat cx no growth.\nChemo completed. Cycles 2-4 outpatient.\nNKDA. Home meds unchanged: atorvastatin 40, aspirin 81."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-25a",
+          "kind": "office_visit",
+          "start": "2025-03-25T10:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up",
+          "conditions": [
+            {
+              "label": "Catheter-related bloodstream infection",
+              "action": "resolved",
+              "icd10": "T80.211A"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              132,
+              74
+            ],
+            "hr": 64,
+            "rr": 15,
+            "temp_c": 36.9,
+            "spo2": 97,
+            "weight_kg": 75.8
+          },
+          "labs": [
+            {
+              "panel": "Complete Blood Count (CBC)",
+              "collected": "2025-03-25T11:10",
+              "results": [
+                {
+                  "test": "Hemoglobin",
+                  "value": 10.6
+                },
+                {
+                  "test": "White Blood Cells",
+                  "value": 6.1
+                },
+                {
+                  "test": "Red Blood Cells",
+                  "value": 3.47
+                },
+                {
+                  "test": "Hematocrit",
+                  "value": 32.3
+                },
+                {
+                  "test": "Mean Corpuscular Volume",
+                  "value": 93
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin",
+                  "value": 30.5
+                },
+                {
+                  "test": "Mean Corpuscular Hemoglobin Concentration",
+                  "value": 32.8
+                },
+                {
+                  "test": "Red Cell Distribution Width",
+                  "value": 12.9
+                },
+                {
+                  "test": "Platelets",
+                  "value": 308
+                },
+                {
+                  "test": "Mean Platelet Volume",
+                  "value": 8.4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-03-25T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-03-25T11:25",
+              "author": "PCP",
+              "body": "One week out from a 10-day oncology admission. Discharge summary in.\n\nWent in for the first round of carboplatin/etoposide again after progression in Feb. Day 3 he spiked to 38.9 with shaking chills; cultures from the new port and his arm grew coag-negative staph. Port kept, vancomycin 2 weeks with lock, last cultures clean. Antibiotic finished yesterday.\n\nToday: no fevers at home, port site not sore, appetite fair. Next cycle on the 31st.\n\nExam: afebrile, vitals as charted. Port R upper chest, healed incision, no redness or tenderness. Lungs with bibasilar crackles, unchanged. Heart regular. No edema.\n\nCBC today.\n\nA/P\n1. Port infection, treated; resolved.\n2. ES-SCLC, second-line carbo/etoposide.\n3. Anemia from chemo, following with oncology.\n4. HLD: continue atorvastatin, aspirin."
+            }
+          ],
+          "state": {
+            "weight_kg": 76.0
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-03-26a",
+          "kind": "portal_message",
+          "start": "2025-03-26T15:20",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Blood count",
+              "date": "2025-03-26T15:20",
+              "author": "PCP",
+              "body": "His white count is back to normal and the hemoglobin is 10.6, a bit better than in the hospital. That's the chemo's effect and oncology is watching it too. Nothing to change."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-13a",
+          "kind": "pharmacy",
+          "start": "2025-05-13T08:30",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: atorvastatin",
+              "date": "2025-05-13T08:30",
+              "author": "MA",
+              "body": "eRx renewal atorvastatin 40 mg #90 with 3 refills. Approved by PCP."
+            }
+          ]
+        },
+        {
+          "id": "2025-06-17a",
+          "kind": "telehealth_visit",
+          "start": "2025-06-17T15:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up",
+          "procedures": [
+            {
+              "procedure": "Telehealth visit, established patient, low MDM",
+              "performed": "2025-06-17T15:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Video Follow-up",
+              "date": "2025-06-17T15:30",
+              "author": "PCP",
+              "body": "Video, pt and wife on the tablet from their kitchen, ID verified.\nFourth and last round of the carbo/etoposide is next week. Tired for a few days after each one, then recovers. No fevers since March. Cough and morning sputum about the same. Port fine.\nMeds: atorvastatin 40, aspirin 81.\nObserved: speaking full sentences, no distress, color good.\nPlan: no changes. Oncology restaging after this round. Office visit this fall with the flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-07a",
+          "kind": "nurse_visit",
+          "start": "2025-10-07T11:00",
+          "reason": "vaccines",
+          "procedures": [
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-07T11:05"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-07T11:05"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Pfizer-BioNTech, updated formula",
+              "date": "2025-10-07T11:07"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Nursing Note",
+              "title": "Immunization Visit",
+              "date": "2025-10-07T11:25",
+              "author": "RN",
+              "body": "Flu HD L deltoid, COVID R deltoid. Wife says scans in late August showed growth again and he started lurbinectedin every 3 weeks on 9/5; next dose 10/17. Updated med list note for PCP. Tolerated shots, observed 15 min."
+            }
+          ]
+        },
+        {
+          "id": "2025-11-16a",
+          "kind": "hospital_admission",
+          "start": "2025-11-16T13:10",
+          "end": "2025-11-20T12:30",
+          "service": "Emergency Medicine / Hospital Medicine",
+          "reason": "confusion and lethargy",
+          "conditions": [
+            {
+              "label": "Syndrome of inappropriate antidiuretic hormone secretion",
+              "action": "diagnosed",
+              "onset": "2025-11-13",
+              "icd10": "E22.2"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              133,
+              70
+            ],
+            "hr": 71,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 97
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-16T13:40",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 119
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 28
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.94
+                },
+                {
+                  "test": "Glucose",
+                  "value": 85
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.6
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 88
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -12
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-16T13:40",
+              "results": [
+                {
+                  "test": "Osmolality of Serum or Plasma",
+                  "loinc": "2692-2",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 275,
+                    "high": 295
+                  },
+                  "value": 252
+                },
+                {
+                  "test": "Osmolality of Urine",
+                  "loinc": "2695-5",
+                  "unit": "mosm/kg",
+                  "range": {
+                    "low": 38,
+                    "high": 1400
+                  },
+                  "value": 470
+                },
+                {
+                  "test": "Sodium [Moles/volume] in Urine",
+                  "loinc": "2955-3",
+                  "unit": "mmol/L",
+                  "range": {},
+                  "value": 54
+                },
+                {
+                  "test": "Thyroid Stimulating Hormone",
+                  "value": 2.1
+                }
+              ]
+            },
+            {
+              "panel": null,
+              "collected": "2025-11-17T07:00",
+              "results": [
+                {
+                  "test": "Cortisol, AM",
+                  "value": 15.8
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-20T06:00",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 128
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.2
+                },
+                {
+                  "test": "Chloride",
+                  "value": 105
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 26
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.98
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.2
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 84
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": -3
+                }
+              ]
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2025-11-21T09:20",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 11/16/2025. 68M, ES-SCLC, prior malignant pleural effusion, earlier admission for hypercalcemia with confusion.\nWife: 3 days of increasing confusion, sleepy; drinking his usual amount, eating little. Last chemo about a month ago.\nVitals WNL. Oriented to self only. Euvolemic, turgor normal, no edema. Foley placed for strict I/O.\nNa 119, serum osm 252, urine osm 470, urine Na 54. TSH and AM cortisol normal.\nImp: SIADH, paraneoplastic.\nAdmitted: fluid restriction, cautious 3% saline in step-down, then salt tabs 1 g TID and 1.2 L/day restriction. Na 128 at discharge 11/20. Foley out day 2.\nNKDA. Discharge meds add sodium chloride 1 g TID."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2"
+          ]
+        },
+        {
+          "id": "2025-11-25a",
+          "kind": "office_visit",
+          "start": "2025-11-25T09:15",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "hospital follow-up, low sodium",
+          "medications": [
+            {
+              "drug_text": "sodium chloride 1000 MG Oral Tablet",
+              "action": "historical",
+              "sig": "Take 1 tablet by mouth three times daily",
+              "dose": {
+                "value": 1,
+                "unit": "g"
+              },
+              "frequency": "TID",
+              "route": "Oral",
+              "course": "chronic",
+              "reason": "SIADH"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              117,
+              74
+            ],
+            "hr": 61,
+            "rr": 16,
+            "temp_c": 36.9,
+            "spo2": 96,
+            "weight_kg": 76.9
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-11-25T09:50",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 131
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 104
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 14
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.93
+                },
+                {
+                  "test": "Glucose",
+                  "value": 87
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.5
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 89
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 0
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Transitional care management, high complexity",
+              "performed": "2025-11-25T09:15"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Post-Hospital Visit",
+              "date": "2025-11-25T10:05",
+              "author": "PCP",
+              "body": "Seen with wife 5 days after discharge. He spent his birthday in the ED: 3 days of confusion and sleepiness, sodium 119, workup fit SIADH from the cancer. Hypertonic saline briefly, then fluid restriction and salt tablets. Sodium 128 on discharge.\n\nNow clear, back to himself, doing crosswords. Sticking to about 5 cups of fluid a day, wife measuring. Salt tabs 1 g three times a day. Lurbinectedin continues every 3 weeks, next dose per oncology.\n\nExam: alert, oriented x3, conversant. Moist membranes, no edema. Chest unchanged. Heart regular.\n\nBMP today.\n\nA/P\n1. SIADH, paraneoplastic. Continue restriction and NaCl tabs. Repeat sodium in 2 weeks. Signs of low sodium reviewed.\n2. ES-SCLC on lurbinectedin (oncology).\n3. HLD: atorvastatin, aspirin."
+            }
+          ],
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2025-11-26a",
+          "kind": "portal_message",
+          "start": "2025-11-26T12:10",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium result",
+              "date": "2025-11-26T12:10",
+              "author": "PCP",
+              "body": "Sodium is 131 today, up from 128 at discharge. Moving the right way. Keep the fluid limit and salt tablets, and we'll recheck on 12/9. I sent a copy to oncology."
+            }
+          ]
+        },
+        {
+          "id": "2025-12-09a",
+          "kind": "lab_only",
+          "start": "2025-12-09T08:20",
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-12-09T08:20",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 134
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 27
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 0.89
+                },
+                {
+                  "test": "Glucose",
+                  "value": 88
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.3
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 93
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 4
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Venipuncture",
+              "performed": "2025-12-09T08:20"
+            }
+          ]
+        },
+        {
+          "id": "2025-12-10a",
+          "kind": "portal_message",
+          "start": "2025-12-10T09:30",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Sodium 134",
+              "date": "2025-12-10T09:30",
+              "author": "PCP",
+              "body": "Sodium 134, nearly normal. Stay on the tablets and the fluid limit through the holidays and we'll look at easing off in the new year."
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Sodium 134",
+              "date": "2025-12-10T13:02",
+              "author": "patient",
+              "body": "Great, thank you. He wants to know if coffee counts in the 5 cups. (It does, I told him.)"
+            }
+          ]
+        },
+        {
+          "id": "2026-03-03a",
+          "kind": "annual_physical",
+          "start": "2026-03-03T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "annual wellness visit and sodium follow-up",
+          "conditions": [
+            {
+              "label": "Syndrome of inappropriate antidiuretic hormone secretion",
+              "action": "resolved",
+              "note": "paraneoplastic, resolved",
+              "icd10": "E22.2"
+            }
+          ],
+          "medications": [
+            {
+              "drug_text": "sodium chloride 1000 MG Oral Tablet",
+              "action": "stop",
+              "reason": "sodium normal"
+            }
+          ],
+          "vitals": {
+            "bp": [
+              135,
+              66
+            ],
+            "hr": 60,
+            "rr": 18,
+            "temp_c": 36.3,
+            "spo2": 97,
+            "weight_kg": 74.8
+          },
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2026-03-02T08:10",
+              "results": [
+                {
+                  "test": "Sodium",
+                  "value": 137
+                },
+                {
+                  "test": "Potassium",
+                  "value": 4.0
+                },
+                {
+                  "test": "Chloride",
+                  "value": 103
+                },
+                {
+                  "test": "Bicarbonate",
+                  "value": 29
+                },
+                {
+                  "test": "Blood Urea Nitrogen",
+                  "value": 13
+                },
+                {
+                  "test": "Creatinine",
+                  "value": 1.01
+                },
+                {
+                  "test": "Glucose",
+                  "value": 91
+                },
+                {
+                  "test": "Calcium",
+                  "value": 9.4
+                },
+                {
+                  "test": "Estimated Glomerular Filtration Rate (Creatinine)",
+                  "value": 81
+                },
+                {
+                  "test": "Anion Gap",
+                  "value": 5
+                }
+              ]
+            }
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 1
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2026-03-03T10:00"
+            },
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2026-03-03T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Annual Wellness and Follow-up",
+              "date": "2026-03-03T10:55",
+              "author": "PCP",
+              "body": "AWV plus sodium follow-up. Wife present.\n\nSince Dec: no confusion. Fluid limit kept, salt tablets three times daily. Lurbinectedin every 3 weeks, tolerating it. Morning sputum as always, PEP device most days. No falls.\n\nMeds: atorvastatin 40, aspirin 81, NaCl 1 g TID.\nPHQ-2 1. Proxy: wife, MOLST on file from oncology.\n\nVitals as charted, weight 75.5. Exam: thin. Clubbing. Port clean. Crackles at bases, reduced at R base after pleurodesis. Heart regular. No edema. Oriented, speech normal.\n\nBMP yesterday: Na 137.\n\nA/P\n1. SIADH, paraneoplastic: resolved for now. Stop salt tablets. Loosen fluid limit to about 1.5 L, recheck sodium with oncology's next labs; any confusion -> call.\n2. ES-SCLC on lurbinectedin.\n3. Bronchiectasis, asbestosis: stable.\n4. HLD: continue statin, aspirin.\nRTC in 6 months."
+            }
+          ],
+          "state": {
+            "weight_kg": 75.5
+          },
+          "measure": [
+            "bp",
+            "hr",
+            "rr",
+            "temp_c",
+            "spo2",
+            "weight_kg"
+          ]
+        },
+        {
+          "id": "2026-05-19a",
+          "kind": "pharmacy",
+          "start": "2026-05-19T08:40",
+          "documents": [
+            {
+              "type": "Refill Request",
+              "title": "Refill: atorvastatin",
+              "date": "2026-05-19T08:40",
+              "author": "MA",
+              "body": "Atorvastatin 40 mg 90-day fill, refills remaining on the May 2025 Rx. Pharmacy just confirming. No action needed."
+            }
+          ]
+        },
+        {
+          "id": "2026-07-04a",
+          "kind": "ed_visit",
+          "start": "2026-07-04T10:15",
+          "end": "2026-07-04T17:40",
+          "service": "Emergency Medicine",
+          "reason": "shortness of breath, cough, blood-streaked sputum",
+          "vitals": [
+            {
+              "time": "2026-07-04T10:20",
+              "bp": [
+                132,
+                84
+              ],
+              "hr": 94,
+              "temp_c": 36.7,
+              "spo2": 94
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Note",
+              "date": "2026-07-09T14:10",
+              "author": "emergency medicine",
+              "body": "Regional hospital ED, 7/4/2026.\n68M, ES-SCLC, bronchiectasis, on lurbinectedin. Breathing worse over weeks, productive cough with occasional streaks of blood. No chest pain, no fever. Appetite down, about 5 kg lost in 3 months without trying. Many bouts of bronchitis over the years, never admitted for one. Former smoker 90 pk-yr, quit 2 years ago.\nT 36.7, BP 132/84, HR 94, SpO2 94% RA.\nDecreased breath sounds and dull to percussion R mid and lower fields. No crackles, no wheeze. Trachea shifted to the R.\nCXR: dense R mid/lower zone opacity, mediastinum shifted R.\nCT chest: central R bronchial mass with R lung volume loss.\nImp: obstructive atelectasis from central airway tumor.\nOncology paged, will see him this week. Discharged home with wife, return for heavier bleeding or worse breathing.\nNKDA."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-11a",
+          "kind": "portal_message",
+          "start": "2026-08-11T20:15",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Radiation",
+              "date": "2026-08-11T20:15",
+              "author": "patient",
+              "body": "Hi, Bill's wife. After the ER in July the oncologist stopped the lurbinectedin and he's getting radiation to the tumor in the airway, he's about halfway done. They said you got the ER paperwork. We still have him down to see you on September 10, is that still good?"
+            },
+            {
+              "type": "Patient Message",
+              "title": "Re: Radiation",
+              "date": "2026-08-12T08:40",
+              "author": "PCP",
+              "body": "Thank you for writing. Yes, we have the ER note. September 10 is still on and I'll plan extra time. If radiation days make it hard, we can switch it to video. Call us before then for anything."
+            }
+          ]
+        },
+        {
+          "id": "2026-08-12a",
+          "kind": "telephone",
+          "start": "2026-08-12T10:05",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Appointment Confirmed",
+              "date": "2026-08-12T10:05",
+              "author": "front desk",
+              "body": "Called wife to confirm 9/10 at 1:30, 40-min slot per PCP. Ride arranged by family. Confirmed."
+            }
+          ]
+        },
+        {
+          "id": "2026-09-10a",
+          "kind": "office_visit",
+          "start": "2026-09-10T13:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "follow-up after ED visit and radiation",
+          "appointment": "booked"
+        }
+      ]
+    }
+  ],
+  "terms": {
+    "conditions": {
+      "Asbestos exposure|Z77.090": {
+        "code": "Z77.090",
+        "display": "Contact with and (suspected) exposure to asbestos",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Cardiac tamponade|I31.4": {
+        "code": "I31.4",
+        "display": "Cardiac tamponade",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Catheter-related bloodstream infection|T80.211A": {
+        "code": "T80.211A",
+        "display": "Bloodstream infection due to central venous catheter, initial encounter",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Hypercalcemia|E83.52": {
+        "code": "E83.52",
+        "display": "Hypercalcemia",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant pericardial effusion|I31.31": {
+        "code": "I31.31",
+        "display": "Malignant pericardial effusion in diseases classified elsewhere",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Malignant pleural effusion|J91.0": {
+        "code": "J91.0",
+        "display": "Malignant pleural effusion",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Suspected malignant neoplasm of lung|R91.8": {
+        "code": "R91.8",
+        "display": "Other nonspecific abnormal finding of lung field",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      },
+      "Syndrome of inappropriate antidiuretic hormone secretion|E22.2": {
+        "code": "E22.2",
+        "display": "Syndrome of inappropriate secretion of antidiuretic hormone",
+        "receipt": "NLM Clinical Tables ICD-10-CM"
+      }
+    },
+    "medications": {
+      "sodium chloride 1000 MG Oral Tablet": {
+        "code": "313009",
+        "display": "sodium chloride 1000 MG Oral Tablet",
+        "ingredient": "sodium",
+        "receipt": "NLM RxNav rxcui (exact name)"
+      }
+    },
+    "labs": {
+      "Osmolality of Serum or Plasma": {
+        "code": "2692-2",
+        "display": "Osmolality of Serum or Plasma",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 275,
+          "high": 295
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Osmolality of Urine": {
+        "code": "2695-5",
+        "display": "Osmolality of Urine",
+        "unit": "mosm/kg",
+        "range": {
+          "low": 38,
+          "high": 1400
+        },
+        "receipt": "NLM Clinical Tables LOINC"
+      },
+      "Sodium [Moles/volume] in Urine": {
+        "code": "2955-3",
+        "display": "Sodium [Moles/volume] in Urine",
+        "unit": "mmol/L",
+        "range": {},
+        "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Implantation of venous access port": {
+        "code": "80402001",
+        "display": "Implantation of venous access port",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Percutaneous needle biopsy of lung, CT-guided": {
+        "code": "287465001",
+        "display": "Percutaneous needle biopsy lung",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Pericardiocentesis": {
+        "code": "309849004",
+        "display": "Pericardiocentesis",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Talc pleurodesis": {
+        "code": "302450005",
+        "display": "Talc pleurodesis",
+        "receipt": "tx.fhir.org SNOMED CT"
+      },
+      "Thoracentesis": {
+        "code": "91602002",
+        "display": "Thoracentesis",
+        "receipt": "tx.fhir.org SNOMED CT"
+      }
+    }
+  }
+}

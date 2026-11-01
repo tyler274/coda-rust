@@ -1,38 +1,27 @@
 # GCP deployment
 
-Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
+Duet production composition stays in <a href="/submodules/coda-app/infra/gcp/README%2Emd"><code>infra/gcp/README.md</code></a>. The physician OpenTofu roots in this workspace are [`foundation`](/infra/gcp/foundation), <a href="/infra/gcp/staging/README%2Emd"><code>staging</code></a>, <a href="/infra/gcp/clinical-evidence/README%2Emd"><code>clinical-evidence</code></a>, and <a href="/infra/gcp/physician-runtime/README%2Emd"><code>physician-runtime</code></a>. The last one is the GKE Autopilot and Cloud SQL target for `physician-sample` and `physician-auth`. This workspace does not apply those reference roots. Public-site staging and production (the marketing site only) and the isolated Rust staging root are workspace-owned and require separately authorized saved-plan applies. [Build, CI, and release](release.md#retained-physician-infrastructure-references) says what each root owns.
 
 The mail-only <a href="/infra/gcp/shared-mail/README%2Emd">shared-mail root</a> is owned here
 for production SMTP in `coda-health-prod`, with separate state and explicit
 saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
-## Public marketing site preparation
+## Public marketing site
 
-The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root prepares the
-stateless Rust marketing server on Cloud Run. Staging runs in the existing
-`coda-health-staging` project with direct Cloud Run IAP and no load balancer or
-CDN. Access is a service-scoped `roles/iap.httpsResourceAccessor` binding for
-`group:gcp-engineering@codahealth.ai`, and the IAP service agent is the only
-invoker. The origin also verifies the signed IAP assertion. Production stays behind
-a global external HTTPS load balancer with Cloud CDN. There is no Cloudflare
-dependency. Unlike the physician roots, this root owns its **staging** state
-(GCS prefix `public-site/staging` in the existing state bucket) and may be planned
-and applied for staging from this workspace. It is never planned or applied for
-production here. Staging is deployed at `staging.codahealth.ai` behind IAP (see
-[deployment status](public-site.md#staging-deployment-status-2026-10-21)). The
-root does not share physician/Duet databases or authorize a product cutover. See
-[Public site](public-site.md) for the architecture, IAP and cache controls, runtime
-configuration, image build/smoke procedure, verification evidence and the
-[staging state and deployment](public-site.md#staging-state-and-deployment)
-procedure.
-
-[PR #36](https://github.com/Coda-Health/coda-rust/pull/36) merged the implementation.
-Dev's staging review and production approval, hostname/IAP/analytics
-decisions, verified cutover/recovery procedures and the agreed recovery window
-precede removal of website-only Vercel resources and credentials. Neither this
-chapter nor passing local/CI validation authorizes deployment, DNS changes or
-Vercel retirement.
+The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the
+stateless Rust marketing server on Cloud Run. The site belongs to the company,
+not to a product, so both environments live in the Coda Health projects:
+`staging.codahealth.ai` behind direct Cloud Run IAP in `coda-health-staging`, and
+`codahealth.ai` and `www.codahealth.ai` behind a load balancer and Cloud CDN in
+`coda-health-prod`, apart from the physician and Duet projects such as
+`coda-rust-staging`. The root shares no physician/Duet databases. CI deploys
+staging from `main`; production receives staging-tested images through manual
+promotion, and operator applies need Dev's explicit authorization. [Public
+site](public-site.md) owns the architecture, IAP and cache controls, runtime
+configuration, checks, and the
+[staging](public-site.md#staging-state-and-deployment) and
+[production](public-site.md#production-state-and-deployment) procedures.
 
 ## Rust container images
 
@@ -118,16 +107,17 @@ Activating it took these operator steps, in order:
    apply the services.
 
 The initial preview uses proof-token delivery until physician mail is configured
-as below. Staging physician email sign-in was qualified on October 24, 2026;
-Duet identity and the full P1/D1 journeys remain outside that result, so this is
-not complete hosted acceptance.
+as below. Staging physician email sign-in is qualified; Duet identity and the full
+P1/D1 journeys are outside that result, so this is not complete hosted acceptance.
 
 ### Staging sign-in accounts
 
 `physician-migrate` ensures the accounts listed in `PHYSICIAN_STAGING_ACCOUNTS`
 (`email|Display Name|admin` or `…|physician`, comma-separated) exist in
-`roger-synthetic-practice` with `physician_id = staging-physician`, the panel the
-server seeds with the five synthetic workspaces on startup. The list and
+`roger-synthetic-practice`. Each email gets its own physician id. On startup
+the server registers the five synthetic workspaces and places every active
+admin in that practice on their panel, including the preview identity
+`staging-physician`. The list and
 `CODA_HOSTED_PROFILE=staging-preview` come from `migration_environment` in
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars); any
 other profile refuses the list. A rerun never reactivates or edits an existing
@@ -173,8 +163,8 @@ client removes both from the address bar, redeems the single-use token
 automatically, and opens Today after the server verifies it. The email contains
 one Sign in button and an equivalent plain-text link; there is no code field or
 second confirmation. Used or expired links offer a new link. The
-[sign-in graph](/verification/physician-experience/sign-in.mmd) maps entry and
-recovery; in-workspace session expiry remains a separate behavior.
+<a href="/verification/physician/sign-in/README%2Emd">sign-in chart</a> maps entry, recovery
+and session expiry.
 
 Local browser tests exercise the actual HTML email button through the
 public-site proxy using a stand-in mail service. Live staging qualification
@@ -405,28 +395,35 @@ redeploy.
 
 #### Apply commands for Dev
 
-**Status, October 26, 2026.** Dev provisioned the infrastructure as the project
-Owner while leaving the physician site's queue activation pending. Redis, both
-topics and subscriptions, and `physician-worker` exist; the Redis URL and CA are in Doppler `stg_physician_runtime`; the worker is Ready;
-the budget alert is $200/month. The remaining activation is:
+Redis, both topics and subscriptions, and `physician-worker` exist in
+`coda-rust-staging`; the Redis URL and CA are in Doppler `stg_physician_runtime`;
+the budget alert is $200/month. The physician site's queue activation is pending:
+the service still runs with minimum zero instances, CPU throttling and no
+`PHYSICIAN_CHAT_TOPIC`. Read it back with:
+
+```bash
+gcloud run services describe physician --project=coda-rust-staging --region=us-east1 \
+  --format='value(spec.template.metadata.annotations)'
+```
+
+To activate it:
 
 - The physician site keeps one instance while scaling is on
-  (`min_instance_count` 0 to 1), so its recovery sweep always runs. After the
-  stack merges and `deploy-staging` is green, run steps 4 to 6 once more. The
-  saved plan should update `google_cloud_run_v2_service.app["physician"]`
-  in place: `min_instance_count` 0 to 1, `cpu_idle` true to false, and add
-  `PHYSICIAN_CHAT_TOPIC`. The readback at 05:09 UTC still had minimum zero,
-  CPU throttling enabled, and no topic. Review every changed field in a fresh
-  saved plan; expect nothing added or destroyed and no Duet changes. The minimum
-  instance costs about $48/month after the free tier (see [Cost](#cost)).
-- The worker image now sets `PHYSICIAN_AUTH=required`. The same key in
-  `stg_physician_runtime` becomes redundant and harmless; it can stay.
+  (`min_instance_count` 0 to 1), so its recovery sweep always runs. Once step 1
+  confirms the code is deployed, run steps 4 to 6. The saved plan should update
+  `google_cloud_run_v2_service.app["physician"]` in place: `min_instance_count` 0
+  to 1, `cpu_idle` true to false, and add `PHYSICIAN_CHAT_TOPIC`. Review every
+  changed field in a fresh saved plan; expect nothing added or destroyed and no
+  Duet changes. The minimum instance costs about $48/month after the free tier
+  (see [Cost](#cost)).
+- The worker image sets `PHYSICIAN_AUTH=required`. The same key in
+  `stg_physician_runtime` is redundant and harmless; it can stay.
 
-The first-time steps below are kept for a fresh project.
+The steps below also build a fresh project.
 
 The plan creates IAM bindings that `group:gcp-engineering@codahealth.ai`
-cannot write on `coda-rust-staging`. Checked with `testIamPermissions` on
-October 25, 2026, engineering lacks:
+cannot write on `coda-rust-staging`. Engineering lacks these permissions (check
+with `testIamPermissions`):
 
 | Permission | Needed for |
 | --- | --- |
@@ -445,13 +442,17 @@ Run everything below in `nix develop` from an up-to-date `main` checkout. That
 shell has `gcloud`, `tofu`, `doppler` and `jq`.
 
 1. **Confirm the code is live.** The site that queues turns and
-   `physician-worker` must be on `main`, and the latest `deploy-staging` run on
-   `main` must be green. Applying before that sets the topic on a site that does
-   not read it.
+   `physician-worker` must be on `main`, and a push run for the intended release
+   must have a successful `Deploy staging` job. Skills/docs-only pushes skip that
+   job, so overall CI success is not deployment evidence. Applying before the
+   required code is deployed sets the topic on a site that does not read it.
 
    ```bash
-   gh run list --workflow ci.yml --branch main --event push --limit 1 \
-     --json headSha,conclusion,url
+   gh run list --workflow ci.yml --branch main --event push --limit 10 \
+     --json databaseId,headSha,conclusion,url
+   # Select the run for the intended release SHA, then inspect its deploy job.
+   gh run view RUN_ID --json headSha,url,jobs \
+     --jq '{headSha,url,deployments:[.jobs[] | select(.name == "Deploy staging") | {conclusion,url}]}'
    ```
 
 2. **Raise the budget alert** (billing administrator). Expected fixed spend
@@ -512,8 +513,8 @@ shell has `gcloud`, `tofu`, `doppler` and `jq`.
      -out=staging.tfplan
    ```
 
-5. **Review the saved plan.** On October 25, 2026 it was 20 to add, 2 to
-   change, 0 to destroy. The additions are the cache; the two topics, the two
+5. **Review the saved plan.** From a project without the scaling resources it
+   is 20 to add, 2 to change, 0 to destroy. The additions are the cache; the two topics, the two
    subscriptions and their three bindings; the push and worker service accounts,
    the push token grant and the worker's two Cloud SQL grants; the worker, its
    invoker and its two release grants; the Pub/Sub service identity; and the
@@ -591,10 +592,10 @@ shell has `gcloud`, `tofu`, `doppler` and `jq`.
 
 #### Cost
 
-These are list prices for `us-east1` in October 2026. The `coda-rust-stg` budget
-is an alert, not a spending cap. Dev raised it from $10 to $200/month on
-October 25, 2026, which covers this gate. Raise
-that alert before applying. Nothing is applied without a reviewed saved plan.
+These are `us-east1` list prices; check the linked pricing pages before relying on
+them. The `coda-rust-stg` budget is a $200/month alert, not a spending cap, and it
+covers this gate. Raise that alert before applying anything that exceeds it.
+Nothing is applied without a reviewed saved plan.
 
 | Item | Billing | Estimate |
 | --- | --- | --- |
@@ -637,22 +638,6 @@ $105/month before the worker and any second site instance.
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#access-and-security-operations">Access and security operations</a>
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#cloud-sql-restore-drill">Cloud SQL restore drill</a>
 - <a href="/submodules/coda-app/infra/gcp/README%2Emd#privacy-reconciliation-before-recovery-serves-traffic">Privacy reconciliation before recovery serves traffic</a>
-
-## Dated release and security evidence
-
-Source: <a href="/submodules/coda-app/infra/gcp/README%2Emd#dated-release-and-security-evidence"><code>Dated release and security evidence</code></a>.
-
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-5-2026-spend-records-and-reviewed-doctor-page-release">October 5, 2026 spend records and reviewed doctor page release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-5-2026-structural-cleanup-release">October 5, 2026 structural cleanup release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-3-2026-wave-1-and-genome-removal-release">October 3, 2026 Wave 1 and Genome removal release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-2-2026-patient-isolation-and-graceful-runs-release">October 2, 2026 patient isolation and graceful runs release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-1-2026-security-and-build-133-release">October 1, 2026 security and build 133 release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#october-1-2026-doctors--hospitals-release">October 1, 2026 Doctors &amp; hospitals release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#september-30-2026-minimum-build-131-release">September 30, 2026 minimum build 131 release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#september-30-2026-companion-release">September 30, 2026 companion release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#september-27-2026-first-session-recovery-release">September 27, 2026 first-session recovery release</a>
-- <a href="/submodules/coda-app/infra/gcp/README%2Emd#earlier-releases">Earlier releases</a>
-
 
 ## Shared mail service
 

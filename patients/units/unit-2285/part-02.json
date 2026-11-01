@@ -282,10 +282,14 @@
          "test": "Folate"
         },
         {
-         "test": "Homocysteine",
-         "loinc": "13965-9",
-         "unit": "umol/L",
-         "value": 41
+          "test": "Homocysteine",
+          "loinc": "13965-9",
+          "unit": "umol/L",
+          "value": 41,
+          "range": {
+            "low": 5,
+            "high": 15
+          }
         },
         {
          "test": "Thyroid Stimulating Hormone"
@@ -339,11 +343,12 @@
      ],
      "orders": [
       {
-       "id": "b12-teach-2021",
-       "action": "placed",
-       "order": "Nurse visit: B12 injection and home injection teaching",
-       "category": "procedure",
-       "reason": "Vitamin B12 deficiency"
+        "id": "b12-teach-2021",
+        "action": "placed",
+        "order": "Nurse visit: B12 injection and home injection teaching",
+        "category": "procedure",
+        "reason": "Vitamin B12 deficiency",
+        "snomed": "308752009"
       }
      ],
      "documents": [
@@ -364,9 +369,9 @@
      "reason": "B12 injection and teaching",
      "orders": [
       {
-       "id": "b12-teach-2021",
-       "action": "done",
-       "date": "2021-01-13T10:00"
+        "id": "b12-teach-2021",
+        "action": "done",
+        "date": "2021-01-13T10:00"
       }
      ],
      "documents": [

@@ -243,7 +243,8 @@
               "action": "placed",
               "order": "Antimitochondrial antibody",
               "category": "lab",
-              "reason": "Cholestatic liver tests"
+              "reason": "Cholestatic liver tests",
+              "loinc": "14236-4"
             }
           ],
           "documents": [
@@ -397,14 +398,21 @@
             {
               "id": "tft-2025-01",
               "action": "placed",
-              "order": "TSH and free T4 in 8 weeks",
+              "order": "Thyroid Stimulating Hormone",
+              "category": "lab",
+              "reason": "Recheck after stopping estrogen"
+            },
+            {
+              "id": "tft-2025-01-2",
+              "action": "placed",
+              "order": "Free Thyroxine",
               "category": "lab",
               "reason": "Recheck after stopping estrogen"
             },
             {
               "id": "hbsab-2025",
               "action": "placed",
-              "order": "Hepatitis B surface antibody",
+              "order": "Hepatitis B Surface Antibody",
               "category": "lab",
               "reason": "Immunity check, chronic liver disease"
             }
@@ -491,6 +499,11 @@
               "date": "2025-01-22T07:20"
             },
             {
+              "id": "tft-2025-01-2",
+              "action": "done",
+              "date": "2025-01-22T07:20"
+            },
+            {
               "id": "hbsab-2025",
               "action": "done",
               "date": "2025-01-22T07:20"
@@ -498,7 +511,7 @@
             {
               "id": "colonoscopy-2025",
               "action": "placed",
-              "order": "Screening colonoscopy",
+              "order": "Colonoscopy, screening, average risk",
               "category": "procedure",
               "to": "Gastroenterology",
               "reason": "Family history of colon cancer, 10-year interval due"

@@ -1,0 +1,571 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002301",
+      "events": [
+        {
+          "id": "2025-01-14a",
+          "kind": "imaging",
+          "start": "2025-01-14T11:30",
+          "reason": "Lung cancer screening",
+          "reports": [
+            {
+              "study": "Low-dose CT chest for lung cancer screening",
+              "performed": "2025-01-14T11:30",
+              "text": "Indication: annual lung cancer screening, 67-year-old former smoker, 48 pack-years, quit 2023. Technique: low-dose helical CT of the chest without contrast. Findings: no pulmonary nodules. Airways patent. No consolidation or effusion. Heart size normal, no pericardial effusion. No enlarged mediastinal or hilar lymph nodes. Visualized upper abdomen unremarkable.",
+              "conclusion": "Lung-RADS 1, negative. Continue annual screening in 12 months."
+            }
+          ],
+          "orders": [
+            {
+              "id": "ldct-2025",
+              "action": "done",
+              "date": "2025-01-14T11:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "Low-Dose CT Lung Screening",
+              "author": "radiology",
+              "date": "2025-01-14T15:10",
+              "body": "Outpatient imaging center report. Low-dose chest CT for lung cancer screening. No nodules. Lung-RADS 1. Recommend repeat screening in 12 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-01-16a",
+          "kind": "portal_message",
+          "start": "2025-01-16T12:05",
+          "reason": "CT result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Lung screening scan",
+              "author": "PCP",
+              "date": "2025-01-16T12:05",
+              "body": "Good news on the CT, no spots on the lungs at all. We repeat this once a year, so next one around January. See you in February for the wellness visit."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-25a",
+          "kind": "annual_physical",
+          "start": "2025-02-25T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Medicare annual wellness visit",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "surveys": [
+            {
+              "survey": "PHQ-2 total score",
+              "value": 0
+            },
+            {
+              "survey": "AUDIT-C total score",
+              "value": 2
+            }
+          ],
+          "labs": [
+            {
+              "panel": null,
+              "collected": "2025-02-25T09:30",
+              "results": [
+                {
+                  "test": "Hepatitis C Antibody",
+                  "text": "Nonreactive"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Pneumococcal conjugate PCV20",
+              "date": "2025-02-25T09:20"
+            },
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-02-25T09:22"
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "placed",
+              "order": "US Abdominal Aorta for screening",
+              "category": "imaging",
+              "reason": "male 65-75, former smoker"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Annual wellness visit, subsequent",
+              "performed": "2025-02-25T08:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-02-25T09:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Medicare Annual Wellness Visit",
+              "author": "PCP",
+              "date": "2025-02-25T09:45",
+              "body": "AWV. Feels about the same as in the fall, breathing steady through the winter so far, albuterol maybe twice a week. No falls. Independent in all ADLs and IADLs, drives, does his own shopping. Hearing fine in the room. Sleeps ok.\n\nScreens: PHQ-2 0. AUDIT-C 2. No safety concerns at home. Advance directive: does not have one, took the packet home.\n\nPrevention review:\n- Colonoscopy 2018 normal at prior office, next 2028.\n- Lung CT January, Lung-RADS 1. Next due January.\n- Hep C never checked, drawn today.\n- AAA screen: male, former smoker, never done. Ultrasound ordered.\n- Pneumococcal: no record of any dose. PCV20 today.\n- Shingrix dose 1 today, dose 2 at May visit.\n- RSV done in December. Flu and COVID done in November.\n\nVitals as charted. Lungs with distant breath sounds, no wheeze. Heart regular. No edema.\n\nCOPD, HTN, lipids all stable on current regimen. No changes. Follow-up in about 3 months."
+            }
+          ]
+        },
+        {
+          "id": "2025-02-27a",
+          "kind": "portal_message",
+          "start": "2025-02-27T16:20",
+          "reason": "Lab result",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Hepatitis C test",
+              "author": "PCP",
+              "date": "2025-02-27T16:20",
+              "body": "Hep C screen came back negative. That one never needs repeating unless something changes. The vascular lab should be calling about the aorta ultrasound."
+            }
+          ]
+        },
+        {
+          "id": "2025-03-11a",
+          "kind": "imaging",
+          "start": "2025-03-11T10:00",
+          "reason": "AAA screening",
+          "reports": [
+            {
+              "study": "US Abdominal Aorta for screening",
+              "loinc": "79374-5",
+              "performed": "2025-03-11T10:00",
+              "text": "Screening ultrasound of the abdominal aorta. The aorta is visualized from the diaphragm to the bifurcation. Maximal anteroposterior diameter of the infrarenal aorta measured outer wall to outer wall is within normal limits. No aneurysm. Common iliac arteries normal caliber where seen.",
+              "conclusion": "No abdominal aortic aneurysm. No further screening needed."
+            }
+          ],
+          "orders": [
+            {
+              "id": "aaa-us",
+              "action": "done",
+              "date": "2025-03-11T10:00"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Imaging Report",
+              "title": "AAA Screening Ultrasound",
+              "author": "radiology",
+              "date": "2025-03-11T13:40",
+              "body": "Screening aortic ultrasound: normal caliber aorta, no aneurysm. One-time screen complete. Reviewed by PCP, result released to patient."
+            }
+          ]
+        },
+        {
+          "id": "2025-04-08a",
+          "kind": "pharmacy",
+          "start": "2025-04-08T10:15",
+          "reason": "Refill request",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Refill Request",
+              "author": "MA",
+              "date": "2025-04-08T10:15",
+              "body": "Pharmacy refill request for tiotropium capsules and fluticasone/salmeterol 250/50. Prior office's prescriptions ran out. Sent under PCP with 90-day supply and 3 refills each. Patient aware via voicemail."
+            }
+          ]
+        },
+        {
+          "id": "2025-05-20a",
+          "kind": "office_visit",
+          "start": "2025-05-20T13:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and blood pressure follow-up",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "labs": [
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-05-20T14:15",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Blood Urea Nitrogen"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Zoster recombinant (Shingrix)",
+              "date": "2025-05-20T14:10"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-05-20T13:40"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-05-20T14:10"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-05-20T14:25",
+              "body": "S: Routine check. Breathing good this spring, had the windows open, no flares. Rescue inhaler once or twice a week. Taking everything. Felt a little achy for a day after the first Shingrix.\n\nO: vitals as charted. Lungs diminished at bases equally, no wheeze or crackles. RRR. Ext no edema.\n\nA/P: COPD stable. HTN controlled. Shingrix #2 today, series done. BMP on lisinopril. RTC fall with flu shot."
+            }
+          ]
+        },
+        {
+          "id": "2025-07-29a",
+          "kind": "portal_message",
+          "start": "2025-07-29T07:55",
+          "reason": "Refill",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Albuterol",
+              "author": "patient",
+              "date": "2025-07-29T07:55",
+              "body": "Can I get a new albuterol sent over, the one in the truck is almost empty and the other one expired. Same pharmacy."
+            },
+            {
+              "type": "Patient Message",
+              "title": "RE: Albuterol",
+              "author": "RN",
+              "date": "2025-07-29T11:30",
+              "body": "Sent two inhalers so you can keep one in the truck. Let us know if you find you're using it more than a few times a week."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23a",
+          "kind": "ed_visit",
+          "start": "2025-09-23T10:40",
+          "end": "2025-09-23T16:30",
+          "service": "Emergency Medicine",
+          "reason": "Fever and right upper quadrant pain",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "rr"
+          ],
+          "conditions": [
+            {
+              "label": "Acute cholecystitis",
+              "icd10": "K81.0",
+              "action": "diagnosed",
+              "onset": "2025-09-21",
+              "note": "acalculous"
+            }
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "White Blood Cells",
+                  "value": 15.0
+                },
+                {
+                  "test": "Hemoglobin",
+                  "value": 12.2
+                },
+                {
+                  "test": "Platelets",
+                  "value": 250
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase",
+                  "value": 80
+                },
+                {
+                  "test": "Alanine Aminotransferase",
+                  "value": 75
+                },
+                {
+                  "test": "Alkaline Phosphatase",
+                  "value": 200
+                },
+                {
+                  "test": "Bilirubin, Total",
+                  "value": 1.8
+                },
+                {
+                  "test": "Bilirubin, Direct",
+                  "value": 1.2
+                }
+              ]
+            },
+            {
+              "panel": "Basic Metabolic Panel (BMP)",
+              "collected": "2025-09-23T11:05",
+              "results": [
+                {
+                  "test": "Sodium"
+                },
+                {
+                  "test": "Potassium"
+                },
+                {
+                  "test": "Creatinine"
+                },
+                {
+                  "test": "Glucose"
+                }
+              ]
+            }
+          ],
+          "reports": [
+            {
+              "study": "Right upper quadrant ultrasound",
+              "performed": "2025-09-23T12:20",
+              "text": "Indication: fever, right upper quadrant pain. The gallbladder is distended with a thickened wall and pericholecystic fluid. No gallstones or sludge-layering stones are seen. Common bile duct is normal in caliber. Liver normal in size and echotexture without focal lesion. Right kidney unremarkable. Pancreas head unremarkable where seen.",
+              "conclusion": "Gallbladder wall thickening, distension and pericholecystic fluid without gallstones, consistent with acute acalculous cholecystitis.",
+              "issued": "2025-09-23T12:55"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Emergency department visit, high MDM",
+              "performed": "2025-09-23T10:40"
+            }
+          ],
+          "documents": [
+            {
+              "type": "ED Notes",
+              "title": "Emergency Department Record",
+              "author": "emergency medicine",
+              "date": "2025-09-29T09:30",
+              "body": "Regional hospital ED, visit date 9/23/2025. Received by fax 9/29.\n\nCC: fever x2 days, RUQ abdominal pain.\n\nHPI: 67M with COPD, HTN, hyperlipidemia. Two days of fevers at home and steady pain under the right ribs. No prior gallbladder trouble.\n\nMeds: tiotropium, fluticasone/salmeterol, albuterol prn, lisinopril 10, atorvastatin 40, aspirin 81. Allergy: sulfa (rash). Former smoker, quit 2023.\n\nExam: uncomfortable, grimaces and tender when the right upper quadrant is pressed. Lungs without wheeze. Heart regular.\n\nLabs: WBC 15.0, Hgb 12.2, plt 250. AST 80, ALT 75, alk phos 200, T bili 1.8, D bili 1.2.\nRUQ US: distended gallbladder, thick wall, pericholecystic fluid, no stones.\n\nImpression: acute acalculous cholecystitis. IV antibiotics started, surgery paged. Admitted to medicine."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-23b",
+          "kind": "hospital_admission",
+          "start": "2025-09-23T16:30",
+          "end": "2025-09-26T12:10",
+          "service": "Hospital Medicine",
+          "reason": "Acute acalculous cholecystitis",
+          "medications": [
+            {
+              "drug": "amoxicillin 875 MG / clavulanate 125 MG Oral Tablet",
+              "action": "start",
+              "sig": "Take 1 tablet by mouth twice daily with food for 7 days",
+              "dose": {
+                "value": 1,
+                "unit": "tablet"
+              },
+              "frequency": "BID",
+              "route": "Oral",
+              "course": "short",
+              "reason": "Acute cholecystitis"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Initial hospital inpatient care",
+              "performed": "2025-09-23T17:00"
+            },
+            {
+              "procedure": "Hospital discharge day management, 30 minutes or less",
+              "performed": "2025-09-26T10:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Discharge Summary",
+              "title": "Hospital Discharge Summary",
+              "author": "hospital medicine",
+              "date": "2025-09-29T09:35",
+              "body": "Regional hospital, medicine service. Admitted 9/23/2025, discharged 9/26/2025.\n\nDiagnosis: acute acalculous cholecystitis.\n\nCourse: Admitted from the ED with fever, RUQ tenderness and leukocytosis; ultrasound with a distended, thick-walled gallbladder, pericholecystic fluid and no stones. Treated with IV antibiotics and bowel rest, then diet. General surgery saw him on admission and recommended nonoperative management given his COPD; no interval cholecystectomy planned unless symptoms return. Fever resolved within a day, pain improved steadily, eating by day 2.\n\nDischarge medications: amoxicillin-clavulanate 875/125 mg twice daily for 7 more days (new). Continue tiotropium, fluticasone/salmeterol, albuterol as needed, lisinopril 10 mg, atorvastatin 40 mg, aspirin 81 mg.\nAllergies: sulfa drugs (rash).\n\nFollow-up: PCP within 1 to 2 weeks with CBC and liver tests. Return for fever, worsening pain, jaundice or vomiting."
+            }
+          ]
+        },
+        {
+          "id": "2025-09-29a",
+          "kind": "telephone",
+          "start": "2025-09-29T14:15",
+          "reason": "Post-discharge call",
+          "documents": [
+            {
+              "type": "Telephone Encounter",
+              "title": "Post-Discharge Call",
+              "author": "RN",
+              "date": "2025-09-29T14:15",
+              "body": "Called pt after hospital discharge for gallbladder infection. Home since Friday. No fever since leaving. Soreness under the right ribs much better, eating light. Taking the antibiotic twice a day with food, no problems with it. Breathing at baseline. Reviewed reasons to go back to the ED. Appointment made Thursday with PCP, labs that day."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-02a",
+          "kind": "office_visit",
+          "start": "2025-10-02T10:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Hospital follow-up, cholecystitis",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg",
+            "temp_c"
+          ],
+          "labs": [
+            {
+              "panel": "CBC with Differential",
+              "collected": "2025-10-02T10:55",
+              "results": [
+                {
+                  "test": "White Blood Cells"
+                },
+                {
+                  "test": "Hemoglobin"
+                },
+                {
+                  "test": "Platelets"
+                }
+              ]
+            },
+            {
+              "panel": "Hepatic Panel (LFT)",
+              "collected": "2025-10-02T10:55",
+              "results": [
+                {
+                  "test": "Aspartate Aminotransferase"
+                },
+                {
+                  "test": "Alanine Aminotransferase"
+                },
+                {
+                  "test": "Alkaline Phosphatase"
+                },
+                {
+                  "test": "Bilirubin, Total"
+                },
+                {
+                  "test": "Bilirubin, Direct"
+                }
+              ]
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, moderate MDM",
+              "performed": "2025-10-02T10:20"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Hospital Follow-up",
+              "author": "PCP",
+              "date": "2025-10-02T11:10",
+              "body": "Seen after 3-night admission 9/23-9/26 for acute acalculous cholecystitis, treated with antibiotics, no surgery. Discharge summary and ED record reviewed.\n\nNow: no fevers, appetite back, only a faint ache under the right ribs if he presses there. Two more days of amoxicillin-clavulanate. Breathing unchanged from baseline, no extra albuterol use in the hospital or since.\n\nExam: afebrile, vitals as charted. Not jaundiced. Abdomen soft, very mild RUQ tenderness, no guarding, negative Murphy. Lungs as usual, diminished, no wheeze.\n\nA/P\nAcute acalculous cholecystitis, improving. Finish antibiotic. CBC and liver panel today to make sure the counts and bilirubin have come back down. Surgery's plan is no operation unless it recurs; reviewed what a recurrence would feel like.\nCOPD, HTN stable. Keep the October 24 visit for flu shot and COVID."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-03a",
+          "kind": "portal_message",
+          "start": "2025-10-03T15:40",
+          "reason": "Lab results",
+          "documents": [
+            {
+              "type": "Patient Message",
+              "title": "Follow-up labs",
+              "author": "PCP",
+              "date": "2025-10-03T15:40",
+              "body": "White count and liver tests are all back to normal. Exactly what we wanted to see after the gallbladder infection. See you on the 24th."
+            }
+          ]
+        },
+        {
+          "id": "2025-10-24a",
+          "kind": "office_visit",
+          "start": "2025-10-24T09:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "COPD and hypertension follow-up, vaccines",
+          "measure": [
+            "bp",
+            "hr",
+            "spo2",
+            "weight_kg"
+          ],
+          "conditions": [
+            {
+              "label": "Acute cholecystitis",
+              "icd10": "K81.0",
+              "action": "resolved",
+              "onset": "2025-09-21"
+            }
+          ],
+          "immunizations": [
+            {
+              "vaccine": "Influenza, high-dose, trivalent",
+              "date": "2025-10-24T09:30"
+            },
+            {
+              "vaccine": "COVID-19, mRNA, Moderna, updated formula",
+              "date": "2025-10-24T09:32"
+            }
+          ],
+          "procedures": [
+            {
+              "procedure": "Office visit, established patient, low MDM",
+              "performed": "2025-10-24T09:00"
+            },
+            {
+              "procedure": "Immunization administration",
+              "performed": "2025-10-24T09:30"
+            }
+          ],
+          "documents": [
+            {
+              "type": "Progress Notes",
+              "title": "Follow-up Visit",
+              "author": "PCP",
+              "date": "2025-10-24T09:50",
+              "body": "S: Back to himself after the September gallbladder episode. No RUQ pain since finishing the antibiotic, eating everything. Breathing about the same as the spring, albuterol a few times a week now that it is colder. No sputum change, no fevers.\nMeds reviewed, unchanged: tiotropium daily, fluticasone/salmeterol bid, albuterol prn, lisinopril 10, atorvastatin 40, aspirin 81.\n\nO: vitals as charted. Abdomen soft, nontender. Lungs diminished at bases, no wheeze or crackles. Heart regular.\n\nA/P\n1. Acute acalculous cholecystitis, resolved. Labs normalized 10/2.\n2. COPD, stable. Continue current inhalers.\n3. HTN controlled.\n4. Hyperlipidemia on atorvastatin, lipids due at the January visit.\n5. Flu (high-dose) and COVID given.\nRTC January, fasting labs then. Lung CT due January as well."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

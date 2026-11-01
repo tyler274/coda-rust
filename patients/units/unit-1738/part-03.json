@@ -53,8 +53,8 @@
           "labs": [
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2025-02-18T21:55", "results": [{"test": "Glucose", "value": 438}, {"test": "Bicarbonate", "value": 9}, {"test": "Anion Gap", "value": 25}, {"test": "Potassium", "value": 5.3}]},
             {"panel": null, "collected": "2025-02-18T21:55", "results": [
-              {"test": "Arterial pH", "loinc": "2744-1", "unit": "[pH]", "value": 7.14},
-              {"test": "Beta-hydroxybutyrate", "loinc": "6873-4", "unit": "mmol/L", "value": 6.4},
+              {"test": "Arterial pH", "loinc": "2744-1", "unit": "[pH]", "value": 7.14, "range": {"low": 7.38, "high": 7.44}},
+              {"test": "Beta-hydroxybutyrate", "loinc": "6873-4", "unit": "mmol/L", "value": 6.4, "range": {"high": 0.4}},
               {"test": "Hemoglobin A1c", "value": 7.8},
               {"test": "SARS-CoV-2 (COVID-19) PCR", "text": "Not detected"}
             ]},
@@ -202,9 +202,9 @@
               {"test": "MOG antibody, serum", "loinc": "106548-1", "text": "Negative", "resulted": "2025-11-01T14:00"}
             ]},
             {"panel": null, "collected": "2025-10-30T11:30", "results": [
-              {"test": "CSF white blood cells", "loinc": "26465-5", "unit": "/uL", "value": 11},
-              {"test": "CSF protein", "loinc": "2880-3", "unit": "mg/dL", "value": 49},
-              {"test": "CSF glucose", "loinc": "2342-4", "unit": "mg/dL", "value": 71},
+              {"test": "CSF white blood cells", "loinc": "26465-5", "unit": "/uL", "value": 11, "range": {"low": 0, "high": 5}},
+              {"test": "CSF protein", "loinc": "2880-3", "unit": "mg/dL", "value": 49, "range": {"low": 15, "high": 45}},
+              {"test": "CSF glucose", "loinc": "2342-4", "unit": "mg/dL", "value": 71, "range": {"low": 50, "high": 75}},
               {"test": "CSF oligoclonal bands", "loinc": "32358-4", "text": "Absent", "resulted": "2025-11-03T10:00"}
             ]}
           ],

@@ -1,0 +1,231 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00001707",
+      "given": "Wendy",
+      "family": "Schmidt",
+      "birth_date": "1988-12-16",
+      "address_line": "37 Quarry Hill Lane",
+      "phone": "+1-413-555-0131",
+      "email": "wendy.schmidt@example.test",
+      "marital_status": "married",
+      "summary": "Marketing manager with Hashimoto thyroiditis on levothyroxine and adolescent anorexia nervosa in remission who joins in 2019. Infertility care at outside gynecology brings Asherman syndrome after a myomectomy, then a prolactinoma that grows to compress the chiasm and responds to cabergoline, primary ovarian insufficiency, later weight loss, and an ED visit for psychogenic urinary retention after the practice last saw her.",
+      "events": [
+        {
+          "id": "2019-06-11a",
+          "kind": "establish_care",
+          "start": "2019-06-11T09:20",
+          "end": "2019-06-11T10:10",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care",
+          "conditions": [
+            {"label": "Hashimoto thyroiditis", "action": "history", "onset": "2010-05-01", "note": "Diagnosed at a prior practice in her early twenties; on levothyroxine since."},
+            {"label": "History of anorexia nervosa, in remission", "icd10": "Z86.59", "action": "history", "onset": "2004-01-01", "note": "Adolescent anorexia nervosa, treated as a teenager; in remission."}
+          ],
+          "medications": [
+            {"drug": "levothyroxine sodium 0.075 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth every morning on an empty stomach", "dose": {"value": 75, "unit": "mcg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Hashimoto thyroiditis"}
+          ],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "state": {"weight_kg": 56.2, "height_cm": 165.0, "labs": {"Thyroid Stimulating Hormone": 1.9}},
+          "measure": ["bp", "hr", "rr", "temp_c", "spo2", "weight_kg", "height_cm"],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per week"},
+            {"item": "Occupation", "value": "Marketing manager"}
+          ],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 2}],
+          "labs": [
+            {"panel": "CBC with Differential", "collected": "2019-06-11T10:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2019-06-11T10:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2019-06-11T10:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2019-06-11T10:20", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": null, "collected": "2019-06-11T10:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2019-06-11T10:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2019-06-11T10:05"}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2019-06-11T09:20"},
+            {"procedure": "Immunization administration", "performed": "2019-06-11T10:05"},
+            {"procedure": "Venipuncture", "performed": "2019-06-11T10:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit", "author": "PCP", "date": "2019-06-11T10:40", "body": "30-year-old woman new to the practice. Moved her care here after her previous office closed its panel; records requested.\n\nThyroid: told she had Hashimoto's about ten years ago, on levothyroxine 75 mcg each morning ever since, no dose changes in years. Feels well on it. No palpitations, no cold intolerance, energy fine.\n\nEating disorder history: anorexia nervosa as a teenager, treated with outpatient therapy and family-based work in high school. She describes it as long behind her and says she eats normally now; weight has been steady for years. We agreed to keep an eye on it the way we would any chronic history, without making it the focus of every visit.\n\nPSH: none. Meds: levothyroxine 75 mcg daily. Allergies: no known drug allergies.\nFamily: mother treated for major depression; maternal aunt with an autoimmune thyroid problem; sister has PCOS.\nSocial: marketing manager. Married. Never smoked. A glass of wine once or twice a week. Walks most evenings.\nGyn: regular cycles. Sees an outside gynecologist. Last Pap last year, normal per her report.\n\nROS otherwise negative.\n\nExam: well appearing, pleasant. Vitals as charted. Thyroid normal size, no nodules, nontender. Heart regular, no murmur. Lungs clear. Abdomen soft. No edema. Skin normal. Mood and affect appropriate.\n\nA/P\n1. Hashimoto thyroiditis, stable on levothyroxine 75 mcg. TSH today; continue current dose if in range.\n2. History of anorexia nervosa, in remission. BMI about 20.6. PHQ-9 2.\n3. Health maintenance: baseline CBC, CMP, lipids. One-time HIV and hepatitis C screening done today. Tdap given (last one she remembers was in college). Pap per her gynecologist; will confirm date from old records.\n\nFollow up yearly, sooner as needed."}
+          ]
+        },
+        {
+          "id": "2019-06-14a",
+          "kind": "portal_message",
+          "start": "2019-06-14T08:45",
+          "documents": [
+            {"type": "Patient Message", "title": "Your lab results", "author": "PCP", "date": "2019-06-14T08:45", "body": "Hi Wendy, all of your labs from Tuesday look good. Thyroid level is right where it should be on 75 mcg, so no change. Blood counts, kidney and liver tests and cholesterol are normal, and the HIV and hepatitis C screens are negative. See you next year."}
+          ]
+        },
+        {
+          "id": "2019-07-09a",
+          "kind": "outside_records",
+          "start": "2019-07-09T14:10",
+          "reports": [
+            {"study": "Cervical cytology (Pap)", "performed": "2018-04-17T10:00", "text": "Specimen: cervical, liquid-based preparation. Adequacy: satisfactory for evaluation; transformation zone component present.", "conclusion": "Negative for intraepithelial lesion or malignancy."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2019-07-09T14:10", "body": "Received 38 pages from patient's previous primary care office (covering 2013 through 2019). Includes problem list (Hashimoto thyroiditis; history of anorexia nervosa, adolescent), med list (levothyroxine 75 mcg daily), yearly TSH values all within range, an April 2018 Pap reported negative, and immunization record. Scanned and routed to PCP."},
+            {"type": "Progress Notes", "title": "Outside records review", "author": "PCP", "date": "2019-07-11T12:30", "body": "Old chart reviewed. Levothyroxine dose has been 75 mcg for the whole stretch with stable TSH. Eating disorder history documented in her teens, no recurrence noted in their notes. Pap April 2018 normal, next due 2021 by cytology alone. Nothing else to act on."}
+          ]
+        },
+        {
+          "id": "2019-10-22a",
+          "kind": "nurse_visit",
+          "start": "2019-10-22T17:15",
+          "reason": "Flu shot",
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-22T17:20"}],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-22T17:20"}],
+          "documents": [
+            {"type": "Nurse Note", "title": "Influenza vaccine", "author": "RN", "date": "2019-10-22T17:25", "body": "Here after work for her flu shot. No prior reactions, feeling well today. Given IM left deltoid, VIS provided. Waited 15 minutes, no issues."}
+          ]
+        },
+        {
+          "id": "2020-05-12a",
+          "kind": "pharmacy",
+          "start": "2020-05-12T09:05",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill request: levothyroxine", "author": "MA", "date": "2020-05-12T09:05", "body": "Electronic request from her pharmacy for levothyroxine 75 mcg, 90 days. TSH last June in range. Approved per PCP with 3 refills."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "annual_physical",
+          "start": "2020-09-22T08:40",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical",
+          "medications": [
+            {"drug_text": "folic acid 0.4 MG Oral Tablet", "action": "start", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 0.4, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "Planning pregnancy"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "labs": [
+            {"panel": null, "collected": "2020-09-22T09:25", "results": [{"test": "Thyroid Stimulating Hormone"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-09-22T09:20"}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2020-09-22T08:40"},
+            {"procedure": "Immunization administration", "performed": "2020-09-22T09:20"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2020-09-22T09:50", "body": "Yearly exam, masked visit. She and her husband started trying for a pregnancy last month. Cycles regular, roughly every 28 days. No pelvic pain, no unusual bleeding. She has an appointment with her gynecologist this winter for a preconception visit.\n\nThyroid stable, no symptoms. Eating well, weight unchanged. Mood good, working from home since spring, says it suits her.\n\nMeds: levothyroxine 75 mcg daily. NKDA.\n\nExam: vitals as charted. Thyroid without enlargement. Heart and lungs normal. Abdomen benign. No edema.\n\nPlan:\n- Preconception: start folic acid 0.4 mg daily now. Thyroid needs a check early in any pregnancy because the dose usually goes up; she should call as soon as she has a positive test. TSH today.\n- Flu vaccine given.\n- PHQ-2 negative.\n- Pap due next year by the old record; gynecology can do it.\nReturn in a year."}
+          ]
+        },
+        {
+          "id": "2020-09-24a",
+          "kind": "portal_message",
+          "start": "2020-09-24T13:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Thyroid result", "author": "PCP", "date": "2020-09-24T13:10", "body": "TSH is normal. Same levothyroxine dose. Good luck to you both, and remember to let us know right away with a positive test so we can recheck the thyroid."},
+            {"type": "Patient Message", "title": "RE: Thyroid result", "author": "patient", "date": "2020-09-24T19:42", "body": "Thank you! Will do."}
+          ]
+        },
+        {
+          "id": "2021-02-18a",
+          "kind": "portal_message",
+          "start": "2021-02-18T20:15",
+          "procedures": [
+            {"procedure": "Hysteroscopic myomectomy", "snomed": "446804002", "performed": "2021-02-09T08:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "FYI procedure", "author": "patient", "date": "2021-02-18T20:15", "body": "Hi, just wanted you to know I had a hysteroscopy last Tuesday (Feb 9) with my gynecologist. During the fertility workup they saw a fibroid inside the uterus and took it out. Recovery was easy, back at work the next day. Not sure if they send you anything."},
+            {"type": "Patient Message", "title": "RE: FYI procedure", "author": "PCP", "date": "2021-02-19T07:55", "body": "Thanks for telling me, glad it went smoothly. I'll add it to your surgical history. We haven't received a note from them; if you're there again, ask them to fax a copy to us."}
+          ]
+        },
+        {
+          "id": "2021-05-04a",
+          "kind": "portal_message",
+          "start": "2021-05-04T11:30",
+          "immunizations": [
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-08T16:00"},
+            {"vaccine": "COVID-19, mRNA, Pfizer-BioNTech, original", "date": "2021-04-29T16:00"}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Vaccine card", "author": "patient", "date": "2021-05-04T11:30", "body": "Attaching a picture of my vaccine card so you have it. Both doses at the pharmacy, April 8 and April 29."},
+            {"type": "Patient Message", "title": "RE: Vaccine card", "author": "MA", "date": "2021-05-04T15:05", "body": "Got it, both doses are entered in your record now. Thanks!"}
+          ]
+        },
+        {
+          "id": "2021-06-08a",
+          "kind": "pharmacy",
+          "start": "2021-06-08T10:20",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Refill: levothyroxine", "author": "MA", "date": "2021-06-08T10:20", "body": "Refill request for levothyroxine 75 mcg #90. Last TSH 9/2020 normal. Sent with 3 refills. Reminder to schedule her fall physical."}
+          ]
+        },
+        {
+          "id": "2021-08-06a",
+          "kind": "specialist_visit",
+          "start": "2021-08-06T10:30",
+          "service": "Gynecology",
+          "reason": "Secondary amenorrhea after hysteroscopic myomectomy",
+          "conditions": [
+            {"label": "Secondary amenorrhea", "icd10": "N91.1", "action": "diagnosed", "onset": "2021-02-15"},
+            {"label": "Asherman syndrome", "icd10": "N85.6", "action": "diagnosed", "onset": "2021-08-06", "note": "Suspected intrauterine adhesions after hysteroscopic myomectomy; negative progesterone challenge."},
+            {"label": "Female infertility", "action": "diagnosed", "onset": "2021-08-06"}
+          ],
+          "labs": [
+            {"panel": null, "collected": "2021-08-06T10:50", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]}
+          ],
+          "documents": [
+            {"type": "Consult Note", "title": "Gynecology consultation", "author": "gynecology", "date": "2021-08-20T09:00", "body": "OUTSIDE GYNECOLOGY PRACTICE - CONSULTATION LETTER\nDate of service: 08/06/2021\nRe: Wendy Schmidt, DOB 12/16/1988\n\nThank you for allowing us to participate in Ms. Schmidt's care. She is a 32-year-old G0 seen for absent menses. Before her hysteroscopic fibroid resection in February her cycles came like clockwork; she has not bled once in the six months since. She and her husband have been trying for a pregnancy for about a year without success.\n\nPMH: Hashimoto thyroiditis on levothyroxine 75 mcg daily; history of anorexia nervosa, in remission.\nPSH: hysteroscopic myomectomy, 2/2021.\nAllergies: NKDA.\nFH: maternal aunt with autoimmune thyroid disease, mother with depression, sister with PCOS.\nSH: never smoker, occasional alcohol, works in marketing.\n\nExam: vital signs normal. Abdomen soft, nontender, no masses. External genitalia, vagina and cervix normal; uterus normal size, mobile; adnexa without masses or tenderness.\n\nData: urine hCG negative in the office. Thyroid function and prolactin from this visit were within normal limits. She completed a 10-day progestin challenge with no withdrawal bleed.\n\nImpression: secondary amenorrhea after intrauterine surgery with a negative progestin challenge and normal thyroid and prolactin results, most consistent with intrauterine adhesions (Asherman syndrome). Infertility of one year.\n\nPlan: operative hysteroscopy for evaluation and lysis of adhesions, scheduling for September.\n\nAllergies: NKDA. cc: primary care physician"}
+          ]
+        },
+        {
+          "id": "2021-11-09a",
+          "kind": "annual_physical",
+          "start": "2021-11-09T13:20",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Annual physical; nipple discharge",
+          "conditions": [
+            {"label": "Secondary amenorrhea", "icd10": "N91.1", "action": "resolved", "onset": "2021-02-15", "note": "Menses returned October 2021 after hysteroscopic adhesiolysis."},
+            {"label": "Galactorrhea not associated with childbirth", "icd10": "N64.3", "action": "diagnosed", "onset": "2021-10-15"}
+          ],
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-9 total score", "value": 3}],
+          "labs": [
+            {"panel": null, "collected": "2021-11-09T13:40", "results": [{"test": "Pregnancy Test, Urine", "text": "Negative"}]},
+            {"panel": null, "collected": "2021-11-09T14:10", "results": [{"test": "Prolactin", "value": 31, "unit": "ng/mL"}]},
+            {"panel": null, "collected": "2021-11-09T14:10", "results": [{"test": "Thyroid Stimulating Hormone"}]},
+            {"panel": "CBC with Differential", "collected": "2021-11-09T14:10", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2021-11-09T14:10", "results": [{"test": "Sodium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]}
+          ],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2021-11-09T14:00"}],
+          "procedures": [
+            {"procedure": "Intraluminal hysterolysis", "snomed": "50871007", "performed": "2021-09-14T08:00"},
+            {"procedure": "Preventive visit, established patient, 18-39", "performed": "2021-11-09T13:20"},
+            {"procedure": "Immunization administration", "performed": "2021-11-09T14:00"},
+            {"procedure": "Venipuncture", "performed": "2021-11-09T14:10"}
+          ],
+          "orders": [
+            {"id": "endo-referral-2021", "action": "placed", "order": "Endocrinology referral", "category": "referral", "to": "Endocrinology", "reason": "Galactorrhea with elevated prolactin"}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2021-11-09T14:35", "body": "Annual. A lot has happened on the gyn side this year. The fibroid resection in February was followed by six months of no periods; her gynecologist (letter in chart from August) thought scar tissue and took her back for an operative hysteroscopy on 9/14 to cut adhesions. No operative report has come to us; per her they found and divided scar tissue. Her period came back in October and the next one is due now. Still trying to conceive, still on folic acid.\n\nNew: for about three weeks she has noticed milky fluid from both nipples, sometimes on her bra, sometimes when she showers. No lumps, no pain, no redness. Not breastfeeding, never pregnant. No headaches, no change in vision. No new medications.\n\nThyroid: no symptoms on 75 mcg.\n\nExam: vitals as charted. Thyroid not enlarged. Breasts: symmetric, no masses, no skin change, no axillary nodes; with gentle pressure a small amount of white milky fluid comes from multiple ducts on both sides. Heart and lungs normal. Abdomen soft. Neuro grossly nonfocal.\n\nUrine hCG negative in the office.\n\nA/P\n1. Bilateral milky nipple discharge, i.e. galactorrhea. Prolactin and TSH today. No meds that would explain it. Referring to endocrinology regardless of the number, given the fertility picture.\n2. Secondary amenorrhea after myomectomy, adhesions lysed in September, cycles back. Off the active list.\n3. Hashimoto: TSH today.\n4. Prevention: flu shot today; CBC and CMP. PHQ-9 3.\n\nAsked her to have gynecology send the hysteroscopy report."}
+          ]
+        },
+        {
+          "id": "2021-11-12a",
+          "kind": "portal_message",
+          "start": "2021-11-12T09:30",
+          "documents": [
+            {"type": "Patient Message", "title": "Prolactin result", "author": "PCP", "date": "2021-11-12T09:30", "body": "Wendy, your prolactin came back at 31, a bit above the normal range. That level can cause milk production and it also matters for fertility, so it's good you're seeing endocrinology. They'll likely repeat it and may want imaging of the pituitary gland. Thyroid, blood counts and chemistry were all normal. The referral is in; you should get a call from their office."},
+            {"type": "Patient Message", "title": "RE: Prolactin result", "author": "patient", "date": "2021-11-12T12:14", "body": "Ok. Is a pituitary problem serious? A little freaked out reading online."},
+            {"type": "Patient Message", "title": "RE: Prolactin result", "author": "PCP", "date": "2021-11-12T16:50", "body": "Very understandable. A mildly high prolactin has several causes and most of them are very treatable, including the small pituitary growths that are the most common one. Let's let the endocrinologist sort out which it is before worrying. Call me if you develop headaches or any change in your vision before then."}
+          ]
+        },
+        {
+          "id": "2021-12-02a",
+          "kind": "telephone",
+          "start": "2021-12-02T11:45",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Referral scheduling", "author": "front desk", "date": "2021-12-02T11:45", "body": "Endocrinology office called to confirm they received the referral. First available new consult 1/27/22. Patient aware and has the date."}
+          ]
+        }
+      ]
+    }
+  ]
+}

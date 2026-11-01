@@ -23,7 +23,7 @@
             {"label": "History of gestational hypertension", "icd10": "Z87.59", "action": "history", "note": "first pregnancy, resolved after delivery"}
           ],
           "medications": [
-            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pregnancy"},
+            {"drug_text": "prenatal multivitamin with folic acid Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "pregnancy", "uncoded": true},
             {"drug": "ferrous sulfate 325 MG Oral Tablet", "action": "historical", "sig": "Take 1 tablet by mouth daily", "dose": {"value": 325, "unit": "mg"}, "frequency": "DAILY", "route": "Oral", "course": "chronic", "reason": "iron supplementation in pregnancy"}
           ],
           "allergies": [
@@ -37,8 +37,8 @@
             {"panel": "Complete Blood Count (CBC)", "collected": "2024-09-07T14:40", "results": [{"test": "Hemoglobin", "value": 11.2}, {"test": "Platelets", "value": 110}]},
             {"panel": "Basic Metabolic Panel (BMP)", "collected": "2024-09-07T14:40", "results": [{"test": "Creatinine", "value": 1.1}]},
             {"panel": "Hepatic Panel (LFT)", "collected": "2024-09-07T14:40", "results": [{"test": "Aspartate Aminotransferase", "text": "Elevated"}, {"test": "Alanine Aminotransferase", "text": "Elevated"}]},
-            {"panel": null, "collected": "2024-09-07T15:05", "results": [{"test": "Protein/Creatinine ratio, urine", "loinc": "2890-2", "unit": "mg/mg", "value": 0.4}]},
-            {"panel": null, "collected": "2024-09-08T15:30", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "mg/(24.h)", "value": 350}]}
+            {"panel": null, "collected": "2024-09-07T15:05", "results": [{"test": "Protein/Creatinine ratio, urine", "loinc": "2890-2", "unit": "mg/mg", "value": 0.4, "range": {"high": 0.2}}]},
+            {"panel": null, "collected": "2024-09-08T15:30", "results": [{"test": "Protein, 24 hour urine", "loinc": "2889-4", "unit": "mg/(24.h)", "value": 350, "range": {"high": 100}}]}
           ],
           "documents": [
             {
@@ -92,8 +92,7 @@
             {"procedure": "Immunization administration", "performed": "2024-10-29T10:15"}
           ],
           "orders": [
-            {"id": "rec-req-2024", "action": "placed", "order": "Outside records request: September 2024 hospital admission", "category": "procedure", "to": "Regional hospital health information management", "reason": "preeclampsia admission and delivery"}
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -132,8 +131,7 @@
           "start": "2024-12-10T09:40",
           "reason": "Hospital records received: September 2024 admission",
           "orders": [
-            {"id": "rec-req-2024", "action": "done", "date": "2024-12-10T09:40"}
-          ],
+            ],
           "documents": [
             {
               "type": "Progress Notes",

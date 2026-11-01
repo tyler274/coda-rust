@@ -1,0 +1,193 @@
+{
+  "patients": [
+    {
+      "mrn": "MRN00002775",
+      "given": "Amy",
+      "family": "Martel",
+      "birth_date": "1979-03-31",
+      "address_line": "63 Pleasant Street",
+      "phone": "+1-518-555-0172",
+      "email": "amy.martel@example.test",
+      "marital_status": "single",
+      "summary": "Elementary school teacher who joined the practice healthy in 2018, developed immune thrombocytopenic purpura in 2021 managed by hematology on prednisone 10 mg with an ED visit and an IVIG admission for bleeding, then had right Bell palsy in 2023 (recurring in 2026) and vestibular neuritis in 2024.",
+      "events": [
+        {
+          "id": "2018-05-08a",
+          "kind": "establish_care",
+          "start": "2018-05-08T08:30",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "New patient, establish care and physical",
+          "state": {"weight_kg": 66.8, "height_cm": 165.0},
+          "measure": ["bp", "hr", "temp_c", "rr", "spo2", "weight_kg", "height_cm"],
+          "allergies": [{"substance": "No known drug allergies"}],
+          "social": [
+            {"item": "Tobacco smoking status", "value": "Never smoker"},
+            {"item": "History of alcohol use", "value": "Social, 1-2 drinks per month"},
+            {"item": "Occupation", "value": "Elementary school teacher"}
+          ],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, new patient, 18-39", "performed": "2018-05-08T08:30"},
+            {"procedure": "Tonsillectomy and adenoidectomy", "snomed": "28913000", "performed": "1991-06-15T09:00"},
+            {"procedure": "Extraction of wisdom tooth", "snomed": "65546002", "performed": "1999-07-15T09:00"},
+            {"procedure": "Venipuncture", "performed": "2018-05-08T09:20"},
+            {"procedure": "Immunization administration", "performed": "2018-05-08T09:15"}
+          ],
+          "immunizations": [{"vaccine": "Tdap", "date": "2018-05-08T09:15"}],
+          "orders": [
+            {"id": "pap-2018", "action": "placed", "order": "Cervical cytology (Pap) with HPV", "category": "lab"}
+          ],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2018-05-08T09:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Comprehensive Metabolic Panel (CMP)", "collected": "2018-05-08T09:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}, {"test": "Alanine Aminotransferase"}]},
+            {"panel": "Lipid Panel", "collected": "2018-05-08T09:20", "results": [{"test": "Total Cholesterol"}, {"test": "High Density Lipoprotein"}, {"test": "Triglycerides"}, {"test": "Low Density Lipoprotein"}]},
+            {"panel": null, "collected": "2018-05-08T09:20", "results": [{"test": "Thyroid Stimulating Hormone", "value": 1.84}]},
+            {"panel": null, "collected": "2018-05-08T09:20", "results": [{"test": "Hepatitis C Antibody", "text": "Nonreactive"}]},
+            {"panel": null, "collected": "2018-05-08T09:20", "results": [{"test": "HIV-1/2 Antigen and Antibody", "text": "Nonreactive"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "New Patient Visit and Physical", "author": "PCP", "date": "2018-05-08T09:40", "body": "39 y/o woman, 3rd grade teacher in town, new to us. Her old primary care office was on the other side of the valley and she wanted something closer to school. Feels well. No complaints today.\n\nPMH: none. No chronic problems, no hospitalizations.\nPSH: T&A at about 12, wisdom teeth out at 20. No problems with bleeding after either that she recalls.\nMeds: none. No supplements.\nAllergies: none to medications.\nFamily: mother with an underactive thyroid, father with high blood pressure. Nobody in the family with a bleeding problem.\nSocial: never smoker. Wine at a dinner out maybe once or twice a month. Single, lives alone. Walks most evenings.\nGYN: regular cycles. Last Pap about 3 years ago, normal per her.\n\nROS negative across the board.\n\nExam: well appearing. Vitals as charted. HEENT normal, TMs clear, oropharynx clear, tonsils surgically absent. Thyroid not enlarged. Heart regular, no murmur. Lungs clear. Abdomen soft, nontender, no organomegaly. Skin without rash or bruising. No edema. Breast exam without masses. Pelvic deferred to the cervical sample only, collected without difficulty.\n\nA/P\n1. Health maintenance. Baseline labs today: CBC, CMP, lipids, TSH (given mom's thyroid). One-time hep C and HIV screen, she agrees. Pap with HPV co-test collected. Tdap today, last one she can't remember.\n2. Mammogram: talked about starting at 40, she'd like to start next year.\n3. Will request records from her prior office.\nRTC one year."}
+          ]
+        },
+        {
+          "id": "2018-05-10a",
+          "kind": "portal_message",
+          "start": "2018-05-10T16:05",
+          "documents": [
+            {"type": "Patient Message", "title": "Lab results", "author": "PCP", "date": "2018-05-10T16:05", "body": "Hi Amy, your blood work from Tuesday all came back normal: blood counts, kidney and liver tests, cholesterol and thyroid. The hepatitis C and HIV screens were negative. The Pap result usually takes another week, I will send it when it's in."}
+          ]
+        },
+        {
+          "id": "2018-05-17a",
+          "kind": "lab_only",
+          "start": "2018-05-17T10:00",
+          "orders": [{"id": "pap-2018", "action": "done", "date": "2018-05-17T10:00"}],
+          "reports": [
+            {"study": "Cervical cytology (Pap) with HPV", "performed": "2018-05-08T09:10", "issued": "2018-05-17T10:00", "text": "Specimen: liquid-based cervical cytology. Specimen adequacy: satisfactory for evaluation; endocervical/transformation zone component present. Interpretation: negative for intraepithelial lesion or malignancy. High-risk HPV DNA: not detected.", "conclusion": "NILM, high-risk HPV negative."}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Pap result", "author": "PCP", "date": "2018-05-17T15:30", "body": "Your Pap and HPV test were both normal. With a normal co-test the next one is due in 5 years, so 2023."}
+          ]
+        },
+        {
+          "id": "2018-06-12a",
+          "kind": "outside_records",
+          "start": "2018-06-12T11:00",
+          "documents": [
+            {"type": "Outside Records", "title": "Records from prior primary care office", "author": "front desk", "date": "2018-06-12T11:00", "body": "Faxed records received from patient's previous primary care office, 2009 to 2017. Annual visits, no chronic diagnoses, no medications. Pap 2015 negative. Routine labs 2016 within normal limits. Immunization record shows a childhood series and a tetanus booster in 2006. Filed to chart; PCP reviewed, nothing to act on."}
+          ]
+        },
+        {
+          "id": "2018-10-11a",
+          "kind": "nurse_visit",
+          "start": "2018-10-11T15:40",
+          "reason": "Flu shot",
+          "measure": ["temp_c"],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2018-10-11T15:45"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2018-10-11T15:45"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2018-10-11T15:50", "body": "Came after school for her flu vaccine. Afebrile, no egg or vaccine reactions in the past. Given L deltoid, tolerated well. VIS provided."}
+          ]
+        },
+        {
+          "id": "2019-04-23a",
+          "kind": "annual_physical",
+          "start": "2019-04-23T15:45",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Yearly physical",
+          "measure": ["bp", "hr", "temp_c", "spo2", "weight_kg"],
+          "surveys": [{"survey": "PHQ-2 total score", "value": 0}],
+          "procedures": [
+            {"procedure": "Preventive visit, established patient, 40-64", "performed": "2019-04-23T15:45"},
+            {"procedure": "Venipuncture", "performed": "2019-04-23T16:20"}
+          ],
+          "orders": [{"id": "mammo-2019", "action": "placed", "order": "Screening mammogram, bilateral", "category": "imaging"}],
+          "labs": [
+            {"panel": "Complete Blood Count (CBC)", "collected": "2019-04-23T16:20", "results": [{"test": "White Blood Cells"}, {"test": "Hemoglobin"}, {"test": "Platelets"}]},
+            {"panel": "Basic Metabolic Panel (BMP)", "collected": "2019-04-23T16:20", "results": [{"test": "Sodium"}, {"test": "Potassium"}, {"test": "Creatinine"}, {"test": "Glucose"}]}
+          ],
+          "documents": [
+            {"type": "Progress Notes", "title": "Annual Physical", "author": "PCP", "date": "2019-04-23T16:30", "body": "Turned 40 last month. Busy spring with state testing at school but doing fine. No new symptoms. Not on any medicines.\n\nROS: no fatigue, weight change, chest pain, breathlessness, bowel or urinary change. Periods regular.\nFamily and social unchanged from last year.\n\nExam: vitals as charted. Well. Neck supple without thyroid enlargement. Heart RRR, lungs clear. Abdomen soft without masses or organomegaly. Skin clear. Breast exam normal bilaterally. No edema.\n\nA/P: Healthy 40 y/o.\n- Screening mammogram ordered, she will book it for after the school year gets quieter.\n- CBC and BMP today. Lipids were fine last year, skip this year.\n- Pap up to date (2023 next). Tdap 2018.\n- Flu shot in the fall.\nRTC one year."}
+          ]
+        },
+        {
+          "id": "2019-04-24a",
+          "kind": "portal_message",
+          "start": "2019-04-24T12:10",
+          "documents": [
+            {"type": "Patient Message", "title": "Results", "author": "PCP", "date": "2019-04-24T12:10", "body": "Blood count and chemistries from yesterday are all normal. Nothing to change."}
+          ]
+        },
+        {
+          "id": "2019-05-14a",
+          "kind": "imaging",
+          "start": "2019-05-14T07:45",
+          "orders": [{"id": "mammo-2019", "action": "done", "date": "2019-05-14T07:45"}],
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2019-05-14T07:45", "text": "Bilateral digital screening mammogram with tomosynthesis. No prior studies available for comparison. The breasts are heterogeneously dense, which may obscure small masses. No suspicious mass, architectural distortion or suspicious calcifications in either breast. Axillae unremarkable.", "conclusion": "BI-RADS 1: negative. Routine annual screening recommended."}
+          ],
+          "documents": [
+            {"type": "Patient Message", "title": "Mammogram result", "author": "PCP", "date": "2019-05-15T09:00", "body": "Your first mammogram was normal. You'll get a letter from the breast center too. Repeat in a year."}
+          ]
+        },
+        {
+          "id": "2019-10-17a",
+          "kind": "nurse_visit",
+          "start": "2019-10-17T15:30",
+          "reason": "Flu shot",
+          "measure": ["temp_c"],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2019-10-17T15:35"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2019-10-17T15:35"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "MA", "date": "2019-10-17T15:40", "body": "Influenza vaccine given R deltoid. No issues with last year's dose. Tolerated, left ambulatory."}
+          ]
+        },
+        {
+          "id": "2020-04-21a",
+          "kind": "annual_physical",
+          "start": "2020-04-21T15:45",
+          "reason": "Yearly physical",
+          "appointment": "cancelled",
+          "documents": [
+            {"type": "Telephone Encounter", "title": "Appointment cancelled", "author": "front desk", "date": "2020-04-06T10:20", "body": "Called pt to cancel her April physical; in-person preventive visits on hold during the COVID-19 shutdown. Offered a video check-in in June, she accepted."}
+          ]
+        },
+        {
+          "id": "2020-06-09a",
+          "kind": "telehealth_visit",
+          "start": "2020-06-09T10:00",
+          "service": "Internal Medicine — Primary Care",
+          "reason": "Video check-in in place of physical",
+          "surveys": [{"survey": "PHQ-2 total score", "value": 1}],
+          "procedures": [{"procedure": "Telehealth visit, established patient, low MDM", "performed": "2020-06-09T10:00"}],
+          "documents": [
+            {"type": "Progress Notes", "title": "Video Visit", "author": "PCP", "date": "2020-06-09T10:25", "body": "Video, she's at her kitchen table, consented to a video visit. Finishing out the school year teaching remotely, which she says is exhausting in a different way than the classroom, but she's sleeping fine and mood is okay. Walking daily. No health concerns she wants to raise. No meds.\n\nAppears well on camera, speaking full sentences, no distress.\n\nPlan: hold the in-person physical and labs until things settle, probably the fall or next spring. Mammogram was due in May; she will call the breast center once they reopen screening. Flu shot in the fall. She'll reach out with anything in between."}
+          ]
+        },
+        {
+          "id": "2020-09-22a",
+          "kind": "imaging",
+          "start": "2020-09-22T16:10",
+          "reports": [
+            {"study": "Screening mammogram, bilateral", "performed": "2020-09-22T16:10", "text": "Bilateral digital screening mammogram with tomosynthesis, compared with 2019. Heterogeneously dense breast tissue. No new mass, suspicious calcifications or architectural distortion. Stable appearance.", "conclusion": "BI-RADS 1: negative. Annual screening."}
+          ],
+          "documents": [
+            {"type": "Outside Records", "title": "Mammogram report received", "author": "front desk", "date": "2020-09-24T09:15", "body": "Screening mammogram 9/22 report received from breast imaging center, negative. Scanned; PCP reviewed."}
+          ]
+        },
+        {
+          "id": "2020-10-08a",
+          "kind": "nurse_visit",
+          "start": "2020-10-08T16:00",
+          "reason": "Flu shot",
+          "measure": ["temp_c"],
+          "procedures": [{"procedure": "Immunization administration", "performed": "2020-10-08T16:05"}],
+          "immunizations": [{"vaccine": "Influenza, quadrivalent, injectable", "date": "2020-10-08T16:05"}],
+          "documents": [
+            {"type": "Nursing Note", "title": "Nurse Visit - Influenza Vaccine", "author": "RN", "date": "2020-10-08T16:10", "body": "Screened at door, no symptoms, afebrile. Masked. Flu vaccine L deltoid, tolerated well."}
+          ]
+        }
+      ]
+    }
+  ]
+}

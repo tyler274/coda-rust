@@ -290,7 +290,11 @@
                   "test": "Reticulocyte count",
                   "loinc": "17849-1",
                   "unit": "%",
-                  "value": 1
+                  "value": 1,
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  }
                 }
               ]
             },
@@ -314,7 +318,11 @@
                   "test": "Lactate dehydrogenase",
                   "loinc": "2532-0",
                   "unit": "U/L",
-                  "value": 420
+                  "value": 420,
+                  "range": {
+                    "low": 80,
+                    "high": 225
+                  }
                 }
               ]
             },
@@ -406,7 +414,22 @@
             {
               "id": "lab-recheck-2022-01",
               "action": "placed",
-              "order": "CBC, reticulocyte count, folate",
+              "order": "Complete Blood Count (CBC)",
+              "category": "lab",
+              "reason": "Recheck after folate repletion"
+            },
+            {
+              "id": "lab-recheck-2022-01-2",
+              "action": "placed",
+              "order": "Reticulocyte count",
+              "category": "lab",
+              "reason": "Recheck after folate repletion",
+              "loinc": "17849-1"
+            },
+            {
+              "id": "lab-recheck-2022-01-3",
+              "action": "placed",
+              "order": "Folate",
               "category": "lab",
               "reason": "Recheck after folate repletion"
             }
@@ -452,6 +475,16 @@
               "id": "lab-recheck-2022-01",
               "action": "done",
               "date": "2022-01-03T08:15"
+            },
+            {
+              "id": "lab-recheck-2022-01-2",
+              "action": "done",
+              "date": "2022-01-03T08:15"
+            },
+            {
+              "id": "lab-recheck-2022-01-3",
+              "action": "done",
+              "date": "2022-01-03T08:15"
             }
           ],
           "labs": [
@@ -486,7 +519,11 @@
                   "test": "Reticulocyte count",
                   "loinc": "17849-1",
                   "unit": "%",
-                  "value": 9
+                  "value": 9,
+                  "range": {
+                    "low": 0.5,
+                    "high": 1.5
+                  }
                 }
               ]
             },

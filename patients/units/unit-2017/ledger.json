@@ -1,16 +1,7 @@
 {
   "unit": "unit-2017",
   "model": "claude-opus-5-5 (Claude Code workflow subagent)",
-  "warnings": [
-    "MRN00002017/2020-09-21a: procedure order \"Request records from prior primary care practice\" names no one catalog lab, panel, study or procedure",
-    "MRN00002017/2021-09-27a: procedure order \"Request records from vascular surgery\" names no one catalog lab, panel, study or procedure",
-    "MRN00002017/2022-09-19a: procedure order \"Pulmonary function tests, complete with lung volumes\" names no one catalog lab, panel, study or procedure",
-    "MRN00002017/2022-09-19a: referral to \"Pulmonary & Critical Care\" names no catalog specialty",
-    "MRN00002017/2023-02-27a: lab order \"Basic metabolic panel in 2 weeks\" names no one catalog lab, panel, study or procedure",
-    "MRN00002017/2024-04-01a: referral to \"Pulmonary & Critical Care\" names no catalog specialty",
-    "MRN00002017/2024-10-21a: referral to \"Hematology & Oncology\" names no catalog specialty",
-    "MRN00002017/2025-05-05a: referral to \"Pulmonary & Critical Care\" names no catalog specialty"
-  ],
+  "warnings": [],
   "patients": [
     {
       "mrn": "MRN00002017",
@@ -333,15 +324,6 @@
               "date": "2020-09-21T10:00"
             }
           ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "placed",
-              "order": "Request records from prior primary care practice",
-              "category": "procedure",
-              "reason": "establishing care"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -401,13 +383,6 @@
             {
               "vaccine": "Tdap",
               "date": "2016-04-11T10:00"
-            }
-          ],
-          "orders": [
-            {
-              "id": "records-prior-pcp",
-              "action": "done",
-              "date": "2020-10-19T11:00"
             }
           ],
           "documents": [
@@ -627,13 +602,6 @@
               "id": "vasc-referral-2021",
               "action": "done",
               "date": "2021-09-27T14:00"
-            },
-            {
-              "id": "records-vascular-2021",
-              "action": "placed",
-              "order": "Request records from vascular surgery",
-              "category": "procedure",
-              "reason": "femoral stent May 2021"
             }
           ],
           "documents": [
@@ -836,13 +804,6 @@
               "date": "2021-11-22T12:00"
             }
           ],
-          "orders": [
-            {
-              "id": "records-vascular-2021",
-              "action": "cancelled",
-              "date": "2022-03-28T09:30"
-            }
-          ],
           "documents": [
             {
               "type": "Progress Notes",
@@ -946,7 +907,8 @@
               "action": "placed",
               "order": "Pulmonary function tests, complete with lung volumes",
               "category": "procedure",
-              "to": "Pulmonary Function Lab",
+              "to": "Pulmonology",
+              "snomed": "23426006",
               "reason": "progressive exertional dyspnea, heavy smoker"
             },
             {
@@ -954,7 +916,7 @@
               "action": "placed",
               "order": "Pulmonology referral",
               "category": "referral",
-              "to": "Pulmonary & Critical Care",
+              "to": "Pulmonology",
               "reason": "progressive exertional dyspnea, heavy smoker"
             }
           ],
@@ -1301,7 +1263,7 @@
             {
               "id": "bmp-2023-03",
               "action": "placed",
-              "order": "Basic metabolic panel in 2 weeks",
+              "order": "Basic Metabolic Panel (BMP)",
               "category": "lab",
               "reason": "new ACE inhibitor"
             },
@@ -1952,7 +1914,7 @@
               "action": "placed",
               "order": "Pulmonology referral, expedited",
               "category": "referral",
-              "to": "Pulmonary & Critical Care",
+              "to": "Pulmonology",
               "reason": "progressive dyspnea, hoarseness and cough"
             }
           ],
@@ -2375,7 +2337,7 @@
               "action": "placed",
               "order": "Hematology/oncology referral, urgent",
               "category": "referral",
-              "to": "Hematology & Oncology",
+              "to": "Hematology",
               "reason": "iron deficiency anemia with unintentional weight loss"
             }
           ],
@@ -2787,7 +2749,7 @@
               "action": "placed",
               "order": "Pulmonology referral for bronchoscopy and biopsy",
               "category": "referral",
-              "to": "Pulmonary & Critical Care",
+              "to": "Pulmonology",
               "reason": "right lower lobe mass"
             }
           ],
@@ -4427,19 +4389,19 @@
         "code": "597195",
         "display": "carboplatin 10 MG/ML Injectable Solution",
         "ingredient": "carboplatin",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "dexamethasone 4 MG Oral Tablet": {
         "code": "197582",
         "display": "dexamethasone 4 MG Oral Tablet",
         "ingredient": "dexamethasone",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "docetaxel 20 MG/ML Injectable Solution": {
         "code": "1001405",
         "display": "docetaxel 20 MG/ML Injectable Solution",
         "ingredient": "docetaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       },
       "durvalumab 50 MG/ML Injectable Solution": {
         "code": "1919515",
@@ -4451,7 +4413,7 @@
         "code": "312199",
         "display": "paclitaxel 6 MG/ML Injectable Solution",
         "ingredient": "paclitaxel",
-        "receipt": "NLM RxNav approximateTerm + properties"
+        "receipt": "NLM RxNav rxcui (exact name)"
       }
     },
     "reports": {
@@ -4469,6 +4431,13 @@
         "code": "39435-3",
         "display": "US.doppler Renal artery",
         "receipt": "NLM Clinical Tables LOINC"
+      }
+    },
+    "procedures": {
+      "Pulmonary function tests, complete with lung volumes": {
+        "code": "23426006",
+        "display": "Measurement of respiratory function",
+        "receipt": "tx.fhir.org SNOMED CT"
       }
     }
   }
