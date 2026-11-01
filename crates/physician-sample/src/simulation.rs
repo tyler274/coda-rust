@@ -104,7 +104,7 @@ pub(crate) async fn workspace(
     State(state): State<SimulationState>,
     Path(id): Path<String>,
 ) -> Response {
-    let Some(raw) = super::workspace_body(&id) else {
+    let Some(raw) = workspace_body(&id) else {
         return StatusCode::NOT_FOUND.into_response();
     };
     let mut doc: Value = serde_json::from_str(raw).expect("workspace fixture JSON");
@@ -173,7 +173,7 @@ pub(crate) async fn snapshot(
     State(state): State<SimulationState>,
     Path((id, chat)): Path<(String, String)>,
 ) -> Response {
-    if super::workspace_body(&id).is_none() {
+    if workspace_body(&id).is_none() {
         return StatusCode::NOT_FOUND.into_response();
     }
     let guard = state.inner.lock().expect("simulation lock");
@@ -392,5 +392,54 @@ pub(crate) fn status_json(session: &SimulationSession) -> Value {
         "aggregate_metric": session.aggregate_metric,
         "scenarios": local_simulation_scenarios(),
         "panel_patients": roger_panel_patients(),
+    })
+}
+
+const ROSTER: &str = include_str!("../fixtures/roster.json");
+
+pub(crate) async fn roster(Query(query): Query<crate::RosterQuery>) -> Response {
+    let words: Vec<String> = query
+        .query
+        .unwrap_or_default()
+        .split_whitespace()
+        .map(str::to_lowercase)
+        .collect();
+    if words.is_empty() {
+        return Json(json!({ "patients": [], "next_after": null })).into_response();
+    }
+    let roster: Value = serde_json::from_str(ROSTER).expect("roster");
+    let patients: Vec<Value> = roster["patients"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .filter(|patient| {
+            let name = patient["patient_display_name"].as_str().unwrap_or("");
+            let birth = patient["birth_date"].as_str().unwrap_or("");
+            let haystack = format!("{name} {birth}").to_lowercase();
+            words.iter().all(|word| haystack.contains(word))
+        })
+        .collect();
+    Json(json!({ "patients": patients, "next_after": null })).into_response()
+}
+
+pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
+    Some(match id {
+        "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
+            include_str!("../fixtures/workspaces/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json")
+        }
+        "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d" => {
+            include_str!("../fixtures/workspaces/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d.json")
+        }
+        "pw-f5404d89-acde-4bb5-8c42-2fa191766811" => {
+            include_str!("../fixtures/workspaces/pw-f5404d89-acde-4bb5-8c42-2fa191766811.json")
+        }
+        "pw-d11a35f7-0d8d-466f-a48e-5812df0a4971" => {
+            include_str!("../fixtures/workspaces/pw-d11a35f7-0d8d-466f-a48e-5812df0a4971.json")
+        }
+        "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e" => {
+            include_str!("../fixtures/workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json")
+        }
+        _ => return None,
     })
 }

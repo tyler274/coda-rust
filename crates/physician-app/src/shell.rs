@@ -798,7 +798,7 @@ pub struct SummaryTime {
     pub words: String,
 }
 
-/// Summary written, care reviewed, and records as of. A missing field adds nothing.
+/// Summary written and care reviewed. A missing field adds nothing.
 pub fn summary_times(workspace: &PatientWorkspaceResponse, now: &str) -> Vec<SummaryTime> {
     let zone = workspace.time_zone.as_deref().unwrap_or("");
     let mut times = Vec::new();
@@ -812,10 +812,16 @@ pub fn summary_times(workspace: &PatientWorkspaceResponse, now: &str) -> Vec<Sum
     if let Some(instant) = workspace.last_reviewed_at.clone() {
         push_summary_time(&mut times, "Care reviewed", instant, zone, now);
     }
-    if let Some(instant) = records_as_of(&workspace.connected_sources) {
-        push_summary_time(&mut times, "Records as of", instant, zone, now);
-    }
     times
+}
+
+/// When the patient's records were last refreshed, beside their identity.
+pub fn records_time(workspace: &PatientWorkspaceResponse, now: &str) -> Option<SummaryTime> {
+    let mut times = Vec::new();
+    let zone = workspace.time_zone.as_deref().unwrap_or("");
+    let instant = records_as_of(&workspace.connected_sources)?;
+    push_summary_time(&mut times, "Records as of", instant, zone, now);
+    times.pop()
 }
 
 fn push_summary_time(
@@ -1748,10 +1754,13 @@ mod tests {
                 .iter()
                 .map(|time| (time.label, time.words.as_str()))
                 .collect::<Vec<_>>(),
-            vec![
-                ("Summary written", "Today, 8:00 AM"),
-                ("Records as of", "Today, 12:57 PM"),
-            ]
+            vec![("Summary written", "Today, 8:00 AM")]
+        );
+        assert_eq!(
+            records_time(&workspace, &day.current_time)
+                .map(|time| time.words)
+                .as_deref(),
+            Some("Today, 12:57 PM")
         );
         let mut reviewed = workspace.clone();
         reviewed.last_reviewed_at = Some("2026-08-26T16:00:00.000Z".to_owned());

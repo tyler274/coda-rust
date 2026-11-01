@@ -29,4 +29,6 @@ pub enum PanelError {
     Forbidden,
     /// The target physician does not belong to the caller's practice.
     UnknownTarget,
+    /// The store could not record the assignment.
+    Unavailable,
 }

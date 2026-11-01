@@ -71,7 +71,7 @@ pub(crate) struct Live {
     /// The site accepts and snapshots; the worker runs the model.
     pub(crate) durable: Option<Arc<crate::durable::DurableChat>>,
     /// Whether the explicitly enabled synthetic reply source is on.
-    synthetic_reply: std::sync::atomic::AtomicBool,
+    synthetic_reply: Mutex<Option<String>>,
 }
 
 impl Live {
@@ -101,7 +101,7 @@ impl Live {
             sources: Mutex::new(sources),
             turns: AtomicU64::new(0),
             durable: None,
-            synthetic_reply: false.into(),
+            synthetic_reply: Mutex::new(None),
         }))
     }
     /// Starts an empty chat session for the model's role.
@@ -137,7 +137,7 @@ impl Live {
             bus,
             turns: AtomicU64::new(0),
             durable: None,
-            synthetic_reply: synthetic_reply_from_env().into(),
+            synthetic_reply: Mutex::new(synthetic_reply_from_env()),
             sources: Mutex::new(
                 source_snapshot()
                     .and_then(local_product::physician_sources::Observation::seeded)
@@ -201,19 +201,22 @@ impl Live {
             sources: Mutex::new(Default::default()),
             turns: AtomicU64::new(0),
             durable: Some(chat),
-            synthetic_reply: synthetic_reply_from_env().into(),
+            synthetic_reply: Mutex::new(synthetic_reply_from_env()),
         }))
     }
 
     /// Whether the explicitly enabled synthetic reply source is on.
-    pub(crate) fn synthetic_reply(&self) -> bool {
-        self.synthetic_reply.load(Ordering::Relaxed)
+    pub(crate) fn synthetic_reply(&self) -> Option<String> {
+        self.synthetic_reply
+            .lock()
+            .expect("synthetic reply")
+            .clone()
     }
 
     /// Turns the synthetic reply source on for an in-process test server.
     #[cfg(test)]
-    pub(crate) fn enable_synthetic_reply(&self) {
-        self.synthetic_reply.store(true, Ordering::Relaxed);
+    pub(crate) fn enable_synthetic_reply(&self, patient: &str) {
+        *self.synthetic_reply.lock().expect("synthetic reply") = Some(patient.to_owned());
     }
 
     /// The signed-in physician's chats in this workspace as wire
@@ -306,8 +309,8 @@ fn chat_owner(ctx: Option<&AuthContext>) -> Option<ChatOwner> {
     })
 }
 
-fn synthetic_reply_from_env() -> bool {
-    crate::synthetic_reply::enabled(
+fn synthetic_reply_from_env() -> Option<String> {
+    crate::synthetic_reply::patient(
         std::env::var(crate::synthetic_reply::SWITCH)
             .ok()
             .as_deref(),

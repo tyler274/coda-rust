@@ -24,7 +24,7 @@ fn test_lock() -> &'static Mutex<()> {
 
 #[tokio::test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn the_recorded_practice_is_visible() {
+async fn the_practice_and_its_patients_are_visible() {
     let _guard = test_lock().lock().await;
     let site = build_site();
     // A temporary physician session and offline replay: never the operator's
@@ -46,15 +46,12 @@ async fn the_recorded_practice_is_visible() {
     let dom = dump_dom(&chrome, &format!("http://{address}/")).await;
     assert!(
         dom.contains("Today")
-            && dom.contains("Coda hasn’t read Gmail yet.")
-            && dom.contains("Coda hasn’t read Spruce yet.")
-            && dom.contains("3:30 PM")
-            && dom.contains("Mary Louis")
+            && dom.contains("Aug 27, 2026")
+            && dom.contains("Nothing needs you right now.")
             && dom.contains("m3 11 9-8 9 8")
             && dom.contains("viewBox=\"0 0 24 24\"")
             && dom.contains("stroke-width=\"1.8\"")
             && dom.contains("box-sizing: border-box")
-            && !dom.contains("Nothing needs you right now.")
             && !dom.contains("Connections"),
         "Today did not match the React shell:\n{dom}"
     );
@@ -64,24 +61,15 @@ async fn the_recorded_practice_is_visible() {
     )
     .await;
     assert!(
-        workspace.contains("Patient summary")
+        workspace.contains("Mary Louis")
             && workspace.contains("Age 54 years")
             && workspace.contains("MRN 00000005")
             && workspace.contains("Gender Female")
-            && workspace.contains("[1]")
-            && workspace.contains("Source 2: Discharge Summary. Preview source.")
-            && workspace.contains("Upcoming visits")
-            && workspace.contains("3:30 PM")
-            && workspace.contains("Follow-up visit")
-            && workspace.contains("Preparation failed")
-            && workspace.contains("Summary written")
-            && workspace.contains("Today, 8:00 AM")
             && workspace.contains("Records as of")
-            && workspace.contains("Today, 12:57 PM")
-            && !workspace.contains("[[patient_source")
-            && !workspace.contains("Write a message")
-            && !workspace.contains("Visit preparation failed. No new briefing was completed."),
-        "the workspace did not match the React patient page:\n{workspace}"
+            && workspace.contains("Today, 12:00 PM")
+            && !workspace.contains("Patient summary")
+            && !workspace.contains("Write a message"),
+        "the workspace did not show the patient:\n{workspace}"
     );
     // Exercise the legacy preview ingress through the running server, then
     // verify what the physician sees in the compiled client. Submitted source
@@ -129,7 +117,7 @@ async fn the_recorded_practice_is_visible() {
         "{preview}"
     );
 
-    // `?chat=` opens a conversation the recorded workspace does not list.
+    // `?chat=` opens a conversation the workspace does not list.
     let chat = dump_dom(
         &chrome,
         &format!(
@@ -138,7 +126,7 @@ async fn the_recorded_practice_is_visible() {
     )
     .await;
     assert!(
-        chat.contains("Patient summary")
+        chat.contains("Records as of")
             && chat.contains("What would you like Coda to review?")
             && chat.contains("Write a message")
             && !chat.contains("This workspace has no chats."),
@@ -338,7 +326,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .eval("document.querySelector('button[aria-label=\"Open Today\"]').click()")
         .await;
     browser
-        .wait_for_text("Coda hasn’t read Gmail yet.", Duration::from_secs(10))
+        .wait_for_text("Nothing needs you right now.", Duration::from_secs(10))
         .await;
     let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
     assert_eq!(
@@ -355,7 +343,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
         .eval("document.querySelector('.dialog-results button').click()")
         .await;
     browser
-        .wait_for_text("Patient summary", Duration::from_secs(10))
+        .wait_for_text("Records as of", Duration::from_secs(10))
         .await;
     let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
     assert_eq!(
@@ -368,7 +356,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     );
     browser.reload().await;
     browser
-        .wait_for_text("Patient summary", Duration::from_secs(20))
+        .wait_for_text("Records as of", Duration::from_secs(20))
         .await;
 }
 
@@ -629,7 +617,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.wait_for_text("Work email", Duration::from_secs(20))
         .await;
     tab.request_sign_in("physician@codahealth.test").await;
-    tab.wait_for_text("Mary Louis", Duration::from_secs(20))
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
         .await;
     let bearer = tab
         .eval("localStorage.getItem('coda.physician.session')")
@@ -809,7 +797,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await;
     denied.request_sign_in("physician@codahealth.test").await;
     denied
-        .wait_for_text("Mary Louis", Duration::from_secs(20))
+        .wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
         .await;
     denied.navigate(&chat_url).await;
     denied
@@ -834,7 +822,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await;
     removed.request_sign_in("physician@codahealth.test").await;
     removed
-        .wait_for_text("Mary Louis", Duration::from_secs(20))
+        .wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
         .await;
     removed.navigate(&chat_url).await;
     removed
@@ -900,7 +888,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     tab.wait_for_text("Work email", Duration::from_secs(20))
         .await;
     tab.request_sign_in("physician@codahealth.test").await;
-    tab.wait_for_text("Mary Louis", Duration::from_secs(20))
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
         .await;
     let bearer = tab
         .eval("localStorage.getItem('coda.physician.session')")
@@ -1152,7 +1140,7 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
     let requests = Arc::new(std::sync::Mutex::new(Vec::<String>::new()));
     let seen = requests.clone();
     let stream_count = streams.clone();
-    let app = physician_sample::recorded().layer(axum::middleware::from_fn(
+    let app = physician_sample::fixture_site().layer(axum::middleware::from_fn(
         move |request: axum::extract::Request, next: axum::middleware::Next| {
             let streams = stream_count.clone();
             async move {
@@ -1179,7 +1167,7 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
     let address = listener.local_addr().unwrap();
     let app = public_proxy(upstream_address, address)
         // Override-only fixture; /physician itself is the real public-site transport.
-        .nest("/override", physician_sample::recorded())
+        .nest("/override", physician_sample::fixture_site())
         .layer(axum::middleware::from_fn(
             move |request: axum::extract::Request, next: axum::middleware::Next| {
                 let seen = seen.clone();
@@ -1193,7 +1181,7 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
     let chrome = chromium();
     let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/physician/")).await;
     browser
-        .wait_for_text("Mary Louis", Duration::from_secs(15))
+        .wait_for_text("Nothing needs you right now.", Duration::from_secs(15))
         .await;
     let assets = browser
         .eval(
@@ -1238,7 +1226,7 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
         ))
         .await;
     browser
-        .wait_for_text("Mary Louis", Duration::from_secs(15))
+        .wait_for_text("Nothing needs you right now.", Duration::from_secs(15))
         .await;
     let deadline = Instant::now() + Duration::from_secs(10);
     while !requests
@@ -1330,7 +1318,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     let email = "physician@codahealth.test";
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let upstream_address = listener.local_addr().unwrap();
-    let app = physician_sample::authed_router(physician_sample::recorded()).await;
+    let app = physician_sample::authed_router(physician_sample::fixture_site()).await;
     let upstream = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(upstream_address).await;
     let proxy = tokio::spawn(async move {
@@ -1476,7 +1464,10 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         false,
     );
     // Mary belongs to practice-clinic-a (initially on Dr. Colleague's panel, not Dr. Clinic Admin's).
-    store.register_patient("practice-clinic-a", mary).await;
+    store
+        .register_patient("practice-clinic-a", mary)
+        .await
+        .unwrap();
     let admin_identity = PhysicianIdentity {
         practice_id: "practice-clinic-a".to_owned(),
         physician_id: "phys-admin".to_owned(),
@@ -1486,7 +1477,10 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .await
         .unwrap();
     // Jake belongs to a completely different practice (practice-clinic-b).
-    store.register_patient("practice-clinic-b", jake).await;
+    store
+        .register_patient("practice-clinic-b", jake)
+        .await
+        .unwrap();
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let upstream_address = listener.local_addr().unwrap();
@@ -1553,7 +1547,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         cross_practice_dom.contains("Go to Today")
             && !cross_practice_dom.contains("Coda couldn’t load what needs you for this patient.")
             && !cross_practice_dom.contains("Jake")
-            && !cross_practice_dom.contains("Patient summary")
+            && !cross_practice_dom.contains("Records as of")
             && !cross_practice_dom.contains("Patient demographics"),
         "cross-practice patient must not leak demographics or clinical data:\n{cross_practice_dom}"
     );
@@ -1573,8 +1567,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
             && demographic_dom.contains("Female")
             && demographic_dom.contains("00000005")
             && demographic_dom.contains("Assign to panel")
-            && !demographic_dom.contains("Patient summary")
-            && !demographic_dom.contains("Discharge Summary")
+            && !demographic_dom.contains("Records as of")
             && !demographic_dom.contains("This workspace has no chats."),
         "same-clinic non-panel patient should render clean demographic card:\n{demographic_dom}"
     );
@@ -1599,11 +1592,10 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         )
         .await;
     let unlocked_dom = browser
-        .wait_for_text("Patient summary", Duration::from_secs(10))
+        .wait_for_text("Records as of", Duration::from_secs(10))
         .await;
     assert!(
         unlocked_dom.contains("Mary Louis")
-            && unlocked_dom.contains("Source 2: Discharge Summary. Preview source.")
             && unlocked_dom.contains("Remove from panel")
             && !unlocked_dom.contains("Clinic record · Not on your panel"),
         "assigning patient to panel must unlock full clinical workspace live:\n{unlocked_dom}"
@@ -1623,7 +1615,7 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
         .await;
     assert!(
-        relocked_dom.contains("Patient demographics") && !relocked_dom.contains("Patient summary"),
+        relocked_dom.contains("Patient demographics") && !relocked_dom.contains("Records as of"),
         "removing patient from panel must lock clinical workspace back to demographic card:\n{relocked_dom}"
     );
 
@@ -1837,7 +1829,7 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
         .await;
     browser.eval("window.__release()").await;
     browser
-        .wait_for_text("3:30 PM", Duration::from_secs(10))
+        .wait_for_text("Aug 27, 2026", Duration::from_secs(10))
         .await;
 
     browser
@@ -1901,7 +1893,7 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
         .await;
     browser.eval("window.__release()").await;
     browser
-        .wait_for_text("Follow-up visit", Duration::from_secs(10))
+        .wait_for_text("Records as of", Duration::from_secs(10))
         .await;
 }
 

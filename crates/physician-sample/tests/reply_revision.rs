@@ -30,6 +30,7 @@ const SNAPSHOT_CONTENT: &str = "Synthetic source observation from the retained s
 fn source(id: &str, revision: &str, content: &str) -> SourceRevision {
     SourceRevision {
         workspace: physician_sample::WORKSPACE_IDS[0].into(),
+        source_id: "ehr".into(),
         candidate_id: id.into(),
         revision: revision.into(),
         record_type: "Observation".into(),
@@ -138,7 +139,11 @@ impl Running {
             let sources = vec![source(SNAPSHOT_SOURCE, "immutable-1", SNAPSHOT_CONTENT)];
             let snapshot = home.join(format!("sources-{index}.json"));
             std::fs::write(&snapshot, serde_json::to_vec(&sources).unwrap()).unwrap();
-            let switch = if synthetic { "1" } else { "0" };
+            let switch = if synthetic {
+                physician_sample::WORKSPACE_IDS[0]
+            } else {
+                ""
+            };
             let mut env = vec![
                 ("PHYSICIAN_SYNTHETIC_REPLY", switch),
                 ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
@@ -769,7 +774,8 @@ async fn missing_and_other_physician_drafts_are_not_created_or_exposed() {
         .await
         .unwrap();
     auth.set_membership(&identity, &scope.workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let (status, _) = support::get_json(&running.hosts[1], &path(&scope), &session).await;
     assert_eq!(status, 404);
     let (status, body) = support::post(
@@ -1012,7 +1018,8 @@ async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority(
 
     // Demographic-only access (same clinic, not on the panel) opens nothing.
     auth.set_membership(&identity, &theirs.workspace, Membership::Denied)
-        .await;
+        .await
+        .unwrap();
     let (status, body) = support::get_json(&running.hosts[1], &workspace_path(), &session).await;
     assert_eq!(status, 200, "{body}");
     assert_eq!(body["membership"], "clinic_demographic");
@@ -1024,7 +1031,8 @@ async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority(
 
     // On the panel the colleague gets their own draft, never the physician's.
     auth.set_membership(&identity, &theirs.workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let mine = running.listed(0, &running.session).await.unwrap();
     let (status, _) = running.save(&synthetic_scope(), 1, SAVED).await;
     assert_eq!(status, 200);
@@ -1070,7 +1078,8 @@ async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority(
             .unwrap()
     };
     auth.set_membership(&other_identity, &theirs.workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     auth.end_session(&other_session).await;
     let (status, _) = support::get_json(&running.hosts[0], &workspace_path(), &other_session).await;
     assert_eq!(status, 401);
@@ -1145,7 +1154,7 @@ fn open_workspace(browser: &mut devtools::Browser, host: &str) {
     browser.text_until(&url, "Sign in to Coda");
     browser.type_into(".sign-in-input", "physician@codahealth.test");
     browser.click(".sign-in-primary");
-    browser.wait_for("Patient summary");
+    browser.wait_for("Records as of");
 }
 
 /// The real hosted browser journey for the synthetic reply: two site
@@ -1253,7 +1262,7 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
             hosts[1],
             physician_sample::WORKSPACE_IDS[0]
         ),
-        "Patient summary",
+        "Records as of",
     );
     wait_card(&mut b, 30, "revision 3 on B", |(r, _, _, _)| *r == 3);
     ask_from_page(&mut b, "Rephrase it [fail:9]");
@@ -1284,7 +1293,7 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
             hosts[0],
             physician_sample::WORKSPACE_IDS[0]
         ),
-        "Patient summary",
+        "Records as of",
     );
     let (revision, status, text, _) =
         wait_card(&mut a, 30, "the reloaded card", |(r, _, _, _)| *r == 3);

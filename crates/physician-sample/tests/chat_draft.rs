@@ -199,14 +199,16 @@ async fn chat_draft_saves_on_one_site_and_reads_on_the_other() {
         .await
         .unwrap();
     auth.set_membership(&identity, workspace, Membership::Denied)
-        .await;
+        .await
+        .unwrap();
     let (status, _) = support::get_json(&running.hosts[1], &path, &other).await;
     assert_eq!(status, 404);
     let (status, _) =
         put_chat_draft(&running.hosts[1], &other, &path, 2, "foreign overwrite").await;
     assert_eq!(status, 404);
     auth.set_membership(&identity, workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let (status, body) = support::get_json(&running.hosts[0], &path, &other).await;
     assert_eq!((status, body), (200, json!({"revision": 0, "text": ""})));
     let (status, _) = put_chat_draft(&running.hosts[0], &other, &path, 0, "Their own note").await;

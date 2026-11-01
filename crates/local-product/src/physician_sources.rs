@@ -34,6 +34,8 @@ pub struct ReadablePart {
 pub struct SourceRevision {
     /// Patient workspace to which the source owner admitted these bytes.
     pub workspace: String,
+    /// The source that holds this record.
+    pub source_id: String,
     /// Original opaque candidate ID, never derived from prose.
     pub candidate_id: String,
     /// Source owner's immutable revision identity.
@@ -55,6 +57,7 @@ impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
     pub fn validate(&self) -> Result<(), String> {
         if self.workspace.is_empty()
+            || self.source_id.is_empty()
             || self.candidate_id.is_empty()
             || self.revision.is_empty()
             || self.record_type.is_empty()
@@ -101,8 +104,10 @@ pub trait PatientSource: Send + Sync {
     fn source_id(&self) -> &str;
     /// The source's name as a physician sees it.
     fn source_label(&self) -> &str;
-    /// Every patient the source holds.
-    async fn patients(&self) -> Result<Vec<SourcePatient>, String>;
+    /// The source's own id for every patient it holds.
+    async fn patient_ids(&self) -> Result<Vec<String>, String>;
+    /// One patient's identity, read alone so one bad patient stays one patient.
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String>;
     /// One patient's records, admitted to `workspace`.
     async fn records(
         &self,
@@ -431,6 +436,7 @@ mod tests {
     fn source(revision: &str, content: &str) -> SourceRevision {
         SourceRevision {
             workspace: "patient".into(),
+            source_id: "ehr".into(),
             candidate_id: "lab".into(),
             revision: revision.into(),
             record_type: "Observation".into(),

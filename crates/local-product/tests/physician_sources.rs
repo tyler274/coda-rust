@@ -5,6 +5,7 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
     let content = "source-native α result 4.1 mmol/L";
     let source = SourceRevision {
         workspace: "one".into(),
+        source_id: "ehr".into(),
         candidate_id: "original-id".into(),
         revision: "revision-7".into(),
         record_type: "DocumentReference".into(),

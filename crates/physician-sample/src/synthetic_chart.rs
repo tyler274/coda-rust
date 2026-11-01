@@ -45,18 +45,6 @@ impl SyntheticCharts {
             patients: bank.join("patients"),
         }
     }
-
-    fn patient_ids(&self) -> Result<Vec<String>, String> {
-        let entries = fs::read_dir(&self.patients)
-            .map_err(|error| format!("{}: {error}", self.patients.display()))?;
-        let mut ids = Vec::new();
-        for entry in entries {
-            let entry = entry.map_err(|error| format!("{}: {error}", self.patients.display()))?;
-            ids.push(entry.file_name().to_string_lossy().into_owned());
-        }
-        ids.sort();
-        Ok(ids)
-    }
 }
 
 #[async_trait]
@@ -69,19 +57,27 @@ impl PatientSource for SyntheticCharts {
         SOURCE_LABEL
     }
 
-    async fn patients(&self) -> Result<Vec<SourcePatient>, String> {
-        self.patient_ids()?
-            .into_iter()
-            .map(|id| {
-                let path = self.patients.join(&id).join("Patient.ndjson");
-                let text = read(&path)?;
-                let line = text
-                    .lines()
-                    .next()
-                    .ok_or_else(|| format!("{}: no Patient record", path.display()))?;
-                source_patient(id, line).map_err(|error| format!("{}: {error}", path.display()))
-            })
-            .collect()
+    async fn patient_ids(&self) -> Result<Vec<String>, String> {
+        let entries = fs::read_dir(&self.patients)
+            .map_err(|error| format!("{}: {error}", self.patients.display()))?;
+        let mut ids = Vec::new();
+        for entry in entries {
+            let entry = entry.map_err(|error| format!("{}: {error}", self.patients.display()))?;
+            ids.push(entry.file_name().to_string_lossy().into_owned());
+        }
+        ids.sort();
+        Ok(ids)
+    }
+
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String> {
+        let path = self.patients.join(source_patient_id).join("Patient.ndjson");
+        let text = read(&path)?;
+        let line = text
+            .lines()
+            .next()
+            .ok_or_else(|| format!("{}: no Patient record", path.display()))?;
+        source_patient(source_patient_id.to_owned(), line)
+            .map_err(|error| format!("{}: {error}", path.display()))
     }
 
     async fn records(
@@ -158,6 +154,7 @@ fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String
     let sha256 = sha256_hex(line.as_bytes());
     let source = SourceRevision {
         workspace: workspace.to_owned(),
+        source_id: SOURCE_ID.to_owned(),
         candidate_id: candidate_id.clone(),
         revision: sha256.clone(),
         record_type: record_type.to_owned(),
@@ -165,7 +162,7 @@ fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String
         content: line.to_owned(),
         sha256,
         readable_parts: readable_parts(&resource)?,
-        provenance: json!({"source": SOURCE_ID, "native_record": candidate_id}),
+        provenance: json!({"native_record": candidate_id}),
     };
     source.validate()?;
     Ok(source)
@@ -236,9 +233,9 @@ mod tests {
     #[tokio::test]
     async fn a_chart_reads_as_coda_records_with_its_exact_bytes() {
         let source = SyntheticCharts::open(&bank("reads", NOTE));
-        let patients = source.patients().await.unwrap();
-        assert_eq!(patients.len(), 1);
-        let patient = &patients[0];
+        let ids = source.patient_ids().await.unwrap();
+        assert_eq!(ids.len(), 1);
+        let patient = &source.patient(&ids[0]).await.unwrap();
         assert_eq!(patient.display_name, "Mary Ann Louis");
         assert_eq!(patient.birth_date.as_deref(), Some("1972-03-18"));
         assert_eq!(patient.sex_or_gender.as_deref(), Some("female"));
@@ -265,14 +262,15 @@ mod tests {
         let manifest: Value =
             serde_json::from_str(&read(&bank.join("manifest.json")).unwrap()).unwrap();
         let source = SyntheticCharts::open(&bank);
-        let patients = source.patients().await.unwrap();
+        let ids = source.patient_ids().await.unwrap();
         assert_eq!(
-            json!(patients.len()),
+            json!(ids.len()),
             json!(manifest["patients"].as_array().unwrap().len())
         );
         let mut totals = std::collections::BTreeMap::<String, u64>::new();
-        for patient in &patients {
-            for record in source.records(patient, "pw-1").await.unwrap() {
+        for id in &ids {
+            let patient = source.patient(id).await.unwrap();
+            for record in source.records(&patient, "pw-1").await.unwrap() {
                 assert!(!record.dates.is_empty(), "{}", record.candidate_id);
                 assert_eq!(
                     record.record_type == "DocumentReference",
@@ -290,7 +288,8 @@ mod tests {
     async fn an_attachment_coda_cannot_read_stops_the_chart() {
         let scan = NOTE.replace("text/plain; charset=utf-8", "image/tiff");
         let source = SyntheticCharts::open(&bank("scan", &scan));
-        let patient = source.patients().await.unwrap().remove(0);
+        let ids = source.patient_ids().await.unwrap();
+        let patient = source.patient(&ids[0]).await.unwrap();
         let error = source.records(&patient, "pw-1").await.unwrap_err();
         assert!(error.contains("image/tiff"), "{error}");
     }

@@ -31,12 +31,13 @@ async fn postgres_revocation_waits_for_existing_authority_row_publication_fence(
         .await
         .unwrap();
     eprintln!("authority proof: redeemed, registering");
-    store.register_patient(&practice, &workspace).await;
+    store.register_patient(&practice, &workspace).await.unwrap();
     eprintln!("authority proof: registered");
     store
         .set_membership(&identity, &workspace, Membership::Allowed)
-        .await;
-    let auth = auth::Auth::on(
+        .await
+        .unwrap();
+    let auth = auth::Auth::over_fixture(
         store.clone(),
         Arc::new(front_door::MemoryFrontDoorStore::new()),
     )

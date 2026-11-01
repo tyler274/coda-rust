@@ -156,8 +156,8 @@ pub(super) mod source {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
-/// When a source last delivered one patient's records. A later pull replaces
-/// the row. The table is created from this entity by the store's migration.
+/// One source's last delivery for one patient. A later pull replaces the row.
+/// The table is created from this entity by the store's migration.
 pub(super) mod source_pull {
     use sea_orm::entity::prelude::*;
 
@@ -172,6 +172,9 @@ pub(super) mod source_pull {
         /// The source's name as a physician sees it.
         #[sea_orm(column_type = "Text")]
         pub source_label: String,
+        /// The patient as this source identifies them.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub patient: Json,
         /// The practice clock's Unix second when the pull finished.
         pub pulled_at: i64,
     }

@@ -22,7 +22,7 @@ use local_product::{
     IngestedDuetRecord, PlanItemInput,
 };
 use physician_auth::{
-    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence,
+    AuthStore, Cadence, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence,
     SignInError, StoreUnavailable,
 };
 use physician_wire::{
@@ -31,23 +31,43 @@ use physician_wire::{
 };
 
 use crate::auth::{AuthContext, STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, now};
+use crate::patients::{self, MemoryPatients, Patient, PatientDirectory};
 
 /// Shared Connected Care state attached to every request on a physician router.
 #[derive(Clone)]
 pub(crate) struct ConnectedCare {
     fallback_auth: Arc<dyn AuthStore>,
+    fallback_patients: Arc<dyn PatientDirectory>,
     pub(crate) duet_sources: Arc<Mutex<DuetSourceStore>>,
     pub(crate) doctor_plans: Arc<Mutex<DoctorPlanStore>>,
 }
 
 impl ConnectedCare {
-    /// Creates a new Connected Care state with its own fallback memory auth store.
+    /// Creates a new Connected Care state with its own fallback memory stores,
+    /// holding no patients.
     pub(crate) fn new() -> Self {
-        let store = Arc::new(MemoryAuthStore::new());
-        store.seed_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK);
+        Self::on(
+            Arc::new(Self::memory_store()),
+            Arc::new(MemoryPatients::default()),
+        )
+    }
+
+    /// The fallback memory stores over the fixture patients, on the preview
+    /// identity's panel.
+    pub(crate) fn fixture() -> Self {
+        let store = Self::memory_store();
+        let patients = MemoryPatients::fixture();
+        let preview = Self::identity(&axum::http::Extensions::new());
         for workspace in crate::WORKSPACE_IDS {
             store.seed_patient(STAGING_PRACTICE_ID, workspace);
+            store.seed_membership(&preview, workspace, Membership::Allowed);
         }
+        Self::on(Arc::new(store), patients)
+    }
+
+    fn memory_store() -> MemoryAuthStore {
+        let store = MemoryAuthStore::new();
+        store.seed_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK);
         store.seed_account(
             STAGING_PRACTICE_ID,
             "staging-physician",
@@ -55,8 +75,13 @@ impl ConnectedCare {
             "Staging Physician",
             true,
         );
+        store
+    }
+
+    fn on(fallback_auth: Arc<dyn AuthStore>, fallback_patients: Arc<dyn PatientDirectory>) -> Self {
         Self {
-            fallback_auth: store,
+            fallback_auth,
+            fallback_patients,
             duet_sources: Arc::new(Mutex::new(DuetSourceStore::new())),
             doctor_plans: Arc::new(Mutex::new(DoctorPlanStore::new())),
         }
@@ -67,6 +92,30 @@ impl ConnectedCare {
             .get::<Arc<dyn AuthStore>>()
             .cloned()
             .unwrap_or_else(|| Arc::clone(&self.fallback_auth))
+    }
+
+    pub(crate) fn patients(
+        &self,
+        extensions: &axum::http::Extensions,
+    ) -> Arc<dyn PatientDirectory> {
+        extensions
+            .get::<Arc<dyn PatientDirectory>>()
+            .cloned()
+            .unwrap_or_else(|| Arc::clone(&self.fallback_patients))
+    }
+
+    /// `id` if it is a patient of the signed-in practice a source holds.
+    pub(crate) async fn patient(
+        &self,
+        extensions: &axum::http::Extensions,
+        id: &str,
+    ) -> Result<Option<Patient>, StoreUnavailable> {
+        let practice = Self::identity(extensions).practice_id;
+        let store = self.auth_store(extensions);
+        if store.patient_practice(id).await.as_deref() != Some(practice.as_str()) {
+            return Ok(None);
+        }
+        patients::read_patient(&*self.patients(extensions), id).await
     }
 
     pub(crate) fn identity(extensions: &axum::http::Extensions) -> PhysicianIdentity {
@@ -141,7 +190,7 @@ impl ConnectedCare {
 }
 
 /// Whether `id` is a patient registered to the signed-in practice.
-async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> bool {
+pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> bool {
     let Some(care) = extensions.get::<ConnectedCare>() else {
         return false;
     };
@@ -510,13 +559,12 @@ pub(crate) async fn post_approve_plan(Path(id): Path<String>, request: Request<B
     }
 }
 
-/// Enriches a recorded workspace JSON string with `patient_link`, `duet_records`, and `doctor_plan`.
+/// Adds `patient_link`, `duet_records`, and `doctor_plan` to a patient page.
 pub(crate) async fn enrich_workspace(
-    raw: &str,
+    mut value: Value,
     workspace_id: &str,
     extensions: &axum::http::Extensions,
 ) -> Value {
-    let mut value: Value = serde_json::from_str(raw).expect("recorded workspace fixture");
     if let Some(care) = extensions.get::<ConnectedCare>() {
         let store = care.auth_store(extensions);
         let identity = ConnectedCare::identity(extensions);

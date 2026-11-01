@@ -5,7 +5,7 @@
 
 use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
-    PracticeClock, SESSION_TTL_SECONDS, SessionError, SignInError,
+    PracticeClock, SESSION_TTL_SECONDS, SessionError, SignInError, StoreUnavailable,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -53,6 +53,21 @@ async fn a_practice_keeps_the_clock_it_was_created_with() {
             PracticeClock::RealTime
         );
     }
+}
+
+#[tokio::test]
+async fn a_practice_read_from_a_lost_database_is_unavailable_not_empty() {
+    let Some(url) = fresh_database("lost_practice").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    store.pool().close().await;
+    assert_eq!(
+        store.practice_accounts("clinic").await,
+        Err(StoreUnavailable)
+    );
 }
 
 #[tokio::test]
@@ -328,14 +343,16 @@ async fn membership_denies_by_default_and_round_trips() {
     );
     store
         .set_membership(&who, &workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     assert_eq!(
         store.membership(&who, &workspace).await,
         Membership::Allowed
     );
     store
         .set_membership(&who, &workspace, Membership::Denied)
-        .await;
+        .await
+        .unwrap();
     assert_eq!(
         store.membership(&who, &workspace).await,
         Membership::Denied,
@@ -513,7 +530,10 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         .unwrap()
         .identity;
 
-    store.register_patient("pg-proof", "pw-clinic-1").await;
+    store
+        .register_patient("pg-proof", "pw-clinic-1")
+        .await
+        .unwrap();
     assert_eq!(
         store.patient_practice("pw-clinic-1").await.as_deref(),
         Some("pg-proof")
@@ -746,8 +766,8 @@ async fn distinct_preview_accounts_resolve_their_own_admin_flag_and_panel() {
             .await
             .expect("member")
     );
-    store.register_patient(practice, "pw-admin").await;
-    store.register_patient(practice, "pw-member").await;
+    store.register_patient(practice, "pw-admin").await.unwrap();
+    store.register_patient(practice, "pw-member").await.unwrap();
     let admin = PhysicianIdentity {
         practice_id: practice.to_owned(),
         physician_id: "physician-admin".to_owned(),
@@ -912,7 +932,8 @@ async fn a_cached_read_drops_when_another_replica_writes() {
     let seen = feed.borrow_and_update().generation;
     writer
         .set_membership(&who, "ws-feed", Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     tokio::time::timeout(
         std::time::Duration::from_secs(10),
         feed.wait_for(|feed| feed.generation > seen),

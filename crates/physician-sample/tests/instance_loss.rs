@@ -431,9 +431,11 @@ async fn accepted(url: &str, store: &Store) -> Delivery {
         .await
         .expect("session");
     auth.register_patient(&identity.practice_id, &workspace)
-        .await;
+        .await
+        .unwrap();
     auth.set_membership(&identity, &workspace, physician_auth::Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let scope = local_product::runtime::Scope {
         practice: identity.practice_id,
         physician: identity.physician_id,

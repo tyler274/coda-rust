@@ -2,10 +2,10 @@
 //! and hosted paths, so the first reply draft and its hosted revision can be
 //! exercised without seeding the database directly.
 //!
-//! `PHYSICIAN_SYNTHETIC_REPLY=1` enables it; it is off by default. It only
-//! supplies one fixed-ready reply, with a stable server-owned identifier and
-//! non-PHI wording, to the synthetic practice's first recorded workspace. The
-//! draft opens at revision 1 while the auth owner's session, account and
+//! `PHYSICIAN_SYNTHETIC_REPLY=<patient workspace id>` enables it for that
+//! patient; it is off by default. It only supplies one fixed-ready reply, with
+//! a stable server-owned identifier and non-PHI wording, in the synthetic
+//! practice. The draft opens at revision 1 while the auth owner's session, account and
 //! panel locks are held in the same transaction (hosted) or under the
 //! publication fence (inline). Opening again keeps the saved draft as it is.
 //!
@@ -18,7 +18,8 @@ use crate::live::Live;
 use local_product::execution::Status;
 use serde_json::{Value, json};
 
-/// The switch. Any other value, or none, leaves the source off.
+/// The switch: the patient workspace the reply belongs to. Blank or unset
+/// leaves the source off.
 pub(crate) const SWITCH: &str = "PHYSICIAN_SYNTHETIC_REPLY";
 
 /// Stable, server-owned reply work identity.
@@ -30,19 +31,17 @@ pub(crate) const FIRST_DRAFT: &str = "Thank you for your message. Please keep ta
 const HEADLINE: &str = "Synthetic message: question about medicines";
 const CREATED_AT: &str = "2026-08-27T12:05:00Z";
 
-/// Whether `value` turns the source on.
-pub(crate) fn enabled(value: Option<&str>) -> bool {
-    value.map(str::trim) == Some("1")
-}
-
-/// The one workspace the fixed scenario is associated with.
-pub(crate) fn workspace() -> &'static str {
-    crate::WORKSPACE_IDS[0]
+/// The patient `value` names.
+pub(crate) fn patient(value: Option<&str>) -> Option<String> {
+    value
+        .map(str::trim)
+        .filter(|value| !value.is_empty())
+        .map(str::to_owned)
 }
 
 /// Whether this signed-in physician and workspace get the synthetic reply.
-fn applies(ctx: &AuthContext, workspace: &str) -> bool {
-    ctx.identity.practice_id == STAGING_PRACTICE_ID && workspace == self::workspace()
+fn applies(ctx: &AuthContext, patient: Option<&str>, workspace: &str) -> bool {
+    ctx.identity.practice_id == STAGING_PRACTICE_ID && patient == Some(workspace)
 }
 
 fn scope(ctx: &AuthContext, workspace: &str) -> local_product::runtime::Scope {
@@ -95,7 +94,8 @@ pub(crate) async fn project(
     workspace: &str,
     display_name: &str,
 ) -> Result<Option<Value>, ()> {
-    let Some(ctx) = ctx.filter(|ctx| live.synthetic_reply() && applies(ctx, workspace)) else {
+    let patient = live.synthetic_reply();
+    let Some(ctx) = ctx.filter(|ctx| applies(ctx, patient.as_deref(), workspace)) else {
         return Ok(None);
     };
     if let Some(durable) = &live.durable {
@@ -159,11 +159,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn only_the_exact_switch_value_enables_the_source() {
-        assert!(enabled(Some("1")));
-        assert!(enabled(Some(" 1 ")));
-        for off in [None, Some(""), Some("0"), Some("true"), Some("yes")] {
-            assert!(!enabled(off), "{off:?}");
+    fn the_switch_names_the_patient() {
+        assert_eq!(patient(Some(" pw-1 ")).as_deref(), Some("pw-1"));
+        for off in [None, Some(""), Some("  ")] {
+            assert_eq!(patient(off), None, "{off:?}");
         }
     }
 
@@ -171,7 +170,7 @@ mod tests {
     fn the_first_draft_is_fixed_non_empty_wording() {
         assert!(!FIRST_DRAFT.trim().is_empty());
         assert!(!REPLY_ID.trim().is_empty());
-        let reply = wire(workspace(), "Synthetic patient", FIRST_DRAFT, 1, None);
+        let reply = wire("pw-1", "Synthetic patient", FIRST_DRAFT, 1, None);
         let parsed: physician_wire::WorkspaceReply = serde_json::from_value(reply).unwrap();
         assert_eq!(parsed.draft_revision, Some(1));
         assert_eq!(parsed.state, "ready");

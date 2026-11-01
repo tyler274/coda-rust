@@ -30,7 +30,7 @@ use shell::{
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_local_date, format_message, format_waited,
     keyboard_command, need_you_words, opens_reader, past_work_copy, patient_upcoming_visits,
-    read_view, reply_channel_label, reply_review_actions, reply_revision_words,
+    read_view, records_time, reply_channel_label, reply_review_actions, reply_revision_words,
     reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
     summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
     work_heading,
@@ -3235,6 +3235,9 @@ fn PatientSurface(
         .as_ref()
         .map(|open| summary_times(open, &server_now))
         .unwrap_or_default();
+    let records = workspace
+        .as_ref()
+        .and_then(|open| records_time(open, &server_now));
     let visit_focus = focused.and_then(|index| {
         if index >= 0 && (index as usize) < visits.len() {
             Some(index as usize)
@@ -3296,6 +3299,9 @@ fn PatientSurface(
                     }
                     if let Some(mrn) = mrn.clone() {
                         span { "MRN {mrn}" }
+                    }
+                    if let Some(records) = records {
+                        time { datetime: "{records.instant}", "{records.label} {records.words}" }
                     }
                 }
                 if !clinic_demographic && !panel_notice.is_empty() {

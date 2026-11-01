@@ -1,13 +1,14 @@
-//! Physician projections for the Roger synthetic practice.
+//! The physician site for the synthetic practice.
 //!
-//! The FHIR corpus stays in coda-agents. These files are the physician JSON the
-//! React site already renders. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`:
+//! Patients come from [`patients`]: the practice's registered patients and what
+//! their sources delivered. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`:
 //! `message.submit` runs through the Codex CLI (`codex login`) and does not
 //! read an API key. `record` and `replay` use a cassette on that same path.
-//! `api` answers `message.submit` through OpenAI Responses. Projections stay
-//! on the recording. `PHYSICIAN_UPSTREAM` still forwards physician routes to
-//! the Node server when api mode is unset. The same server serves the Dioxus
-//! page, which mounts into `#main`.
+//! `api` answers `message.submit` through OpenAI Responses.
+//! `PHYSICIAN_UPSTREAM` still forwards physician routes to the Node server when
+//! api mode is unset. `--simulate` serves the fixtures under `fixtures/` through
+//! the local simulation. The same server serves the Dioxus page, which mounts
+//! into `#main`.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 
@@ -20,6 +21,7 @@ pub mod hosting;
 mod live;
 #[cfg(test)]
 mod live_tests;
+pub mod patients;
 mod publication;
 #[cfg(test)]
 mod publication_tests;
@@ -52,15 +54,12 @@ const INDEX: &str = include_str!("../../physician-app/index.html");
 const LOGO: &[u8] = include_bytes!("../../physician-app/assets/coda-health-logo-transparent.png");
 const FAVICON: &[u8] = include_bytes!("../../physician-app/assets/favicon.svg");
 
-const TODAY: &str = include_str!("../fixtures/today.json");
 const PRACTICE_DAY: &str = include_str!("../fixtures/practice-day.json");
 const UPDATES: &str = include_str!("../fixtures/updates.json");
 const RECENT: &str = include_str!("../fixtures/recent-conversations.json");
 const WORKSPACES: &str = include_str!("../fixtures/patient-workspaces.json");
-const ROSTER: &str = include_str!("../fixtures/roster.json");
 
-/// The recorded practice's patient workspace ids, also the roster the
-/// staging practice invites from; integration tests read them too.
+/// The fixture patients the local simulation and the tests read.
 pub const WORKSPACE_IDS: [&str; 5] = [
     "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee",
     "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
@@ -101,7 +100,7 @@ pub fn simulation_router_with_scenario(scenario: &str) -> Router {
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(simulation::snapshot),
         )
-        .route("/patient-roster", get(roster))
+        .route("/patient-roster", get(simulation::roster))
         .route("/commands", post(simulation::command))
         .route(
             "/local-proof/simulations",
@@ -126,7 +125,11 @@ pub fn simulation_router_with_scenario(scenario: &str) -> Router {
 }
 
 pub(crate) fn simulation_scenario_from_env() -> Option<String> {
-    let raw = env::var("CODA_LOCAL_SIMULATION").ok()?;
+    simulation_scenario(|key| env::var(key).ok())
+}
+
+fn simulation_scenario(get: impl Fn(&str) -> Option<String>) -> Option<String> {
+    let raw = get("CODA_LOCAL_SIMULATION")?;
     let trimmed = raw.trim();
     if trimmed.is_empty() || trimmed == "0" || trimmed.eq_ignore_ascii_case("false") {
         return None;
@@ -141,14 +144,14 @@ pub(crate) fn simulation_scenario_from_env() -> Option<String> {
 fn router_with(upstream: Option<String>) -> Router {
     let routes = match upstream {
         Some(base) => proxied(base),
-        None => recorded(),
+        None => fixture_site(),
     };
     routes.layer(middleware::from_fn(cors))
 }
 
-/// The recorded practice the sample server serves, for integration tests.
-/// Its projection is read-only, so a draft save answers 409.
-pub fn recorded() -> Router {
+/// The site over five fixture patients, for integration tests. It runs no
+/// chat, so a command is refused and a draft save answers 409.
+pub fn fixture_site() -> Router {
     site()
         .route(
             "/physician-state/drafts/{workspace}/{chat}",
@@ -159,7 +162,8 @@ pub fn recorded() -> Router {
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(empty_snapshot),
         )
-        .route("/patient-workspaces/events", get(recorded_events))
+        .route("/patient-workspaces/events", get(quiet_events))
+        .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
 fn live_router(model: live::ChatModel) -> Router {
@@ -184,6 +188,7 @@ fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
         .route("/patient-workspaces/events", get(live::events))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
+        .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
 
@@ -191,17 +196,16 @@ fn site<S>() -> Router<S>
 where
     S: Clone + Send + Sync + 'static,
 {
-    let care = care::ConnectedCare::new();
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
         .route("/practice-day", get(practice_day))
-        .route("/updates", get(|| async { json_body(UPDATES) }))
-        .route("/recent-conversations", get(|| async { json_body(RECENT) }))
+        .route("/updates", get(updates))
         .route(
-            "/patient-workspaces",
-            get(|| async { json_body(WORKSPACES) }),
+            "/recent-conversations",
+            get(|| async { Json(json!({ "conversations": [] })) }),
         )
+        .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
         .route(
             "/patient-workspaces/{id}/invite",
@@ -244,7 +248,6 @@ where
         .route("/assets/coda-health-logo-transparent.png", get(logo))
         .route("/favicon.svg", get(favicon))
         .fallback(site_file)
-        .layer(axum::Extension(care))
 }
 
 fn proxied(upstream: String) -> Router {
@@ -411,8 +414,9 @@ async fn site_index() -> Response {
 
 async fn empty_snapshot(
     axum::extract::Path((id, _chat)): axum::extract::Path<(String, String)>,
+    request: Request<Body>,
 ) -> Response {
-    if workspace_body(&id).is_none() {
+    if !care::on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     Json(json!({
@@ -421,7 +425,7 @@ async fn empty_snapshot(
     .into_response()
 }
 
-async fn recorded_events() -> Response {
+async fn quiet_events() -> Response {
     let stream = futures_util::stream::pending::<Result<String, std::convert::Infallible>>();
     (
         StatusCode::OK,
@@ -478,7 +482,17 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 /// the model. Without the topic, chat runs inline, hosted or not. Recovery is
 /// aborted after graceful shutdown.
 pub async fn serve(listener: tokio::net::TcpListener) {
-    let (router, recovery) = match site_from_env(|key| env::var(key).ok()).await {
+    serve_holding(listener, std::sync::Arc::default()).await;
+}
+
+/// [`serve`], with `memory_patients` in the practice when there is no database.
+#[doc(hidden)]
+pub async fn serve_holding(
+    listener: tokio::net::TcpListener,
+    memory_patients: std::sync::Arc<patients::MemoryPatients>,
+) {
+    let site = site_from_env(|key| env::var(key).ok(), memory_patients).await;
+    let (router, recovery) = match site {
         Ok(ready) => ready,
         Err(error) => {
             tracing::error!(%error, "physician site cannot start");
@@ -503,6 +517,7 @@ fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String
 
 async fn site_from_env(
     get: impl Fn(&str) -> Option<String>,
+    memory_patients: std::sync::Arc<patients::MemoryPatients>,
 ) -> Result<(Router, Option<tokio::task::JoinHandle<()>>), String> {
     let hosted = hosting::is_hosted(&get);
     let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
@@ -517,11 +532,27 @@ async fn site_from_env(
     if topic.is_some() && database.is_none() {
         return Err("PHYSICIAN_CHAT_TOPIC requires PHYSICIAN_DATABASE_URL".into());
     }
+    let required = configured(&get, "PHYSICIAN_AUTH").as_deref() == Some("required");
+    // Their patients are not the practice's, so access has nothing to enforce.
+    if required {
+        if configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
+            return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
+        }
+        if simulation_scenario(&get).is_some() {
+            return Err("the local simulation cannot run with required sign-in".into());
+        }
+    }
     let bus = physician_bus::from_env(&get, hosted).await?;
-    let (base, chat) = if let (Some(topic), Some(database)) = (topic, database) {
-        let store = local_product::runtime::Store::connect(&database)
-            .await
-            .map_err(|_| "physician runtime store unavailable".to_string())?;
+    // One pool per process: durable chat and the patient directory share it.
+    let runtime = match &database {
+        Some(url) if required || topic.is_some() => Some(
+            local_product::runtime::Store::connect(url)
+                .await
+                .map_err(|_| "physician runtime store unavailable".to_string())?,
+        ),
+        _ => None,
+    };
+    let (base, chat) = if let (Some(topic), Some(store)) = (topic, runtime.clone()) {
         // The retained snapshot is the stand-in source owner's only import
         // path. Importing it again changes nothing, so every instance can.
         store
@@ -543,7 +574,8 @@ async fn site_from_env(
     } else {
         (router_from_env(std::sync::Arc::clone(&bus))?, None)
     };
-    let router = auth::authed_router_with_bus(base, bus).await;
+    let postgres = database.as_deref().zip(runtime);
+    let router = auth::authed_router_with_bus(base, bus, memory_patients, postgres).await;
     let recovery = chat.map(|chat| chat.start_recovery());
     Ok((router, recovery))
 }
@@ -616,7 +648,7 @@ pub fn codex_chat_router(transport: local_product::codex::CodexTransport) -> Rou
     )
 }
 
-/// Serves the recorded practice on `listener` with authentication required
+/// Serves the fixture site on `listener` with authentication required
 /// against the given `store`.
 pub async fn serve_with_store(
     listener: tokio::net::TcpListener,
@@ -779,16 +811,52 @@ fn role_environment() -> Vec<(&'static str, String)> {
         .collect()
 }
 
-async fn today(Query(query): Query<TodayQuery>) -> Response {
-    if let Some(id) = query.patient_workspace_id {
-        return match patient_today(&id) {
-            Some(body) => json_body(body),
-            None => StatusCode::NOT_FOUND.into_response(),
-        };
-    }
-    json_body(TODAY)
+/// The practice's calendar day, as `/today` and `/updates` carry it. It is the
+/// clock's UTC date, which a fixed clock at noon never shows; a real-time
+/// practice needs its own zone here.
+fn practice_date(now: &str) -> &str {
+    now.get(..10).unwrap_or_default()
 }
 
+async fn today(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let Ok(now) = connected.practice_now(request.extensions()).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    Json(json!({
+        "date": practice_date(&now),
+        "rows": [],
+        "seen": [],
+        "connections": [],
+        "cursors": {},
+        "as_of": 0,
+        "also_reviewed": 0,
+    }))
+    .into_response()
+}
+
+async fn updates(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let Ok(now) = connected.practice_now(request.extensions()).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    Json(json!({
+        "date": practice_date(&now),
+        "rows": [],
+        "seen": [],
+        "as_of": 0,
+        "also_reviewed": 0,
+        "next_cursor": null,
+        "previous_date": null,
+    }))
+    .into_response()
+}
+
+/// The practice has no calendar source yet, so the day says so.
 async fn practice_day(
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
@@ -796,9 +864,31 @@ async fn practice_day(
     let Ok(now) = connected.practice_now(request.extensions()).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let mut day: Value = serde_json::from_str(PRACTICE_DAY).expect("recorded practice day");
-    day["current_time"] = json!(now);
-    Json(day).into_response()
+    Json(json!({
+        "date": practice_date(&now),
+        "time_zone": patients::PRACTICE_TIME_ZONE,
+        "current_time": now,
+        "source_state": { "state": "absent" },
+        "visits": [],
+    }))
+    .into_response()
+}
+
+async fn patient_list(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    let store = connected.auth_store(extensions);
+    let panel = store
+        .panel(&care::ConnectedCare::identity(extensions))
+        .await;
+    let directory = connected.patients(extensions);
+    let Ok(found) = patients::read_patients(&*directory, &panel).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let rows: Vec<Value> = found.iter().map(patients::Patient::list_row).collect();
+    Json(json!({ "patients": rows })).into_response()
 }
 
 async fn workspace(
@@ -806,28 +896,30 @@ async fn workspace(
     axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
-    let Some(body) = workspace_body(&id) else {
-        return StatusCode::NOT_FOUND.into_response();
-    };
     let Ok(now) = connected.practice_now(request.extensions()).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let mut enriched = care::enrich_workspace(body, &id, request.extensions()).await;
-    enriched["current_time"] = json!(now);
-    // A live server lists the signed-in physician's chats ahead of the
-    // recording's (which are empty today). The recorded router has no `Live`.
+    let patient = match connected.patient(request.extensions(), &id).await {
+        Ok(Some(patient)) => patient,
+        Ok(None) => return StatusCode::NOT_FOUND.into_response(),
+        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    };
+    let mut enriched =
+        care::enrich_workspace(patient.workspace_body(&now), &id, request.extensions()).await;
+    // A live server lists the signed-in physician's chats. The fixture site
+    // has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {
         let ctx = request.extensions().get::<auth::AuthContext>();
         let Ok(chats) = live.chats(ctx, &id).await else {
             return StatusCode::SERVICE_UNAVAILABLE.into_response();
         };
-        merge_chats(&mut enriched, chats);
+        enriched["chats"] = Value::Array(chats);
         let name = enriched["display_name"]
             .as_str()
             .unwrap_or_default()
             .to_owned();
         match synthetic_reply::project(live, ctx, &id, &name).await {
-            Ok(Some(reply)) => add_reply(&mut enriched, reply),
+            Ok(Some(reply)) => enriched["replies"] = json!([reply]),
             Ok(None) => {}
             Err(()) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
         }
@@ -835,54 +927,34 @@ async fn workspace(
     Json(enriched).into_response()
 }
 
-/// Lists an owner-held reply first, replacing a recorded one with its id.
-fn add_reply(workspace: &mut Value, reply: Value) {
-    let mut replies = vec![reply.clone()];
-    if let Some(recorded) = workspace["replies"].as_array() {
-        replies.extend(
-            recorded
-                .iter()
-                .filter(|r| r["reply_work_id"] != reply["reply_work_id"])
-                .cloned(),
-        );
-    }
-    workspace["replies"] = Value::Array(replies);
-}
-
-/// Puts runtime chats first and keeps recorded chats the runtime doesn't have.
-fn merge_chats(workspace: &mut Value, runtime: Vec<Value>) {
-    let recorded = workspace["chats"].as_array().cloned().unwrap_or_default();
-    let mut chats = runtime;
-    for chat in recorded {
-        if !chats.iter().any(|c| c["chat_id"] == chat["chat_id"]) {
-            chats.push(chat);
+async fn roster(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    Query(query): Query<RosterQuery>,
+    request: Request<Body>,
+) -> Response {
+    let extensions = request.extensions();
+    let store = connected.auth_store(extensions);
+    let practice = care::ConnectedCare::identity(extensions).practice_id;
+    let registered = store.practice_patients(&practice).await;
+    let directory = connected.patients(extensions);
+    let query = query.query.unwrap_or_default();
+    let Ok(found) = patients::search(&*directory, &registered, &query).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut rows: Vec<Value> = found.iter().map(|patient| patient.roster_row()).collect();
+    let (connected, store, practice_id) = (&connected, &*store, practice.as_str());
+    let links = auth::per_workspace(&rows, |ws_id| async move {
+        connected.link_wire(store, practice_id, &ws_id).await
+    })
+    .await;
+    for (row, link) in rows.iter_mut().zip(links) {
+        if let Some(link) = link {
+            row["duet_linked"] = json!(link.linked);
+            row["sharing_consented"] = json!(link.sharing_consented);
+            row["cadence"] = json!(link.cadence);
         }
     }
-    workspace["chats"] = Value::Array(chats);
-}
-
-async fn roster(Query(query): Query<RosterQuery>, request: Request<Body>) -> Response {
-    let mut patients = search_roster(&query.query.unwrap_or_default());
-    if let Some(care) = request.extensions().get::<care::ConnectedCare>() {
-        let store = care.auth_store(request.extensions());
-        let identity = care::ConnectedCare::identity(request.extensions());
-        let (store, practice_id) = (&*store, identity.practice_id.as_str());
-        let links = auth::per_workspace(&patients, |ws_id| async move {
-            care.link_wire(store, practice_id, &ws_id).await
-        })
-        .await;
-        for (patient, link) in patients.iter_mut().zip(links) {
-            if let (Some(link), Some(obj)) = (link, patient.as_object_mut()) {
-                obj.insert("duet_linked".to_owned(), json!(link.linked));
-                obj.insert(
-                    "sharing_consented".to_owned(),
-                    json!(link.sharing_consented),
-                );
-                obj.insert("cadence".to_owned(), json!(link.cadence));
-            }
-        }
-    }
-    Json(json!({ "patients": patients, "next_after": null })).into_response()
+    Json(json!({ "patients": rows, "next_after": null })).into_response()
 }
 
 async fn reject_command(body: Option<Json<Value>>) -> Response {
@@ -927,39 +999,8 @@ fn json_body(body: &'static str) -> Response {
 }
 
 #[derive(Deserialize)]
-struct TodayQuery {
-    patient_workspace_id: Option<String>,
-}
-
-#[derive(Deserialize)]
-struct RosterQuery {
-    query: Option<String>,
-}
-
-/// Filters the recorded roster by the query.
-pub fn search_roster(query: &str) -> Vec<Value> {
-    let words: Vec<String> = query
-        .split_whitespace()
-        .map(|word| word.to_lowercase())
-        .filter(|word| !word.is_empty())
-        .collect();
-    if words.is_empty() {
-        return Vec::new();
-    }
-    let roster: Value = serde_json::from_str(ROSTER).expect("roster");
-    roster["patients"]
-        .as_array()
-        .cloned()
-        .unwrap_or_default()
-        .into_iter()
-        .filter(|patient| {
-            let name = patient["patient_display_name"].as_str().unwrap_or("");
-            let birth = patient["birth_date"].as_str().unwrap_or("");
-            let haystack = format!("{name} {birth}").to_lowercase();
-            words.iter().all(|word| haystack.contains(word))
-        })
-        .take(50)
-        .collect()
+pub(crate) struct RosterQuery {
+    pub(crate) query: Option<String>,
 }
 
 /// Returns why this server rejects the command.
@@ -986,61 +1027,6 @@ pub fn rejection_message(command_type: &str) -> &'static str {
         }
         _ => "Coda couldn’t confirm that request. Reconnect to check its status.",
     }
-}
-
-pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
-    Some(match id {
-        "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
-            include_str!("../fixtures/workspaces/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json")
-        }
-        "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d" => {
-            include_str!("../fixtures/workspaces/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d.json")
-        }
-        "pw-f5404d89-acde-4bb5-8c42-2fa191766811" => {
-            include_str!("../fixtures/workspaces/pw-f5404d89-acde-4bb5-8c42-2fa191766811.json")
-        }
-        "pw-d11a35f7-0d8d-466f-a48e-5812df0a4971" => {
-            include_str!("../fixtures/workspaces/pw-d11a35f7-0d8d-466f-a48e-5812df0a4971.json")
-        }
-        "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e" => {
-            include_str!("../fixtures/workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json")
-        }
-        _ => return None,
-    })
-}
-
-fn patient_today(id: &str) -> Option<&'static str> {
-    if !WORKSPACE_IDS.contains(&id) {
-        return None;
-    }
-    Some(match id {
-        "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
-            include_str!(
-                "../fixtures/today-by-patient/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json"
-            )
-        }
-        "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d" => {
-            include_str!(
-                "../fixtures/today-by-patient/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d.json"
-            )
-        }
-        "pw-f5404d89-acde-4bb5-8c42-2fa191766811" => {
-            include_str!(
-                "../fixtures/today-by-patient/pw-f5404d89-acde-4bb5-8c42-2fa191766811.json"
-            )
-        }
-        "pw-d11a35f7-0d8d-466f-a48e-5812df0a4971" => {
-            include_str!(
-                "../fixtures/today-by-patient/pw-d11a35f7-0d8d-466f-a48e-5812df0a4971.json"
-            )
-        }
-        "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e" => {
-            include_str!(
-                "../fixtures/today-by-patient/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json"
-            )
-        }
-        _ => return None,
-    })
 }
 
 async fn cors(request: Request<Body>, next: Next) -> Response {
@@ -1088,7 +1074,8 @@ mod tests {
 
     #[tokio::test]
     async fn hosted_site_without_a_chat_topic_runs_chat_inline() {
-        let (_, recovery) = site_from_env(|name| (name == "K_SERVICE").then(|| "physician".into()))
+        let hosted = |name: &str| (name == "K_SERVICE").then(|| "physician".into());
+        let (_, recovery) = site_from_env(hosted, std::sync::Arc::default())
             .await
             .expect("hosted without a topic starts");
         assert!(recovery.is_none(), "no durable chat, so no recovery sweep");
@@ -1096,30 +1083,62 @@ mod tests {
 
     #[tokio::test]
     async fn a_chat_topic_requires_the_physician_database() {
-        let error = site_from_env(|name| {
+        let topic = |name: &str| {
             (name == "PHYSICIAN_CHAT_TOPIC")
                 .then(|| "projects/p/topics/physician-chat-turns".into())
-        })
-        .await
-        .expect_err("topic without a database");
+        };
+        let error = site_from_env(topic, std::sync::Arc::default())
+            .await
+            .expect_err("topic without a database");
         assert!(error.contains("PHYSICIAN_DATABASE_URL"), "{error}");
     }
 
     #[tokio::test]
-    async fn serves_the_recorded_practice() {
+    async fn required_sign_in_serves_only_the_practice() {
+        for (other_routes, named) in [
+            ("PHYSICIAN_UPSTREAM", "PHYSICIAN_UPSTREAM"),
+            ("CODA_LOCAL_SIMULATION", "simulation"),
+        ] {
+            let environment = |name: &str| {
+                (name == "PHYSICIAN_AUTH" || name == other_routes).then(|| "required".to_owned())
+            };
+            let error = site_from_env(environment, std::sync::Arc::default())
+                .await
+                .expect_err("required sign-in over other routes");
+            assert!(error.contains(named), "{error}");
+        }
+    }
+
+    #[tokio::test]
+    async fn serves_patients_and_no_work_it_does_not_hold() {
         let (status, today) = get("/today").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(today.contains("not_yet_read"));
+        assert!(today.contains("\"rows\":[]"), "{today}");
         let (status, day) = get("/practice-day").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(day.contains("Mary Louis"));
+        let day: Value = serde_json::from_str(&day).unwrap();
+        assert_eq!(day["source_state"]["state"], "absent");
+        assert_eq!(day["visits"], json!([]));
+        assert_eq!(day["current_time"], "2026-08-27T16:00:00.000Z");
         let (status, mary) =
             get("/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(mary.contains("authored_text"));
+        let mary: Value = serde_json::from_str(&mary).unwrap();
+        assert_eq!(mary["display_name"], "Mary Louis");
+        assert_eq!(mary["identity"]["age_years"], 54);
+        assert_eq!(
+            mary["connected_sources"][0]["state"]["synchronized_at"],
+            "2026-08-27T16:00:00.000Z"
+        );
+        let (status, listed) = get("/patient-workspaces").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(listed.contains("Mary Louis"), "{listed}");
         let (status, found) = get("/patient-roster?query=Mary").await;
         assert_eq!(status, StatusCode::OK);
-        assert!(found.contains("1972-03-18"));
+        assert!(found.contains("1972-03-18"), "{found}");
+        let (status, blank) = get("/patient-roster?query=").await;
+        assert_eq!(status, StatusCode::OK);
+        assert!(blank.contains("\"patients\":[]"), "{blank}");
         let (status, updates) = get("/updates").await;
         assert_eq!(status, StatusCode::OK);
         assert!(updates.contains("\"rows\":[]"));
@@ -1134,10 +1153,16 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn an_unset_upstream_stays_recorded_and_a_set_one_forwards() {
+    async fn a_registered_patient_no_source_holds_is_not_found() {
+        let (status, _) = get("/patient-workspaces/pw-nobody").await;
+        assert_eq!(status, StatusCode::NOT_FOUND);
+    }
+
+    #[tokio::test]
+    async fn an_unset_upstream_serves_the_site_and_a_set_one_forwards() {
         let (status, today) = request(router_with(None), "GET", "/today", Body::empty()).await;
         assert_eq!(status, StatusCode::OK);
-        assert!(today.contains("not_yet_read"));
+        assert!(today.contains("\"rows\":[]"), "{today}");
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let address = listener.local_addr().unwrap();
         tokio::spawn(async move {

@@ -442,6 +442,7 @@ mod tests {
     fn exact_reads_are_pinned_workspace_scoped_and_refuse_effects() {
         let source = SourceRevision {
             workspace: "w".into(),
+            source_id: "ehr".into(),
             candidate_id: "pinned".into(),
             revision: "v1".into(),
             record_type: "note".into(),
