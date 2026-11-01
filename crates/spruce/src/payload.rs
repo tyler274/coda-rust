@@ -156,12 +156,29 @@ pub struct Event {
 /// What a transcription fetch became. The id is the one the item named.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum TranscriptionState {
-    /// Spruce returned the transcript text.
+    /// Spruce finished the transcript. `pending`, `failed`, and `noSpeech` are not this.
     Ready {
         /// Transcription id.
         id: String,
         /// Transcript text.
         text: String,
+        /// Summary text, when Spruce sent one.
+        summary: Option<String>,
+    },
+    /// Spruce returned a transcription that is not a finished body.
+    ///
+    /// `status` is Spruce's string (`pending`, `failed`, `noSpeech`, or anything else
+    /// that is not `completed`). The product can read the conversation again while
+    /// it is still `pending`.
+    Unfinished {
+        /// Transcription id.
+        id: String,
+        /// Spruce's status string.
+        status: String,
+        /// Transcript text so far. Empty when Spruce has not written one.
+        text: String,
+        /// Summary text, when Spruce sent one.
+        summary: Option<String>,
     },
     /// Spruce has no transcript. Transcriptions from before November 2025 answer 404.
     NotFound {
@@ -242,9 +259,25 @@ impl Item {
             }
         }
         match &self.transcription {
-            Some(TranscriptionState::Ready { text, .. }) => {
+            Some(TranscriptionState::Ready { text, summary, .. }) => {
                 hasher.update([1]);
+                hasher.update(b"completed");
                 hasher.update(text.as_bytes());
+                hasher.update([0]);
+                hasher.update(summary.as_deref().unwrap_or(""));
+            }
+            Some(TranscriptionState::Unfinished {
+                status,
+                text,
+                summary,
+                ..
+            }) => {
+                hasher.update([4]);
+                hasher.update(status.as_bytes());
+                hasher.update([0]);
+                hasher.update(text.as_bytes());
+                hasher.update([0]);
+                hasher.update(summary.as_deref().unwrap_or(""));
             }
             Some(TranscriptionState::NotFound { .. }) => hasher.update([2]),
             Some(TranscriptionState::Unavailable { .. }) => hasher.update([3]),

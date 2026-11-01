@@ -28,6 +28,8 @@ fn message(conversation: &str, id: &str, text: &str, created: i64, activity: i64
         activity_at: at(activity),
         transcription_id: None,
         transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
     }
 }
 
@@ -346,6 +348,102 @@ async fn a_transcript_is_fetched_and_a_missing_one_keeps_the_item() {
         missing.transcription,
         Some(TranscriptionState::NotFound { .. })
     ));
+}
+
+#[tokio::test]
+async fn a_fractional_activity_time_stays_history() {
+    let fake = FakeSpruce::spawn().await;
+    let mut existing = message("t_old", "ti_old", "already there", 0, 0);
+    existing.created_at = "2026-10-27T18:12:50.400Z".into();
+    existing.modified_at = existing.created_at.clone();
+    existing.activity_at = existing.created_at.clone();
+    fake.deliver(existing);
+    let reader = open(&fake, Duration::ZERO, 50);
+    let (cursor, changes) = drain(&reader, None).await;
+    assert!(changes.is_empty());
+    assert!(
+        cursor.encode().contains("2026-10-27T18:12:50.400Z"),
+        "the history floor must keep the fraction: {}",
+        cursor.encode()
+    );
+    let (_cursor, changes) = drain(&reader, Some(cursor)).await;
+    assert!(
+        changes.is_empty(),
+        "a message that existed at connect time must stay history"
+    );
+}
+
+#[tokio::test]
+async fn an_unfinished_transcript_is_not_a_finished_body() {
+    let fake = FakeSpruce::spawn().await;
+    for (id, item, status, text, summary) in [
+        ("tr_pending", "ti_pending", "pending", "", None),
+        ("tr_failed", "ti_failed", "failed", "", None),
+        ("tr_silent", "ti_silent", "noSpeech", "", None),
+        (
+            "tr_done",
+            "ti_done",
+            "completed",
+            "heard the cough",
+            Some("cough"),
+        ),
+    ] {
+        let mut delivery = message("t_one", item, "", 0, 0);
+        delivery.transcription_id = Some(id.into());
+        delivery.transcription_text = Some(text.into());
+        delivery.transcription_status = Some(status.into());
+        delivery.transcription_summary = summary.map(str::to_owned);
+        fake.deliver(delivery);
+    }
+    let reader = open(&fake, Duration::ZERO, 50);
+    let items = all_items(&reader, "t_one").await;
+    let state = |id: &str| {
+        items
+            .iter()
+            .find(|item| item.id() == id)
+            .expect(id)
+            .transcription
+            .clone()
+    };
+    assert!(matches!(
+        state("ti_pending"),
+        Some(TranscriptionState::Unfinished { ref status, ref text, .. })
+            if status == "pending" && text.is_empty()
+    ));
+    assert!(matches!(
+        state("ti_failed"),
+        Some(TranscriptionState::Unfinished { ref status, .. }) if status == "failed"
+    ));
+    assert!(matches!(
+        state("ti_silent"),
+        Some(TranscriptionState::Unfinished { ref status, .. }) if status == "noSpeech"
+    ));
+    assert!(matches!(
+        state("ti_done"),
+        Some(TranscriptionState::Ready { ref text, ref summary, .. })
+            if text == "heard the cough" && summary.as_deref() == Some("cough")
+    ));
+
+    let pending_version = items
+        .iter()
+        .find(|item| item.id() == "ti_pending")
+        .expect("pending")
+        .version();
+    let mut finished = message("t_one", "ti_pending", "", 0, 0);
+    finished.transcription_id = Some("tr_pending".into());
+    finished.transcription_text = Some("heard the cough".into());
+    finished.transcription_status = Some("completed".into());
+    fake.deliver(finished);
+    let again = all_items(&reader, "t_one").await;
+    let pending = again
+        .iter()
+        .find(|item| item.id() == "ti_pending")
+        .expect("pending");
+    assert!(matches!(
+        &pending.transcription,
+        Some(TranscriptionState::Ready { text, .. }) if text == "heard the cough"
+    ));
+    assert_ne!(pending.version(), pending_version);
 }
 
 #[tokio::test]

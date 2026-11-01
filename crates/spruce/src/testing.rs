@@ -43,6 +43,16 @@ pub struct Delivery {
     pub transcription_id: Option<String>,
     /// Transcript text. `None` with a `transcription_id` makes that GET answer 404.
     pub transcription_text: Option<String>,
+    /// Spruce transcription status. Defaults to `completed` when text is present.
+    pub transcription_status: Option<String>,
+    /// Summary text, when the transcription resource includes one.
+    pub transcription_summary: Option<String>,
+}
+
+struct StoredTranscription {
+    status: String,
+    text: String,
+    summary: Option<String>,
 }
 
 struct StoredConversation {
@@ -71,7 +81,7 @@ struct FakeState {
     duplicate: Option<String>,
     conversations: Vec<StoredConversation>,
     items: Vec<StoredItem>,
-    transcriptions: HashMap<String, String>,
+    transcriptions: HashMap<String, StoredTranscription>,
 }
 
 impl FakeState {
@@ -135,7 +145,17 @@ impl FakeSpruce {
         if let Some(text) = delivery.transcription_text.clone()
             && let Some(id) = &delivery.transcription_id
         {
-            state.transcriptions.insert(id.clone(), text);
+            state.transcriptions.insert(
+                id.clone(),
+                StoredTranscription {
+                    status: delivery
+                        .transcription_status
+                        .clone()
+                        .unwrap_or_else(|| "completed".into()),
+                    text,
+                    summary: delivery.transcription_summary.clone(),
+                },
+            );
         }
         if let Some(conversation) = state
             .conversations
@@ -378,10 +398,18 @@ async fn transcription(
         return response;
     }
     let state = state.lock().expect("spruce stand-in lock");
-    let Some(text) = state.transcriptions.get(&id) else {
+    let Some(transcription) = state.transcriptions.get(&id) else {
         return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
     };
-    Json(json!({"transcription": {"id": id, "status": "completed", "text": text}})).into_response()
+    Json(json!({
+        "transcription": {
+            "id": id,
+            "status": transcription.status,
+            "text": transcription.text,
+            "summarization": transcription.summary.as_ref().map(|text| json!({"text": text})),
+        }
+    }))
+    .into_response()
 }
 
 fn conversation_json(conversation: &StoredConversation) -> Value {

@@ -533,10 +533,23 @@ impl Reader {
         org: &mut OrgCheck,
     ) -> Result<TranscriptionState, Error> {
         match self.client.get_transcription(id).await {
-            Ok(transcription) => Ok(TranscriptionState::Ready {
-                id: id.to_owned(),
-                text: transcription.text,
-            }),
+            Ok(transcription) => {
+                let state = if transcription.status == "completed" {
+                    TranscriptionState::Ready {
+                        id: id.to_owned(),
+                        text: transcription.text,
+                        summary: transcription.summary,
+                    }
+                } else {
+                    TranscriptionState::Unfinished {
+                        id: id.to_owned(),
+                        status: transcription.status,
+                        text: transcription.text,
+                        summary: transcription.summary,
+                    }
+                };
+                Ok(state)
+            }
             Err(error) if self.refused(&error, org).await? => Err(error),
             Err(Error::NotFound) => Ok(TranscriptionState::NotFound { id: id.to_owned() }),
             Err(
@@ -622,7 +635,13 @@ fn checkpoint(floor: &str, boundary: &str, overlap: Duration) -> String {
         .ok()
         .and_then(|overlap| boundary_at.checked_sub_signed(overlap))
         .unwrap_or_else(epoch_at);
-    format_instant(if pulled < floor_at { floor_at } else { pulled })
+    if pulled < floor_at {
+        if parse_instant(floor).is_some() {
+            return floor.to_owned();
+        }
+        return format_instant(floor_at);
+    }
+    format_instant(pulled)
 }
 
 fn latest<'a>(seed: Option<&str>, values: impl IntoIterator<Item = &'a str>) -> Option<String> {
@@ -631,7 +650,9 @@ fn latest<'a>(seed: Option<&str>, values: impl IntoIterator<Item = &'a str>) -> 
         if let Some(at) = parse_instant(value)
             && found.as_ref().is_none_or(|(best, _)| at > *best)
         {
-            found = Some((at, format_instant(at)));
+            // Keep Spruce's own timestamp. Reformatting to whole seconds would
+            // move the history floor earlier than the winning activity.
+            found = Some((at, value.to_owned()));
         }
     }
     found.map(|(_, value)| value)
@@ -651,7 +672,12 @@ fn parse_instant(value: &str) -> Option<DateTime<Utc>> {
 }
 
 fn format_instant(value: DateTime<Utc>) -> String {
-    value.to_rfc3339_opts(SecondsFormat::Secs, true)
+    let precision = if value.timestamp_subsec_nanos() == 0 {
+        SecondsFormat::Secs
+    } else {
+        SecondsFormat::Millis
+    };
+    value.to_rfc3339_opts(precision, true)
 }
 
 fn epoch() -> String {
