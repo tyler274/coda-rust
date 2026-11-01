@@ -24,6 +24,10 @@ const SEND_TEXT: &str = "How is my sleep this week?";
 #[path = "common/durable_doctor.rs"]
 mod durable_doctor;
 
+// Durable-service D2 proof (no browser): isolated PostgreSQL + real owners + duet-client.
+#[path = "common/durable_d2.rs"]
+mod durable_d2;
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_duet_journey_runs_on_a_live_stub_backend() {
@@ -81,8 +85,8 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Open source Sleep note"]"#);
     let text = browser.wait_for("About seven hours, from the sleep note.");
     assert!(
-        text.contains("Sleep note"),
-        "the source sheet did not name the citation:\n{text}"
+        text.contains("Source: Sleep note") && !text.contains("\"body\""),
+        "the source sheet did not show the cited note:\n{text}"
     );
     browser.click(r#"dialog.dialog-sheet:last-of-type button[aria-label="Close"]"#);
     wait_for_gone(&mut browser, "p.source-text");
@@ -155,6 +159,33 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         text.contains("Lisinopril 5 mg"),
         "the corrected medication disappeared with the deleted lab:\n{text}"
     );
+
+    // Stub/browser D2 proof: You lists each record as a person would read it,
+    // and "Ask about this" hands that exact revision to the composer.
+    browser.click("details.record-browser summary");
+    let text = wait_until(&mut browser, |text| text.contains("Showing "));
+    assert!(
+        text.contains("Source: Pharmacy") && text.contains("2026-10-01T15:00:00+00:00"),
+        "the record browser did not show the source and date:\n{text}"
+    );
+    assert!(
+        !text.contains("Version 1") && !text.contains("Show original"),
+        "the record browser still shows a technical inspector:\n{text}"
+    );
+    wait_for_selector(
+        &mut browser,
+        r#"button[aria-label="Ask about Lisinopril 5 mg"]"#,
+    );
+    browser.click(r#"button[aria-label="Ask about Lisinopril 5 mg"]"#);
+    let text = wait_until(&mut browser, |text| {
+        text.contains("Asking about Lisinopril 5 mg") && !text.contains("(version 1)")
+    });
+    assert!(
+        text.contains("Asking about"),
+        "the selected record did not reach the composer:\n{text}"
+    );
+    browser.click(r#"button[aria-label="Clear selected record"]"#);
+    wait_until(&mut browser, |text| !text.contains("Asking about"));
 
     // The Shared tab reports the stub's sharing overview.
     browser.click(r#"nav.tabs button[aria-current="false"]:nth-of-type(4)"#);

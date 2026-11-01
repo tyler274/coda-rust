@@ -30,6 +30,14 @@ pub enum AppleHealthSourceApiEvidenceAppleHealthGetError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`browse_evidence_records`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum BrowseEvidenceRecordsError {
+    Status409(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`commit_durable_privacy_restriction`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -269,6 +277,14 @@ pub enum ReadCanonicalHealthContextError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`read_conversation_source_revision`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadConversationSourceRevisionError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`read_doctor_publication`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -310,6 +326,14 @@ pub enum ReadDurableConversationEventsError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ReadDurableConversationUsageError {
+    Status404(),
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`read_evidence_revision`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ReadEvidenceRevisionError {
     Status404(),
     UnknownValue(serde_json::Value),
 }
@@ -536,6 +560,63 @@ pub async fn apple_health_source_api_evidence_apple_health_get(
         let content = resp.text().await?;
         let entity: Option<AppleHealthSourceApiEvidenceAppleHealthGetError> =
             serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn browse_evidence_records(
+    configuration: &configuration::Configuration,
+    evidence_browse_query: models::EvidenceBrowseQuery,
+) -> Result<models::EvidenceBrowsePage, Error<BrowseEvidenceRecordsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_evidence_browse_query = evidence_browse_query;
+
+    let uri_str = format!("{}/api/evidence/browse", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_evidence_browse_query);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::EvidenceBrowsePage`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::EvidenceBrowsePage`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<BrowseEvidenceRecordsError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,
@@ -2252,6 +2333,68 @@ pub async fn read_canonical_health_context(
     }
 }
 
+pub async fn read_conversation_source_revision(
+    configuration: &configuration::Configuration,
+    message_id: Option<&str>,
+    source_id: &str,
+) -> Result<models::EvidenceRevisionView, Error<ReadConversationSourceRevisionError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_path_message_id = message_id;
+    let p_path_source_id = source_id;
+
+    let uri_str = format!(
+        "{}/api/conversation/messages/{message_id}/sources/{source_id}/revision",
+        configuration.base_path,
+        message_id = crate::apis::urlencode(p_path_message_id.unwrap()),
+        source_id = crate::apis::urlencode(p_path_source_id)
+    );
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::EvidenceRevisionView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::EvidenceRevisionView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadConversationSourceRevisionError> =
+            serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
 pub async fn read_doctor_publication(
     configuration: &configuration::Configuration,
 ) -> Result<models::DurablePublicationView, Error<ReadDoctorPublicationError>> {
@@ -2594,6 +2737,63 @@ pub async fn read_durable_conversation_usage(
     } else {
         let content = resp.text().await?;
         let entity: Option<ReadDurableConversationUsageError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent {
+            status,
+            content,
+            entity,
+        }))
+    }
+}
+
+pub async fn read_evidence_revision(
+    configuration: &configuration::Configuration,
+    evidence_revision_request: models::EvidenceRevisionRequest,
+) -> Result<models::EvidenceRevisionView, Error<ReadEvidenceRevisionError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_body_evidence_revision_request = evidence_revision_request;
+
+    let uri_str = format!("{}/api/evidence/revision", configuration.base_path);
+    let mut req_builder = configuration
+        .client
+        .request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_body_evidence_revision_request);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+    let content_type = resp
+        .headers()
+        .get("content-type")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("application/octet-stream");
+    let content_type = super::ContentType::from(content_type);
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        match content_type {
+            ContentType::Json => serde_json::from_str(&content).map_err(Error::from),
+            ContentType::Text => {
+                return Err(Error::from(serde_json::Error::custom(
+                    "Received `text/plain` content type response that cannot be converted to `models::EvidenceRevisionView`",
+                )));
+            }
+            ContentType::Unsupported(unknown_type) => {
+                return Err(Error::from(serde_json::Error::custom(format!(
+                    "Received `{unknown_type}` content type response that cannot be converted to `models::EvidenceRevisionView`"
+                ))));
+            }
+        }
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ReadEvidenceRevisionError> = serde_json::from_str(&content).ok();
         Err(Error::ResponseError(ResponseContent {
             status,
             content,

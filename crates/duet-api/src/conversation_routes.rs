@@ -34,6 +34,10 @@ pub fn router(state: ConversationState) -> Router {
             "/api/conversation/messages/{message_id}/sources/{source_id}",
             get(message_source),
         )
+        .route(
+            "/api/conversation/messages/{message_id}/sources/{source_id}/revision",
+            get(message_source_revision),
+        )
         .route("/api/conversation/{id}", get(read))
         .route("/api/conversation/{id}/commands", post(accept))
         .route("/api/conversation/commands/{id}/resume", post(resume))
@@ -70,6 +74,18 @@ async fn phone_send(
     let run = serde_json::from_value(accepted["run"]["id"].clone()).unwrap_or(body.id);
     launch(&s, &c, run).await?;
     Ok((axum::http::StatusCode::ACCEPTED, Json(accepted)))
+}
+async fn message_source_revision(
+    State(s): State<ConversationState>,
+    h: HeaderMap,
+    Path((message, source)): Path<(Uuid, String)>,
+) -> Result<Json<Value>, ApiError> {
+    let c = s.durable.authenticate(&h).await?;
+    Ok(Json(
+        s.store
+            .message_source_revision(&c, message, &source)
+            .await?,
+    ))
 }
 async fn message_source(
     State(s): State<ConversationState>,

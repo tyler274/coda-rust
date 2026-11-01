@@ -226,6 +226,106 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
+    /// Reads one bounded page of the complete exact record inventory. Pass the previous
+    /// page's `next_cursor` until it is `None`; a conflict means evidence changed and
+    /// browsing restarts from the first page.
+    pub async fn browse_records(
+        &self,
+        cursor: Option<String>,
+    ) -> Result<duet_wire::models::EvidenceBrowsePage, String> {
+        let mut query = duet_wire::models::EvidenceBrowseQuery::new();
+        query.cursor = cursor;
+        query.include_removed = Some(true);
+        duet_wire::apis::default_api::browse_evidence_records(&self.configuration, query)
+            .await
+            .map_err(|error| error.to_string())
+    }
+
+    /// Reads every page of the record inventory, restarting once if evidence changed
+    /// mid-walk. Never returns a truncated list.
+    pub async fn all_records(
+        &self,
+    ) -> Result<Vec<duet_wire::models::EvidenceBrowseRecord>, String> {
+        let mut last = String::new();
+        for _ in 0..2 {
+            let mut records = Vec::new();
+            let mut cursor = None;
+            loop {
+                match self.browse_records(cursor.take()).await {
+                    Ok(page) => {
+                        records.extend(page.records);
+                        match page.next_cursor {
+                            Some(next) => cursor = Some(next),
+                            None => return Ok(records),
+                        }
+                    }
+                    Err(error) => {
+                        last = error;
+                        break;
+                    }
+                }
+            }
+        }
+        Err(last)
+    }
+
+    /// Reads one exact record revision with its truthful status.
+    pub async fn record_revision(
+        &self,
+        address: duet_wire::models::CanonicalSourceAddress,
+    ) -> Result<duet_wire::models::EvidenceRevisionView, String> {
+        duet_wire::apis::default_api::read_evidence_revision(
+            &self.configuration,
+            duet_wire::models::EvidenceRevisionRequest::new(address),
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Reopens the exact record revision a message cited, including `unavailable`
+    /// after privacy erasure. Non-record citations answer an error; use
+    /// [`DuetClient::message_source`] for those.
+    pub async fn cited_revision(
+        &self,
+        message_id: uuid::Uuid,
+        source_id: &str,
+    ) -> Result<duet_wire::models::EvidenceRevisionView, String> {
+        duet_wire::apis::default_api::read_conversation_source_revision(
+            &self.configuration,
+            Some(&message_id.to_string()),
+            source_id,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
+    /// Sends one message about one exact selected record revision.
+    pub async fn send_about_record(
+        &self,
+        id: uuid::Uuid,
+        text: &str,
+        timezone: &str,
+        record_id: uuid::Uuid,
+        revision: i32,
+    ) -> Result<ConversationAcceptance, String> {
+        let mut request = duet_wire::models::ConversationSendRequest::new(
+            id,
+            text.to_owned(),
+            timezone.to_owned(),
+        );
+        // The enum tag already writes `kind`; setting the field too would duplicate it.
+        let selected = duet_wire::models::SelectedRecordContext::new(record_id, revision);
+        request.selected_context = Some(Some(Box::new(
+            duet_wire::models::ConversationSendRequestSelectedContext::Record(Box::new(selected)),
+        )));
+        duet_wire::apis::conversation_api::send_message_api_conversation_messages_post(
+            &self.configuration,
+            request,
+        )
+        .await
+        .map_err(|error| error.to_string())
+    }
+
     /// Opens one source cited on a conversation message.
     pub async fn message_source(
         &self,

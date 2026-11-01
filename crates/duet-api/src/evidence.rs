@@ -281,11 +281,17 @@ fn wire_revision(revision: i64) -> Result<i32, ApiError> {
 fn refused() -> ApiError {
     ApiError::Conflict(SOURCE_AUTHORITY_REFUSED)
 }
+/// RFC 3339 instant, or `None` when the literal is absent, partial, or not an instant.
+/// Browse uses this same acceptance for `measured_interval.start` and `.end`.
+pub(crate) fn declared_instant_text(text: &str) -> Option<DateTime<Utc>> {
+    text.parse().ok()
+}
+
 /// A declared instant: RFC 3339 → Some; absent/null/partial literal → None.
 fn declared_instant(value: Option<&Value>) -> Result<Option<DateTime<Utc>>, ApiError> {
     match value {
         None | Some(Value::Null) => Ok(None),
-        Some(Value::String(text)) => Ok(text.parse().ok()),
+        Some(Value::String(text)) => Ok(declared_instant_text(text)),
         Some(_) => Err(ApiError::Unprocessable("declared dates must be strings")),
     }
 }
@@ -418,6 +424,24 @@ impl EvidenceStore {
         context: &AccountContext,
         after: i64,
     ) -> Result<EvidenceSnapshot, ApiError> {
+        Ok(self.collect(context, after, false).await?.0)
+    }
+    /// Complete browse inventory: the current snapshot plus, from the same account
+    /// transaction, the last retained revision of every source-removed record
+    /// (`current=false`). Privacy-erased records are absent from both.
+    pub async fn inventory(
+        &self,
+        context: &AccountContext,
+    ) -> Result<(EvidenceSnapshot, Vec<ExactEvidence>), ApiError> {
+        self.collect(context, 0, true).await
+    }
+    async fn collect(
+        &self,
+        context: &AccountContext,
+        after: i64,
+        include_removed: bool,
+    ) -> Result<(EvidenceSnapshot, Vec<ExactEvidence>), ApiError> {
+        let mut removed = Vec::new();
         let mut tx = self.database.begin(context.account_id).await?;
         check_current(&mut tx, context, false).await?;
         let fences = account_fences(&mut tx, context.account_id).await?;
@@ -457,6 +481,21 @@ impl EvidenceStore {
                     payload: latest.payload,
                     current: true,
                 });
+            } else if include_removed
+                && member.source_removed
+                && let Some(latest) =
+                    latest_revision(&mut tx, context.account_id, member.record_id).await?
+            {
+                removed.push(ExactEvidence {
+                    address: AddressedRecordRevision::new(
+                        member.record_id,
+                        entity,
+                        member.client_record_id.clone(),
+                        wire_revision(latest.revision)?,
+                    ),
+                    payload: latest.payload,
+                    current: false,
+                });
             }
             changes.push(EvidenceChange {
                 entity,
@@ -468,13 +507,70 @@ impl EvidenceStore {
             });
         }
         tx.commit().await?;
-        Ok(EvidenceSnapshot {
-            cursor: fences.evidence_revision,
-            health_records_generation: fences.health_records_generation,
-            changes,
-            records,
-        })
+        Ok((
+            EvidenceSnapshot {
+                cursor: fences.evidence_revision,
+                health_records_generation: fences.health_records_generation,
+                changes,
+                records,
+            },
+            removed,
+        ))
     }
+    /// Exact revision with its truthful status; see [`revision_view_in_transaction`].
+    pub async fn revision_view(
+        &self,
+        context: &AccountContext,
+        address: &AddressedRecordRevision,
+    ) -> Result<Value, ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, false).await?;
+        revision_view_in_transaction(&mut tx, context.account_id, address).await
+    }
+}
+
+/// `EvidenceRevisionView` for one exact address: the addressed payload, and whether
+/// it is `current`, `superseded` by a later correction, or `removed_by_source`.
+/// Privacy-erased, withdrawn, foreign or absent addresses are `NotFound`; callers that
+/// already proved ownership (a retained citation) render that as `unavailable`.
+pub async fn revision_view_in_transaction(
+    tx: &mut Transaction<'_, Postgres>,
+    account: Uuid,
+    address: &AddressedRecordRevision,
+) -> Result<Value, ApiError> {
+    let exact = exact_in_transaction(tx, account, address, false).await?;
+    let removed = orm::model(
+        tx,
+        &membership::Entity::find()
+            .filter(membership::Column::UserId.eq(account))
+            .filter(membership::Column::RecordId.eq(address.canonical_record_id))
+            .into_query(),
+    )
+    .await?
+    .is_some_and(|m: membership::Model| m.source_removed);
+    let latest = latest_revision(tx, account, address.canonical_record_id)
+        .await?
+        .map(|r| r.revision);
+    let status = if exact.current {
+        "current"
+    } else if removed {
+        "removed_by_source"
+    } else {
+        "superseded"
+    };
+    Ok(serde_json::json!({
+        "address": exact.address,
+        "status": status,
+        "current": exact.current,
+        "newer_revision_exists": latest.is_some_and(|l| l > i64::from(address.revision)),
+        "current_revision": latest,
+        "payload": exact.payload,
+    }))
+}
+
+/// `EvidenceRevisionView` for a retained citation whose record was privacy-erased.
+pub fn unavailable_view(address: &AddressedRecordRevision) -> Value {
+    serde_json::json!({"address": address, "status": "unavailable", "current": false, "payload": null})
 }
 
 async fn account_fences(

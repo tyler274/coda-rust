@@ -168,9 +168,14 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
             "/api/conversation/messages/{message_id}/sources/{source_id}",
             get(message_source),
         )
+        .route(
+            "/api/conversation/messages/{message_id}/sources/{source_id}/revision",
+            get(cited_revision),
+        )
         .route("/api/insight-cycles", get(insights))
         .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
+        .route("/api/evidence/browse", post(browse))
         .route("/api/evidence", post(ingest))
         .route("/api/saved-routines", get(routines))
         .route(
@@ -326,6 +331,42 @@ async fn message_source(
         _ => source.title.clone(),
     };
     Ok(Json(ConversationSourceDetail::new(source, text)))
+}
+
+/// Stand-in for the exact cited revision. The sleep note's payload stays on the
+/// revision; the client renders person-facing lines and does not dump JSON.
+async fn cited_revision(
+    Path((_message_id, source_id)): Path<(uuid::Uuid, String)>,
+) -> Result<Json<duet_wire::models::EvidenceRevisionView>, StatusCode> {
+    if source_id != "sleep-note" {
+        return Err(StatusCode::NOT_FOUND);
+    }
+    use duet_wire::models::{
+        CanonicalSourceAddress, EvidenceRevisionView, canonical_source_address::Entity,
+        evidence_revision_view::Status,
+    };
+    let mut view = EvidenceRevisionView::new(
+        CanonicalSourceAddress::new(
+            uuid::Uuid::nil(),
+            "sleep-note".into(),
+            Entity::ClinicalNote,
+            1,
+        ),
+        Status::Current,
+        true,
+    );
+    view.payload = Some(Some(
+        [
+            ("title".to_owned(), serde_json::json!("Sleep note")),
+            (
+                "body".to_owned(),
+                serde_json::json!("About seven hours, from the sleep note."),
+            ),
+            ("source_label".to_owned(), serde_json::json!("Sleep note")),
+        ]
+        .into(),
+    ));
+    Ok(Json(view))
 }
 
 fn acceptance(message: ConversationMessage, revision: i32) -> ConversationAcceptance {
@@ -812,6 +853,54 @@ fn apply_doctor_save(base: DoctorCollection, save: DoctorPageSave) -> DoctorColl
     }
 }
 
+/// Stand-in for the durable record browser: the stub library as exact records, paged
+/// fifty at a time by an offset cursor. Stub records carry no provenance connection.
+async fn browse(
+    State(store): State<Arc<Mutex<Store>>>,
+    Json(query): Json<duet_wire::models::EvidenceBrowseQuery>,
+) -> Result<Json<duet_wire::models::EvidenceBrowsePage>, StatusCode> {
+    use duet_wire::models::{
+        CanonicalSourceAddress, EvidenceBrowsePage, EvidenceBrowseRecord, EvidenceRecordProvenance,
+        canonical_source_address::Entity as AddressEntity, evidence_browse_record::Status,
+        evidence_record_provenance::Writer,
+    };
+    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
+    let page = library_page(&store);
+    let records: Vec<EvidenceBrowseRecord> = page
+        .entries
+        .iter()
+        .map(|entry| {
+            let entity = match entry.entity {
+                LibraryEntity::ClinicalNote => AddressEntity::ClinicalNote,
+                LibraryEntity::HealthEvidence => AddressEntity::HealthEvidence,
+            };
+            let mut record = EvidenceBrowseRecord::new(
+                CanonicalSourceAddress::new(entry.record_id, entry.id.clone(), entity, 1),
+                Status::Current,
+                entry.title.clone(),
+                EvidenceRecordProvenance::new("manual".into(), Writer::Device),
+                Some(entry.preview.clone().unwrap_or_default()),
+            );
+            record.provenance.source_label = entry.source_label.clone().flatten();
+            record.date = entry.date.map(|date| date.to_rfc3339());
+            record.date_role = record.date.as_ref().map(|_| "recorded_at".to_owned());
+            record
+        })
+        .collect();
+    let offset = match query.cursor.as_deref() {
+        None => 0,
+        Some(cursor) => cursor.parse().map_err(|_| StatusCode::CONFLICT)?,
+    };
+    if offset > records.len() {
+        return Err(StatusCode::CONFLICT);
+    }
+    let end = (offset + 50).min(records.len());
+    let mut out =
+        EvidenceBrowsePage::new(0, 0, records.len() as i32, records[offset..end].to_vec());
+    out.removed_count = Some(0);
+    out.next_cursor = (end < records.len()).then(|| end.to_string());
+    Ok(Json(out))
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -888,6 +977,23 @@ mod tests {
         let detail: ConversationSourceDetail = serde_json::from_str(&body(opened).await).unwrap();
         assert_eq!(detail.text, "About seven hours, from the sleep note.");
         assert_eq!(detail.reference.title, "Sleep note");
+        let revision = app
+            .clone()
+            .oneshot(
+                Request::builder()
+                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/sleep-note/revision")
+                    .body(Body::empty())
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert!(revision.status().is_success());
+        let view: duet_wire::models::EvidenceRevisionView =
+            serde_json::from_str(&body(revision).await).unwrap();
+        assert_eq!(
+            view.payload.flatten().unwrap()["body"],
+            "About seven hours, from the sleep note."
+        );
         let missing = app
             .clone()
             .oneshot(

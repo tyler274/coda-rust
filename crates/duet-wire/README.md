@@ -42,6 +42,7 @@ Class | Method | HTTP request | Description
 *ConversationApi* | [**set_feedback_api_conversation_messages_message_id_feedback_put**](docs/ConversationApi.md#set_feedback_api_conversation_messages_message_id_feedback_put) | **PUT** /api/conversation/messages/{message_id}/feedback | Set Feedback
 *DefaultApi* | [**accept_durable_conversation_command**](docs/DefaultApi.md#accept_durable_conversation_command) | **POST** /api/conversation/{id}/commands |
 *DefaultApi* | [**apple_health_source_api_evidence_apple_health_get**](docs/DefaultApi.md#apple_health_source_api_evidence_apple_health_get) | **GET** /api/evidence/apple-health | Apple Health Source
+*DefaultApi* | [**browse_evidence_records**](docs/DefaultApi.md#browse_evidence_records) | **POST** /api/evidence/browse |
 *DefaultApi* | [**commit_durable_privacy_restriction**](docs/DefaultApi.md#commit_durable_privacy_restriction) | **POST** /api/auth/privacy-restrictions |
 *DefaultApi* | [**complete_epic_api_connectors_epic_complete_post**](docs/DefaultApi.md#complete_epic_api_connectors_epic_complete_post) | **POST** /api/connectors/epic/complete | Complete Epic
 *DefaultApi* | [**complete_healow_api_connectors_healow_complete_post**](docs/DefaultApi.md#complete_healow_api_connectors_healow_complete_post) | **POST** /api/connectors/healow/complete | Complete Healow
@@ -72,12 +73,14 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**read_canonical_evidence_exact**](docs/DefaultApi.md#read_canonical_evidence_exact) | **POST** /api/canonical-evidence/exact |
 *DefaultApi* | [**read_canonical_evidence_snapshot**](docs/DefaultApi.md#read_canonical_evidence_snapshot) | **GET** /api/canonical-evidence |
 *DefaultApi* | [**read_canonical_health_context**](docs/DefaultApi.md#read_canonical_health_context) | **GET** /api/health-context |
+*DefaultApi* | [**read_conversation_source_revision**](docs/DefaultApi.md#read_conversation_source_revision) | **GET** /api/conversation/messages/{message_id}/sources/{source_id}/revision |
 *DefaultApi* | [**read_doctor_publication**](docs/DefaultApi.md#read_doctor_publication) | **GET** /api/doctor-collection/share-link |
 *DefaultApi* | [**read_doctor_save_receipt**](docs/DefaultApi.md#read_doctor_save_receipt) | **GET** /api/doctor-collection/save-receipts/{generation} |
 *DefaultApi* | [**read_durable_account_context**](docs/DefaultApi.md#read_durable_account_context) | **GET** /api/auth/account/context |
 *DefaultApi* | [**read_durable_conversation**](docs/DefaultApi.md#read_durable_conversation) | **GET** /api/conversation/{id} |
 *DefaultApi* | [**read_durable_conversation_events**](docs/DefaultApi.md#read_durable_conversation_events) | **GET** /api/conversation/commands/{id}/events |
 *DefaultApi* | [**read_durable_conversation_usage**](docs/DefaultApi.md#read_durable_conversation_usage) | **GET** /api/conversation/commands/{id}/usage |
+*DefaultApi* | [**read_evidence_revision**](docs/DefaultApi.md#read_evidence_revision) | **POST** /api/evidence/revision |
 *DefaultApi* | [**read_today_assessment_status**](docs/DefaultApi.md#read_today_assessment_status) | **POST** /api/insight-cycles/status |
 *DefaultApi* | [**reject_durable_doctor_proposal**](docs/DefaultApi.md#reject_durable_doctor_proposal) | **POST** /api/doctor-collection/proposals/{id}/reject |
 *DefaultApi* | [**resume_durable_conversation_command**](docs/DefaultApi.md#resume_durable_conversation_command) | **POST** /api/conversation/commands/{id}/resume |
@@ -238,6 +241,9 @@ Class | Method | HTTP request | Description
  - [EpicDisconnectResponse](docs/EpicDisconnectResponse.md)
  - [EvidenceBatchRequest](docs/EvidenceBatchRequest.md)
  - [EvidenceBatchResponse](docs/EvidenceBatchResponse.md)
+ - [EvidenceBrowsePage](docs/EvidenceBrowsePage.md)
+ - [EvidenceBrowseQuery](docs/EvidenceBrowseQuery.md)
+ - [EvidenceBrowseRecord](docs/EvidenceBrowseRecord.md)
  - [EvidenceDeletion](docs/EvidenceDeletion.md)
  - [EvidenceItem](docs/EvidenceItem.md)
  - [EvidenceKind](docs/EvidenceKind.md)
@@ -249,8 +255,11 @@ Class | Method | HTTP request | Description
  - [EvidenceLibraryPage](docs/EvidenceLibraryPage.md)
  - [EvidenceLibraryQuery](docs/EvidenceLibraryQuery.md)
  - [EvidenceReadPage](docs/EvidenceReadPage.md)
+ - [EvidenceRecordProvenance](docs/EvidenceRecordProvenance.md)
  - [EvidenceReferenceInput](docs/EvidenceReferenceInput.md)
  - [EvidenceReferenceOutput](docs/EvidenceReferenceOutput.md)
+ - [EvidenceRevisionRequest](docs/EvidenceRevisionRequest.md)
+ - [EvidenceRevisionView](docs/EvidenceRevisionView.md)
  - [EvidenceSeriesPage](docs/EvidenceSeriesPage.md)
  - [EvidenceSeriesPoint](docs/EvidenceSeriesPoint.md)
  - [EvidenceSeriesQuery](docs/EvidenceSeriesQuery.md)

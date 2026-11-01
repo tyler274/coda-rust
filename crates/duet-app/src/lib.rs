@@ -8,8 +8,10 @@ mod browser_identity;
 mod export;
 mod preview;
 mod publication;
+mod records;
 mod resolution;
 mod roots;
+pub use records::{ChatHandoff, RecordSelection};
 mod selection;
 pub use account::{DuetRoot, PatientSession};
 pub use approval::proposal_save;
@@ -77,6 +79,11 @@ async fn load_front_door(base_url: String, bearer: String) -> Result<ConsentStat
 #[component]
 fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
+    let handoff_selected = use_signal(|| None::<RecordSelection>);
+    use_context_provider(|| ChatHandoff {
+        selected: handoff_selected,
+        tab,
+    });
     let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
@@ -487,6 +494,9 @@ fn schedule_loaded_insights(page: &duet_client::InsightCyclePage) {
 
 #[component]
 fn ConversationTab(base_url: String, bearer: String) -> Element {
+    let handoff = try_use_context::<ChatHandoff>();
+    let fallback_selection = use_signal(|| None::<RecordSelection>);
+    let mut selected_record = handoff.map(|h| h.selected).unwrap_or(fallback_selection);
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
@@ -843,6 +853,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         send_failed.set(false);
         let base_url = send_url.clone();
         let bearer = send_bearer.clone();
+        let selection = selected_record.peek().clone();
         let shown = page.clone();
         spawn(async move {
             let timezone = match iana_time_zone::get_timezone() {
@@ -861,8 +872,18 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     return;
                 }
             };
-            match api.send_message(id, &text, &timezone).await {
+            let sent = match &selection {
+                Some(record) => {
+                    api.send_about_record(id, &text, &timezone, record.record_id, record.revision)
+                        .await
+                }
+                None => api.send_message(id, &text, &timezone).await,
+            };
+            match sent {
                 Ok(admission) => {
+                    if selection.is_some() {
+                        selected_record.set(None);
+                    }
                     let message = *admission.message;
                     accepted.set(Some(message.clone()));
                     if let Some(base) = shown {
@@ -1751,6 +1772,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         }
         if can_compose {
             div { class: "duet-composer-wrap",
+                if let Some(record) = selected_record() {
+                    div { class: "source-row", role: "status",
+                        span { class: "source-detail", "{record.chip()}" }
+                        button { class: "duet-retry", r#type: "button", aria_label: "Clear selected record", onclick: move |_| selected_record.set(None), "Clear" }
+                    }
+                }
                 if send_failed() {
                     p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
                 }
@@ -1843,7 +1870,20 @@ fn load_source(
         failed: false,
     }));
     spawn(async move {
-        let loaded = match open_client(base_url, bearer) {
+        let api = open_client(base_url, bearer);
+        // Record citations reopen their exact cited revision with a truthful status;
+        // other citations (insights, follow-ups, measurements) keep the detail read.
+        if let Ok(api) = &api
+            && let Ok(view) = api.cited_revision(chip.message_id, &chip.source_id).await
+        {
+            opened.set(Some(OpenedSource {
+                title,
+                text: Some(records::revision_text(&view)),
+                failed: false,
+            }));
+            return;
+        }
+        let loaded = match api {
             Ok(api) => api.message_source(chip.message_id, &chip.source_id).await,
             Err(_) => Err(String::new()),
         };
@@ -2498,6 +2538,7 @@ fn YouTab(
                 TryAgain { label: TRY_AGAIN, on_retry: retry }
             }
         }
+        records::RecordBrowser { base_url: evidence_url.clone(), bearer: evidence_bearer.clone(), reload: attempt }
         Button {
             onclick: move |_| menu.set(true),
             "Add health information"
