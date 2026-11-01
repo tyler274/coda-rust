@@ -6,12 +6,13 @@
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens,
+    Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
 };
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, ReviewCadence, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError,
-    SignInError, mint_patient_token, mint_token, token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SESSION_TTL_SECONDS,
+    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, StoreUnavailable, mint_patient_token,
+    mint_token, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -550,6 +551,50 @@ impl AuthStore for PostgresAuthStore {
                 .await
             }
         };
+    }
+
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|since| since.as_secs())
+            .unwrap_or(0) as i64;
+        let fixed_time = match clock {
+            PracticeClock::RealTime => None,
+            PracticeClock::Fixed(instant) => Some(instant as i64),
+        };
+        let practice = crate::migration::PracticeActiveModel {
+            practice_id: Set(practice_id.to_owned()),
+            fixed_time: Set(fixed_time),
+            created_at: Set(now),
+        };
+        Practices::insert(practice)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::practice::Column::PracticeId,
+                )
+                .do_nothing()
+                .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await
+            .map(|_| ())
+            .map_err(|_| StoreUnavailable)
+    }
+
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
+        let practice = Practices::find_by_id(practice_id.to_owned())
+            .one(&self.db)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(match practice.and_then(|row| row.fixed_time) {
+            Some(instant) => PracticeClock::Fixed(instant as u64),
+            None => PracticeClock::RealTime,
+        })
     }
 
     async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {

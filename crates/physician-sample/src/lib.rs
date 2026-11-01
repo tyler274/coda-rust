@@ -194,7 +194,7 @@ where
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
-        .route("/practice-day", get(|| async { json_body(PRACTICE_DAY) }))
+        .route("/practice-day", get(practice_day))
         .route("/updates", get(|| async { json_body(UPDATES) }))
         .route("/recent-conversations", get(|| async { json_body(RECENT) }))
         .route(
@@ -788,14 +788,31 @@ async fn today(Query(query): Query<TodayQuery>) -> Response {
     json_body(TODAY)
 }
 
+async fn practice_day(
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
+    request: Request<Body>,
+) -> Response {
+    let Ok(now) = connected.practice_now(request.extensions()).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    let mut day: Value = serde_json::from_str(PRACTICE_DAY).expect("recorded practice day");
+    day["current_time"] = json!(now);
+    Json(day).into_response()
+}
+
 async fn workspace(
     axum::extract::Path(id): axum::extract::Path<String>,
+    axum::Extension(connected): axum::Extension<care::ConnectedCare>,
     request: Request<Body>,
 ) -> Response {
     let Some(body) = workspace_body(&id) else {
         return StatusCode::NOT_FOUND.into_response();
     };
+    let Ok(now) = connected.practice_now(request.extensions()).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     let mut enriched = care::enrich_workspace(body, &id, request.extensions()).await;
+    enriched["current_time"] = json!(now);
     // A live server lists the signed-in physician's chats ahead of the
     // recording's (which are empty today). The recorded router has no `Live`.
     if let Some(live) = request.extensions().get::<std::sync::Arc<live::Live>>() {

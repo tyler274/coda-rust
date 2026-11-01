@@ -23,7 +23,7 @@ mod error;
 mod store;
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
-pub use error::{PanelError, SessionError, SignInError};
+pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
 pub use patient_work::ReviewCadence;
 pub use store::PostgresAuthStore;
 pub use tokio::sync::watch;
@@ -102,6 +102,27 @@ pub struct PhysicianIdentity {
     pub practice_id: String,
     /// The physician within the practice.
     pub physician_id: String,
+}
+
+/// The clock a practice is bound to when it is created. It sets the practice's
+/// clinical "now"; sign-in, sessions, and other operational time stay on real
+/// time in every practice.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PracticeClock {
+    /// A real practice: clinical "now" is the real time.
+    RealTime,
+    /// A synthetic practice: clinical "now" stays at this Unix second.
+    Fixed(u64),
+}
+
+impl PracticeClock {
+    /// The practice's clinical "now", given the real time.
+    pub fn now(self, real_time: u64) -> u64 {
+        match self {
+            Self::RealTime => real_time,
+            Self::Fixed(instant) => instant,
+        }
+    }
 }
 
 /// A physician's access to one patient workspace.
@@ -233,6 +254,16 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
         membership: Membership,
     ) -> Result<(), PanelError>;
+    /// Creates `practice_id` on `clock`. A practice that already exists keeps
+    /// the clock it was created with.
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable>;
+    /// Reads the clock `practice_id` was created with. A practice with no
+    /// record was never made synthetic, so it runs on real time.
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable>;
     /// Registers a patient workspace as belonging to `practice_id`.
     async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str);
     /// Returns the practice that owns `patient_workspace_id`, if registered.
@@ -351,6 +382,7 @@ pub(crate) fn mint_patient_token() -> String {
 struct MemoryState {
     accounts: HashMap<String, Account>,
     memberships: HashMap<(String, String, String), Membership>,
+    practices: HashMap<String, PracticeClock>,
     patients: HashMap<String, String>,
     cadences: HashMap<String, ReviewCadence>,
     sessions: HashMap<[u8; 32], Session>,
@@ -453,6 +485,17 @@ impl MemoryAuthStore {
                 sessions_ended_before: 0,
             },
         );
+    }
+
+    /// Creates one practice directly, for fixtures and the staging practice.
+    /// A practice that already exists keeps its clock.
+    pub fn seed_practice(&self, practice_id: &str, clock: PracticeClock) {
+        self.state
+            .lock()
+            .expect("auth state")
+            .practices
+            .entry(practice_id.to_owned())
+            .or_insert(clock);
     }
 
     /// Lists one practice's accounts, for the admin surface.
@@ -764,6 +807,26 @@ impl AuthStore for MemoryAuthStore {
             membership,
         );
         Ok(())
+    }
+
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable> {
+        self.seed_practice(practice_id, clock);
+        Ok(())
+    }
+
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
+        Ok(self
+            .state
+            .lock()
+            .expect("auth state")
+            .practices
+            .get(practice_id)
+            .copied()
+            .unwrap_or(PracticeClock::RealTime))
     }
 
     async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
@@ -1139,6 +1202,22 @@ mod tests {
     async fn signed_in(store: &MemoryAuthStore, email: &str) -> (PhysicianIdentity, String) {
         let token = store.begin_sign_in(email, NOW).await.unwrap();
         store.complete_sign_in(email, &token, NOW).await.unwrap()
+    }
+
+    #[tokio::test]
+    async fn a_practice_keeps_the_clock_it_was_created_with() {
+        let store = MemoryAuthStore::new();
+        let fixed = PracticeClock::Fixed(1_787_846_400);
+        store.ensure_practice("synthetic", fixed).await.unwrap();
+        store
+            .ensure_practice("synthetic", PracticeClock::RealTime)
+            .await
+            .unwrap();
+        assert_eq!(store.practice_clock("synthetic").await.unwrap(), fixed);
+        assert_eq!(
+            store.practice_clock("real").await.unwrap(),
+            PracticeClock::RealTime
+        );
     }
 
     #[tokio::test]

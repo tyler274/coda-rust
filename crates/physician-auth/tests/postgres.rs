@@ -5,7 +5,7 @@
 
 use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
-    SESSION_TTL_SECONDS, SessionError, SignInError,
+    PracticeClock, SESSION_TTL_SECONDS, SessionError, SignInError,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -26,6 +26,33 @@ async fn wait_for_two_lock_waiters(db: &sea_orm::DatabaseConnection) {
             tokio::time::sleep(std::time::Duration::from_millis(10)).await;
         }
     }).await.expect("both redemptions must contend for the held row");
+}
+
+#[tokio::test]
+async fn a_practice_keeps_the_clock_it_was_created_with() {
+    let Some(url) = fresh_database("practice_clock").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let fixed = PracticeClock::Fixed(1_787_846_400);
+    store.ensure_practice("synthetic", fixed).await.unwrap();
+    store
+        .ensure_practice("synthetic", PracticeClock::RealTime)
+        .await
+        .unwrap();
+    store
+        .ensure_practice("real", PracticeClock::RealTime)
+        .await
+        .unwrap();
+    assert_eq!(store.practice_clock("synthetic").await.unwrap(), fixed);
+    for practice in ["real", "never-created"] {
+        assert_eq!(
+            store.practice_clock(practice).await.unwrap(),
+            PracticeClock::RealTime
+        );
+    }
 }
 
 #[tokio::test]
@@ -237,6 +264,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "physician_memberships",
         "physician_patient_links",
         "physician_patients",
+        "physician_practices",
         "physician_sessions",
         "physician_sign_in_tokens",
     ];

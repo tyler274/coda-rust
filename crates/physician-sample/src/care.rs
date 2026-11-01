@@ -6,6 +6,7 @@
 //! (`ENG-51`), and physician plan drafting with exact-text approval (`ENG-53`).
 
 use std::sync::{Arc, Mutex};
+use std::time::{Duration, UNIX_EPOCH};
 
 use axum::Json;
 use axum::body::Body;
@@ -15,19 +16,21 @@ use axum::response::{IntoResponse, Response};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
+use local_product::codex::format_rfc3339;
 use local_product::{
     ApprovedDoctorPlan, ConsentedDuetItem, DoctorPlanDraft, DoctorPlanStore, DuetSourceStore,
     IngestedDuetRecord, PlanItemInput,
 };
 use physician_auth::{
-    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence, SignInError,
+    AuthStore, Cadence, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence,
+    SignInError, StoreUnavailable,
 };
 use physician_wire::{
     ApprovedDoctorPlanWire, DoctorPlanDraftWire, DoctorPlanItemWire, DuetIngestedRecordWire,
     DuetSyncResponse, PatientInvitationResponse, PatientLinkWire, PlanDiffEntryWire, PlanItemWire,
 };
 
-use crate::auth::{STAGING_PRACTICE_ID, now};
+use crate::auth::{AuthContext, STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, now};
 
 /// Shared Connected Care state attached to every request on a physician router.
 #[derive(Clone)]
@@ -41,6 +44,7 @@ impl ConnectedCare {
     /// Creates a new Connected Care state with its own fallback memory auth store.
     pub(crate) fn new() -> Self {
         let store = Arc::new(MemoryAuthStore::new());
+        store.seed_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK);
         store.seed_account(
             STAGING_PRACTICE_ID,
             "staging-physician",
@@ -64,12 +68,25 @@ impl ConnectedCare {
 
     pub(crate) fn identity(extensions: &axum::http::Extensions) -> PhysicianIdentity {
         extensions
-            .get::<PhysicianIdentity>()
-            .cloned()
+            .get::<AuthContext>()
+            .map(|context| context.identity.clone())
             .unwrap_or_else(|| PhysicianIdentity {
                 practice_id: STAGING_PRACTICE_ID.to_owned(),
                 physician_id: "staging-physician".to_owned(),
             })
+    }
+
+    /// The signed-in practice's clinical "now", as the wire carries it.
+    pub(crate) async fn practice_now(
+        &self,
+        extensions: &axum::http::Extensions,
+    ) -> Result<String, StoreUnavailable> {
+        let store = self.auth_store(extensions);
+        let identity = Self::identity(extensions);
+        let clock = store.practice_clock(&identity.practice_id).await?;
+        Ok(format_rfc3339(
+            UNIX_EPOCH + Duration::from_secs(clock.now(now())),
+        ))
     }
 
     pub(crate) async fn link_wire(

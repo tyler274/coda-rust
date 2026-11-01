@@ -40,11 +40,15 @@ use serde_json::{Value, json};
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PostgresAuthStore, ReviewCadence, SessionError, SignInError,
+    PhysicianIdentity, PostgresAuthStore, PracticeClock, ReviewCadence, SessionError, SignInError,
 };
 
 /// The staging practice the recorded fixture workspaces are seeded into by default.
 pub const STAGING_PRACTICE_ID: &str = "roger-synthetic-practice";
+
+/// The clock the synthetic practice is created with: 2026-08-27 noon Eastern,
+/// the moment its charts end.
+pub(crate) const SYNTHETIC_PRACTICE_CLOCK: PracticeClock = PracticeClock::Fixed(1_787_846_400);
 
 /// Unix seconds now.
 pub fn now() -> u64 {
@@ -88,13 +92,17 @@ pub(crate) struct Auth {
     pub(crate) events: Arc<dyn physician_bus::Bus>,
 }
 
-/// Registers the recorded practice's five workspaces to `STAGING_PRACTICE_ID`
-/// (if not already registered to a practice) and places every active admin in
-/// that practice on their panel, along with the preview identity
-/// `staging-physician`. Runs before the router is built so a workspace check
-/// never races its grant. A later start asserts the same panel again. A
-/// deactivated admin is left off it.
+/// Creates the synthetic practice on its clock, registers the recorded
+/// practice's five workspaces to `STAGING_PRACTICE_ID` (if not already
+/// registered to a practice) and places every active admin in that practice on
+/// their panel, along with the preview identity `staging-physician`. Runs
+/// before the router is built so a workspace check never races its grant. A
+/// later start asserts the same panel again. A deactivated admin is left off it.
 async fn seed_staging(store: &dyn AuthStore) {
+    store
+        .ensure_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK)
+        .await
+        .expect("create the synthetic practice");
     let mut identities = vec![PhysicianIdentity {
         practice_id: STAGING_PRACTICE_ID.to_owned(),
         physician_id: "staging-physician".to_owned(),
@@ -2103,6 +2111,43 @@ mod tests {
         let json: Value = serde_json::from_str(&demo_body).expect("demographic body");
         assert_eq!(json["membership"], "clinic_demographic");
         assert!(json["patient_synopsis"].is_null());
+    }
+
+    #[tokio::test]
+    async fn clinical_now_follows_the_clock_each_practice_was_created_with() {
+        const FIXED: &str = "2026-08-27T16:00:00.000Z";
+        let (app, store, _) = authed_recorded().await;
+        let mary = crate::WORKSPACE_IDS[4];
+        store.seed_account(
+            "northside-clinic",
+            "north-doc",
+            "doc@northside.test",
+            "Northside Doc",
+            false,
+        );
+        let colleague = PhysicianIdentity {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            physician_id: "colleague".to_owned(),
+        };
+        store
+            .set_membership(&colleague, mary, Membership::Allowed)
+            .await;
+        let synthetic = session_for(&app, COLLEAGUE_EMAIL).await;
+        let real = session_for(&app, "doc@northside.test").await;
+        let current_time = async |path: &str, session: &str| {
+            let (status, body) = send(&app, Method::GET.as_str(), path, Some(session), None).await;
+            assert_eq!(status, StatusCode::OK, "{path}: {body}");
+            let value: Value = serde_json::from_str(&body).unwrap();
+            value["current_time"].as_str().unwrap().to_owned()
+        };
+
+        assert_eq!(current_time("/practice-day", &synthetic).await, FIXED);
+        let workspace = format!("/patient-workspaces/{mary}");
+        assert_eq!(current_time(&workspace, &synthetic).await, FIXED);
+
+        let before = UNIX_EPOCH + Duration::from_secs(now());
+        let before = local_product::codex::format_rfc3339(before);
+        assert!(current_time("/practice-day", &real).await >= before);
     }
 
     #[tokio::test]

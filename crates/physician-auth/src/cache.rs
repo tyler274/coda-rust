@@ -28,7 +28,8 @@ use tokio::sync::watch;
 
 use crate::{
     Account, AuthStore, AuthorityFeed, Cadence, Membership, PanelError, PatientLink,
-    PhysicianIdentity, ReviewCadence, SessionError, SignInError, token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SessionError, SignInError, StoreUnavailable,
+    token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -339,6 +340,18 @@ impl AuthStore for CachedAuthStore {
         result
     }
 
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable> {
+        self.inner.ensure_practice(practice_id, clock).await
+    }
+
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
+        self.inner.practice_clock(practice_id).await
+    }
+
     async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
         self.inner
             .register_patient(practice_id, patient_workspace_id)
@@ -575,6 +588,12 @@ mod tests {
             d: Membership,
         ) -> Result<(), PanelError> {
             self.inner.assign_panel(a, b, c, d).await
+        }
+        async fn ensure_practice(&self, a: &str, b: PracticeClock) -> Result<(), StoreUnavailable> {
+            self.inner.ensure_practice(a, b).await
+        }
+        async fn practice_clock(&self, a: &str) -> Result<PracticeClock, StoreUnavailable> {
+            self.inner.practice_clock(a).await
         }
         async fn register_patient(&self, a: &str, b: &str) {
             self.inner.register_patient(a, b).await

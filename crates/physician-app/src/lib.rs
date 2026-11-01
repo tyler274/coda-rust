@@ -28,11 +28,12 @@ use shell::{
     TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
     TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
-    format_calendar_date, format_clock, format_message, format_waited, keyboard_command,
-    need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
-    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
-    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
-    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
+    format_calendar_date, format_clock, format_local_date, format_message, format_waited,
+    keyboard_command, need_you_words, opens_reader, past_work_copy, patient_upcoming_visits,
+    read_view, reply_channel_label, reply_review_actions, reply_revision_words,
+    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -1371,6 +1372,7 @@ fn PhysicianShell(
     let practice_zone = day
         .map(|day| day.time_zone.clone())
         .unwrap_or_else(|| "America/New_York".to_owned());
+    let practice_date = format_local_date(&server_now, &practice_zone);
     let visits = day.map(upcoming_visits).unwrap_or_default();
     let show_schedule = schedule_unanswered(schedule) || day.is_some_and(shows_today_schedule);
     let schedule_empty = day.map(schedule_empty_copy).unwrap_or("").to_owned();
@@ -1754,6 +1756,7 @@ fn PhysicianShell(
                             schedule_collapsed: schedule_collapsed(),
                             on_schedule_collapsed: move |collapsed| remember(Panel::Schedule, collapsed),
                             server_now: server_now.clone(),
+                            practice_date: practice_date.clone(),
                             need_you,
                             focused: shown_focus,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
@@ -2769,6 +2772,7 @@ fn TodaySurface(
     schedule_collapsed: bool,
     on_schedule_collapsed: EventHandler<bool>,
     server_now: String,
+    practice_date: Option<String>,
     need_you: usize,
     focused: Option<i32>,
     on_retry: EventHandler,
@@ -2802,6 +2806,9 @@ fn TodaySurface(
         div { class: "reading-workspace",
             header { class: "today-heading",
                 h1 { "Today" }
+                if let Some(date) = practice_date {
+                    span { class: "today-date", "{date}" }
+                }
                 if need_you > 0 {
                     Count { value: need_you, words }
                 }

@@ -775,6 +775,12 @@ pub fn format_context_time(iso: &str, zone: &str, now: &str) -> Option<String> {
     Some(format!("{prefix}, {clock}"))
 }
 
+/// The calendar date `iso` falls on in `zone`, such as `Aug 27, 2026`.
+pub fn format_local_date(iso: &str, zone: &str) -> Option<String> {
+    let (year, month, day) = civil_from_days(local_day(iso, zone)?);
+    Some(format_calendar_date(&format!("{year}-{month}-{day}")))
+}
+
 fn local_day(iso: &str, zone: &str) -> Option<i64> {
     let unix = parse_unix(iso)?;
     let offset = zone_offset(zone, unix)?;
@@ -885,20 +891,25 @@ fn nth_sunday(year: i32, month: u32, n: u32) -> u32 {
 }
 
 fn year_of(unix: i64) -> i32 {
-    let z = unix.div_euclid(86_400) + 719_468;
+    civil_from_days(unix.div_euclid(86_400)).0
+}
+
+fn civil_from_days(days: i64) -> (i32, u32, u32) {
+    let z = days + 719_468;
     let era = if z >= 0 { z } else { z - 146_096 } / 146_097;
     let doe = (z - era * 146_097) as u64;
     let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
     let y = yoe as i64 + era * 400;
     let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
     let month_part = (5 * doy + 2) / 153;
+    let day = doy - (153 * month_part + 2) / 5 + 1;
     let month = if month_part < 10 {
         month_part + 3
     } else {
         month_part - 9
     };
     let year = if month <= 2 { y + 1 } else { y };
-    year as i32
+    (year as i32, month as u32, day as u32)
 }
 
 fn days_from_civil(year: i32, month: u32, day: u32) -> i64 {
@@ -1719,6 +1730,18 @@ mod tests {
                 && patient.birth_date.as_deref() == Some("1972-03-18")
         }));
         assert_eq!(format_calendar_date("1972-03-18"), "Mar 18, 1972");
+        for (instant, date) in [
+            ("2026-08-27T16:00:00.000Z", "Aug 27, 2026"),
+            ("2026-08-28T02:00:00.000Z", "Aug 27, 2026"),
+            ("2028-02-29T17:00:00.000Z", "Feb 29, 2028"),
+            ("2027-01-01T04:59:00.000Z", "Dec 31, 2026"),
+        ] {
+            assert_eq!(
+                format_local_date(instant, "America/New_York").as_deref(),
+                Some(date)
+            );
+        }
+        assert_eq!(format_local_date("", "America/New_York"), None);
         let times = summary_times(&workspace, &day.current_time);
         assert_eq!(
             times
