@@ -21,7 +21,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | Standalone account entry, current tab roots and connection controls; remaining gaps are tracked in the UI map | [UI and design](ui-surface-map.md) |
+| `duet-app` | [`src/lib.rs`](/crates/duet-app/src/lib.rs), [`src/roots.rs`](/crates/duet-app/src/roots.rs) | Standalone account entry, tab roots and connection controls | [UI and design](ui-surface-map.md) |
 | `duet-api` | [`src/lib.rs`](/crates/duet-api/src/lib.rs), [`src/main.rs`](/crates/duet-api/src/main.rs) | Axum owner for identity, evidence, conversation, saved work, privacy and the existing connection adapter | [Backend architecture](backend-architecture.md), [Patient front door](front-door.md) |
 | `duet-client` | [`src/lib.rs`](/crates/duet-client/src/lib.rs) | Duet caller over the generated client, adding the app-build headers | [Backend architecture](backend-architecture.md) |
 | `duet-wire` (package `duet_wire`) | [`src/lib.rs`](/crates/duet-wire/src/lib.rs), <a href="/crates/duet-wire/README%2Emd">generated API index</a> | Models, operations and reference docs generated from the pinned coda-app OpenAPI plus Duet-owned additions. Regenerate with `cargo run -p workspace-tools -- generate-duet-wire`; do not edit outputs by hand. | [API generation](backend-architecture.md#api-and-clients) |
@@ -47,7 +47,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
-| `front-door` | [`src/lib.rs`](/crates/front-door/src/lib.rs), [`src/bin/front-door-migrate.rs`](/crates/front-door/src/bin/front-door-migrate.rs) | Existing invitation/roster/consent adapter with legacy account and premium fields; standalone account authority stays in Duet | [Patient front door](front-door.md) |
+| `front-door` | [`src/lib.rs`](/crates/front-door/src/lib.rs), [`src/bin/front-door-migrate.rs`](/crates/front-door/src/bin/front-door-migrate.rs) | Invitation, roster and consent adapter; standalone account authority stays in Duet | [Patient front door](front-door.md) |
 | `mobile` | [`src/lib.rs`](/crates/mobile/src/lib.rs), [`src/main.rs`](/crates/mobile/src/main.rs) | The one Android and iOS shell, with an explicit physician or client mode. It is the only crate that mounts both apps. | [Release](release.md#android-and-google-play) |
 
 ## Public website

@@ -4,13 +4,11 @@ The observability stack uses Datadog for
 operations (APM, logs, Error Tracking, monitors, paging) and **self-hosted
 Langfuse** for agent runs. The two use the same OpenTelemetry trace. Datadog
 gets every span with agent content removed. Langfuse gets only model
-generations and stays inside our GCP project. This decision replaces the
-ClickStack, Sentry, incident.io, and Langfuse Cloud rows of the method doc. The Datadog BAA scope is still open,
-and that is why the collector strips content from Datadog unconditionally.
+generations and stays inside our GCP project. The collector strips content from
+Datadog unconditionally, so no content depends on Datadog's BAA scope.
 
-This page covers implementation and validation only. `infra/gcp/observability`
-has not been applied, and no Datadog org, monitor, or Langfuse deployment is changed from this
-repository.
+This page covers implementation and validation only. No Datadog org, monitor, or
+Langfuse deployment is changed from this repository.
 
 ## Data flow
 

@@ -42,7 +42,7 @@ This workspace does not run `init` against a backend and does not apply these ro
 
 ## Duet backend on GCP
 
-The original Python Duet service's production composition, staging windows, release runner, and rollback are retained in <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. [GCP deployment](gcp.md) lists each section.
+The original Python Duet service's production composition, staging windows, release runner, and rollback are retained in <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. See [GCP deployment](gcp.md) for the Rust services.
 
 ## iPhone and TestFlight
 
@@ -53,4 +53,4 @@ The original Python Duet service's production composition, staging windows, rele
 
 - `cargo run -p android -- build` ([`crates/android`](/crates/android/src/main.rs)) builds the debug APK for the `mobile` mode shell. Its module comment explains the toolchain it needs.
 - `cargo run -p duet-stub` serves the host stand-in that the emulator calls. `cargo run -p android -- window` opens the emulator, and `cargo run -p android -- test coda.duet.ModeShellTest` runs UI Automator (see [`crates/android`](/crates/android/src/main.rs)). CI does not run the emulator.
-- This repository has no signed release build and no Google Play procedure yet. Do not treat a debug APK as a Play upload.
+- A debug APK is not a Play upload.

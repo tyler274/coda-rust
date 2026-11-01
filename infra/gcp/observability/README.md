@@ -81,16 +81,8 @@ DD_ENV                      = staging | production
 CODA_TELEMETRY_CONTENT      = none
 ```
 
-Cloud Run services get a collector sidecar in a follow-up.
-
-## Known gaps before an apply
-
-- The Langfuse chart `1.5.41` pins its own ClickHouse and Valkey images from
-  `bitnamilegacy/*`. Chart `2.x` (Langfuse v4) replaces them with an operator
-  and SeaweedFS and is a separate upgrade.
-- The project's Langfuse data-retention setting (Enterprise in some versions)
-  is applied in the UI. The blob lifecycle enforces `langfuse_retention_days`
-  on GCS.
+The project's Langfuse data-retention setting (Enterprise in some versions) is
+applied in the UI. The blob lifecycle enforces `langfuse_retention_days` on GCS.
 
 ## Testing
 

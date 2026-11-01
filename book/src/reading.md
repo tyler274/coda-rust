@@ -5,7 +5,7 @@ decisions. Linear tracks scope, work and acceptance. This book documents Rust
 owners, setup and proof. Code establishes what is implemented; it does not
 turn an old implementation into an approved product decision. Dev's latest
 explicit decisions take precedence. When an outcome and implementation disagree,
-keep the gap visible and update the responsible owner as the work lands.
+Linear tracks the gap, and the responsible owner changes as the work lands.
 
 | Question | Canonical owner |
 | --- | --- |
@@ -43,7 +43,7 @@ the app and its runtime. These documents answer different questions:
 | <a href="/intent/physician%2Emd">Physician spec</a> and its decisions | The agreed behavior: Today, the patient page, conversations, readings, work and communication, including capabilities not built yet. |
 | <a href="/intent/harness%2Emd">Harness spec</a> and [physician site](physician-site.md) | The guarantees left to execution, then the Rust owners and execution paths that implement parts of them. Recovery and scaling support the experience; they do not establish coverage of every product workflow. |
 | <a href="/verification/README%2Emd">Verification</a> and the <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">physician verification recipe</a> | The boundary between graph/model checks, implementation checks and running-app readback. The current physician recipe exercises chat across a local scale stack with a fixed provider. |
-| [GCP staging](gcp.md#rust-staging-bootstrap-and-deployment-gate) and [release](release.md) | Deployment and the hosted checks still needed for real identity, delivery, providers and recovery. A deployed revision is not itself an accepted physician journey. |
+| [GCP staging](gcp.md#rust-staging-bootstrap-and-deployment-gate) and [release](release.md) | Deployment. A deployed revision is not itself an accepted physician journey. |
 
 For the next implementation slice, use Linear's current outcome and the physician
 spec together: choose a complete physician journey, identify missing server data

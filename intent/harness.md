@@ -91,7 +91,6 @@ In the MVP:
 - A physician proof: a synthetic physician workspace accepts a durable command, runs the loop, gets a real evidence-tool result and commits a grounded reply that reads back.
 - A Duet proof: a fictional, consented Duet account accepts a durable message, uses the same loop for a source read or a requested routine, and streams and keeps the reply.
 - Then every other model-running journey runs through the loop, with its instructions, skills and tools verified to reach the model.
-- Duet's unmounted conversation path is retired once the loop covers it.
 
 Later:
 
@@ -104,5 +103,4 @@ Later:
 - **Budgets.** The loop's request, tool, byte and deadline limits, retry budgets, cadence and how much work runs at once are engineering decisions, adjusted as we learn.
 - **Recovery.** The physician product continues interrupted work through successor attempts; Duet retries the same accepted run.
 - **Storage.** Permanent records are never rewritten to add a field. A new field is derived from what they hold when that's exact, or reads unknown, and old runs stay replayable.
-- **Build order.** Hosted access and durable conversations, then the physician and Duet proofs together, then the remaining care and connected-patient journeys, then the full Rust cutover.
 - **Capacity.** The physician product adds an admission limit and priority classes only once load measurements justify them. Duet has one capacity owner with separate queues for chat, Check-ins and reviews.

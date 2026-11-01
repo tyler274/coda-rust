@@ -14,8 +14,8 @@ save → same current item and originating conversation path must remain coheren
 across the client, backend and model interaction.
 
 Person-to-person Shared is retired from product scope. Practice connection
-controls and documented care remain reachable. Their final placement is an
-open design question; removing a tab must not silently redesign consent.
+controls and documented care remain reachable; removing a tab must not silently
+redesign consent.
 
 The patient-owned doctor workspace is in MVP: preparation, updates,
 patient review and saving, including patient-provided and connected-practice
@@ -28,12 +28,12 @@ do not approve Duet's wording.
 The design corpus links the mockups, flow sheets, doctor workspace and
 clinician-preview prototype under “Mockups and interactive prototypes.”
 
-## Rust owners and gaps
+## Rust owners
 
 | Owner | What to inspect |
 | --- | --- |
-| [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation; the existing four-tab/Shared surface still needs removal of person-to-person sharing |
-| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens; the old join gate is disabled, while the retained sharing toggle still conflicts with fixed consent |
+| [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation |
+| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs), [`duet-widget`](/crates/duet-widget/src/lib.rs) | Native health, notification and widget adapters; verify on installed clients under the owning outcomes |
 

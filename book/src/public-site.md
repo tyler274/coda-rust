@@ -14,14 +14,9 @@ test, CI, or runtime dependency.
 ## Application contract
 
 The application design is Dioxus route components prerendered at startup, served
-by a stateless axum binary. The route inventory includes `/`, `/duet`, current and
-archived Duet privacy/terms, `/duet/consumer-health-data`, `/privacy`, `/terms`,
-`/clinical-transparency`, and `/scheduling/dev`. The sitemap lists only the eight
-current documents; archived versions stay reachable from their policy pages, and
-`/scheduling/dev` is noindex. `/physicians` and `/api/physician-waitlist` are 404.
-Pages, asset parity, compression, conditional requests, IAP assertion verification,
-and motion integration have separate crate tests; passing infrastructure tests does
-not establish any of those behaviors.
+by a stateless axum binary. The sitemap lists only current documents; archived
+versions stay reachable from their policy pages, and `/scheduling/dev` is noindex.
+`/physicians` and `/api/physician-waitlist` are 404.
 
 Startup builds the page/asset tables and their identity, gzip and Brotli
 representations once; requests do not render Dioxus or query a database. The server
@@ -40,22 +35,15 @@ disabled, and `chrome.js` floats the nav after 8px of scroll, as kytos' SiteNav
 does. Reduced motion is decided by the original script at load.
 
 The one deliberate exception is the Duet story (`src/pages/phones.rs`). It replaces
-the original Duet phones on `/` and `/duet` with one story across three phones, in
-which Duet leads and Maya says yes: Today shows what Duet noticed about her home
-blood pressure; Duet offers a morning Check-in and she accepts it; on Monday the
-Check-in returns by itself and Duet prepares an update to her page for her doctor;
-she reviews it, saves it and previews it, and the story ends on the page her
-clinician receives (the same constants render the preview and that page). Each
-screen is laid out at the mockups' native width and scaled into the phone. It reuses
-`site.css` phone hardware and the stage scaling and landscapes `site.js` applies to
-every frame, but its classes (`duet-story`, `ds-*`) are its own, so the original Duet
-loop never binds to it. Its styles are `css/duet.css`, every selector scoped to
-`.duet-story`; its motion is `homepage/duet.js`, which plays only while the stage is
-on screen and, on narrow stages, brings the phone doing the work to the front. The
-markup is the story's last frame, which reduced-motion and no-script visitors see.
-The region is marked `data-owner="site"`: the parity suite compares the rest of the
-page with the original's served output and checks that it had the original phones
-(`duet-phones.html`) where the story stands.
+the original Duet phones on `/` and `/duet` with one story across three phones. It
+reuses `site.css` phone hardware and the stage scaling and landscapes `site.js`
+applies to every frame, but its classes (`duet-story`, `ds-*`) are its own, so the
+original Duet loop never binds to it. Its styles are `css/duet.css`, every selector
+scoped to `.duet-story`; its motion is `homepage/duet.js`, which plays only while
+the stage is on screen. The markup is the story's last frame, which reduced-motion
+and no-script visitors see. The region is marked `data-owner="site"`: the parity
+suite compares the rest of the page with the original's served output and checks
+that it had the original phones (`duet-phones.html`) where the story stands.
 
 The same rule covers everything else the original computes in a build or runtime
 step: the port consumes the output instead of re-implementing the step, because a
@@ -74,24 +62,13 @@ Staging applies its origin IAP gate to pages, assets, redirects, health routes
 and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
 headers, `Vary: *` and `X-Robots-Tag: noindex, nofollow`. IAP authenticates the
 user in front of Cloud Run. The origin still verifies the signed
-`x-goog-iap-jwt-assertion` header on every request. It does not trust the
+`x-goog-iap-jwt-assertion` header on every request in
+[`access.rs`](/crates/public-site/src/access.rs), against the exact audience
+`/projects/NUMBER/locations/REGION/services/NAME`. That is the direct Cloud Run
+signed-header audience, not an OAuth client ID or URL. It does not trust the
 signature-free `x-goog-authenticated-user-*` headers, and it does not let IAP's
-presence stand in for verification:
-
-- Exactly one assertion header, at most 16 KiB, ES256 only, with a key ID.
-- Signature checked against Google's fixed JWK set
-  (`https://www.gstatic.com/iap/verify/public_key-jwk`). The key must be P-256
-  and must not be marked for another algorithm, use or operation. A key ID that
-  matches more than one key is rejected.
-- Issuer `https://cloud.google.com/iap` and the exact audience
-  `/projects/NUMBER/locations/REGION/services/NAME`. That is the direct Cloud Run
-  signed-header audience, not an OAuth client ID or URL.
-- `exp`, `iat` and an optional numeric `nbf` checked with one clock reading and
-  30 seconds of skew. The lifetime may not exceed 660 seconds.
-- Key retrieval is HTTPS-only with no redirects, 2 s to connect, 3 s in total,
-  a 256 KiB body limit and 1–32 keys. One fetch runs at a time and the cache lasts
-  5 minutes. An unknown key ID triggers at most one refresh every 30 seconds.
-  When a refresh fails, cached keys are not used, so the request is denied.
+presence stand in for verification. When a key refresh fails, cached keys are not
+used, so the request is denied.
 
 Missing or invalid assertions return 403. A staging process with a missing or
 malformed audience refuses to start. Cloudflare Access variables, headers and
@@ -122,9 +99,7 @@ Runtime configuration:
   selects the origin IAP gate. Do not use a misspelled environment to disable it.
 - `RELEASE_SHA`: full Git revision, supplied at runtime for the health response.
 - `PUBLIC_SITE_IAP_AUDIENCE`: required for staging. The deployment root sets it
-  from the project number, region and service name, and it is not a secret. For
-  staging it is
-  `/projects/134570912572/locations/us-east1/services/public-site-staging`.
+  from the project number, region and service name, and it is not a secret.
   Production and local runs do not read it.
 - `STAGING_HEALTH_TOKEN`: when configured, `/api/health` requires it in addition
   to a valid IAP assertion; it is not an IAP bypass.
@@ -149,19 +124,6 @@ preview already owns it rather than stopping that preview.
 
 ## Physician entry point
 
-The `/physician/` proxy runs on staging. Staging's public-origin sign-in journey
-is qualified end to end with both IAP boundaries enabled: request, mailbox delivery,
-email-button click, automatic Today, reload, sign-out, and used-link rejection. That
-covers the exercised browser and service-account path; it does not establish every
-user's IAP access or complete P1/D1 acceptance.
-
-The local physician browser tests run through the actual public-site proxy to a
-separate loopback physician server. They cover prefixed assets/API calls, the
-mailed HTML button, sign-in, session restoration, sign-out/token revocation,
-account revocation and finite-stream reconnection. The explicit `?api=` override
-check uses a separate recorded fixture. Local tests and live staging evidence
-establish different parts of the flow.
-
 Production configures no physician upstream. Configuring one there requires
 qualified production physician authentication first; production must not expose
 unconfigured proof-token delivery.
@@ -178,8 +140,7 @@ proxy work.
 The credential flow is keyless: IAM Credentials `signJwt`, using the public-site
 runtime identity, a short-lived JWT scoped to the configured physician origin, and
 a self-scoped signing permission. The custom role `publicSitePhysicianProxySigner`
-(`iam.serviceAccounts.signJwt` only) is bound runtime-to-itself on
-`public-site-staging@coda-health-staging.iam.gserviceaccount.com`; the
+(`iam.serviceAccounts.signJwt` only) is bound runtime-to-itself; the
 [staging admin bootstrap](#staging-admin-bootstrap)'s `--physician-proxy` flag
 creates it. This permission is identity-signing authority, **not** an IAM
 restriction to one audience. The physician infrastructure owner grants that runtime
@@ -191,29 +152,23 @@ browser state or logs.
 `/physician/` is not a browser security boundary: marketing scripts on the same origin
 can access the physician session stored in local storage. The entire origin
 must therefore be treated as trusted physician-session code. Proxy responses
-must never enter public or CDN caches. Browser proof covers prefix-relative assets
-and API requests, sign-in, session restoration, sign-out and streamed events through
-the proxy, not just direct-backend access. Cloud Run streams are finite; clients
+must never enter public or CDN caches. Cloud Run streams are finite; clients
 reconnect rather than relying on a longer request timeout.
 
 ## Original-source snapshots
 
-Ordinary builds, tests, and CI do not fetch or access the old private repository.
-The primary checkout explicitly disables submodules and credential persistence.
-No GitHub App, private-reference credential, Doppler CI config, or service token is
-needed. Fork and Dependabot changes run the same parity tests without application
-secrets; the workflow uses `pull_request`, not `pull_request_target`. The site
-itself reads no secrets, and no `dev`, `stg`, or `prd` secrets are copied into CI.
+Ordinary builds, tests, and CI do not fetch or access the old private repository,
+so they need no private credential or application secret, and fork and Dependabot
+changes run the same parity tests. The site itself reads no secrets.
 
-`crates/public-site/tests/fixtures/original/` contains 18 narrowly selected
-original-source snapshots from `Coda-Health/kytos` commit
-`5012bb749e29104e00ccb208a14a810f93fa420f`. `provenance.json` records the source
-path, original SHA-256, snapshot SHA-256, and extraction policy for each input.
-HTML, page/legal TypeScript, archive JSON, notices, CSS, and the scheduling social
-image definition are verbatim source files, as is `public/homepage/site.js`, the
-motion script the site ships unchanged, and `lib/site.ts`, which the legal modules
-import. No Next application, package dependencies, private credentials, or
-rendered Rust output are imported.
+`crates/public-site/tests/fixtures/original/` contains narrowly selected
+original-source snapshots from `Coda-Health/kytos`, at the reviewed commit named in
+`provenance.json`. That file records the source path, original SHA-256, snapshot
+SHA-256, and extraction policy for each input. HTML, page/legal TypeScript, archive
+JSON, notices, CSS, and the scheduling social image definition are verbatim source
+files, as is `public/homepage/site.js`, the motion script the site ships unchanged,
+and `lib/site.ts`, which the legal modules import. No Next application, package
+dependencies, private credentials, or rendered Rust output are imported.
 
 `crates/public-site/tests/fixtures/served/` records what the kytos deployment served
 at that same commit: every page, the not-found page, the sitemap, `robots.txt`, the
@@ -244,8 +199,7 @@ nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
 
 The importer reads Git blobs at the explicit reviewed commit, checks that the
 optional checkout is clean and pinned, and writes only allowlisted fixture paths.
-The served fixtures are a frozen record; the kytos deployment that produced them no
-longer exists.
+The served fixtures are a frozen record and can't be regenerated.
 Builds and tests never run `--import`. To adopt a new publication, review the
 original changes first, explicitly update the importer's commit and optional
 gitlink, then import and review the fixture/provenance diff. Do not regenerate
@@ -293,35 +247,15 @@ The admin bootstraps create them and refuse to continue if any grants `allUsers`
 | `public-site-base` | standard, immutable tags | digest copy of `gcr.io/distroless/static-debian12:nonroot` | CI deployer and `gcp-engineering@` read |
 
 The Dockerfile names each base image by registry path (a build `ARG`) plus a
-fixed digest. The defaults are the private repositories:
+fixed digest, and the defaults are the private repositories. An override changes
+only where a base image is fetched from. The digest stays fixed, so a different
+registry must serve identical content or the build fails.
 
-```dockerfile
-ARG RUST_REPO=us-east1-docker.pkg.dev/coda-health-staging/public-site-dockerhub/library/rust
-ARG RUNTIME_REPO=us-east1-docker.pkg.dev/coda-health-staging/public-site-base/distroless/static-debian12
-FROM ${RUST_REPO}@sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db7ed2 AS build
-FROM ${RUNTIME_REPO}@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
-```
+Distroless is a one-time copy by digest into a standard immutable repository
+rather than a remote repository, so builds never contact `gcr.io` and the copy
+cannot later change.
 
-An override changes only where a base image is fetched from. The digest stays
-fixed, so a different registry must serve identical content or the build fails.
-
-**Why distroless is copied, not proxied.** Artifact Registry remote repositories
-accept the preset `docker-hub` upstream and any custom HTTPS Docker upstream, so
-`https://gcr.io` would also work as a remote. A standard immutable repository
-plus a one-time copy by digest is used instead. Builds then never contact
-`gcr.io`, and the copy cannot later change. The bootstrap copies it with
-`docker buildx imagetools create --prefer-index=false`. With one source, this
-writes the manifest index bytes unchanged, so the digest stays
-`sha256:afa5c872…`. `crane copy` is an equivalent alternative.
-`gcloud artifacts docker images copy` does not exist in the pinned gcloud.
-
-**Cloud Run pulls.** For an image in the same project, Cloud Run pulls through
-its service agent `service-134570912572@serverless-robot-prod.iam.gserviceaccount.com`.
-That agent's project-level `roles/run.serviceAgent` includes
-`artifactregistry.repositories.downloadArtifacts`. Cloud Run's docs require an
-explicit reader grant for this agent only for cross-project images. The
-bootstrap grants it reader on `public-site` only if that default role was
-removed. It also grants the runtime SA reader on `public-site` alone, so that
+The bootstrap grants the runtime SA reader on `public-site` alone, so that
 identity's image access is explicit and limited to that repository. OpenTofu
 rejects any `image` outside `REGION-docker.pkg.dev/PROJECT_ID/public-site/` that
 is not digest-pinned (see [Checks](#checks)).
@@ -358,10 +292,9 @@ and production state through a partial GCS backend, one file per environment (se
 Both environments get a separate Cloud Run service and a dedicated service account.
 The root creates no DNS records, project, API enablement, service identity, Google
 Group, database, or physician runtime dependency. Production's one certificate is the
-Certificate Manager certificate described below. Defaults are
-min 0 / max 10 instances, concurrency 1000, one vCPU, and 512 MiB; these are bounded
-configuration defaults, not demonstrated load capacity. Startup uses a TCP probe
-on port 8080 rather than an unauthenticated HTTP health route.
+Certificate Manager certificate described below. Its scaling defaults are bounded
+configuration, not demonstrated load capacity. Startup uses a TCP probe on port 8080
+rather than an unauthenticated HTTP health route.
 
 **Staging** (`environment = "staging"`, the default) uses direct Cloud Run IAP and
 no load balancer:
@@ -375,7 +308,6 @@ no load balancer:
 - The only `roles/iap.httpsResourceAccessor` member is
   `group:gcp-engineering@codahealth.ai` (variable `iap_group`). This is also an
   authoritative binding on this service only, not a project or domain grant.
-  `iap_group` validation rejects bare domains and IAM principal prefixes.
 - `PUBLIC_SITE_IAP_AUDIENCE` comes from `project_number`, `region` and the service
   name, and it is set directly on the container. The output
   `iap_audience` exposes the same value.
@@ -383,11 +315,7 @@ no load balancer:
   `env/staging.tfvars` sets it to `staging.codahealth.ai`. Cloud Run manages TLS;
   the Cloudflare `staging` record is a DNS-only CNAME to `ghs.googlehosted.com`, as
   `staging_domain_records` returns. Native IAP remains the access owner on both
-  hostnames. This uses Google's
-  [preview domain mapping](https://docs.cloud.google.com/run/docs/mapping-custom-domains#run)
-  for staging only.
-- There is no serverless NEG, backend service, Cloud CDN, URL map, TLS policy,
-  HTTPS proxy, reserved IP or forwarding rule. No standalone certificate is needed.
+  hostnames.
 
 **Production** (`environment = "production"`) serves the same image behind a load
 balancer. Ingress is `INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER` and the `run.app` URI
@@ -403,16 +331,10 @@ is authorized by the DNS records the `certificate_dns_records` output lists, not
 serving traffic, and those records also renew it. Production without `domains` is
 rejected. IAP is off. No Cloud Run custom-domain mapping is created for production.
 
-### Cloud CDN support and staging safety
+### Cloud CDN and staging safety
 
-Google documents Cloud CDN support for Cloud Run/serverless NEGs on a **global
-external Application Load Balancer** in
-[Enable Cloud CDN](https://cloud.google.com/load-balancing/docs/https/setup-global-ext-https-serverless#enable_cloud_cdn).
-The [serverless NEG limitations](https://cloud.google.com/load-balancing/docs/negs/serverless-neg-concepts#limitations)
-exclude backend health checks and configurable backend timeouts, not this CDN
-combination. Those unsupported fields are intentionally omitted. IAP and Cloud
-CDN cannot be enabled together on one backend. That is one reason staging uses
-direct Cloud Run IAP with no backend service.
+IAP and Cloud CDN cannot be enabled together on one backend. That is one reason
+staging uses direct Cloud Run IAP with no backend service.
 
 - **Production:** Cloud CDN is enabled with `USE_ORIGIN_HEADERS`, no forced
   caching and no negative caching. The server emits the cache headers described
@@ -434,8 +356,7 @@ nix develop --command mdbook build book
 
 Routine CI does not launch browsers. The `site` browser test is ignored by default;
 run the explicit command above or manually dispatch the CI workflow for browser
-qualification. It covers Chromium desktop/mobile, reduced motion, delayed
-initialization and motion-preference transitions.
+qualification.
 
 Infrastructure checks initialize without the backend (`-backend=false`), so they
 need no ADC credentials and make no live GCP API calls. Do not initialize the other
@@ -448,29 +369,10 @@ nix develop --command tofu -chdir=infra/gcp/public-site validate
 nix develop --command tofu -chdir=infra/gcp/public-site test
 ```
 
-The provider is pinned to `hashicorp/google` 7.43.0, and its generated
-`.terraform.lock.hcl` belongs in version control. The mocked tests cover:
-
-- Staging direct IAP, the protected `run.app` URL, the IAP service agent as the only
-  invoker, the engineering group as the only accessor, both bindings scoped to this
-  service, and the audience following the project, region and service inputs.
-- The proxy: its own runtime identity in staging, no physician entry without an
-  upstream, and rejection of upstream credentials, paths and queries.
-- The container running the image entrypoint with no secret and no `value_source`.
-- Production's ALB-only ingress, disabled `run.app` URL, disabled invoker check,
-  origin-header CDN, HTTPS/TLS frontend with one DNS-authorized certificate and a
-  map entry for apex and www, and the port-80 redirect to HTTPS.
-- Rejection of production without `domains`, a domain with a scheme or wildcard, a
-  project ID or `0` as the project number, a domain or IAM-prefixed `iap_group`, an
-  unknown environment, excessive concurrency and inverted scaling.
-- The image coming only from the private repository, digest-pinned. These are
-  rejected: a mutable image, the shared `coda-agents` repository, the
-  `public-site-dockerhub` cache, Docker Hub, `gcr.io`, another project's
-  `public-site`, a look-alike `pkg.dev` host, and a tag without a digest.
-
-These checks validate resource contracts, not cloud permissions, API enablement,
-IAP brand/OAuth configuration, group membership, regional quotas, autoscaling
-behavior, application health, or a real deployment.
+The generated `.terraform.lock.hcl` belongs in version control. These checks
+validate resource contracts, not cloud permissions, API enablement, IAP brand/OAuth
+configuration, group membership, regional quotas, autoscaling behavior, application
+health, or a real deployment.
 
 The image smoke builds and runs the image locally:
 
@@ -480,34 +382,17 @@ nix develop --command docker build --platform=linux/amd64 \
 nix develop --command python infra/gcp/public-site/smoke.py public-site:deployment-check
 ```
 
-`smoke.py` starts disposable, nonroot, read-only containers with all capabilities
-dropped, no-new-privileges, one CPU, 512 MiB memory, and random host-loopback ports.
-It checks the image entrypoint/user/listen configuration and restricts image
-environment names to `PATH`, `SSL_CERT_FILE`, and `PUBLIC_SITE_LISTEN_ADDR`. It runs
-the image three ways:
-
-- as production does, with no physician upstream: homepage 200 with title,
-  canonical, description, main and footer; no Sign in and `/physician` 404;
-  content-addressed CSS with immutable caching; `chrome.js`, the original
-  `site.js` (checked against its reviewed SHA-256) and `duet.js` served;
-  `/healthz`, `/readyz` and `/api/health` 200 with the right environment and
-  release; unknown paths 404;
-- with an upstream: Sign in links to `/physician/` and the upstream origin is absent
-  from the HTML;
-- in staging mode: missing or invalid IAP assertions, unsigned identity headers and
-  Cloudflare credentials are denied with `no-store` and `noindex`.
-
-Each container must exit 0 on SIGTERM. The smoke has no signed positive path: signed
-allow, key rotation and fetch failure are proven only by Rust tests with a public
-test key. It does not replace browser animation/parity tests, a deep secret scan of
-embedded source assets, a load test, cloud ingress verification, or a deployment.
-No model calls, secret fetches, or live GCP requests occur in the smoke script.
+`smoke.py` runs the image in disposable, locked-down containers three ways: as
+production does, with a physician upstream, and in staging mode. It has no signed
+positive path: signed allow, key rotation and fetch failure are proven only by Rust
+tests with a public test key. It does not replace browser animation/parity tests, a
+deep secret scan of embedded source assets, a load test, cloud ingress verification,
+or a deployment.
 
 ### Local load check
 
-`crates/public-site/load_check.py` starts only disposable loopback listeners, with
-a clean child environment containing the tool PATH, `APP_ENV`, and the local
-listen address. It neither targets arbitrary URLs nor starts model/data services.
+`crates/public-site/load_check.py` starts only disposable loopback listeners. It
+neither targets arbitrary URLs nor starts model/data services.
 
 ```bash
 nix develop --command env -u RUSTC_WRAPPER -u RUSTC_WORKSPACE_WRAPPER \
@@ -516,17 +401,7 @@ nix develop --command env -u RUSTC_WRAPPER -u RUSTC_WORKSPACE_WRAPPER \
 nix develop --command python crates/public-site/load_check.py
 ```
 
-The script discovers an actual hashed CSS URL in the homepage and runs `/` and that
-asset sequentially with `oha --no-tui --output-format json
---stats-success-breakdown --http-version 1.1 --disable-compression
--H 'Accept-Encoding: gzip' -c 1000 -z 30s -w -t 10s`. `--disable-compression`
-disables oha's automatic negotiation/decoding; the explicit header still requests
-the server's precompressed gzip body, and the script checks that identity and
-decoded gzip bodies match. `-w` drains in-flight requests after the issuing window
-instead of counting deadline cancellations as transport failures. It also starts a
-credential-free staging child and checks 403 with `no-store` and `noindex`. Output
-goes under `target/public-site-load/` (`--output` chooses another directory).
-
+Output goes under `target/public-site-load/` (`--output` chooses another directory).
 The results are closed-loop, fixed-concurrency numbers from the machine that runs
 them, with no TLS, CDN, browser or Brotli. They don't establish Cloud Run capacity,
 behavior above the request-permit limit, or a single-digit-millisecond p99.
@@ -538,14 +413,8 @@ keep their product-repository apply authority; this ownership covers only
 `infra/gcp/public-site` with `environment = "staging"`.
 
 - **State.** `backend "gcs" {}` is partial. `backend/staging.gcs.tfbackend`
-  selects a dedicated staging bucket, `coda-health-staging-tofu-state-us-east1`
-  in `coda-health-staging`, with prefix `public-site/staging`. It is versioned,
-  uses uniform bucket-level access, enforces public access prevention, lives in
-  `us-east1` and keeps the default soft-delete policy. Staging state never lives in
-  a `coda-health-prod` bucket, so the CI deployer needs no production-project IAM.
-  An empty, unused state object remains under
-  `gs://coda-health-prod-terraform-state-us-east1/public-site/staging/`; a bucket
-  owner may delete it.
+  selects a dedicated staging bucket. Staging state never lives in a
+  `coda-health-prod` bucket, so the CI deployer needs no production-project IAM.
 - **Inputs.** `env/staging.tfvars` holds the non-secret staging inputs: the last
   operator-reviewed image digest in the private `public-site` repository, release
   SHA, and `physician_app_url`, the physician preview service in `coda-rust-staging`
@@ -558,9 +427,13 @@ keep their product-repository apply authority; this ownership covers only
 
 `infra/gcp/public-site/scripts/staging-admin-bootstrap.sh` is run by an
 administrator of `coda-health-staging`, not by the deployer. It prepares only
-what the root deliberately does not own. Each create step checks first, so it is
-safe to rerun. It prints every command and never touches `coda-health-prod`.
-Review it with `--print` first; that mode makes no gcloud calls.
+what the root deliberately does not own: APIs, the state bucket, the
+[private repositories](#private-registries-only) and their base images, the keyless
+CI deployer with resource-scoped roles, and GitHub Workload Identity Federation
+limited to this repository's `main` branch and `staging` environment. Each create
+step checks first, so it is safe to rerun. It prints every command and never
+touches `coda-health-prod`. Review it with `--print` first; that mode makes no
+gcloud calls.
 
 ```bash
 # From the workspace root, inside the dev shell, as the staging admin:
@@ -574,99 +447,23 @@ bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --temporary-deploy
 bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh
 ```
 
-In order, it:
-
-1. **APIs.** Enables `serviceusage`, `cloudresourcemanager`, `iam`,
-   `iamcredentials`, `sts`, `run`, `iap`, `artifactregistry` and `storage`
-   (`gcloud services enable` is idempotent).
-2. **State bucket.** Creates `gs://coda-health-staging-tofu-state-us-east1`
-   (`--location=us-east1 --uniform-bucket-level-access --public-access-prevention`)
-   and asserts `--versioning`. Soft delete stays at the default.
-3. **Private Artifact Registry repositories** (see
-   [Private registries only](#private-registries-only)). Creates `public-site`
-   (standard, `--immutable-tags`), `public-site-dockerhub`
-   (`--mode=remote-repository --remote-docker-repo=docker-hub`) and
-   `public-site-base` (standard, `--immutable-tags`). It reasserts immutable
-   tags. On `public-site` it sets a cleanup policy: delete untagged versions
-   after 7 days, always keep the newest 10 (`SITE_KEEP_COUNT`). Tagged images
-   cannot be deleted in an immutable-tag repository. Then it **refuses to
-   continue** if any of the three grants `allUsers` or `allAuthenticatedUsers`,
-   or if any of their policies cannot be read. It checks `coda-agents` too and
-   fails if that repository is public. An unreadable `coda-agents` policy is
-   only a warning, because this script does not own that repository. Finally it
-   grants `gcp-engineering@codahealth.ai` reader on the two base-image
-   repositories. It grants the Cloud Run service agent reader on `public-site`
-   only if the agent lacks `roles/run.serviceAgent`.
-4. **CI deployer.** Creates `public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`
-   with no keys. Its roles follow what this root manages (see the table below).
-   If a `roles/artifactregistry.writer` grant for it exists on `coda-agents`, it
-   is removed. Once the runtime SA exists it gets reader on `public-site`.
-   With `--physician-proxy`, it also creates the
-   [proxy signing role](#physician-entry-point) and binds it runtime-to-itself.
-5. **GitHub Workload Identity Federation.** Creates pool `github-actions` and
-   OIDC provider `github-oidc` (issuer `https://token.actions.githubusercontent.com`).
-   The provider's attribute condition admits only repository
-   `Coda-Health/coda-rust` (name, repository ID `1412706552` and owner ID
-   `306538119`), ref `refs/heads/main` and GitHub environment `staging`. The CI
-   service account grants `roles/iam.workloadIdentityUser` only to
-   `principal://iam.googleapis.com/projects/134570912572/locations/global/workloadIdentityPools/github-actions/subject/repo:Coda-Health@306538119/coda-rust@1412706552:environment:staging`.
-   The repository uses GitHub's immutable subject claim, so `sub` carries the
-   owner and repository IDs; a `repo:Coda-Health/coda-rust:...` binding never
-   matches and the token exchange fails with `iam.serviceAccounts.getAccessToken`
-   denied. A rerun reasserts the condition.
-6. **Base images, by digest.** Runs `gcloud auth configure-docker us-east1-docker.pkg.dev`.
-   Copies `gcr.io/distroless/static-debian12@sha256:afa5c872…` into
-   `public-site-base/distroless/static-debian12` (tag `nonroot-afa5c872c891`) and
-   checks that the digest exists there. Resolves
-   `public-site-dockerhub/library/rust@sha256:606fd313…` through the cache.
-7. **Legacy site image.** Copies `coda-agents/public-site@sha256:a179ab01…` (tag
-   `b18760ef98a82e68aef29ac7a20bc48796794bf9`) into `public-site/public-site` by
-   digest, skipping a copy that already exists, then repeats the public-access
-   check on every repository. The copy needs read on `coda-agents` (the admin's)
-   and writer on `public-site`.
-8. **Optional temporary grant** (`--temporary-deployer-grant`). Gives
-   `DEPLOYER_USER` (default `tyler@codahealth.ai`) the first-apply roles, each with
-   an IAM condition `request.time < timestamp(NOW + 24h)`: project-level
-   `roles/iam.serviceAccountCreator`, `roles/iam.serviceAccountUser`,
-   `roles/run.admin` and `roles/iap.admin`, plus `roles/storage.objectAdmin` on
-   the state bucket and `roles/artifactregistry.reader` on `public-site`. The
-   project-level roles are project-level because the service account and the
-   service do not exist before a first apply. Expired bindings grant nothing;
-   remove them afterwards with `remove-iam-policy-binding ... --all`.
-
-CI deployer roles, evaluated against the resources this root manages (runtime
-service account, the Cloud Run service, its invoker
-policy and its IAP accessor policy):
-
-| Role | Scope | Why |
-| --- | --- | --- |
-| `roles/storage.objectAdmin` | the staging state bucket only | Read, write and lock state objects |
-| `roles/artifactregistry.writer` | repository `public-site` only | Publish digest-pinned site images (no grant on `coda-agents`) |
-| `roles/artifactregistry.reader` | repositories `public-site-dockerhub` and `public-site-base` only | Pull the two base images for the build |
-| `roles/run.viewer` | project | Read-only; the provider polls location-scoped Cloud Run operations |
-| `roles/run.admin` | service `public-site-staging` only | Update the service and its invoker policy |
-| `roles/iap.admin` | IAP resource of `public-site-staging` only | Manage the authoritative IAP accessor binding |
-| `roles/iam.serviceAccountUser` | runtime SA `public-site-staging@` only | Deploy revisions that run as it |
+`--physician-proxy` also creates the [proxy signing role](#physician-entry-point) and
+binds it runtime-to-itself. Expired temporary grants grant nothing; remove them
+afterwards with `remove-iam-policy-binding ... --all`.
 
 CI gets no `iam.serviceAccountAdmin` (it never creates or edits the runtime
 account: a first apply is a human apply), no project-wide `run.admin`,
 `iap.admin` or `actAs`, and no `run.invoker` or `iap.httpsResourceAccessor`, so
-it has no website access. The service-scoped rows need the service and runtime
+it has no website access. The service-scoped grants need the service and runtime
 account to exist; the script skips them until then and adds them on a rerun.
 Tofu's authoritative bindings cover only `roles/run.invoker` and
 `roles/iap.httpsResourceAccessor`, so they do not remove these grants.
 
-**Group check (Workspace admin).** The IAP accessor is
-`group:gcp-engineering@codahealth.ai`. A Google Workspace or Cloud Identity admin
-can confirm the group exists and whether `DEPLOYER_USER` is in it (read-only):
+A Google Workspace or Cloud Identity admin can confirm the IAP group exists and
+whether `DEPLOYER_USER` is in it (read-only):
 
 ```bash
 bash infra/gcp/public-site/scripts/staging-admin-bootstrap.sh --check-group
-# runs:
-gcloud identity groups describe gcp-engineering@codahealth.ai --project=coda-health-staging
-gcloud identity groups memberships check-transitive-membership \
-  --project=coda-health-staging --group-email=gcp-engineering@codahealth.ai \
-  --member-email=tyler@codahealth.ai
 ```
 
 ### CI deploy on push to main
@@ -677,11 +474,7 @@ pushes to `main` selected for full validation, after `CI result` passes.
 Engineering-skills/docs-only pushes skip deployment. It runs only when the repository variable
 `PUBLIC_SITE_STAGING_DEPLOY` is `enabled`; unset it to stop deploys without
 editing the workflow. The GitHub `staging` environment allows only the `main`
-branch to deploy, which matches the provider's attribute condition. The job
-authenticates with `google-github-actions/auth`
-(`workload_identity_provider: projects/134570912572/locations/global/workloadIdentityPools/github-actions/providers/github-oidc`,
-`service_account: public-site-ci-deployer@coda-health-staging.iam.gserviceaccount.com`)
-and:
+branch to deploy, which matches the provider's attribute condition. The job:
 
 1. Builds `crates/public-site/Dockerfile` with the private base-image defaults
    and runs `smoke.py` on the result.
@@ -723,11 +516,11 @@ tofu -chdir=infra/gcp/public-site apply staging.tfplan
 tofu -chdir=infra/gcp/public-site output staging_url
 ```
 
-A new staging environment has six resources, including the domain mapping. After
-its first apply, rerun the bootstrap so CI gets its service-scoped roles. Staging is
-live only when a member of the engineering group is allowed, a nonmember denied, an
-unauthenticated direct `run.app` request redirected to sign-in, and no protected
-content served from a cache, on both `staging.codahealth.ai` and the `run.app` URL.
+After a first apply, rerun the bootstrap so CI gets its service-scoped roles. A new
+staging environment is live only when a member of the engineering group is allowed,
+a nonmember denied, an unauthenticated direct `run.app` request redirected to
+sign-in, and no protected content served from a cache, on both
+`staging.codahealth.ai` and the `run.app` URL.
 
 ## Production state and deployment
 
@@ -735,55 +528,34 @@ Production serves the image staging tested, without sign-in, at `codahealth.ai`
 and `www.codahealth.ai` from `coda-health-prod`. Operator applies and DNS changes
 need Dev's explicit authorization.
 
-- **State.** `backend/production.gcs.tfbackend` selects the dedicated
-  `coda-health-prod-public-site-tofu-state-us-east1` bucket, prefix
-  `public-site/production`, as staging has its own bucket. The deployer has no
-  access to the shared production state bucket: Cloud Storage cannot narrow
-  object listing to a prefix with an IAM condition.
+- **State.** `backend/production.gcs.tfbackend` selects a dedicated state bucket,
+  as staging has its own. The deployer has no access to the shared production state
+  bucket: Cloud Storage cannot narrow object listing to a prefix with an IAM
+  condition.
 - **Inputs.** `env/production.tfvars` holds the non-secret production inputs: the
-  project and number, and `domains = ["codahealth.ai", "www.codahealth.ai"]`.
-  It sets no `physician_app_url`, so production has no Sign in link and no
-  `/physician/` mount. `image` and `release_sha` are supplied per release: the
-  digest staging tested and its commit.
+  project and number, and `domains`. It sets no `physician_app_url`, so production
+  has no Sign in link and no `/physician/` mount. `image` and `release_sha` are
+  supplied per release: the digest staging tested and its commit.
 - **DNS.** In the `codahealth.ai` Cloudflare zone, `codahealth.ai` and
   `www.codahealth.ai` are DNS-only A records to the root's `load_balancer_ip`. The
-  `_acme-challenge.codahealth.ai` and `_acme-challenge.www.codahealth.ai` CNAMEs
-  from `certificate_dns_records` stay in place: Certificate Manager renews the
-  certificate through them. The zone's other records (`app`, `work`, their staging
-  hosts, `staging`, `agents` and mail) belong to other owners.
+  `_acme-challenge` CNAMEs from `certificate_dns_records` stay in place: Certificate
+  Manager renews the certificate through them. The zone's other records belong to
+  other owners.
 
 ### Production admin bootstrap
 
-`scripts/production-admin-bootstrap.sh` prepares what the root does not own. An
-administrator of `coda-health-prod` runs it with Dev's authorization; one step needs
-an administrator of `coda-health-staging`. `--print` shows every command without
-calling gcloud. It is safe to rerun, and a first apply is followed by a rerun for
-the bindings that need the service and runtime account to exist.
+`scripts/production-admin-bootstrap.sh` prepares what the root does not own: APIs,
+the state bucket, the private image repository, the keyless
+`public-site-prod-deployer` account, and a Workload Identity Federation provider
+accepting only `Coda-Health/coda-rust` on `refs/heads/main` in the `production`
+environment. An administrator of `coda-health-prod` runs it with Dev's authorization;
+one step needs an administrator of `coda-health-staging`. `--print` shows every
+command without calling gcloud. It is safe to rerun, and a first apply is followed by
+a rerun for the bindings that need the service and runtime account to exist.
 
-- Enables the Run, Compute, Certificate Manager, Artifact Registry, IAM and STS
-  APIs.
-- Creates the dedicated state bucket (versioned, uniform access, public access
-  prevented).
-- Creates the private `public-site` image repository (immutable tags, cleanup
-  policy) and refuses to continue if it is public. Production builds nothing, so
-  there are no base-image repositories.
-- Creates the keyless `public-site-prod-deployer` account with:
-  - `roles/storage.objectAdmin` on the dedicated state bucket only;
-  - writer on the production image repository and reader on staging's, so promotion
-    can copy the digest staging tested;
-  - project `run.viewer`, `compute.viewer` and `certificatemanager.viewer`, so a
-    promotion plan can refresh what it may not change;
-  - the custom role `publicSiteCdnInvalidator`, holding only
-    `compute.urlMaps.invalidateCache`, so promotion can clear the CDN;
-  - once the service exists, `iam.serviceAccountUser` on the runtime account and
-    `run.admin` on the service only.
-
-  It gets no compute, certificate or IAM admin role: promotion cannot change the
-  load balancer, TLS or identities, only clear the CDN.
-- Creates the `github-actions` WIF pool and provider in `coda-health-prod`, accepting
-  only `Coda-Health/coda-rust` on `refs/heads/main` in the `production` environment,
-  and lets only that subject impersonate the deployer. The GitHub `production`
-  environment admits only `main` and has no required reviewer.
+The deployer gets no compute, certificate or IAM admin role: promotion cannot change
+the load balancer, TLS or identities, only clear the CDN. The GitHub `production`
+environment admits only `main` and has no required reviewer.
 
 ### Promotion
 
@@ -803,28 +575,21 @@ repository can promote a commit staging already built and tested. It:
    service. Load balancer, certificate, IAM and identity changes are operator applies;
 4. applies the saved plan and checks the Ready revision serves the digest with all
    traffic;
-5. clears the CDN (`invalidate-cdn-cache --path='/*'`) and waits for it to finish;
+5. clears the CDN and waits for it to finish;
 6. pins `codahealth.ai` and `www.codahealth.ai` to the load balancer IP with
    `curl --resolve` and checks each: `/api/health` reports production and the SHA,
    the homepage sends production's HSTS and offers no Sign in, `/physician/today` is
-   404, and plain HTTP answers 308 to the same HTTPS URL (Google's redirect may name
-   the default port, `https://host:443/…`, which browsers treat as the same URL).
+   404, and plain HTTP answers 308 to the same HTTPS URL.
 
-Why the CDN is cleared: HTML is cached with `max-age=300, s-maxage=3600,
-stale-while-revalidate=86400`, so without invalidation the edge could serve the
-previous release's HTML for up to a day. That HTML names hashed CSS and JS the new
-image no longer serves, which would load unstyled pages. Clearing the CDN does
-not clear browsers: one that loaded the page before the release can show its cached
-HTML once more (fresh for `max-age=300`, then reused while it revalidates in the
-background), so a returning visitor may see one unstyled load before the next
-load is current.
+The CDN is cleared because its cached HTML names hashed CSS and JS the new image no
+longer serves, which would load unstyled pages. Clearing the CDN does not clear
+browsers, so a returning visitor may see one unstyled load before the next load is
+current.
 
 ### Recovery
 
 Recovery is a promotion of an earlier staging-tested commit: run the promotion
-workflow with that commit's SHA. There is no Vercel fallback: the `kytos` project
-no longer holds `codahealth.ai` or `www`, and the `codahealth.ai` domain stays on the
-Vercel team only for `work`, `work-staging`, `app` and `app-staging`.
+workflow with that commit's SHA.
 
 ### Rebuilding production
 
