@@ -395,10 +395,11 @@ async fn run_durable_owners() {
         decoder.decode(parts[4]).unwrap(),
     ]
     .concat();
+    let nonce: [u8; 12] = nonce.as_slice().try_into().unwrap();
     let plaintext = Aes256Gcm::new_from_slice(&key)
         .unwrap()
         .decrypt(
-            nonce.as_slice().into(),
+            (&nonce).into(),
             Payload {
                 msg: &ciphertext,
                 aad: parts[0].as_bytes(),

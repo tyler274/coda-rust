@@ -456,10 +456,11 @@ fn open(key: &[u8; 32], bytes: &[u8], aad: &[u8]) -> Result<Vec<u8>, ApiError> {
     if bytes.len() < 28 {
         return Err(ApiError::NotFound);
     }
+    let nonce: [u8; 12] = bytes[..12].try_into().map_err(|_| ApiError::NotFound)?;
     Aes256Gcm::new_from_slice(key)
         .map_err(|_| ApiError::NotFound)?
         .decrypt(
-            bytes[..12].into(),
+            (&nonce).into(),
             Payload {
                 msg: &bytes[12..],
                 aad,
