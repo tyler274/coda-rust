@@ -30,9 +30,19 @@ cargo test --workspace
 
 `scripts/ui-gallery.sh` builds the UI gallery and serves it at <http://127.0.0.1:8080/>, each section at its own address, such as `/#charts`.
 
+### Local practice
+
+`scripts/local-practice.sh` runs the synthetic practice on a local Postgres database. It runs the migration and the chart load, then starts the site with sign-in required. Sign in as `physician@codahealth.test`; the local site redeems the link itself.
+
+```sh
+PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-practice.sh
+```
+
+`cargo run -p physician-sample` alone has no database, so its practice has no patients.
+
 ### Physician chat (Codex CLI)
 
-Local physician chat uses the Codex CLI subscription. Projections stay on the recording. Live, record, and replay do not read `OPENAI_API_KEY`.
+Local physician chat uses the Codex CLI subscription. Live, record, and replay do not read `OPENAI_API_KEY`.
 
 Sign in once, outside this repo's nix shell if that is where the CLI is installed:
 
@@ -40,10 +50,10 @@ Sign in once, outside this repo's nix shell if that is where the CLI is installe
 codex login
 ```
 
-Then start the sample server. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`.
+Then start the local practice with `PHYSICIAN_DATABASE_URL` set. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`.
 
 ```sh
-cargo run -p physician-sample
+scripts/local-practice.sh
 ```
 
 Record a cassette outside the repository, then replay it. Replay makes no model call.
@@ -52,16 +62,16 @@ Record a cassette outside the repository, then replay it. Replay makes no model 
 CODA_LOCAL_MODEL_EXECUTION=record \
 CODA_CASSETTE_AUTHORIZATION='who approved this synthetic run' \
 CODA_CASSETTE_OUTPUT=/absolute/path/cassette.json \
-cargo run -p physician-sample
+scripts/local-practice.sh
 
 CODA_LOCAL_MODEL_EXECUTION=replay \
 CODA_CASSETTE_PATH=/absolute/path/cassette.json \
-cargo run -p physician-sample
+scripts/local-practice.sh
 ```
 
 `CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
 
-A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the sample server and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
+A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the local practice and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
 
 ### Unattended development
 
@@ -113,11 +123,10 @@ Compose, and the Dev Containers extension on x86_64 Linux. On Apple silicon, use
    as described in [backend migrations](book/src/backend-architecture.md#persistence-and-migrations).
    Set the API `DATABASE_URL` to that runtime login before starting it. The
    container-provided `coda` database user is the local bootstrap administrator.
-3. Run from the command palette, Terminal > Run Task: `physician page (recorded)`
+3. Run from the command palette, Terminal > Run Task: `local practice`
    (http://127.0.0.1:8790), `duet-api` (http://127.0.0.1:8080), and the optional
    `React local product` (http://127.0.0.1:8787) after its one-time host-side
-   setup (see [coda-agents README](submodules/coda-agents/README.md)). Build
-   the page bundle first with `physician page web bundle`.
+   setup (see [coda-agents README](submodules/coda-agents/README.md)).
 
 Storage: the database lives in the `coda-rust-pg` named volume; it survives
 rebuilds and resets only with `docker compose down -v` from `.devcontainer/`.

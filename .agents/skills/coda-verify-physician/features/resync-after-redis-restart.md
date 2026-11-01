@@ -16,7 +16,7 @@ resubscribe. Owners: `crates/physician-bus` (`Event::Resync`), the SSE writer in
 
 ## How to get to it (user POV)
 
-- Keep Today or Mary Louis's workspace open while the bus restarts. The physician sees
+- Keep Today or Abigail Lemieux's workspace open while the bus restarts. The physician sees
   no error; the page quietly refetches.
 
 ## Driving it with physician-drive
@@ -32,7 +32,7 @@ Preconditions:
 - **Resync on both.** `wait`. Both watchers exit `0`; `watch-a-resync.json` and `watch-b-resync.json` have `seen: true`, and `frames` contains `event: resync\ndata: {}`. Measured locally: about 2 s from the signal.
 - **Subscribers back.** Run `$D subscribers` until it prints `3`.
 - **Fan-out recovers.** Follow [cross-instance chat](./cross-instance-chat.md) with a new chat: send on A, hold `watch --site b --until workspace_changed`, and read `Noted.` on B.
-- **Page after.** Save `$OUT/after.png` and the accessibility snapshot. Mary Louis's `Patient summary` and the conversation (`Noted.`) are still shown, the page did not return to `Sign in to Coda`, and no `Coda couldn’t open this conversation.` notice appears. Then send a second message from the page's composer and see its `Noted.` arrive live. That proves the page's own stream recovered, not only the drive's watchers.
+- **Page after.** Save `$OUT/after.png` and the accessibility snapshot. Abigail Lemieux's `Records as of` and the conversation (`Noted.`) are still shown, the page did not return to `Sign in to Coda`, and no `Coda couldn’t open this conversation.` notice appears. Then send a second message from the page's composer and see its `Noted.` arrive live. That proves the page's own stream recovered, not only the drive's watchers.
 
 ## Gotchas
 

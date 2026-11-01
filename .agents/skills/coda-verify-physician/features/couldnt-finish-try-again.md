@@ -21,10 +21,10 @@ pressing it again cannot reopen finished work. Owners: `durable_snapshot_body` a
 
 ## How to get to it (user POV)
 
-- Open Mary Louis on a chat (`?patient=…&chat=<id>`), send a message Coda cannot finish,
-  wait for the line, and choose `Try again` beside it.
-- `Try again` on a matching Today row uses the same `work.resume` command. The recorded
-  Today does not list chat turns, so this recipe does not drive that entry.
+- Open Abigail Lemieux on a chat (`?patient=…&chat=<id>`), send a message Coda cannot
+  finish, wait for the line, and choose `Try again` beside it.
+- `Try again` on a matching Today row uses the same `work.resume` command. Today is empty
+  until a real owner fills it, so this recipe does not drive that entry.
 
 ## Driving it with physician-drive
 
@@ -43,7 +43,7 @@ Preconditions:
 - **Wrong run.** Run `$D --out "$OUT/wrong" resume --site a --session "$S" --chat "$C" --run not-the-run`. Exit `1`; `.body.outcome` is `rejected`, and a re-read snapshot still shows the mechanical line.
 - **Try again.** Run `$D --out "$OUT" resume --site a --session "$S" --chat "$C"`. Exit `0`; `.body.outcome` is `accepted` and `.body.run_id` is the failed run.
 - **Reply.** Run `$D --out "$OUT/after" snapshot --site b --session "$S" --chat "$C" --wait-text Noted.`. The conversation is `[Hello [fail:5], Noted.]` with no `mechanical` item, and `.runs` is `[]`.
-- **Pressed twice.** Repeat the **Try again** command: `.body.outcome` is `accepted` again because it reuses the key `resume-<work>-<run>`. A new key after completion, `$D resume ... --run <same run>` with a different key, is not exposed by the helper. Prove it with `cargo test -p physician-sample --test try_again` (it asserts `rejected`).
+- **Pressed twice.** `$D resume` needs a failed turn, so it cannot repeat Try again after the reply. Run `CODA_REQUIRE_POSTGRES_TESTS=1 PHYSICIAN_RUNTIME_TEST_DATABASE_URL="$(jq -r .postgres.url "$RUN/stack.json")" cargo test -p physician-sample --test try_again`: the same key `resume-<work>-<run>` answers `accepted` again, and a new key after completion answers `rejected`.
 - **Button, from the page.** Use a new chat `P=chat-$(uuidgen | tr -d -)` on the same stack. Open `$($D page-url --site a --chat "$P")`, sign in, write `Hello [fail:5]`, and choose `Send`. Without reloading, wait (up to 120 s) for `Coda couldn’t finish this response. Your message is saved.` and the `Try again` button in `.conversation-mechanical`. Save `$OUT/site-a-failed.png` and the `Conversation` accessibility snapshot. Choose `Try again`, wait for `Noted.`, and confirm the line and button are gone. Save `$OUT/site-a-after.png`. Then run the **Dead letter**, **Durable state** and **Reply** checks above for `$P`. The count is per message, so the HTTP path and the page path each prove themselves on one stack.
 
 ## Gotchas

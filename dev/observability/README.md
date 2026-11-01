@@ -14,7 +14,7 @@ Then point a service at the collector:
 
 ```sh
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CONTENT=full \
-  cargo run -p physician-sample
+  PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-practice.sh
 ```
 
 | Surface | Address |

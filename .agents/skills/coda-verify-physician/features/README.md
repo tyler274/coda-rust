@@ -8,15 +8,17 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 ## Baseline preconditions
 
 - The binaries in `target/stream-e/debug` (or the `--bin-dir` you pass) were built from
-  the current worktree, and `target/physician-web` holds the current page.
+  the current worktree, `target/physician-web` holds the current page, and
+  `target/patient-bank/bank` holds the current charts.
 - `scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-fail-marker`
   is running in its own terminal and has printed `Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>`.
 - `RUN=$(ls -td target/verification/runs/physician-scale-stack-* | head -1)` names that
   stack, and every [doctor](../SKILL.md#doctor) check passes.
 - `D=.agents/skills/coda-verify-physician/scripts/physician-drive.py` and
   `S=$($D sign-in --site a)` are set in the driving shell.
-- The workspace is Mary Louis, `pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e` (`stack.json`
-  `.workspace`). It is on the seeded panel and on Today as `Open Mary Louis`.
+- The workspace is Abigail Lemieux, `pw-2a995cfc98bbfd3c4e6c1d7492ee6998` (`stack.json`
+  `.workspace`), a bank patient on the staging panel. Search finds her, and
+  `$D page-url` opens her page.
 
 ## Driving conventions
 
@@ -39,7 +41,7 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 - Durable proof is a second read on the *other* site, or a `psql` query of
   `physician_runtime_conversations` against `stack.json` `.postgres.url`.
 - Browser proof is a screenshot plus an accessibility snapshot of the `Conversation`
-  region with the page identity (`Patient summary`, the site's port) visible. An HTTP
+  region with the page identity (`Records as of`, the site's port) visible. An HTTP
   pass never stands in for a browser step. If the page is stale or a step fails to
   render, report that step as unverified beside the HTTP result.
 - Record the feature ID and site with each artifact.

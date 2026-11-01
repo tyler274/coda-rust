@@ -39,7 +39,7 @@ Preconditions:
 - **Duplicate delivery.** Build the push body for the same `{scope, input_id}` and send it to the worker:
 
   ```bash
-  DATA=$(jq -cn --arg c "$C" --arg k "$K" '{scope:{practice:"roger-synthetic-practice",physician:"staging-physician",workspace:"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e",chat:$c},input_id:$k}' | base64 -w0)
+  DATA=$(jq -cn --arg c "$C" --arg k "$K" '{scope:{practice:"roger-synthetic-practice",physician:"staging-physician",workspace:"pw-2a995cfc98bbfd3c4e6c1d7492ee6998",chat:$c},input_id:$k}' | base64 -w0)
   curl -sS -o /dev/null -w "%{http_code}\n" -X POST "$WK/pubsub/chat-turn" -H 'content-type: application/json' \
     -d "{\"message\":{\"data\":\"$DATA\",\"messageId\":\"duplicate-delivery\"},\"subscription\":\"projects/coda-local-physician/subscriptions/physician-chat-turns\"}" | tee "$OUT/duplicate-push.txt"
   ```

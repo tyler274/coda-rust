@@ -29,12 +29,13 @@ Run the matching [feature](features/README.md) when a change touches:
 
 ## Launch
 
-1. Build the three binaries and the page. Use a private target directory when other work
-   shares `target/`:
+1. Build the three binaries, the page and the charts. Use a private target directory when
+   other work shares `target/`:
 
    ```bash
    CARGO_TARGET_DIR=target/stream-e cargo build -p physician-sample --bins
    cargo test -p physician-sample --test site -- --ignored   # also writes target/physician-web
+   cargo run -p patient-bank -- build                        # writes target/patient-bank/bank
    ```
 
    The page assets are served from `target/physician-web` (or `--site-dir`). A stale
@@ -65,9 +66,10 @@ Run the matching [feature](features/README.md) when a change touches:
 
    Every port is a fresh loopback port; never assume a previous run's port. The stack runs
    `physician-migrate`, seeds the synthetic account `physician@codahealth.test`
-   (`roger-synthetic-practice` / `staging-physician`), and starts the sites one at a time
-   so each seeds the five-patient panel. Sites run `PHYSICIAN_AUTH=required` with proof
-   sign-in: `/auth/sign-in` answers the token in its body.
+   (`roger-synthetic-practice` / `staging-physician`), runs `physician-migrate load-charts`
+   (`--charts`, about 30 s), and starts the sites one at a time. Sites run
+   `PHYSICIAN_AUTH=required` with proof sign-in: `/auth/sign-in` answers the token in its
+   body.
 
 3. Optional load numbers: add `--load-numbers [--idle-seconds 20]`. After readiness it
    writes `<evidence>/load-numbers.json` (see [Evidence](#evidence)) and then keeps
@@ -103,7 +105,7 @@ runtime chats, newest first, titled by their first message. The page's `New conv
 button (Conversations sidebar, and the empty Conversation region) opens a new `chat-…` id
 and writes it to `?chat=`. A drive that needs a known id opens it from the address:
 `$D page-url --site b --chat "$C"` prints
-`http://127.0.0.1:<b>/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e&chat=$C`. Before its
+`http://127.0.0.1:<b>/?patient=pw-2a995cfc98bbfd3c4e6c1d7492ee6998&chat=$C`. Before its
 first message the page lists that chat as `Untitled`, opens it, and shows
 `What would you like Coda to review?`. A message sent with the page's own `Send` button
 creates the chat. The drive can also create it with the same `POST /commands`
@@ -153,9 +155,9 @@ Use a browser driver against `Site A` or `Site B` with a desktop viewport:
 
 - Navigate to `$D page-url --site <a|b> --chat "$C"`. The sign-in screen appears first.
 - Sign in: fill `.sign-in-input` with `physician@codahealth.test`, choose `.sign-in-primary`.
-  Proof delivery redeems the token automatically, and the page opens Mary Louis on `$C`.
+  Proof delivery redeems the token automatically, and the page opens Abigail Lemieux on `$C`.
   It does not go to Today, because the first shell after sign-in keeps `?patient=` and `?chat=`.
-- Wait for `Patient summary` and the `Conversation` region's `Write a message` composer.
+- Wait for `Records as of` and the `Conversation` region's `Write a message` composer.
   Write with `textarea.composer`, then choose the `Send` button in `.composer-actions`.
 - Capture a screenshot plus the accessibility snapshot of the `Conversation` region.
   Look at the image: a DOM string can be present while the panel is clipped or off-screen.

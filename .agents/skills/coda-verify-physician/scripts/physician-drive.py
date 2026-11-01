@@ -6,7 +6,7 @@ Reads the newest target/verification/runs/physician-scale-stack-*/stack.json
 writes it there too. No credentials: proof sign-in for the synthetic account.
 
   sign-in   [--site a|b]                          print a bearer session
-  page-url  [--chat C] [--site b]                 the page on Mary Louis, opened on that chat (?patient=[&chat=])
+  page-url  [--chat C] [--site b]                 the stack's patient, opened on that chat (?patient=[&chat=])
   send      --session S --chat C --text T [--site a] [--key K]
   snapshot  --session S --chat C [--site b] [--wait-text T | --wait-failed] [--timeout 90]
   resume    --session S --chat C [--site a]       Try again on the failed run
