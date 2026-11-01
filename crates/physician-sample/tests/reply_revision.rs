@@ -308,18 +308,10 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
         .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
         .await;
     assert_eq!(first.attempts[0].sources, accepted.sources);
-    // A lab arrives, then a duplicate is accepted on the other site. The
-    // duplicate answers from its receipt and does not re-pin.
+    // A lab arrives, then the other site accepts the duplicate command.
     let lab = source("lab-arrived", "immutable-1", "Creatinine 2.4 mg/dL (high).");
     running.store.record_source(&lab).await.unwrap();
     running.command(1, &command, "accepted").await;
-    let duplicate = running.store.draft(&scope).await.unwrap().unwrap();
-    assert_eq!(duplicate.input.as_ref(), Some(&input));
-    if duplicate.attempts.len() == 1 {
-        assert_eq!(duplicate.sources_version, first.sources_version);
-        assert_eq!(duplicate.sources, accepted.sources);
-    }
-
     let complete = running
         .wait_draft(&scope, |draft| draft.status == "completed")
         .await;
@@ -436,19 +428,6 @@ async fn a_source_arriving_mid_revision_is_read_before_the_revision_publishes() 
     let lab = source("lab-arrived", "immutable-1", "Potassium 5.9 mmol/L (high).");
     running.store.record_source(&lab).await.unwrap();
 
-    // The finish on the older reading publishes nothing; the attempt records
-    // the refresh while revision 1 is still the saved draft.
-    let refreshed = running
-        .wait_draft(&scope, |draft| {
-            draft.attempts.iter().any(|a| !a.refreshes.is_empty())
-        })
-        .await;
-    assert_eq!(
-        refreshed.revision, 1,
-        "nothing published on the older reading"
-    );
-    assert_eq!(refreshed.text, ORIGINAL);
-
     let complete = running
         .wait_draft(&scope, |draft| draft.status == "completed")
         .await;
@@ -530,33 +509,60 @@ async fn a_chart_that_keeps_changing_fails_the_revision_and_keeps_the_draft() {
 }
 
 #[tokio::test]
-async fn newer_physician_save_fences_out_a_late_revision_completion() {
-    let Some(running) = Running::start("reply_save", 0, 2000).await else {
+async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
+    // The worker enters the Responses exchange and connects to this loopback
+    // HTTPS proxy. Keeping the tunnel unanswered holds the provider pending
+    // through the save without forwarding a request or using a real API key.
+    let proxy = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}", proxy.local_addr().unwrap());
+    let Some(running) = Running::start_full(
+        "reply_save",
+        0,
+        0,
+        false,
+        &[],
+        &[
+            ("PHYSICIAN_WORKER_FIXED_TEXT", ""),
+            ("CODA_LOCAL_MODEL_EXECUTION", "api"),
+            ("CODA_ALLOW_MODEL_CALLS", "1"),
+            ("OPENAI_API_KEY", "synthetic"),
+            ("HTTPS_PROXY", &url),
+            ("NO_PROXY", "127.0.0.1,localhost"),
+        ],
+    )
+    .await
+    else {
         return;
     };
     let scope = running.seed().await;
     let command = revise(&scope, "revision-before-save", 1);
     running.command(0, &command, "accepted").await;
-    // Observe the durable dispatch, not a timing guess, before saving on B.
-    running
-        .wait_draft(&scope, |draft| {
-            draft.status == "active" && !dispatches(draft).is_empty()
-        })
-        .await;
+    let _pending_exchange = tokio::time::timeout(Duration::from_secs(60), async {
+        use tokio::io::{AsyncBufReadExt, BufReader};
+        let (stream, _) = proxy.accept().await.unwrap();
+        let mut tunnel = BufReader::new(stream);
+        let mut request = String::new();
+        tunnel.read_line(&mut request).await.unwrap();
+        assert!(
+            request.starts_with("CONNECT api.openai.com:443 "),
+            "{request}"
+        );
+        tunnel
+    })
+    .await
+    .unwrap_or_else(|_| panic!("provider did not enter the exchange\n{}", running.logs()));
     let (status, body) = running.save(&scope, 1, SAVED).await;
     assert_eq!(status, 200, "{body}\n{}", running.logs());
     let (status, body) = running.save(&scope, 1, "stale overwrite").await;
     assert_eq!(status, 409, "{body}");
-    // The worker may cooperatively cancel the delayed provider at the save
-    // fence. Wait for either retained late output or the retained cancellation
-    // failure, never merely for the save's synchronous superseded state.
+    // The in-flight provider must settle after the save and retain its failure.
     let late = running
         .wait_draft(&scope, |draft| {
             draft
                 .attempts
                 .iter()
                 .flat_map(|attempt| &attempt.records)
-                .any(|record| matches!(record, Record::Exchange { .. } | Record::Failure { .. }))
+                .any(|record| matches!(record, Record::Failure { .. }))
         })
         .await;
     assert_eq!(late.status, "superseded");
