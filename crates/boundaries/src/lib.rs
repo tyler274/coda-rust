@@ -112,11 +112,12 @@ mod tests {
         }
     }
 
-    /// Pub/Sub mechanics and Gmail transport are shared by both products, so
-    /// they reach no product crate, not even through a test dependency.
+    /// Pub/Sub mechanics, Gmail transport, and the Spruce reader are shared by
+    /// both products, so they reach no product crate, not even through a test
+    /// dependency.
     #[test]
-    fn pubsub_and_gmail_are_product_neutral() {
-        let allowed = ["pubsub", "gmail"];
+    fn pubsub_gmail_and_spruce_are_product_neutral() {
+        let allowed = ["pubsub", "gmail", "spruce"];
         for neutral in allowed {
             for dependency in local_closure(neutral) {
                 assert!(

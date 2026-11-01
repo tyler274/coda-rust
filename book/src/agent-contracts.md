@@ -101,6 +101,9 @@ When porting a submodule behavior into a crate:
 - The Coda Agents invariants and failure doctrine govern the physician owners:
   `patient-work`, `local-product`, `physician-auth`, and `physician-app`.
 - The Duet intelligence boundary governs `duet-api` and `duet-app`.
+- `spruce` is a read-only Spruce REST reader and change cursor. Products own
+  the stored cursor, patient linking, and effects. It does not send and it
+  does not keep a ledger.
 - `harness` and its neutral supporting libraries, including the `agent-skills`
   loader, share product-neutral execution mechanics.
   Common execution-integrity and failure-isolation invariants apply to both
