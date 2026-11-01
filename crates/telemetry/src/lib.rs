@@ -24,7 +24,7 @@ use std::time::Duration;
 use axum::extract::MatchedPath;
 use http::{HeaderMap, Request, Response};
 use opentelemetry::propagation::Extractor;
-use opentelemetry::trace::{SpanId, TraceId, TracerProvider as _};
+use opentelemetry::trace::{SpanId, TraceContextExt, TraceId, TracerProvider as _};
 use opentelemetry::{KeyValue, global};
 use opentelemetry_sdk::Resource;
 use opentelemetry_sdk::propagation::TraceContextPropagator;
@@ -34,7 +34,7 @@ use tower_http::classify::{ServerErrorsAsFailures, SharedClassifier};
 use tower_http::trace::{MakeSpan, OnResponse, TraceLayer};
 use tracing::field::{Field, Visit};
 use tracing::{Event, Span, Subscriber};
-use tracing_opentelemetry::{OpenTelemetrySpanExt, OtelData};
+use tracing_opentelemetry::OpenTelemetrySpanExt;
 use tracing_subscriber::EnvFilter;
 use tracing_subscriber::fmt::format::Writer;
 use tracing_subscriber::fmt::time::{FormatTime, SystemTime};
@@ -207,14 +207,24 @@ where
             line.insert("dd.version".into(), Value::String(version.clone()));
         }
         if let Some(span) = ctx.lookup_current() {
-            line.insert("span".into(), Value::String(span.name().to_owned()));
-            let extensions = span.extensions();
-            if let Some(data) = extensions.get::<OtelData>()
-                && let (Some(trace_id), Some(span_id)) = (data.trace_id(), data.span_id())
-                && trace_id != TraceId::INVALID
-            {
-                line.insert("dd.trace_id".into(), Value::String(dd_trace_id(trace_id)));
-                line.insert("dd.span_id".into(), Value::String(dd_span_id(span_id)));
+            let name = span.name().to_owned();
+            let span_id = span.id();
+            drop(span);
+            line.insert("span".into(), Value::String(name));
+            let context = tracing::dispatcher::get_default(|dispatch| {
+                tracing_opentelemetry::get_otel_context(&span_id, dispatch)
+            });
+            if let Some(context) = context {
+                let otel_span = context.span();
+                let span_context = otel_span.span_context();
+                let trace_id = span_context.trace_id();
+                if trace_id != TraceId::INVALID {
+                    line.insert("dd.trace_id".into(), Value::String(dd_trace_id(trace_id)));
+                    line.insert(
+                        "dd.span_id".into(),
+                        Value::String(dd_span_id(span_context.span_id())),
+                    );
+                }
             }
         }
         let mut fields = Map::new();
