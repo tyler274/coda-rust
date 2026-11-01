@@ -9,6 +9,7 @@ from datetime import datetime
 import json
 import os
 import queue
+import re
 import threading
 import time
 import uuid
@@ -24,13 +25,30 @@ from slack_interactions import (APPROVALS, QUESTIONS, action_block, answer_modal
                                 async_questions, request_text, tool_approval)
 from slack_render import STATUS_REACTIONS, chunks, markdown_payload, render_native, run_status, thread_root_payload
 
+CONTROL_WORDS = frozenset(('approve', 'deny', 'answer'))
+REQUEST_TOKEN = re.compile(r'[0-9a-fA-F]{8}\Z')
+
 
 def human_message(event, channel):
+    # Slack history keeps an edited message under its original timestamp and
+    # sets `edited`. A live edit arrives separately as subtype message_changed.
     return (event.get('type', 'message') == 'message'
             and event.get('channel') == channel and bool(event.get('user'))
             and not event.get('subtype')
-            and not event.get('bot_id') and not event.get('edited')
+            and not event.get('bot_id')
             and bool(event.get('text', '').strip()))
+
+
+def control_command(words, requests):
+    """Approve, deny, and answer apply only to a pending request token."""
+    if len(words) < 2 or words[0].lower() not in CONTROL_WORDS:
+        return False
+    token = words[1]
+    return token in requests or REQUEST_TOKEN.fullmatch(token) is not None
+
+
+def definite_rejection(error):
+    return isinstance(error, RpcError) and not error.lost
 
 
 def admitted(event, root, channel, slack_started=False):
@@ -148,11 +166,19 @@ class Bridge:
         if root:
             arguments['thread_ts'] = root
             arguments['reply_broadcast'] = False
-        result = self.web.chat_postMessage(**arguments)
+        try:
+            result = self.web.chat_postMessage(**arguments)
+        except SlackApiError:
+            # Slack answered. A later send must not stay blocked on this refusal.
+            self.state.data['pending_post'] = None
+            self.state.save()
+            raise
         # Slack owns Markdown rendering and normalizes the returned text. Its
         # successful channel/timestamp acknowledgement confirms this submission;
         # comparing rendered text to Markdown would misclassify a successful send.
-        if not result.get('ok') or result['channel'] != self.channel or not result.get('ts'):
+        if not result.get('ok') or result.get('channel') != self.channel or not result.get('ts'):
+            self.state.data['pending_post'] = None
+            self.state.save()
             raise RuntimeError('Slack did not confirm delivery to the intended channel')
         # Caller records the routing/cursor and clears this in the same save.
         return result['ts']
@@ -216,7 +242,13 @@ class Bridge:
         # creating another native conversation after a lost acknowledgement.
         self.state.data['pending_start'] = {'root': root, 'message': event['ts'], 'user': event['user']}
         self.state.save()
-        thread = self.codex.call('thread/start', params)['thread']
+        try:
+            thread = self.codex.call('thread/start', params)['thread']
+        except RpcError as error:
+            if definite_rejection(error):
+                self.state.data['pending_start'] = None
+                self.state.save()
+            raise
         ident = thread['id']
         self.state.data['routes'][ident] = {
             'thread_id': ident, 'created_at': thread['createdAt'] * 1000,
@@ -425,7 +457,7 @@ class Bridge:
         mentioned = f'<@{self.bot_user}>' in event['text']
         text = event['text'].replace(f'<@{self.bot_user}>', '').strip()
         words = text.split(maxsplit=2)
-        control = bool(words) and words[0].lower() in ('approve', 'deny', 'answer') and len(words) >= 2
+        control = control_command(words, self.requests)
         if not mentioned and text.lower() != 'stop' and not control:
             return
         if route['pending_input']:
@@ -472,20 +504,26 @@ class Bridge:
         active = next((t for t in reversed(thread['turns']) if t['status'] == 'inProgress'), None)
         route['pending_input'] = receipt
         self.state.save()
-        if stop:
-            if active:
-                self.codex.call('turn/interrupt', {'threadId': ident, 'turnId': active['id']})
-        elif active:
-            self.codex.call('turn/steer', {'threadId': ident, 'expectedTurnId': active['id'],
-                                         'clientUserMessageId': client_id,
-                                         'input': [{'type': 'text', 'text': context}]})
-        else:
-            turn = self.codex.call('turn/start', {'threadId': ident,
-                'clientUserMessageId': client_id,
-                'input': [{'type': 'text', 'text': context}]})['turn']
-            # The native response already owns the accepted turn's status. A
-            # brand-new session file may not be readable until its first save.
-            thread = {**thread, 'turns': [*thread['turns'], turn]}
+        try:
+            if stop:
+                if active:
+                    self.codex.call('turn/interrupt', {'threadId': ident, 'turnId': active['id']})
+            elif active:
+                self.codex.call('turn/steer', {'threadId': ident, 'expectedTurnId': active['id'],
+                                             'clientUserMessageId': client_id,
+                                             'input': [{'type': 'text', 'text': context}]})
+            else:
+                turn = self.codex.call('turn/start', {'threadId': ident,
+                    'clientUserMessageId': client_id,
+                    'input': [{'type': 'text', 'text': context}]})['turn']
+                # The native response already owns the accepted turn's status. A
+                # brand-new session file may not be readable until its first save.
+                thread = {**thread, 'turns': [*thread['turns'], turn]}
+        except RpcError as error:
+            if definite_rejection(error):
+                route['pending_input'] = None
+                self.state.save()
+            raise
         if receipt.get('ts'):
             route['cursor'] = receipt['ts']
         route['pending_input'] = None
