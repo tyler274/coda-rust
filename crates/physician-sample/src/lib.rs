@@ -14,6 +14,7 @@
 
 mod auth;
 mod care;
+pub mod chart_load;
 mod chat_draft;
 pub mod durable;
 mod gmail;

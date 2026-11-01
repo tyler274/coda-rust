@@ -4,8 +4,8 @@
 //! `CODA_HOSTED` is set) start only under the explicit staging-preview profile:
 //! `CODA_ENVIRONMENT=stg`, `CODA_HOSTED_PROFILE=staging-preview`,
 //! `PHYSICIAN_AUTH=required` and `PHYSICIAN_DATABASE_URL`. Production and every
-//! other combination refuse to start. The profile serves the recorded synthetic
-//! practice behind IAP; it is not a clinical-data qualification.
+//! other combination refuse to start. The profile serves the synthetic practice
+//! behind IAP; it is not a clinical-data qualification.
 
 /// The only hosted profile this binary will start under.
 pub const STAGING_PROFILE: &str = "staging-preview";
@@ -110,6 +110,23 @@ pub fn staging_accounts(
         .collect()
 }
 
+/// The folder of built synthetic charts `load-charts` reads. Any profile but
+/// staging-preview refuses the load: synthetic patients never enter another
+/// profile's database.
+pub fn synthetic_charts(
+    get: impl Fn(&str) -> Option<String>,
+) -> Result<std::path::PathBuf, String> {
+    if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
+        return Err(format!(
+            "load-charts only runs under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+        ));
+    }
+    get("PHYSICIAN_SYNTHETIC_CHARTS")
+        .filter(|path| !path.trim().is_empty())
+        .map(Into::into)
+        .ok_or_else(|| "PHYSICIAN_SYNTHETIC_CHARTS is required".to_owned())
+}
+
 /// Stable physician id for one staging email.
 ///
 /// The readable slug is not unique (`a.b@c` and `a-b@c` share it), so a short
@@ -202,6 +219,21 @@ mod tests {
                 .find(|(key, _)| *key == name)
                 .map(|(_, value)| (*value).to_owned())
         })
+    }
+
+    #[test]
+    fn synthetic_charts_load_only_under_the_preview_profile() {
+        let charts = |profile: Option<&str>| {
+            synthetic_charts(|key| match key {
+                "PHYSICIAN_SYNTHETIC_CHARTS" => Some("/charts".to_owned()),
+                "CODA_HOSTED_PROFILE" => profile.map(str::to_owned),
+                _ => None,
+            })
+        };
+        for profile in [Some("production"), Some(""), None] {
+            assert!(charts(profile).is_err(), "{profile:?}");
+        }
+        assert_eq!(charts(Some(STAGING_PROFILE)), Ok("/charts".into()));
     }
 
     #[test]

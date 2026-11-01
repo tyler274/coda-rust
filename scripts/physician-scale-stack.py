@@ -36,8 +36,8 @@ CHANNEL = "physician:workspace-events:v1"
 PRACTICE = "roger-synthetic-practice"
 PHYSICIAN = "staging-physician"
 EMAIL = "physician@codahealth.test"
-# Mary Louis: on the seeded panel and reachable from Today's `Open Mary Louis`.
-WORKSPACE = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"
+# Abigail Lemieux: a bank patient on the staging panel.
+WORKSPACE = "pw-2a995cfc98bbfd3c4e6c1d7492ee6998"
 FIXED_TEXT = "Noted."
 HOSTED = ("K_SERVICE", "K_REVISION", "CLOUD_RUN_JOB", "CODA_HOSTED", "GAE_ENV")
 # Deliberately do not inherit Doppler, Google ADC, model keys, database URLs,
@@ -412,6 +412,10 @@ def run(args, root, evidence):
             binary = args.bin_dir.resolve()
             subprocess.run([str(binary / "physician-migrate")], env=stack.env | shared, check=True)
             seed_account(stack, database)
+            # The practice's patients come from the chart load.
+            subprocess.run([str(binary / "physician-migrate"), "load-charts"], check=True, env=stack.env | shared | {
+                "CODA_HOSTED_PROFILE": "staging-preview",
+                "PHYSICIAN_SYNTHETIC_CHARTS": str(args.charts.resolve())})
             worker_env = shared | {
                 "PHYSICIAN_WORKER_LISTEN_ADDR": f"127.0.0.1:{worker}",
                 "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}",
@@ -431,7 +435,6 @@ def run(args, root, evidence):
             site_env = dict(shared)
             if args.site_dir:
                 site_env["PHYSICIAN_SITE_DIR"] = str(args.site_dir.resolve())
-            # One site at a time: each seeds the synthetic panel on startup.
             for name, port in (("site-a", site_a), ("site-b", site_b)):
                 stack.start(name, [str(binary / "physician-sample")], site_env | {
                     "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{port}"})
@@ -504,6 +507,8 @@ def main():
     parser.add_argument("--site-dir", type=Path, default=None,
                         help="wasm-bindgen output for the page (PHYSICIAN_SITE_DIR); "
                              "the sites fall back to target/physician-web")
+    parser.add_argument("--charts", type=Path, default=Path("target/patient-bank/bank"),
+                        help="built synthetic charts (cargo run -p patient-bank -- build)")
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
                         help="PHYSICIAN_WORKER_FIXED_FAILURES: the worker's first N provider calls "
                              "fail; 5 dead-letters the first turn")

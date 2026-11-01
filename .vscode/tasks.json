@@ -12,9 +12,9 @@
       "problemMatcher": []
     },
     {
-      "label": "physician page (recorded)",
+      "label": "local practice",
       "type": "shell",
-      "command": "nix develop -c cargo run -p physician-sample",
+      "command": "nix develop -c bash -c 'createdb -h 127.0.0.1 -p 5433 -U coda physician 2>/dev/null; PHYSICIAN_DATABASE_URL=postgres://coda@127.0.0.1:5433/physician scripts/local-practice.sh'",
       "options": { "cwd": "/workspace" },
       "isBackground": true,
       "problemMatcher": []
