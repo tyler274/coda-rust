@@ -487,6 +487,19 @@ impl MemoryAuthStore {
         );
     }
 
+    /// Registers one patient directly, for fixtures and the staging practice.
+    pub fn seed_patient(&self, practice_id: &str, patient_workspace_id: &str) {
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        state
+            .patients
+            .insert(patient_workspace_id.to_owned(), practice_id.to_owned());
+        state
+            .cadences
+            .entry(patient_workspace_id.to_owned())
+            .or_insert(ReviewCadence::Weekly);
+    }
+
     /// Creates one practice directly, for fixtures and the staging practice.
     /// A practice that already exists keeps its clock.
     pub fn seed_practice(&self, practice_id: &str, clock: PracticeClock) {
@@ -830,15 +843,7 @@ impl AuthStore for MemoryAuthStore {
     }
 
     async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
-        let _announce = self.announce();
-        let mut state = self.state.lock().expect("auth state");
-        state
-            .patients
-            .insert(patient_workspace_id.to_owned(), practice_id.to_owned());
-        state
-            .cadences
-            .entry(patient_workspace_id.to_owned())
-            .or_insert(ReviewCadence::Weekly);
+        self.seed_patient(practice_id, patient_workspace_id);
     }
 
     async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {

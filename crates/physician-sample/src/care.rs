@@ -45,6 +45,9 @@ impl ConnectedCare {
     pub(crate) fn new() -> Self {
         let store = Arc::new(MemoryAuthStore::new());
         store.seed_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK);
+        for workspace in crate::WORKSPACE_IDS {
+            store.seed_patient(STAGING_PRACTICE_ID, workspace);
+        }
         store.seed_account(
             STAGING_PRACTICE_ID,
             "staging-physician",
@@ -137,9 +140,19 @@ impl ConnectedCare {
     }
 }
 
+/// Whether `id` is a patient registered to the signed-in practice.
+async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> bool {
+    let Some(care) = extensions.get::<ConnectedCare>() else {
+        return false;
+    };
+    let store = care.auth_store(extensions);
+    let identity = ConnectedCare::identity(extensions);
+    store.patient_practice(id).await.as_deref() == Some(identity.practice_id.as_str())
+}
+
 /// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet (`ENG-48`).
 pub(crate) async fn invite_patient(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -197,7 +210,7 @@ pub(crate) async fn accept_patient_invitation(request: Request<Body>) -> Respons
 
 /// Reads the front-door link, versioned consent state, and review cadence (`ENG-48`).
 pub(crate) async fn get_patient_link(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -220,7 +233,7 @@ pub(crate) async fn put_patient_consent(
     Path(id): Path<String>,
     request: Request<Body>,
 ) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -255,7 +268,7 @@ pub(crate) async fn put_patient_consent(
 
 /// Revokes `"share with my physician"` consent in one step (`stop sharing`, `ENG-47`).
 pub(crate) async fn post_stop_sharing(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -287,7 +300,7 @@ pub(crate) async fn put_patient_cadence(
     Path(id): Path<String>,
     request: Request<Body>,
 ) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -339,7 +352,7 @@ struct DuetSyncBody {
 /// This legacy route is not an authenticated patient-origin feed.
 /// Refuses with 403 when the preview consent gate is not active.
 pub(crate) async fn post_duet_sync(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -385,7 +398,7 @@ pub(crate) async fn post_duet_sync(Path(id): Path<String>, request: Request<Body
 
 /// Reads the current doctor's plan draft and approval state (`ENG-53`).
 pub(crate) async fn get_plan(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -413,7 +426,7 @@ struct SavePlanDraftBody {
 
 /// Saves or edits the doctor's plan draft (`ENG-53`). Any edit invalidates prior approval.
 pub(crate) async fn put_plan_draft(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
@@ -462,7 +475,7 @@ struct ApprovePlanBody {
 
 /// Approves the exact visible text of the doctor's plan (`ENG-53`).
 pub(crate) async fn post_approve_plan(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if crate::workspace_body(&id).is_none() {
+    if !on_roster(request.extensions(), &id).await {
         return StatusCode::NOT_FOUND.into_response();
     }
     let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {

@@ -1256,9 +1256,11 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    if caller.practice_id != STAGING_PRACTICE_ID
-        || !crate::WORKSPACE_IDS.contains(&body.patient_workspace_id.as_str())
-    {
+    let owner = auth
+        .store
+        .patient_practice(&body.patient_workspace_id)
+        .await;
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let patient = RosterPatient {
@@ -1343,9 +1345,8 @@ async fn patient_front_door(
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    if caller.practice_id != STAGING_PRACTICE_ID
-        || !crate::WORKSPACE_IDS.contains(&patient_workspace_id.as_str())
-    {
+    let owner = auth.store.patient_practice(&patient_workspace_id).await;
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let patient = RosterPatient {
@@ -2111,6 +2112,38 @@ mod tests {
         let json: Value = serde_json::from_str(&demo_body).expect("demographic body");
         assert_eq!(json["membership"], "clinic_demographic");
         assert!(json["patient_synopsis"].is_null());
+    }
+
+    #[tokio::test]
+    async fn a_patient_exists_once_registered_to_the_practice() {
+        let (app, store, _) = authed_recorded().await;
+        let session = session_for(&app, STAGING_EMAIL).await;
+        let physician = PhysicianIdentity {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            physician_id: "staging-physician".to_owned(),
+        };
+        store
+            .set_membership(&physician, "pw-chart", Membership::Allowed)
+            .await;
+        store
+            .set_membership(&physician, "pw-elsewhere", Membership::Allowed)
+            .await;
+        store
+            .register_patient("northside-clinic", "pw-elsewhere")
+            .await;
+        let link = async |workspace: &str| {
+            let path = format!("/patient-workspaces/{workspace}/link");
+            send(&app, Method::GET.as_str(), &path, Some(&session), None)
+                .await
+                .0
+        };
+
+        assert_eq!(link("pw-chart").await, StatusCode::NOT_FOUND);
+        assert_eq!(link("pw-elsewhere").await, StatusCode::NOT_FOUND);
+        store
+            .register_patient(STAGING_PRACTICE_ID, "pw-chart")
+            .await;
+        assert_eq!(link("pw-chart").await, StatusCode::OK);
     }
 
     #[tokio::test]
