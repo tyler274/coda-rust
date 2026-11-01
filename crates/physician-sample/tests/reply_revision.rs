@@ -308,8 +308,7 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
         .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
         .await;
     assert_eq!(first.attempts[0].sources, accepted.sources);
-    // A lab arrives, then a duplicate is accepted on the other site. The
-    // duplicate answers from its receipt and does not re-pin.
+    // A lab arrives, then the other site accepts the duplicate command.
     let lab = source("lab-arrived", "immutable-1", "Creatinine 2.4 mg/dL (high).");
     running.store.record_source(&lab).await.unwrap();
     running.command(1, &command, "accepted").await;
