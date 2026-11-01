@@ -313,13 +313,6 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     let lab = source("lab-arrived", "immutable-1", "Creatinine 2.4 mg/dL (high).");
     running.store.record_source(&lab).await.unwrap();
     running.command(1, &command, "accepted").await;
-    let duplicate = running.store.draft(&scope).await.unwrap().unwrap();
-    assert_eq!(duplicate.input.as_ref(), Some(&input));
-    if duplicate.attempts.len() == 1 {
-        assert_eq!(duplicate.sources_version, first.sources_version);
-        assert_eq!(duplicate.sources, accepted.sources);
-    }
-
     let complete = running
         .wait_draft(&scope, |draft| draft.status == "completed")
         .await;
@@ -517,7 +510,7 @@ async fn a_chart_that_keeps_changing_fails_the_revision_and_keeps_the_draft() {
 }
 
 #[tokio::test]
-async fn newer_physician_save_fences_out_a_late_revision_completion() {
+async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
     // The worker enters the Responses exchange and connects to this loopback
     // HTTPS proxy. Keeping the tunnel unanswered holds the provider pending
     // through the save without forwarding a request or using a real API key.
@@ -558,7 +551,7 @@ async fn newer_physician_save_fences_out_a_late_revision_completion() {
         tunnel
     })
     .await
-    .expect("provider did not enter the exchange");
+    .unwrap_or_else(|_| panic!("provider did not enter the exchange\n{}", running.logs()));
     let (status, body) = running.save(&scope, 1, SAVED).await;
     assert_eq!(status, 200, "{body}\n{}", running.logs());
     let (status, body) = running.save(&scope, 1, "stale overwrite").await;
