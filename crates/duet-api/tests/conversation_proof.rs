@@ -976,6 +976,7 @@ async fn durable_tool_recovery_memory_and_permission_fences() {
         entity: duet_wire::models::addressed_record_revision::Entity::HealthEvidence,
         expected_revision: None,
         source_generation: None,
+        operation: Default::default(),
         payload: json!({"concept_id":"test","measured_at":"2026-10-20T00:00:00Z","source":{"kind":"manual"},"value":{"literal":"<0.03","unit":"mg/dL"}}),
     };
     let address = evidence.ingest(&c, &mutation).await.unwrap();

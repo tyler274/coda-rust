@@ -27,6 +27,7 @@ Method | HTTP request | Description
 [**health_health_get**](DefaultApi.md#health_health_get) | **GET** /health | Health
 [**health_records_source_api_evidence_health_records_get**](DefaultApi.md#health_records_source_api_evidence_health_records_get) | **GET** /api/evidence/health-records | Health Records Source
 [**ingest_canonical_evidence**](DefaultApi.md#ingest_canonical_evidence) | **POST** /api/canonical-evidence |
+[**ingest_canonical_evidence_batch**](DefaultApi.md#ingest_canonical_evidence_batch) | **POST** /api/canonical-evidence/batch |
 [**ingest_evidence_api_evidence_post**](DefaultApi.md#ingest_evidence_api_evidence_post) | **POST** /api/evidence | Ingest Evidence
 [**portal_organizations_api_connectors_portals_organizations_get**](DefaultApi.md#portal_organizations_api_connectors_portals_organizations_get) | **GET** /api/connectors/portals/organizations | Portal Organizations
 [**portal_status_api_connectors_portals_get**](DefaultApi.md#portal_status_api_connectors_portals_get) | **GET** /api/connectors/portals | Portal Status
@@ -688,6 +689,34 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**models::CanonicalSourceAddress**](CanonicalSourceAddress.md)
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## ingest_canonical_evidence_batch
+
+> models::CanonicalEvidenceBatchResult ingest_canonical_evidence_batch(canonical_evidence_batch)
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**canonical_evidence_batch** | [**CanonicalEvidenceBatch**](CanonicalEvidenceBatch.md) |  | [required] |
+
+### Return type
+
+[**models::CanonicalEvidenceBatchResult**](CanonicalEvidenceBatchResult.md)
 
 ### Authorization
 

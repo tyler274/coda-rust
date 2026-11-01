@@ -79,6 +79,10 @@ const MIGRATIONS: &[(&str, &str)] = &[
         "0017_conversation_steers",
         include_str!("../migrations/0017_conversation_steers.sql"),
     ),
+    (
+        "0018_source_authority",
+        include_str!("../migrations/0018_source_authority.sql"),
+    ),
 ];
 
 fn refused(message: &str) -> sqlx::Error {

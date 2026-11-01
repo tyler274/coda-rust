@@ -44,6 +44,7 @@ fn measurement(day: i64, value: f64, issuer: &str) -> EvidenceMutation {
         entity: Entity::HealthEvidence,
         expected_revision: None,
         source_generation: Some(0),
+        operation: Default::default(),
         payload: json!({"id":id,"concept_id":"steps","display_name":"Steps","verification":"verified","method":"daily_aggregate","measured_interval":{"start":at},"source":{"kind":"appleHealth","connection_id":"phone","issuer":issuer,"provenance":"native"},"value":{"type":"quantity","quantity":{"canonical_value":value,"canonical_unit":"count"}},"context":{"aggregation":"daily_sum","day_timezone":"UTC","day_partial":false}}),
     }
 }

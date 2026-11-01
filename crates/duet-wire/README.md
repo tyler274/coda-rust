@@ -63,6 +63,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**health_health_get**](docs/DefaultApi.md#health_health_get) | **GET** /health | Health
 *DefaultApi* | [**health_records_source_api_evidence_health_records_get**](docs/DefaultApi.md#health_records_source_api_evidence_health_records_get) | **GET** /api/evidence/health-records | Health Records Source
 *DefaultApi* | [**ingest_canonical_evidence**](docs/DefaultApi.md#ingest_canonical_evidence) | **POST** /api/canonical-evidence |
+*DefaultApi* | [**ingest_canonical_evidence_batch**](docs/DefaultApi.md#ingest_canonical_evidence_batch) | **POST** /api/canonical-evidence/batch |
 *DefaultApi* | [**ingest_evidence_api_evidence_post**](docs/DefaultApi.md#ingest_evidence_api_evidence_post) | **POST** /api/evidence | Ingest Evidence
 *DefaultApi* | [**portal_organizations_api_connectors_portals_organizations_get**](docs/DefaultApi.md#portal_organizations_api_connectors_portals_organizations_get) | **GET** /api/connectors/portals/organizations | Portal Organizations
 *DefaultApi* | [**portal_status_api_connectors_portals_get**](docs/DefaultApi.md#portal_status_api_connectors_portals_get) | **GET** /api/connectors/portals | Portal Status
@@ -168,8 +169,12 @@ Class | Method | HTTP request | Description
  - [CanonicalContextCapture](docs/CanonicalContextCapture.md)
  - [CanonicalContextProjection](docs/CanonicalContextProjection.md)
  - [CanonicalContextUpload](docs/CanonicalContextUpload.md)
+ - [CanonicalEvidenceBatch](docs/CanonicalEvidenceBatch.md)
+ - [CanonicalEvidenceBatchResult](docs/CanonicalEvidenceBatchResult.md)
  - [CanonicalEvidenceChange](docs/CanonicalEvidenceChange.md)
+ - [CanonicalEvidenceItemOutcome](docs/CanonicalEvidenceItemOutcome.md)
  - [CanonicalEvidenceMutation](docs/CanonicalEvidenceMutation.md)
+ - [CanonicalEvidenceRejection](docs/CanonicalEvidenceRejection.md)
  - [CanonicalEvidenceSnapshot](docs/CanonicalEvidenceSnapshot.md)
  - [CanonicalExactEvidence](docs/CanonicalExactEvidence.md)
  - [CanonicalRecordRevision](docs/CanonicalRecordRevision.md)
