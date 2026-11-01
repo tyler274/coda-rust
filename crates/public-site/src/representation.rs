@@ -11,7 +11,10 @@ pub const HTML_CACHE: &str = "public, max-age=300, s-maxage=3600, stale-while-re
 pub const IMMUTABLE_CACHE: &str = "public, max-age=31536000, immutable";
 
 pub fn digest(bytes: &[u8]) -> String {
-    format!("{:x}", Sha256::digest(bytes))
+    Sha256::digest(bytes)
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect()
 }
 
 #[derive(Clone, Debug)]
@@ -207,6 +210,14 @@ mod tests {
         headers.insert(header::ACCEPT_ENCODING, value.parse().unwrap());
         negotiate(&headers)
     }
+    #[test]
+    fn digest_is_lowercase_sha256() {
+        assert_eq!(
+            digest(b"abc"),
+            "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+        );
+    }
+
     #[test]
     fn gzip_vector_crc_round_trip() {
         // Exercise vectorized CRC folding, which short strings do not reach.
