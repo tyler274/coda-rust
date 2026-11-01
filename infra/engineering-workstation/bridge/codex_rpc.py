@@ -12,6 +12,8 @@ from websockets.exceptions import ConnectionClosed
 class RpcError(RuntimeError):
     def __init__(self, method, error):
         self.code = error.get('code')
+        # A closed socket did not return a result. A server error object did.
+        self.lost = bool(error.get('lost'))
         super().__init__(f'{method}: {error.get("message", "unknown error")}')
 
 
@@ -40,7 +42,9 @@ class Rpc:
         finally:
             self.closed.set()
             for response in list(self.pending.values()):
-                response.put({'error': {'message': 'Codex connection closed; inspect before retrying'}})
+                response.put({'error': {
+                    'message': 'Codex connection closed; inspect before retrying', 'lost': True,
+                }})
 
     def call(self, method, params, timeout=30):
         ident = next(self.ids)

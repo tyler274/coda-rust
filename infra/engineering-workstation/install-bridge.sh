@@ -38,6 +38,10 @@ autostart.parent.mkdir(parents=True, exist_ok=True)
 autostart.write_text('[Desktop Entry]\nType=Application\nName=Codex workstation\nExec=' + str(start)
                      + '\nTerminal=false\nX-GNOME-Autostart-enabled=true\n')
 PY
+"$bridge_dir/.venv/bin/python" "$recipe_dir/bridge/client_setup.py" mcp \
+  --config "$HOME/.codex/config.toml" \
+  --python "$bridge_dir/.venv/bin/python" \
+  --bridge "$bridge_dir"
 systemctl --user daemon-reload
 # Credential retrieval belongs to native startup. A separate preflight exchange
 # can consume the same GCE OIDC token that Doppler would see at startup.

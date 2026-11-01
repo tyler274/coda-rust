@@ -63,7 +63,9 @@ request and the task's agreed scope to decide what to do; ask when conflicting
 directions leave a material decision unresolved.
 
 Use `slack-history` to read or search the configured channel when broader context
-would help. Start with the supplied thread, search for relevant terms, then read
+would help. The bridge installer registers that read-only server with Codex. If
+it is not registered, say so and use the transcript already included with this
+turn. Start with the supplied thread, search for relevant terms, then read
 the exact source thread. `read_channel_context` resolves names, channel visibility
 and current membership from Slack. Follow pagination as far back as needed;
 there is no fixed lookback. Search is case-insensitive literal text over messages
@@ -82,12 +84,15 @@ For channel-specific composition, use the shared workstation-communication skill
 
 ## Company GitHub access
 
-For `Coda-Health/coda-rust`, use the `github-company` MCP tools or `coda-gh`
-for GitHub CLI commands. The company app's installed repository grants govern
-access. The integration requests Contents and Pull requests write access and
-Actions read access, including completed job logs. Normal HTTPS Git uses the
-installed company credential helper. If access fails, report the missing grant;
-do not sign in as a person or switch to personal credentials.
+For `Coda-Health/coda-rust`, use `coda-gh` for GitHub CLI commands. Use the
+`github-company` MCP tools when the bridge installer has registered that server.
+The company app's installed repository grants govern access. The integration
+requests Contents and Pull requests write access and Actions read access,
+including completed job logs. The client installer registers the company
+credential helper only for `https://github.com/Coda-Health/coda-rust`. Other
+repositories keep their existing Git credentials. If `github-company` is not
+registered, publication goes through `coda-gh`. If access fails, report the
+missing grant; do not sign in as a person or switch to personal credentials.
 
 For an authorized change, prepare the patch and tests in an isolated checkout
 when concurrent work warrants it. Show the change, verification, target branch,

@@ -95,6 +95,13 @@ def run_status(thread, needs_input=False):
             'interrupted': 'Stopped'}.get(turn['status'], f'Status: {turn["status"]}')
 
 
+def header_text(title, limit=150):
+    """Slack rejects a header block whose plain text is longer than 150 characters."""
+    if len(title) <= limit:
+        return title
+    return title[:limit - 1] + '…'
+
+
 def thread_root_payload(title, timestamp, status, owner, availability):
     started = f'Started {timestamp:%a, %b %-d · %-I:%M %p %Z}'
     instructions = f'Mention the agent in a reply to contribute, or send `stop` to interrupt. Workstation owner: <@{owner}>.'
@@ -102,7 +109,7 @@ def thread_root_payload(title, timestamp, status, owner, availability):
     return {
         'text': f'{title}\n{started}\n\n{observed}\n\n{instructions}\n\n{availability}',
         'blocks': [
-            {'type': 'header', 'text': {'type': 'plain_text', 'text': title}},
+            {'type': 'header', 'text': {'type': 'plain_text', 'text': header_text(title)}},
             {'type': 'context', 'elements': [{'type': 'plain_text', 'text': started}]},
             {'type': 'section', 'text': {'type': 'mrkdwn', 'text': observed}},
             {'type': 'section', 'text': {'type': 'mrkdwn', 'text': instructions}},

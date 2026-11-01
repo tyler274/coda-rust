@@ -1,6 +1,8 @@
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import unittest
 
-from slack_render import chunks, render_native
+from slack_render import chunks, render_native, thread_root_payload
 
 
 class RenderingTests(unittest.TestCase):
@@ -29,6 +31,15 @@ class RenderingTests(unittest.TestCase):
         parts = chunks(text, size=len(first) + 20)
         self.assertEqual(''.join(parts), text)
         self.assertTrue(any(location in part for part in parts))
+
+    def test_status_header_stays_within_slack_limit(self):
+        title = 'Reviewed migration ' * 12
+        payload = thread_root_payload(title, datetime(2026, 10, 31, 9, 0, tzinfo=ZoneInfo('Europe/London')),
+                                      'Working', 'UOWNER', 'Available during the chosen working hours.')
+        header = payload['blocks'][0]['text']['text']
+        self.assertLessEqual(len(header), 150)
+        self.assertTrue(header.endswith('…'))
+        self.assertIn(title, payload['text'])
 
 
 if __name__ == '__main__':

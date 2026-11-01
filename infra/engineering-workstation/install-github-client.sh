@@ -24,4 +24,8 @@ for name, mode in (('git-credential-coda-company', 'git-credential'), ('coda-gh'
     launcher.write_text('#!/bin/sh\nexec ' + shlex.join(arguments) + ' "$@"\n')
     launcher.chmod(0o700)
 PY
-echo 'Company clients installed. Prove fetch and CI logs before changing credential helpers or personal authentication.'
+"$bridge_dir/.venv/bin/python" "$recipe_dir/bridge/client_setup.py" git \
+  --repository "$1" \
+  --helper "$HOME/.local/bin/git-credential-coda-company" \
+  --gitconfig "$HOME/.gitconfig"
+echo "Company Git helper registered for https://github.com/$1 only. Prove fetch and CI logs before removing personal authentication."
