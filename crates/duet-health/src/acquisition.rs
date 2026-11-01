@@ -12,7 +12,9 @@ use serde_json::{Map, Value};
 /// Phone sources that may write canonical evidence from a device.
 ///
 /// The names are the server's device source kinds. Android Health Connect has
-/// no server source kind yet; it stays out of the uploader until one exists.
+/// no server source kind yet: [`PhoneSource::HealthConnect`] exists so the
+/// gated adapter can name itself, but it stays out of the uploader until the
+/// server accepts it and its type scope is agreed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum PhoneSource {
     /// HealthKit samples (`appleHealth`).
@@ -21,6 +23,10 @@ pub enum PhoneSource {
     /// HealthKit clinical records on the phone (`healthRecords`).
     #[serde(rename = "healthRecords")]
     HealthRecords,
+    /// Android Health Connect (`healthConnect`). Not accepted by the server
+    /// yet; acquisition is gated off by default.
+    #[serde(rename = "healthConnect")]
+    HealthConnect,
 }
 
 impl PhoneSource {
@@ -29,6 +35,7 @@ impl PhoneSource {
         match self {
             Self::AppleHealth => "appleHealth",
             Self::HealthRecords => "healthRecords",
+            Self::HealthConnect => "healthConnect",
         }
     }
 }
@@ -178,6 +185,9 @@ pub enum CoverageError {
     },
     /// The data type is not supported on this device or OS version.
     Unsupported,
+    /// Acquisition for this source is deliberately disabled in this build
+    /// (e.g. Health Connect pending its agreed type scope). Never "empty".
+    NotEnabled,
 }
 
 /// Per-type result of one read. Only [`CoverageOutcome::Data`] and

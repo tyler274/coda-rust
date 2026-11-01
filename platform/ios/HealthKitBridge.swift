@@ -33,6 +33,209 @@ private func copyString(_ value: String) -> UnsafeMutablePointer<CChar>? {
     value.withCString { strdup($0) }
 }
 
+// MARK: - Durable acquisition (duet_health::native_adapters)
+
+/// `1` when HealthKit can be queried on this device.
+@_cdecl("duet_healthkit_available")
+public func duetHealthKitAvailable() -> Int32 {
+    HKHealthStore.isHealthDataAvailable() ? 1 : 0
+}
+
+/// One `HKAnchoredObjectQuery`. The request is the JSON `HealthKitQuery`
+/// (`data_type`, `unit`, `anchor`, optional `history_start_unix`, `limit`);
+/// the reply is `{"ok": HealthKitChanges}` or `{"error": {"code": ...}}`.
+/// Durable policy (which anchor is committed, coverage, retries) stays in Rust.
+/// A missing `history_start_unix` reads with no start predicate.
+@_cdecl("duet_healthkit_read_type")
+public func duetHealthKitReadType(_ request: UnsafePointer<CChar>?) -> UnsafeMutablePointer<CChar>? {
+    guard let request else { return copyString(AnchoredReader.failure("missing request")) }
+    return copyString(AnchoredReader.read(String(cString: request)))
+}
+
+/// Rust background entry (`duet_healthkit_background_delivery`). It returns
+/// after the durable outbox write or a typed pause; it never waits for upload.
+public typealias DuetBackgroundDelivery = @convention(c) (UnsafePointer<CChar>?) -> Int32
+
+/// Registers `HKObserverQuery` + background delivery for the JSON array of
+/// type identifiers. Safe to call more than once; each type is registered once.
+@_cdecl("duet_healthkit_start_observers")
+public func duetHealthKitStartObservers(_ types: UnsafePointer<CChar>?, _ deliver: DuetBackgroundDelivery?) {
+    guard let types, let deliver,
+          let data = String(cString: types).data(using: .utf8),
+          let names = try? JSONSerialization.jsonObject(with: data) as? [String] else { return }
+    AnchoredReader.startObservers(names, deliver: deliver)
+}
+
+private enum AnchoredReader {
+    private static let store = HKHealthStore()
+    private static let observerQueue = DispatchQueue(label: "coda.duet.healthkit.observer")
+    private static var observed = Set<String>()
+
+    static func read(_ body: String) -> String {
+        guard let data = body.data(using: .utf8),
+              let request = (try? JSONSerialization.jsonObject(with: data)) as? [String: Any],
+              let identifier = request["data_type"] as? String,
+              let unitText = request["unit"] as? String,
+              let limit = (request["limit"] as? NSNumber)?.intValue else {
+            return failure("malformed request")
+        }
+        guard HKHealthStore.isHealthDataAvailable() else { return error("store_unavailable") }
+        guard let type = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: identifier)) else {
+            return error("unsupported")
+        }
+        let unit = HKUnit(from: unitText)
+        var anchor: HKQueryAnchor?
+        if let archived = request["anchor"] as? String {
+            guard let bytes = Data(base64Encoded: archived),
+                  let restored = try? NSKeyedUnarchiver.unarchivedObject(ofClass: HKQueryAnchor.self, from: bytes) else {
+                return error("anchor_invalidated")
+            }
+            anchor = restored
+        }
+        let predicate = (request["history_start_unix"] as? NSNumber).map { start in
+            HKQuery.predicateForSamples(
+                withStart: Date(timeIntervalSince1970: start.doubleValue),
+                end: nil,
+                options: []
+            )
+        }
+        let box = QueryBox<String>()
+        let ready = DispatchSemaphore(value: 0)
+        let query = HKAnchoredObjectQuery(
+            type: type,
+            predicate: predicate,
+            anchor: anchor,
+            limit: max(limit, 1)
+        ) { _, samples, deleted, newAnchor, queryError in
+            defer { ready.signal() }
+            if let queryError {
+                box.result = .success(mapError(queryError))
+                return
+            }
+            guard let newAnchor,
+                  let archive = try? NSKeyedArchiver.archivedData(withRootObject: newAnchor, requiringSecureCoding: true) else {
+                box.result = .success(failure("anchor could not be archived"))
+                return
+            }
+            let rows = (samples ?? []).compactMap { $0 as? HKQuantitySample }.map { row($0, unit: unit, unitText: unitText) }
+            let removed = (deleted ?? []).map { $0.uuid.uuidString }
+            let count = (samples?.count ?? 0) + removed.count
+            let changes: [String: Any] = [
+                "samples": rows,
+                "deleted": removed,
+                "anchor": archive.base64EncodedString(),
+                "has_more": count >= max(limit, 1),
+            ]
+            box.result = .success(encode(["ok": changes]) ?? failure("reply could not be encoded"))
+        }
+        store.execute(query)
+        ready.wait()
+        if case .success(let reply) = box.result { return reply }
+        return failure("query did not finish")
+    }
+
+    static func startObservers(_ names: [String], deliver: @escaping DuetBackgroundDelivery) {
+        observerQueue.async {
+            for name in names where !observed.contains(name) {
+                guard let type = HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: name)) else {
+                    continue
+                }
+                observed.insert(name)
+                let query = HKObserverQuery(sampleType: type, predicate: nil) { _, completion, error in
+                    if error != nil {
+                        completion()
+                        return
+                    }
+                    // Complete only after Rust's durable hand-off returns.
+                    observerQueue.async {
+                        _ = name.withCString { deliver($0) }
+                        completion()
+                    }
+                }
+                store.execute(query)
+                store.enableBackgroundDelivery(for: type, frequency: .immediate) { _, _ in }
+            }
+        }
+    }
+
+    private static func row(_ sample: HKQuantitySample, unit: HKUnit, unitText: String) -> [String: Any] {
+        let zoneName = sample.metadata?[HKMetadataKeyTimeZone] as? String
+        let zone = zoneName.flatMap(TimeZone.init(identifier:)) ?? TimeZone(identifier: "UTC")!
+        let format = ISO8601DateFormatter()
+        format.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        format.timeZone = zone
+        var out: [String: Any] = [
+            "id": sample.uuid.uuidString,
+            // Shortest round-tripping decimal of the stored double, in the
+            // requested unit. Never rounded for display. Percent stays on
+            // HKUnit.percent()'s 0–1 scale; Rust scales that literal once.
+            "value": "\(sample.quantity.doubleValue(for: unit))",
+            "unit": unitText,
+            "start": format.string(from: sample.startDate),
+            "end": format.string(from: sample.endDate),
+        ]
+        if let zoneName { out["time_zone"] = zoneName }
+        let source = sample.sourceRevision.source
+        out["source_name"] = source.name
+        out["writer_id"] = source.bundleIdentifier
+        if let device = sample.device {
+            let parts = [device.manufacturer, device.model, device.hardwareVersion, device.softwareVersion, device.name]
+                .compactMap { $0 }
+            if !parts.isEmpty { out["device"] = parts.joined(separator: " ") }
+        }
+        var metadata: [String: Any] = [:]
+        for (key, value) in sample.metadata ?? [:] {
+            metadata[key] = jsonSafe(value)
+        }
+        var revision: [String: Any] = [:]
+        if let version = sample.sourceRevision.version { revision["version"] = version }
+        if let product = sample.sourceRevision.productType { revision["product_type"] = product }
+        let os = sample.sourceRevision.operatingSystemVersion
+        revision["os"] = "\(os.majorVersion).\(os.minorVersion).\(os.patchVersion)"
+        metadata["source_revision"] = revision
+        out["metadata"] = metadata
+        return out
+    }
+
+    private static func jsonSafe(_ value: Any) -> Any {
+        switch value {
+        case let text as String: return text
+        case let number as NSNumber: return number
+        case let date as Date: return ISO8601DateFormatter().string(from: date)
+        case let quantity as HKQuantity: return "\(quantity)"
+        default: return "\(value)"
+        }
+    }
+
+    private static func mapError(_ error: Error) -> String {
+        guard let error = error as? HKError else { return failure(error.localizedDescription) }
+        switch error.code {
+        case .errorAuthorizationDenied, .errorAuthorizationNotDetermined:
+            return self.error("permission_denied")
+        case .errorDatabaseInaccessible, .errorHealthDataUnavailable:
+            return self.error("store_unavailable")
+        case .errorHealthDataRestricted:
+            return self.error("unsupported")
+        default:
+            return failure(error.localizedDescription)
+        }
+    }
+
+    private static func error(_ code: String) -> String {
+        encode(["error": ["code": code]]) ?? #"{"error":{"code":"failed","message":""}}"#
+    }
+
+    static func failure(_ message: String) -> String {
+        encode(["error": ["code": "failed", "message": message]]) ?? #"{"error":{"code":"failed","message":""}}"#
+    }
+
+    private static func encode(_ object: [String: Any]) -> String? {
+        guard JSONSerialization.isValidJSONObject(object),
+              let data = try? JSONSerialization.data(withJSONObject: object) else { return nil }
+        return String(data: data, encoding: .utf8)
+    }
+}
+
 private enum HealthKitBridge {
     private static let requestedKey = "coda.duet.healthkit.requested"
     private static let store = HKHealthStore()

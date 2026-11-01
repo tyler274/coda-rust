@@ -4,10 +4,13 @@
 //! A missing permission or an empty store contributes no sample.
 //! Book: `book/src/backend-architecture.md`.
 //! Durable acquisition lives in [`acquisition`] (records and the native
-//! adapter contract) and [`outbox`] (the transactional upload outbox).
+//! adapter contract), [`native_adapters`] (HealthKit and the gated Health
+//! Connect adapter over thin native bridges) and [`outbox`] (the
+//! transactional upload outbox).
 #![deny(missing_docs)]
 
 pub mod acquisition;
+pub mod native_adapters;
 pub mod outbox;
 
 use serde::Deserialize;
@@ -309,6 +312,21 @@ fn android_request() {
 
 #[cfg(target_os = "android")]
 fn android_call(method: &str, signature: &str) -> Result<String, String> {
+    android_invoke(method, signature, None)
+}
+
+/// Calls `HealthConnectBridge.<method>(Context, String): String`.
+#[cfg(target_os = "android")]
+pub(crate) fn android_call_string(method: &str, argument: &str) -> Result<String, String> {
+    android_invoke(
+        method,
+        "(Ljava/lang/String;)Ljava/lang/String;",
+        Some(argument),
+    )
+}
+
+#[cfg(target_os = "android")]
+fn android_invoke(method: &str, signature: &str, argument: Option<&str>) -> Result<String, String> {
     use jni::objects::{JClass, JObject, JString, JValue};
     let ctx = ndk_context::android_context();
     let vm =
@@ -357,14 +375,26 @@ fn android_call(method: &str, signature: &str) -> Result<String, String> {
             .map(|_| String::new())
             .map_err(|error| error.to_string())
         } else {
-            let value = env
-                .call_static_method(
+            let value = match argument {
+                Some(argument) => {
+                    let argument = env
+                        .new_string(argument)
+                        .map_err(|error| error.to_string())?;
+                    env.call_static_method(
+                        bridge,
+                        method,
+                        "(Landroid/content/Context;Ljava/lang/String;)Ljava/lang/String;",
+                        &[JValue::Object(&context), JValue::Object(&argument)],
+                    )
+                }
+                None => env.call_static_method(
                     bridge,
                     method,
                     "(Landroid/content/Context;)Ljava/lang/String;",
                     &[JValue::Object(&context)],
-                )
-                .map_err(|error| error.to_string())?;
+                ),
+            }
+            .map_err(|error| error.to_string())?;
             let object = value.l().map_err(|error| error.to_string())?;
             let jstring = JString::from(object);
             let text = env

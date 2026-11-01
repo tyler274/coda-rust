@@ -229,6 +229,59 @@ pub async fn upload<S: OutboxStorage, T: EvidenceTransport>(
     Ok((total, batches))
 }
 
+/// Result of one acquisition pass into the outbox.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct AcquisitionOutcome {
+    /// Acquisition totals. Everything counted here is durably in the outbox.
+    pub acquired: AcquireReport,
+    /// Why the pass stopped before writing, if it did. Nothing is lost.
+    pub paused: Option<SyncPause>,
+}
+
+/// The single acquisition owner shared by foreground and background
+/// triggers: read bounded adapter pages and commit each page (records,
+/// deletions, coverage, anchor) to the outbox in one durable write. It never
+/// touches the network.
+pub fn acquire<S: OutboxStorage, A: HealthSourceAdapter + ?Sized>(
+    outbox: &Outbox<S>,
+    adapter: &A,
+    max_pages: usize,
+) -> AcquisitionOutcome {
+    match outbox.acquire_all(adapter, max_pages) {
+        Ok(acquired) => AcquisitionOutcome {
+            acquired,
+            paused: None,
+        },
+        Err(error) => AcquisitionOutcome {
+            acquired: AcquireReport::default(),
+            paused: Some(error.into()),
+        },
+    }
+}
+
+/// Background entry (e.g. an `HKObserverQuery` update). Runs [`acquire`] and
+/// returns only after the durable outbox write, or after a typed pause such
+/// as locked storage. It does not upload: the caller may complete the OS
+/// callback immediately, and upload happens on the next foreground or
+/// scheduled [`sync`].
+pub fn background_acquire<S: OutboxStorage, A: HealthSourceAdapter + ?Sized>(
+    outbox: &Outbox<S>,
+    adapter: &A,
+    max_pages: usize,
+) -> (
+    duet_health::native_adapters::BackgroundSignal,
+    AcquisitionOutcome,
+) {
+    use duet_health::native_adapters::BackgroundSignal;
+    let outcome = acquire(outbox, adapter, max_pages);
+    let signal = if outcome.paused.is_some() {
+        BackgroundSignal::Paused
+    } else {
+        BackgroundSignal::Durable
+    };
+    (signal, outcome)
+}
+
 /// One bounded acquire-then-upload pass for the current session.
 pub async fn sync<S: OutboxStorage, A: HealthSourceAdapter + ?Sized, T: EvidenceTransport>(
     outbox: &Outbox<S>,
@@ -238,12 +291,11 @@ pub async fn sync<S: OutboxStorage, A: HealthSourceAdapter + ?Sized, T: Evidence
     budget: SyncBudget,
 ) -> SyncReport {
     let mut report = SyncReport::default();
-    match outbox.acquire_all(adapter, budget.pages) {
-        Ok(acquired) => report.acquired = acquired,
-        Err(error) => {
-            report.paused = Some(error.into());
-            return report;
-        }
+    let acquired = acquire(outbox, adapter, budget.pages);
+    report.acquired = acquired.acquired;
+    if let Some(pause) = acquired.paused {
+        report.paused = Some(pause);
+        return report;
     }
     match upload(outbox, transport, now_ms, budget.batches).await {
         Ok((uploaded, batches)) => {
