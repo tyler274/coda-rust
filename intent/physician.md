@@ -417,7 +417,7 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. The literature service is an optional gateway, and chart answers work without it.
 
-**Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
 
 **Storage.** Per-practice database topology is decided when it's needed.
 

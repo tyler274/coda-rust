@@ -3,6 +3,7 @@
 //! come from a source adapter, never projection prose or a provider. This
 //! reader neither discovers new records nor claims that a snapshot is a
 //! complete chart.
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
@@ -64,6 +65,57 @@ impl SourceRevision {
         }
         Ok(())
     }
+}
+
+/// One patient a source holds, as the source identifies them.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SourcePatient {
+    /// The source's own identity for this patient.
+    pub source_patient_id: String,
+    /// The patient's name as the source gives it.
+    pub display_name: String,
+    /// The birth date as the source gives it, when it gives one.
+    pub birth_date: Option<String>,
+    /// The sex or gender as the source gives it, when it gives one.
+    pub sex_or_gender: Option<String>,
+    /// The medical record numbers the source holds for this patient.
+    pub medical_record_numbers: Vec<MedicalRecordNumber>,
+}
+
+/// One medical record number and the system that issued it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MedicalRecordNumber {
+    /// The issuing system.
+    pub system: String,
+    /// The number.
+    pub value: String,
+}
+
+/// A source read as whole charts: who it holds and each patient's records. Each
+/// source implements this in its own terms; past it, every chart is the same.
+#[async_trait]
+pub trait PatientSource: Send + Sync {
+    /// The source's stable identifier.
+    fn source_id(&self) -> &str;
+    /// The source's name as a physician sees it.
+    fn source_label(&self) -> &str;
+    /// Every patient the source holds.
+    async fn patients(&self) -> Result<Vec<SourcePatient>, String>;
+    /// One patient's records, admitted to `workspace`.
+    async fn records(
+        &self,
+        patient: &SourcePatient,
+        workspace: &str,
+    ) -> Result<Vec<SourceRevision>, String>;
+}
+
+/// The stable workspace of one source patient. It carries no patient
+/// identifier, because workspace ids travel in URLs.
+pub fn workspace_id(source_id: &str, source_patient_id: &str) -> String {
+    let digest = crate::sha256_hex(format!("{source_id}|{source_patient_id}").as_bytes());
+    format!("pw-{}", &digest[..32])
 }
 
 /// Exact, per-reference outcomes with a byte bound. A missing reference never

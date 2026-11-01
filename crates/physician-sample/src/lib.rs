@@ -26,6 +26,7 @@ mod publication_tests;
 pub mod queue;
 mod reply;
 mod simulation;
+pub mod synthetic_chart;
 mod synthetic_reply;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
