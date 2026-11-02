@@ -71,6 +71,7 @@ ignore = [
     { id = "RUSTSEC-2026-0367", reason = "zip extract() keeps SUID/SGID bits; unreachable, candle-core never extracts (ENG-108)" },
     { id = "RUSTSEC-2026-0368", reason = "zip extract() symlink escape; unreachable, candle-core never extracts (ENG-108)" },
     { id = "RUSTSEC-2026-0369", reason = "zip extract() chmod through symlinks; unreachable, candle-core never extracts (ENG-108)" },
+    { id = "RUSTSEC-2026-0429", reason = "zip extract() aborts on a symlink with a huge declared size; unreachable, candle-core never extracts (ENG-108)" },
 ]
 
 [sources]
