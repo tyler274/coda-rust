@@ -239,7 +239,7 @@ jobs:
       # Linting the web roots with their web features also lints every
       # workspace crate they build.
       - name: Lint browser code
-        run: cargo clippy -p physician-app -p duet-app -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,ui-gallery/web -- -D warnings
+        run: cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web -- -D warnings
       # Browser tests are explicitly ignored by Rust's test harness. Routine
       # checks still run every package's unit, service, storage and HTTP tests.
       - name: Test workspace libraries and services

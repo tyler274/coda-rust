@@ -25,10 +25,10 @@ fn App() -> Element {
 
 #[cfg(any(feature = "web", feature = "mobile"))]
 fn physician_url() -> String {
-    if let Some(url) = option_env!("PHYSICIAN_API_URL") {
-        if !url.is_empty() {
-            return url.to_owned();
-        }
+    if let Some(url) = option_env!("PHYSICIAN_API_URL")
+        && !url.is_empty()
+    {
+        return url.to_owned();
     }
     #[cfg(target_arch = "wasm32")]
     if let Some(origin) = page_origin() {
@@ -39,10 +39,10 @@ fn physician_url() -> String {
 
 #[cfg(any(feature = "web", feature = "mobile"))]
 fn duet_url() -> String {
-    if let Some(url) = option_env!("DUET_API_URL") {
-        if !url.is_empty() {
-            return url.to_owned();
-        }
+    if let Some(url) = option_env!("DUET_API_URL")
+        && !url.is_empty()
+    {
+        return url.to_owned();
     }
     #[cfg(target_arch = "wasm32")]
     if let Some(origin) = page_origin() {

@@ -30,5 +30,5 @@ fi
 cd "$root"
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --quiet -- -D warnings
-cargo clippy -p physician-app -p duet-app -p ui-gallery --target wasm32-unknown-unknown \
-  --features physician-app/web,duet-app/web,ui-gallery/web --quiet -- -D warnings
+cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown \
+  --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web --quiet -- -D warnings

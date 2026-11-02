@@ -156,14 +156,13 @@ fn clear_persisted() {
 
 fn recall_device() -> Option<&'static str> {
     #[cfg(target_arch = "wasm32")]
-    {
-        return web_storage()
-            .and_then(|storage| storage.get_item(MODE_KEY).ok().flatten())
-            .as_deref()
-            .and_then(parse_mode);
-    }
+    let mode = web_storage()
+        .and_then(|storage| storage.get_item(MODE_KEY).ok().flatten())
+        .as_deref()
+        .and_then(parse_mode);
     #[cfg(not(target_arch = "wasm32"))]
-    recall_mode(&mode_path())
+    let mode = recall_mode(&mode_path());
+    mode
 }
 
 #[cfg(not(target_arch = "wasm32"))]
