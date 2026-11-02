@@ -46,10 +46,6 @@ This workspace does not run `init` against a backend and does not apply these ro
 | [`infra/gcp/shared-mail`](/infra/gcp/shared-mail) | Production mail only in `coda-health-prod`, with separate state and operator-approved saved-plan applies. | <a href="/infra/gcp/shared-mail/README%2Emd">Production shared mail</a> |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
 
-## Duet backend on GCP
-
-The original Python Duet service's production composition, staging windows, release runner, and rollback are retained in <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. See [GCP deployment](gcp.md) for the Rust services.
-
 ## iPhone and TestFlight
 
 - The Rust bindings for iPhone are in [`platform/ios`](/platform/ios) (see the [crate map](crate-map.md#platform-bindings)).
