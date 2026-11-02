@@ -329,7 +329,7 @@ Work integrity:
 Everything Coda reads in the MVP is read only.
 
 - **The practice's EHR**, with Elation and Hint the two we're focused on first.
-- **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It opens no tabs, takes no focus, downloads nothing, and never stores or enters credentials. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read, shows when each chart was last read, and catches up the next time the physician signs in. Pulls run during the practice's business hours. Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
+- **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from each physician's own Gmail and the practice's Spruce.
 - **Attachments**, including scans and faxes read through OCR.
