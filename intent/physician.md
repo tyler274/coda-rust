@@ -328,8 +328,8 @@ Work integrity:
 
 Everything Coda reads in the MVP is read only.
 
-- **Elation**, the first practice's EHR, through its API. Coda can pull it anytime, including overnight.
-- **Hint**, the first practice's other EHR, through computer use in the practice's own signed-in Chrome, because Hint's API misses much of the chart. Hint's API still covers notes and medications. Coda reads Hint's Export Patient preview and downloads nothing, so no PHI file lands in the clinic's Downloads folder, and because the export carries no Hint IDs, Coda confirms which patient it is. Hint refreshes only while that Chrome is open and signed in, so its records can be older than Elation's.
+- **The practice's EHR**, with Elation and Hint the two we're focused on first.
+- **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It opens no tabs, takes no focus, downloads nothing, and never stores or enters credentials. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read, shows when each chart was last read, and catches up the next time the physician signs in. Pulls run during the practice's business hours. Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from each physician's own Gmail and the practice's Spruce.
 - **Attachments**, including scans and faxes read through OCR.
@@ -340,7 +340,7 @@ Everything Coda reads in the MVP is read only.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
-Computer use in the EHR works in a dedicated Coda tab in the practice's Chrome and never takes the physician's tab or focus. The model chooses each action and computer use does exactly that. Nothing repeats silently, and computer use has a Stop. If Hint signs the user out, it stops and asks; it never enters credentials. Skills are general across EHRs, never click scripts for one app.
+Coda's Chrome extension acts only as the signed-in physician, never takes the physician's tab or focus, and never enters credentials.
 
 ## Scope
 
@@ -374,7 +374,7 @@ Later:
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
 - EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
 - Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
-- A Chrome extension as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
+- The Chrome extension also as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
 - Coda reaching out to patients from its own findings.
 - Learned physician preferences, from the physician's own words and edits only, with Undo.
 - Practice-wide direction from Today, such as panel sweeps.
