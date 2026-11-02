@@ -31,7 +31,7 @@ use duet_wire::models::{
     ConversationSourceDetail, DoctorCollection, DoctorPageSave, EvidenceBatchRequest,
     EvidenceBatchResponse, EvidenceItem, EvidenceLibraryEntry, EvidenceLibraryPage, FollowUp,
     FollowUpPage, FollowUpState, FollowUpVersionRequest, InsightCyclePage, IntelligenceSettings,
-    SavedRoutine, SavedRoutineList, SavedRoutineUpdateRequest, SharingOverviewResponse,
+    SavedRoutine, SavedRoutineList, SavedRoutineUpdateRequest,
 };
 use serde::de::DeserializeOwned;
 
@@ -42,7 +42,6 @@ const LIBRARY: &str = include_str!("../fixtures/library.json");
 const ROUTINES: &str = include_str!("../fixtures/routines.json");
 const FOLLOW_UPS: &str = include_str!("../fixtures/follow-ups.json");
 const DOCTOR: &str = include_str!("../fixtures/doctor.json");
-const SHARING: &str = include_str!("../fixtures/sharing.json");
 const RUN_ID: &str = "00000000-0000-0000-0000-000000000099";
 
 /// Accepted messages kept beside the recorded conversation.
@@ -241,7 +240,6 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
             "/api/doctor-plan",
             get(care::get_doctor_plan).put(care::put_doctor_plan),
         )
-        .route("/api/sharing/overview", get(sharing))
         .with_state(store)
 }
 
@@ -648,10 +646,6 @@ async fn save_doctor(
     Ok(Json(saved))
 }
 
-async fn sharing() -> Json<SharingOverviewResponse> {
-    Json(fixture("sharing", SHARING))
-}
-
 fn stamp_recorded_at(item: &mut EvidenceItem) -> bool {
     let payload = item.payload.get_or_insert_with(Default::default);
     if payload.contains_key("recorded_at") {
@@ -937,7 +931,6 @@ mod tests {
         let routines: SavedRoutineList = fixture("routines", ROUTINES);
         let follow_ups: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
         let doctor: DoctorCollection = fixture("doctor", DOCTOR);
-        let sharing: SharingOverviewResponse = fixture("sharing", SHARING);
         assert_eq!(page.messages.len(), 3);
         assert_eq!(routines.items[0].title, "Evening walk");
         assert_eq!(
@@ -952,7 +945,6 @@ mod tests {
         assert!(settings.enabled);
         assert_eq!(library.entries[0].title, "Lisinopril");
         assert_eq!(library.entries[1].title, "LDL cholesterol");
-        assert_eq!(sharing.account_label, "me");
         assert_eq!(
             page.messages[1].sources.as_ref().unwrap()[0].title,
             "Sleep note"

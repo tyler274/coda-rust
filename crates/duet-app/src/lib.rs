@@ -29,17 +29,16 @@ use duet_notify::{
 };
 use duet_wire::models::ConversationMessage;
 use roots::{
-    ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, AWAITING, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE,
-    CHECK_UNAVAILABLE, CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
+    ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE,
+    CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
     ConversationSourceChip, DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL,
     JoinDraft, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind, LibraryRecord, LibraryRoot,
-    NOT_SHARING, NoteOpen, OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL,
+    NoteOpen, OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL,
     SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING, SHARING_OFF_DETAIL, SHARING_ON_DETAIL,
-    SHARING_SAVED, SHARING_UNAVAILABLE, SHARING_UNCHECKED, STOP_SHARING, SavedItemPage,
-    SharedNotice, SharedRoot, SharingRoot, TRY_AGAIN, TodayRoot, closed_send, composer_open,
-    conversation_root, date_line, doctor_page, doctor_plan_section, draft_after_send, greeting,
-    library_root, note_open, opens_doctor, page_with_accepted, plan_page, reminder_page, send_id,
-    shared_root, sharing_root, today_root,
+    SHARING_UNAVAILABLE, STOP_SHARING, SavedItemPage, SharingRoot, TRY_AGAIN, TodayRoot,
+    closed_send, composer_open, conversation_root, date_line, doctor_page, doctor_plan_section,
+    draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
+    plan_page, reminder_page, send_id, sharing_root, today_root,
 };
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
@@ -2800,7 +2799,6 @@ fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
 fn SharedTab(base_url: String, bearer: String) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
-    let mut cache = use_signal(|| None);
     let mut physician_cache = use_signal(|| None::<duet_client::PhysicianSharingStatus>);
     let action_url = base_url.clone();
     let action_bearer = bearer.clone();
@@ -2809,44 +2807,21 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
         let base_url = base_url.clone();
         let bearer = bearer.clone();
         async move {
-            match open_client(base_url, bearer) {
-                Ok(api) => {
-                    let overview = api.sharing_overview().await?;
-                    let physician = api.physician_sharing_status().await.ok();
-                    Ok((overview, physician))
-                }
-                Err(error) => Err(error),
-            }
+            open_client(base_url, bearer)?
+                .physician_sharing_status()
+                .await
         }
     });
     use_effect(move || {
         loading.set(resource().is_none());
-        if let Some(Ok((overview, physician))) = resource() {
-            cache.set(Some(shared_root(&[], Ok(&overview))));
-            physician_cache.set(physician);
+        if let Some(Ok(status)) = resource() {
+            physician_cache.set(Some(status));
         }
     });
-    let current = resource();
-    let (view, physician_status) = match &current {
-        Some(Ok((overview, physician))) => (shared_root(&[], Ok(overview)), physician.clone()),
-        Some(Err(_)) => (
-            shared_root(
-                &cache().map(|root| root.people).unwrap_or_default(),
-                Err(()),
-            ),
-            physician_cache(),
-        ),
-        None => (
-            cache().unwrap_or(SharedRoot {
-                people: Vec::new(),
-                notice: None,
-            }),
-            physician_cache(),
-        ),
+    let physician_status = match resource() {
+        Some(Ok(status)) => Some(status),
+        Some(Err(_)) | None => physician_cache(),
     };
-    let people = view.people.clone();
-    let notice = view.notice.clone();
-    let retry = move |_| attempt.set(attempt() + 1);
     let stop_url = action_url.clone();
     let stop_bearer = action_bearer.clone();
     let stop_sharing = move |_| {
@@ -2889,31 +2864,6 @@ fn SharedTab(base_url: String, bearer: String) -> Element {
                     }
                 }
             }
-        }
-        if !people.is_empty() {
-            p { class: "status-title", "People" }
-            for person in people {
-                article { class: "card voice-card",
-                    p { class: "card-title", "{person}" }
-                }
-            }
-        }
-        match notice {
-            Some(SharedNotice::NotSharing) => rsx! { p { class: "empty", "{NOT_SHARING}" } },
-            Some(SharedNotice::CouldNotCheck) => rsx! {
-                div { role: "alert",
-                    p { class: "empty", "{SHARING_UNCHECKED}" }
-                    TryAgain { label: TRY_AGAIN, on_retry: retry }
-                }
-            },
-            Some(SharedNotice::SavedStayVisible) => rsx! {
-                div { role: "alert",
-                    p { class: "empty", "{SHARING_SAVED}" }
-                    TryAgain { label: TRY_AGAIN, on_retry: retry }
-                }
-            },
-            Some(SharedNotice::AwaitingAcceptance) => rsx! { p { class: "status-title", "{AWAITING}" } },
-            None => rsx! {},
         }
     }
 }

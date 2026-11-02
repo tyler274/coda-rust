@@ -2,7 +2,7 @@
 
 use duet_client::{
     ConversationPage, DuetDoctorPlanView, EvidenceLibraryPage, InsightCyclePage,
-    IntelligenceSettings, SharingOverviewResponse, SharingPeer,
+    IntelligenceSettings,
 };
 use duet_wire::models::conversation_availability::Reason;
 use duet_wire::models::conversation_message::Role;
@@ -29,11 +29,7 @@ pub const CHECK_UNAVAILABLE_DETAIL: &str =
 pub const LIBRARY_EMPTY: &str = "No records or measurements yet.";
 pub const LIBRARY_UNAVAILABLE: &str =
     "Your health information isn’t available right now. Try again in a moment.";
-pub const NOT_SHARING: &str = "You’re not sharing yet.";
-pub const SHARING_UNCHECKED: &str = "Duet couldn’t check whether sharing is still allowed.";
-pub const SHARING_SAVED: &str = "Duet couldn’t check whether sharing is still allowed. Saved values stay visible for up to 24 hours after the last successful check.";
 pub const TRY_AGAIN: &str = "Try again";
-pub const AWAITING: &str = "Awaiting acceptance";
 pub const ALLOW_HEALTHKIT: &str = "Allow HealthKit";
 pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
 pub const INSIGHT_NOTIFICATIONS: &str = "New insight notifications";
@@ -849,83 +845,6 @@ fn calendar_line(day: chrono::NaiveDate) -> String {
     )
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum SharedNotice {
-    NotSharing,
-    CouldNotCheck,
-    SavedStayVisible,
-    AwaitingAcceptance,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct SharedRoot {
-    pub people: Vec<String>,
-    pub notice: Option<SharedNotice>,
-}
-
-pub fn people_in(overview: &SharingOverviewResponse) -> Vec<String> {
-    let mut people = Vec::new();
-    for grants in [
-        &overview.incoming,
-        &overview.outgoing,
-        &overview.pending_incoming,
-        &overview.pending_outgoing,
-        &overview.reconnect_required,
-    ]
-    .into_iter()
-    .flatten()
-    {
-        for grant in grants {
-            people.push(peer_name(&grant.peer));
-        }
-    }
-    people
-}
-
-fn peer_name(peer: &SharingPeer) -> String {
-    peer.display_name
-        .clone()
-        .flatten()
-        .filter(|name| !name.trim().is_empty())
-        .unwrap_or_else(|| peer.account_label.clone())
-}
-
-pub fn shared_root(
-    previous: &[String],
-    result: Result<&SharingOverviewResponse, ()>,
-) -> SharedRoot {
-    match result {
-        Ok(overview) => {
-            let people = people_in(overview);
-            let invitations = overview.invitations.as_ref().map(Vec::len).unwrap_or(0);
-            if people.is_empty() && invitations == 0 {
-                SharedRoot {
-                    people,
-                    notice: Some(SharedNotice::NotSharing),
-                }
-            } else if people.is_empty() {
-                SharedRoot {
-                    people,
-                    notice: Some(SharedNotice::AwaitingAcceptance),
-                }
-            } else {
-                SharedRoot {
-                    people,
-                    notice: None,
-                }
-            }
-        }
-        Err(()) if previous.is_empty() => SharedRoot {
-            people: Vec::new(),
-            notice: Some(SharedNotice::CouldNotCheck),
-        },
-        Err(()) => SharedRoot {
-            people: previous.to_vec(),
-            notice: Some(SharedNotice::SavedStayVisible),
-        },
-    }
-}
-
 pub fn greeting(hour: u32) -> &'static str {
     match hour {
         5..12 => "Good morning",
@@ -1436,30 +1355,6 @@ mod tests {
         assert_eq!(
             LIBRARY_UNAVAILABLE,
             "Your health information isn’t available right now. Try again in a moment."
-        );
-    }
-
-    #[test]
-    fn shared_people_stay_when_a_later_read_fails() {
-        let empty = json::<SharingOverviewResponse>(r#"{"account_label":"Ada"}"#);
-        assert_eq!(
-            shared_root(&[], Ok(&empty)),
-            SharedRoot {
-                people: vec![],
-                notice: Some(SharedNotice::NotSharing)
-            }
-        );
-        let loaded = json::<SharingOverviewResponse>(
-            r#"{"account_label":"me","outgoing":[{"connection_id":"00000000-0000-0000-0000-000000000010","created_at":"2026-10-09T15:00:00Z","grant_id":"00000000-0000-0000-0000-000000000011","peer":{"account_label":"ada@example","display_name":"Ada","user_id":"00000000-0000-0000-0000-000000000012"},"recipient_key_version":1,"recipient_user_id":"00000000-0000-0000-0000-000000000012","revision":1,"sender_key_version":1,"sender_user_id":"00000000-0000-0000-0000-000000000013","state":"active","updated_at":"2026-10-09T15:00:00Z"}]}"#,
-        );
-        let people = people_in(&loaded);
-        assert_eq!(people, vec!["Ada".to_owned()]);
-        assert_eq!(
-            shared_root(&people, Err(())),
-            SharedRoot {
-                people: vec!["Ada".into()],
-                notice: Some(SharedNotice::SavedStayVisible)
-            }
         );
     }
 

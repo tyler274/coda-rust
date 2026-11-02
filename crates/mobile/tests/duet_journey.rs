@@ -187,12 +187,54 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Clear selected record"]"#);
     wait_until(&mut browser, |text| !text.contains("Asking about"));
 
-    // The Shared tab reports the stub's sharing overview.
-    browser.click(r#"nav.tabs button[aria-current="false"]:nth-of-type(4)"#);
-    let text = browser.wait_for("Ada");
+    // Shared is the practice-connection tab even though the person-to-person
+    // endpoint is gone. Exercise the existing consent controls on the stub.
+    assert_eq!(
+        http.get(format!("{base}/api/sharing/overview"))
+            .send()
+            .await
+            .unwrap()
+            .status(),
+        404
+    );
+    http.post(format!("{base}/api/physician-sharing/accept-invitation"))
+        .json(&serde_json::json!({
+            "practice_id": "practice-coda-1",
+            "practice_name": "Coda Internal Medicine",
+            "patient_workspace_id": "synthetic-patient",
+            "invitation_token": "synthetic-invitation"
+        }))
+        .send()
+        .await
+        .unwrap()
+        .error_for_status()
+        .unwrap();
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
+    browser.click(r#"nav.tabs button:nth-of-type(4)"#);
+    let text = browser.wait_for("Coda Internal Medicine");
+    assert!(text.contains("Share with my physician"), "{text}");
     assert!(
-        text.contains("Shared"),
-        "the Shared tab did not render:\n{text}"
+        !text.contains("People")
+            && !text.contains("Awaiting acceptance")
+            && !text.contains("not sharing yet")
+            && !text.contains("Saved values stay visible"),
+        "{text}"
+    );
+    browser.page().evaluate(r#"Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Share with my physician').click(); true"#);
+    browser.wait_for("Stop sharing");
+    browser.page().evaluate(r#"Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Stop sharing').click(); true"#);
+    browser.wait_for("Sharing stopped");
+    assert!(
+        !http
+            .get(format!("{base}/api/physician-sharing/status"))
+            .send()
+            .await
+            .unwrap()
+            .json::<serde_json::Value>()
+            .await
+            .unwrap()["sharing_consented"]
+            .as_bool()
+            .unwrap()
     );
 
     // The journey holds at the desktop viewport.

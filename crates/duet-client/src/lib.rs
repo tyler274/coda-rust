@@ -18,8 +18,6 @@ pub use duet_wire::models::EvidenceLibraryPage;
 pub use duet_wire::models::EvidenceLibraryQuery;
 pub use duet_wire::models::InsightCyclePage;
 pub use duet_wire::models::IntelligenceSettings;
-pub use duet_wire::models::SharingOverviewResponse;
-pub use duet_wire::models::SharingPeer;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
 use serde::{Deserialize, Serialize};
 
@@ -602,13 +600,6 @@ impl DuetClient {
         .map_err(|error| error.to_string())
     }
 
-    /// Reads who sharing includes.
-    pub async fn sharing_overview(&self) -> Result<SharingOverviewResponse, String> {
-        duet_wire::apis::sharing_api::overview_api_sharing_overview_get(&self.configuration)
-            .await
-            .map_err(|error| error.to_string())
-    }
-
     /// Redeems the practice's invitation through the front door. The minted
     /// session becomes this client's bearer.
     pub async fn join(&self, email: &str, token: &str) -> Result<FrontDoorSession, FrontDoorError> {
@@ -1053,8 +1044,10 @@ mod tests {
                 }),
             )
             .route(
-                "/api/sharing/overview",
-                get(|| async { Json(serde_json::json!({"account_label": "Ada"})) }),
+                "/api/physician-sharing/status",
+                get(|| async {
+                    Json(serde_json::json!({"linked": false, "sharing_consented": false}))
+                }),
             );
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
         let address = listener.local_addr().unwrap();
@@ -1065,10 +1058,7 @@ mod tests {
         assert!(client.list_insight_cycles().await.unwrap().items.is_empty());
         assert!(client.intelligence_settings().await.unwrap().enabled);
         assert_eq!(client.evidence_library().await.unwrap().total_count, 0);
-        assert_eq!(
-            client.sharing_overview().await.unwrap().account_label,
-            "Ada"
-        );
+        assert!(!client.physician_sharing_status().await.unwrap().linked);
     }
 
     #[tokio::test]

@@ -139,24 +139,6 @@ Class | Method | HTTP request | Description
 *SavedRoutinesApi* | [**get_saved_routine_api_saved_routines_routine_id_get**](docs/SavedRoutinesApi.md#get_saved_routine_api_saved_routines_routine_id_get) | **GET** /api/saved-routines/{routine_id} | Get Saved Routine
 *SavedRoutinesApi* | [**list_saved_routines_api_saved_routines_get**](docs/SavedRoutinesApi.md#list_saved_routines_api_saved_routines_get) | **GET** /api/saved-routines | List Saved Routines
 *SavedRoutinesApi* | [**update_saved_routine_api_saved_routines_routine_id_put**](docs/SavedRoutinesApi.md#update_saved_routine_api_saved_routines_routine_id_put) | **PUT** /api/saved-routines/{routine_id} | Update Saved Routine
-*SharingApi* | [**accept_invitation_api_sharing_invitations_accept_post**](docs/SharingApi.md#accept_invitation_api_sharing_invitations_accept_post) | **POST** /api/sharing/invitations/accept | Accept Invitation
-*SharingApi* | [**accept_offer_api_sharing_grants_accept_post**](docs/SharingApi.md#accept_offer_api_sharing_grants_accept_post) | **POST** /api/sharing/grants/accept | Accept Offer
-*SharingApi* | [**block_api_sharing_connections_block_post**](docs/SharingApi.md#block_api_sharing_connections_block_post) | **POST** /api/sharing/connections/block | Block
-*SharingApi* | [**cancel_invitation_api_sharing_invitations_cancel_post**](docs/SharingApi.md#cancel_invitation_api_sharing_invitations_cancel_post) | **POST** /api/sharing/invitations/cancel | Cancel Invitation
-*SharingApi* | [**create_invitation_api_sharing_invitations_post**](docs/SharingApi.md#create_invitation_api_sharing_invitations_post) | **POST** /api/sharing/invitations | Create Invitation
-*SharingApi* | [**create_offer_api_sharing_grants_offer_post**](docs/SharingApi.md#create_offer_api_sharing_grants_offer_post) | **POST** /api/sharing/grants/offer | Create Offer
-*SharingApi* | [**decline_invitation_api_sharing_invitations_decline_post**](docs/SharingApi.md#decline_invitation_api_sharing_invitations_decline_post) | **POST** /api/sharing/invitations/decline | Decline Invitation
-*SharingApi* | [**decline_offer_api_sharing_grants_decline_post**](docs/SharingApi.md#decline_offer_api_sharing_grants_decline_post) | **POST** /api/sharing/grants/decline | Decline Offer
-*SharingApi* | [**disconnect_api_sharing_connections_disconnect_post**](docs/SharingApi.md#disconnect_api_sharing_connections_disconnect_post) | **POST** /api/sharing/connections/disconnect | Disconnect
-*SharingApi* | [**download_chunks_api_sharing_chunks_download_post**](docs/SharingApi.md#download_chunks_api_sharing_chunks_download_post) | **POST** /api/sharing/chunks/download | Download Chunks
-*SharingApi* | [**get_device_api_sharing_device_get**](docs/SharingApi.md#get_device_api_sharing_device_get) | **GET** /api/sharing/device | Get Device
-*SharingApi* | [**overview_api_sharing_overview_get**](docs/SharingApi.md#overview_api_sharing_overview_get) | **GET** /api/sharing/overview | Overview
-*SharingApi* | [**preview_invitation_api_sharing_invitations_preview_post**](docs/SharingApi.md#preview_invitation_api_sharing_invitations_preview_post) | **POST** /api/sharing/invitations/preview | Preview Invitation
-*SharingApi* | [**register_device_api_sharing_device_register_post**](docs/SharingApi.md#register_device_api_sharing_device_register_post) | **POST** /api/sharing/device/register | Register Device
-*SharingApi* | [**replace_device_api_sharing_device_replace_post**](docs/SharingApi.md#replace_device_api_sharing_device_replace_post) | **POST** /api/sharing/device/replace | Replace Device
-*SharingApi* | [**stop_grant_api_sharing_grants_stop_post**](docs/SharingApi.md#stop_grant_api_sharing_grants_stop_post) | **POST** /api/sharing/grants/stop | Stop Grant
-*SharingApi* | [**update_grant_api_sharing_grants_put**](docs/SharingApi.md#update_grant_api_sharing_grants_put) | **PUT** /api/sharing/grants | Update Grant
-*SharingApi* | [**upsert_chunks_api_sharing_chunks_batch_post**](docs/SharingApi.md#upsert_chunks_api_sharing_chunks_batch_post) | **POST** /api/sharing/chunks/batch | Upsert Chunks
 
 
 ## Documentation For Models
@@ -350,32 +332,7 @@ Class | Method | HTTP request | Description
  - [SelectedPublishedInsightContext](docs/SelectedPublishedInsightContext.md)
  - [SelectedRecordContext](docs/SelectedRecordContext.md)
  - [SessionRevocationResponse](docs/SessionRevocationResponse.md)
- - [SharingChunkBatchRequest](docs/SharingChunkBatchRequest.md)
- - [SharingChunkBatchResponse](docs/SharingChunkBatchResponse.md)
- - [SharingChunkDelete](docs/SharingChunkDelete.md)
- - [SharingChunkDownloadRequest](docs/SharingChunkDownloadRequest.md)
- - [SharingChunkDownloadResponse](docs/SharingChunkDownloadResponse.md)
- - [SharingChunkUpsert](docs/SharingChunkUpsert.md)
- - [SharingConnectionActionRequest](docs/SharingConnectionActionRequest.md)
- - [SharingDeviceReplacementRequest](docs/SharingDeviceReplacementRequest.md)
  - [SharingDeviceRequest](docs/SharingDeviceRequest.md)
- - [SharingDeviceResponse](docs/SharingDeviceResponse.md)
- - [SharingEncryptedChunk](docs/SharingEncryptedChunk.md)
- - [SharingGrantAcceptRequest](docs/SharingGrantAcceptRequest.md)
- - [SharingGrantActionRequest](docs/SharingGrantActionRequest.md)
- - [SharingGrantScope](docs/SharingGrantScope.md)
- - [SharingGrantSummary](docs/SharingGrantSummary.md)
- - [SharingGrantUpdateRequest](docs/SharingGrantUpdateRequest.md)
- - [SharingInvitationCancelRequest](docs/SharingInvitationCancelRequest.md)
- - [SharingInvitationCreateRequest](docs/SharingInvitationCreateRequest.md)
- - [SharingInvitationCreatedResponse](docs/SharingInvitationCreatedResponse.md)
- - [SharingInvitationPreviewResponse](docs/SharingInvitationPreviewResponse.md)
- - [SharingInvitationSecretRequest](docs/SharingInvitationSecretRequest.md)
- - [SharingInvitationSummary](docs/SharingInvitationSummary.md)
- - [SharingOfferRequest](docs/SharingOfferRequest.md)
- - [SharingOverviewResponse](docs/SharingOverviewResponse.md)
- - [SharingPeer](docs/SharingPeer.md)
- - [SharingStatusResponse](docs/SharingStatusResponse.md)
  - [SourcesInner](docs/SourcesInner.md)
  - [TermsAcceptanceRequest](docs/TermsAcceptanceRequest.md)
  - [TodayStatSelectionRequest](docs/TodayStatSelectionRequest.md)

@@ -44,3 +44,27 @@ class ContractComposition(unittest.TestCase):
         ]:
             with self.assertRaises(ValueError):
                 module.compose(self.base, additions)
+
+    def test_retirement_preserves_practice_doctor_and_reused_schema_contracts(self):
+        def response(name):
+            return {"get": {"responses": {"200": {"$ref": "#/components/schemas/" + name}}}}
+
+        self.base["paths"].update({
+            "/api/sharing/overview": response("Overview"),
+            "/api/sharing/device": response("Device"),
+            "/api/physician-sharing/status": response("Practice"),
+            "/api/doctor-page": response("Doctor"),
+        })
+        self.base["components"]["schemas"].update({
+            "Overview": {"$ref": "#/components/schemas/Peer"},
+            "Peer": {"$ref": "#/components/schemas/Device"},
+            "Device": {"$ref": "#/components/schemas/Evidence"},
+            "Practice": {"$ref": "#/components/schemas/Evidence"},
+            "Doctor": {"$ref": "#/components/schemas/Evidence"},
+            "Evidence": {"type": "object"},
+        })
+        result = module.compose(self.base, {})
+        self.assertEqual(set(result["paths"]), {"/page", "/api/physician-sharing/status", "/api/doctor-page"})
+        self.assertEqual(set(result["components"]["schemas"]), {"Page", "Practice", "Doctor", "Evidence"})
+        self.assertIn("/api/sharing/overview", self.base["paths"])
+        self.assertIn("Device", self.base["components"]["schemas"])

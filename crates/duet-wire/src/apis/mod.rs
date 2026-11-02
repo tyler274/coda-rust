@@ -123,6 +123,5 @@ pub mod genome_api;
 pub mod health_intelligence_api;
 pub mod moments_api;
 pub mod saved_routines_api;
-pub mod sharing_api;
 
 pub mod configuration;

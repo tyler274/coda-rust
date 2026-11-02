@@ -51,6 +51,10 @@ fn check_regenerated(root: &Path, committed: &Path) -> Result<(), Failure> {
 }
 
 fn generate_tree(root: &Path, spec: &Path, out: &Path) -> Result<(), Failure> {
+    // OpenAPI Generator overwrites files but does not remove retired operations
+    // or models. These directories contain generated output only.
+    remove_generated(out.join("src"))?;
+    remove_generated(out.join("docs"))?;
     run_generator(spec, out)?;
     post_edit(out)?;
     finish_generated(root, spec, out)

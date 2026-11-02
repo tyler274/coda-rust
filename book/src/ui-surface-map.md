@@ -13,9 +13,10 @@ surfaces and green direction. The full Today → selected item in chat → accep
 save → same current item and originating conversation path must remain coherent
 across the client, backend and model interaction.
 
-Person-to-person Shared is retired from product scope. Practice connection
-controls and documented care remain reachable; removing a tab must not silently
-redesign consent.
+Person-to-person sharing is retired from product scope. Shared remains the
+practice-connection tab, with its practice card, Share with my physician and
+Stop sharing controls. It has no People list or person-to-person notices.
+Documented care remains with its existing owner.
 
 The patient-owned doctor workspace is in MVP: preparation, updates,
 patient review and saving, including patient-provided and connected-practice
