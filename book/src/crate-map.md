@@ -1,6 +1,6 @@
 # Crate map
 
-Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The product-neutral crates the two products share are `ui`, `http`, `gmail`, `spruce`, `pubsub`, and the execution mechanics in `harness` (with its `agent-skills` admission dependency); <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns that boundary.
+Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns which crates the two products share.
 
 ## Shared
 
@@ -41,6 +41,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `physician-sample` | [`src/lib.rs`](/crates/physician-sample/src/lib.rs), [`src/main.rs`](/crates/physician-sample/src/main.rs) | Serves the page and the recorded synthetic practice, plus auth and live chat routes; the `physician-migrate` binary runs the physician schema migrations | [Physician site](physician-site.md) |
 | `physician-auth` | [`src/lib.rs`](/crates/physician-auth/src/lib.rs), [`src/bin/physician-auth-migrate.rs`](/crates/physician-auth/src/bin/physician-auth-migrate.rs) | Physician identity, membership, panels, and sessions | [Physician site](physician-site.md#physician-sign-in-and-practice-access) |
 | `local-product` | [`src/lib.rs`](/crates/local-product/src/lib.rs) | Model execution in `live`, `record`, `replay`, and `api` modes; the physician runtime store, and hosted chat's instructions and `skill_view` tool (`physician_chat`) | [Physician site](physician-site.md) |
+| `physician-bus` | [`src/lib.rs`](/crates/physician-bus/src/lib.rs) | Telling open physician pages to reread changed state, through a local bus or Redis fan-out. Lossy invalidation, not a durable work queue | [Physician site](physician-site.md) |
 | `patient-work` | [`src/lib.rs`](/crates/patient-work/src/lib.rs) | The patient-work dispatcher's grouping window | [Physician site](physician-site.md) |
 
 ## Between the products
