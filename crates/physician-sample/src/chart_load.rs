@@ -57,7 +57,10 @@ pub async fn load_synthetic_practice(
     for id in source.patient_ids().await? {
         let workspace = workspace_id(source.source_id(), &id);
         let loaded: Result<(), String> = async {
-            let owner = auth.patient_practice(&workspace).await;
+            let owner = auth
+                .patient_practice(&workspace)
+                .await
+                .map_err(|_| "read the patient's practice".to_owned())?;
             if owner.as_deref().is_some_and(|id| id != STAGING_PRACTICE_ID) {
                 return Err("belongs to another practice".to_owned());
             }
@@ -73,11 +76,9 @@ pub async fn load_synthetic_practice(
                 .record_chart(&workspace, &records, &pull)
                 .await
                 .map_err(|error| error.to_string())?;
-            if owner.is_none() {
-                auth.register_patient(STAGING_PRACTICE_ID, &workspace)
-                    .await
-                    .map_err(|_| "register the patient".to_owned())?;
-            }
+            auth.register_patient(STAGING_PRACTICE_ID, &workspace)
+                .await
+                .map_err(|_| "register the patient".to_owned())?;
             for identity in &panel {
                 auth.place_on_panel(identity, &workspace)
                     .await

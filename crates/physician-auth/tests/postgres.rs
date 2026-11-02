@@ -71,6 +71,47 @@ async fn a_practice_read_from_a_lost_database_is_unavailable_not_empty() {
 }
 
 #[tokio::test]
+async fn a_patient_whose_practice_could_not_be_read_stays_with_that_practice() {
+    let Some(url) = fresh_database("unread_owner").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let (email, _) = invited_account(&store, "owner-clinic").await;
+    let doc = store.account_by_email(&email).await.unwrap().identity;
+    store
+        .register_patient("owner-clinic", "pw-owned")
+        .await
+        .unwrap();
+    store
+        .set_membership(&doc, "pw-owned", Membership::Allowed)
+        .await
+        .unwrap();
+
+    let lost = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    lost.pool().close().await;
+    assert_eq!(
+        lost.patient_practice("pw-owned").await,
+        Err(StoreUnavailable)
+    );
+    assert_eq!(lost.membership(&doc, "pw-owned").await, Membership::Denied);
+
+    store
+        .register_patient("other-clinic", "pw-owned")
+        .await
+        .unwrap();
+    assert_eq!(
+        store.patient_practice("pw-owned").await,
+        Ok(Some("owner-clinic".to_owned()))
+    );
+    assert!(store.practice_patients("other-clinic").await.is_empty());
+    assert_eq!(store.panel(&doc).await, vec!["pw-owned".to_owned()]);
+}
+
+#[tokio::test]
 async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
     let Some(url) = fresh_database("concurrent_sign_in").await else {
         return;
@@ -496,13 +537,14 @@ async fn panel_assignment_requires_admin_permission_in_the_same_practice() {
         "cannot assign panels across practices"
     );
 
-    store.register_patient("other-clinic", "pw-1").await;
+    store
+        .register_patient("other-clinic", "pw-1")
+        .await
+        .unwrap();
     assert!(
         store.panel(&doc).await.is_empty(),
         "a workspace registered to another practice leaves the panel"
     );
-    store.register_patient("pg-proof", "pw-1").await;
-    assert_eq!(store.panel(&doc).await, vec!["pw-1".to_owned()]);
 }
 
 #[tokio::test]
@@ -535,7 +577,11 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         .await
         .unwrap();
     assert_eq!(
-        store.patient_practice("pw-clinic-1").await.as_deref(),
+        store
+            .patient_practice("pw-clinic-1")
+            .await
+            .unwrap()
+            .as_deref(),
         Some("pg-proof")
     );
     assert_eq!(

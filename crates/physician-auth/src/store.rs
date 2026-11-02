@@ -392,13 +392,12 @@ impl AuthStore for PostgresAuthStore {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
     ) -> Membership {
-        let patient_row = Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten();
-        if let Some(ref row) = patient_row
-            && row.practice_id != identity.practice_id
+        let Ok(owner) = self.patient_practice(patient_workspace_id).await else {
+            return Membership::Denied;
+        };
+        if owner
+            .as_deref()
+            .is_some_and(|owner| owner != identity.practice_id)
         {
             return Membership::Denied;
         }
@@ -416,7 +415,7 @@ impl AuthStore for PostgresAuthStore {
         if panel_allowed {
             return Membership::Allowed;
         }
-        if patient_row.is_some_and(|row| row.practice_id == identity.practice_id) {
+        if owner.as_deref() == Some(identity.practice_id.as_str()) {
             return Membership::ClinicDemographic;
         }
         Membership::Denied
@@ -549,11 +548,11 @@ impl AuthStore for PostgresAuthStore {
         if self.account_by_identity(&target).await.is_none() {
             return Err(PanelError::UnknownTarget);
         }
-        if self
+        let owner = self
             .patient_practice(patient_workspace_id)
             .await
-            .is_some_and(|owner| owner != actor.practice_id)
-        {
+            .map_err(|_| PanelError::Unavailable)?;
+        if owner.is_some_and(|owner| owner != actor.practice_id) {
             return Err(PanelError::UnknownTarget);
         }
         self.set_membership(&target, patient_workspace_id, membership)
@@ -566,33 +565,29 @@ impl AuthStore for PostgresAuthStore {
         practice_id: &str,
         patient_workspace_id: &str,
     ) -> Result<(), StoreUnavailable> {
-        let existing = Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .map_err(|_| StoreUnavailable)?;
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map(|since| since.as_secs())
             .unwrap_or(0) as i64;
-        match existing {
-            Some(row) => {
-                let mut update: crate::migration::PatientActiveModel = row.into();
-                update.practice_id = Set(practice_id.to_owned());
-                update.update(&self.db).await
-            }
-            None => {
-                crate::migration::PatientActiveModel {
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    practice_id: Set(practice_id.to_owned()),
-                    cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
-                    created_at: Set(now),
-                }
-                .insert(&self.db)
-                .await
-            }
-        }
-        .map(|_| ())
-        .map_err(|_| StoreUnavailable)
+        let patient = crate::migration::PatientActiveModel {
+            patient_workspace_id: Set(patient_workspace_id.to_owned()),
+            practice_id: Set(practice_id.to_owned()),
+            cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
+            created_at: Set(now),
+        };
+        Patients::insert(patient)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::patient::Column::PatientWorkspaceId,
+                )
+                .do_nothing()
+                .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await
+            .map(|_| ())
+            .map_err(|_| StoreUnavailable)
     }
 
     async fn ensure_practice(
@@ -639,13 +634,15 @@ impl AuthStore for PostgresAuthStore {
         })
     }
 
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable> {
         Patients::find_by_id(patient_workspace_id.to_owned())
             .one(&self.db)
             .await
-            .ok()
-            .flatten()
-            .map(|row| row.practice_id)
+            .map(|row| row.map(|row| row.practice_id))
+            .map_err(|_| StoreUnavailable)
     }
 
     async fn practice_patients(&self, practice_id: &str) -> Vec<String> {

@@ -167,11 +167,9 @@ pub async fn enroll_fixture(auth: &dyn AuthStore, runtime: &Store) -> Result<(),
             .record_chart(workspace, &[], &fixture_pull(workspace))
             .await
             .map_err(|error| format!("{workspace}: {error}"))?;
-        if auth.patient_practice(workspace).await.is_none() {
-            auth.register_patient(STAGING_PRACTICE_ID, workspace)
-                .await
-                .map_err(|_| format!("{workspace}: register the patient"))?;
-        }
+        auth.register_patient(STAGING_PRACTICE_ID, workspace)
+            .await
+            .map_err(|_| format!("{workspace}: register the patient"))?;
         for identity in &panel {
             auth.set_membership(identity, workspace, Membership::Allowed)
                 .await

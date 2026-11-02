@@ -130,13 +130,15 @@ async fn register_fixture_patients(store: &dyn AuthStore) {
         .expect("create the synthetic practice");
     let panel = staging_panel(store).await.expect("read the staging panel");
     for workspace in crate::WORKSPACE_IDS {
-        if store.patient_practice(workspace).await.is_none() {
-            store
-                .register_patient(STAGING_PRACTICE_ID, workspace)
-                .await
-                .expect("register a fixture patient");
-        }
-        if store.patient_practice(workspace).await.as_deref() == Some(STAGING_PRACTICE_ID) {
+        store
+            .register_patient(STAGING_PRACTICE_ID, workspace)
+            .await
+            .expect("register a fixture patient");
+        let owner = store
+            .patient_practice(workspace)
+            .await
+            .expect("read a fixture patient's practice");
+        if owner.as_deref() == Some(STAGING_PRACTICE_ID) {
             for identity in &panel {
                 store
                     .set_membership(identity, workspace, Membership::Allowed)
@@ -1085,8 +1087,10 @@ async fn apply_panel_change(
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    let owner_practice = auth.store.patient_practice(&patient_workspace_id).await;
-    if owner_practice.as_deref() != Some(caller.practice_id.as_str()) {
+    let Ok(owner) = auth.store.patient_practice(&patient_workspace_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let membership = if allowed {
@@ -1155,10 +1159,13 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    let owner = auth
+    let Ok(owner) = auth
         .store
         .patient_practice(&body.patient_workspace_id)
-        .await;
+        .await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
@@ -1244,7 +1251,9 @@ async fn patient_front_door(
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    let owner = auth.store.patient_practice(&patient_workspace_id).await;
+    let Ok(owner) = auth.store.patient_practice(&patient_workspace_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
     if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
@@ -2104,10 +2113,7 @@ mod tests {
         // with its own admin and physician, proving no STAGING_PRACTICE_ID hard-coding.
         let jake = crate::WORKSPACE_IDS[1];
         let mary = crate::WORKSPACE_IDS[4];
-        store
-            .register_patient("northside-clinic", jake)
-            .await
-            .unwrap();
+        store.seed_patient("northside-clinic", jake);
         store.seed_account(
             "northside-clinic",
             "north-admin",

@@ -271,14 +271,19 @@ pub trait AuthStore: Send + Sync {
     /// Reads the clock `practice_id` was created with. A practice with no
     /// record was never made synthetic, so it runs on real time.
     async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable>;
-    /// Registers a patient workspace as belonging to `practice_id`.
+    /// Registers a patient workspace as belonging to `practice_id`. A workspace
+    /// that is already registered keeps its practice.
     async fn register_patient(
         &self,
         practice_id: &str,
         patient_workspace_id: &str,
     ) -> Result<(), StoreUnavailable>;
-    /// Returns the practice that owns `patient_workspace_id`, if registered.
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String>;
+    /// Returns the practice that owns `patient_workspace_id`, or `None` when it
+    /// is not registered.
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable>;
     /// Lists the patient workspaces registered in `practice_id`, sorted.
     async fn practice_patients(&self, practice_id: &str) -> Vec<String>;
     /// Lists the physician accounts in `practice_id`, sorted.
@@ -896,17 +901,30 @@ impl AuthStore for MemoryAuthStore {
         practice_id: &str,
         patient_workspace_id: &str,
     ) -> Result<(), StoreUnavailable> {
-        self.seed_patient(practice_id, patient_workspace_id);
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        state
+            .patients
+            .entry(patient_workspace_id.to_owned())
+            .or_insert_with(|| practice_id.to_owned());
+        state
+            .cadences
+            .entry(patient_workspace_id.to_owned())
+            .or_insert(ReviewCadence::Weekly);
         Ok(())
     }
 
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
-        self.state
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable> {
+        Ok(self
+            .state
             .lock()
             .expect("auth state")
             .patients
             .get(patient_workspace_id)
-            .cloned()
+            .cloned())
     }
 
     async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
@@ -1634,7 +1652,7 @@ mod tests {
 
         store.register_patient("clinic-a", "pw-mary").await.unwrap();
         assert_eq!(
-            store.patient_practice("pw-mary").await.as_deref(),
+            store.patient_practice("pw-mary").await.unwrap().as_deref(),
             Some("clinic-a")
         );
         assert_eq!(

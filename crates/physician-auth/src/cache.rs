@@ -19,6 +19,7 @@
 //! passes through to the store's row-locked fence.
 
 use std::collections::HashMap;
+use std::convert::Infallible;
 use std::hash::Hash;
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, Instant};
@@ -121,6 +122,25 @@ impl CachedAuthStore {
         V: Clone,
         F: std::future::Future<Output = V>,
     {
+        let Ok(value) = self
+            .read_fallible(map, key, async { Ok::<_, Infallible>(load.await) })
+            .await;
+        value
+    }
+
+    /// Reads through the cache and keeps only answers: a failed read is
+    /// returned and never cached.
+    async fn read_fallible<K, V, E, F>(
+        &self,
+        map: fn(&mut Cache) -> &mut HashMap<K, Entry<V>>,
+        key: K,
+        load: F,
+    ) -> Result<V, E>
+    where
+        K: Eq + Hash,
+        V: Clone,
+        F: std::future::Future<Output = Result<V, E>>,
+    {
         let before = *self.feed.borrow();
         let epoch = {
             let mut cache = self.cache.lock().expect("authority cache");
@@ -129,12 +149,12 @@ impl CachedAuthStore {
                 if let Some((value, at)) = map(&mut cache).get(&key)
                     && at.elapsed() < ENTRY_TTL
                 {
-                    return value.clone();
+                    return Ok(value.clone());
                 }
             }
             cache.local_epoch
         };
-        let value = load.await;
+        let value = load.await?;
         let after = *self.feed.borrow();
         if before.live && after == before {
             let mut cache = self.cache.lock().expect("authority cache");
@@ -149,7 +169,7 @@ impl CachedAuthStore {
                 entries.insert(key, (value.clone(), Instant::now()));
             }
         }
-        value
+        Ok(value)
     }
 
     async fn read_session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
@@ -380,8 +400,11 @@ impl AuthStore for CachedAuthStore {
         written
     }
 
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
-        self.read(
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable> {
+        self.read_fallible(
             |cache| &mut cache.practices,
             patient_workspace_id.to_owned(),
             self.inner.patient_practice(patient_workspace_id),
@@ -546,15 +569,17 @@ impl AuthStore for CachedAuthStore {
 mod tests {
     use super::*;
     use crate::MemoryAuthStore;
-    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 
     const NOW: u64 = 1_760_000_000;
 
-    /// The memory store, counting the authority reads that reach it.
+    /// The memory store, counting the authority reads that reach it. While
+    /// `unavailable` is set, a patient's practice cannot be read.
     #[derive(Default)]
     struct Counting {
         inner: MemoryAuthStore,
         reads: AtomicUsize,
+        unavailable: AtomicBool,
     }
 
     impl std::ops::Deref for Counting {
@@ -631,7 +656,10 @@ mod tests {
         async fn register_patient(&self, a: &str, b: &str) -> Result<(), StoreUnavailable> {
             self.inner.register_patient(a, b).await
         }
-        async fn patient_practice(&self, a: &str) -> Option<String> {
+        async fn patient_practice(&self, a: &str) -> Result<Option<String>, StoreUnavailable> {
+            if self.unavailable.load(Ordering::SeqCst) {
+                return Err(StoreUnavailable);
+            }
             self.inner.patient_practice(a).await
         }
         async fn practice_patients(&self, a: &str) -> Vec<String> {
@@ -795,6 +823,19 @@ mod tests {
             cached.panel(&identity).await;
         }
         assert_eq!(counting.reads.load(Ordering::SeqCst), 3);
+    }
+
+    #[tokio::test]
+    async fn a_patient_whose_practice_could_not_be_read_is_not_kept_as_unregistered() {
+        let (counting, cached, _tx, _identity, _token) = fixture();
+        counting.inner.seed_patient("clinic", "ws-1");
+        counting.unavailable.store(true, Ordering::SeqCst);
+        assert_eq!(cached.patient_practice("ws-1").await, Err(StoreUnavailable));
+        counting.unavailable.store(false, Ordering::SeqCst);
+        assert_eq!(
+            cached.patient_practice("ws-1").await,
+            Ok(Some("clinic".to_owned()))
+        );
     }
 
     #[tokio::test]

@@ -152,7 +152,7 @@ async fn a_loaded_chart_is_a_patient_of_the_practice_and_loading_again_changes_n
 
     let workspace = workspace_id("synthetic-charts", &format!("{run}-a"));
     assert_eq!(
-        auth.patient_practice(&workspace).await.as_deref(),
+        auth.patient_practice(&workspace).await.unwrap().as_deref(),
         Some(STAGING_PRACTICE_ID)
     );
     let admin = PhysicianIdentity {
@@ -313,9 +313,9 @@ async fn a_chart_that_cannot_load_is_reported_and_the_rest_still_load() {
         assert_eq!(summary.failed.len(), 1, "{:?}", summary.failed);
         assert!(summary.failed[0].contains(&refused), "{:?}", summary.failed);
         assert_eq!(summary.patients, 1);
-        assert!(auth.patient_practice(&refused).await.is_none());
+        assert!(auth.patient_practice(&refused).await.unwrap().is_none());
         let loaded = workspace_id("synthetic-charts", &format!("{run}-b"));
-        assert!(auth.patient_practice(&loaded).await.is_some());
+        assert!(auth.patient_practice(&loaded).await.unwrap().is_some());
     }
 }
 
@@ -356,7 +356,10 @@ async fn a_patient_the_practice_could_not_take_is_reported_and_the_next_load_tak
         assert!(summary.failed[0].contains(&refused), "{table}");
         assert_eq!(summary.changed, 4, "{table}: a's saved chart still counts");
         let loaded = workspace_id("synthetic-charts", &format!("{run}-b"));
-        assert!(auth.patient_practice(&loaded).await.is_some(), "{table}");
+        assert!(
+            auth.patient_practice(&loaded).await.unwrap().is_some(),
+            "{table}"
+        );
 
         sea_orm::sqlx::raw_sql(sea_orm::sqlx::AssertSqlSafe(format!(
             "DROP TRIGGER {name} ON {table}"
@@ -404,7 +407,7 @@ async fn a_deploy_leaves_the_charts_alone_and_a_failed_account_fails_it() {
     assert!(!job.status.success(), "{stderr}");
     assert!(stderr.contains(&account), "{stderr}");
     let unread = workspace_id("synthetic-charts", &format!("{run}-b"));
-    assert!(auth.patient_practice(&unread).await.is_none());
+    assert!(auth.patient_practice(&unread).await.unwrap().is_none());
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
@@ -425,7 +428,7 @@ async fn the_load_tries_every_patient_and_fails_when_one_failed() {
         "{stdout}"
     );
     let loaded = workspace_id("synthetic-charts", &format!("{run}-b"));
-    assert!(auth.patient_practice(&loaded).await.is_some());
+    assert!(auth.patient_practice(&loaded).await.unwrap().is_some());
 
     let repaired = load_charts(&url, &bank(&run, NOTE));
     let stderr = String::from_utf8_lossy(&repaired.stderr);

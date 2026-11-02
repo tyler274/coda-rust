@@ -112,7 +112,7 @@ impl ConnectedCare {
     ) -> Result<Option<Patient>, StoreUnavailable> {
         let practice = Self::identity(extensions).practice_id;
         let store = self.auth_store(extensions);
-        if store.patient_practice(id).await.as_deref() != Some(practice.as_str()) {
+        if store.patient_practice(id).await?.as_deref() != Some(practice.as_str()) {
             return Ok(None);
         }
         patients::read_patient(&*self.patients(extensions), id).await
@@ -196,7 +196,10 @@ pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> 
     };
     let store = care.auth_store(extensions);
     let identity = ConnectedCare::identity(extensions);
-    store.patient_practice(id).await.as_deref() == Some(identity.practice_id.as_str())
+    matches!(
+        store.patient_practice(id).await,
+        Ok(Some(owner)) if owner == identity.practice_id
+    )
 }
 
 /// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet (`ENG-48`).
