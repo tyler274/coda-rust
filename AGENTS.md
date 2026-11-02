@@ -71,6 +71,15 @@ a screenshot, tied to the revision it ran against. The
 [verify skills](verification/README.md#verify-skills) name the proof for each
 feature they cover.
 
+Repository documentation, including the intent specs, states current truth and
+direction, so an agent reading it cold understands what is true now and where
+things are going. It reads as a description, never a record: no dated history,
+change logs, evidence or decision trails, audit notes, or wording like
+"previously" or "we changed X to Y." When something changes, edit the text so it
+says what's true now; git history keeps how it got there. Say what something is
+for and what must hold, and leave choices that belong to its owner open instead
+of prescribing them.
+
 Keep individual Linear ticket IDs, links and status mappings out of repository
 documentation. Linear owns that tracking; docs use source and document links to
 explain responsibilities, implemented behavior and operating procedures. Live
