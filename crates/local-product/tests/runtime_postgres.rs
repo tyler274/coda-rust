@@ -675,7 +675,11 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         .unwrap_err();
     assert!(error.contains("model calls"), "{error}");
     let state = s.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "failed");
+    // Bound exhaustion leaves the attempt leased, like any other engine
+    // failure. Ending it here would make one crash terminal before
+    // retry_delivery or lease expiry. Narration still must not publish.
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts[0].status, "active");
     assert_eq!(state.messages.len(), 1, "narration must not be published");
     let executed = state.attempts[0]
         .events
