@@ -4,7 +4,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Continuous integration
 
-- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. Every run checks engineering skills and documentation. [CI selection](/scripts/ci_scope.py) adds the full Rust, database, infrastructure and image suite for product/build or mixed changes; unavailable comparisons also select full. Browser tests are ignored by the ordinary test harness; their explicit targets run on `workflow_dispatch`. A green routine CI run does not establish browser qualification. The workflow and its comments own the exact step list.
+- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. Every run checks engineering skills and documentation. [CI selection](/scripts/ci_scope.py) adds the full Rust, database, infrastructure and image suite for product/build or mixed changes, and the runtime clinical `skills/` count as product; unavailable comparisons also select full. Browser tests are ignored by the ordinary test harness; their explicit targets run on `workflow_dispatch`. A green routine CI run does not establish browser qualification. The workflow and its comments own the exact step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
 - `deploy-public-site-staging` applies the public site's reviewed staging plan after full validation on pushes to `main` only when the repository variable `PUBLIC_SITE_STAGING_DEPLOY` is `enabled` ([public site](public-site.md)).
 - [`.github/workflows/promote-public-site.yml`](/.github/workflows/promote-public-site.yml) is a manual workflow that promotes the image staging tested for one `main` commit to public-site production, with the `production` environment's approval ([promotion](public-site.md#promotion)).
@@ -19,7 +19,12 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Secrets: Doppler
 
-<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. A process that reads secrets starts under `doppler run --`; the public marketing site reads none and runs without Doppler. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
+The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>: Doppler holds every secret value, and Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config.
+
+- Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in once with `doppler login`, then prefix a local command with `doppler run --`. [`doppler.yaml`](/doppler.yaml) selects `dev`; the shell loads it when a login exists and continues when it does not. Creating `prd` is an operator login step, and this repository stores no token and no secret value.
+- A process that reads secrets starts under `doppler run --`; production Rust processes use `doppler run --project coda-rust --config prd --` and still read environment variables. Cloud Run mounts the config's `DOPPLER_TOKEN` from Secret Manager, and GitHub release jobs read the same token from an environment secret.
+- The public marketing site reads no secrets and runs without Doppler. CI does not call Doppler.
+- `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned, checksum-verified CLI for images and runners.
 
 ## Retained physician infrastructure references
 

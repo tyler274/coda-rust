@@ -124,27 +124,18 @@ clinical-intelligence and recovery rules.
 
 ## Dev shell
 
-`nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`.
+`nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`. For unattended work, run builds, tests and Git commits with `nix develop .#agent --command <command>`; [unattended development](README.md#unattended-development) describes that profile.
 
-For unattended work, use `nix develop .#agent --command <command>` for builds, tests and Git commits. This shares the default toolchain without Cursor or automatic Doppler credential loading. The execution environment supplies Nix; the repository setup hook only materializes the shell.
-
-Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in once with `doppler login`, then prefix a local command with `doppler run --`. The shell loads `dev` when a login exists and continues when it does not. Production Rust processes that read secrets start with `doppler run --project coda-rust --config prd --` and still read environment variables. The public marketing site reads no secrets, so it runs without Doppler. Tests and the sample server do not need a Doppler account. Creating `prd` is an operator login step; this repo stores no token and no secret value.
-
-Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`, a read-only service token scoped to one config: Cloud Run mounts it, and the process starts under `doppler run --`, which loads the rest. GitHub release jobs read the same token from an environment secret. Do not copy Doppler values into Secret Manager. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` installs the pinned, checksum-verified CLI for images and runners.
+Doppler holds every secret value, and GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` scoped to one config. Never copy Doppler values into Secret Manager or the repository. Tests and the sample server need no Doppler account. [Secrets](book/src/release.md#secrets-doppler) has the configs and commands.
 
 ## Infrastructure and CI
 
 `infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) says which ones this workspace applies. Apply a root only from a reviewed saved plan with the operator's authorization; production applies and DNS changes need the user's explicit authorization. Applying a workspace root grants no production authority over the physician, Duet, clinical-evidence or Gym deployments.
 
 Choose checks by affected contracts and dependencies; use hosted CI for shared
-integration and environment confirmation. Report missing local capabilities
-and remaining proof honestly.
-
-CI uses [ci_scope.py](scripts/ci_scope.py) to select lightweight documentation and
-engineering-skill checks or the full workspace suite. Runtime clinical `skills/`
-remain product inputs. The `CI result` check requires every selected job to pass;
-skills/docs-only main pushes do not deploy. Browser qualification remains explicit:
-run ignored browser tests locally or dispatch CI manually for full qualification.
-See [local CI checks](README.md#local-ci-checks) and [CI](book/src/release.md#continuous-integration).
-
-`act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
+integration and environment confirmation. A green routine CI run does not
+establish browser qualification: run the ignored browser tests locally or
+dispatch CI manually. Report missing local capabilities and remaining proof
+honestly. [CI](book/src/release.md#continuous-integration) says what each run
+selects and checks, and [local CI checks](README.md#local-ci-checks) how to run
+them here.

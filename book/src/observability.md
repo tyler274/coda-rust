@@ -70,14 +70,12 @@ what Datadog would receive.
 
 ## Secrets
 
-Doppler (`coda-rust`, configs `dev`/`stg`/`prd`) holds every value: the Datadog
-API and app keys, the Langfuse salt, NextAuth secret, encryption key, ClickHouse
-and Valkey passwords, the GCS HMAC pair, and the Langfuse project keys. GCP
-Secret Manager holds only `DOPPLER_TOKEN`. OpenTofu reads it ephemerally and
-writes it into one Kubernetes Secret through a write-only attribute, so it is
-never in state. The Doppler Kubernetes Operator then syncs the rest into the
-`observability` namespace through `DopplerSecret` resources. The mapping table is in
-[`infra/gcp/observability`](/infra/gcp/observability).
+Doppler holds every observability secret: the Datadog API and app keys, the
+Langfuse salt, NextAuth secret, encryption key, ClickHouse and Valkey passwords,
+the GCS HMAC pair, and the Langfuse project keys. The Doppler Kubernetes Operator
+syncs them into the `observability` namespace;
+<a href="/infra/gcp/observability/README%2Emd"><code>infra/gcp/observability</code></a>
+says how its token arrives and maps each key.
 
 ## Local runbook
 
