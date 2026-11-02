@@ -22,7 +22,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>.
 
 - Doppler project `coda-rust` has the parent configs `dev`, `stg` and `prd`. Locally, log in once with `doppler login` and prefix a command with `doppler run --`; [`doppler.yaml`](/doppler.yaml) selects `dev`, and the shell loads it when a login exists and continues when it does not. Creating a config is an operator step, and this repository stores no token and no secret value.
-- Hosted services read per-product, per-role child configs, never a parent, because a parent-scoped token would carry the other product's secrets. [GCP deployment](gcp.md) lists those configs and how each image starts under `doppler run`.
+- Physician and Duet services read per-product, per-role child configs, never a parent, because a parent-scoped token would carry the other product's secrets. [GCP deployment](gcp.md) lists those configs and how each image starts under `doppler run`.
 - The public marketing site reads no secrets and runs without Doppler. CI installs the pinned CLI only to verify it and fetches no secrets through it; GitHub jobs reach GCP through Workload Identity Federation.
 - `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned, checksum-verified CLI for images and runners.
 
