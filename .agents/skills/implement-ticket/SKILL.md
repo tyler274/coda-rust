@@ -15,6 +15,19 @@ tools. Resolve the ticket, workspace, repository, and checkout; follow repositor
 setup guidance. Name missing access and continue work supported by available
 evidence rather than inventing ticket contents or a separate integration.
 
+When the task is to implement the work, claim each Linear ticket before investing
+in it, checking every ticket in a set before changing any. For a Done, Canceled,
+or Duplicate ticket, change nothing: name the status and any assignee, and ask the
+user before any work. Approval starts the work and leaves the ticket as it is. If
+someone else holds any other ticket, change nothing and stop: name the assignee
+and status, and ask plainly whether to take it from them, as in "Should we hijack
+this ticket?" Approval assigns it to the developer; without approval, leave it and
+do not start. If the user declines a ticket in a set, ask whether the rest should
+go ahead before changing any of them. Assign an unassigned ticket to the developer,
+and move a Backlog or Todo ticket to In Progress once it is the developer's; an In
+Review ticket keeps its status. If Linear is unavailable or the write fails, report
+the ticket as unclaimed.
+
 Read the ticket, discussion, governing specs, dependencies, and current code.
 Establish what already works, what remains, and what would prove completion.
 Restate acceptance as numbered criteria (AC1, AC2, ...), drafting them when the
