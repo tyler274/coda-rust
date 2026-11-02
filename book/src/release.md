@@ -52,7 +52,6 @@ The original Python Duet service's production composition, staging windows, rele
 
 ## iPhone and TestFlight
 
-- The original [TestFlight runbook](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/testflight-release.md), [iOS verification](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/ios-verification.md), and [release packets](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs) preserve historical distribution and approval evidence. They do not qualify the Rust app. A Rust build is not a TestFlight upload.
 - The Rust bindings for iPhone are in [`platform/ios`](/platform/ios) (see the [crate map](crate-map.md#platform-bindings)).
 
 ## Android and Google Play

@@ -80,11 +80,3 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | [`android/StatWidget.kt`](/platform/android/StatWidget.kt) | `duet-widget` snapshot |
 | [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
-
-## Reference-only products and evidence
-
-Gym and computer use have no Rust product crates. The [retained reference map](reading.md#retained-references)
-links their owners and historical Duet catalog, licensing and release evidence.
-Rust privacy and identity already have owners; see [privacy recovery](privacy-recovery.md)
-and [security boundaries](security-posture.md). A reference implementation's
-coverage is not proof that the corresponding Rust journey is qualified.

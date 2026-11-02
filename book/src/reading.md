@@ -58,16 +58,7 @@ Connected-care behavior belongs to the
 <a href="/intent/connected-care%2Emd">connected-care spec</a>. It does not merge the
 physician's and Duet's accounts, clinical state or runtime owners.
 
-## Retained references
-
-The original repositories remain read-only comparison material. Their pinned
-contracts and release packets explain prior behavior and evidence; they cannot
-override current product decisions. Follow the original source when comparing
-or porting a behavior. Do not recreate a chapter for every historical heading.
-
-- [Original Duet documentation](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs): behavior, clinical catalogs and licenses, privacy, historical iOS/TestFlight release packets, scenario and insight research.
-- [Original physician documentation](https://github.com/Coda-Health/coda-agents/tree/5674d0f13895214e0a633fc81176107f2e28f79d/docs): architecture, runtime protocol, physician experience, care-team operations and readiness.
-- <a href="/submodules/coda-gym/README%2Emd">Coda Gym</a> and <a href="/submodules/Coda-Computer-Use/README%2Emd">computer use</a> retain their own task packages, source evidence and operating instructions; neither has a Rust product crate here.
+## Retiring a surface
 
 Fixtures, generated API contracts, published legal text and active verification
 work are not obsolete merely because product scope changed. Remove a runtime
