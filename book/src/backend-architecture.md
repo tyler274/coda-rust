@@ -122,8 +122,13 @@ chain when `FRONT_DOOR_DATABASE_URL` is supplied. Do not replay the coda-app
 migration ledger to initialize this service.
 
 Follow the ORM rules in <a href="/AGENTS%2Emd#persistence-orm-first">AGENTS.md</a>.
-`PgMoments` uses a Duet-owned SeaORM entity over the SQLx pool. Schema/account
-transactions and other adapters use SQLx. Ordinary CRUD belongs to the owning
+`PgMoments` uses a Duet-owned SeaORM entity over the SQLx pool. It keeps
+user-scoped list and delete, descending `(occurred_at, id)` order, unknown-kind
+errors, affected-row semantics and the privacy-journal deletion gate; prove
+changes on disposable Postgres, including cross-account refusal. Schema/account
+transactions and other adapters use SQLx. `src/sql/has_migration.sql` is a
+schema-readiness query, not a CRUD pattern, and `duet-migrate` keeps the separate
+reference `schema_migrations` ledger. Ordinary CRUD belongs to the owning
 product's typed entities; products do not share stores.
 
 ## Proof

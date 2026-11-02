@@ -23,10 +23,14 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Patient screens and design references | [Duet UI](ui-surface-map.md) |
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
+| The physician clinical skill catalog | [`skills/`](/skills), read by `agent-skills` for `harness`; [skills in hosted chat](physician-site.md#skills-in-hosted-chat) |
+| Public marketing site | [Public site](public-site.md) |
+| Gym cases and computer use | [Gym](agent-contracts.md#coda-gym-evaluation) and [computer-use](agent-contracts.md#computer-use) invariants, <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |
 | Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
 | Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
+| Dev container setup, ports and storage | <a href="/README%2Emd#dev-container">Dev container</a> |
 
 Keep ticket references, lists, status and acceptance tracking in Linear. This book
 describes maintained source owners, implemented behavior and operating procedures;
