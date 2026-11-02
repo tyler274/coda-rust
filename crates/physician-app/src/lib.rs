@@ -4022,10 +4022,13 @@ fn ReplyReviewCard(
                             "data-reply-action": "copy",
                             disabled: busy,
                             onclick: move |_| {
-                                copied.set(if copy_text(&draft) {
-                                    "Copied".to_owned()
-                                } else {
-                                    "Couldn’t copy".to_owned()
+                                let draft = draft.clone();
+                                spawn(async move {
+                                    copied.set(if ui::copy_text(draft).await {
+                                        "Copied".to_owned()
+                                    } else {
+                                        "Couldn’t copy".to_owned()
+                                    });
                                 });
                             },
                             "{REPLY_COPY}"
@@ -4087,42 +4090,6 @@ fn ReplyReviewCard(
             }
         }
     }
-}
-
-fn copy_text(text: &str) -> bool {
-    #[cfg(target_arch = "wasm32")]
-    {
-        copy_text_wasm(text)
-    }
-    #[cfg(not(target_arch = "wasm32"))]
-    {
-        let _ = text;
-        false
-    }
-}
-
-#[cfg(target_arch = "wasm32")]
-fn copy_text_wasm(text: &str) -> bool {
-    use wasm_bindgen::JsCast;
-    let Some(window) = web_sys::window() else {
-        return false;
-    };
-    let Ok(navigator) = js_sys::Reflect::get(&window, &"navigator".into()) else {
-        return false;
-    };
-    let Ok(clipboard) = js_sys::Reflect::get(&navigator, &"clipboard".into()) else {
-        return false;
-    };
-    if clipboard.is_null() || clipboard.is_undefined() {
-        return false;
-    }
-    let Ok(write) = js_sys::Reflect::get(&clipboard, &"writeText".into()) else {
-        return false;
-    };
-    let Ok(write) = write.dyn_into::<js_sys::Function>() else {
-        return false;
-    };
-    write.call1(&clipboard, &text.into()).is_ok()
 }
 
 #[component]
