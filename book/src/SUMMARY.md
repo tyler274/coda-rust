@@ -4,7 +4,6 @@
 
 # Implementation
 
-- [Operating invariants](agent-contracts.md)
 - [Crate map](crate-map.md)
 - [Duet backend](backend-architecture.md)
 - [Duet UI and design](ui-surface-map.md)

@@ -61,8 +61,8 @@ security findings.
 
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must
-not import the physician `local-product`; [operating invariants](agent-contracts.md)
-define this boundary.
+not import the physician `local-product`; the <a href="/intent/harness%2Emd">harness spec</a>
+and the [boundaries](/crates/boundaries/src/lib.rs) tests define this boundary.
 
 The shared model → tool → model orchestration lives in `harness::engine`.
 The mounted conversation owner uses `harness::execution` as a compatibility

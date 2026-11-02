@@ -12,7 +12,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | What are we building and why? | <a href="/intent/README%2Emd">Intent specs</a>: principles, then the physician, Duet, connected-care and harness specs, then decisions; Linear tracks the work: [Duet](https://linear.app/coda-health/project/duet-ed7c815ed39b), [Coda Agents](https://linear.app/coda-health/project/coda-agents-d7d16847168e), [Connected care](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874), and their outcome tickets; [engineering scope and proof](https://linear.app/coda-health/project/coda-rust-platform-6ca86460e169) |
 | How should Duet look and read? | [Design language](https://linear.app/coda-health/document/duet-design-language-foundations-patterns-and-current-care-e3d0bc28fa6d) |
 | Where is it implemented? | [Crate map](crate-map.md), then the owning source file and tests |
-| How do I work here? | <a href="/AGENTS%2Emd">AGENTS.md</a>, [operating invariants](agent-contracts.md), and <a href="/README%2Emd">README setup</a> |
+| How do I work here? | <a href="/AGENTS%2Emd">AGENTS.md</a> and <a href="/README%2Emd">README setup</a> |
 | What has been proved? | The scoped test/run evidence linked by each outcome; <a href="/verification/README%2Emd">verification</a> owns formal-design workflow; [release](release.md) and [GCP](gcp.md) own operational procedures |
 
 ## Find the implementation
@@ -25,8 +25,8 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | The physician clinical skill catalog | [`skills/`](/skills), read by `agent-skills` for `harness`; [skills in hosted chat](physician-site.md#skills-in-hosted-chat) |
 | Public marketing site | [Public site](public-site.md) |
-| Gym cases and computer use | [Gym](agent-contracts.md#coda-gym-evaluation) and [computer-use](agent-contracts.md#computer-use) invariants, <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |
-| Shared execution and product boundaries | [Operating invariants](agent-contracts.md), [crate map](crate-map.md) |
+| Gym cases, promotion and runs | <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |
+| Shared execution and product boundaries | <a href="/intent/harness%2Emd">Harness spec</a>, [crate map](crate-map.md) |
 | Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |

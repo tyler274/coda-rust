@@ -98,8 +98,6 @@ share code only through the [shared crates](book/src/crate-map.md#shared), and t
 [boundaries](crates/boundaries/src/lib.rs) tests keep either product from
 importing the other's crates.
 [The harness spec](intent/harness.md) says what the shared harness owns.
-[Operating invariants](book/src/agent-contracts.md) keeps the common authority,
-clinical-intelligence and recovery rules.
 
 `eval/` inside `submodules/coda-agents` is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
 
