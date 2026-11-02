@@ -5,16 +5,25 @@ set -euo pipefail
 
 workspace=/workspace
 nix_version=2.34.8
-nix_tarball="nix-${nix_version}-x86_64-linux.tar.xz"
-nix_digest=2c2e146b80834fe0ca201b51deeb939405b4f18e8d2071bf80b10f8123c50464
+nix_arch=$(uname -m)
+nix_tarball="nix-${nix_version}-${nix_arch}-linux.tar.xz"
+case "$nix_arch" in
+  x86_64) nix_digest=2c2e146b80834fe0ca201b51deeb939405b4f18e8d2071bf80b10f8123c50464 ;;
+  aarch64) nix_digest=b4e565fe4db5c352547b8146488cab81db06be89301a4c67b081c76f1e457760 ;;
+  *)
+    echo "no pinned Nix for $nix_arch" >&2
+    exit 1
+    ;;
+esac
 
 # --- Runtime packages --------------------------------------------------------
-# Two additions the thin image needs: xz to unpack the fallback Nix tarball,
-# and psql for the migration applier. Compose pins resolvers that answer
-# (see docker-compose.yml dns); the build cannot.
-if ! command -v psql >/dev/null || ! command -v xz >/dev/null; then
+# Three additions the thin image needs: xz to unpack the fallback Nix tarball,
+# psql for the migration applier, and a font, without which headless Chromium
+# aborts while rendering. Compose pins resolvers that answer (see
+# docker-compose.yml dns); the build cannot.
+if ! command -v psql >/dev/null || ! command -v xz >/dev/null || [ ! -d /usr/share/fonts/truetype/liberation ]; then
   sudo apt-get update -qq
-  sudo apt-get install -y -qq --no-install-recommends xz-utils postgresql-client >/dev/null
+  sudo apt-get install -y -qq --no-install-recommends xz-utils postgresql-client fonts-liberation >/dev/null
 fi
 
 # --- Nix ---------------------------------------------------------------------
@@ -26,6 +35,8 @@ fi
 nix_bin=/nix/store/mls1lldgdxny8i0ll3n1asb1kn38fw73-nix-2.34.8/bin
 if [ -x /nix/var/nix/profiles/default/bin/nix ] || [ -x "$nix_bin/nix" ]; then
   echo "reusing the host's /nix store"
+elif [ -x "$HOME/.nix-profile/bin/nix" ]; then
+  nix_bin="$HOME/.nix-profile/bin"
 else
   if [ ! -w /nix ]; then
     echo "/nix is not writable and no host store is bound" >&2
@@ -37,13 +48,14 @@ else
   echo "$nix_digest  $tmp/$nix_tarball" | sha256sum -c --status
   tar -xJf "$tmp/$nix_tarball" -C "$tmp"
   WRITE_TO_NIX_STORE=1 "$tmp"/*/install --no-daemon >/dev/null
-  nix_bin=/nix/var/nix/profiles/default/bin
+  # A single-user install leaves nix in the user's profile, not profiles/default.
+  nix_bin="$HOME/.nix-profile/bin"
 fi
 if [ -x /nix/var/nix/profiles/default/bin/nix ]; then
   nix_bin=/nix/var/nix/profiles/default/bin
 fi
 export PATH="$nix_bin:$PATH"
-grep -q 'nix-2.34.8/bin\|profiles/default/bin' "$HOME/.bashrc" 2>/dev/null || \
+grep -q 'nix-2.34.8/bin\|profiles/default/bin\|\.nix-profile/bin' "$HOME/.bashrc" 2>/dev/null || \
   printf '\nexport PATH="%s:$PATH"\n' "$nix_bin" >> "$HOME/.bashrc"
 # Non-interactive shells (VS Code tasks, `docker exec`) never read .bashrc;
 # expose nix on the default PATH for every shell.

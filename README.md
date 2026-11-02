@@ -100,8 +100,8 @@ revisions cancel superseded CI runs, without cancelling main deployment runs.
 The same workspace runs in a VS Code Dev Container whose `dev` service executes
 the identical `nix dev shell` (the flake stays the single toolchain owner) and
 a `pgvector` PostgreSQL 16 service on `127.0.0.1:5433`. Prerequisites: Docker,
-Compose, and the Dev Containers extension (x86_64 Linux; the flake hardcodes
-that system).
+Compose, and the Dev Containers extension on x86_64 Linux. On Apple silicon, use
+[Apple's container tool](#apple-container) instead.
 
 1. Open the repository in VS Code and choose "Reopen in Container".
 2. The first build installs pinned Nix into a `/nix` volume, fetches missing
@@ -124,3 +124,60 @@ Postgres-backed suites behave identically inside the container because the
 flake's socket-directory wrapper engages there too. Live model execution and
 the encoder need host-only local data; uncomment the `coda-local-data` bind
 mount in [.devcontainer/docker-compose.yml](.devcontainer/docker-compose.yml).
+
+### Apple container
+
+On Apple silicon with macOS 26, [`container`](https://github.com/apple/container)
+runs the same dev shell as native `aarch64-linux`. It has no Docker API, Compose
+or host networking, so "Reopen in Container" and `act` do not work with it, and
+Rosetta cannot host the x86_64 shell because it does not preserve `argv[0]`,
+which Nix's Python wrappers rely on. CI remains the x86_64 proof.
+
+```sh
+brew install --formula container
+dev/apple-container.sh
+container exec -it --user vscode --workdir /workspace coda-dev-arm nix develop .#agent
+```
+
+The script reuses an existing container and takes `CODA_CONTAINER_NAME`,
+`CODA_CONTAINER_CPUS` and `CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and
+`target` live in volumes named after the container. It publishes ports 8790 and
+8080 on loopback, so stop one container before starting another under a new name.
+Rerun the script after a restart rather than `container start` alone.
+
+Run the rest inside that shell. Bind a server to `0.0.0.0` to reach it from the
+Mac. The physician page needs its bundle first:
+
+```sh
+cargo build -p physician-app --target wasm32-unknown-unknown --features web
+wasm-bindgen --target web --out-dir target/physician-web "$PWD/target/wasm32-unknown-unknown/debug/physician-app.wasm"
+PHYSICIAN_LISTEN_ADDR=0.0.0.0:8790 cargo run -p physician-sample
+```
+
+Live chat on that page needs the Codex CLI and `codex login` in the container, or
+a [replay cassette](#physician-chat-codex-cli). The dev shell does not include it.
+
+The script starts no Postgres service, and the database-backed tests fail without
+one. Start a disposable cluster, point the tests at it as
+[CI](.github/workflows/ci.yml) does, and clear the encoder model path unless that
+directory exists, because the dev shell always sets it. The browser tests build
+offline, so fetch their crates first:
+
+```sh
+initdb -D /tmp/coda-pg -U postgres --auth=trust
+pg_ctl -D /tmp/coda-pg -o "-p 5544 -k /tmp" -l /tmp/coda-pg.log start
+export DUET_TEST_DATABASE_URL=postgresql://postgres@127.0.0.1:5544/postgres
+export PHYSICIAN_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
+export FRONT_DOOR_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
+unset DUET_DISCOVERY_ENCODER_MODEL CODA_PATIENT_ENCODER_MODEL
+cargo test --workspace
+cargo fetch --locked --target wasm32-unknown-unknown
+cargo test -p physician-sample --test site --test auth_browser -- --ignored
+```
+
+`duet-api` also needs the [schema setup](book/src/backend-architecture.md#persistence-and-migrations)
+and its Doppler secrets; bind it with `DUET_LISTEN_ADDR=0.0.0.0:8080`.
+
+Commit inside this shell, after setting your Git identity there. Entering it sets
+`core.hooksPath` in the shared `.git/config`, and that hook cannot run on a Mac
+without Nix. Push from the Mac, which holds your credentials.
