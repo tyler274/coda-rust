@@ -67,6 +67,8 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 **Your doctor's plan.** The documented care decisions and open items a connected practice sends back, with source, author, date and status. It's read only, lives on Today, and Duet explains it faithfully. With more than one connected practice, each practice's plan shows separately, labeled with its practice, and Duet explains them together when asked. When a connection ends, the plan stays, marked no longer updated.
 
+**Shared.** The practice-connection tab. It keeps the practice card with Share with my physician and Stop sharing. It has no person-to-person People list or sharing notices.
+
 **Connected care.** An invited practice's consented connection to the person's Duet account. Patients join a practice only through that practice's invitation and their consent, and joining links to the account they already have. A person may connect to more than one practice, each connection separate. Every Duet flow works without a connected practice.
 
 **Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." It's shown at sign-up and kept within reach in chat, without being repeated in every reply.

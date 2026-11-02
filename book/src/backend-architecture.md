@@ -106,9 +106,11 @@ and model/operation pages are regenerated with the Rust sources.
 the manifest and documentation against fresh output. Use the pinned toolchain
 in `nix develop`.
 
-The generator consumes the pinned OpenAPI source. Its DTOs are compatibility
-artifacts, not a promise of person-to-person sharing. Retiring a wire surface
-requires checking its actual callers and services.
+The generator consumes the pinned OpenAPI source. The composer excludes the
+retired `/api/sharing/` person-to-person routes and schemas used only by them.
+Practice-connection and doctor-workspace contracts keep their own owners.
+Regeneration clears generated source and documentation directories so removed
+operations cannot survive as stale files.
 
 ## Persistence and migrations
 
