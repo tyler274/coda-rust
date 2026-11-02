@@ -235,10 +235,10 @@
   /* The person's words being edited, as wide as a bubble may be; the note beneath wraps the actions under it once
      narrower than its own width. */
   --message-editor-width: 36rem;
-  --message-editor-note-width: 14rem;
-  /* An attached file's card; in a bubble, cards share the row from a smaller starting width. */
+  --message-editor-note-basis: 14rem;
+  /* An attached file's card; in a bubble, cards share the row, each growing from a smaller basis. */
   --attachment-width: 14rem;
-  --attachment-min-width: 9rem;
+  --attachment-basis: 9rem;
   /* A pressed item lifted out of its page: the page behind blurred, the item's shadow, and the fade where a tall item is
      cut off. */
   --lift-backdrop: blur(14px) saturate(1.2);
