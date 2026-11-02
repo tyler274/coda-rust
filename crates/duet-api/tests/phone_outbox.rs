@@ -409,10 +409,9 @@ async fn phone_outbox_drains_into_canonical_evidence_on_postgres() {
     // restarts acquisition from the beginning under fresh identities.
     outbox.connect(1).unwrap();
     assert_eq!(outbox.view().unwrap().anchor, None);
-    sqlx::raw_sql(AssertSqlSafe(format!(
+    let _ = sqlx::raw_sql(AssertSqlSafe(format!(
         "drop database if exists {name} with (force)"
     )))
     .execute(&mut admin)
-    .await
-    .ok();
+    .await;
 }
