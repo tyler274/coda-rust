@@ -454,9 +454,7 @@ async fn load_today(
     String,
 > {
     let api = open_client(base_url, bearer)?;
-    let settings = api.intelligence_settings().await?;
-    let cycles = api.list_insight_cycles().await?;
-    Ok((settings, cycles))
+    futures_util::future::try_join(api.intelligence_settings(), api.list_insight_cycles()).await
 }
 
 fn schedule_loaded_insights(page: &duet_client::InsightCyclePage) {
@@ -757,9 +755,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         let bearer = bearer.clone();
         async move {
             let api = open_client(base_url, bearer)?;
-            let page = api.list_messages().await?;
-            let routines = api.list_saved_routines().await.ok().map(|list| list.items);
-            let follow_ups = api.list_follow_ups().await.ok().map(|page| page.items);
+            let (page, routines, follow_ups) = futures_util::future::try_join3(
+                api.list_messages(),
+                async { Ok(api.list_saved_routines().await.ok().map(|list| list.items)) },
+                async { Ok(api.list_follow_ups().await.ok().map(|page| page.items)) },
+            )
+            .await?;
             Ok::<_, String>(ThreadLoad {
                 page,
                 routines,
@@ -2218,9 +2219,10 @@ fn YouTab(
         async move {
             match open_client(base_url, bearer) {
                 Ok(api) => {
-                    let library = api.evidence_library().await?;
-                    let doctor_plan = api.doctor_plan().await.ok().flatten();
-                    Ok((library, doctor_plan))
+                    futures_util::future::try_join(api.evidence_library(), async {
+                        Ok(api.doctor_plan().await.ok().flatten())
+                    })
+                    .await
                 }
                 Err(error) => Err(error),
             }

@@ -848,12 +848,13 @@ async fn roster(Query(query): Query<RosterQuery>, request: Request<Body>) -> Res
     if let Some(care) = request.extensions().get::<care::ConnectedCare>() {
         let store = care.auth_store(request.extensions());
         let identity = care::ConnectedCare::identity(request.extensions());
-        for patient in &mut patients {
-            let Some(ws_id) = patient["patient_workspace_id"].as_str().map(str::to_owned) else {
-                continue;
-            };
-            let link = care.link_wire(&*store, &identity.practice_id, &ws_id).await;
-            if let Some(obj) = patient.as_object_mut() {
+        let (store, practice_id) = (&*store, identity.practice_id.as_str());
+        let links = auth::per_workspace(&patients, |ws_id| async move {
+            care.link_wire(store, practice_id, &ws_id).await
+        })
+        .await;
+        for (patient, link) in patients.iter_mut().zip(links) {
+            if let (Some(link), Some(obj)) = (link, patient.as_object_mut()) {
                 obj.insert("duet_linked".to_owned(), json!(link.linked));
                 obj.insert(
                     "sharing_consented".to_owned(),

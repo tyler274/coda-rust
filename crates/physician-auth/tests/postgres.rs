@@ -450,6 +450,14 @@ async fn panel_assignment_requires_admin_permission_in_the_same_practice() {
         PanelError::UnknownTarget,
         "cannot assign panels across practices"
     );
+
+    store.register_patient("other-clinic", "pw-1").await;
+    assert!(
+        store.panel(&doc).await.is_empty(),
+        "a workspace registered to another practice leaves the panel"
+    );
+    store.register_patient("pg-proof", "pw-1").await;
+    assert_eq!(store.panel(&doc).await, vec!["pw-1".to_owned()]);
 }
 
 #[tokio::test]

@@ -388,8 +388,10 @@ pub(crate) async fn guard(
     if let Some(workspace) = direct_workspace(&path) {
         match auth.store.membership(&identity, workspace).await {
             Membership::Allowed => {
-                let response = next.run(Request::from_parts(parts, body)).await;
-                let cadence = auth.store.patient_cadence(workspace).await;
+                let (response, cadence) = tokio::join!(
+                    next.run(Request::from_parts(parts, body)),
+                    auth.store.patient_cadence(workspace),
+                );
                 return enrich_allowed_workspace(response, cadence).await;
             }
             Membership::ClinicDemographic => {
@@ -538,12 +540,12 @@ async fn filter_projection_response(
     let Ok(mut value) = serde_json::from_slice::<Value>(&bytes) else {
         return Response::from_parts(parts, Body::from(bytes));
     };
-    let panel: HashSet<String> = auth.store.panel(identity).await.into_iter().collect();
-    let practice_has_patients = !auth
-        .store
-        .practice_patients(&identity.practice_id)
-        .await
-        .is_empty();
+    let (panel, practice_patients) = tokio::join!(
+        auth.store.panel(identity),
+        auth.store.practice_patients(&identity.practice_id),
+    );
+    let panel: HashSet<String> = panel.into_iter().collect();
+    let practice_has_patients = !practice_patients.is_empty();
 
     match path {
         "/today" => {
@@ -566,16 +568,13 @@ async fn filter_projection_response(
         "/patient-workspaces" => {
             filter_workspace_array(&mut value, "patients", &panel);
             if let Some(items) = value.get_mut("patients").and_then(Value::as_array_mut) {
-                for item in items {
-                    if let Some(ws_id) = item
-                        .get("patient_workspace_id")
-                        .and_then(Value::as_str)
-                        .map(str::to_owned)
-                    {
-                        let cadence = auth.store.patient_cadence(&ws_id).await;
-                        if let Some(obj) = item.as_object_mut() {
-                            obj.insert("review_cadence".to_owned(), json!(cadence.as_str()));
-                        }
+                let cadences = per_workspace(items, |ws_id| async move {
+                    auth.store.patient_cadence(&ws_id).await
+                })
+                .await;
+                for (item, cadence) in items.iter_mut().zip(cadences) {
+                    if let (Some(cadence), Some(obj)) = (cadence, item.as_object_mut()) {
+                        obj.insert("review_cadence".to_owned(), json!(cadence.as_str()));
                     }
                 }
             }
@@ -594,27 +593,46 @@ async fn filter_projection_response(
         }
         "/patient-roster" => {
             if let Some(patients) = value.get_mut("patients").and_then(Value::as_array_mut) {
-                let mut retained = Vec::with_capacity(patients.len());
-                for patient in std::mem::take(patients) {
-                    let same_practice =
-                        match patient.get("patient_workspace_id").and_then(Value::as_str) {
-                            Some(ws_id) => {
-                                auth.store.patient_practice(ws_id).await.as_deref()
-                                    == Some(identity.practice_id.as_str())
-                            }
-                            None => false,
-                        };
-                    if same_practice {
-                        retained.push(patient);
-                    }
-                }
-                *patients = retained;
+                let practices = per_workspace(patients, |ws_id| async move {
+                    auth.store.patient_practice(&ws_id).await
+                })
+                .await;
+                let mut same_practice = practices.into_iter().map(|practice| {
+                    practice.flatten().as_deref() == Some(identity.practice_id.as_str())
+                });
+                patients.retain(|_| same_practice.next().unwrap_or(false));
             }
         }
         _ => {}
     }
 
     Json(value).into_response()
+}
+
+/// How many store reads one list response keeps in flight: enough to overlap
+/// round trips, few enough to leave the connection pool to other requests.
+const STORE_READS_IN_FLIGHT: usize = 4;
+
+/// Runs `read` on each item's `patient_workspace_id`, at most
+/// [`STORE_READS_IN_FLIGHT`] at a time, and returns the results in item order.
+/// An item without a workspace id reads nothing and yields `None`.
+pub(crate) async fn per_workspace<T, F: std::future::Future<Output = T>>(
+    items: &[Value],
+    read: impl Fn(String) -> F,
+) -> Vec<Option<T>> {
+    let workspaces: Vec<Option<String>> = items
+        .iter()
+        .map(|item| {
+            item.get("patient_workspace_id")
+                .and_then(Value::as_str)
+                .map(str::to_owned)
+        })
+        .collect();
+    stream::iter(workspaces)
+        .map(|ws_id| futures_util::future::OptionFuture::from(ws_id.map(&read)))
+        .buffered(STORE_READS_IN_FLIGHT)
+        .collect()
+        .await
 }
 
 fn filter_workspace_array(value: &mut Value, key: &str, panel: &HashSet<String>) {
@@ -804,14 +822,15 @@ async fn stream_still_authorized(
     watched_workspace: Option<&str>,
     initial_panel: &HashSet<String>,
 ) -> bool {
-    if auth.store.session(token, now()).await.is_err() {
-        return false;
-    }
-    if let Some(ws) = watched_workspace {
-        return allows_workspace(auth, identity, ws).await;
-    }
-    let current_panel: HashSet<String> = auth.store.panel(identity).await.into_iter().collect();
-    initial_panel.iter().all(|ws| current_panel.contains(ws))
+    let still_allowed = async {
+        if let Some(ws) = watched_workspace {
+            return allows_workspace(auth, identity, ws).await;
+        }
+        let current_panel: HashSet<String> = auth.store.panel(identity).await.into_iter().collect();
+        initial_panel.iter().all(|ws| current_panel.contains(ws))
+    };
+    let (session, still_allowed) = tokio::join!(auth.store.session(token, now()), still_allowed);
+    session.is_ok() && still_allowed
 }
 
 async fn filter_sse_chunk(

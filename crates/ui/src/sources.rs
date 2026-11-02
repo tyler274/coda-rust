@@ -340,7 +340,7 @@ fn PreviewSurface(
                         match Heard::read(message) {
                             Some(Heard::Window(width, height)) => {
                                 let Some(trigger) = citation.peek().clone() else { break };
-                                let (Ok(at), Ok(own)) = (trigger.get_client_rect().await, surface.get_client_rect().await) else {
+                                let (Ok(at), Ok(own)) = futures_util::future::join(trigger.get_client_rect(), surface.get_client_rect()).await else {
                                     continue;
                                 };
                                 let side = (*placement.peek()).map(|at| at.below);

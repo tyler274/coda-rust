@@ -466,25 +466,26 @@ impl AuthStore for PostgresAuthStore {
     }
 
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
-        let rows = Memberships::find()
-            .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
-            .filter(crate::migration::membership::Column::PhysicianId.eq(&identity.physician_id))
-            .filter(crate::migration::membership::Column::Allowed.eq(true))
+        use crate::migration::{membership, patient};
+        use sea_orm::sea_query::ExprTrait;
+
+        // A workspace registered to another practice never joins this panel.
+        let foreign = Query::select()
+            .column(patient::Column::PatientWorkspaceId)
+            .from(Patients)
+            .and_where(Expr::col((Patients, patient::Column::PracticeId)).ne(&identity.practice_id))
+            .to_owned();
+        let mut workspaces: Vec<String> = Memberships::find()
+            .filter(membership::Column::PracticeId.eq(&identity.practice_id))
+            .filter(membership::Column::PhysicianId.eq(&identity.physician_id))
+            .filter(membership::Column::Allowed.eq(true))
+            .filter(membership::Column::PatientWorkspaceId.not_in_subquery(foreign))
             .all(&self.db)
             .await
-            .unwrap_or_default();
-        let mut workspaces = Vec::new();
-        for row in rows {
-            let foreign = Patients::find_by_id(row.patient_workspace_id.clone())
-                .one(&self.db)
-                .await
-                .ok()
-                .flatten()
-                .is_some_and(|patient| patient.practice_id != identity.practice_id);
-            if !foreign {
-                workspaces.push(row.patient_workspace_id);
-            }
-        }
+            .unwrap_or_default()
+            .into_iter()
+            .map(|row| row.patient_workspace_id)
+            .collect();
         workspaces.sort();
         workspaces
     }
