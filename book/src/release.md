@@ -14,16 +14,16 @@ This page links the owners of each release path. Each owner keeps its own proced
 - Rust build caches are best effort. A restore, save, or cache-size failure can make the next build slower; it does not invalidate passing checks.
 - CI installs `wasm-bindgen`, mdBook, and lychee from pinned, checksum-verified release archives, not with `cargo install`. The comments next to each install step give the reason for its pin.
 - CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. [`.actrc`](/.actrc) maps both labels to the `act` image, and [`.github/actionlint.yaml`](/.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
-- Run the workflow locally with `act` from `nix develop`. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
+- Run the workflow locally with `act` from `nix develop`; it needs the host's Docker daemon, which the shell does not provide. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
 
 ## Secrets: Doppler
 
-The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>: Doppler holds every secret value, and Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config.
+The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>.
 
-- Doppler project `coda-rust` has three configs, `dev`, `stg` and `prd`. Log in once with `doppler login`, then prefix a local command with `doppler run --`. [`doppler.yaml`](/doppler.yaml) selects `dev`; the shell loads it when a login exists and continues when it does not. Creating `prd` is an operator login step, and this repository stores no token and no secret value.
-- A process that reads secrets starts under `doppler run --`; production Rust processes use `doppler run --project coda-rust --config prd --` and still read environment variables. Cloud Run mounts the config's `DOPPLER_TOKEN` from Secret Manager, and GitHub release jobs read the same token from an environment secret.
-- The public marketing site reads no secrets and runs without Doppler. CI does not call Doppler.
+- Doppler project `coda-rust` has the parent configs `dev`, `stg` and `prd`. Locally, log in once with `doppler login` and prefix a command with `doppler run --`; [`doppler.yaml`](/doppler.yaml) selects `dev`, and the shell loads it when a login exists and continues when it does not. Creating a config is an operator step, and this repository stores no token and no secret value.
+- Hosted services read per-product, per-role child configs, never a parent, because a parent-scoped token would carry the other product's secrets. [GCP deployment](gcp.md) lists those configs and how each image starts under `doppler run`.
+- The public marketing site reads no secrets and runs without Doppler. CI installs the pinned CLI only to verify it and fetches no secrets through it; GitHub jobs reach GCP through Workload Identity Federation.
 - `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned, checksum-verified CLI for images and runners.
 
 ## Retained physician infrastructure references
