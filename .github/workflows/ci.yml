@@ -256,6 +256,7 @@ jobs:
           cargo test -p physician-sample --test site --test auth_browser -- --ignored
           cargo test -p public-site --test site -- --ignored
           cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
+          cargo test -p ui-gallery --test sections -- --ignored
       - name: Upload public-site browser screenshots
         if: always() && github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7

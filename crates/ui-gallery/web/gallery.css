@@ -3,6 +3,9 @@ body { margin: 0; background: var(--surface); color: var(--ink); font: var(--typ
 .gallery { box-sizing: border-box; max-width: 760px; margin: 0 auto; padding: var(--space-6) var(--page-gutter) 30vh; }
 .gallery-header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-6); }
 .gallery-lede, .gallery-note { margin: var(--space-1) 0 0; color: var(--muted); font: var(--type-body-sm); }
+.gallery-families { display: flex; flex-wrap: wrap; gap: var(--space-1); margin-bottom: var(--space-5); }
+.gallery-family { padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); color: var(--ink); font: var(--type-label-md); text-decoration: none; }
+.gallery-family[aria-current] { background: var(--primary-container); color: var(--on-primary-container); }
 .gallery-sections { display: grid; gap: var(--space-5); }
 .gallery-section { padding: var(--space-5); }
 .gallery-title { margin: 0; font: var(--type-title-md); }

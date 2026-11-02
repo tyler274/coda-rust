@@ -231,6 +231,22 @@ impl Browser {
         );
     }
 
+    /// Starts recording what the page reports as wrong: uncaught exceptions,
+    /// including a WebAssembly panic, and console or browser errors.
+    #[allow(dead_code)]
+    pub fn watch_page_errors(&mut self) {
+        self.page.call_session("Runtime.enable", json!({}));
+        self.page.call_session("Log.enable", json!({}));
+    }
+
+    /// The errors recorded since the last call, once the page has answered
+    /// everything it sent before now.
+    #[allow(dead_code)]
+    pub fn take_page_errors(&mut self) -> Vec<String> {
+        self.page.evaluate("0");
+        std::mem::take(&mut self.page.errors)
+    }
+
     /// Whether the document reports reduced motion.
     #[allow(dead_code)]
     pub fn prefers_reduced_motion(&mut self) -> bool {
@@ -249,7 +265,7 @@ impl Drop for Browser {
 }
 
 /// A local port the kernel considers free right now.
-fn free_port() -> Option<u16> {
+pub fn free_port() -> Option<u16> {
     std::net::TcpListener::bind(("127.0.0.1", 0))
         .ok()?
         .local_addr()
@@ -304,6 +320,51 @@ pub struct Page {
     received: usize,
     method: String,
     last_frame: String,
+    errors: Vec<String>,
+}
+
+/// What a DevTools event says went wrong, when it reports an error.
+fn page_error(event: &Value) -> Option<String> {
+    let params = event.get("params")?;
+    match event.get("method")?.as_str()? {
+        "Runtime.exceptionThrown" => {
+            let details = params.get("exceptionDetails")?;
+            let description = details.pointer("/exception/description");
+            let text = description.or_else(|| details.get("text"))?.as_str()?;
+            Some(format!("uncaught: {text}"))
+        }
+        "Runtime.consoleAPICalled" => {
+            let kind = params.get("type")?.as_str()?;
+            if kind != "error" && kind != "assert" {
+                return None;
+            }
+            let words = params
+                .get("args")?
+                .as_array()?
+                .iter()
+                .map(|arg| {
+                    let value = arg.get("value").or_else(|| arg.get("description"));
+                    match value {
+                        Some(Value::String(text)) => text.clone(),
+                        Some(other) => other.to_string(),
+                        None => String::new(),
+                    }
+                })
+                .collect::<Vec<_>>()
+                .join(" ");
+            Some(format!("console.{kind}: {words}"))
+        }
+        "Log.entryAdded" => {
+            let entry = params.get("entry")?;
+            if entry.get("level")?.as_str()? != "error" {
+                return None;
+            }
+            let text = entry.get("text")?.as_str()?;
+            let url = entry.get("url").and_then(Value::as_str).unwrap_or_default();
+            Some(format!("browser: {text} {url}"))
+        }
+        _ => None,
+    }
 }
 
 pub fn targets(port: u16) -> Result<Vec<Target>, String> {
@@ -379,6 +440,7 @@ pub fn connect(port: u16, socket_path: &str) -> Result<Page, String> {
         received: 0,
         method: String::new(),
         last_frame: String::new(),
+        errors: Vec::new(),
     })
 }
 
@@ -441,6 +503,7 @@ impl Page {
             if value.get("id").and_then(Value::as_u64) == Some(id) {
                 return value;
             }
+            self.errors.extend(page_error(&value));
             self.last_frame = frame.chars().take(240).collect();
         }
     }

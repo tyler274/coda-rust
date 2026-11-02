@@ -28,6 +28,8 @@ cargo test --workspace
 
 `nix develop` is the shell for this checkout. Tests and the sample server do not need a Doppler account.
 
+`scripts/ui-gallery.sh` builds the UI gallery and serves it at <http://127.0.0.1:8080/>, each section at its own address, such as `/#charts`.
+
 ### Physician chat (Codex CLI)
 
 Local physician chat uses the Codex CLI subscription. Projections stay on the recording. Live, record, and replay do not read `OPENAI_API_KEY`.
@@ -154,7 +156,13 @@ wasm-bindgen --target web --out-dir target/physician-web "$PWD/target/wasm32-unk
 PHYSICIAN_LISTEN_ADDR=0.0.0.0:8790 cargo run -p physician-sample
 ```
 
-Live chat on that page needs the Codex CLI and `codex login` in the container, or
+The UI gallery builds and serves with one command, here on the published port:
+
+```sh
+UI_GALLERY_LISTEN_ADDR=0.0.0.0:8080 scripts/ui-gallery.sh
+```
+
+Live chat on the physician page needs the Codex CLI and `codex login` in the container, or
 a [replay cassette](#physician-chat-codex-cli). The dev shell does not include it.
 
 The script starts no Postgres service, and the database-backed tests fail without
