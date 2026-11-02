@@ -35,7 +35,7 @@ The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>.
 | [`infra/gcp/staging`](/infra/gcp/staging) | The hosted synthetic integration platform on Cloud Run | <a href="/infra/gcp/staging/README%2Emd">README</a> |
 | [`infra/gcp/clinical-evidence`](/infra/gcp/clinical-evidence) | The production Clinical Evidence runbook | <a href="/infra/gcp/clinical-evidence/README%2Emd">README</a> |
 
-This workspace does not run `init` against a backend and does not apply these roots. Apply authority stays with the product repositories and the operator of the target project. [GCP deployment](gcp.md) links Duet's production composition.
+This workspace does not run `init` against a backend and does not apply these roots. Apply authority stays with the product repositories and the operator of the target project. [GCP deployment](gcp.md) says what runs Duet production.
 
 ## Workspace-owned roots
 
