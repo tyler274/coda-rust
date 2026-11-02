@@ -50,14 +50,11 @@ record's source kind, connection and note label are fixed when it is created.
   ([privacy recovery](privacy-recovery.md)) deletes base rows and their
   retained revisions, and remains authoritative.
 
-The patient-owned doctor workspace and explicit sending to a connected practice
-are MVP scope; [Accounts and practice connection](front-door.md#implementation)
-owns that implementation boundary. External public-page and link sharing is
-parked for post-MVP. The current binary still mounts the publication routes in
-`doctor_routes`, including HTML, PDF and SMART Health Link retrieval. Retaining
-those routes neither qualifies external sharing for MVP nor restores PDF download
-to product scope. Parked product scope does not disable a route or resolve its
-security findings.
+The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns the For my doctor workspace
+and what it sends to a connected practice. The binary still mounts the publication
+routes in `doctor_routes`, including HTML, PDF and SMART Health Link retrieval. A
+mounted route doesn't put external sharing or PDF download in scope, and it keeps
+its security findings until the route is removed or fixed.
 
 Duet uses the product-neutral [`harness`](/crates/harness/src/lib.rs). It retains
 its own context policy, authority, durable state, effects and recovery. It must

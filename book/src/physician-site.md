@@ -6,9 +6,7 @@ The web build calls the API at a loopback `?api=` URL when one is given, otherwi
 
 ## Product direction and proof
 
-The <a href="/intent/physician%2Emd">physician spec</a> owns product intent, and the
-[Coda Agents project](https://linear.app/coda-health/project/coda-agents-d7d16847168e)
-tracks the work against it; each
+The <a href="/intent/physician%2Emd">physician spec</a> owns product intent; each
 feature's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>,
 starting with <a href="/verification/physician/sign-in/README%2Emd">sign-in</a>.
 

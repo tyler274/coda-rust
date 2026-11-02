@@ -335,7 +335,7 @@ Everything Coda reads in the MVP is read only.
 - **Attachments**, including scans and faxes read through OCR.
 - **Outside records** from other organizations through Kno2, with Coda acting as the physician's delegate. They complement the practice's chart and never replace it.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
-- **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch.
+- **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch. Coda searches it as often as a question needs, reads as many sources as it judges useful, and keeps going until it has enough to answer.
 - **Outside clinical AI** under a BAA, such as UpToDate's Expert AI.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
@@ -393,6 +393,8 @@ These are how we build the product above. They matter to its behavior but are en
 **Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push, such as a Gmail notification, only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
+
+**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces.
 
 **Runs.**
 

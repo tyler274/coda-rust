@@ -5,33 +5,14 @@ invitation and consent boundary. A Duet account does not require an invitation.
 An invitation attaches the practice to that account; existing accounts and data
 are not migrated from the old app. The products keep separate data and authority.
 
-## Current scope
+## Scope
 
-The MVP allows independent connections to invited practices, fixed consent at join, sharing until
-patient leave, practice discharge or account deletion, and re-invitation after
-the connection ends. There is no separate stop/resume-sharing or re-consent
-flow. Ending a connection preserves the Duet account and history; the last
-received doctor's plan stays dated and is no longer updated. Ending one connection
-leaves the others unaffected. Patient-facing clinician lookup is later work.
-
-The connection contract covers consented evidence reaching the physician and
-documented care instructions reaching Duet with provenance. Physicians do
-not approve Duet's wording or manage the patient app. The patient-owned doctor
-workspace—preparation, updates, review and saving—is in MVP. Sharing with physicians
-outside Coda follows after MVP, using browser review with no PDF download.
-The jointly maintained live shared space is also post-MVP; it is separate from
-both the patient-owned workspace and the MVP practice connection. There is no
-paid tier in the MVP; the
-[Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
-owns scope and cadence decisions.
+The <a href="/intent/connected-care%2Emd">connected-care spec</a> owns what a practice
+connection does, from invitation and fixed consent to leaving, discharge and
+re-invitation. The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns the patient's
+For my doctor workspace, including sending a saved version to a connected practice.
 
 ## Implementation
-
-The patient-owned workspace remains in MVP, including explicitly sending a saved
-version to a connected practice; saving alone shares nothing. External public-page
-and link sharing is parked for post-MVP. See <a href="/intent/duet%2Emd">Duet intent</a> (D4)
-and <a href="/intent/connected-care%2Emd">Connected care intent</a> (C1.6)
-for the governing behavior.
 
 | Rust owner | Implemented responsibility and boundary |
 | --- | --- |
@@ -54,5 +35,4 @@ router mounts invitation and linked-patient operations.
 [Duet migrations](backend-architecture.md#persistence-and-migrations) and
 [GCP migration jobs](gcp.md). The existing
 [`front_door_postgres.rs`](/crates/physician-sample/tests/front_door_postgres.rs)
-proves its invitation and link path. The [Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
-tracks these outcomes and their acceptance.
+proves its invitation and link path.
