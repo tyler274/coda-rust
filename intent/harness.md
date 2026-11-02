@@ -16,7 +16,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 1. **Context is curated and discoverable, never stuffed.** The model gets salience on what exists, through clear tool and skill names, and discovers the rest. The harness never resends the whole transcript each turn, never breaks the prompt cache, and doesn't reach for subagents where progressive disclosure does the job.
 2. **The model owns judgment.** The harness adds tools and guardrails and never restricts what the model may think or do within the product's limits. No intent classifier, routing table or code-side judgment decides for it.
-3. **Product-neutral mechanics only.** Each fact has one owner. Separate owners connect through recorded facts, and none infers another's terminal state.
+3. **Product-neutral mechanics only.** Separate owners connect through recorded facts, and none infers another's terminal state.
 4. **Models are swappable.** The harness isn't built around model names. Which model fills which role is product configuration.
 5. **Fail closed on access, consent and patient data; fail gracefully on everything else.** One failed tool read or bad item fails only itself, and independent successes are kept.
 6. **Pull, not push.** New information reaches a run because the work pulls current sources. A push only wakes the work.
@@ -46,7 +46,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 These are the promises the products build on.
 
-- **Durable runs.** Run records and control state survive restarts. Scheduled and resumed work runs in hosted infrastructure and never depends on a developer's machine.
+- **Durable runs.** Run records and control state survive restarts. Scheduled and resumed work runs in hosted infrastructure and never depends on a developer's machine. A retry limit never drops the work, and a skip never counts as done.
 - **No duplicate effects.** Each logical change, such as a send or a saved routine, keeps one identity across retries, so interrupted work can resume without doing anything twice. Nothing is retried transparently once its output is visible.
 - **Steering.** Stop, queued input and steering each affect the intended work once, and late output never overwrites newer direction. The loop supports both products: a physician's Stop stays held until Resume, and in Duet a new message steers the reply in progress. Runs can run in parallel within one account.
 - **Honest endings.** After the finish call the run is over, and its outcome is recorded truthfully.

@@ -9,7 +9,7 @@ complete affected journeys.
 - [Practice connection](front-door.md) maps consent and invitation implementation. The existing withdrawal toggle does not define the current fixed-consent contract.
 - Runtime database roles and migration identities are separate. [Backend migrations](backend-architecture.md#persistence-and-migrations) and [GCP](gcp.md) identify their owners and configuration checks.
 - [Privacy recovery](privacy-recovery.md) owns receipts, deletion and replay. [Observability](observability.md) owns telemetry content handling. Neither is a substitute for access control.
-- Native device/session storage must be checked through the installed client and its platform bindings. Historical SwiftUI security findings in the [original Duet docs](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/security-posture.md) are source evidence, not proof of either a Rust vulnerability or a completed Rust fix.
+- Native device/session storage must be checked through the installed client and its platform bindings.
 
 The hosted staging profile, `/readyz`, an IAP redirect, and a passing local test
 each prove only their boundary. Real authenticated member/nonmember access,

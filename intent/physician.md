@@ -26,7 +26,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 4. **Design for the patient who does nothing.** Coda notices what changed and carries each episode to the physician's decision and through follow-through without the patient lifting a finger.
 5. **Attention stays salient.** Not everything becomes a concern. Quiet work that needs nothing from the physician finishes without a receipt and stays inspectable from the patient's history and the Updates log.
 6. **Ambient.** The physician doesn't have to ask Coda to start ordinary work. Preparation, reviews and follow-ups start from the schedule, the clock, scheduled pulls of each source and arriving patient mail.
-7. **One fact, one owner.** Every screen and job reads the same owner, and no journey keeps a parallel copy of state.
+7. **Build for every practice.** What differs between practices is configuration or a declared adapter, never a constant or a branch written for one practice.
 8. **Silence that looks like health is a failure.** If something is behind, stuck or degraded, someone who can act on it sees it, with the reason. Recovery is the system's job, and retries never become the physician's workflow.
 9. **Live where you work; history as it was.** What the physician is looking at updates live. Anything already said or sent keeps the version it used and is marked when something newer exists.
 10. **Messages stay in the practice's channels.** Gmail and Spruce remain the inbox, and Coda has no inbox of its own.

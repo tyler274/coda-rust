@@ -10,8 +10,7 @@ All new development — new crates, new features, bug fixes, tests, and CI
 changes — happens in the Rust workspace at the root of this repo
 (`crates/*`), not in the reference submodules.
 
-The directories under `submodules/` (`coda-agents`, `coda-app`,
-`Coda-Computer-Use`, `coda-gym`) are **reference material**. Do not:
+The directories under `submodules/` are **reference material**. Do not:
 
 - ❌ Edit any file under `submodules/**`
 - ❌ Add crates, tests, or scripts inside a submodule
@@ -29,8 +28,8 @@ Instead:
 ## ❌ BAD
 
 ```text
-submodules/coda-app/backend/app/services/new_feature.py   # editing a submodule
-submodules/coda-agents/src/adapters/.../new_module.rs     # editing a submodule
+submodules/<repo>/src/new_feature.py   # editing a submodule
+submodules/<repo>/src/new_module.rs    # editing a submodule
 ```
 
 ## ✅ GOOD

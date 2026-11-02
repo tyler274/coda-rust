@@ -24,6 +24,8 @@ These govern everything below them: physician.md, duet.md, connected-care.md, ha
 
 **10. Subtract stale and brittle; never give up capability.** Removing stale or brittle behavior is always good, as long as we don't give up capability or treat local as a substitute for production.
 
+**11. One fact, one owner.** Every screen, job and product reads the same owner for a fact, and nothing keeps a parallel copy of state.
+
 ## UI principles
 
 These apply to the physician app and Duet alike, on the web, iOS and Android.

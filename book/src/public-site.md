@@ -23,16 +23,15 @@ representations once; requests do not render Dioxus or query a database. The ser
 serves content-addressed immutable assets and HTML with bounded public/shared-cache
 lifetimes, encoding-specific ETags, conditional requests and bodyless HEAD responses.
 Every response carries `Strict-Transport-Security: max-age=63072000`.
-Motion is the original kytos `public/homepage/site.js`, served byte-for-byte as
-`/homepage/site.js` on `/` and `/duet`, exactly as the Next site loads it. It also
-paints the landscapes. Parity therefore holds by construction: `tests/parity.rs`
+Motion is `/homepage/site.js`, a reviewed snapshot served byte-for-byte on `/` and
+`/duet`. It also paints the landscapes. Parity therefore holds by construction: `tests/parity.rs`
 fails if the shipped script, `site.css` or `chrome.css` differ from the reviewed
 snapshots, and the browser proof fails if the hero pointer jumps instead of
 gliding. Site-owned additions are layout or fallback only, never motion:
 `stage.css` reserves and scales each product frame before the script runs (it then
 sets the same values inline), `noscript.css` reveals content when scripts are
-disabled, and `chrome.js` floats the nav after 8px of scroll, as kytos' SiteNav
-does. Reduced motion is decided by the original script at load.
+disabled, and `chrome.js` floats the nav after 8px of scroll. Reduced motion is
+decided by `site.js` at load.
 
 The one deliberate exception is the Duet story (`src/pages/phones.rs`). It replaces
 the original Duet phones on `/` and `/duet` with one story across three phones. It

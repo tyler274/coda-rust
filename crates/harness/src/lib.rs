@@ -3,8 +3,8 @@
 //! [`engine`] owns the provider/tool loop; [`execution`] is its compatibility
 //! facade. [`responses`] and [`provider`] are API adapters. Product hosts retain authority, effects,
 //! persistence, and recovery. [`Harness`] admits only `skill_view`. A skill
-//! never authorizes a tool or a patient read. Book:
-//! `book/src/agent-contracts.md`.
+//! never authorizes a tool or a patient read. Spec:
+//! `intent/harness.md`.
 #![deny(missing_docs)]
 
 pub mod engine;

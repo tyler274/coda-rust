@@ -29,10 +29,9 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 9. **Explain, never decide care.** Duet doesn't diagnose, prescribe, assess personal risk or urgency, or decide care. This limits what Duet tells the person. It never limits what Duet investigates or takes on.
 10. **One AI with full reach.** Chat, Today, Check-ins and For my doctor all reach the same authorized records, memory, conversations and Plans. Code enforces identity, permissions, acceptance, versions, saves and sharing.
 11. **Grounded, cited and faithful.** Facts and calculations come from evidence Duet actually received, with citations that reopen it. Records show as the source sent them. Every claim Duet makes, such as "read", "current" or "will try again", traces to recorded evidence, and Duet is honest about gaps and about how old its information is.
-12. **One fact, one owner.** Every screen and job reads the same owner, with no parallel copies.
-13. **No silence that looks like health.** Anything behind, stuck or degraded is shown, with its reason, to someone who can act.
-14. **Live where you work; history as it was.** What the person is looking at updates live. Anything already said or sent keeps the version it used and is marked when a newer one exists.
-15. **Plain, calm and smooth.** Duet follows the shared UI principles (PRINCIPLES.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly.
+12. **No silence that looks like health.** Anything behind, stuck or degraded is shown, with its reason, to someone who can act.
+13. **Live where you work; history as it was.** What the person is looking at updates live. Anything already said or sent keeps the version it used and is marked when a newer one exists.
+14. **Plain, calm and smooth.** Duet follows the shared UI principles (PRINCIPLES.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly.
 
 ## The concepts
 

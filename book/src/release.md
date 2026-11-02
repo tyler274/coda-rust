@@ -4,7 +4,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 
 ## Continuous integration
 
-- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. Every run checks engineering skills and documentation. [CI selection](/scripts/ci_scope.py) adds the full Rust, database, infrastructure and image suite for product/build or mixed changes; unavailable comparisons also select full. Browser tests are ignored by the ordinary test harness; their explicit targets run on `workflow_dispatch`. A green routine CI run does not establish browser qualification. The workflow and its comments own the exact step list.
+- [`.github/workflows/ci.yml`](/.github/workflows/ci.yml) owns pull-request and main checks plus the existing staging deploys. Every run checks engineering skills and documentation. [CI selection](/scripts/ci_scope.py) adds the full Rust, database, infrastructure and image suite for product/build or mixed changes, and the runtime clinical `skills/` count as product; unavailable comparisons also select full. Browser tests are ignored by the ordinary test harness; their explicit targets run on `workflow_dispatch`. A green routine CI run does not establish browser qualification. The workflow and its comments own the exact step list.
 - The other jobs are `foundations` (offline cloud foundation contracts and mocked release adapters), `images` (the locked Nix images, built and run but not pushed), `postgres` (fresh migrations and the Postgres proofs), `observability` (the collector config and its OpenTofu roots), and `cargo-deny` (which applies [`deny.toml`](/deny.toml)).
 - `deploy-public-site-staging` applies the public site's reviewed staging plan after full validation on pushes to `main` only when the repository variable `PUBLIC_SITE_STAGING_DEPLOY` is `enabled` ([public site](public-site.md)).
 - [`.github/workflows/promote-public-site.yml`](/.github/workflows/promote-public-site.yml) is a manual workflow that promotes the image staging tested for one `main` commit to public-site production, with the `production` environment's approval ([promotion](public-site.md#promotion)).
@@ -13,12 +13,18 @@ This page links the owners of each release path. Each owner keeps its own proced
 - Skills/docs-only main pushes skip both deployments. A successful `CI result` confirms the selected checks passed, not that a deployment occurred.
 - Rust build caches are best effort. A restore, save, or cache-size failure can make the next build slower; it does not invalidate passing checks.
 - CI installs `wasm-bindgen`, mdBook, and lychee from pinned, checksum-verified release archives, not with `cargo install`. The comments next to each install step give the reason for its pin.
-- Run the workflow locally with `act` from `nix develop`. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
+- CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. [`.actrc`](/.actrc) maps both labels to the `act` image, and [`.github/actionlint.yaml`](/.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
+- Run the workflow locally with `act` from `nix develop`; it needs the host's Docker daemon, which the shell does not provide. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
 
 ## Secrets: Doppler
 
-<a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code>: Dev shell</a> owns this policy. In short: Doppler project `coda-rust` holds every secret value in configs `dev`, `stg`, and `prd`. GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` for one config. A process that reads secrets starts under `doppler run --`; the public marketing site reads none and runs without Doppler. `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned CLI for images and runners, and [`doppler.yaml`](/doppler.yaml) selects `dev` locally. CI does not call Doppler.
+The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>.
+
+- Doppler project `coda-rust` has the parent configs `dev`, `stg` and `prd`. Locally, log in once with `doppler login` and prefix a command with `doppler run --`; [`doppler.yaml`](/doppler.yaml) selects `dev`, and the shell loads it when a login exists and continues when it does not. Creating a config is an operator step, and this repository stores no token and no secret value.
+- Physician and Duet services read per-product, per-role child configs, never a parent, because a parent-scoped token would carry the other product's secrets. [GCP deployment](gcp.md) lists those configs and how each image starts under `doppler run`.
+- The public marketing site reads no secrets and runs without Doppler. CI installs the pinned CLI only to verify it and fetches no secrets through it; GitHub jobs reach GCP through Workload Identity Federation.
+- `cargo run -p workspace-tools -- install-doppler OUTPUT_PATH` ([`doppler.rs`](/crates/workspace-tools/src/doppler.rs)) installs the pinned, checksum-verified CLI for images and runners.
 
 ## Retained physician infrastructure references
 
@@ -29,7 +35,7 @@ This page links the owners of each release path. Each owner keeps its own proced
 | [`infra/gcp/staging`](/infra/gcp/staging) | The hosted synthetic integration platform on Cloud Run | <a href="/infra/gcp/staging/README%2Emd">README</a> |
 | [`infra/gcp/clinical-evidence`](/infra/gcp/clinical-evidence) | The production Clinical Evidence runbook | <a href="/infra/gcp/clinical-evidence/README%2Emd">README</a> |
 
-This workspace does not run `init` against a backend and does not apply these roots. Apply authority stays with the product repositories and the operator of the target project. [GCP deployment](gcp.md) links Duet's production composition.
+This workspace does not run `init` against a backend and does not apply these roots. Apply authority stays with the product repositories and the operator of the target project. [GCP deployment](gcp.md) says what runs Duet production.
 
 ## Workspace-owned roots
 
@@ -40,13 +46,8 @@ This workspace does not run `init` against a backend and does not apply these ro
 | [`infra/gcp/shared-mail`](/infra/gcp/shared-mail) | Production mail only in `coda-health-prod`, with separate state and operator-approved saved-plan applies. | <a href="/infra/gcp/shared-mail/README%2Emd">Production shared mail</a> |
 | [`infra/gcp/observability`](/infra/gcp/observability) | The shared collector deployment | [Observability](observability.md) |
 
-## Duet backend on GCP
-
-The original Python Duet service's production composition, staging windows, release runner, and rollback are retained in <a href="/submodules/coda-app/infra/gcp/README%2Emd">coda-app <code>infra/gcp/README.md</code></a>. Its GitHub workflows are in <a href="/submodules/coda-app/%2Egithub/workflows">coda-app <code>.github/workflows</code></a>. See [GCP deployment](gcp.md) for the Rust services.
-
 ## iPhone and TestFlight
 
-- The original [TestFlight runbook](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/testflight-release.md), [iOS verification](https://github.com/Coda-Health/coda-app/blob/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs/ios-verification.md), and [release packets](https://github.com/Coda-Health/coda-app/tree/5a1dc47b8feacb8db3fcc71522982f76822c0b01/docs) preserve historical distribution and approval evidence. They do not qualify the Rust app. A Rust build is not a TestFlight upload.
 - The Rust bindings for iPhone are in [`platform/ios`](/platform/ios) (see the [crate map](crate-map.md#platform-bindings)).
 
 ## Android and Google Play

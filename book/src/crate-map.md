@@ -1,19 +1,18 @@
 # Crate map
 
-Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. <a href="/AGENTS%2Emd#where-work-goes"><code>AGENTS.md</code></a> owns which crates the two products share.
+Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The Shared table below is the list of crates both products may use.
 
 ## Shared
 
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
 | `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Coda's design, as a catalog of AI-native component families: tokens, icons, and each component's look, motion, gestures, states and accessibility, with no product rules | — |
-| `ui-gallery` | [`src/main.rs`](/crates/ui-gallery/src/main.rs) | Every `ui` family rendered with its states, and how to build and serve it. Nothing depends on it | — |
 | `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
 | `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | Plain-text or HTML messages through the Gmail API or the Workspace SMTP relay, plus the intake primitives: push-wake routing ([`src/push.rs`](/crates/gmail/src/push.rs)) and the `history.list` cursor reader ([`src/history.rs`](/crates/gmail/src/history.rs)). Products own the copy, the links, the durable cursor and the effects | [GCP](gcp.md) |
-| `spruce` | [`src/lib.rs`](/crates/spruce/src/lib.rs) | Read-only Spruce REST reader and change cursor. Products own the cursor store, the effects, and patient linking | [Operating invariants](agent-contracts.md) |
+| `spruce` | [`src/lib.rs`](/crates/spruce/src/lib.rs) | Read-only Spruce REST reader and change cursor. Products own the cursor store, the effects, and patient linking | — |
 | `pubsub` | [`src/lib.rs`](/crates/pubsub/src/lib.rs) | Pub/Sub push-envelope decoding, the loopback-emulator check and the official publisher; the `test-util` feature is the disposable emulator for tests (dev-dependencies only, checked by `boundaries`) | [GCP](gcp.md) |
-| `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder binary, reached through `CODA_PATIENT_ENCODER_BIN` (flake.nix); no crate depends on it | [Physician site](physician-site.md) |
-| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | One product-neutral bounded provider/tool loop in `engine`; `execution` forwards through compatibility adapters and preserves its saved request, response and record formats. Also reads `skills/` and admits `skill_view`. Hosted physician chat in `physician-worker` loads the catalog through `local-product`; nothing else does. Products keep authority, effects, persistence, and recovery. | [Operating invariants](agent-contracts.md) |
+| `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder binary that speaks both the Duet and the physician encoder protocols; [`tests/compare.rs`](/crates/encoder/tests/compare.rs) checks it against the existing Python workers. No crate depends on it | [Physician site](physician-site.md) |
+| `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | One product-neutral bounded provider/tool loop in `engine`; `execution` forwards through compatibility adapters and preserves its saved request, response and record formats. Also reads `skills/` and admits `skill_view`. Hosted physician chat in `physician-worker` loads the catalog through `local-product`; nothing else does. Products keep authority, effects, persistence, and recovery. | <a href="/intent/harness%2Emd">Harness spec</a> |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
 | `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services | [Observability](observability.md) |
 
@@ -62,6 +61,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
 | `patient-bank` | [`src/lib.rs`](/crates/patient-bank/src/lib.rs), [`src/main.rs`](/crates/patient-bank/src/main.rs) | The synthetic patient bank: chart authoring checks, the verified code catalog, the FHIR build and its validation | [Synthetic patients](patient-bank.md) |
+| `ui-gallery` | [`src/main.rs`](/crates/ui-gallery/src/main.rs) | Every `ui` family rendered with its states, and how to build and serve it. Nothing depends on it | — |
 | `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart and retain the reference shipping clients | This page |
 | `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, and `apply-migrations`; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
@@ -80,11 +80,3 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | [`android/StatWidget.kt`](/platform/android/StatWidget.kt) | `duet-widget` snapshot |
 | [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
-
-## Reference-only products and evidence
-
-Gym and computer use have no Rust product crates. The [retained reference map](reading.md#retained-references)
-links their owners and historical Duet catalog, licensing and release evidence.
-Rust privacy and identity already have owners; see [privacy recovery](privacy-recovery.md)
-and [security boundaries](security-posture.md). A reference implementation's
-coverage is not proof that the corresponding Rust journey is qualified.

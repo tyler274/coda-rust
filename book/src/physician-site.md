@@ -2,6 +2,8 @@
 
 The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, consuming projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and the physician routes over the synthetic practice, with chat through the model execution described next; tests also use its recorded projection, and `PHYSICIAN_UPSTREAM` forwards physician routes to the Node server. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`agent-skills`](/crates/agent-skills/src/lib.rs) reads the clinical skill catalog in [`skills/`](/skills) for [`harness`](/crates/harness/src/lib.rs); only hosted chat in `physician-worker` loads it (see [Skills in hosted chat](#skills-in-hosted-chat)); the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
 
+The web build calls the API at a loopback `?api=` URL when one is given, otherwise at `PHYSICIAN_API_URL` set at build time, otherwise at its own origin (under `/physician` when it is mounted there).
+
 ## Product direction and proof
 
 The <a href="/intent/physician%2Emd">physician spec</a> owns product intent, and the

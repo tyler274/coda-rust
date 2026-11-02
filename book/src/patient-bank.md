@@ -15,9 +15,8 @@ has reviewed it.
   what it may hold, so every clinical fact comes from the source or a listed
   addition, and nothing is invented.
 - **Lab labels and reference ranges:** coda-gym's `lab_reference_ranges.xlsx`.
-- **The format:** the Coda Agents Roger fixture in
-  `submodules/coda-agents/docs/local-product-fixtures`: its resource families, MRN
-  system, note header and code systems.
+- **The format:** FHIR R4 as [`render.rs`](/crates/patient-bank/src/render.rs)
+  builds it, with its MRN system and note header, and the catalog's code systems.
 
 ## What a chart is
 
