@@ -171,16 +171,42 @@
   --space-region: var(--space-6);
   /* The tightest stack: a row's first line above its words, a name above its detail. */
   --space-hair: 2px;
-  /* Lines: a hairline divides; a stroke marks (focus, a quote's edge, a key's base). */
+  /* Lines: a hairline divides; a stroke marks (focus, a quote's edge, a key's base, a chart's line). A thin stroke draws
+     an open ring, a dash, and what a series is compared with; a heavy stroke rings a slider's thumb and edges a chosen
+     passage; a running total's line is a touch heavier than a stroke. */
   --hairline: 1px;
+  --stroke-thin: 1.5px;
   --stroke: 2px;
+  --stroke-total: 2.2px;
+  --stroke-heavy: 3px;
   /* A row's leading edge: new, or needing the person now. */
   --unread-dot: 8px;
-  /* A touch target: the hit area every control reaches where the pointer is coarse, whatever its visible size. */
+  /* What is chosen, as a dot: a radio's, a pinned point's. */
+  --chosen-dot: 8px;
+  /* A touch target: the hit area every control reaches where the pointer is coarse, whatever its visible size. A
+     compact reach serves a small control set on something else, where a full target would cover what is beside it. */
   --target: 44px;
+  --target-compact: 40px;
   /* Marks beside words follow the words' size, so an icon or ring set in a label is a label's size. */
   --icon-size: 1.15em;
+  /* A mark that holds its own size whatever the words: extra-small in a filled check; small in a pill, a sort or a small
+     control; medium beside a detail or a note, and as a task's ring; large leading the active task; extra-large over
+     a tab's label. */
+  --icon-xs: 12px;
+  --icon-sm: 14px;
+  --icon-md: 16px;
+  --icon-lg: 18px;
+  --icon-xl: 24px;
+  /* Tiles that hold a mark: small and round for a work step, the card header's tile, large for an attachment or an
+     artifact; an image attached is a thumbnail. */
+  --tile-size-sm: 24px;
   --tile-size: 32px;
+  --tile-size-lg: 40px;
+  --thumbnail-size: 64px;
+  /* A task's mark, whichever it shows: a number, a ring, a check or a dash. */
+  --task-mark-height: 20px;
+  /* A dash as a mark: a task passed over, a box that is mixed. */
+  --dash-mark: 10px;
   --avatar-sm: 30px;
   --avatar-md: 36px;
   --avatar-lg: 42px;
@@ -193,19 +219,79 @@
   --dialog-max-height: calc(100dvh - 2 * var(--dialog-margin));
   --popover-width: 22.5rem;
   --popover-max-height: 26rem;
+  /* The bars across a screen's top and over its tabs. */
+  --top-bar-height: 56px;
+  --tab-bar-height: 52px;
+  /* Floating choices: a menu between its least and greatest width, a combobox's list, a tooltip's line length. */
+  --menu-min-width: 13rem;
+  --menu-max-width: 21rem;
+  --combobox-max-height: 18rem;
+  --tooltip-max-width: 16rem;
+  /* The command palette: a narrower dialog toward the window's top, its field a line across its head. */
+  --command-palette-width: 36rem;
+  --command-palette-margin: 12dvh;
+  --command-palette-max-height: 30rem;
+  --command-field-height: 3.5rem;
+  /* The person's words being edited, as wide as a bubble may be; the note beneath wraps the actions under it once
+     narrower than its own width. */
+  --message-editor-width: 36rem;
+  --message-editor-note-basis: 14rem;
+  /* An attached file's card; in a bubble, cards share the row, each growing from a smaller basis. */
+  --attachment-width: 14rem;
+  --attachment-basis: 9rem;
+  /* A pressed item lifted out of its page: the page behind blurred, the item's shadow, and the fade where a tall item is
+     cut off. */
+  --lift-backdrop: blur(14px) saturate(1.2);
+  --lift-shadow: drop-shadow(0 12px 28px rgb(var(--ref-shadow) / .18));
+  --lift-fade: 3rem;
   /* A column narrower than 40rem is compact: rows stack their parts, headers wrap. Container queries state it in rem
      (a query cannot read a token); only the shell asks the window, at 56.25rem, where the sidebar becomes a drawer. */
   --control-height: 36px;
   /* A compact control, and every row reserved to hold one, so a state that brings a control in never moves the page. */
   --control-compact-height: 32px;
-  /* Shape: small for keys and marks, medium for rows, tiles and inner panels, large for cards,
-     extra-large for dialogs and sheets, full for every control and pill; the composer keeps its field shape. */
+  /* A large control: Duet's full-width actions. */
+  --control-large-height: 50px;
+  /* A control drawn as a mark: a box or ring to choose, a slider's thumb, an attachment's remove button. */
+  --control-mark-size: 22px;
+  /* A switch: its track and the knob that travels it. */
+  --switch-width: 51px;
+  --switch-height: 31px;
+  --switch-knob: 27px;
+  /* Tracks: a slider's; how far something has got, thinner along an attachment's edge; a sheet's handle. */
+  --slider-track: 6px;
+  --progress-height: 4px;
+  --progress-edge-height: 3px;
+  --sheet-handle-width: 38px;
+  --sheet-handle-height: 4px;
+  /* Dictation's voice: the bars' row, each bar between half its width and its width, still showing when silent. */
+  --wave-height: 32px;
+  --wave-bar-width: 4px;
+  --wave-bar-rest: 3px;
+  /* Charts: a sparkline and its end point; a series' plot, full or bare, its points, quieter while others stand forward,
+     a bar's width when the buckets are few, and the dash of what it is compared with; a comparison's bar. A point is
+     reached within a fingertip of it. */
+  --sparkline-height: 40px;
+  --chart-point: 6px;
+  --series-height: 132px;
+  --series-bare-height: 56px;
+  --series-point: 7px;
+  --series-point-quiet: 4px;
+  --series-bar-narrow: 14px;
+  --series-dash: 4px;
+  --series-dash-gap: 3px;
+  --comparison-height: 7px;
+  --point-reach: 48px;
+  /* Shape: extra-small for a chart's bars, small for keys and marks, medium for rows, tiles and inner panels, large for
+     cards, extra-large for dialogs and sheets, full for every control and pill; the composer keeps its field shape, and
+     Duet's bubble its tail. */
+  --radius-xs: 3px;
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-pill: 999px;
   --radius-field: 22px;
+  --radius-tail: 5px;
   /* Motion roles, one duration each: press; control change, which every exit uses so exits are
      always shorter than entries; arrival; step (panes, sheets, layout). Every host names a role, as with type. */
   --motion-press: 120ms;
