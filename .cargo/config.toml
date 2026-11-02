@@ -6,3 +6,9 @@
 # Scope to this shell's native target, leaving wasm, iOS and Android unchanged.
 [target.x86_64-unknown-linux-gnu]
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+# gemm-f16 (through candle) uses half-precision NEON unconditionally and does not
+# compile on this target without the feature. Apple silicon, the only arm64
+# Linux host this shell supports, always has it.
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["-C", "target-feature=+fp16"]

@@ -280,7 +280,7 @@ async fn teardown(mut admin: PgConnection, f: Fixture) {
         .execute(&mut admin)
         .await
         .unwrap();
-    std::fs::remove_dir_all(journal).ok();
+    let _ = std::fs::remove_dir_all(journal);
 }
 
 #[tokio::test]

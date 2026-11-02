@@ -130,6 +130,8 @@ Doppler holds every secret value, and GCP Secret Manager holds only a read-only 
 
 `infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) says which ones this workspace applies. Apply a root only from a reviewed saved plan with the operator's authorization; production applies and DNS changes need the user's explicit authorization. Applying a workspace root grants no production authority over the physician, Duet, clinical-evidence or Gym deployments.
 
+Workspace-wide lint rules live in `[workspace.lints]` in the root [`Cargo.toml`](Cargo.toml); each crate opts in with `[lints] workspace = true`, except the generated `duet-wire`. CI and the pre-commit hook run Clippy with warnings denied on the host build and on the web apps' wasm32 build, so a rule's warning fails either.
+
 Choose checks by affected contracts and dependencies; use hosted CI for shared
 integration and environment confirmation. A green routine CI run does not
 establish browser qualification: run the ignored browser tests locally or

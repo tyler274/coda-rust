@@ -5,6 +5,9 @@ license.workspace = true
 publish.workspace = true
 version.workspace = true
 
+[lints]
+workspace = true
+
 [dependencies]
 async-trait = "0.1"
 fred = { version = "10", default-features = false, features = ["i-std", "i-pubsub", "subscriber-client", "enable-rustls-ring"] }

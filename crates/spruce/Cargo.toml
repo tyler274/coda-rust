@@ -6,6 +6,9 @@ publish.workspace = true
 version.workspace = true
 description = "Read-only Spruce conversation sync"
 
+[lints]
+workspace = true
+
 [dependencies]
 chrono = { version = "0.4", default-features = false, features = ["std"] }
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }

@@ -53,11 +53,10 @@ impl Provider for Paused {
         self.release.notified().await;
         // Even cancelled output can report billable usage. The owner retains it
         // without permitting publication after withdrawal.
-        emit(StreamEvent::Usage(harness::execution::Usage {
+        let _ = emit(StreamEvent::Usage(harness::execution::Usage {
             input_tokens: Some(17),
             output_tokens: Some(3),
-        }))
-        .ok();
+        }));
         cancel.check()?;
         if self.fail {
             return Err("controlled interruption".into());
