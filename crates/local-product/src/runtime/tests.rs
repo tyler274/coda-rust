@@ -592,6 +592,328 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
+async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = delivery_scope(&practice, "chat");
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .await
+        .unwrap();
+    let claim = store
+        .claim(&scope, 60)
+        .await
+        .unwrap()
+        .expect("pending work");
+    let work = store.conversation(&scope).await.unwrap().work.clone();
+    store
+        .persist(
+            &claim,
+            engine::Event {
+                attempt_id: claim.attempt.clone(),
+                sequence: 1,
+                kind: engine::EventKind::Candidate {
+                    text: "late".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    let candidate = engine::Candidate {
+        text: "late".into(),
+        transcript: vec![],
+        usage: engine::Usage::default(),
+    };
+
+    let mut other = scope.clone();
+    other.physician = "someone-else".into();
+    assert_eq!(
+        store
+            .stop_authorized(&other, "theirs", vec![8; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    let mut other_practice = scope.clone();
+    other_practice.practice = uuid::Uuid::new_v4().to_string();
+    assert_eq!(
+        store
+            .stop_authorized(&other_practice, "other-practice", vec![7; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "mismatch", vec![6; 32], "other-work")
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert!(
+        store
+            .stop_authorized(&scope, "short", vec![6; 4], &work)
+            .await
+            .is_err()
+    );
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    assert_eq!(held.session_hash.as_deref(), Some(&[6u8; 32][..]));
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], "other-work")
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert!(
+        store
+            .commit_authorized(&claim, &candidate, &mut OpenAuthority)
+            .await
+            .is_err()
+    );
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.messages.len(), 1);
+    // A newer message steers the saved text and stays held. The old claim
+    // still cannot publish over it.
+    assert_eq!(
+        store
+            .accept_authorized(&scope, &delivery_input("steered"), vec![4; 32])
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let steered = store.conversation(&scope).await.unwrap();
+    assert_eq!(steered.status, "held");
+    assert_eq!(
+        steered
+            .messages
+            .iter()
+            .map(|message| message.text.as_str())
+            .collect::<Vec<_>>(),
+        ["turn", "steered"]
+    );
+    assert!(
+        store
+            .commit_authorized(&claim, &candidate, &mut OpenAuthority)
+            .await
+            .is_err()
+    );
+    let steered = store.conversation(&scope).await.unwrap();
+    assert_eq!(steered.status, "held");
+    assert_eq!(steered.messages.len(), 2);
+    assert_eq!(steered.attempts.last().unwrap().status, "cancelled");
+    assert!(
+        !store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .iter()
+            .any(|delivery| delivery.scope == scope)
+    );
+
+    drop(store);
+    let store = Store::connect(&url).await.unwrap();
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.messages.last().unwrap().text, "steered");
+    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    let run = held.attempts.last().unwrap().id.clone();
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "steered".into()
+        }
+    );
+    let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
+
+    let quiet = delivery_scope(&practice, "before-claim");
+    store
+        .accept_authorized(&quiet, &delivery_input("early"), vec![5; 32])
+        .await
+        .unwrap();
+    let early = store.conversation(&quiet).await.unwrap();
+    assert!(early.attempts.is_empty());
+    assert_eq!(
+        store
+            .stop_authorized(&quiet, "early-stop", vec![6; 32], &early.work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let stopped = store.conversation(&quiet).await.unwrap();
+    assert_eq!(stopped.attempts.len(), 1);
+    assert_eq!(stopped.attempts[0].status, "cancelled");
+    assert_eq!(
+        store
+            .resume_authorized(
+                &quiet,
+                "early-resume",
+                vec![9; 32],
+                &stopped.work,
+                &stopped.attempts[0].id,
+            )
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "early".into()
+        }
+    );
+
+    // Couldn't finish stays Try again. Stop does not turn it into a hold.
+    let failed_scope = delivery_scope(&practice, "failed");
+    store
+        .accept_authorized(&failed_scope, &delivery_input("gave-up"), vec![5; 32])
+        .await
+        .unwrap();
+    let turn = Delivery::chat_turn(failed_scope.clone(), "gave-up".into());
+    for _ in 0..MAX_FAILED_ATTEMPTS {
+        let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+        store.retry_delivery(&claim).await.unwrap();
+    }
+    let failed = store.conversation(&failed_scope).await.unwrap();
+    assert_eq!(failed.status, "failed");
+    assert_eq!(
+        store
+            .stop_authorized(&failed_scope, "stop-failed", vec![6; 32], &failed.work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    let still = store.conversation(&failed_scope).await.unwrap();
+    assert_eq!(still.status, "failed");
+    let run = still.attempts.last().unwrap().id.clone();
+    assert_eq!(
+        store
+            .resume_authorized(&failed_scope, "try-again", vec![9; 32], &still.work, &run,)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "gave-up".into()
+        }
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn engine_failure_stays_leased_until_the_lease_expires() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
+    store.accept(&scope, &delivery_input("turn")).await.unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = PhysicianHost {
+        store: store.clone(),
+        claim: claim.clone(),
+        authority: OpenAuthority,
+        instructions: "versioned test".into(),
+        skills: None,
+    };
+    assert!(
+        host.run(
+            &mut Fails,
+            &engine_limits(),
+            &engine::Cancellation::default()
+        )
+        .await
+        .is_err()
+    );
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts.last().unwrap().status, "active");
+    assert_eq!(state.failures, 0);
+    assert_eq!(state.messages.len(), 1);
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
+    let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "active");
+    assert_eq!(state.failures, 1);
+    assert_eq!(state.messages.len(), 1);
+}
+
+struct OpenAuthority;
+
+#[async_trait]
+impl Authority for OpenAuthority {
+    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+        Ok(())
+    }
+
+    async fn lock_publication(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+}
+
+struct Fails;
+
+#[async_trait]
+impl engine::Provider for Fails {
+    fn request_bytes(&self, _: &engine::Request<'_>) -> Result<usize, String> {
+        Ok(1)
+    }
+
+    async fn complete(&mut self, _: engine::Request<'_>) -> Result<engine::Turn, String> {
+        Err("provider failed".into())
+    }
+}
+
+fn engine_limits() -> engine::Limits {
+    engine::Limits {
+        model_calls: 2,
+        tool_calls: 0,
+        calls_per_turn: 4,
+        request_bytes: 10_000,
+        response_bytes: 10_000,
+        tool_result_bytes: 1000,
+        total_tool_result_bytes: 1000,
+        output_tokens: 500,
+        elapsed: std::time::Duration::from_secs(5),
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
 async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();

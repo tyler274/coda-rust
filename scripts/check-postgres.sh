@@ -52,6 +52,8 @@ cargo test --locked -p physician-sample --test worker -- --test-threads=1
 # shows "couldn't finish" and Try again (work.resume) gets the reply.
 cargo test --locked -p physician-sample --test recovery -- --test-threads=1
 cargo test --locked -p physician-sample --test try_again -- --test-threads=1
+# Stop holds the turn across a worker restart; Resume runs one successor.
+cargo test --locked -p physician-sample --test stop -- --test-threads=1
 # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
 # ownership, without a worker. The runtime draft-fence proof runs above.
 cargo test --locked -p physician-sample --test chat_draft -- --test-threads=1

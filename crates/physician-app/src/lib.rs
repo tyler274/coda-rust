@@ -21,22 +21,24 @@ use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
-    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkspaceReply,
+    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
+    WorkspaceReply,
 };
 
 use panels::Panel;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
     REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
-    ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
-    TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
-    WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to, chat_view, chip_name,
-    citation_inspection, connection_lines, demographic_card_view, format_calendar_date,
-    format_clock, format_local_date, format_waited, keyboard_command, need_you_words, opens_reader,
-    past_work_copy, patient_upcoming_visits, read_view, records_time, reply_channel_label,
-    reply_review_actions, reply_revision_words, reply_urgency_words, row_icon, row_tone,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
+    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
+    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
+    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
+    format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
+    need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
+    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
+    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -911,6 +913,7 @@ fn PhysicianShell(
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
     let chat_resume_slot = use_command_slot();
+    let chat_stop_slot = use_command_slot();
     let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
@@ -2100,6 +2103,17 @@ fn PhysicianShell(
                                     });
                                 }
                             },
+                            conversation_stop_busy: chat_stop_slot.sending(),
+                            conversation_stop_notice: chat_stop_slot.notice(client),
+                            on_conversation_stop: move |target: WorkStopTarget| {
+                                if let Some(command) =
+                                    chat_stop_command(selected(), open_chat(), &target)
+                                {
+                                    chat_stop_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
                             on_send: move |_| send_message(),
@@ -3257,6 +3271,9 @@ fn PatientSurface(
     conversation_resume_busy: bool,
     conversation_resume_notice: Element,
     on_conversation_resume: EventHandler<WorkResumeTarget>,
+    conversation_stop_busy: bool,
+    conversation_stop_notice: Element,
+    on_conversation_stop: EventHandler<WorkStopTarget>,
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
     conversation_open: bool,
@@ -3739,14 +3756,24 @@ fn PatientSurface(
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
                         for line in conversation.content().cloned().unwrap_or_default() {
-                            if let Some(target) = line.resume {
+                            if let Some(target) = line.stop {
+                                div { class: "conversation-mechanical", role: "status",
+                                    p { "{line.text}" }
+                                    Button {
+                                        compact: true,
+                                        disabled: conversation_stop_busy,
+                                        onclick: move |_| on_conversation_stop.call(target.clone()),
+                                        "{STOP}"
+                                    }
+                                }
+                            } else if let Some(target) = line.resume {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
                                     Button {
                                         compact: true,
                                         disabled: conversation_resume_busy,
                                         onclick: move |_| on_conversation_resume.call(target.clone()),
-                                        "{TRY_AGAIN}"
+                                        if line.held { "{RESUME}" } else { "{TRY_AGAIN}" }
                                     }
                                 }
                             } else if line.author == Some(Author::Person) {
@@ -3762,6 +3789,7 @@ fn PatientSurface(
                             }
                         }
                         {conversation_resume_notice}
+                        {conversation_stop_notice}
                         ui::Composer {
                             label: "Message",
                             placeholder: "Write a message",
@@ -4499,7 +4527,8 @@ fn message_command(
 }
 
 /// One line of the open conversation. A turn Coda couldn't finish carries the
-/// work and run its Try again resumes.
+/// work and run its Try again resumes. A running turn carries Stop, and a
+/// stopped turn carries Resume.
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
@@ -4507,6 +4536,9 @@ struct ConversationLine {
     /// doesn't say shows without a speaker rather than as either.
     author: Option<Author>,
     resume: Option<WorkResumeTarget>,
+    stop: Option<WorkStopTarget>,
+    /// This resume is an intentional Stop. A failed turn's resume is Try again.
+    held: bool,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4517,10 +4549,18 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         .iter()
         .filter_map(|turn| {
             let text = turn.body()?.to_owned();
+            let mechanical = turn.kind.as_deref() == Some("mechanical");
+            let stop = turn.stop_target.clone().filter(|_| mechanical);
             let resume = turn
                 .resume_target
                 .clone()
-                .filter(|_| turn.kind.as_deref() == Some("mechanical"));
+                .filter(|_| mechanical && stop.is_none());
+            let held = resume.as_ref().is_some_and(|target| {
+                snapshot
+                    .runs
+                    .iter()
+                    .any(|run| run.run_id == target.expected_run_id && run.state == "held")
+            });
             let author = match turn.kind.as_deref() {
                 Some("physician") => Some(Author::Person),
                 Some("model") => Some(Author::Assistant),
@@ -4530,6 +4570,8 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 text,
                 author,
                 resume,
+                stop,
+                held,
             })
         })
         .collect()
@@ -4551,6 +4593,25 @@ fn chat_resume_command(
             "chat_id": chat_id,
             "work_item_id": target.work_item_id,
             "expected_run_id": target.expected_run_id,
+        }),
+    ))
+}
+
+/// Stop on the chat turn Coda is writing. The key names the work, so pressing
+/// again for the same work is the same request.
+fn chat_stop_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    target: &WorkStopTarget,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::keyed(
+        "work.stop",
+        format!("stop-{}", target.work_item_id),
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "work_item_id": target.work_item_id,
         }),
     ))
 }
@@ -4632,8 +4693,11 @@ fn now_millis() -> u128 {
 
 #[cfg(test)]
 mod conversation_line_tests {
-    use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
-    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+    use super::{
+        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
+    };
+    use crate::shell::STOPPED;
+    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget, WorkStopTarget};
     use ui::Author;
 
     #[test]
@@ -4673,11 +4737,15 @@ mod conversation_line_tests {
                     text: "Hello".into(),
                     author: Some(Author::Person),
                     resume: None,
+                    stop: None,
+                    held: false,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
                     author: None,
                     resume: Some(target()),
+                    stop: None,
+                    held: false,
                 },
             ]
         );
@@ -4716,8 +4784,67 @@ mod conversation_line_tests {
         assert!(
             conversation_lines(&page.snapshot)
                 .iter()
-                .all(|line| line.resume.is_none())
+                .all(|line| line.resume.is_none() && line.stop.is_none())
         );
+    }
+
+    #[test]
+    fn a_writing_line_offers_stop_and_a_stopped_line_offers_resume() {
+        let writing: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Hello" },
+                { "kind": "mechanical", "text": "Coda is writing this response.",
+                  "stop_target": { "work_item_id": "work-1" } },
+            ] }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&writing.snapshot);
+        assert_eq!(
+            lines[1].stop,
+            Some(WorkStopTarget {
+                work_item_id: "work-1".into(),
+            })
+        );
+        assert!(lines[1].resume.is_none());
+        let stopped: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "mechanical",
+                      "text": "Coda stopped this response. Your message is saved.",
+                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                ],
+                "runs": [{ "run_id": "run-1", "state": "held" }],
+            }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&stopped.snapshot);
+        assert_eq!(lines[0].text, STOPPED);
+        assert_eq!(lines[0].resume, Some(target()));
+        assert!(lines[0].held);
+        assert!(lines[0].stop.is_none());
+    }
+
+    #[test]
+    fn stop_is_one_keyed_command_for_the_named_work() {
+        let target = WorkStopTarget {
+            work_item_id: "work-1".into(),
+        };
+        let command =
+            chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();
+        assert_eq!(
+            command.0,
+            serde_json::json!({
+                "type": "work.stop",
+                "idempotency_key": "stop-work-1",
+                "payload": {
+                    "patient_workspace_id": "pw-1",
+                    "chat_id": "chat-1",
+                    "work_item_id": "work-1",
+                },
+            })
+        );
+        assert!(chat_stop_command(None, Some("chat-1".into()), &target).is_none());
+        assert!(chat_stop_command(Some("pw-1".into()), None, &target).is_none());
     }
 
     #[test]

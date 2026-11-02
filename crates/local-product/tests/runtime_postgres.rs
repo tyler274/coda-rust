@@ -227,7 +227,10 @@ async fn refused_event_ack_prevents_provider_dispatch_and_tools_fail_closed() {
         .is_err()
     );
     let state = s.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "failed");
+    // A provider or event failure leaves the attempt leased. Ending it here
+    // would make one crash terminal before retry_delivery or lease expiry.
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts[0].status, "active");
     assert_eq!(state.messages.len(), 1);
     assert_eq!(state.attempts[0].events.len(), 1);
 }

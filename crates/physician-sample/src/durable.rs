@@ -2,7 +2,7 @@
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
 use crate::queue::ChatQueue;
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Resumed, Scope, Store,
+    Accepted, Authority, Conversation, Input, Resumed, Scope, Stopped, Store,
     delivery::Delivery,
     reply::{RevisionAccepted, RevisionInput},
 };
@@ -118,6 +118,22 @@ impl DurableChat {
             tracing::warn!("resumed physician input awaits queue recovery");
         }
         Ok(resumed)
+    }
+
+    /// The physician's Stop. The runtime holds the named work and saves the
+    /// receipt. Nothing is published: a held turn is settled, and a duplicate
+    /// Stop must not wake the worker.
+    pub async fn stop(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+    ) -> Result<Stopped, String> {
+        self.store
+            .stop_authorized(scope, key, session_hash, work_item_id)
+            .await
+            .map_err(|error| error.to_string())
     }
 
     /// Reads only the scoped durable conversation; caller authenticates current
