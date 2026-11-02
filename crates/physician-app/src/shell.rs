@@ -18,6 +18,13 @@ pub const WORKSPACE_UNAVAILABLE: &str = "Coda couldn’t load what needs you for
 #[allow(dead_code)]
 pub const READER_EMPTY: &str = "Nothing is open to read.";
 pub const TRY_AGAIN: &str = "Try again";
+/// Stops the chat turn Coda is still writing.
+pub const STOP: &str = "Stop";
+/// Resumes a turn the physician stopped. Failure still says [`TRY_AGAIN`].
+pub const RESUME: &str = "Resume";
+/// The hosted snapshot's held-turn sentence, checked by the conversation line test.
+#[cfg(test)]
+pub const STOPPED: &str = "Coda stopped this response. Your message is saved.";
 /// Past work with no history dates or items on the projection.
 pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available.";
 /// An open conversation whose snapshot has no turns.
