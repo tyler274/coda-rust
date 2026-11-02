@@ -8,7 +8,8 @@
 # hook re-executes itself under `nix develop` instead of using host cargo.
 # The flake shellHook exports CODA_DEV_SHELL=1 as its last step.
 #
-# Clippy denies warnings, matching the CI lint step.
+# Clippy denies warnings on the host and browser builds, matching the CI lint
+# steps.
 set -euo pipefail
 
 root=$(git rev-parse --show-toplevel)
@@ -29,3 +30,5 @@ fi
 cd "$root"
 cargo fmt --all --check
 cargo clippy --workspace --all-targets --quiet -- -D warnings
+cargo clippy -p physician-app -p duet-app -p ui-gallery --target wasm32-unknown-unknown \
+  --features physician-app/web,duet-app/web,ui-gallery/web --quiet -- -D warnings

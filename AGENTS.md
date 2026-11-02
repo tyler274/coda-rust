@@ -159,7 +159,7 @@ Doppler holds every secret value. GCP Secret Manager holds only `DOPPLER_TOKEN`,
 
 `infra/gcp` holds the OpenTofu roots; [GCP deployment](book/src/gcp.md) lists each one and who applies it. This workspace owns the staging roots `public-site` and `rust-environments`, the mail-only production root `shared-mail`, and public-site production (the marketing site only). Apply each only from a reviewed saved plan with the operator's authorization. The other roots are references whose apply authority stays in the product repositories. These production exceptions grant no production authority over physician, Duet, clinical evidence or Gym application deployments.
 
-Lint rules for every crate live in `[workspace.lints]` in the root [`Cargo.toml`](Cargo.toml); each crate opts in with `[lints] workspace = true`, except the generated `duet-wire`. CI runs `cargo clippy --workspace --all-targets -- -D warnings`, so a rule's warning fails the build.
+Workspace-wide lint rules live in `[workspace.lints]` in the root [`Cargo.toml`](Cargo.toml); each crate opts in with `[lints] workspace = true`, except the generated `duet-wire`. CI and the pre-commit hook run Clippy with warnings denied on the host build and on the web apps' wasm32 build, so a rule's warning fails either.
 
 `act` runs [`.github/workflows/ci.yml`](.github/workflows/ci.yml) with the host Docker daemon. `actionlint` checks that file. The workflow does not call Doppler.
 

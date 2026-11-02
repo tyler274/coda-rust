@@ -235,6 +235,11 @@ jobs:
       # that slips past --no-verify still faces clippy here, warnings denied.
       - name: Lint
         run: cargo clippy --workspace --all-targets -- -D warnings
+      # Code under cfg(target_arch = "wasm32") compiles only for the browser.
+      # Linting the web roots with their web features also lints every
+      # workspace crate they build.
+      - name: Lint browser code
+        run: cargo clippy -p physician-app -p duet-app -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,ui-gallery/web -- -D warnings
       # Browser tests are explicitly ignored by Rust's test harness. Routine
       # checks still run every package's unit, service, storage and HTTP tests.
       - name: Test workspace libraries and services
