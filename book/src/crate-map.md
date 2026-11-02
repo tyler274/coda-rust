@@ -62,7 +62,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- | --- | --- |
 | `patient-bank` | [`src/lib.rs`](/crates/patient-bank/src/lib.rs), [`src/main.rs`](/crates/patient-bank/src/main.rs) | The synthetic patient bank: chart authoring checks, the verified code catalog, the FHIR build and its validation | [Synthetic patients](patient-bank.md) |
 | `ui-gallery` | [`src/main.rs`](/crates/ui-gallery/src/main.rs), [`scripts/ui-gallery.sh`](/scripts/ui-gallery.sh) | Every `ui` family rendered with its states, each at its own address, the command that builds and serves it, and the browser test that opens every family. Nothing depends on it | — |
-| `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart and retain the reference shipping clients | This page |
+| `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart, retain the reference shipping clients, and hold both apps' raw controls, hand-built cards and library overrides to a [checked-in table](/crates/boundaries/src/shared_ui.rs) | This page |
 | `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, and `apply-migrations`; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
 
