@@ -73,7 +73,9 @@ feature they cover.
 
 Keep individual Linear ticket IDs, links and status mappings out of repository
 documentation. Linear owns that tracking; docs use source and document links to
-explain responsibilities, implemented behavior and operating procedures.
+explain responsibilities, implemented behavior and operating procedures. Live
+environment state, rollout notes, prices and implementation gaps stay out too;
+they go in the PR, the ticket or the system that holds them.
 
 ## Where work goes
 
@@ -97,7 +99,7 @@ explain responsibilities, implemented behavior and operating procedures.
 [Operating invariants](book/src/agent-contracts.md) keeps the common authority,
 clinical-intelligence and recovery rules. Product behavior lives in the intent
 specs, and Linear tracks the work against them; the book maps them to actual
-Rust owners and names remaining gaps.
+Rust owners.
 Submodules stay read-only reference. Do not restore retired behavior merely
 because it appears in an older contract or generated wire schema.
 

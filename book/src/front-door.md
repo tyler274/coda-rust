@@ -25,11 +25,8 @@ paid tier in the MVP; the
 [Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
 owns scope and cadence decisions.
 
-## Implementation and remaining gaps
+## Implementation
 
-The scope above is the intended MVP behavior, not a claim that the live
-Duet-to-practice journey is fully integrated in Rust. Existing adapters and
-physician preview routes do not establish that end-to-end connection.
 The patient-owned workspace remains in MVP, including explicitly sending a saved
 version to a connected practice; saving alone shares nothing. External public-page
 and link sharing is parked for post-MVP. See <a href="/intent/duet%2Emd">Duet intent</a> (D4)
@@ -41,26 +38,21 @@ for the governing behavior.
 | [`duet-api::identity`](/crates/duet-api/src/identity.rs) | Duet identity store and authentication; standalone sign-up/session acceptance requires the whole journey |
 | [`front-door`](/crates/front-door/src/lib.rs) | Existing account, invitation, connection, consent and premium adapter, with SeaORM/Postgres persistence; its account model is not a decision to make standalone Duet depend on practice admission |
 | [`physician-sample::auth`](/crates/physician-sample/src/auth.rs) | Practice-authorized invitations and linked-patient reads; cross-practice access stays refused |
-| [`duet-api`](/crates/duet-api/src/lib.rs) and [`duet-client`](/crates/duet-client/src/lib.rs) | Join, consent and premium router adapters and client calls; the adapters are not mounted by the current Duet binary |
-| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account root already owns private access; the old practice join gate is disabled. Retained join code and the sharing toggle still need reconciliation with fixed consent; they are not an account prerequisite |
+| [`duet-api`](/crates/duet-api/src/lib.rs) and [`duet-client`](/crates/duet-client/src/lib.rs) | Join, consent and premium router adapters and client calls; the Duet binary does not mount the adapters |
+| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account root owns private access. Join code and the sharing toggle are not an account prerequisite and do not define fixed consent |
 
-The legacy consent withdrawal/resume and paid-premium fields still exist in the
-adapter. Do not infer approved MVP behavior from them. Reconcile those paths
-with the agreed connection behavior, including account linking,
-ended-connection behavior and both products' consumers. Documentation alignment
-does not implement that migration.
+The adapter's consent withdrawal/resume and paid-premium fields are not approved
+MVP behavior.
 
 [`duet-api::main`](/crates/duet-api/src/main.rs) mounts Duet-owned identity and
 durable routes. Its optional front-door store is used by readiness; the separate
 [`duet-privacy-delivery`](/crates/duet-api/src/bin/duet-privacy-delivery.rs)
 operator also uses front-door journals. The physician auth
-router still mounts invitation and linked-patient operations. These remaining
-consumers matter when reconciling the adapter under the existing outcomes.
+router mounts invitation and linked-patient operations.
 
 `front-door-migrate` owns the adapter's schema; see
 [Duet migrations](backend-architecture.md#persistence-and-migrations) and
 [GCP migration jobs](gcp.md). The existing
 [`front_door_postgres.rs`](/crates/physician-sample/tests/front_door_postgres.rs)
-proves its scoped invitation/link path, not all current connection acceptance.
-The [Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
+proves its invitation and link path. The [Connected care project](https://linear.app/coda-health/project/connected-care-v1-9f745b9c6874)
 tracks these outcomes and their acceptance.

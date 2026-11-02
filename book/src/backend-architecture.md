@@ -51,8 +51,7 @@ record's source kind, connection and note label are fixed when it is created.
   retained revisions, and remains authoritative.
 
 The patient-owned doctor workspace and explicit sending to a connected practice
-are MVP scope. The live cross-product connection is not yet fully integrated;
-[Accounts and practice connection](front-door.md#implementation-and-remaining-gaps)
+are MVP scope; [Accounts and practice connection](front-door.md#implementation)
 owns that implementation boundary. External public-page and link sharing is
 parked for post-MVP. The current binary still mounts the publication routes in
 `doctor_routes`, including HTML, PDF and SMART Health Link retrieval. Retaining
@@ -107,9 +106,9 @@ and model/operation pages are regenerated with the Rust sources.
 the manifest and documentation against fresh output. Use the pinned toolchain
 in `nix develop`.
 
-The generator still consumes the pinned legacy OpenAPI source. Retained DTOs
-are compatibility artifacts, not a promise to restore retired person-to-person
-sharing. Retiring a wire surface requires checking its actual callers and services.
+The generator consumes the pinned OpenAPI source. Its DTOs are compatibility
+artifacts, not a promise of person-to-person sharing. Retiring a wire surface
+requires checking its actual callers and services.
 
 ## Persistence and migrations
 
@@ -123,10 +122,9 @@ chain when `FRONT_DOOR_DATABASE_URL` is supplied. Do not replay the coda-app
 migration ledger to initialize this service.
 
 Follow the ORM rules in <a href="/AGENTS%2Emd#persistence-orm-first">AGENTS.md</a>.
-`PgMoments` already uses a Duet-owned SeaORM entity over the existing SQLx
-pool. Schema/account transactions and other adapters still use SQLx; do not
-confuse that remaining work with an unimplemented moments conversion. Ordinary
-CRUD belongs to the owning product's typed entities; products do not share stores.
+`PgMoments` uses a Duet-owned SeaORM entity over the SQLx pool. Schema/account
+transactions and other adapters use SQLx. Ordinary CRUD belongs to the owning
+product's typed entities; products do not share stores.
 
 ## Proof
 

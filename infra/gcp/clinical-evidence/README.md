@@ -355,7 +355,7 @@ build or revision rollout: workers swap generations without closing in-flight wo
 closed while the loaded build differs from the active binding, and queued requests keep their own
 version. Worker failures report only stage, exception class, duration and native version.
 
-Serving placement is changing (readiness: *Serving placement*); until then:
+Serving operations:
 
 - A serving-image rotation creates and probes a new revision that materializes the active binding, so
   verify Cloud SQL is `RUNNABLE` before applying a serving digest and keep the proof in the same
@@ -494,8 +494,8 @@ paid run.
 ## Cost bounds and cleanup
 
 Mechanical bounds are the one-instance, scale-to-zero service; parked SQL; jobs with task deadlines that
-rerun at most twice, only when Batch lost the VM (exit 50003 rebooted, 50006 recreated); and SQL storage auto-growth capped by `sql_disk_autoresize_limit_gb` (default 50 GB; production
-runs at 250 GB for the backfill, and the variable accepts at most 500 GB). The disk grows only as data
+rerun at most twice, only when Batch lost the VM (exit 50003 rebooted, 50006 recreated); and SQL storage auto-growth capped by `sql_disk_autoresize_limit_gb` (default 50 GB; the variable
+accepts at most 500 GB). The disk grows only as data
 arrives and never shrinks. Budgets alert but do not cap spend. Storage,
 images, network transfer and SQL disk bill independently of job timeouts. The build-source bucket
 deletes objects after one day with soft delete disabled. Artifact Registry deletes untagged versions
@@ -525,7 +525,7 @@ explicit cancellation can still prevent cleanup; this is not an absolute billing
 | `region` / `gpu_region` | `us-east1` / `us-east4` | Database, bucket and jobs / L4 Cloud Run service |
 | `sql_tier` | `db-custom-1-3840` | Corpus database machine |
 | `sql_activation_policy` | `NEVER` | Parked outside windows; `ALWAYS` only for initialization or a named window |
-| `sql_disk_autoresize_limit_gb` | 50 | Hard SQL storage ceiling (20–500; production 250) |
+| `sql_disk_autoresize_limit_gb` | 50 | Hard SQL storage ceiling (20–500) |
 | `clinical_retrieval_max_passages` | 1,000,000 | Pre-inference passage guard (≤ 46 million) |
 | `clinical_retrieval_build_batch_size` | 64 | Document-embedding batch size (1–256) |
 | `clinical_evidence_worker_count` | 2 | Resident search workers per instance |
