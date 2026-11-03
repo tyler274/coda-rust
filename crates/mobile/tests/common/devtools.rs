@@ -196,15 +196,23 @@ impl Browser {
         assert_eq!(found, "typed", "no input to type into for {selector}");
     }
 
-    /// Presses `key` (for example `"Enter"`) on the focused element.
+    /// Presses `key` (for example `"Tab"`) as the browser's own input, so what the page does with
+    /// it by default, such as moving focus or scrolling, happens too.
     #[allow(dead_code)]
     pub fn press_key(&mut self, key: &str) {
-        let escaped = escape_js(key);
-        self.page.evaluate(&format!(
-            "(() => {{ const node = document.activeElement || document.body; \
-             node.dispatchEvent(new KeyboardEvent('keydown', \
-             {{ key: \"{escaped}\", bubbles: true }})); return 'sent'; }})()"
-        ));
+        let code = match key {
+            "Tab" => 9,
+            "Enter" => 13,
+            "ArrowLeft" => 37,
+            "ArrowRight" => 39,
+            other => panic!("no key code for {other}"),
+        };
+        for kind in ["rawKeyDown", "keyUp"] {
+            self.page.call_session(
+                "Input.dispatchKeyEvent",
+                json!({ "type": kind, "key": key, "code": key, "windowsVirtualKeyCode": code }),
+            );
+        }
     }
 
     /// Resizes the viewport. `size` is one of [`DESKTOP`] or [`PHONE`].

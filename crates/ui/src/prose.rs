@@ -5,8 +5,9 @@
 //! mail or phone address. An inline piece stands outside the Markdown's emphasis, links and code
 //! around it, so it is never inside a link and keeps its state when the words around it change; a
 //! piece written inside raw HTML or a link's address is not drawn. Code set apart stands as a
-//! `CodeBlock` under its language. While the words are still `streaming` in, each word fades in as
-//! it arrives.
+//! `CodeBlock` under its language. Code and tables that don't fit scroll across on their own, each
+//! a stop for the keys so they can scroll it too. While the words are still `streaming` in, each
+//! word fades in as it arrives.
 
 use dioxus::prelude::*;
 use pulldown_cmark::{CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
@@ -27,13 +28,23 @@ pub enum ProsePart {
     Inline(Element),
 }
 
+/// What assistive technology calls the parts of prose that scroll on their own.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct ProseNames {
+    /// A block of code, before its language when it has one.
+    pub code: String,
+    /// A table.
+    pub table: String,
+}
+
 /// Words to read, in Markdown, with the host's inline pieces among them. Markdown that runs across
 /// an inline piece reads as one: a paragraph stays one paragraph around its citations. While
 /// `streaming`, the words are still arriving, and each new word fades in; `copy` names the control
-/// that copies each block of code.
+/// that copies each block of code, and `names` says what its code and tables are called.
 #[component]
 pub fn Prose(
     parts: Vec<ProsePart>,
+    names: ProseNames,
     #[props(default)] streaming: bool,
     copy: Option<CopyWords>,
 ) -> Element {
@@ -43,6 +54,7 @@ pub fn Prose(
         inlines,
         streaming,
         copy,
+        names,
     };
     rsx! {
         div { class: "prose",
@@ -58,6 +70,7 @@ struct Drawing {
     inlines: Vec<Element>,
     streaming: bool,
     copy: Option<CopyWords>,
+    names: ProseNames,
 }
 
 /// The words as one Markdown source with a marker where each inline piece goes, and the pieces in
@@ -329,6 +342,7 @@ fn draw(node: &Node, drawing: &Drawing) -> Element {
                     .collect::<String>()
                     .trim_end_matches('\n')
                     .to_owned(),
+                name: drawing.names.code.clone(),
                 label: language.clone(),
                 copy: drawing.copy.clone(),
             }
@@ -354,7 +368,13 @@ fn draw(node: &Node, drawing: &Drawing) -> Element {
                 }
                 Kind::Item => rsx! { li { "data-prose": "", {inner} } },
                 Kind::Table => rsx! {
-                    div { class: "prose-table-scroll", table { "data-prose": "", {inner} } }
+                    div {
+                        class: "prose-table-scroll",
+                        role: "region",
+                        aria_label: "{drawing.names.table}",
+                        tabindex: "0",
+                        table { "data-prose": "", {inner} }
+                    }
                 },
                 Kind::Head => rsx! { thead { tr { {inner} } } },
                 Kind::Row => rsx! { tr { {inner} } },
@@ -547,6 +567,34 @@ mod tests {
         );
     }
 
+    fn names() -> ProseNames {
+        ProseNames {
+            code: "Code".into(),
+            table: "Table".into(),
+        }
+    }
+
+    #[test]
+    fn code_and_tables_are_named_stops_for_the_keys() {
+        fn app() -> Element {
+            rsx! {
+                Prose {
+                    names: names(),
+                    parts: vec![ProsePart::Words(
+                        "```rust\nfn main() {}\n```\n\n| Date |\n| --- |\n| Today |".into(),
+                    )],
+                }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert_eq!(html.matches(r#"role="region""#).count(), 2, "{html}");
+        assert_eq!(html.matches(r#"tabindex="0""#).count(), 2, "{html}");
+        assert!(html.contains(r#"aria-label="Code: rust""#), "{html}");
+        assert!(html.contains(r#"aria-label="Table""#), "{html}");
+    }
+
     static MOUNTS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
     static BOLD: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 
@@ -565,7 +613,7 @@ mod tests {
                 "Alpha "
             };
             rsx! {
-                Prose { parts: vec![ProsePart::Words(words.into()), ProsePart::Inline(rsx! { Counted {} })] }
+                Prose { names: names(), parts: vec![ProsePart::Words(words.into()), ProsePart::Inline(rsx! { Counted {} })] }
             }
         }
         let mut dom = VirtualDom::new(app);

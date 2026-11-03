@@ -2,7 +2,10 @@
 //!
 //! The sections come from the page's own links, so a new family is covered the
 //! moment the gallery shows it. A section fails on a panic, a console error,
-//! sideways page overflow, or a heading or body that never appears.
+//! sideways page overflow, or a heading or body that never appears. What only
+//! keys can reach is walked here too, with real key presses. With
+//! `UI_GALLERY_SCREENSHOTS` set to a folder, those walks leave a picture of what
+//! they focused there.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -15,11 +18,15 @@ use std::process::{Child, Command};
 use std::sync::{Mutex, MutexGuard};
 use std::time::{Duration, Instant};
 
+use base64::Engine;
 use devtools::{Browser, DESKTOP, PHONE, free_port};
 use serde_json::Value;
 
 /// How long a section's entry motion and first scripted steps get to run.
 const SETTLE: Duration = Duration::from_secs(2);
+
+/// How many presses of Tab a walk gets to reach what it is after, past the page's other stops.
+const TAB_STOPS: usize = 120;
 
 /// Each start rewrites the one built bundle, so a test holds this while it serves it.
 static BUNDLE: Mutex<()> = Mutex::new(());
@@ -253,6 +260,113 @@ fn an_unknown_address_opens_the_first_section() {
         .page()
         .navigate(&format!("{}#no-such-family", gallery.url));
     wait_for_heading(&mut browser, &first).expect("the first section");
+}
+
+/// Tab reaches a code block too long for its frame, shows the ring, and the arrows move it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn keys_scroll_a_code_block() {
+    keys_scroll(
+        "agent-work",
+        "Agent work",
+        ".gallery-agent > .code-block:not(.diff) > .code-block-body",
+        "code-block",
+    );
+}
+
+/// Tab reaches a prose table too wide for its column, shows the ring, and the arrows move it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn keys_scroll_a_prose_table() {
+    keys_scroll("prose", "Prose", ".prose-table-scroll", "prose-table");
+}
+
+/// Walks to `selector` with Tab at phone width, where it can't fit, then scrolls it both ways.
+fn keys_scroll(slug: &str, title: &str, selector: &str, picture: &str) {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser.page().navigate(&format!("{}#{slug}", gallery.url));
+    wait_for_heading(&mut browser, title).expect("the section");
+    std::thread::sleep(SETTLE);
+
+    let target = format!("document.querySelector({selector:?})");
+    let wider = browser
+        .page()
+        .evaluate(&format!("{target}.scrollWidth > {target}.clientWidth"));
+    assert_eq!(
+        wider.as_bool(),
+        Some(true),
+        "{selector} fits, so nothing to scroll"
+    );
+
+    let mut reached = false;
+    for _ in 0..TAB_STOPS {
+        browser.press_key("Tab");
+        let focused = browser
+            .page()
+            .evaluate(&format!("document.activeElement === {target}"));
+        if focused.as_bool() == Some(true) {
+            reached = true;
+            break;
+        }
+    }
+    assert!(reached, "Tab never reached {selector}");
+
+    let own_stop = browser.page().evaluate(&format!("{target}.tabIndex"));
+    assert_eq!(
+        own_stop.as_i64(),
+        Some(0),
+        "{selector} is no stop of its own"
+    );
+
+    // The ring grows in from nothing, so it is read once it has settled.
+    std::thread::sleep(SETTLE);
+    let ring = browser.page().evaluate(&format!(
+        "(() => {{ const style = getComputedStyle({target}); \
+         return {target}.matches(':focus-visible') && style.outlineStyle === 'solid' \
+           && parseFloat(style.outlineWidth) > 0; }})()"
+    ));
+    assert_eq!(ring.as_bool(), Some(true), "{selector} shows no focus ring");
+    save_picture(&mut browser, picture);
+
+    browser.press_key("ArrowRight");
+    let moved = wait_for_scroll(&mut browser, &target, |left| left > 0.0);
+    assert!(moved, "ArrowRight did not scroll {selector}");
+    browser.press_key("ArrowLeft");
+    let back = wait_for_scroll(&mut browser, &target, |left| left == 0.0);
+    assert!(back, "ArrowLeft did not scroll {selector} back");
+}
+
+/// Waits out the browser's smooth scroll for the scroll position to answer `arrived`.
+fn wait_for_scroll(browser: &mut Browser, target: &str, arrived: impl Fn(f64) -> bool) -> bool {
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while Instant::now() < deadline {
+        let left = browser.page().evaluate(&format!("{target}.scrollLeft"));
+        if left.as_f64().is_some_and(&arrived) {
+            return true;
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    false
+}
+
+/// Saves the page as it stands, when `UI_GALLERY_SCREENSHOTS` names a folder for it.
+fn save_picture(browser: &mut Browser, name: &str) {
+    let Some(folder) = std::env::var_os("UI_GALLERY_SCREENSHOTS") else {
+        return;
+    };
+    let shot = browser.page().call_session(
+        "Page.captureScreenshot",
+        serde_json::json!({ "format": "png" }),
+    );
+    let encoded = shot["result"]["data"].as_str().expect("a screenshot");
+    let png = base64::engine::general_purpose::STANDARD
+        .decode(encoded)
+        .expect("a screenshot in base64");
+    let folder = PathBuf::from(folder);
+    std::fs::create_dir_all(&folder).expect("the screenshot folder");
+    std::fs::write(folder.join(format!("{name}.png")), png).expect("the screenshot");
 }
 
 /// Presses Replay entries in the page's header.

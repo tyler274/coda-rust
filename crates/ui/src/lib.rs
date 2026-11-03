@@ -57,7 +57,7 @@ pub use motion::Stylesheet;
 pub use overlays::{
     Command, CommandPalette, ContextMenu, Menu, MenuItem, MenuSection, Popover, Tooltip,
 };
-pub use prose::{Prose, ProsePart};
+pub use prose::{Prose, ProseNames, ProsePart};
 pub use sources::{CitationPreview, SourceDetails, SourcePane, SourceReading, SourceText};
 pub use tables::{Column, SortOrder, Table, TableRow};
 pub use toast::{TOAST_MS, Toast};

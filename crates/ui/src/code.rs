@@ -65,11 +65,22 @@ const text = await dioxus.recv();
 try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
 "#;
 
-/// Code as written, kept to its lines and scrolled across rather than wrapped, under a `label` that
-/// says what it is, such as its language or file. With `copy`, a `CopyButton` copies it.
+/// Code as written, kept to its lines and scrolled across rather than wrapped, a stop for the keys
+/// so they can scroll it too, under a `label` that says what it is, such as its language or file.
+/// `name` is what assistive technology calls it, with the `label` after. With `copy`, a
+/// `CopyButton` copies it.
 #[component]
-pub fn CodeBlock(code: String, label: Option<String>, copy: Option<CopyWords>) -> Element {
+pub fn CodeBlock(
+    code: String,
+    name: String,
+    label: Option<String>,
+    copy: Option<CopyWords>,
+) -> Element {
     let heading = label.is_some() || copy.is_some();
+    let name = match &label {
+        Some(label) => format!("{name}: {label}"),
+        None => name,
+    };
     rsx! {
         div { class: "code-block",
             if heading {
@@ -82,7 +93,9 @@ pub fn CodeBlock(code: String, label: Option<String>, copy: Option<CopyWords>) -
                     }
                 }
             }
-            pre { class: "code-block-body", code { "{code}" } }
+            pre { class: "code-block-body", role: "region", aria_label: "{name}", tabindex: "0",
+                code { "{code}" }
+            }
         }
     }
 }
@@ -182,5 +195,30 @@ pub fn Diff(
                 }
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn html(app: fn() -> Element) -> String {
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        dioxus_ssr::render(&dom)
+    }
+
+    #[test]
+    fn a_code_block_is_a_named_stop_for_the_keys() {
+        let html = html(|| rsx! { CodeBlock { code: "1 + 1", name: "Code", label: "json" } });
+        assert!(html.contains(r#"role="region""#), "{html}");
+        assert!(html.contains(r#"aria-label="Code: json""#), "{html}");
+        assert!(html.contains(r#"tabindex="0""#), "{html}");
+    }
+
+    #[test]
+    fn a_code_block_with_no_label_keeps_its_name() {
+        let html = html(|| rsx! { CodeBlock { code: "1 + 1", name: "Code" } });
+        assert!(html.contains(r#"aria-label="Code""#), "{html}");
     }
 }

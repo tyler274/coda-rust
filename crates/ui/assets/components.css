@@ -171,7 +171,7 @@
   :is(.control, .navigation-control)::after { content: ""; position: absolute; top: 50%; left: 50%; width: max(100%, var(--target)); height: max(100%, var(--target)); transform: translate(-50%, -50%); }
 }
 /* Focus ring: one ring for everything a person can reach, following its corners; it grows in, then settles. */
-:is(button, a, input, textarea, select, summary, .table-frame):focus-visible {
+:is(button, a, input, textarea, select, summary, .table-frame, .code-block-body, .prose-table-scroll):focus-visible {
   outline: var(--focus-ring-width) solid var(--focus-ring-color);
   outline-offset: var(--focus-ring-offset);
   animation: focus-ring-grow calc(var(--motion-focus) * .25) var(--ease-emphasized),
@@ -469,6 +469,8 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
   border-bottom: var(--hairline) solid var(--outline-variant); color: var(--muted); font: var(--type-body-sm); }
 .code-block-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .code-block-body { margin: 0; padding: var(--space-3); overflow-x: auto; font: var(--type-code); tab-size: 4; }
+/* The frame clips what stands outside it, so the ring stands inside. */
+.code-block-body:focus-visible { outline-offset: calc(-1 * var(--focus-ring-width)); }
 .code-block-body > code { font: inherit; }
 .diff .code-block-heading { padding-inline-end: var(--space-3); }
 .diff .code-block-body { padding-inline: 0; }
@@ -505,7 +507,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
   .card-object:has(.card-open:focus-visible) { outline-color: Highlight; }
   .control { border-color: ButtonText; }
   :is(.state-pill, .avatar) { outline: var(--hairline) solid CanvasText; outline-offset: calc(-1 * var(--hairline)); }
-  :is(button, a, input, textarea, select, summary, .table-frame):focus-visible { outline-color: Highlight; }
+  :is(button, a, input, textarea, select, summary, .table-frame, .code-block-body, .prose-table-scroll):focus-visible { outline-color: Highlight; }
 }
 /* Measurements and charts. A value's units read in body text beside its figures. */
 .value { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .3em; color: var(--ink); font: var(--type-value-md); letter-spacing: var(--title-tracking); font-variant-numeric: tabular-nums; }

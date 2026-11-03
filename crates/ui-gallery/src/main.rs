@@ -29,12 +29,13 @@ use ui::{
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
     MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper,
     PaperSection, Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose,
-    ProsePart, Quote, RadioGroup, Rating, RowFrame, RowGroup, RunningChart, SearchField,
-    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider,
-    SortOrder, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton, Sparkline,
-    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
-    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, TryAgain, Value,
-    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
+    ProseNames, ProsePart, Quote, RadioGroup, Rating, RowFrame, RowGroup, RunningChart,
+    SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
+    SettingRow, Slider, SortOrder, SourceDetails, SourcePane, SourceReading, SourceText,
+    SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
+    TableRow, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip,
+    TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
+    use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -1603,7 +1604,7 @@ fn ButtonDemo() -> Element {
 #[cfg(feature = "web")]
 const PROSE_BEFORE: &str = "## Recorded measurements\n\nPotassium was **5.4 mmol/L** on Tuesday";
 #[cfg(feature = "web")]
-const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium |\n| --- | --- |\n| September 12 | 4.9 |\n| October 28 | 5.4 |\n\nRecheck with a `BMP` next week.";
+const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium |\n| --- | --- |\n| September 12 | 4.9 |\n| [October 28](https://example.org/results) | 5.4 |\n\nRecheck with a `BMP` next week.";
 
 #[cfg(feature = "web")]
 #[component]
@@ -1611,6 +1612,7 @@ fn ProseDemo() -> Element {
     rsx! {
         div { class: "gallery-prose",
             Prose {
+                names: prose_names(),
                 parts: vec![
                     ProsePart::Words(PROSE_BEFORE.to_owned()),
                     ProsePart::Inline(rsx! { CitationChip { index: 1, label: "Source 1: Basic metabolic panel" } }),
@@ -2295,6 +2297,14 @@ fn copy_words() -> CopyWords {
 }
 
 #[cfg(feature = "web")]
+fn prose_names() -> ProseNames {
+    ProseNames {
+        code: "Code".into(),
+        table: "Table".into(),
+    }
+}
+
+#[cfg(feature = "web")]
 #[component]
 fn ReplyDemo() -> Element {
     // How much of the reply has arrived, in bytes.
@@ -2324,7 +2334,7 @@ fn ReplyDemo() -> Element {
     let streaming = shown() < REPLY.len();
     rsx! {
         div { class: "gallery-agent",
-            Prose { streaming, copy: copy_words(), parts: vec![ProsePart::Words(REPLY[..shown()].to_owned())] }
+            Prose { streaming, copy: copy_words(), names: prose_names(), parts: vec![ProsePart::Words(REPLY[..shown()].to_owned())] }
             ArtifactCard {
                 icon: IconName::File,
                 title: "Letter to her cardiologist",
@@ -2354,7 +2364,7 @@ fn line(change: Change, text: &str) -> DiffLine {
 
 /// A result as a tool returned it.
 #[cfg(feature = "web")]
-const RESULT: &str = "{\n  \"code\": \"2823-3\",\n  \"display\": \"Potassium\",\n  \"value\": 5.4,\n  \"unit\": \"mmol/L\",\n  \"effective\": \"2026-10-28\"\n}";
+const RESULT: &str = "{\n  \"code\": \"2823-3\",\n  \"display\": \"Potassium\",\n  \"value\": 5.4,\n  \"unit\": \"mmol/L\",\n  \"effective\": \"2026-10-28\",\n  \"note\": \"Drawn four hours after the morning dose; repeat within one week if the reading stays above 5.0 mmol/L.\"\n}";
 
 #[cfg(feature = "web")]
 #[component]
@@ -2362,6 +2372,7 @@ fn CodeDemo() -> Element {
     rsx! {
         div { class: "gallery-agent",
             CodeBlock {
+                name: "Code",
                 label: "json",
                 copy: copy_words(),
                 code: RESULT,
