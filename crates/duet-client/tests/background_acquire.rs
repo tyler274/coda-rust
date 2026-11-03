@@ -113,7 +113,10 @@ fn background_on_locked_storage_completes_as_a_typed_pause() {
     *disk.locked.borrow_mut() = true;
     let (signal, outcome) = background_acquire(&outbox, &adapter(), 4);
     assert_eq!(signal, BackgroundSignal::Paused);
-    assert_eq!(outcome.paused, Some(SyncPause::StorageUnavailable));
+    assert_eq!(
+        outcome.paused,
+        Some(SyncPause::StorageUnavailable("locked".into()))
+    );
     *disk.locked.borrow_mut() = false;
     // Nothing was lost or advanced: the next pass reads the record.
     assert_eq!(acquire(&outbox, &adapter(), 4).acquired.upserts, 1);

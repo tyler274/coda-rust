@@ -1,4 +1,4 @@
-//! On-device health samples. Only the Duet app imports this crate.
+//! On-device health samples and acquisition primitives for the Duet client.
 //! Apple HealthKit is reached through the Swift binding in `platform/ios`.
 //! Android reads granted Health Connect records through `platform/android`.
 //! A missing permission or an empty store contributes no sample.
@@ -212,7 +212,7 @@ impl HealthSource for PlatformHealth {
 
 #[cfg(target_os = "ios")]
 fn ios_snapshot() -> HealthSnapshot {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_healthkit_status() -> *mut std::ffi::c_char;
         fn duet_healthkit_readings() -> *mut std::ffi::c_char;
         fn duet_healthkit_string_free(pointer: *mut std::ffi::c_char);
@@ -235,9 +235,79 @@ fn ios_snapshot() -> HealthSnapshot {
     }
 }
 
+/// Result of an unsuccessful HealthKit authorization request.
+#[derive(Debug, thiserror::Error)]
+pub enum AuthorizationError {
+    /// HealthKit reported that the request did not complete.
+    #[error("HealthKit did not complete the authorization request")]
+    RequestFailed,
+    /// The error domain and code supplied by HealthKit.
+    #[error("HealthKit authorization failed ({domain} {code})")]
+    Native {
+        /// NSError domain.
+        domain: String,
+        /// NSError code.
+        code: i64,
+    },
+    /// The native callback was dropped.
+    #[error("authorization callback dropped")]
+    Canceled(#[from] futures_channel::oneshot::Canceled),
+}
+
+/// Wait for the HealthKit permission sheet before querying. Completion only means the
+/// request finished; HealthKit deliberately does not disclose which read types were denied.
+#[cfg(target_os = "ios")]
+pub async fn request_apple_health() -> Result<(), AuthorizationError> {
+    use futures_channel::oneshot;
+    unsafe extern "C" {
+        fn duet_healthkit_authorize(
+            identifiers: *const std::ffi::c_char,
+            context: usize,
+            callback: extern "C" fn(usize, i32, *const std::ffi::c_char, i64),
+        );
+    }
+    type Reply = Result<(), AuthorizationError>;
+    extern "C" fn completed(
+        context: usize,
+        success: i32,
+        domain: *const std::ffi::c_char,
+        code: i64,
+    ) {
+        // Swift invokes the callback exactly once, even when HealthKit is unavailable.
+        let sender = unsafe { Box::from_raw(context as *mut oneshot::Sender<Reply>) };
+        let reply = if !domain.is_null() {
+            // Swift borrows NSError.domain for the duration of this callback.
+            let domain = unsafe { std::ffi::CStr::from_ptr(domain) }
+                .to_string_lossy()
+                .into_owned();
+            Err(AuthorizationError::Native { domain, code })
+        } else if success != 0 {
+            Ok(())
+        } else {
+            Err(AuthorizationError::RequestFailed)
+        };
+        let _ = sender.send(reply);
+    }
+    let (sender, result) = oneshot::channel::<Reply>();
+    let types = native_adapters::default_healthkit_types()
+        .into_iter()
+        .map(|s| s.data_type)
+        .collect::<Vec<_>>()
+        .join(",");
+    let types = std::ffi::CString::new(types).expect("code-owned HealthKit identifiers");
+    unsafe {
+        duet_healthkit_authorize(
+            types.as_ptr(),
+            Box::into_raw(Box::new(sender)) as usize,
+            completed,
+        )
+    };
+    result.await?
+}
+
 #[cfg(target_os = "ios")]
 fn ios_request() {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_healthkit_request();
     }
     unsafe { duet_healthkit_request() }
@@ -292,6 +362,12 @@ fn unreadable_snapshot() -> HealthSnapshot {
     }
 }
 
+/// Opens the system permission chooser without reading the Health Connect store.
+#[cfg(target_os = "android")]
+pub fn request_health_connect_permission() -> Result<(), String> {
+    android_call("requestPermission", "()V").map(|_| ())
+}
+
 #[cfg(target_os = "android")]
 fn android_snapshot() -> HealthSnapshot {
     let state = match android_call("status", "()Ljava/lang/String;") {
@@ -311,7 +387,7 @@ fn android_snapshot() -> HealthSnapshot {
 
 #[cfg(target_os = "android")]
 fn android_request() {
-    let _ = android_call("requestPermission", "()V");
+    let _ = request_health_connect_permission();
 }
 
 #[cfg(target_os = "android")]

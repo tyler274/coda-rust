@@ -7,6 +7,8 @@
 )]
 
 mod account;
+#[cfg(target_os = "ios")]
+mod apple_health;
 mod approval;
 mod browser_identity;
 mod export;
@@ -27,13 +29,12 @@ use std::time::Duration;
 
 use dioxus::prelude::*;
 use duet_client::DuetClient;
-use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
 use duet_notify::{
     AlertSnapshot, AlertState, PlatformAlerts, insight_alerts_wanted, plan_insight_delivery,
 };
 use duet_wire::models::ConversationMessage;
 use roots::{
-    ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE,
+    ALLOW_NOTIFICATIONS, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE,
     CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
     ConversationSourceChip, DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL,
     LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind, LibraryRecord, LibraryRoot, NoteOpen,
@@ -68,7 +69,6 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
         selected: handoff_selected,
         tab,
     });
-    let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
     rsx! {
@@ -80,8 +80,6 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                     TodayTab {
                         base_url: base_url.clone(),
                         bearer: bearer.clone(),
-                        readings: phone().readings.clone(),
-                        connected: phone().state.connected(),
                         insight_alerts,
                     }
                 }
@@ -89,13 +87,8 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                     YouTab {
                         base_url: base_url.clone(),
                         bearer: bearer.clone(),
-                        phone: phone(),
                         alerts: alerts(),
                         insight_alerts: insight_alerts(),
-                        on_allow: move |_| {
-                            PlatformHealth.request_access();
-                            phone.set(PlatformHealth.snapshot());
-                        },
                         on_allow_alerts: move |_| {
                             PlatformAlerts.request_access();
                             alerts.set(PlatformAlerts.snapshot());
@@ -117,9 +110,6 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                 selected: tab(),
                 on_select: move |index| {
                     tab.set(index);
-                    if index == 1 || index == 2 {
-                        phone.set(PlatformHealth.snapshot());
-                    }
                     if index == 2 {
                         alerts.set(PlatformAlerts.snapshot());
                         insight_alerts.set(PlatformAlerts.insights_enabled());
@@ -1936,13 +1926,7 @@ fn note_body(note: ConversationNote) -> Element {
 }
 
 #[component]
-fn TodayTab(
-    base_url: String,
-    bearer: String,
-    readings: Vec<PhoneReading>,
-    connected: bool,
-    insight_alerts: Signal<bool>,
-) -> Element {
+fn TodayTab(base_url: String, bearer: String, insight_alerts: Signal<bool>) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
     let mut cache = use_signal(|| None);
@@ -1978,7 +1962,6 @@ fn TodayTab(
         TabHeading { name: "Today".to_owned(), loading }
         p { class: "duet-date", "{date}" }
         p { class: "duet-greeting", "{hello}" }
-        PhoneReadings { readings, connected }
         match root {
             Some(TodayRoot::Quiet) => rsx! {},
             Some(TodayRoot::Paused) => rsx! {
@@ -2006,13 +1989,29 @@ fn TodayTab(
 }
 
 #[component]
+fn PhoneHealthControl(base_url: String, attempt: Signal<u32>) -> Element {
+    #[cfg(target_os = "ios")]
+    return rsx! { apple_health::AppleHealthControl { base_url, refreshed: attempt } };
+    #[cfg(target_os = "android")]
+    {
+        let mut failed = use_signal(|| false);
+        return rsx! { div { class: "source-row",
+            span { class: "source-name", "Health Connect" }
+            span { class: "source-detail", "You can set phone permissions. Health Connect imports are unavailable in this build." }
+            Button { onclick: move |_| failed.set(duet_client::request_health_connect_permission().is_err()), "Allow" }
+            if failed() { p { role: "alert", "Could not open Health Connect permissions." } }
+        } };
+    }
+    #[cfg(not(any(target_os = "ios", target_os = "android")))]
+    rsx! {}
+}
+
+#[component]
 fn YouTab(
     base_url: String,
     bearer: String,
-    phone: HealthSnapshot,
     alerts: AlertSnapshot,
     insight_alerts: bool,
-    on_allow: EventHandler<()>,
     on_allow_alerts: EventHandler<()>,
     on_insight_alerts: EventHandler<bool>,
     on_open_settings: EventHandler<()>,
@@ -2207,17 +2206,7 @@ fn YouTab(
                 }
             }
         } else {
-        div { class: "source-row",
-            span { class: "source-name", "Sources" }
-            span { class: "source-detail", "{phone.sentence()}" }
-            if phone.state.can_request() {
-                Button {
-                    aria_label: "{ALLOW_HEALTHKIT}",
-                    onclick: move |_| on_allow.call(()),
-                    "Allow"
-                }
-            }
-        }
+        PhoneHealthControl { base_url: evidence_url.clone(), attempt }
         if alerts.state.shown() {
             div { class: "source-row",
                 span { class: "source-name", "Notifications" }
@@ -2248,7 +2237,6 @@ fn YouTab(
                 }
             }
         }
-        PhoneReadings { readings: phone.readings.clone(), connected: phone.state.connected() }
         if let Some(section) = plan_section {
             article { class: "card voice-card",
                 p { class: "card-title", "{section.heading}" }
@@ -2553,24 +2541,6 @@ fn HealthDraft(
                     "Save note"
                 }
             },
-        }
-    }
-}
-
-#[component]
-fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
-    rsx! {
-        if connected && readings.is_empty() {
-            p { class: "empty", "{NO_READINGS}" }
-        }
-        for reading in readings {
-            article { class: "card number-card",
-                p { class: "card-title", "{reading.name}" }
-                p { class: "card-text", "{reading.value} {reading.unit}" }
-                if !reading.source.is_empty() {
-                    p { class: "record-meta", "{reading.source}" }
-                }
-            }
         }
     }
 }

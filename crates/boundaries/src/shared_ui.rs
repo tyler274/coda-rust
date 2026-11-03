@@ -85,8 +85,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 18,
-        reason: "Today, You, thread, reading and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
+        count: 15,
+        reason: "Today, You, thread and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
         file: "crates/duet-app/src/publication.rs",

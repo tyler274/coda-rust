@@ -24,6 +24,20 @@ public func duetHealthKitRequest() {
     HealthKitBridge.requestAccess()
 }
 
+@_cdecl("duet_healthkit_authorize")
+public func duetHealthKitAuthorize(_ identifiers: UnsafePointer<CChar>, _ context: UInt, _ callback: @escaping @convention(c) (UInt, Int32, UnsafePointer<CChar>?, Int64) -> Void) {
+    let types = String(cString: identifiers).split(separator: ",").compactMap {
+        HKQuantityType.quantityType(forIdentifier: HKQuantityTypeIdentifier(rawValue: String($0)))
+    }
+    HealthKitBridge.requestAccess(types: Set(types)) { completed, error in
+        if let error = error as NSError? {
+            error.domain.withCString { callback(context, 0, $0, Int64(error.code)) }
+        } else {
+            callback(context, completed ? 1 : 0, nil, 0)
+        }
+    }
+}
+
 @_cdecl("duet_healthkit_string_free")
 public func duetHealthKitStringFree(_ pointer: UnsafeMutablePointer<CChar>?) {
     free(pointer)
@@ -246,11 +260,11 @@ private enum HealthKitBridge {
         return UserDefaults.standard.bool(forKey: requestedKey) ? "connected" : "permission"
     }
 
-    static func requestAccess() {
-        guard HKHealthStore.isHealthDataAvailable() else { return }
+    static func requestAccess(types: Set<HKObjectType> = readTypes(), completion: @escaping (Bool, Error?) -> Void = { _, _ in }) {
+        guard HKHealthStore.isHealthDataAvailable() else { completion(false, nil); return }
         UserDefaults.standard.set(true, forKey: requestedKey)
         DispatchQueue.main.async {
-            store.requestAuthorization(toShare: [], read: readTypes()) { _, _ in }
+            store.requestAuthorization(toShare: [], read: types, completion: completion)
         }
     }
 
@@ -335,12 +349,17 @@ private enum HealthKitBridge {
 
     private static func sleepMinutes(from start: Date, to end: Date) -> Double? {
         guard let type = HKObjectType.categoryType(forIdentifier: .sleepAnalysis) else { return nil }
-        let asleep: Set<Int> = [
+        let asleep: Set<Int>
+        if #available(iOS 16.0, *) {
+            asleep = [
             HKCategoryValueSleepAnalysis.asleepUnspecified.rawValue,
             HKCategoryValueSleepAnalysis.asleepCore.rawValue,
             HKCategoryValueSleepAnalysis.asleepDeep.rawValue,
             HKCategoryValueSleepAnalysis.asleepREM.rawValue,
-        ]
+            ]
+        } else {
+            asleep = [HKCategoryValueSleepAnalysis.asleep.rawValue]
+        }
         let predicate = HKQuery.predicateForSamples(withStart: start, end: end, options: .strictStartDate)
         let result: Result<[HKCategorySample], Error> = awaitQuery { done in
             let query = HKSampleQuery(sampleType: type, predicate: predicate, limit: HKObjectQueryNoLimit, sortDescriptors: nil) { _, samples, error in

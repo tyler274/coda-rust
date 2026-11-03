@@ -16,12 +16,14 @@ profile = plistlib.loads(subprocess.check_output(["security", "cms", "-D", "-i",
 authorized = profile["Entitlements"]
 if authorized.get("com.apple.developer.applesignin") != ["Default"]:
     raise SystemExit("Provisioning profile does not authorize Sign in with Apple")
+if not authorized.get("com.apple.developer.healthkit"):
+    raise SystemExit("Provisioning profile does not authorize Apple Health")
 app_id = authorized.get("application-identifier", "")
 if not app_id.endswith("." + bundle):
     raise SystemExit("Provisioning profile does not explicitly authorize this bundle")
 # Preserve only the approved profile's application/keychain/team/debug entitlements.
 # Never add an entitlement not authorized by the provisioning profile.
-keys = ["application-identifier", "com.apple.developer.team-identifier", "keychain-access-groups", "get-task-allow", "com.apple.developer.applesignin"]
+keys = ["application-identifier", "com.apple.developer.team-identifier", "keychain-access-groups", "get-task-allow", "com.apple.developer.applesignin", "com.apple.developer.healthkit"]
 entitlements = {key: authorized[key] for key in keys if key in authorized}
 with tempfile.TemporaryDirectory(prefix="duet-local-sign-") as directory:
     path = Path(directory) / "entitlements.plist"

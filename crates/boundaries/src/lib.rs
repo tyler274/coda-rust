@@ -36,6 +36,14 @@ mod tests {
         assert!(shell.contains("physician-app"));
     }
 
+    #[test]
+    fn duet_screens_do_not_read_device_health_directly() {
+        assert!(
+            !manifest("duet-app").contains("duet-health"),
+            "Duet screens must read account-owned evidence through duet-client"
+        );
+    }
+
     /// Follow local dependencies, including renamed dependencies, rather than
     /// trusting direct package-name string checks. No generated clinical crate
     /// can slip into the neutral mechanics through a transitive dependency.

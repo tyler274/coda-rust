@@ -159,12 +159,18 @@ async fn sign_out_and_account_switch_pause_and_isolate_the_queue() {
     let report = sync(&outbox_a, &adapter, &transport, 0, SyncBudget::default()).await;
     assert_eq!(report.acquired.upserts, 25);
     assert_eq!(report.batches, 1);
+    assert_eq!(
+        report.progress(&outbox_a),
+        Err(RefreshStop::WaitingForUpload)
+    );
     let pending_a = outbox_a.view().unwrap().items;
     assert_eq!(pending_a.len(), 25);
 
     // Switch to B: A's fence is dead, so A's outbox handle can neither read
     // nor upload, and B's outbox does not see A's work.
     let b = retention.activate(identity("owner-b")).unwrap();
+    // A permission sheet opened by A may finish only after B has signed in.
+    assert!(outbox_a.connect(0).is_err());
     let late = sync(&outbox_a, &adapter, &transport, 0, SyncBudget::default()).await;
     assert_eq!(late.paused, Some(SyncPause::AccountChanged));
     assert_eq!(transport.sent.borrow().len(), 1);
@@ -198,9 +204,20 @@ async fn sign_out_and_account_switch_pause_and_isolate_the_queue() {
     );
     assert_eq!(outbox_a.view().unwrap().items, pending_a);
     let first_ops = transport.sent.borrow()[0].operation_ids();
-    let report = sync(&outbox_a, &adapter, &transport, 0, SyncBudget::default()).await;
-    assert_eq!(report.paused, None);
-    assert_eq!(report.uploaded.acknowledged, 25);
+    let budget = SyncBudget {
+        pages: 1,
+        batches: 1,
+    };
+    let mut acknowledged = 0;
+    for expected_more in [true, true, false] {
+        let report = sync(&outbox_a, &adapter, &transport, 0, budget).await;
+        acknowledged += report.uploaded.acknowledged;
+        assert_eq!(
+            report.progress(&outbox_a).unwrap().is_continue(),
+            expected_more
+        );
+    }
+    assert_eq!(acknowledged, 25);
     assert_eq!(transport.sent.borrow()[1].operation_ids(), first_ops);
 }
 
@@ -257,7 +274,16 @@ async fn locked_protected_storage_pauses_then_resumes() {
     let transport = Transport::default();
     *store.locked.lock().unwrap() = true;
     let report = sync(&outbox, &adapter, &transport, 0, SyncBudget::default()).await;
-    assert_eq!(report.paused, Some(SyncPause::StorageUnavailable));
+    assert_eq!(
+        retention.health_installation(&fence),
+        Err(HealthStorageError::Unavailable("locked".into()))
+    );
+    assert_eq!(
+        report.progress(&outbox),
+        Err(RefreshStop::Paused(SyncPause::StorageUnavailable(
+            "locked".into()
+        )))
+    );
     assert!(transport.sent.borrow().is_empty());
     *store.locked.lock().unwrap() = false;
     let report = sync(&outbox, &adapter, &transport, 0, SyncBudget::default()).await;
@@ -327,25 +353,30 @@ async fn duet_client_transport_posts_the_canonical_batch() {
     let captured = seen.clone();
     let app = Router::new().route(
         "/api/canonical-evidence/batch",
-        post(move |Json(body): Json<serde_json::Value>| {
-            let captured = captured.clone();
-            async move {
-                captured.lock().unwrap().push(body.clone());
-                let results: Vec<_> = body["items"]
-                    .as_array()
-                    .unwrap()
-                    .iter()
-                    .enumerate()
-                    .map(|(index, m)| {
-                        serde_json::json!({
+        post(
+            move |headers: axum::http::HeaderMap, Json(body): Json<serde_json::Value>| {
+                let captured = captured.clone();
+                async move {
+                    captured.lock().unwrap().push(body.clone());
+                    if headers["authorization"] == "Bearer expired" {
+                        return Err(axum::http::StatusCode::UNAUTHORIZED);
+                    }
+                    let results: Vec<_> = body["items"]
+                        .as_array()
+                        .unwrap()
+                        .iter()
+                        .enumerate()
+                        .map(|(index, m)| {
+                            serde_json::json!({
                         "status":"accepted","index":index,"operation_id":m["operation_id"],
                         "address":{"canonical_record_id":m["canonical_record_id"],
                             "record_id":m["record_id"],"entity":"health_evidence","revision":1}})
-                    })
-                    .collect();
-                Json(serde_json::json!({ "results": results }))
-            }
-        }),
+                        })
+                        .collect();
+                    Ok(Json(serde_json::json!({ "results": results })))
+                }
+            },
+        ),
     );
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
@@ -362,6 +393,28 @@ async fn duet_client_transport_posts_the_canonical_batch() {
         limits(),
     );
     outbox.connect(2).unwrap();
+    let expired =
+        duet_client::DuetClient::new(format!("http://{address}"), "expired", "1", "1.0").unwrap();
+    let report = sync(
+        &outbox,
+        &Adapter { count: 2 },
+        &expired,
+        0,
+        SyncBudget::default(),
+    )
+    .await;
+    assert_eq!(
+        report.progress(&outbox),
+        Err(RefreshStop::Paused(SyncPause::Unauthorized))
+    );
+    assert!(
+        outbox
+            .view()
+            .unwrap()
+            .items
+            .iter()
+            .all(|item| item.attempts == 0)
+    );
     let client =
         duet_client::DuetClient::new(format!("http://{address}"), "token", "1", "1.0").unwrap();
     let report = sync(
@@ -374,7 +427,11 @@ async fn duet_client_transport_posts_the_canonical_batch() {
     .await;
     assert_eq!(report.paused, None);
     assert_eq!(report.uploaded.acknowledged, 2);
-    let body = seen.lock().unwrap()[0].clone();
+    assert!(report.progress(&outbox).unwrap().is_break());
+    let requests = seen.lock().unwrap();
+    assert_eq!(requests.len(), 2);
+    assert_eq!(requests[0], requests[1]);
+    let body = &requests[1];
     let item = &body["items"][0];
     assert_eq!(item["operation"], "upsert");
     assert_eq!(item["source_generation"], 2);
@@ -388,4 +445,260 @@ async fn duet_client_transport_posts_the_canonical_batch() {
     let ledger = outbox.view().unwrap().ledger;
     assert_eq!(ledger["HKQuantitySample/0"].revision, Some(1));
     server.abort();
+}
+
+/// Refuses the first item it ever sees and accepts the rest.
+#[derive(Default)]
+struct RefusesFirst {
+    refused: RefCell<bool>,
+}
+impl EvidenceTransport for RefusesFirst {
+    async fn send(&self, batch: &UploadBatch) -> UploadOutcome {
+        let acks = batch
+            .items
+            .iter()
+            .map(|(op, m)| {
+                if !std::mem::replace(&mut *self.refused.borrow_mut(), true) {
+                    return ItemAck::Rejected {
+                        operation_id: *op,
+                        code: RejectionCode::Invalid,
+                        message: "refused".into(),
+                    };
+                }
+                ItemAck::Accepted {
+                    operation_id: *op,
+                    canonical_record_id: m["canonical_record_id"]
+                        .as_str()
+                        .unwrap()
+                        .parse()
+                        .unwrap(),
+                    revision: 1,
+                }
+            })
+            .collect();
+        UploadOutcome::Delivered(acks)
+    }
+}
+
+#[tokio::test]
+async fn a_retained_rejection_reports_only_after_the_queue_drains() {
+    let retention = RetentionOwner::new(Arc::new(Store::default()));
+    let fence = retention.activate(identity("owner-a")).unwrap();
+    let outbox = open_outbox(
+        &retention,
+        &fence,
+        "install-1",
+        PhoneSource::AppleHealth,
+        limits(),
+    );
+    outbox.connect(1).unwrap();
+    let adapter = Adapter { count: 25 };
+    let transport = RefusesFirst::default();
+    let budget = SyncBudget {
+        pages: 1,
+        batches: 1,
+    };
+    let mut acknowledged = 0;
+    let stop = loop {
+        let report = sync(&outbox, &adapter, &transport, 0, budget).await;
+        acknowledged += report.uploaded.acknowledged;
+        match report.progress(&outbox) {
+            Ok(flow) if flow.is_continue() => {}
+            other => break other,
+        }
+    };
+    assert_eq!(acknowledged, 24);
+    assert_eq!(
+        stop,
+        Err(RefreshStop::Rejected(
+            RejectionCode::Invalid,
+            "refused".into()
+        ))
+    );
+}
+
+mod apple_health {
+    use super::*;
+    use axum::{
+        Json, Router,
+        http::StatusCode,
+        routing::{get, post},
+    };
+    use duet_client::{
+        DuetClient,
+        apple_health::{AppleHealth, AppleHealthDevice, AppleHealthError},
+    };
+    use duet_health::{
+        AuthorizationError,
+        native_adapters::{
+            BridgeError, HealthKitBridge, HealthKitChanges, HealthKitQuery, NativeSample,
+        },
+    };
+    use std::sync::atomic::{AtomicI32, AtomicUsize, Ordering};
+
+    /// Reads one heart-rate sample. `on_authorize` runs while the sheet is open.
+    #[derive(Clone)]
+    struct Device {
+        authorized: Arc<AtomicUsize>,
+        on_authorize: Arc<dyn Fn() + Send + Sync>,
+    }
+    impl Device {
+        fn new(on_authorize: impl Fn() + Send + Sync + 'static) -> Self {
+            Self {
+                authorized: Arc::default(),
+                on_authorize: Arc::new(on_authorize),
+            }
+        }
+    }
+    impl HealthKitBridge for Device {
+        fn available(&self) -> bool {
+            true
+        }
+        fn read_type(&self, query: &HealthKitQuery) -> Result<HealthKitChanges, BridgeError> {
+            let wanted = query.data_type == "HKQuantityTypeIdentifierHeartRate";
+            let samples = if wanted && query.anchor.is_none() {
+                vec![NativeSample {
+                    id: "a".into(),
+                    value: "72".into(),
+                    unit: Some("count/min".into()),
+                    start: Some("2026-10-20T07:30:00+09:00".into()),
+                    end: Some("2026-10-20T07:30:00+09:00".into()),
+                    time_zone: Some("Asia/Tokyo".into()),
+                    source_name: None,
+                    writer_id: Some("com.apple.health".into()),
+                    device: None,
+                    metadata: None,
+                }]
+            } else {
+                Vec::new()
+            };
+            Ok(HealthKitChanges {
+                samples,
+                deleted: Vec::new(),
+                anchor: "next".into(),
+                has_more: false,
+            })
+        }
+    }
+    impl AppleHealthDevice for Device {
+        async fn authorize(&self) -> Result<(), AuthorizationError> {
+            self.authorized.fetch_add(1, Ordering::SeqCst);
+            (self.on_authorize)();
+            Ok(())
+        }
+    }
+
+    /// Local API: the account's generation and an accepting batch route.
+    struct Api {
+        client: DuetClient,
+        generation: Arc<AtomicI32>,
+        uploaded: Arc<AtomicUsize>,
+    }
+    async fn serve(generation: i32, refuse_session: bool) -> Api {
+        let shared = Arc::new(AtomicI32::new(generation));
+        let uploaded = Arc::new(AtomicUsize::default());
+        let (read, count) = (shared.clone(), uploaded.clone());
+        let app = Router::new()
+            .route(
+                "/api/apple-health/generation",
+                get(move || async move {
+                    if refuse_session {
+                        return Err(StatusCode::UNAUTHORIZED);
+                    }
+                    Ok(Json(read.load(Ordering::SeqCst)))
+                }),
+            )
+            .route(
+                "/api/canonical-evidence/batch",
+                post(move |Json(body): Json<serde_json::Value>| async move {
+                    let items = body["items"].as_array().unwrap();
+                    count.fetch_add(items.len(), Ordering::SeqCst);
+                    let results: Vec<_> = items
+                        .iter()
+                        .enumerate()
+                        .map(|(index, m)| {
+                            serde_json::json!({
+                                "status":"accepted","index":index,"operation_id":m["operation_id"],
+                                "address":{"canonical_record_id":m["canonical_record_id"],
+                                    "record_id":m["record_id"],"entity":"health_evidence","revision":1}})
+                        })
+                        .collect();
+                    Json(serde_json::json!({ "results": results }))
+                }),
+            );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        Api {
+            client: DuetClient::new(format!("http://{address}"), "token", "1", "1.0").unwrap(),
+            generation: shared,
+            uploaded,
+        }
+    }
+
+    fn signed_in() -> (RetentionOwner, duet_client::session::SessionFence) {
+        let retention = RetentionOwner::new(Arc::new(Store::default()));
+        let fence = retention.activate(identity("owner-a")).unwrap();
+        (retention, fence)
+    }
+
+    #[tokio::test]
+    async fn refresh_imports_through_the_connected_queue() {
+        let api = serve(2, false).await;
+        let (retention, fence) = signed_in();
+        let health = AppleHealth::open(&retention, &fence, Device::new(|| {})).unwrap();
+        assert!(!health.connected().unwrap());
+        health.connect(&api.client).await.unwrap();
+        assert!(health.connected().unwrap());
+        health.refresh(&api.client).await.unwrap();
+        assert_eq!(api.uploaded.load(Ordering::SeqCst), 1);
+    }
+
+    #[tokio::test]
+    async fn a_withdrawal_during_the_sheet_cannot_authorize_a_later_generation() {
+        let api = serve(3, false).await;
+        let (retention, fence) = signed_in();
+        let bumped = api.generation.clone();
+        let device = Device::new(move || bumped.store(4, Ordering::SeqCst));
+        let health = AppleHealth::open(&retention, &fence, device).unwrap();
+        health.connect(&api.client).await.unwrap();
+        let stopped = health.refresh(&api.client).await.unwrap_err();
+        assert!(matches!(
+            stopped,
+            AppleHealthError::Stopped(RefreshStop::Paused(SyncPause::StaleGeneration))
+        ));
+        assert!(!health.connected().unwrap());
+        assert_eq!(api.uploaded.load(Ordering::SeqCst), 0);
+    }
+
+    #[tokio::test]
+    async fn a_refused_session_never_opens_the_sheet() {
+        let api = serve(1, true).await;
+        let (retention, fence) = signed_in();
+        let device = Device::new(|| {});
+        let health = AppleHealth::open(&retention, &fence, device.clone()).unwrap();
+        let refused = health.connect(&api.client).await.unwrap_err();
+        assert!(matches!(refused, AppleHealthError::SessionRefused(_)));
+        assert_eq!(device.authorized.load(Ordering::SeqCst), 0);
+        assert!(!health.connected().unwrap());
+    }
+
+    #[tokio::test]
+    async fn a_late_permission_answer_cannot_connect_the_next_patient() {
+        let api = serve(1, false).await;
+        let (retention, fence) = signed_in();
+        let switching = retention.clone();
+        let device = Device::new(move || {
+            switching.activate(identity("owner-b")).unwrap();
+        });
+        let health = AppleHealth::open(&retention, &fence, device).unwrap();
+        let stopped = health.connect(&api.client).await.unwrap_err();
+        assert!(matches!(
+            stopped,
+            AppleHealthError::Stopped(RefreshStop::Paused(SyncPause::AccountChanged))
+        ));
+        let next = retention.session().fence().unwrap();
+        let theirs = AppleHealth::open(&retention, &next, Device::new(|| {})).unwrap();
+        assert!(!theirs.connected().unwrap());
+    }
 }

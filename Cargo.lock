@@ -2461,7 +2461,6 @@ dependencies = [
  "chrono",
  "dioxus",
  "duet-client",
- "duet-health",
  "duet-notify",
  "duet-page",
  "duet_wire",
@@ -2487,12 +2486,14 @@ dependencies = [
  "chrono",
  "duet-health",
  "duet_wire",
+ "futures-channel",
  "http 0.1.0",
  "jni 0.22.4",
  "ndk-context",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
+ "thiserror 2.0.21",
  "tokio",
  "uuid",
 ]
@@ -2501,11 +2502,13 @@ dependencies = [
 name = "duet-health"
 version = "0.1.0"
 dependencies = [
+ "futures-channel",
  "jni 0.22.4",
  "ndk-context",
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "thiserror 2.0.21",
  "uuid",
 ]
 

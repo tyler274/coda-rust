@@ -282,7 +282,7 @@ fn alert_snapshot(code: &str) -> AlertSnapshot {
 
 #[cfg(target_os = "ios")]
 fn ios_snapshot() -> AlertSnapshot {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_status() -> *mut std::ffi::c_char;
         fn duet_notify_string_free(pointer: *mut std::ffi::c_char);
     }
@@ -296,7 +296,7 @@ fn ios_snapshot() -> AlertSnapshot {
 
 #[cfg(target_os = "ios")]
 fn ios_request() {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_request();
     }
     unsafe { duet_notify_request() }
@@ -304,7 +304,7 @@ fn ios_request() {
 
 #[cfg(target_os = "ios")]
 fn ios_register_remote() {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_register_remote();
     }
     unsafe { duet_notify_register_remote() }
@@ -312,7 +312,7 @@ fn ios_register_remote() {
 
 #[cfg(target_os = "ios")]
 fn ios_last_planned() -> Option<Uuid> {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_last_planned() -> *mut std::ffi::c_char;
         fn duet_notify_string_free(pointer: *mut std::ffi::c_char);
     }
@@ -325,7 +325,7 @@ fn ios_last_planned() -> Option<Uuid> {
 
 #[cfg(target_os = "ios")]
 fn ios_submit(delivery: &InsightDelivery) {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_schedule(
             identifier: *const std::ffi::c_char,
             year: i32,
@@ -357,7 +357,7 @@ fn ios_submit(delivery: &InsightDelivery) {
 
 #[cfg(target_os = "ios")]
 fn ios_insights_enabled() -> bool {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_insights_enabled() -> i32;
     }
     unsafe { duet_notify_insights_enabled() != 0 }
@@ -365,7 +365,7 @@ fn ios_insights_enabled() -> bool {
 
 #[cfg(target_os = "ios")]
 fn ios_set_insights(enabled: bool) -> bool {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_set_insights(enabled: i32) -> i32;
     }
     unsafe { duet_notify_set_insights(i32::from(enabled)) != 0 }
@@ -373,7 +373,7 @@ fn ios_set_insights(enabled: bool) -> bool {
 
 #[cfg(target_os = "ios")]
 fn ios_cancel_insight() {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_cancel_insights();
     }
     unsafe { duet_notify_cancel_insights() }
@@ -381,7 +381,7 @@ fn ios_cancel_insight() {
 
 #[cfg(target_os = "ios")]
 fn ios_open_settings() {
-    extern "C" {
+    unsafe extern "C" {
         fn duet_notify_open_settings();
     }
     unsafe { duet_notify_open_settings() }

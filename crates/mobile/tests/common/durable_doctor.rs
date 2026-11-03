@@ -96,6 +96,49 @@ async fn chat_citations_reopen_the_retained_source() {
     .await;
 }
 
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn switching_accounts_shows_only_the_current_patients_imported_measurements() {
+    with_durable_browser(async |base, _, _, _, _| {
+        let http = reqwest::Client::new();
+        const OTHER: &str = "synthetic-foreign-browser-only";
+        for (bearer, title, value) in [(TOKEN, "First patient steps", 7654), (OTHER, "Second patient steps", 2301)] {
+            http.put(format!("{base}/api/auth/account")).bearer_auth(bearer)
+                .json(&serde_json::json!({})).send().await.unwrap().error_for_status().unwrap();
+            let id = Uuid::new_v4();
+            http.post(format!("{base}/api/canonical-evidence")).bearer_auth(bearer)
+                .json(&serde_json::json!({"operation_id":Uuid::new_v4(), "canonical_record_id":id,
+                    "record_id":id.to_string(),"entity":"health_evidence","source_generation":0,
+                    "payload":{"concept_id":"steps","display_name":title,"title":title,
+                        "measured_at":"2026-10-28T12:00:00Z","source":{"kind":"appleHealth"},
+                        "value":{"literal":value.to_string(),"unit":"count"}}}))
+                .send().await.unwrap().error_for_status().unwrap();
+        }
+
+        let mut patient = Browser::launch();
+        patient.text_until(&format!("{base}/?mode=client"), "Today");
+        patient.click("nav.tabs button:nth-of-type(3)");
+        patient.wait_for("First patient steps");
+        click_text(&mut patient, "Sign out");
+        patient.wait_for("Sign in to your Duet account.");
+        assert!(!patient.body_text().unwrap().contains("First patient steps"));
+
+        // Substitute the second synthetic identity at the transport, leaving the same
+        // mounted account shell, tab, origin, storage and real API in place.
+        patient.page().call_session("Network.enable", serde_json::json!({}));
+        patient.page().call_session("Network.setExtraHTTPHeaders", serde_json::json!({
+            "headers":{"Authorization":format!("Bearer {OTHER}")}
+        }));
+        patient.page().evaluate("window.previousPatientShown = false; new MutationObserver(() => { if (document.body.innerText.includes('First patient steps')) window.previousPatientShown = true }).observe(document.body, {subtree:true,childList:true,characterData:true,attributes:true}); true");
+        click_text(&mut patient, "Retry saved sign-in");
+        patient.wait_for("Today");
+        patient.click("nav.tabs button:nth-of-type(2)");
+        patient.click("nav.tabs button:nth-of-type(3)");
+        patient.wait_for("Second patient steps");
+        assert_eq!(patient.page().evaluate("window.previousPatientShown"), serde_json::json!(false));
+    }).await;
+}
+
 async fn with_durable_browser(
     check: impl AsyncFn(
         &str,

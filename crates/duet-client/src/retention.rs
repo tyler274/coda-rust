@@ -86,15 +86,8 @@ fn health_key(owner: &str, scope: &str) -> String {
     format!("{}:{}:{scope}", key("health-outbox", owner), scope.len())
 }
 
-/// Why the health outbox could not be read or written.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum HealthStorageError {
-    /// Protected storage is locked or unavailable; keep work and retry later.
-    Unavailable(String),
-    /// The fence is no longer the current session (sign-out or account switch),
-    /// or secure sign-out cleanup is pending.
-    AccountChanged,
-}
+/// Storage failures shared with the health outbox.
+pub use duet_health::outbox::StorageError as HealthStorageError;
 
 /// Provider refresh credential and its verified Duet owner. Never Debug/log this type.
 #[derive(Clone, Serialize, Deserialize)]
@@ -442,6 +435,29 @@ impl RetentionOwner {
         self.require(fence)?;
         self.store.remove(&key("doctor-draft", fence.owner()))
     }
+    /// Stable namespace for this device's HealthKit queue. The native protected
+    /// store does not migrate between devices. Never derive it from the bearer.
+    pub fn health_installation(
+        &self,
+        fence: &SessionFence,
+    ) -> Result<uuid::Uuid, HealthStorageError> {
+        let _guard = self.gate.lock().unwrap();
+        self.require_health_session(fence)?;
+        const KEY: &str = "health-installation";
+        if let Some(bytes) = self
+            .store
+            .read(KEY)
+            .map_err(HealthStorageError::Unavailable)?
+        {
+            return uuid::Uuid::from_slice(&bytes)
+                .map_err(|error| HealthStorageError::Unavailable(error.to_string()));
+        }
+        let id = uuid::Uuid::new_v4();
+        self.store
+            .write(KEY, id.as_bytes())
+            .map_err(HealthStorageError::Unavailable)?;
+        Ok(id)
+    }
     /// Read this owner's health outbox document. Refused unless `fence` is the
     /// current session, so another account can never read or consume it.
     pub fn read_health_outbox(
@@ -450,9 +466,7 @@ impl RetentionOwner {
         scope: &str,
     ) -> Result<Option<Vec<u8>>, HealthStorageError> {
         let _guard = self.gate.lock().unwrap();
-        self.require(fence)
-            .map_err(|_| HealthStorageError::AccountChanged)?;
-        self.health_cleanup_clear()?;
+        self.require_health_session(fence)?;
         self.store
             .read(&health_key(fence.owner(), scope))
             .map_err(HealthStorageError::Unavailable)
@@ -465,14 +479,15 @@ impl RetentionOwner {
         bytes: &[u8],
     ) -> Result<(), HealthStorageError> {
         let _guard = self.gate.lock().unwrap();
-        self.require(fence)
-            .map_err(|_| HealthStorageError::AccountChanged)?;
-        self.health_cleanup_clear()?;
+        self.require_health_session(fence)?;
         self.store
             .write(&health_key(fence.owner(), scope), bytes)
             .map_err(HealthStorageError::Unavailable)
     }
-    fn health_cleanup_clear(&self) -> Result<(), HealthStorageError> {
+    fn require_health_session(&self, fence: &SessionFence) -> Result<(), HealthStorageError> {
+        if !self.session.is_current(fence) {
+            return Err(HealthStorageError::AccountChanged);
+        }
         match self.store.cleanup_pending() {
             Ok(false) => Ok(()),
             Ok(true) => Err(HealthStorageError::AccountChanged),

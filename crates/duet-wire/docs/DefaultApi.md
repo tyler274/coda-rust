@@ -34,6 +34,7 @@ Method | HTTP request | Description
 [**portal_status_api_connectors_portals_get**](DefaultApi.md#portal_status_api_connectors_portals_get) | **GET** /api/connectors/portals | Portal Status
 [**preview_approved_doctor_page**](DefaultApi.md#preview_approved_doctor_page) | **GET** /api/doctor-collection/preview |
 [**publish_approved_doctor_page**](DefaultApi.md#publish_approved_doctor_page) | **POST** /api/doctor-collection/share-link |
+[**read_apple_health_generation**](DefaultApi.md#read_apple_health_generation) | **GET** /api/apple-health/generation |
 [**read_canonical_evidence_exact**](DefaultApi.md#read_canonical_evidence_exact) | **POST** /api/canonical-evidence/exact |
 [**read_canonical_evidence_snapshot**](DefaultApi.md#read_canonical_evidence_snapshot) | **GET** /api/canonical-evidence |
 [**read_canonical_health_context**](DefaultApi.md#read_canonical_health_context) | **GET** /api/health-context |
@@ -894,6 +895,31 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## read_apple_health_generation
+
+> i32 read_apple_health_generation()
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+**i32**
+
+### Authorization
+
+[HTTPBearer](../README.md#HTTPBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

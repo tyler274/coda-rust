@@ -48,6 +48,7 @@ pub fn router(state: DurableState) -> Router {
     Router::new()
         .route("/api/auth/account", get(account).put(ensure))
         .route("/api/auth/account/context", get(context))
+        .route("/api/apple-health/generation", get(apple_health_generation))
         .route("/api/auth/account/terms", put(terms))
         .route("/api/auth/account/today-stats", put(stats))
         .route("/api/auth/account/luna-consent", put(luna))
@@ -98,6 +99,16 @@ async fn state_in(
     s.intelligence_available = Some(false);
     s.setup_complete = Some(row.get("setup_complete"));
     Ok(s)
+}
+async fn apple_health_generation(
+    State(s): State<DurableState>,
+    headers: HeaderMap,
+) -> Result<Json<i32>, ApiError> {
+    Ok(Json(
+        s.evidence
+            .apple_health_generation(&s.authenticate(&headers).await?)
+            .await?,
+    ))
 }
 async fn context(
     State(s): State<DurableState>,

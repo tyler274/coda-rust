@@ -8,7 +8,7 @@ let
   rustPlatform = pkgs.makeRustPlatform { cargo = toolchain; rustc = toolchain; };
   src = lib.fileset.toSource {
     root = ../.;
-    fileset = lib.fileset.unions [ ../Cargo.toml ../Cargo.lock ../crates ../skills ];
+    fileset = lib.fileset.unions [ ../Cargo.toml ../Cargo.lock ../crates ../platform/ios/build_bridge.rs ../skills ];
   };
   common = {
     version = "0.1.0";

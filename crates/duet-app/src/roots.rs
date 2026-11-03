@@ -30,7 +30,6 @@ pub const LIBRARY_EMPTY: &str = "No records or measurements yet.";
 pub const LIBRARY_UNAVAILABLE: &str =
     "Your health information isn’t available right now. Try again in a moment.";
 pub const TRY_AGAIN: &str = "Try again";
-pub const ALLOW_HEALTHKIT: &str = "Allow HealthKit";
 pub const ALLOW_NOTIFICATIONS: &str = "Allow notifications";
 pub const INSIGHT_NOTIFICATIONS: &str = "New insight notifications";
 pub const INSIGHT_NOTIFICATIONS_DETAIL: &str = "Notify me when Duet finds something worth showing.";
@@ -1272,9 +1271,7 @@ mod tests {
     }
 
     #[test]
-    fn allow_buttons_name_their_permission() {
-        assert_ne!(ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS);
-        assert!(ALLOW_HEALTHKIT.contains("HealthKit"));
+    fn notification_controls_name_their_permission() {
         assert!(ALLOW_NOTIFICATIONS.contains("notifications"));
         assert_eq!(INSIGHT_NOTIFICATIONS, "New insight notifications");
         assert_ne!(INSIGHT_NOTIFICATIONS, ALLOW_NOTIFICATIONS);

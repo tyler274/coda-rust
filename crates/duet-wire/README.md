@@ -70,6 +70,7 @@ Class | Method | HTTP request | Description
 *DefaultApi* | [**portal_status_api_connectors_portals_get**](docs/DefaultApi.md#portal_status_api_connectors_portals_get) | **GET** /api/connectors/portals | Portal Status
 *DefaultApi* | [**preview_approved_doctor_page**](docs/DefaultApi.md#preview_approved_doctor_page) | **GET** /api/doctor-collection/preview |
 *DefaultApi* | [**publish_approved_doctor_page**](docs/DefaultApi.md#publish_approved_doctor_page) | **POST** /api/doctor-collection/share-link |
+*DefaultApi* | [**read_apple_health_generation**](docs/DefaultApi.md#read_apple_health_generation) | **GET** /api/apple-health/generation |
 *DefaultApi* | [**read_canonical_evidence_exact**](docs/DefaultApi.md#read_canonical_evidence_exact) | **POST** /api/canonical-evidence/exact |
 *DefaultApi* | [**read_canonical_evidence_snapshot**](docs/DefaultApi.md#read_canonical_evidence_snapshot) | **GET** /api/canonical-evidence |
 *DefaultApi* | [**read_canonical_health_context**](docs/DefaultApi.md#read_canonical_health_context) | **GET** /api/health-context |

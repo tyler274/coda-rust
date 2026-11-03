@@ -5,7 +5,7 @@
 //! route. Every storage access presents the session fence captured when the
 //! sync started, so sign-out or an account switch stops acquisition and upload
 //! at the next step, and another account can never read or consume this queue.
-use crate::retention::{HealthStorageError, RetentionOwner};
+use crate::retention::RetentionOwner;
 use crate::session::SessionFence;
 use duet_health::acquisition::HealthSourceAdapter;
 use duet_health::outbox::{
@@ -23,21 +23,11 @@ pub struct FencedHealthStorage {
 
 impl OutboxStorage for FencedHealthStorage {
     fn load(&self) -> Result<Option<Vec<u8>>, StorageError> {
-        self.retention
-            .read_health_outbox(&self.fence, &self.scope)
-            .map_err(map_storage)
+        self.retention.read_health_outbox(&self.fence, &self.scope)
     }
     fn save(&self, bytes: &[u8]) -> Result<(), StorageError> {
         self.retention
             .write_health_outbox(&self.fence, &self.scope, bytes)
-            .map_err(map_storage)
-    }
-}
-
-fn map_storage(error: HealthStorageError) -> StorageError {
-    match error {
-        HealthStorageError::Unavailable(message) => StorageError::Unavailable(message),
-        HealthStorageError::AccountChanged => StorageError::AccountChanged,
     }
 }
 
@@ -103,6 +93,10 @@ pub fn acks_from_wire(result: &duet_wire::models::CanonicalEvidenceBatchResult) 
         .collect()
 }
 
+pub(crate) fn authentication_refused(status: u16) -> bool {
+    matches!(status, 401 | 403)
+}
+
 /// Map an HTTP status and body to an upload outcome. Only a 2xx body that
 /// decodes completely is a delivery; anything ambiguous is uncertain.
 pub fn outcome_from_http(status: u16, body: &[u8]) -> UploadOutcome {
@@ -112,7 +106,7 @@ pub fn outcome_from_http(status: u16, body: &[u8]) -> UploadOutcome {
                 .map(|result| UploadOutcome::Delivered(acks_from_wire(&result)))
                 .unwrap_or(UploadOutcome::Uncertain)
         }
-        401 | 403 => UploadOutcome::Unauthorized,
+        status if authentication_refused(status) => UploadOutcome::Unauthorized,
         _ => UploadOutcome::Uncertain,
     }
 }
@@ -139,26 +133,63 @@ impl EvidenceTransport for crate::DuetClient {
 }
 
 /// Why a sync step stopped. Pending work is always retained.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum SyncPause {
     /// The session changed (sign-out, account switch) or cleanup is pending.
+    #[error("account changed")]
     AccountChanged,
     /// Protected storage is locked; resume when it unlocks.
-    StorageUnavailable,
+    #[error("protected storage unavailable: {0}")]
+    StorageUnavailable(String),
     /// The source is not connected for this account.
+    #[error("source disconnected")]
     NotConnected,
     /// The outbox document is damaged and left untouched.
+    #[error("damaged outbox")]
     Damaged,
     /// The server asked for authentication.
+    #[error("authentication refused")]
     Unauthorized,
+    /// The patient must reconnect to the current source generation.
+    #[error("source generation changed")]
+    StaleGeneration,
+}
+
+/// Why a foreground refresh could not drain all available work.
+#[derive(Debug, Clone, PartialEq, Eq, thiserror::Error)]
+pub enum RefreshStop {
+    /// The bounded sync pass could not run to completion.
+    #[error("sync pass paused")]
+    Paused(#[from] SyncPause),
+    /// The adapter could not complete its read.
+    #[error("source read failed: {0}")]
+    ReadFailed(String),
+    /// One source type could not be read.
+    #[error("incomplete coverage: {0:?}")]
+    Coverage(duet_health::acquisition::TypeCoverage),
+    /// A refused record is retained with its diagnostic.
+    #[error("record rejected ({0:?}): {1}")]
+    Rejected(RejectionCode, String),
+    /// Work retained from a previous source generation.
+    #[error("record fenced: {0:?}")]
+    Fenced(duet_health::outbox::FenceReason),
+    /// Delivery exhausted its retry budget.
+    #[error("upload retry limit reached")]
+    Parked,
+    /// Accepted locally; awaiting another upload attempt.
+    #[error("upload pending")]
+    WaitingForUpload,
 }
 
 impl From<OutboxError> for SyncPause {
     fn from(error: OutboxError) -> Self {
         match error {
             OutboxError::Storage(StorageError::AccountChanged) => Self::AccountChanged,
-            OutboxError::Storage(StorageError::Unavailable(_)) => Self::StorageUnavailable,
-            OutboxError::NotConnected | OutboxError::StaleGeneration => Self::NotConnected,
+            OutboxError::Storage(StorageError::Unavailable(cause)) => {
+                Self::StorageUnavailable(cause)
+            }
+            OutboxError::NotConnected => Self::NotConnected,
+            OutboxError::StaleGeneration => Self::StaleGeneration,
             OutboxError::Damaged => Self::Damaged,
         }
     }
@@ -290,14 +321,27 @@ pub async fn sync<S: OutboxStorage, A: HealthSourceAdapter + ?Sized, T: Evidence
     now_ms: u64,
     budget: SyncBudget,
 ) -> SyncReport {
-    let mut report = SyncReport::default();
     let acquired = acquire(outbox, adapter, budget.pages);
-    report.acquired = acquired.acquired;
+    sync_acquired(outbox, acquired, transport, now_ms, budget.batches).await
+}
+
+/// Finish one bounded pass after acquisition on the platform's reading thread.
+pub async fn sync_acquired<S: OutboxStorage, T: EvidenceTransport>(
+    outbox: &Outbox<S>,
+    acquired: AcquisitionOutcome,
+    transport: &T,
+    now_ms: u64,
+    max_batches: usize,
+) -> SyncReport {
+    let mut report = SyncReport {
+        acquired: acquired.acquired,
+        ..SyncReport::default()
+    };
     if let Some(pause) = acquired.paused {
         report.paused = Some(pause);
         return report;
     }
-    match upload(outbox, transport, now_ms, budget.batches).await {
+    match upload(outbox, transport, now_ms, max_batches).await {
         Ok((uploaded, batches)) => {
             report.uploaded = uploaded;
             report.batches = batches;
@@ -305,4 +349,56 @@ pub async fn sync<S: OutboxStorage, A: HealthSourceAdapter + ?Sized, T: Evidence
         Err(pause) => report.paused = Some(pause),
     }
     report
+}
+
+impl SyncReport {
+    /// Decide whether a foreground refresh has drained its queue, needs another
+    /// bounded pass, or stopped for a specific reason.
+    pub fn progress<S: OutboxStorage>(
+        self,
+        outbox: &Outbox<S>,
+    ) -> Result<std::ops::ControlFlow<()>, RefreshStop> {
+        if let Some(reason) = self.paused {
+            return Err(reason.into());
+        }
+        if let Some(reason) = self.acquired.read_error {
+            return Err(RefreshStop::ReadFailed(reason));
+        }
+        let view = outbox.view().map_err(SyncPause::from)?;
+        if let Some((data_type, outcome)) = view
+            .coverage
+            .into_iter()
+            .find(|(_, outcome)| !outcome.read_succeeded())
+        {
+            return Err(RefreshStop::Coverage(
+                duet_health::acquisition::TypeCoverage { data_type, outcome },
+            ));
+        }
+        if self.uploaded.retrying > 0 {
+            return Err(RefreshStop::WaitingForUpload);
+        }
+        let settled = self.uploaded.acknowledged + self.uploaded.rejected;
+        if !view.items.is_empty() && settled == 0 {
+            let parked = view
+                .items
+                .iter()
+                .any(|item| item.state == duet_health::outbox::DeliveryState::Parked);
+            return Err(if parked {
+                RefreshStop::Parked
+            } else {
+                RefreshStop::WaitingForUpload
+            });
+        }
+        if self.acquired.has_more || self.acquired.backpressure || !view.items.is_empty() {
+            return Ok(std::ops::ControlFlow::Continue(()));
+        }
+        // Retained items outlive this pass, so they report only after the drain.
+        if let Some(item) = view.rejected.into_iter().next() {
+            return Err(RefreshStop::Rejected(item.code, item.message));
+        }
+        if let Some(item) = view.fenced.first() {
+            return Err(RefreshStop::Fenced(item.reason));
+        }
+        Ok(std::ops::ControlFlow::Break(()))
+    }
 }

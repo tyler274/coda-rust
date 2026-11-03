@@ -332,6 +332,15 @@ impl EvidenceStore {
     pub fn new(database: AccountDatabase) -> Self {
         Self { database }
     }
+    /// Source generation for a new, explicit Apple Health connection. An existing
+    /// connection keeps its captured generation until the patient reconnects.
+    pub async fn apple_health_generation(&self, context: &AccountContext) -> Result<i32, ApiError> {
+        let mut tx = self.database.begin(context.account_id).await?;
+        check_current(&mut tx, context, false).await?;
+        let account = account_fences(&mut tx, context.account_id).await?;
+        tx.commit().await?;
+        Ok(account.apple_health_generation)
+    }
     /// Device upload. Idempotent, optimistic; locks the account so cursor order equals commit order.
     pub async fn ingest(
         &self,

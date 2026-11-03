@@ -7,6 +7,10 @@
     reason = "converting to errors that keep their cause"
 )]
 
+#[cfg(not(target_arch = "wasm32"))]
+pub mod apple_health;
+#[cfg(target_os = "android")]
+pub use duet_health::request_health_connect_permission;
 pub mod doctor;
 pub mod health_upload;
 pub mod identity;
