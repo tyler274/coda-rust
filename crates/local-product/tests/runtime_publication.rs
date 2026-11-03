@@ -319,11 +319,7 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
             )
             .await
             .unwrap();
-        let claim = store
-            .claim(&scope, if expire { 1 } else { 60 })
-            .await
-            .unwrap()
-            .unwrap();
+        let claim = store.claim(&scope, 60).await.unwrap().unwrap();
         let candidate = engine::Candidate {
             text: "controlled".into(),
             transcript: vec![],
@@ -341,6 +337,11 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
                 )
                 .await
                 .unwrap();
+        }
+        if expire {
+            // Start the expiry window after saving the candidate. A one-second
+            // lease can end at the very next tick of the database clock.
+            store.heartbeat(&claim, 2).await.unwrap();
         }
         let (locked_tx, locked_rx) = oneshot::channel();
         let (proceed_tx, proceed_rx) = oneshot::channel();
@@ -368,7 +369,14 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
         assert!(!revocation.is_finished());
         proceed_tx.send(()).unwrap();
         let result = publication.await.unwrap();
-        assert_eq!(result.is_ok(), !expire);
+        if expire {
+            assert_eq!(
+                result,
+                Err(sea_orm::DbErr::Custom("stale completion".into()))
+            );
+        } else {
+            result.unwrap();
+        }
         revocation.await.unwrap();
         assert_eq!(
             store.conversation(&scope).await.unwrap().messages.len(),
