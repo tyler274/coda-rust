@@ -239,11 +239,13 @@ jobs:
       # Linting the web roots with their web features also lints every
       # workspace crate they build.
       - name: Lint browser code
-        run: cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web -- -D warnings
+        run: cargo clippy -p physician-app -p duet-app -p mobile -p ui-gallery -p extension-popup --target wasm32-unknown-unknown --features physician-app/web,duet-app/web,mobile/web,ui-gallery/web,extension-popup/web -- -D warnings
       # Browser tests are explicitly ignored by Rust's test harness. Routine
       # checks still run every package's unit, service, storage and HTTP tests.
       - name: Test workspace libraries and services
         run: cargo test --workspace
+      - name: Test the extension's worker against simulated Chrome
+        run: node extension/sandbox/test_connector.mjs
       - name: Run explicitly requested browser qualification
         if: github.event_name == 'workflow_dispatch'
         env:
@@ -257,6 +259,7 @@ jobs:
           cargo test -p public-site --test site -- --ignored
           cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
           cargo test -p ui-gallery --test sections -- --ignored
+          cargo test -p extension-popup --test popup -- --ignored
       - name: Upload public-site browser screenshots
         if: always() && github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7

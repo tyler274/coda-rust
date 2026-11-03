@@ -258,7 +258,6 @@ pub(crate) fn load() {
 #[cfg(target_arch = "wasm32")]
 mod transport {
     use std::cell::RefCell;
-    use std::rc::Rc;
 
     use futures_channel::mpsc::{UnboundedReceiver, unbounded};
     use futures_util::StreamExt;
@@ -301,10 +300,7 @@ mod transport {
         Running::start(|report| listen_behaviour(name, args, report))
     }
 
-    #[derive(Clone)]
-    pub(super) struct Running(Rc<Inner>);
-
-    struct Inner {
+    pub(super) struct Running {
         handle: u32,
         heard: RefCell<UnboundedReceiver<String>>,
         // Held so the behaviour can report for as long as anyone listens.
@@ -319,23 +315,23 @@ mod transport {
                 let _ = tell.unbounded_send(value);
             });
             let handle = call(&report);
-            Self(Rc::new(Inner {
+            Self {
                 handle,
                 heard: RefCell::new(heard),
                 _report: report,
-            }))
+            }
         }
 
         // The sender goes only with the receiver, so this waits rather than ending: a behaviour says
         // why it has nothing through its report.
         pub(super) async fn recv(&self) -> Result<String, Unheard> {
-            std::future::poll_fn(|cx| self.0.heard.borrow_mut().poll_next_unpin(cx))
+            std::future::poll_fn(|cx| self.heard.borrow_mut().poll_next_unpin(cx))
                 .await
                 .ok_or_else(|| Unheard::Failed("the report channel closed".to_owned()))
         }
 
         pub(super) fn stop(&self) {
-            stop_behaviour(self.0.handle);
+            stop_behaviour(self.handle);
         }
     }
 }
@@ -381,7 +377,6 @@ mod transport {
         Running::start("listen", name, args)
     }
 
-    #[derive(Clone)]
     pub(super) struct Running(Eval);
 
     impl Running {

@@ -80,8 +80,24 @@ impl Browser {
     /// Launches headless Chromium on an ephemeral port with one blank page.
     // Success transfers the child into Browser; its Drop kills and waits.
     // Startup failure paths below also kill and wait before panicking.
-    #[allow(clippy::zombie_processes)]
     pub fn launch() -> Self {
+        Self::launch_with(&[])
+    }
+
+    /// `launch`, with the unpacked Chrome extension in `folder` loaded.
+    #[allow(dead_code)]
+    pub fn launch_with_extension(folder: &std::path::Path) -> Self {
+        let folder = folder.display();
+        let profile = std::env::temp_dir().join(format!("coda-extension-{}", std::process::id()));
+        Self::launch_with(&[
+            format!("--user-data-dir={}", profile.display()),
+            format!("--disable-extensions-except={folder}"),
+            format!("--load-extension={folder}"),
+        ])
+    }
+
+    #[allow(clippy::zombie_processes)]
+    fn launch_with(extra: &[String]) -> Self {
         let port = free_port().expect("a free local port for the DevTools endpoint");
         let mut child = std::process::Command::new(chromium_path())
             .env_remove("LD_LIBRARY_PATH")
@@ -94,6 +110,7 @@ impl Browser {
                 &format!("--window-size={},{}", DESKTOP.0, DESKTOP.1),
                 "about:blank",
             ])
+            .args(extra)
             .stdout(std::process::Stdio::null())
             .stderr(std::process::Stdio::null())
             .spawn()

@@ -25,6 +25,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
 | The physician clinical skill catalog | [`skills/`](/skills), read by `agent-skills` for `harness`; [skills in hosted chat](physician-site.md#skills-in-hosted-chat) |
 | Public marketing site | [Public site](public-site.md) |
+| Coda's Chrome extension and its EHR reads, Hint first | <a href="/extension/README%2Emd">Chrome extension</a> |
 | Gym cases, promotion and runs | <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |
 | Shared execution and product boundaries | <a href="/intent/harness%2Emd">Harness spec</a>, [crate map](crate-map.md) |
 | Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |

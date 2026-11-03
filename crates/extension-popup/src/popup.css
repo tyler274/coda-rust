@@ -1,0 +1,14 @@
+body { margin: 0; width: var(--popover-width); background: var(--surface-lowest); }
+.popup-body { display: grid; gap: var(--space-4); padding: var(--space-2) var(--space-5) var(--space-5); }
+.popup-state { display: grid; gap: var(--space-4); }
+.popup-footer { --control-width: 100%; }
+/* While the popup waits on the worker, a wave runs round Coda's ring; while Coda reads, it runs slowly. */
+.brand-mark circle { transform-box: fill-box; transform-origin: center; }
+.brand-mark.is-working circle { animation: brand-wave var(--motion-working) var(--ease-in-out) calc(var(--dot) * var(--motion-working) / 12) infinite both; }
+.brand-mark.is-live circle { animation: brand-wave calc(var(--motion-working) * 4) var(--ease-in-out) calc(var(--dot) * var(--motion-working) / 3) infinite both; }
+@keyframes brand-wave { 0%, 60%, 100% { opacity: .35; transform: scale(.7); } 30% { opacity: 1; transform: scale(1); } }
+/* A new state rises into place. */
+.popup-arrive { animation: popup-arrive var(--motion-arrive) var(--ease-out) both; }
+.popup-arrive-again { animation: popup-arrive-again var(--motion-arrive) var(--ease-out) both; }
+@keyframes popup-arrive { from { opacity: 0; transform: translateY(var(--rise-small)); } }
+@keyframes popup-arrive-again { from { opacity: 0; transform: translateY(var(--rise-small)); } }

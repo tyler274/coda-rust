@@ -1,0 +1,42 @@
+{
+  "manifest_version": 3,
+  "name": "Coda Hint Sandbox Connector",
+  "version": "0.3.2",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2d0FLhSlmSggo13QjASancHULGI8LEZW+Lg92kIglpfi12QRdG+VTSYBYPhCzeHz7oU28/o+rXaI/EKLMHxBfokMLmj7GgsCG8ui5Oh6ibSWpnnbphIKzxpHn3lEAh5v4hIeQGyEIMKNED9p4Ho4KrY+BRKwLFzk3TWrZmbIuHBHNIXNRyqSLEupsnPxG9TFIucPGXd8pOI3GR1npQ0GZvdk9SjKGwl7YMapZMVjHTJ74VtuId7vLRQD/+YwJaX143WXzfIM0I7ZA8Oi22tJKUFErvgCWRZ7rXWYw5H5cqlFacbB/c/do8yobFkHqdJgwEzNGq4A3g95aVNQbODZqwIDAQAB",
+  "description": "Read-only independent connection experiment for four fictional Hint patients.",
+  "minimum_chrome_version": "120",
+  "permissions": [
+    "alarms",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://app.hint.com/*",
+    "https://accounts.hint.com/*",
+    "https://api.hint.com/*",
+    "https://api.one.hint.com/*",
+    "http://127.0.0.1/*"
+  ],
+  "background": {
+    "service_worker": "worker.js"
+  },
+  "options_page": "options.html",
+  "action": {
+    "default_title": "Coda",
+    "default_popup": "options.html",
+    "default_icon": {
+      "16": "icons/coda-16.png",
+      "32": "icons/coda-32.png",
+      "48": "icons/coda-48.png"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  },
+  "icons": {
+    "16": "icons/coda-16.png",
+    "32": "icons/coda-32.png",
+    "48": "icons/coda-48.png",
+    "128": "icons/coda-128.png"
+  }
+}
