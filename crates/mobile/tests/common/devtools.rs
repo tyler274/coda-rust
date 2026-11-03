@@ -25,6 +25,45 @@ pub const DESKTOP: (u32, u32) = (1280, 800);
 /// The phone viewport a Duet proof uses.
 pub const PHONE: (u32, u32) = (390, 844);
 
+/// A key as DevTools presses it.
+#[allow(dead_code)]
+#[derive(Clone, Copy)]
+pub struct Key {
+    /// The key's name, as the page reads it.
+    pub key: &'static str,
+    code: &'static str,
+    virtual_code: u32,
+    text: &'static str,
+}
+
+#[allow(dead_code)]
+impl Key {
+    pub const TAB: Self = Self::named("Tab", 9, "");
+    pub const ENTER: Self = Self::named("Enter", 13, "\r");
+    pub const ESCAPE: Self = Self::named("Escape", 27, "");
+    pub const END: Self = Self::named("End", 35, "");
+    pub const HOME: Self = Self::named("Home", 36, "");
+    pub const ARROW_LEFT: Self = Self::named("ArrowLeft", 37, "");
+    pub const ARROW_UP: Self = Self::named("ArrowUp", 38, "");
+    pub const ARROW_RIGHT: Self = Self::named("ArrowRight", 39, "");
+    pub const ARROW_DOWN: Self = Self::named("ArrowDown", 40, "");
+    pub const T: Self = Self {
+        key: "t",
+        code: "KeyT",
+        virtual_code: 84,
+        text: "t",
+    };
+
+    const fn named(key: &'static str, virtual_code: u32, text: &'static str) -> Self {
+        Self {
+            key,
+            code: key,
+            virtual_code,
+            text,
+        }
+    }
+}
+
 /// One headless Chromium instance: an ephemeral debugging port, one page.
 ///
 /// Each launch binds port 0, asks the kernel for a free local port, closes it,
@@ -196,21 +235,20 @@ impl Browser {
         assert_eq!(found, "typed", "no input to type into for {selector}");
     }
 
-    /// Presses `key` (for example `"Tab"`) as the browser's own input, so what the page does with
-    /// it by default, such as moving focus or scrolling, happens too.
+    /// Presses `key` as the browser's own input, so what it does by default, such as moving focus
+    /// or scrolling, happens too.
     #[allow(dead_code)]
-    pub fn press_key(&mut self, key: &str) {
-        let code = match key {
-            "Tab" => 9,
-            "Enter" => 13,
-            "ArrowLeft" => 37,
-            "ArrowRight" => 39,
-            other => panic!("no key code for {other}"),
-        };
-        for kind in ["rawKeyDown", "keyUp"] {
+    pub fn press_key(&mut self, key: Key) {
+        for (kind, text) in [("keyDown", key.text), ("keyUp", "")] {
             self.page.call_session(
                 "Input.dispatchKeyEvent",
-                json!({ "type": kind, "key": key, "code": key, "windowsVirtualKeyCode": code }),
+                json!({
+                    "type": kind,
+                    "key": key.key,
+                    "code": key.code,
+                    "windowsVirtualKeyCode": key.virtual_code,
+                    "text": text,
+                }),
             );
         }
     }

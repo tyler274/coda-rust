@@ -20,7 +20,7 @@ use std::sync::{Mutex, MutexGuard};
 use std::time::{Duration, Instant};
 
 use base64::Engine;
-use devtools::{Browser, DESKTOP, PHONE, free_port};
+use devtools::{Browser, DESKTOP, Key, PHONE, free_port};
 use serde_json::Value;
 
 /// How long a section's entry motion and first scripted steps get to run.
@@ -303,7 +303,7 @@ fn keys_scroll(slug: &str, title: &str, selector: &str, picture: &str) {
 
     let mut reached = false;
     for _ in 0..TAB_STOPS {
-        browser.press_key("Tab");
+        browser.press_key(Key::TAB);
         let focused = browser
             .page()
             .evaluate(&format!("document.activeElement === {target}"));
@@ -331,10 +331,10 @@ fn keys_scroll(slug: &str, title: &str, selector: &str, picture: &str) {
     assert_eq!(ring.as_bool(), Some(true), "{selector} shows no focus ring");
     save_picture(&mut browser, picture);
 
-    browser.press_key("ArrowRight");
+    browser.press_key(Key::ARROW_RIGHT);
     let moved = wait_for_scroll(&mut browser, &target, |left| left > 0.0);
     assert!(moved, "ArrowRight did not scroll {selector}");
-    browser.press_key("ArrowLeft");
+    browser.press_key(Key::ARROW_LEFT);
     let back = wait_for_scroll(&mut browser, &target, |left| left == 0.0);
     assert!(back, "ArrowLeft did not scroll {selector} back");
 }
@@ -449,14 +449,14 @@ fn a_menu_moves_by_its_keys_and_closes_on_a_choice() {
         (Key::ARROW_UP, "Delete"),
         (Key::T, "Try again"),
     ] {
-        browser.key(key);
+        browser.press_key(key);
         wait_true(
             &mut browser,
             &format!("document.activeElement.textContent.trim().startsWith({focused:?})"),
             &format!("{} to focus {focused}", key.key),
         );
     }
-    browser.key(Key::ENTER);
+    browser.press_key(Key::ENTER);
     wait_true(
         &mut browser,
         "!document.getElementById('gallery-reply-menu').matches(':popover-open')",
@@ -482,7 +482,7 @@ fn a_dialog_opens_modally_and_escape_closes_it() {
          return d !== null && d.matches(':modal') && d.contains(document.activeElement); })()",
         "the dialog to open modally with focus inside",
     );
-    browser.key(Key::ESCAPE);
+    browser.press_key(Key::ESCAPE);
     wait_true(
         &mut browser,
         "document.querySelector('dialog') === null",
@@ -600,62 +600,13 @@ fn wait_true(browser: &mut Browser, expression: &str, what: &str) {
     panic!("timed out waiting for {what}");
 }
 
-/// A key as DevTools types it: its name, its code, and the text it enters, if any.
-#[derive(Clone, Copy)]
-struct Key {
-    key: &'static str,
-    code: &'static str,
-    virtual_code: u32,
-    text: &'static str,
-}
-
-impl Key {
-    const ARROW_DOWN: Self = Self::named("ArrowDown", 40, "");
-    const ARROW_UP: Self = Self::named("ArrowUp", 38, "");
-    const HOME: Self = Self::named("Home", 36, "");
-    const END: Self = Self::named("End", 35, "");
-    const ENTER: Self = Self::named("Enter", 13, "\r");
-    const ESCAPE: Self = Self::named("Escape", 27, "");
-    const T: Self = Self {
-        key: "t",
-        code: "KeyT",
-        virtual_code: 84,
-        text: "t",
-    };
-
-    const fn named(key: &'static str, virtual_code: u32, text: &'static str) -> Self {
-        Self {
-            key,
-            code: key,
-            virtual_code,
-            text,
-        }
-    }
-}
-
 /// Real input through DevTools, as the page's own listeners receive it.
 trait Input {
-    fn key(&mut self, key: Key);
     fn press(&mut self, selector: &str);
     fn drag(&mut self, selector: &str, distance: f64);
 }
 
 impl Input for Browser {
-    fn key(&mut self, key: Key) {
-        for (kind, text) in [("keyDown", key.text), ("keyUp", "")] {
-            self.page().call_session(
-                "Input.dispatchKeyEvent",
-                serde_json::json!({
-                    "type": kind,
-                    "key": key.key,
-                    "code": key.code,
-                    "windowsVirtualKeyCode": key.virtual_code,
-                    "text": text,
-                }),
-            );
-        }
-    }
-
     fn press(&mut self, selector: &str) {
         let (x, y) = center(self, selector);
         for kind in ["mousePressed", "mouseReleased"] {
@@ -708,6 +659,51 @@ fn mouse(browser: &mut Browser, kind: &str, x: f64, y: f64) {
             "clickCount": if kind == "mouseMoved" { 0 } else { 1 },
         }),
     );
+}
+
+/// A preview follows what the page reports: it opens placed where the window lets it, Escape closes
+/// it, and once it has gone the page has Escape back, so its listening stopped with it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_preview_hears_the_page_until_it_goes() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(
+        &mut browser,
+        &gallery.url,
+        "citations-and-sources",
+        "Citations and sources",
+    );
+
+    let (x, y) = center(&mut browser, ".citation-chip");
+    mouse(&mut browser, "mouseMoved", x, y);
+    wait_true(
+        &mut browser,
+        "document.querySelector('.citation-preview')?.style.visibility === 'visible'",
+        "the preview to be placed",
+    );
+    browser.page().evaluate(
+        "document.addEventListener('keydown', (event) => { window.pageHeard = event.key; }); 0",
+    );
+    browser.press_key(Key::ESCAPE);
+    wait_true(
+        &mut browser,
+        "document.querySelector('.citation-preview') === null",
+        "Escape to close the preview",
+    );
+    assert_eq!(
+        browser.page().evaluate("window.pageHeard === undefined"),
+        Value::Bool(true),
+        "the preview should have taken Escape from the page"
+    );
+    browser.press_key(Key::ESCAPE);
+    wait_true(
+        &mut browser,
+        "window.pageHeard === 'Escape'",
+        "the page to have Escape back",
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
 /// A copy the clipboard refuses, or that the browser can't even try, leaves the control as it was

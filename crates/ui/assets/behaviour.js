@@ -376,16 +376,16 @@ function scrollToPassage(bodyId) {
 function watchPage(citationId, previewId, send) {
   const root = document.documentElement;
   const citation = document.getElementById(citationId);
-  const report = () => send([0, root.clientWidth, root.clientHeight]);
+  const report = () => send({ kind: 'window', width: root.clientWidth, height: root.clientHeight });
   const escape = (event) => {
     if (event.key !== 'Escape') return;
     event.preventDefault();
     event.stopPropagation();
     // Looked up now: this script starts before the preview is in the page.
     const preview = document.getElementById(previewId);
-    send([1, preview !== null && preview.contains(document.activeElement) ? 1 : 0, 0]);
+    send({ kind: 'escape', inside: preview !== null && preview.contains(document.activeElement) });
   };
-  const sight = new IntersectionObserver(([entry]) => { if (entry !== undefined && !entry.isIntersecting) send([2, 0, 0]); });
+  const sight = new IntersectionObserver(([entry]) => { if (entry !== undefined && !entry.isIntersecting) send({ kind: 'away' }); });
   if (citation !== null) sight.observe(citation);
   addEventListener('scroll', report, true);
   addEventListener('resize', report);

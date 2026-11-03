@@ -9,7 +9,8 @@ use std::time::Duration;
 use dioxus::html::geometry::PixelsRect;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens, script};
+use crate::script::{self, PageHeard};
+use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens};
 
 static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 
@@ -22,28 +23,6 @@ const EDGE_PX: f64 = 12.0;
 
 /// The room between a preview and its citation.
 const GAP_PX: f64 = 6.0;
-
-/// One thing `WATCH_PAGE` heard.
-#[derive(Clone, Copy, Debug, PartialEq)]
-enum Heard {
-    /// The window, as wide and tall as this.
-    Window(f64, f64),
-    /// Escape, and whether focus was inside the preview.
-    Escape(bool),
-    /// The citation is out of sight.
-    Away,
-}
-
-impl Heard {
-    fn read([kind, a, b]: [f64; 3]) -> Option<Self> {
-        match kind as u8 {
-            0 => Some(Self::Window(a, b)),
-            1 => Some(Self::Escape(a != 0.0)),
-            2 => Some(Self::Away),
-            _ => None,
-        }
-    }
-}
 
 /// Where a preview sits: its left edge, the edge nearest its citation, and the height it has.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -268,8 +247,6 @@ fn PreviewSurface(
     let PassageSurface(mut surface_body) =
         use_context_provider(|| PassageSurface(Signal::new(None)));
     let watch = use_hook(|| script::watch_page(&citation_id, &id));
-    let stopping = watch.clone();
-    use_drop(move || stopping.stop());
     // Every property is written each time: a style the renderer merges must never keep a stale one.
     let style = match placement() {
         None => "visibility: hidden; left: 0px; top: 0px; bottom: auto".to_owned(),
@@ -303,8 +280,8 @@ fn PreviewSurface(
                         // The behaviour finished or failed: the preview stops following it.
                         let heard = watch.next().await;
                         let Ok(message) = heard else { break };
-                        match Heard::read(message) {
-                            Some(Heard::Window(width, height)) => {
+                        match message {
+                            PageHeard::Window { width, height } => {
                                 let Some(trigger) = citation.peek().clone() else { break };
                                 let rects = futures_util::future::join(trigger.get_client_rect(), surface.get_client_rect()).await;
                                 let (Ok(at), Ok(own)) = rects else { continue };
@@ -314,15 +291,14 @@ fn PreviewSurface(
                                     surface_body.set(Some(format!("{id}-body")));
                                 }
                             }
-                            Some(Heard::Escape(inside)) => {
+                            PageHeard::Escape { inside } => {
                                 on_escape.call(inside);
                                 break;
                             }
-                            Some(Heard::Away) => {
+                            PageHeard::Away => {
                                 on_away.call(());
                                 break;
                             }
-                            None => {}
                         }
                     }
                 });
@@ -580,18 +556,6 @@ mod tests {
         assert_eq!(kept.left, 1000.0 - 360.0 - 12.0);
         let narrow = place(citation(4.0, 100.0), 360.0, (300.0, 800.0), None);
         assert_eq!(narrow.left, 12.0);
-    }
-
-    #[test]
-    fn reads_what_the_page_reports() {
-        assert_eq!(
-            Heard::read([0.0, 1280.0, 800.0]),
-            Some(Heard::Window(1280.0, 800.0))
-        );
-        assert_eq!(Heard::read([1.0, 1.0, 0.0]), Some(Heard::Escape(true)));
-        assert_eq!(Heard::read([1.0, 0.0, 0.0]), Some(Heard::Escape(false)));
-        assert_eq!(Heard::read([2.0, 0.0, 0.0]), Some(Heard::Away));
-        assert_eq!(Heard::read([9.0, 0.0, 0.0]), None);
     }
 
     #[test]

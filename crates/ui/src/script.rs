@@ -10,6 +10,7 @@
 
 use std::fmt;
 use std::marker::PhantomData;
+use std::rc::Rc;
 
 use serde::Deserialize;
 use serde::de::DeserializeOwned;
@@ -116,10 +117,29 @@ pub(crate) fn reduced_motion() -> Asked<bool> {
     ask("reducedMotion", json!([]))
 }
 
-/// What the page tells the open preview `preview` of citation `citation`, until stopped. Each report
-/// is a kind and two values.
-pub(crate) fn watch_page(citation: &str, preview: &str) -> Listening<[f64; 3]> {
+/// What the page tells the open preview `preview` of citation `citation`, until dropped.
+pub(crate) fn watch_page(citation: &str, preview: &str) -> Listening<PageHeard> {
     listen("watchPage", json!([citation, preview]))
+}
+
+/// One thing `watchPage` reports.
+#[derive(Clone, Copy, Debug, Deserialize, PartialEq)]
+#[serde(tag = "kind", rename_all = "lowercase")]
+pub(crate) enum PageHeard {
+    /// The window, as wide and tall as this.
+    Window {
+        /// Its width.
+        width: f64,
+        /// Its height.
+        height: f64,
+    },
+    /// Escape, and whether focus was inside the preview.
+    Escape {
+        /// Whether focus was inside the preview.
+        inside: bool,
+    },
+    /// The citation is out of sight.
+    Away,
 }
 
 /// Why a behaviour has nothing for its caller.
@@ -160,24 +180,26 @@ impl<T: DeserializeOwned> Asked<T> {
     }
 }
 
-/// A behaviour that keeps reporting until stopped. Dropping every copy stops hearing it, not the
-/// behaviour itself.
+/// A behaviour that keeps reporting. Dropping the last copy stops it.
 #[derive(Clone)]
 pub(crate) struct Listening<T> {
     name: &'static str,
-    running: transport::Running,
+    running: Rc<Stopping>,
     report: PhantomData<T>,
+}
+
+struct Stopping(transport::Running);
+
+impl Drop for Stopping {
+    fn drop(&mut self) {
+        self.0.stop();
+    }
 }
 
 impl<T: DeserializeOwned> Listening<T> {
     /// The next thing the behaviour reports, or why there is none, which also goes to the console.
     pub(crate) async fn next(&self) -> Result<T, Unheard> {
-        hear(self.name, &self.running).await
-    }
-
-    /// Stops the behaviour.
-    pub(crate) fn stop(&self) {
-        self.running.stop();
+        hear(self.name, &self.running.0).await
     }
 }
 
@@ -222,7 +244,7 @@ fn ask<T>(name: &'static str, args: Value) -> Asked<T> {
 fn listen<T>(name: &'static str, args: Value) -> Listening<T> {
     Listening {
         name,
-        running: transport::listen(name, &args.to_string()),
+        running: Rc::new(Stopping(transport::listen(name, &args.to_string()))),
         report: PhantomData,
     }
 }
@@ -406,5 +428,26 @@ mod tests {
             Err(Unheard::Unreadable(_))
         ));
         assert!(matches!(read::<bool>("true"), Err(Unheard::Unreadable(_))));
+    }
+
+    #[test]
+    fn reads_what_the_page_reports() {
+        let heard = |report: &str| read::<PageHeard>(report).unwrap();
+        assert_eq!(
+            heard(r#"{"ok":{"kind":"window","width":1280,"height":800}}"#),
+            PageHeard::Window {
+                width: 1280.0,
+                height: 800.0
+            }
+        );
+        assert_eq!(
+            heard(r#"{"ok":{"kind":"escape","inside":true}}"#),
+            PageHeard::Escape { inside: true }
+        );
+        assert_eq!(heard(r#"{"ok":{"kind":"away"}}"#), PageHeard::Away);
+        assert!(matches!(
+            read::<PageHeard>(r#"{"ok":{"kind":"elsewhere"}}"#),
+            Err(Unheard::Unreadable(_))
+        ));
     }
 }
