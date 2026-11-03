@@ -573,6 +573,8 @@ pub fn Button(
     onclick: Option<EventHandler<MouseEvent>>,
     /// The press, before it takes focus: a control that leaves focus where it is prevents it here.
     onmousedown: Option<EventHandler<MouseEvent>>,
+    /// The control reaching the page, for a caller that later moves focus to it.
+    onmounted: Option<EventHandler<MountedEvent>>,
     #[props(extends = GlobalAttributes)] attributes: Vec<Attribute>,
     children: Element,
 ) -> Element {
@@ -607,6 +609,11 @@ pub fn Button(
             },
             onmousedown: move |event| {
                 if let Some(handler) = &onmousedown {
+                    handler.call(event);
+                }
+            },
+            onmounted: move |event| {
+                if let Some(handler) = &onmounted {
                     handler.call(event);
                 }
             },

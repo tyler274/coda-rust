@@ -84,15 +84,30 @@ function (step, ...args) {
     scrollToStart(selector) {
       document.querySelector(selector)?.scrollIntoView({ block: "start" });
     },
-    collapseSidebar() {
-      document
-        .querySelector(".glass-app:not(.has-collapsed-sidebar) button.sidebar-collapse")
-        ?.click();
-    },
-    expandSidebar() {
-      document
-        .querySelector(".glass-app.has-collapsed-sidebar button.sidebar-expand")
-        ?.click();
+    // The sidebar and the page as they stand.
+    readShell() {
+      const sidebar = one(".glass-sidebar");
+      const stage = one(".glass-stage");
+      const shown = (selector) => {
+        const style = getComputedStyle(one(selector));
+        return style.display !== "none" && style.visibility !== "hidden";
+      };
+      return {
+        sidebar: shown(".glass-sidebar"),
+        sidebarLeft: sidebar.getBoundingClientRect().left,
+        sidebarWidth: sidebar.getBoundingClientRect().width,
+        stageLeft: stage.getBoundingClientRect().left,
+        stageWidth: stage.getBoundingClientRect().width,
+        stageInert: stage.inert,
+        backdrop: shown(".glass-sidebar-backdrop"),
+        menu: shown(".stage-menu"),
+        close: shown(".sidebar-close"),
+        collapse: shown(".sidebar-collapse"),
+        expand: shown("button.sidebar-expand"),
+        labels: shown(".sidebar-nav-item > .item-text"),
+        focus: document.activeElement?.getAttribute("aria-label") ?? null,
+        pageWidth: document.documentElement.scrollWidth,
+      };
     },
   };
   return steps[step](...args);

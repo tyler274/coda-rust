@@ -678,6 +678,16 @@ pub fn format_calendar_date(day: &str) -> String {
     format!("{name} {date}, {year}")
 }
 
+/// The sidebar where the window can't hold it beside a page: whether it is over the page, and
+/// whether closing it hands focus back.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Drawer {
+    Closed,
+    Open,
+    /// Closed from inside: focus returns to the menu button that opened it.
+    Dismissed,
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum NavCommand {
     Search,

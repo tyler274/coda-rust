@@ -26,7 +26,7 @@ use physician_wire::{
 
 use panels::Panel;
 use shell::{
-    CONVERSATION_EMPTY, ChatView, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
+    CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
     REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
     ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
     TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
@@ -843,6 +843,9 @@ fn PhysicianShell(
         }
     });
     let mut sidebar_collapsed = use_signal(|| false);
+    let mut drawer = use_signal(|| Drawer::Closed);
+    let mut drawer_menu = use_signal(|| None::<std::rc::Rc<MountedData>>);
+    let mut drawer_close = use_signal(|| None::<std::rc::Rc<MountedData>>);
     let mut app_collapsed = use_signal(|| false);
     let mut schedule_collapsed = use_signal(|| false);
     // The physician's remembered choices arrive with who they are.
@@ -864,6 +867,24 @@ fn PhysicianShell(
     let mut search_open = use_signal(|| false);
     let mut shortcuts_open = use_signal(|| false);
     let mut connections_open = use_signal(|| false);
+    // Focus goes into the drawer as it opens, and back to the menu when it's dismissed, or once a
+    // dialog opened from it closes, since that dialog returns focus to the hidden row it came from.
+    use_effect(move || {
+        let dialog_open = search_open() || shortcuts_open() || connections_open();
+        let control = match drawer() {
+            Drawer::Open => drawer_close.peek().clone(),
+            Drawer::Dismissed if !dialog_open => {
+                drawer.set(Drawer::Closed);
+                drawer_menu.peek().clone()
+            }
+            Drawer::Closed | Drawer::Dismissed => None,
+        };
+        if let Some(control) = control {
+            spawn(async move {
+                let _ = control.set_focus(true).await;
+            });
+        }
+    });
     // Draft text and the Save mark, per patient workspace and chat.
     let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
@@ -1483,9 +1504,11 @@ fn PhysicianShell(
         // The new chat is its own draft target, so its composer starts empty.
         open_chat.set(Some(new_chat_id()));
     };
+    let drawer_open = drawer() == Drawer::Open;
     let shell_class = format!(
-        "glass-app{}{}",
+        "glass-app{}{}{}",
         if app_collapsed() { " is-collapsed" } else { "" },
+        if drawer_open { " has-open-sidebar" } else { "" },
         if sidebar_collapsed() {
             " has-collapsed-sidebar"
         } else {
@@ -1532,9 +1555,17 @@ fn PhysicianShell(
             class: "{shell_class}",
             aria_hidden: if app_collapsed() || expired() { "true" } else { "false" },
             "inert": expired().then_some("true"),
-            tabindex: "0",
+            // Tab stays on the drawer's own controls while it is open.
+            tabindex: if drawer_open { "-1" } else { "0" },
             onkeydown: move |event| {
                 let key = event.key().to_string();
+                // The page behind an open drawer answers no keys; Escape closes the drawer.
+                if drawer() == Drawer::Open {
+                    if key == "Escape" {
+                        drawer.set(Drawer::Dismissed);
+                    }
+                    return;
+                }
                 if key == " " && event.modifiers().ctrl() && event.modifiers().shift() {
                     event.prevent_default();
                     let client = client.read().clone();
@@ -1602,7 +1633,10 @@ fn PhysicianShell(
                             class: "sidebar-brand",
                             r#type: "button",
                             aria_label: "Coda Health",
-                            onclick: move |_| place.set(Place::Today),
+                            onclick: move |_| {
+                                place.set(Place::Today);
+                                drawer.set(Drawer::Dismissed);
+                            },
                             img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "Coda Health" }
                         }
                         Button {
@@ -1621,6 +1655,15 @@ fn PhysicianShell(
                             onclick: move |_| remember(Panel::Sidebar, false),
                             Icon { name: IconName::SidebarExpand }
                         }
+                        Button {
+                            variant: ButtonVariant::Quiet,
+                            icon_only: true,
+                            class: "sidebar-close",
+                            aria_label: "Close navigation",
+                            onmounted: move |event: MountedEvent| drawer_close.set(Some(event.data())),
+                            onclick: move |_| drawer.set(Drawer::Dismissed),
+                            Icon { name: IconName::X }
+                        }
                     }
                     nav { class: "sidebar-primary selection-host", aria_label: "Primary",
                         NavigationRow {
@@ -1629,6 +1672,7 @@ fn PhysicianShell(
                             aria_current: (place() == Place::Today).then_some("page"),
                             onclick: move |_| {
                                 place.set(Place::Today);
+                                drawer.set(Drawer::Dismissed);
                             },
                             if place() == Place::Today {
                                 Icon { name: IconName::Home }
@@ -1640,14 +1684,20 @@ fn PhysicianShell(
                         NavigationRow {
                             class: "sidebar-nav-item",
                             aria_current: (place() == Place::Updates).then_some("page"),
-                            onclick: move |_| place.set(Place::Updates),
+                            onclick: move |_| {
+                                place.set(Place::Updates);
+                                drawer.set(Drawer::Dismissed);
+                            },
                             Icon { name: IconName::Message }
                             strong { class: "item-text", "Updates" }
                         }
                         NavigationRow {
                             class: "sidebar-nav-item",
                             aria_label: "Find patient",
-                            onclick: move |_| search_open.set(true),
+                            onclick: move |_| {
+                                search_open.set(true);
+                                drawer.set(Drawer::Dismissed);
+                            },
                             Icon { name: IconName::Search }
                             strong { class: "item-text", "Find patient" }
                             kbd { class: "key-hint", aria_hidden: "true", "⌘ K" }
@@ -1668,7 +1718,10 @@ fn PhysicianShell(
                                     Button {
                                         compact: true,
                                         class: "sidebar-new-conversation",
-                                        onclick: move |_| start_chat(),
+                                        onclick: move |_| {
+                                            start_chat();
+                                            drawer.set(Drawer::Dismissed);
+                                        },
                                         Icon { name: IconName::Plus }
                                         "{NEW_CONVERSATION}"
                                     }
@@ -1685,7 +1738,10 @@ fn PhysicianShell(
                                                 class: "sidebar-conversation-link",
                                                 onclick: {
                                                     let id = line.id.clone();
-                                                    move |_| open_chat.set(Some(id.clone()))
+                                                    move |_| {
+                                                        open_chat.set(Some(id.clone()));
+                                                        drawer.set(Drawer::Dismissed);
+                                                    }
                                                 },
                                                 Icon { name: IconName::Message }
                                                 "{line.title}"
@@ -1717,14 +1773,20 @@ fn PhysicianShell(
                         if connection_accounts {
                             Button {
                                 variant: ButtonVariant::Quiet,
-                                onclick: move |_| connections_open.set(true),
+                                onclick: move |_| {
+                                    connections_open.set(true);
+                                    drawer.set(Drawer::Dismissed);
+                                },
                                 Icon { name: IconName::Users }
                                 "{CONNECTIONS}"
                             }
                         }
                         Button {
                             variant: ButtonVariant::Quiet,
-                            onclick: move |_| shortcuts_open.set(true),
+                            onclick: move |_| {
+                                shortcuts_open.set(true);
+                                drawer.set(Drawer::Dismissed);
+                            },
                             Icon { name: IconName::Keyboard }
                             "Keyboard shortcuts"
                         }
@@ -1738,12 +1800,38 @@ fn PhysicianShell(
                     }
                 }
             }
+            // The stylesheet gives it the window's size wherever the sidebar is a drawer, seen or
+            // not, and no size where the sidebar stands beside the page. So having no size means
+            // the window grew past the drawer, which leaves nothing to keep the page inert behind.
+            div {
+                class: "glass-sidebar-backdrop",
+                onclick: move |_| drawer.set(Drawer::Dismissed),
+                onresize: move |event: ResizeEvent| {
+                    let gone = event.get_border_box_size().is_ok_and(|size| size.width == 0.0);
+                    if gone && *drawer.peek() == Drawer::Open {
+                        drawer.set(Drawer::Closed);
+                    }
+                },
+            }
             main { class: "glass-stage",
-                Button {
-                    variant: ButtonVariant::Quiet,
-                    class: "stage-minimize",
-                    onclick: move |_| app_collapsed.set(true),
-                    "Collapse Coda"
+                "inert": drawer_open.then_some("true"),
+                header { class: "glass-toolbar",
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        icon_only: true,
+                        class: "stage-menu",
+                        aria_label: "Open navigation",
+                        aria_expanded: if drawer_open { "true" } else { "false" },
+                        onmounted: move |event: MountedEvent| drawer_menu.set(Some(event.data())),
+                        onclick: move |_| drawer.set(Drawer::Open),
+                        Icon { name: IconName::Menu }
+                    }
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        class: "stage-minimize",
+                        onclick: move |_| app_collapsed.set(true),
+                        "Collapse Coda"
+                    }
                 }
                 match place() {
                     Place::Today => rsx! {

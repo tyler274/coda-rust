@@ -1189,6 +1189,10 @@ async fn sign_out_stays_on_screen_and_a_long_recent_list_scrolls() {
                     .await;
             }
         }
+        // Below 900px the sidebar is a drawer, and Sign out is in it once it is open.
+        if case.width < 900 {
+            open_the_drawer(&mut browser).await;
+        }
         for theme in [Theme::Light, Theme::Dark] {
             let layout = browser
                 .sidebar_layout(theme)
@@ -2518,6 +2522,244 @@ async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
     );
 }
 
+/// Reads the shell until `settled` holds; the page answers a press a moment later.
+async fn shell_when(
+    browser: &mut CdpBrowser,
+    what: &str,
+    settled: impl Fn(&serde_json::Value) -> bool,
+) -> serde_json::Value {
+    let deadline = Instant::now() + Duration::from_secs(5);
+    loop {
+        let shell = browser.journey("readShell", serde_json::json!([])).await;
+        if settled(&shell) {
+            return shell;
+        }
+        assert!(Instant::now() < deadline, "{what}: {shell}");
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    }
+}
+
+async fn open_the_drawer(browser: &mut CdpBrowser) {
+    browser
+        .journey("click", serde_json::json!(["button.stage-menu"]))
+        .await;
+    let open = shell_when(
+        browser,
+        "the drawer did not open with focus inside",
+        |shell| {
+            shell["sidebar"] == true
+                && shell["sidebarLeft"] == 0
+                && shell["stageInert"] == true
+                && shell["backdrop"] == true
+                && shell["focus"] == "Close navigation"
+        },
+    )
+    .await;
+    assert_eq!(open["close"], true, "the drawer has no close: {open}");
+    assert_eq!(open["labels"], true, "the drawer is not a rail: {open}");
+    assert_eq!(
+        open["collapse"], false,
+        "the drawer offers the rail: {open}"
+    );
+    assert_eq!(open["expand"], false, "the drawer offers the rail: {open}");
+}
+
+fn drawer_closed(shell: &serde_json::Value) -> bool {
+    shell["sidebar"] == false && shell["stageInert"] == false && shell["backdrop"] == false
+}
+
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_otherwise() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let app = physician_sample::simulation_router();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/")).await;
+    browser
+        .wait_for_text("Today", Duration::from_secs(20))
+        .await;
+
+    // A phone starts on the whole page, with the sidebar out of sight, focus and reach.
+    browser.set_viewport(390, 844, true).await;
+    browser.reload().await;
+    browser
+        .wait_for_text("Today", Duration::from_secs(20))
+        .await;
+    let start = shell_when(&mut browser, "a phone did not start closed", drawer_closed).await;
+    assert_eq!(
+        start["stageLeft"], 0,
+        "the page is not at the edge: {start}"
+    );
+    assert_eq!(start["stageWidth"], 390, "the page is not whole: {start}");
+    assert_eq!(
+        start["pageWidth"], 390,
+        "the page scrolls sideways: {start}"
+    );
+    assert_eq!(start["menu"], true, "a phone has no way in: {start}");
+    browser.save_picture("drawer-closed-phone-light").await;
+
+    // Every way out closes it; its own controls hand focus back to the menu.
+    open_the_drawer(&mut browser).await;
+    browser.save_picture("drawer-open-phone-light").await;
+    // Tab walks the drawer's own controls round to its first, never stopping on the shell.
+    let mut came_round = false;
+    for _ in 0..60 {
+        browser.press_key("Tab", 9).await;
+        let on_shell = browser
+            .journey("hasFocus", serde_json::json!([".glass-app"]))
+            .await;
+        assert_ne!(on_shell, true, "Tab stopped on the shell behind the drawer");
+        let on_close = browser
+            .journey("hasFocus", serde_json::json!(["button.sidebar-close"]))
+            .await;
+        if on_close == true {
+            came_round = true;
+            break;
+        }
+    }
+    assert!(came_round, "Tab never came back round the drawer");
+    browser.press_key("Escape", 27).await;
+    shell_when(&mut browser, "Escape left the drawer open", |shell| {
+        drawer_closed(shell) && shell["focus"] == "Open navigation"
+    })
+    .await;
+    open_the_drawer(&mut browser).await;
+    browser
+        .journey("click", serde_json::json!([".glass-sidebar-backdrop"]))
+        .await;
+    shell_when(&mut browser, "the backdrop left the drawer open", |shell| {
+        drawer_closed(shell) && shell["focus"] == "Open navigation"
+    })
+    .await;
+    open_the_drawer(&mut browser).await;
+    browser
+        .journey("click", serde_json::json!(["button.sidebar-close"]))
+        .await;
+    shell_when(&mut browser, "Close left the drawer open", |shell| {
+        drawer_closed(shell) && shell["focus"] == "Open navigation"
+    })
+    .await;
+    // A dialog opened from it hands focus back to the menu when it closes.
+    open_the_drawer(&mut browser).await;
+    browser
+        .journey(
+            "clickNamed",
+            serde_json::json!(["button", "Keyboard shortcuts"]),
+        )
+        .await;
+    browser
+        .wait_for_text("Keyboard shortcuts", Duration::from_secs(5))
+        .await;
+    shell_when(
+        &mut browser,
+        "the dialog left the drawer open",
+        drawer_closed,
+    )
+    .await;
+    tokio::time::sleep(Duration::from_millis(300)).await;
+    browser.press_key("Escape", 27).await;
+    shell_when(&mut browser, "the dialog lost the page's focus", |shell| {
+        drawer_closed(shell) && shell["focus"] == "Open navigation"
+    })
+    .await;
+    // Going to the page already open still closes it, as going elsewhere does.
+    for place in ["Today", "Updates"] {
+        open_the_drawer(&mut browser).await;
+        browser
+            .journey(
+                "clickNamed",
+                serde_json::json!([".sidebar-nav-item", place]),
+            )
+            .await;
+        shell_when(
+            &mut browser,
+            "going somewhere left the drawer open",
+            drawer_closed,
+        )
+        .await;
+    }
+
+    // A window grown past the drawer has the sidebar beside the page and nothing left inert.
+    open_the_drawer(&mut browser).await;
+    browser.set_viewport(900, 800, true).await;
+    let beside = shell_when(
+        &mut browser,
+        "growing left the drawer over the page",
+        |shell| {
+            shell["sidebar"] == true && shell["stageInert"] == false && shell["backdrop"] == false
+        },
+    )
+    .await;
+    assert_eq!(
+        beside["stageLeft"], 244,
+        "the page isn't beside it: {beside}"
+    );
+    assert_eq!(beside["sidebarLeft"], 0, "the sidebar moved: {beside}");
+    assert_eq!(
+        beside["menu"], false,
+        "a wide window has the menu: {beside}"
+    );
+    assert_eq!(
+        beside["close"], false,
+        "a wide window has the close: {beside}"
+    );
+    assert_eq!(
+        beside["collapse"], true,
+        "a wide window lost collapse: {beside}"
+    );
+    browser.set_viewport(899, 800, true).await;
+    shell_when(&mut browser, "899px is not a drawer", drawer_closed).await;
+
+    // The rail still collapses and expands beside the page.
+    browser.set_viewport(1280, 800, true).await;
+    browser
+        .journey("click", serde_json::json!(["button.sidebar-collapse"]))
+        .await;
+    let rail = |shell: &serde_json::Value| {
+        shell["sidebarWidth"] == 56 && shell["stageLeft"] == 56 && shell["expand"] == true
+    };
+    shell_when(&mut browser, "collapse did not make a rail", rail).await;
+
+    // A phone ignores the rail, and the drawer opens whole, without forgetting it.
+    browser.set_viewport(390, 844, true).await;
+    let collapsed = shell_when(&mut browser, "the rail stayed on a phone", drawer_closed).await;
+    assert_eq!(
+        collapsed["stageWidth"], 390,
+        "the page is not whole: {collapsed}"
+    );
+    assert_eq!(
+        collapsed["expand"], false,
+        "a phone offers expand: {collapsed}"
+    );
+    open_the_drawer(&mut browser).await;
+    browser.press_key("Escape", 27).await;
+    shell_when(&mut browser, "Escape left the drawer open", drawer_closed).await;
+    browser.set_viewport(1280, 800, true).await;
+    shell_when(&mut browser, "the phone forgot the rail", rail).await;
+    browser
+        .journey("click", serde_json::json!(["button.sidebar-expand"]))
+        .await;
+    shell_when(
+        &mut browser,
+        "expand did not bring the sidebar back",
+        |shell| {
+            shell["sidebarWidth"] == 244 && shell["stageLeft"] == 244 && shell["collapse"] == true
+        },
+    )
+    .await;
+    browser.save_picture("sidebar-desktop-light").await;
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")
@@ -3344,39 +3586,21 @@ impl CdpBrowser {
     }
 
     /// With `PHYSICIAN_PROOF_SHOTS` set, saves `state` scrolled to `anchor` at desktop and phone
-    /// sizes in light and dark, then returns the page to desktop light. The phone shots collapse
-    /// the sidebar first, which otherwise covers most of a phone's width.
+    /// sizes in light and dark, then returns the page to desktop light.
     async fn save_pictures(&mut self, state: &str, anchor: &str) {
-        let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") else {
+        if env::var_os("PHYSICIAN_PROOF_SHOTS").is_none() {
             return;
-        };
-        let folder = PathBuf::from(folder);
-        fs::create_dir_all(&folder).expect("the picture folder");
+        }
         for (size, width, height) in [("desktop", 1440, 900), ("phone", 390, 844)] {
             self.set_viewport(width, height, true).await;
-            if size == "phone" {
-                self.journey("collapseSidebar", serde_json::json!([])).await;
-                tokio::time::sleep(Duration::from_millis(400)).await;
-            }
             for theme in ["light", "dark"] {
                 self.journey("setTheme", serde_json::json!([theme])).await;
                 self.journey("scrollToStart", serde_json::json!([anchor]))
                     .await;
                 tokio::time::sleep(Duration::from_millis(400)).await;
-                let shot = self
-                    .call(
-                        "Page.captureScreenshot",
-                        serde_json::json!({"format": "png"}),
-                    )
-                    .await;
-                let png = base64::engine::general_purpose::STANDARD
-                    .decode(shot["result"]["data"].as_str().expect("a screenshot"))
-                    .expect("a screenshot in base64");
-                fs::write(folder.join(format!("{state}-{size}-{theme}.png")), png)
-                    .expect("the picture");
+                self.save_picture(&format!("{state}-{size}-{theme}")).await;
             }
         }
-        self.journey("expandSidebar", serde_json::json!([])).await;
         self.set_viewport(1440, 900, true).await;
         self.journey("setTheme", serde_json::json!(["light"])).await;
     }

@@ -9,16 +9,20 @@ button, input { font: inherit; }
   background: var(--surface);
 }
 .glass-app.is-collapsed { display: none; }
-.glass-app.has-collapsed-sidebar { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
-.glass-app.has-collapsed-sidebar .sidebar-brand,
-.glass-app.has-collapsed-sidebar .sidebar-rule,
-.glass-app.has-collapsed-sidebar .sidebar-recent,
-.glass-app.has-collapsed-sidebar .sidebar-patient-context,
-.glass-app.has-collapsed-sidebar .sidebar-footer,
-.glass-app.has-collapsed-sidebar .sidebar-nav-item > :not(.icon),
-.glass-app.has-collapsed-sidebar .sidebar-collapse { display: none; }
-.glass-app.has-collapsed-sidebar .sidebar-content { padding-inline: calc((var(--sidebar-rail-width) - var(--target)) / 2); }
-.glass-app.has-collapsed-sidebar .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
+/* Collapsing to the rail belongs to windows that hold the sidebar beside the page. */
+@media (width >= 56.25rem) {
+  .glass-app.has-collapsed-sidebar { grid-template-columns: var(--sidebar-rail-width) minmax(0, 1fr); }
+  .glass-app.has-collapsed-sidebar .sidebar-brand,
+  .glass-app.has-collapsed-sidebar .sidebar-rule,
+  .glass-app.has-collapsed-sidebar .sidebar-recent,
+  .glass-app.has-collapsed-sidebar .sidebar-patient-context,
+  .glass-app.has-collapsed-sidebar .sidebar-footer,
+  .glass-app.has-collapsed-sidebar .sidebar-nav-item > :not(.icon),
+  .glass-app.has-collapsed-sidebar .sidebar-collapse { display: none; }
+  .glass-app.has-collapsed-sidebar .sidebar-content { padding-inline: calc((var(--sidebar-rail-width) - var(--target)) / 2); }
+  .glass-app.has-collapsed-sidebar .sidebar-nav-item { justify-content: center; width: var(--target); padding: 0; }
+  .glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
+}
 .coda-restore {
   position: fixed;
   z-index: 2;
@@ -57,7 +61,6 @@ button, input { font: inherit; }
 /* The wordmark is dark ink; on the dark canvas it reads in the canvas's own light ink. */
 :root[data-theme="dark"] :is(.coda-logo, .sign-in-logo) { filter: brightness(0) invert(.96); }
 button.sidebar-expand { display: none; }
-.glass-app.has-collapsed-sidebar button.sidebar-expand { display: inline-flex; }
 .sidebar-primary { --selection-fill: var(--surface-lowest); --selection-shadow: var(--elevation-1); --selection-radius: var(--radius-pill);
   display: grid; gap: var(--space-hair); margin-top: var(--space-4); }
 .sidebar-nav-item {
@@ -123,6 +126,70 @@ button.sidebar-expand { display: none; }
 
 .glass-stage { position: relative; height: 100dvh; min-width: 0; overflow: auto; background: var(--surface); }
 .stage-minimize { position: absolute; top: var(--space-3); right: var(--space-4); }
+.glass-toolbar { display: contents; }
+.glass-toolbar .stage-menu, .glass-sidebar .sidebar-close, .glass-sidebar-backdrop { display: none; }
+/* Where the window can't hold the sidebar beside a page, the sidebar is a drawer over it. Closed, the drawer is hidden
+   from focus and assistive technology as well as from sight. Anything that sticks or scrolls to the stage's top stops
+   under the toolbar. */
+@media (width < 56.25rem) {
+  .glass-app { display: block; }
+  .glass-sidebar {
+    position: fixed;
+    z-index: 45;
+    top: 0;
+    left: 0;
+    width: var(--drawer-width);
+    visibility: hidden;
+    transform: translateX(-102%);
+    transition: transform var(--motion-step) var(--ease-out), visibility 0s linear var(--motion-step);
+  }
+  .glass-app.has-open-sidebar .glass-sidebar {
+    visibility: visible;
+    transform: none;
+    border-right-color: var(--outline);
+    transition: transform var(--motion-step) var(--ease-out), visibility 0s;
+  }
+  .glass-sidebar-backdrop {
+    position: fixed;
+    z-index: 44;
+    inset: 0;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    background: var(--scrim);
+    transition: opacity var(--motion-arrive) var(--ease-out), visibility 0s linear var(--motion-arrive);
+  }
+  .glass-app.has-open-sidebar .glass-sidebar-backdrop {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity var(--motion-arrive) var(--ease-out), visibility 0s;
+  }
+  .glass-sidebar .sidebar-collapse { display: none; }
+  .glass-sidebar .sidebar-close { display: inline-flex; }
+  .glass-stage {
+    --toolbar-height: calc(var(--target) + 2 * var(--space-1));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    scroll-padding-top: var(--toolbar-height);
+  }
+  .glass-stage .schedule-rail { top: var(--toolbar-height); }
+  .glass-toolbar {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2);
+    box-sizing: border-box;
+    min-height: var(--toolbar-height);
+    padding-inline: var(--space-2);
+    background: var(--surface);
+  }
+  .glass-toolbar .stage-menu { display: inline-flex; }
+  .stage-minimize { position: static; }
+}
 .reading-workspace { box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start; height: 100%; min-height: 0; padding: var(--space-3) var(--page-gutter) var(--space-4); }
 .today-heading { display: flex; align-items: center; gap: var(--space-2); padding-bottom: var(--space-section); }
 .today-heading h1 { margin: 0; color: var(--ink); font: var(--type-headline-md); letter-spacing: var(--title-tracking); }
