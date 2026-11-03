@@ -395,8 +395,7 @@ fn bearer(headers: &HeaderMap) -> Option<String> {
 /// Builds the Duet front-door routes (`/api/join`, `/api/consent`,
 /// `/api/premium`, and `/front-door/*`) backed by the given front door.
 pub fn front_door_router(api: DuetApi) -> Router {
-    // Patient invitations and physician sharing stay behind the scenes during
-    // the beta. The serving Duet binary does not mount this adapter.
+    // The serving Duet binary does not mount this adapter.
     let join_door = api.front_door.clone();
     let read_door = api.front_door.clone();
     let grant_door = api.front_door.clone();

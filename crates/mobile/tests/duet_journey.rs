@@ -187,7 +187,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Clear selected record"]"#);
     wait_until(&mut browser, |text| !text.contains("Asking about"));
 
-    // The retired person-to-person endpoint stays absent. The beta tab does not
+    // The retired person-to-person endpoint stays absent. The Shared tab does not
     // expose physician consent controls.
     assert_eq!(
         http.get(format!("{base}/api/sharing/overview"))
@@ -326,7 +326,7 @@ async fn spawn_site() -> std::net::SocketAddr {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn beta_patient_tabs_do_not_offer_or_request_physician_sharing() {
+async fn patient_tabs_do_not_offer_or_request_physician_sharing() {
     let (address, session) = spawn_site_with_patient(true).await;
     let base = format!("http://{address}");
     let mut browser = Browser::launch();
@@ -339,8 +339,8 @@ async fn beta_patient_tabs_do_not_offer_or_request_physician_sharing() {
         serde_json::json!({"headers":{"Authorization":format!("Bearer {session}")}}),
     );
     browser.text_until(&format!("{base}/?mode=client"), "Today");
-    let evidence =
-        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../target/verification/beta-sharing");
+    let evidence = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../target/verification/physician-sharing");
     std::fs::create_dir_all(&evidence).unwrap();
     for (tab, loaded, absent, image) in [
         (

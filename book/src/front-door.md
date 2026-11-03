@@ -20,7 +20,7 @@ For my doctor workspace, including sending a saved version to a connected practi
 | [`front-door`](/crates/front-door/src/lib.rs) | Existing account, invitation, connection, consent and premium adapter, with SeaORM/Postgres persistence; its account model is not a decision to make standalone Duet depend on practice admission |
 | [`physician-sample::auth`](/crates/physician-sample/src/auth.rs) | Practice-authorized invitations and linked-patient reads; cross-practice access stays refused |
 | [`duet-api`](/crates/duet-api/src/lib.rs) and [`duet-client`](/crates/duet-client/src/lib.rs) | Join, consent and premium router adapters and client calls; the Duet binary does not mount the adapters |
-| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | The standalone account root owns private access. The beta app offers neither invitation enrollment nor a physician sharing control and does not request practice consent status |
+| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | The standalone account root owns private access. It offers neither invitation enrollment nor a physician sharing control and does not request practice consent status |
 
 The adapter's consent withdrawal/resume and paid-premium fields are not approved
 MVP behavior.
