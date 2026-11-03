@@ -9,6 +9,10 @@
 //! to the state file, so the next process still has that line. The stand-in does
 //! not invent an assistant reply.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod care;
 

@@ -13,6 +13,10 @@
 //! `runtime` owner over `harness::engine`, and a worker runs them.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::collections::{HashMap, HashSet};
 

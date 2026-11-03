@@ -11,5 +11,10 @@ version = "0.1.0"
 # Lint rules for every crate except the generated duet-wire. A rule belongs here
 # when it catches a mistake precisely and the right alternative is clear.
 [workspace.lints.clippy]
-# `result.ok();` hides a discarded error; `let _ = result;` keeps the discard visible.
+# Errors keep their cause: `map_err(|_| …)` replaces the original error instead of
+# keeping it as the source. Code still converting allows it at its crate root, or
+# atop a module that test crates also include, with that reason.
+map_err_ignore = "warn"
+# Failure looks like failure: `result.ok();` hides a discarded error. Where the
+# failure truly matters to no one, `let _ = result;` discards it visibly.
 unused_result_ok = "warn"

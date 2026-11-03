@@ -9,6 +9,10 @@
 //! Book: `book/src/front-door.md` records consumers and migration boundaries.
 
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::collections::HashMap;
 use std::sync::Mutex;

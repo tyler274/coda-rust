@@ -4,6 +4,10 @@
 //! `PHYSICIAN_RUNTIME_TEST_DATABASE_URL`. Each test creates its own database
 //! on that server. Valkey and the Pub/Sub emulator bind `127.0.0.1:0`.
 #![allow(dead_code)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::collections::HashMap;
 use std::fs::OpenOptions;

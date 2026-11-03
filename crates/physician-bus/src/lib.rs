@@ -4,6 +4,10 @@
 //! receiver lag, malformed wire data, and Redis reconnects all surface as one.
 //! Workspace IDs are routing hints, not authorization: filter them against the
 //! authenticated physician's current authority before sending anything to a client.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use async_trait::async_trait;
 use fred::{clients::SubscriberClient, prelude::*, types::RespVersion};

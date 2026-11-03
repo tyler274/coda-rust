@@ -1,14 +1,14 @@
 ---
 name: local-review
-description: Independently review local code, artifacts, or combined changes before handoff. Use during implementation and verification, or when assessing an unpublished result against its intent and evidence.
+description: Independently review local code, artifacts, or combined changes before handoff. Use when the repository's development workflow calls for independent review or the user requests it.
 ---
 
 # Local Review
 
-Assess the complete local result through a fresh reviewer, separate from the
-coding conversation. This is part of the shared
-[development workflow](../../../AGENTS.md#development-workflow); no separate
-review request is needed during implementation. The parent owns intent,
+Use this skill when the shared
+[development workflow](../../../AGENTS.md#development-workflow) calls for independent
+review, or when the user requests it. Assess the complete local result through a
+fresh reviewer, separate from the coding conversation. The parent owns intent,
 corrections, and final judgment.
 
 ## Prepare the review

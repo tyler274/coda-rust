@@ -1,3 +1,7 @@
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 use std::env;
 use std::io::Write;
 use std::path::PathBuf;

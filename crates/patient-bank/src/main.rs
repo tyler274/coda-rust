@@ -11,6 +11,10 @@
 //!
 //! Defaults come from `patient_bank::paths`: inputs in `crates/patient-bank/data/`,
 //! one folder per unit in `patients/units/`, previews and the bank under `target/patient-bank/`.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::collections::HashMap;
 use std::env;

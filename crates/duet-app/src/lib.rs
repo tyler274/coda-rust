@@ -1,6 +1,10 @@
 //! Duet's four tab roots. SwiftUI remains the shipping iPhone app.
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 mod account;
 mod approval;

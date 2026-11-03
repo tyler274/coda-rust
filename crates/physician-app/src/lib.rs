@@ -2,6 +2,10 @@
 //! The React app remains the shipping client. This client renders the same projections.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 mod composer;
 mod local_draft;

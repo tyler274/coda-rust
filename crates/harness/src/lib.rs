@@ -6,6 +6,10 @@
 //! never authorizes a tool or a patient read. Spec:
 //! `intent/harness.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod engine;
 pub mod execution;

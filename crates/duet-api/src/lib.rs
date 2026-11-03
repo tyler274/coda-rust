@@ -5,6 +5,10 @@
 //! `conversation_execution` is also separate from the mounted conversation path.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod accounting;
 pub mod care;

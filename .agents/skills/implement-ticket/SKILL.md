@@ -61,12 +61,13 @@ looked at, each recorded with the revision it ran against through
 [capture-proof](../capture-proof/SKILL.md). Re-run evidence that a
 later correction makes stale. A criterion without evidence stays listed as a gap.
 
-Use [local-review](../local-review/SKILL.md) with the original intent, exact
-change, criteria, and their evidence. Reconcile its findings, correct accepted defects,
-and verify the result through that skill's correction workflow. Work through
-that feedback locally before PR handoff, following the shared defaults for early
-collaboration. Missing proof
-remains visible rather than reducing the ticket's acceptance criteria.
+When the shared [development workflow](../../../AGENTS.md#development-workflow)
+calls for independent review, use [local-review](../local-review/SKILL.md) with
+the original intent, exact change, criteria, and their evidence. Reconcile its
+findings, correct accepted defects, and verify the result through that skill's
+correction workflow. Work through that feedback locally before PR handoff,
+following the shared defaults for early collaboration. Missing proof remains
+visible rather than reducing the ticket's acceptance criteria.
 
 ## Prepare the handoff
 

@@ -10,6 +10,10 @@
 //!
 //! A headless emulator is not a window. `window` replaces one. This does not
 //! create or delete an AVD, and there is no no-argument test suite.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::env;
 use std::fs::{self, File};

@@ -24,6 +24,10 @@
 //! let pdf = layout.pdf().expect("the full snapshot fits and all glyphs exist");
 //! ```
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use cosmic_text::{Attrs, Buffer, Family, FontSystem, Metrics, Shaping, Weight, Wrap, fontdb};
 use krilla::{

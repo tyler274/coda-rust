@@ -8,6 +8,10 @@
 //! Connect adapter over thin native bridges) and [`outbox`] (the
 //! transactional upload outbox).
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod acquisition;
 pub mod native_adapters;

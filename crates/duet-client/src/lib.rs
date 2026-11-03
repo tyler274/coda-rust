@@ -2,6 +2,10 @@
 //! This crate adds the app-build headers the FastAPI gate reads.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod doctor;
 pub mod health_upload;

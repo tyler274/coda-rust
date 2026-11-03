@@ -11,6 +11,10 @@
 //! into `#main`.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 mod auth;
 mod care;

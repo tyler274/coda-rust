@@ -120,7 +120,7 @@ The binary applies the Duet-owned chain first and optionally the front-door
 chain when `FRONT_DOOR_DATABASE_URL` is supplied. Do not replay the coda-app
 migration ledger to initialize this service.
 
-Follow the ORM rules in <a href="/AGENTS%2Emd#persistence-orm-first">AGENTS.md</a>.
+Queries go through the typed database API, as <a href="/AGENTS%2Emd#writing-code">AGENTS.md</a> asks.
 `PgMoments` uses a Duet-owned SeaORM entity over the SQLx pool. It keeps
 user-scoped list and delete, descending `(occurred_at, id)` order, unknown-kind
 errors, affected-row semantics and the privacy-journal deletion gate; prove

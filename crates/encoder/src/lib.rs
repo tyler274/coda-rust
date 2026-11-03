@@ -1,6 +1,10 @@
 //! Offline BGE encoder used by Duet and the physician retrieval path.
 //! Book: `book/src/physician-site.md` (model boundary).
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 mod model;
 mod protocol;

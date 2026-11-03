@@ -1,4 +1,8 @@
 //! Startup-rendered public website, isolated from the physician runtime.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 pub mod access;
 pub mod assets;
 pub mod chrome;

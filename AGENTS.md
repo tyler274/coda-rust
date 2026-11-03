@@ -6,6 +6,36 @@ implementation, operations and proof. Start with the [canonical map](book/src/re
 The user's latest explicit decisions take precedence and land in the specs. Submodules are read-only: behavior that appears only in a
 submodule or a generated wire schema is not a specification, and is not restored merely because it is there.
 
+## Writing code
+
+- **Model the problem using the type system.** Start from the domain's meaningful
+  distinctions, valid states and allowed operations. Encode the rules the compiler
+  can check in types, ownership and interfaces, so pieces cannot be plugged in
+  upside down. Use static analysis generously to enforce those rules. Prefer
+  guarantees over conventions callers must remember, and choose the simplest
+  representation that prevents meaningful mistakes.
+- **Use the typed owner, not a string.** Another language or a structured meaning
+  never travels as text inside Rust. Queries go through the product's typed
+  database API, browser behaviour lives in its own script files and takes
+  arguments, and errors are types. Where the owner truly can't express something,
+  say why at that spot and pass values as parameters, never spliced in.
+- **Errors keep their cause.** An error says what went wrong and carries why.
+  Keep the original error as its source instead of replacing it with a sentence,
+  and choose the words a person sees at the place that shows them. Extend the
+  error type that already owns the path rather than adding a looser one.
+- **Failure looks like failure.** Ignore a result only when its failure matters
+  to no one. A failed action never reads as done, and a failed read never reads
+  as empty.
+- **Make control flow easy to follow.** Keep related work together and make
+  prerequisites, effects and exits explicit. Handle cases that end the operation
+  where they become clear, often with an early return, so the remaining work
+  reads in sequence. Do the work, then branch on its result; don't fold an
+  action into a condition.
+
+Move code toward these as you touch it; don't mass-convert just to comply.
+Clippy's rules in `[workspace.lints]` hold what a rule can tell right from wrong;
+review holds the rest.
+
 ## Development workflow
 
 Iterate locally: implement, exercise the real workflow, review, and correct
@@ -47,11 +77,12 @@ feature they cover. A physician-site change is not done unless
 `cargo test -p physician-sample --test site -- --ignored` passed; that Chromium
 test fails when the document is blank.
 
-Local review is part of every change, with or without a ticket: after
-implementing and verifying a coherent change, obtain independent review,
-reconcile findings, and verify corrections before reporting it ready. No
-separate review request is needed. Opening a PR does not by itself require a
-second review; carry prior findings and evidence forward.
+Inspect every diff yourself and verify the affected behavior. Obtain independent
+review for non-trivial changes, or when requested. Judge by consequences and
+uncertainty, not line count; trivial, mechanical, behavior-preserving edits do
+not require a separate reviewer. Reconcile findings and verify corrections before
+reporting ready. Opening a PR does not itself require a second review; carry
+prior findings and evidence forward.
 
 The engineering skills live in [`.agents/skills`](.agents/skills), and each
 skill's description says when to use it. Use them as the work calls for them;
@@ -100,25 +131,6 @@ importing the other's crates.
 [The harness spec](intent/harness.md) says what the shared harness owns.
 
 `eval/` inside `submodules/coda-agents` is sealed. Do not read it or place it in prompts, fixtures, or model-visible context.
-
-## Persistence: ORM first
-
-- New or changed ordinary CRUD uses the owning product's ORM entities and typed
-  query APIs, not hand-authored SQL. `physician-auth` and `front-door` already use
-  SeaORM 2 / SeaQuery; extend their existing owners. Use migration builders for
-  schema changes where supported, preserving recorded migration history.
-- Raw SQL is an exception for database-specific functionality unsupported by those
-  APIs or a demonstrated performance need. Document the reason at the call site
-  and test the behavior against Postgres. Bind all runtime values; never
-  interpolate user values. Keep dynamic identifiers code-owned and allowlisted.
-- Duet's schema/account transactions and other adapters use SQLx; its persistence
-  owners are in [the Duet backend](book/src/backend-architecture.md#persistence-and-migrations).
-  Do not import physician entities, combine product stores, or mass-convert
-  persistence merely to comply with this preference.
-- SQL formatting checks remain for legitimate authored-SQL exceptions; formatter
-  coverage is not a reason to introduce or retain raw SQL. When an ORM conversion
-  removes a query, update the formatter's required-file inventory and its tests
-  together; never keep dummy SQL or report an empty scan as meaningful coverage.
 
 ## Dev shell
 

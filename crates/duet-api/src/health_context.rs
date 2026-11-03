@@ -4,6 +4,10 @@
 //! private; ordinary conversation/source-reader credentials remain SELECT-only.
 //! Arithmetic consumes immutable evidence through EvidenceStore, never uploaded
 //! measurement facts. Unsupported shapes remain visible as calculation limits.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 use crate::{
     ApiError,
     database::AccountDatabase,

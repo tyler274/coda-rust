@@ -3,6 +3,10 @@
 //! SAME transaction. No client endpoint may deserialize an agent authority.
 //! Person restrictions must be committed with the existing privacy outbox and
 //! independently confirmed by its journal; these methods never claim a receipt.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 // Field names mirror the reference follow-up wire vocabulary; operation methods
 // below document the authority and transaction requirements.
 #![allow(missing_docs)]

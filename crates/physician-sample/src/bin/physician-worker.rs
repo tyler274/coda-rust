@@ -6,6 +6,10 @@
 //! The worker loads the packaged skill catalog once at startup and offers
 //! chat turns the read-only `skill_view` tool (book: `physician-site.md`,
 //! "Skills in hosted chat").
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::path::PathBuf;
 use std::sync::Arc;

@@ -1,5 +1,9 @@
 //! Explicit bounded recovery-job entrypoint. No scheduler, migration, HTTP
 //! activation, object listing, or restore/coverage declaration is performed.
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 use duet_api::privacy_archive::GcsReceiptArchive;
 use front_door::PostgresFrontDoorStore;
 

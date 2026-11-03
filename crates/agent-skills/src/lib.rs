@@ -6,6 +6,10 @@
 //! a tool or a patient read. The harness in `crates/harness` is the caller.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 use std::fs;
 use std::path::{Path, PathBuf};

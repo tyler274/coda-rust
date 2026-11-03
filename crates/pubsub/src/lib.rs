@@ -15,6 +15,10 @@
 //! Products own what a message means, whether it is acked, and any durable
 //! state behind it. This crate carries no product types. Book: `book/src/gcp.md`.
 #![deny(missing_docs)]
+#![allow(
+    clippy::map_err_ignore,
+    reason = "converting to errors that keep their cause"
+)]
 
 pub mod envelope;
 
