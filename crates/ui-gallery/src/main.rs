@@ -25,16 +25,16 @@ use ui::{
     CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
     ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
     Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
-    FeedbackRating, FooterActions, Icon, IconName, KeyHint, ListRow, LiveDot, MeasurementTile,
-    Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor, MessageState,
-    MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper, PaperSection,
-    Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose, ProsePart, Quote,
-    RadioGroup, Rating, RowFrame, RowGroup, RunningChart, SearchField, SectionHeader, Segmented,
-    Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider, SortOrder, SourceDetails,
-    SourcePane, SourceReading, SourceText, SourcesButton, Sparkline, StatePill, StatusLine,
-    StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList, TaskState, TaskWords,
-    TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, Value, VersionSwitch, WorkStep, WorkTrace,
-    WorkingMark, WorkingPresence, use_live_rows,
+    FeedbackRating, FooterActions, Icon, IconName, IconTile, KeyHint, ListRow, LiveDot,
+    MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
+    MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper,
+    PaperSection, Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose,
+    ProsePart, Quote, RadioGroup, Rating, RowFrame, RowGroup, RunningChart, SearchField,
+    SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape, SettingRow, Slider,
+    SortOrder, SourceDetails, SourcePane, SourceReading, SourceText, SourcesButton, Sparkline,
+    Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table, TableRow, Task, TaskList,
+    TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip, TopBar, TryAgain, Value,
+    VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -100,6 +100,12 @@ const FAMILIES: [Family; 16] = [
         body: || {
             rsx! {
                 IconDemo {}
+                Part { title: "Icon tiles", note: "An icon leading what it belongs to: neutral on a hairline, as a card header or a record's heading leads, or tinted in the data colour, as a row leads.",
+                    div { class: "gallery-row",
+                        span { class: "gallery-label", IconTile { name: IconName::Calendar } "Neutral" }
+                        span { class: "gallery-label", IconTile { name: IconName::Heart, tinted: true } "Tinted" }
+                    }
+                }
             }
         },
     },
@@ -293,6 +299,15 @@ const FAMILIES: [Family; 16] = [
                 Part { title: "Working and loading", note: "The working mark while work runs, the live dot, a placeholder in the shape of what loads (a line, list items, rows or reading), and notices for reads and commands.",
                     LoadingDemo {}
                 }
+                Part { title: "Waiting on an action", note: "A turning ring at icon size, on its own or where a busy button's icon was. Running work keeps the working mark; content still loading keeps its placeholder.",
+                    div { class: "gallery-row",
+                        span { class: "gallery-label", Spinner {} "Sending" }
+                        Button { busy: true, pending_label: "Saving", Icon { name: IconName::Check } "Save" }
+                    }
+                }
+                Part { title: "Trying again", note: "Scripted. The one recovery action after a failure, under the line that says what failed. It takes no input while the retry runs.",
+                    TryAgainDemo {}
+                }
                 Part { title: "Progress", note: "Scripted. How far something has got, in the host's words. Not knowing how far, the bar moves and claims no amount. Bare, it stands where something else says what it is, such as a file's tile or a table's cell.",
                     ProgressDemo {}
                 }
@@ -370,8 +385,11 @@ fn Gallery() -> Element {
                     }
                 }
             }
-            div { key: "{family.slug}-{replay}", class: "gallery-sections",
-                Section { title: family.title, note: family.note, {(family.body)()} }
+            // A key only counts among a list's items, so the section is a list of one.
+            for generation in std::iter::once(format!("{}-{}", family.slug, replay())) {
+                div { key: "{generation}", class: "gallery-sections",
+                    Section { title: family.title, note: family.note, {(family.body)()} }
+                }
             }
         }
     }
@@ -1319,6 +1337,28 @@ fn LoadingDemo() -> Element {
         StatusLine { message: "Reading records…", pending: true }
         StatusLine { message: "Couldn’t refresh. Showing what was read at 9:41.", retry: "Try again", on_retry: move |_| {} }
         StatusLine { message: "Couldn’t confirm it was saved.", retry: "Check again", on_retry: move |_| {} }
+    }
+}
+
+#[cfg(feature = "web")]
+#[component]
+fn TryAgainDemo() -> Element {
+    let mut retrying = use_signal(|| false);
+    let retry = move |_| {
+        spawn(async move {
+            retrying.set(true);
+            futures_timer::Delay::new(Duration::from_millis(1200)).await;
+            retrying.set(false);
+        });
+    };
+    rsx! {
+        div { class: "gallery-stack",
+            p { class: "gallery-copy", "Couldn’t refresh the visit list." }
+            div { class: "gallery-row",
+                TryAgain { label: "Try again", disabled: retrying(), on_retry: retry }
+                TryAgain { label: "Try again", disabled: true, on_retry: move |_| {} }
+            }
+        }
     }
 }
 

@@ -95,6 +95,151 @@ fn links_and_going_back_change_the_section() {
     assert_eq!(browser.take_page_errors(), Vec::<String>::new());
 }
 
+/// Replay entries throws the section away: its nodes and what was done to them go, and its entry
+/// motion runs again.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn replay_entries_remounts_the_section() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+
+    browser.text_until(&format!("{}#inputs", gallery.url), "Inputs");
+    wait_for_heading(&mut browser, "Inputs").expect("the section to replay");
+    let checked =
+        "document.querySelectorAll('.gallery-section input[type=checkbox]:checked').length";
+    let first_state = browser.page().evaluate(checked);
+    let ticked = browser.page().evaluate(
+        "(() => { window.before = document.querySelector('.gallery-section'); \
+         const box = document.querySelector('.gallery-section input[type=checkbox]:not(:checked)'); \
+         box.click(); window.boxBefore = box; return box.checked; })()",
+    );
+    assert_eq!(ticked.as_bool(), Some(true), "the checkbox didn't tick");
+
+    press_replay(&mut browser);
+    wait_until_replaced(&mut browser);
+    let reset = browser.page().evaluate(
+        "(() => { const boxes = document.querySelectorAll('.gallery-section input[type=checkbox]'); \
+         return !window.boxBefore.isConnected && boxes.length > 0; })()",
+    );
+    assert_eq!(
+        reset.as_bool(),
+        Some(true),
+        "the checkbox survived the replay"
+    );
+    assert_eq!(
+        browser.page().evaluate(checked),
+        first_state,
+        "the replayed section didn't return to its first state"
+    );
+
+    // Charts draw in on entry, so a replay there starts animations of its own.
+    browser.click("a[href='#charts']");
+    wait_for_heading(&mut browser, "Charts").expect("the section to replay");
+    std::thread::sleep(SETTLE);
+    browser.page().evaluate(
+        "window.before = document.querySelector('.gallery-section'); window.entries = 0; \
+         document.addEventListener('animationstart', () => { window.entries += 1; }, true); 0",
+    );
+    press_replay(&mut browser);
+    wait_until_replaced(&mut browser);
+    std::thread::sleep(SETTLE);
+    let entries = browser.page().evaluate("window.entries");
+    assert!(
+        entries.as_u64().is_some_and(|count| count > 0),
+        "the replay started no entry motion: {entries}"
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Slow motion plays what is running at quarter speed, and turning it off restores it.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn slow_motion_changes_the_pace_of_running_animations() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.text_until(&format!("{}#status", gallery.url), "Status");
+    wait_for_heading(&mut browser, "Status").expect("a section with running animations");
+    let rates = "(() => { const all = document.getAnimations().map((a) => a.playbackRate); \
+                 return [all.length, Math.min(...all), Math.max(...all)]; })()";
+    let press = "document.querySelector('.gallery-header button[aria-pressed]').click(); 0";
+
+    browser.page().evaluate(press);
+    wait_for_value(&mut browser, rates, |rates| {
+        rates[1] == 0.25 && rates[2] == 0.25
+    })
+    .expect("every animation at quarter speed");
+    browser.page().evaluate(press);
+    wait_for_value(&mut browser, rates, |rates| {
+        rates[1] == 1.0 && rates[2] == 1.0
+    })
+    .expect("every animation back at full speed");
+}
+
+/// The components the rest of the gallery leaves out stand under their own names, in their states.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn tiles_spinners_and_retries_show_their_states() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+
+    browser.text_until(&format!("{}#icons", gallery.url), "Icons");
+    wait_for_heading(&mut browser, "Icons").expect("the section with the tiles");
+    assert_eq!(
+        in_part(&mut browser, "Icon tiles", ".icon-tile:not(.is-tinted) svg"),
+        1,
+        "the neutral tile"
+    );
+    assert_eq!(
+        in_part(&mut browser, "Icon tiles", ".icon-tile.is-tinted svg"),
+        1,
+        "the tinted tile"
+    );
+
+    browser.click("a[href='#status']");
+    wait_for_heading(&mut browser, "Status").expect("the section with the spinner");
+    assert_eq!(
+        in_part(&mut browser, "Waiting on an action", ".spinner"),
+        2,
+        "the spinner bare and in its busy button"
+    );
+    assert_eq!(
+        in_part(
+            &mut browser,
+            "Waiting on an action",
+            "button[aria-busy=true] .spinner"
+        ),
+        1,
+        "the spinner in its busy button"
+    );
+
+    assert_eq!(
+        in_part(&mut browser, "Trying again", "button:not([disabled])"),
+        1,
+        "the retry that can be pressed"
+    );
+    assert_eq!(
+        in_part(&mut browser, "Trying again", "button[disabled]"),
+        1,
+        "the retry that can't yet"
+    );
+
+    // Pressing one holds it while the retry runs, then offers it again.
+    let enabled = "(() => { const part = Array.from(document.querySelectorAll('.gallery-part')) \
+                   .find((part) => part.querySelector('.gallery-part-title').textContent === 'Trying again'); \
+                   return [part.querySelectorAll('button[disabled]').length]; })()";
+    browser.page().evaluate(
+        "Array.from(document.querySelectorAll('.gallery-part')) \
+         .find((part) => part.querySelector('.gallery-part-title').textContent === 'Trying again') \
+         .querySelector('button:not([disabled])').click(); 0",
+    );
+    wait_for_value(&mut browser, enabled, |held| held[0] == 2.0)
+        .expect("the pressed retry held while it runs");
+    wait_for_value(&mut browser, enabled, |held| held[0] == 1.0).expect("the retry offered again");
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
 /// An address that names no section opens the first rather than a blank page.
 #[test]
 #[ignore = "browser qualification; run explicitly with --ignored"]
@@ -108,6 +253,61 @@ fn an_unknown_address_opens_the_first_section() {
         .page()
         .navigate(&format!("{}#no-such-family", gallery.url));
     wait_for_heading(&mut browser, &first).expect("the first section");
+}
+
+/// Presses Replay entries in the page's header.
+fn press_replay(browser: &mut Browser) {
+    browser.click(".gallery-header .control-primary");
+}
+
+/// Waits for `window.before`, the section marked before a replay, to leave the page.
+fn wait_until_replaced(browser: &mut Browser) {
+    let deadline = Instant::now() + Duration::from_secs(5);
+    while Instant::now() < deadline {
+        let replaced = browser
+            .page()
+            .evaluate("!window.before.isConnected && !!document.querySelector('.gallery-section')");
+        if replaced.as_bool() == Some(true) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    panic!("Replay entries left the section's nodes in place");
+}
+
+/// Waits until `expression`, a list of numbers, satisfies `done`.
+fn wait_for_value(
+    browser: &mut Browser,
+    expression: &str,
+    done: impl Fn(&[f64]) -> bool,
+) -> Result<(), String> {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let mut seen = Value::Null;
+    while Instant::now() < deadline {
+        seen = browser.page().evaluate(expression);
+        let numbers: Vec<f64> = seen
+            .as_array()
+            .map(|items| items.iter().filter_map(Value::as_f64).collect())
+            .unwrap_or_default();
+        if done(&numbers) {
+            return Ok(());
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    Err(format!("last saw {seen}"))
+}
+
+/// How many of `selector` the part titled `title` holds.
+fn in_part(browser: &mut Browser, title: &str, selector: &str) -> u64 {
+    browser
+        .page()
+        .evaluate(&format!(
+            "(() => {{ const part = Array.from(document.querySelectorAll('.gallery-part')) \
+             .find((part) => part.querySelector('.gallery-part-title').textContent === {title:?}); \
+             return part ? part.querySelectorAll({selector:?}).length : 0; }})()"
+        ))
+        .as_u64()
+        .unwrap_or_default()
 }
 
 /// The gallery's links, as `(slug, title)`.
