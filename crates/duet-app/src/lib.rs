@@ -71,7 +71,6 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
-    // Patient invitations and physician sharing stay internal during the beta.
     rsx! {
         ui::Stylesheet { app: DUET_STYLES }
         main { class: "duet theme-duet",

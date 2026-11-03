@@ -14,9 +14,7 @@ save → same current item and originating conversation path must remain coheren
 across the client, backend and model interaction.
 
 Person-to-person sharing is retired from product scope. Shared remains the
-practice-connection tab. Practice sharing stays internal during beta, so the
-beta app shows no practice card or consent controls. It has no People list or
-person-to-person notices.
+practice-connection tab, with no People list or person-to-person notices.
 Documented care remains with its existing owner.
 
 The patient-owned doctor workspace is in MVP: preparation, updates,
