@@ -26,18 +26,17 @@ use physician_wire::{
 
 use panels::Panel;
 use shell::{
-    CONVERSATION_EMPTY, ChatView, Inline, KeyInput, MessageBlock, NavCommand, PAST_WORK_EMPTY,
-    REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE,
-    REPLY_TELL_CODA, ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING,
-    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
-    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
-    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
-    format_calendar_date, format_clock, format_local_date, format_message, format_waited,
-    keyboard_command, need_you_words, opens_reader, past_work_copy, patient_upcoming_visits,
-    read_view, records_time, reply_channel_label, reply_review_actions, reply_revision_words,
-    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
-    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
-    work_heading,
+    CONVERSATION_EMPTY, ChatView, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
+    REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
+    ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
+    TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
+    WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to, chat_view, chip_name,
+    citation_inspection, connection_lines, demographic_card_view, format_calendar_date,
+    format_clock, format_local_date, format_waited, keyboard_command, need_you_words, opens_reader,
+    past_work_copy, patient_upcoming_visits, read_view, records_time, reply_channel_label,
+    reply_review_actions, reply_revision_words, reply_urgency_words, row_icon, row_tone,
+    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
+    today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -3664,14 +3663,14 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Person) {
                                 ui::Message { author: Author::Person, by: "You",
-                                    FormattedMessage { text: line.text }
+                                    LiteralWords { text: line.text }
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
-                                    FormattedMessage { text: line.text }
+                                    MessageWords { text: line.text }
                                 }
                             } else {
-                                FormattedMessage { text: line.text }
+                                MessageWords { text: line.text }
                             }
                         }
                         {conversation_resume_notice}
@@ -3930,42 +3929,24 @@ fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
     }
 }
 
+/// What Coda says in a chat snapshot, drawn richly. This doesn't fetch a source or run a model.
 #[component]
-fn FormattedMessage(text: String) -> Element {
-    let blocks = format_message(&text);
+fn MessageWords(text: String) -> Element {
     rsx! {
-        div { class: "formatted-message",
-            for block in blocks {
-                match block {
-                    MessageBlock::Paragraph(inlines) => rsx! {
-                        p { class: "formatted-paragraph synopsis",
-                            FormattedInlines { inlines }
-                        }
-                    },
-                    MessageBlock::List(items) => rsx! {
-                        ul { class: "formatted-list",
-                            for item in items {
-                                li { FormattedInlines { inlines: item } }
-                            }
-                        }
-                    },
-                }
-            }
+        ui::Prose {
+            message: true,
+            names: ui::ProseNames { code: "Code".to_owned(), table: "Table".to_owned() },
+            parts: vec![ui::ProsePart::Words(text)],
         }
     }
 }
 
+/// Words that read exactly as written: a physician's own, which aren't Markdown, and a reply draft,
+/// which goes to a patient as plain text, so the physician reviews what Copy sends.
 #[component]
-fn FormattedInlines(inlines: Vec<Inline>) -> Element {
+fn LiteralWords(text: String) -> Element {
     rsx! {
-        for inline in inlines {
-            match inline {
-                Inline::Text(text) => rsx! { span { "{text}" } },
-                Inline::Strong(text) => rsx! { strong { "{text}" } },
-                Inline::Emphasis(text) => rsx! { em { "{text}" } },
-                Inline::Break => rsx! { br {} },
-            }
-        }
+        p { class: "literal-words", "{text}" }
     }
 }
 
@@ -4022,7 +4003,7 @@ fn ReplyReviewCard(
                 StatePill { tone: Tone::Warning, "{urgency}" }
             }
             p { class: "patient-synopsis-meta", "{label}" }
-            FormattedMessage { text: draft.clone() }
+            LiteralWords { text: draft.clone() }
             if let Some(words) = run_words {
                 p {
                     class: "composer-notice",
@@ -4070,20 +4051,18 @@ fn ReplyReviewCard(
             }
             if can_revise {
                 div { class: "reply-review-ask",
-                    input {
-                        class: "reply-review-instruction field",
-                        r#type: "text",
-                        placeholder: "{REPLY_TELL_CODA}",
-                        aria_label: "{REPLY_TELL_CODA}",
+                    ui::CompactField {
+                        class: "reply-review-instruction",
+                        label: REPLY_TELL_CODA,
                         disabled: busy,
-                        value: "{instruction}",
+                        value: instruction(),
                         onfocus: move |_| on_editing.call(true),
                         onblur: move |_| on_editing.call(false),
-                        oninput: move |event| instruction.set(event.value()),
+                        on_input: move |words| instruction.set(words),
                         onkeydown: {
                             let reply_id = reply_id.clone();
-                            move |event| {
-                                if event.key().to_string() != "Enter" {
+                            move |event: KeyboardEvent| {
+                                if event.key() != Key::Enter {
                                     return;
                                 }
                                 event.prevent_default();

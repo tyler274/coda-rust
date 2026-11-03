@@ -176,6 +176,10 @@ fn live_router(model: live::ChatModel) -> Router {
 }
 
 fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
+    live_router_over(live, care::ConnectedCare::new())
+}
+
+fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::ConnectedCare) -> Router {
     site()
         .route("/commands", post(live::submit))
         .route(
@@ -193,7 +197,7 @@ fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
         .route("/patient-workspaces/events", get(live::events))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
-        .layer(axum::Extension(care::ConnectedCare::new()))
+        .layer(axum::Extension(connected))
         .with_state(live)
 }
 
@@ -642,6 +646,20 @@ pub fn codex_chat_router(transport: local_product::codex::CodexTransport) -> Rou
             transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
         })
         .layer(middleware::from_fn(cors)),
+    )
+}
+
+/// The site over five fixture patients with chat on one Codex transport, so a browser test can
+/// read a real reply in a patient's conversation.
+#[doc(hidden)]
+pub fn codex_chat_site(transport: local_product::codex::CodexTransport) -> Router {
+    let roles = local_product::model_roles("codex-exec", &[]).expect("default roles");
+    live_router_over(
+        live::Live::new(live::ChatModel::Codex {
+            binding: roles.chat,
+            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
+        }),
+        care::ConnectedCare::fixture(),
     )
 }
 

@@ -1,13 +1,16 @@
 //! Prose to read: the
 //! words as GitHub-flavoured Markdown (paragraphs, headings, lists, emphasis, links, quotes, code,
 //! rules and tables), with the host's inline pieces, such as citations, where they were written.
-//! Raw HTML is dropped, an image shows only its description, and a link opens only on a web,
-//! mail or phone address. An inline piece stands outside the Markdown's emphasis, links and code
-//! around it, so it is never inside a link and keeps its state when the words around it change; a
-//! piece written inside raw HTML or a link's address is not drawn. Code set apart stands as a
-//! `CodeBlock` under its language. Code and tables that don't fit scroll across on their own, each
-//! a stop for the keys so they can scroll it too. While the words are still `streaming` in, each
-//! word fades in as it arrives.
+//! Raw HTML shows as the words it was written in and never reaches the page as markup, so nothing
+//! written goes unseen. An image shows only its description, and a link opens only on a web, mail
+//! or phone address. An inline piece stands outside the Markdown's emphasis, links and code around
+//! it, so it is never inside a link and keeps its state when the words around it change; a piece
+//! written inside raw HTML or a link's address is not drawn. Code set apart stands as a `CodeBlock`
+//! under its language. Code and tables that don't fit scroll across on their own, each a stop for
+//! the keys so they can scroll it too. While the words are still `streaming` in, each word fades in
+//! as it arrives. A `message`, in a conversation or a card, is set smaller and closer in the host's
+//! colour, and keeps its single newlines as line breaks, as someone writing one means them; a `>`
+//! opening one of its lines stays as written rather than starting a quote.
 
 use dioxus::prelude::*;
 use pulldown_cmark::{CodeBlockKind, Event, HeadingLevel, Options, Parser, Tag, TagEnd};
@@ -18,6 +21,8 @@ use crate::{CodeBlock, CopyWords, opens};
 /// character, which the words themselves never keep. Each piece is known by where its marker
 /// stands in the source, so words that decode to the same character never stand for one.
 const INLINE: char = '\u{FFFC}';
+
+const OPTIONS: Options = Options::ENABLE_TABLES.union(Options::ENABLE_STRIKETHROUGH);
 
 /// One run of prose: Markdown words, or a piece the host draws at that point in them.
 #[derive(Clone, PartialEq)]
@@ -40,24 +45,33 @@ pub struct ProseNames {
 /// Words to read, in Markdown, with the host's inline pieces among them. Markdown that runs across
 /// an inline piece reads as one: a paragraph stays one paragraph around its citations. While
 /// `streaming`, the words are still arriving, and each new word fades in; `copy` names the control
-/// that copies each block of code, and `names` says what its code and tables are called.
+/// that copies each block of code, and `names` says what its code and tables are called. A
+/// `message` is set smaller and closer, in the colour around it, a single newline in it stands as a
+/// line break rather than a space, and a `>` opening a line stays as written.
 #[component]
 pub fn Prose(
     parts: Vec<ProsePart>,
     names: ProseNames,
     #[props(default)] streaming: bool,
+    #[props(default)] message: bool,
     copy: Option<CopyWords>,
 ) -> Element {
     let (source, inlines) = joined(&parts);
+    let source = if message {
+        quote_marks_as_words(source)
+    } else {
+        source
+    };
     let blocks = parse(&source, &markers(&source));
     let drawing = Drawing {
         inlines,
         streaming,
+        breaks: message,
         copy,
         names,
     };
     rsx! {
-        div { class: "prose",
+        div { class: if message { "prose is-message" } else { "prose" },
             for (index, node) in blocks.iter().enumerate() {
                 Fragment { key: "{key(index, node)}", {draw(node, &drawing)} }
             }
@@ -69,6 +83,7 @@ pub fn Prose(
 struct Drawing {
     inlines: Vec<Element>,
     streaming: bool,
+    breaks: bool,
     copy: Option<CopyWords>,
     names: ProseNames,
 }
@@ -90,6 +105,24 @@ fn joined(parts: &[ProsePart]) -> (String, Vec<Element>) {
     (source, inlines)
 }
 
+/// In a message, a `>` opening a line means what it says, such as a threshold, rather than a quote.
+/// Markdown decides what is a quote, so each one it finds is escaped until none is left; a `>` in
+/// code is never one.
+fn quote_marks_as_words(mut source: String) -> String {
+    while let Some(mark) = Parser::new_ext(&source, OPTIONS)
+        .into_offset_iter()
+        .find_map(|(event, range)| match event {
+            Event::Start(Tag::BlockQuote(_)) => {
+                source[range.start..].find('>').map(|at| range.start + at)
+            }
+            _ => None,
+        })
+    {
+        source.insert(mark, '\\');
+    }
+    source
+}
+
 /// Where each inline piece's marker stands in the source, in order.
 fn markers(source: &str) -> Vec<usize> {
     source.match_indices(INLINE).map(|(at, _)| at).collect()
@@ -104,6 +137,8 @@ enum Node {
     /// The host's nth inline piece.
     Inline(usize),
     Break,
+    /// A single newline in the words: a space, or a line break where the host keeps them.
+    Newline,
     Rule,
 }
 
@@ -134,11 +169,10 @@ enum Kind {
 }
 
 fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
-    let options = Options::ENABLE_TABLES | Options::ENABLE_STRIKETHROUGH;
     let mut stack: Vec<(Kind, Vec<Node>)> = vec![(Kind::Plain, Vec::new())];
     let mut in_head = false;
     let mut skip = 0usize;
-    for (event, range) in Parser::new_ext(source, options).into_offset_iter() {
+    for (event, range) in Parser::new_ext(source, OPTIONS).into_offset_iter() {
         // The pieces whose markers stand in this event's source, in order. Text decoded from an
         // entity holds none, so the character it decodes to is dropped.
         let mut pieces = markers.partition_point(|at| *at < range.start)
@@ -152,11 +186,11 @@ fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
             continue;
         }
         match event {
-            Event::Start(Tag::HtmlBlock) | Event::Start(Tag::MetadataBlock(_)) => skip = 1,
+            Event::Start(Tag::MetadataBlock(_)) => skip = 1,
             Event::Start(Tag::FootnoteDefinition(_)) => skip = 1,
             Event::Start(tag) => {
                 let kind = match tag {
-                    Tag::Paragraph => Kind::Paragraph,
+                    Tag::Paragraph | Tag::HtmlBlock => Kind::Paragraph,
                     Tag::Heading { level, .. } => Kind::Heading(heading(level)),
                     Tag::BlockQuote(_) => Kind::Quote,
                     Tag::CodeBlock(CodeBlockKind::Fenced(info)) => {
@@ -188,9 +222,13 @@ fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
                 if end == TagEnd::TableHead {
                     in_head = false;
                 }
-                if let Some((kind, children)) = stack.pop()
+                if let Some((kind, mut children)) = stack.pop()
                     && let Some((_, parent)) = stack.last_mut()
                 {
+                    // Raw HTML's last line ends with a newline that separates nothing.
+                    if end == TagEnd::HtmlBlock && children.last() == Some(&Node::Newline) {
+                        children.pop();
+                    }
                     parent.extend(around_pieces(kind, children));
                 }
             }
@@ -202,11 +240,19 @@ fn parse(source: &str, markers: &[usize]) -> Vec<Node> {
                 let parent = &mut stack.last_mut().expect("root").1;
                 split(&code, &mut pieces, parent, |run| Node::Code(run.to_owned()));
             }
-            Event::SoftBreak => stack
-                .last_mut()
-                .expect("root")
-                .1
-                .push(Node::Text(" ".to_owned())),
+            // Words, never markup; a piece's marker inside it goes undrawn.
+            Event::Html(html) | Event::InlineHtml(html) => {
+                let words: String = html.chars().filter(|ch| *ch != INLINE).collect();
+                let line = words.trim_end_matches('\n');
+                let parent = &mut stack.last_mut().expect("root").1;
+                if !line.is_empty() {
+                    parent.push(Node::Text(line.to_owned()));
+                }
+                if line.len() < words.len() {
+                    parent.push(Node::Newline);
+                }
+            }
+            Event::SoftBreak => stack.last_mut().expect("root").1.push(Node::Newline),
             Event::HardBreak => stack.last_mut().expect("root").1.push(Node::Break),
             Event::Rule => stack.last_mut().expect("root").1.push(Node::Rule),
             _ => {}
@@ -287,7 +333,7 @@ fn described(nodes: Vec<Node>) -> Vec<Node> {
         .flat_map(|node| match node {
             Node::Text(words) | Node::Code(words) => vec![Node::Text(words)],
             Node::Block(_, children) => described(children),
-            Node::Break => vec![Node::Text(" ".to_owned())],
+            Node::Break | Node::Newline => vec![Node::Text(" ".to_owned())],
             Node::Inline(piece) => vec![Node::Inline(piece)],
             Node::Rule => Vec::new(),
         })
@@ -330,6 +376,8 @@ fn draw(node: &Node, drawing: &Drawing) -> Element {
             .cloned()
             .unwrap_or_else(|| rsx! {}),
         Node::Break => rsx! { br {} },
+        Node::Newline if drawing.breaks => rsx! { br {} },
+        Node::Newline => rsx! { " " },
         Node::Rule => rsx! { hr { "data-prose": "" } },
         Node::Block(Kind::CodeBlock(language), children) => rsx! {
             CodeBlock {
@@ -435,22 +483,185 @@ mod tests {
     }
 
     #[test]
-    fn raw_html_and_unsafe_links_do_not_reach_the_page() {
+    fn raw_html_shows_as_words_and_unsafe_links_do_not_reach_the_page() {
         let nodes = parse(
-            "<script>x()</script>\n\n[open](javascript:x()) and [site](https://example.org)",
+            "<script>x()</script>\n\nThe <clinic-note> [open](javascript:x()) and [site](https://example.org)",
             &[],
         );
         assert_eq!(
             nodes,
+            vec![
+                Node::Block(Kind::Paragraph, vec![text("<script>x()</script>")]),
+                Node::Block(
+                    Kind::Paragraph,
+                    vec![
+                        text("The "),
+                        text("<clinic-note>"),
+                        text(" "),
+                        Node::Block(Kind::Unlinked, vec![text("open")]),
+                        text(" and "),
+                        Node::Block(Kind::Link("https://example.org".into()), vec![text("site")]),
+                    ]
+                ),
+            ]
+        );
+    }
+
+    #[test]
+    fn raw_html_across_lines_keeps_its_lines_apart() {
+        assert_eq!(
+            parse("<div>\nFirst line\nSecond line\n</div>", &[]),
             vec![Node::Block(
                 Kind::Paragraph,
                 vec![
-                    Node::Block(Kind::Unlinked, vec![text("open")]),
-                    text(" and "),
-                    Node::Block(Kind::Link("https://example.org".into()), vec![text("site")]),
+                    text("<div>"),
+                    Node::Newline,
+                    text("First line"),
+                    Node::Newline,
+                    text("Second line"),
+                    Node::Newline,
+                    text("</div>"),
                 ]
             )]
         );
+    }
+
+    fn drawn_message(words: &'static str) -> String {
+        #[derive(Clone, PartialEq, Props)]
+        struct Words {
+            words: &'static str,
+        }
+        fn app(props: Words) -> Element {
+            rsx! {
+                Prose {
+                    message: true,
+                    names: names(),
+                    parts: vec![ProsePart::Words(props.words.to_owned())],
+                }
+            }
+        }
+        let mut dom = VirtualDom::new_with_props(app, Words { words });
+        dom.rebuild_in_place();
+        dioxus_ssr::render(&dom)
+    }
+
+    #[test]
+    fn a_message_keeps_what_markdown_would_read_as_a_quote() {
+        for words in [
+            "> 180 mg/dL: call",
+            ">= 200 mg/dL\n> 180 mg/dL",
+            "   > 180 mg/dL",
+            "- > 180 mg/dL",
+            "> > 180 mg/dL",
+        ] {
+            let html = drawn_message(words);
+            assert!(!html.contains("<blockquote"), "{words}: {html}");
+            let shown = html.matches("&#62;").count() + html.matches("&gt;").count();
+            assert_eq!(
+                shown,
+                words.matches('>').count(),
+                "{words} lost a mark: {html}"
+            );
+        }
+    }
+
+    #[test]
+    fn a_message_keeps_the_marks_in_code_as_written() {
+        let html = drawn_message("```\n> 180\n```");
+        assert!(!html.contains('\\'), "{html}");
+    }
+
+    #[test]
+    fn prose_that_is_not_a_message_still_reads_a_quote() {
+        assert_eq!(
+            parse("> Feels well", &[]),
+            vec![Node::Block(
+                Kind::Quote,
+                vec![Node::Block(Kind::Paragraph, vec![text("Feels well")])]
+            )]
+        );
+    }
+
+    #[test]
+    fn raw_html_reaches_the_page_escaped() {
+        fn app() -> Element {
+            rsx! {
+                Prose {
+                    names: names(),
+                    parts: vec![ProsePart::Words("<script>x()</script>\n\nThe <img src=x onerror=y> dose".into())],
+                }
+            }
+        }
+        let mut dom = VirtualDom::new(app);
+        dom.rebuild_in_place();
+        let html = dioxus_ssr::render(&dom);
+        assert!(!html.contains("<script"), "{html}");
+        assert!(!html.contains("<img"), "{html}");
+        assert!(
+            html.contains("&#60;script") || html.contains("&lt;script"),
+            "{html}"
+        );
+    }
+
+    #[test]
+    fn a_piece_written_inside_raw_html_is_not_drawn() {
+        assert_eq!(
+            parsed(&[
+                ProsePart::Words("Before <b title=\"".into()),
+                piece(),
+                ProsePart::Words("\"> after ".into()),
+                piece(),
+            ]),
+            vec![Node::Block(
+                Kind::Paragraph,
+                vec![
+                    text("Before "),
+                    text("<b title=\"\">"),
+                    text(" after "),
+                    Node::Inline(1),
+                ]
+            )]
+        );
+    }
+
+    #[test]
+    fn a_single_newline_stands_as_a_break_only_in_a_message() {
+        fn drawn(message: bool) -> String {
+            #[derive(Clone, PartialEq, Props)]
+            struct Words {
+                message: bool,
+            }
+            fn app(words: Words) -> Element {
+                rsx! {
+                    Prose {
+                        names: names(),
+                        message: words.message,
+                        parts: vec![ProsePart::Words("Line one\nLine two".into())],
+                    }
+                }
+            }
+            let mut dom = VirtualDom::new_with_props(app, Words { message });
+            dom.rebuild_in_place();
+            dioxus_ssr::render(&dom)
+        }
+        assert!(drawn(true).contains("Line one<br"), "{}", drawn(true));
+        assert!(
+            drawn(false).contains("Line one Line two"),
+            "{}",
+            drawn(false)
+        );
+    }
+
+    #[test]
+    fn a_citation_marker_the_host_has_not_drawn_stays_as_its_words() {
+        let words: String = described(parse("[[patient_source|a|b]] stays", &[]))
+            .iter()
+            .map(|node| match node {
+                Node::Text(words) => words.as_str(),
+                _ => "",
+            })
+            .collect();
+        assert_eq!(words, "[[patient_source|a|b]] stays");
     }
 
     fn piece() -> ProsePart {

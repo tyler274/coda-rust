@@ -1131,7 +1131,7 @@ fn wait_card(
 /// Asks Coda to revise from the page: types into the revise field and
 /// presses its button, which names the revision on screen.
 fn ask_from_page(browser: &mut devtools::Browser, instruction: &str) {
-    browser.type_into("input.reply-review-instruction", instruction);
+    browser.type_into(".reply-review-instruction input", instruction);
     let deadline = Instant::now() + Duration::from_secs(5);
     while browser
         .page()

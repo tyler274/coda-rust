@@ -411,9 +411,8 @@ button.sidebar-expand { display: none; }
   gap: var(--space-2);
 }
 .patient-identity-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
-.formatted-message { display: grid; gap: var(--space-2); min-width: 0; }
-.formatted-paragraph { margin: 0; }
-.formatted-list { margin: 0; padding-left: 1.2em; }
+/* A physician's own words and a reply draft, exactly as written. */
+.literal-words { margin: 0; overflow-wrap: anywhere; white-space: pre-wrap; font: var(--type-body-md); }
 .conversation-empty { margin: 0; color: var(--ink); font: var(--type-title-sm); }
 .citation-unavailable { margin: 0; color: var(--muted); }
 /* A reading dialog reads at the page's one content width. */
@@ -428,13 +427,7 @@ button.sidebar-expand { display: none; }
   align-items: center;
   gap: var(--space-2);
 }
-.reply-review-instruction {
-  flex: 1 1 12rem;
-  min-width: 0;
-  min-height: var(--control-compact-height);
-  padding: 0 var(--space-3);
-  border-radius: var(--radius-pill);
-}
+.reply-review-instruction { flex: 1 1 12rem; min-width: 0; }
 @media (max-width: 720px) {
   .today-layout.has-schedule,
   .today-layout.has-schedule:has(.schedule-rail.is-collapsed) {
@@ -443,6 +436,7 @@ button.sidebar-expand { display: none; }
   }
   .patient-facts, .reply-review-actions, .reply-review-ask { align-items: stretch; }
   .reply-review-ask { flex-direction: column; }
+  .reply-review-instruction { flex-basis: auto; }
   .patient-identity-top { align-items: flex-start; }
 }
 

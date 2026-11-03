@@ -22,7 +22,7 @@ use ui::{
     ActionRow, Answer, ApprovalCard, ArtifactCard, AttachButton, Attachment, AttachmentState,
     Attachments, Author, Avatar, AvatarSize, Button, ButtonVariant, Card, Change, ChartHeader,
     Checkbox, Choice, CitationChip, CitationPreview, CodeBlock, Column, Combobox, Command,
-    CommandPalette, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
+    CommandPalette, CompactField, Comparison, ComparisonBars, Composer, ContextChip, ContextMenu,
     ConversationViewport, CopyButton, CopyWords, Count, DateField, DateKind, DateSeparator, Dialog,
     Dictation, Diff, DiffLine, DiffWords, Disclosure, DraftConflict, EmptyLine, EmptyState,
     FeedbackRating, FooterActions, Icon, IconName, IconTile, KeyHint, ListRow, LiveDot,
@@ -1621,6 +1621,10 @@ fn ButtonDemo() -> Element {
 const PROSE_BEFORE: &str = "## Recorded measurements\n\nPotassium was **5.4 mmol/L** on Tuesday";
 #[cfg(feature = "web")]
 const PROSE_AFTER: &str = ", up from 4.9 in September. Confirm the current reading with the patient.\n\n- Lisinopril 10 mg daily\n- Spironolactone 25 mg, *held* since October 2\n\n> Feels well, with no palpitations.\n\n| Date | Potassium |\n| --- | --- |\n| September 12 | 4.9 |\n| [October 28](https://example.org/results) | 5.4 |\n\nRecheck with a `BMP` next week.";
+/// Prose in a message: compact, keeping its line breaks.
+#[cfg(feature = "web")]
+const PROSE_MESSAGE: &str =
+    "Potassium is **5.4** today.\nRecheck on Friday.\n\n- Hold the supplement\n- Repeat the panel";
 
 #[cfg(feature = "web")]
 #[component]
@@ -1634,6 +1638,13 @@ fn ProseDemo() -> Element {
                     ProsePart::Inline(rsx! { CitationChip { index: 1, label: "Source 1: Basic metabolic panel" } }),
                     ProsePart::Words(PROSE_AFTER.to_owned()),
                 ],
+            }
+            Message { author: Author::Assistant, by: "Coda",
+                Prose {
+                    message: true,
+                    names: prose_names(),
+                    parts: vec![ProsePart::Words(PROSE_MESSAGE.to_owned())],
+                }
             }
         }
     }
@@ -2855,6 +2866,7 @@ fn InputsDemo() -> Element {
     let mut sharing = use_signal(|| [true, false, true]);
     let mut reach = use_signal(|| Some(0usize));
     let mut on = use_signal(|| true);
+    let mut instruction = use_signal(String::new);
     let mut email = use_signal(|| "dana@northside".to_owned());
     let mut phone = use_signal(String::new);
     let mut span = use_signal(|| 1usize);
@@ -3008,6 +3020,11 @@ fn InputsDemo() -> Element {
                 value: email(),
                 on_input: move |words| email.set(words),
                 error: (!email().contains('.')).then(|| "That address looks incomplete.".to_owned()),
+            }
+            CompactField {
+                label: "Tell Coda what to change",
+                value: instruction(),
+                on_input: move |words| instruction.set(words),
             }
         }
     }

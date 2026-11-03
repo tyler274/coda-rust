@@ -8,6 +8,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
+use axum::response::IntoResponse;
 use base64::Engine as _;
 use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -285,7 +286,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
             r#"new Promise(resolve => {{
             const old = {};
             const region = () => document.querySelector('[aria-label="Conversation"]');
-            const lines = () => [...(region()?.querySelectorAll('.formatted-message') ?? [])].map(m => m.textContent);
+            const lines = () => [...(region()?.querySelectorAll('.message') ?? [])].map(m => m.textContent);
             let seen = false;
             const check = () => {{
                 if (lines().some(t => t.includes(old))) seen = true;
@@ -1005,7 +1006,7 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     tab.wait_composer("", Duration::from_secs(10)).await;
     let lines = tab
         .eval(&format!(
-            "[...document.querySelectorAll('[aria-label=\"Conversation\"] .formatted-message')].filter(m => m.textContent.includes({})).length",
+            "[...document.querySelectorAll('[aria-label=\"Conversation\"] .message')].filter(m => m.textContent.includes({})).length",
             serde_json::to_string(second).unwrap()
         ))
         .await;
@@ -2090,6 +2091,433 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
         .await;
 }
 
+/// A reply using everything a physician's reply can hold: a kept line break, a list, words in angle
+/// brackets, a citation marker the page doesn't draw yet, and code and a table too wide for a phone.
+const RICH_REPLY: &str = "Potassium is **5.4** today.\nRecheck on Friday.\n\n- Hold the supplement\n- Repeat the panel\n\nThe order reads <clinic-note> and cites [[patient_source|a|b]].\n\n```sql\nselect patient, potassium, collected_at, reported_at, ordering_physician, performing_laboratory from basic_metabolic_panel;\n```\n\n| Collected | Potassium | Reference range | Performing laboratory | Ordering physician |\n| --- | --- | --- | --- | --- |\n| Tuesday morning | 5.4 mmol/L | 3.5 to 5.0 mmol/L | Synthetic Regional Laboratory | Synthetic Physician |\n";
+
+struct RichReply;
+
+impl local_product::codex::CodexExecutor for RichReply {
+    fn run(
+        &mut self,
+        _request: &local_product::codex::CodexRequest,
+    ) -> Result<local_product::codex::CodexProcessResult, String> {
+        Ok(local_product::codex::CodexProcessResult::authored(
+            RICH_REPLY,
+        ))
+    }
+}
+
+/// What the next conversation read meets, so the page's loading and error states can be reached.
+#[derive(Clone, Copy, PartialEq)]
+enum SnapshotGate {
+    Open,
+    Fails,
+    Held,
+}
+
+static SNAPSHOT: std::sync::Mutex<SnapshotGate> = std::sync::Mutex::new(SnapshotGate::Open);
+
+fn snapshot_gate() -> SnapshotGate {
+    *SNAPSHOT.lock().unwrap()
+}
+
+fn set_snapshot_gate(gate: SnapshotGate) {
+    *SNAPSHOT.lock().unwrap() = gate;
+}
+
+async fn gate_snapshot(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    if request.uri().path().ends_with("/snapshot") {
+        while snapshot_gate() == SnapshotGate::Held {
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        if snapshot_gate() == SnapshotGate::Fails {
+            return axum::http::StatusCode::INTERNAL_SERVER_ERROR.into_response();
+        }
+    }
+    next.run(request).await
+}
+
+/// Adds a ready reply holding `RICH_REPLY` to a workspace read: the simulation's own drafts are
+/// fixed wording and carry no revision, so they can't show code, a table or the revision field.
+async fn with_rich_draft(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    with_draft(request, next, RICH_REPLY).await
+}
+
+/// A draft whose first line is a threshold, which Markdown would read as a quote.
+const THRESHOLD_DRAFT: &str = "> 180 mg/dL: call the office.\n>= 200 mg/dL: go to the ED.";
+
+async fn with_threshold_draft(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    with_draft(request, next, THRESHOLD_DRAFT).await
+}
+
+async fn with_draft(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+    draft: &str,
+) -> axum::response::Response {
+    let path = request.uri().path().to_owned();
+    let response = next.run(request).await;
+    if path != format!("/patient-workspaces/{REVIEW_PATIENT}") {
+        return response;
+    }
+    let (mut parts, body) = response.into_parts();
+    let bytes = axum::body::to_bytes(body, usize::MAX).await.unwrap();
+    let mut workspace: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    workspace["replies"] = serde_json::json!([{
+        "reply_work_id": "reply-rich",
+        "patient_workspace_id": REVIEW_PATIENT,
+        "patient_display_name": "Jake Smith",
+        "channel": "spruce",
+        "headline": "Synthetic draft to review",
+        "draft_text": draft,
+        "urgency": "urgent_ed",
+        "created_at": "2026-08-27T12:05:00Z",
+        "state": "ready",
+        "draft_revision": 1,
+    }]);
+    parts.headers.remove(axum::http::header::CONTENT_LENGTH);
+    axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
+}
+
+const REVIEW_PATIENT: &str = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
+
+/// What the reply journeys do and read in the page.
+const REPLY_JOURNEY: &str = include_str!("reply_journey.js");
+
+const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";
+const CONVERSATION_REPLY: &str = "[aria-label=\"Conversation\"] .message-assistant";
+const REVIEW_FIELD: &str = ".reply-review-ask input";
+
+fn assert_rich(reply: &serde_json::Value, body_font: &str) {
+    let text = reply["text"].as_str().unwrap_or_default();
+    assert_eq!(reply["prose"], true, "not drawn by Prose: {reply}");
+    assert_eq!(reply["code"], true, "the code block is missing: {reply}");
+    assert_eq!(reply["table"], true, "the table is missing: {reply}");
+    assert_eq!(reply["list"], true, "the list is missing: {reply}");
+    assert!(
+        text.contains("today.\nRecheck on Friday."),
+        "the line break was lost: {text}"
+    );
+    assert!(
+        text.contains("<clinic-note>"),
+        "words in angle brackets were dropped: {text}"
+    );
+    assert!(
+        text.contains("[[patient_source|a|b]]"),
+        "the citation marker changed: {text}"
+    );
+    assert!(
+        reply["font"]
+            .as_str()
+            .unwrap_or_default()
+            .contains(body_font),
+        "the words changed size: {reply}"
+    );
+}
+
+/// In a real turn, a reply draws its code and table, and each scrolls by key where it can't fit.
+/// The conversation's empty, loading, error and recovery states are walked around it.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let state = env::temp_dir().join(format!("coda-rich-reply-{}", std::process::id()));
+    let _ = fs::remove_dir_all(&state);
+    fs::create_dir_all(&state).unwrap();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+        env::set_var("CODA_PHYSICIAN_SESSION_PATH", state.join("session.json"));
+        for key in [
+            "PHYSICIAN_AUTH",
+            "PHYSICIAN_AUTH_PROOF_TOKENS",
+            "PHYSICIAN_UPSTREAM",
+            "CODA_LOCAL_SIMULATION",
+        ] {
+            env::remove_var(key);
+        }
+    }
+    let transport = local_product::codex::CodexTransport::recording(
+        Box::new(RichReply),
+        "synthetic reply rendering test",
+        state.join("cassette.json"),
+    )
+    .unwrap();
+    set_snapshot_gate(SnapshotGate::Open);
+    let app = physician_sample::codex_chat_site(transport)
+        .layer(axum::middleware::from_fn(gate_snapshot));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+    let chrome = chromium();
+    let mut browser =
+        CdpBrowser::launch(&chrome, &format!("http://{address}/?patient={patient}")).await;
+    browser
+        .wait_for_text("This workspace has no chats.", Duration::from_secs(20))
+        .await;
+    browser
+        .journey(
+            "click",
+            serde_json::json!(["button.sidebar-new-conversation"]),
+        )
+        .await;
+    browser
+        .wait_for_text(
+            "What would you like Coda to review?",
+            Duration::from_secs(10),
+        )
+        .await;
+    browser
+        .save_pictures("thread-empty", ".conversation-empty")
+        .await;
+
+    browser
+        .type_composer("Please review **Friday**\nand the panel")
+        .await;
+    browser
+        .journey(
+            "clickNamed",
+            serde_json::json!([".composer-toolbar button", "Send"]),
+        )
+        .await;
+    browser
+        .wait_for_text("Recheck on Friday", Duration::from_secs(30))
+        .await;
+    browser
+        .save_pictures("thread-reply", ".message-assistant")
+        .await;
+
+    // Reached by reopening the conversation, as the page itself would.
+    set_snapshot_gate(SnapshotGate::Held);
+    browser.reload().await;
+    browser
+        .wait_for_text("Opening the conversation…", Duration::from_secs(20))
+        .await;
+    browser.save_pictures("thread-loading", ".composer").await;
+    set_snapshot_gate(SnapshotGate::Fails);
+    browser
+        .wait_for_text(
+            "Coda couldn’t open this conversation.",
+            Duration::from_secs(20),
+        )
+        .await;
+    browser.save_pictures("thread-error", ".composer").await;
+    set_snapshot_gate(SnapshotGate::Open);
+    browser
+        .journey(
+            "clickNamed",
+            serde_json::json!(["[aria-label=\"Conversation\"] button", "Try again"]),
+        )
+        .await;
+    browser
+        .wait_for_text("Recheck on Friday", Duration::from_secs(20))
+        .await;
+    browser
+        .save_pictures("thread-recovered", ".message-assistant")
+        .await;
+
+    // Physicians don't write Markdown, so their words show as they wrote them.
+    let person = browser
+        .journey(
+            "readText",
+            serde_json::json!([format!("{CONVERSATION_PERSON} p")]),
+        )
+        .await;
+    assert_eq!(
+        person.as_str(),
+        Some("Please review **Friday**\nand the panel"),
+        "the physician's own words read as Markdown"
+    );
+    let reply = browser
+        .journey("readReply", serde_json::json!([CONVERSATION_REPLY]))
+        .await;
+    assert_rich(&reply, "15px / 22px");
+
+    browser.set_viewport(390, 844, true).await;
+    // A table too wide for a phone scrolls; it doesn't split its words to fit.
+    let lines = browser
+        .journey(
+            "headerLines",
+            serde_json::json!([
+                format!("{CONVERSATION_REPLY} .prose-table-scroll"),
+                "Potassium"
+            ]),
+        )
+        .await;
+    assert_eq!(lines, 1, "a table header split across lines: {lines}");
+    for part in [".code-block-body", ".prose-table-scroll"] {
+        let target = format!("{CONVERSATION_REPLY} {part}");
+        browser.tab_to(&target).await;
+        browser.press_key("ArrowRight", 39).await;
+        browser.wait_for_scroll(&target, |left| left > 0.0).await;
+        browser.press_key("ArrowLeft", 37).await;
+        browser.wait_for_scroll(&target, |left| left == 0.0).await;
+    }
+    let _ = fs::remove_dir_all(&state);
+}
+
+/// A threshold at the start of a line reads as written, so the physician reviews what Copy sends.
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_draft_keeps_a_threshold_that_markdown_would_read_as_a_quote() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app = physician_sample::simulation_router()
+        .layer(axum::middleware::from_fn(with_threshold_draft));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(
+        &chrome,
+        &format!("http://{address}/?patient={REVIEW_PATIENT}"),
+    )
+    .await;
+    browser
+        .wait_for_text("Synthetic draft to review", Duration::from_secs(20))
+        .await;
+    let shown = browser
+        .journey("readText", serde_json::json!(["article.reply-review"]))
+        .await;
+    assert!(
+        shown
+            .as_str()
+            .is_some_and(|words| words.contains(THRESHOLD_DRAFT)),
+        "the review shows other words than the draft holds: {shown}"
+    );
+    let copied = browser
+        .journey(
+            "copied",
+            serde_json::json!(["[data-reply-action=\"copy\"]"]),
+        )
+        .await;
+    assert_eq!(copied.as_str(), Some(THRESHOLD_DRAFT));
+}
+
+/// A reply draft goes to a patient as plain text, so the review shows exactly what Copy sends, and
+/// the instruction to revise it takes keys as it did.
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app =
+        physician_sample::simulation_router().layer(axum::middleware::from_fn(with_rich_draft));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let chrome = chromium();
+    let mut browser = CdpBrowser::launch(
+        &chrome,
+        &format!("http://{address}/?patient={REVIEW_PATIENT}"),
+    )
+    .await;
+    browser
+        .wait_for_text("Synthetic draft to review", Duration::from_secs(20))
+        .await;
+    browser
+        .save_pictures("review-draft", "article.reply-review")
+        .await;
+    browser
+        .save_pictures("patient-summary-citations", "div.synopsis")
+        .await;
+
+    let copied = browser
+        .journey(
+            "copied",
+            serde_json::json!(["[data-reply-action=\"copy\"]"]),
+        )
+        .await;
+    assert_eq!(
+        copied.as_str(),
+        Some(RICH_REPLY),
+        "Copy no longer sends the draft's own words"
+    );
+    browser
+        .wait_for_text("Copied", Duration::from_secs(5))
+        .await;
+
+    let field = browser
+        .journey("field", serde_json::json!([REVIEW_FIELD]))
+        .await;
+    assert_eq!(
+        field["labelContained"], true,
+        "a hidden label reaches past its field and can scroll the page"
+    );
+    assert_eq!(
+        field["name"], field["placeholder"],
+        "the instruction is not named by what it asks: {field}"
+    );
+    // Stacked on a phone, the field takes only its own height.
+    browser.set_viewport(390, 844, true).await;
+    let stacked = browser
+        .journey("field", serde_json::json!([REVIEW_FIELD]))
+        .await;
+    browser.set_viewport(1440, 900, true).await;
+    assert_eq!(
+        stacked["hostHeight"], stacked["inputHeight"],
+        "the instruction field holds empty space on a phone: {stacked}"
+    );
+    browser.tab_to(REVIEW_FIELD).await;
+    browser
+        .call(
+            "Input.insertText",
+            serde_json::json!({ "text": "Make it shorter" }),
+        )
+        .await;
+    browser
+        .wait_for_text("Ask Coda", Duration::from_secs(5))
+        .await;
+    browser
+        .save_pictures("review-instruction", ".reply-review-ask")
+        .await;
+    browser.press_key("Enter", 13).await;
+    let cleared = browser
+        .journey("valueSoon", serde_json::json!([REVIEW_FIELD]))
+        .await;
+    assert_eq!(
+        cleared.as_str(),
+        Some(""),
+        "Enter did not ask for the revision"
+    );
+
+    let shown = browser
+        .journey("readText", serde_json::json!(["article.reply-review"]))
+        .await;
+    assert!(
+        shown
+            .as_str()
+            .is_some_and(|words| words.contains(RICH_REPLY.trim_end())),
+        "the review shows other words than Copy sends: {shown}"
+    );
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")
@@ -2825,6 +3253,132 @@ impl CdpBrowser {
             .and_then(|id| id.as_str())
             .expect("main frame document loader")
             .to_owned()
+    }
+
+    /// One real key press.
+    async fn press_key(&mut self, key: &str, code: u32) {
+        for kind in ["rawKeyDown", "keyUp"] {
+            self.call(
+                "Input.dispatchKeyEvent",
+                serde_json::json!({
+                    "type": kind,
+                    "key": key,
+                    "code": key,
+                    "windowsVirtualKeyCode": code,
+                    "nativeVirtualKeyCode": code,
+                }),
+            )
+            .await;
+        }
+        // Enter makes a character as well; the field's own handler reads it from `key`.
+    }
+
+    /// Runs one step of `reply_journey.js` with `args` as real arguments, and returns what it
+    /// answers. A step that throws fails the test.
+    async fn journey(&mut self, step: &str, args: serde_json::Value) -> serde_json::Value {
+        let global = self
+            .call(
+                "Runtime.evaluate",
+                serde_json::json!({ "expression": "globalThis" }),
+            )
+            .await;
+        let object = global["result"]["result"]["objectId"]
+            .as_str()
+            .expect("the page's global object");
+        let mut arguments = vec![serde_json::json!({ "value": step })];
+        arguments.extend(
+            args.as_array()
+                .expect("a step's arguments")
+                .iter()
+                .map(|arg| serde_json::json!({ "value": arg })),
+        );
+        let response = self
+            .call(
+                "Runtime.callFunctionOn",
+                serde_json::json!({
+                    "functionDeclaration": REPLY_JOURNEY,
+                    "objectId": object,
+                    "arguments": arguments,
+                    "returnByValue": true,
+                    "awaitPromise": true,
+                }),
+            )
+            .await;
+        assert!(
+            response["result"].get("exceptionDetails").is_none() && response.get("error").is_none(),
+            "journey step {step} failed: {response}"
+        );
+        response["result"]["result"]["value"].clone()
+    }
+
+    /// Presses Tab until the element `selector` names has focus.
+    async fn tab_to(&mut self, selector: &str) {
+        for _ in 0..120 {
+            self.press_key("Tab", 9).await;
+            let focused = self
+                .journey("hasFocus", serde_json::json!([selector]))
+                .await;
+            if focused == true {
+                return;
+            }
+        }
+        panic!("Tab never reached {selector}");
+    }
+
+    /// Waits out the browser's smooth scroll for `selector`'s scroll position to answer `arrived`.
+    async fn wait_for_scroll(&mut self, selector: &str, arrived: impl Fn(f64) -> bool) {
+        let deadline = Instant::now() + Duration::from_secs(5);
+        loop {
+            let left = self
+                .journey("scrollLeft", serde_json::json!([selector]))
+                .await;
+            if left.as_f64().is_some_and(&arrived) {
+                return;
+            }
+            assert!(
+                Instant::now() < deadline,
+                "{selector} never reached the scroll position it should: {left}"
+            );
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+    }
+
+    /// With `PHYSICIAN_PROOF_SHOTS` set, saves `state` scrolled to `anchor` at desktop and phone
+    /// sizes in light and dark, then returns the page to desktop light. The phone shots collapse
+    /// the sidebar first, which otherwise covers most of a phone's width.
+    async fn save_pictures(&mut self, state: &str, anchor: &str) {
+        let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") else {
+            return;
+        };
+        let folder = PathBuf::from(folder);
+        fs::create_dir_all(&folder).expect("the picture folder");
+        for (size, width, height) in [("desktop", 1440, 900), ("phone", 390, 844)] {
+            self.set_viewport(width, height, true).await;
+            if size == "phone" {
+                self.journey("collapseSidebar", serde_json::json!([])).await;
+                tokio::time::sleep(Duration::from_millis(400)).await;
+            }
+            for theme in ["light", "dark"] {
+                self.journey("setTheme", serde_json::json!([theme])).await;
+                self.journey("scrollToStart", serde_json::json!([anchor]))
+                    .await;
+                tokio::time::sleep(Duration::from_millis(400)).await;
+                let shot = self
+                    .call(
+                        "Page.captureScreenshot",
+                        serde_json::json!({"format": "png"}),
+                    )
+                    .await;
+                let png = base64::engine::general_purpose::STANDARD
+                    .decode(shot["result"]["data"].as_str().expect("a screenshot"))
+                    .expect("a screenshot in base64");
+                fs::write(folder.join(format!("{state}-{size}-{theme}.png")), png)
+                    .expect("the picture");
+            }
+        }
+        self.journey("expandSidebar", serde_json::json!([])).await;
+        self.set_viewport(1440, 900, true).await;
+        self.journey("setTheme", serde_json::json!(["light"])).await;
     }
 
     async fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {

@@ -208,6 +208,9 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+/* A field set among controls: a pill at a compact control's height. Positioned so its hidden label stays with it and can't reach past a scrolling host. */
+.compact-field { position: relative; min-width: 0; }
+.compact-field-input { display: block; width: 100%; min-width: 0; min-height: var(--control-compact-height); margin: 0; padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--ink); font: var(--type-body-md); }
 /* A combobox stands at a text field's height. */
 .search-field.combobox > input { min-height: 0; padding-block: var(--space-3); }
 /* A select is the platform's own, in the field's look, with the library's chevron. */
@@ -408,11 +411,13 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose .code-block { margin: var(--space-3) 0; }
 .prose > :first-child { margin-top: 0; }
 .prose > :last-child { margin-bottom: 0; }
-.prose p:where([data-prose]) { margin: 0 0 var(--space-3); color: inherit; font: inherit; text-wrap: pretty; }
+/* Words in a conversation or a card: smaller and closer, in the colour around them. */
+.prose.is-message { --prose-gap: var(--space-2); --prose-indent: 1.2em; color: inherit; font: var(--type-body-md); }
+.prose p:where([data-prose]) { margin: 0 0 var(--prose-gap, var(--space-3)); color: inherit; font: inherit; text-wrap: pretty; }
 .prose :is(h1, h2, h3, h4, h5, h6):where([data-prose]) { margin: var(--space-5) 0 var(--space-2); color: var(--ink); }
 .prose :is(h1, h2):where([data-prose]) { font: var(--type-title-lg); letter-spacing: var(--title-tracking); }
 .prose :is(h3, h4, h5, h6):where([data-prose]) { font: var(--type-title-sm); }
-.prose :is(ul, ol):where([data-prose]) { margin: var(--space-2) 0 var(--space-3); padding-left: 1.45em; }
+.prose :is(ul, ol):where([data-prose]) { margin: var(--space-2) 0 var(--prose-gap, var(--space-3)); padding-left: var(--prose-indent, 1.45em); }
 .prose li:where([data-prose]) { padding-left: .18em; }
 .prose li:where([data-prose]) + li { margin-top: var(--space-1); }
 .prose li:where([data-prose]) > p { margin-bottom: var(--space-1); }
@@ -426,7 +431,7 @@ button.source-trigger { cursor: pointer; transition: border-color var(--motion-p
 .prose hr:where([data-prose]) { margin: var(--space-5) 0; border: 0; border-top: var(--hairline) solid var(--outline-variant); }
 .prose-table-scroll { max-width: 100%; margin: var(--space-3) 0; overflow-x: auto; }
 .prose table:where([data-prose]) { width: 100%; min-width: 28em; border-collapse: collapse; font: var(--type-body-md); }
-.prose :is(th, td):where([data-prose]) { padding: var(--space-2); border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
+.prose :is(th, td):where([data-prose]) { padding: var(--space-2); overflow-wrap: normal; border: var(--hairline) solid var(--outline-variant); text-align: left; vertical-align: top; }
 .prose th:where([data-prose]) { color: var(--ink); font-weight: var(--weight-strong); }
 /* A table: things of one kind read across, in a frame that scrolls on its own; its head on the low surface, a hairline
    between rows, and figures on the trailing edge. A heading that sorts takes the whole of its cell, its chevron held in

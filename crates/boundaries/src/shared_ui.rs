@@ -127,8 +127,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/physician-app/src/lib.rs",
         kind: Input,
-        count: 2,
-        reason: "The sign-in email and the reply review instruction, which move to `TextField` with sign-in and the remaining controls.",
+        count: 1,
+        reason: "The sign-in email, which moves to `TextField` with sign-in.",
     },
     Entry {
         file: "crates/physician-app/src/lib.rs",

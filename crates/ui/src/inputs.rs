@@ -97,6 +97,51 @@ pub fn TextField(
     }
 }
 
+/// One line set among other controls: a pill at their height, whose `label` is what the empty
+/// field shows and what assistive technology calls it, so the two can't differ. It has no hint or
+/// error, having nowhere to say them. `class` places it in its host.
+#[component]
+pub fn CompactField(
+    label: String,
+    value: String,
+    on_input: EventHandler<String>,
+    #[props(default)] disabled: bool,
+    #[props(default)] class: String,
+    onkeydown: Option<EventHandler<KeyboardEvent>>,
+    onfocus: Option<EventHandler<FocusEvent>>,
+    onblur: Option<EventHandler<FocusEvent>>,
+) -> Element {
+    let id = use_hook(field_id);
+    rsx! {
+        div { class: "compact-field {class}",
+            label { class: "sr-only", r#for: "{id}", "{label}" }
+            input {
+                id: "{id}",
+                class: "field compact-field-input",
+                placeholder: "{label}",
+                value: "{value}",
+                disabled,
+                oninput: move |event| on_input.call(event.value()),
+                onkeydown: move |event| {
+                    if let Some(handler) = onkeydown {
+                        handler.call(event);
+                    }
+                },
+                onfocus: move |event| {
+                    if let Some(handler) = onfocus {
+                        handler.call(event);
+                    }
+                },
+                onblur: move |event| {
+                    if let Some(handler) = onblur {
+                        handler.call(event);
+                    }
+                },
+            }
+        }
+    }
+}
+
 /// One choice that is on or off: a checkbox, its words and a quieter detail on what choosing it
 /// includes, the whole row pressing it. `mixed` says some of what it stands for is chosen, as for a
 /// box over a list; pressing it asks for all.
