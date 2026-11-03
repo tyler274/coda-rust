@@ -442,10 +442,14 @@ mod tests {
     fn exact_reads_are_pinned_workspace_scoped_and_refuse_effects() {
         let source = SourceRevision {
             workspace: "w".into(),
+            source_id: "ehr".into(),
             candidate_id: "pinned".into(),
             revision: "v1".into(),
+            record_type: "note".into(),
+            dates: vec![],
             content: "hello".into(),
             sha256: "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824".into(),
+            readable_parts: vec![],
             provenance: json!({"owner": "test-source"}),
         };
         let mut call = Call {

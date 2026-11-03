@@ -40,20 +40,18 @@ async fn sign_in_and_sign_out_walk_the_browser() {
     browser.resize(DESKTOP);
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
-    let text = browser.wait_for("Mary Louis");
+    let text = browser.wait_for(SIGNED_IN);
     assert!(
         text.contains("Today"),
         "a signed-in Today did not show the practice:\n{text}"
     );
 
-    // The panel workspace opens inside the running app: clicking the Today
-    // schedule visit keeps the in-memory bearer session, so the workspace
-    // reads clinically. A full navigation would reload the app and drop it.
-    browser.click(r#"button[aria-label="Open Mary Louis"]"#);
-    let text = browser.wait_for("Patient summary");
+    // The panel workspace opens inside the running app: Find patient keeps
+    // the bearer session in the page, so the workspace reads in full.
+    let text = open_mary(&mut browser);
     assert!(
         text.contains("Age 54 years"),
-        "the panel workspace did not read clinically:\n{text}"
+        "the panel workspace did not read in full:\n{text}"
     );
 
     // Sign out: the app returns to the sign-in screen immediately.
@@ -130,12 +128,18 @@ const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app
      return !!prompt && !!shell && prompt.contains(top) \
          && shell.getAttribute('aria-hidden') === 'true' && shell.hasAttribute('inert'); })()";
 
+/// What a signed-in Today says while nothing waits.
+const SIGNED_IN: &str = "Nothing needs you right now.";
+
+/// What every patient's page says.
+const PATIENT_PAGE: &str = "Records as of";
+
 const FIND_PATIENT_OPEN: &str = "[...document.querySelectorAll('dialog[open]')]\
      .some((dialog) => dialog.innerText.includes('Find patient'))";
 
 const RESUMED_ON_THE_PATIENT: &str = "!document.querySelector('.session-prompt') \
      && !document.querySelector('.glass-app').hasAttribute('inert') \
-     && document.body.innerText.includes('Patient summary')";
+     && document.body.innerText.includes('Records as of')";
 
 /// Another tab redeems a link: a fresh session for the staging account,
 /// stored with `owner` as its owner. `then` runs once it is stored.
@@ -175,14 +179,13 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     );
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
-    browser.wait_for("Mary Louis");
+    browser.wait_for(SIGNED_IN);
     wait_until(
         &mut browser,
         "window.__news.some((news) => news.kind === 'changed')",
         "the sign-in reaching other tabs",
     );
-    browser.click(r#"button[aria-label="Open Mary Louis"]"#);
-    browser.wait_for("Patient summary");
+    open_mary(&mut browser);
 
     // The session ends: the prompt covers the patient page, which stays put.
     browser.page().evaluate(END_THE_SESSION);
@@ -258,7 +261,7 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     ));
     let text = browser.wait_for("Sign in to Coda");
     assert!(
-        !text.contains("Patient summary"),
+        !text.contains("Records as of"),
         "signing out elsewhere left the patient showing:\n{text}"
     );
 }
@@ -302,7 +305,7 @@ async fn a_sign_out_answered_after_you_signed_in_again_elsewhere_keeps_the_new_s
     assert!(
         browser
             .body_text()
-            .is_some_and(|text| !text.contains("Sign in to Coda") && text.contains("Mary Louis")),
+            .is_some_and(|text| !text.contains("Sign in to Coda") && text.contains(SIGNED_IN)),
         "the late sign-out undid the new sign-in"
     );
 }
@@ -311,7 +314,16 @@ fn sign_in(browser: &mut Browser, base: &str) {
     browser.text_until(base, "Sign in to Coda");
     browser.type_into(".sign-in-input", STAGING_EMAIL);
     browser.click(".sign-in-primary");
-    browser.wait_for("Mary Louis");
+    browser.wait_for(SIGNED_IN);
+}
+
+/// Finds Mary Louis from the open app; returns her page's text.
+fn open_mary(browser: &mut Browser) -> String {
+    browser.click(r#"button[aria-label="Find patient"]"#);
+    browser.type_into(".search-field input", "Mary");
+    browser.wait_for("DOB");
+    browser.click(".dialog-results button");
+    browser.wait_for(PATIENT_PAGE)
 }
 
 /// The session this browser holds.

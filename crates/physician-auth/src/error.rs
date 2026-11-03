@@ -18,6 +18,10 @@ pub enum SignInError {
     Inactive,
 }
 
+/// The store could not answer, so the caller must not assume an answer.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct StoreUnavailable;
+
 /// Why a panel assignment failed.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PanelError {
@@ -25,4 +29,6 @@ pub enum PanelError {
     Forbidden,
     /// The target physician does not belong to the caller's practice.
     UnknownTarget,
+    /// The store could not record the assignment.
+    Unavailable,
 }

@@ -685,7 +685,8 @@ pub fn unix_now() -> u64 {
         .unwrap_or_default()
 }
 
-/// Creates the staging physician the site's local sign-in accepts.
+/// Creates the staging physician the site's local sign-in accepts, with the
+/// fixture patients on their panel.
 pub async fn staging_account(url: &str) {
     let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
         .await
@@ -700,6 +701,12 @@ pub async fn staging_account(url: &str) {
     )
     .await
     .expect("staging account");
+    let runtime = local_product::runtime::Store::connect(url)
+        .await
+        .expect("runtime store");
+    physician_sample::patients::enroll_fixture(&auth, &runtime)
+        .await
+        .expect("fixture patients");
 }
 
 /// Signs the staging physician in on a non-hosted site; returns the bearer.

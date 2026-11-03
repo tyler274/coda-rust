@@ -56,9 +56,11 @@ async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
         chat: id,
     };
     auth.register_patient(&scope.practice, &scope.workspace)
-        .await;
+        .await
+        .unwrap();
     auth.set_membership(&identity, &scope.workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     store
         .accept_authorized(
             &scope,
@@ -138,6 +140,7 @@ async fn auth_revocation_and_publication_use_conflicting_real_row_locks() {
                 "panel" => {
                     auth.set_membership(&identity, &workspace, Membership::Denied)
                         .await
+                        .unwrap();
                 }
                 _ => {
                     assert!(auth.deactivate(&email).await);

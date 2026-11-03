@@ -100,9 +100,11 @@ async fn accepted(store: &Store, auth: &PostgresAuthStore) -> Scope {
         chat: id,
     };
     auth.register_patient(&scope.practice, &scope.workspace)
-        .await;
+        .await
+        .unwrap();
     auth.set_membership(&identity, &scope.workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     store
         .accept_authorized(
             &scope,
@@ -300,9 +302,11 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
             chat: id,
         };
         auth.register_patient(&scope.practice, &scope.workspace)
-            .await;
+            .await
+            .unwrap();
         auth.set_membership(&identity, &scope.workspace, Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
         store
             .accept_authorized(
                 &scope,

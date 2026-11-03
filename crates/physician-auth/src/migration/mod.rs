@@ -27,6 +27,9 @@ pub mod patient;
 pub mod patient_link;
 
 #[allow(missing_docs)]
+pub mod practice;
+
+#[allow(missing_docs)]
 pub mod session;
 
 #[allow(missing_docs)]
@@ -41,6 +44,7 @@ pub use patient::Model as PatientRow;
 pub use patient::{ActiveModel as PatientActiveModel, Entity as Patients};
 pub use patient_link::Model as PatientLinkRow;
 pub use patient_link::{ActiveModel as PatientLinkActiveModel, Entity as PatientLinks};
+pub use practice::{ActiveModel as PracticeActiveModel, Entity as Practices};
 pub use session::Model as SessionRow;
 pub use session::{ActiveModel as SessionActiveModel, Entity as Sessions};
 pub use sign_in_token::Model as SignInTokenRow;
@@ -60,6 +64,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20260101_000002_practice_patients),
             Box::new(m20261023_000003_unique_physician_identity),
             Box::new(m20261024_000004_authority_notify),
+            Box::new(m20261030_000005_practices),
         ]
     }
 }
@@ -572,6 +577,45 @@ impl MigrationTrait for m20261023_000003_unique_physician_identity {
 ///
 /// Raw SQL by exception: SeaQuery has no trigger or PL/pgSQL builder. The
 /// statements carry no runtime values.
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261030_000005_practices;
+impl MigrationName for m20261030_000005_practices {
+    fn name(&self) -> &str {
+        "physician_auth_20261030_000005_practices"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261030_000005_practices {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .create_table(
+                Table::create()
+                    .table(Practices)
+                    .col(
+                        ColumnDef::new(practice::Column::PracticeId)
+                            .string()
+                            .not_null()
+                            .primary_key(),
+                    )
+                    .col(ColumnDef::new(practice::Column::FixedTime).big_integer())
+                    .col(
+                        ColumnDef::new(practice::Column::CreatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .drop_table(Table::drop().table(Practices).to_owned())
+            .await
+    }
+}
+
 #[allow(non_camel_case_types, missing_docs)]
 pub struct m20261024_000004_authority_notify;
 impl MigrationName for m20261024_000004_authority_notify {

@@ -15,7 +15,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::time::{Duration, Instant};
 
 /// An empty schema-1 Codex cassette. Replay answers no request from it.
-const EMPTY_CASSETTE: &str = r#"{
+pub const EMPTY_CASSETTE: &str = r#"{
   "schema_version": 1,
   "cassette_id": "physician-sample-browser-tests",
   "recorded_at": "2026-01-01T00:00:00Z",
@@ -39,8 +39,8 @@ impl Drop for IsolatedServer {
     }
 }
 
-/// Starts `physician_sample::serve` on a fresh port with an isolated session
-/// and replay execution. `configure` sets the test's own variables. Startup is
+/// Starts the site on a fresh port with an isolated session, replay execution
+/// and the fixture patients. `configure` sets the test's own variables. Startup is
 /// serialized and waits for an HTTP answer, so the server has read the
 /// environment before another test changes it.
 pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
@@ -94,7 +94,8 @@ pub async fn serve_isolated(configure: impl FnOnce()) -> IsolatedServer {
 
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { physician_sample::serve(listener).await });
+    let patients = physician_sample::patients::MemoryPatients::fixture();
+    tokio::spawn(async move { physician_sample::serve_holding(listener, patients).await });
     wait_until_serving(address).await;
     IsolatedServer { address, state }
 }

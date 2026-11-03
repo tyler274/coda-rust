@@ -83,7 +83,7 @@ async fn router(
             .expect("front-door store"),
     );
     let router = physician_sample::authed_router_on(
-        physician_sample::recorded(),
+        physician_sample::fixture_site(),
         std::sync::Arc::clone(&auth),
         std::sync::Arc::clone(&front_door),
     )

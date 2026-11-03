@@ -6,12 +6,13 @@
 use std::time::Duration;
 
 use crate::migration::{
-    Accounts, Invitations, Memberships, PatientLinks, Patients, Sessions, SignInTokens,
+    Accounts, Invitations, Memberships, PatientLinks, Patients, Practices, Sessions, SignInTokens,
 };
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, ReviewCadence, SESSION_TTL_SECONDS, SIGN_IN_TOKEN_TTL_SECONDS, SessionError,
-    SignInError, mint_patient_token, mint_token, token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SESSION_TTL_SECONDS,
+    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, StoreUnavailable, mint_patient_token,
+    mint_token, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -391,13 +392,12 @@ impl AuthStore for PostgresAuthStore {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
     ) -> Membership {
-        let patient_row = Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten();
-        if let Some(ref row) = patient_row
-            && row.practice_id != identity.practice_id
+        let Ok(owner) = self.patient_practice(patient_workspace_id).await else {
+            return Membership::Denied;
+        };
+        if owner
+            .as_deref()
+            .is_some_and(|owner| owner != identity.practice_id)
         {
             return Membership::Denied;
         }
@@ -415,7 +415,7 @@ impl AuthStore for PostgresAuthStore {
         if panel_allowed {
             return Membership::Allowed;
         }
-        if patient_row.is_some_and(|row| row.practice_id == identity.practice_id) {
+        if owner.as_deref() == Some(identity.practice_id.as_str()) {
             return Membership::ClinicDemographic;
         }
         Membership::Denied
@@ -426,10 +426,10 @@ impl AuthStore for PostgresAuthStore {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
         membership: Membership,
-    ) {
+    ) -> Result<(), StoreUnavailable> {
         if membership == Membership::ClinicDemographic {
             self.register_patient(&identity.practice_id, patient_workspace_id)
-                .await;
+                .await?;
         }
         let allowed = membership == Membership::Allowed;
         let existing = Memberships::find()
@@ -439,12 +439,13 @@ impl AuthStore for PostgresAuthStore {
                 crate::migration::membership::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
             .one(&self.db)
-            .await;
+            .await
+            .map_err(|_| StoreUnavailable)?;
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map(|since| since.as_secs())
             .unwrap_or(0) as i64;
-        let _ = match existing.ok().flatten() {
+        match existing {
             Some(row) => {
                 let mut update: crate::migration::MembershipActiveModel = row.into();
                 update.allowed = Set(allowed);
@@ -462,7 +463,43 @@ impl AuthStore for PostgresAuthStore {
                 .insert(&self.db)
                 .await
             }
+        }
+        .map(|_| ())
+        .map_err(|_| StoreUnavailable)
+    }
+
+    async fn place_on_panel(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|since| since.as_secs())
+            .unwrap_or(0) as i64;
+        let place = crate::migration::MembershipActiveModel {
+            id: Default::default(),
+            practice_id: Set(identity.practice_id.clone()),
+            physician_id: Set(identity.physician_id.clone()),
+            patient_workspace_id: Set(patient_workspace_id.to_owned()),
+            allowed: Set(true),
+            created_at: Set(now),
         };
+        Memberships::insert(place)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::columns([
+                    crate::migration::membership::Column::PracticeId,
+                    crate::migration::membership::Column::PhysicianId,
+                    crate::migration::membership::Column::PatientWorkspaceId,
+                ])
+                .do_nothing()
+                .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await
+            .map(|_| ())
+            .map_err(|_| StoreUnavailable)
     }
 
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
@@ -511,54 +548,101 @@ impl AuthStore for PostgresAuthStore {
         if self.account_by_identity(&target).await.is_none() {
             return Err(PanelError::UnknownTarget);
         }
-        if self
+        let owner = self
             .patient_practice(patient_workspace_id)
             .await
-            .is_some_and(|owner| owner != actor.practice_id)
-        {
+            .map_err(|_| PanelError::Unavailable)?;
+        if owner.is_some_and(|owner| owner != actor.practice_id) {
             return Err(PanelError::UnknownTarget);
         }
         self.set_membership(&target, patient_workspace_id, membership)
-            .await;
-        Ok(())
+            .await
+            .map_err(|_| PanelError::Unavailable)
     }
 
-    async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
-        let existing = Patients::find_by_id(patient_workspace_id.to_owned())
-            .one(&self.db)
-            .await
-            .ok()
-            .flatten();
+    async fn register_patient(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable> {
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .map(|since| since.as_secs())
             .unwrap_or(0) as i64;
-        let _ = match existing {
-            Some(row) => {
-                let mut update: crate::migration::PatientActiveModel = row.into();
-                update.practice_id = Set(practice_id.to_owned());
-                update.update(&self.db).await
-            }
-            None => {
-                crate::migration::PatientActiveModel {
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    practice_id: Set(practice_id.to_owned()),
-                    cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
-                    created_at: Set(now),
-                }
-                .insert(&self.db)
-                .await
-            }
+        let patient = crate::migration::PatientActiveModel {
+            patient_workspace_id: Set(patient_workspace_id.to_owned()),
+            practice_id: Set(practice_id.to_owned()),
+            cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
+            created_at: Set(now),
         };
+        Patients::insert(patient)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::patient::Column::PatientWorkspaceId,
+                )
+                .do_nothing()
+                .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await
+            .map(|_| ())
+            .map_err(|_| StoreUnavailable)
     }
 
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|since| since.as_secs())
+            .unwrap_or(0) as i64;
+        let fixed_time = match clock {
+            PracticeClock::RealTime => None,
+            PracticeClock::Fixed(instant) => Some(instant as i64),
+        };
+        let practice = crate::migration::PracticeActiveModel {
+            practice_id: Set(practice_id.to_owned()),
+            fixed_time: Set(fixed_time),
+            created_at: Set(now),
+        };
+        Practices::insert(practice)
+            .on_conflict(
+                sea_orm::sea_query::OnConflict::column(
+                    crate::migration::practice::Column::PracticeId,
+                )
+                .do_nothing()
+                .to_owned(),
+            )
+            .try_insert()
+            .exec(&self.db)
+            .await
+            .map(|_| ())
+            .map_err(|_| StoreUnavailable)
+    }
+
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
+        let practice = Practices::find_by_id(practice_id.to_owned())
+            .one(&self.db)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(match practice.and_then(|row| row.fixed_time) {
+            Some(instant) => PracticeClock::Fixed(instant as u64),
+            None => PracticeClock::RealTime,
+        })
+    }
+
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable> {
         Patients::find_by_id(patient_workspace_id.to_owned())
             .one(&self.db)
             .await
-            .ok()
-            .flatten()
-            .map(|row| row.practice_id)
+            .map(|row| row.map(|row| row.practice_id))
+            .map_err(|_| StoreUnavailable)
     }
 
     async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
@@ -574,17 +658,17 @@ impl AuthStore for PostgresAuthStore {
         workspaces
     }
 
-    async fn practice_accounts(&self, practice_id: &str) -> Vec<Account> {
+    async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
         let mut accounts: Vec<Account> = Accounts::find()
             .filter(crate::migration::account::Column::PracticeId.eq(practice_id))
             .all(&self.db)
             .await
-            .unwrap_or_default()
+            .map_err(|_| StoreUnavailable)?
             .into_iter()
             .map(Self::account_row)
             .collect();
         accounts.sort();
-        accounts
+        Ok(accounts)
     }
 
     async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {

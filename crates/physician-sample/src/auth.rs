@@ -38,13 +38,21 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
+use local_product::codex::format_rfc3339;
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
-    PhysicianIdentity, PostgresAuthStore, ReviewCadence, SessionError, SignInError,
+    PhysicianIdentity, PostgresAuthStore, PracticeClock, ReviewCadence, SessionError, SignInError,
+    StoreUnavailable,
 };
 
-/// The staging practice the recorded fixture workspaces are seeded into by default.
+use crate::patients::{MemoryPatients, PatientDirectory, enroll_in_memory, read_patient};
+
+/// The staging practice the synthetic charts load into.
 pub const STAGING_PRACTICE_ID: &str = "roger-synthetic-practice";
+
+/// The clock the synthetic practice is created with: 2026-08-27 noon Eastern,
+/// the moment its charts end.
+pub(crate) const SYNTHETIC_PRACTICE_CLOCK: PracticeClock = PracticeClock::Fixed(1_787_846_400);
 
 /// Unix seconds now.
 pub fn now() -> u64 {
@@ -81,6 +89,8 @@ pub(crate) struct Auth {
     /// The Duet front door this practice invites patients through. One
     /// store serves every practice; isolation is enforced per request.
     pub(crate) front_door: Arc<dyn FrontDoorStore>,
+    /// What each source last delivered about the practice's patients.
+    pub(crate) patients: Arc<dyn PatientDirectory>,
     /// Workspace invalidation bus shared with chat execution. `live::events`
     /// is the only SSE encoder; the guard filters that stream and does not
     /// subscribe again. Session revocation still arrives on the Postgres
@@ -88,18 +98,16 @@ pub(crate) struct Auth {
     pub(crate) events: Arc<dyn physician_bus::Bus>,
 }
 
-/// Registers the recorded practice's five workspaces to `STAGING_PRACTICE_ID`
-/// (if not already registered to a practice) and places every active admin in
-/// that practice on their panel, along with the preview identity
-/// `staging-physician`. Runs before the router is built so a workspace check
-/// never races its grant. A later start asserts the same panel again. A
-/// deactivated admin is left off it.
-async fn seed_staging(store: &dyn AuthStore) {
+/// The physicians whose panels start with every patient of the staging practice:
+/// the preview identity and each active admin.
+pub(crate) async fn staging_panel(
+    store: &dyn AuthStore,
+) -> Result<Vec<PhysicianIdentity>, StoreUnavailable> {
     let mut identities = vec![PhysicianIdentity {
         practice_id: STAGING_PRACTICE_ID.to_owned(),
         physician_id: "staging-physician".to_owned(),
     }];
-    for account in store.practice_accounts(STAGING_PRACTICE_ID).await {
+    for account in store.practice_accounts(STAGING_PRACTICE_ID).await? {
         if account.active
             && account.admin
             && !identities
@@ -109,64 +117,60 @@ async fn seed_staging(store: &dyn AuthStore) {
             identities.push(account.identity);
         }
     }
-    for workspace in super::WORKSPACE_IDS {
-        if store.patient_practice(workspace).await.is_none() {
-            store.register_patient(STAGING_PRACTICE_ID, workspace).await;
-        }
-        if store.patient_practice(workspace).await.as_deref() == Some(STAGING_PRACTICE_ID) {
-            for identity in &identities {
+    Ok(identities)
+}
+
+/// Creates the synthetic practice and registers the fixture patients on
+/// `store`, on the staging panel, as a load does. A patient another practice
+/// holds stays with that practice.
+async fn register_fixture_patients(store: &dyn AuthStore) {
+    store
+        .ensure_practice(STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK)
+        .await
+        .expect("create the synthetic practice");
+    let panel = staging_panel(store).await.expect("read the staging panel");
+    for workspace in crate::WORKSPACE_IDS {
+        store
+            .register_patient(STAGING_PRACTICE_ID, workspace)
+            .await
+            .expect("register a fixture patient");
+        let owner = store
+            .patient_practice(workspace)
+            .await
+            .expect("read a fixture patient's practice");
+        if owner.as_deref() == Some(STAGING_PRACTICE_ID) {
+            for identity in &panel {
                 store
                     .set_membership(identity, workspace, Membership::Allowed)
-                    .await;
+                    .await
+                    .expect("place a fixture patient on the panel");
             }
         }
     }
 }
 
 impl Auth {
-    /// Builds the auth state on one pair of stores after seeding the
-    /// staging access. The front door is chosen beside the auth store:
-    /// Postgres rides the same database URL, memory rides local runs.
-    pub(crate) async fn on(
-        store: Arc<dyn AuthStore>,
-        front_door: Arc<dyn FrontDoorStore>,
-    ) -> Arc<Self> {
-        Self::with_bus(
-            store,
-            front_door,
-            Arc::new(physician_bus::LocalBus::new(64)),
-        )
-        .await
-    }
-
-    /// Same stores as [`Self::on`], publishing on a caller-owned bus.
-    /// Sign-in stays in proof mode.
-    pub(crate) async fn with_bus(
-        store: Arc<dyn AuthStore>,
-        front_door: Arc<dyn FrontDoorStore>,
-        events: Arc<dyn physician_bus::Bus>,
-    ) -> Arc<Self> {
-        Self::configured(store, front_door, events, crate::gmail::Delivery::Proof).await
-    }
-
-    /// Stores, a workspace bus, and one mail delivery.
+    /// Stores, a workspace bus, and one mail delivery. The front door and the
+    /// patient directory are chosen beside the auth store: Postgres rides the
+    /// same database URL, memory rides local runs.
     ///
     /// [`Delivery::Proof`](crate::gmail::Delivery::Proof) is what local runs
     /// and tests use. The process entrypoint passes
     /// [`Delivery::from_env`](crate::gmail::Delivery::from_env) so a configured
     /// mail transport switches the same routes to hosted mail.
-    pub(crate) async fn configured(
+    pub(crate) fn configured(
         store: Arc<dyn AuthStore>,
         front_door: Arc<dyn FrontDoorStore>,
+        patients: Arc<dyn PatientDirectory>,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Arc<Self> {
-        seed_staging(&*store).await;
         Arc::new(Self {
             store,
             publication: tokio::sync::Mutex::new(()),
             delivery: std::sync::Mutex::new(Vec::new()),
             front_door,
+            patients,
             events,
             mail,
         })
@@ -176,6 +180,7 @@ impl Auth {
     #[cfg(test)]
     pub(crate) async fn memory() -> Arc<Self> {
         Self::memory_with(
+            Arc::default(),
             Arc::new(physician_bus::LocalBus::new(64)),
             crate::gmail::Delivery::Proof,
         )
@@ -183,6 +188,7 @@ impl Auth {
     }
 
     async fn memory_with(
+        patients: Arc<MemoryPatients>,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Arc<Self> {
@@ -194,12 +200,36 @@ impl Auth {
             "Staging Physician",
             true,
         );
-        Self::configured(store, Arc::new(MemoryFrontDoorStore::new()), events, mail).await
+        enroll_in_memory(&store, &patients).await;
+        Self::configured(
+            store,
+            Arc::new(MemoryFrontDoorStore::new()),
+            patients,
+            events,
+            mail,
+        )
     }
 
-    /// Postgres auth on a caller-owned bus. Does not migrate.
+    /// Auth over the fixture patients, registered on `store`.
+    pub(crate) async fn over_fixture(
+        store: Arc<dyn AuthStore>,
+        front_door: Arc<dyn FrontDoorStore>,
+    ) -> Arc<Self> {
+        register_fixture_patients(&*store).await;
+        Self::configured(
+            store,
+            front_door,
+            MemoryPatients::fixture(),
+            Arc::new(physician_bus::LocalBus::new(64)),
+            crate::gmail::Delivery::Proof,
+        )
+    }
+
+    /// Postgres auth on a caller-owned bus, reading patients through the
+    /// process's `runtime` store. Does not migrate.
     pub(crate) async fn postgres_with_bus(
         database_url: &str,
+        runtime: local_product::runtime::Store,
         events: Arc<dyn physician_bus::Bus>,
         mail: crate::gmail::Delivery,
     ) -> Result<Arc<Self>, String> {
@@ -220,7 +250,13 @@ impl Auth {
         // Authority reads are answered from memory between changes; the
         // database trigger feed invalidates them across replicas.
         let store = CachedAuthStore::postgres(store);
-        Ok(Self::configured(Arc::new(store), Arc::new(front_door), events, mail).await)
+        Ok(Self::configured(
+            Arc::new(store),
+            Arc::new(front_door),
+            Arc::new(runtime),
+            events,
+            mail,
+        ))
     }
 }
 
@@ -292,6 +328,7 @@ pub(crate) async fn guard(
     next: Next,
 ) -> Response {
     request.extensions_mut().insert(Arc::clone(&auth.store));
+    request.extensions_mut().insert(Arc::clone(&auth.patients));
     if !guarded(request.uri().path()) {
         return next.run(request).await;
     }
@@ -395,10 +432,7 @@ pub(crate) async fn guard(
                 return enrich_allowed_workspace(response, cadence).await;
             }
             Membership::ClinicDemographic => {
-                if let Some(raw) = crate::workspace_body(workspace) {
-                    return clinic_demographics(raw);
-                }
-                return not_found();
+                return clinic_demographics(&auth, &identity, workspace).await;
             }
             Membership::Denied => return not_found(),
         }
@@ -423,8 +457,7 @@ pub(crate) async fn guard(
         return guard_event_stream(response, auth, token, identity, watched_workspace).await;
     }
 
-    let response = next.run(Request::from_parts(parts, body)).await;
-    filter_projection_response(&path, query.as_deref(), response, &auth, &identity).await
+    next.run(Request::from_parts(parts, body)).await
 }
 
 /// The largest command body the guard reads to resolve its workspace.
@@ -475,138 +508,22 @@ async fn enrich_allowed_workspace(response: Response, cadence: ReviewCadence) ->
 /// not on the caller's panel: identity demographics are preserved while
 /// clinical synopsis, citations, chats, follow-ups, source handles, and
 /// review cadence stay omitted.
-fn clinic_demographics(raw: &str) -> Response {
-    let value: Value = serde_json::from_str(raw).expect("recorded workspace fixture");
-    let identity = value.get("identity").map(|id| {
-        json!({
-            "display_name": id.get("display_name").cloned().unwrap_or(Value::Null),
-            "birth_date": id.get("birth_date").cloned().unwrap_or(Value::Null),
-            "age_years": id.get("age_years").cloned().unwrap_or(Value::Null),
-            "age_as_of": id.get("age_as_of").cloned().unwrap_or(Value::Null),
-            "sex_or_gender": id.get("sex_or_gender").cloned().unwrap_or(Value::Null),
-            "medical_record_numbers": id
-                .get("medical_record_numbers")
-                .cloned()
-                .unwrap_or_else(|| json!([])),
-            "state": id.get("state").cloned().unwrap_or(Value::Null),
-        })
-    });
-    Json(json!({
-        "patient_workspace_id": value["patient_workspace_id"],
-        "display_name": value["display_name"],
-        "membership": "clinic_demographic",
-        "time_zone": value["time_zone"],
-        "current_time": value["current_time"],
-        "cursor": value["cursor"],
-        "identity": identity,
-        "chats": [],
-        "patient_synopsis": null,
-        "automation_run": null,
-        "active_follow_ups": [],
-        "has_past_work": false,
-        "connected_sources": [],
-    }))
-    .into_response()
-}
-
-async fn filter_projection_response(
-    path: &str,
-    query: Option<&str>,
-    response: Response,
+async fn clinic_demographics(
     auth: &Auth,
     identity: &PhysicianIdentity,
+    workspace: &str,
 ) -> Response {
-    if response.status() != StatusCode::OK {
-        return response;
-    }
-    if path == "/today" && query_param(query, "patient_workspace_id").is_some() {
-        return response;
-    }
-    if !matches!(
-        path,
-        "/today"
-            | "/updates"
-            | "/recent-conversations"
-            | "/patient-workspaces"
-            | "/practice-day"
-            | "/patient-roster"
-    ) {
-        return response;
-    }
-    let (parts, body) = response.into_parts();
-    let Ok(bytes) = axum::body::to_bytes(body, 2_000_000).await else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
+    let Ok(clock) = auth.store.practice_clock(&identity.practice_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let Ok(mut value) = serde_json::from_slice::<Value>(&bytes) else {
-        return Response::from_parts(parts, Body::from(bytes));
-    };
-    let (panel, practice_patients) = tokio::join!(
-        auth.store.panel(identity),
-        auth.store.practice_patients(&identity.practice_id),
-    );
-    let panel: HashSet<String> = panel.into_iter().collect();
-    let practice_has_patients = !practice_patients.is_empty();
-
-    match path {
-        "/today" => {
-            filter_workspace_array(&mut value, "rows", &panel);
-            filter_workspace_array(&mut value, "seen", &panel);
-            if let Some(cursors) = value.get_mut("cursors").and_then(Value::as_object_mut) {
-                cursors.retain(|workspace_id, _| panel.contains(workspace_id));
-            }
-            if !practice_has_patients {
-                value["connections"] = json!([]);
-            }
+    match read_patient(&*auth.patients, workspace).await {
+        Ok(Some(patient)) => {
+            let at = UNIX_EPOCH + Duration::from_secs(clock.now(now()));
+            Json(patient.clinic_demographics(&format_rfc3339(at))).into_response()
         }
-        "/updates" => {
-            filter_workspace_array(&mut value, "rows", &panel);
-            filter_workspace_array(&mut value, "seen", &panel);
-        }
-        "/recent-conversations" => {
-            filter_workspace_array(&mut value, "conversations", &panel);
-        }
-        "/patient-workspaces" => {
-            filter_workspace_array(&mut value, "patients", &panel);
-            if let Some(items) = value.get_mut("patients").and_then(Value::as_array_mut) {
-                let cadences = per_workspace(items, |ws_id| async move {
-                    auth.store.patient_cadence(&ws_id).await
-                })
-                .await;
-                for (item, cadence) in items.iter_mut().zip(cadences) {
-                    if let (Some(cadence), Some(obj)) = (cadence, item.as_object_mut()) {
-                        obj.insert("review_cadence".to_owned(), json!(cadence.as_str()));
-                    }
-                }
-            }
-        }
-        "/practice-day" => {
-            if !practice_has_patients {
-                value["visits"] = json!([]);
-            } else if let Some(visits) = value.get_mut("visits").and_then(Value::as_array_mut) {
-                visits.retain(|visit| {
-                    match visit.get("patient_workspace_id").and_then(Value::as_str) {
-                        Some(ws_id) => panel.contains(ws_id),
-                        None => true,
-                    }
-                });
-            }
-        }
-        "/patient-roster" => {
-            if let Some(patients) = value.get_mut("patients").and_then(Value::as_array_mut) {
-                let practices = per_workspace(patients, |ws_id| async move {
-                    auth.store.patient_practice(&ws_id).await
-                })
-                .await;
-                let mut same_practice = practices.into_iter().map(|practice| {
-                    practice.flatten().as_deref() == Some(identity.practice_id.as_str())
-                });
-                patients.retain(|_| same_practice.next().unwrap_or(false));
-            }
-        }
-        _ => {}
+        Ok(None) => not_found(),
+        Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
-
-    Json(value).into_response()
 }
 
 /// How many store reads one list response keeps in flight: enough to overlap
@@ -633,16 +550,6 @@ pub(crate) async fn per_workspace<T, F: std::future::Future<Output = T>>(
         .buffered(STORE_READS_IN_FLIGHT)
         .collect()
         .await
-}
-
-fn filter_workspace_array(value: &mut Value, key: &str, panel: &HashSet<String>) {
-    if let Some(items) = value.get_mut(key).and_then(Value::as_array_mut) {
-        items.retain(|item| {
-            item.get("patient_workspace_id")
-                .and_then(Value::as_str)
-                .is_some_and(|ws_id| panel.contains(ws_id))
-        });
-    }
 }
 
 async fn guard_event_stream(
@@ -1048,6 +955,7 @@ async fn whoami(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
         auth.store
             .practice_accounts(&identity.practice_id)
             .await
+            .unwrap_or_default()
             .into_iter()
             .filter(|acct| acct.active)
             .map(|acct| {
@@ -1179,8 +1087,10 @@ async fn apply_panel_change(
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    let owner_practice = auth.store.patient_practice(&patient_workspace_id).await;
-    if owner_practice.as_deref() != Some(caller.practice_id.as_str()) {
+    let Ok(owner) = auth.store.patient_practice(&patient_workspace_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let membership = if allowed {
@@ -1210,6 +1120,7 @@ async fn apply_panel_change(
         }
         Err(PanelError::Forbidden) => StatusCode::FORBIDDEN.into_response(),
         Err(PanelError::UnknownTarget) => not_found(),
+        Err(PanelError::Unavailable) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
 
@@ -1248,9 +1159,14 @@ async fn invite(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Respon
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    if caller.practice_id != STAGING_PRACTICE_ID
-        || !crate::WORKSPACE_IDS.contains(&body.patient_workspace_id.as_str())
-    {
+    let Ok(owner) = auth
+        .store
+        .patient_practice(&body.patient_workspace_id)
+        .await
+    else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let patient = RosterPatient {
@@ -1335,9 +1251,10 @@ async fn patient_front_door(
     if !caller_admin {
         return StatusCode::FORBIDDEN.into_response();
     }
-    if caller.practice_id != STAGING_PRACTICE_ID
-        || !crate::WORKSPACE_IDS.contains(&patient_workspace_id.as_str())
-    {
+    let Ok(owner) = auth.store.patient_practice(&patient_workspace_id).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    if owner.as_deref() != Some(caller.practice_id.as_str()) {
         return not_found();
     }
     let patient = RosterPatient {
@@ -1373,7 +1290,7 @@ async fn patient_front_door(
         .into_response()
 }
 
-/// The workspace membership check a recorded handler uses: a denied or
+/// The workspace membership check a handler uses: a denied or
 /// missing membership answers 404 so clinical projections stay panel-scoped.
 pub(crate) async fn allows_workspace(
     auth: &Auth,
@@ -1383,7 +1300,7 @@ pub(crate) async fn allows_workspace(
     auth.store.membership(identity, patient_workspace_id).await == Membership::Allowed
 }
 
-/// The 404 a denied workspace check returns. It matches what the recorded
+/// The 404 a denied workspace check returns. It matches what the site
 /// handler returns for an unknown workspace, so "denied" and "absent" are
 /// indistinguishable to a probing physician.
 pub(crate) fn not_found() -> Response {
@@ -1423,7 +1340,7 @@ pub async fn authed_router_with_store(
     base: axum::Router,
     store: Arc<dyn AuthStore>,
 ) -> axum::Router {
-    let auth = Auth::on(store, Arc::new(MemoryFrontDoorStore::new())).await;
+    let auth = Auth::over_fixture(store, Arc::new(MemoryFrontDoorStore::new())).await;
     required_router(base, auth)
 }
 
@@ -1433,42 +1350,52 @@ async fn inject_auth_store(
     next: Next,
 ) -> Response {
     request.extensions_mut().insert(Arc::clone(&auth.store));
+    request.extensions_mut().insert(Arc::clone(&auth.patients));
     next.run(request).await
 }
 
-/// Builds the router with auth required.
+/// Builds the router with auth required over the in-memory store.
 ///
-/// `PHYSICIAN_AUTH=required` guards every physician route of `base` through
-/// one store — Postgres when `PHYSICIAN_DATABASE_URL` is set (the migration
-/// job applies schema changes; this connects without migrating), memory
-/// otherwise. Any other value serves `base` with the auth routes still
-/// present. Workspace events stay on an in-process bus. The process entrypoint
-/// uses [`authed_router_with_bus`] when Redis is configured. Sign-in mail comes
-/// from the environment.
+/// `PHYSICIAN_AUTH=required` guards every physician route of `base`. Any other
+/// value serves `base` with the auth routes still present. Workspace events
+/// stay on an in-process bus. The process entrypoint uses
+/// [`authed_router_with_bus`] for Postgres and Redis. Sign-in mail comes from
+/// the environment.
 pub async fn authed_router(base: axum::Router) -> axum::Router {
-    authed_router_with_bus(base, Arc::new(physician_bus::LocalBus::new(64))).await
+    authed_router_with_bus(
+        base,
+        Arc::new(physician_bus::LocalBus::new(64)),
+        MemoryPatients::fixture(),
+        None,
+    )
+    .await
 }
 
 /// Builds the router with auth on `base`, publishing panel changes on `bus`.
 ///
 /// `PHYSICIAN_AUTH=required` guards every physician route through one store —
-/// Postgres when `PHYSICIAN_DATABASE_URL` is set, memory otherwise. Any other
-/// value serves `base` with the auth routes still present. Neither store is
-/// migrated. Sign-in mail comes from the environment.
+/// Postgres when `postgres` names the database and the process's runtime store,
+/// memory otherwise. Any other value serves `base` with the auth routes still
+/// present. Neither store is migrated. Without a database the practice holds
+/// `memory_patients`. Sign-in mail comes from the environment.
 pub(crate) async fn authed_router_with_bus(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
+    memory_patients: Arc<MemoryPatients>,
+    postgres: Option<(&str, local_product::runtime::Store)>,
 ) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
-    let auth = match (auth_mode(), database_url()) {
-        (AuthMode::Required, Some(url)) => match Auth::postgres_with_bus(&url, bus, mail).await {
-            Ok(auth) => auth,
-            Err(error) => {
-                tracing::error!(%error, "physician auth store unavailable");
-                std::process::exit(1);
+    let auth = match (auth_mode(), postgres) {
+        (AuthMode::Required, Some((url, runtime))) => {
+            match Auth::postgres_with_bus(url, runtime, bus, mail).await {
+                Ok(auth) => auth,
+                Err(error) => {
+                    tracing::error!(%error, "physician auth store unavailable");
+                    std::process::exit(1);
+                }
             }
-        },
-        _ => Auth::memory_with(bus, mail).await,
+        }
+        _ => Auth::memory_with(memory_patients, bus, mail).await,
     };
     match auth_mode() {
         AuthMode::Required => required_router(base, auth),
@@ -1483,14 +1410,15 @@ pub(crate) async fn authed_router_with_bus(
 }
 
 /// Builds the required router on one explicit pair of stores, both already
-/// migrated and seeded. The Postgres integration tests use it to prove the
-/// invite → redeem → link → premium journey the deployment wiring builds.
+/// migrated, over the fixture patients. The Postgres integration tests use it
+/// to prove the invite → redeem → link → premium journey the deployment wiring
+/// builds.
 pub async fn authed_router_on(
     base: axum::Router,
     store: Arc<dyn AuthStore>,
     front_door: Arc<dyn FrontDoorStore>,
 ) -> axum::Router {
-    required_router(base, Auth::on(store, front_door).await)
+    required_router(base, Auth::over_fixture(store, front_door).await)
 }
 
 enum AuthMode {
@@ -1503,12 +1431,6 @@ fn auth_mode() -> AuthMode {
         Ok("required") => AuthMode::Required,
         _ => AuthMode::Open,
     }
-}
-
-fn database_url() -> Option<String> {
-    let url = std::env::var("PHYSICIAN_DATABASE_URL").ok()?;
-    let url = url.trim().to_owned();
-    (!url.is_empty()).then_some(url)
 }
 
 #[cfg(test)]
@@ -1541,10 +1463,10 @@ mod tests {
     const STAGING_EMAIL: &str = "physician@codahealth.test";
     const COLLEAGUE_EMAIL: &str = "colleague@codahealth.test";
 
-    /// The recorded practice behind a required session on one memory store,
+    /// The fixture site behind a required session on one memory store,
     /// plus the concrete stores for seeding a second physician's access and
     /// redeeming an invitation the practice endpoint minted.
-    async fn authed_recorded() -> (
+    async fn authed_practice() -> (
         axum::Router,
         Arc<MemoryAuthStore>,
         Arc<MemoryFrontDoorStore>,
@@ -1565,12 +1487,16 @@ mod tests {
             false,
         );
         let front_door = Arc::new(MemoryFrontDoorStore::new());
-        let auth = Auth::on(
+        let auth = Auth::over_fixture(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::clone(&front_door) as Arc<dyn FrontDoorStore>,
         )
         .await;
-        (required_router(crate::recorded(), auth), store, front_door)
+        (
+            required_router(crate::fixture_site(), auth),
+            store,
+            front_door,
+        )
     }
 
     #[tokio::test]
@@ -1605,7 +1531,7 @@ mod tests {
             true,
         );
         assert!(store.deactivate("former@codahealth.ai").await);
-        let _auth = Auth::on(
+        let _auth = Auth::over_fixture(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::new(MemoryFrontDoorStore::new()),
         )
@@ -1695,7 +1621,7 @@ mod tests {
 
     #[tokio::test]
     async fn reads_without_a_session_never_serialize() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         for path in [
             "/today",
             "/patient-roster?query=Mary",
@@ -1711,7 +1637,7 @@ mod tests {
 
     #[tokio::test]
     async fn an_unknown_or_expired_token_never_serializes() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let (status, _) = send(
             &app,
             Method::GET.as_str(),
@@ -1738,7 +1664,7 @@ mod tests {
 
     #[tokio::test]
     async fn health_and_the_signed_out_page_stay_open() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let (status, body) = send(&app, Method::GET.as_str(), "/health", None, None).await;
         assert_eq!(status, StatusCode::OK);
         assert!(body.contains("\"status\":\"ok\""), "{body}");
@@ -1749,7 +1675,7 @@ mod tests {
 
     #[tokio::test]
     async fn whoami_names_the_session_physician() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let (status, _) = send(&app, Method::GET.as_str(), "/auth/whoami", None, None).await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
         let session = session_for(&app, STAGING_EMAIL).await;
@@ -1778,7 +1704,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_refused_read_says_whether_the_session_ended_or_access_was_removed() {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         let (status, body) = send(&app, Method::GET.as_str(), "/today", None, None).await;
         assert_eq!(
             (status, reason(&body).as_str()),
@@ -1809,7 +1735,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_held_link_without_access_says_so_and_a_guessed_one_does_not() {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         let (_, body) = send(
             &app,
             Method::POST.as_str(),
@@ -1849,7 +1775,7 @@ mod tests {
 
     #[tokio::test]
     async fn an_unknown_email_never_confirms_an_account() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let (status, body) = send(
             &app,
             Method::POST.as_str(),
@@ -1864,7 +1790,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_sign_in_token_verifies_once() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let (_, body) = send(
             &app,
             Method::POST.as_str(),
@@ -1898,7 +1824,7 @@ mod tests {
 
     #[tokio::test]
     async fn the_staging_physician_reads_their_granted_workspaces() {
-        let (app, _, _) = authed_recorded().await;
+        let (app, _, _) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[0];
         let (status, today) = send(
@@ -1926,14 +1852,15 @@ mod tests {
     #[tokio::test]
     async fn same_clinic_physicians_read_basic_demographics_while_clinical_routes_require_panel_membership()
      {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         let colleague = PhysicianIdentity {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
             physician_id: "colleague".to_owned(),
         };
         store
             .set_membership(&colleague, crate::WORKSPACE_IDS[0], Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
         // WORKSPACE_IDS[1] is in the same clinic, not on `colleague`'s panel.
         let session = session_for(&app, COLLEAGUE_EMAIL).await;
         let other_clinic_patient = crate::WORKSPACE_IDS[1];
@@ -2000,7 +1927,7 @@ mod tests {
         assert_eq!(status, StatusCode::OK);
         assert!(roster_body.contains("\"patients\":[]"), "{roster_body}");
 
-        // The granted workspace reads its full clinical synopsis; practice-level lists still read.
+        // The granted workspace reads in full; practice-level lists still read.
         let (status, body) = send(
             &app,
             Method::GET.as_str(),
@@ -2010,7 +1937,7 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::OK, "{body}");
-        assert!(body.contains("authored_text"), "{body}");
+        assert!(body.contains("synchronized_at"), "{body}");
         let (status, body) = send(
             &app,
             Method::GET.as_str(),
@@ -2024,7 +1951,7 @@ mod tests {
 
     #[tokio::test]
     async fn clinic_admin_or_secretary_assigns_patient_to_physician_panel_over_http() {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         store.seed_account(
             STAGING_PRACTICE_ID,
             "secretary",
@@ -2079,7 +2006,7 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::OK, "{ws_body}");
-        assert!(ws_body.contains("authored_text"), "{ws_body}");
+        assert!(ws_body.contains("synchronized_at"), "{ws_body}");
 
         // Removing the patient via DELETE returns colleague to the clinic-demographic view.
         let (status, del_body) = send(
@@ -2106,13 +2033,87 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn a_patient_exists_once_registered_to_the_practice() {
+        let (app, store, _) = authed_practice().await;
+        let session = session_for(&app, STAGING_EMAIL).await;
+        let physician = PhysicianIdentity {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            physician_id: "staging-physician".to_owned(),
+        };
+        store
+            .set_membership(&physician, "pw-chart", Membership::Allowed)
+            .await
+            .unwrap();
+        store
+            .set_membership(&physician, "pw-elsewhere", Membership::Allowed)
+            .await
+            .unwrap();
+        store
+            .register_patient("northside-clinic", "pw-elsewhere")
+            .await
+            .unwrap();
+        let link = async |workspace: &str| {
+            let path = format!("/patient-workspaces/{workspace}/link");
+            send(&app, Method::GET.as_str(), &path, Some(&session), None)
+                .await
+                .0
+        };
+
+        assert_eq!(link("pw-chart").await, StatusCode::NOT_FOUND);
+        assert_eq!(link("pw-elsewhere").await, StatusCode::NOT_FOUND);
+        store
+            .register_patient(STAGING_PRACTICE_ID, "pw-chart")
+            .await
+            .unwrap();
+        assert_eq!(link("pw-chart").await, StatusCode::OK);
+    }
+
+    #[tokio::test]
+    async fn clinical_now_follows_the_clock_each_practice_was_created_with() {
+        const FIXED: &str = "2026-08-27T16:00:00.000Z";
+        let (app, store, _) = authed_practice().await;
+        let mary = crate::WORKSPACE_IDS[4];
+        store.seed_account(
+            "northside-clinic",
+            "north-doc",
+            "doc@northside.test",
+            "Northside Doc",
+            false,
+        );
+        let colleague = PhysicianIdentity {
+            practice_id: STAGING_PRACTICE_ID.to_owned(),
+            physician_id: "colleague".to_owned(),
+        };
+        store
+            .set_membership(&colleague, mary, Membership::Allowed)
+            .await
+            .unwrap();
+        let synthetic = session_for(&app, COLLEAGUE_EMAIL).await;
+        let real = session_for(&app, "doc@northside.test").await;
+        let current_time = async |path: &str, session: &str| {
+            let (status, body) = send(&app, Method::GET.as_str(), path, Some(session), None).await;
+            assert_eq!(status, StatusCode::OK, "{path}: {body}");
+            let value: Value = serde_json::from_str(&body).unwrap();
+            value["current_time"].as_str().unwrap().to_owned()
+        };
+
+        assert_eq!(current_time("/practice-day", &synthetic).await, FIXED);
+        let workspace = format!("/patient-workspaces/{mary}");
+        assert_eq!(current_time(&workspace, &synthetic).await, FIXED);
+
+        let before = UNIX_EPOCH + Duration::from_secs(now());
+        let before = local_product::codex::format_rfc3339(before);
+        assert!(current_time("/practice-day", &real).await >= before);
+    }
+
+    #[tokio::test]
     async fn projection_lists_filter_by_practice_and_panel_without_staging_practice_assumptions() {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         // Move Jake Smith (WORKSPACE_IDS[1]) to a second clinic ("northside-clinic")
         // with its own admin and physician, proving no STAGING_PRACTICE_ID hard-coding.
         let jake = crate::WORKSPACE_IDS[1];
         let mary = crate::WORKSPACE_IDS[4];
-        store.register_patient("northside-clinic", jake).await;
+        store.seed_patient("northside-clinic", jake);
         store.seed_account(
             "northside-clinic",
             "north-admin",
@@ -2134,13 +2135,14 @@ mod tests {
         };
         store
             .set_membership(&colleague, mary, Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
 
         let colleague_session = session_for(&app, COLLEAGUE_EMAIL).await;
         let north_admin_session = session_for(&app, "admin@northside.test").await;
         let north_doc_session = session_for(&app, "doc@northside.test").await;
 
-        // Colleague in STAGING_PRACTICE_ID sees only Mary on /patient-workspaces, /practice-day, and /today?patient_workspace_id=...
+        // Colleague in STAGING_PRACTICE_ID sees only Mary on /patient-workspaces and /today?patient_workspace_id=...
         let (status, mary_today_body) = send(
             &app,
             Method::GET.as_str(),
@@ -2172,25 +2174,6 @@ mod tests {
         let patients = ws_list_json["patients"].as_array().unwrap();
         assert_eq!(patients.len(), 1);
         assert_eq!(patients[0]["patient_workspace_id"], mary);
-
-        let (_, day_body) = send(
-            &app,
-            Method::GET.as_str(),
-            "/practice-day",
-            Some(&colleague_session),
-            None,
-        )
-        .await;
-        let day_json: Value = serde_json::from_str(&day_body).unwrap();
-        let visits = day_json["visits"].as_array().unwrap();
-        assert!(!visits.is_empty());
-        assert!(
-            visits
-                .iter()
-                .filter_map(|v| v.get("patient_workspace_id").and_then(Value::as_str))
-                .all(|ws_id| ws_id == mary),
-            "practice-day leaked non-panel visits: {day_body}"
-        );
 
         // Colleague gets 404 on Jake (now in northside-clinic) and cannot find Jake in roster.
         let (status, _) = send(
@@ -2255,7 +2238,7 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::OK);
-        assert!(north_full.contains("authored_text"), "{north_full}");
+        assert!(north_full.contains("synchronized_at"), "{north_full}");
         let (_, north_ws_list) = send(
             &app,
             Method::GET.as_str(),
@@ -2299,7 +2282,7 @@ mod tests {
             "Colleague Physician",
             false,
         );
-        let auth = Auth::on(
+        let auth = Auth::over_fixture(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::new(MemoryFrontDoorStore::new()),
         )
@@ -2316,7 +2299,8 @@ mod tests {
         let other_ws = crate::WORKSPACE_IDS[1];
         store
             .set_membership(&colleague, allowed_ws, Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
 
         let colleague_session = session_for(&app, COLLEAGUE_EMAIL).await;
         let staging_session = session_for(&app, STAGING_EMAIL).await;
@@ -2390,7 +2374,8 @@ mod tests {
         // Now revoke colleague's panel access to `allowed_ws`: the SSE stream must terminate!
         store
             .set_membership(&colleague, allowed_ws, Membership::Denied)
-            .await;
+            .await
+            .unwrap();
         let closed = tokio::time::timeout(Duration::from_secs(2), body_stream.next())
             .await
             .expect("SSE termination timeout");
@@ -2403,7 +2388,7 @@ mod tests {
     #[tokio::test]
     async fn agents_reads_per_patient_review_cadence_without_payment_status_or_physician_override()
     {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[0];
 
@@ -2479,14 +2464,15 @@ mod tests {
 
     #[tokio::test]
     async fn a_command_into_a_denied_workspace_returns_404() {
-        let (app, store, _) = authed_recorded().await;
+        let (app, store, _) = authed_practice().await;
         let colleague = PhysicianIdentity {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
             physician_id: "colleague".to_owned(),
         };
         store
             .set_membership(&colleague, crate::WORKSPACE_IDS[0], Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
         let session = session_for(&app, COLLEAGUE_EMAIL).await;
         let command = |workspace: &str| {
             json!({
@@ -2515,7 +2501,7 @@ mod tests {
             "a denied command 404 carried a body: {body}"
         );
         // A command into the granted workspace reaches the handler: the
-        // recorded server answers its own rejection, not the guard's 404.
+        // fixture site answers its own rejection, not the guard's 404.
         let (status, body) = send(
             &app,
             Method::POST.as_str(),
@@ -2616,7 +2602,7 @@ mod tests {
 
     #[tokio::test]
     async fn an_admin_invitation_redeems_once_at_the_front_door() {
-        let (app, _, front_door) = authed_recorded().await;
+        let (app, _, front_door) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[0];
         let (status, body) =
@@ -2662,7 +2648,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_cross_practice_or_unknown_patient_never_gets_invited() {
-        let (app, store, front_door) = authed_recorded().await;
+        let (app, store, front_door) = authed_practice().await;
         store.seed_account(
             "other-practice",
             "outsider-admin",
@@ -2697,7 +2683,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_non_admin_physician_cannot_invite_and_a_conflict_answers_409() {
-        let (app, _, front_door) = authed_recorded().await;
+        let (app, _, front_door) = authed_practice().await;
         let colleague = session_for(&app, COLLEAGUE_EMAIL).await;
         let (status, body) = invite_patient(
             &app,
@@ -2754,7 +2740,7 @@ mod tests {
 
     #[tokio::test]
     async fn the_practice_reads_one_linked_patient_account_and_premium() {
-        let (app, _, front_door) = authed_recorded().await;
+        let (app, _, front_door) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[2];
         let account = linked_account(&front_door, "reader@example.test", workspace).await;
@@ -2801,7 +2787,7 @@ mod tests {
 
     #[tokio::test]
     async fn an_unlinked_or_cross_practice_front_door_read_answers_404() {
-        let (app, store, front_door) = authed_recorded().await;
+        let (app, store, front_door) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         // A roster patient nobody invited yet answers 404, like the
         // workspace route's unknown patient.
@@ -2855,7 +2841,7 @@ mod tests {
 
     #[tokio::test]
     async fn a_non_admin_cannot_read_the_front_door_panel() {
-        let (app, _, front_door) = authed_recorded().await;
+        let (app, _, front_door) = authed_practice().await;
         linked_account(&front_door, "reader@example.test", crate::WORKSPACE_IDS[0]).await;
         let colleague = session_for(&app, COLLEAGUE_EMAIL).await;
         let (status, body) = send(
@@ -2927,15 +2913,16 @@ mod tests {
             .await
             .expect("session");
         let front_door = Arc::new(MemoryFrontDoorStore::new());
+        register_fixture_patients(&*store).await;
         let auth = Auth::configured(
             Arc::clone(&store) as Arc<dyn AuthStore>,
             Arc::clone(&front_door) as Arc<dyn FrontDoorStore>,
+            MemoryPatients::fixture(),
             Arc::new(physician_bus::LocalBus::new(64)),
             crate::gmail::Delivery::Hosted(Box::new(sender)),
-        )
-        .await;
+        );
         (
-            required_router(crate::recorded(), auth),
+            required_router(crate::fixture_site(), auth),
             front_door,
             session,
         )

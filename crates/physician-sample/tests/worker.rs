@@ -127,9 +127,11 @@ async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) 
     assert_eq!(&identity.practice_id, &practice);
     assert_eq!(&identity.physician_id, &physician);
     auth.register_patient(&identity.practice_id, &workspace)
-        .await;
+        .await
+        .unwrap();
     auth.set_membership(&identity, &workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let scope = Scope {
         practice: identity.practice_id,
         physician: identity.physician_id,

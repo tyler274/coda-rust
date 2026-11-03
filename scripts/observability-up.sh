@@ -46,6 +46,6 @@ Collector:  OTLP http://localhost:4318, gRPC localhost:4317
 Datadog:    ${overlay}
 Point a service at it:
   OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CONTENT=full \\
-    cargo run -p physician-sample
+    PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-practice.sh
 Collector debug output: docker compose -f $compose_file logs -f otel-collector
 EOF

@@ -1,8 +1,32 @@
-//! Retained physician source snapshots. Imports must come from the physician
-//! source owner, never projection prose or a provider. This reader neither
-//! discovers new records nor claims that a snapshot is a complete chart.
+//! The record every patient source hands Coda, whatever its format. Each source
+//! has its own adapter; past the adapter a record is one of these. Imports must
+//! come from a source adapter, never projection prose or a provider. This
+//! reader neither discovers new records nor claims that a snapshot is a
+//! complete chart.
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
+
+/// One date on a record, as the source wrote it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RecordDate {
+    /// The source's own name for this date.
+    pub name: String,
+    /// The value as the source gave it, at the source's precision.
+    pub value: String,
+}
+
+/// Text inside a record that its exact representation doesn't show plainly,
+/// such as an encoded attachment.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ReadablePart {
+    /// The source's own name for this part.
+    pub label: String,
+    /// The part's text.
+    pub text: String,
+}
 
 /// One immutable accepted source revision from the physician source owner.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -10,14 +34,22 @@ use serde_json::{Value, json};
 pub struct SourceRevision {
     /// Patient workspace to which the source owner admitted these bytes.
     pub workspace: String,
+    /// The source that holds this record.
+    pub source_id: String,
     /// Original opaque candidate ID, never derived from prose.
     pub candidate_id: String,
     /// Source owner's immutable revision identity.
     pub revision: String,
+    /// The source's own name for this kind of record.
+    pub record_type: String,
+    /// The record's dates, in the source's words.
+    pub dates: Vec<RecordDate>,
     /// Exact source-native retained UTF-8 representation.
     pub content: String,
     /// SHA-256 of retained content bytes, verified on import and read.
     pub sha256: String,
+    /// The record's readable text, beside its exact representation.
+    pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
 }
@@ -25,8 +57,10 @@ impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
     pub fn validate(&self) -> Result<(), String> {
         if self.workspace.is_empty()
+            || self.source_id.is_empty()
             || self.candidate_id.is_empty()
             || self.revision.is_empty()
+            || self.record_type.is_empty()
             || crate::sha256_hex(self.content.as_bytes()) != self.sha256
             || self.provenance.is_null()
         {
@@ -34,6 +68,59 @@ impl SourceRevision {
         }
         Ok(())
     }
+}
+
+/// One patient a source holds, as the source identifies them.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct SourcePatient {
+    /// The source's own identity for this patient.
+    pub source_patient_id: String,
+    /// The patient's name as the source gives it.
+    pub display_name: String,
+    /// The birth date as the source gives it, when it gives one.
+    pub birth_date: Option<String>,
+    /// The sex or gender as the source gives it, when it gives one.
+    pub sex_or_gender: Option<String>,
+    /// The medical record numbers the source holds for this patient.
+    pub medical_record_numbers: Vec<MedicalRecordNumber>,
+}
+
+/// One medical record number and the system that issued it.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct MedicalRecordNumber {
+    /// The issuing system.
+    pub system: String,
+    /// The number.
+    pub value: String,
+}
+
+/// A source read as whole charts: who it holds and each patient's records. Each
+/// source implements this in its own terms; past it, every chart is the same.
+#[async_trait]
+pub trait PatientSource: Send + Sync {
+    /// The source's stable identifier.
+    fn source_id(&self) -> &str;
+    /// The source's name as a physician sees it.
+    fn source_label(&self) -> &str;
+    /// The source's own id for every patient it holds.
+    async fn patient_ids(&self) -> Result<Vec<String>, String>;
+    /// One patient's identity, read alone so one bad patient stays one patient.
+    async fn patient(&self, source_patient_id: &str) -> Result<SourcePatient, String>;
+    /// One patient's records, admitted to `workspace`.
+    async fn records(
+        &self,
+        patient: &SourcePatient,
+        workspace: &str,
+    ) -> Result<Vec<SourceRevision>, String>;
+}
+
+/// The stable workspace of one source patient. It carries no patient
+/// identifier, because workspace ids travel in URLs.
+pub fn workspace_id(source_id: &str, source_patient_id: &str) -> String {
+    let digest = crate::sha256_hex(format!("{source_id}|{source_patient_id}").as_bytes());
+    format!("pw-{}", &digest[..32])
 }
 
 /// Exact, per-reference outcomes with a byte bound. A missing reference never
@@ -57,7 +144,9 @@ pub fn exact_read(
             Some(source) => {
                 source.validate()?;
                 json!({"reference": reference, "outcome": "available", "revision": source.revision,
+                    "record_type": source.record_type, "dates": source.dates,
                     "read_representation": "native_record", "content": source.content,
+                    "readable_parts": source.readable_parts,
                     "sha256": source.sha256, "provenance": source.provenance})
             }
             None => {
@@ -347,10 +436,14 @@ mod tests {
     fn source(revision: &str, content: &str) -> SourceRevision {
         SourceRevision {
             workspace: "patient".into(),
+            source_id: "ehr".into(),
             candidate_id: "lab".into(),
             revision: revision.into(),
+            record_type: "Observation".into(),
+            dates: vec![],
             content: content.into(),
             sha256: crate::sha256_hex(content.as_bytes()),
+            readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
         }
     }

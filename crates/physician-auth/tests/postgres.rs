@@ -5,7 +5,7 @@
 
 use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
-    SESSION_TTL_SECONDS, SessionError, SignInError,
+    PracticeClock, SESSION_TTL_SECONDS, SessionError, SignInError, StoreUnavailable,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -26,6 +26,89 @@ async fn wait_for_two_lock_waiters(db: &sea_orm::DatabaseConnection) {
             tokio::time::sleep(std::time::Duration::from_millis(10)).await;
         }
     }).await.expect("both redemptions must contend for the held row");
+}
+
+#[tokio::test]
+async fn a_practice_keeps_the_clock_it_was_created_with() {
+    let Some(url) = fresh_database("practice_clock").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let fixed = PracticeClock::Fixed(1_787_846_400);
+    store.ensure_practice("synthetic", fixed).await.unwrap();
+    store
+        .ensure_practice("synthetic", PracticeClock::RealTime)
+        .await
+        .unwrap();
+    store
+        .ensure_practice("real", PracticeClock::RealTime)
+        .await
+        .unwrap();
+    assert_eq!(store.practice_clock("synthetic").await.unwrap(), fixed);
+    for practice in ["real", "never-created"] {
+        assert_eq!(
+            store.practice_clock(practice).await.unwrap(),
+            PracticeClock::RealTime
+        );
+    }
+}
+
+#[tokio::test]
+async fn a_practice_read_from_a_lost_database_is_unavailable_not_empty() {
+    let Some(url) = fresh_database("lost_practice").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    store.pool().close().await;
+    assert_eq!(
+        store.practice_accounts("clinic").await,
+        Err(StoreUnavailable)
+    );
+}
+
+#[tokio::test]
+async fn a_patient_whose_practice_could_not_be_read_stays_with_that_practice() {
+    let Some(url) = fresh_database("unread_owner").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let (email, _) = invited_account(&store, "owner-clinic").await;
+    let doc = store.account_by_email(&email).await.unwrap().identity;
+    store
+        .register_patient("owner-clinic", "pw-owned")
+        .await
+        .unwrap();
+    store
+        .set_membership(&doc, "pw-owned", Membership::Allowed)
+        .await
+        .unwrap();
+
+    let lost = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    lost.pool().close().await;
+    assert_eq!(
+        lost.patient_practice("pw-owned").await,
+        Err(StoreUnavailable)
+    );
+    assert_eq!(lost.membership(&doc, "pw-owned").await, Membership::Denied);
+
+    store
+        .register_patient("other-clinic", "pw-owned")
+        .await
+        .unwrap();
+    assert_eq!(
+        store.patient_practice("pw-owned").await,
+        Ok(Some("owner-clinic".to_owned()))
+    );
+    assert!(store.practice_patients("other-clinic").await.is_empty());
+    assert_eq!(store.panel(&doc).await, vec!["pw-owned".to_owned()]);
 }
 
 #[tokio::test]
@@ -237,6 +320,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         "physician_memberships",
         "physician_patient_links",
         "physician_patients",
+        "physician_practices",
         "physician_sessions",
         "physician_sign_in_tokens",
     ];
@@ -300,14 +384,16 @@ async fn membership_denies_by_default_and_round_trips() {
     );
     store
         .set_membership(&who, &workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     assert_eq!(
         store.membership(&who, &workspace).await,
         Membership::Allowed
     );
     store
         .set_membership(&who, &workspace, Membership::Denied)
-        .await;
+        .await
+        .unwrap();
     assert_eq!(
         store.membership(&who, &workspace).await,
         Membership::Denied,
@@ -451,13 +537,14 @@ async fn panel_assignment_requires_admin_permission_in_the_same_practice() {
         "cannot assign panels across practices"
     );
 
-    store.register_patient("other-clinic", "pw-1").await;
+    store
+        .register_patient("other-clinic", "pw-1")
+        .await
+        .unwrap();
     assert!(
         store.panel(&doc).await.is_empty(),
         "a workspace registered to another practice leaves the panel"
     );
-    store.register_patient("pg-proof", "pw-1").await;
-    assert_eq!(store.panel(&doc).await, vec!["pw-1".to_owned()]);
 }
 
 #[tokio::test]
@@ -485,9 +572,16 @@ async fn practice_patients_resolve_clinic_demographic_and_persist_cadence_in_pos
         .unwrap()
         .identity;
 
-    store.register_patient("pg-proof", "pw-clinic-1").await;
+    store
+        .register_patient("pg-proof", "pw-clinic-1")
+        .await
+        .unwrap();
     assert_eq!(
-        store.patient_practice("pw-clinic-1").await.as_deref(),
+        store
+            .patient_practice("pw-clinic-1")
+            .await
+            .unwrap()
+            .as_deref(),
         Some("pg-proof")
     );
     assert_eq!(
@@ -718,8 +812,8 @@ async fn distinct_preview_accounts_resolve_their_own_admin_flag_and_panel() {
             .await
             .expect("member")
     );
-    store.register_patient(practice, "pw-admin").await;
-    store.register_patient(practice, "pw-member").await;
+    store.register_patient(practice, "pw-admin").await.unwrap();
+    store.register_patient(practice, "pw-member").await.unwrap();
     let admin = PhysicianIdentity {
         practice_id: practice.to_owned(),
         physician_id: "physician-admin".to_owned(),
@@ -884,7 +978,8 @@ async fn a_cached_read_drops_when_another_replica_writes() {
     let seen = feed.borrow_and_update().generation;
     writer
         .set_membership(&who, "ws-feed", Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     tokio::time::timeout(
         std::time::Duration::from_secs(10),
         feed.wait_for(|feed| feed.generation > seen),

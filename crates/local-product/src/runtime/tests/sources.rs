@@ -2,8 +2,11 @@
 //! finishes: the versioned source store, per-attempt pins, refreshes recorded
 //! on the attempt, and ingestion serialized against publication.
 use super::*;
-use crate::physician_sources::{SourceRevision, exact_read};
+use crate::physician_sources::{
+    ReadablePart, RecordDate, SourcePatient, SourceRevision, exact_read,
+};
 use crate::runtime::reply::{FINISH_TOOL, RevisionCommit, RevisionInput};
+use crate::runtime::sources::SourcePull;
 use harness::execution::{Call, Item, Record, Request, Response, Usage};
 
 struct Allow;
@@ -41,10 +44,14 @@ async fn setup() -> (Store, Scope) {
 fn source(scope: &Scope, id: &str, revision: &str, content: &str) -> SourceRevision {
     SourceRevision {
         workspace: scope.workspace.clone(),
+        source_id: "ehr".into(),
         candidate_id: id.into(),
         revision: revision.into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: content.into(),
         sha256: crate::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
         provenance: serde_json::json!({"native_record": id}),
     }
 }
@@ -136,6 +143,129 @@ async fn accepted_claim(store: &Store, scope: &Scope, key: &str) -> reply::Revis
         .await
         .unwrap()
         .unwrap()
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_record_comes_back_with_its_type_dates_and_readable_parts() {
+    let (store, scope) = setup().await;
+    let mut note = source(&scope, "note", "r1", r#"{"data":"U2VlbiBpbiBjbGluaWM="}"#);
+    note.record_type = "DocumentReference".into();
+    note.dates = vec![RecordDate {
+        name: "date".into(),
+        value: "2026-08".into(),
+    }];
+    note.readable_parts = vec![ReadablePart {
+        label: "attachment".into(),
+        text: "Seen in clinic".into(),
+    }];
+    store.record_source(&note).await.unwrap();
+    let read = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(read.sources, [note.clone()]);
+
+    let mut changed = note;
+    changed.record_type = "Observation".into();
+    assert!(store.record_source(&changed).await.is_err());
+}
+
+fn pull(source_id: &str, pulled_at: i64) -> SourcePull {
+    SourcePull {
+        source_id: source_id.into(),
+        source_label: source_id.to_uppercase(),
+        patient: SourcePatient {
+            source_patient_id: "patient-1".into(),
+            display_name: "Mary Louis".into(),
+            birth_date: Some("1972-03-18".into()),
+            sex_or_gender: None,
+            medical_record_numbers: vec![],
+        },
+        pulled_at,
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_later_pull_replaces_only_that_sources_last_pull() {
+    let (store, scope) = setup().await;
+    for delivery in [pull("ehr", 100), pull("mail", 200), pull("ehr", 300)] {
+        store
+            .record_chart(&scope.workspace, &[], &delivery)
+            .await
+            .unwrap();
+    }
+    assert_eq!(
+        store
+            .source_pulls(std::slice::from_ref(&scope.workspace))
+            .await
+            .unwrap()[&scope.workspace],
+        [pull("ehr", 300), pull("mail", 200)]
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_chart_delivery_is_one_version_and_withdraws_what_the_source_dropped() {
+    let (store, scope) = setup().await;
+    let lab = source(&scope, "lab", "r1", "Potassium 4.1");
+    let note = source(&scope, "note", "r1", "Seen in clinic");
+    let mut message = source(&scope, "message", "r1", "From the patient");
+    message.source_id = "mail".into();
+    store.record_source(&message).await.unwrap();
+    let delivery = pull("ehr", 100);
+    let chart = [lab.clone(), note.clone()];
+    assert_eq!(
+        store
+            .record_chart(&scope.workspace, &chart, &delivery)
+            .await
+            .unwrap(),
+        2
+    );
+    let first = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(first.version, 2);
+
+    // A repeat delivery moves nothing.
+    assert_eq!(
+        store
+            .record_chart(&scope.workspace, &chart, &delivery)
+            .await
+            .unwrap(),
+        0
+    );
+    assert_eq!(store.sources(&scope.workspace).await.unwrap(), first);
+
+    // The source dropped the note and corrected the lab. The other source's
+    // record stays.
+    let corrected = source(&scope, "lab", "r2", "Potassium 4.3");
+    assert_eq!(
+        store
+            .record_chart(
+                &scope.workspace,
+                std::slice::from_ref(&corrected),
+                &delivery
+            )
+            .await
+            .unwrap(),
+        2
+    );
+    let after = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(after.version, 3);
+    assert_eq!(after.sources, [corrected, message]);
+
+    // The same identity with other bytes is refused, and the pull stays.
+    let conflict = source(&scope, "lab", "r2", "Potassium 9.9");
+    assert!(
+        store
+            .record_chart(&scope.workspace, &[conflict], &pull("ehr", 200))
+            .await
+            .is_err()
+    );
+    assert_eq!(
+        store
+            .source_pulls(std::slice::from_ref(&scope.workspace))
+            .await
+            .unwrap()[&scope.workspace],
+        [delivery]
+    );
 }
 
 #[tokio::test]
@@ -577,5 +707,45 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
             .await
             .unwrap(),
         RevisionCommit::Committed
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_chart_delivery_says_what_the_source_holds_now() {
+    let (store, scope) = setup().await;
+    let first = source(&scope, "lab", "r1", "Potassium 4.1");
+    let second = source(&scope, "lab", "r2", "Potassium 4.3");
+    let delivery = pull("ehr", 100);
+    for chart in [&first, &second, &first] {
+        store
+            .record_chart(&scope.workspace, std::slice::from_ref(chart), &delivery)
+            .await
+            .unwrap();
+    }
+    let rolled_back = store.sources(&scope.workspace).await.unwrap();
+    assert_eq!(rolled_back.sources, std::slice::from_ref(&first));
+    assert_eq!(rolled_back.version, 3);
+
+    // Dropped, then delivered again with the same bytes.
+    store
+        .record_chart(&scope.workspace, &[], &delivery)
+        .await
+        .unwrap();
+    assert!(
+        store
+            .sources(&scope.workspace)
+            .await
+            .unwrap()
+            .sources
+            .is_empty()
+    );
+    store
+        .record_chart(&scope.workspace, std::slice::from_ref(&first), &delivery)
+        .await
+        .unwrap();
+    assert_eq!(
+        store.sources(&scope.workspace).await.unwrap().sources,
+        [first]
     );
 }

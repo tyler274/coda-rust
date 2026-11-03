@@ -38,6 +38,12 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     )
     .await
     .expect("staging account");
+    let runtime = local_product::runtime::Store::connect(&database.url)
+        .await
+        .expect("runtime store");
+    physician_sample::patients::enroll_fixture(&auth, &runtime)
+        .await
+        .expect("fixture patients");
     drop(auth);
 
     let home = Home(std::env::temp_dir().join(format!(

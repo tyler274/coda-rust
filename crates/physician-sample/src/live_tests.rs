@@ -17,7 +17,7 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
         "Physician",
         true,
     );
-    let auth = auth::Auth::on(
+    let auth = auth::Auth::over_fixture(
         store.clone(),
         Arc::new(front_door::MemoryFrontDoorStore::new()),
     )
@@ -44,10 +44,14 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
         .unwrap();
     let source = local_product::physician_sources::SourceRevision {
         workspace: workspace.into(),
+        source_id: "ehr".into(),
         candidate_id: "source-one".into(),
         revision: "immutable-7".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: "Potassium 4.1 mmol/L".into(),
         sha256: local_product::sha256_hex(b"Potassium 4.1 mmol/L"),
+        readable_parts: vec![],
         provenance: json!({"native_record":"lab-7"}),
     };
     let binding = local_product::ModelBinding {
@@ -244,10 +248,14 @@ async fn inline_revision_reads_a_source_that_arrives_before_it_finishes() {
     let target = "inline-arrival-target";
     let source = |id: &str, content: &str| SourceRevision {
         workspace: workspace.into(),
+        source_id: "ehr".into(),
         candidate_id: id.into(),
         revision: "immutable-1".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
         content: content.into(),
         sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
         provenance: json!({"synthetic": true}),
     };
     let original = source("lab-old", "Potassium 4.1 mmol/L");
@@ -349,7 +357,7 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
         "Physician",
         true,
     );
-    let auth = auth::Auth::on(
+    let auth = auth::Auth::over_fixture(
         store.clone(),
         Arc::new(front_door::MemoryFrontDoorStore::new()),
     )
@@ -378,7 +386,8 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
             WORKSPACE_IDS[0],
             physician_auth::Membership::Allowed,
         )
-        .await;
+        .await
+        .unwrap();
     let sign = store
         .begin_sign_in("colleague@codahealth.test", auth::now())
         .await
@@ -500,7 +509,7 @@ async fn inline_workspace_lists_the_chat_a_physician_started() {
 #[tokio::test]
 async fn inline_chat_draft_saves_under_a_revision_for_one_physician() {
     let store = Arc::new(MemoryAuthStore::new());
-    let auth = auth::Auth::on(
+    let auth = auth::Auth::over_fixture(
         store.clone(),
         Arc::new(front_door::MemoryFrontDoorStore::new()),
     )
@@ -530,7 +539,8 @@ async fn inline_chat_draft_saves_under_a_revision_for_one_physician() {
             workspace,
             physician_auth::Membership::Allowed,
         )
-        .await;
+        .await
+        .unwrap();
     let (token, colleague) = (&tokens[0], &tokens[1]);
     let live = live::Live::on(
         live::ChatModel::Fixed("Noted.".into()),
@@ -721,14 +731,14 @@ async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() 
         "Colleague",
         false,
     );
-    let auth = auth::Auth::on(
+    let auth = auth::Auth::over_fixture(
         store.clone(),
         Arc::new(front_door::MemoryFrontDoorStore::new()),
     )
     .await;
     let (_, token) = sign_in_memory(&store, "physician@codahealth.test").await;
     let (colleague_identity, colleague) = sign_in_memory(&store, "colleague@codahealth.test").await;
-    let workspace = synthetic_reply::workspace();
+    let workspace = crate::WORKSPACE_IDS[0];
     let serve = |live: Arc<live::Live>| {
         let app = auth::required_router(live_router_on(live), auth.clone());
         async move {
@@ -751,7 +761,7 @@ async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() 
         }
     };
 
-    // Off by default: the recorded workspace has no reply and none is opened.
+    // Off by default: the workspace has no reply and none is opened.
     let off = live::Live::on(
         live::ChatModel::Fixed("unused".into()),
         PhysicianSession::memory(),
@@ -791,7 +801,7 @@ async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() 
         vec![],
     )
     .unwrap();
-    live.enable_synthetic_reply();
+    live.enable_synthetic_reply(workspace);
     let (base, task) = serve(live.clone()).await;
     let (status, listed) = replies(&base, &token).await;
     assert_eq!(status, StatusCode::OK, "{listed}");
@@ -828,7 +838,8 @@ async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() 
             workspace,
             physician_auth::Membership::Allowed,
         )
-        .await;
+        .await
+        .unwrap();
     let (_, theirs) = replies(&base, &colleague).await;
     assert_eq!(theirs[0]["draft_text"], synthetic_reply::FIRST_DRAFT);
     assert_eq!(theirs[0]["draft_revision"], 1);
@@ -841,7 +852,8 @@ async fn the_synthetic_reply_opens_once_under_authority_and_only_when_enabled() 
             workspace,
             physician_auth::Membership::Denied,
         )
-        .await;
+        .await
+        .unwrap();
     let (status, listed) = replies(&base, &colleague).await;
     assert_eq!(status, StatusCode::OK);
     assert!(listed.as_array().is_none_or(Vec::is_empty), "{listed}");

@@ -23,7 +23,7 @@ mod error;
 mod store;
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
-pub use error::{PanelError, SessionError, SignInError};
+pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
 pub use patient_work::ReviewCadence;
 pub use store::PostgresAuthStore;
 pub use tokio::sync::watch;
@@ -102,6 +102,27 @@ pub struct PhysicianIdentity {
     pub practice_id: String,
     /// The physician within the practice.
     pub physician_id: String,
+}
+
+/// The clock a practice is bound to when it is created. It sets the practice's
+/// clinical "now"; sign-in, sessions, and other operational time stay on real
+/// time in every practice.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PracticeClock {
+    /// A real practice: clinical "now" is the real time.
+    RealTime,
+    /// A synthetic practice: clinical "now" stays at this Unix second.
+    Fixed(u64),
+}
+
+impl PracticeClock {
+    /// The practice's clinical "now", given the real time.
+    pub fn now(self, real_time: u64) -> u64 {
+        match self {
+            Self::RealTime => real_time,
+            Self::Fixed(instant) => instant,
+        }
+    }
 }
 
 /// A physician's access to one patient workspace.
@@ -219,7 +240,14 @@ pub trait AuthStore: Send + Sync {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
         membership: Membership,
-    );
+    ) -> Result<(), StoreUnavailable>;
+    /// Puts one patient workspace on one physician's panel unless a panel
+    /// choice already exists for the pair, so a removal stays removed.
+    async fn place_on_panel(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable>;
     /// Lists the patient workspaces on one physician's panel, sorted.
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String>;
     /// Assigns or removes a patient workspace on `physician_id`'s panel in
@@ -233,14 +261,33 @@ pub trait AuthStore: Send + Sync {
         patient_workspace_id: &str,
         membership: Membership,
     ) -> Result<(), PanelError>;
-    /// Registers a patient workspace as belonging to `practice_id`.
-    async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str);
-    /// Returns the practice that owns `patient_workspace_id`, if registered.
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String>;
+    /// Creates `practice_id` on `clock`. A practice that already exists keeps
+    /// the clock it was created with.
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable>;
+    /// Reads the clock `practice_id` was created with. A practice with no
+    /// record was never made synthetic, so it runs on real time.
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable>;
+    /// Registers a patient workspace as belonging to `practice_id`. A workspace
+    /// that is already registered keeps its practice.
+    async fn register_patient(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable>;
+    /// Returns the practice that owns `patient_workspace_id`, or `None` when it
+    /// is not registered.
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable>;
     /// Lists the patient workspaces registered in `practice_id`, sorted.
     async fn practice_patients(&self, practice_id: &str) -> Vec<String>;
     /// Lists the physician accounts in `practice_id`, sorted.
-    async fn practice_accounts(&self, practice_id: &str) -> Vec<Account>;
+    async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable>;
     /// Reads the per-patient [`ReviewCadence`] without exposing payment status.
     async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence;
     /// Sets the per-patient [`ReviewCadence`] (written by the front door /
@@ -351,6 +398,7 @@ pub(crate) fn mint_patient_token() -> String {
 struct MemoryState {
     accounts: HashMap<String, Account>,
     memberships: HashMap<(String, String, String), Membership>,
+    practices: HashMap<String, PracticeClock>,
     patients: HashMap<String, String>,
     cadences: HashMap<String, ReviewCadence>,
     sessions: HashMap<[u8; 32], Session>,
@@ -453,6 +501,49 @@ impl MemoryAuthStore {
                 sessions_ended_before: 0,
             },
         );
+    }
+
+    /// Registers one patient directly, for fixtures and the staging practice.
+    pub fn seed_patient(&self, practice_id: &str, patient_workspace_id: &str) {
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        state
+            .patients
+            .insert(patient_workspace_id.to_owned(), practice_id.to_owned());
+        state
+            .cadences
+            .entry(patient_workspace_id.to_owned())
+            .or_insert(ReviewCadence::Weekly);
+    }
+
+    /// Places one patient on a physician's panel directly, for fixtures.
+    pub fn seed_membership(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+        membership: Membership,
+    ) {
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        state.memberships.insert(
+            (
+                identity.practice_id.clone(),
+                identity.physician_id.clone(),
+                patient_workspace_id.to_owned(),
+            ),
+            membership,
+        );
+    }
+
+    /// Creates one practice directly, for fixtures and the staging practice.
+    /// A practice that already exists keeps its clock.
+    pub fn seed_practice(&self, practice_id: &str, clock: PracticeClock) {
+        self.state
+            .lock()
+            .expect("auth state")
+            .practices
+            .entry(practice_id.to_owned())
+            .or_insert(clock);
     }
 
     /// Lists one practice's accounts, for the admin surface.
@@ -681,7 +772,7 @@ impl AuthStore for MemoryAuthStore {
         identity: &PhysicianIdentity,
         patient_workspace_id: &str,
         membership: Membership,
-    ) {
+    ) -> Result<(), StoreUnavailable> {
         let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         if membership == Membership::ClinicDemographic {
@@ -698,6 +789,25 @@ impl AuthStore for MemoryAuthStore {
             ),
             membership,
         );
+        Ok(())
+    }
+
+    async fn place_on_panel(
+        &self,
+        identity: &PhysicianIdentity,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable> {
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        state
+            .memberships
+            .entry((
+                identity.practice_id.clone(),
+                identity.physician_id.clone(),
+                patient_workspace_id.to_owned(),
+            ))
+            .or_insert(Membership::Allowed);
+        Ok(())
     }
 
     async fn panel(&self, identity: &PhysicianIdentity) -> Vec<String> {
@@ -766,25 +876,55 @@ impl AuthStore for MemoryAuthStore {
         Ok(())
     }
 
-    async fn register_patient(&self, practice_id: &str, patient_workspace_id: &str) {
+    async fn ensure_practice(
+        &self,
+        practice_id: &str,
+        clock: PracticeClock,
+    ) -> Result<(), StoreUnavailable> {
+        self.seed_practice(practice_id, clock);
+        Ok(())
+    }
+
+    async fn practice_clock(&self, practice_id: &str) -> Result<PracticeClock, StoreUnavailable> {
+        Ok(self
+            .state
+            .lock()
+            .expect("auth state")
+            .practices
+            .get(practice_id)
+            .copied()
+            .unwrap_or(PracticeClock::RealTime))
+    }
+
+    async fn register_patient(
+        &self,
+        practice_id: &str,
+        patient_workspace_id: &str,
+    ) -> Result<(), StoreUnavailable> {
         let _announce = self.announce();
         let mut state = self.state.lock().expect("auth state");
         state
             .patients
-            .insert(patient_workspace_id.to_owned(), practice_id.to_owned());
+            .entry(patient_workspace_id.to_owned())
+            .or_insert_with(|| practice_id.to_owned());
         state
             .cadences
             .entry(patient_workspace_id.to_owned())
             .or_insert(ReviewCadence::Weekly);
+        Ok(())
     }
 
-    async fn patient_practice(&self, patient_workspace_id: &str) -> Option<String> {
-        self.state
+    async fn patient_practice(
+        &self,
+        patient_workspace_id: &str,
+    ) -> Result<Option<String>, StoreUnavailable> {
+        Ok(self
+            .state
             .lock()
             .expect("auth state")
             .patients
             .get(patient_workspace_id)
-            .cloned()
+            .cloned())
     }
 
     async fn practice_patients(&self, practice_id: &str) -> Vec<String> {
@@ -799,8 +939,8 @@ impl AuthStore for MemoryAuthStore {
         patients
     }
 
-    async fn practice_accounts(&self, practice_id: &str) -> Vec<Account> {
-        MemoryAuthStore::practice_accounts(self, practice_id)
+    async fn practice_accounts(&self, practice_id: &str) -> Result<Vec<Account>, StoreUnavailable> {
+        Ok(MemoryAuthStore::practice_accounts(self, practice_id))
     }
 
     async fn patient_cadence(&self, patient_workspace_id: &str) -> ReviewCadence {
@@ -1142,6 +1282,22 @@ mod tests {
     }
 
     #[tokio::test]
+    async fn a_practice_keeps_the_clock_it_was_created_with() {
+        let store = MemoryAuthStore::new();
+        let fixed = PracticeClock::Fixed(1_787_846_400);
+        store.ensure_practice("synthetic", fixed).await.unwrap();
+        store
+            .ensure_practice("synthetic", PracticeClock::RealTime)
+            .await
+            .unwrap();
+        assert_eq!(store.practice_clock("synthetic").await.unwrap(), fixed);
+        assert_eq!(
+            store.practice_clock("real").await.unwrap(),
+            PracticeClock::RealTime
+        );
+    }
+
+    #[tokio::test]
     async fn an_issued_token_signs_in_once_and_mints_a_session() {
         let store = MemoryAuthStore::new();
         store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
@@ -1282,7 +1438,8 @@ mod tests {
         );
         store
             .set_membership(&identity, "pw-1", Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
         assert_eq!(
             store.membership(&identity, "pw-1").await,
             Membership::Allowed
@@ -1493,9 +1650,9 @@ mod tests {
             physician_id: "outside".to_owned(),
         };
 
-        store.register_patient("clinic-a", "pw-mary").await;
+        store.register_patient("clinic-a", "pw-mary").await.unwrap();
         assert_eq!(
-            store.patient_practice("pw-mary").await.as_deref(),
+            store.patient_practice("pw-mary").await.unwrap().as_deref(),
             Some("clinic-a")
         );
         assert_eq!(

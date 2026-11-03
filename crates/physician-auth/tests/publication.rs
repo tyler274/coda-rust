@@ -12,10 +12,11 @@ async fn proof(store: Arc<dyn AuthStore>, revoker_store: Arc<dyn AuthStore>) {
         .await
         .unwrap();
     let (identity, mut token) = store.redeem_invitation(&email, &invite, now).await.unwrap();
-    store.register_patient(&unique, &workspace).await;
+    store.register_patient(&unique, &workspace).await.unwrap();
     store
         .set_membership(&identity, &workspace, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     for mutation in ["membership", "account", "session"] {
         let (entered_tx, entered_rx) = tokio::sync::oneshot::channel();
         let (release_tx, release_rx) = std::sync::mpsc::channel();
@@ -45,7 +46,7 @@ async fn proof(store: Arc<dyn AuthStore>, revoker_store: Arc<dyn AuthStore>) {
         let mut revoker = tokio::spawn(async move {
             started_tx.send(()).unwrap();
             match mutation {
-                "membership" => s.set_membership(&i, &w, Membership::Denied).await,
+                "membership" => s.set_membership(&i, &w, Membership::Denied).await.unwrap(),
                 "account" => {
                     assert!(s.deactivate(&email_copy).await);
                 }
@@ -75,6 +76,7 @@ async fn proof(store: Arc<dyn AuthStore>, revoker_store: Arc<dyn AuthStore>) {
                 store
                     .set_membership(&identity, &workspace, Membership::Allowed)
                     .await
+                    .unwrap();
             }
             "account" => {
                 assert!(store.reactivate(&email).await);
@@ -130,10 +132,11 @@ async fn runtime_authority_locks_all_four_owners_and_refuses_revoked_access() {
             .await
             .unwrap();
         let (identity, token) = store.redeem_invitation(&email, &invite, now).await.unwrap();
-        store.register_patient(&unique, &unique).await;
+        store.register_patient(&unique, &unique).await.unwrap();
         store
             .set_membership(&identity, &unique, Membership::Allowed)
-            .await;
+            .await
+            .unwrap();
         let hash = PostgresAuthStore::session_reference(&token);
         let authority = db.begin().await.unwrap();
         PostgresAuthStore::lock_runtime_authority(&authority, &hash, &identity, &unique)
@@ -244,10 +247,11 @@ async fn runtime_authority_reads_wall_clock_after_waiting_for_locks() {
         .await
         .unwrap();
     let (identity, token) = store.redeem_invitation(&email, &invite, now).await.unwrap();
-    store.register_patient(&unique, &unique).await;
+    store.register_patient(&unique, &unique).await.unwrap();
     store
         .set_membership(&identity, &unique, Membership::Allowed)
-        .await;
+        .await
+        .unwrap();
     let hash = PostgresAuthStore::session_reference(&token);
     let blocker = db.begin().await.unwrap();
     Sessions::update_many()

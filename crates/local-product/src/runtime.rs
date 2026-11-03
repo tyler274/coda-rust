@@ -290,6 +290,9 @@ impl Store {
         let mut sources = schema.create_table_from_entity(entities::source::Entity);
         sources.if_not_exists();
         tx.execute(&sources).await?;
+        let mut source_pulls = schema.create_table_from_entity(entities::source_pull::Entity);
+        source_pulls.if_not_exists();
+        tx.execute(&source_pulls).await?;
         // Receipts older than this column get the migration's time, so the
         // 90-day reduction counts from when it could first see them. `now()`
         // is stable, so Postgres stores it once instead of rewriting rows.

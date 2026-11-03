@@ -209,7 +209,7 @@ const OBSERVE: &str = r#"(() => {
     : heading.startsWith('Let') ? (text.includes('no longer valid') ? 'This link no longer works' : "Coda couldn't reach sign-in")
     : 'Something else: ' + heading;
   return { shows, held: coda.held.map((h) => [h.kind, h.bearer]), news: coda.news.length,
-    signingOut: coda.signingOut, patient: text.includes('Patient summary') };
+    signingOut: coda.signingOut, patient: text.includes('Records as of') };
 })()"#;
 
 /// Whether the page that just opened has drawn Coda's workspace, prompt or
