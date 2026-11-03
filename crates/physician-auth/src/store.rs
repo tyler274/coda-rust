@@ -11,8 +11,8 @@ use crate::migration::{
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
     PhysicianIdentity, PracticeClock, ReviewCadence, SESSION_TTL_SECONDS,
-    SIGN_IN_TOKEN_TTL_SECONDS, SessionError, SignInError, StoreUnavailable, mint_patient_token,
-    mint_token, token_hash,
+    SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionError, SignInError, StoreUnavailable,
+    mint_patient_token, mint_token, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -20,6 +20,36 @@ use sea_orm::{
     DbErr, EntityTrait, QueryFilter, QuerySelect, QueryTrait, Set, TransactionTrait,
     sea_query::{Expr, JoinType, LockType, Query},
 };
+
+fn unix_now() -> i64 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap_or_default()
+        .as_secs() as i64
+}
+
+async fn register_patient_on(
+    db: &impl ConnectionTrait,
+    practice_id: &str,
+    workspace: &str,
+) -> Result<(), DbErr> {
+    use crate::migration::patient::Column;
+    Patients::insert(crate::migration::PatientActiveModel {
+        patient_workspace_id: Set(workspace.to_owned()),
+        practice_id: Set(practice_id.to_owned()),
+        cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
+        created_at: Set(unix_now()),
+    })
+    .on_conflict(
+        sea_orm::sea_query::OnConflict::column(Column::PatientWorkspaceId)
+            .do_nothing()
+            .to_owned(),
+    )
+    .try_insert()
+    .exec(db)
+    .await?;
+    Ok(())
+}
 
 /// The SQL-backed store.
 #[derive(Debug, Clone)]
@@ -307,7 +337,7 @@ impl AuthStore for PostgresAuthStore {
         ))
     }
 
-    async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+    async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         let hash = token_hash(token);
         let session = Sessions::find()
             .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
@@ -331,9 +361,14 @@ impl AuthStore for PostgresAuthStore {
             // session still is not.
             return Err(SessionError::Inactive);
         }
-        Ok(PhysicianIdentity {
-            practice_id: account.practice_id,
-            physician_id: account.physician_id,
+        Ok(Session {
+            identity: PhysicianIdentity {
+                practice_id: account.practice_id,
+                physician_id: account.physician_id,
+            },
+            token_hash: hash,
+            expires_at: session.expires_at as u64,
+            created_at: session.created_at as u64,
         })
     }
 
@@ -359,11 +394,13 @@ impl AuthStore for PostgresAuthStore {
         publish()?;
         txn.commit().await.map_err(|e| e.to_string())
     }
-    async fn end_session(&self, token: &str) {
-        let _ = Sessions::delete_many()
+    async fn end_session(&self, token: &str) -> Result<(), StoreUnavailable> {
+        Sessions::delete_many()
             .filter(crate::migration::session::Column::TokenHash.eq(token_hash(token).to_vec()))
             .exec(&self.db)
-            .await;
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        Ok(())
     }
 
     async fn account_by_email(&self, email: &str) -> Option<Account> {
@@ -427,45 +464,34 @@ impl AuthStore for PostgresAuthStore {
         patient_workspace_id: &str,
         membership: Membership,
     ) -> Result<(), StoreUnavailable> {
+        use crate::migration::membership::Column;
+        let txn = self.db.begin().await.map_err(|_| StoreUnavailable)?;
         if membership == Membership::ClinicDemographic {
-            self.register_patient(&identity.practice_id, patient_workspace_id)
-                .await?;
-        }
-        let allowed = membership == Membership::Allowed;
-        let existing = Memberships::find()
-            .filter(crate::migration::membership::Column::PracticeId.eq(&identity.practice_id))
-            .filter(crate::migration::membership::Column::PhysicianId.eq(&identity.physician_id))
-            .filter(
-                crate::migration::membership::Column::PatientWorkspaceId.eq(patient_workspace_id),
-            )
-            .one(&self.db)
-            .await
-            .map_err(|_| StoreUnavailable)?;
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|since| since.as_secs())
-            .unwrap_or(0) as i64;
-        match existing {
-            Some(row) => {
-                let mut update: crate::migration::MembershipActiveModel = row.into();
-                update.allowed = Set(allowed);
-                update.update(&self.db).await
-            }
-            None => {
-                crate::migration::MembershipActiveModel {
-                    id: Default::default(),
-                    practice_id: Set(identity.practice_id.clone()),
-                    physician_id: Set(identity.physician_id.clone()),
-                    patient_workspace_id: Set(patient_workspace_id.to_owned()),
-                    allowed: Set(allowed),
-                    created_at: Set(now),
-                }
-                .insert(&self.db)
+            register_patient_on(&txn, &identity.practice_id, patient_workspace_id)
                 .await
-            }
+                .map_err(|_| StoreUnavailable)?;
         }
-        .map(|_| ())
-        .map_err(|_| StoreUnavailable)
+        Memberships::insert(crate::migration::MembershipActiveModel {
+            id: Default::default(),
+            practice_id: Set(identity.practice_id.clone()),
+            physician_id: Set(identity.physician_id.clone()),
+            patient_workspace_id: Set(patient_workspace_id.to_owned()),
+            allowed: Set(membership == Membership::Allowed),
+            created_at: Set(unix_now()),
+        })
+        .on_conflict(
+            sea_orm::sea_query::OnConflict::columns([
+                Column::PracticeId,
+                Column::PhysicianId,
+                Column::PatientWorkspaceId,
+            ])
+            .update_column(Column::Allowed)
+            .to_owned(),
+        )
+        .exec_without_returning(&txn)
+        .await
+        .map_err(|_| StoreUnavailable)?;
+        txn.commit().await.map_err(|_| StoreUnavailable)
     }
 
     async fn place_on_panel(
@@ -565,28 +591,8 @@ impl AuthStore for PostgresAuthStore {
         practice_id: &str,
         patient_workspace_id: &str,
     ) -> Result<(), StoreUnavailable> {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .map(|since| since.as_secs())
-            .unwrap_or(0) as i64;
-        let patient = crate::migration::PatientActiveModel {
-            patient_workspace_id: Set(patient_workspace_id.to_owned()),
-            practice_id: Set(practice_id.to_owned()),
-            cadence: Set(ReviewCadence::Weekly.as_str().to_owned()),
-            created_at: Set(now),
-        };
-        Patients::insert(patient)
-            .on_conflict(
-                sea_orm::sea_query::OnConflict::column(
-                    crate::migration::patient::Column::PatientWorkspaceId,
-                )
-                .do_nothing()
-                .to_owned(),
-            )
-            .try_insert()
-            .exec(&self.db)
+        register_patient_on(&self.db, practice_id, patient_workspace_id)
             .await
-            .map(|_| ())
             .map_err(|_| StoreUnavailable)
     }
 

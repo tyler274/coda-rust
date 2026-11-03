@@ -850,7 +850,7 @@ impl Owner for LiveOwner {
     }
     async fn check(&mut self) -> Result<(), String> {
         if let Some(ctx) = &self.auth_ctx
-            && (ctx.auth.store.session(&ctx.token, now()).await.is_err()
+            && (ctx.auth.store.identity(&ctx.token, now()).await.is_err()
                 || !allows_workspace(&ctx.auth, &ctx.identity, &self.work.workspace).await)
         {
             return Err("physician authorization withdrawn".into());

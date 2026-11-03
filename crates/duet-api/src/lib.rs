@@ -25,6 +25,7 @@ pub mod evidence_paging;
 pub mod evidence_routes;
 pub mod follow_up;
 pub mod health_context;
+mod health_context_entity;
 pub mod hosting;
 pub mod identity;
 pub mod journal_gcs;

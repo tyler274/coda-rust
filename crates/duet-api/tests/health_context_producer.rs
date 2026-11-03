@@ -1,19 +1,16 @@
 //! Real PostgreSQL proof from an empty database; producer rows are never SQL seeded.
-use sqlx::AssertSqlSafe;
-// Compile the assigned module before coordinator wiring; no shared lib edits required.
-pub use duet_api::{ApiError, database, evidence, identity};
-#[path = "../src/health_context.rs"]
-mod health_context;
 use chrono::{Duration, Utc};
+use duet_api::{ApiError, health_context};
 use duet_api::{
-    database::AccountDatabase,
+    database::{self, AccountDatabase},
     evidence::{EvidenceMutation, EvidenceStore},
-    identity::{IdentityStore, IdentityVerifier, VerifiedIdentity},
+    identity::{self, IdentityStore, IdentityVerifier, VerifiedIdentity},
     privacy::{FileJournal, PrivacyStore, Restriction},
 };
 use duet_wire::models::addressed_record_revision::Entity;
 use health_context::{HealthContextProducer, Upload};
 use serde_json::json;
+use sqlx::AssertSqlSafe;
 use sqlx::{ConnectOptions, Connection};
 use std::sync::Arc;
 use uuid::Uuid;

@@ -4,7 +4,7 @@ use crate::{ApiError, conversation::Submission};
 use duet_wire::models::ConversationSendRequestSelectedContext as Selection;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
-use sqlx::{Postgres, Row, Transaction};
+use sqlx::{Postgres, Transaction};
 use uuid::Uuid;
 
 fn identity(value: &Value) -> String {
@@ -166,29 +166,9 @@ pub(crate) async fn admit(
             {
                 return Err(invalid());
             }
-            let row = sqlx::query("select source_boundary_id,revision,projections,generated_at,producer_fingerprint from health_contexts where user_id=$1")
-                .bind(account).fetch_optional(&mut **tx).await?.ok_or(ApiError::Conflict("selected_context_unavailable"))?;
-            if row.get::<Uuid, _>("source_boundary_id") != m.source_boundary_id
-                || row.get::<i64, _>("revision") != i64::from(m.health_context_revision)
-                || !row
-                    .get::<Value, _>("projections")
-                    .as_array()
-                    .is_some_and(|v| !v.is_empty())
-            {
-                return Err(ApiError::Conflict("selected_context_unavailable"));
-            }
-            if row
-                .get::<Option<String>, _>("producer_fingerprint")
-                .is_some()
-            {
-                crate::health_context::validate_current_in_transaction(tx, account)
-                    .await
-                    .map_err(|_| ApiError::Conflict("selected_context_unavailable"))?;
-            }
-            // The original contract accepts a resolver-produced fact outside Today:
-            // do not require membership in the current bundle, nor substitute a device snapshot.
-            let retained_at: chrono::DateTime<chrono::Utc> = row.get("generated_at");
-            unrestricted(tx, account, &json!(m.fact), retained_at)
+            let (fact, retained_at) =
+                crate::health_context::selected_measurement(tx, account, m).await?;
+            unrestricted(tx, account, &json!(fact), retained_at)
                 .await
                 .map_err(|e| match e {
                     ApiError::NotFound => ApiError::Conflict("selected_context_unavailable"),
@@ -202,9 +182,9 @@ pub(crate) async fn admit(
                 m.period_start,
                 m.period_end
             ]));
-            let reference = json!({"id":id,"kind":"native_fact","title":m.fact.title,"source":m.source.kind,"date":m.period_end});
+            let reference = json!({"id":id,"kind":"native_fact","title":fact.title,"source":m.source.kind,"date":m.period_end});
             Ok(
-                json!({"source":{"read_id":id,"reference":reference,"kind":"native_fact","body":m.fact,"retained_at":retained_at},"selected_context":selection}),
+                json!({"source":{"read_id":id,"reference":reference,"kind":"native_fact","body":fact,"retained_at":retained_at},"selected_context":selection}),
             )
         }
         Selection::FollowUp(f) => {

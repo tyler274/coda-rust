@@ -1080,7 +1080,7 @@ async fn synthetic_reply_opening_refuses_other_physicians_and_revoked_authority(
     auth.set_membership(&other_identity, &theirs.workspace, Membership::Allowed)
         .await
         .unwrap();
-    auth.end_session(&other_session).await;
+    auth.end_session(&other_session).await.unwrap();
     let (status, _) = support::get_json(&running.hosts[0], &workspace_path(), &other_session).await;
     assert_eq!(status, 401);
     let mut revoked = synthetic_scope();

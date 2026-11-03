@@ -66,7 +66,7 @@ async fn postgres_revocation_waits_for_existing_authority_row_publication_fence(
     entered_rx.await.unwrap();
     let other = store.clone();
     let token_copy = token.clone();
-    let mut revoker = tokio::spawn(async move { other.end_session(&token_copy).await });
+    let mut revoker = tokio::spawn(async move { other.end_session(&token_copy).await.unwrap() });
     assert!(
         tokio::time::timeout(std::time::Duration::from_millis(100), &mut revoker)
             .await

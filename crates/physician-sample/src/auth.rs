@@ -302,7 +302,7 @@ pub(crate) async fn resolve(
 ) -> Result<ResolvedSession, Refused> {
     let token = token.ok_or(Refused::NoSession)?;
     auth.store
-        .session(&token, now())
+        .identity(&token, now())
         .await
         .map_err(|error| match error {
             SessionError::Invalid => Refused::NoSession,
@@ -736,8 +736,9 @@ async fn stream_still_authorized(
         let current_panel: HashSet<String> = auth.store.panel(identity).await.into_iter().collect();
         initial_panel.iter().all(|ws| current_panel.contains(ws))
     };
-    let (session, still_allowed) = tokio::join!(auth.store.session(token, now()), still_allowed);
-    session.is_ok() && still_allowed
+    let (resolved_identity, still_allowed) =
+        tokio::join!(auth.store.identity(token, now()), still_allowed);
+    resolved_identity.is_ok() && still_allowed
 }
 
 async fn filter_sse_chunk(
@@ -937,8 +938,9 @@ async fn sign_out(State(auth): State<Arc<Auth>>, request: Request<Body>) -> Resp
         .get(axum::http::header::AUTHORIZATION)
         .and_then(|value| value.to_str().ok())
         .and_then(|header| header.strip_prefix("Bearer "))
+        && auth.store.end_session(token).await.is_err()
     {
-        auth.store.end_session(token).await;
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
     }
     StatusCode::NO_CONTENT.into_response()
 }

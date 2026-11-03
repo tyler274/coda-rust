@@ -359,7 +359,7 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
         });
         locked_rx.await.unwrap();
         let a = auth.clone();
-        let revocation = tokio::spawn(async move { a.end_session(&token).await });
+        let revocation = tokio::spawn(async move { a.end_session(&token).await.unwrap() });
         tokio::time::sleep(std::time::Duration::from_millis(if expire {
             2100
         } else {

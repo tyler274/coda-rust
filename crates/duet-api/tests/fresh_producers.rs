@@ -263,7 +263,8 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
             .await
             .is_null()
     );
-    let facts = context["snapshot"]["projections"][0]["facts"]
+    let stored = ok(&app, "GET", "/api/health-context", "a", json!(null)).await;
+    let facts = stored["snapshot"]["projections"][0]["facts"]
         .as_array()
         .unwrap();
     let fact = facts
@@ -367,7 +368,7 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
             .is_err()
     );
     let measurement: duet_api::conversation::Submission = serde_json::from_value(json!({"timezone":"UTC","selected_context":{"kind":"measurement","source_boundary_id":context["snapshot"]["source_boundary_id"],"health_context_revision":context["revision"],"source":{"kind":"appleHealth","connection_id":"phone"},"measurement_id":"steps","period_start":fact["range_start"],"period_end":fact["range_end"],"fact":fact}})).unwrap();
-    assert!(
+    assert!(matches!(
         store
             .phone_accept_submission(
                 &b,
@@ -376,9 +377,33 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
                 "local",
                 &measurement
             )
-            .await
-            .is_err()
+            .await,
+        Err(ApiError::Conflict("selected_context_unavailable"))
+    ));
+    let mut altered = serde_json::to_value(&measurement).unwrap();
+    altered["selected_context"]["fact"]["value"] = json!(99_999);
+    let altered = serde_json::from_value(altered).unwrap();
+    assert!(matches!(
+        store
+            .phone_accept_submission(&a, Uuid::new_v4(), "Altered measurement", "local", &altered)
+            .await,
+        Err(ApiError::Conflict("selected_context_unavailable"))
+    ));
+    // The phone can omit optional nulls and express the same instant in local time.
+    let mut phone = serde_json::to_value(&measurement).unwrap();
+    let phone_fact = &mut phone["selected_context"]["fact"];
+    let range_start = chrono::DateTime::parse_from_rfc3339(fact["range_start"].as_str().unwrap())
+        .unwrap()
+        .with_timezone(&chrono::FixedOffset::west_opt(5 * 3600).unwrap());
+    phone_fact["range_start"] = json!(range_start);
+    assert_eq!(
+        phone_fact
+            .as_object_mut()
+            .unwrap()
+            .remove("comparison_value"),
+        Some(Value::Null)
     );
+    let measurement = serde_json::from_value(phone).unwrap();
     let measurement_command = Uuid::new_v4();
     store
         .phone_accept_submission(
@@ -405,13 +430,13 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
     )
     .await;
     let measurement_assistant = Uuid::from_u128(measurement_command.as_u128() ^ (1u128 << 127));
-    assert!(
-        store
-            .message_source(&a, measurement_assistant, "measurement-read")
-            .await
-            .unwrap()
-            .to_string()
-            .contains("7654")
+    let reopened = store
+        .message_source(&a, measurement_assistant, "measurement-read")
+        .await
+        .unwrap();
+    assert_eq!(
+        serde_json::from_str::<Value>(reopened["text"].as_str().unwrap()).unwrap(),
+        fact
     );
     // Actual accepted conversation tool creates follow-through; API cannot import it.
     let command = Uuid::new_v4();
@@ -536,6 +561,18 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
             .await
             .is_err()
     );
+    assert!(matches!(
+        store
+            .phone_accept_submission(
+                &a,
+                Uuid::new_v4(),
+                "Stale measurement",
+                "local",
+                &measurement
+            )
+            .await,
+        Err(ApiError::Conflict("selected_context_unavailable"))
+    ));
     assert!(producer.read(&a).await.is_err());
     let refreshed = ok(&app, "POST", "/api/health-context/refresh", "a", json!({})).await;
     assert!(

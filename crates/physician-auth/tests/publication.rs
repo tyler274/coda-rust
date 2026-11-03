@@ -50,7 +50,7 @@ async fn proof(store: Arc<dyn AuthStore>, revoker_store: Arc<dyn AuthStore>) {
                 "account" => {
                     assert!(s.deactivate(&email_copy).await);
                 }
-                _ => s.end_session(&t).await,
+                _ => s.end_session(&t).await.unwrap(),
             }
         });
         started_rx.await.unwrap();

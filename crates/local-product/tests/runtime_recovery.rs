@@ -136,12 +136,11 @@ async fn auth_revocation_and_publication_use_conflicting_real_row_locks() {
         let workspace = scope.workspace.clone();
         let revoker = tokio::spawn(async move {
             match action {
-                "session" => auth.end_session(&token).await,
-                "panel" => {
-                    auth.set_membership(&identity, &workspace, Membership::Denied)
-                        .await
-                        .unwrap();
-                }
+                "session" => auth.end_session(&token).await.unwrap(),
+                "panel" => auth
+                    .set_membership(&identity, &workspace, Membership::Denied)
+                    .await
+                    .unwrap(),
                 _ => {
                     assert!(auth.deactivate(&email).await);
                 }

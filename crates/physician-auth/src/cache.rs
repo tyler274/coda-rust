@@ -29,8 +29,8 @@ use tokio::sync::watch;
 
 use crate::{
     Account, AuthStore, AuthorityFeed, Cadence, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, SessionError, SignInError, StoreUnavailable,
-    token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, Session, SessionError, SignInError,
+    StoreUnavailable, token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -49,7 +49,7 @@ struct Cache {
     /// The feed generation and local write epoch the entries were read at.
     stamp: (u64, u64),
     local_epoch: u64,
-    sessions: HashMap<[u8; 32], Entry<PhysicianIdentity>>,
+    sessions: HashMap<[u8; 32], Entry<Session>>,
     memberships: HashMap<(PhysicianIdentity, String), Entry<Membership>>,
     panels: HashMap<PhysicianIdentity, Entry<Vec<String>>>,
     accounts: HashMap<PhysicianIdentity, Entry<Option<Account>>>,
@@ -172,23 +172,27 @@ impl CachedAuthStore {
         Ok(value)
     }
 
-    async fn read_session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+    async fn read_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         let before = *self.feed.borrow();
         let hash = token_hash(token);
         let epoch = {
             let mut cache = self.cache.lock().expect("authority cache");
             if before.live {
                 cache.align(before.generation);
-                if let Some((identity, at)) = cache.sessions.get(&hash)
+                if let Some((session, at)) = cache.sessions.get(&hash)
                     && at.elapsed() < ENTRY_TTL
                 {
-                    return Ok(identity.clone());
+                    return if now < session.expires_at {
+                        Ok(session.clone())
+                    } else {
+                        Err(SessionError::Invalid)
+                    };
                 }
             }
             cache.local_epoch
         };
         // Failures are not cached: an unknown token must not occupy memory.
-        let identity = self.inner.session(token, now).await?;
+        let session = self.inner.verified_session(token, now).await?;
         let after = *self.feed.borrow();
         if before.live && after == before {
             let mut cache = self.cache.lock().expect("authority cache");
@@ -199,10 +203,10 @@ impl CachedAuthStore {
                 }
                 cache
                     .sessions
-                    .insert(hash, (identity.clone(), Instant::now()));
+                    .insert(hash, (session.clone(), Instant::now()));
             }
         }
-        Ok(identity)
+        Ok(session)
     }
 }
 
@@ -276,7 +280,7 @@ impl AuthStore for CachedAuthStore {
         result
     }
 
-    async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+    async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         self.read_session(token, now).await
     }
 
@@ -293,9 +297,10 @@ impl AuthStore for CachedAuthStore {
             .await
     }
 
-    async fn end_session(&self, token: &str) {
-        self.inner.end_session(token).await;
+    async fn end_session(&self, token: &str) -> Result<(), StoreUnavailable> {
+        let result = self.inner.end_session(token).await;
         self.invalidate();
+        result
     }
 
     async fn account_by_email(&self, email: &str) -> Option<Account> {
@@ -591,9 +596,9 @@ mod tests {
 
     #[async_trait]
     impl AuthStore for Counting {
-        async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+        async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
             self.reads.fetch_add(1, Ordering::SeqCst);
-            self.inner.session(token, now).await
+            self.inner.verified_session(token, now).await
         }
         async fn membership(&self, identity: &PhysicianIdentity, workspace: &str) -> Membership {
             self.reads.fetch_add(1, Ordering::SeqCst);
@@ -614,7 +619,7 @@ mod tests {
         ) -> Result<(PhysicianIdentity, String), SignInError> {
             self.inner.complete_sign_in(a, b, c).await
         }
-        async fn end_session(&self, a: &str) {
+        async fn end_session(&self, a: &str) -> Result<(), StoreUnavailable> {
             self.inner.end_session(a).await
         }
         async fn account_by_email(&self, a: &str) -> Option<Account> {
@@ -769,7 +774,7 @@ mod tests {
     async fn repeated_reads_reach_the_store_once_between_changes() {
         let (counting, cached, _tx, identity, token) = fixture();
         for _ in 0..5 {
-            assert_eq!(cached.session(&token, NOW).await.unwrap(), identity);
+            assert_eq!(cached.identity(&token, NOW).await.unwrap(), identity);
             assert_eq!(
                 cached.membership(&identity, "ws-1").await,
                 Membership::Denied
@@ -800,17 +805,17 @@ mod tests {
     #[tokio::test]
     async fn a_feed_generation_drops_what_another_writer_made_stale() {
         let (counting, cached, tx, _identity, token) = fixture();
-        assert!(cached.session(&token, NOW).await.is_ok());
+        assert!(cached.identity(&token, NOW).await.is_ok());
         // Another replica deactivates the account: the inner store changes
         // without this cache seeing the write, then the trigger notifies.
         counting.inner.deactivate("doc@example.test").await;
         assert!(
-            cached.session(&token, NOW).await.is_ok(),
+            cached.identity(&token, NOW).await.is_ok(),
             "served from cache"
         );
         tx.send_modify(|feed| feed.generation += 1);
         assert_eq!(
-            cached.session(&token, NOW).await,
+            cached.identity(&token, NOW).await,
             Err(SessionError::Inactive)
         );
     }
@@ -823,6 +828,17 @@ mod tests {
             cached.panel(&identity).await;
         }
         assert_eq!(counting.reads.load(Ordering::SeqCst), 3);
+    }
+
+    #[tokio::test]
+    async fn cached_session_ends_at_its_absolute_expiry() {
+        let (_, cache, _tx, _, token) = fixture();
+        let expiry = NOW + crate::SESSION_TTL_SECONDS;
+        assert!(cache.identity(&token, expiry - 1).await.is_ok());
+        assert_eq!(
+            cache.identity(&token, expiry).await,
+            Err(SessionError::Invalid)
+        );
     }
 
     #[tokio::test]
@@ -842,7 +858,7 @@ mod tests {
     async fn failures_are_not_cached() {
         let (counting, cached, _tx, _identity, _token) = fixture();
         for _ in 0..3 {
-            assert!(cached.session("codas-unknown", NOW).await.is_err());
+            assert!(cached.identity("codas-unknown", NOW).await.is_err());
         }
         assert_eq!(counting.reads.load(Ordering::SeqCst), 3);
     }

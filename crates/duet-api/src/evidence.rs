@@ -20,10 +20,8 @@
 //! and the literal stays in the payload. Receipt time is never a source date.
 use crate::{
     ApiError,
-    database::AccountDatabase,
-    evidence_entity::{
-        self as orm, account, clinical_note, health_evidence, ingestion, membership, revision,
-    },
+    database::{AccountDatabase, orm},
+    evidence_entity::{account, clinical_note, health_evidence, ingestion, membership, revision},
     identity::{AccountContext, check_current},
 };
 use chrono::{DateTime, Utc};

@@ -6,6 +6,8 @@
 //! own migrations here, without replaying the reference beta reset. The
 //! reference `schema_migrations` ledger is not claimed or modified.
 
+pub(crate) mod orm;
+
 use sha2::{Digest, Sha256};
 use sqlx::{AssertSqlSafe, Connection, PgConnection, PgPool, Postgres, Transaction};
 use uuid::Uuid;

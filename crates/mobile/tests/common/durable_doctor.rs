@@ -1,4 +1,7 @@
 //! Real PostgreSQL + durable routes + compiled patient UI; no stub or live model.
+#[path = "../../../duet-api/tests/support/retained_measurement.rs"]
+mod retained_measurement;
+
 use super::*;
 use duet_api::{
     database::{AccountDatabase, migrate},
@@ -79,6 +82,29 @@ fn click_text(browser: &mut Browser, text: &str) {
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn saved_page_publishes_and_revokes_through_real_durable_routes() {
+    with_durable_browser(run_browser_checks).await;
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn chat_citations_reopen_the_retained_source() {
+    with_durable_browser(async |base, _, account, owner_url, _| {
+        let mut patient = Browser::launch();
+        patient.resize(PHONE);
+        prove_conversation_source(base, account, owner_url, &mut patient).await;
+    })
+    .await;
+}
+
+async fn with_durable_browser(
+    check: impl AsyncFn(
+        &str,
+        &WorkspaceStore,
+        &duet_api::identity::AccountContext,
+        &str,
+        &mut BackendProcess,
+    ),
+) {
     let url = std::env::var("DUET_TEST_DATABASE_URL")
         .expect("explicit disposable loopback PostgreSQL required");
     let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
@@ -115,15 +141,7 @@ async fn saved_page_publishes_and_revokes_through_real_durable_routes() {
     let site = build_site_with_bearer(Some(TOKEN));
     let mut server = BackendProcess::start(&runtime_url, &journal_path, &site, &base);
     wait_until_ready(address).await;
-    run_browser_checks(
-        &base,
-        &workspace,
-        &account,
-        &owner_url,
-        &runtime_url,
-        &mut server,
-    )
-    .await;
+    check(&base, &workspace, &account, &owner_url, &mut server).await;
     server.stop();
     drop(workspace);
     drop(database);
@@ -312,6 +330,24 @@ impl Drop for BackendProcess {
     }
 }
 
+fn open_assistant_source(browser: &mut Browser, reply_number: usize, title: &str) {
+    let trigger = format!(
+        ".message-assistant:nth-child({reply_number} of .message-assistant) .sources-button"
+    );
+    wait_for_selector(browser, &trigger);
+    browser.click(&trigger);
+    let row = format!("dialog [aria-label='Open source {title}']");
+    wait_for_selector(browser, &row);
+    browser.click(&row);
+}
+
+fn close_source_sheets(browser: &mut Browser) {
+    browser.click("dialog ~ dialog button[aria-label='Close']");
+    wait_for_gone(browser, "dialog ~ dialog");
+    browser.click("dialog button[aria-label='Close']");
+    wait_for_gone(browser, "dialog");
+}
+
 async fn prove_conversation_source(
     base: &str,
     account: &duet_api::identity::AccountContext,
@@ -323,7 +359,7 @@ async fn prove_conversation_source(
     sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version='2026-09-23' where id=$1").bind(account.account_id).execute(&mut admin).await.unwrap();
     let http = reqwest::Client::new();
     let record = Uuid::new_v4();
-    let mut mutation = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":record,"record_id":"browser-literal-note","entity":"clinical_note","payload":{"title":"Retained browser note","body":"Original exact browser wording","source_label":"Synthetic records"}});
+    let mut mutation = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":record,"record_id":"browser-literal-note","entity":"clinical_note","payload":{"title":"Retained browser note","body":"Original exact browser wording","source_label":"Health Records"}});
     let address: serde_json::Value = http
         .post(format!("{base}/api/canonical-evidence"))
         .bearer_auth(TOKEN)
@@ -473,25 +509,27 @@ async fn prove_conversation_source(
     patient.text_until(&format!("{base}/?mode=client"), "Today");
     patient.click("nav.tabs button:nth-of-type(1)");
     patient.wait_for("Here is the original record you selected.");
-    // The final source chip belongs to the assistant, not the selected user attachment.
-    patient.page().evaluate("(() => { const chips = [...document.querySelectorAll('button[aria-label=\"Open source Retained browser note\"]')]; chips[ chips.length-1 ].click(); return true; })()");
+    open_assistant_source(patient, 1, "Retained browser note");
     patient.wait_for("Original exact browser wording");
-    patient.wait_for("A newer version of this record is available.");
+    patient.wait_for("A newer version of this record exists.");
+    let cited = patient
+        .page()
+        .evaluate("document.querySelector('dialog .source-text').innerText");
     assert!(
-        !patient
-            .body_text()
+        !cited
+            .as_str()
             .unwrap()
             .contains("Corrected current browser wording")
     );
-    patient.click("button[aria-label='Close source']");
+    close_source_sheets(patient);
     let boundary = Uuid::new_v4();
     let snapshot = Uuid::new_v4();
     let cycle = Uuid::new_v4();
     let insight = Uuid::new_v4();
     let fact = json!({"id":"steps:day","kind":"current_value","window":"day","concept_ids":["steps"],"title":"Frozen browser measurement","range_start":"2026-10-19T00:00:00Z","range_end":"2026-10-20T00:00:00Z","value":7654.0,"evidence":[{"id":"stat:steps","kind":"stat","title":"Steps","source_kind":"appleHealth"}]});
-    sqlx::query("insert into health_contexts(user_id,snapshot_id,source_boundary_id,generated_at,timezone,projections) values($1,$2,$3,now(),'UTC','[{\"kind\":\"daily\"}]')").bind(account.account_id).bind(snapshot).bind(boundary).execute(&mut admin).await.unwrap();
+    retained_measurement::insert(owner_url, account.account_id, snapshot, boundary, &fact).await;
     sqlx::query("insert into insight_cycles(id,user_id,context_snapshot_id,kind,window_start,window_end,timezone,first_weekday,status,insights,supporting_facts,observed_through,generated_at) values($1,$2,$3,'daily','2026-10-19','2026-10-20','UTC',1,'ready',$4,$5,now(),now())").bind(cycle).bind(account.account_id).bind(snapshot).bind(json!([{"id":insight,"title":"Frozen browser observation","detail":"Original published browser observation","evidence":[],"fact_ids":["steps:day"]}])).bind(json!([fact])).execute(&mut admin).await.unwrap();
-    for (selected, title, text) in [
+    for (index, (selected, title, text)) in [
         (
             json!({"kind":"measurement","source_boundary_id":boundary,"health_context_revision":1,"source":{"kind":"appleHealth"},"measurement_id":"steps","period_start":"2026-10-19T00:00:00Z","period_end":"2026-10-20T00:00:00Z","fact":fact}),
             "Frozen browser measurement",
@@ -502,7 +540,7 @@ async fn prove_conversation_source(
             "Frozen browser observation",
             "Original published browser observation",
         ),
-    ] {
+    ].into_iter().enumerate() {
         let id = Uuid::new_v4();
         http.post(format!("{base}/api/conversation/messages")).bearer_auth(TOKEN).json(&json!({"id":id,"text":"Explain this retained context","timezone":"UTC","selected_context":selected})).send().await.unwrap().error_for_status().unwrap();
         let assistant_id = Uuid::from_u128(id.as_u128() ^ (1u128 << 127));
@@ -533,11 +571,9 @@ async fn prove_conversation_source(
         }
         patient.text_until(&format!("{base}/?mode=client"), "Today");
         patient.click("nav.tabs button:nth-of-type(1)");
-        patient.wait_for(title);
-        let label = format!("Open source {title}");
-        patient.page().evaluate(&format!("(() => {{ const chips=[...document.querySelectorAll('button')].filter(b=>b.getAttribute('aria-label')==={label:?}); chips[chips.length-1].click();return true; }})()"));
+        open_assistant_source(patient, index + 2, title);
         patient.wait_for(text);
-        patient.click("button[aria-label='Close source']");
+        close_source_sheets(patient);
         let detail =
             format!("{base}/api/conversation/messages/{assistant_id}/sources/browser-read");
         assert_eq!(
@@ -591,9 +627,9 @@ async fn prove_conversation_source(
             .status(),
         404
     );
-    patient.page().evaluate("(() => { const chips = [...document.querySelectorAll('button[aria-label=\"Open source Retained browser note\"]')]; chips[chips.length-1].click(); return true; })()");
-    patient.wait_for("couldn’t");
-    patient.click("button[aria-label='Close source']");
+    open_assistant_source(patient, 1, "Retained browser note");
+    patient.wait_for("This record is no longer available.");
+    close_source_sheets(patient);
 }
 
 async fn run_browser_checks(
@@ -601,7 +637,6 @@ async fn run_browser_checks(
     workspace: &WorkspaceStore,
     account: &duet_api::identity::AccountContext,
     owner_url: &str,
-    _runtime_url: &str,
     server: &mut BackendProcess,
 ) {
     let mut patient = Browser::launch();

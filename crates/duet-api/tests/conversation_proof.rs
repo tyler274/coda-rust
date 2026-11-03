@@ -1,4 +1,7 @@
 //! Controlled provider proof through real PostgreSQL accepted-work ownership.
+#[path = "support/retained_measurement.rs"]
+mod retained_measurement;
+
 use duet_api::{
     conversation::ConversationStore, database::AccountDatabase, identity::AccountContext,
 };
@@ -14,6 +17,7 @@ async fn retained_context_families(
     db: &AccountDatabase,
     c: &AccountContext,
     admin: &mut sqlx::PgConnection,
+    owner_url: &str,
 ) {
     use duet_api::{ApiError, conversation::Submission};
     let boundary = Uuid::new_v4();
@@ -23,7 +27,7 @@ async fn retained_context_families(
     let insight = Uuid::new_v4();
     // Explicit synthetic retained-owner fixtures, not invented runtime producers.
     let fact = json!({"id":"steps:day","kind":"current_value","window":"day","concept_ids":["steps"],"title":"Frozen selected steps","range_start":"2026-10-19T00:00:00Z","range_end":"2026-10-20T00:00:00Z","value":7654.0,"unit":"count","evidence":[{"id":"stat:steps","kind":"stat","title":"Steps","source_kind":"appleHealth","source_connection_ids":["phone-1"]}]});
-    sqlx::query("insert into health_contexts(user_id,snapshot_id,source_boundary_id,generated_at,timezone,projections) values($1,$2,$3,now(),'UTC','[{\"kind\":\"daily\"}]')").bind(c.account_id).bind(snapshot).bind(boundary).execute(&mut *admin).await.unwrap();
+    retained_measurement::insert(owner_url, c.account_id, snapshot, boundary, &fact).await;
     sqlx::query("insert into follow_ups(id,user_id,accepted_instruction,schedule,schedule_summary,state,source_message_ids) values($1,$2,'Ask about my recorded walk','{}','Once','paused','{}')").bind(follow).bind(c.account_id).execute(&mut *admin).await.unwrap();
     let observations = json!([{"id":insight,"title":"Retained Today observation","detail":"Original published words","concept_ids":["steps"],"fact_ids":["steps:day"],"evidence":[],"sources":[]}]);
     sqlx::query("insert into insight_cycles(id,user_id,context_snapshot_id,kind,window_start,window_end,timezone,first_weekday,status,insights,supporting_facts,observed_through,generated_at) values($1,$2,$3,'daily','2026-10-19','2026-10-20','UTC',1,'ready',$4,$5,now(),now())").bind(cycle).bind(c.account_id).bind(snapshot).bind(observations).bind(json!([fact])).execute(&mut *admin).await.unwrap();
@@ -1035,7 +1039,7 @@ async fn durable_tool_recovery_memory_and_permission_fences() {
         .execute(&mut admin_db)
         .await
         .unwrap();
-    retained_context_families(&store, &db, &c, &mut admin_db).await;
+    retained_context_families(&store, &db, &c, &mut admin_db, &owner_url).await;
     admission_and_sources(&store, &db, &c, &address, &mut admin_db).await;
     sqlx::query("update duet_commands set state='running' where user_id=$1 and id=$2")
         .bind(account)

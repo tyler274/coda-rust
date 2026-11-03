@@ -211,7 +211,11 @@ pub trait AuthStore: Send + Sync {
         now: u64,
     ) -> Result<(PhysicianIdentity, String), SignInError>;
     /// Resolves a bearer token to its physician's identity.
-    async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError>;
+    async fn identity(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+        Ok(self.verified_session(token, now).await?.identity)
+    }
+    /// Resolves an active session with its persisted expiry.
+    async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError>;
     /// Executes synchronous publication while holding the actual session,
     /// account, panel and patient authority fence. Implementations must exclude
     /// direct mutations too, not only HTTP handlers. The callback must not call
@@ -227,7 +231,7 @@ pub trait AuthStore: Send + Sync {
         Err("authority store does not support fenced publication".into())
     }
     /// Ends one session so its token stops resolving.
-    async fn end_session(&self, token: &str);
+    async fn end_session(&self, token: &str) -> Result<(), StoreUnavailable>;
     /// Reads one account by email.
     async fn account_by_email(&self, email: &str) -> Option<Account>;
     /// Reads one account by its identity.
@@ -651,7 +655,7 @@ impl AuthStore for MemoryAuthStore {
         Ok((identity, session_token.expect("token minted")))
     }
 
-    async fn session(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
+    async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         let hash = token_hash(token);
         let state = self.state.lock().expect("auth state");
         let session = state.sessions.get(&hash).ok_or(SessionError::Invalid)?;
@@ -671,7 +675,7 @@ impl AuthStore for MemoryAuthStore {
             // session still is not.
             return Err(SessionError::Inactive);
         }
-        Ok(account.identity.clone())
+        Ok(session.clone())
     }
 
     async fn publish_authorized(
@@ -711,13 +715,14 @@ impl AuthStore for MemoryAuthStore {
         // Every direct memory mutation takes this same mutex.
         publish()
     }
-    async fn end_session(&self, token: &str) {
+    async fn end_session(&self, token: &str) -> Result<(), StoreUnavailable> {
         let _announce = self.announce();
         self.state
             .lock()
             .expect("auth state")
             .sessions
             .remove(&token_hash(token));
+        Ok(())
     }
 
     async fn account_by_email(&self, email: &str) -> Option<Account> {
@@ -1317,7 +1322,7 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(identity.physician_id, "physician");
-        assert_eq!(store.session(&session, NOW).await.unwrap(), identity);
+        assert_eq!(store.identity(&session, NOW).await.unwrap(), identity);
         assert_eq!(
             store
                 .complete_sign_in("doc@example.test", &token, NOW)
@@ -1394,15 +1399,15 @@ mod tests {
         let (_, session) = signed_in(&store, "doc@example.test").await;
         assert!(
             store
-                .session(&session, NOW + SESSION_TTL_SECONDS)
+                .identity(&session, NOW + SESSION_TTL_SECONDS)
                 .await
                 .is_err(),
             "an expired session stops resolving"
         );
         let (_, session) = signed_in(&store, "doc@example.test").await;
-        store.end_session(&session).await;
+        store.end_session(&session).await.unwrap();
         assert!(
-            store.session(&session, NOW).await.is_err(),
+            store.identity(&session, NOW).await.is_err(),
             "sign-out ends the session"
         );
     }
@@ -1414,19 +1419,19 @@ mod tests {
         let (_, session) = signed_in(&store, "doc@example.test").await;
         assert!(store.deactivate("doc@example.test").await);
         assert_eq!(
-            store.session(&session, NOW).await.unwrap_err(),
+            store.identity(&session, NOW).await.unwrap_err(),
             SessionError::Inactive,
             "a deactivated account's session cannot act"
         );
         assert!(store.reactivate("doc@example.test").await);
         assert!(
-            store.session(&session, NOW).await.is_err(),
+            store.identity(&session, NOW).await.is_err(),
             "sessions ended by deactivation stay ended"
         );
         let (_, session) = signed_in(&store, "doc@example.test").await;
         assert!(store.remove_account("doc@example.test").await);
         assert_eq!(
-            store.session(&session, NOW).await.unwrap_err(),
+            store.identity(&session, NOW).await.unwrap_err(),
             SessionError::Invalid,
             "removal deletes the sessions, so the token is simply unknown"
         );
@@ -1472,7 +1477,7 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(identity.practice_id, "practice");
-        assert!(store.session(&session, NOW).await.is_ok());
+        assert!(store.identity(&session, NOW).await.is_ok());
         let account = store.account_by_email("new@example.test").await.unwrap();
         assert_eq!(account.display_name, "New Doc");
         assert!(account.active);

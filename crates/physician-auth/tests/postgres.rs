@@ -120,7 +120,7 @@ async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
         .await
         .unwrap();
     let (email, initial_session) = invited_account(&store, "pg-proof").await;
-    let who = store.session(&initial_session, NOW).await.unwrap();
+    let who = store.identity(&initial_session, NOW).await.unwrap();
     let token = store.begin_sign_in(&email, NOW).await.unwrap();
     let db = sea_orm::Database::connect(&url).await.unwrap();
     let held = db.begin().await.unwrap();
@@ -154,7 +154,7 @@ async fn concurrent_sign_in_consumes_one_token_and_mints_one_session() {
     );
     let (identity, session) = outcomes.into_iter().find_map(Result::ok).unwrap();
     assert_eq!(identity, who);
-    assert_eq!(store.session(&session, NOW).await.unwrap(), who);
+    assert_eq!(store.identity(&session, NOW).await.unwrap(), who);
     assert_eq!(
         physician_auth::migration::session::Entity::find()
             .count(&db)
@@ -326,7 +326,10 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
     ];
     assert_eq!(schema_tables(&url).await, expected);
     let (email, session) = invited_account(&runtime, "separation-proof").await;
-    let who = runtime.session(&session, NOW).await.expect("saved session");
+    let who = runtime
+        .identity(&session, NOW)
+        .await
+        .expect("saved session");
     migrate();
     runtime.migrate().await.expect("explicit migration rerun");
     let read_only_url = format!("{url}?options=-c%20default_transaction_read_only%3Don");
@@ -338,7 +341,7 @@ async fn runtime_connection_leaves_schema_untouched_and_migration_job_reruns() {
         .await
         .expect("read-only schema check");
     assert_eq!(schema_tables(&url).await, expected);
-    assert_eq!(reopened.session(&session, NOW).await.unwrap(), who);
+    assert_eq!(reopened.identity(&session, NOW).await.unwrap(), who);
     assert!(reopened.account_by_email(&email).await.is_some());
     assert!(
         reopened.migrate().await.is_err(),
@@ -422,9 +425,9 @@ async fn a_sign_in_token_verifies_once_and_mints_one_session() {
         SignInError::Invalid,
         "a verified token never verifies again"
     );
-    let resolved = store.session(&session, NOW + SESSION_TTL_SECONDS).await;
+    let resolved = store.identity(&session, NOW + SESSION_TTL_SECONDS).await;
     assert!(resolved.is_err(), "an expired session stops resolving");
-    assert_eq!(store.session(&session, NOW).await.unwrap(), who);
+    assert_eq!(store.identity(&session, NOW).await.unwrap(), who);
 }
 
 #[tokio::test]
@@ -433,16 +436,16 @@ async fn deactivation_fences_held_sessions_and_removal_deletes_them() {
         return;
     };
     let (email, session) = invited_account(&store, "pg-proof").await;
-    assert!(store.session(&session, NOW).await.is_ok());
+    assert!(store.identity(&session, NOW).await.is_ok());
     assert!(store.deactivate(&email).await);
     assert_eq!(
-        store.session(&session, NOW).await.unwrap_err(),
+        store.identity(&session, NOW).await.unwrap_err(),
         SessionError::Inactive,
         "deactivation ends every held session"
     );
     assert!(store.reactivate(&email).await);
     assert_eq!(
-        store.session(&session, NOW).await.unwrap_err(),
+        store.identity(&session, NOW).await.unwrap_err(),
         SessionError::Inactive,
         "sessions ended by deactivation stay ended"
     );
@@ -454,7 +457,7 @@ async fn deactivation_fences_held_sessions_and_removal_deletes_them() {
         .expect("verify");
     assert!(store.remove_account(&email).await);
     assert!(
-        store.session(&session, NOW).await.is_err(),
+        store.identity(&session, NOW).await.is_err(),
         "removal deletes the sessions, so the token is simply unknown"
     );
     assert!(store.account_by_email(&email).await.is_none());
@@ -475,7 +478,7 @@ async fn an_invitation_redeems_once_and_a_raced_second_redeem_finds_nothing() {
         .await
         .expect("first redeem");
     assert_eq!(who.practice_id, "pg-proof");
-    assert!(store.session(&session, NOW).await.is_ok());
+    assert!(store.identity(&session, NOW).await.is_ok());
     let Account { admin, .. } = store.account_by_email(&email).await.expect("account");
     assert!(admin, "the invitation's admin flag lands on the account");
     assert_eq!(
@@ -881,8 +884,8 @@ async fn distinct_preview_accounts_resolve_their_own_admin_flag_and_panel() {
         .await
         .expect("member session");
 
-    let admin_identity = store.session(&admin_session, NOW).await.expect("admin");
-    let member_identity = store.session(&member_session, NOW).await.expect("member");
+    let admin_identity = store.identity(&admin_session, NOW).await.expect("admin");
+    let member_identity = store.identity(&member_session, NOW).await.expect("member");
     assert_ne!(admin_identity.physician_id, member_identity.physician_id);
     let admin_account = store
         .account_by_identity(&admin_identity)
@@ -1007,7 +1010,7 @@ async fn a_cached_read_drops_when_another_replica_writes() {
     .expect("listener connects")
     .expect("feed open");
     let who = reader
-        .session(&session, NOW)
+        .identity(&session, NOW)
         .await
         .expect("session resolves");
     assert!(reader.membership(&who, "ws-feed").await == Membership::Denied);
@@ -1039,7 +1042,45 @@ async fn a_cached_read_drops_when_another_replica_writes() {
     .expect("trigger notifies")
     .expect("feed open");
     assert_eq!(
-        reader.session(&session, NOW).await,
+        reader.identity(&session, NOW).await,
         Err(SessionError::Inactive)
+    );
+}
+
+#[tokio::test]
+async fn failed_revocations_do_not_acknowledge_or_change_access() {
+    let Some(url) = fresh_database("failed_revocations").await else {
+        return;
+    };
+    let store = PostgresAuthStore::connect_with_migrations(&url)
+        .await
+        .unwrap();
+    let email = "admin@example.test";
+    let token = store
+        .invite("practice", email, "Admin", true, NOW)
+        .await
+        .unwrap();
+    let (actor, session) = store.redeem_invitation(email, &token, NOW).await.unwrap();
+    store.register_patient("practice", "patient").await.unwrap();
+    store
+        .assign_panel(&actor, &actor.physician_id, "patient", Membership::Allowed)
+        .await
+        .unwrap();
+
+    let db = sea_orm::Database::connect(&url).await.unwrap();
+    db.execute_unprepared("CREATE FUNCTION fail_write() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'simulated storage failure'; END $$;
+        CREATE TRIGGER refuse_logout BEFORE DELETE ON physician_sessions FOR EACH ROW EXECUTE FUNCTION fail_write();
+        CREATE TRIGGER refuse_removal BEFORE UPDATE ON physician_memberships FOR EACH ROW EXECUTE FUNCTION fail_write();").await.unwrap();
+    assert!(store.end_session(&session).await.is_err());
+    assert_eq!(
+        store
+            .assign_panel(&actor, &actor.physician_id, "patient", Membership::Denied)
+            .await,
+        Err(PanelError::Unavailable)
+    );
+    assert_eq!(store.identity(&session, NOW).await.unwrap(), actor);
+    assert_eq!(
+        store.membership(&actor, "patient").await,
+        Membership::Allowed
     );
 }

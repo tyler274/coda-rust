@@ -162,7 +162,7 @@ pub(crate) async fn accept_durable(
     {
         return StatusCode::CONFLICT.into_response();
     }
-    if ctx.auth.store.session(&ctx.token, now()).await.is_err() {
+    if ctx.auth.store.identity(&ctx.token, now()).await.is_err() {
         return StatusCode::UNAUTHORIZED.into_response();
     }
     if !allows_workspace(&ctx.auth, &ctx.identity, &input.patient_workspace_id).await {
@@ -206,7 +206,7 @@ pub(crate) async fn admit(
     {
         return Err("invalid revision input".into());
     }
-    if ctx.auth.store.session(&ctx.token, now()).await.is_err()
+    if ctx.auth.store.identity(&ctx.token, now()).await.is_err()
         || !allows_workspace(&ctx.auth, &ctx.identity, &input.patient_workspace_id).await
     {
         return Err("not authorized".into());
