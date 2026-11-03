@@ -1,5 +1,7 @@
 # Coda Agents
 
+Chords is the external name of Coda Health’s physician product described in this specification.
+
 This is what we're building for physicians: what Coda Agents is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
 ## What Coda Agents is
