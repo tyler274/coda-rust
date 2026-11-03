@@ -6,6 +6,8 @@
 #   dev/apple-container.sh                 bring the container up
 #   dev/apple-container.sh exec <command>  run a command in the dev shell of the
 #                                          current checkout or worktree
+#   dev/apple-container.sh clean           reclaim disk space now; exec also does
+#                                          this in the background once a day
 set -euo pipefail
 
 script_dir=$(cd "$(dirname "$0")" && pwd -P)
@@ -13,6 +15,8 @@ script_dir=$(cd "$(dirname "$0")" && pwd -P)
 # container serves them all, because worktrees live inside the checkout it mounts.
 root=$(dirname "$(git -C "$script_dir" rev-parse --path-format=absolute --git-common-dir)")
 name=${CODA_CONTAINER_NAME:-coda-dev-arm}
+# This tree's copy, which exists even when the current worktree's branch predates it.
+clean_script="/workspace${script_dir#"$root"}/apple-container-clean.sh"
 # The dev container's pinned base image.
 image=$(sed -n 's/^FROM //p' "$root/.devcontainer/Dockerfile")
 cpus=${CODA_CONTAINER_CPUS:-$(sysctl -n hw.ncpu)}
@@ -53,7 +57,9 @@ bring_up() {
         container volume create "$name-$volume" >/dev/null
     done
     # No host networking: servers inside listen on 0.0.0.0 to use these ports.
+    # --init reaps the orphans browser tests leave, and fstrim needs CAP_SYS_ADMIN.
     container run -d --name "$name" --arch arm64 --cpus "$cpus" --memory "$memory" \
+      --init --cap-add CAP_SYS_ADMIN \
       -v "$root:/workspace" \
       -v "$name-nix:/nix" \
       -v "$name-cargo:/home/vscode/.cargo" \
@@ -76,6 +82,25 @@ bring_up() {
   container exec --user vscode --workdir /workspace "$name" bash .devcontainer/postCreate.sh
 }
 
+# Runs unattended because nothing else gives this space back. The script stamps
+# the store as it starts, and a failed run is in /tmp/coda-clean.log.
+clean_if_due() {
+  local tree="/workspace${1#"$root"}" recent
+  recent=$(container exec "$name" find /nix/var/coda-last-clean -mtime -1 2>/dev/null) || true
+  [[ -z "$recent" ]] || return 0
+  # Housekeeping that fails to start must not stop the command it precedes.
+  container exec --detach --user vscode "$name" sh -c \
+    'exec bash "$1" "$2" >/tmp/coda-clean.log 2>&1' sh "$clean_script" "$tree" >/dev/null ||
+    echo "could not start the daily disk cleanup" >&2
+}
+
+clean() {
+  local checkout
+  checkout=$(git rev-parse --show-toplevel)
+  bring_up >&2
+  exec container exec --user vscode "$name" bash "$clean_script" "/workspace${checkout#"$root"}"
+}
+
 run_in_shell() {
   local here checkout inspection interactive=-i
   here=$(pwd -P)
@@ -96,6 +121,8 @@ run_in_shell() {
     bring_up >&2
   fi
 
+  clean_if_due "$checkout"
+
   [[ -t 0 && -t 1 ]] && interactive=-it
   # Build output stays in the target volume: the bind mount is far slower, and
   # every worktree would otherwise start its build from nothing.
@@ -115,8 +142,9 @@ case "${1:-}" in
     fi
     run_in_shell "$@"
     ;;
+  clean) clean ;;
   *)
-    echo "usage: $0 [exec <command> [args...]]" >&2
+    echo "usage: $0 [clean | exec <command> [args...]]" >&2
     exit 2
     ;;
 esac

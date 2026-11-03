@@ -1955,7 +1955,7 @@ fn build_site() -> PathBuf {
     BUILT_SITE
         .get_or_init(|| {
             let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-            let target = env::temp_dir().join("coda-physician-wasm");
+            let target = workspace.join("target/coda-physician-wasm");
             let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
             let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
             cargo_without_parent_package(&mut cargo);

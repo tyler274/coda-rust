@@ -137,7 +137,7 @@ async fn dump_dom(chrome: &Path, url: &str) -> String {
 
 fn build_site() -> PathBuf {
     let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let target = env::temp_dir().join("coda-mobile-wasm");
+    let target = workspace.join("target/coda-mobile-wasm");
     let wasm = target.join("wasm32-unknown-unknown/debug/mobile.wasm");
     let mut cargo = Command::new(env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
     cargo.env_clear();

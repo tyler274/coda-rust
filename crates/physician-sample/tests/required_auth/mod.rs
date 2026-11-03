@@ -34,7 +34,7 @@ fn shared_site() -> PathBuf {
 
 fn build_site() -> PathBuf {
     let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-    let target = std::env::temp_dir().join("coda-physician-wasm");
+    let target = workspace.join("target/coda-physician-wasm");
     let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
     let mut cargo =
         std::process::Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));

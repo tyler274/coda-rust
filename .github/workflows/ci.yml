@@ -313,7 +313,7 @@ jobs:
         if: steps.rust-cache.outputs.cache-hit != 'true'
         run: |
           set -euo pipefail
-          rm -rf target/wasm32-unknown-unknown target/debug/incremental target/doc target/debug/examples
+          rm -rf target/wasm32-unknown-unknown target/coda-*-wasm target/debug/incremental target/doc target/debug/examples
           if [ -d target/debug ]; then
             find target/debug -maxdepth 1 -type f -delete
             # Linked test and bin executables are workspace outputs, relinked

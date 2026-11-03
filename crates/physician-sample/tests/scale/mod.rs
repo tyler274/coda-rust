@@ -786,7 +786,7 @@ pub fn page_dir() -> PathBuf {
     static SITE: std::sync::OnceLock<PathBuf> = std::sync::OnceLock::new();
     SITE.get_or_init(|| {
         let workspace = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../..");
-        let target = std::env::temp_dir().join("coda-physician-wasm");
+        let target = workspace.join("target/coda-physician-wasm");
         let wasm = target.join("wasm32-unknown-unknown/debug/physician-app.wasm");
         let mut cargo = Command::new(std::env::var_os("CARGO").unwrap_or_else(|| "cargo".into()));
         cargo.env_clear();

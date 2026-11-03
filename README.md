@@ -162,11 +162,24 @@ does not mean the container is broken or justify `--no-verify`.
 One container serves the main checkout and every worktree inside it. A worktree
 outside the checkout is not visible to it. Build output goes to the shared
 `/workspace/target` volume (`CARGO_TARGET_DIR`), so concurrent builds wait for each
-other.
+other. Browser tests build their WASM in the worktree's own `target`, on the Mac's
+disk, which removing the worktree frees.
 
 The script takes `CODA_CONTAINER_NAME`, `CODA_CONTAINER_CPUS` and
 `CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and `target` live in volumes
-named after the container. It publishes ports 8790 and 8080 on loopback, so stop
+named after the container.
+
+Those images grow as needed and never shrink on their own, so `exec` starts a
+background cleanup once a day and logs it to `/tmp/coda-clean.log` in the container.
+It removes abandoned shell temporary directories, collects Nix garbage while keeping
+the dev shell of the worktree that started it, deletes Cargo artifacts older than
+three days from target directories no build holds, and trims the images.
+`dev/apple-container.sh clean` does the same now. Trimming needs a container created
+with `CAP_SYS_ADMIN`: run `container rm -f <name>`, then this script, to recreate an
+older one. The volumes stay, but the container's own disk, including `/tmp` and the
+Git identity below, does not.
+
+The script publishes ports 8790 and 8080 on loopback, so stop
 one container before starting another under a new name, which only a second clone
 needs. Rerun the script after a restart rather than `container start` alone.
 
