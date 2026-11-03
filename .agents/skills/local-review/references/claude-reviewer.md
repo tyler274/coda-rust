@@ -7,8 +7,8 @@ session. Report unavailable tools or models without bypassing permissions or
 changing global settings. Follow the shared local-review method and repository
 development defaults.
 
-Pass the sourced context and the full text of the
-[review standard](standard.md) on stdin from a trusted workspace. The `claude` CLI must be installed, authenticated, and
+Pass the full text of the [review standard](standard.md) and the sourced
+context, in that order, on stdin from a trusted workspace. The `claude` CLI must be installed, authenticated, and
 available on PATH. Use the host's background process facility; in a terminal,
 run directly and collect the result when the process exits:
 
