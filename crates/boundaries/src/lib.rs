@@ -1,8 +1,12 @@
-//! Keeps Duet and the physician client from sharing clinical crates.
+//! Keeps Duet and the physician client from sharing clinical crates, and holds both to the shared
+//! component set.
 //!
 //! The book chapter is `book/src/reading.md`.
 
 #![deny(missing_docs)]
+
+#[cfg(test)]
+mod shared_ui;
 
 #[cfg(test)]
 mod tests {
