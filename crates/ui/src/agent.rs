@@ -11,7 +11,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName, Spinner, WorkingMark};
+use crate::{Button, ButtonVariant, Icon, IconName, Spinner, WorkingMark, script};
 
 /// Where one step of an agent's work stands.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -110,10 +110,7 @@ pub fn WorkTrace(
     use_effect(use_reactive!(|working| {
         chosen.set(None);
         if !working {
-            document::eval(&format!(
-                "const region = document.getElementById('{region}');
-                 if (region && region.contains(document.activeElement)) document.getElementById('{region}-line')?.focus();"
-            ));
+            script::refocus_line(&region);
         }
     }));
     let open = chosen().unwrap_or(working);

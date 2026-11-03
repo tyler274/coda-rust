@@ -7,7 +7,10 @@ use dioxus::prelude::*;
 use crate::{Disclosure, Icon, IconName, StatePill, Tone};
 
 /// The bar atop a pushed screen: an optional way back on the leading edge, the title centred with
-/// an optional mark (who a conversation is with), and the screen's one action on the trailing edge.
+/// an optional mark (who a conversation is with), and the screen's one action on the trailing edge:
+/// in words, as `action` with `on_action`, or instead, as `trailing`, a control of its own such as
+/// the button that opens the screen's menu. The two share that edge, so a screen sets one or the
+/// other, never both.
 #[component]
 pub fn TopBar(
     title: String,
@@ -16,6 +19,7 @@ pub fn TopBar(
     #[props(default)] on_back: Option<EventHandler<MouseEvent>>,
     #[props(default)] action: Option<String>,
     #[props(default)] on_action: Option<EventHandler<MouseEvent>>,
+    #[props(default)] trailing: Option<Element>,
 ) -> Element {
     rsx! {
         header { class: "top-bar",
@@ -28,6 +32,9 @@ pub fn TopBar(
             h1 { class: "top-bar-title", {mark} "{title}" }
             if let (Some(action), Some(on_action)) = (action, on_action) {
                 button { class: "top-bar-action", r#type: "button", onclick: move |event| on_action.call(event), "{action}" }
+            }
+            if let Some(control) = trailing {
+                div { class: "top-bar-trailing", {control} }
             }
         }
     }

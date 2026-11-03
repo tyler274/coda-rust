@@ -1,5 +1,5 @@
-//! Keeps Duet and the physician client from sharing clinical crates, and holds both to the shared
-//! component set.
+//! Keeps Duet and the physician client from sharing clinical crates, holds both to the shared
+//! component set, and keeps the UI library's browser behaviour out of `eval`.
 //!
 //! The book chapter is `book/src/reading.md`.
 
@@ -203,6 +203,111 @@ mod tests {
             dev_users > 0,
             "the check found no test users of the emulator"
         );
+    }
+
+    /// The `ui` crate's Rust sources, by path relative to its `src`.
+    fn ui_sources() -> Vec<(String, String)> {
+        fn visit(dir: &std::path::Path, src: &std::path::Path, found: &mut Vec<(String, String)>) {
+            for entry in std::fs::read_dir(dir).unwrap() {
+                let path = entry.unwrap().path();
+                if path.is_dir() {
+                    visit(&path, src, found);
+                } else if path.extension().is_some_and(|extension| extension == "rs") {
+                    let name = path.strip_prefix(src).unwrap().display().to_string();
+                    found.push((name, std::fs::read_to_string(&path).unwrap()));
+                }
+            }
+        }
+        let src = root().join("crates/ui/src");
+        let mut found = Vec::new();
+        visit(&src, &src, &mut found);
+        found
+    }
+
+    /// A source's tokens, in order, with each group's contents in place of the group: comments
+    /// are gone and strings are literals, so only code is read.
+    fn tokens(source: &str) -> Vec<proc_macro2::TokenTree> {
+        fn flatten(stream: proc_macro2::TokenStream, found: &mut Vec<proc_macro2::TokenTree>) {
+            for token in stream {
+                match token {
+                    proc_macro2::TokenTree::Group(group) => {
+                        found.push(proc_macro2::TokenTree::Group(group.clone()));
+                        flatten(group.stream(), found);
+                    }
+                    other => found.push(other),
+                }
+            }
+        }
+        let mut found = Vec::new();
+        flatten(source.parse().expect("ui source tokenizes"), &mut found);
+        found
+    }
+
+    fn is_ident(token: Option<&proc_macro2::TokenTree>, name: &str) -> bool {
+        matches!(token, Some(proc_macro2::TokenTree::Ident(ident)) if ident == name)
+    }
+
+    /// A page that refuses `eval`, such as a Chrome extension's, runs the UI library only if
+    /// its browser behaviour lives in `assets/behaviour.js`; `script.rs` alone may evaluate it,
+    /// for the native webview. Dioxus's `eval` counts however it is reached: as
+    /// `document::eval`, or imported by name.
+    #[test]
+    fn the_ui_library_runs_its_browser_behaviour_without_eval() {
+        let sources = ui_sources();
+        assert!(sources.iter().any(|(name, _)| name == "script.rs"));
+        for (name, source) in &sources {
+            if name == "script.rs" {
+                continue;
+            }
+            assert!(
+                !tokens(source)
+                    .iter()
+                    .any(|token| is_ident(Some(token), "eval")),
+                "crates/ui/src/{name} uses Dioxus's eval; add the behaviour to assets/behaviour.js"
+            );
+        }
+    }
+
+    /// Each kind of behaviour `script.rs` runs by name is exactly what `assets/behaviour.js` lists
+    /// for that kind. Only `script.rs` can name one: its `fire`, `ask` and `listen` are private.
+    #[test]
+    fn every_ui_behaviour_is_run_as_its_kind() {
+        let behaviour =
+            std::fs::read_to_string(root().join("crates/ui/assets/behaviour.js")).unwrap();
+        let script = std::fs::read_to_string(root().join("crates/ui/src/script.rs")).unwrap();
+        let tokens = tokens(&script);
+        for (kind, list) in [("fire", "fires"), ("ask", "asks"), ("listen", "listens")] {
+            let listed = behaviour
+                .split_once(&format!("const {list} = {{"))
+                .and_then(|(_, rest)| rest.split_once('}'))
+                .unwrap_or_else(|| panic!("behaviour.js lists `const {list} = {{ ... }}`"))
+                .0;
+            let defined: std::collections::BTreeSet<String> = listed
+                .split(',')
+                .map(str::trim)
+                .filter(|name| !name.is_empty())
+                .map(str::to_owned)
+                .collect();
+            let run: std::collections::BTreeSet<String> = tokens
+                .windows(3)
+                .filter(|window| is_ident(window.first(), kind))
+                .filter_map(|window| match &window[2] {
+                    proc_macro2::TokenTree::Literal(literal) => Some(literal.to_string()),
+                    _ => None,
+                })
+                .filter_map(|literal| {
+                    literal
+                        .strip_prefix('"')
+                        .and_then(|named| named.strip_suffix('"'))
+                        .map(str::to_owned)
+                })
+                .collect();
+            assert!(!run.is_empty(), "the check found no `{kind}` behaviours");
+            assert_eq!(
+                run, defined,
+                "script.rs and assets/behaviour.js disagree on which behaviours `{kind}` runs"
+            );
+        }
     }
 
     #[test]

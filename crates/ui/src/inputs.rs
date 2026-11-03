@@ -8,7 +8,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use dioxus::prelude::*;
 
 use crate::overlays::OptionRow;
-use crate::{Icon, IconName, Spinner};
+use crate::{Icon, IconName, Spinner, script};
 
 static FIELDS: AtomicUsize = AtomicUsize::new(0);
 
@@ -113,9 +113,7 @@ pub fn Checkbox(
     // Only a property holds this state; the markup has no attribute for it.
     let box_id = id.clone();
     use_effect(use_reactive!(|mixed| {
-        document::eval(&format!(
-            "const box = document.getElementById('{box_id}'); if (box) box.indeterminate = {mixed};"
-        ));
+        script::indeterminate(&box_id, mixed);
     }));
     rsx! {
         label { class: "selection-row",
@@ -342,9 +340,7 @@ pub fn Combobox(
     let shown = popup.clone();
     use_effect(move || {
         let show = open();
-        document::eval(&format!(
-            "document.getElementById('{shown}')?.togglePopover({show})"
-        ));
+        script::toggle_popover(&shown, show);
     });
     // The active choice stands for a place in this list; a new list starts again from its first.
     use_effect(use_reactive!(|options| {
@@ -404,9 +400,7 @@ pub fn Combobox(
                                 let next = step_choice(&keyed, current, event.key() == Key::ArrowDown);
                                 active.set(next);
                                 if let Some(next) = next {
-                                    document::eval(&format!(
-                                        "document.getElementById('{moving}-{next}')?.scrollIntoView({{ block: 'nearest' }})"
-                                    ));
+                                    script::scroll_into_view(&format!("{moving}-{next}"));
                                 }
                             }
                             Key::Enter if open() => {

@@ -10,6 +10,8 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
+use crate::script;
+
 /// A row as a live list shows it.
 #[derive(Clone, PartialEq)]
 pub struct ListedRow<T> {
@@ -123,8 +125,7 @@ pub fn use_live_rows<T: Clone + 'static>(
     let render = renders.get();
     use_effect(use_reactive!(|keys, render| {
         let _ = render;
-        let reorder = document::eval(&REORDER.replace("{id}", &reordered));
-        let _ = reorder.send(keys);
+        script::reorder(&reordered, &keys);
     }));
     LiveRows {
         listed,
@@ -133,62 +134,7 @@ pub fn use_live_rows<T: Clone + 'static>(
     }
 }
 
-/// A list the server reorders: each row it keeps slides
-/// from where it stood to where it now stands, its current item carrying the selection fill. A row that rises past others is lifted while it moves, so it passes over them rather than
-/// through them. Rows that only join or leave move nothing here; their own frames open and close.
-/// The list's frames are its children, in the order of the keys sent. `{id}` is the list's id.
-const REORDER: &str = r#"
-const keys = await dioxus.recv();
-const list = document.getElementById("{id}");
-if (list !== null) {
-  const frames = [...list.children].filter((child) => child.classList.contains("row-frame"));
-  const tops = new Map(keys.map((key, index) => [key, frames[index]?.offsetTop ?? 0]));
-  const before = list.codaShownRows ?? { keys: [], tops: new Map() };
-  list.codaShownRows = { keys, tops };
-  const motion = window.codaMotion;
-  const kept = keys.filter((key) => before.tops.has(key));
-  if (motion !== undefined && kept.join("\n") !== before.keys.filter((key) => tops.has(key)).join("\n")) {
-    const selected = motion.currentItem(list);
-    keys.forEach((key, index) => {
-      const from = before.tops.get(key);
-      const to = tops.get(key);
-      const frame = frames[index];
-      if (from === undefined || frame === undefined || from === to) return;
-      const shift = [{ translate: `0 ${from - to}px` }, {}];
-      const moving = motion.animate(frame, shift, "step", "emphasized");
-      if (moving !== undefined && from > to) {
-        frame.classList.add("is-lifted");
-        moving.finished.catch(() => undefined).then(() => frame.classList.remove("is-lifted"));
-      }
-      // The current item carries the fill itself while it moves, so the two never part.
-      if (moving !== undefined && selected !== null && frame.contains(selected)) {
-        selected.classList.add("is-carrying-selection");
-        moving.finished.catch(() => undefined).then(() => selected.classList.remove("is-carrying-selection"));
-      }
-    });
-  }
-}
-"#;
-
 static LISTS: AtomicUsize = AtomicUsize::new(0);
-
-/// Reports once a frame's collapse has finished, or at once with none to run: under reduced
-/// motion. A collapse cancelled by the row coming back reports nothing; one cancelled while the
-/// row still leaves is watched again. `{id}` is the frame's id.
-const WATCH_EXIT: &str = r#"
-const watch = () => requestAnimationFrame(() => {
-  const frame = document.getElementById("{id}");
-  const collapsing = frame ? frame.getAnimations().filter((animation) => animation.transitionProperty === "grid-template-rows") : [];
-  if (collapsing.length === 0) { dioxus.send(true); return; }
-  Promise.allSettled(collapsing.map((animation) => animation.finished)).then((settled) => {
-    if (settled.every((result) => result.status === "fulfilled")) dioxus.send(true);
-    // A collapse cancelled while the row still leaves (motion became immediate) is watched again.
-    else if (frame.classList.contains("is-exiting")) watch();
-    else dioxus.send(false);
-  });
-});
-watch();
-"#;
 
 static FRAMES: AtomicUsize = AtomicUsize::new(0);
 
@@ -212,12 +158,11 @@ pub fn RowFrame(
         let this = watch.get() + 1;
         watch.set(this);
         if !present {
-            let mut exit = document::eval(&WATCH_EXIT.replace("{id}", &watched));
+            let exit = script::watch_exit(&watched);
             let watch = watch.clone();
             spawn(async move {
-                if let Ok(true) = exit.recv::<bool>().await
-                    && watch.get() == this
-                {
+                let exited = exit.answer().await;
+                if matches!(exited, Ok(true)) && watch.get() == this {
                     on_exited.call(());
                 }
             });

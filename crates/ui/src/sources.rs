@@ -9,7 +9,7 @@ use std::time::Duration;
 use dioxus::html::geometry::PixelsRect;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens};
+use crate::{Button, ButtonVariant, EXIT_MS, Icon, IconName, opens, script};
 
 static PREVIEWS: AtomicUsize = AtomicUsize::new(0);
 
@@ -22,36 +22,6 @@ const EDGE_PX: f64 = 12.0;
 
 /// The room between a preview and its citation.
 const GAP_PX: f64 = 6.0;
-
-/// What the open preview hears from the page while it is open, until told to stop: the window's
-/// size now and on every scroll or resize; Escape, taken first so a surrounding dialog keeps it,
-/// with whether focus was inside the preview; and the citation going out of sight, scroll areas
-/// included. Every Dioxus renderer runs it the same way, so the preview depends on no one engine's
-/// CSS. `{citation}` and `{preview}` are the two elements' ids.
-const WATCH_PAGE: &str = "
-const root = document.documentElement;
-const citation = document.getElementById('{citation}');
-const report = () => dioxus.send([0, root.clientWidth, root.clientHeight]);
-const escape = (event) => {
-  if (event.key !== 'Escape') return;
-  event.preventDefault();
-  event.stopPropagation();
-  // Looked up now: this script starts before the preview is in the page.
-  const preview = document.getElementById('{preview}');
-  dioxus.send([1, preview !== null && preview.contains(document.activeElement) ? 1 : 0, 0]);
-};
-const sight = new IntersectionObserver(([entry]) => { if (entry !== undefined && !entry.isIntersecting) dioxus.send([2, 0, 0]); });
-if (citation !== null) sight.observe(citation);
-addEventListener('scroll', report, true);
-addEventListener('resize', report);
-document.addEventListener('keydown', escape, true);
-report();
-await dioxus.recv();
-sight.disconnect();
-removeEventListener('scroll', report, true);
-removeEventListener('resize', report);
-document.removeEventListener('keydown', escape, true);
-";
 
 /// One thing `WATCH_PAGE` heard.
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -297,16 +267,9 @@ fn PreviewSurface(
     // The preview's body is its passages' surface once the preview is placed and its height held.
     let PassageSurface(mut surface_body) =
         use_context_provider(|| PassageSurface(Signal::new(None)));
-    let watch = use_hook(|| {
-        document::eval(
-            &WATCH_PAGE
-                .replace("{citation}", &citation_id)
-                .replace("{preview}", &id),
-        )
-    });
-    use_drop(move || {
-        let _ = watch.send(());
-    });
+    let watch = use_hook(|| script::watch_page(&citation_id, &id));
+    let stopping = watch.clone();
+    use_drop(move || stopping.stop());
     // Every property is written each time: a style the renderer merges must never keep a stale one.
     let style = match placement() {
         None => "visibility: hidden; left: 0px; top: 0px; bottom: auto".to_owned(),
@@ -333,16 +296,18 @@ fn PreviewSurface(
             onpointerenter: move |_| on_enter.call(()),
             onmounted: move |event| {
                 let surface = event.data();
-                let mut watch = watch;
+                let watch = watch.clone();
                 let id = id.clone();
                 spawn(async move {
-                    while let Ok(message) = watch.recv::<[f64; 3]>().await {
+                    loop {
+                        // The behaviour finished or failed: the preview stops following it.
+                        let heard = watch.next().await;
+                        let Ok(message) = heard else { break };
                         match Heard::read(message) {
                             Some(Heard::Window(width, height)) => {
                                 let Some(trigger) = citation.peek().clone() else { break };
-                                let (Ok(at), Ok(own)) = futures_util::future::join(trigger.get_client_rect(), surface.get_client_rect()).await else {
-                                    continue;
-                                };
+                                let rects = futures_util::future::join(trigger.get_client_rect(), surface.get_client_rect()).await;
+                                let (Ok(at), Ok(own)) = rects else { continue };
                                 let side = (*placement.peek()).map(|at| at.below);
                                 placement.set(Some(place(at, own.width(), (width, height), side)));
                                 if side.is_none() {
@@ -516,16 +481,6 @@ pub struct SourcePane {
     pub close: String,
 }
 
-/// Opens a reading surface's own scrolling body at the first passage marked in it, once the
-/// surface has its size: only that body moves, never the page beneath. `{body}` is the body's id.
-const SCROLL_TO_PASSAGE: &str = r#"
-requestAnimationFrame(() => requestAnimationFrame(() => {
-  const body = document.getElementById("{body}");
-  const passage = body?.querySelector(".source-text mark");
-  if (passage) body.scrollTop += passage.getBoundingClientRect().top - body.getBoundingClientRect().top;
-}));
-"#;
-
 /// The reading surface a source's words are read in: the id of its own scrolling body, once the
 /// surface is laid out (a preview once it is placed, a pane at once).
 #[derive(Clone, Copy)]
@@ -544,7 +499,7 @@ pub fn SourceText(text: String, #[props(default)] passages: Vec<(usize, usize)>)
         if let Some(PassageSurface(body)) = surface
             && let Some(body) = body()
         {
-            document::eval(&SCROLL_TO_PASSAGE.replace("{body}", &body));
+            script::scroll_to_passage(&body);
         }
     }));
     rsx! {

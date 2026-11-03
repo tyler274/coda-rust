@@ -4041,10 +4041,10 @@ fn ReplyReviewCard(
                             onclick: move |_| {
                                 let draft = draft.clone();
                                 spawn(async move {
-                                    copied.set(if ui::copy_text(draft).await {
-                                        "Copied".to_owned()
-                                    } else {
-                                        "Couldn’t copy".to_owned()
+                                    let copy = ui::copy_text(draft).await;
+                                    copied.set(match copy {
+                                        Ok(()) => "Copied".to_owned(),
+                                        Err(_) => "Couldn’t copy".to_owned(),
                                     });
                                 });
                             },

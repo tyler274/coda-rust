@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName};
+use crate::{Button, ButtonVariant, Icon, IconName, script};
 
 /// How long a copy says it is done before it offers to copy again.
 const COPIED_MS: u64 = 1600;
@@ -34,8 +34,10 @@ pub fn CopyButton(text: String, words: CopyWords) -> Element {
             aria_label: if copied() { words.copied.clone() } else { words.copy.clone() },
             onclick: move |_| {
                 let text = text.clone();
+                // A copy the clipboard refused leaves the copy mark as it is.
                 spawn(async move {
-                    if copy_text(text).await {
+                    let copy = copy_text(text).await;
+                    if copy.is_ok() {
                         copied.set(true);
                         futures_timer::Delay::new(Duration::from_millis(COPIED_MS)).await;
                         copied.set(false);
@@ -52,18 +54,26 @@ pub fn CopyButton(text: String, words: CopyWords) -> Element {
     }
 }
 
-/// Puts `text` on the clipboard and answers whether the clipboard took it, for a host's own copy
-/// action to say so only then.
-pub async fn copy_text(text: String) -> bool {
-    let write = document::eval(COPY);
-    write.send(text).is_ok() && write.join::<bool>().await.unwrap_or(false)
+/// Why the clipboard didn't take the words, in the browser's own words where it gave any.
+#[derive(Debug)]
+pub struct CopyFailed(String);
+
+impl std::fmt::Display for CopyFailed {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "the clipboard didn't take the words: {}", self.0)
+    }
 }
 
-/// Writes the words it is sent to the clipboard, and answers whether the clipboard took them.
-const COPY: &str = r#"
-const text = await dioxus.recv();
-try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
-"#;
+impl std::error::Error for CopyFailed {}
+
+/// Puts `text` on the clipboard, or says why it didn't take, for a host's own copy action to say
+/// it's copied only once it is.
+pub async fn copy_text(text: String) -> Result<(), CopyFailed> {
+    script::copy(&text)
+        .answer()
+        .await
+        .map_err(|why| CopyFailed(why.to_string()))
+}
 
 /// Code as written, kept to its lines and scrolled across rather than wrapped, a stop for the keys
 /// so they can scroll it too, under a `label` that says what it is, such as its language or file.

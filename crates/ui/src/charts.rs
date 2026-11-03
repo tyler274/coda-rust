@@ -7,7 +7,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName};
+use crate::{Button, ButtonVariant, Icon, IconName, script};
 
 /// A measurement's figure, each number with its unit beside it in body text: `6 hr 18 min`.
 /// Large on a measurement's own page; medium in a tile or a card.
@@ -294,7 +294,7 @@ pub fn SeriesChart(
                                         event.prevent_default();
                                         if let Some(next) = next {
                                             choose(Some(next));
-                                            document::eval(&format!("document.getElementById('{focus_id}-{next}')?.focus()"));
+                                            script::focus_element(&format!("{focus_id}-{next}"));
                                         }
                                     }
                                 },

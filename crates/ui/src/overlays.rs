@@ -6,7 +6,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 
 use dioxus::prelude::*;
 
-use crate::{Icon, IconName, KeyHint, host_attributes, use_modal};
+use crate::{Icon, IconName, KeyHint, host_attributes, script, use_modal};
 
 /// A surface of the host's content beside the control that opens it, a `Button` whose `opens`
 /// names this `id`. It opens under the control from its leading edge, flipping above or across
@@ -36,7 +36,7 @@ pub fn Menu(id: String, label: String, children: Element) -> Element {
             tabindex: "-1",
             aria_label: label,
             onmounted: |_| {
-                document::eval(MENU_KEYS);
+                script::menu_keys();
             },
             {children}
         }
@@ -124,12 +124,10 @@ pub fn ContextMenu(
     children: Element,
 ) -> Element {
     let id = use_hook(|| format!("context-{}", HOSTS.fetch_add(1, Ordering::Relaxed)));
-    let script = CONTEXT.replace("{host}", &id);
+    let host = id.clone();
     let dropped = id.clone();
     use_drop(move || {
-        document::eval(&format!(
-            "window.codaContextHosts?.['{dropped}']?.dispose()"
-        ));
+        script::dispose_context_host(&dropped);
     });
     let mut class = String::from("context-menu-host");
     let rest = host_attributes(&mut class, attributes);
@@ -139,7 +137,7 @@ pub fn ContextMenu(
             class: "{class}",
             "data-menu": "{menu}",
             onmounted: move |_| {
-                document::eval(&script);
+                script::context_host(&host);
             },
             ..rest,
             {children}
@@ -148,168 +146,6 @@ pub fn ContextMenu(
 }
 
 static HOSTS: AtomicUsize = AtomicUsize::new(0);
-
-/// One context menu host's ways in. `{host}` is its id; its menu's is its `data-menu`, read each
-/// time it opens. A menu opened at a point keeps that place until it next opens from its own
-/// control. Lifting uses one layer per page, `window.codaLift`, which blurs the page beneath; its
-/// motion runs on the springs and simply arrives where motion is immediate. The host's
-/// `window.codaContextHosts[id].dispose()` ends it: a press or opening still pending never lands,
-/// and its lifted copy, and a menu it opened, close.
-const CONTEXT: &str = r#"
-const host = document.getElementById("{host}");
-if (host && !host.dataset.contextMenu) {
-  host.dataset.contextMenu = "";
-  const root = document.documentElement;
-  let gone = false;
-  // Whether a button or finger is down anywhere on the page, kept once for every host.
-  if (!window.codaPressed) {
-    window.codaPressed = { down: false };
-    addEventListener("pointerdown", () => { window.codaPressed.down = true; }, { capture: true, passive: true });
-    for (const ending of ["pointerup", "pointercancel"]) addEventListener(ending, () => { window.codaPressed.down = false; }, { capture: true, passive: true });
-  }
-  const margin = 12, gap = 8;
-  const immediate = () => matchMedia("(prefers-reduced-motion: reduce)").matches || root.dataset.interaction === "keyboard";
-  const timing = (name) => {
-    const [length, ...curve] = getComputedStyle(root).getPropertyValue(name).trim().split(" ");
-    return { duration: parseFloat(length) * (length.endsWith("ms") ? 1 : 1000), easing: curve.join(" ") || "ease-out" };
-  };
-  // A press released outside a popover closes every open one, so a menu asked for while a button or finger is still down
-  // opens once it is let go.
-  const released = (then) => {
-    if (!window.codaPressed.down) { then(); return; }
-    const go = () => { removeEventListener("pointerup", go, true); removeEventListener("pointercancel", go, true); setTimeout(() => { if (!gone) then(); }); };
-    addEventListener("pointerup", go, true);
-    addEventListener("pointercancel", go, true);
-  };
-  const run = (element, keyframes, how) => immediate() ? undefined : element.animate(keyframes, how);
-  // Shows the menu at a point, its own control's placement given back the next time that control opens it.
-  const show = () => {
-    const menu = document.getElementById(host.dataset.menu);
-    if (!menu) return;
-    if (menu.matches(":popover-open")) menu.hidePopover();
-    if (menu.dataset.placesItself === undefined) {
-      menu.dataset.placesItself = "";
-      menu.addEventListener("beforetoggle", (event) => {
-        if (event.newState !== "open" || menu.dataset.atPoint !== undefined) return;
-        delete menu.dataset.openedBy;
-        menu.classList.remove("is-at-point");
-        for (const property of ["left", "top", "transform-origin"]) menu.style.removeProperty(property);
-      });
-    }
-    menu.classList.add("is-at-point");
-    menu.dataset.openedBy = host.id;
-    menu.dataset.atPoint = "";
-    menu.showPopover();
-    delete menu.dataset.atPoint;
-    return menu;
-  };
-  const place = (menu, x, y, leading) => {
-    const width = menu.offsetWidth, height = menu.offsetHeight;
-    const left = Math.max(margin, Math.min(leading ? x : x - width, innerWidth - margin - width));
-    const below = y + height + margin <= innerHeight;
-    Object.assign(menu.style, { left: `${left}px`, top: `${below ? y : Math.max(margin, y - height)}px`,
-      transformOrigin: `${leading ? "left" : "right"} ${below ? "top" : "bottom"}` });
-  };
-  const openAt = (x, y) => released(() => { const menu = show(); if (menu) place(menu, x, y, true); });
-  // Lifting: the copy rises in place while the finger holds, then, once it is let go, moves only as far as the menu
-  // beneath it needs.
-  const lift = () => {
-    getSelection()?.removeAllRanges();
-    const content = host.firstElementChild ?? host;
-    // Its own box, without the shrink of the press it may still be settling from.
-    const box = content.getBoundingClientRect();
-    const at = { width: content.offsetWidth, height: content.offsetHeight };
-    at.left = box.left + (box.width - at.width) / 2;
-    at.top = box.top + (box.height - at.height) / 2;
-    at.right = at.left + at.width;
-    const copy = content.cloneNode(true);
-    for (const element of [copy, ...copy.querySelectorAll("[id]")]) element.removeAttribute("id");
-    copy.inert = true;
-    // The copy keeps the box the content was given, never one it would take from the layer.
-    Object.assign(copy.style, { boxSizing: "border-box", width: `${at.width}px`, maxWidth: "none", margin: "0" });
-    const layer = window.codaLift ??= Object.assign(document.createElement("div"), { className: "context-lift", popover: "manual" });
-    layer.dataset.host = host.id;
-    if (!layer.isConnected) document.body.append(layer);
-    const preview = Object.assign(document.createElement("div"), { className: "context-lift-preview" });
-    preview.append(copy);
-    layer.replaceChildren(preview);
-    layer.classList.remove("is-settling");
-    const height = Math.min(at.height, innerHeight * 0.45);
-    preview.classList.toggle("is-clipped", at.height > height);
-    Object.assign(preview.style, { left: `${at.left}px`, top: `${at.top}px`, width: `${at.width}px`, height: `${height}px` });
-    layer.showPopover();
-    host.dataset.lifted = "";
-    run(preview, [{ scale: 0.97 }, { scale: 1 }], timing("--spring-step"));
-    const settle = (to) => {
-      layer.classList.add("is-settling");
-      const back = run(preview, [{ translate: "0 0" }, { translate: to }], { duration: timing("--motion-control").duration, easing: "ease-in", fill: "forwards" });
-      const done = () => { if (layer.contains(preview)) { layer.hidePopover(); layer.replaceChildren(); } delete host.dataset.lifted; };
-      back ? back.finished.then(done, done) : done();
-    };
-    released(() => {
-      const menu = show();
-      if (!menu) { settle("0 0"); return; }
-      const top = Math.max(margin, Math.min(at.top, innerHeight - margin - menu.offsetHeight - gap - height));
-      preview.style.top = `${top}px`;
-      const leading = at.left + at.width / 2 <= innerWidth / 2;
-      place(menu, leading ? at.left : at.right, top + height + gap, leading);
-      const away = `0 ${at.top - top}px`;
-      run(preview, [{ translate: away }, { translate: "0 0" }], timing("--spring-step"));
-      const closed = (event) => {
-        if (event.newState !== "closed") return;
-        menu.removeEventListener("toggle", closed);
-        settle(away);
-      };
-      menu.addEventListener("toggle", closed);
-    });
-  };
-  // A held press on touch or pen: the content shrinks a touch while held and, unmoved for half a second, lifts; the tap
-  // that ends it does nothing else. Movement, lifting the finger or a scroll lets go. Android's own long-press menu
-  // request lifts it at once.
-  let timer, start, fired = false, touch = false;
-  const release = () => { clearTimeout(timer); timer = undefined; delete host.dataset.pressing; removeEventListener("scroll", release, true); };
-  const fire = () => { release(); fired = true; lift(); };
-  host.addEventListener("pointerdown", (event) => {
-    touch = event.pointerType !== "mouse";
-    if (!touch || event.button !== 0) return;
-    start = [event.clientX, event.clientY];
-    fired = false;
-    host.dataset.pressing = "";
-    addEventListener("scroll", release, { capture: true, passive: true });
-    timer = setTimeout(fire, 500);
-  });
-  host.addEventListener("pointermove", (event) => {
-    if (timer !== undefined && Math.hypot(event.clientX - start[0], event.clientY - start[1]) > 10) release();
-  });
-  for (const ending of ["pointerup", "pointercancel", "pointerleave"]) host.addEventListener(ending, release);
-  host.addEventListener("click", (event) => {
-    if (fired) { fired = false; event.preventDefault(); event.stopPropagation(); }
-  }, true);
-  host.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-    if (touch) { if (!fired) fire(); return; }
-    openAt(event.clientX, event.clientY);
-  });
-  host.addEventListener("keydown", (event) => {
-    if (event.key !== "ContextMenu" && !(event.key === "F10" && event.shiftKey)) return;
-    event.preventDefault();
-    const at = (host.contains(document.activeElement) ? document.activeElement : host).getBoundingClientRect();
-    openAt(at.left, at.bottom + 4);
-  });
-  window.codaContextHosts ??= {};
-  window.codaContextHosts[host.id] = {
-    dispose() {
-      gone = true;
-      release();
-      const layer = window.codaLift;
-      if (layer?.dataset.host === host.id) { if (layer.matches(":popover-open")) layer.hidePopover(); layer.replaceChildren(); }
-      const menu = document.getElementById(host.dataset.menu);
-      if (menu?.dataset.openedBy === host.id && menu.matches(":popover-open")) menu.hidePopover();
-      delete window.codaContextHosts[host.id];
-    },
-  };
-}
-"#;
 
 /// What a control does, named over it once the pointer rests on it, with the key that does the
 /// same where there is a keyboard. Keyboard focus shows it at once, and once one has shown, the
@@ -325,7 +161,7 @@ pub fn Tooltip(text: String, shortcut: Option<String>, children: Element) -> Ele
             class: "tooltip-host",
             style: "anchor-name: {anchor}",
             onmounted: |_| {
-                document::eval(TOOLTIPS);
+                script::tooltips();
             },
             {children}
             span { class: "tooltip", "popover": "manual", aria_hidden: "true", style: "position-anchor: {anchor}",
@@ -339,51 +175,6 @@ pub fn Tooltip(text: String, shortcut: Option<String>, children: Element) -> Ele
 }
 
 static TIPS: AtomicUsize = AtomicUsize::new(0);
-
-/// Installs, once per page, every tooltip's showing and leaving. A rest of half a second shows one;
-/// within a moment of another leaving, the next shows at once. The pointer can cross to the tooltip
-/// and rest on it: leaving the control waits a moment for it.
-const TOOLTIPS: &str = r#"
-if (!window.codaTooltips) {
-  window.codaTooltips = true;
-  let timer, leaving, shown, warmUntil = 0;
-  const tipOf = (host) => host?.querySelector(":scope > .tooltip");
-  const hide = () => {
-    clearTimeout(timer);
-    clearTimeout(leaving);
-    if (shown?.matches(":popover-open")) { shown.hidePopover(); warmUntil = performance.now() + 400; }
-    shown = undefined;
-  };
-  const show = (host, now) => {
-    clearTimeout(timer);
-    clearTimeout(leaving);
-    const tip = tipOf(host);
-    if (!tip || tip === shown) return;
-    // It opens on a task of its own, never inside a focus change another popover is making.
-    const open = () => { hide(); if (tip.isConnected) { tip.showPopover(); shown = tip; } };
-    timer = setTimeout(open, now || shown || performance.now() < warmUntil ? 0 : 500);
-  };
-  document.addEventListener("pointerover", (event) => {
-    if (event.pointerType !== "mouse") return;
-    const host = event.target.closest?.(".tooltip-host");
-    if (host && !host.contains(event.relatedTarget)) show(host, false);
-  });
-  document.addEventListener("pointerout", (event) => {
-    const host = event.target.closest?.(".tooltip-host");
-    if (!host || host.contains(event.relatedTarget)) return;
-    clearTimeout(timer);
-    clearTimeout(leaving);
-    leaving = setTimeout(hide, 120);
-  });
-  document.addEventListener("focusin", (event) => {
-    const host = event.target.closest?.(".tooltip-host");
-    if (host && event.target.matches(":focus-visible")) show(host, true);
-  });
-  document.addEventListener("focusout", hide);
-  document.addEventListener("pointerdown", hide, true);
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") hide(); }, true);
-}
-"#;
 
 /// One command in a `CommandPalette`.
 #[derive(Clone, PartialEq, Debug, Default)]
@@ -501,10 +292,7 @@ pub fn CommandPalette(
                             };
                             event.prevent_default();
                             active.set(next);
-                            document::eval(&format!(
-                                "document.getElementById('{moving}-{}')?.scrollIntoView({{ block: 'nearest' }})",
-                                rows[next]
-                            ));
+                            script::scroll_into_view(&format!("{moving}-{}", rows[next]));
                         },
                     }
                 }
@@ -623,50 +411,6 @@ fn matching(commands: &[Command], query: &str) -> Vec<usize> {
         })
         .collect()
 }
-
-/// Installs, once per page, every menu's keys, its focus on opening and its closing on a choice.
-/// The listeners sit on the document, so a menu added later needs nothing more.
-const MENU_KEYS: &str = r#"
-if (!window.codaMenuKeys) {
-  window.codaMenuKeys = true;
-  const choices = (menu) => [...menu.querySelectorAll('[role^="menuitem"]')];
-  const menuOf = (element) => element?.closest?.(".menu:popover-open");
-  document.addEventListener("toggle", (event) => {
-    // Opened from the keys, focus is on the first choice; otherwise on the menu, where the keys still start.
-    if (event.target.classList?.contains("menu") && event.newState === "open") {
-      const keyboard = document.documentElement.dataset.interaction === "keyboard";
-      (keyboard ? choices(event.target)[0] : event.target)?.focus({ preventScroll: true });
-    }
-  }, true);
-  document.addEventListener("keydown", (event) => {
-    const menu = menuOf(event.target);
-    if (!menu || event.altKey || event.ctrlKey || event.metaKey) return;
-    if (event.key === "Tab") { menu.hidePopover(); return; }
-    const all = choices(menu);
-    const now = all.indexOf(document.activeElement);
-    let next = { ArrowDown: now + 1, ArrowUp: now < 0 ? all.length - 1 : now - 1, Home: 0, End: all.length - 1 }[event.key];
-    if (next === undefined && event.key.length === 1 && event.key !== " ") {
-      const letter = event.key.toLocaleLowerCase();
-      const after = [...all.slice(now + 1), ...all.slice(0, now + 1)];
-      const found = after.find((choice) => choice.textContent.trim().toLocaleLowerCase().startsWith(letter));
-      if (found) next = all.indexOf(found);
-    }
-    if (next === undefined) return;
-    event.preventDefault();
-    all[(next + all.length) % all.length]?.focus({ preventScroll: false });
-  });
-  document.addEventListener("pointermove", (event) => {
-    if (event.pointerType !== "mouse" || !menuOf(event.target)) return;
-    const choice = event.target.closest('[role^="menuitem"]');
-    if (choice && document.activeElement !== choice) choice.focus({ preventScroll: true });
-  }, { passive: true });
-  document.addEventListener("click", (event) => {
-    const choice = event.target.closest?.('[role^="menuitem"]');
-    const menu = menuOf(choice);
-    if (menu && choice.getAttribute("aria-disabled") !== "true") menu.hidePopover();
-  });
-}
-"#;
 
 #[cfg(test)]
 mod tests {

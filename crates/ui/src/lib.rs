@@ -2,7 +2,9 @@
 //! tokens (colour, type, space, shape and motion), the icons, and each component's look, motion,
 //! gestures, states and accessibility. It holds no product rules. The surface that places a
 //! component decides when it shows, what pressing it does, what its server guarantees, every word
-//! it says, and how the screen is laid out. `crates/ui-gallery` renders every family.
+//! it says, and how the screen is laid out. `crates/ui-gallery` renders every family. Its browser
+//! behaviour runs from `assets/behaviour.js` as a module, never through `eval`, so it works on a
+//! page that refuses `eval`, such as a Chrome extension's.
 #![deny(missing_docs)]
 
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -25,6 +27,7 @@ mod live;
 mod motion;
 mod overlays;
 mod prose;
+mod script;
 mod sources;
 mod tables;
 mod toast;
@@ -38,7 +41,9 @@ pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
     SeriesPoint, SeriesShape, Sparkline, Value,
 };
-pub use code::{Change, CodeBlock, CopyButton, CopyWords, Diff, DiffLine, DiffWords, copy_text};
+pub use code::{
+    Change, CodeBlock, CopyButton, CopyFailed, CopyWords, Diff, DiffLine, DiffWords, copy_text,
+};
 pub use conversation::{
     ContextChip, ConversationViewport, DateSeparator, Dictation, MessageActions, MessageEditor,
     MessageStatus, Suggestion, VersionSwitch,
@@ -852,7 +857,7 @@ pub fn Composer(
     let dropping = id.clone();
     use_effect(use_reactive!(|takes_files| {
         if takes_files {
-            document::eval(&FILE_DRAGS.replace("{id}", &dropping));
+            script::file_drags(&dropping);
         }
     }));
     let mut class = String::from(if inline {
@@ -920,22 +925,6 @@ pub fn Composer(
 
 static COMPOSERS: AtomicUsize = AtomicUsize::new(0);
 
-/// Takes only drags that carry files over the composer `{id}`, which only the browser's own list of
-/// what a drag holds can tell while it moves. Counted, because entering a child leaves its parent.
-const FILE_DRAGS: &str = "
-const form = document.getElementById('{id}');
-if (form && !form.dataset.takesFiles) {
-  form.dataset.takesFiles = 'true';
-  let over = 0;
-  const files = (event) => form.querySelector(':scope > .composer-drop') && [...(event.dataTransfer?.types ?? [])].includes('Files');
-  const settle = () => { over = 0; delete form.dataset.dropping; };
-  form.addEventListener('dragenter', (event) => { if (files(event)) { event.preventDefault(); over += 1; form.dataset.dropping = 'true'; } });
-  form.addEventListener('dragover', (event) => { if (files(event)) event.preventDefault(); });
-  form.addEventListener('dragleave', (event) => { if (files(event) && --over <= 0) settle(); });
-  form.addEventListener('drop', (event) => { if (files(event)) { event.preventDefault(); settle(); } });
-}
-";
-
 /// The words a send uses. The field wins when it has something in it: on Android the controlled
 /// value can drop keystrokes while the person still sees them.
 fn submitted_text(field: Option<&str>, value: &str) -> String {
@@ -998,117 +987,16 @@ pub fn Disclosure(
 
 static DIALOGS: AtomicUsize = AtomicUsize::new(0);
 
-/// A sheet follows the finger or pointer down from its handle, its header, or its content once
-/// that is scrolled to the top. Pulled up, it resists, rubber-banding as iOS does. Let go, it is
-/// projected where the flick would carry it, decelerating as a native scroll view does: past half its height it goes, otherwise it springs back. Either way
-/// the release carries the flick's speed into the step spring (`--spring-step`: a smooth spring,
-/// response 0.35, critically damped). Without motion it lands at once. A drag that began on
-/// a control doesn't also press it. `{dialog}` is the sheet's id.
-const SHEET_DRAG: &str = "
-const sheet = document.getElementById('{dialog}');
-const body = sheet && sheet.querySelector('.dialog-body');
-if (sheet && body) {
-  const stiffness = (2 * Math.PI / 0.35) ** 2, damping = 4 * Math.PI / 0.35;
-  // Where a flick at this speed (px/s) would come to rest, at UIScrollView's normal deceleration.
-  const projection = 0.998 / (1 - 0.998) / 1000;
-  const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let drag = null, settling = 0;
-  const show = (y) => {
-    const height = sheet.offsetHeight || 1;
-    sheet.style.transform = `translateY(${y}px)`;
-    sheet.style.setProperty('--sheet-shown', String(Math.min(1, Math.max(0, 1 - y / height))));
-  };
-  const rest = () => { sheet.style.removeProperty('transform'); sheet.style.removeProperty('--sheet-shown'); delete sheet.dataset.dragging; };
-  const band = (y, height) => y >= 0 ? y : -(1 - 1 / (-y * 0.55 / height + 1)) * height;
-  // Where the sheet is drawn now, whether its entry or a spring is moving it.
-  const drawn = () => { const t = getComputedStyle(sheet).transform; return t === 'none' ? 0 : new DOMMatrix(t).m42; };
-  // Where the hand would be for a sheet already shown at `y`, so taking hold of it never moves it.
-  const unband = (y, height) => y >= 0 ? y : -height * (1 / (1 + y / height) - 1) / 0.55;
-  const settle = (from, to, speed, done) => {
-    cancelAnimationFrame(settling);
-    if (still()) { show(to); done(); return; }
-    let x = from, v = speed, last = performance.now();
-    const step = (now) => {
-      let dt = Math.min(0.032, (now - last) / 1000); last = now;
-      while (dt > 0) { const h = Math.min(dt, 1 / 240); v += (-stiffness * (x - to) - damping * v) * h; x += v * h; dt -= h; }
-      show(x);
-      // The spring is critically damped, so it nears its end without passing it.
-      const arrived = to > 0 ? x >= to - 0.5 : Math.abs(x - to) < 0.5 && Math.abs(v) < 5;
-      if (arrived) { show(to); done(); } else { settling = requestAnimationFrame(step); }
-    };
-    settling = requestAnimationFrame(step);
-  };
-  const typing = (node) => node.closest('input, textarea, select, [contenteditable]') !== null;
-  sheet.addEventListener('pointerdown', (event) => {
-    if (event.button !== 0 || !sheet.open || sheet.classList.contains('is-closing') || typing(event.target)) return;
-    const fromContent = body.contains(event.target) && !event.target.closest('.dialog-header');
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, fromContent, active: false, from: 0, offset: 0, samples: [[event.timeStamp, event.clientY]] };
-  });
-  sheet.addEventListener('pointermove', (event) => {
-    if (!drag || event.pointerId !== drag.id) return;
-    const dx = event.clientX - drag.x, dy = event.clientY - drag.y;
-    if (!drag.active) {
-      if (Math.abs(dy) < 6 || Math.abs(dy) < Math.abs(dx)) return;
-      if (drag.fromContent && (body.scrollTop > 0 || dy < 0)) { drag = null; return; }
-      drag.active = true;
-      // Taken mid-motion, it is held where it is; the movement that started the drag still counts.
-      cancelAnimationFrame(settling);
-      drag.from = unband(drawn(), sheet.offsetHeight || 1);
-      sheet.dataset.dragging = '';
-      sheet.setPointerCapture(event.pointerId);
-    }
-    const height = sheet.offsetHeight || 1;
-    drag.offset = band(drag.from + event.clientY - drag.y, height);
-    drag.samples.push([event.timeStamp, event.clientY]);
-    while (drag.samples.length > 2 && event.timeStamp - drag.samples[0][0] > 100) drag.samples.shift();
-    show(drag.offset);
-  });
-  // A drag is the sheet's, not the page's: on touch the browser would otherwise scroll it away.
-  sheet.addEventListener('touchmove', (event) => { if (drag && drag.active) event.preventDefault(); }, { passive: false });
-  const release = (event) => {
-    if (!drag || event.pointerId !== drag.id) return;
-    const ended = drag; drag = null;
-    if (!ended.active) return;
-    // The click this release would make belongs to the drag; it arrives before any timer runs.
-    const swallow = (click) => { click.preventDefault(); click.stopPropagation(); };
-    sheet.addEventListener('click', swallow, { capture: true, once: true });
-    setTimeout(() => sheet.removeEventListener('click', swallow, { capture: true }), 0);
-    // The speed at release, over its last 100ms: a hand held still before letting go has none.
-    const recent = [...ended.samples, [event.timeStamp, event.clientY]].filter(([t]) => event.timeStamp - t <= 100);
-    const [first, last] = [recent[0], recent[recent.length - 1]];
-    const speed = recent.length > 1 && last[0] > first[0] ? (last[1] - first[1]) / ((last[0] - first[0]) / 1000) : 0;
-    const height = sheet.offsetHeight || 1;
-    const goes = event.type === 'pointerup' && ended.offset > 0 && ended.offset + speed * projection > height / 2;
-    if (goes) {
-      settle(ended.offset, height, Math.max(speed, 0), () => sheet.close());
-    } else {
-      settle(ended.offset, 0, ended.offset < 0 ? 0 : speed, rest);
-    }
-  };
-  sheet.addEventListener('pointerup', release);
-  sheet.addEventListener('pointercancel', release);
-}
-";
-
 /// The life of a modal dialog `id` the browser owns: it opens modally once mounted, with focus on
 /// what its content marks `autofocus`, else the first match of `focus`; its exit motion
 /// (`dialog-exit`, on `.is-closing`) ends by closing it; and whatever closed it, `on_close` hears
 /// it once.
 pub(crate) fn use_modal(id: String, focus: &'static str, on_close: EventHandler) {
     use_effect(move || {
-        let mut opened = document::eval(&format!(
-            "const d = document.getElementById('{id}');
-            if (d && !d.open) {{
-              d.addEventListener('animationend', (e) => {{
-                if (e.target === d && e.animationName === 'dialog-exit') d.close();
-              }});
-              d.addEventListener('close', () => dioxus.send(true), {{ once: true }});
-              d.showModal();
-              (d.querySelector('[autofocus]') ?? d.querySelector('{focus}'))?.focus({{ preventScroll: true }});
-            }}"
-        ));
+        let opened = script::modal(&id, focus);
         spawn(async move {
-            if opened.recv::<bool>().await.is_ok() {
+            let closed = opened.answer().await;
+            if matches!(closed, Ok(true)) {
                 on_close.call(());
             }
         });
@@ -1147,7 +1035,7 @@ pub fn Dialog(
     let dragging = id.clone();
     use_effect(move || {
         if sheet {
-            document::eval(&SHEET_DRAG.replace("{dialog}", &dragging));
+            script::sheet_drag(&dragging);
         }
     });
     let mut dismiss = move || {

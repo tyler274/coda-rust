@@ -8,7 +8,7 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use dioxus::html::geometry::PixelsVector2D;
 use dioxus::prelude::*;
 
-use crate::{Button, ButtonVariant, Icon, IconName, WorkingMark};
+use crate::{Button, ButtonVariant, Icon, IconName, WorkingMark, script};
 
 /// How near the end counts as at it: within this, new replies are followed.
 const FOLLOW_PX: f64 = 48.0;
@@ -82,13 +82,9 @@ pub fn ConversationViewport(
                         // Scrolling asked for in code ignores the stylesheet's reduced-motion rule,
                         // so the preference is read here.
                         spawn(async move {
-                            let reduced = document::eval(
-                                "return matchMedia('(prefers-reduced-motion: reduce)').matches",
-                            )
-                            .join::<bool>()
-                            .await
-                            .unwrap_or(false);
-                            reveal(if reduced { ScrollBehavior::Instant } else { ScrollBehavior::Smooth });
+                            let reduced = script::reduced_motion().answer().await;
+                            // Unasked, it scrolls without motion, which suits everyone.
+                            reveal(if reduced.unwrap_or(true) { ScrollBehavior::Instant } else { ScrollBehavior::Smooth });
                         });
                     },
                     "{jump_label}"
@@ -173,7 +169,7 @@ pub fn VersionSwitch(
     let switch = id.clone();
     use_effect(use_reactive!(|shown, count| {
         let _ = (shown, count);
-        document::eval(&HAND_OFF.replace("{id}", &switch));
+        script::hand_off(&switch);
     }));
     rsx! {
         div { class: "version-switch", role: "group", aria_label: "{label}",
@@ -203,14 +199,6 @@ pub fn VersionSwitch(
 }
 
 static SWITCHES: AtomicUsize = AtomicUsize::new(0);
-
-/// Moves focus off an arrow of the switch `{id}` that has just been disabled.
-const HAND_OFF: &str = "
-const previous = document.getElementById('{id}-previous'), next = document.getElementById('{id}-next');
-const held = document.activeElement;
-if (held === previous && previous.disabled) next.focus();
-if (held === next && next.disabled) previous.focus();
-";
 
 /// What has become of a message on its way, given as its `Message`'s `status`: its icon, its
 /// words, such as "Not sent" or "Sends after this reply", and the host's ways on, such as Try again
@@ -277,9 +265,7 @@ pub fn MessageEditor(
                     let field = event.data();
                     spawn(async move {
                         let _ = field.set_focus(true).await;
-                        document::eval(
-                            "const field = document.activeElement; if (field && field.setSelectionRange) field.setSelectionRange(field.value.length, field.value.length);",
-                        );
+                        script::caret_to_end();
                     });
                 },
             }

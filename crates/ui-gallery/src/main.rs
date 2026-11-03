@@ -855,6 +855,22 @@ fn FrameDemo() -> Element {
                 mark: rsx! { span { class: "gallery-companion", aria_hidden: "true" } },
                 back: "Back",
                 on_back: move |_| {},
+                trailing: rsx! {
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        icon_only: true,
+                        opens: "gallery-sprout-menu",
+                        aria_label: "Conversation actions",
+                        aria_haspopup: "menu",
+                        Icon { name: IconName::More }
+                    }
+                    Menu { id: "gallery-sprout-menu", label: "Conversation actions",
+                        MenuSection {
+                            MenuItem { icon: IconName::Share, onclick: move |_| {}, "Share" }
+                            MenuItem { icon: IconName::Archive, onclick: move |_| {}, "Archive" }
+                        }
+                    }
+                },
             }
             div { class: "gallery-phone-thread",
                 DateSeparator { date: "Wednesday, October 21" }
@@ -1834,7 +1850,8 @@ fn FeedbackDemo() -> Element {
             Button {
                 onclick: move |_| {
                     spawn(async move {
-                        if ui::copy_text(COPIED_REPLY.to_owned()).await {
+                        let copy = ui::copy_text(COPIED_REPLY.to_owned()).await;
+                        if copy.is_ok() {
                             shown.set(shown() + 1);
                             toast.set(Some((shown(), false)));
                         }

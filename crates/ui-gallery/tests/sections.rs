@@ -5,7 +5,8 @@
 //! sideways page overflow, or a heading or body that never appears. What only
 //! keys can reach is walked here too, with real key presses. With
 //! `UI_GALLERY_SCREENSHOTS` set to a folder, those walks leave a picture of what
-//! they focused there.
+//! they focused there. The UI library's module behaviour is walked with real input too: a
+//! menu's keys, a dialog's close, a sheet's drag, and a copy read back from the clipboard.
 
 // The shared client also carries helpers for journeys this test doesn't walk.
 #[allow(dead_code)]
@@ -422,6 +423,395 @@ fn in_part(browser: &mut Browser, title: &str, selector: &str) -> u64 {
         ))
         .as_u64()
         .unwrap_or_default()
+}
+
+/// A menu opened from its control takes the arrow keys, Home and End, and a letter, skips nothing
+/// it shows, and closes on a choice, which the page hears.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_menu_moves_by_its_keys_and_closes_on_a_choice() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(&mut browser, &gallery.url, "overlays", "Overlays");
+
+    browser.click("[popovertarget='gallery-reply-menu']");
+    wait_true(
+        &mut browser,
+        "document.getElementById('gallery-reply-menu').matches(':popover-open')",
+        "the menu to open",
+    );
+    for (key, focused) in [
+        (Key::ARROW_DOWN, "Copy"),
+        (Key::ARROW_DOWN, "Edit"),
+        (Key::END, "Delete"),
+        (Key::HOME, "Copy"),
+        (Key::ARROW_UP, "Delete"),
+        (Key::T, "Try again"),
+    ] {
+        browser.key(key);
+        wait_true(
+            &mut browser,
+            &format!("document.activeElement.textContent.trim().startsWith({focused:?})"),
+            &format!("{} to focus {focused}", key.key),
+        );
+    }
+    browser.key(Key::ENTER);
+    wait_true(
+        &mut browser,
+        "!document.getElementById('gallery-reply-menu').matches(':popover-open')",
+        "the menu to close on a choice",
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A dialog opens modally with focus inside it, and Escape closes it through its exit motion: the
+/// page hears the close and takes the dialog away.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_dialog_opens_modally_and_escape_closes_it() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(&mut browser, &gallery.url, "overlays", "Overlays");
+
+    click_button(&mut browser, "Open a dialog");
+    wait_true(
+        &mut browser,
+        "(() => { const d = document.querySelector('dialog'); \
+         return d !== null && d.matches(':modal') && d.contains(document.activeElement); })()",
+        "the dialog to open modally with focus inside",
+    );
+    browser.key(Key::ESCAPE);
+    wait_true(
+        &mut browser,
+        "document.querySelector('dialog') === null",
+        "the page to take the closed dialog away",
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// A sheet dragged a little by its header springs back and stays; dragged past half its height it
+/// goes, and the page takes it away.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_sheet_springs_back_from_a_short_drag_and_goes_from_a_long_one() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    browser.resize(PHONE);
+    open(&mut browser, &gallery.url, "overlays", "Overlays");
+
+    click_button(&mut browser, "Open a sheet");
+    wait_true(
+        &mut browser,
+        "document.querySelector('dialog')?.open === true",
+        "the sheet to open",
+    );
+    wait_true(
+        &mut browser,
+        "document.querySelector('dialog').getAnimations().length === 0",
+        "the sheet's entry to finish",
+    );
+    let height = browser
+        .page()
+        .evaluate("document.querySelector('dialog').offsetHeight")
+        .as_f64()
+        .expect("the sheet's height");
+
+    browser.drag(".dialog-header h2", height * 0.2);
+    wait_true(
+        &mut browser,
+        "(() => { const d = document.querySelector('dialog'); \
+         return d?.open === true && d.style.transform === '' && d.dataset.dragging === undefined; })()",
+        "a short drag to spring back",
+    );
+
+    browser.drag(".dialog-header h2", height * 0.8);
+    wait_true(
+        &mut browser,
+        "document.querySelector('dialog') === null",
+        "a long drag to dismiss the sheet",
+    );
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Copy puts a message's words on the clipboard, and says so only once the clipboard has them:
+/// pasted back, they are the message's.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn copy_puts_the_words_on_the_clipboard() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(&mut browser, &gallery.url, "conversation", "Conversation");
+
+    let copy = ".message-turn.is-person button[aria-label='Copy']";
+    let words = browser.page().evaluate(&format!(
+        "document.querySelector({copy:?}).closest('.message-turn').querySelector('.message p').textContent"
+    ));
+    browser.press(copy);
+    wait_true(
+        &mut browser,
+        "document.querySelector(\".message-turn.is-person button[aria-label='Copied']\") !== null",
+        "the control to say Copied",
+    );
+    // Read back as a person would: pasted into a field of its own.
+    browser.page().evaluate(
+        "(() => { const field = document.createElement('textarea'); field.id = 'pasted'; \
+         document.body.append(field); field.focus(); return 0; })()",
+    );
+    browser.page().call_session(
+        "Input.dispatchKeyEvent",
+        serde_json::json!({ "type": "keyDown", "key": "v", "code": "KeyV", "commands": ["paste"] }),
+    );
+    let pasted = browser
+        .page()
+        .evaluate("document.getElementById('pasted').value");
+    assert_eq!(pasted, words, "the clipboard held something else");
+    assert_eq!(browser.take_page_errors(), Vec::<String>::new());
+}
+
+/// Opens one section as a fresh page and waits for its heading.
+fn open(browser: &mut Browser, url: &str, slug: &str, title: &str) {
+    browser.text_until(&format!("{url}#{slug}"), title);
+    wait_for_heading(browser, title).expect("the section");
+}
+
+/// Clicks the button whose words are `words`.
+fn click_button(browser: &mut Browser, words: &str) {
+    let found = browser.page().evaluate(&format!(
+        "(() => {{ const button = Array.from(document.querySelectorAll('button')) \
+         .find((node) => node.textContent.trim() === {words:?}); \
+         if (!button) return false; button.click(); return true; }})()"
+    ));
+    assert_eq!(found.as_bool(), Some(true), "no button says {words:?}");
+}
+
+/// Waits for `expression` to hold in the page.
+fn wait_true(browser: &mut Browser, expression: &str, what: &str) {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    while Instant::now() < deadline {
+        if browser.page().evaluate(expression).as_bool() == Some(true) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(25));
+    }
+    panic!("timed out waiting for {what}");
+}
+
+/// A key as DevTools types it: its name, its code, and the text it enters, if any.
+#[derive(Clone, Copy)]
+struct Key {
+    key: &'static str,
+    code: &'static str,
+    virtual_code: u32,
+    text: &'static str,
+}
+
+impl Key {
+    const ARROW_DOWN: Self = Self::named("ArrowDown", 40, "");
+    const ARROW_UP: Self = Self::named("ArrowUp", 38, "");
+    const HOME: Self = Self::named("Home", 36, "");
+    const END: Self = Self::named("End", 35, "");
+    const ENTER: Self = Self::named("Enter", 13, "\r");
+    const ESCAPE: Self = Self::named("Escape", 27, "");
+    const T: Self = Self {
+        key: "t",
+        code: "KeyT",
+        virtual_code: 84,
+        text: "t",
+    };
+
+    const fn named(key: &'static str, virtual_code: u32, text: &'static str) -> Self {
+        Self {
+            key,
+            code: key,
+            virtual_code,
+            text,
+        }
+    }
+}
+
+/// Real input through DevTools, as the page's own listeners receive it.
+trait Input {
+    fn key(&mut self, key: Key);
+    fn press(&mut self, selector: &str);
+    fn drag(&mut self, selector: &str, distance: f64);
+}
+
+impl Input for Browser {
+    fn key(&mut self, key: Key) {
+        for (kind, text) in [("keyDown", key.text), ("keyUp", "")] {
+            self.page().call_session(
+                "Input.dispatchKeyEvent",
+                serde_json::json!({
+                    "type": kind,
+                    "key": key.key,
+                    "code": key.code,
+                    "windowsVirtualKeyCode": key.virtual_code,
+                    "text": text,
+                }),
+            );
+        }
+    }
+
+    fn press(&mut self, selector: &str) {
+        let (x, y) = center(self, selector);
+        for kind in ["mousePressed", "mouseReleased"] {
+            mouse(self, kind, x, y);
+        }
+    }
+
+    /// Drags from the middle of `selector` straight down by `distance`, in steps a hand would make.
+    fn drag(&mut self, selector: &str, distance: f64) {
+        let (x, y) = center(self, selector);
+        mouse(self, "mousePressed", x, y);
+        let steps = 12;
+        for step in 1..=steps {
+            mouse(
+                self,
+                "mouseMoved",
+                x,
+                y + distance * f64::from(step) / f64::from(steps),
+            );
+            std::thread::sleep(Duration::from_millis(16));
+        }
+        // Held still before letting go, so the release carries no flick.
+        std::thread::sleep(Duration::from_millis(150));
+        mouse(self, "mouseMoved", x, y + distance);
+        mouse(self, "mouseReleased", x, y + distance);
+    }
+}
+
+/// The middle of `selector`, scrolled into view first so input lands on it.
+fn center(browser: &mut Browser, selector: &str) -> (f64, f64) {
+    let at = browser.page().evaluate(&format!(
+        "(() => {{ const node = document.querySelector({selector:?}); if (!node) return null; \
+         node.scrollIntoView({{ block: 'center', behavior: 'instant' }}); const box = node.getBoundingClientRect(); return [box.left + box.width / 2, box.top + box.height / 2]; }})()"
+    ));
+    let at = at
+        .as_array()
+        .unwrap_or_else(|| panic!("nothing matches {selector}"));
+    (at[0].as_f64().unwrap(), at[1].as_f64().unwrap())
+}
+
+fn mouse(browser: &mut Browser, kind: &str, x: f64, y: f64) {
+    browser.page().call_session(
+        "Input.dispatchMouseEvent",
+        serde_json::json!({
+            "type": kind,
+            "x": x,
+            "y": y,
+            "button": "left",
+            "buttons": if kind == "mouseReleased" { 0 } else { 1 },
+            "clickCount": if kind == "mouseMoved" { 0 } else { 1 },
+        }),
+    );
+}
+
+/// A copy the clipboard refuses, or that the browser can't even try, leaves the control as it was
+/// and says why in the console: both reach Rust through the one way a behaviour answers.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn a_refused_copy_stays_uncopied_and_says_why() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    browser.watch_page_errors();
+    open(&mut browser, &gallery.url, "conversation", "Conversation");
+
+    let copy = ".message-turn.is-person button[aria-label='Copy']";
+    for (refuse, why) in [
+        (
+            "Object.defineProperty(navigator.clipboard, 'writeText', { value: () => \
+             Promise.reject(new DOMException('denied', 'NotAllowedError')) })",
+            "coda ui: copy: NotAllowedError: denied",
+        ),
+        (
+            "Object.defineProperty(navigator, 'clipboard', { value: undefined })",
+            "coda ui: copy: TypeError",
+        ),
+    ] {
+        browser.page().evaluate(&format!("{refuse}; 0"));
+        browser.press(copy);
+        let deadline = Instant::now() + Duration::from_secs(10);
+        let mut errors = Vec::new();
+        while errors.is_empty() && Instant::now() < deadline {
+            errors = browser.take_page_errors();
+            std::thread::sleep(Duration::from_millis(25));
+        }
+        assert!(
+            errors.iter().any(|error| error.contains(why)),
+            "the console should say {why:?}: {errors:?}"
+        );
+        assert_eq!(
+            browser.page().evaluate(&format!(
+                "document.querySelector({copy:?}) !== null \
+                 && document.querySelector(\".message-turn.is-person button[aria-label='Copied']\") === null"
+            )),
+            Value::Bool(true),
+            "a refused copy shouldn't say Copied"
+        );
+    }
+}
+
+/// The native webview's scripts, run here as Dioxus's native channel runs them: the module loads
+/// from its source once, each kind of behaviour runs through it, and a module that won't load or a
+/// behaviour that throws reaches its caller as why it has nothing. This holds the scripts to their
+/// channel in Chromium; only a native build proves the webview's own import.
+#[test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+fn the_native_scripts_run_every_kind_of_behaviour_and_say_why_they_cant() {
+    let gallery = Gallery::start();
+    let mut browser = Browser::launch();
+    open(&mut browser, &gallery.url, "conversation", "Conversation");
+
+    let script = format!(
+        "const LOAD = {load}, NATIVE = {native}, BEHAVIOUR = {behaviour};\n{harness}\n0",
+        load = Value::from(include_str!("../../ui/assets/native_load.js")),
+        native = Value::from(include_str!("../../ui/assets/native.js")),
+        behaviour = Value::from(include_str!("../../ui/assets/behaviour.js")),
+        harness = include_str!("native_path.js"),
+    );
+    browser.page().evaluate(&format!("{{ {script} }}"));
+    wait_true(
+        &mut browser,
+        "window.nativeSeen !== undefined",
+        "the native scripts to finish",
+    );
+    let seen = browser.page().evaluate("window.nativeSeen");
+    let says = |key: &str, words: &str| {
+        let report = seen[key][0]["err"].as_str().unwrap_or_default();
+        assert!(report.contains(words), "{key}: {report:?}: {seen}");
+    };
+    says("notLoaded", "the module is not loaded");
+    assert!(
+        seen["badLoad"]
+            .as_str()
+            .is_some_and(|said| said.starts_with("rejected")),
+        "{seen}"
+    );
+    says("afterBadLoad", "SyntaxError");
+    says("threw", "TypeError");
+    for (key, expected) in [
+        ("load", Value::from("returned")),
+        ("secondLoad", Value::from("returned")),
+        ("sameModule", Value::Bool(true)),
+        ("sendErrors", serde_json::json!([])),
+        ("ask", serde_json::json!([{ "ok": false }])),
+        ("fired", Value::Bool(true)),
+        ("modalFinishedEarly", Value::from("returned")),
+        ("modalWaits", Value::Bool(true)),
+        ("modal", serde_json::json!([{ "ok": true }])),
+        ("stopped", Value::from("returned")),
+        ("quietAfterStop", Value::Bool(true)),
+    ] {
+        assert_eq!(seen[key], expected, "{key}: {seen}");
+    }
+    assert!(
+        seen["listen"].as_u64().is_some_and(|reports| reports > 0),
+        "{seen}"
+    );
 }
 
 /// The gallery's links, as `(slug, title)`.
