@@ -20,7 +20,10 @@ if [ "${CODA_DEV_SHELL:-}" != 1 ]; then
     exit 1
   fi
   if ! command -v nix >/dev/null; then
-    echo "pre-commit: nix is not on PATH; cannot enter the dev shell (or commit with --no-verify)" >&2
+    echo "pre-commit: nix is not on PATH; cannot enter the dev shell" >&2
+    if command -v container >/dev/null; then
+      echo "pre-commit: commit through the Apple container: dev/apple-container.sh exec git commit ..." >&2
+    fi
     exit 1
   fi
   export CODA_PRE_COMMIT_REEXEC=1

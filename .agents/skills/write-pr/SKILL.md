@@ -54,9 +54,12 @@ may share one summary that still shows their commands and results.
 
 ## Write and maintain the handoff
 
-Return a specific title and a body sized to the work. Explain the intended outcome,
-approach, consequences, proof, and meaningful uncertainty without mandatory empty
-sections or a chronology of tools and patches.
+Return a specific title and a body sized to the work. When the work has a ticket,
+start the title with its key in brackets, as in `[ENG-123] Keep sessions across
+restarts`; give each key its own brackets when there are several. Without a ticket,
+use no prefix. Explain the intended outcome, approach, consequences, proof, and
+meaningful uncertainty without mandatory empty sections or a chronology of tools
+and patches.
 
 Carry forward [local-review](../local-review/SKILL.md) findings and dispositions.
 Recommend whether the PR needs human or agent review and briefly explain why;

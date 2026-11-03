@@ -28,6 +28,14 @@ and move a Backlog or Todo ticket to In Progress once it is the developer's; an 
 Review ticket keeps its status. If Linear is unavailable or the write fails, report
 the ticket as unclaimed.
 
+Once the work goes ahead, start the session's title with the ticket key, in the
+same form as the [PR title](../write-pr/SKILL.md#write-and-maintain-the-handoff),
+when the agent tool can rename its session. If it cannot, continue without it.
+
+Enter the [dev shell](../../../AGENTS.md#dev-shell) for this machine before
+choosing evidence, so a missing host toolchain does not become a proof gap
+while a documented route remains untried.
+
 Read the ticket, discussion, governing specs, dependencies, and current code.
 Establish what already works, what remains, and what would prove completion.
 Restate acceptance as numbered criteria (AC1, AC2, ...), drafting them when the

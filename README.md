@@ -26,7 +26,7 @@ nix develop
 cargo test --workspace
 ```
 
-`nix develop` is the shell for this checkout. Tests and the sample server do not need a Doppler account.
+`nix develop` is the shell for this checkout. Tests and the sample server do not need a Doppler account. On an Apple silicon Mac without Nix, use the [Apple container](#apple-silicon-mac-without-nix-apple-container) instead.
 
 `scripts/ui-gallery.sh` builds the UI gallery and serves it at <http://127.0.0.1:8080/>, each section at its own address, such as `/#charts`.
 
@@ -113,7 +113,7 @@ The same workspace runs in a VS Code Dev Container whose `dev` service executes
 the identical `nix dev shell` (the flake stays the single toolchain owner) and
 a `pgvector` PostgreSQL 16 service on `127.0.0.1:5433`. Prerequisites: Docker,
 Compose, and the Dev Containers extension on x86_64 Linux. On Apple silicon, use
-[Apple's container tool](#apple-container) instead.
+[Apple's container tool](#apple-silicon-mac-without-nix-apple-container) instead.
 
 1. Open the repository in VS Code and choose "Reopen in Container".
 2. The first build installs pinned Nix into a `/nix` volume, fetches missing
@@ -136,7 +136,7 @@ flake's socket-directory wrapper engages there too. Live model execution and
 the encoder need host-only local data; uncomment the `coda-local-data` bind
 mount in [.devcontainer/docker-compose.yml](.devcontainer/docker-compose.yml).
 
-### Apple container
+### Apple silicon Mac without Nix (Apple container)
 
 On Apple silicon with macOS 26, [`container`](https://github.com/apple/container)
 runs the same dev shell as native `aarch64-linux`. It has no Docker API, Compose
@@ -147,21 +147,35 @@ which Nix's Python wrappers rely on. CI remains the x86_64 proof.
 ```sh
 brew install --formula container
 dev/apple-container.sh
-container exec -it --user vscode --workdir /workspace coda-dev-arm nix develop .#agent
+dev/apple-container.sh exec cargo test -p ui
 ```
 
-The script reuses an existing container and takes `CODA_CONTAINER_NAME`,
-`CODA_CONTAINER_CPUS` and `CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and
-`target` live in volumes named after the container. It publishes ports 8790 and
-8080 on loopback, so stop one container before starting another under a new name.
-Rerun the script after a restart rather than `container start` alone.
+`exec` runs one command in the dev shell of the checkout or worktree you run it
+from, using that tree's own flake, and starts the container if it is stopped. It
+needs no terminal, so agents use it the same way. `dev/apple-container.sh exec bash`
+opens a shell for the longer steps below.
 
-Run the rest inside that shell. Bind a server to `0.0.0.0` to reach it from the
-Mac. The physician page needs its bundle first:
+`exec` occasionally fails before the command starts with `failed to read index:
+... no longer exists`. The cause is unknown. Run the same command again; the error
+does not mean the container is broken or justify `--no-verify`.
+
+One container serves the main checkout and every worktree inside it. A worktree
+outside the checkout is not visible to it. Build output goes to the shared
+`/workspace/target` volume (`CARGO_TARGET_DIR`), so concurrent builds wait for each
+other.
+
+The script takes `CODA_CONTAINER_NAME`, `CODA_CONTAINER_CPUS` and
+`CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and `target` live in volumes
+named after the container. It publishes ports 8790 and 8080 on loopback, so stop
+one container before starting another under a new name, which only a second clone
+needs. Rerun the script after a restart rather than `container start` alone.
+
+Bind a server to `0.0.0.0` to reach it from the Mac. The physician page needs its
+bundle first:
 
 ```sh
 cargo build -p physician-app --target wasm32-unknown-unknown --features web
-wasm-bindgen --target web --out-dir target/physician-web "$PWD/target/wasm32-unknown-unknown/debug/physician-app.wasm"
+wasm-bindgen --target web --out-dir target/physician-web "$CARGO_TARGET_DIR/wasm32-unknown-unknown/debug/physician-app.wasm"
 PHYSICIAN_LISTEN_ADDR=0.0.0.0:8790 cargo run -p physician-sample
 ```
 
@@ -195,6 +209,12 @@ cargo test -p physician-sample --test site --test auth_browser -- --ignored
 `duet-api` also needs the [schema setup](book/src/backend-architecture.md#persistence-and-migrations)
 and its Doppler secrets; bind it with `DUET_LISTEN_ADDR=0.0.0.0:8080`.
 
-Commit inside this shell, after setting your Git identity there. Entering it sets
-`core.hooksPath` in the shared `.git/config`, and that hook cannot run on a Mac
-without Nix. Push from the Mac, which holds your credentials.
+Commit through the container, so the pre-commit hook runs. The hook cannot run on a
+Mac without Nix. Set your Git identity there once; pushing stays on the Mac, which
+holds your credentials:
+
+```sh
+dev/apple-container.sh exec git config --global user.name "Your Name"
+dev/apple-container.sh exec git config --global user.email you@example.com
+dev/apple-container.sh exec git commit -m "Your message"
+```

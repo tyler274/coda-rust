@@ -31,6 +31,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 | Dev container setup, ports and storage | <a href="/README%2Emd#dev-container">Dev container</a> |
+| Dev shell on an Apple silicon Mac without Nix | <a href="/README%2Emd#apple-silicon-mac-without-nix-apple-container">Apple container</a> |
 
 Keep ticket references, lists, status and acceptance tracking in Linear. This book
 describes maintained source owners, implemented behavior and operating procedures;

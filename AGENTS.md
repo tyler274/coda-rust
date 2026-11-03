@@ -124,6 +124,8 @@ importing the other's crates.
 
 `nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`. For unattended work, run builds, tests and Git commits with `nix develop .#agent --command <command>`; [unattended development](README.md#unattended-development) describes that profile.
 
+On an Apple silicon Mac where `nix` is not on PATH, the dev shell is in Apple's container: run the same builds, tests and Git commits with `dev/apple-container.sh exec <command>` from the checkout or worktree. [That route](README.md#apple-silicon-mac-without-nix-apple-container) has the setup. Try it before reporting a missing toolchain as a proof gap, and do not skip the pre-commit hook with `--no-verify` because the host lacks one.
+
 Doppler holds every secret value, and GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` scoped to one config. Never copy Doppler values into Secret Manager or the repository. Tests and the sample server need no Doppler account. [Secrets](book/src/release.md#secrets-doppler) has the configs and commands.
 
 ## Infrastructure and CI
