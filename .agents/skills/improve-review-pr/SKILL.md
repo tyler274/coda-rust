@@ -29,8 +29,9 @@ that a finding was right or wrong.
 Read the current guidance before proposing a change. Put shared development
 defaults in [AGENTS.md](../../../AGENTS.md#development-workflow); local review
 handoff and reconciliation in [local-review](../local-review/SKILL.md); PR scope,
-coordination, and discussion in [review-pr](../review-pr/SKILL.md); PR reviewer
-judgment in its [reviewer guidance](../review-pr/references/reviewer.md); and
+coordination, and discussion in [review-pr](../review-pr/SKILL.md); how every
+reviewer judges a change in the [review standard](../local-review/references/standard.md);
+what is specific to a PR reviewer in its [reviewer guidance](../review-pr/references/reviewer.md); and
 execution behavior in the relevant launcher or execution reference.
 
 Explain the observed failure, its cause, the future decision that should change,

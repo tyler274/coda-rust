@@ -40,8 +40,9 @@ Honor the user's engine and model choices.
 
 Start a fresh reviewer conversation, separate from the coding session. Resume
 that exact reviewer with `--resume-from` for corrections or clarification; use a
-fresh review for a changed target set or a deliberate new opinion. The launcher supplies
-[reviewer guidance](references/reviewer.md) each turn and checks target freshness.
+fresh review for a changed target set or a deliberate new opinion. The launcher supplies the
+[review standard](../local-review/references/standard.md) and the
+[PR reviewer guidance](references/reviewer.md) each turn and checks target freshness.
 Use background completion delivery and inspect `run.json` and the full `review.md`.
 Read back verified publication links as well as the assessment. Failed, stale,
 access-unverified, or publication-unverified runs do not establish completion.
