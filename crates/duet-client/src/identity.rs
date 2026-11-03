@@ -30,6 +30,16 @@ pub enum IdentityError {
     /// Configuration, network, locked storage or service outage; keep drafts.
     Unavailable,
 }
+impl std::fmt::Display for IdentityError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::Unauthorized => "no valid credential",
+            Self::Expired => "the credential is expired, revoked or disabled",
+            Self::Unavailable => "the identity service is unavailable or not configured",
+        })
+    }
+}
+impl std::error::Error for IdentityError {}
 impl DuetClient {
     /// Establish standalone account with the existing identity DTO; no invitation required.
     pub async fn ensure_account(&self) -> Result<duet_wire::models::AccountState, IdentityError> {

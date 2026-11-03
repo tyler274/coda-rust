@@ -2,7 +2,7 @@
 use dioxus::prelude::*;
 use duet_client::{
     DuetClient,
-    identity::{IdentityPlatformClient, ProviderCredential},
+    identity::{IdentityError, IdentityPlatformClient, ProviderCredential},
     retention::{RetainedIdentity, RetentionOwner},
 };
 use std::sync::Arc;
@@ -32,29 +32,128 @@ fn provider() -> IdentityPlatformClient {
         option_env!("DUET_IOS_BUNDLE_ID").map(str::to_owned),
     )
 }
+/// Where Apple returns an authorization, web or native: an HTTPS URL fixed at build time.
+fn apple_redirect_uri() -> Result<&'static str, SignInError> {
+    https_redirect_uri(option_env!("DUET_APPLE_REDIRECT_URI"))
+}
+
+fn https_redirect_uri(uri: Option<&str>) -> Result<&str, SignInError> {
+    let uri = uri.ok_or(SignInError::NotConfigured)?;
+    let parsed = url::Url::parse(uri).map_err(SignInError::RedirectUri)?;
+    if parsed.scheme() != "https" {
+        return Err(SignInError::RedirectNotHttps);
+    }
+    Ok(uri)
+}
+
+/// Why signing in produced no account session. Each case keeps what went
+/// wrong; its `Display` is what the sign-in screen shows.
+#[derive(Debug)]
+enum SignInError {
+    /// The build has no Apple Services ID or return URL.
+    NotConfigured,
+    /// The build's Apple return URL is not a URL.
+    RedirectUri(url::ParseError),
+    /// The build's Apple return URL is not HTTPS.
+    RedirectNotHttps,
+    /// Apple's web authorization produced no credential.
+    #[cfg(target_arch = "wasm32")]
+    Web(crate::browser_identity::AppleWebError),
+    /// This host cannot start native Sign in with Apple.
+    #[cfg(not(target_arch = "wasm32"))]
+    NativeUnavailable(IdentityError),
+    /// Native Sign in with Apple was cancelled or failed on the device.
+    #[cfg(not(target_arch = "wasm32"))]
+    Native(IdentityError),
+    /// Native Sign in with Apple gave no answer in time.
+    #[cfg(not(target_arch = "wasm32"))]
+    TimedOut,
+    /// The identity provider did not accept Apple's credential.
+    Exchange(IdentityError),
+    /// No client for the account service could be built.
+    Client(String),
+    /// Duet did not accept the account.
+    Account(IdentityError),
+    /// Duet could not read the account's context.
+    Context(IdentityError),
+    /// The protected store could not hold the new identity; its own words.
+    Retention(String),
+    /// A newer sign-in or sign-out started first.
+    Superseded,
+}
+
+impl std::fmt::Display for SignInError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::NotConfigured | Self::RedirectUri(_) | Self::RedirectNotHttps => {
+                f.write_str("Sign in with Apple is not set up for this build of Duet.")
+            }
+            #[cfg(target_arch = "wasm32")]
+            Self::Web(crate::browser_identity::AppleWebError::Script(_)) => {
+                f.write_str("Sign in with Apple did not complete. Try again.")
+            }
+            #[cfg(target_arch = "wasm32")]
+            Self::Web(_) => f.write_str("Invalid Apple response."),
+            #[cfg(not(target_arch = "wasm32"))]
+            Self::NativeUnavailable(_) => {
+                f.write_str("Native Sign in with Apple is not available in this host.")
+            }
+            #[cfg(not(target_arch = "wasm32"))]
+            Self::Native(_) => f.write_str("Sign-in cancelled or unavailable."),
+            #[cfg(not(target_arch = "wasm32"))]
+            Self::TimedOut => f.write_str("Sign-in timed out. Try again."),
+            Self::Exchange(_) => f.write_str("Apple sign-in could not be verified."),
+            Self::Client(cause) => write!(f, "Duet is unavailable: {cause}"),
+            Self::Account(_) => {
+                f.write_str("Duet could not verify your account. Your saved draft is unchanged.")
+            }
+            Self::Context(_) => f.write_str("Duet could not read your account context."),
+            Self::Retention(words) => f.write_str(words),
+            Self::Superseded => f.write_str("Account changed; sign-in ignored."),
+        }
+    }
+}
+
+impl std::error::Error for SignInError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            #[cfg(target_arch = "wasm32")]
+            Self::Web(error) => Some(error),
+            #[cfg(not(target_arch = "wasm32"))]
+            Self::NativeUnavailable(error) | Self::Native(error) => Some(error),
+            Self::Exchange(error) | Self::Account(error) | Self::Context(error) => Some(error),
+            Self::RedirectUri(error) => Some(error),
+            _ => None,
+        }
+    }
+}
+
 async fn verify(
     base: &str,
     credential: ProviderCredential,
     owner: &RetentionOwner,
     current: impl Fn() -> bool,
-) -> Result<Active, String> {
-    let client = DuetClient::new(base, &credential.id_token, "0", "0.1.0")?;
+) -> Result<Active, SignInError> {
+    let client =
+        DuetClient::new(base, &credential.id_token, "0", "0.1.0").map_err(SignInError::Client)?;
     client
         .ensure_account()
         .await
-        .map_err(|_| "Duet could not verify your account. Your saved draft is unchanged.")?;
+        .map_err(SignInError::Account)?;
     let context = client
         .account_context()
         .await
-        .map_err(|_| "Duet could not read your account context.")?;
+        .map_err(SignInError::Context)?;
     if !current() {
-        return Err("Account changed; sign-in ignored".into());
+        return Err(SignInError::Superseded);
     }
-    let fence = owner.activate(RetainedIdentity {
-        subject: credential.subject,
-        owner: context.owner(),
-        refresh_token: credential.refresh_token,
-    })?;
+    let fence = owner
+        .activate(RetainedIdentity {
+            subject: credential.subject,
+            owner: context.owner(),
+            refresh_token: credential.refresh_token,
+        })
+        .map_err(SignInError::Retention)?;
     Ok(Active {
         bearer: credential.id_token,
         fence,
@@ -133,7 +232,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             } else {
                 match owner.retained_identity() {
                     Ok(Some(identity)) => match provider().refresh(&identity.subject, &identity.refresh_token).await {
-                        Ok(credential) if lifecycle() == epoch => verify(&base, credential, &owner, || lifecycle() == epoch).await,
+                        Ok(credential) if lifecycle() == epoch => verify(&base, credential, &owner, || lifecycle() == epoch).await.map_err(|error| error.to_string()),
                         _ => Err("Could not restore sign-in. Your protected draft has not been discarded. Unlock your device or retry when online.".into()),
                     },
                     Ok(None) => Err(String::new()),
@@ -309,47 +408,45 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         spawn(async move {
             #[cfg(target_arch = "wasm32")]
             let result = async {
-                let apple = crate::browser_identity::sign_in().await?;
-                let credential = provider()
-                    .apple(
-                        apple,
-                        option_env!("DUET_APPLE_REDIRECT_URI").unwrap_or_default(),
-                    )
+                let redirect_uri = apple_redirect_uri()?;
+                let services_id = option_env!("DUET_APPLE_SERVICES_ID")
+                    .filter(|id| !id.is_empty())
+                    .ok_or(SignInError::NotConfigured)?;
+                let apple = crate::browser_identity::sign_in(services_id, redirect_uri)
                     .await
-                    .map_err(|_| "Apple sign-in could not be verified".to_owned())?;
+                    .map_err(SignInError::Web)?;
+                let credential = provider()
+                    .apple(apple, redirect_uri)
+                    .await
+                    .map_err(SignInError::Exchange)?;
                 verify(&base, credential, &owner, || lifecycle() == epoch).await
             }
             .await;
             #[cfg(not(target_arch = "wasm32"))]
             let result = async {
-                duet_client::identity::start_native_sign_in().map_err(|_| {
-                    "Native Sign in with Apple is not available in this host.".to_owned()
-                })?;
+                let redirect_uri = apple_redirect_uri()?;
+                duet_client::identity::start_native_sign_in()
+                    .map_err(SignInError::NativeUnavailable)?;
                 for _ in 0..240 {
                     futures_timer::Delay::new(std::time::Duration::from_millis(500)).await;
                     if lifecycle() != epoch {
-                        return Err("Sign-in cancelled.".into());
+                        return Err(SignInError::Superseded);
                     }
-                    match duet_client::identity::poll_native_sign_in() {
-                        Ok(Some(apple)) => {
-                            let credential = provider()
-                                .apple(
-                                    apple,
-                                    option_env!("DUET_APPLE_REDIRECT_URI").unwrap_or_default(),
-                                )
-                                .await
-                                .map_err(|_| "Apple sign-in could not be verified.".to_owned())?;
-                            if lifecycle() != epoch {
-                                return Err("Sign-in cancelled.".into());
-                            }
-                            return verify(&base, credential, &owner, || lifecycle() == epoch)
-                                .await;
-                        }
-                        Ok(None) => (),
-                        Err(_) => return Err("Sign-in cancelled or unavailable.".into()),
+                    let apple = match duet_client::identity::poll_native_sign_in() {
+                        Ok(Some(apple)) => apple,
+                        Ok(None) => continue,
+                        Err(error) => return Err(SignInError::Native(error)),
+                    };
+                    let credential = provider()
+                        .apple(apple, redirect_uri)
+                        .await
+                        .map_err(SignInError::Exchange)?;
+                    if lifecycle() != epoch {
+                        return Err(SignInError::Superseded);
                     }
+                    return verify(&base, credential, &owner, || lifecycle() == epoch).await;
                 }
-                Err("Sign-in timed out. Try again.".into())
+                Err(SignInError::TimedOut)
             }
             .await;
             if lifecycle() != epoch {
@@ -365,7 +462,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                     active.set(Some(value));
                     message.set(String::new());
                 }
-                Err(error) => message.set(error),
+                Err(error) => message.set(error.to_string()),
             }
             busy.set(false);
         });
@@ -491,7 +588,34 @@ fn shown_offline_draft<T>(
 
 #[cfg(test)]
 mod tests {
-    use super::{DraftTransition, shown_offline_draft, step_offline_draft};
+    use super::{
+        DraftTransition, SignInError, https_redirect_uri, shown_offline_draft, step_offline_draft,
+    };
+
+    #[test]
+    fn only_a_parsed_https_return_url_lets_apple_sign_in_start() {
+        assert!(matches!(
+            https_redirect_uri(None),
+            Err(SignInError::NotConfigured)
+        ));
+        for malformed in ["https://", "https://[", "https://exa mple.com", ""] {
+            assert!(
+                matches!(
+                    https_redirect_uri(Some(malformed)),
+                    Err(SignInError::RedirectUri(_))
+                ),
+                "{malformed:?} was accepted"
+            );
+        }
+        assert!(matches!(
+            https_redirect_uri(Some("http://duet.example.test/apple")),
+            Err(SignInError::RedirectNotHttps)
+        ));
+        assert_eq!(
+            https_redirect_uri(Some("https://duet.example.test/apple")).unwrap(),
+            "https://duet.example.test/apple"
+        );
+    }
 
     #[test]
     fn recovered_draft_is_empty_after_another_account_signs_in_and_expires() {

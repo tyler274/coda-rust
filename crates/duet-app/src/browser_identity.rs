@@ -3,28 +3,56 @@
 #[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::*;
 #[cfg(target_arch = "wasm32")]
-#[wasm_bindgen(inline_js = r#"
-export async function duetAppleSignIn(clientId, redirectURI) {
-  if (!clientId || !redirectURI || new URL(redirectURI).protocol !== 'https:') throw new Error('configuration');
-  if (!globalThis.AppleID?.auth) throw new Error('Load the official Apple authorization SDK before enabling sign in');
-  const random = crypto.getRandomValues(new Uint8Array(32));
-  const nonce = Array.from(random, b => b.toString(16).padStart(2,'0')).join('');
-  const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(nonce)));
-  const state = Array.from(crypto.getRandomValues(new Uint8Array(32)), b => b.toString(16).padStart(2,'0')).join('');
-  AppleID.auth.init({clientId, redirectURI, scope:'name email', state, nonce:Array.from(hash,b=>b.toString(16).padStart(2,'0')).join(''), usePopup:true});
-  const response = await AppleID.auth.signIn();
-  if (response.authorization?.state !== state || !response.authorization?.id_token) throw new Error('authorization');
-  return JSON.stringify({identity_token:response.authorization.id_token, nonce});
-}
-"#)]
+#[wasm_bindgen(module = "/assets/apple_sign_in.js")]
 extern "C" {
     #[wasm_bindgen(catch, js_name = duetAppleSignIn)]
     async fn apple_sign_in(client: &str, redirect: &str) -> Result<JsValue, JsValue>;
 }
-/// Launch official Apple popup; token exchange and account verification remain in Rust.
+
+/// Why Apple's web authorization produced no credential.
 #[cfg(target_arch = "wasm32")]
-pub async fn sign_in() -> Result<duet_client::identity::AppleCredential, String> {
-    let value = apple_sign_in(option_env!("DUET_APPLE_SERVICES_ID").unwrap_or_default(), option_env!("DUET_APPLE_REDIRECT_URI").unwrap_or_default()).await.map_err(|_| "Apple web sign-in requires a registered Services ID, HTTPS return URL and the official Apple JS SDK; sign-in was not completed".to_owned())?;
-    serde_json::from_str(&value.as_string().ok_or("Invalid Apple response")?)
-        .map_err(|_| "Invalid Apple response".into())
+#[derive(Debug)]
+pub enum AppleWebError {
+    /// Apple's script threw or rejected, as given: the SDK is missing, the
+    /// popup was closed, or the answer did not match this request.
+    Script(JsValue),
+    /// The script answered with something other than credential text.
+    NotText(JsValue),
+    /// The credential text was not an Apple credential.
+    Credential(serde_json::Error),
+}
+
+#[cfg(target_arch = "wasm32")]
+impl std::fmt::Display for AppleWebError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Script(value) => write!(f, "Apple's authorization script failed: {value:?}"),
+            Self::NotText(value) => write!(f, "Apple's authorization answered {value:?}"),
+            Self::Credential(error) => write!(f, "Apple's credential was unreadable: {error}"),
+        }
+    }
+}
+
+#[cfg(target_arch = "wasm32")]
+impl std::error::Error for AppleWebError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Credential(error) => Some(error),
+            Self::Script(_) | Self::NotText(_) => None,
+        }
+    }
+}
+
+/// Launch official Apple popup for `services_id`, returning to `redirect_uri`;
+/// token exchange and account verification remain in Rust.
+#[cfg(target_arch = "wasm32")]
+pub async fn sign_in(
+    services_id: &str,
+    redirect_uri: &str,
+) -> Result<duet_client::identity::AppleCredential, AppleWebError> {
+    let value = apple_sign_in(services_id, redirect_uri)
+        .await
+        .map_err(AppleWebError::Script)?;
+    let text = value.as_string().ok_or(AppleWebError::NotText(value))?;
+    serde_json::from_str(&text).map_err(AppleWebError::Credential)
 }
