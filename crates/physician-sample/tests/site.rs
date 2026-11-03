@@ -8,6 +8,7 @@ use std::process::{Child, Command, Stdio};
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
+use base64::Engine as _;
 use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
@@ -1022,6 +1023,192 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
         );
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
+}
+
+#[derive(Clone, Copy, Debug)]
+enum Theme {
+    Light,
+    Dark,
+}
+
+impl Theme {
+    const fn attribute(self) -> &'static str {
+        match self {
+            Self::Light => "light",
+            Self::Dark => "dark",
+        }
+    }
+}
+
+/// A window the sidebar has to fit, and how many recent conversations it lists.
+#[derive(Clone, Copy, Debug)]
+struct SidebarCase {
+    name: &'static str,
+    width: u32,
+    height: u32,
+    recents: Recents,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Recents {
+    /// The sample's empty list.
+    None,
+    /// More rows than any window can show, so the list has to give up space.
+    Overflowing,
+}
+
+const OVERFLOWING_RECENTS: usize = 60;
+
+const SIDEBAR_CASES: [SidebarCase; 3] = [
+    SidebarCase {
+        name: "desktop",
+        width: 1440,
+        height: 900,
+        recents: Recents::None,
+    },
+    SidebarCase {
+        name: "phone",
+        width: 390,
+        height: 844,
+        recents: Recents::None,
+    },
+    SidebarCase {
+        name: "short",
+        width: 1440,
+        height: 600,
+        recents: Recents::Overflowing,
+    },
+];
+
+/// An element's edges in the window.
+#[derive(Debug, serde::Deserialize)]
+struct Edges {
+    left: f64,
+    right: f64,
+    top: f64,
+    bottom: f64,
+}
+
+/// What `sidebar_layout.js` reads from the page.
+#[derive(Debug, serde::Deserialize)]
+struct SidebarLayout {
+    window_width: f64,
+    window_height: f64,
+    sign_out: Edges,
+    sign_out_visible: bool,
+    recent_rows: usize,
+    recent_visible_height: f64,
+    recent_scrolls_down: bool,
+    recent_scrolls_sideways: bool,
+}
+
+impl SidebarLayout {
+    fn sign_out_on_screen(&self) -> bool {
+        let Edges {
+            left,
+            right,
+            top,
+            bottom,
+        } = self.sign_out;
+        self.sign_out_visible
+            && left >= 0.0
+            && top >= 0.0
+            && left < right
+            && top < bottom
+            && right <= self.window_width
+            && bottom <= self.window_height
+    }
+
+    /// Down, and never sideways.
+    fn recent_list_scrolls(&self) -> bool {
+        self.recent_visible_height > 0.0
+            && self.recent_scrolls_down
+            && !self.recent_scrolls_sideways
+    }
+}
+
+/// The recent list's response, read back through the type the app reads it with.
+fn overflowing_recents() -> String {
+    let conversations: Vec<_> = (1..=OVERFLOWING_RECENTS)
+        .map(|n| {
+            serde_json::json!({
+                "patient_workspace_id": format!("pw-synthetic-{n}"),
+                "title": format!("Synthetic conversation {n}"),
+                "patient_display_name": format!("Synthetic patient {n}"),
+            })
+        })
+        .collect();
+    let body = serde_json::json!({ "conversations": conversations }).to_string();
+    let response: physician_wire::RecentConversationsResponse =
+        serde_json::from_str(&body).expect("the wire type reads the recent list");
+    assert_eq!(response.conversations.len(), OVERFLOWING_RECENTS);
+    body
+}
+
+/// Sign out stays on screen, and a long recent list scrolls instead of pushing it off.
+#[tokio::test]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn sign_out_stays_on_screen_and_a_long_recent_list_scrolls() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = common::serve_isolated(|| {
+        // SAFETY: tests in this binary hold `test_lock()` before mutating
+        // process env, and `serve_isolated` holds its start lock here.
+        unsafe {
+            env::set_var("PHYSICIAN_SITE_DIR", &site);
+            env::remove_var("PHYSICIAN_AUTH");
+            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
+            env::remove_var("PHYSICIAN_UPSTREAM");
+        }
+    })
+    .await;
+    let url = format!("http://{}/", server.address);
+    let chrome = chromium();
+
+    let mut cut_off = Vec::new();
+    for case in SIDEBAR_CASES {
+        let mut browser = CdpBrowser::launch(&chrome, "about:blank").await;
+        browser.set_viewport(case.width, case.height, true).await;
+        match case.recents {
+            Recents::None => {
+                browser.navigate(&url).await;
+                browser.wait_for_recent_rows(0, None).await;
+            }
+            Recents::Overflowing => {
+                browser
+                    .call(
+                        "Fetch.enable",
+                        serde_json::json!({ "patterns": [{ "urlPattern": "*/recent-conversations*" }] }),
+                    )
+                    .await;
+                browser.navigate(&url).await;
+                let recents = overflowing_recents();
+                browser
+                    .wait_for_recent_rows(OVERFLOWING_RECENTS, Some(&recents))
+                    .await;
+            }
+        }
+        for theme in [Theme::Light, Theme::Dark] {
+            let layout = browser
+                .sidebar_layout(theme)
+                .await
+                .expect("the sidebar stays rendered");
+            browser
+                .save_picture(&format!("{}-{}", case.name, theme.attribute()))
+                .await;
+            if !layout.sign_out_on_screen() {
+                cut_off.push((case.name, theme, layout));
+                continue;
+            }
+            if case.recents == Recents::Overflowing {
+                assert!(
+                    layout.recent_list_scrolls(),
+                    "the recent list does not scroll at {case:?}: {layout:?}"
+                );
+            }
+        }
+    }
+    assert!(cut_off.is_empty(), "Sign out is cut off: {cut_off:#?}");
 }
 
 async fn new_chat(browser: &mut CdpBrowser) -> String {
@@ -2251,6 +2438,89 @@ impl CdpBrowser {
             serde_json::json!({ "requestId": request["requestId"] }),
         )
         .await;
+    }
+
+    /// Answers one held request with `body` instead of the server.
+    async fn fulfill_json(&mut self, request: &serde_json::Value, body: &str) {
+        self.call(
+            "Fetch.fulfillRequest",
+            serde_json::json!({
+                "requestId": request["requestId"],
+                "responseCode": 200,
+                "responseHeaders": [{ "name": "content-type", "value": "application/json" }],
+                "body": base64::engine::general_purpose::STANDARD.encode(body),
+            }),
+        )
+        .await;
+    }
+
+    /// Waits for the sidebar to list `rows` recent conversations, answering every
+    /// held request with `recents` meanwhile: the app reads the list again as its
+    /// session settles.
+    async fn wait_for_recent_rows(&mut self, rows: usize, recents: Option<&str>) {
+        let started = Instant::now();
+        loop {
+            let layout = self.sidebar_layout(Theme::Light).await;
+            if let Some(recents) = recents {
+                for request in std::mem::take(&mut self.paused) {
+                    self.fulfill_json(&request, recents).await;
+                }
+            }
+            match layout {
+                Some(layout) if layout.recent_rows == rows => return,
+                seen => assert!(
+                    started.elapsed() < Duration::from_secs(20),
+                    "the sidebar did not list {rows} recent conversations: {seen:?}"
+                ),
+            }
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+    }
+
+    /// Runs `sidebar_layout.js` in `theme`, passing the theme as a real argument.
+    async fn sidebar_layout(&mut self, theme: Theme) -> Option<SidebarLayout> {
+        let global = self
+            .call(
+                "Runtime.evaluate",
+                serde_json::json!({ "expression": "globalThis" }),
+            )
+            .await;
+        let object = global["result"]["result"]["objectId"]
+            .as_str()
+            .expect("the page's global object");
+        let answer = self
+            .call(
+                "Runtime.callFunctionOn",
+                serde_json::json!({
+                    "functionDeclaration": include_str!("sidebar_layout.js"),
+                    "objectId": object,
+                    "arguments": [{ "value": theme.attribute() }],
+                    "returnByValue": true,
+                }),
+            )
+            .await;
+        serde_json::from_value(answer["result"]["result"]["value"].clone())
+            .unwrap_or_else(|error| panic!("sidebar_layout.js answered {answer}: {error}"))
+    }
+
+    /// Saves the page as it stands, when `PHYSICIAN_PROOF_SHOTS` names a folder for it.
+    async fn save_picture(&mut self, name: &str) {
+        let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") else {
+            return;
+        };
+        let shot = self
+            .call(
+                "Page.captureScreenshot",
+                serde_json::json!({ "format": "png" }),
+            )
+            .await;
+        let encoded = shot["result"]["data"].as_str().expect("a screenshot");
+        let png = base64::engine::general_purpose::STANDARD
+            .decode(encoded)
+            .expect("a screenshot in base64");
+        let folder = PathBuf::from(folder);
+        fs::create_dir_all(&folder).expect("the screenshot folder");
+        fs::write(folder.join(format!("{name}.png")), png).expect("the screenshot");
     }
 
     /// Types `text` into the composer as the physician would.

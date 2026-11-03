@@ -44,6 +44,7 @@ button, input { font: inherit; }
   overflow: hidden;
 }
 .sidebar-content {
+  box-sizing: border-box;
   display: grid;
   grid-template-rows: auto auto auto minmax(0, 1fr) auto;
   height: 100%;
@@ -87,6 +88,7 @@ button.sidebar-expand { display: none; }
 .sidebar-section-heading h2 { margin: 0; font: var(--type-label-md); }
 .sidebar-empty, .sidebar-loading { margin: var(--space-2); color: var(--muted); font: var(--type-body-sm); }
 .sidebar-recent-link, .sidebar-conversation-link {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: var(--space-2);
