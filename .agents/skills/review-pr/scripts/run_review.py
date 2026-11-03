@@ -194,7 +194,14 @@ def main():
         targets = record["targets"] = list(by_url.values())
         if previous and set(by_url) != {target["url"] for target in previous["targets"]}:
             raise ValueError("A follow-up must use the same PR target set as its recorded reviewer session.")
-        guidance = (SKILL_ROOT / "references" / "reviewer.md").read_text()
+        # The shared review standard, then what is specific to PRs.
+        guidance = "\n\n".join(
+            path.read_text()
+            for path in (
+                SKILL_ROOT.parent / "local-review" / "references" / "standard.md",
+                SKILL_ROOT / "references" / "reviewer.md",
+            )
+        )
         record["guidance_sha256"] = hashlib.sha256(guidance.encode()).hexdigest()
         context = args.context_file.expanduser().read_text() if args.context_file else "None supplied."
         continuity = (
