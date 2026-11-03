@@ -5,8 +5,8 @@ effort unless the user explicitly selects another configuration. The reviewer
 stays read-only. Follow the shared local-review method and repository development
 defaults.
 
-Prepare the sourced context and the full text of the
-[review standard](standard.md) as a task-local request file. The `codex` CLI must be installed, authenticated, and available on
+Prepare the full text of the [review standard](standard.md) and the sourced
+context as a task-local request file, in that order. The `codex` CLI must be installed, authenticated, and available on
 PATH. Replace the example paths with this developer's workspace and scratch
 files. Run through the host's background process facility; in Claude Code, use
 the parent's Bash tool with `run_in_background: true`. In a terminal, run directly

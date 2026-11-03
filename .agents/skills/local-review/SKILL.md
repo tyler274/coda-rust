@@ -40,7 +40,7 @@ resolved from their checkout; no personal installation or connector is required.
 Honor an explicitly selected engine or model. These references own commands,
 background completion, result validation, and exact-session continuation.
 
-Supply the context and the review standard on every turn. Start fresh for an
+Supply the review standard and the context on every turn. Start fresh for an
 initial review and resume that reviewer for corrections. Use
 [review-pr](../review-pr/SKILL.md) for a requested PR review; local work does not need to
 be published to become reviewable.
@@ -49,9 +49,9 @@ be published to become reviewable.
 
 The reviewer judges the change by the
 [review standard](references/standard.md), the same one a PR reviewer follows.
-Include that file's text, unchanged, in every turn's request, after the context;
-don't summarize it. The reviewer stays read-only and returns its findings to the
-parent.
+Include that file's text, unchanged, at the start of every turn's request, then
+the context, and end with what to review; don't summarize it. The reviewer stays
+read-only and returns its findings to the parent.
 
 ## Reconcile and finish
 
