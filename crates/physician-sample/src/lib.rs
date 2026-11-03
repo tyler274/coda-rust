@@ -212,15 +212,7 @@ where
             "/patient-workspaces/{id}/invite",
             post(care::invite_patient),
         )
-        .route(
-            "/patient-invitations/accept",
-            post(care::accept_patient_invitation),
-        )
         .route("/patient-workspaces/{id}/link", get(care::get_patient_link))
-        .route(
-            "/patient-workspaces/{id}/consent",
-            axum::routing::put(care::put_patient_consent),
-        )
         .route(
             "/patient-workspaces/{id}/stop-sharing",
             post(care::post_stop_sharing),
@@ -1390,8 +1382,12 @@ mod tests {
     #[tokio::test]
     async fn connected_care_end_to_end_invite_consent_provenance_dedup_revocation_and_exact_text_plan()
      {
-        let app = router();
+        use physician_auth::{AuthStore, MemoryAuthStore};
         let patient_id = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+        let store = MemoryAuthStore::new();
+        store.seed_patient("roger-synthetic-practice", patient_id);
+        let store: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
+        let app = router().layer(axum::Extension(store.clone()));
 
         // 1. Practice explicitly invites roster patient.
         let (status, invite_body) = request(
@@ -1418,10 +1414,12 @@ mod tests {
             )),
         )
         .await;
-        assert_eq!(status, StatusCode::OK, "{accept_body}");
-        let accept_json: Value = serde_json::from_str(&accept_body).unwrap();
-        assert_eq!(accept_json["linked"], true);
-        assert_eq!(accept_json["sharing_consented"], false);
+        assert_eq!(status, StatusCode::NOT_FOUND, "{accept_body}");
+        // Only fixture setup represents the patient side of this preview.
+        store
+            .accept_patient_invitation(token, "duet-acct-elena", 0)
+            .await
+            .unwrap();
 
         // Before consent, syncing Duet records is forbidden.
         let (status, _) = request(
@@ -1440,10 +1438,17 @@ mod tests {
             Body::from(r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#),
         )
         .await;
-        assert_eq!(status, StatusCode::OK, "{consent_body}");
-        let consent_json: Value = serde_json::from_str(&consent_body).unwrap();
-        assert_eq!(consent_json["sharing_consented"], true);
-        assert_eq!(consent_json["consent_version"], "v1");
+        assert_eq!(status, StatusCode::NOT_FOUND, "{consent_body}");
+        store
+            .grant_patient_consent(
+                "roger-synthetic-practice",
+                patient_id,
+                "duet-acct-elena",
+                "v1",
+                1,
+            )
+            .await
+            .unwrap();
 
         // 3. Cadence is the only scheduling signal exposed (`weekly` | `daily_when_changed`).
         let (status, cadence_body) = request(
@@ -1677,7 +1682,7 @@ mod tests {
             Body::from(r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#),
         )
         .await;
-        assert_eq!(status, StatusCode::BAD_REQUEST, "{restore_body}");
+        assert_eq!(status, StatusCode::NOT_FOUND, "{restore_body}");
 
         let (status, _) = request(
             app.clone(),

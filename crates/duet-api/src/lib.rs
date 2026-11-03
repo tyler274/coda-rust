@@ -390,6 +390,8 @@ fn bearer(headers: &HeaderMap) -> Option<String> {
 /// Builds the Duet front-door routes (`/api/join`, `/api/consent`,
 /// `/api/premium`, and `/front-door/*`) backed by the given front door.
 pub fn front_door_router(api: DuetApi) -> Router {
+    // Patient invitations and physician sharing stay behind the scenes during
+    // the beta. The serving Duet binary does not mount this adapter.
     let join_door = api.front_door.clone();
     let read_door = api.front_door.clone();
     let grant_door = api.front_door.clone();
@@ -652,7 +654,7 @@ mod tests {
 
     /// Invites through the front door (the practice side, as ENG-48 will own
     /// it) and posts the join through Duet's route.
-    async fn joined(app: &Router, email: &str) -> (serde_json::Value, String) {
+    async fn joined(app: &Router, email: &str, patient_id: &str) -> (serde_json::Value, String) {
         let token = app
             .clone()
             .oneshot(
@@ -663,7 +665,7 @@ mod tests {
                     .body(Body::from(
                         serde_json::json!({
                             "practice_id": "roger-synthetic-practice",
-                            "patient_id": "patient-1",
+                            "patient_id": patient_id,
                             "email": email,
                             "display_name": "Luna Park",
                         })
@@ -724,7 +726,7 @@ mod tests {
     #[tokio::test]
     async fn a_joined_patient_holds_a_session_that_reads_the_link() {
         let (app, _store) = front_door_app();
-        let (body, session) = joined(&app, "luna@example.test").await;
+        let (body, session) = joined(&app, "luna@example.test", "patient-1").await;
         assert!(body["account_id"].as_str().is_some());
         assert!(session.starts_with("codaf-"));
         let link = request(&app, "GET", "/front-door/link", Some(&session)).await;
@@ -742,7 +744,7 @@ mod tests {
     #[tokio::test]
     async fn a_used_or_wrong_invitation_redeems_never_again() {
         let (app, _store) = front_door_app();
-        let (_, _) = joined(&app, "luna@example.test").await;
+        let (_, _) = joined(&app, "luna@example.test", "patient-1").await;
         // A second join on the redeemed invitation is unauthorized.
         let second = app
             .clone()
@@ -768,7 +770,7 @@ mod tests {
     #[tokio::test]
     async fn consent_grants_reads_and_withdraws_in_one_step() {
         let (app, _store) = front_door_app();
-        let (_, session) = joined(&app, "luna@example.test").await;
+        let (_, session) = joined(&app, "luna@example.test", "patient-1").await;
         let none = request(&app, "GET", "/api/consent", Some(&session)).await;
         assert_eq!(none.status(), StatusCode::OK);
         let none: serde_json::Value = serde_json::from_slice(
@@ -789,6 +791,27 @@ mod tests {
         .unwrap();
         assert_eq!(granted["state"], "granted");
         assert!(granted["at"].as_u64().is_some());
+        let (_, other) = joined(&app, "other@example.test", "patient-2").await;
+        let state = request(&app, "GET", "/api/consent", Some(&other)).await;
+        let state: serde_json::Value =
+            serde_json::from_slice(&axum::body::to_bytes(state.into_body(), 4096).await.unwrap())
+                .unwrap();
+        assert_eq!(state["state"], "none");
+        // A second patient's withdrawal acts only on their own link.
+        assert_eq!(
+            request(&app, "DELETE", "/api/consent", Some(&other))
+                .await
+                .status(),
+            StatusCode::NO_CONTENT
+        );
+        let original = request(&app, "GET", "/api/consent", Some(&session)).await;
+        let original: serde_json::Value = serde_json::from_slice(
+            &axum::body::to_bytes(original.into_body(), 4096)
+                .await
+                .unwrap(),
+        )
+        .unwrap();
+        assert_eq!(original["state"], "granted");
         // One step: DELETE ends the sharing, no confirm round trip.
         let withdrawn = request(&app, "DELETE", "/api/consent", Some(&session)).await;
         assert_eq!(withdrawn.status(), StatusCode::NO_CONTENT);
@@ -810,7 +833,7 @@ mod tests {
     #[tokio::test]
     async fn consent_follows_the_presented_session_not_a_dev_header() {
         let (app, _store) = front_door_app();
-        let (_, _session) = joined(&app, "luna@example.test").await;
+        let (_, _session) = joined(&app, "luna@example.test", "patient-1").await;
         let anonymous = request(&app, "GET", "/api/consent", None).await;
         assert_eq!(anonymous.status(), StatusCode::UNAUTHORIZED);
         let forged = request(&app, "GET", "/api/consent", Some("codaf-forged")).await;
@@ -820,7 +843,7 @@ mod tests {
     #[tokio::test]
     async fn premium_reads_free_until_the_front_door_says_otherwise() {
         let (app, store) = front_door_app();
-        let (_, session) = joined(&app, "luna@example.test").await;
+        let (_, session) = joined(&app, "luna@example.test", "patient-1").await;
         let free = request(&app, "GET", "/api/premium", Some(&session)).await;
         assert_eq!(free.status(), StatusCode::OK);
         let free: serde_json::Value = serde_json::from_slice(

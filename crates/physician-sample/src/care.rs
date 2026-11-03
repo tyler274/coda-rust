@@ -1,9 +1,6 @@
-//! Connected Care routes on the physician sample server (`ENG-44`, `ENG-39`, `ENG-45`).
-//!
-//! Handles explicit roster patient invitations (`ENG-48`), patient invitation redemption
-//! and versioned `"share with my physician"` consent (`ENG-47`), consented Duet record
-//! preview ingestion with physician-entered attribution and cross-source deduplication
-//! (`ENG-51`), and physician plan drafting with exact-text approval (`ENG-53`).
+//! Physician-side Connected Care preview routes. The practice invites a roster
+//! patient, reads link status, and can stop sharing. Consented preview records
+//! retain physician-entered attribution. The patient product owns acceptance and consent.
 
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, UNIX_EPOCH};
@@ -228,38 +225,6 @@ pub(crate) async fn invite_patient(Path(id): Path<String>, request: Request<Body
     }
 }
 
-#[derive(Deserialize)]
-struct AcceptInvitationBody {
-    token: String,
-    duet_account_id: String,
-}
-
-/// Redeems a single-use patient invitation token and links `(practice_id, patient_workspace_id)`
-/// to `duet_account_id` (`ENG-48` / `ENG-47`).
-pub(crate) async fn accept_patient_invitation(request: Request<Body>) -> Response {
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let Ok(body) = serde_json::from_slice::<AcceptInvitationBody>(&bytes) else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    match store
-        .accept_patient_invitation(&body.token, &body.duet_account_id, now())
-        .await
-    {
-        Ok(link) => Json(to_link_wire(link)).into_response(),
-        Err(SignInError::Invalid | SignInError::Inactive) => (
-            StatusCode::UNAUTHORIZED,
-            Json(json!({ "detail": "That patient invitation token is invalid or expired." })),
-        )
-            .into_response(),
-    }
-}
-
 /// Reads the front-door link, versioned consent state, and review cadence (`ENG-48`).
 pub(crate) async fn get_patient_link(Path(id): Path<String>, request: Request<Body>) -> Response {
     if !on_roster(request.extensions(), &id).await {
@@ -272,50 +237,6 @@ pub(crate) async fn get_patient_link(Path(id): Path<String>, request: Request<Bo
     let identity = ConnectedCare::identity(request.extensions());
     let wire = care.link_wire(&*store, &identity.practice_id, &id).await;
     Json(wire).into_response()
-}
-
-#[derive(Deserialize)]
-struct ConsentBody {
-    duet_account_id: String,
-    consent_version: String,
-}
-
-/// Grants versioned `"share with my physician"` consent for a linked roster patient (`ENG-47`).
-pub(crate) async fn put_patient_consent(
-    Path(id): Path<String>,
-    request: Request<Body>,
-) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let Ok(body) = serde_json::from_slice::<ConsentBody>(&bytes) else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    match store
-        .grant_patient_consent(
-            &identity.practice_id,
-            &id,
-            &body.duet_account_id,
-            &body.consent_version,
-            now(),
-        )
-        .await
-    {
-        Ok(link) => Json(to_link_wire(link)).into_response(),
-        Err(SignInError::Invalid | SignInError::Inactive) => (
-            StatusCode::BAD_REQUEST,
-            Json(json!({ "detail": "Patient must accept the practice invitation before granting consent." })),
-        )
-            .into_response(),
-    }
 }
 
 /// Revokes `"share with my physician"` consent in one step (`stop sharing`, `ENG-47`).

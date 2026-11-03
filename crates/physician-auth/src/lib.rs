@@ -1157,6 +1157,12 @@ impl AuthStore for MemoryAuthStore {
         if expires_at <= now {
             return Err(SignInError::Invalid);
         }
+        if record.link.duet_account_id.as_deref() != Some(duet_account_id) {
+            record.link.sharing_consented = false;
+            record.link.consent_version = None;
+            record.link.consented_at = None;
+            record.link.revoked_at = None;
+        }
         record.link.duet_account_id = Some(duet_account_id.to_owned());
         record.link.linked = true;
         Ok(record.link.clone())

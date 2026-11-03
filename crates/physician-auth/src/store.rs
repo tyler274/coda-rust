@@ -948,6 +948,7 @@ impl AuthStore for PostgresAuthStore {
             .map_err(stale)?
             .ok_or(SignInError::Invalid)?;
         let expires_at = row.pending_expires_at.unwrap_or(0);
+        let changed_account = row.duet_account_id.as_deref() != Some(duet_account_id);
         let mut update: crate::migration::PatientLinkActiveModel = row.into();
         update.pending_token_hash = Set(None);
         update.pending_expires_at = Set(None);
@@ -955,6 +956,12 @@ impl AuthStore for PostgresAuthStore {
             update.update(&txn).await.map_err(stale)?;
             txn.commit().await.map_err(stale)?;
             return Err(SignInError::Invalid);
+        }
+        if changed_account {
+            update.sharing_consented = Set(false);
+            update.consent_version = Set(None);
+            update.consented_at = Set(None);
+            update.revoked_at = Set(None);
         }
         update.duet_account_id = Set(Some(duet_account_id.to_owned()));
         update.linked = Set(true);
@@ -976,12 +983,14 @@ impl AuthStore for PostgresAuthStore {
         if consent_version.is_empty() || duet_account_id.is_empty() {
             return Err(SignInError::Invalid);
         }
+        let txn = self.db.begin().await.map_err(stale)?;
         let row = PatientLinks::find()
             .filter(crate::migration::patient_link::Column::PracticeId.eq(practice_id))
             .filter(
                 crate::migration::patient_link::Column::PatientWorkspaceId.eq(patient_workspace_id),
             )
-            .one(&self.db)
+            .lock_exclusive()
+            .one(&txn)
             .await
             .map_err(stale)?
             .ok_or(SignInError::Invalid)?;
@@ -995,7 +1004,8 @@ impl AuthStore for PostgresAuthStore {
         update.sharing_consented = Set(true);
         update.consent_version = Set(Some(consent_version.to_owned()));
         update.consented_at = Set(Some(now as i64));
-        let updated = update.update(&self.db).await.map_err(stale)?;
+        let updated = update.update(&txn).await.map_err(stale)?;
+        txn.commit().await.map_err(stale)?;
         Ok(patient_link_from_row(updated))
     }
 

@@ -22,7 +22,7 @@ use std::rc::Rc;
 use std::time::Duration;
 
 use dioxus::prelude::*;
-use duet_client::{ConsentState, DuetClient, FrontDoorError};
+use duet_client::DuetClient;
 use duet_health::{HealthSnapshot, NO_READINGS, PhoneReading, PlatformHealth};
 use duet_notify::{
     AlertSnapshot, AlertState, PlatformAlerts, insight_alerts_wanted, plan_insight_delivery,
@@ -32,13 +32,11 @@ use roots::{
     ALLOW_HEALTHKIT, ALLOW_NOTIFICATIONS, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE,
     CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
     ConversationSourceChip, DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL,
-    JoinDraft, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind, LibraryRecord, LibraryRoot,
-    NoteOpen, OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL,
-    SHARE_WITH_MY_PHYSICIAN, SHARING_ERROR, SHARING_HEADING, SHARING_OFF_DETAIL, SHARING_ON_DETAIL,
-    SHARING_UNAVAILABLE, STOP_SHARING, SavedItemPage, SharingRoot, TRY_AGAIN, TodayRoot,
-    closed_send, composer_open, conversation_root, date_line, doctor_page, doctor_plan_section,
-    draft_after_send, greeting, library_root, note_open, opens_doctor, page_with_accepted,
-    plan_page, reminder_page, send_id, sharing_root, today_root,
+    LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind, LibraryRecord, LibraryRoot, NoteOpen,
+    OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SavedItemPage, TRY_AGAIN,
+    TodayRoot, closed_send, composer_open, conversation_root, date_line, doctor_page,
+    doctor_plan_section, draft_after_send, greeting, library_root, note_open, opens_doctor,
+    page_with_accepted, plan_page, reminder_page, send_id, today_root,
 };
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
@@ -58,23 +56,6 @@ const DUET_STYLES: &str = include_str!("../assets/duet.css");
 
 pub use roots::{api_base_url, api_bearer};
 
-/// What the front door reports for this session: the consent state Duet's
-/// screens turn into the existing practice-sharing controls.
-#[derive(Debug, Clone, PartialEq, Eq)]
-enum FrontDoorStatus {
-    /// The consent read succeeded.
-    Loaded(ConsentState),
-    /// No practice connection resolves for this session.
-    NotJoined,
-    /// The front door could not answer.
-    Unavailable,
-}
-
-async fn load_front_door(base_url: String, bearer: String) -> Result<ConsentState, FrontDoorError> {
-    let api = open_client(base_url, bearer).map_err(FrontDoorError::Other)?;
-    api.consent().await
-}
-
 #[component]
 fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
@@ -86,54 +67,16 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut phone = use_signal(|| PlatformHealth.snapshot());
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
     let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
-    // Standalone account admission is owned by account::DuetRoot. The front
-    // door supplies optional practice-link status; it does not gate the app.
-    let mut front_door_attempt = use_signal(|| 0u32);
-    let mut joined_session = use_signal(roots::recalled_session);
-    let door_url = base_url.clone();
-    let door_bearer = bearer.clone();
-    let front_door = use_resource(move || {
-        let _attempt = front_door_attempt();
-        let base_url = door_url.clone();
-        let bearer = joined_session().unwrap_or_else(|| door_bearer.clone());
-        async move {
-            if bearer.is_empty() {
-                return Err(FrontDoorError::Unauthorized);
-            }
-            load_front_door(base_url, bearer).await
-        }
-    });
-    let status = match front_door() {
-        Some(Ok(state)) => FrontDoorStatus::Loaded(state),
-        Some(Err(FrontDoorError::Unauthorized)) | Some(Err(FrontDoorError::Invalid)) => {
-            FrontDoorStatus::NotJoined
-        }
-        Some(Err(_)) | None => FrontDoorStatus::Unavailable,
-    };
-    // AccountRoot already verified the standalone account. Consent is optional practice linking.
-    let needs_join = false;
-    let active_bearer = joined_session().unwrap_or_else(|| bearer.clone());
+    // Patient invitations and physician sharing stay internal during the beta.
     rsx! {
         ui::Stylesheet { app: DUET_STYLES }
         main { class: "duet theme-duet",
             div { class: "duet-page",
-                if needs_join {
-                    JoinScreen {
-                        base_url: base_url.clone(),
-                        on_joined: move |session: String| {
-                            roots::remember_session(&session);
-                            joined_session.set(Some(session));
-                            front_door_attempt.set(front_door_attempt() + 1);
-                        },
-                        on_retry: move |_| front_door_attempt.set(front_door_attempt() + 1),
-                        checking: status == FrontDoorStatus::Unavailable,
-                    }
-                } else {
-                div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: active_bearer.clone() } }
+                div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: bearer.clone() } }
                 div { hidden: tab() != 1,
                     TodayTab {
                         base_url: base_url.clone(),
-                        bearer: active_bearer.clone(),
+                        bearer: bearer.clone(),
                         readings: phone().readings.clone(),
                         connected: phone().state.connected(),
                         insight_alerts,
@@ -142,12 +85,7 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                 div { hidden: tab() != 2,
                     YouTab {
                         base_url: base_url.clone(),
-                        bearer: active_bearer.clone(),
-                        consent: match &status {
-                            FrontDoorStatus::Loaded(state) => Ok(*state),
-                            FrontDoorStatus::NotJoined => Err(FrontDoorError::Unauthorized),
-                            FrontDoorStatus::Unavailable => Err(FrontDoorError::Unavailable),
-                        },
+                        bearer: bearer.clone(),
                         phone: phone(),
                         alerts: alerts(),
                         insight_alerts: insight_alerts(),
@@ -167,134 +105,23 @@ fn PrivateRoot(base_url: String, bearer: String) -> Element {
                         on_open_settings: move |_| PlatformAlerts.open_settings(),
                     }
                 }
-                div { hidden: tab() != 3, SharedTab { base_url, bearer: active_bearer } }
-                }
+                div { hidden: tab() != 3, SharedTab {} }
             }
-            if !needs_join {
-                TabBar {
-                    label: "Sections",
-                    labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
-                    icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
-                    selected: tab(),
-                    on_select: move |index| {
-                        tab.set(index);
-                        if index == 1 || index == 2 {
-                            phone.set(PlatformHealth.snapshot());
-                        }
-                        if index == 2 {
-                            alerts.set(PlatformAlerts.snapshot());
-                            insight_alerts.set(PlatformAlerts.insights_enabled());
-                        }
-                    },
-                }
-            }
-        }
-    }
-}
-
-/// The join screen: the person enters the email and token their practice's
-/// invitation carried, and Duet redeems it at the front door.
-#[component]
-fn JoinScreen(
-    base_url: String,
-    on_joined: EventHandler<String>,
-    on_retry: EventHandler,
-    checking: bool,
-) -> Element {
-    let mut draft = use_signal(|| JoinDraft {
-        email: String::new(),
-        token: String::new(),
-    });
-    let mut email = use_signal(String::new);
-    let mut token = use_signal(String::new);
-    let mut submitting = use_signal(|| false);
-    let mut failure = use_signal(|| None::<FrontDoorError>);
-    let join_url = base_url;
-    let ready = !email().trim().is_empty() && !token().trim().is_empty();
-    let mut submit = move |_| {
-        if submitting() {
-            return;
-        }
-        let candidate = JoinDraft {
-            email: email().trim().to_owned(),
-            token: token().trim().to_owned(),
-        };
-        if !candidate.ready() {
-            return;
-        }
-        submitting.set(true);
-        failure.set(None);
-        let base_url = join_url.clone();
-        spawn(async move {
-            let joined = match open_client(base_url, String::new()) {
-                Ok(api) => api.join(&candidate.email, &candidate.token).await,
-                Err(error) => Err(FrontDoorError::Other(error)),
-            };
-            match joined {
-                Ok(joined) => {
-                    draft.set(JoinDraft {
-                        email: String::new(),
-                        token: String::new(),
-                    });
-                    email.set(String::new());
-                    token.set(String::new());
-                    submitting.set(false);
-                    on_joined.call(joined.session);
-                }
-                Err(error) => {
-                    failure.set(Some(error));
-                    submitting.set(false);
-                }
-            }
-        });
-    };
-    rsx! {
-        div { class: "duet-page",
-            TabHeading { name: "Duet".to_owned(), loading: use_signal(|| false) }
-            if checking {
-                p { class: "status-detail", "{CONNECTING}" }
-                TryAgain { label: TRY_AGAIN, on_retry }
-            }
-            p { class: "status-title", "{roots::JOIN_HEADING}" }
-            p { class: "status-detail", "{roots::JOIN_DETAIL}" }
-            form {
-                class: "duet-composer",
-                onsubmit: move |event| {
-                    event.prevent_default();
-                    submit(());
-                },
-                p { class: "status-detail", "{roots::JOIN_EMAIL_LABEL}" }
-                input {
-                    class: "field duet-field",
-                    r#type: "email",
-                    name: "email",
-                    value: "{email}",
-                    oninput: move |event| email.set(event.value()),
-                }
-                p { class: "status-detail", "{roots::JOIN_TOKEN_LABEL}" }
-                input {
-                    class: "field duet-field",
-                    r#type: "text",
-                    name: "token",
-                    value: "{token}",
-                    oninput: move |event| token.set(event.value()),
-                }
-                if let Some(error) = failure() {
-                    p { class: "empty", role: "alert", "{roots::join_failure_sentence(&error)}" }
-                    if error == FrontDoorError::Unavailable {
-                        Button {
-                            compact: true,
-                            submit: true,
-                            "{roots::JOIN_RETRY}"
-                        }
+            TabBar {
+                label: "Sections",
+                labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
+                icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
+                selected: tab(),
+                on_select: move |index| {
+                    tab.set(index);
+                    if index == 1 || index == 2 {
+                        phone.set(PlatformHealth.snapshot());
                     }
-                }
-                Button {
-                    variant: ButtonVariant::Primary,
-                    submit: true,
-                    disabled: submitting() || !ready,
-                    "{roots::JOIN_BUTTON}"
-                }
+                    if index == 2 {
+                        alerts.set(PlatformAlerts.snapshot());
+                        insight_alerts.set(PlatformAlerts.insights_enabled());
+                    }
+                },
             }
         }
     }
@@ -2179,7 +2006,6 @@ fn TodayTab(
 fn YouTab(
     base_url: String,
     bearer: String,
-    consent: Result<ConsentState, FrontDoorError>,
     phone: HealthSnapshot,
     alerts: AlertSnapshot,
     insight_alerts: bool,
@@ -2201,17 +2027,12 @@ fn YouTab(
     let mut note_id = use_signal(|| None::<uuid::Uuid>);
     let mut saving = use_signal(|| false);
     let mut save_failed = use_signal(|| false);
-    let mut changing_sharing = use_signal(|| false);
-    let mut sharing_failed = use_signal(|| false);
     let mut editing = use_signal(|| None::<EvidenceEdit>);
     let mut evidence_notice = use_signal(|| None::<String>);
-    let share_url = base_url.clone();
-    let share_bearer = bearer.clone();
     let save_url = base_url.clone();
     let save_bearer = bearer.clone();
     let evidence_url = base_url.clone();
     let evidence_bearer = bearer.clone();
-    let sharing = sharing_root(consent.clone());
     let resource = use_resource(move || {
         let _attempt = attempt();
         let base_url = base_url.clone();
@@ -2383,52 +2204,6 @@ fn YouTab(
                 }
             }
         } else {
-        div { class: "source-row",
-            span { class: "source-name", "{SHARING_HEADING}" }
-            span { class: "source-detail", match sharing {
-                SharingRoot::On => SHARING_ON_DETAIL,
-                SharingRoot::Off | SharingRoot::NotJoined => SHARING_OFF_DETAIL,
-                SharingRoot::Unknown => SHARING_UNAVAILABLE,
-            } }
-            if sharing == SharingRoot::On || sharing == SharingRoot::Off {
-                input {
-                    r#type: "checkbox",
-                    checked: sharing == SharingRoot::On,
-                    aria_label: "{SHARING_HEADING}",
-                    disabled: changing_sharing(),
-                    onchange: move |event| {
-                        let on = event.checked();
-                        if changing_sharing() {
-                            return;
-                        }
-                        changing_sharing.set(true);
-                        sharing_failed.set(false);
-                        let base_url = share_url.clone();
-                        let bearer = share_bearer.clone();
-                        spawn(async move {
-                            let done = match open_client(base_url, bearer) {
-                                Ok(api) => {
-                                    if on {
-                                        api.grant_consent().await
-                                    } else {
-                                        api.withdraw_consent().await
-                                    }
-                                }
-                                Err(error) => Err(FrontDoorError::Other(error)),
-                            };
-                            match done {
-                                Ok(()) => sharing_failed.set(false),
-                                Err(_) => sharing_failed.set(true),
-                            }
-                            changing_sharing.set(false);
-                        });
-                    },
-                }
-            }
-        }
-        if sharing_failed() {
-            p { class: "empty", role: "alert", "{SHARING_ERROR}" }
-        }
         div { class: "source-row",
             span { class: "source-name", "Sources" }
             span { class: "source-detail", "{phone.sentence()}" }
@@ -2798,74 +2573,9 @@ fn PhoneReadings(readings: Vec<PhoneReading>, connected: bool) -> Element {
 }
 
 #[component]
-fn SharedTab(base_url: String, bearer: String) -> Element {
-    let mut attempt = use_signal(|| 0u32);
-    let mut loading = use_signal(|| true);
-    let mut physician_cache = use_signal(|| None::<duet_client::PhysicianSharingStatus>);
-    let action_url = base_url.clone();
-    let action_bearer = bearer.clone();
-    let resource = use_resource(move || {
-        let _attempt = attempt();
-        let base_url = base_url.clone();
-        let bearer = bearer.clone();
-        async move {
-            open_client(base_url, bearer)?
-                .physician_sharing_status()
-                .await
-        }
-    });
-    use_effect(move || {
-        loading.set(resource().is_none());
-        if let Some(Ok(status)) = resource() {
-            physician_cache.set(Some(status));
-        }
-    });
-    let physician_status = match resource() {
-        Some(Ok(status)) => Some(status),
-        Some(Err(_)) | None => physician_cache(),
-    };
-    let stop_url = action_url.clone();
-    let stop_bearer = action_bearer.clone();
-    let stop_sharing = move |_| {
-        let base_url = stop_url.clone();
-        let bearer = stop_bearer.clone();
-        spawn(async move {
-            if let Ok(api) = open_client(base_url, bearer) {
-                let _ = api.stop_physician_sharing().await;
-                attempt.set(attempt() + 1);
-            }
-        });
-    };
-    let grant_sharing = move |_| {
-        let base_url = action_url.clone();
-        let bearer = action_bearer.clone();
-        spawn(async move {
-            if let Ok(api) = open_client(base_url, bearer) {
-                let _ = api.grant_physician_consent("v1").await;
-                attempt.set(attempt() + 1);
-            }
-        });
-    };
+fn SharedTab() -> Element {
+    let loading = use_signal(|| false);
     rsx! {
         TabHeading { name: "Shared".to_owned(), loading }
-        if let Some(status) = physician_status.filter(|status| status.linked) {
-            article { class: "card voice-card",
-                p { class: "card-title", "{status.practice_name.as_deref().unwrap_or(\"Connected practice\")}" }
-                if status.sharing_consented {
-                    p { class: "record-meta", "{SHARE_WITH_MY_PHYSICIAN} ({status.consent_version.as_deref().unwrap_or(\"v1\")})" }
-                    Button {
-                        danger: true,
-                        onclick: stop_sharing,
-                        "{STOP_SHARING}"
-                    }
-                } else {
-                    p { class: "record-meta", "Sharing stopped" }
-                    Button {
-                        onclick: grant_sharing,
-                        "{SHARE_WITH_MY_PHYSICIAN}"
-                    }
-                }
-            }
-        }
     }
 }

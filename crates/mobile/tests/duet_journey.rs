@@ -187,8 +187,8 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     browser.click(r#"button[aria-label="Clear selected record"]"#);
     wait_until(&mut browser, |text| !text.contains("Asking about"));
 
-    // Shared is the practice-connection tab even though the person-to-person
-    // endpoint is gone. Exercise the existing consent controls on the stub.
+    // The retired person-to-person endpoint stays absent. The beta tab does not
+    // expose physician consent controls.
     assert_eq!(
         http.get(format!("{base}/api/sharing/overview"))
             .send()
@@ -197,44 +197,20 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
             .status(),
         404
     );
-    http.post(format!("{base}/api/physician-sharing/accept-invitation"))
-        .json(&serde_json::json!({
-            "practice_id": "practice-coda-1",
-            "practice_name": "Coda Internal Medicine",
-            "patient_workspace_id": "synthetic-patient",
-            "invitation_token": "synthetic-invitation"
-        }))
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap();
-    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
     browser.click(r#"nav.tabs button:nth-of-type(4)"#);
-    let text = browser.wait_for("Coda Internal Medicine");
-    assert!(text.contains("Share with my physician"), "{text}");
+    wait_for_selector(
+        &mut browser,
+        r#"nav.tabs button:nth-of-type(4)[aria-current="page"]"#,
+    );
+    let text = browser.wait_for("Shared");
     assert!(
         !text.contains("People")
+            && !text.contains("Share with my physician")
+            && !text.contains("Stop sharing")
             && !text.contains("Awaiting acceptance")
             && !text.contains("not sharing yet")
             && !text.contains("Saved values stay visible"),
         "{text}"
-    );
-    browser.page().evaluate(r#"Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Share with my physician').click(); true"#);
-    browser.wait_for("Stop sharing");
-    browser.page().evaluate(r#"Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Stop sharing').click(); true"#);
-    browser.wait_for("Sharing stopped");
-    assert!(
-        !http
-            .get(format!("{base}/api/physician-sharing/status"))
-            .send()
-            .await
-            .unwrap()
-            .json::<serde_json::Value>()
-            .await
-            .unwrap()["sharing_consented"]
-            .as_bool()
-            .unwrap()
     );
 
     // The journey holds at the desktop viewport.
@@ -345,7 +321,66 @@ fn wait_until(browser: &mut Browser, ready: impl Fn(&str) -> bool) -> String {
 /// The WASM build is shared through the process-wide cell; the two servers
 /// stay independent.
 async fn spawn_site() -> std::net::SocketAddr {
-    let site = shared_site();
+    spawn_site_with_patient(false).await.0
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn beta_patient_tabs_do_not_offer_or_request_physician_sharing() {
+    let (address, session) = spawn_site_with_patient(true).await;
+    let base = format!("http://{address}");
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser
+        .page()
+        .call_session("Network.enable", serde_json::json!({}));
+    browser.page().call_session(
+        "Network.setExtraHTTPHeaders",
+        serde_json::json!({"headers":{"Authorization":format!("Bearer {session}")}}),
+    );
+    browser.text_until(&format!("{base}/?mode=client"), "Today");
+    let evidence =
+        PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../target/verification/beta-sharing");
+    std::fs::create_dir_all(&evidence).unwrap();
+    for (tab, loaded, absent, image) in [
+        (
+            3,
+            "Add health information",
+            "Sharing with my physician",
+            "you.json",
+        ),
+        (4, "Shared", "Share with my physician", "shared.json"),
+    ] {
+        browser.click(&format!("nav.tabs button:nth-of-type({tab})"));
+        wait_for_selector(
+            &mut browser,
+            &format!(r#"nav.tabs button:nth-of-type({tab})[aria-current="page"]"#),
+        );
+        let text = browser.wait_for(loaded);
+        assert!(!text.contains(absent), "{text}");
+        let screenshot = browser.page().call_session(
+            "Page.captureScreenshot",
+            serde_json::json!({"format":"png"}),
+        );
+        std::fs::write(
+            evidence.join(image),
+            serde_json::to_vec(&screenshot).unwrap(),
+        )
+        .unwrap();
+    }
+    let paths: Vec<String> = serde_json::from_value(browser.page().evaluate(
+        "performance.getEntriesByType('resource').map(entry => new URL(entry.name).pathname)",
+    ))
+    .unwrap();
+    assert!(
+        paths.iter().all(|path| path != "/api/consent"
+            && !path.starts_with("/api/physician-sharing/")
+            && !path.starts_with("/api/sharing/")),
+        "{paths:?}"
+    );
+}
+
+async fn spawn_site_with_patient(linked: bool) -> (std::net::SocketAddr, String) {
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     let store = Arc::new(Mutex::new(
@@ -372,7 +407,7 @@ async fn spawn_site() -> std::net::SocketAddr {
     )
     .await
     .expect("front-door invite");
-    let (_account_id, session) = front_door::FrontDoorStore::redeem_invitation(
+    let (account_id, session) = front_door::FrontDoorStore::redeem_invitation(
         front_door_store.as_ref(),
         "elena@codahealth.test",
         &invite_token,
@@ -380,28 +415,42 @@ async fn spawn_site() -> std::net::SocketAddr {
     )
     .await
     .expect("front-door redeem");
+    let site = shared_site();
+    let expected = format!(
+        "Bearer {}",
+        if linked {
+            session.as_str()
+        } else {
+            "synthetic-stub-browser-only"
+        }
+    );
+    let account_header = expected.clone();
     // Test-only identity adapter. It verifies the synthetic build credential, then
     // supplies a stable account/incarnation. It never modifies production routing.
-    let context = serde_json::json!({"account_id":uuid::Uuid::new_v4(),"incarnation":uuid::Uuid::new_v4(),"permission_revision":0,"authenticated_at":"2026-10-20T00:00:00Z"});
+    let context = serde_json::json!({"account_id":account_id,"incarnation":uuid::Uuid::new_v4(),"permission_revision":0,"authenticated_at":"2026-10-20T00:00:00Z"});
     let identity = axum::Router::new()
         .route(
             "/api/auth/account",
-            axum::routing::put(|headers: axum::http::HeaderMap| async move {
-                if headers.get("authorization").and_then(|h| h.to_str().ok())
-                    != Some("Bearer synthetic-stub-browser-only")
-                {
-                    return Err(axum::http::StatusCode::UNAUTHORIZED);
+            axum::routing::put(move |headers: axum::http::HeaderMap| {
+                let expected = account_header.clone();
+                async move {
+                    if headers.get("authorization").and_then(|h| h.to_str().ok())
+                        != Some(expected.as_str())
+                    {
+                        return Err(axum::http::StatusCode::UNAUTHORIZED);
+                    }
+                    Ok(axum::Json(serde_json::json!({})))
                 }
-                Ok(axum::Json(serde_json::json!({})))
             }),
         )
         .route(
             "/api/auth/account/context",
             axum::routing::get(move |headers: axum::http::HeaderMap| {
                 let context = context.clone();
+                let expected = expected.clone();
                 async move {
                     if headers.get("authorization").and_then(|h| h.to_str().ok())
-                        != Some("Bearer synthetic-stub-browser-only")
+                        != Some(expected.as_str())
                     {
                         return Err(axum::http::StatusCode::UNAUTHORIZED);
                     }
@@ -414,11 +463,10 @@ async fn spawn_site() -> std::net::SocketAddr {
             front_door_store,
         )))
         .merge(identity);
-    let _ = session; // The legacy front-door session is not used as standalone identity.
     let app = site_router(site, api);
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
-    address
+    (address, session)
 }
 
 /// The mobile page at `/` and the stub under `/api`. The stub keeps its own

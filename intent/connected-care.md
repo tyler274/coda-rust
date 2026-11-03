@@ -6,6 +6,8 @@ This is how a Duet patient and a Coda practice connect: what crosses between the
 
 Connected care joins two separate products. Duet is the patient's own health app, and Coda Agents is the practice's team of agents. A practice invites a patient, the patient joins and consents once, and from then on what the patient connected in Duet reaches the practice live. In the other direction, the practice's documented care decisions and appointment details come back to the patient's Duet.
 
+Practice invitations and patient-to-physician sharing stay internal during the beta. Patients can connect personal sources such as Apple Health independently.
+
 The point is that the data a patient can connect actually gets to their physician. The physician sees what the chart doesn't hold, such as the patient's other health systems, phone health readings and the notes they've made, and the patient understands what their clinician documented, without anyone running an approval queue for Duet. Connecting patients to their providers is where we ultimately add the most value, and it has to reduce work for both sides rather than create more.
 
 ## Principles

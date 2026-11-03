@@ -67,8 +67,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Input,
-        count: 13,
-        reason: "The join form, corrected value, note, visit, question and medication fields, and the medication, sharing and insight notification checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
+        count: 10,
+        reason: "The corrected value, note, visit, question and medication fields, and the medication and insight notification checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
@@ -85,8 +85,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 20,
-        reason: "Today, You, Shared, thread, reading and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
+        count: 18,
+        reason: "Today, You, thread, reading and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
         file: "crates/duet-app/src/publication.rs",

@@ -76,23 +76,25 @@ async fn the_practice_and_its_patients_are_visible() {
     // and approval claims must not become patient-origin attribution.
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let http = reqwest::Client::new();
-    let workspace_url = format!("http://{address}/patient-workspaces/{patient}");
-    let invitation: serde_json::Value = http
-        .post(format!("{workspace_url}/invite"))
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
+    let practice = "roger-synthetic-practice";
+    let store = MemoryAuthStore::new();
+    store.seed_patient(practice, patient);
+    let store: Arc<dyn AuthStore> = Arc::new(store);
+    let account = "synthetic-preview-account";
+    let token = store.invite_patient(practice, patient, 0).await.unwrap();
+    store
+        .accept_patient_invitation(&token, account, 1)
         .await
         .unwrap();
-    http.post(format!("http://{address}/patient-invitations/accept"))
-        .json(&serde_json::json!({"token": invitation["token"], "duet_account_id": "synthetic-preview-account"}))
-        .send().await.unwrap().error_for_status().unwrap();
-    http.put(format!("{workspace_url}/consent"))
-        .json(&serde_json::json!({"duet_account_id": "synthetic-preview-account", "consent_version": "v1"}))
-        .send().await.unwrap().error_for_status().unwrap();
+    store
+        .grant_patient_consent(practice, patient, account, "v1", 2)
+        .await
+        .unwrap();
+    let preview_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let preview_address = preview_listener.local_addr().unwrap();
+    let preview_app = physician_sample::router().layer(axum::Extension(store));
+    tokio::spawn(async move { axum::serve(preview_listener, preview_app).await.unwrap() });
+    let workspace_url = format!("http://{preview_address}/patient-workspaces/{patient}");
     http.post(format!("{workspace_url}/duet-sync"))
         .json(&serde_json::json!({"items": [{
             "record_id": "synthetic-preview", "revision_cursor": "revision-1",
@@ -107,7 +109,11 @@ async fn the_practice_and_its_patients_are_visible() {
         .unwrap()
         .error_for_status()
         .unwrap();
-    let preview = dump_dom(&chrome, &format!("http://{address}/?patient={patient}")).await;
+    let preview = dump_dom(
+        &chrome,
+        &format!("http://{preview_address}/?patient={patient}"),
+    )
+    .await;
     assert!(
         preview.contains("Preview records") && preview.contains("Physician-entered preview"),
         "{preview}"

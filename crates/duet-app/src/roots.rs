@@ -36,8 +36,6 @@ pub const INSIGHT_NOTIFICATIONS: &str = "New insight notifications";
 pub const INSIGHT_NOTIFICATIONS_DETAIL: &str = "Notify me when Duet finds something worth showing.";
 pub const OPEN_NOTIFICATION_SETTINGS: &str = "Open iPhone Settings";
 pub const YOUR_DOCTORS_PLAN: &str = "your doctor's plan";
-pub const SHARE_WITH_MY_PHYSICIAN: &str = "Share with my physician";
-pub const STOP_SHARING: &str = "Stop sharing";
 
 /// One read-only item in `"your doctor's plan"` (`ENG-54`).
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -908,91 +906,6 @@ pub fn recalled_session() -> Option<String> {
     None
 }
 
-/// Legacy invitation credentials remain memory-only; never write browser storage.
-pub fn remember_session(_session: &str) {}
-
-/// The join screen's copy: what the practice sent and where the token goes.
-pub const JOIN_HEADING: &str = "Join your practice";
-pub const JOIN_DETAIL: &str =
-    "Enter the invitation your practice sent you. The email and the token in the invitation.";
-pub const JOIN_EMAIL_LABEL: &str = "Invitation email";
-pub const JOIN_TOKEN_LABEL: &str = "Invitation token";
-pub const JOIN_BUTTON: &str = "Join";
-pub const JOIN_INVALID: &str =
-    "That invitation isn't valid, or it has already been used. Ask your practice for a new one.";
-pub const JOIN_UNAVAILABLE: &str = "Duet couldn't reach your practice just now. Try again.";
-pub const JOIN_RETRY: &str = "Try again";
-pub const SHARING_HEADING: &str = "Sharing with my physician";
-pub const SHARING_ON_DETAIL: &str =
-    "Duet shares what you've chosen with your physician's office. Turning sharing off is one step.";
-pub const SHARING_OFF_DETAIL: &str =
-    "Sharing is off. What was already shared stays with your physician as dated evidence.";
-pub const SHARING_ERROR: &str =
-    "Duet couldn't change sharing just now. What was already shared stays as dated evidence.";
-pub const SHARING_UNAVAILABLE: &str =
-    "Duet couldn't check whether sharing is still allowed. Saved values stay visible.";
-
-/// The join screen's state: what the person has typed and what happened.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct JoinDraft {
-    /// The invitation email the practice sent.
-    pub email: String,
-    /// The token from the invitation.
-    pub token: String,
-}
-
-impl JoinDraft {
-    /// A join is ready when both fields hold something.
-    pub fn ready(&self) -> bool {
-        !self.email.trim().is_empty() && !self.token.trim().is_empty()
-    }
-}
-
-/// Maps a failed join to the sentence the join screen shows. The copy stays
-/// in this module, as every Duet screen's does.
-pub fn join_failure_sentence(error: &crate::FrontDoorError) -> &'static str {
-    match error {
-        crate::FrontDoorError::Invalid => JOIN_INVALID,
-        crate::FrontDoorError::Unauthorized => JOIN_INVALID,
-        crate::FrontDoorError::Unavailable => JOIN_UNAVAILABLE,
-        crate::FrontDoorError::Other(_) => JOIN_UNAVAILABLE,
-    }
-}
-
-/// The share-with-my-physician state the You tab shows.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum SharingRoot {
-    /// The account has not joined through an invitation yet.
-    NotJoined,
-    /// Sharing is on.
-    On,
-    /// Sharing is off; what was shared stays dated evidence.
-    Off,
-    /// Sharing could not be checked; the toggle keeps its last value.
-    Unknown,
-}
-
-/// Maps a consent read to the You tab's share toggle. A withdrawn consent
-/// reads off, and what was already shared stays dated evidence.
-pub fn sharing_root(consent: Result<crate::ConsentState, crate::FrontDoorError>) -> SharingRoot {
-    match consent {
-        Ok(state) => match state {
-            crate::ConsentState::Granted { .. } => SharingRoot::On,
-            crate::ConsentState::Withdrawn { .. } => SharingRoot::Off,
-            crate::ConsentState::None => SharingRoot::Off,
-        },
-        Err(crate::FrontDoorError::Unauthorized) => SharingRoot::NotJoined,
-        Err(_) => SharingRoot::Unknown,
-    }
-}
-
-/// Whether the app shows the join screen: joining happens once, at the
-/// front door, before any other journey works.
-#[cfg(test)]
-pub fn shows_join(result: Result<crate::ConsentState, crate::FrontDoorError>) -> bool {
-    matches!(sharing_root(result), SharingRoot::NotJoined)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1377,67 +1290,6 @@ mod tests {
             "127.0.0.1"
         };
         assert!(api_base_url().contains(host) || option_env!("DUET_API_URL").is_some());
-    }
-
-    #[test]
-    fn a_join_draft_is_ready_when_both_fields_hold_something() {
-        let empty = JoinDraft {
-            email: String::new(),
-            token: String::new(),
-        };
-        assert!(!empty.ready());
-        let half = JoinDraft {
-            email: "luna@example.test".into(),
-            token: "   ".into(),
-        };
-        assert!(!half.ready(), "a whitespace token is not a token");
-        let ready = JoinDraft {
-            email: "luna@example.test".into(),
-            token: "codaf-invite".into(),
-        };
-        assert!(ready.ready());
-        assert_eq!(JOIN_HEADING, "Join your practice");
-        assert_eq!(JOIN_BUTTON, "Join");
-        assert_ne!(JOIN_EMAIL_LABEL, JOIN_TOKEN_LABEL);
-    }
-
-    #[test]
-    fn the_share_toggle_reads_consent_and_never_hides_shared_items() {
-        assert_eq!(
-            sharing_root(Ok(crate::ConsentState::Granted { at: 1 })),
-            SharingRoot::On
-        );
-        assert_eq!(
-            sharing_root(Ok(crate::ConsentState::Withdrawn {
-                at: 1,
-                withdrawn_at: 2
-            })),
-            SharingRoot::Off,
-            "withdrawn consent reads off; what was shared stays dated evidence"
-        );
-        assert_eq!(
-            sharing_root(Ok(crate::ConsentState::None)),
-            SharingRoot::Off,
-            "consent is granted, never assumed"
-        );
-        assert_eq!(
-            sharing_root(Err(crate::FrontDoorError::Unauthorized)),
-            SharingRoot::NotJoined,
-            "a dead session means the person joins again"
-        );
-        assert_eq!(
-            sharing_root(Err(crate::FrontDoorError::Unavailable)),
-            SharingRoot::Unknown,
-            "an unreachable front door keeps the last shown value"
-        );
-        assert!(shows_join(Err(crate::FrontDoorError::Unauthorized)));
-        assert!(!shows_join(Ok(crate::ConsentState::Granted { at: 1 })));
-        assert!(!shows_join(Err(crate::FrontDoorError::Unavailable)));
-        assert_eq!(SHARING_HEADING, "Sharing with my physician");
-        assert!(SHARING_OFF_DETAIL.contains("dated evidence"));
-        assert!(SHARING_ON_DETAIL.contains("one step"));
-        assert!(JOIN_INVALID.contains("new one"));
-        assert!(!JOIN_UNAVAILABLE.is_empty());
     }
 
     #[test]

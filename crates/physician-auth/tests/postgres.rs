@@ -684,6 +684,43 @@ async fn patient_invitation_consent_and_cadence_round_trip() {
 }
 
 #[tokio::test]
+async fn relinking_a_workspace_does_not_transfer_patient_consent() {
+    let Some(store) = store("relink_consent").await else {
+        return;
+    };
+    let invite = store
+        .invite_patient("practice", "patient", NOW)
+        .await
+        .unwrap();
+    store
+        .accept_patient_invitation(&invite, "account-a", NOW)
+        .await
+        .unwrap();
+    store
+        .grant_patient_consent("practice", "patient", "account-a", "v1", NOW)
+        .await
+        .unwrap();
+    let invite = store
+        .invite_patient("practice", "patient", NOW + 1)
+        .await
+        .unwrap();
+    store
+        .accept_patient_invitation(&invite, "account-b", NOW + 1)
+        .await
+        .unwrap();
+    let link = store.patient_link("practice", "patient").await.unwrap();
+    assert_eq!(link.duet_account_id.as_deref(), Some("account-b"));
+    assert!(!link.sharing_consented);
+    assert_eq!((link.consented_at, link.consent_version), (None, None));
+    assert!(
+        store
+            .grant_patient_consent("practice", "patient", "account-a", "v1", NOW + 2)
+            .await
+            .is_err()
+    );
+}
+
+#[tokio::test]
 async fn expired_and_replaced_patient_invitations_cannot_link_an_account() {
     let Some(store) = store("stale_patient_invite").await else {
         return;
