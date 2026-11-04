@@ -42,7 +42,7 @@ google-cloud-auth = { version = "1", features = ["idtoken"] }
 base64 = "0.23"
 # Signed synthetic OIDC tokens exercise Google's verifier, not a mock verdict.
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
-mailparse = "0.16"
+mailparse = "0.18"
 gmail = { path = "../gmail", features = ["test-util"] }
 # The disposable emulator behind tests/scale.
 pubsub = { path = "../pubsub", features = ["test-util"] }
