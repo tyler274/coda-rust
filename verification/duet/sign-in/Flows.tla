@@ -1,0 +1,48 @@
+------------------------------- MODULE Flows -------------------------------
+(***************************************************************************)
+(* Each README flow, claimed never to happen. Every step of DuetSignIn.tla *)
+(* names the flow it carries out in `event.flow`, so a flow no step       *)
+(* carries out can't be refuted here. The statechart skill refutes each   *)
+(* claim with the shortest path on which the flow happens, told in        *)
+(* scenes.mjs's words: that path is the flow's scene. flows.cfg has no    *)
+(* VIEW, so a state reached by two different steps is checked after each. *)
+(***************************************************************************)
+EXTENDS DuetSignIn
+
+Says(name) == event.name = name
+Shows(screen) == phone.screen = screen
+
+F01_CheckYourEmail        == ~(event.flow = "F1" /\ Shows(CheckEmail))
+F02_SignsIn               == ~(event.flow = "F2" /\ Says("Duet signs you in") /\ Shows(Conversation))
+F03_LinkNoLongerWorks     == ~(event.flow = "F3")
+F04_CouldntBeReached      == ~(event.flow = "F4" /\ Shows(Unreached))
+F04_SignInAnswerLost      == ~(event.flow = "F4" /\ Says("Duet signs you in, but the answer is lost"))
+F05_LinkWhileSignedIn     == ~(event.flow = "F5")
+F06_TermsFirst            == ~(event.flow = "F6" /\ Says("Duet signs you in") /\ Shows(Terms))
+F07_TermsRecorded         == ~(event.flow = "F7")
+F07_NotAskedAgain         == ~(event.flow = "F2" /\ Says("Duet signs you in")
+                               /\ \E s \in Sessions : session[s] = Ended(phone.whose))
+F08_TermsAnswerLost       == ~(event.flow = "F8" /\ Says("Duet records the Terms, but the answer is lost"))
+F08_ChecksAgain           == ~(event.flow = "F8" /\ Says("Duet answers the check") /\ Shows(Conversation))
+F09_SignOutUnderTerms     == ~(event.flow = "F9")
+F10_ReopensAsLeft         == ~(event.flow = "F10" /\ Says("you open Duet") /\ phone.draft # Nobody /\ phone.entries # Nobody)
+F11_NoSessionAsksEmail    == ~(event.flow = "F11")
+F12_UnreachableStillUsable == ~(event.flow = "F12" /\ Says("Duet can't be reached") /\ Shows(Conversation))
+F12_AsksAgain             == ~(event.flow = "F12" /\ Says("the phone checks with Duet"))
+F13_EntriesTaken          == ~(event.flow = "F13" /\ Says("Duet takes the entries"))
+F14_EndedElsewhere        == ~(event.flow = "F14")
+F15_NoticeArrives         == ~(event.flow = "F15" /\ Says("Duet's notice reaches the app"))
+F16_RefusedSaysRemoved    == ~(event.flow = "F16" /\ Shows(Removed))
+F16_RefusedNothingToTell  == ~(event.flow = "F16" /\ Shows(Email))
+F17_OfflineStillShows     == ~(event.flow = "F17" /\ Shows(Conversation))
+F18_SendsEntriesFirst     == ~(event.flow = "F18" /\ Shows(Saving))
+F19_Warned                == ~(event.flow = "F19" /\ Shows(Warning))
+F19_StaysSignedIn         == ~(event.flow = "F19" /\ Says("you stay signed in"))
+F19_SignsOutAnyway        == ~(event.flow = "F19" /\ Says("you sign out anyway"))
+F20_ConfirmedWhileWarned  == ~(event.flow = "F20" /\ Shows(Email))
+F20_OnlyTheDraftLeft      == ~(event.flow = "F20" /\ Shows(Warning) /\ phone.entries = Nobody)
+F21_SignedOutAtOnce       == ~(event.flow = "F21" /\ Says("you sign out") /\ phone.owes # {})
+F21_TellsDuetLater        == ~(event.flow = "F21" /\ Says("the phone tells Duet it signed out"))
+F22_AnotherPerson         == ~(event.flow = "F22" /\ \E s \in Sessions : session[s] # Unused /\ Of(s) # phone.whose
+                                                     /\ (s \in phone.owes \/ ~IsLive(s)))
+=============================================================================

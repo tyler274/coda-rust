@@ -31,6 +31,7 @@ const steps = {
   CloseDuet: "Duet closes",
   EnterEmail: "you enter your email",
   OpenLink: "you open the link",
+  OpenLinkSignedIn: "you open a link while signed in",
   DuetSignsIn: "Duet signs you in",
   SignInUnheard: "Duet signs you in, but the answer is lost",
   LinkNoLongerWorks: "the link no longer works",
@@ -67,6 +68,8 @@ export const step = (action, from) => {
   const at = state(from);
   if (action === "CloseDuet" && notDrawnClosing.includes(at)) return null;
   if (action === "OpenLink" && !waiting.includes(at)) return null;
+  // A link opened while signed in opens Duet as it was, the same as opening Duet.
+  if (action === "OpenLinkSignedIn") return steps.OpenDuet;
   // Where these go depends on work the screen doesn't show, so the label says which.
   // Both signing-out screens start "Signing out".
   if (action === "DuetTakesEntries" && from.phone.screen.startsWith("Signing out")) {
