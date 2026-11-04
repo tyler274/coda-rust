@@ -12,7 +12,7 @@ pub fn Home() -> Element {
                 div { class: "hero-cta rv", style: "--d:.18s",
                     a { class: "btn", href: "mailto:hello@codahealth.ai",
                         "Partner with us "
-                        icons::icon_0 {}
+                        icons::arrow_right {}
                     }
                 }
             }
@@ -39,35 +39,35 @@ pub fn Home() -> Element {
                                     src: "/brand/coda-health-logo-transparent.webp",
                                 }
                                 span { class: "a-nav on",
-                                    icons::icon_1 {}
+                                    icons::home {}
                                     "Today"
                                 }
                                 span { class: "a-nav",
-                                    icons::icon_2 {}
+                                    icons::message {}
                                     "Updates"
                                 }
                                 span { class: "a-nav",
-                                    icons::icon_3 {}
+                                    icons::search {}
                                     "Find patient"
                                     kbd { "⌘K" }
                                 }
                                 span { class: "a-sideh", "Recent conversations" }
                                 span { class: "a-conv",
-                                    icons::icon_4 {}
+                                    icons::message {}
                                     span {
                                         b { "Creatinine after ibuprofen" }
                                         small { "Jake Smith" }
                                     }
                                 }
                                 span { class: "a-conv",
-                                    icons::icon_5 {}
+                                    icons::message {}
                                     span {
                                         b { "Diuretic dose before Friday" }
                                         small { "Mary Louis" }
                                     }
                                 }
                                 span { class: "a-conv",
-                                    icons::icon_6 {}
+                                    icons::message {}
                                     span {
                                         b { "Labs due after travel" }
                                         small { "Elena Park" }
@@ -86,7 +86,7 @@ pub fn Home() -> Element {
                                                 i { class: "a-new" }
                                                 b { "Maya Bennett" }
                                                 span { class: "a-chip a-flag",
-                                                    icons::icon_7 {}
+                                                    icons::flag {}
                                                     "Flagged"
                                                 }
                                                 time { "9:12 PM" }
@@ -99,7 +99,7 @@ pub fn Home() -> Element {
                                             }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_8 {}
+                                                    icons::check {}
                                                     "Done"
                                                 }
                                             }
@@ -109,7 +109,7 @@ pub fn Home() -> Element {
                                                 i { class: "a-new" }
                                                 b { "Jake Smith" }
                                                 span { class: "a-chip a-reply",
-                                                    icons::icon_9 {}
+                                                    icons::reply {}
                                                     "Drafted a reply"
                                                 }
                                                 time { "6:05 PM" }
@@ -117,7 +117,7 @@ pub fn Home() -> Element {
                                             p { "“Did my kidney test come back okay?”" }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_10 {}
+                                                    icons::reply {}
                                                     "Review reply"
                                                 }
                                             }
@@ -127,7 +127,7 @@ pub fn Home() -> Element {
                                                 i { class: "a-new" }
                                                 b { "Mary Louis" }
                                                 span { class: "a-chip a-flag",
-                                                    icons::icon_11 {}
+                                                    icons::flag {}
                                                     "Flagged"
                                                 }
                                                 time { "6:48 AM" }
@@ -142,7 +142,7 @@ pub fn Home() -> Element {
                                                 span {
                                                     class: "a-btn",
                                                     "data-k": "done",
-                                                    icons::icon_12 {}
+                                                    icons::check {}
                                                     "Done"
                                                 }
                                             }
@@ -167,19 +167,19 @@ pub fn Home() -> Element {
                                             }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_13 {}
+                                                    icons::stop {}
                                                     "Stop review"
                                                 }
                                             }
                                         }
                                         div { class: "a-also",
                                             "Coda also reviewed 9 patients today"
-                                            icons::icon_14 {}
+                                            icons::chevron_right {}
                                         }
                                     }
                                     div { class: "a-sched",
                                         div { class: "a-sh",
-                                            icons::icon_15 {}
+                                            icons::calendar {}
                                             b { "Schedule" }
                                             span { "5 left" }
                                         }
@@ -219,12 +219,12 @@ pub fn Home() -> Element {
                                 }
                                 b { "Maya Bennett" }
                                 span { class: "a-chip a-flag",
-                                    icons::icon_16 {}
+                                    icons::flag {}
                                     "Flagged"
                                 }
                                 span { class: "a-ics",
-                                    icons::icon_17 {}
-                                    icons::icon_18 {}
+                                    icons::expand {}
+                                    icons::close {}
                                 }
                             }
                             h4 { "Home blood pressure unchanged after the dose increase" }
@@ -241,29 +241,29 @@ pub fn Home() -> Element {
                                 div { class: "chart-head",
                                     span { "Home blood pressure" }
                                     span { class: "src",
-                                        icons::icon_19 {}
+                                        icons::heart {}
                                         "Apple Health · home cuff"
                                     }
                                 }
-                                icons::icon_20 {}
+                                icons::blood_pressure_chart {}
                             }
                             div { class: "a-disc",
                                 span {
                                     "Basis and limitations "
-                                    icons::icon_21 {}
+                                    icons::chevron_down {}
                                 }
                                 span { class: "a-srcs",
-                                    icons::icon_22 {}
+                                    icons::chevron_down {}
                                     "Sources 3"
                                 }
                             }
                             div { class: "a-acts",
                                 span { class: "a-btn", "data-k": "discuss",
-                                    icons::icon_23 {}
+                                    icons::message {}
                                     "Discuss"
                                 }
                                 span { class: "a-btn",
-                                    icons::icon_24 {}
+                                    icons::check {}
                                     "Done"
                                 }
                             }
@@ -276,8 +276,8 @@ pub fn Home() -> Element {
                                 }
                                 b { "Maya Bennett" }
                                 span { class: "a-ics",
-                                    icons::icon_25 {}
-                                    icons::icon_26 {}
+                                    icons::expand {}
+                                    icons::close {}
                                 }
                             }
                             div { class: "a-anchor",
@@ -308,10 +308,10 @@ pub fn Home() -> Element {
                                     "data-ph": "Ask Coda about this patient…",
                                     "Ask Coda about this patient…"
                                 }
-                                span { class: "a-mic", icons::icon_27 {} }
+                                span { class: "a-mic", icons::mic {} }
                                 span { class: "a-send",
                                     "Send"
-                                    icons::icon_28 {}
+                                    icons::send {}
                                 }
                             }
                         }
@@ -324,7 +324,7 @@ pub fn Home() -> Element {
                             }
                             span { class: "a-open",
                                 "Open original"
-                                icons::icon_29 {}
+                                icons::open_external {}
                             }
                         }
                         div { class: "app sat a-srcprev sat-s3",
@@ -337,11 +337,11 @@ pub fn Home() -> Element {
                             }
                             span { class: "a-open",
                                 "Open original"
-                                icons::icon_30 {}
+                                icons::open_external {}
                             }
                         }
                         div { class: "ptr-x",
-                            div { class: "ptr-y", icons::icon_31 {} }
+                            div { class: "ptr-y", icons::pointer {} }
                         }
                     }
                 }
@@ -483,7 +483,7 @@ pub fn Home() -> Element {
                                                         i { class: "a-new" }
                                                         b { "Maya Bennett" }
                                                         span { class: "a-chip a-flag",
-                                                            icons::icon_32 {}
+                                                            icons::flag {}
                                                             "Flagged"
                                                         }
                                                         time { "9:12 PM" }
@@ -496,7 +496,7 @@ pub fn Home() -> Element {
                                                     }
                                                     div { class: "a-acts",
                                                         span { class: "a-btn",
-                                                            icons::icon_33 {}
+                                                            icons::check {}
                                                             "Done"
                                                         }
                                                     }
@@ -506,7 +506,7 @@ pub fn Home() -> Element {
                                                         i { class: "a-new" }
                                                         b { "Jake Smith" }
                                                         span { class: "a-chip a-reply",
-                                                            icons::icon_34 {}
+                                                            icons::reply {}
                                                             "Drafted a reply"
                                                         }
                                                         time { "6:05 PM" }
@@ -514,7 +514,7 @@ pub fn Home() -> Element {
                                                     p { "“Did my kidney test come back okay?”" }
                                                     div { class: "a-acts",
                                                         span { class: "a-btn",
-                                                            icons::icon_35 {}
+                                                            icons::reply {}
                                                             "Review reply"
                                                         }
                                                     }
@@ -526,7 +526,7 @@ pub fn Home() -> Element {
                                                         i { class: "a-new" }
                                                         b { "Mary Louis" }
                                                         span { class: "a-chip a-flag",
-                                                            icons::icon_36 {}
+                                                            icons::flag {}
                                                             "Flagged"
                                                         }
                                                         time { "6:48 AM" }
@@ -541,14 +541,14 @@ pub fn Home() -> Element {
                                                         span {
                                                             class: "a-btn",
                                                             "data-k": "done",
-                                                            icons::icon_37 {}
+                                                            icons::check {}
                                                             "Done"
                                                         }
                                                     }
                                                 }
                                                 div { class: "a-also",
                                                     "Coda also reviewed 9 patients today"
-                                                    icons::icon_38 {}
+                                                    icons::chevron_right {}
                                                 }
                                                 div { class: "a-updates",
                                                     span { class: "a-ul", "Reviewed, nothing for you" }
@@ -632,10 +632,10 @@ pub fn Home() -> Element {
                                             div { class: "a-disc",
                                                 span {
                                                     "Basis and limitations "
-                                                    icons::icon_39 {}
+                                                    icons::chevron_down {}
                                                 }
                                                 span { class: "a-srcs",
-                                                    icons::icon_40 {}
+                                                    icons::chevron_down {}
                                                     "Sources 4"
                                                 }
                                             }
@@ -649,7 +649,7 @@ pub fn Home() -> Element {
                                             }
                                             span { class: "a-open",
                                                 "Open original"
-                                                icons::icon_41 {}
+                                                icons::open_external {}
                                             }
                                         }
                                     }
@@ -719,10 +719,10 @@ pub fn Home() -> Element {
                                             }
                                             div { class: "a-compose",
                                                 span { "Ask Coda about this patient…" }
-                                                span { class: "a-mic", icons::icon_42 {} }
+                                                span { class: "a-mic", icons::mic {} }
                                                 span { class: "a-send",
                                                     "Send"
-                                                    icons::icon_43 {}
+                                                    icons::send {}
                                                 }
                                             }
                                         }
@@ -739,7 +739,7 @@ pub fn Home() -> Element {
                                     div { class: "stage f-follow",
                                         div { class: "app a-card a-fu",
                                             div { class: "a-sec",
-                                                span { class: "a-tile", icons::icon_44 {} }
+                                                span { class: "a-tile", icons::repeat {} }
                                                 b { "Follow-ups" }
                                                 span { class: "a-c", "1" }
                                             }
@@ -747,7 +747,7 @@ pub fn Home() -> Element {
                                                 div { class: "a-rh",
                                                     b { "Elena Park" }
                                                     span { class: "a-chip a-plain",
-                                                        icons::icon_45 {}
+                                                        icons::repeat {}
                                                         "Follow-up"
                                                     }
                                                     time { "Next review Oct 1" }
@@ -782,7 +782,7 @@ pub fn Home() -> Element {
                                                 i { class: "a-new" }
                                                 b { "Elena Park" }
                                                 span { class: "a-chip a-flag",
-                                                    icons::icon_46 {}
+                                                    icons::flag {}
                                                     "Flagged"
                                                 }
                                                 time { "Oct 1" }
@@ -790,7 +790,7 @@ pub fn Home() -> Element {
                                             p { "Back from Spain. A1c 8.1, up from 7.4 in June." }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_47 {}
+                                                    icons::check {}
                                                     "Done"
                                                 }
                                             }
@@ -837,7 +837,7 @@ pub fn Home() -> Element {
                                         }
                                         span { class: "a-open",
                                             "Open original"
-                                            icons::icon_48 {}
+                                            icons::open_external {}
                                         }
                                     }
                                 }
@@ -897,7 +897,7 @@ pub fn Home() -> Element {
                                         }
                                         div { class: "app a-mini a-quiet",
                                             "Coda also reviewed 9 patients today"
-                                            icons::icon_49 {}
+                                            icons::chevron_right {}
                                         }
                                     }
                                 }
@@ -923,14 +923,14 @@ pub fn Home() -> Element {
                                             div { class: "a-rh",
                                                 b { "Jake Smith" }
                                                 span { class: "a-chip a-reply",
-                                                    icons::icon_50 {}
+                                                    icons::reply {}
                                                     "Drafted a reply"
                                                 }
                                             }
                                             p { "“Did my kidney test come back okay?”" }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_51 {}
+                                                    icons::reply {}
                                                     "Review reply"
                                                 }
                                             }
@@ -939,18 +939,18 @@ pub fn Home() -> Element {
                                             div { class: "a-rh",
                                                 b { "Maya Bennett" }
                                                 span { class: "a-chip a-flag",
-                                                    icons::icon_52 {}
+                                                    icons::flag {}
                                                     "Flagged"
                                                 }
                                             }
                                             p { "Blood pressure unchanged after the dose increase." }
                                             div { class: "a-acts",
                                                 span { class: "a-btn",
-                                                    icons::icon_53 {}
+                                                    icons::message {}
                                                     "Discuss"
                                                 }
                                                 span { class: "a-btn",
-                                                    icons::icon_54 {}
+                                                    icons::check {}
                                                     "Done"
                                                 }
                                             }
@@ -1079,7 +1079,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: visit note",
                                         class: "mt-s",
-                                        icons::icon_55 {}
+                                        icons::source_note {}
                                     }
                                 }
                                 div {
@@ -1122,7 +1122,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: pharmacy record",
                                         class: "mt-s",
-                                        icons::icon_56 {}
+                                        icons::source_pharmacy {}
                                     }
                                 }
                                 div {
@@ -1182,7 +1182,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: patient message",
                                         class: "mt-s",
-                                        icons::icon_57 {}
+                                        icons::source_message {}
                                     }
                                 }
                                 div {
@@ -1246,7 +1246,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: lab result",
                                         class: "mt-s",
-                                        icons::icon_58 {}
+                                        icons::source_lab {}
                                     }
                                 }
                                 div {
@@ -1295,7 +1295,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: home readings",
                                         class: "mt-s",
-                                        icons::icon_59 {}
+                                        icons::source_readings {}
                                     }
                                 }
                                 div {
@@ -1340,7 +1340,7 @@ pub fn Home() -> Element {
                                     span {
                                         aria_label: "Source: patient message and 2024 clinic note",
                                         class: "mt-s",
-                                        icons::icon_60 {}
+                                        icons::source_message {}
                                     }
                                 }
                                 i { class: "mt-reach" }
@@ -1361,7 +1361,7 @@ pub fn Home() -> Element {
                                 class: "btn btn-light",
                                 href: "mailto:hello@codahealth.ai",
                                 "Partner with Coda "
-                                icons::icon_61 {}
+                                icons::arrow_right {}
                             }
                             a {
                                 class: "btn-ghost",
@@ -1379,10 +1379,11 @@ pub fn Home() -> Element {
     }
 }
 
+/// The homepage's icons, each named by what it shows.
 mod icons {
     use super::*;
 
-    pub(crate) fn icon_0() -> Element {
+    pub(crate) fn arrow_right() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M5 12h14m-6-6 6 6-6 6" }
@@ -1390,7 +1391,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_1() -> Element {
+    pub(crate) fn home() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M4 11.5 12 5l8 6.5V20h-5.5v-5h-5v5H4z" }
@@ -1398,7 +1399,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_2() -> Element {
+    pub(crate) fn message() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
@@ -1406,7 +1407,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_3() -> Element {
+    pub(crate) fn search() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 circle { cx: "11", cy: "11", r: "6" }
@@ -1415,31 +1416,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_4() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_5() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_6() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_7() -> Element {
+    pub(crate) fn flag() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
@@ -1447,7 +1424,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_8() -> Element {
+    pub(crate) fn check() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "m5 12 4 4L19 6" }
@@ -1455,7 +1432,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_9() -> Element {
+    pub(crate) fn reply() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
@@ -1463,31 +1440,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_10() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_11() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_12() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_13() -> Element {
+    pub(crate) fn stop() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 rect {
@@ -1501,7 +1454,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_14() -> Element {
+    pub(crate) fn chevron_right() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "m9 6 6 6-6 6" }
@@ -1509,7 +1462,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_15() -> Element {
+    pub(crate) fn calendar() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 rect {
@@ -1524,15 +1477,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_16() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_17() -> Element {
+    pub(crate) fn expand() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" }
@@ -1540,7 +1485,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_18() -> Element {
+    pub(crate) fn close() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M6 6l12 12M18 6 6 18" }
@@ -1548,7 +1493,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_19() -> Element {
+    pub(crate) fn heart() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path {
@@ -1560,7 +1505,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_20() -> Element {
+    pub(crate) fn blood_pressure_chart() -> Element {
         rsx! {
             svg {
                 "aria-hidden": "true",
@@ -1604,7 +1549,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_21() -> Element {
+    pub(crate) fn chevron_down() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "m6 9 6 6 6-6" }
@@ -1612,47 +1557,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_22() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m6 9 6 6 6-6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_23() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_24() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_25() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_26() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 6l12 12M18 6 6 18" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_27() -> Element {
+    pub(crate) fn mic() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 rect {
@@ -1667,7 +1572,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_28() -> Element {
+    pub(crate) fn send() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M20 5v7a3 3 0 0 1-3 3H6m4-4-4 4 4 4" }
@@ -1675,7 +1580,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_29() -> Element {
+    pub(crate) fn open_external() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" }
@@ -1683,15 +1588,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_30() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_31() -> Element {
+    pub(crate) fn pointer() -> Element {
         rsx! {
             svg { "aria-hidden": "true", class: "pointer", view_box: "0 0 24 24",
                 path { d: "M5 3l14 8.2-6.1 1.3 3.6 6.9-2.5 1.3-3.6-6.9L6 18.6z" }
@@ -1699,110 +1596,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_32() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_33() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_34() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_35() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_36() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_37() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_38() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m9 6 6 6-6 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_39() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m6 9 6 6 6-6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_40() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m6 9 6 6 6-6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_41() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_42() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                rect {
-                    height: "11",
-                    rx: "3",
-                    width: "6",
-                    x: "9",
-                    y: "3",
-                }
-                path { d: "M5 11a7 7 0 0 0 14 0M12 18v3" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_43() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M20 5v7a3 3 0 0 1-3 3H6m4-4-4 4 4 4" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_44() -> Element {
+    pub(crate) fn repeat() -> Element {
         rsx! {
             svg { "aria-hidden": "true", view_box: "0 0 24 24",
                 path { d: "M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4" }
@@ -1810,87 +1604,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_45() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_46() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_47() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_48() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_49() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m9 6 6 6-6 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_50() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_51() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M9 7 4 12l5 5M4 12h10a6 6 0 0 1 6 6v1" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_52() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M6 21V4m0 0h11l-2.5 4 2.5 4H6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_53() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_54() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "m5 12 4 4L19 6" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_55() -> Element {
+    pub(crate) fn source_note() -> Element {
         rsx! {
             svg { view_box: "0 0 24 24",
                 rect {
@@ -1905,7 +1619,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_56() -> Element {
+    pub(crate) fn source_pharmacy() -> Element {
         rsx! {
             svg { view_box: "0 0 24 24",
                 rect {
@@ -1921,7 +1635,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_57() -> Element {
+    pub(crate) fn source_message() -> Element {
         rsx! {
             svg { view_box: "0 0 24 24",
                 path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
@@ -1929,7 +1643,7 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_58() -> Element {
+    pub(crate) fn source_lab() -> Element {
         rsx! {
             svg { view_box: "0 0 24 24",
                 path { d: "M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3" }
@@ -1938,26 +1652,10 @@ mod icons {
         }
     }
 
-    pub(crate) fn icon_59() -> Element {
+    pub(crate) fn source_readings() -> Element {
         rsx! {
             svg { view_box: "0 0 24 24",
                 path { d: "M3 12h4l3-7 4 14 3-7h4" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_60() -> Element {
-        rsx! {
-            svg { view_box: "0 0 24 24",
-                path { d: "M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-9l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" }
-            }
-        }
-    }
-
-    pub(crate) fn icon_61() -> Element {
-        rsx! {
-            svg { "aria-hidden": "true", view_box: "0 0 24 24",
-                path { d: "M5 12h14m-6-6 6 6-6 6" }
             }
         }
     }

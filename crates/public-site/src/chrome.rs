@@ -5,13 +5,7 @@ use dioxus::prelude::*;
 /// Each shell's markup is the one its stylesheets are written for.
 #[component]
 pub fn Chrome() -> Element {
-    let route = use_route::<Route>();
-    // The legal pages share one page component, which marks its main.
-    let main_class = match route {
-        Route::Home {} | Route::Duet {} | Route::Scheduling {} | Route::NotFound { .. } => None,
-        _ => Some("legal-page"),
-    };
-    match route.shell() {
+    match use_route::<Route>().shell() {
         Shell::Homepage => rsx! {
             Nav {}
             main { Outlet::<Route> {} }
@@ -21,7 +15,7 @@ pub fn Chrome() -> Element {
             div { class: "flex min-h-svh flex-col bg-bg text-ink",
                 Nav {}
                 div { class: "flex-1",
-                    main { class: main_class, Outlet::<Route> {} }
+                    main { Outlet::<Route> {} }
                 }
                 Footer {}
             }

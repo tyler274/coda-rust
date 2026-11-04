@@ -158,7 +158,7 @@ run "production_respects_origin_cache_headers" {
   }
   assert {
     condition     = google_compute_global_forwarding_rule.http[0].port_range == "80" && google_compute_global_forwarding_rule.http[0].ip_address == google_compute_global_forwarding_rule.https[0].ip_address && google_compute_url_map.http_redirect[0].default_url_redirect[0].https_redirect && google_compute_url_map.http_redirect[0].default_url_redirect[0].redirect_response_code == "PERMANENT_REDIRECT" && !google_compute_url_map.http_redirect[0].default_url_redirect[0].strip_query
-    error_message = "Production HTTP must 308 to HTTPS on the same address, keeping the query, as Vercel does."
+    error_message = "Production HTTP must 308 to HTTPS on the same address, keeping the query."
   }
   assert {
     condition     = local.runtime_env.APP_ENV == "production" && !contains(keys(local.runtime_env), "PUBLIC_SITE_IAP_AUDIENCE") && google_cloud_run_v2_service.site.template[0].containers[0].command == null && google_cloud_run_v2_service.site.template[0].containers[0].args == null && alltrue([for e in google_cloud_run_v2_service.site.template[0].containers[0].env : length(e.value_source) == 0]) && output.iap_audience == null && output.staging_url == null

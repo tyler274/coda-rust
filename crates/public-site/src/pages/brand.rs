@@ -25,7 +25,7 @@ impl Product {
         }
     }
 
-    /// The wordmark and the size it renders at. chrome.css's `duet-brand-wordmark`
+    /// The wordmark and the size it renders at. chrome.css's `product-wordmark`
     /// sizes Duet's; Chords' is wider at the same letter height, so it carries its
     /// own size.
     fn wordmark(self, hero: bool) -> Wordmark {
@@ -51,7 +51,7 @@ enum Wordmark {
         width: u32,
         height: u32,
     },
-    /// Rendered by the `duet-brand-wordmark` styles; the attributes are its intrinsic size.
+    /// Rendered by the `product-wordmark` styles; the attributes are its intrinsic size.
     Styled {
         src: &'static str,
         width: u32,
@@ -59,7 +59,7 @@ enum Wordmark {
     },
 }
 
-/// A product's mark and wordmark, with the audience it serves, in the `duet-brand`
+/// A product's mark and wordmark, with the audience it serves, in the `product`
 /// lockup styles. `hero` is the larger lockup that opens a product's own page.
 #[component]
 pub fn ProductLockup(
@@ -69,16 +69,16 @@ pub fn ProductLockup(
 ) -> Element {
     let (mark, mark_size) = product.mark();
     let class = if hero {
-        "duet-brand duet-brand-hero rv"
+        "product product-hero rv"
     } else {
-        "duet-brand"
+        "product"
     };
     rsx! {
         div { class,
-            span { class: "duet-brand-lockup",
+            span { class: "product-lockup",
                 img {
                     alt: "",
-                    class: "duet-brand-mark",
+                    class: "product-mark",
                     height: "{mark_size}",
                     src: mark,
                     width: "{mark_size}",
@@ -90,7 +90,7 @@ pub fn ProductLockup(
                     Wordmark::Styled { src, width, height } => rsx! {
                         img {
                             alt: product.name(),
-                            class: "duet-brand-wordmark",
+                            class: "product-wordmark",
                             height: "{height}",
                             src,
                             width: "{width}",
@@ -99,7 +99,7 @@ pub fn ProductLockup(
                 }
             }
             if let Some(audience) = audience {
-                span { class: "duet-brand-label", "{audience}" }
+                span { class: "product-label", "{audience}" }
             }
         }
     }
