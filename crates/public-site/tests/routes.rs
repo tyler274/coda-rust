@@ -3,7 +3,9 @@ use axum::{
     http::{Request, StatusCode},
 };
 use public_site::{
-    Config, Route, prerender,
+    Config, Route,
+    legal::Legal,
+    prerender,
     proxy::ProxyConfig,
     runtime::RuntimeConfig,
     server::{Readiness, router_with_options},
@@ -36,7 +38,7 @@ async fn staging_sign_in_reaches_the_physician_service() {
         physician_sign_in: runtime.physician_proxy.is_some(),
         ..Config::default()
     };
-    let app = router_with_options(prerender(&config), runtime, [], Readiness::ready());
+    let app = router_with_options(prerender(&config).unwrap(), runtime, [], Readiness::ready());
     let response = app
         .oneshot(Request::builder().uri("/").body(Body::empty()).unwrap())
         .await
@@ -68,12 +70,13 @@ async fn staging_sign_in_reaches_the_physician_service() {
 #[tokio::test]
 async fn every_route_metadata_sitemap_and_retired_routes() {
     let app = router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config::default()).unwrap(),
         RuntimeConfig::default(),
         [],
         Readiness::ready(),
     );
-    for route in Route::pages() {
+    let legal = Legal::load().unwrap();
+    for route in Route::pages(&legal) {
         let response = app
             .clone()
             .oneshot(
@@ -98,7 +101,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
                 .to_vec(),
         )
         .unwrap();
-        let meta = route.meta();
+        let meta = route.meta(&legal);
         assert!(
             html.contains(&format!("<title>{}</title>", meta.title)),
             "{route}"
@@ -200,7 +203,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
 #[tokio::test]
 async fn urls_resolve_redirect_and_set_hsts() {
     let app = router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config::default()).unwrap(),
         RuntimeConfig::default(),
         [],
         Readiness::ready(),
@@ -263,7 +266,7 @@ async fn urls_resolve_redirect_and_set_hsts() {
 #[tokio::test]
 async fn real_scripts_are_content_addressed_and_immutable() {
     let app = router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config::default()).unwrap(),
         RuntimeConfig::default(),
         [],
         Readiness::ready(),
@@ -383,7 +386,7 @@ async fn staging_denies_pages_and_assets_without_access() {
         ..RuntimeConfig::default()
     };
     let app = router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config::default()).unwrap(),
         runtime,
         [],
         Readiness::ready(),

@@ -1,33 +1,31 @@
 //! Public page components, rendered once at startup.
 mod brand;
-mod clinical_transparency;
 mod duet;
 mod home;
 mod legal;
-#[path = "../legal.rs"]
-pub(crate) mod legal_content;
 mod not_found;
 mod phones;
 mod scheduling;
 
-pub use clinical_transparency::ClinicalTransparency;
 pub use duet::Duet;
 pub use home::Home;
 pub use legal::{
-    ConsumerHealthData, DuetPrivacy, DuetPrivacyArchive, DuetTerms, DuetTermsArchive, Privacy,
-    Terms,
+    ClinicalTransparency, ConsumerHealthData, DuetPrivacy, DuetPrivacyArchive, DuetTerms,
+    DuetTermsArchive, Privacy, Terms,
 };
 pub use not_found::NotFound;
 pub use scheduling::Scheduling;
 
 #[cfg(test)]
 mod tests {
-    use crate::{Config, Route, prerender::render_page};
+    use crate::{Config, Route, legal::Legal, prerender::render_page};
+    use std::rc::Rc;
 
     #[test]
     fn every_document_renders_its_body() {
-        for route in Route::pages() {
-            let page = render_page(&route, &Config::default());
+        let legal = Rc::new(Legal::load().unwrap());
+        for route in Route::pages(&legal) {
+            let page = render_page(&route, &Config::default(), &legal);
             let html = std::str::from_utf8(&page.html).unwrap();
             assert!(html.contains("<h1"), "missing page body: {route}");
             assert!(!html.contains("This page is being rebuilt"));
@@ -37,7 +35,8 @@ mod tests {
 
     #[test]
     fn home_preserves_motion_targets_and_shared_phones() {
-        let page = render_page(&Route::Home {}, &Config::default());
+        let legal = Rc::new(Legal::load().unwrap());
+        let page = render_page(&Route::Home {}, &Config::default(), &legal);
         let html = std::str::from_utf8(&page.html).unwrap();
         for marker in [
             "id=\"heroStage\"",
@@ -51,7 +50,7 @@ mod tests {
         ] {
             assert!(html.contains(marker), "missing motion target {marker}");
         }
-        let duet = render_page(&Route::Duet {}, &Config::default());
+        let duet = render_page(&Route::Duet {}, &Config::default(), &legal);
         assert!(
             std::str::from_utf8(&duet.html)
                 .unwrap()
@@ -60,7 +59,7 @@ mod tests {
                     .unwrap()
                     .contains("src=\"/homepage/duet.js\"")
         );
-        let privacy = render_page(&Route::Privacy {}, &Config::default());
+        let privacy = render_page(&Route::Privacy {}, &Config::default(), &legal);
         assert!(
             !std::str::from_utf8(&privacy.html)
                 .unwrap()

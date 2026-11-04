@@ -56,6 +56,20 @@ Tailwind build, so `utility.css` changes only by direct edit. The `/scheduling/d
 social image is a static PNG. A trailing slash is removed with a 308 that keeps the
 query.
 
+Legal documents are data. Each current document is one record in
+`data/<document>.json` holding every word of it: heading, title, intro, date and
+sections. That covers Duet's privacy policy, terms and consumer health data policy,
+Coda Health's privacy policy and terms, and Clinical Transparency. Each archived
+version is its own record in `data/archive/<document>/<slug>.json`, named by its slug,
+and does not change. Each block of a section's body is an object with one key naming
+its kind: `paragraph`, `linked`, `list`, `table` or `source`. `src/legal.rs` types and
+loads the records, listing each archive's versions newest first, and
+`src/pages/legal.rs` renders them. Startup stops, naming the file and the fault, when
+a record has a missing, renamed or repeated field or a link that isn't one of the
+site's pages. Legal pages' titles and descriptions are
+in `src/route.rs`, with every other page's. Legal wording changes with its normal
+legal review.
+
 Staging applies its origin IAP gate to pages, assets, redirects, health routes
 and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
 headers, `Vary: *` and `X-Robots-Tag: noindex, nofollow`. IAP authenticates the

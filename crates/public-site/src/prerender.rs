@@ -1,4 +1,9 @@
-use crate::{Config, PageMeta, Route, route::Shell, site};
+use crate::{
+    Config, PageMeta, Route,
+    legal::{Legal, LegalError},
+    route::Shell,
+    site,
+};
 use axum::body::Bytes;
 use dioxus::prelude::*;
 use dioxus_history::{History, MemoryHistory};
@@ -18,25 +23,28 @@ pub struct PageTable {
     pub not_found: Page,
 }
 
-/// All Dioxus work happens here, before accepting any HTTP requests.
-pub fn prerender(config: &Config) -> PageTable {
-    let pages = Route::pages()
+/// All Dioxus work happens here, before accepting any HTTP requests. The legal records
+/// load first, so a malformed one stops startup before anything renders.
+pub fn prerender(config: &Config) -> Result<PageTable, LegalError> {
+    let legal = Rc::new(Legal::load()?);
+    let pages = Route::pages(&legal)
         .into_iter()
-        .map(|route| (route.to_string(), render_page(&route, config)))
+        .map(|route| (route.to_string(), render_page(&route, config, &legal)))
         .collect();
     let not_found = render_page(
         &Route::NotFound {
             segments: vec!["404".into()],
         },
         config,
+        &legal,
     );
-    PageTable { pages, not_found }
+    Ok(PageTable { pages, not_found })
 }
 
 /// Render with an explicit per-document memory history, so Router/Outlet select
 /// the requested route rather than silently falling back to the homepage.
-pub fn render_page(route: &Route, config: &Config) -> Page {
-    let meta = route.meta();
+pub fn render_page(route: &Route, config: &Config, legal: &Rc<Legal>) -> Page {
+    let meta = route.meta(legal);
     let mut dom = VirtualDom::new_with_props(
         Document,
         DocumentProps {
@@ -47,6 +55,7 @@ pub fn render_page(route: &Route, config: &Config) -> Page {
     let history: Rc<dyn History> = Rc::new(MemoryHistory::with_initial_path(route));
     dom.insert_any_root_context(Box::new(history));
     dom.insert_any_root_context(Box::new(config.clone()));
+    dom.insert_any_root_context(Box::new(legal.clone()));
     dom.rebuild_in_place();
     // Dioxus 0.7's HTML element set omits the outer html element.
     let html = format!(

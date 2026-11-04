@@ -7,6 +7,7 @@ pub mod access;
 pub mod assets;
 pub mod chrome;
 pub mod config;
+pub mod legal;
 pub mod pages;
 pub mod prerender;
 pub mod proxy;

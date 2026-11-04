@@ -34,7 +34,8 @@ fn site(origin: &str) -> Router {
         prerender(&Config {
             physician_sign_in: true,
             ..Config::default()
-        }),
+        })
+        .unwrap(),
         RuntimeConfig {
             physician_proxy: Some(
                 ProxyConfig::new(origin, "http://127.0.0.1:8791", None, false, false).unwrap(),

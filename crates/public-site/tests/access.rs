@@ -7,6 +7,7 @@ use axum::{
 use public_site::{
     Config, Route,
     access::AccessConfig,
+    legal::Legal,
     prerender,
     runtime::RuntimeConfig,
     server::{Readiness, router_with_options},
@@ -18,7 +19,7 @@ const AUDIENCE: &str = "/projects/134570912572/locations/us-east1/services/publi
 #[tokio::test]
 async fn staging_denies_every_page_and_resource_without_signed_iap() {
     let app = router_with_options(
-        prerender(&Config::default()),
+        prerender(&Config::default()).unwrap(),
         RuntimeConfig {
             staging: true,
             environment: "staging".into(),
@@ -31,7 +32,10 @@ async fn staging_denies_every_page_and_resource_without_signed_iap() {
         [],
         Readiness::ready(),
     );
-    let mut paths: Vec<_> = Route::pages().iter().map(ToString::to_string).collect();
+    let mut paths: Vec<_> = Route::pages(&Legal::load().unwrap())
+        .iter()
+        .map(ToString::to_string)
+        .collect();
     paths.extend(
         [
             "/healthz",

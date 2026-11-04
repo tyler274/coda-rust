@@ -5,7 +5,9 @@ use axum::{
     http::{Method, Request, StatusCode},
 };
 use public_site::{
-    Config, Route, prerender,
+    Config, Route,
+    legal::Legal,
+    prerender,
     runtime::RuntimeConfig,
     server::{Readiness, router_with_options},
 };
@@ -14,9 +16,10 @@ use tower::ServiceExt;
 #[test]
 fn every_enumerated_route_uses_real_router_ssr_and_shared_chrome() {
     let config = Config::default();
-    let table = prerender(&config);
-    assert_eq!(table.pages.len(), Route::pages().len());
-    for route in Route::pages() {
+    let table = prerender(&config).unwrap();
+    let routes = Route::pages(&Legal::load().unwrap());
+    assert_eq!(table.pages.len(), routes.len());
+    for route in routes {
         let path = route.to_string();
         assert_eq!(path.parse::<Route>().unwrap(), route);
         let page = &table.pages[&path];
@@ -58,7 +61,8 @@ fn sign_in_appears_on_every_page_only_when_offered() {
     let table = prerender(&Config {
         physician_sign_in: true,
         ..Config::default()
-    });
+    })
+    .unwrap();
     for (path, page) in &table.pages {
         let html = std::str::from_utf8(&page.html).unwrap();
         assert!(html.contains("href=\"/physician/\">Sign in</a>"), "{path}");
@@ -67,7 +71,7 @@ fn sign_in_appears_on_every_page_only_when_offered() {
 
 #[tokio::test]
 async fn axum_serves_only_startup_bytes_and_preserves_404s() {
-    let table = prerender(&Config::default());
+    let table = prerender(&Config::default()).unwrap();
     let asset_table = public_site::assets::AssetTable::embedded_with([]);
     let expected = asset_table.rewrite(std::str::from_utf8(&table.pages["/duet"].html).unwrap());
     let app = router_with_options(table, RuntimeConfig::default(), [], Readiness::ready());

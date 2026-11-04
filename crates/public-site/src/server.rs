@@ -400,7 +400,7 @@ mod tests {
         )
     }
     fn pages() -> PageTable {
-        let meta = crate::Route::Home {}.meta();
+        let meta = crate::Route::Home {}.meta(&crate::legal::Legal::load().unwrap());
         let page = crate::Page {
             html: Bytes::from_static(b"<!DOCTYPE html><img src=\"/favicon.ico\">"),
             meta,
