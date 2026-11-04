@@ -42,7 +42,12 @@ impl PostgresFrontDoorStore {
             .max_connections(4)
             .connect_timeout(Duration::from_secs(10));
         let db = Database::connect(options).await?;
-        Ok(Self { db })
+        Ok(Self::from_connection(db))
+    }
+
+    /// Uses an existing pool without applying migrations or changing its limits.
+    pub fn from_connection(db: DatabaseConnection) -> Self {
+        Self { db }
     }
 
     /// Checks every owned table without creating a migration ledger or writing data.

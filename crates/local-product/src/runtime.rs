@@ -254,9 +254,12 @@ impl Store {
     pub async fn connect(url: &str) -> Result<Self, DbErr> {
         let mut options = sea_orm::ConnectOptions::new(url);
         options.max_connections(8).sqlx_logging(false);
-        Ok(Self {
-            db: Database::connect(options).await?,
-        })
+        Ok(Self::from_connection(Database::connect(options).await?))
+    }
+
+    /// Uses an existing pool without applying migrations or changing its limits.
+    pub fn from_connection(db: DatabaseConnection) -> Self {
+        Self { db }
     }
 
     /// Explicit additive, rerunnable migration, never invoked by connect.

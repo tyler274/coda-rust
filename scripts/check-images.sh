@@ -95,8 +95,11 @@ initdb -D "$pgdata/data" -U postgres --auth=trust >/dev/null
 pg_ctl -D "$pgdata/data" -l "$pgdata/log" -w \
   -o "-c listen_addresses=127.0.0.1 -p $pgport -k $pgdata -c fsync=off" start >/dev/null
 admin="postgres://postgres@127.0.0.1:$pgport/postgres"
-psql -q "$admin" -c 'create database physician' -c 'create database duet'
-physician_db="postgres://postgres@127.0.0.1:$pgport/physician"
+psql -q "$admin" \
+  -c 'create role physician_migration login nosuperuser nobypassrls nocreatedb nocreaterole connection limit 4' \
+  -c 'create database physician owner physician_migration' -c 'create database duet'
+physician_db="postgres://physician_migration@127.0.0.1:$pgport/physician"
+physician_runtime_db="postgres://postgres@127.0.0.1:$pgport/physician"
 duet_db="postgres://postgres@127.0.0.1:$pgport/duet"
 run_job() {
   local tag=$1; shift
@@ -110,7 +113,9 @@ schema_state() {
 }
 states=()
 for attempt in 1 2; do
-  run_job "${tag_of[coda-physician-migrate]}" -e PHYSICIAN_DATABASE_URL="$physician_db"
+  run_job "${tag_of[coda-physician-migrate]}" -e PHYSICIAN_DATABASE_URL="$physician_db" \
+    -e CODA_HOSTED_PROFILE=staging-preview \
+    -e 'PHYSICIAN_STAGING_ACCOUNTS=dev@codahealth.test|Dev|admin,tyler@codahealth.test|Tyler|admin,physician@codahealth.test|Staging Physician|admin,ops@codahealth.test|Ops|admin,eli@codahealth.test|Eli|admin'
   states+=("$(schema_state "$physician_db")")
   printf 'physician migration run %s: ok (%s)\n' "$attempt" "$(tail -n2 <<<"${states[-1]}" | paste -sd' ')"
 done
@@ -212,7 +217,7 @@ physician_port=$(free_port)
 # API mode needs an explicit allowance and a key value to construct the
 # router; this placeholder is never sent anywhere because no chat is submitted.
 serve coda-physician-sample "$physician_port" \
-  -e PHYSICIAN_DATABASE_URL="$physician_db" -e PHYSICIAN_AUTH=required \
+  -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" -e PHYSICIAN_AUTH=required \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
   -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder
 expect_status "http://127.0.0.1:$physician_port/health" 200
@@ -226,7 +231,7 @@ expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 # configure token verification.
 worker_port=$(free_port)
 serve coda-physician-worker "$worker_port" \
-  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
+  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
   -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
   -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
