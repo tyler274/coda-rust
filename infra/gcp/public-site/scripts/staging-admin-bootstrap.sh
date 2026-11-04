@@ -8,8 +8,7 @@
 # the distroless runtime base), a CI deployer service account with
 # resource-scoped roles, GitHub Workload Identity Federation, and
 # (optionally) a time-bound grant for a human first apply. It refuses to continue
-# if any of those repositories (or the legacy coda-agents repository, when
-# readable) grants allUsers or allAuthenticatedUsers.
+# if any of those repositories grants allUsers or allAuthenticatedUsers.
 #
 # It never applies OpenTofu, never prints or stores a secret value, and never
 # touches coda-health-prod. Every create step checks first and is safe to rerun;
@@ -50,7 +49,6 @@ AR_HOST="${REGION}-docker.pkg.dev"
 SITE_REPOSITORY="${SITE_REPOSITORY:-public-site}"                # standard, immutable tags
 DOCKERHUB_REPOSITORY="${DOCKERHUB_REPOSITORY:-public-site-dockerhub}" # remote, Docker Hub
 BASE_REPOSITORY="${BASE_REPOSITORY:-public-site-base}"           # standard, immutable tags
-LEGACY_REPOSITORY="${LEGACY_REPOSITORY:-coda-agents}"            # first push; checked, not changed
 SITE_KEEP_COUNT="${SITE_KEEP_COUNT:-10}"
 # Readers of the two base-image repositories (local image builds).
 BUILDER_GROUP="${BUILDER_GROUP:-gcp-engineering@codahealth.ai}"
@@ -60,12 +58,6 @@ RUST_DIGEST="sha256:606fd313a0f49743ee2a7bd49a0914bab7deedb12791f3a846a34a4711db
 DISTROLESS_SOURCE="gcr.io/distroless/static-debian12"
 DISTROLESS_DIGEST="sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab" # :nonroot
 DISTROLESS_TAG="nonroot-${DISTROLESS_DIGEST:7:12}"
-
-# The image already pushed to the legacy repository (built from b18760e).
-MIGRATE_IMAGE="${MIGRATE_IMAGE:-public-site}"
-MIGRATE_DIGEST="${MIGRATE_DIGEST:-sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140}"
-MIGRATE_TAG="${MIGRATE_TAG:-b18760ef98a82e68aef29ac7a20bc48796794bf9}"
-
 
 CI_SA_ID="${CI_SA_ID:-public-site-ci-deployer}"
 CI_SA="${CI_SA_ID}@${PROJECT_ID}.iam.gserviceaccount.com"
@@ -139,10 +131,10 @@ exists() {
 repo_missing() {
   missing "${G[@]}" artifacts repositories describe "$1" --location="$REGION"
 }
-# Fails if the repository grants allUsers or allAuthenticatedUsers. An
-# unreadable policy fails too, unless the second argument is "optional".
+# Fails if the repository grants allUsers or allAuthenticatedUsers, or if its
+# policy is unreadable.
 assert_repo_private() {
-  local repo="$1" mode="${2:-required}" members
+  local repo="$1" members
   printf '+ %s artifacts repositories get-iam-policy %q --location=%q --flatten=bindings[].members --format=value(bindings.members)\n' \
     "${G[*]}" "$repo" "$REGION"
   if [[ $PRINT -eq 1 ]]; then
@@ -151,10 +143,6 @@ assert_repo_private() {
   fi
   if ! members="$("${G[@]}" artifacts repositories get-iam-policy "$repo" --location="$REGION" \
     --flatten='bindings[].members' --format='value(bindings.members)' 2>/dev/null)"; then
-    if [[ "$mode" == optional ]]; then
-      note "WARNING: cannot read the IAM policy of ${repo}; public access is unverified"
-      return 0
-    fi
     echo "cannot read the IAM policy of ${repo}; refusing to continue" >&2
     exit 1
   fi
@@ -164,12 +152,6 @@ assert_repo_private() {
     exit 1
   fi
   note "${repo}: no allUsers / allAuthenticatedUsers bindings"
-}
-legacy_ci_writer() {
-  "${G[@]}" artifacts repositories get-iam-policy "$LEGACY_REPOSITORY" --location="$REGION" \
-    --flatten='bindings[].members' \
-    --filter="bindings.role=roles/artifactregistry.writer AND bindings.members=serviceAccount:${CI_SA}" \
-    --format='value(bindings.role)' 2>/dev/null | grep -q .
 }
 docker_digest_exists() {
   exists "${G[@]}" artifacts docker images describe "$1"
@@ -281,7 +263,6 @@ step "Refuse public repositories (allUsers / allAuthenticatedUsers)"
 for repo in "$SITE_REPOSITORY" "$DOCKERHUB_REPOSITORY" "$BASE_REPOSITORY"; do
   assert_repo_private "$repo"
 done
-assert_repo_private "$LEGACY_REPOSITORY" optional
 
 step "Repository-scoped readers"
 # Developers and CI pull the two base images; nobody else reads them.
@@ -330,15 +311,6 @@ for repo in "$DOCKERHUB_REPOSITORY" "$BASE_REPOSITORY"; do
   run "${G[@]}" artifacts repositories add-iam-policy-binding "$repo" --location="$REGION" \
     --member="serviceAccount:${CI_SA}" --role=roles/artifactregistry.reader --condition=None
 done
-# CI never writes to the shared coda-agents repository. Remove a writer grant
-# an earlier version of this script may have added there.
-if [[ $PRINT -eq 1 ]] || legacy_ci_writer; then
-  run "${G[@]}" artifacts repositories remove-iam-policy-binding "$LEGACY_REPOSITORY" \
-    --location="$REGION" --member="serviceAccount:${CI_SA}" \
-    --role=roles/artifactregistry.writer --all
-else
-  note "no CI writer grant found on ${LEGACY_REPOSITORY} (or its policy is unreadable)"
-fi
 # Read-only Cloud Run access at project level: the provider polls location-
 # scoped Cloud Run operations, which a service-level grant does not cover.
 run "${G[@]}" projects add-iam-policy-binding "$PROJECT_ID" \
@@ -445,8 +417,6 @@ note "             service_account=${CI_SA} (job must use environment: ${WIF_ENV
 # equivalent tool. Needs docker with buildx, authenticated for ${AR_HOST}.
 DISTROLESS_DEST="${AR_HOST}/${PROJECT_ID}/${BASE_REPOSITORY}/distroless/static-debian12"
 RUST_REMOTE="${AR_HOST}/${PROJECT_ID}/${DOCKERHUB_REPOSITORY}/library/rust"
-SITE_DEST="${AR_HOST}/${PROJECT_ID}/${SITE_REPOSITORY}/${MIGRATE_IMAGE}"
-LEGACY_SOURCE="${AR_HOST}/${PROJECT_ID}/${LEGACY_REPOSITORY}/${MIGRATE_IMAGE}@${MIGRATE_DIGEST}"
 step "Authenticate docker to ${AR_HOST} (writes a credential helper entry, no secret)"
 run gcloud auth configure-docker "$AR_HOST" --quiet
 
@@ -465,25 +435,12 @@ step "Check the Docker Hub cache serves library/rust@${RUST_DIGEST:0:19}..."
 # are cached on the first build that pulls them.
 run docker buildx imagetools inspect "${RUST_REMOTE}@${RUST_DIGEST}"
 
-# --- 7. Move the already-pushed site image into the site repository ------------
-step "Copy ${LEGACY_SOURCE} into ${SITE_REPOSITORY}"
-if [[ $PRINT -eq 1 ]] || ! docker_digest_exists "${SITE_DEST}@${MIGRATE_DIGEST}"; then
-  run docker buildx imagetools create --prefer-index=false \
-    --tag "${SITE_DEST}:${MIGRATE_TAG}" "$LEGACY_SOURCE"
-else
-  note "already present"
-fi
-run "${G[@]}" artifacts docker images describe "${SITE_DEST}@${MIGRATE_DIGEST}" \
-  --format='value(image_summary.digest)'
-note "env/staging.tfvars already references that digest in ${SITE_REPOSITORY}."
-
 step "Re-check that no repository is public"
 for repo in "$SITE_REPOSITORY" "$DOCKERHUB_REPOSITORY" "$BASE_REPOSITORY"; do
   assert_repo_private "$repo"
 done
-assert_repo_private "$LEGACY_REPOSITORY" optional
 
-# --- 8. OPTIONAL: time-bound human first-apply grant ---------------------------
+# --- 7. OPTIONAL: time-bound human first-apply grant ---------------------------
 if [[ $TEMP_GRANT -eq 1 ]]; then
   if [[ $PRINT -eq 1 ]]; then
     EXPIRY="<now+${GRANT_HOURS}h, RFC 3339 UTC>"

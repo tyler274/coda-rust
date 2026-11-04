@@ -242,10 +242,10 @@ run "reject_mutable_image" {
 run "staging_image_comes_from_private_repository" {
   command = plan
   variables {
-    image = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site:b18760ef98a82e68aef29ac7a20bc48796794bf9@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140"
+    image = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site:0000000000000000000000000000000000000000@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   }
   assert {
-    condition     = startswith(google_cloud_run_v2_service.site.template[0].containers[0].image, "us-east1-docker.pkg.dev/coda-health-staging/public-site/") && endswith(google_cloud_run_v2_service.site.template[0].containers[0].image, "@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140")
+    condition     = startswith(google_cloud_run_v2_service.site.template[0].containers[0].image, "us-east1-docker.pkg.dev/coda-health-staging/public-site/") && endswith(google_cloud_run_v2_service.site.template[0].containers[0].image, "@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
     error_message = "Staging must deploy the digest-pinned image from its private public-site repository."
   }
 }
@@ -253,7 +253,7 @@ run "staging_image_comes_from_private_repository" {
 run "reject_shared_coda_agents_repository" {
   command = plan
   variables {
-    image = "us-east1-docker.pkg.dev/coda-health-staging/coda-agents/public-site@sha256:a179ab017b9b47179b0f9e71e7237242b9d454d8e27d98b2eb671bbbfd263140"
+    image = "us-east1-docker.pkg.dev/coda-health-staging/coda-agents/public-site@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   }
   expect_failures = [var.image]
 }
@@ -301,7 +301,7 @@ run "reject_lookalike_registry_host" {
 run "reject_private_repository_tag_without_digest" {
   command = plan
   variables {
-    image = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site:b18760ef98a82e68aef29ac7a20bc48796794bf9"
+    image = "us-east1-docker.pkg.dev/coda-health-staging/public-site/public-site:0000000000000000000000000000000000000000"
   }
   expect_failures = [var.image]
 }
