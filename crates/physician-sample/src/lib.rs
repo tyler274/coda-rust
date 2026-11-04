@@ -1024,6 +1024,7 @@ pub fn rejection_message(command_type: &str) -> &'static str {
         "message.submit" => "Coda couldn’t accept that message.",
         "message.withdraw" => "Coda couldn’t remove that queued message.",
         "work.resume" => "Coda couldn’t resume that work.",
+        "work.stop" => "Coda couldn’t stop that work.",
         "work.done" => "Coda couldn’t mark that done.",
         "chat.open" => "Coda couldn’t open that chat.",
         "discussion.open" => "Coda couldn’t open that discussion.",

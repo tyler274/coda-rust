@@ -227,7 +227,10 @@ async fn refused_event_ack_prevents_provider_dispatch_and_tools_fail_closed() {
         .is_err()
     );
     let state = s.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "failed");
+    // A provider or event failure leaves the attempt leased. Ending it here
+    // would make one crash terminal before retry_delivery or lease expiry.
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts[0].status, "active");
     assert_eq!(state.messages.len(), 1);
     assert_eq!(state.attempts[0].events.len(), 1);
 }
@@ -359,19 +362,21 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     drop(s);
     let s = store().await;
     assert!(s.claim(&scope, 60).await.unwrap().is_none());
+    // A new message releases the hold and a successor answers it. The
+    // stopped claim still cannot commit.
     let mut steer = input();
     steer.key = "steer".into();
     steer.text = "new instruction".into();
     s.accept(&scope, &steer).await.unwrap();
-    assert!(s.claim(&scope, 60).await.unwrap().is_none());
-    s.resume(&scope).await.unwrap();
-    let resumed = s.claim(&scope, 60).await.unwrap().unwrap();
+    assert!(s.commit(&claim, &candidate).await.is_err());
+    let answering = s.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(claim.attempt, answering.attempt);
     steer.key = "steer-again".into();
     s.accept(&scope, &steer).await.unwrap();
-    assert!(s.assert_current(&resumed).await.is_err());
-    assert!(s.commit(&resumed, &candidate).await.is_err());
+    assert!(s.assert_current(&answering).await.is_err());
+    assert!(s.commit(&answering, &candidate).await.is_err());
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
-    assert_ne!(resumed.attempt, next.attempt);
+    assert_ne!(answering.attempt, next.attempt);
     assert_eq!(s.conversation(&scope).await.unwrap().messages.len(), 3);
 }
 
@@ -672,7 +677,10 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         .unwrap_err();
     assert!(error.contains("model calls"), "{error}");
     let state = s.conversation(&scope).await.unwrap();
+    // A reached bound is not an infrastructure failure: running the turn
+    // again would reach it again. It ends as couldn't finish.
     assert_eq!(state.status, "failed");
+    assert_eq!(state.attempts[0].status, "failed");
     assert_eq!(state.messages.len(), 1, "narration must not be published");
     let executed = state.attempts[0]
         .events
@@ -685,4 +693,8 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         })
         .count();
     assert_eq!(executed, 3);
+    // The worker's retry cannot reopen it; only Try again does.
+    s.retry_delivery(&host.claim).await.unwrap();
+    assert_eq!(s.conversation(&scope).await.unwrap().status, "failed");
+    assert!(s.claim(&scope, 60).await.unwrap().is_none());
 }

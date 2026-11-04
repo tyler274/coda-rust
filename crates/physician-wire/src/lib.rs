@@ -283,6 +283,13 @@ pub struct WorkResumeTarget {
     pub expected_run_id: String,
 }
 
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// The work a running chat turn's Stop command names.
+pub struct WorkStopTarget {
+    /// The `work_item_id` value.
+    pub work_item_id: String,
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq)]
 /// The `PatientWorkspacesResponse` value exchanged by this crate.
 pub struct PatientWorkspacesResponse {
@@ -735,11 +742,23 @@ pub struct ChatSnapshotResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// One run the open chat snapshot names. Present when the turn is held or failed.
+pub struct ChatRun {
+    /// The attempt id.
+    pub run_id: String,
+    /// `held` while Stop is in force, or `failed` when the turn couldn't finish.
+    pub state: String,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `ChatSnapshot` value exchanged by this crate.
 pub struct ChatSnapshot {
     #[serde(default)]
     /// The `conversation` value.
     pub conversation: Vec<ChatTurn>,
+    #[serde(default)]
+    /// The latest run when the turn is held or failed. Older servers omit it.
+    pub runs: Vec<ChatRun>,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -755,8 +774,11 @@ pub struct ChatTurn {
     /// `physician`, `model`, or `mechanical`. Older servers omit it.
     pub kind: Option<String>,
     #[serde(default)]
-    /// On a mechanical "couldn't finish" line: the work Try again resumes.
+    /// On a mechanical "couldn't finish" or stopped line: the work Resume names.
     pub resume_target: Option<WorkResumeTarget>,
+    #[serde(default)]
+    /// On a mechanical line while Coda is still writing: the work Stop names.
+    pub stop_target: Option<WorkStopTarget>,
 }
 
 impl ChatTurn {
@@ -1089,9 +1111,31 @@ mod tests {
                 expected_run_id: "r1".into(),
             })
         );
+        assert_eq!(page.snapshot.runs[0].run_id, "r1");
+        assert_eq!(page.snapshot.runs[0].state, "failed");
         let older: ChatSnapshotResponse =
             serde_json::from_str(r#"{"snapshot": {"conversation": [{"text": "Hi"}]}}"#).unwrap();
         assert_eq!(older.snapshot.conversation[0].kind, None);
         assert_eq!(older.snapshot.conversation[0].resume_target, None);
+        assert_eq!(older.snapshot.conversation[0].stop_target, None);
+    }
+
+    #[test]
+    fn reads_a_stop_target_on_a_running_turn() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {"conversation": [{
+                "text": "Coda is writing this response.",
+                "kind": "mechanical",
+                "stop_target": {"work_item_id": "w1"}
+            }]}}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            page.snapshot.conversation[0].stop_target,
+            Some(WorkStopTarget {
+                work_item_id: "w1".into(),
+            })
+        );
+        assert_eq!(page.snapshot.conversation[0].resume_target, None);
     }
 }

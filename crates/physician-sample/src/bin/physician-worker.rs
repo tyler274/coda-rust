@@ -165,11 +165,13 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         skills: Some(worker.skills.clone()),
     };
     let cancel = Cancellation::default();
+    let watcher = watch_currentness(worker.store.clone(), host.claim.clone(), cancel.clone());
     // One provider per turn: concurrent pushes on this instance run side by
     // side instead of queueing behind one another's model call.
     let mut provider = match provider {
         Ok(provider) => provider,
         Err(_) => {
+            watcher.abort();
             tracing::error!("physician chat provider unavailable");
             // Counted like a model failure, so the fifth one ends the turn.
             return failed_attempt(&worker, &host.claim, workspace_id).await;
@@ -179,6 +181,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         .run(&mut provider, &worker.limits, &cancel)
         .instrument(span.clone())
         .await;
+    watcher.abort();
     match result {
         Ok(()) => {
             let output = message_text(&worker.store, &host.claim.scope, "assistant").await;
@@ -191,9 +194,45 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         Err(_) => {
             genai::record_error(&span, "physician chat failed");
             tracing::error!("physician chat failed");
-            failed_attempt(&worker, &host.claim, workspace_id).await
+            if turn_settled(&worker.store, &host.claim).await {
+                // Stop or a newer message already owns the turn. Ack so the
+                // broker does not count this delivery as a failure.
+                announce(&worker, workspace_id).await;
+                StatusCode::NO_CONTENT
+            } else {
+                failed_attempt(&worker, &host.claim, workspace_id).await
+            }
         }
     }
+}
+
+/// Cancels the provider call once this claim is no longer the current attempt.
+/// A database blip does not cancel: publication still refuses a stale result.
+fn watch_currentness(
+    store: Store,
+    claim: Claim,
+    cancel: Cancellation,
+) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        loop {
+            match store.is_current(&claim).await {
+                Ok(false) => {
+                    cancel.cancel();
+                    break;
+                }
+                Ok(true) | Err(_) => tokio::time::sleep(Duration::from_millis(100)).await,
+            }
+        }
+    })
+}
+
+/// Whether this claim must not be retried: Stop held it, it committed, or a
+/// newer input replaced it.
+async fn turn_settled(store: &Store, claim: &Claim) -> bool {
+    let Ok(Some(state)) = store.read(&claim.scope).await else {
+        return false;
+    };
+    state.revision != claim.revision || matches!(state.status.as_str(), "completed" | "held")
 }
 
 /// One unsuccessful attempt, whether the provider could not start or the
