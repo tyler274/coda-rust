@@ -110,9 +110,9 @@ fn Document(meta: PageMeta, shell: Shell) -> Element {
                     link { rel: "stylesheet", href: "/css/duet.css" }
                     noscript { link { rel: "stylesheet", href: "/css/noscript.css" } }
                 },
-                // Production's compiled Tailwind, which already contains chrome.css.
-                Shell::Utility => rsx! {
-                    link { rel: "stylesheet", href: "/css/utility.css" }
+                Shell::Document => rsx! {
+                    link { rel: "stylesheet", href: "/css/chrome.css" }
+                    link { rel: "stylesheet", href: "/css/document.css" }
                 },
             }
         }

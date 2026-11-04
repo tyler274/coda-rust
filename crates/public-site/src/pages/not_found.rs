@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 #[component]
 pub fn NotFound(segments: Vec<String>) -> Element {
     rsx! {
-        header { class: "hero pb-24 sm:pb-32",
+        header { class: "hero not-found",
             div { class: "hero-copy",
                 p { class: "kicker", "404 / Page not found" }
                 h1 { "This page isn't here." }

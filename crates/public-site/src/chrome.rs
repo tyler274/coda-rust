@@ -2,7 +2,9 @@ use crate::{Config, Route, route::Shell, site};
 use dioxus::prelude::*;
 
 /// Shared server-rendered layout. Ordinary anchors deliberately need no JS router.
-/// Each shell's markup is the one its stylesheets are written for.
+/// Document pages wrap their content so the footer stays at the foot of a short page.
+/// The homepage family's pages are never short and stay unwrapped: inside the wrapper
+/// the floating nav would sit lower once the page scrolls.
 #[component]
 pub fn Chrome() -> Element {
     match use_route::<Route>().shell() {
@@ -11,10 +13,10 @@ pub fn Chrome() -> Element {
             main { Outlet::<Route> {} }
             Footer {}
         },
-        Shell::Utility => rsx! {
-            div { class: "flex min-h-svh flex-col bg-bg text-ink",
+        Shell::Document => rsx! {
+            div { class: "page",
                 Nav {}
-                div { class: "flex-1",
+                div { class: "page-content",
                     main { Outlet::<Route> {} }
                 }
                 Footer {}

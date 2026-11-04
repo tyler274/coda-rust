@@ -46,21 +46,22 @@ pub struct PageMeta {
     pub noindex: bool,
 }
 
-/// The site's two page systems. Each decides a document's stylesheets and the markup
-/// around its main content.
+/// The site's two page families, which differ in the stylesheets they load and the
+/// layout around their main content. Both use `chrome.css`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Shell {
     /// The homepage and /duet: the homepage styles and motion script.
     Homepage,
-    /// Every other page: the compiled Tailwind stylesheet.
-    Utility,
+    /// Every other page: the legal documents, scheduling and not-found, styled by
+    /// `document.css`.
+    Document,
 }
 
 impl Route {
     pub fn shell(&self) -> Shell {
         match self {
             Self::Home {} | Self::Duet {} => Shell::Homepage,
-            _ => Shell::Utility,
+            _ => Shell::Document,
         }
     }
 

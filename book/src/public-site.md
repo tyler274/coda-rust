@@ -48,11 +48,13 @@ this); its motion is `homepage/duet.js`, which plays only while the stage is on
 screen. The markup is the story's last frame, which reduced-motion and no-script
 visitors see.
 
-Pages belong to one of two systems (`Route::shell`). `/` and `/duet` use the
-homepage system: `chrome.css`, `site.css`, the motion script and the Duet story.
-Every other page uses the utility system: its shell markup and `css/utility.css`, a
-compiled Tailwind stylesheet that already contains `chrome.css`. The workspace has no
-Tailwind build, so `utility.css` changes only by direct edit. The `/scheduling/dev`
+Every page shares `chrome.css`, which owns the tokens, type, page opening, cards, nav
+and footer. Pages belong to one of two families (`Route::shell`) that differ in the
+stylesheets they load and the layout around their content. `/` and `/duet` add
+`site.css`, the motion script and the Duet story. Every other page, the legal
+documents, scheduling and not-found, adds `css/document.css`, a hand-written
+stylesheet with its own reset and named classes for those pages, and sits in the
+`.page` layout, which keeps the footer at the foot of a short page. The `/scheduling/dev`
 social image is a static PNG. A trailing slash is removed with a 308 that keeps the
 query.
 

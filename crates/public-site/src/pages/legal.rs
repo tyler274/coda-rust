@@ -132,47 +132,47 @@ struct Page {
 #[component]
 fn LegalPage(page: Page) -> Element {
     rsx! {
-        header { class: "hero pb-14 sm:pb-16",
+        header { class: "hero legal-hero",
             div { class: "hero-copy",
                 p { class: "kicker", "{page.eyebrow}" }
                 h1 { "{page.title}" }
                 p { class: "lede", "{page.intro}" }
                 p { class: "hero-meta micro",
-                    if let Some(version) = &page.version { span { class: "mb-2 block", "Version {version}" } }
+                    if let Some(version) = &page.version { span { class: "legal-version", "Version {version}" } }
                     "{page.date_label} {page.effective}"
-                    if let Some(revised) = &page.revised { span { class: "mt-2 block", "Last updated {revised}" } }
+                    if let Some(revised) = &page.revised { span { class: "legal-revised", "Last updated {revised}" } }
                 }
             }
         }
-        div { class: "wrap pb-20 sm:pb-28",
+        div { class: "wrap legal-body",
             if !page.summary.is_empty() {
-                div { class: "card mb-10 p-6 sm:mb-14 sm:p-8",
-                    h2 { class: "micro text-accent", "The short version" }
-                    ul { class: "mt-5 grid gap-x-10 gap-y-3 min-[900px]:grid-cols-2",
+                div { class: "card legal-summary",
+                    h2 { class: "micro", "The short version" }
+                    ul {
                         for point in &page.summary {
-                            li { class: "relative pl-5 text-[16px] leading-[1.6] text-ink before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-accent", "{point}" }
+                            li { "{point}" }
                         }
                     }
                 }
             }
             for (index, section) in page.sections.iter().enumerate() {
-                section { id: section.id.clone(), class: "scroll-mt-28 border-t border-hairline py-10 sm:py-12 min-[900px]:grid min-[900px]:grid-cols-[5fr_7fr] min-[900px]:gap-x-16",
+                section { id: section.id.clone(), class: "legal-section",
                     div {
                         span { class: "idx", i {} "{index + 1:02}" }
-                        h2 { class: "mt-3 max-w-[14em] text-[22px] leading-snug tracking-[-0.02em] text-ink min-[900px]:text-[26px]", "{section.title}" }
+                        h2 { "{section.title}" }
                     }
-                    div { class: "mt-5 min-w-0 space-y-4 min-[900px]:mt-0",
+                    div { class: "legal-section-body",
                         for block in section.body.iter().cloned() { LegalBlock { block } }
                     }
                 }
             }
             if !page.links.is_empty() {
-                p { class: "flex flex-wrap items-baseline gap-x-3 gap-y-2 border-t border-hairline pt-8 text-[14px] font-medium text-ink-mid",
-                    span { class: "micro mr-2", "{page.links_title}" }
+                p { class: "legal-links",
+                    span { class: "micro legal-links-title", "{page.links_title}" }
                     for (index, (href, label)) in page.links.iter().enumerate() {
-                        span { class: "flex items-baseline gap-x-3",
-                            if index > 0 { span { aria_hidden: "true", class: "text-ink-faint", "·" } }
-                            a { href: "{href}", class: "underline decoration-accent decoration-1 underline-offset-4 hover:text-accent", "{label}" }
+                        span { class: "legal-links-item",
+                            if index > 0 { span { aria_hidden: "true", class: "legal-links-sep", "·" } }
+                            a { href: "{href}", "{label}" }
                         }
                     }
                 }
@@ -183,53 +183,52 @@ fn LegalPage(page: Page) -> Element {
 
 #[component]
 fn LegalBlock(block: Block) -> Element {
-    let paragraph_class = "text-[16px] leading-[1.7] text-ink-mid";
     match block {
-        Block::Paragraph(paragraph) => rsx! { p { class: paragraph_class, "{paragraph}" } },
+        Block::Paragraph(paragraph) => rsx! { p { "{paragraph}" } },
         // Notice sources are plain https:// addresses, so their authority is the host.
         Block::Source(url) => {
-            rsx! { p { class: paragraph_class, a { href: "{url}", class: "break-words underline underline-offset-4", "Source and license: {url.authority()}" } } }
+            rsx! { p { a { href: "{url}", class: "legal-source", "Source and license: {url.authority()}" } } }
         }
         Block::Linked(LinkedParagraph {
             before,
             link,
             after,
         }) => {
-            rsx! { p { class: paragraph_class,
+            rsx! { p {
                 "{before}"
-                a { href: "{link.href}", class: "text-ink! underline! decoration-accent! decoration-1! underline-offset-4 hover:text-accent!", "{link.label}" }
+                a { href: "{link.href}", class: "legal-link", "{link.label}" }
                 "{after}"
             } }
         }
-        Block::List(list) => rsx! { ul { class: "space-y-2",
+        Block::List(list) => rsx! { ul { class: "legal-list",
             for item in &list {
-                li { class: "relative pl-5 text-[16px] leading-[1.7] text-ink-mid before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-accent", "{item}" }
+                li { "{item}" }
             }
         } },
         Block::Table(Table { columns, rows }) => {
             rsx! {
-            table { class: "w-full border-collapse text-left text-[0.92rem] leading-7 text-ink-mid max-md:hidden",
-                thead { tr { class: "border-b border-hairline-strong",
-                    for column in &columns { th { scope: "col", class: "py-2.5 pr-5 align-bottom last:pr-0 micro text-ink-faint", "{column}" } }
+            table { class: "legal-table",
+                thead { tr {
+                    for column in &columns { th { scope: "col", class: "micro", "{column}" } }
                 } }
                 tbody {
                     for row in &rows {
-                        tr { class: "border-b border-hairline last:border-b-0",
+                        tr {
                             for (index, cell) in row.iter().enumerate() {
-                                if index == 0 { th { scope: "row", class: "py-3 pr-5 align-top font-medium text-ink", "{cell}" } }
-                                else { td { class: "py-3 pr-5 align-top last:pr-0", "{cell}" } }
+                                if index == 0 { th { scope: "row", "{cell}" } }
+                                else { td { "{cell}" } }
                             }
                         }
                     }
                 }
             }
-            div { class: "md:hidden",
+            div { class: "legal-cards",
                 for row in &rows {
-                    dl { class: "border-b border-hairline py-3 text-[0.92rem] leading-7 text-ink-mid last:border-b-0",
+                    dl {
                         for (index, (cell, column)) in row.iter().zip(&columns).enumerate() {
-                            div { class: "py-1",
-                                dt { class: if index == 0 { "sr-only" } else { "micro text-ink-faint" }, "{column}" }
-                                dd { class: if index == 0 { "font-medium text-ink" } else { "" }, "{cell}" }
+                            div {
+                                dt { class: if index == 0 { "sr-only" } else { "micro" }, "{column}" }
+                                dd { "{cell}" }
                             }
                         }
                     }

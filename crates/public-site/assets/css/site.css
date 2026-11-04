@@ -1,4 +1,7 @@
 /* Coda Health homepage. Tokens, base type, nav, buttons and footer live in chrome.css. */
+/* The homepage's nav is frosted in every browser; on document pages only chrome.css's
+   -webkit- blur applies, which Safari honours. */
+.nav{backdrop-filter:saturate(1.4) blur(14px)}
 
 .tlink{display:inline-flex;gap:6px;align-items:center;color:var(--green);font-size:14px;font-weight:600}
 .tlink span{transition:transform .25s var(--ease)}
