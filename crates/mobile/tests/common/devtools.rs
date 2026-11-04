@@ -287,6 +287,15 @@ impl Browser {
         std::mem::take(&mut self.page.errors)
     }
 
+    /// The requests `Fetch.enable` has paused since the last call, oldest first,
+    /// once the page has answered everything it sent before now. Each waits until
+    /// the caller continues, fails or answers it.
+    #[allow(dead_code)]
+    pub fn take_paused_requests(&mut self) -> Vec<Value> {
+        self.page.evaluate("0");
+        std::mem::take(&mut self.page.paused)
+    }
+
     /// Whether the document reports reduced motion.
     #[allow(dead_code)]
     pub fn prefers_reduced_motion(&mut self) -> bool {
@@ -346,6 +355,7 @@ pub struct Page {
     method: String,
     last_frame: String,
     errors: Vec<String>,
+    paused: Vec<Value>,
 }
 
 /// What a DevTools event says went wrong, when it reports an error.
@@ -466,6 +476,7 @@ pub fn connect(port: u16, socket_path: &str) -> Result<Page, String> {
         method: String::new(),
         last_frame: String::new(),
         errors: Vec::new(),
+        paused: Vec::new(),
     })
 }
 
@@ -502,7 +513,8 @@ impl Page {
 
     /// Calls `declaration`, a JavaScript function, on the page with `args`. The
     /// values arrive as the function's arguments, never as script text. A
-    /// promise is awaited, and a throw fails the test.
+    /// promise is awaited, a throw fails the test, and a function that returns
+    /// nothing answers null.
     pub fn call_function(&mut self, declaration: &str, args: &[Value]) -> Value {
         let global = self.call_session("Runtime.evaluate", json!({ "expression": "globalThis" }));
         let object = global
@@ -526,19 +538,26 @@ impl Page {
         value
             .pointer("/result/result/value")
             .cloned()
-            .unwrap_or_else(|| panic!("page function returned no value:\n{value}"))
+            .unwrap_or(Value::Null)
     }
 
     /// Sends one raw DevTools method on this page's session and requires an
     /// answer without an `error` field.
     pub fn call_session(&mut self, method: &str, params: Value) -> Value {
+        self.try_call_session(method, params)
+            .unwrap_or_else(|error| panic!("{method} failed: {error}"))
+    }
+
+    /// Sends one raw DevTools method on this page's session, and returns the
+    /// `error` Chrome answered for a caller that expects one it can name.
+    pub fn try_call_session(&mut self, method: &str, params: Value) -> Result<Value, Value> {
         let id = self.next_id;
         self.next_id += 1;
-        let value = self.call(id, method, params);
-        if let Some(error) = value.get("error") {
-            panic!("{method} failed: {error}");
+        let mut value = self.call(id, method, params);
+        match value.get_mut("error") {
+            Some(error) => Err(error.take()),
+            None => Ok(value),
         }
-        value
     }
 
     // The React comparison navigates. The Android proof reads the page the
@@ -569,6 +588,9 @@ impl Page {
                 .unwrap_or_else(|error| panic!("DevTools frame was not JSON: {error}\n{frame}"));
             if value.get("id").and_then(Value::as_u64) == Some(id) {
                 return value;
+            }
+            if value.get("method").and_then(Value::as_str) == Some("Fetch.requestPaused") {
+                self.paused.extend(value.get("params").cloned());
             }
             self.errors.extend(page_error(&value));
             self.last_frame = frame.chars().take(240).collect();

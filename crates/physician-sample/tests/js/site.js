@@ -1,6 +1,5 @@
-// What the reply journeys in `site.rs` do and read in the page. `CdpBrowser::journey` calls this
-// through `Runtime.callFunctionOn`, so what each step is given arrives as arguments, never as
-// script text.
+// What the site tests in `site.rs` do and read in the page. `Tab::step` calls this through
+// `Runtime.callFunctionOn`, so what each step is given arrives as arguments, never as script text.
 function (step, ...args) {
   const one = (selector) => {
     const found = document.querySelector(selector);
@@ -83,6 +82,80 @@ function (step, ...args) {
     },
     scrollToStart(selector) {
       document.querySelector(selector)?.scrollIntoView({ block: "start" });
+    },
+    // The composer's text (null when there is no composer) and the mark beside it.
+    composer() {
+      return [
+        document.querySelector("textarea.composer-input")?.value ?? null,
+        document.querySelector(".composer-context [role=status]")?.textContent ?? "",
+      ];
+    },
+    // This tab's same-tab draft recovery keys.
+    draftRecoveryKeys() {
+      return Object.keys(sessionStorage).filter((key) => key.startsWith("coda.physician.draft."));
+    },
+    // The open dialog's words, or nothing when no dialog is open.
+    dialogText() {
+      return document.querySelector("dialog.dialog")?.innerText ?? "";
+    },
+    // The page's visible text and its HTML, read in one turn so they agree.
+    pageSnapshot() {
+      return {
+        text: document.body ? document.body.innerText : "",
+        html: document.documentElement ? document.documentElement.outerHTML : "",
+      };
+    },
+    // The text of each line in the conversation.
+    conversationLines() {
+      return [...document.querySelectorAll('[aria-label="Conversation"] .message')].map(
+        (line) => line.textContent,
+      );
+    },
+    // The conflict the composer shows: the newer revision and its text, or null.
+    conflict() {
+      const conflict = document.querySelector(".draft-conflict");
+      if (!conflict) return null;
+      return [Number(conflict.dataset.revision), conflict.querySelector("pre")?.textContent ?? ""];
+    },
+    // Sends from the keyboard: Ctrl+Enter in the composer.
+    sendWithKeyboard() {
+      const box = one("textarea.composer-input");
+      box.focus();
+      box.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", ctrlKey: true, bubbles: true }));
+    },
+    // Clicks New conversation and checks every render until its empty state shows: `seen` is
+    // whether any of them still listed a line containing `old`. The click itself changes no DOM,
+    // so the page before it is not counted.
+    newConversationShowing(old) {
+      return new Promise((resolve) => {
+        const region = () => document.querySelector('[aria-label="Conversation"]');
+        const lines = () => [...(region()?.querySelectorAll(".message") ?? [])].map((m) => m.textContent);
+        let seen = false;
+        const check = () => {
+          if (lines().some((text) => text.includes(old))) seen = true;
+          if (region()?.querySelector(".conversation-empty")) {
+            observer.disconnect();
+            resolve({ seen, done: true });
+          }
+        };
+        const observer = new MutationObserver(check);
+        observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+        one("button.sidebar-new-conversation").click();
+        setTimeout(() => {
+          observer.disconnect();
+          resolve({ seen, done: false });
+        }, 10000);
+      });
+    },
+    // Whether the logo and favicon load from under the `/physician/` prefix.
+    async prefixAssetsLoad() {
+      const logo = one("img.coda-logo");
+      await logo.decode();
+      const icon = one('link[rel="icon"]');
+      const response = await fetch(icon.href);
+      return logo.naturalWidth > 0 && new URL(logo.src).pathname.startsWith("/physician/assets/")
+        && new URL(icon.href).pathname === "/physician/favicon.svg" && response.ok
+        && (await response.text()).includes("<svg");
     },
     // The sidebar and the page as they stand.
     readShell() {

@@ -1,5 +1,5 @@
 // Puts the page in `theme` and reads where the sidebar's footer and recent list sit, or null before
-// they render. `CdpBrowser::sidebar_layout` calls this through `Runtime.callFunctionOn`.
+// they render. `Tab::sidebar_layout` calls this through `Runtime.callFunctionOn`.
 function (theme) {
   document.documentElement.dataset.theme = theme;
   const signOut = document.querySelector('button[aria-label="Sign out of Coda"]');

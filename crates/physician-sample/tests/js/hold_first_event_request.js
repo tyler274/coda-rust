@@ -7,7 +7,10 @@
             window.__eventRequests++;
             if (window.__eventRequests === 1) {
                 return new Promise(resolve => {
-                    window.__connectEvents = () => resolve(original(input, init));
+                    window.__connectEvents = () => {
+                        resolve(original(input, init));
+                        return true;
+                    };
                 });
             }
         }

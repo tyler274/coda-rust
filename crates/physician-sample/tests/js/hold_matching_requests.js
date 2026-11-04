@@ -12,6 +12,8 @@
     };
     window.__release = () => {
         window.__hold = null;
-        window.__held.splice(0).forEach(release => release());
+        const held = window.__held.splice(0);
+        held.forEach(release => release());
+        return held.length;
     };
 })()
