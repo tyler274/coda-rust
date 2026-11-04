@@ -34,18 +34,20 @@ cargo test --workspace
 
 Open the checkout in Codex and trust the project to load [its MCP config](.codex/config.toml).
 In Claude Code, approve the [project servers](.mcp.json) when prompted.
+In Cursor, approve the [project servers](.cursor/mcp.json) in Customize, once in each checkout or worktree.
 Launch the client with any required token variables in its environment. Each developer uses their own credentials.
+Cursor starts its local servers with the `PATH` from the environment it was launched in. That `PATH` needs `uvx` for NixOS, and `gh` plus `nix` or `github-mcp-server` for GitHub. If a server can't find one, quit Cursor fully, then start it from a shell that has them.
 
 | Server | Setup |
 | --- | --- |
-| [GitHub](https://github.com/github/github-mcp-server#remote-github-mcp-server) | Set `GITHUB_MCP_TOKEN` to a personal access token scoped to the repositories and operations you need. |
-| [Linear](https://linear.app/docs/mcp) | From this checkout, run `codex mcp login linear`, or open `/mcp` in Claude Code and authenticate Linear. |
-| [NixOS](https://github.com/utensils/mcp-nixos) | Put `uvx` on the client's PATH. The dev shell includes it through `uv`. On first use it downloads the pinned server for package and option lookups. |
-| [Slack](https://docs.slack.dev/ai/slack-mcp-server/) | In Claude Code, open `/mcp` and sign in with the [Slack integration for Claude Code](https://docs.slack.dev/ai/slack-mcp-server/connect-to-claude/) approved by your workspace admin. For Codex, set `SLACK_MCP_USER_TOKEN` to a user token from a workspace-approved, MCP-enabled Slack app with the scopes you need. |
-| [Datadog](https://docs.datadoghq.com/mcp_server/setup/) | Sign in to the US1 site with `codex mcp login datadog` or through `/mcp` in Claude Code. Use a role with MCP Read and read access to the logs, monitors and traces you investigate. |
-| [Local Langfuse](dev/observability/README.md) | Run `scripts/observability-up.sh` on the client host. Both clients use port 3000 and the local Compose project's fixed synthetic-data credentials. If you override `LANGFUSE_PORT`, update the port in your client URL and keep the hostname `localhost`. The v3 stack exposes project tools such as `getHealth` and `listPrompts` through MCP. Use the local UI for generation inputs and outputs. |
+| [GitHub](https://github.com/github/github-mcp-server#remote-github-mcp-server) | For Codex and Claude Code, set `GITHUB_MCP_TOKEN` to a personal access token scoped to the repositories and operations you need. Cursor runs the [local server](https://github.com/github/github-mcp-server#local-github-mcp-server) through [`scripts/github-mcp.sh`](scripts/github-mcp.sh). It uses `GITHUB_MCP_TOKEN` when that is set, and otherwise your `gh auth login` with all of that login's scopes. With Nix it runs the server from the flake's locked nixpkgs. On the [Apple container](#apple-silicon-mac-without-nix-apple-container) route, `brew bundle` installs `gh` and the current Homebrew `github-mcp-server`, which is not pinned and can offer different tools. |
+| [Linear](https://linear.app/docs/mcp) | From this checkout, run `codex mcp login linear`, open `/mcp` in Claude Code, or connect Linear in Cursor's Customize. |
+| [NixOS](https://github.com/utensils/mcp-nixos) | Put `uvx` on the client's PATH. The dev shell includes it through `uv`. On the [Apple container](#apple-silicon-mac-without-nix-apple-container) route, the client runs on the Mac, and `brew bundle` installs `uv` there. On first use it downloads the pinned server for package and option lookups. |
+| [Slack](https://docs.slack.dev/ai/slack-mcp-server/) | In Claude Code, open `/mcp` and sign in with the [Slack integration for Claude Code](https://docs.slack.dev/ai/slack-mcp-server/connect-to-claude/) approved by your workspace admin. In Cursor, connect Slack in Customize; the config names [Slack's app for Cursor](https://docs.slack.dev/ai/slack-mcp-server/connect-to-cursor/), which your workspace admin approves. For Codex, set `SLACK_MCP_USER_TOKEN` to a user token from a workspace-approved, MCP-enabled Slack app with the scopes you need. |
+| [Datadog](https://docs.datadoghq.com/mcp_server/setup/) | Sign in to the US1 site with `codex mcp login datadog`, through `/mcp` in Claude Code, or in Cursor's Customize. Use a role with MCP Read and read access to the logs, monitors and traces you investigate. |
+| [Local Langfuse](dev/observability/README.md) | Run `scripts/observability-up.sh` on the client host. It needs Docker Compose there, which Apple's `container` tool does not provide. All three clients use port 3000 and the local Compose project's fixed synthetic-data credentials. If you override `LANGFUSE_PORT`, set that port in a personal client entry rather than the committed config, and keep the hostname `localhost`. In Cursor, add the entry under another name in `~/.cursor/mcp.json` and turn off the project `langfuse` server in Customize. The v3 stack exposes project tools such as `getHealth` and `listPrompts` through MCP. Use the local UI for generation inputs and outputs. |
 
-Open `/mcp` in either client to inspect the servers. To check access, ask for a known pull request, Linear issue, Nix package, or Slack thread you can read.
+Open `/mcp` in Codex or Claude Code, or Customize in Cursor, to inspect the servers. To check access, ask for a known pull request, Linear issue, Nix package, or Slack thread you can read.
 
 ### Local practice
 
