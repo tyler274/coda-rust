@@ -7,6 +7,7 @@ the model. Features not modeled yet follow the intent specs alone.
 | Feature | Folder |
 | --- | --- |
 | Physician sign-in | [physician/sign-in](physician/sign-in/README.md) |
+| Duet sign-in | [duet/sign-in](duet/sign-in/README.md) |
 
 ## A feature's folder
 
