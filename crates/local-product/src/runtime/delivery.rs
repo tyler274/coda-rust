@@ -146,8 +146,10 @@ impl Store {
 
     /// Release this delivery's unsuccessful attempt for broker retry. Never
     /// releases Stop, changes a successor, or reopens completed work. The
-    /// [`MAX_FAILED_ATTEMPTS`]th failure ends the work as failed, so neither
-    /// redelivery nor the recovery sweep starts it again.
+    /// attempt is recorded as failed; an expired lease is recorded as
+    /// interrupted by the next claim instead. The [`MAX_FAILED_ATTEMPTS`]th
+    /// failure ends the work as failed, so neither redelivery nor the recovery
+    /// sweep starts it again.
     pub async fn retry_delivery(&self, claim: &Claim) -> Result<(), DbErr> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         if state.revision == claim.revision
@@ -155,7 +157,7 @@ impl Store {
             && let Some(attempt) = state.attempts.last_mut().filter(|a| a.id == claim.attempt)
         {
             if attempt.status == "active" {
-                attempt.status = "interrupted".into();
+                attempt.status = "failed".into();
             }
             state.failures += 1;
             state.status = if state.failures >= MAX_FAILED_ATTEMPTS {

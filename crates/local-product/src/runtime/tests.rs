@@ -348,9 +348,12 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         DeliveryState::Claimed
     );
 
-    // A failed run is released for broker redelivery as a successor attempt.
+    // A failed run is released for broker redelivery as a successor attempt,
+    // and its history says it failed: a lost lease is "interrupted" instead.
     store.retry_delivery(&claim).await.unwrap();
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "pending");
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "pending");
+    assert_eq!(state.attempts.last().unwrap().status, "failed");
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
         DeliveryState::Due

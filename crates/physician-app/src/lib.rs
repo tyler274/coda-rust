@@ -34,11 +34,10 @@ use shell::{
     TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
     chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
-    need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view,
-    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
-    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
-    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
-    work_heading,
+    need_you_words, opens_reader, past_work_copy, patient_upcoming_visits, read_view, records_time,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
