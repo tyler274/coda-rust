@@ -811,13 +811,8 @@ async fn resume_durable(
             "run_id": payload.expected_run_id,
         }))
         .into_response(),
-        Err(error) => {
-            // Empty fields are the caller's; anything else is the database.
-            let invalid = error.contains("empty command field");
-            tracing::warn!(invalid, "physician work resume failed");
-            if invalid {
-                return rejected("work.resume");
-            }
+        Err(_) => {
+            tracing::warn!("physician work resume failed");
             (
                 StatusCode::SERVICE_UNAVAILABLE,
                 Json(json!({
@@ -891,12 +886,8 @@ async fn stop_durable(
             }))
             .into_response()
         }
-        Err(error) => {
-            let invalid = error.contains("empty command field");
-            tracing::warn!(invalid, "physician work stop failed");
-            if invalid {
-                return rejected("work.stop");
-            }
+        Err(_) => {
+            tracing::warn!("physician work stop failed");
             (
                 StatusCode::SERVICE_UNAVAILABLE,
                 Json(json!({

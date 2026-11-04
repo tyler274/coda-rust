@@ -166,6 +166,19 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     )
     .await;
     assert_eq!(body["outcome"], "accepted", "{status} {body}");
+    // A blank work identity is the caller's mistake: refused, not a 503.
+    let (status, body) = post_json(
+        &site_listen,
+        "/commands",
+        &session,
+        &stop(workspace, &chat, " ", "stop-blank"),
+    )
+    .await;
+    assert_eq!(
+        (status, body["outcome"].as_str()),
+        (200, Some("rejected")),
+        "{body}"
+    );
 
     sse.wait_for("event: workspace_changed", Duration::from_secs(20))
         .await

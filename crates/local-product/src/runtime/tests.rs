@@ -539,6 +539,21 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
             .await
             .is_err()
     );
+    for (key, work_id, run_id) in [
+        ("", work.as_str(), run.as_str()),
+        ("blank-work", " ", run.as_str()),
+        ("blank-run", work.as_str(), ""),
+    ] {
+        assert_eq!(
+            store
+                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id)
+                .await
+                .unwrap(),
+            Resumed::Refused,
+            "{key:?}"
+        );
+    }
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "failed");
 
     // The named failed run resumes with a fresh budget and the current session.
     assert_eq!(
@@ -668,7 +683,19 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .await
             .is_err()
     );
+    // A blank field is the caller's mistake, refused as a value, not an error.
+    for (key, work_id) in [(" ", work.as_str()), ("blank-work", "")] {
+        assert_eq!(
+            store
+                .stop_authorized(&scope, key, vec![6; 32], work_id)
+                .await
+                .unwrap(),
+            Stopped::Refused,
+            "{key:?} {work_id:?}"
+        );
+    }
     assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert!(store.is_current(&claim).await.unwrap());
 
     assert_eq!(
         store
@@ -677,6 +704,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .unwrap(),
         Stopped::Held
     );
+    assert!(!store.is_current(&claim).await.unwrap());
     let held = store.conversation(&scope).await.unwrap();
     assert_eq!(held.status, "held");
     assert_eq!(held.attempts.last().unwrap().status, "cancelled");

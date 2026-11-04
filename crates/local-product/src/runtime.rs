@@ -200,7 +200,8 @@ pub enum Resumed {
     },
     /// The exact same Try again was already taken; do not publish again.
     Duplicate,
-    /// The named work or run is not the current failed or held work.
+    /// The named work or run is not the current failed or held work, or a
+    /// command field is blank.
     Refused,
 }
 
@@ -213,7 +214,8 @@ pub enum Stopped {
     /// The exact same Stop was already taken, or the named work is already
     /// held.
     Duplicate,
-    /// Nothing open to hold: missing, completed, or a different work identity.
+    /// Nothing open to hold: missing, completed, or a different work identity,
+    /// or a command field is blank.
     Refused,
 }
 
@@ -548,13 +550,24 @@ impl Store {
         tx.commit().await
     }
 
+    /// Whether the claim is still the current attempt: not stopped, not
+    /// replaced by a newer message, and not expired. `Err` means currentness
+    /// could not be read: the database, or a missing or unreadable
+    /// conversation.
+    pub async fn is_current(&self, claim: &Claim) -> Result<bool, DbErr> {
+        let (tx, state, now) = self.locked(&claim.scope).await?;
+        let current = Self::current(&state, claim, now);
+        tx.commit().await?;
+        Ok(current)
+    }
+
     /// Rechecks the current attempt against durable Stop, steering and expiry.
     pub async fn assert_current(&self, claim: &Claim) -> Result<(), DbErr> {
-        let (tx, state, now) = self.locked(&claim.scope).await?;
-        if !Self::current(&state, claim, now) {
-            return Err(error("attempt no longer current"));
+        if self.is_current(claim).await? {
+            Ok(())
+        } else {
+            Err(error("attempt no longer current"))
         }
-        tx.commit().await
     }
 
     /// Acknowledges an ordered event only after commit. Exact replay is idempotent.
@@ -684,8 +697,9 @@ impl Store {
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
     /// and its latest attempt is `expected_run_id`, so a stale page never
-    /// restarts newer work and completed work is never reopened. The receipt is
-    /// saved with the change: the same `key` and target answers `Duplicate`.
+    /// restarts newer work and completed work is never reopened. A blank field
+    /// is refused. The receipt is saved with the change: the same `key` and
+    /// target answers `Duplicate`.
     /// The accepted session moves to the physician's current session, because
     /// the original one may have ended while the work sat failed.
     pub async fn resume_authorized(
@@ -711,7 +725,7 @@ impl Store {
         .iter()
         .any(|s| s.trim().is_empty())
         {
-            return Err(error("empty command field"));
+            return Ok(Resumed::Refused);
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({
@@ -763,9 +777,9 @@ impl Store {
     /// receipt is saved with the change: the same `key` and work answers
     /// [`Stopped::Duplicate`], and so does a new key while that work is
     /// already held. A different command under that key is refused.
-    /// Completed work, a failed turn, a different work identity, and a scope
-    /// with no conversation are refused. Only a new hold keeps its receipt.
-    /// No wakeup is published.
+    /// Completed work, a failed turn, a different work identity, a blank
+    /// field, and a scope with no conversation are refused. Only a new hold
+    /// keeps its receipt. No wakeup is published.
     pub async fn stop_authorized(
         &self,
         scope: &Scope,
@@ -787,7 +801,7 @@ impl Store {
         .iter()
         .any(|part| part.trim().is_empty())
         {
-            return Err(error("empty command field"));
+            return Ok(Stopped::Refused);
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({

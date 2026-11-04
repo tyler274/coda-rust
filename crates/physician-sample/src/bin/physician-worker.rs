@@ -215,13 +215,12 @@ fn watch_currentness(
 ) -> tokio::task::JoinHandle<()> {
     tokio::spawn(async move {
         loop {
-            match store.assert_current(&claim).await {
-                Ok(()) => tokio::time::sleep(Duration::from_millis(100)).await,
-                Err(error) if error.to_string().contains("no longer current") => {
+            match store.is_current(&claim).await {
+                Ok(false) => {
                     cancel.cancel();
                     break;
                 }
-                Err(_) => tokio::time::sleep(Duration::from_millis(100)).await,
+                Ok(true) | Err(_) => tokio::time::sleep(Duration::from_millis(100)).await,
             }
         }
     })
