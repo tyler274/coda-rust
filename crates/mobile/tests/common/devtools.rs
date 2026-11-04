@@ -218,37 +218,14 @@ impl Browser {
 
     /// Clicks the first element matching `selector`.
     pub fn click(&mut self, selector: &str) {
-        let found = self
-            .page
-            .evaluate(&format!(
-                "(() => {{ const node = document.querySelector({selector:?}); \
-                 if (!node) return 'missing'; node.click(); return 'clicked'; }})()"
-            ))
-            .as_str()
-            .unwrap_or_default()
-            .to_owned();
+        let found = self.page.run("click", json!([selector]));
         assert_eq!(found, "clicked", "no element to click for {selector}");
     }
 
     /// Types `text` into the first input or textarea matching `selector` and
     /// fires the Dioxus `input` event so signal bindings update.
     pub fn type_into(&mut self, selector: &str, text: &str) {
-        let escaped = escape_js(text);
-        let found = self
-            .page
-            .evaluate(&format!(
-                "(() => {{ const node = document.querySelector({selector:?}); \
-                 if (!node) return 'missing'; \
-                 const field = node instanceof window.HTMLInputElement \
-                     ? window.HTMLInputElement : window.HTMLTextAreaElement; \
-                 const setter = Object.getOwnPropertyDescriptor(field.prototype, 'value').set; \
-                 setter.call(node, \"{escaped}\"); \
-                 node.dispatchEvent(new Event('input', {{ bubbles: true }})); \
-                 return 'typed'; }})()"
-            ))
-            .as_str()
-            .unwrap_or_default()
-            .to_owned();
+        let found = self.page.run("typeInto", json!([selector, text]));
         assert_eq!(found, "typed", "no input to type into for {selector}");
     }
 
@@ -359,21 +336,6 @@ fn find_on_path(name: &str) -> Option<std::path::PathBuf> {
     std::env::split_paths(&paths)
         .map(|dir| dir.join(name))
         .find(|path| path.is_file())
-}
-
-/// A JavaScript string literal, safe inside one double-quoted expression.
-fn escape_js(text: &str) -> String {
-    let mut out = String::with_capacity(text.len() + 2);
-    for character in text.chars() {
-        match character {
-            '"' => out.push_str("\\\""),
-            '\\' => out.push_str("\\\\"),
-            '\n' => out.push_str("\\n"),
-            '\r' => out.push_str("\\r"),
-            other => out.push(other),
-        }
-    }
-    out
 }
 
 pub struct Page {
@@ -523,6 +485,48 @@ impl Page {
             .pointer("/result/result/value")
             .cloned()
             .unwrap_or_else(|| panic!("page evaluation returned no value:\n{value}"))
+    }
+
+    /// Runs `name` from `page.js` with `args`, a JSON array, and returns what it
+    /// gives back.
+    pub fn run(&mut self, name: &str, args: Value) -> Value {
+        let mut arguments = vec![json!(name)];
+        arguments.extend(
+            args.as_array()
+                .expect("a JSON array of arguments")
+                .iter()
+                .cloned(),
+        );
+        self.call_function(include_str!("page.js"), &arguments)
+    }
+
+    /// Calls `declaration`, a JavaScript function, on the page with `args`. The
+    /// values arrive as the function's arguments, never as script text. A
+    /// promise is awaited, and a throw fails the test.
+    pub fn call_function(&mut self, declaration: &str, args: &[Value]) -> Value {
+        let global = self.call_session("Runtime.evaluate", json!({ "expression": "globalThis" }));
+        let object = global
+            .pointer("/result/result/objectId")
+            .cloned()
+            .unwrap_or_else(|| panic!("the page has no global object:\n{global}"));
+        let arguments: Vec<Value> = args.iter().map(|value| json!({ "value": value })).collect();
+        let value = self.call_session(
+            "Runtime.callFunctionOn",
+            json!({
+                "functionDeclaration": declaration,
+                "objectId": object,
+                "arguments": arguments,
+                "returnByValue": true,
+                "awaitPromise": true,
+            }),
+        );
+        if let Some(exception) = value.pointer("/result/exceptionDetails") {
+            panic!("page function failed: {exception}");
+        }
+        value
+            .pointer("/result/result/value")
+            .cloned()
+            .unwrap_or_else(|| panic!("page function returned no value:\n{value}"))
     }
 
     /// Sends one raw DevTools method on this page's session and requires an

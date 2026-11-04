@@ -272,9 +272,7 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
 fn wait_for_gone(browser: &mut Browser, selector: &str) {
     let deadline = std::time::Instant::now() + Duration::from_secs(10);
     while std::time::Instant::now() < deadline {
-        let found = browser
-            .page()
-            .evaluate(&format!("Boolean(document.querySelector({selector:?}))"));
+        let found = browser.page().run("has", serde_json::json!([selector]));
         if found.as_bool() == Some(false) {
             return;
         }
@@ -286,9 +284,7 @@ fn wait_for_gone(browser: &mut Browser, selector: &str) {
 fn wait_for_selector(browser: &mut Browser, selector: &str) {
     let deadline = std::time::Instant::now() + Duration::from_secs(10);
     while std::time::Instant::now() < deadline {
-        let found = browser
-            .page()
-            .evaluate(&format!("Boolean(document.querySelector({selector:?}))"));
+        let found = browser.page().run("has", serde_json::json!([selector]));
         if found.as_bool() == Some(true) {
             return;
         }
