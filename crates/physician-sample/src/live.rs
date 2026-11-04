@@ -392,7 +392,7 @@ pub(crate) const COULDNT_FINISH: &str =
 pub(crate) const WRITING: &str = "Coda is writing this response.";
 
 /// The mechanical line after an intentional Stop. Resume stays until the
-/// physician resumes; a newer message does not release the hold.
+/// physician resumes or sends something else.
 pub(crate) const STOPPED: &str = "Coda stopped this response. Your message is saved.";
 
 #[derive(Deserialize)]

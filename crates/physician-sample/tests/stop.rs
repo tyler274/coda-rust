@@ -1,9 +1,10 @@
-//! A physician Stop holds the turn until Resume.
+//! A physician Stop holds the turn until Resume or a newer message.
 //!
 //! One site and one slow worker share a disposable Postgres, Valkey and the
 //! Pub/Sub emulator. Stop during the turn keeps the row held after the worker
 //! is dropped, and the late reply is not published. Resume on a new worker
-//! runs one successor.
+//! starts a successor, a second Stop holds that too, and a message sent
+//! while held is answered without either stopped reply.
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
@@ -25,7 +26,7 @@ impl Drop for Home {
 }
 
 #[tokio::test]
-async fn stop_holds_across_a_worker_restart_and_resume_runs_one_successor() {
+async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message() {
     let Some(database) = support::Database::create("stop").await else {
         return;
     };
@@ -227,6 +228,8 @@ async fn stop_holds_across_a_worker_restart_and_resume_runs_one_successor() {
             ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            // The resumed run is still writing when Stop lands again.
+            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "8000"),
         ],
         &home.0,
     );
@@ -249,17 +252,88 @@ async fn stop_holds_across_a_worker_restart_and_resume_runs_one_successor() {
     .await;
     assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
     assert_eq!(body["outcome"], "accepted", "{body}");
+
+    // Resume keeps the work's identity. A second Stop is a new press with
+    // its own key, and it holds the resumed run just as the first one did.
+    wait_claimed(&database.url, &chat)
+        .await
+        .unwrap_or_else(|error| {
+            panic!(
+                "the worker never claimed the resumed turn: {error}\n{}",
+                tails(&site, &worker)
+            )
+        });
+    let resumed_at = Instant::now();
+    let (status, body) = post_json(
+        &site_listen,
+        "/commands",
+        &session,
+        &stop(workspace, &chat, &work, &format!("stop-again-{work}")),
+    )
+    .await;
+    assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
+    assert_eq!(body["outcome"], "accepted", "{body}");
+    let held_again = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
+        mechanical(snapshot).is_some_and(|line| line["text"] == STOPPED)
+    })
+    .await
+    .unwrap_or_else(|snapshot| {
+        panic!(
+            "the second Stop did not hold the resumed run\n{snapshot}\n{}",
+            tails(&site, &worker)
+        )
+    });
+    let resumed_run = mechanical(&held_again).unwrap()["resume_target"]["expected_run_id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    assert_ne!(resumed_run, run, "{held_again}");
+    let remain = Duration::from_millis(9_000).saturating_sub(resumed_at.elapsed());
+    tokio::time::sleep(remain).await;
+    let (status, body) = get_json(&site_listen, &snapshot_path, &session).await;
+    assert_eq!(status, 200, "{body}");
+    let snapshot = &body["snapshot"];
+    assert_eq!(
+        texts(snapshot),
+        ["Hello"],
+        "the resumed run published over the second Stop\n{snapshot}"
+    );
+    assert_eq!(mechanical(snapshot).unwrap()["text"], STOPPED, "{snapshot}");
+
+    // Sending something else ends the hold: that message is answered once,
+    // and neither stopped run's reply appears.
+    let (status, body) = post_json(
+        &site_listen,
+        "/commands",
+        &session,
+        &json!({
+            "type": "message.submit",
+            "idempotency_key": format!("key-{}", uuid::Uuid::new_v4().simple()),
+            "payload": {
+                "patient_workspace_id": workspace,
+                "chat_id": chat,
+                "text": "Something else",
+                "physician_time_zone": "America/New_York"
+            }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{body}\n{}", tails(&site, &worker));
+    assert_eq!(body["outcome"], "accepted", "{body}");
     let answered = wait_snapshot(&site_listen, &snapshot_path, &session, |snapshot| {
         texts(snapshot).contains(&support::FIXED_TEXT)
     })
     .await
     .unwrap_or_else(|snapshot| {
         panic!(
-            "Resume did not publish one successor\n{snapshot}\n{}",
+            "the message sent while stopped was never answered\n{snapshot}\n{}",
             tails(&site, &worker)
         )
     });
-    assert_eq!(texts(&answered), ["Hello", support::FIXED_TEXT]);
+    assert_eq!(
+        texts(&answered),
+        ["Hello", "Something else", support::FIXED_TEXT]
+    );
     assert!(mechanical(&answered).is_none(), "{answered}");
 }
 

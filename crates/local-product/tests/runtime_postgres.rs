@@ -362,19 +362,21 @@ async fn event_ack_stop_steering_and_late_candidate_fences() {
     drop(s);
     let s = store().await;
     assert!(s.claim(&scope, 60).await.unwrap().is_none());
+    // A new message releases the hold and a successor answers it. The
+    // stopped claim still cannot commit.
     let mut steer = input();
     steer.key = "steer".into();
     steer.text = "new instruction".into();
     s.accept(&scope, &steer).await.unwrap();
-    assert!(s.claim(&scope, 60).await.unwrap().is_none());
-    s.resume(&scope).await.unwrap();
-    let resumed = s.claim(&scope, 60).await.unwrap().unwrap();
+    assert!(s.commit(&claim, &candidate).await.is_err());
+    let answering = s.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(claim.attempt, answering.attempt);
     steer.key = "steer-again".into();
     s.accept(&scope, &steer).await.unwrap();
-    assert!(s.assert_current(&resumed).await.is_err());
-    assert!(s.commit(&resumed, &candidate).await.is_err());
+    assert!(s.assert_current(&answering).await.is_err());
+    assert!(s.commit(&answering, &candidate).await.is_err());
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
-    assert_ne!(resumed.attempt, next.attempt);
+    assert_ne!(answering.attempt, next.attempt);
     assert_eq!(s.conversation(&scope).await.unwrap().messages.len(), 3);
 }
 

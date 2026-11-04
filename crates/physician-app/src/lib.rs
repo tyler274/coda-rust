@@ -4596,17 +4596,17 @@ fn chat_resume_command(
     ))
 }
 
-/// Stop on the chat turn Coda is writing. The key names the work, so pressing
-/// again for the same work is the same request.
+/// Stop on the chat turn Coda is writing. Resume keeps the work's identity,
+/// so each press is its own command; a key that named the work would make a
+/// second Stop after Resume a replay of the first, which leaves the run going.
 fn chat_stop_command(
     workspace_id: Option<String>,
     chat_id: Option<String>,
     target: &WorkStopTarget,
 ) -> Option<Command> {
     let (workspace_id, chat_id) = (workspace_id?, chat_id?);
-    Some(Command::keyed(
+    Some(Command::new(
         "work.stop",
-        format!("stop-{}", target.work_item_id),
         serde_json::json!({
             "patient_workspace_id": workspace_id,
             "chat_id": chat_id,
@@ -4824,24 +4824,27 @@ mod conversation_line_tests {
     }
 
     #[test]
-    fn stop_is_one_keyed_command_for_the_named_work() {
+    fn each_stop_press_is_its_own_command_for_the_named_work() {
         let target = WorkStopTarget {
             work_item_id: "work-1".into(),
         };
         let command =
             chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();
+        assert_eq!(command.0["type"], "work.stop");
         assert_eq!(
-            command.0,
+            command.0["payload"],
             serde_json::json!({
-                "type": "work.stop",
-                "idempotency_key": "stop-work-1",
-                "payload": {
-                    "patient_workspace_id": "pw-1",
-                    "chat_id": "chat-1",
-                    "work_item_id": "work-1",
-                },
+                "patient_workspace_id": "pw-1",
+                "chat_id": "chat-1",
+                "work_item_id": "work-1",
             })
         );
+        // Resume keeps the work's identity, so a Stop after Resume must not
+        // reuse the earlier Stop's key: the server would answer it as that
+        // earlier, already-taken Stop and leave the resumed turn running.
+        let again = chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();
+        assert_ne!(command.0["idempotency_key"], again.0["idempotency_key"]);
+        assert_eq!(command.0["payload"], again.0["payload"]);
         assert!(chat_stop_command(None, Some("chat-1".into()), &target).is_none());
         assert!(chat_stop_command(Some("pw-1".into()), None, &target).is_none());
     }

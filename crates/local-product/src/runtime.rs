@@ -207,9 +207,11 @@ pub enum Resumed {
 /// Outcome of a physician's Stop on the current chat work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Stopped {
-    /// The conversation is held until Resume. Do not publish a wakeup.
+    /// The conversation is held until Resume or newer input. Do not publish a
+    /// wakeup.
     Held,
-    /// The exact same Stop was already taken.
+    /// The exact same Stop was already taken, or the named work is already
+    /// held.
     Duplicate,
     /// Nothing open to hold: missing, completed, or a different work identity.
     Refused,
@@ -449,10 +451,9 @@ impl Store {
             role: "user".into(),
             text: input.text.clone(),
         });
-        // New input steers ordinary work, but does not silently release intentional Stop.
-        if state.status != "held" {
-            state.status = "pending".into();
-        }
+        // New input steers ordinary work. After Stop it is the physician
+        // sending something else, which releases the hold and drops Resume.
+        state.status = "pending".into();
         Self::save(tx, scope, &state).await?;
         Ok(Accepted::New)
     }
@@ -755,13 +756,16 @@ impl Store {
         Ok(Resumed::Pending { input_id })
     }
 
-    /// Hosted Stop. Holds the named work until Resume, and only while that
-    /// work is still pending or active. A failed turn stays failed, so Try
-    /// again can resume it. The receipt is saved with the change: the same
-    /// `key` and work answers [`Stopped::Duplicate`]. A different command
-    /// under that key is refused. Completed work, a failed turn, a different
-    /// work identity, and a scope with no conversation are refused and the
-    /// new receipt is not kept. No wakeup is published.
+    /// Hosted Stop. Holds the named work until Resume or newer input, and
+    /// only while that work is still pending or active. Each hold names its
+    /// own run, so Resume keyed by that run is never a replay of an earlier
+    /// Resume. A failed turn stays failed, so Try again can resume it. The
+    /// receipt is saved with the change: the same `key` and work answers
+    /// [`Stopped::Duplicate`], and so does a new key while that work is
+    /// already held. A different command under that key is refused.
+    /// Completed work, a failed turn, a different work identity, and a scope
+    /// with no conversation are refused. Only a new hold keeps its receipt.
+    /// No wakeup is published.
     pub async fn stop_authorized(
         &self,
         scope: &Scope,
@@ -810,6 +814,12 @@ impl Store {
         };
         let mut state: Conversation =
             serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        // Another press on work that is already held, from a page that has
+        // not caught up or a second tab, finds what it asked for. Nothing
+        // changes, so its receipt is not kept.
+        if state.status == "held" && state.work == work_item_id {
+            return Ok(Stopped::Duplicate);
+        }
         // A failed turn stays Try again. Stop does not turn it into a hold.
         if !matches!(state.status.as_str(), "pending" | "active") || state.work != work_item_id {
             return Ok(Stopped::Refused);
@@ -820,12 +830,17 @@ impl Store {
             .filter(|attempt| attempt.status == "active")
         {
             attempt.status = "cancelled".into();
-        }
-        // Stop before a claim still needs a run Resume can name.
-        if state.attempts.is_empty() {
+        } else {
+            // Stop before a claim still needs a run Resume can name. The last
+            // run may be the one an earlier hold named and Resume already
+            // took, so this hold gets its own run, or Resume would be a replay.
             state.attempts.push(Attempt {
                 id: Uuid::new_v4().to_string(),
-                predecessor: None,
+                predecessor: state
+                    .attempts
+                    .last()
+                    .filter(|a| a.work == state.work)
+                    .map(|a| a.id.clone()),
                 work: state.work.clone(),
                 revision: state.revision,
                 status: "cancelled".into(),
