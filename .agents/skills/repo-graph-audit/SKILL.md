@@ -60,6 +60,19 @@ Use existing repo tooling when it provides the needed relationships. Small,
 task-local collectors are appropriate; do not create a universal parser, daemon,
 or graph database to perform this audit.
 
+When tracing a workflow through branch-heavy code, optionally run Lizard on the
+relevant file or directory at the selected revision. For example, from the
+Coda Rust checkout:
+
+```sh
+uvx --from lizard==1.17.31 lizard -l rust crates/physician-app/src/lib.rs
+```
+
+The `CCN` column estimates cyclomatic complexity per function. Lizard can exit 1
+after printing a report with warnings. Use the report to pick functions to
+read. A finding should identify which unrelated decisions a change
+forces the reader to understand and why that matters for the workflow.
+
 ## Build the owner and workflow layer
 
 Group files around responsibilities found in the repository, not a predefined

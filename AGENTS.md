@@ -30,7 +30,11 @@ submodule or a generated wire schema is not a specification, and is not restored
   prerequisites, effects and exits explicit. Handle cases that end the operation
   where they become clear, often with an early return, so the remaining work
   reads in sequence. Do the work, then branch on its result; don't fold an
-  action into a condition.
+  action into a condition. Keep each decision with the code that owns it. When
+  changing one behavior requires reasoning about unrelated state, separate those
+  responsibilities so the change can be understood locally. When control flow is
+  hard to follow, use cyclomatic complexity to locate branch-heavy functions and
+  check whether their decisions belong together.
 
 Move code toward these as you touch it; don't mass-convert just to comply.
 Clippy's rules in `[workspace.lints]` hold what a rule can tell right from wrong;
