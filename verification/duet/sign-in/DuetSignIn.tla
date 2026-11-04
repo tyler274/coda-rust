@@ -2,18 +2,16 @@
 (***************************************************************************)
 (* How a person signs in to Duet on iPhone or Android, stays signed in and *)
 (* signs out: the design drawn from README.md and intent/duet.md D1 and    *)
-(* D5.4. Each INVARIANT is one agreed sentence. The model is written from  *)
-(* the README, not from code; when the code is held to it, each action's   *)
-(* comment gains the code that carries it out.                             *)
+(* D5.4. Each INVARIANT is one agreed sentence.                            *)
 (*                                                                         *)
 (* One phone and two accounts, so the phone can pass from one person to    *)
 (* another. Duet owns the sessions and whether each account has accepted  *)
 (* the Terms; the phone keeps its session, where it was, its draft and     *)
 (* unsent entries across a restart, and knows only what Duet last         *)
 (* answered. When Duet ends a session, the phone finds out when Duet       *)
-(* refuses its next check or request; a notice to the open app may never   *)
-(* arrive. Another phone signing out everywhere, or Duet revoking the      *)
-(* session, is the one step "Duet ends the session".                       *)
+(* refuses its next check or request; nothing depends on Duet's notice to  *)
+(* the open app. Another phone signing out everywhere, or Duet revoking    *)
+(* the session, is the one step "Duet ends the session".                   *)
 (*                                                                         *)
 (* Each wait is a step of its own: Duet answers whenever it does, a        *)
 (* request may not get through, and the app may close at any moment.      *)
@@ -336,7 +334,7 @@ DuetEndsSession ==
     /\ Did("Duet ends " \o s)
 
 (* Duet's notice that the session ended reaches the open app, which then  *)
-(* checks. The notice may never arrive.                                     *)
+(* checks. Nothing depends on this step happening.                          *)
 NoticeArrives ==
   /\ Running /\ phone.holds \in Sessions /\ ~IsLive(phone.holds) /\ ~phone.told
   /\ phone' = [phone EXCEPT !.told = TRUE]
