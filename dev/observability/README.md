@@ -19,7 +19,7 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
 
 | Surface | Address |
 | --- | --- |
-| Langfuse UI | <http://localhost:3000> (`LANGFUSE_PORT` overrides the host port), `dev@coda.local` / `coda-local-dev` |
+| Langfuse UI | <http://localhost:3000> (`LANGFUSE_PORT` overrides the host port; 3030 belongs to the worker), `dev@coda.local` / `coda-local-dev` |
 | Collector OTLP | `http://localhost:4318` (HTTP), `localhost:4317` (gRPC) |
 | Collector health | <http://localhost:13133> |
 | Datadog-bound spans | `docker compose -f dev/observability/compose.yaml logs -f otel-collector` |

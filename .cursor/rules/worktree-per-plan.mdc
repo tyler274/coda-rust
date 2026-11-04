@@ -29,9 +29,12 @@ alongside the repo root:
 
 3. Do all plan work inside the worktree: edits, builds, tests, commits, and pushes.
    The nix dev shell still applies there (direnv picks up the repo's `.envrc`);
-   see [nix-dev-shell](nix-dev-shell.mdc).
+   see [nix-dev-shell](nix-dev-shell.mdc). On an Apple silicon Mac without Nix,
+   run `dev/apple-session.sh up` in the new worktree first, then run builds,
+   tests and commits through `dev/apple-session.sh exec <command>`.
 4. Open a PR from the worktree's branch. One plan = one worktree = one PR.
-5. Clean up after the PR merges:
+5. Clean up after the PR merges. On the Apple container route, run
+   `dev/apple-session.sh down` inside the worktree first to return its disk:
 
    ```bash
    git worktree remove ../worktrees/<slug>
