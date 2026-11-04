@@ -62,13 +62,13 @@ fn Footer() -> Element {
                     }
                     span { class: "foot-copy", "© 2026 Coda Health" }
                 }
+                // One column per product and one for the company, whose privacy
+                // policy and terms cover the site and both products.
                 div { class: "foot-cols",
                     div {
-                        span { class: "micro", "Coda" }
+                        span { class: "micro", "Chords" }
                         a { href: "/#physicians", "For physicians" }
                         a { href: "/clinical-transparency", "Clinical Transparency" }
-                        a { href: "/privacy", "Privacy" }
-                        a { href: "/terms", "Terms" }
                     }
                     div {
                         span { class: "micro", "Duet" }
@@ -78,8 +78,10 @@ fn Footer() -> Element {
                         a { href: "/duet/consumer-health-data", "Consumer Health Data Privacy Policy" }
                     }
                     div {
-                        span { class: "micro", "Contact" }
+                        span { class: "micro", "Coda Health" }
                         a { href: site::contact_mailto(), "{site::CONTACT_EMAIL}" }
+                        a { href: "/privacy", "Privacy" }
+                        a { href: "/terms", "Terms" }
                     }
                 }
             }

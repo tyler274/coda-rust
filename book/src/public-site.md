@@ -30,6 +30,15 @@ same values inline), `noscript.css` reveals content when scripts are disabled, a
 `chrome.js` floats the nav after 8px of scroll. Reduced motion is decided by
 `site.js` at load.
 
+Chords, the physician product, and Duet, the patient product, are presented the same
+way. The Chords lockup on `/` introduces the physician product as the Duet lockup
+introduces the patient one: each product's mark and wordmark (`brand/chords/`,
+`brand/duet/`) with its audience, in the `duet-brand` lockup styles, through one
+component (`ProductLockup` in `src/pages/brand.rs`). The footer's link columns are
+Chords, Duet and Coda Health: each product's pages under its name, and the company's
+contact, privacy policy and terms, which cover the site and both products, under
+Coda Health.
+
 The Duet story (`src/pages/phones.rs`) shows Duet on `/` and `/duet` as one story
 across three phones. It reuses `site.css` phone hardware and the stage scaling and
 landscapes `site.js` applies to every frame, but its classes (`duet-story`, `ds-*`)

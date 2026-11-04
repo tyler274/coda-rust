@@ -1,3 +1,4 @@
+use super::brand::{Product, ProductLockup};
 use super::phones::Phones;
 use dioxus::prelude::*;
 
@@ -20,12 +21,7 @@ pub fn Duet() -> Element {
     rsx! {
         header { class: "hero",
             div { class: "hero-copy",
-                div { class: "duet-brand duet-brand-hero rv",
-                    span { class: "duet-brand-lockup",
-                        img { class: "duet-brand-mark", src: "/brand/duet/mark.svg", width: "400", height: "400", alt: "" }
-                        img { class: "duet-brand-wordmark", src: "/brand/duet/wordmark.svg", width: "440", height: "170", alt: "Duet" }
-                    }
-                }
+                ProductLockup { product: Product::Duet, hero: true }
                 p { class: "kicker rv", style: "--d:0.03s", "Your health, in context" }
                 h1 { class: "rv", style: "--d:0.06s", "A clearer picture of you." }
                 p { class: "lede rv", style: "--d:0.12s", "Duet brings together the health information you choose, notices a few supported patterns, and helps you prepare the useful parts for a conversation with your doctor." }

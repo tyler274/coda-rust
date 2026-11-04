@@ -116,7 +116,7 @@ impl Route {
             Self::ConsumerHealthData {} => ("Duet Consumer Health Data Privacy Policy".into(), "Consumer Health Data Privacy Policy for Duet by Coda Health, under Washington's My Health My Data Act.".into()),
             Self::Privacy {} => ("Privacy Policy".into(), "How Coda Health handles information through its website and related services.".into()),
             Self::Terms {} => ("Terms of Service".into(), "Terms of Service for the Coda Health website and related services.".into()),
-            Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Coda supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
+            Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Chords supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
             Self::Scheduling {} => ("Schedule with Dev Patale".into(), "Book a conversation with Dev Patale about clinical environments, health-agent evaluation, and health AI research.".into()),
             Self::NotFound { .. } => ("Page Not Found".into(), "The requested page could not be found.".into()),
         };

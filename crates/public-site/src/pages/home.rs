@@ -1,3 +1,4 @@
+use super::brand::{Product, ProductLockup};
 use super::phones::Phones;
 use dioxus::prelude::*;
 
@@ -406,10 +407,7 @@ pub fn Home() -> Element {
         section { class: "sec", id: "physicians",
             div { class: "wrap",
                 div { class: "sec-head center rv",
-                    span { class: "kicker",
-                        b { "Coda" }
-                        " for physicians"
-                    }
+                    ProductLockup { product: Product::Chords, audience: "for physicians" }
                     h2 { "The work between visits, ready for you." }
                     p {
                         "When a result or message arrives, Coda pulls up the patient, your last plan, and what changed."
@@ -970,25 +968,7 @@ pub fn Home() -> Element {
         section { class: "sec", id: "patients",
             div { class: "wrap",
                 div { class: "sec-head center rv",
-                    div { class: "duet-brand",
-                        span { class: "duet-brand-lockup",
-                            img {
-                                alt: "",
-                                class: "duet-brand-mark",
-                                height: "400",
-                                src: "/brand/duet/mark.svg",
-                                width: "400",
-                            }
-                            img {
-                                alt: "Duet",
-                                class: "duet-brand-wordmark",
-                                height: "170",
-                                src: "/brand/duet/wordmark.svg",
-                                width: "440",
-                            }
-                        }
-                        span { class: "duet-brand-label", "for patients" }
-                    }
+                    ProductLockup { product: Product::Duet, audience: "for patients" }
                     h2 { "Understand your health between visits." }
                     p { "Track your readings. Prepare for your visit. Share only what you choose." }
                 }

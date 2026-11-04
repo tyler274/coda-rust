@@ -1,4 +1,5 @@
 //! Public page components, rendered once at startup.
+mod brand;
 mod clinical_transparency;
 mod duet;
 mod home;
