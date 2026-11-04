@@ -20,6 +20,7 @@ export const state = (v) => {
   const p = v.phone;
   const screen = screens[p.screen] ?? p.screen;
   if (p.whose === "Nobody") return screen;
+  if (screen === "Terms" && p.asks.startsWith("Accepting")) return "Terms agreed, waiting for Duet: theirs";
   return `${screen}: ${p.whose === "Yours" ? "yours" : "theirs"}`;
 };
 

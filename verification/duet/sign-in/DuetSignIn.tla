@@ -353,7 +353,11 @@ DuetTakesEntries ==
                    [] r.screen = Saving -> [r EXCEPT !.screen = Warning]
                    [] OTHER -> r
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("Duet takes the entries", IF phone.screen \in {Saving, Warning} THEN "F20" ELSE "F13")
+  /\ Did("Duet takes the entries",
+          CASE phone.screen = Warning -> "F20"
+            [] phone.screen = Saving /\ phone.draft = Nobody -> "F18"
+            [] phone.screen = Saving -> "F19"
+            [] OTHER -> "F13")
 
 StaySignedIn ==
   /\ phone.screen = Warning
