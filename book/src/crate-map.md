@@ -8,7 +8,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- | --- | --- |
 | `ui` | [`src/lib.rs`](/crates/ui/src/lib.rs) | Coda's design, as a catalog of AI-native component families: tokens, icons, and each component's look, motion, gestures, states and accessibility, with no product rules | — |
 | `extension-popup` | [`src/lib.rs`](/crates/extension-popup/src/lib.rs) | The Chrome extension's popup, built from `ui`: where the connection stands, in one line, and its one action. The extension's worker owns the connection | [Chrome extension](#chrome-extension) |
-| `http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
+| `coda-http` | [`src/lib.rs`](/crates/http/src/lib.rs) | Request and stream mechanics with no schema knowledge | [Backend architecture](backend-architecture.md) |
 | `gmail` | [`src/lib.rs`](/crates/gmail/src/lib.rs) | Plain-text or HTML messages through the Gmail API or the Workspace SMTP relay, plus the intake primitives: push-wake routing ([`src/push.rs`](/crates/gmail/src/push.rs)) and the `history.list` cursor reader ([`src/history.rs`](/crates/gmail/src/history.rs)). Products own the copy, the links, the durable cursor and the effects | [GCP](gcp.md) |
 | `spruce` | [`src/lib.rs`](/crates/spruce/src/lib.rs) | Read-only Spruce REST reader and change cursor. Products own the cursor store, the effects, and patient linking | — |
 | `pubsub` | [`src/lib.rs`](/crates/pubsub/src/lib.rs) | Pub/Sub push-envelope decoding, the loopback-emulator check and the official publisher; the `test-util` feature is the disposable emulator for tests (dev-dependencies only, checked by `boundaries`) | [GCP](gcp.md) |

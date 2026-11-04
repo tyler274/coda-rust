@@ -101,7 +101,7 @@ mod tests {
 
     #[test]
     fn shared_harness_is_product_neutral_and_has_no_product_store() {
-        let allowed = ["harness", "agent-skills", "http"];
+        let allowed = ["harness", "agent-skills", "coda-http"];
         for dependency in local_closure("harness") {
             assert!(
                 allowed.contains(&dependency.as_str()),

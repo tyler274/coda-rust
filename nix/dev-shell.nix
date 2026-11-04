@@ -202,7 +202,7 @@ PGCTL
     # Git hooks live in .githooks (pre-commit runs rustfmt + clippy).
     # Idempotent: only set when not already configured, so a local
     # override survives.
-    if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
+    if [ "$(git rev-parse --git-dir 2>/dev/null)" ] && ! git config --get core.hooksPath >/dev/null; then
       git config core.hooksPath .githooks
     fi
     # Set last, after every PATH and linker fix above, so a hook that

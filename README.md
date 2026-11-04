@@ -161,65 +161,66 @@ or host networking, so "Reopen in Container" and `act` do not work with it, and
 Rosetta cannot host the x86_64 shell because it does not preserve `argv[0]`,
 which Nix's Python wrappers rely on. CI remains the x86_64 proof.
 
+Each checkout or worktree gets its own container, called a session, so several
+agents can build and run the app side by side. Set up once, then use a session
+per worktree:
+
 ```sh
-brew install --formula container
-dev/apple-container.sh
-dev/apple-container.sh exec cargo test -p ui
+brew bundle
+dev/apple-session.sh seed
+dev/apple-session.sh up
+dev/apple-session.sh exec cargo test -p ui
+dev/apple-session.sh down
 ```
 
-`exec` runs one command in the dev shell of the checkout or worktree you run it
-from, using that tree's own flake, and starts the container if it is stopped. It
-needs no terminal, so agents use it the same way. `dev/apple-container.sh exec bash`
-opens a shell for the longer steps below.
+`seed` builds the shared starting point: the Nix store, the Cargo home and the
+third-party build output. It takes about 20 minutes and rerunning it picks up new
+dependencies; a session also fetches and builds whatever the seed lacks, so
+rerun it when sessions start spending their time there. `up` takes seconds, because
+it makes APFS clones of those volumes, which share disk with the seed until they
+diverge. A session's own builds take 20 to 30 GB at their peak, and `down` returns
+them. `prune` removes the sessions of worktrees that no longer exist, and `status`
+lists them all.
 
-`exec` occasionally fails before the command starts with `failed to read index:
-... no longer exists`. The cause is unknown. Run the same command again; the error
-does not mean the container is broken or justify `--no-verify`.
+The session mounts the worktree and the shared `.git` at their Mac paths, so edit
+files with your usual tools. `target/` is a volume inside the container, so build
+output is not visible from the Mac, except `target/verification`, which stays on
+the Mac after `down`. `exec` runs one command in the
+[unattended dev shell](#unattended-development) and needs no terminal, so agents
+use it the same way; `dev/apple-session.sh exec bash` opens a shell for the longer
+steps below.
 
-One container serves the main checkout and every worktree inside it. A worktree
-outside the checkout is not visible to it. Build output goes to the shared
-`/workspace/target` volume (`CARGO_TARGET_DIR`), so concurrent builds wait for each
-other. Browser tests build their WASM in the worktree's own `target`, on the Mac's
-disk, which removing the worktree frees.
+A file replaced from the Mac or another session can read as missing for about a
+second, which shows up as errors like `failed to read index: ... no longer exists`.
+Run the same command again; the error does not mean the session is broken or
+justify `--no-verify`.
 
-The script takes `CODA_CONTAINER_NAME`, `CODA_CONTAINER_CPUS` and
-`CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and `target` live in volumes
-named after the container.
+Sessions run with `CODA_SESSION_CPUS`, `CODA_SESSION_MEMORY` (12 GB by default)
+and `CODA_SESSION_JOBS`. A second clone of the repository on the same Mac needs its
+own `CODA_SESSION_PREFIX` and `CODA_SESSION_PORT_BASE`. The cloning swaps the image
+file inside a volume, which `container` has no command for, so a new release of
+the tool could need a change here.
 
-Those images grow as needed and never shrink on their own, so `exec` starts a
-background cleanup once a day and logs it to `/tmp/coda-clean.log` in the container.
-It removes abandoned shell temporary directories, collects Nix garbage while keeping
-the dev shell of the worktree that started it, deletes Cargo artifacts older than
-three days from target directories no build holds, and trims the images.
-`dev/apple-container.sh clean` does the same now. Trimming needs a container created
-with `CAP_SYS_ADMIN`: run `container rm -f <name>`, then this script, to recreate an
-older one. The volumes stay, but the container's own disk, including `/tmp` and the
-Git identity below, does not.
-
-The script publishes ports 8790 and 8080 on loopback, so stop
-one container before starting another under a new name, which only a second clone
-needs. Rerun the script after a restart rather than `container start` alone.
-
-Bind a server to `0.0.0.0` to reach it from the Mac. The physician page needs its
-bundle first:
+Servers keep their usual ports inside the session. `up` prints the Mac address of
+each one, and `exec` binds them where those addresses reach. The local practice
+builds the physician page and runs on the session's own Postgres:
 
 ```sh
-cargo build -p physician-app --target wasm32-unknown-unknown --features web
-wasm-bindgen --target web --out-dir target/physician-web "$CARGO_TARGET_DIR/wasm32-unknown-unknown/debug/physician-app.wasm"
-PHYSICIAN_LISTEN_ADDR=0.0.0.0:8790 cargo run -p physician-sample
+url=$(dev/apple-session.sh postgres)
+dev/apple-session.sh exec env PHYSICIAN_DATABASE_URL="$url" scripts/local-practice.sh
 ```
 
 The UI gallery builds and serves with one command, here on the published port:
 
 ```sh
-UI_GALLERY_LISTEN_ADDR=0.0.0.0:8080 scripts/ui-gallery.sh
+dev/apple-session.sh exec scripts/ui-gallery.sh
 ```
 
-Live chat on the physician page needs the Codex CLI and `codex login` in the container, or
+Live chat on the physician page needs the Codex CLI and `codex login` in the session, or
 a [replay cassette](#physician-chat-codex-cli). The dev shell does not include it.
 
-The script starts no Postgres service, and the database-backed tests fail without
-one. Start a disposable cluster, point the tests at it as
+The session's Postgres lasts as long as the session. The database-backed tests
+need a cluster of their own, so run these in `dev/apple-session.sh exec bash`. Point the tests at it as
 [CI](.github/workflows/ci.yml) does, and clear the encoder model path unless that
 directory exists, because the dev shell always sets it. The browser tests build
 offline, so fetch their crates first:
@@ -237,14 +238,13 @@ cargo test -p physician-sample --test site --test auth_browser -- --ignored
 ```
 
 `duet-api` also needs the [schema setup](book/src/backend-architecture.md#persistence-and-migrations)
-and its Doppler secrets; bind it with `DUET_LISTEN_ADDR=0.0.0.0:8080`.
+and its Doppler secrets, which the unattended shell leaves out.
 
-Commit through the container, so the pre-commit hook runs. The hook cannot run on a
-Mac without Nix. Set your Git identity there once; pushing stays on the Mac, which
-holds your credentials:
+Commit through the session, so the pre-commit hook runs. The hook cannot run on a
+Mac without Nix. `up` copies your Git identity from the Mac. Fetching submodules and
+pushing stay on the Mac, which holds your credentials:
 
 ```sh
-dev/apple-container.sh exec git config --global user.name "Your Name"
-dev/apple-container.sh exec git config --global user.email you@example.com
-dev/apple-container.sh exec git commit -m "Your message"
+dev/apple-session.sh exec git commit -m "Your message"
+git push
 ```

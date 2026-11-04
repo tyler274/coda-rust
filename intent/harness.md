@@ -4,7 +4,7 @@ The harness is the agent loop that Coda Agents and Duet both run on. It isn't a 
 
 ## What it is for
 
-There is one product-neutral loop, in the shared `harness` crate beside the shared `ui` and `http` crates. It carries the provider and tool protocol, runs the model→tool→model cycle, handles scheduling and cancellation mechanics, measures context, and emits neutral, ordered events. There's no second engine and no shared runtime service.
+There is one product-neutral loop, in the shared `harness` crate beside the shared `ui` and `coda-http` crates. It carries the provider and tool protocol, runs the model→tool→model cycle, handles scheduling and cancellation mechanics, measures context, and emits neutral, ordered events. There's no second engine and no shared runtime service.
 
 A good harness is about context management and safety, and not much else. Everything that makes a product what it is stays with that product: clinical types, accounts, consent, evidence, context policy, model roles and instructions, which tools and skills are admitted, durable state, scheduling, effects, commit, recovery and how a run ends. The harness carries those through execution without owning them.
 
