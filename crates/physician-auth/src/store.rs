@@ -75,7 +75,12 @@ impl PostgresAuthStore {
             .max_connections(8)
             .connect_timeout(Duration::from_secs(10));
         let db = Database::connect(options).await?;
-        Ok(Self { db })
+        Ok(Self::from_connection(db))
+    }
+
+    /// Uses an existing pool without applying migrations or changing its limits.
+    pub fn from_connection(db: DatabaseConnection) -> Self {
+        Self { db }
     }
 
     /// The runtime pool, for the authority change listener.
