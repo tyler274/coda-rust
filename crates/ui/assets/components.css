@@ -133,7 +133,7 @@
 /* Buttons: the one filled action, a white one on a
    hairline, and text alone. A host places a control through its own class; it never restyles one. A surface may set the
    control's component tokens (width, height, shape, quiet colour) once at its root. */
-.control { position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
+.control { position: relative; display: inline-flex; align-items: center; justify-content: var(--control-justify, center); gap: var(--space-2); width: var(--control-width, fit-content); min-width: var(--target); min-height: var(--control-min-height, var(--control-height)); padding: var(--space-1) var(--space-4); border: var(--hairline) solid transparent; border-radius: var(--control-radius, var(--radius-pill)); cursor: pointer; font: var(--type-label-lg); text-decoration: none; white-space: nowrap; -webkit-tap-highlight-color: transparent; transition: color var(--motion-control) var(--ease-out), border-color var(--motion-control) var(--ease-out), background-color var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out), box-shadow var(--motion-arrive) var(--ease-out); }
 .control-primary { border-color: var(--primary); background: var(--primary); color: var(--on-primary); box-shadow: var(--elevation-1); }
 .control-secondary { border-color: var(--outline-variant); background: var(--surface-lowest); color: var(--ink); box-shadow: var(--elevation-1); }
 .control-quiet { padding: var(--space-2) var(--space-3); border-color: transparent; background: transparent; color: var(--control-quiet-color, var(--muted)); font-weight: var(--weight-regular); }
@@ -152,6 +152,10 @@
 /* A key hint beside a control's words, where there is a keyboard. */
 .key-hint { margin-inline-start: var(--space-1); color: inherit; opacity: .72; font: inherit; font-weight: var(--weight-regular); }
 @media (pointer: coarse) { .key-hint { display: none; } }
+/* A row's own mark is quieter than its words until the row is the current place; a key hint keeps the far edge. */
+.navigation-row > .icon { color: var(--muted); }
+.navigation-row[aria-current]:not([aria-current="false"]) > .icon { color: var(--ink); }
+.navigation-row > .key-hint { margin-inline-start: auto; }
 .control-compact { width: fit-content; min-height: var(--control-compact-height); padding: var(--space-1) var(--space-3); }
 .control-quiet { padding-inline: var(--control-quiet-padding-inline, var(--space-3)); }
 .control-icon { width: var(--control-height); height: var(--control-height); min-width: var(--control-height); min-height: var(--control-height); padding: var(--space-2); }
@@ -619,6 +623,7 @@ del > .diff-sign, .diff-removed { color: var(--error); }
 @keyframes chart-reveal { from { clip-path: inset(calc(-1 * var(--space-2)) 100% calc(-1 * var(--space-2)) calc(-1 * var(--space-2))); } to { clip-path: inset(calc(-1 * var(--space-2))); } }
 @keyframes chart-point { from { opacity: 0; transform: scale(.4); } }
 /* A card holding one object: what it holds, its title, its content and its source. */
+.rail-card-expand { display: grid; justify-items: center; gap: var(--space-1); width: 100%; padding: var(--space-3) 0; color: var(--muted); }
 .card-object { display: grid; gap: var(--space-4); padding: var(--space-5); border: var(--hairline) solid var(--outline-variant); box-shadow: none; }
 .card-object.is-tinted { background: var(--data-container); }
 .card-lead { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }

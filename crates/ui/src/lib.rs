@@ -36,7 +36,7 @@ pub use agent::{
     WorkTrace,
 };
 pub use attachments::{AttachButton, Attachment, AttachmentState, Attachments};
-pub use cards::{Card, Quote};
+pub use cards::{Card, Quote, RailCard};
 pub use charts::{
     ChartHeader, Comparison, ComparisonBars, MeasurementTile, RunningChart, SeriesChart,
     SeriesPoint, SeriesShape, Sparkline, Value,

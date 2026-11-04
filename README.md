@@ -234,7 +234,7 @@ export FRONT_DOOR_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
 unset DUET_DISCOVERY_ENCODER_MODEL CODA_PATIENT_ENCODER_MODEL
 cargo test --workspace
 cargo fetch --locked --target wasm32-unknown-unknown
-cargo test -p physician-sample --test site --test auth_browser --test sign_in_states -- --ignored
+cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states -- --ignored
 ```
 
 `duet-api` also needs the [schema setup](book/src/backend-architecture.md#persistence-and-migrations)

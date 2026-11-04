@@ -34,7 +34,7 @@ pub async fn spawn_required_server() -> common::IsolatedServer {
 
 /// Builds the WASM site once for this test binary; the two browser tests
 /// would otherwise race two cargo builds over one output directory.
-fn shared_site() -> PathBuf {
+pub fn shared_site() -> PathBuf {
     static SITE: OnceLock<PathBuf> = OnceLock::new();
     SITE.get_or_init(build_site).clone()
 }

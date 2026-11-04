@@ -254,7 +254,7 @@ jobs:
         # React comparison still requires a separate practice on port 8787.
         # backend_process is a child-only helper, launched by its parent proof.
         run: |
-          cargo test -p physician-sample --test site --test auth_browser --test sign_in_states -- --ignored
+          cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states -- --ignored
           cargo test -p public-site --test site -- --ignored
           cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
           cargo test -p ui-gallery --test sections -- --ignored
