@@ -41,13 +41,13 @@ pub struct PageMeta {
     pub noindex: bool,
 }
 
-/// The original's two page systems. Each decides a document's stylesheets and the
-/// markup around its main content, as the original's homepage and utility layouts do.
+/// The site's two page systems. Each decides a document's stylesheets and the markup
+/// around its main content.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Shell {
-    /// The homepage and /duet: the original styles and motion script.
+    /// The homepage and /duet: the homepage styles and motion script.
     Homepage,
-    /// Every other page: the original's compiled Tailwind stylesheet.
+    /// Every other page: the compiled Tailwind stylesheet.
     Utility,
 }
 
@@ -86,7 +86,7 @@ impl Route {
         pages
     }
 
-    /// The pages the sitemap lists, in the original's order: current documents only.
+    /// The pages the sitemap lists, in order: current documents only.
     /// Archived policy versions stay reachable from their policy pages, not advertised.
     pub fn sitemap() -> Vec<Self> {
         vec![

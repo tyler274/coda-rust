@@ -131,16 +131,25 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
             .to_vec(),
     )
     .unwrap();
-    // The same locations, in the same order, as production's sitemap.
-    let locations = |xml: &str| -> Vec<String> {
-        xml.split("<loc>")
-            .skip(1)
-            .map(|part| part.split("</loc>").next().unwrap().to_owned())
-            .collect()
-    };
+    // Current documents only, in this order; archived versions are reached from their
+    // policy pages.
+    let locations: Vec<_> = sitemap
+        .split("<loc>")
+        .skip(1)
+        .map(|part| part.split("</loc>").next().unwrap())
+        .collect();
     assert_eq!(
-        locations(&sitemap),
-        locations(include_str!("fixtures/served/sitemap.xml"))
+        locations,
+        [
+            "https://codahealth.ai/",
+            "https://codahealth.ai/duet",
+            "https://codahealth.ai/clinical-transparency",
+            "https://codahealth.ai/privacy",
+            "https://codahealth.ai/terms",
+            "https://codahealth.ai/duet/privacy",
+            "https://codahealth.ai/duet/terms",
+            "https://codahealth.ai/duet/consumer-health-data",
+        ]
     );
     let response = app
         .clone()
@@ -154,8 +163,7 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
         .unwrap();
     assert_eq!(
         to_bytes(response.into_body(), usize::MAX).await.unwrap(),
-        include_str!("fixtures/served/robots.txt").as_bytes(),
-        "robots.txt is what production serves"
+        "User-Agent: *\nAllow: /\n\nHost: https://codahealth.ai\nSitemap: https://codahealth.ai/sitemap.xml\n"
     );
     for path in [
         "/physicians",
@@ -186,43 +194,67 @@ async fn every_route_metadata_sitemap_and_retired_routes() {
     }
 }
 
-/// Status and redirect target for every probe, as production served them (including
-/// Next's trailing-slash rule); see tests/fixtures/served/responses.json.
+/// Every page answers 200; a trailing slash is removed with a 308 that keeps the query,
+/// for pages, unknown paths and assets alike; an unknown path is 404. Every response
+/// carries HSTS.
 #[tokio::test]
-async fn urls_resolve_redirect_and_set_hsts_as_production_serves_them() {
+async fn urls_resolve_redirect_and_set_hsts() {
     let app = router_with_options(
         prerender(&Config::default()),
         RuntimeConfig::default(),
         [],
         Readiness::ready(),
     );
-    let served: serde_json::Value =
-        serde_json::from_str(include_str!("fixtures/served/responses.json")).unwrap();
-    for (path, expected) in served.as_object().unwrap() {
+    let pages = [
+        "/",
+        "/duet",
+        "/duet/privacy",
+        "/duet/privacy/2026-09-09",
+        "/duet/privacy/2026-09-23",
+        "/duet/privacy/2026-09-24",
+        "/duet/terms",
+        "/duet/terms/2026-09-08",
+        "/duet/consumer-health-data",
+        "/privacy",
+        "/terms",
+        "/clinical-transparency",
+        "/scheduling/dev",
+    ];
+    let mut probes: Vec<(String, u16, Option<String>)> = Vec::new();
+    for page in pages {
+        probes.push((page.to_owned(), 200, None));
+        if page != "/" {
+            probes.push((format!("{page}/"), 308, Some(page.to_owned())));
+        }
+    }
+    for (path, status, location) in [
+        ("/duet//", 308, Some("/duet/")),
+        ("/duet/?a=1", 308, Some("/duet?a=1")),
+        ("/does-not-exist", 404, None),
+        ("/does-not-exist/", 308, Some("/does-not-exist")),
+        ("/brand/duet/mark.svg/", 308, Some("/brand/duet/mark.svg")),
+        ("/api/health/", 308, Some("/api/health")),
+    ] {
+        probes.push((path.to_owned(), status, location.map(str::to_owned)));
+    }
+    for (path, status, location) in probes {
         let response = app
             .clone()
-            .oneshot(Request::builder().uri(path).body(Body::empty()).unwrap())
+            .oneshot(Request::builder().uri(&path).body(Body::empty()).unwrap())
             .await
             .unwrap();
-        assert_eq!(
-            response.status().as_u16(),
-            expected["status"].as_u64().unwrap() as u16,
-            "{path}"
-        );
+        assert_eq!(response.status().as_u16(), status, "{path}");
         assert_eq!(
             response
                 .headers()
                 .get("location")
                 .map(|value| value.to_str().unwrap()),
-            expected["location"].as_str(),
+            location.as_deref(),
             "{path}"
         );
         assert_eq!(
-            response
-                .headers()
-                .get("strict-transport-security")
-                .map(|value| value.to_str().unwrap()),
-            expected["strictTransportSecurity"].as_str(),
+            response.headers().get("strict-transport-security").unwrap(),
+            "max-age=63072000",
             "{path}"
         );
     }

@@ -87,8 +87,8 @@ fn router_with_gate(
         ),
         noindex: page.meta.noindex,
     };
-    // Each location resolves its path against the origin, as the original's sitemap
-    // does, so the homepage is listed with its slash.
+    // Each location resolves its path against the origin, so the homepage is listed
+    // with its slash.
     let sitemap = format!(
         "<?xml version=\"1.0\" encoding=\"UTF-8\"?><urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">{}</urlset>",
         crate::Route::sitemap()
@@ -103,7 +103,7 @@ fn router_with_gate(
         .expect("site origin")
         .origin()
         .ascii_serialization();
-    // The original's app/robots.ts as Next serializes it: allow all, with host and sitemap.
+    // Allow all, with host and sitemap.
     let robots = if runtime.staging {
         "User-agent: *\nDisallow: /\n".to_owned()
     } else {

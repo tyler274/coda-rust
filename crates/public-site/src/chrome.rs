@@ -2,11 +2,11 @@ use crate::{Config, Route, route::Shell, site};
 use dioxus::prelude::*;
 
 /// Shared server-rendered layout. Ordinary anchors deliberately need no JS router.
-/// Each shell's markup is the original layout's, so the original stylesheets apply as-is.
+/// Each shell's markup is the one its stylesheets are written for.
 #[component]
 pub fn Chrome() -> Element {
     let route = use_route::<Route>();
-    // The original's legal pages share one page component, which marks its main.
+    // The legal pages share one page component, which marks its main.
     let main_class = match route {
         Route::Home {} | Route::Duet {} | Route::Scheduling {} | Route::NotFound { .. } => None,
         _ => Some("legal-page"),

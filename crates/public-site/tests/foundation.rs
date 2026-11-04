@@ -1,4 +1,5 @@
-//! Focused scaffold proof; full route/parity/browser testing follows in its own phase.
+//! Every route renders through the real router with the shared chrome, Sign in appears
+//! only when offered, and the server serves only the bytes built at startup.
 use axum::{
     body::{Body, to_bytes},
     http::{Method, Request, StatusCode},

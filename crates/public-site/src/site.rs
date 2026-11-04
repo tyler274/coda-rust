@@ -1,5 +1,4 @@
-//! Site-wide facts, each stated once. Ported from kytos `lib/site.ts` and
-//! `lib/metadata.ts`.
+//! Site-wide facts, each stated once.
 
 /// The canonical origin every canonical URL and share image resolves against.
 pub const SITE_ORIGIN: &str = "https://codahealth.ai";

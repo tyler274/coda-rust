@@ -7,6 +7,7 @@ Run from the workspace root in Nix:
 import hashlib
 from html.parser import HTMLParser
 import json
+from pathlib import Path
 import re
 import subprocess
 import sys
@@ -15,8 +16,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 
-# kytos public/homepage/site.js at the reviewed snapshot commit (provenance.json).
-ORIGINAL_SITE_JS_SHA256 = "672b93cee690408b072033feb643a1e15dfe70d7022a5d5c2b5d79482bf59b80"
+# The motion script the image must embed: the workspace's own copy.
+SITE_JS = Path(__file__).resolve().parents[3] / "crates/public-site/assets/homepage/site.js"
 
 
 def docker(*args):
@@ -133,7 +134,7 @@ def main():
         for path in ["/physician", "/physician/today"]:
             assert fetch(base, path)[0] == 404, path
         print(f"Homepage: 200, {len(body)} bytes, title/canonical/description/main/footer valid; no physician upstream, so no Sign in and /physician 404")
-        # The homepage system: original styles, frame reservation and the no-script reveal.
+        # The homepage system: its styles, frame reservation and the no-script reveal.
         assert [path.rsplit("/", 1)[1] for path in document.styles] == [
             "chrome.css", "site.css", "stage.css", "duet.css", "noscript.css"], document.styles
         for path in document.styles:
@@ -156,8 +157,9 @@ def main():
         status, headers, js = fetch(base, motion)
         assert status == 200 and "javascript" in headers["Content-Type"]
         assert "immutable" in headers["Cache-Control"]
-        assert hashlib.sha256(js).hexdigest() == ORIGINAL_SITE_JS_SHA256
-        print(f"Motion: chrome.js, the original site.js and the site-owned duet.js served; site.js sha256 {ORIGINAL_SITE_JS_SHA256}")
+        site_js_sha256 = hashlib.sha256(SITE_JS.read_bytes()).hexdigest()
+        assert hashlib.sha256(js).hexdigest() == site_js_sha256
+        print(f"Motion: chrome.js, site.js and duet.js served; site.js sha256 {site_js_sha256} matches the workspace")
         for path in ["/healthz", "/readyz"]:
             assert fetch(base, path)[0] == 200, path
         status, headers, body = fetch(base, "/api/health")

@@ -59,8 +59,7 @@ pub fn render_page(route: &Route, config: &Config) -> Page {
     }
 }
 
-/// The original's head: page metadata as its lib/metadata.ts states it, site icons as its
-/// root layout declares them, and each shell's stylesheets.
+/// The document head: page metadata, site icons, and each shell's stylesheets.
 #[component]
 fn Document(meta: PageMeta, shell: Shell) -> Element {
     rsx! {

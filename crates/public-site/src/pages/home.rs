@@ -1393,7 +1393,7 @@ pub fn Home() -> Element {
                 }
             }
         }
-        // The original motion script, served byte-for-byte (see tests/parity.rs).
+        // The motion script, which also paints the landscapes.
         script { src: "/homepage/site.js", defer: true }
         script { src: "/homepage/duet.js", defer: true }
     }

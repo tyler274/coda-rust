@@ -65,8 +65,8 @@ impl AssetTable {
             );
             table.aliases.insert(path, hashed);
         }
-        // Next's social endpoint is extensionless; preserve that public URL
-        // while serving the embedded PNG with its correct image content type.
+        // The social image's public URL is extensionless; serve the embedded PNG there
+        // with its correct image content type.
         if let Some(image) = table
             .assets
             .get("/scheduling/dev/opengraph-image.png")

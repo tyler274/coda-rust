@@ -8,8 +8,6 @@ by the site. Sign-in exists only where `PHYSICIAN_APP_URL` is configured: that o
 setting mounts the same-origin `/physician/` proxy and renders the nav's Sign in
 link. Staging sets it; production doesn't, so production offers no sign-in and
 `/physician/` is an ordinary 404.
-`submodules/kytos` is an optional read-only developer reference, never a build,
-test, CI, or runtime dependency.
 
 ## Application contract
 
@@ -23,39 +21,31 @@ representations once; requests do not render Dioxus or query a database. The ser
 serves content-addressed immutable assets and HTML with bounded public/shared-cache
 lifetimes, encoding-specific ETags, conditional requests and bodyless HEAD responses.
 Every response carries `Strict-Transport-Security: max-age=63072000`.
-Motion is `/homepage/site.js`, a reviewed snapshot served byte-for-byte on `/` and
-`/duet`. It also paints the landscapes. Parity therefore holds by construction: `tests/parity.rs`
-fails if the shipped script, `site.css` or `chrome.css` differ from the reviewed
-snapshots, and the browser proof fails if the hero pointer jumps instead of
-gliding. Site-owned additions are layout or fallback only, never motion:
-`stage.css` reserves and scales each product frame before the script runs (it then
-sets the same values inline), `noscript.css` reveals content when scripts are
-disabled, and `chrome.js` floats the nav after 8px of scroll. Reduced motion is
-decided by `site.js` at load.
+Motion is `/homepage/site.js` on `/` and `/duet`. It also paints the landscapes,
+and the browser proof fails if the hero pointer jumps instead of gliding. The other
+stylesheets and scripts are layout or fallback only, never motion, and
+`tests/stylesheets.rs` holds `stage.css` and `noscript.css` to that: `stage.css`
+reserves and scales each product frame before the script runs (it then sets the
+same values inline), `noscript.css` reveals content when scripts are disabled, and
+`chrome.js` floats the nav after 8px of scroll. Reduced motion is decided by
+`site.js` at load.
 
-The one deliberate exception is the Duet story (`src/pages/phones.rs`). It replaces
-the original Duet phones on `/` and `/duet` with one story across three phones. It
-reuses `site.css` phone hardware and the stage scaling and landscapes `site.js`
-applies to every frame, but its classes (`duet-story`, `ds-*`) are its own, so the
-original Duet loop never binds to it. Its styles are `css/duet.css`, every selector
-scoped to `.duet-story`; its motion is `homepage/duet.js`, which plays only while
-the stage is on screen. The markup is the story's last frame, which reduced-motion
-and no-script visitors see. The region is marked `data-owner="site"`: the parity
-suite compares the rest of the page with the original's served output and checks
-that it had the original phones (`duet-phones.html`) where the story stands.
+The Duet story (`src/pages/phones.rs`) shows Duet on `/` and `/duet` as one story
+across three phones. It reuses `site.css` phone hardware and the stage scaling and
+landscapes `site.js` applies to every frame, but its classes (`duet-story`, `ds-*`)
+are its own, so the phone loop in `site.js` never binds to it. Its styles are
+`css/duet.css`, every selector scoped to `.duet-story` (`tests/stylesheets.rs` checks
+this); its motion is `homepage/duet.js`, which plays only while the stage is on
+screen. The markup is the story's last frame, which reduced-motion and no-script
+visitors see.
 
-The same rule covers everything else the original computes in a build or runtime
-step: the port consumes the output instead of re-implementing the step, because a
-re-implementation drifts without any test noticing when the tests re-derive their
-expectations the same way. Pages belong to one of the original's two systems
-(`Route::shell`). `/` and `/duet` use the homepage system: `chrome.css`, `site.css`
-and the motion script (plus the site-owned Duet story). Every other page uses the
-utility system: the original layout's shell markup and its compiled Tailwind
-stylesheet, served verbatim as `css/utility.css` (it already contains
-`chrome.css`). The `/scheduling/dev` social image is the PNG the original's
-`ImageResponse` rendered. Head metadata and icons follow the original's
-`lib/metadata.ts` and root layout. URLs follow Next's default rule: a trailing slash
-is removed with a 308 that keeps the query.
+Pages belong to one of two systems (`Route::shell`). `/` and `/duet` use the
+homepage system: `chrome.css`, `site.css`, the motion script and the Duet story.
+Every other page uses the utility system: its shell markup and `css/utility.css`, a
+compiled Tailwind stylesheet that already contains `chrome.css`. The workspace has no
+Tailwind build, so `utility.css` changes only by direct edit. The `/scheduling/dev`
+social image is a static PNG. A trailing slash is removed with a 308 that keeps the
+query.
 
 Staging applies its origin IAP gate to pages, assets, redirects, health routes
 and errors. Responses force `private, no-store, max-age=0`, CDN-specific no-store
@@ -154,63 +144,6 @@ must therefore be treated as trusted physician-session code. Proxy responses
 must never enter public or CDN caches. Cloud Run streams are finite; clients
 reconnect rather than relying on a longer request timeout.
 
-## Original-source snapshots
-
-Ordinary builds, tests, and CI do not fetch or access the old private repository,
-so they need no private credential or application secret, and fork and Dependabot
-changes run the same parity tests. The site itself reads no secrets.
-
-`crates/public-site/tests/fixtures/original/` contains narrowly selected
-original-source snapshots from `Coda-Health/kytos`, at the reviewed commit named in
-`provenance.json`. That file records the source path, original SHA-256, snapshot
-SHA-256, and extraction policy for each input. HTML, page/legal TypeScript, archive
-JSON, notices, CSS, and the scheduling social image definition are verbatim source
-files, as is `public/homepage/site.js`, the motion script the site ships unchanged,
-and `lib/site.ts`, which the legal modules import. No Next application, package
-dependencies, private credentials, or rendered Rust output are imported.
-
-`crates/public-site/tests/fixtures/served/` records what the kytos deployment served
-at that same commit: every page, the not-found page, the sitemap, `robots.txt`, the
-compiled utility stylesheet, the rendered social image, and the status, `Location`
-and `Strict-Transport-Security` of each probe URL in `responses.json`. `provenance.json`
-records each file's URL and SHA-256 under `served`. These are the outputs of Next,
-Tailwind and `ImageResponse`, which the port must not re-implement.
-
-These are test oracles, separate from generated application `data/`, CSS, and
-assets. The normal parity suite verifies snapshot integrity; compares every
-document with the page served for it (head metadata and icons, visible text of main
-and footer, and which stylesheet it links); checks every probe URL's status and
-redirect; and compares CSS, the motion script and the social image byte-for-byte
-with what the site serves. Missing or changed fixtures fail; there is no submodule
-fallback or parity skip. Hashes detect accidental fixture edits, not malicious
-co-edits to the provenance manifest: source updates require manual review.
-
-### Deliberate reference updates (optional developer operation)
-
-The `submodules/kytos` gitlink is pinned and read-only. Only developers who
-choose to inspect or update the original source need repository access:
-
-```bash
-nix develop --command git submodule update --init -- submodules/kytos
-nix develop --command node crates/public-site/tests/import-snapshots.mjs --import
-nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
-```
-
-The importer reads Git blobs at the explicit reviewed commit, checks that the
-optional checkout is clean and pinned, and writes only allowlisted fixture paths.
-The served fixtures are a frozen record and can't be regenerated.
-Builds and tests never run `--import`. To adopt a new publication, review the
-original changes first, explicitly update the importer's commit and optional
-gitlink, then import and review the fixture/provenance diff. Do not regenerate
-expected fixtures from Rust output or copy generated `data/` back into them to make
-tests pass. Legal publication changes require their normal review.
-Application generation (`data/import-reference.mjs`) reads these frozen snapshots
-and is a separate, explicit operation. It imports the original TypeScript modules
-as modules (Node strips their types), so legal copy is exactly what Next
-evaluated, and copies the verbatim CSS, motion script and social image into
-`assets/`. Normal tests only use `--check`, so they also work in source exports
-without Git metadata or initialized submodules.
-
 ## Image
 
 `crates/public-site/Dockerfile` builds a static `x86_64-unknown-linux-musl` binary
@@ -222,7 +155,7 @@ checked for a dynamic ELF interpreter during the build.
 Pinned inputs improve repeatability; bit-for-bit image reproducibility is not
 claimed without a repeated-build comparison.
 
-The server embeds `assets/`, including the original `/homepage/site.js`, so
+The server embeds `assets/`, including the motion script `/homepage/site.js`, so
 `docker build` alone produces the complete site; there is no separate motion build.
 
 The site reads no secrets, so it has no Doppler config, token or Secret Manager
@@ -349,7 +282,6 @@ Site checks, from the workspace root:
 ```bash
 nix develop --command cargo test --locked -p public-site
 nix develop --command cargo test --locked -p public-site --test site -- --ignored --nocapture
-nix develop --command node crates/public-site/tests/import-snapshots.mjs --check
 nix develop --command mdbook build book
 ```
 
@@ -384,7 +316,7 @@ nix develop --command python infra/gcp/public-site/smoke.py public-site:deployme
 `smoke.py` runs the image in disposable, locked-down containers three ways: as
 production does, with a physician upstream, and in staging mode. It has no signed
 positive path: signed allow, key rotation and fetch failure are proven only by Rust
-tests with a public test key. It does not replace browser animation/parity tests, a
+tests with a public test key. It does not replace the browser animation tests, a
 deep secret scan of embedded source assets, a load test, cloud ingress verification,
 or a deployment.
 
