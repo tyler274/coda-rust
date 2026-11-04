@@ -19,6 +19,12 @@ the model. Features not modeled yet follow the intent specs alone.
 - **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Each
   `INVARIANT` is one rule, quoted in its comment. Each action's comment names the code that
   carries it out. An `event` variable names each step, and the config's `VIEW` leaves it out.
+  The config sets the scope, as small as still lets each rule fail on a broken copy and each
+  agreed journey happen.
+- **`chart.cfg` and `chart.mjs`:** the chart PStack's `statechart` skill draws, in the words of
+  the person who decides whether the behavior is right. `chart.cfg` runs the same model at a
+  scope of 500 states or fewer, so the whole chart can be drawn, and the README says what it
+  leaves out. `chart.mjs` names its states and steps.
 
 ## How a feature is checked
 
@@ -26,7 +32,7 @@ the model. Features not modeled yet follow the intent specs alone.
    code does today separate from what was agreed.
 2. **Check the model.** PStack's `statechart` skill runs TLC, which visits every state the model
    can reach and checks every rule. A deliberately broken copy of the model shows each rule can
-   fail.
+   fail. The skill also draws the chart, which is how the flows are read and agreed.
 3. **Hold the code to it.** The code follows the model. When TLC or review finds a path on which
    the code breaks a rule, that path goes into the feature's browser test. There,
    [replay.mjs](replay.mjs) gives the model's state after each step, and the test plays the path

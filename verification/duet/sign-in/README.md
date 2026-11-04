@@ -11,7 +11,7 @@ The rest of first run, newer Terms, AI permission, notifications, invitations, s
 - **Staying signed in.** The session belongs to the phone and the account. After a restart the person is still signed in, and Duet reopens where they were, with any draft and unconfirmed entries they left. Duet checks the session each time it opens, and the phone acts on what Duet last answered.
 - **Duet unreachable.** The cached conversation and drafts stay usable, and the phone asks again once it can.
 - **A session ended from elsewhere.** When Duet revokes the session, or the person signs out everywhere from another phone, Duet refuses the session from then on, including after a restart. The phone finds out when Duet refuses it: when Duet opens, or with the phone's next request. Duet also tells the open app, but nothing depends on that notice arriving. The phone then leaves the account. If it held a draft or entries Duet hadn't confirmed, the sign-in screen says what it removed.
-- **Signing out of this phone.** With notes or medications Duet hasn't confirmed, the phone sends them first. If any are still unconfirmed, or there's an unsent message draft, Duet says what signing out removes from this phone and offers Stay signed in or Sign out anyway. Signing out takes effect at once, even offline, and clears the draft; the phone tells Duet now or as soon as it can reach it.
+- **Signing out of this phone.** With notes or medications Duet hasn't confirmed, the phone sends them first. If any are still unconfirmed, or there's an unsent message draft, Duet says what signing out removes from this phone and offers Stay signed in or Sign out anyway. If Duet confirms the entries while it says so, signing out finishes, or with a draft left, Duet says only that the draft goes. Signing out takes effect at once, even offline, and clears the draft; the phone tells Duet now or as soon as it can reach it.
 - **One phone, another person.** Once one person signs out, another can sign in on the same phone. The phone only ever shows the account signed in on it.
 
 ## Rules
@@ -23,6 +23,7 @@ The model checks these in every state it reaches.
 - While the phone holds a live session, Duet never asks the person to sign in, including after a restart.
 - Duet shows the account only after its Terms are accepted, and the Terms only until the phone hears they're accepted.
 - A draft, or entries Duet hasn't confirmed, are never removed without the person being warned first or told after.
+- Duet warns that signing out removes something only while the phone holds a draft or entries Duet hasn't confirmed.
 
 These rest on stored records or the device, which the model can't hold, and no test holds them yet:
 
@@ -37,12 +38,16 @@ These rest on stored records or the device, which the model can't hold, and no t
 
 | File | Holds |
 | --- | --- |
-| [DuetSignIn.tla](DuetSignIn.tla), [DuetSignIn.cfg](DuetSignIn.cfg) | The design as a TLA+ model: one phone and two accounts, the screens, the session the phone keeps, what Duet records, and the rules, one `INVARIANT` each. |
+| [DuetSignIn.tla](DuetSignIn.tla), [DuetSignIn.cfg](DuetSignIn.cfg) | The design as a TLA+ model: one phone, the screens, the session the phone keeps, what Duet records, and the rules, one `INVARIANT` each. The config checks the rules with two accounts and two sessions, so the phone can pass from one person to another. |
+| [chart.cfg](chart.cfg), [chart.mjs](chart.mjs) | The chart: one person's sign-in, with one account and one session, in the screens' words. |
 
-Check it from the repository root:
+Check the rules, then draw the chart, from the repository root:
 
 ```bash
 .agents/skills/statechart/scripts/statechart verification/duet/sign-in/DuetSignIn.tla
+.agents/skills/statechart/scripts/statechart verification/duet/sign-in/DuetSignIn.tla --config verification/duet/sign-in/chart.cfg --view verification/duet/sign-in/chart.mjs
 ```
 
-Duet owns the sessions and whether each account has accepted the Terms. The phone keeps its session, where it was, its draft and unconfirmed entries, and acts on what Duet last answered. The model lets the person, Duet's answers, requests that don't get through, the app closing, Duet ending a session and its notice reaching the app or not happen in any order. A request can fail before Duet acts on it, or Duet can act and its answer never reach the phone. Signing out is one step for the phone: it forgets the session and owes Duet the sign-out. Duet starts up to three sessions in a run, and the phone keeps one draft and one batch of entries at a time. TLC checks the rules in every state the model reaches; it doesn't reach the apps.
+The chart leaves out a second person on the phone and signing in again after signing out, which need a second account and session. It doesn't draw closing Duet or opening a link from a sign-in screen other than where the person waits for them. The rules are checked in both runs.
+
+Duet owns the sessions and whether each account has accepted the Terms. The phone keeps its session, where it was, its draft and unconfirmed entries, and acts on what Duet last answered. The model lets the person, Duet's answers, requests that don't get through, the app closing, Duet ending a session and its notice reaching the app or not happen in any order. A request can fail before Duet acts on it, or Duet can act and its answer never reach the phone. Signing out is one step for the phone: it forgets the session and owes Duet the sign-out. The phone keeps one draft and one batch of entries at a time. TLC checks the rules in every state the model reaches; it doesn't reach the apps.

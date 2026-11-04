@@ -4,8 +4,9 @@
 (* signs out: the design drawn from README.md and intent/duet.md D1 and    *)
 (* D5.4. Each INVARIANT is one agreed sentence.                            *)
 (*                                                                         *)
-(* One phone and two accounts, so the phone can pass from one person to    *)
-(* another. Duet owns the sessions and whether each account has accepted  *)
+(* One phone. DuetSignIn.cfg checks the rules with two accounts and two    *)
+(* sessions, so the phone can pass from one person to another; chart.cfg  *)
+(* draws one person's sign-in, with one account and one session. Duet owns the sessions and whether each account has accepted  *)
 (* the Terms; the phone keeps its session, where it was, its draft and     *)
 (* unconfirmed entries across a restart, and knows only what Duet last    *)
 (* answered. When Duet ends a session, the phone finds out when Duet       *)
@@ -17,18 +18,18 @@
 (* request can fail before Duet acts on it, Duet can act and its answer    *)
 (* never reach the phone, and the app can close at any moment. Signing    *)
 (* out of this phone is one step for the phone: it forgets the session at *)
-(* once and owes Duet the sign-out, which it tells Duet when it can. Duet *)
-(* starts up to three sessions in a run, and the phone keeps one draft and *)
-(* one batch of entries at a time.                                         *)
+(* once and owes Duet the sign-out, which it tells Duet when it can. The  *)
+(* phone keeps one draft and one batch of entries at a time.               *)
 (*                                                                         *)
 (* `event` names the step just taken, for traces; VIEW leaves it out of   *)
 (* the state.                                                              *)
 (***************************************************************************)
-EXTENDS Naturals, Sequences
+EXTENDS Naturals, Sequences, TLC
 
-Accounts == {"Yours", "Theirs"}
-SessionOrder == <<"Session 1", "Session 2", "Session 3">>
-Sessions == {"Session 1", "Session 2", "Session 3"}
+\* The config sets the scope: the accounts that can sign in, and how many sessions Duet starts in a run.
+CONSTANTS Accounts, SessionCount
+SessionOrder == [i \in 1..SessionCount |-> "Session " \o ToString(i)]
+Sessions == {SessionOrder[i] : i \in 1..SessionCount}
 NoSession == "No session"
 Nobody == "Nobody"
 
@@ -72,9 +73,11 @@ VARIABLES
 state == <<session, accepted, phone, removed, refused>>
 vars == <<session, accepted, phone, removed, refused, event>>
 
-Of(s) == IF session[s] \in {Live("Yours"), Ended("Yours")} THEN "Yours" ELSE "Theirs"
+Of(s) == IF \E a \in Accounts : session[s] \in {Live(a), Ended(a)}
+         THEN CHOOSE a \in Accounts : session[s] \in {Live(a), Ended(a)}
+         ELSE Nobody
 IsLive(s) == session[s] = Live(Of(s))
-Index(s) == CHOOSE i \in 1..3 : SessionOrder[i] = s
+Index(s) == CHOOSE i \in 1..SessionCount : SessionOrder[i] = s
 \* The first session not yet signed in, which Duet gives the next sign-in.
 IsNext(s) == session[s] = Unused /\ \A j \in 1..(Index(s) - 1) : session[SessionOrder[j]] # Unused
 AskedWith(r) == CHOOSE s \in Sessions : r.asks \in {Checking(s), Accepting(s)}
@@ -312,12 +315,13 @@ StartSignOut ==
   /\ UNCHANGED <<session, accepted>>
   /\ Did("you sign out")
 
-(* Duet takes the entries on a live session. Signing out goes on: at once  *)
-(* with nothing left, or to the warning for a draft.                        *)
+(* Duet takes the entries on a live session. A sign-out under way, or one  *)
+(* already warning, goes on: at once with nothing left, or to the warning *)
+(* for a draft.                                                             *)
 DuetTakesEntries ==
   /\ phone.sync # NoSync /\ IsLive(SentWith(phone))
   /\ LET r == [phone EXCEPT !.sync = NoSync, !.entries = Nobody]
-     IN phone' = CASE r.screen = Saving /\ r.draft = Nobody -> SignsOutHere(r)
+     IN phone' = CASE r.screen \in {Saving, Warning} /\ r.draft = Nobody -> SignsOutHere(r)
                    [] r.screen = Saving -> [r EXCEPT !.screen = Warning]
                    [] OTHER -> r
   /\ UNCHANGED <<session, accepted>>
@@ -403,4 +407,7 @@ TermsFirst ==
 
 \* A draft, or entries Duet hasn't confirmed, are never removed without the person being warned first or told after.
 NothingRemovedSilently == ~removed
+
+\* Duet warns that signing out removes something only while the phone holds a draft or entries Duet hasn't confirmed.
+WarnsOnlyWhenUnconfirmed == phone.screen = Warning => Unconfirmed(phone)
 =============================================================================
