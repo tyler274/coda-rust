@@ -146,13 +146,15 @@ OpenDuet ==
   /\ Did("you open Duet")
 
 (* The person closes Duet, or the phone ends it. What it waited on goes;   *)
-(* the session, where it was, the draft and entries stay.                   *)
+(* the session, where it was, the draft and entries stay. A sign-out still *)
+(* sending entries stops, so Duet reopens in the conversation.              *)
 CloseDuet ==
   /\ Running
   /\ phone' = [phone EXCEPT !.screen = Closed, !.asks = NoAsk, !.sync = NoSync, !.signIn = NoLink,
                             !.told = FALSE,
-                            !.place = IF phone.screen \in {Terms, Conversation, Warning}
-                                      THEN phone.screen ELSE @]
+                            !.place = CASE phone.screen = Saving -> Conversation
+                                        [] phone.screen \in {Terms, Conversation, Warning} -> phone.screen
+                                        [] OTHER -> @]
   /\ UNCHANGED <<session, accepted>>
   /\ Did("Duet closes")
 
@@ -165,7 +167,8 @@ EnterEmail ==
   /\ Did("you enter your email")
 
 (* The link, or its code typed in, opens Duet and signs in a phone that    *)
-(* holds no session. Opened while signed in, it opens Duet as it was.      *)
+(* holds no session. What a link opened while signed in does isn't        *)
+(* decided; here it opens Duet as it was.                                   *)
 OpenLink(a) ==
   /\ phone.holds = NoSession /\ phone.signIn = NoLink
   /\ phone' = [phone EXCEPT !.screen = Signing, !.signIn = Redeeming(a)]
@@ -351,9 +354,6 @@ Next ==
 Spec == Init /\ [][Next]_vars
 
 -----------------------------------------------------------------------------
-\* The phone has caught up when it's open, waits on no check and has nothing left to ask.
-CaughtUp == Running /\ phone.asks = NoAsk /\ ~phone.told
-
 \* A phone shows only the account signed in on it: never another account's screens, draft or entries.
 OnlyItsAccount ==
   LET mine == IF phone.holds = NoSession THEN Nobody ELSE Of(phone.holds)
@@ -371,7 +371,7 @@ StaysSignedIn ==
 \* Duet shows the account only after its Terms are accepted, and the Terms only until then.
 TermsFirst ==
   /\ phone.screen \in Content => accepted[phone.whose]
-  /\ (CaughtUp /\ phone.screen = Terms) => ~accepted[phone.whose]
+  /\ phone.screen = Terms => ~accepted[phone.whose]
 
 \* Unsent entries and a draft are never dropped without the person being warned first or told after.
 NothingLostSilently == ~lost
