@@ -167,8 +167,7 @@ EnterEmail ==
   /\ Did("you enter your email")
 
 (* The link, or its code typed in, opens Duet and signs in a phone that    *)
-(* holds no session. What a link opened while signed in does isn't        *)
-(* decided; here it opens Duet as it was.                                   *)
+(* holds no session. Opened while signed in, it opens Duet as it was.      *)
 OpenLink(a) ==
   /\ phone.holds = NoSession /\ phone.signIn = NoLink
   /\ phone' = [phone EXCEPT !.screen = Signing, !.signIn = Redeeming(a)]
