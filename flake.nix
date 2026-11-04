@@ -4,9 +4,10 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
   inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.crane.url = "github:ipetkov/crane";
 
   outputs =
-    { self, nixpkgs, rust-overlay }:
+    { self, nixpkgs, rust-overlay, crane }:
     let
       system = "x86_64-linux";
       # aarch64-linux adds only the dev shells, for Linux containers on Apple
@@ -72,7 +73,7 @@
         };
     in
     {
-      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self; };
+      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self crane; };
       devShells = nixpkgs.lib.genAttrs devSystems devShellsFor;
     };
 }

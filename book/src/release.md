@@ -18,6 +18,50 @@ This page links the owners of each release path. Each owner keeps its own proced
 - Run the workflow locally with `act` from `nix develop`; it needs the host's Docker daemon, which the shell does not provide. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
 
+## Private Nix binary cache
+
+[`infra/gcp/nix-cache`](/infra/gcp/nix-cache) owns an isolated private GCS bucket
+and bucket-scoped reader/writer identities. Select its project and remote-state
+backend explicitly; apply only an operator-approved saved plan. It does not own
+product deployment permissions. Nix uses GCS's S3 interoperability endpoint, so
+its HMAC credentials are distinct from the WIF credentials used by deploy jobs.
+
+Keep HMAC and signing secrets in Doppler, outside OpenTofu state. Deliver the
+reader credentials to CI separately from the writer credentials. The GitHub
+`nix-cache-write` environment must restrict deployment branches to `main` before
+installing any writer or signing secrets. Never put those secrets at repository
+scope: a workflow condition alone cannot protect secrets from edited PR code.
+PR jobs use the `nix-cache-read` environment and cannot publish trusted outputs.
+Changing cache trust or rotating its signing key requires operator review.
+Cache-writing main image jobs share a concurrency group because create-only
+object permissions cannot safely handle simultaneous uploads of the same object.
+An active job is not cancelled; GitHub may replace an older pending job with a
+newer one. Reader-only jobs remain parallel. Any additional publisher must use
+the same serialization policy rather than weakening the bucket permissions.
+
+The cache retains compiled dependency artifacts as well as application outputs;
+final image closures alone do not retain the intermediate Rust compilation work.
+Native server, WebAssembly and patient-bank builds keep separate dependency
+artifacts in [`nix/packages.nix`](/nix/packages.nix). Cache reads preserve Nix's
+signature verification and the upstream substituter. A cache miss or outage must
+still run the build and all image proofs. Disabling `NIX_CACHE_ENABLED` restores
+the uncached workflow without changing the proof commands.
+
+The cache contains private build inputs and outputs. Do not make the bucket
+public or copy credentials into the Nix store. Object-age deletion is not a safe
+cache garbage collector: deleting a NAR while retaining its metadata or references
+can break substitution. Retention changes must account for the reference graph.
+
+## CI timing reports
+
+[`scripts/ci_timings.py`](/scripts/ci_timings.py) collects GitHub job and step
+timings through `gh api` and renders inspectable graphs with raw data. The
+`CI result` job retains a report artifact and links it from the step summary.
+Reporting is best effort and does not replace the required result gate. Its live
+snapshot excludes unfinished jobs; deployments occur after validation and must
+not be counted as PR validation latency. Historical comparisons separate full
+successful validation from lightweight, failed, cancelled and manual runs.
+
 ## Secrets: Doppler
 
 The rule is in <a href="/AGENTS%2Emd#dev-shell"><code>AGENTS.md</code></a>.
