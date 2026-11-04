@@ -675,11 +675,10 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         .unwrap_err();
     assert!(error.contains("model calls"), "{error}");
     let state = s.conversation(&scope).await.unwrap();
-    // Bound exhaustion leaves the attempt leased, like any other engine
-    // failure. Ending it here would make one crash terminal before
-    // retry_delivery or lease expiry. Narration still must not publish.
-    assert_eq!(state.status, "active");
-    assert_eq!(state.attempts[0].status, "active");
+    // A reached bound is not an infrastructure failure: running the turn
+    // again would reach it again. It ends as couldn't finish.
+    assert_eq!(state.status, "failed");
+    assert_eq!(state.attempts[0].status, "failed");
     assert_eq!(state.messages.len(), 1, "narration must not be published");
     let executed = state.attempts[0]
         .events
@@ -692,4 +691,8 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         })
         .count();
     assert_eq!(executed, 3);
+    // The worker's retry cannot reopen it; only Try again does.
+    s.retry_delivery(&host.claim).await.unwrap();
+    assert_eq!(s.conversation(&scope).await.unwrap().status, "failed");
+    assert!(s.claim(&scope, 60).await.unwrap().is_none());
 }

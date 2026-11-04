@@ -1108,10 +1108,17 @@ impl<A: Authority> PhysicianHost<A> {
                     .map_err(|e| e.to_string())
             }
             Err(failure) => {
-                // Leave the attempt leased. Stop has already cancelled it;
-                // an infrastructure failure stays active so `retry_delivery`
-                // or lease expiry counts it. Marking it failed here would
-                // end the turn if the process died before that retry.
+                // A reached bound would be reached again, so the turn ends
+                // as couldn't finish. Any other failure leaves the attempt
+                // leased: Stop has already cancelled it, and an
+                // infrastructure failure stays active so `retry_delivery` or
+                // lease expiry counts it even if this process dies first.
+                if matches!(failure.failure, engine::Failure::Limit(_)) {
+                    self.store
+                        .interrupt(&self.claim, true)
+                        .await
+                        .map_err(|e| e.to_string())?;
+                }
                 Err(format!("execution ended: {:?}", failure.failure))
             }
         }
