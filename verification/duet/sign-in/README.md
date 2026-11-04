@@ -24,7 +24,7 @@ The model checks these in every state it reaches.
 - Duet shows the account only after its Terms are accepted, and the Terms only until the phone hears they're accepted.
 - Unsent entries and a draft are never dropped without the person being warned first or told after.
 
-These rest on stored records or the device, which the model can't hold. Each needs a test that reads the records back or runs on the installed app; none is named yet:
+These rest on stored records or the device, which the model can't hold, and no test holds them yet:
 
 - One account per verified email.
 - A sign-in link or code signs in at most once, and expires.
