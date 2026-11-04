@@ -109,9 +109,10 @@ Init ==
   /\ starts = [e \in Events |-> 0]
   /\ corrections = 0
   /\ disconnects = 0
-  /\ event = "start"
+  /\ event = [flow |-> "start", says |-> "start"]
 
-Did(name) == event' = name
+\* Every step names the README flow it carries out, and says what happened in the README's words.
+Did(flow, line) == event' = [flow |-> flow, says |-> line]
 
 \* An event wakes the patient's review. A review already running takes the news in when it reads
 \* again, so the event starts nothing new (physician Patient review: one event starts one review;
@@ -129,11 +130,11 @@ CloseCard == card' = ClosedCard /\ viewing' = NoViews /\ copied' = NoCopies
 (* A patient writes. The channel takes it whether or not Coda is connected (P3.6). *)
 PatientWrites ==
   /\ PatientCount < MaxPatientMessages
-  /\ \E readable \in (IF MayBeUnreadable THEN BOOLEAN ELSE {TRUE}) :
-       inbox' = Append(inbox, [from |-> "Patient", readable |-> readable, words |-> NoWords])
+  /\ \E unreadable \in (IF MayBeUnreadable THEN BOOLEAN ELSE {FALSE}) :
+       inbox' = Append(inbox, [from |-> "Patient", readable |-> ~unreadable, words |-> NoWords])
   /\ UNCHANGED <<channel, says, filed, link, match, handled, review, card, viewing, copied,
                  history, starts, corrections, disconnects>>
-  /\ Did("the patient writes")
+  /\ Did("F1", "the patient writes in the channel")
 
 (* A physician who can reply in the conversation sends there: what they copied, edited or not,  *)
 (* or words of their own. Coda never sends (P3.18; Rules: Authority and sending).              *)
@@ -141,10 +142,10 @@ PracticeSends(d) ==
   /\ d \in Repliers
   /\ ReplyCount < MaxReplies
   /\ \E w \in ({copied[d], OwnWords} \ {NoWords}) :
-       inbox' = Append(inbox, [from |-> "Practice", readable |-> TRUE, words |-> w])
+       /\ inbox' = Append(inbox, [from |-> "Practice", readable |-> TRUE, words |-> w])
+       /\ Did("F18", d \o " sends a reply in the channel: " \o w)
   /\ UNCHANGED <<channel, says, filed, link, match, handled, review, card, viewing, copied,
                  history, starts, corrections, disconnects>>
-  /\ Did("the practice sends a reply in the channel")
 
 -----------------------------------------------------------------------------
 (* Coda files the channel's next item, in order, while connected (P3.3,      *)
@@ -163,7 +164,24 @@ Files ==
   /\ LET i == filed + 1
          item == inbox[i]
          to == IF link # Nobody THEN link ELSE says
+         m == "message " \o ToString(Cardinality({j \in 1..i : Patient(j)}))
+         flow == CASE Patient(i) /\ to # Nobody /\ card.open -> "F15"
+                   [] Patient(i) /\ link # Nobody -> "F2"
+                   [] Patient(i) /\ to # Nobody -> "F3"
+                   [] Patient(i) /\ \E j \in 1..(i - 1) : match[j] = "Unlinked" -> "F7"
+                   [] Patient(i) -> "F4"
+                   [] link # Nobody /\ card.open /\ card.state = Disconnected -> "F25"
+                   [] link # Nobody -> "F19"
+                   [] OTHER -> "F6"
+         words == CASE flow = "F15" -> "Coda files " \o m \o "; the card says the patient wrote again"
+                    [] flow = "F2" -> "Coda files " \o m \o " to " \o to \o ", whose conversation it is"
+                    [] flow = "F3" -> "Coda files " \o m \o " to " \o to \o ", whom the channel names"
+                    [] flow \in {"F4", "F7"} -> "Coda files " \o m \o "; no sure match, so it waits in Messages to match"
+                    [] flow = "F25" -> "Coda, reconnected, sees the reply sent: " \o item.words
+                    [] flow = "F19" -> "Coda sees the reply sent: " \o item.words
+                    [] OTHER -> "Coda files the practice's reply; it waits with the conversation"
      IN /\ filed' = i
+        /\ Did(flow, words)
         /\ IF Patient(i)
            THEN IF to # Nobody
                 THEN /\ link' = to
@@ -181,7 +199,6 @@ Files ==
                      /\ UNCHANGED <<link, match>>
                 ELSE UNCHANGED <<link, match, handled, review, starts, card, viewing, copied, history>>
   /\ UNCHANGED <<channel, inbox, says, corrections, disconnects>>
-  /\ Did("Coda files the next item")
 
 (* Any physician matches a waiting message from Messages to match: they confirm Coda's            *)
 (* suggestion or pick another patient (P3.9; Rules: Access and privacy). The conversation is      *)
@@ -200,8 +217,9 @@ Confirm(p) ==
         /\ handled' = handled \cup {i \in 1..filed : Patient(i) /\ linked[i] = "Linked"
                                                    /\ \E j \in replies : i < j}
         /\ Wake(p, ItemKey(first))
+        /\ Did(IF replies = {} THEN "F5" ELSE "F6",
+               "a physician confirms " \o p \o (IF replies = {} THEN "" ELSE "; the practice's earlier reply joins the history"))
   /\ UNCHANGED <<channel, inbox, says, filed, card, viewing, copied, corrections, disconnects>>
-  /\ Did("a physician confirms the patient")
 
 (* A person leaves a waiting message unlinked. That covers only this message (P3.9). *)
 LeaveUnlinked ==
@@ -211,7 +229,7 @@ LeaveUnlinked ==
        /\ handled' = handled \cup {i}
   /\ UNCHANGED <<channel, inbox, says, filed, link, review, starts, card, viewing, copied, history,
                  corrections, disconnects>>
-  /\ Did("a physician leaves it unlinked")
+  /\ Did("F7", "a physician leaves the message unlinked")
 
 (* The messaging manager corrects the link: Wrong patient? The whole conversation moves, and later *)
 (* messages route to the new patient (P3 Wrong patient). The old patient's review lets go of it at *)
@@ -234,7 +252,7 @@ Correct(q) ==
         /\ viewing' = [d \in Physicians |-> viewing[d] /\ q \in Access(d)]
         /\ corrections' = corrections + 1
   /\ UNCHANGED <<channel, inbox, says, filed, match, handled, copied, disconnects>>
-  /\ Did("the messaging manager corrects the patient")
+  /\ Did("F22", "the messaging manager moves the conversation to " \o q)
 
 -----------------------------------------------------------------------------
 (* The review.                                                              *)
@@ -247,7 +265,7 @@ ReviewReads(p) ==
   /\ review' = [review EXCEPT ![p].read = filed]
   /\ UNCHANGED <<channel, inbox, says, filed, link, match, handled, starts, card, viewing, copied,
                  history, corrections, disconnects>>
-  /\ Did("Coda reads the conversation")
+  /\ Did("F8", "Coda reads " \o p \o "'s conversation and chart")
 
 (* A review of a patient the conversation left has nothing left to review (P2 Nothing left to   *)
 (* review).                                                                                       *)
@@ -256,7 +274,7 @@ ReviewLetsGo(p) ==
   /\ review' = [review EXCEPT ![p] = [on |-> FALSE, read |-> 0]]
   /\ UNCHANGED <<channel, inbox, says, filed, link, match, handled, starts, card, viewing, copied,
                  history, corrections, disconnects>>
-  /\ Did("the review ends: nothing left to review")
+  /\ Did("F22", p \o "'s review lets go of the conversation: nothing left to review")
 
 (* The review proposes a reply (P3.12, P3.13). A new card opens with Coda's draft; while the      *)
 (* channel is disconnected it opens without one (P3.5). An untouched draft updates in place; an    *)
@@ -274,6 +292,20 @@ Proposes(p) ==
                     [] OTHER -> [card EXCEPT !.state = Ready, !.text = "Coda's", !.basis = filed,
                                              !.told = FALSE, !.offer = FALSE]
   /\ UNCHANGED <<handled, viewing, copied>>
+  /\ Did(CASE ~card.open /\ channel = "Connected" -> "F9"
+           [] ~card.open \/ card.state = Disconnected -> "F24"
+           [] card.state = Revising -> "F13"
+           [] card.state = Withheld -> "F23"
+           [] card.edited -> "F16"
+           [] OTHER -> "F15",
+         CASE ~card.open /\ channel = "Connected" -> "Coda drafts a reply for " \o p
+           [] ~card.open -> "Coda's review finds a reply would help; the card opens empty while the channel is disconnected"
+           [] card.state = Disconnected -> "Coda's review finds a reply would help; the card stays empty until reconnected"
+           [] card.state = Revising -> "Coda's review leaves the news to the revision in progress"
+           [] card.state = Withheld /\ card.edited -> "the re-review keeps your edit and offers Coda's update"
+           [] card.state = Withheld -> "the re-review redrafts the withheld reply"
+           [] card.edited -> "Coda keeps your edit and offers its update"
+           [] OTHER -> "Coda updates its untouched draft in place")
 
 (* The review decides no reply would help: an acknowledgment, or a conversation already resolved, *)
 (* settled with no row (P3.12). A card it withheld closes, unless the physician had edited it     *)
@@ -282,13 +314,14 @@ NoReply ==
   /\ ~card.open \/ (card.state = Withheld /\ ~card.edited)
   /\ handled' = handled \cup OpenReadable
   /\ IF card.open THEN CloseCard ELSE UNCHANGED <<card, viewing, copied>>
+  /\ IF card.open THEN Did("F23", "the re-review closes the withheld reply: no reply needed")
+                   ELSE Did("F10", "Coda decides no reply is needed")
 
 ReviewFinishes(p) ==
   /\ review[p].on /\ link = p /\ review[p].read = filed
   /\ Proposes(p) \/ NoReply
   /\ review' = [review EXCEPT ![p] = [on |-> FALSE, read |-> 0]]
   /\ UNCHANGED <<channel, inbox, says, filed, link, match, starts, history, corrections, disconnects>>
-  /\ Did("the review finishes")
 
 (* A revision the physician asked for finishes on the conversation as it stands now (P3.16;       *)
 (* physician Engineering decisions: Runs).                                                          *)
@@ -298,7 +331,7 @@ RevisionFinishes ==
                           !.offer = FALSE]
   /\ UNCHANGED <<channel, inbox, says, filed, link, match, handled, review, starts, viewing, copied,
                  history, corrections, disconnects>>
-  /\ Did("Coda finishes the revision")
+  /\ Did("F13", "Coda finishes the revision on the conversation as it stands")
 
 -----------------------------------------------------------------------------
 (* The physician, on the card. One card per conversation, shared by         *)
@@ -312,7 +345,7 @@ OpenCard(d) ==
   /\ CanSee(d) /\ ~viewing[d]
   /\ viewing' = [viewing EXCEPT ![d] = TRUE]
   /\ UNCHANGED <<Keep, handled, card, copied>>
-  /\ Did("you open the reply")
+  /\ Did("F11", d \o " opens the reply")
 
 (* The physician edits the reply; editing during a revision cancels it and their text stands     *)
 (* (P3.16; physician-site: a physician save makes a revision stale).                               *)
@@ -321,14 +354,15 @@ Edit(d) ==
   /\ ~(card.text = "Yours" /\ card.state = Ready)
   /\ card' = [card EXCEPT !.text = "Yours", !.edited = TRUE, !.state = Ready]
   /\ UNCHANGED <<Keep, handled, viewing, copied>>
-  /\ Did("you edit the reply")
+  /\ IF card.state = Revising THEN Did("F14", d \o " edits during the revision, which stops")
+                              ELSE Did("F12", d \o " edits the reply")
 
 (* Asking Coda to revise is the physician's choice to let Coda replace the text (P3.16). *)
 AskRevision(d) ==
   /\ viewing[d] /\ card.text # "None" /\ card.state = Ready
   /\ card' = [card EXCEPT !.state = Revising, !.edited = FALSE, !.offer = FALSE]
   /\ UNCHANGED <<Keep, handled, viewing, copied>>
-  /\ Did("you ask Coda to revise")
+  /\ Did("F13", d \o " asks Coda to revise")
 
 (* Coda's update replaces the physician's text only when they choose it (P3.17). *)
 TakeUpdate(d) ==
@@ -336,7 +370,7 @@ TakeUpdate(d) ==
   /\ card' = [card EXCEPT !.text = "Coda's", !.edited = FALSE, !.offer = FALSE,
                           !.basis = card.offerBasis, !.told = card.offerBasis < filed]
   /\ UNCHANGED <<Keep, handled, viewing, copied>>
-  /\ Did("you take Coda's update")
+  /\ Did("F16", d \o " takes Coda's update")
 
 (* Copy reply changes nothing Coda holds: the row stays until Coda sees the reply sent (P3.18,    *)
 (* P3.19; Rules: silence or a finished run never proves approval).                                 *)
@@ -344,7 +378,7 @@ CopyReply(d) ==
   /\ viewing[d] /\ card.text # "None" /\ card.state = Ready
   /\ copied' = [copied EXCEPT ![d] = IF card.text = "Coda's" THEN CodaDraft ELSE YourEdit]
   /\ UNCHANGED <<Keep, handled, card, viewing>>
-  /\ Did("you copy the reply")
+  /\ Did("F17", d \o " copies the reply")
 
 (* No reply needed, or Done on a card the disconnect emptied, settles it for everyone (P3 No     *)
 (* reply needed, P3.5, P3.13).                                                                     *)
@@ -353,7 +387,8 @@ Close(d) ==
   /\ handled' = handled \cup OpenReadable
   /\ CloseCard
   /\ UNCHANGED Keep
-  /\ Did(IF card.state = Disconnected THEN "you mark it Done" ELSE "you mark No reply needed")
+  /\ IF card.state = Disconnected THEN Did("F25", d \o " marks the empty card Done")
+                                  ELSE Did("F20", d \o " marks No reply needed")
 
 (* A message Coda can't read waits on Today with a link to the channel until someone marks it    *)
 (* Done (P3 Message Coda can't read).                                                              *)
@@ -361,7 +396,7 @@ DoneUnreadable(d) ==
   /\ link \in Access(d)
   /\ \E i \in Open : ~inbox[i].readable /\ handled' = handled \cup {i}
   /\ UNCHANGED <<Keep, card, viewing, copied>>
-  /\ Did("you mark the unreadable message Done")
+  /\ Did("F21", d \o " marks the unreadable message Done")
 
 -----------------------------------------------------------------------------
 (* The practice disconnects the channel: reply drafts are deleted, and an   *)
@@ -377,14 +412,14 @@ Disconnect ==
              ELSE card
   /\ copied' = NoCopies
   /\ UNCHANGED <<inbox, says, filed, link, match, handled, review, starts, viewing, history, corrections>>
-  /\ Did("the practice disconnects the channel")
+  /\ Did("F24", "the practice disconnects the channel")
 
 Reconnect ==
   /\ channel = "Disconnected"
   /\ channel' = "Connected"
   /\ UNCHANGED <<inbox, says, filed, link, match, handled, review, starts, card, viewing, copied,
                  history, corrections, disconnects>>
-  /\ Did("the practice reconnects the channel")
+  /\ Did("F25", "the practice reconnects the channel")
 
 Busy ==
   \/ PatientWrites \/ (\E d \in Physicians : PracticeSends(d))

@@ -1,10 +1,10 @@
 # Patient messages
 
-This folder is the spec for how a patient's message reaches the right patient in Coda Agents, and how its reply card works until the practice has answered. The model is the agreed behavior, TLC checks that it keeps its rules, and the code follows it. [physician.md P3](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) owns the intent this follows.
+This folder is the spec for how a patient's message reaches the right patient in Coda Agents, and how its reply card works until the practice has answered. The model is the agreed behavior, TLC checks that it keeps its rules, and the code follows it. [physician.md P3](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) owns the intent.
 
 ## What it is for
 
-Patients already write to the practice in its messaging channel, and the work between visits piles up there. Coda doesn't add an inbox or sit in the channel's path. It reads what arrives, links it to one patient, brings it into that patient's review, and drafts a reply only where one would help. The physician sends in the channel, and Coda learns the work is done by seeing that reply. Acknowledgments and resolved conversations never reach the physician, because the measure is fewer things the physician touches, not faster drafting ([physician: The point](../../../intent/physician.md#the-point), Principle 10).
+Patients write to the practice in its messaging channel. Coda adds no inbox and never sits in the channel's path. It reads what arrives, links it to one patient, brings it into that patient's review, and drafts a reply only where one would help. The physician sends in the channel, and Coda knows the work is done when it sees that reply. Acknowledgments and resolved conversations never reach the physician.
 
 The spec holds for any channel the practice connects. Spruce is the channel in the MVP. What differs between channels is configuration, and the rules don't change with it:
 
@@ -16,28 +16,62 @@ The spec holds for any channel the practice connects. Spruce is the channel in t
 
 ## Who owns what
 
-Each fact has one owner, and everything else reads it ([PRINCIPLES 11](../../../intent/PRINCIPLES.md)).
+Each fact has one owner, and everything else reads it.
 
 | Owner | Holds | Never |
 | --- | --- | --- |
 | The channel | The conversation and everything sent in it | Changed by Coda: Coda reads it and never sends |
 | Intake | Which of the channel's items Coda has filed, in order | Shown to the physician while catching up |
-| The link | Which patient a conversation belongs to | Set by a model score alone where P3.7 asks for a person |
+| The link | Which patient a conversation belongs to | Set without a person where the channel can't name exactly one patient |
 | The patient's review | Whether a reply would help, and the draft | Run for a patient the conversation isn't linked to |
-| The reply card | One card for the conversation's unanswered messages: Coda's draft or the physician's edit | Replaced with Coda's text unless the physician chooses it |
+| The reply card | One card for the conversation's unanswered messages: Coda's draft or the physician's edit | Given Coda's text over the physician's unless they choose it |
 | The patient's history | What the practice actually sent | Filled from the draft |
 | Today | Nothing of its own: it is read from the link, the card, the reviews and the channel, through each physician's current access | Stored as a separate list |
 
-## How a message moves
+## Flows
 
-- **Arriving.** The patient writes in the channel. Coda files each item in order while connected; catching up is never shown.
-- **Matching.** A conversation already linked, or one the channel says is exactly one patient's, routes on its own. Every other message waits on the practice-wide Messages to match list and the messaging manager's Today, where any physician confirms Coda's suggestion, picks another patient or leaves it unlinked. Leaving it unlinked covers only that message. Confirming links the conversation: its waiting messages join the patient, and replies the practice already sent there go into the patient's history.
-- **Reviewing.** A linked message wakes the patient's review, which reads the whole conversation, including the practice's own replies, and reads again whenever something new arrives before it finishes. It ends with a draft or with no reply needed. An acknowledgment gets no row.
-- **The card.** A draft opens one card for the conversation, shared by everyone who may access the patient and can reply there. When the patient writes again, the card says so at once. An untouched draft then updates in place; an edited one keeps the physician's text and offers Coda's update. Asking Coda to revise is the physician's choice to let it replace their text, and editing during a revision cancels it.
-- **Handing off.** Copy reply changes nothing Coda holds: the row stays. The physician sends in the channel, with the copied text, an edit, or words of their own. When Coda sees the reply, the history records the words actually sent, the messages before it are settled, the card closes for everyone, and the review wakes to see whether anything is left.
-- **Settling without a reply.** No reply needed closes the card for everyone. A message Coda can't read waits on Today with a link to the channel until someone marks it Done.
-- **Wrong patient.** The messaging manager moves the whole conversation. The old patient's review lets go of it at once, the card moves and is withheld until the new patient's review redrafts or closes it, history moves with it, and anyone who can't see the new patient loses the card. One correction starts one review, on the new patient.
-- **Disconnecting.** Reply drafts are deleted. An open card stays without its draft, says the channel is disconnected, and waits for Done or for Coda, reconnected, to see the reply.
+Arriving and matching:
+
+- **F1.** The patient writes in the channel.
+- **F2.** Coda files a message in a linked conversation, and it routes on its own.
+- **F3.** Coda files a message the channel says is exactly one patient's, and it routes on its own.
+- **F4.** Coda files a message with no sure match, and it waits on the practice-wide Messages to match list and the messaging manager's Today.
+- **F5.** Any physician confirms Coda's suggestion or picks another patient. The conversation is linked, and its waiting messages join that patient.
+- **F6.** A reply the practice sends before the conversation is linked waits with the conversation. Once it is linked, the reply joins the patient's history and the messages it answered are settled.
+- **F7.** A physician leaves a waiting message unlinked. That covers only that message; the conversation's next message waits again.
+
+Reviewing:
+
+- **F8.** The patient's review reads the whole linked conversation, including the practice's own replies, and reads again when something new arrives before it finishes.
+- **F9.** The review drafts a reply, and one card opens, shared by everyone who may access the patient and can reply in the conversation.
+- **F10.** The review decides no reply would help, and the message settles with no row.
+
+The card:
+
+- **F11.** A physician opens the reply from Today or the patient page.
+- **F12.** A physician edits the reply, and the edit shows to everyone who sees the card.
+- **F13.** A physician asks Coda to revise, which lets Coda replace their text. The revision finishes on the conversation as it stands then.
+- **F14.** Editing during a revision stops it, and the physician's text stands.
+- **F15.** When the patient writes again, the card says so at once, and an untouched draft then updates in place.
+- **F16.** When the patient writes again after an edit, the physician's text stays and Coda's update is offered. The physician can take it.
+
+Handing off:
+
+- **F17.** A physician copies the reply. The row stays.
+- **F18.** A physician sends in the channel: the copied draft, their edit, or their own words.
+- **F19.** Coda sees the reply. The patient's history records the words actually sent, the messages before it settle, the card closes for everyone, and the review looks for anything left.
+- **F20.** A physician marks No reply needed, and the card closes for everyone.
+- **F21.** A message Coda can't read waits on Today with a link to the channel until someone marks it Done.
+
+Wrong patient:
+
+- **F22.** The messaging manager moves the whole conversation to the right patient. Later messages route there. The old patient's review lets go of it at once, history moves with it, and the card moves, withheld. Anyone who may not see the new patient loses the card.
+- **F23.** The new patient's review redrafts the withheld reply, keeps the physician's edit and offers its update, or closes it.
+
+Disconnecting:
+
+- **F24.** The practice disconnects the channel. Reply drafts are deleted, and an open card stays empty and says the channel is disconnected. A review that finishes meanwhile opens its card empty.
+- **F25.** The empty card waits until someone marks it Done, or until Coda, reconnected, sees the reply.
 
 ## Rules
 
@@ -63,44 +97,27 @@ These rest on stored records or the channel, which the model can't hold. No test
 - A message moved off the wrong patient is marked entered in error and never deleted, and what Coda wrote from it there is marked and can't surface.
 - A completed disconnect deletes messages never accepted into a record, and reply drafts; accepted evidence stays under the record's policy.
 
-## Where each part comes from
-
-Every state and step traces to [physician.md](../../../intent/physician.md); each action's comment in the model names its lines too.
-
-| State or step | Source |
-| --- | --- |
-| The channel owns the conversation; Coda never sends | Principle 10; P3.1, P3.18; Rules: Authority and sending |
-| Filing in order while connected; catching up never shown | P3.3, P3.4; Engineering decisions: Mail |
-| Routing on its own, or waiting for a person | P3.7, P3.8, P3.9 |
-| Leave unlinked covers one message | P3.9 |
-| The whole conversation is evidence once linked | P3.11 |
-| The review reads again before it finishes | P3.16; The concepts: Patient review |
-| No reply needed is the review's call; no row for it | P3.12; PRINCIPLES 1, 4 |
-| One card, shared by everyone who may access and reply | P3.13 |
-| The patient writes again: quiet update, or offer when edited | P3.17 |
-| Revise, and editing during a revision | P3.16 |
-| Copy keeps the row; the row leaves when Coda sees the reply | P3.18, P3.19; Rules: Authority and sending |
-| History records the words sent | P3.19; Principle 3 |
-| No reply needed; Done on an unreadable message | P3: No reply needed, Message Coda can't read |
-| Wrong patient moves the whole conversation; one review | P3: Wrong patient, Wrong link after use |
-| Disconnect empties the card and keeps it | P3.5 |
-| Access to cards and rows | P3.2; Rules: Access and privacy |
-| Today read from the owners, never stored | PRINCIPLES 11; The concepts: Today |
+The model leaves out whether mail is from a patient at all, Coda's suggested patients, urgent unmatched messages, Ask Coda to reply, Undo, Flagged concerns, attachments, and access that changes other than through a correction.
 
 ## Files
 
 | File | Holds |
 | --- | --- |
-| [Messaging.tla](Messaging.tla), [Messaging.cfg](Messaging.cfg) | The design as a TLA+ model: the channel, intake, the link, each patient's review, the card, history and who sees what, with the rules as `INVARIANT`s. The config checks one conversation with two patients, two physicians (one who may see only the first patient), two patient messages, one reply, one correction and one disconnect. Each is the smallest size at which every rule still fails on its broken copy and every journey above happens. |
-| [chart.cfg](chart.cfg), [chart.mjs](chart.mjs) | The chart: one patient message and one reply, for one physician and one patient, in the physician's words. |
+| [Messaging.tla](Messaging.tla), [Messaging.cfg](Messaging.cfg) | The design as a TLA+ model, with the rules as `INVARIANT`s. Every step names the flow it carries out. The config checks one conversation with two patients, two physicians (one who may see only the first patient), two patient messages, one reply, one correction and one disconnect: the smallest scope at which every rule fails on a broken copy and every flow happens. |
+| [Flows.tla](Flows.tla), [flows.cfg](flows.cfg), [scenes.mjs](scenes.mjs) | Each flow, claimed never to happen. The statechart skill refutes every claim with the shortest path on which the flow happens, told step by step: that path is the flow's scene. A flow that no step carries out has no scene. |
+| [chart.cfg](chart.cfg), [chart.mjs](chart.mjs) | One message and one reply, for one physician and one patient: arriving, matching, the review, the card, copying, sending and the reply Coda sees. |
+| [chart-again.cfg](chart-again.cfg), [chart-again.mjs](chart-again.mjs) | The patient writing again while the reply is open: the quiet update, the offer after an edit, and a revision that takes the news in or that an edit stops. |
+| [chart-correction.cfg](chart-correction.cfg), [chart-correction.mjs](chart-correction.mjs) | Wrong patient: the conversation moves, Dr Bell loses a reply he may no longer see, and the withheld reply is redrafted, kept with the physician's edit, or closed. |
+| [chart-disconnect.cfg](chart-disconnect.cfg), [chart-disconnect.mjs](chart-disconnect.mjs) | The practice disconnecting and reconnecting: the empty card, Done, and the reply Coda sees after reconnecting. |
 
-Check the rules, then draw the chart, from the repository root:
+From the repository root, check the rules, tell the scenes, and draw each chart:
 
 ```bash
 .agents/skills/statechart/scripts/statechart verification/physician/messaging/Messaging.tla
+.agents/skills/statechart/scripts/statechart verification/physician/messaging/Flows.tla --config verification/physician/messaging/flows.cfg --view verification/physician/messaging/scenes.mjs
 .agents/skills/statechart/scripts/statechart verification/physician/messaging/Messaging.tla --config verification/physician/messaging/chart.cfg --view verification/physician/messaging/chart.mjs
 ```
 
-The chart leaves out a second patient message, a correction, a disconnect, an unreadable message and a second physician; the rules are checked against all of them. From the copied card and the physician's edit it draws only sending, from a revision only finishing, and it draws revising, editing and No reply needed from the plain draft. The words sent appear only once Coda has seen the reply, where the history shows them.
+Each focused chart runs the same way with its own `.cfg` and `.mjs`. Every chart is the same model at a smaller scope, and each leaves out the others' areas. The one-message chart draws revising, editing and No reply needed from the plain draft only, and shows the words sent only once Coda has seen the reply. The write-again chart doesn't draw copying, and draws No reply needed and revising from the first draft only. The correction chart doesn't draw revising or copying, and names Dr Bell's open reply but not Dr Ames's. The disconnect chart doesn't draw editing, revising or copying, and shows the channel's state only on the review and the card.
 
-The model reaches no code yet. The code follows the model: each bug path found here is replayed against the real product, and the feature gets a verify skill, once the intake, linking and card exist.
+The model reaches no code yet. The code follows it: each bug path is replayed against the real product, and the feature gets a verify skill, once intake, linking and the card exist.

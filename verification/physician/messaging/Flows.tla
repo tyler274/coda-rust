@@ -1,0 +1,51 @@
+------------------------------- MODULE Flows -------------------------------
+(***************************************************************************)
+(* Each README flow, claimed never to happen. Every step of Messaging.tla *)
+(* names the flow it carries out in `event.flow`, so a flow no step       *)
+(* carries out can't be refuted here, and a step with no flow can't       *)
+(* compile. The statechart skill refutes each claim with the shortest     *)
+(* path on which the flow happens, told in scenes.mjs's words: that path  *)
+(* is the flow's scene. flows.cfg has no VIEW, so a state reached by two  *)
+(* different steps is checked after each. A flow that is a change, not a  *)
+(* state, is claimed as a PROPERTY over one step.                          *)
+(***************************************************************************)
+EXTENDS Messaging
+
+Sent(w) == \E h \in history : h.words = w
+Says(line) == event.says = line
+
+F01_PatientWrites          == ~(event.flow = "F1")
+F02_LinkedRoutes           == ~(event.flow = "F2")
+F03_ChannelNamesPatient    == ~(event.flow = "F3")
+F04_WaitsForMatch          == ~(event.flow = "F4")
+F05_PhysicianConfirms      == ~(event.flow = "F5")
+F06_EarlierReplyJoins      == ~(event.flow = "F6" /\ history # {})
+F07_UnlinkedThenWaitsAgain == ~(event.flow = "F7" /\ \E i \in 1..filed : match[i] = "Waiting")
+F08_ReviewReads            == ~(event.flow = "F8")
+F09_DraftOpensCard         == ~(event.flow = "F9")
+F10_NoReplyNeeded          == ~(event.flow = "F10")
+F11_PhysicianOpens         == ~(event.flow = "F11")
+F12_PhysicianEdits         == ~(event.flow = "F12")
+F13_RevisionFinishes       == ~(event.flow = "F13" /\ card.state = Ready /\ card.text = "Coda's")
+F14_EditStopsRevision      == ~(event.flow = "F14")
+F15_DraftUpdatesInPlace    == ~(event.flow = "F15" /\ card.text = "Coda's" /\ ~card.told /\ filed > 1)
+F16_UpdateOffered          == ~(event.flow = "F16" /\ card.offer)
+F16_UpdateTaken            == ~(event.flow = "F16" /\ ~card.offer /\ card.text = "Coda's")
+F17_CopyKeepsRow           == ~(event.flow = "F17" /\ card.open)
+F18_SentInChannel          == ~(event.flow = "F18")
+F19_SeenCodasDraft         == ~(event.flow = "F19" /\ Sent(CodaDraft))
+F19_SeenYourEdit           == ~(event.flow = "F19" /\ Sent(YourEdit))
+F19_SeenOwnWords           == ~(event.flow = "F19" /\ Sent(OwnWords))
+F20_NoReplyNeededByYou     == ~(event.flow = "F20")
+F21_UnreadableDone         == ~(event.flow = "F21")
+F22_ConversationMoves      == ~(event.flow = "F22" /\ card.open /\ card.state = Withheld)
+\* A step, not a state: someone has the reply open, and the move closes it for them.
+F22_LosesCardOnMove        == [][~(event'.flow = "F22" /\ card'.open /\ \E d \in Physicians : viewing[d] /\ ~viewing'[d])]_vars
+F22_OldReviewLetsGo        == ~(\E p \in Patients : Says(p \o "'s review lets go of the conversation: nothing left to review"))
+F23_WithheldRedrafted      == ~(event.flow = "F23" /\ card.open /\ card.text = "Coda's" /\ card.state = Ready)
+F23_WithheldKeepsYourEdit  == ~(event.flow = "F23" /\ card.offer)
+F23_WithheldClosed         == ~(event.flow = "F23" /\ ~card.open)
+F24_DisconnectEmptiesCard  == ~(event.flow = "F24" /\ card.open /\ card.state = Disconnected)
+F25_EmptyCardDone          == ~(\E d \in Physicians : Says(d \o " marks the empty card Done"))
+F25_SeenAfterReconnect     == ~(\E w \in {CodaDraft, YourEdit, OwnWords} : Says("Coda, reconnected, sees the reply sent: " \o w))
+=============================================================================
