@@ -30,6 +30,23 @@ cargo test --workspace
 
 `scripts/ui-gallery.sh` builds the UI gallery and serves it at <http://127.0.0.1:8080/>, each section at its own address, such as `/#charts`.
 
+### Coding agent connections
+
+Open the checkout in Codex and trust the project to load [its MCP config](.codex/config.toml).
+In Claude Code, approve the [project servers](.mcp.json) when prompted.
+Launch the client with any required token variables in its environment. Each developer uses their own credentials.
+
+| Server | Setup |
+| --- | --- |
+| [GitHub](https://github.com/github/github-mcp-server#remote-github-mcp-server) | Set `GITHUB_MCP_TOKEN` to a personal access token scoped to the repositories and operations you need. |
+| [Linear](https://linear.app/docs/mcp) | From this checkout, run `codex mcp login linear`, or open `/mcp` in Claude Code and authenticate Linear. |
+| [NixOS](https://github.com/utensils/mcp-nixos) | Put `uvx` on the client's PATH. The dev shell includes it through `uv`. On first use it downloads the pinned server for package and option lookups. |
+| [Slack](https://docs.slack.dev/ai/slack-mcp-server/) | In Claude Code, open `/mcp` and sign in with the [Slack integration for Claude Code](https://docs.slack.dev/ai/slack-mcp-server/connect-to-claude/) approved by your workspace admin. For Codex, set `SLACK_MCP_USER_TOKEN` to a user token from a workspace-approved, MCP-enabled Slack app with the scopes you need. |
+| [Datadog](https://docs.datadoghq.com/mcp_server/setup/) | Sign in to the US1 site with `codex mcp login datadog` or through `/mcp` in Claude Code. Use a role with MCP Read and read access to the logs, monitors and traces you investigate. |
+| [Local Langfuse](dev/observability/README.md) | Run `scripts/observability-up.sh` on the client host. Both clients use port 3000 and the local Compose project's fixed synthetic-data credentials. If you override `LANGFUSE_PORT`, update the port in your client URL and keep the hostname `localhost`. The v3 stack exposes project tools such as `getHealth` and `listPrompts` through MCP. Use the local UI for generation inputs and outputs. |
+
+Open `/mcp` in either client to inspect the servers. To check access, ask for a known pull request, Linear issue, Nix package, or Slack thread you can read.
+
 ### Local practice
 
 `scripts/local-practice.sh` runs the synthetic practice on a local Postgres database. It runs the migration and the chart load, then starts the site with sign-in required. Sign in as `physician@codahealth.test`; the local site redeems the link itself.
