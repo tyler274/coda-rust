@@ -27,11 +27,14 @@ product deployment permissions. Nix uses GCS's S3 interoperability endpoint, so
 its HMAC credentials are distinct from the WIF credentials used by deploy jobs.
 
 Keep HMAC and signing secrets in Doppler, outside OpenTofu state. Deliver the
-reader credentials to CI separately from the writer credentials. The GitHub
+reader credentials to CI separately from the writer credentials. The reader HMAC
+pair is a repository secret, because every Nix job reads the cache and most run
+outside any environment; it grants only object reads on this bucket. The GitHub
 `nix-cache-write` environment must restrict deployment branches to `main` before
 installing any writer or signing secrets. Never put those secrets at repository
 scope: a workflow condition alone cannot protect secrets from edited PR code.
-PR jobs use the `nix-cache-read` environment and cannot publish trusted outputs.
+Only the `images` job on a `main` push enters `nix-cache-write`; its PR and
+disabled-cache runs use `nix-cache-read`, which holds no secrets.
 Changing cache trust or rotating its signing key requires operator review.
 Cache-writing main image jobs share a concurrency group because create-only
 object permissions cannot safely handle simultaneous uploads of the same object.
