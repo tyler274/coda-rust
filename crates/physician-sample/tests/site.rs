@@ -1251,22 +1251,7 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     browser
         .call(
             "Page.addScriptToEvaluateOnNewDocument",
-            serde_json::json!({"source": r#"(() => {
-        const original = window.fetch.bind(window);
-        window.__eventRequests = 0;
-        window.fetch = (input, init) => {
-            const url = input instanceof Request ? input.url : String(input);
-            if (url.includes('/patient-workspaces/events')) {
-                window.__eventRequests++;
-                if (window.__eventRequests === 1) {
-                    return new Promise(resolve => {
-                        window.__connectEvents = () => resolve(original(input, init));
-                    });
-                }
-            }
-            return original(input, init);
-        };
-    })()"#}),
+            serde_json::json!({"source": include_str!("js/hold_first_event_request.js")}),
         )
         .await;
     browser
@@ -2000,23 +1985,7 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     browser
         .call(
             "Page.addScriptToEvaluateOnNewDocument",
-            serde_json::json!({ "source": r#"(() => {
-                const fetch = window.fetch.bind(window);
-                window.__hold = '/practice-day';
-                window.__held = [];
-                window.fetch = (input, init) => {
-                    const answer = fetch(input, init);
-                    const url = typeof input === 'string' ? input : input.url;
-                    if (window.__hold && new RegExp(window.__hold).test(url)) {
-                        return new Promise(resolve => window.__held.push(() => resolve(answer)));
-                    }
-                    return answer;
-                };
-                window.__release = () => {
-                    window.__hold = null;
-                    window.__held.splice(0).forEach(release => release());
-                };
-            })()"# }),
+            serde_json::json!({ "source": include_str!("js/hold_matching_requests.js") }),
         )
         .await;
     browser.navigate(&format!("http://{address}/")).await;
