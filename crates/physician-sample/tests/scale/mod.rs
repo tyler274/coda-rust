@@ -26,6 +26,8 @@ use tokio::net::TcpStream;
 
 pub const PROJECT: &str = "coda-local-physician";
 pub const FIXED_TEXT: &str = "Noted.";
+/// The physician [`staging_account`] creates and [`sign_in`] signs in.
+pub const STAGING_PHYSICIAN: &str = "staging-physician";
 
 pub fn topic() -> String {
     format!("projects/{PROJECT}/topics/physician-chat-turns")
@@ -697,7 +699,7 @@ pub async fn staging_account(url: &str) {
         .expect("auth store");
     auth.ensure_account(
         physician_sample::STAGING_PRACTICE_ID,
-        "staging-physician",
+        STAGING_PHYSICIAN,
         "physician@codahealth.test",
         "Staging Physician",
         true,

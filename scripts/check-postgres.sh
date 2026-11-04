@@ -55,6 +55,10 @@ cargo test --locked -p physician-sample --test try_again -- --test-threads=1
 # Stop holds the turn across a worker restart; a second Stop holds the resumed
 # run; a message sent while held is answered without either stopped reply.
 cargo test --locked -p physician-sample --test stop -- --test-threads=1
+# After the site and the worker restart, the same session reads back the same
+# conversations, failed run and chat list. A repeated submit, wakeup or Try
+# again leaves one accepted command and one effect.
+cargo test --locked -p physician-sample --test restart_readback -- --test-threads=1
 # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
 # ownership, without a worker. The runtime draft-fence proof runs above.
 cargo test --locked -p physician-sample --test chat_draft -- --test-threads=1
