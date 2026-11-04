@@ -26,6 +26,10 @@ pkgs.mkShell {
     unzip
     zip
     doppler
+    # Local physician chat and the local-review and review-pr reviewers run
+    # these. Each developer signs in once: `codex login`, `claude auth login`.
+    codex
+    claude-code
     # The Pub/Sub emulator backs the physician chat-turn queue tests
     # (crates/physician-sample/tests/worker.rs). It is a Java server.
     ((google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.pubsub-emulator ]).overrideAttrs (old: {

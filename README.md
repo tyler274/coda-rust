@@ -63,7 +63,7 @@ PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-pr
 
 Local physician chat uses the Codex CLI subscription. Live, record, and replay do not read `OPENAI_API_KEY`.
 
-Sign in once, outside this repo's nix shell if that is where the CLI is installed:
+The dev shell provides the CLI. Sign in once:
 
 ```sh
 codex login
@@ -218,8 +218,8 @@ The UI gallery builds and serves with one command, here on the published port:
 dev/apple-session.sh exec scripts/ui-gallery.sh
 ```
 
-Live chat on the physician page needs the Codex CLI and `codex login` in the session, or
-a [replay cassette](#physician-chat-codex-cli). The dev shell does not include it.
+Live chat on the physician page needs `codex login` in the session, or a
+[replay cassette](#physician-chat-codex-cli). The dev shell provides the Codex CLI.
 
 The session's Postgres lasts as long as the session. The database-backed tests
 need a cluster of their own, so run these in `dev/apple-session.sh exec bash`. Point the tests at it as
