@@ -44,6 +44,27 @@ let
     install -Dm755 ${servers}/bin/${binary} $out/bin/${binary}
   '';
 
+  patientBankTool = rustPlatform.buildRustPackage (common // {
+    pname = "patient-bank";
+    cargoBuildFlags = [ "--locked" "-p" "patient-bank" "--bin" "patient-bank" ];
+  });
+  # Committed ledgers and seeds enter the offline chart build. The migration
+  # image carries only the rendered charts and manifest, never the toolchain.
+  patientBankInputs = lib.fileset.toSource {
+    root = ../patients;
+    fileset = lib.fileset.fileFilter
+      (file: file.name == "seed.json" || file.name == "ledger.json") ../patients;
+  };
+  physicianCharts = pkgs.runCommand "physician-synthetic-charts" {
+    nativeBuildInputs = [ patientBankTool ];
+    PATIENT_BANK_DATA = "${src}/crates/patient-bank/data";
+    PATIENT_BANK_PATIENTS = patientBankInputs;
+  } ''
+    patient-bank build --out bank
+    mkdir -p $out
+    cp -r bank/patients bank/manifest.json $out/
+  '';
+
   webPackages = [ "physician-app" "duet-app" ];
   webBuild = rustPlatform.buildRustPackage (common // {
     pname = "coda-web";
@@ -170,6 +191,7 @@ in
   physician-sample = physician;
   physician-worker = physicianWorker;
   physician-skills = physicianSkills;
+  physician-synthetic-charts = physicianCharts;
   duet-api = duet;
   physician-web = physicianWeb;
   duet-web = duetWeb;
@@ -222,6 +244,8 @@ in
     role = "migration";
     binary = physicianMigration;
     executable = "physician-migrate";
+    assets = physicianCharts;
+    environment = [ "PHYSICIAN_SYNTHETIC_CHARTS=${physicianCharts}" ];
   };
   duet-migration-image = image {
     name = "coda-duet-migrate";

@@ -8,7 +8,8 @@
 #     refuses to start without a token, servers refuse Cloud Run hosting
 #     (K_SERVICE) and jobs refuse missing database configuration.
 #  3. Start a disposable PostgreSQL (initdb in mktemp, loopback only), run
-#     both migration images twice, and start the servers with PORT set:
+#     both migration images twice, import the packaged physician bank twice,
+#     and start the servers with PORT set:
 #     /health and /readyz must answer 200. physician-worker starts hosted
 #     on the image's own PHYSICIAN_AUTH and packaged skill catalog, and
 #     refuses to start when its catalog directory is missing.
@@ -116,6 +117,42 @@ done
 [ "${states[0]}" = "${states[1]}" ] || { echo "physician rerun changed the schema" >&2; exit 1; }
 grep -q physician_runtime_commands <<<"${states[0]}" || { echo "runtime chain missing" >&2; exit 1; }
 echo "physician migration rerun is idempotent"
+
+# The explicit import must work from the image alone, without a source mount or
+# a manually supplied chart directory. Ordinary schema migrations above do not
+# import charts. The second load must preserve the stored records unchanged.
+charts=$(nix build --no-link --print-out-paths .#physician-synthetic-charts)
+expected=$(python3 - "$charts/manifest.json" <<'PY'
+import json, sys
+bank = json.load(open(sys.argv[1]))
+assert bank['patients'], 'the packaged bank is empty'
+print(f"{len(bank['patients'])} patients, {sum(bank['totals'].values())} records")
+PY
+)
+[ "$(psql -At "$physician_db" -c 'select count(*) from physician_runtime_sources')" = 0 ] || {
+  echo "ordinary migrations imported charts" >&2; exit 1;
+}
+chart_summaries=()
+for attempt in 1 2; do
+  if ! output=$(run "${locked[@]}" --network host \
+    --entrypoint "$(binary_of "${tag_of[coda-physician-migrate]}")" \
+    -e PHYSICIAN_DATABASE_URL="$physician_db" \
+    -e CODA_HOSTED_PROFILE=staging-preview \
+    "${tag_of[coda-physician-migrate]}" load-charts); then
+    printf '%s\n' "$output" >&2
+    exit 1
+  fi
+  printf '%s\n' "$output"
+  summary=$(grep '^synthetic charts:' <<<"$output")
+  [[ "$summary" == "synthetic charts: $expected, "*", 0 failed" ]] || {
+    echo "packaged chart import did not match its manifest without failures" >&2; exit 1;
+  }
+  chart_summaries+=("$summary")
+done
+[[ "${chart_summaries[1]}" == *", 0 changed, 0 failed" ]] || {
+  echo "packaged chart reload changed stored records" >&2; exit 1;
+}
+echo "packaged chart import and reload are idempotent"
 
 # duet-migrate applies the doctor-page chain as the unprivileged runtime role,
 # then the front-door chain. Both runs must record the same ledger.
