@@ -7,7 +7,7 @@
 (* One phone and two accounts, so the phone can pass from one person to    *)
 (* another. Duet owns the sessions and whether each account has accepted  *)
 (* the Terms; the phone keeps its session, where it was, its draft and     *)
-(* unsent entries across a restart, and knows only what Duet last         *)
+(* unconfirmed entries across a restart, and knows only what Duet last    *)
 (* answered. When Duet ends a session, the phone finds out when Duet       *)
 (* refuses its next check or request; nothing depends on Duet's notice to  *)
 (* the open app. Another phone signing out everywhere, or Duet revoking    *)
@@ -44,12 +44,12 @@ CheckEmail == "Check your email"
 Signing == "Signing you in"
 LinkDead == "This link no longer works"
 Unreached == "Duet couldn't be reached"
-Unsaved == "You were signed out; what's unsent here couldn't be saved"
+Removed == "You were signed out; what Duet hadn't confirmed was removed from this phone"
 Terms == "Terms"
 Conversation == "Conversation"
-Saving == "Signing out: sending unsent entries"
-Warning == "Unsent work would be lost"
-SignInScreens == {Email, CheckEmail, Signing, LinkDead, Unreached, Unsaved}
+Saving == "Signing out: sending unconfirmed entries"
+Warning == "Signing out removes what Duet hasn't confirmed"
+SignInScreens == {Email, CheckEmail, Signing, LinkDead, Unreached, Removed}
 \* Screens that show the account's health content.
 Content == {Conversation, Saving, Warning}
 
@@ -66,11 +66,11 @@ VARIABLES
   session,   \* Duet: each session's account and whether it is live
   accepted,  \* Duet: whether each account has accepted the Terms
   phone,     \* the phone: see Init
-  lost,      \* history: unsent work went without the person warned first or told after
+  removed,   \* history: a draft or unconfirmed entries left the phone, unwarned and untold
   refused,   \* history: the sessions Duet has refused this phone
   event
-state == <<session, accepted, phone, lost, refused>>
-vars == <<session, accepted, phone, lost, refused, event>>
+state == <<session, accepted, phone, removed, refused>>
+vars == <<session, accepted, phone, removed, refused, event>>
 
 Of(s) == IF session[s] \in {Live("Yours"), Ended("Yours")} THEN "Yours" ELSE "Theirs"
 IsLive(s) == session[s] = Live(Of(s))
@@ -90,31 +90,31 @@ Init ==
               whose |-> Nobody,        \* whose account it shows
               heard |-> FALSE,         \* it has heard Duet recorded that account's Terms
               draft |-> Nobody,       \* whose unsent message draft it keeps
-              entries |-> Nobody,      \* whose unsent notes or medications it keeps
+              entries |-> Nobody,      \* whose notes or medications Duet hasn't confirmed
               asks |-> NoAsk,          \* a check or Terms acceptance in flight
               sync |-> NoSync,         \* entries in flight
               signIn |-> NoLink,       \* a sign-in link being redeemed
               told |-> FALSE,          \* it still needs to check: Duet ended its session, or a check failed
               owes |-> {}]             \* sign-outs Duet hasn't heard yet
-  /\ lost = FALSE
+  /\ removed = FALSE
   /\ refused = {}
   /\ event = "start"
 
 Running == phone.screen # Closed
-Unsent(r) == r.draft # Nobody \/ r.entries # Nobody
+Unconfirmed(r) == r.draft # Nobody \/ r.entries # Nobody
 
-(* What `lost` records, whatever the step: a draft or entries leave the    *)
-(* phone without Duet taking the entries, the person having seen the       *)
-(* warning, or the next screen saying what couldn't be saved.              *)
+(* What `removed` records, whatever the step: a draft or entries leave    *)
+(* the phone without Duet taking the entries, the person having seen the  *)
+(* warning, or the next screen saying what was removed.                   *)
 Dropped(k) == phone[k] # Nobody /\ phone'[k] = Nobody
 TakenByDuet == phone.sync # NoSync /\ phone'.sync = NoSync /\ IsLive(SentWith(phone))
                /\ \A s \in Sessions : session'[s] = session[s]
-Excused == phone.screen = Warning \/ phone'.screen = Unsaved
+Excused == phone.screen = Warning \/ phone'.screen = Removed
 Silent == (Dropped("draft") /\ ~Excused) \/ (Dropped("entries") /\ ~Excused /\ ~TakenByDuet)
 
 \* Each action ends here, after its other changes: it names the step and keeps the history.
 History(name) == /\ event' = name
-                 /\ lost' = (lost \/ Silent)
+                 /\ removed' = (removed \/ Silent)
 Did(name) == History(name) /\ UNCHANGED refused
 
 (* The phone leaves the account: the session, the draft and entries and   *)
@@ -128,8 +128,9 @@ Leave(r, to) == [r EXCEPT !.screen = to, !.place = Conversation, !.holds = NoSes
 SignsOutHere(r) == [Leave(r, Email) EXCEPT !.owes = @ \cup {r.holds}]
 
 (* Duet refuses the session: the phone leaves the account, and when it     *)
-(* held unsent work, the sign-in screen says what couldn't be saved.       *)
-Refused(r) == Leave(r, IF Unsent(r) THEN Unsaved ELSE Email)
+(* held a draft or unconfirmed entries, the sign-in screen says what it    *)
+(* removed.                                                                 *)
+Refused(r) == Leave(r, IF Unconfirmed(r) THEN Removed ELSE Email)
 
 (* D1.11, D1.15: Duet opens where the person was, from what the phone      *)
 (* keeps, and checks the session. Without one, it asks for an email.       *)
@@ -159,7 +160,7 @@ CloseDuet ==
 (* whatever email it's given, which signs in to that email's account or    *)
 (* creates it, and the phone says "Check your email".                       *)
 EnterEmail ==
-  /\ phone.screen \in {Email, CheckEmail, LinkDead, Unreached, Unsaved}
+  /\ phone.screen \in {Email, CheckEmail, LinkDead, Unreached, Removed}
   /\ phone' = [phone EXCEPT !.screen = CheckEmail]
   /\ UNCHANGED <<session, accepted>>
   /\ Did("you enter your email")
@@ -290,17 +291,17 @@ AddEntries ==
   /\ UNCHANGED <<session, accepted>>
   /\ Did("you add entries")
 
-\* The phone sends unsent entries.
+\* The phone sends entries Duet hasn't confirmed.
 SendEntries ==
   /\ Running /\ phone.holds # NoSession /\ phone.entries # Nobody /\ phone.sync = NoSync
   /\ phone' = [phone EXCEPT !.sync = Sending(phone.holds)]
   /\ UNCHANGED <<session, accepted>>
   /\ Did("the phone sends its entries")
 
-(* D5.4: signing out of this phone, also from under the Terms. With unsent *)
-(* entries, Duet tries to send them first. With anything that would still  *)
-(* be lost, counting a draft, Duet warns first. Otherwise it signs out at  *)
-(* once.                                                                    *)
+(* D5.4: signing out of this phone, also from under the Terms. With       *)
+(* unconfirmed entries, the phone sends them first. With a draft or       *)
+(* entries still unconfirmed, Duet says what signing out removes from     *)
+(* this phone. Otherwise it signs out at once.                            *)
 StartSignOut ==
   /\ phone.screen \in {Conversation, Terms}
   /\ IF phone.entries # Nobody
@@ -400,6 +401,6 @@ TermsFirst ==
   /\ phone.screen \in Content => accepted[phone.whose]
   /\ phone.screen = Terms => ~phone.heard
 
-\* Unsent entries and a draft are never dropped without the person being warned first or told after.
-NothingLostSilently == ~lost
+\* A draft, or entries Duet hasn't confirmed, are never removed without the person being warned first or told after.
+NothingRemovedSilently == ~removed
 =============================================================================

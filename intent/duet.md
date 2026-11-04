@@ -92,7 +92,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 11. **App restart.** The person is still signed in, the conversation is intact, and Duet reopens where they were, with any draft they left.
 12. **Signing out before a message is confirmed.** The message still arrives and Duet replies; both show when they sign back in anywhere.
 13. **Interrupted reply.** The person's message is kept, text already streamed is kept, and an action the reply already committed is neither erased nor done twice.
-14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what unsent on that phone couldn't be saved.
+14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed.
 15. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The cached conversation and drafts stay usable while Duet checks the account.
 16. **AI not allowed.** Empty chat shows a small symbol, the real reason, and the matching settings action or View Today. The draft is kept.
 
@@ -178,7 +178,7 @@ Alerts:
 1. **Export.** The person exports everything Duet keeps about them, every kind of data with its source and date. Export never waits on a refresh or on newer Terms; it packages what Duet holds now and says what's still importing.
 2. **Deletion.** The person deletes their account, which removes everything and stops all practice sharing.
 3. **Interrupted deletion.** The deletion finishes, and neither old work nor a restored backup brings deleted or withdrawn data back. A deletion that didn't finish is offered to the person to finish.
-4. **Sign out.** There are two scopes, this device and everywhere. Signing out everywhere ends every session while the account and its history stay, and Duet never says "signed out everywhere" until every session has ended. With unsent notes or medications, Duet tries to sync first, and if it can't, says how many entries would be lost and offers Stay signed in or Sign out anyway. An unsent message draft counts too, and signing out clears it. Signing out of this device takes effect at once, even offline, and Duet hears of it as soon as the phone can reach it.
+4. **Sign out.** There are two scopes, this device and everywhere. Signing out everywhere ends every session while the account and its history stay, and Duet never says "signed out everywhere" until every session has ended. With unsent notes or medications, Duet tries to sync first, and if it can't confirm them, says how many entries it hasn't confirmed and that signing out removes them from this phone, and offers Stay signed in or Sign out anyway. An unsent message draft counts too, and signing out clears it. Signing out of this device takes effect at once, even offline, and Duet hears of it as soon as the phone can reach it.
 5. **Withdrawing AI isn't deletion.** The conversation and Duet's understanding of the person stay viewable, exportable and deletable.
 6. **Rights never wait on Terms.** While newer Terms wait, Settings still open for export, disconnecting a source, leaving a practice, deleting the account and withdrawing AI. Everything else waits.
 
