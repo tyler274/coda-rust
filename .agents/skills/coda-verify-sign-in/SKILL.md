@@ -42,6 +42,16 @@ CHROMIUM=<path to Chromium> cargo test -p physician-sample --test sign_in_model 
 It replays each path in `BUG_PATHS` in `sign_in_model.rs`, in two tabs of one browser against the
 real page and sample server, and compares both tabs with the model after every step.
 
+A change to how the page looks or to what a stage offers also needs its stages walked:
+
+```sh
+CHROMIUM=<path to Chromium> cargo test -p physician-sample --test sign_in_states -- --ignored
+```
+
+It reaches every stage at desktop and phone sizes in light and dark, and checks each stage's words,
+its way on and that nothing scrolls sideways. With `SIGN_IN_SHOTS` set to an absolute folder it also
+saves each stage as a screenshot, to compare two revisions.
+
 ## Bounds and assumptions
 
 Two tabs and up to three sessions. Each wait in the code is one step, and the model's header says

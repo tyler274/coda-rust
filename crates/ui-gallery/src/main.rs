@@ -33,9 +33,9 @@ use ui::{
     SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
     SettingRow, Slider, SortOrder, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
-    TableRow, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip,
-    TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
-    use_live_rows,
+    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, Toast, ToggleChip, Tone,
+    Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -3005,7 +3005,7 @@ fn InputsDemo() -> Element {
             }
             TextField {
                 label: "What I want to discuss",
-                multiline: true,
+                kind: TextKind::Multiline,
                 value: discuss(),
                 on_input: move |words| discuss.set(words),
             }
@@ -3017,6 +3017,7 @@ fn InputsDemo() -> Element {
             }
             TextField {
                 label: "Email",
+                kind: TextKind::Email,
                 value: email(),
                 on_input: move |words| email.set(words),
                 error: (!email().contains('.')).then(|| "That address looks incomplete.".to_owned()),

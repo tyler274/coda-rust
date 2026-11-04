@@ -154,7 +154,7 @@ Run-time dimension: the numbers come from a laptop with `fsync=off`. They show s
 Use a browser driver against `Site A` or `Site B` with a desktop viewport:
 
 - Navigate to `$D page-url --site <a|b> --chat "$C"`. The sign-in screen appears first.
-- Sign in: fill `.sign-in-input` with `physician@codahealth.test`, choose `.sign-in-primary`.
+- Sign in: fill `input[type="email"]` with `physician@codahealth.test`, choose `.control-primary`.
   Proof delivery redeems the token automatically, and the page opens Abigail Lemieux on `$C`.
   It does not go to Today, because the first shell after sign-in keeps `?patient=` and `?chat=`.
 - Wait for `Records as of` and the `Conversation` region's `Write a message` composer.

@@ -43,9 +43,9 @@ use shell::{
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Count, Dialog, DraftConflict, EmptyLine, Icon,
-    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
-    StatusLine, Tone,
+    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, PageTitle, ProgressBar,
+    SearchField, StatePill, StatusLine, TextField, TextKind, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -2492,12 +2492,10 @@ fn SignInScreen(
             SignInStage::Email
         }
     });
-    let mut error = use_signal(String::new);
 
     let mut verify_link = move |link: SignInLink| {
         let client = client.peek().clone();
         stage.set(SignInStage::SigningIn);
-        error.set(String::new());
         spawn(async move {
             match client.verify(&link.email, &link.code).await {
                 Ok(verified) => {
@@ -2524,8 +2522,7 @@ fn SignInScreen(
                             "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
                         }
                     };
-                    error.set(message.to_owned());
-                    stage.set(SignInStage::Recovery);
+                    stage.set(SignInStage::Recovery(message.to_owned()));
                 }
             }
         });
@@ -2584,7 +2581,6 @@ fn SignInScreen(
         let client = client.peek().clone();
         let email_value = email.peek().trim().to_owned();
         stage.set(SignInStage::Requesting);
-        error.set(String::new());
         spawn(async move {
             match client.begin_sign_in(&email_value).await {
                 Ok(answer) => match sign_in_followup(&answer) {
@@ -2602,115 +2598,110 @@ fn SignInScreen(
                         stage.set(SignInStage::CheckEmail);
                     }
                     SignInFollowup::Failed(text) => {
-                        error.set(text);
-                        stage.set(SignInStage::Recovery);
+                        stage.set(SignInStage::Recovery(text));
                     }
                 },
                 Err(_) => {
-                    error.set(SIGN_IN_UNAVAILABLE.to_owned());
-                    stage.set(SignInStage::Recovery);
+                    stage.set(SignInStage::Recovery(SIGN_IN_UNAVAILABLE.to_owned()));
                 }
             }
         });
     };
     let working = matches!(stage(), SignInStage::Requesting | SignInStage::SigningIn);
+    let ways_on = move || {
+        rsx! {
+            ActionRow {
+                Button {
+                    onclick: move |_| request_token(()),
+                    "Send a new link"
+                }
+                if !resuming {
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        onclick: move |_| stage.set(SignInStage::Email),
+                        "Use a different email"
+                    }
+                }
+            }
+        }
+    };
     rsx! {
         div { class: "sign-in-screen",
             section {
-                class: "sign-in-card",
+                class: "sign-in-column",
                 aria_label: "Sign in to Coda",
                 img {
-                    class: "sign-in-logo",
+                    class: "coda-logo",
                     src: "./assets/coda-health-logo-transparent.png",
                     alt: "Coda Health",
-                    width: "152",
                 }
-                div { class: "sign-in-content", aria_live: "polite", aria_busy: working,
-                    h1 {
+                Card {
+                    div { class: "sign-in-content", aria_live: "polite", aria_busy: working,
+                        PageTitle { text: stage().heading(resuming) }
                         match stage() {
-                            SignInStage::CheckEmail => "Check your email",
-                            SignInStage::Requesting => "Sending your link…",
-                            SignInStage::SigningIn => "Signing you in…",
-                            SignInStage::Recovery => "Let’s get you signed in",
-                            SignInStage::NoAccess => "No access to this practice",
-                            SignInStage::Email if resuming => "Sign in to continue",
-                            SignInStage::Email => "Sign in to Coda",
-                        }
-                    }
-                    match stage() {
-                        SignInStage::Email if resuming => rsx! {
-                            p { class: "sign-in-sub", "{SESSION_ENDED}" }
-                            p { class: "sign-in-email", "{email}" }
-                            div { class: "sign-in-form",
-                                button {
-                                    class: "sign-in-primary",
-                                    r#type: "button",
-                                    disabled: email.read().trim().is_empty(),
-                                    onclick: move |_| request_token(()),
-                                    "Email me a sign-in link"
+                            SignInStage::Email if resuming => rsx! {
+                                p { class: "sign-in-sub", "{SESSION_ENDED}" }
+                                p { class: "sign-in-sub sign-in-email", "{email}" }
+                                div { class: "sign-in-form",
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: email.read().trim().is_empty(),
+                                        onclick: move |_| request_token(()),
+                                        "Email me a sign-in link"
+                                    }
+                                    p { class: "sign-in-sub", "Open it to pick up where you were." }
                                 }
-                                p { class: "sign-in-hint", "Open it to pick up where you were." }
-                            }
-                        },
-                        SignInStage::NoAccess => rsx! {
-                            p { class: "sign-in-sub",
-                                if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
-                            }
-                            div { class: "sign-in-actions",
-                                button {
-                                    class: "sign-in-text-action",
-                                    r#type: "button",
-                                    onclick: move |_| {
-                                        removed.set(false);
-                                        email.set(String::new());
-                                        stage.set(SignInStage::Email);
-                                    },
-                                    "Use a different email"
+                            },
+                            SignInStage::NoAccess => rsx! {
+                                p { class: "sign-in-sub",
+                                    if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
                                 }
-                            }
-                        },
-                        SignInStage::Email => rsx! {
-                            p { class: "sign-in-sub", "Your practice, with you." }
-                            div { class: "sign-in-form",
-                                label { "Work email"
-                                    input {
-                                        class: "sign-in-input",
-                                        r#type: "email",
-                                        autocomplete: "email",
+                                ActionRow {
+                                    Button {
+                                        onclick: move |_| {
+                                            removed.set(false);
+                                            email.set(String::new());
+                                            stage.set(SignInStage::Email);
+                                        },
+                                        "Use a different email"
+                                    }
+                                }
+                            },
+                            SignInStage::Email => rsx! {
+                                p { class: "sign-in-sub", "Your practice, with you." }
+                                div { class: "sign-in-form",
+                                    TextField {
+                                        label: "Work email",
+                                        kind: TextKind::Email,
                                         placeholder: "you@practice.com",
-                                        value: "{email}",
-                                        oninput: move |event| email.set(event.value()),
-                                        onkeydown: move |event| {
-                                            if event.key().to_string() == "Enter" && !email.peek().trim().is_empty() {
+                                        hint: "We’ll email you a link. No password needed.",
+                                        value: email(),
+                                        on_input: move |words| email.set(words),
+                                        onkeydown: move |event: KeyboardEvent| {
+                                            if event.key() == Key::Enter && !email.peek().trim().is_empty() {
                                                 request_token(());
                                             }
                                         },
                                     }
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: email.read().trim().is_empty(),
+                                        onclick: move |_| request_token(()),
+                                        "Send sign-in link"
+                                    }
                                 }
-                                button {
-                                    class: "sign-in-primary",
-                                    r#type: "button",
-                                    disabled: email.read().trim().is_empty(),
-                                    onclick: move |_| request_token(()),
-                                    "Send sign-in link"
-                                }
-                                p { class: "sign-in-hint", "We’ll email you a link. No password needed." }
-                            }
-                        },
-                        SignInStage::Requesting | SignInStage::SigningIn => rsx! {
-                            p { class: "sign-in-sub", role: "status",
-                                if stage() == SignInStage::Requesting {
-                                    "This may take a moment."
-                                } else {
-                                    "Opening your Coda workspace."
-                                }
-                            }
-                            div { class: "sign-in-progress", aria_hidden: "true", span {} }
-                        },
-                        SignInStage::CheckEmail | SignInStage::Recovery => rsx! {
-                            if stage() == SignInStage::CheckEmail {
+                            },
+                            SignInStage::Requesting => rsx! {
+                                p { class: "sign-in-sub", role: "status", "This may take a moment." }
+                                ProgressBar { label: "Sending your link", bare: true }
+                            },
+                            SignInStage::SigningIn => rsx! {
+                                p { class: "sign-in-sub", role: "status", "Opening your Coda workspace." }
+                                ProgressBar { label: "Signing you in", bare: true }
+                            },
+                            SignInStage::CheckEmail => rsx! {
                                 p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
-                                p { class: "sign-in-email", "{email}" }
+                                p { class: "sign-in-sub sign-in-email", "{email}" }
                                 p { class: "sign-in-sub",
                                     if resuming {
                                         "Choose Sign in in the email to pick up where you were."
@@ -2718,38 +2709,20 @@ fn SignInScreen(
                                         "Choose Sign in in the email to open your workspace."
                                     }
                                 }
-                            }
-                            if !error().is_empty() {
-                                p { class: "sign-in-error", role: "alert", "{error}" }
-                            }
-                            div { class: "sign-in-actions",
-                                button {
-                                    class: "sign-in-text-action",
-                                    r#type: "button",
-                                    onclick: move |_| request_token(()),
-                                    "Send a new link"
+                                {ways_on()}
+                            },
+                            SignInStage::Recovery(message) => rsx! {
+                                ui::Notice { tone: Tone::Error, icon: IconName::Alert, title: message }
+                                {ways_on()}
+                            },
+                        }
+                        if let Some(sign_out) = on_sign_out {
+                            ActionRow {
+                                Button {
+                                    variant: ButtonVariant::Quiet,
+                                    onclick: move |_| sign_out.call(()),
+                                    "Sign out"
                                 }
-                                if !resuming {
-                                    button {
-                                        class: "sign-in-text-action sign-in-change",
-                                        r#type: "button",
-                                        onclick: move |_| {
-                                            error.set(String::new());
-                                            stage.set(SignInStage::Email);
-                                        },
-                                        "Use a different email"
-                                    }
-                                }
-                            }
-                        },
-                    }
-                    if let Some(sign_out) = on_sign_out {
-                        div { class: "sign-in-actions",
-                            button {
-                                class: "sign-in-text-action sign-in-change",
-                                r#type: "button",
-                                onclick: move |_| sign_out.call(()),
-                                "Sign out"
                             }
                         }
                     }
@@ -2759,15 +2732,31 @@ fn SignInScreen(
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 enum SignInStage {
     Email,
     Requesting,
     CheckEmail,
     SigningIn,
-    Recovery,
+    /// What went wrong, with the ways on from it.
+    Recovery(String),
     /// A held link whose account no longer has access to this practice.
     NoAccess,
+}
+
+impl SignInStage {
+    /// What the page is called at this stage; `resuming` when it covers a page whose session ended.
+    fn heading(&self, resuming: bool) -> &'static str {
+        match self {
+            Self::CheckEmail => "Check your email",
+            Self::Requesting => "Sending your link…",
+            Self::SigningIn => "Signing you in…",
+            Self::Recovery(_) => "Let’s get you signed in",
+            Self::NoAccess => "No access to this practice",
+            Self::Email if resuming => "Sign in to continue",
+            Self::Email => "Sign in to Coda",
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]

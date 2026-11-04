@@ -23,6 +23,7 @@ mod common;
 #[allow(dead_code)]
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
+#[allow(dead_code)]
 mod required_auth;
 
 use devtools::{Browser, DESKTOP};
@@ -316,7 +317,7 @@ impl Walker {
     fn request(&mut self, t: &str, answer: Answer) {
         let page = self.tab(t);
         page.evaluate(&format!(
-            "(() => {{ const input = (document.querySelector('.session-prompt') || document).querySelector('.sign-in-input'); \
+            "(() => {{ const input = (document.querySelector('.session-prompt') || document).querySelector('input[type=email]'); \
                if (input) {{ input.value = '{STAGING_EMAIL}'; input.dispatchEvent(new Event('input', {{ bubbles: true }})); }} return 0; }})()"
         ));
         let press = "(() => { const root = document.querySelector('.session-prompt') || document; \

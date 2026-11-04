@@ -55,7 +55,7 @@ pub use feedback::{FeedbackRating, Rating, ToggleChip};
 pub use icons::{Icon, IconName};
 pub use inputs::{
     Checkbox, Choice, Combobox, CompactField, DateField, DateKind, RadioGroup, Segmented, Select,
-    Slider, TextField,
+    Slider, TextField, TextKind,
 };
 pub use live::{ListedRow, LiveRows, RowFrame, use_live_rows};
 pub use motion::Stylesheet;

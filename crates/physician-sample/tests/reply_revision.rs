@@ -1152,8 +1152,8 @@ fn open_workspace(browser: &mut devtools::Browser, host: &str) {
         physician_sample::WORKSPACE_IDS[0]
     );
     browser.text_until(&url, "Sign in to Coda");
-    browser.type_into(".sign-in-input", "physician@codahealth.test");
-    browser.click(".sign-in-primary");
+    browser.type_into(r#"input[type="email"]"#, "physician@codahealth.test");
+    browser.click(".control-primary");
     browser.wait_for("Records as of");
 }
 

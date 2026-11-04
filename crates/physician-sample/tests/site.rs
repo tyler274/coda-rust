@@ -2661,10 +2661,9 @@ impl Tab {
     }
 
     fn request_sign_in(&mut self, email: &str) {
-        self.browser
-            .type_into("input.sign-in-input[type=\"email\"]", email);
+        self.browser.type_into("input[type=\"email\"]", email);
         std::thread::sleep(Duration::from_millis(50));
-        self.click("button.sign-in-primary");
+        self.click("button.control-primary");
     }
 
     fn search_for(&mut self, query: &str) {

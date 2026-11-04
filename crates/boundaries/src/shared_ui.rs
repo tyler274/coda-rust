@@ -126,12 +126,6 @@ const TABLE: &[Entry] = &[
     },
     Entry {
         file: "crates/physician-app/src/lib.rs",
-        kind: Input,
-        count: 1,
-        reason: "The sign-in email, which moves to `TextField` with sign-in.",
-    },
-    Entry {
-        file: "crates/physician-app/src/lib.rs",
         kind: Select,
         count: 1,
         reason: "The practice's physician panel choice, which moves to the shared `Select` with the remaining controls.",
@@ -139,8 +133,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/physician-app/src/lib.rs",
         kind: Button,
-        count: 8,
-        reason: "Sign-in's six actions, plus the logo images that reopen the app and return to Today, which stay raw until the remaining controls move.",
+        count: 2,
+        reason: "The logo images that reopen the app and return to Today, which stay raw until the remaining controls move.",
     },
     Entry {
         file: "crates/physician-app/src/lib.rs",
