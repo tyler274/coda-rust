@@ -31,6 +31,7 @@ export const state = (v) => {
   const screen = screens[v.phone.screen];
   if (screen === "Closed") return v.phone.holds === "No session" ? "Closed, signed out" : "Closed, signed in";
   if (screen === "Conversation" && ended(v)) return "Conversation, session ended elsewhere";
+  if (screen === "Terms" && v.phone.asks.startsWith("Accepting")) return "Terms agreed, waiting for Duet";
   return screen;
 };
 
@@ -74,6 +75,10 @@ export const step = (action, from) => {
   if (action === "CloseDuet" && signInScreens.includes(at)) return null;
   if (action === "OpenLink" && !waiting.includes(at)) return null;
   // Where these go depends on work the screen doesn't show, so the label says which.
+  // Both signing-out screens start "Signing out".
+  if (action === "DuetTakesEntries" && from.phone.screen.startsWith("Signing out")) {
+    return `${steps[action]} [${from.phone.draft === "Nobody" ? "nothing else unconfirmed" : "with a draft"}]`;
+  }
   if (action === "StartSignOut" || action === "DuetRefuses") {
     const { entries, draft } = from.phone;
     const work = entries === "Nobody" && draft === "Nobody" ? "nothing unconfirmed"
