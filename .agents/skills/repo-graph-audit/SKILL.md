@@ -70,8 +70,9 @@ uvx --from lizard==1.17.31 lizard -l rust crates/physician-app/src/lib.rs
 
 The `CCN` column estimates cyclomatic complexity per function. Lizard can exit 1
 after printing a report with warnings. Use the report to pick functions to
-read. A finding should identify which unrelated decisions a change
-forces the reader to understand and why that matters for the workflow.
+read. When a function mixes responsibilities, ask whether an existing framework
+pattern would let someone change one behavior without having to understand the
+others.
 
 ## Build the owner and workflow layer
 
