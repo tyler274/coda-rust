@@ -56,10 +56,8 @@ its spec, and the code whose changes call for it. When a change touches that cod
 acceptance evidence comes from the skill. A change outside every skill's code proves itself
 with focused tests and the observations its criteria name.
 
-| Skill | Proves | Run when a change touches |
-| --- | --- | --- |
-| [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md#when-a-change-needs-this) | Physician sign-in against its TLA+ model: TLC on its rules, then the bug paths replayed in the browser | Physician session, sign-in and tab code, the auth server's answers, or the sign-in spec or model |
-| [coda-verify-physician](../.agents/skills/coda-verify-physician/SKILL.md#when-a-change-needs-this) | Physician chat across two site instances and a worker: fan-out, couldn't-finish and Try again, resync, duplicate and retry delivery | Physician chat delivery, the worker, the event bus, durable chat runs, or the conversation renderer |
+Each verify skill lives in `.agents/skills/coda-verify-*/`. Its description says what it proves,
+and its "When a change needs this" section names the code that calls for it.
 
 ## The agent harness
 
@@ -84,9 +82,8 @@ Each create skill writes a project skill, such as
 [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md), that names Coda's commands
 and what each check covers. `create-verification-skill` says to write it under
 `.cursor/skills/verify-<app>/`; in Coda it goes in `.agents/skills/coda-verify-<feature>/` with a
-`.claude/skills` link, like every repository skill, and gets a row under
-[Verify skills](#verify-skills). The maintain skills find a verify skill by what it does, not by
-its path. A project skill refers to `statechart` by name and copies none of its commands, options
+`.claude/skills` link, like every repository skill. The maintain skills find a verify skill by
+what it does, not by its path. A project skill refers to `statechart` by name and copies none of its commands, options
 or paths, which change between PStack releases.
 
 The skills in `.agents/skills` are [PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
