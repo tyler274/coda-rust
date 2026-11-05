@@ -56,6 +56,6 @@ Check the rules, then draw the chart, from the repository root:
 .agents/skills/statechart/scripts/statechart verification/physician/messaging/Messaging.tla --config verification/physician/messaging/chart.cfg --view verification/physician/messaging/chart.mjs
 ```
 
-The chart leaves out a second physician, a second patient and the corrections they need, the patient writing twice, and disconnecting. The rules are checked in both runs.
+The chart leaves out a second physician, a second patient and the corrections they need, the patient writing twice, unreadable messages, concerns and disconnecting, and every message waits for a person to match it. It doesn't draw copying, revising, or the practice writing before Coda sees it, since none of them changes what the physician sees on Today. The rules are checked in both runs.
 
 The channel owns the conversation and everything sent in it. The link owns which patient a conversation belongs to; each patient's review owns whether a reply would help and what it says; each physician owns their draft. Today is read from these through each physician's current access, never stored. The model lets the patient, the practice, Coda's reads and reviews, the physicians and the messaging manager act in any order, and the channel deliver late or go away. TLC checks the rules in every state the model reaches; it doesn't reach the code.
