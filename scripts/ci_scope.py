@@ -25,7 +25,7 @@ def lightweight_path(path):
 def dependency_path(path):
     # Changing these rebuilds the Nix dependency derivations from source.
     return (
-        path in {"Cargo.lock", "Cargo.toml", "flake.lock", "flake.nix"}
+        path in {"Cargo.lock", "Cargo.toml", "flake.lock", "flake.nix", "rust-toolchain.toml"}
         or path.endswith("/Cargo.toml")
         or path.startswith("nix/")
     )
