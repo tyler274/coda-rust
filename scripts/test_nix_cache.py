@@ -199,7 +199,7 @@ class CacheTests(unittest.TestCase):
         original = self.fake_run
         def fail(args, **kwargs):
             if args[:2] == ['nix', 'copy']:
-                return subprocess.CompletedProcess(args, 1, '', '403 ' + SECRET)
+                return subprocess.CompletedProcess(args, 1, '', 'HTTP error 403 ' + SECRET)
             return original(args, **kwargs)
         self.runner.side_effect = fail
         with self.assertRaises(cache.CacheError):
@@ -307,6 +307,17 @@ class CacheTests(unittest.TestCase):
 
 
 class CaptureTests(unittest.TestCase):
+    def test_progress_paths_do_not_override_real_errors(self):
+        for progress, error, expected in (
+            ('copying /nix/store/' + 'a' * 29 + '403-thing', 'No space left on device', cache.Failure.DISK),
+            ('copying /nix/store/' + 'a' * 32 + '-openssl', 'path is not valid', cache.Failure.MISSING_PATH),
+        ):
+            with self.subTest(expected=expected):
+                result = cache.capture_command(
+                    [sys.executable, '-c', f'import sys; print({progress!r}); print({error!r}, file=sys.stderr); sys.exit(1)'],
+                    env=os.environ.copy(), input=None, label=cache.Stage.COPY)
+                self.assertEqual(result.failure_category, expected)
+
     def test_fixed_failure_classification(self):
         for message, expected in (
             ('HTTP 403 Forbidden', cache.Failure.PERMISSION),

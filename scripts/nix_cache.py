@@ -79,10 +79,11 @@ HEARTBEAT_SECONDS = 15
 OUTPUT_LIMIT = 16 * 1024 * 1024
 DIAGNOSTIC_LIMIT = 64 * 1024
 FAILURE_HINTS = (
-    (Failure.PERMISSION, ('403', 'forbidden', 'accessdenied', 'access denied', 'permission denied')),
+    (Failure.PERMISSION, ('http error 403', 'http status 403', 'http 403', '403 forbidden', 'accessdenied', 'access denied', 'permission denied')),
     (Failure.DISK, ('no space left', 'disk quota exceeded', 'read-only file system')),
     (Failure.NETWORK, ('could not resolve', 'connection refused', 'connection reset',
-                       'timed out', 'timeout', 'network is unreachable', 'tls', 'ssl')),
+                       'timed out', 'connection timeout', 'network is unreachable',
+                       'tls handshake', 'ssl certificate problem')),
     (Failure.MISSING_PATH, ('no such file', 'does not exist', 'not a valid path', 'path is not valid')),
 )
 
