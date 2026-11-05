@@ -39,6 +39,8 @@ def select(event_name, event):
     """Return (full, deps, reason). deps means a dependency build is likely cold."""
     if event_name == "workflow_dispatch":
         return True, False, "manual qualification"
+    if event_name == "schedule":
+        return True, False, "scheduled cache warm"
     try:
         if event_name == "pull_request":
             base = event["pull_request"]["base"]["sha"]
