@@ -14,12 +14,16 @@ const screens = {
   Terms: "Terms",
   Conversation: "Conversation",
   "Signing out: sending unconfirmed entries": "Signing out, sending entries",
-  "Signing out removes what Duet hasn't confirmed": "Warned before signing out",
 };
+
+// What the warning says goes, from what the phone still holds.
+const warned = (p) =>
+  p.entries === "Nobody" ? "Warned the draft goes"
+    : p.draft === "Nobody" ? "Warned the entries go" : "Warned the draft and entries go";
 
 export const state = (v) => {
   const p = v.phone;
-  const screen = screens[p.screen] ?? p.screen;
+  const screen = p.screen === "Signing out removes what Duet hasn't confirmed" ? warned(p) : screens[p.screen] ?? p.screen;
   if (p.whose === "Nobody") return screen;
   if (screen === "Terms" && p.asks.startsWith("Accepting")) return "Terms agreed, waiting for Duet: theirs";
   return `${screen}: ${p.whose === "Yours" ? "yours" : "theirs"}`;
@@ -31,9 +35,8 @@ const steps = {
   DuetSignsIn: "Duet signs them in",
   AgreeTerms: "they agree to the Terms",
   DuetRecordsTerms: "Duet records the Terms",
-  SendEntries: "the phone sends your entries",
   StartSignOut: "you sign out",
-  DuetTakesEntries: "Duet takes your entries",
+  DuetConfirmsEntries: "Duet confirms your entries",
   StaySignedIn: "you stay signed in",
   SignOutAnyway: "you sign out anyway",
   TellDuet: "the phone tells Duet you signed out",
@@ -47,7 +50,7 @@ export const step = (action, from) => {
     const who = from.phone.whose === "Yours" ? "you sign out" : "they sign out";
     return `${who} [${entries !== "Nobody" ? "with unconfirmed entries" : draft !== "Nobody" ? "with a draft" : "nothing unconfirmed"}]`;
   }
-  if (action === "DuetTakesEntries" && from.phone.screen.startsWith("Signing out")) {
+  if (action === "DuetConfirmsEntries" && from.phone.screen.startsWith("Signing out:")) {
     return from.phone.draft === "Nobody" ? `${steps[action]}, nothing else unconfirmed` : `${steps[action]}, but the draft is left`;
   }
   if (action === "CantReach" && from.phone.screen.startsWith("Signing out")) return "Duet can't confirm your entries";
