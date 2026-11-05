@@ -209,7 +209,10 @@ runs on pushes to `main`, after every check job, when the repository variable
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
    traffic. The update is submitted with `--async` and readiness is polled every
-   5 s for at most 10 minutes, within the release's overall command budget;
+   5 s for at most 10 minutes, within the release's overall command budget.
+   Polling stops early when the submit failed and two consecutive reads, 5 s
+   apart, still show a different image in the service spec. The release then
+   stops with an unconfirmed rollout rather than waiting out the poll bound;
 3. updates `physician-worker` to its digest once that service exists, with the same
    Ready-revision check. Until then it reports the digest to record as
    `images.physician.worker` for the scaling apply;

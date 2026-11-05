@@ -333,6 +333,24 @@ fn failed_operation_survives_an_unwritable_operation_record() {
     assert_eq!(cloud.writes, ["create", "restore"]);
 }
 #[test]
+fn reviewer_reproduction_failed_restore_with_sixth_save_unwritable() {
+    // Saves: receipt creation, create requested, create operation, created,
+    // restore requested, then the restore operation record (index 5).
+    let mut cloud = FakeCloud::new(Product::Duet);
+    cloud.restore_failure = true;
+    let mut store = Memory {
+        fail_at: Some(5),
+        ..Memory::default()
+    };
+    let error = restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap_err();
+    let Error::Unrecorded { primary, .. } = &error else {
+        panic!("persistence failure replaced the operation error: {error:?}");
+    };
+    assert!(matches!(**primary, Error::Operation { .. }), "{primary:?}");
+    assert_eq!(store.snapshots.len(), 5);
+    assert_eq!(cloud.writes, ["create", "restore"]);
+}
+#[test]
 fn persistence_failure_stops_further_cloud_writes() {
     for fail_at in [0, 1, 2, 3, 4] {
         let mut cloud = FakeCloud::new(Product::Duet);

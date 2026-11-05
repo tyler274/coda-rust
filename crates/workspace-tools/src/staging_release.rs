@@ -269,6 +269,11 @@ fn snapshot(receipt: &mut Receipt, cloud: &mut impl Cloud, before: bool) -> bool
     }
     complete
 }
+/// Whether a known service still specifies an image other than the target.
+/// An accepted update records the new spec image at once.
+fn spec_not_updated(service: &Observation, image: &str) -> bool {
+    matches!(service, Observation::Known(service) if service.image != image)
+}
 fn serving(service: &Observation, image: &str) -> bool {
     let Observation::Known(service) = service else {
         return false;
@@ -377,12 +382,21 @@ fn rollout(
     // polling rather than by a synchronous call that a per-call cap could kill.
     let update = cloud.update_service(name, &image);
     let mut observed = observe(receipt, cloud, name);
+    // A failed submit may still land shortly after it returns, so the update is
+    // judged unapplied only after two consecutive reads, a pause apart, both
+    // show a known service specifying another image.
+    let mut unapplied = false;
     for _ in 0..ROLLOUT_POLLS {
         if serving(&observed, &image) || budget_exhausted(receipt) {
             break;
         }
+        let stale = update.is_err() && spec_not_updated(&observed, &image);
         cloud.pause();
         observed = observe(receipt, cloud, name);
+        if stale && spec_not_updated(&observed, &image) {
+            unapplied = true;
+            break;
+        }
     }
     let ready = serving(&observed, &image);
     let record = receipt.services.get_mut(name).expect("service");
@@ -394,7 +408,14 @@ fn rollout(
     };
     if let Err(error) = update {
         retain_cause(receipt, error);
-        diagnostic(receipt, "update-response-failed-reconciled");
+        diagnostic(
+            receipt,
+            if unapplied {
+                "update-failed-spec-unchanged"
+            } else {
+                "update-response-failed-reconciled"
+            },
+        );
     }
     let result = if ready {
         Ok(())
@@ -1000,6 +1021,10 @@ mod tests {
         pending: BTreeMap<String, (Observation, usize)>,
         pauses: usize,
         denied_execution: bool,
+        // The service update is refused and leaves the service unchanged.
+        denied_update: bool,
+        // The submit times out, but the update lands after the first read.
+        late_update: bool,
         // Service reads fail once this many have succeeded.
         reads_before_failure: Option<usize>,
     }
@@ -1033,6 +1058,8 @@ mod tests {
                 pending: BTreeMap::new(),
                 pauses: 0,
                 denied_execution: false,
+                denied_update: false,
+                late_update: false,
                 reads_before_failure: None,
             }
         }
@@ -1107,6 +1134,13 @@ mod tests {
         }
         fn update_service(&mut self, name: &str, image: &str) -> Result<()> {
             self.writes.push(format!("service:{name}"));
+            if self.denied_update {
+                return Err(denied());
+            }
+            if self.late_update {
+                self.pending.insert(name.into(), (known(image), 1));
+                return Err(Error::Cloud("gcloud-timeout"));
+            }
             if name == "physician-worker" && self.worker_failure {
                 return Err(Error::Cloud("worker-update-failed"));
             }
@@ -1120,6 +1154,10 @@ mod tests {
                 }
             }
             if self.not_ready_observations > 0 {
+                // Cloud Run records the new spec at once; readiness lags behind it.
+                if let Some(Observation::Known(current)) = self.services.get_mut(name) {
+                    current.image = image.into();
+                }
                 self.pending
                     .insert(name.into(), (state, self.not_ready_observations));
             } else {
@@ -1313,6 +1351,42 @@ mod tests {
         assert_eq!(receipt.services["physician"].outcome, Outcome::Unknown);
     }
     #[test]
+    fn refused_update_that_left_the_old_spec_stops_after_one_confirming_read() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.denied_update = true;
+        let error =
+            deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("denied");
+        assert_eq!(error.safe_code(), "rollout-not-confirmed");
+        // One confirming read a pause after the first, then no more polling.
+        assert_eq!(cloud.pauses, 1);
+        assert_eq!(receipt.services["physician"].outcome, Outcome::Unknown);
+        let encoded = serde_json::to_string(&receipt).expect("receipt");
+        assert!(encoded.contains("\"PERMISSION_DENIED\""));
+        assert!(encoded.contains("\"update-failed-spec-unchanged\""));
+        assert!(!encoded.contains("\"update-response-failed-reconciled\""));
+        assert!(!encoded.contains("secret"));
+    }
+    #[test]
+    fn timed_out_update_that_lands_after_the_first_read_is_still_confirmed() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.late_update = true;
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
+        assert_eq!(receipt.outcome, Outcome::Succeeded);
+        assert_eq!(cloud.pauses, 3);
+    }
+    #[test]
+    fn applied_update_with_lost_response_keeps_polling_until_ready() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.ambiguous_update = true;
+        cloud.not_ready_observations = 3;
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
+        assert_eq!(receipt.outcome, Outcome::Succeeded);
+        assert_eq!(cloud.pauses, 9);
+    }
+    #[test]
     fn final_receipt_failure_keeps_the_operation_error() {
         for scenario in 0..2 {
             let mut cloud = FakeCloud::new();
@@ -1353,6 +1427,27 @@ mod tests {
         let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
         assert!(matches!(error, Error::Unrecorded { .. }), "{error:?}");
         assert_eq!(error.safe_code(), "migration-failed");
+        assert!(
+            !cloud
+                .writes
+                .iter()
+                .any(|write| write.starts_with("service:"))
+        );
+    }
+    #[test]
+    fn reviewer_reproduction_failed_migration_with_sixth_save_unwritable() {
+        // Saves: before-snapshot, snapshot, three migration checkpoints, then
+        // the save that records the failed execution (index 5).
+        let mut cloud = FakeCloud::new();
+        cloud.fail_migration = true;
+        let mut store = MemoryStore {
+            fail_at: Some(5),
+            ..MemoryStore::default()
+        };
+        let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
+        assert!(matches!(error, Error::Unrecorded { .. }), "{error:?}");
+        assert_eq!(error.safe_code(), "migration-failed");
+        assert_eq!(store.receipts.len(), 5);
         assert!(
             !cloud
                 .writes
