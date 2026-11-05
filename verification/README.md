@@ -13,23 +13,18 @@ the model. Features not modeled yet follow the intent specs alone.
 
 `verification/<product>/<feature>/` holds:
 
-- **`README.md`:** the feature's spec in words: its flows, numbered F1, F2 and on, and its agreed
-  rules, each named by its `INVARIANT`. The intent spec keeps a
+- **`README.md`:** the feature's spec in words, with its agreed rules. The intent spec keeps a
   short summary and links here. A promise the model can't hold, such as identity, revisions,
   collections or single use, is listed with the test that holds it, or says none does yet.
 - **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Each
   `INVARIANT` is one rule, quoted in its comment. Each action's comment names the code that
-  carries it out. An `event` variable names each step and the flow it carries out, and the
-  config's `VIEW` leaves it out. The config sets the scope the rules are checked at: large enough
-  for the races the feature's risks come from, never cut to fit a chart.
-- **`Flows.tla`, `flows.cfg` and `scenes.mjs`:** each flow, claimed never to happen. The
-  `statechart` skill refutes each claim with the shortest path on which the flow happens, told in
-  `scenes.mjs`'s words: the flow's scene. A flow no step carries out has no scene, and a scene
-  that doesn't do what its sentence says is a wrong model.
-- **`chart*.cfg` and `chart*.mjs`:** the charts PStack's `statechart` skill draws, in the words of
-  the person who decides whether the behavior is right, one for each part of the feature worth
-  seeing whole. Each runs the same model at 500 states or fewer, from its start or a chosen
-  moment, and the README says what each leaves out. The `.mjs` names its states and steps.
+  carries it out. An `event` variable names each step, and the config's `VIEW` leaves it out.
+  The config sets the scope the rules are checked at: large enough for the races the feature's
+  risks come from, never cut to fit a chart.
+- **`chart.cfg` and `chart.mjs`:** the chart PStack's `statechart` skill draws, in the words of
+  the person who decides whether the behavior is right. `chart.cfg` runs the same model at a
+  scope of 500 states or fewer, so the whole chart can be drawn, and the README says what it
+  leaves out. `chart.mjs` names its states and steps.
 
 ## How a feature is checked
 
@@ -37,8 +32,7 @@ the model. Features not modeled yet follow the intent specs alone.
    code does today separate from what was agreed.
 2. **Check the model.** PStack's `statechart` skill runs TLC, which visits every state the model
    can reach and checks every rule. A deliberately broken copy of the model shows each rule can
-   fail. The skill also tells each flow's scene and draws the charts, which is how the model is
-   read against the README without reading TLA+.
+   fail. The skill also draws the chart, which is how the flows are read and agreed.
 3. **Hold the code to it.** The code follows the model. When TLC or review finds a path on which
    the code breaks a rule, that path goes into the feature's browser test. There,
    [replay.mjs](replay.mjs) gives the model's state after each step, and the test plays the path

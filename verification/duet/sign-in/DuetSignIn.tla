@@ -22,14 +22,16 @@
 (* once and owes Duet the sign-out, which it tells Duet when it can. The  *)
 (* phone keeps one draft and one batch of entries at a time.               *)
 (*                                                                         *)
-(* `event` names the step just taken and the README flow it carries out, *)
-(* for traces and scenes; VIEW leaves it out of the state.                *)
+(* `event` names the step just taken, for traces; VIEW leaves it out of   *)
+(* the state.                                                              *)
 (***************************************************************************)
 EXTENDS Naturals, Sequences, TLC
 
-\* The config sets the scope: the accounts that can sign in, and how many sessions Duet starts in a run.
 \* DuetSignIn.cfg has two accounts, so the phone can pass from one person to another, and three
 \* sessions, so the phone can sign in a third time while Duet hasn't heard of both earlier sign-outs.
+\* chart.cfg draws one person's sign-in, with one account and one session.
+
+\* The config sets the scope: the accounts that can sign in, and how many sessions Duet starts in a run.
 CONSTANTS Accounts, SessionCount
 SessionOrder == [i \in 1..SessionCount |-> "Session " \o ToString(i)]
 Sessions == {SessionOrder[i] : i \in 1..SessionCount}
@@ -86,8 +88,6 @@ IsNext(s) == session[s] = Unused /\ \A j \in 1..(Index(s) - 1) : session[Session
 AskedWith(r) == CHOOSE s \in Sessions : r.asks \in {Checking(s), Accepting(s)}
 SentWith(r) == CHOOSE s \in Sessions : r.sync = Sending(s)
 LinkFor(r) == CHOOSE a \in Accounts : r.signIn = Redeeming(a)
-\* Another account has signed in on this phone before.
-Other(a) == \E s \in Sessions : session[s] # Unused /\ Of(s) # a
 
 Init ==
   /\ session = [s \in Sessions |-> Unused]
@@ -106,7 +106,7 @@ Init ==
               owes |-> {}]             \* sign-outs Duet hasn't heard yet
   /\ removed = FALSE
   /\ refused = {}
-  /\ event = [name |-> "start", flow |-> "start"]
+  /\ event = "start"
 
 Running == phone.screen # Closed
 Unconfirmed(r) == r.draft # Nobody \/ r.entries # Nobody
@@ -120,11 +120,10 @@ TakenByDuet == phone.sync # NoSync /\ phone'.sync = NoSync /\ IsLive(SentWith(ph
 Excused == phone.screen = Warning \/ phone'.screen = Removed
 Silent == (Dropped("draft") /\ ~Excused) \/ (Dropped("entries") /\ ~Excused /\ ~TakenByDuet)
 
-\* Each action ends here, after its other changes: it names the step and the README flow it carries
-\* out, and keeps the history.
-History(name, flow) == /\ event' = [name |-> name, flow |-> flow]
-                       /\ removed' = (removed \/ Silent)
-Did(name, flow) == History(name, flow) /\ UNCHANGED refused
+\* Each action ends here, after its other changes: it names the step and keeps the history.
+History(name) == /\ event' = name
+                 /\ removed' = (removed \/ Silent)
+Did(name) == History(name) /\ UNCHANGED refused
 
 (* The phone leaves the account: the session, the draft and entries and   *)
 (* everything it waited on go.                                              *)
@@ -150,7 +149,7 @@ OpenDuet ==
               ELSE [phone EXCEPT !.screen = phone.place, !.whose = Of(phone.holds),
                                  !.asks = Checking(phone.holds)]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you open Duet", IF phone.holds = NoSession THEN "F11" ELSE "F10")
+  /\ Did("you open Duet")
 
 (* The person closes Duet, or the phone ends it. What it waited on goes;   *)
 (* the session, where it was, the draft and entries stay. A sign-out still *)
@@ -163,7 +162,7 @@ CloseDuet ==
                                         [] phone.screen \in {Terms, Conversation, Warning} -> phone.screen
                                         [] OTHER -> @]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("Duet closes", "F10")
+  /\ Did("Duet closes")
 
 (* D1.2: signing up and signing in are one flow. Duet emails a link for   *)
 (* whatever email it's given, which signs in to that email's account or    *)
@@ -172,7 +171,7 @@ EnterEmail ==
   /\ phone.screen \in {Email, CheckEmail, LinkDead, Unreached, Removed}
   /\ phone' = [phone EXCEPT !.screen = CheckEmail]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you enter your email", "F1")
+  /\ Did("you enter your email")
 
 (* The link, or its code typed in, opens Duet and signs in a phone that    *)
 (* holds no session. Opened while signed in, it opens Duet as it was.      *)
@@ -180,7 +179,16 @@ OpenLink(a) ==
   /\ phone.holds = NoSession /\ phone.signIn = NoLink
   /\ phone' = [phone EXCEPT !.screen = Signing, !.signIn = Redeeming(a)]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you open the link for " \o a, "F2")
+  /\ Did("you open the link for " \o a)
+
+\* A link opened while the phone holds a session opens Duet as it was.
+OpenLinkSignedIn ==
+  /\ phone.holds # NoSession
+  /\ phone' = IF Running THEN phone
+              ELSE [phone EXCEPT !.screen = phone.place, !.whose = Of(phone.holds),
+                                 !.asks = Checking(phone.holds)]
+  /\ UNCHANGED <<session, accepted>>
+  /\ Did("you open a link while signed in")
 
 (* D1.2-4: Duet starts a session for the link's account. A new account,    *)
 (* or one that hasn't accepted the Terms, goes to the Terms first.          *)
@@ -192,17 +200,7 @@ DuetSignsIn ==
           /\ phone' = [phone EXCEPT !.signIn = NoLink, !.holds = s, !.whose = a, !.heard = accepted[a],
                                     !.screen = IF accepted[a] THEN Conversation ELSE Terms]
     /\ UNCHANGED accepted
-    /\ LET a == LinkFor(phone)
-       IN Did("Duet signs you in", CASE Other(a) -> "F22" [] ~accepted[a] -> "F6" [] OTHER -> "F2")
-
-\* A link opened while the phone holds a session opens Duet as it was.
-OpenLinkSignedIn ==
-  /\ phone.holds # NoSession
-  /\ phone' = IF Running THEN phone
-              ELSE [phone EXCEPT !.screen = phone.place, !.whose = Of(phone.holds),
-                                 !.asks = Checking(phone.holds)]
-  /\ UNCHANGED <<session, accepted>>
-  /\ Did("you open a link while signed in", "F5")
+    /\ Did("Duet signs you in")
 
 \* Duet starts the session, but its answer never reaches the phone, which says Duet couldn't be reached.
 SignInUnheard ==
@@ -211,14 +209,14 @@ SignInUnheard ==
     /\ session' = [session EXCEPT ![s] = Live(LinkFor(phone))]
     /\ phone' = [phone EXCEPT !.signIn = NoLink, !.screen = Unreached]
     /\ UNCHANGED accepted
-    /\ Did("Duet signs you in, but the answer is lost", "F4")
+    /\ Did("Duet signs you in, but the answer is lost")
 
 \* A used or expired link signs nobody in.
 LinkNoLongerWorks ==
   /\ phone.signIn # NoLink
   /\ phone' = [phone EXCEPT !.signIn = NoLink, !.screen = LinkDead]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("the link no longer works", "F3")
+  /\ Did("the link no longer works")
 
 (* D1.15: a request doesn't get through, or Duet's answer to a check, a     *)
 (* refusal or entries is lost, which the phone can't tell apart. A sign-in *)
@@ -237,19 +235,14 @@ CantReach ==
                         [r EXCEPT !.sync = NoSync, !.screen = IF @ = Saving THEN Warning ELSE @]
                    [] OTHER -> [r EXCEPT !.screen = Unreached]
      /\ UNCHANGED <<session, accepted>>
-     /\ Did("Duet can't be reached",
-          CASE r.signIn # NoLink \/ (r.asks = NoAsk /\ r.sync = NoSync) -> "F4"
-            [] r.asks # NoAsk /\ ~IsLive(AskedWith(r)) -> "F17"
-            [] r.asks # NoAsk -> "F12"
-            [] r.screen = Saving -> "F19"
-            [] OTHER -> "F13")
+     /\ Did("Duet can't be reached")
 
 \* Told that its session ended, or still needing to ask, the open app checks.
 PhoneChecks ==
   /\ Running /\ phone.told /\ phone.asks = NoAsk /\ phone.holds # NoSession
   /\ phone' = [phone EXCEPT !.told = FALSE, !.asks = Checking(phone.holds)]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("the phone checks with Duet", IF IsLive(phone.holds) THEN "F12" ELSE "F15")
+  /\ Did("the phone checks with Duet")
 
 (* D1.14: Duet refuses a check or request made with a session that has    *)
 (* ended, and the phone leaves the account.                                 *)
@@ -260,7 +253,7 @@ DuetRefuses ==
     /\ phone' = Refused(phone)
     /\ refused' = refused \cup {s}
     /\ UNCHANGED <<session, accepted>>
-    /\ History("Duet refuses the session", "F16")
+    /\ History("Duet refuses the session")
 
 (* Duet answers a check on a live session from its records: the Terms      *)
 (* until they're accepted, and past them once they are; a sign-out under  *)
@@ -273,10 +266,7 @@ DuetAnswersCheck ==
                    [] r.screen = Terms -> [r EXCEPT !.screen = Conversation]
                    [] OTHER -> r
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("Duet answers the check",
-          CASE phone.screen = Terms /\ accepted[Of(AskedWith(phone))] -> "F8"
-            [] ~accepted[Of(AskedWith(phone))] -> "F6"
-            [] OTHER -> "F10")
+  /\ Did("Duet answers the check")
 
 (* D1.4: one explicit "I agree and continue". Accepting also confirms the  *)
 (* person is 18 or over and in the U.S.                                     *)
@@ -284,7 +274,7 @@ AgreeTerms ==
   /\ phone.screen = Terms /\ phone.asks = NoAsk
   /\ phone' = [phone EXCEPT !.asks = Accepting(phone.holds)]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you agree to the Terms", "F6")
+  /\ Did("you agree to the Terms")
 
 \* Duet records the acceptance on a live session and the phone goes on.
 DuetRecordsTerms ==
@@ -292,7 +282,7 @@ DuetRecordsTerms ==
   /\ accepted' = [accepted EXCEPT ![Of(AskedWith(phone))] = TRUE]
   /\ phone' = [phone EXCEPT !.asks = NoAsk, !.heard = TRUE, !.screen = Conversation]
   /\ UNCHANGED session
-  /\ Did("Duet records the Terms", "F7")
+  /\ Did("Duet records the Terms")
 
 (* Duet records the acceptance, but its answer never reaches the phone,    *)
 (* which stays on the Terms and checks again. Agreeing again changes        *)
@@ -302,28 +292,28 @@ TermsUnheard ==
   /\ accepted' = [accepted EXCEPT ![Of(AskedWith(phone))] = TRUE]
   /\ phone' = [phone EXCEPT !.asks = NoAsk, !.told = TRUE]
   /\ UNCHANGED session
-  /\ Did("Duet records the Terms, but the answer is lost", "F8")
+  /\ Did("Duet records the Terms, but the answer is lost")
 
 \* The person starts a message and leaves it unsent.
 WriteDraft ==
   /\ phone.screen = Conversation /\ phone.draft = Nobody
   /\ phone' = [phone EXCEPT !.draft = phone.whose]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you write a draft", "F13")
+  /\ Did("you write a draft")
 
 \* The person logs notes or medications, which wait on the phone until Duet takes them.
 AddEntries ==
   /\ phone.screen = Conversation /\ phone.entries = Nobody
   /\ phone' = [phone EXCEPT !.entries = phone.whose]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you add entries", "F13")
+  /\ Did("you add entries")
 
 \* The phone sends entries Duet hasn't confirmed.
 SendEntries ==
   /\ Running /\ phone.holds # NoSession /\ phone.entries # Nobody /\ phone.sync = NoSync
   /\ phone' = [phone EXCEPT !.sync = Sending(phone.holds)]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("the phone sends its entries", "F13")
+  /\ Did("the phone sends its entries")
 
 (* D5.4: signing out of this phone, also from under the Terms. With       *)
 (* unconfirmed entries, the phone sends them first. With a draft or       *)
@@ -337,11 +327,7 @@ StartSignOut ==
      ELSE phone' = IF phone.draft # Nobody THEN [phone EXCEPT !.screen = Warning]
                    ELSE SignsOutHere(phone)
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you sign out",
-          CASE phone.screen = Terms -> "F9"
-            [] phone.entries # Nobody -> "F18"
-            [] phone.draft # Nobody -> "F19"
-            [] OTHER -> "F21")
+  /\ Did("you sign out")
 
 (* Duet takes the entries on a live session. A sign-out under way, or one  *)
 (* already warning, goes on: at once with nothing left, or to the warning *)
@@ -353,24 +339,20 @@ DuetTakesEntries ==
                    [] r.screen = Saving -> [r EXCEPT !.screen = Warning]
                    [] OTHER -> r
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("Duet takes the entries",
-          CASE phone.screen = Warning -> "F20"
-            [] phone.screen = Saving /\ phone.draft = Nobody -> "F18"
-            [] phone.screen = Saving -> "F19"
-            [] OTHER -> "F13")
+  /\ Did("Duet takes the entries")
 
 StaySignedIn ==
   /\ phone.screen = Warning
   /\ phone' = [phone EXCEPT !.screen = Conversation]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you stay signed in", "F19")
+  /\ Did("you stay signed in")
 
 \* Warned, the person signs out anyway, and the draft and entries go.
 SignOutAnyway ==
   /\ phone.screen = Warning
   /\ phone' = SignsOutHere(phone)
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("you sign out anyway", "F19")
+  /\ Did("you sign out anyway")
 
 \* The open phone tells Duet of a sign-out it owes, and Duet ends that session.
 TellDuet ==
@@ -379,7 +361,7 @@ TellDuet ==
     /\ session' = IF IsLive(s) THEN [session EXCEPT ![s] = Ended(Of(s))] ELSE session
     /\ phone' = [phone EXCEPT !.owes = @ \ {s}]
     /\ UNCHANGED accepted
-    /\ Did("the phone tells Duet it signed out", "F21")
+    /\ Did("the phone tells Duet it signed out")
 
 \* Duet ends the session, but its answer never reaches the phone, which still owes the sign-out.
 SignOutUnheard ==
@@ -387,7 +369,7 @@ SignOutUnheard ==
     /\ Running
     /\ session' = IF IsLive(s) THEN [session EXCEPT ![s] = Ended(Of(s))] ELSE session
     /\ UNCHANGED <<phone, accepted>>
-    /\ Did("the phone tells Duet it signed out, but the answer is lost", "F21")
+    /\ Did("the phone tells Duet it signed out, but the answer is lost")
 
 (* D1.14: Duet ends a session from elsewhere, by revoking it or because    *)
 (* the person signed out everywhere on another phone. The phone doesn't    *)
@@ -397,7 +379,7 @@ DuetEndsSession ==
     /\ IsLive(s)
     /\ session' = [session EXCEPT ![s] = Ended(Of(s))]
     /\ UNCHANGED <<phone, accepted>>
-    /\ Did("Duet ends " \o s, "F14")
+    /\ Did("Duet ends " \o s)
 
 (* Duet's notice that the session ended reaches the open app, which then  *)
 (* checks. Nothing depends on this step happening.                          *)
@@ -405,7 +387,7 @@ NoticeArrives ==
   /\ Running /\ phone.holds \in Sessions /\ ~IsLive(phone.holds) /\ ~phone.told
   /\ phone' = [phone EXCEPT !.told = TRUE]
   /\ UNCHANGED <<session, accepted>>
-  /\ Did("Duet's notice reaches the app", "F15")
+  /\ Did("Duet's notice reaches the app")
 
 Next ==
   \/ OpenDuet \/ CloseDuet \/ EnterEmail \/ (\E a \in Accounts : OpenLink(a)) \/ OpenLinkSignedIn
