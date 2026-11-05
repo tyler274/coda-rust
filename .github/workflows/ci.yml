@@ -672,8 +672,9 @@ jobs:
           restore-keys: |
             postgres-${{ runner.os }}-shard${{ matrix.shard }}-
             postgres-${{ runner.os }}-
+      # Shard 2 finishes first, so it also checks SQL formatting.
       - name: Check authored SQL formatting
-        if: matrix.shard == 1
+        if: matrix.shard == 2
         run: nix develop .#agent --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:

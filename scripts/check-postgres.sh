@@ -23,16 +23,15 @@ packages=(-p physician-sample -p physician-auth -p front-door -p duet-api
   -p local-product -p physician-bus -p pubsub -p gmail)
 pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 
-# Shard 2 holds four slow physician scale suites and shard 1 everything else,
-# so each runs roughly half of the test time.
+# Shard 1 builds most of the workspace, so shard 2 takes the larger share of
+# test time: four slow physician scale suites and the Pub/Sub emulator suites.
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments --test steering
   --test runtime_postgres --test runtime_publication --test runtime_recovery
-  --test redis --test fanout --test worker --test recovery --test try_again
-  --test emulator --test push_wake)
+  --test redis --test fanout --test worker --test recovery --test try_again)
 shard_2_targets=(--test stop --test chat_draft --test reply_revision
-  --test instance_loss)
+  --test instance_loss --test emulator --test push_wake)
 
 shard_1() {
   # This ignored test fails closed if its URL is missing. It tests each of the
@@ -76,9 +75,6 @@ shard_1() {
   # shows "couldn't finish" and Try again (work.resume) gets the reply.
   pg_test --test recovery -- --test-threads=1
   pg_test --test try_again -- --test-threads=1
-  # Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
-  # duplicates, redelivery, dead letters, ordering keys and cursor expiry.
-  pg_test --test emulator --test push_wake -- --test-threads=1
 }
 
 shard_2() {
@@ -99,6 +95,9 @@ shard_2() {
   # finishes the turn. Exhausted worker leases fail the turn, announce it and
   # dead-letter its wakeup.
   pg_test --test instance_loss -- --test-threads=1
+  # Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
+  # duplicates, redelivery, dead letters, ordering keys and cursor expiry.
+  pg_test --test emulator --test push_wake -- --test-threads=1
 }
 
 # Build only the targets this shard runs; the packages' other test binaries
