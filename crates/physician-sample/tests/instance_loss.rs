@@ -316,7 +316,9 @@ async fn exhausted_leases_announce_the_failed_turn_and_dead_letter_its_wakeup() 
             .expect("claim")
             .expect("the turn should be claimable while its leases remain");
         assert_eq!(claim.scope, delivery.scope);
-        tokio::time::sleep(Duration::from_millis(2100)).await;
+        // The database clock counts whole seconds and a lease ends once
+        // `expires <= now`, so one second always ends it; 200 ms is margin.
+        tokio::time::sleep(Duration::from_millis(1200)).await;
     }
     assert_eq!(
         store.delivery_state(&delivery).await.expect("state"),
