@@ -22,7 +22,7 @@ const patient = 'sbx-pat-QItKCySDsdET';
 const nativeFetch = globalThis.fetch;
 let now = Date.now(), authCount = 0, reads = [], authMode = 'ok', readMode = 'ok';
 let authSuccessStatus = 201;
-let loseCompletion = false, refuseBridge = false, portalCount = 0, hangingRead = null;
+let loseCompletion = false, refuseBridge = false, portalCount = 0, hangingRead = null, hangingResponse = null;
 // What the open Hint tab shows: 'ready', 'signed_out', 'other_practice' or 'sign_in_page'.
 let hintPage = 'ready';
 let cookies = 'fixture-browser-cookie', cookieAccepted = true, bridge, vm;
@@ -75,7 +75,9 @@ const vendor = createServer(async (req, res) => {
   }
   if (readMode === '403') {res.writeHead(403); res.end(CANARY); return;}
   if (readMode === '429') {res.writeHead(429); res.end(CANARY); return;}
-  if (readMode === 'hang') {res.writeHead(200, {'Content-Type': 'application/json'}); res.flushHeaders(); hangingRead?.(); return;}
+  if (readMode === 'hang') {
+    hangingResponse = res; res.writeHead(200, {'Content-Type': 'application/json'}); res.flushHeaders(); hangingRead?.(); return;
+  }
   if (readMode === 'html') {res.writeHead(200); res.end('<html>Sign in</html>'); return;}
   let body = {total: 0, entities: []};
   if (req.url.startsWith('/api/provider/patients?')) body = [{id: patient, first_name: 'Fictional'}];
@@ -153,6 +155,10 @@ async function createWorker(clearSession = false) {
       assert.equal(options.redirect, 'error');
       const headers = {...options.headers};
       if (options.credentials === 'include') headers.Cookie = cookies;
+      // Node 22's fetch can lose the worker's abort before it reaches a body already in flight,
+      // leaving the read to Undici's 300-second body timeout. Close the hanging response when,
+      // and only when, the worker aborts, so its cancellation is what ends the read.
+      options.signal?.addEventListener('abort', () => hangingResponse?.destroy(), {once: true});
       return nativeFetch(`http://127.0.0.1:${vendorPort}${parsed.pathname}${parsed.search}`, {...options, headers});
     }});
   runInContext(source, sandbox, {filename: 'worker.js'});
@@ -170,7 +176,7 @@ function evidence(name, detail = {}) {report.cases.push({name, passed: true, ...
 async function resetConnection() {
   await message('stop');
   await vm.storage.local.set({context: {...vm.storage.local.map.context, prepared_at: now}});
-  authMode = 'ok'; readMode = 'ok'; cookieAccepted = true;
+  authMode = 'ok'; readMode = 'ok'; cookieAccepted = true; hangingResponse = null;
 }
 
 try {
@@ -342,12 +348,15 @@ try {
   for (const [mode, expected] of [['401', 'chart_unauthorized'], ['403', 'access_denied'], ['429', 'rate_limited'], ['html', 'read_non_json'], ['hang', 'read_transport_failed']]) {
     await resetConnection(); await message('start'); now += 60000; readMode = mode;
     await rpc('request_chart', {patient_id: patient});
-    const count = reads.length, authBefore = authCount; const outcome = await tick();
+    const count = reads.length, authBefore = authCount, began = performance.now(); const outcome = await tick();
+    const seconds = (performance.now() - began) / 1000;
     assert.equal(outcome.state.state, expected);
     assert.equal(session.map.access, undefined);
     await tick(); assert.equal(reads.length, count + (mode === '401' ? 2 : 1));
     assert.equal(authCount, authBefore + (mode === '401' ? 1 : 0));
-    evidence('chart ' + mode + ' stops once and clears access token');
+    // The worker's 15-second deadline ends a hanging body, not a transport timeout.
+    if (mode === 'hang') assert(seconds >= 14 && seconds < 30, `hanging body ended after ${seconds}s`);
+    evidence('chart ' + mode + ' stops once and clears access token', mode === 'hang' ? {seconds} : {});
   }
   await resetConnection(); await message('start'); readMode = 'hang';
   await rpc('request_chart', {patient_id: patient});
