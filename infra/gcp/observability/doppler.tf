@@ -11,13 +11,22 @@ locals {
   # Managed Secret name => Doppler keys it carries, renamed where the
   # consumer expects a different key.
   doppler_secrets = merge(
-    {
+    # Only the selected backend's keys need to exist in Doppler.
+    local.datadog_backend ? {
       # Runtime ingestion gets only the API key. Management credentials
       # stay with the operator running the Datadog provider.
       "datadog-secret" = {
         "DD_API_KEY" = "api-key"
       }
-    },
+    } : {},
+    local.grafana_backend ? {
+      # Injected as environment (envFrom) into Grafana: the admin login and
+      # the Slack webhook its provisioned contact point reads.
+      "grafana-secrets" = {
+        "GRAFANA_ADMIN_PASSWORD"    = "GF_SECURITY_ADMIN_PASSWORD"
+        "GRAFANA_SLACK_WEBHOOK_URL" = "GRAFANA_SLACK_WEBHOOK_URL"
+      }
+    } : {},
     # Without Langfuse, none of its keys need to exist in Doppler.
     var.langfuse_enabled ? {
       # Referenced by key from the Langfuse chart values (secretKeyRef and

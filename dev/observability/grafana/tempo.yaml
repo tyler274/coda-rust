@@ -1,0 +1,66 @@
+# Monolithic Tempo (`-target=all`) on local disk, shared by the local stack
+# (compose profile `grafana`) and the GKE StatefulSet (infra reads this file).
+# Run with `-config.file=<this file> -config.expand-env=true`.
+#
+#   PROMETHEUS_REMOTE_WRITE_URL  metrics-generator remote write target,
+#                                default http://prometheus:9090/api/v1/write
+#   TEMPO_BLOCK_RETENTION        trace retention, default 336h (14 days)
+#
+# Only the gateway collector writes here, over OTLP gRPC on 4317, after its
+# content-stripping processors. Grafana reads the HTTP API on 3200.
+#
+# Span metrics carry low-cardinality dimensions only. Never add coda.run_id,
+# coda.work_id, trace or span ids, or any free-form attribute: every distinct
+# value becomes a Prometheus series. Run IDs stay on spans and are found
+# through Tempo search, not metrics.
+stream_over_http_enabled: true
+
+server:
+  http_listen_port: 3200
+  log_level: info
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        grpc:
+          endpoint: 0.0.0.0:4317
+
+metrics_generator:
+  registry:
+    external_labels:
+      source: tempo
+  storage:
+    path: /var/tempo/generator/wal
+    remote_write:
+      - url: ${PROMETHEUS_REMOTE_WRITE_URL:-http://prometheus:9090/api/v1/write}
+        send_exemplars: true
+  processor:
+    span_metrics:
+      # Includes the alert thresholds (2s interactive, 120s worker push) as
+      # exact bucket edges so p95 interpolation is exact at the boundary.
+      histogram_buckets: [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 120, 240, 480]
+      # Intrinsic defaults stay: service, span_name, span_kind, status_code.
+      # status_message is off (the collector clears it anyway).
+      dimensions: [coda.job, gen_ai.system, deployment.environment]
+    service_graphs:
+      dimensions: [deployment.environment]
+
+storage:
+  trace:
+    backend: local
+    wal:
+      path: /var/tempo/wal
+    local:
+      path: /var/tempo/blocks
+
+overrides:
+  defaults:
+    metrics_generator:
+      processors: [span-metrics, service-graphs]
+      generate_native_histograms: classic
+    compaction:
+      block_retention: ${TEMPO_BLOCK_RETENTION:-336h}
+
+usage_report:
+  reporting_enabled: false

@@ -1,0 +1,61 @@
+# Single-binary Loki on the filesystem, shared by the local stack (compose
+# profile `grafana`) and the GKE StatefulSet (infra reads this file).
+# Run with `-config.file=<this file> -config.expand-env=true`.
+#
+#   LOKI_RETENTION_PERIOD  log retention, default 720h (30 days)
+#
+# Only the gateway collector writes here, through OTLP/HTTP at /otlp/v1/logs,
+# after its content-stripping processors (bodies are already the fixed string
+# "operational.event" and severity_text is cleared; severity_number stays).
+#
+# Index labels are low-cardinality only: service.name and
+# deployment.environment (Loki names them service_name and
+# deployment_environment). Every other resource attribute and every log
+# attribute (coda.run_id, coda.job, event, ...) is structured metadata, as are
+# the record's trace_id, span_id and severity_number. Queries filter on them
+# after the stream selector: `{service_name="x"} | trace_id="..."`.
+auth_enabled: false
+
+server:
+  http_listen_port: 3100
+  log_level: info
+
+common:
+  instance_addr: 127.0.0.1
+  path_prefix: /loki
+  storage:
+    filesystem:
+      chunks_directory: /loki/chunks
+      rules_directory: /loki/rules
+  replication_factor: 1
+  ring:
+    kvstore:
+      store: inmemory
+
+schema_config:
+  configs:
+    - from: 2024-01-01
+      store: tsdb
+      object_store: filesystem
+      schema: v13
+      index:
+        prefix: index_
+        period: 24h
+
+compactor:
+  working_directory: /loki/compactor
+  retention_enabled: true
+  delete_request_store: filesystem
+
+limits_config:
+  retention_period: ${LOKI_RETENTION_PERIOD:-720h}
+  allow_structured_metadata: true
+  otlp_config:
+    resource_attributes:
+      ignore_defaults: true
+      attributes_config:
+        - action: index_label
+          attributes: [service.name, deployment.environment]
+
+analytics:
+  reporting_enabled: false

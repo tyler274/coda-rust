@@ -1,0 +1,172 @@
+# The four Coda alerts, at parity with infra/gcp/observability/datadog.tf.
+# Shared by the local stack and GKE (infra reads this file).
+#
+# Thresholds are fixed here because Grafana's provisioning interpolation has
+# no default syntax (an unset variable becomes empty, which would break every
+# rule). They equal the defaults in infra/gcp/observability/variables.tf; keep
+# both in step:
+#   async_failure_threshold                 0     (count in 10m, per service)
+#   site_5xx_rate_threshold                 0.05  (share in 5m, per service)
+#   chat_generation_error_threshold         5     (count in 10m)
+#   service_p95_latency_threshold_seconds   physician-sample 2,
+#                                           physician-worker 120, duet-api 2
+#
+# Each rule is multi-dimensional: one alert instance per service and
+# deployment environment, so one rule covers what Datadog's for_each monitors
+# cover. Annotations avoid `$` (Grafana would read it as an environment
+# variable) by using `index .Labels`.
+#
+# Sources:
+#   traces_spanmetrics_*  Tempo metrics-generator in Prometheus. Labels:
+#                         service, span_name, span_kind, status_code,
+#                         coda_job, gen_ai_system, deployment_environment.
+#   Loki                  OTLP logs; severity_number is structured metadata
+#                         (the collector clears severity_text).
+apiVersion: 1
+
+groups:
+  - orgId: 1
+    name: coda-operations
+    folder: Coda
+    interval: 1m
+    rules:
+      - uid: coda-site-5xx-rate
+        title: Service 5xx rate
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels:
+          team: coda
+        annotations:
+          summary: '{{ index .Labels "service" }} is answering more than 5% of requests with 5xx.'
+          description: >-
+            Open the failing request in Grafana Explore (Tempo: service and
+            status = error). If it includes a physician attempt, read its
+            canonical record using coda.run_id before following the matching
+            generation to Langfuse. Duet operations do not require a Langfuse
+            generation.
+        data:
+          - refId: A
+            relativeTimeRange: {from: 300, to: 0}
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              range: false
+              # A service with no 5xx yields no series, which is OK (no data).
+              expr: >-
+                sum by (service, deployment_environment) (increase(traces_spanmetrics_calls_total{service=~"physician-sample|physician-worker|duet-api", span_name="http.server", span_kind="SPAN_KIND_SERVER", status_code="STATUS_CODE_ERROR"}[5m]))
+                / sum by (service, deployment_environment) (increase(traces_spanmetrics_calls_total{service=~"physician-sample|physician-worker|duet-api", span_name="http.server", span_kind="SPAN_KIND_SERVER"}[5m]))
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: {type: gt, params: [0.05]}
+
+      - uid: coda-site-p95-latency
+        title: Service p95 latency
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels:
+          team: coda
+        annotations:
+          summary: '{{ index .Labels "service" }} p95 server latency is above its threshold (physician-sample 2s, physician-worker 120s, duet-api 2s).'
+          description: >-
+            Slow chat turns show their generation span (model, tokens,
+            duration) in the trace. The value is p95 divided by the
+            service's threshold; above 1 fires.
+        data:
+          - refId: A
+            relativeTimeRange: {from: 600, to: 0}
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              range: false
+              # p95 / per-service threshold, so one comparison (> 1) serves
+              # every service.
+              expr: >-
+                histogram_quantile(0.95, sum by (le, service, deployment_environment) (rate(traces_spanmetrics_latency_bucket{service="physician-sample", span_name="http.server", span_kind="SPAN_KIND_SERVER"}[10m]))) / 2
+                or histogram_quantile(0.95, sum by (le, service, deployment_environment) (rate(traces_spanmetrics_latency_bucket{service="physician-worker", span_name="http.server", span_kind="SPAN_KIND_SERVER"}[10m]))) / 120
+                or histogram_quantile(0.95, sum by (le, service, deployment_environment) (rate(traces_spanmetrics_latency_bucket{service="duet-api", span_name="http.server", span_kind="SPAN_KIND_SERVER"}[10m]))) / 2
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: {type: gt, params: [1]}
+
+      - uid: coda-chat-generation-errors
+        title: Physician chat generation errors
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels:
+          team: coda
+          service: physician-worker
+        annotations:
+          summary: More than 5 physician chat generations failed in 10 minutes.
+          description: >-
+            Open the generation trace and use coda.run_id to read the
+            canonical attempt, then find the matching Langfuse generation.
+        data:
+          - refId: A
+            relativeTimeRange: {from: 600, to: 0}
+            datasourceUid: prometheus
+            model:
+              refId: A
+              instant: true
+              range: false
+              expr: >-
+                sum by (deployment_environment) (increase(traces_spanmetrics_calls_total{service="physician-worker", status_code="STATUS_CODE_ERROR", coda_job=~"physician_.*", gen_ai_system!=""}[10m]))
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: {type: gt, params: [5]}
+
+      - uid: coda-async-failures
+        title: Service asynchronous failures
+        condition: C
+        for: 0s
+        noDataState: OK
+        execErrState: Error
+        labels:
+          team: coda
+        annotations:
+          summary: '{{ index .Labels "service_name" }} reported asynchronous failures, including work whose original HTTP request succeeded.'
+          description: >-
+            Open the correlated trace from the log (its trace_id links to
+            Tempo). For physician-worker, read the persisted canonical attempt
+            using coda.run_id, then find that attempt's generation in
+            Langfuse. A pre-claim failure has no canonical run ID; investigate
+            its trace rather than inventing one.
+        data:
+          - refId: A
+            relativeTimeRange: {from: 600, to: 0}
+            datasourceUid: loki
+            model:
+              refId: A
+              queryType: instant
+              expr: >-
+                sum by (service_name, deployment_environment) (count_over_time({service_name=~"physician-sample|physician-worker|duet-api"} | severity_number >= 17 [10m]))
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions:
+                - evaluator: {type: gt, params: [0]}

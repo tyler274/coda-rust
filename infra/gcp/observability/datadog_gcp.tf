@@ -11,7 +11,10 @@
 # starts, instance counts, container CPU and memory, 5xx answered before the
 # product container).
 locals {
-  datadog_gcp = var.datadog_gcp_integration_enabled ? toset(["integration"]) : toset([])
+  # The variable's validation already refuses it under grafana; the backend
+  # gate here keeps the resources tied to Datadog regardless.
+  datadog_gcp_enabled = local.datadog_backend && var.datadog_gcp_integration_enabled
+  datadog_gcp         = local.datadog_gcp_enabled ? toset(["integration"]) : toset([])
 
   # Read-only roles Datadog documents for the integration. browser lets it
   # list the project it lives in; no write, secret or data-plane access.
@@ -44,7 +47,7 @@ resource "google_service_account" "datadog_gcp" {
 }
 
 resource "google_project_iam_member" "datadog_gcp" {
-  for_each = var.datadog_gcp_integration_enabled ? local.datadog_gcp_roles : toset([])
+  for_each = local.datadog_gcp_enabled ? local.datadog_gcp_roles : toset([])
   project  = var.cluster_project
   role     = each.value
   member   = "serviceAccount:${google_service_account.datadog_gcp["integration"].email}"

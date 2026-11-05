@@ -1,11 +1,15 @@
 # Local observability stack for ENG-65: self-hosted Langfuse v3, the shared
-# OpenTelemetry Collector, and (profile `datadog`) the Datadog Agent.
+# OpenTelemetry Collector, and one optional operations backend: profile
+# `datadog` (the Datadog Agent) or profile `grafana` (Tempo, Loki,
+# Prometheus, Grafana and a local Slack webhook sink).
 #
 #   scripts/observability-up.sh                 # Langfuse + collector, debug exporter
 #   scripts/observability-up.sh --datadog       # also the Datadog Agent (needs DD_API_KEY)
+#   scripts/observability-up.sh --grafana       # also the Grafana stack (no secrets)
 #
 # Then run a service with OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318.
 # Langfuse UI: http://localhost:3000 (dev@coda.local / coda-local-dev).
+# Grafana UI:  http://localhost:3300 (admin / coda-local-dev), profile grafana.
 #
 # Every credential below is a fixed LOCAL DEVELOPMENT value, not a secret:
 # the stack binds to 127.0.0.1, holds synthetic data only, and the keys are
@@ -167,8 +171,9 @@ services:
     # shell's `otelcol-contrib validate` checks the binary that runs here.
     image: docker.io/otel/opentelemetry-collector-contrib:0.155.0
     restart: unless-stopped
-    # COLLECTOR_OVERLAY picks the Datadog-pipeline exporter: `debug` (default,
-    # no Agent) or `datadog` (set by observability-up.sh --datadog).
+    # COLLECTOR_OVERLAY picks the ops pipelines' backend: `debug` (default,
+    # no backend), `datadog` (observability-up.sh --datadog) or `grafana`
+    # (observability-up.sh --grafana).
     command:
       - --config=/etc/otelcol/collector.yaml
       - --config=/etc/otelcol/collector.${COLLECTOR_OVERLAY:-debug}.yaml
@@ -176,8 +181,11 @@ services:
       - ./collector.yaml:/etc/otelcol/collector.yaml:ro
       - ./collector.debug.yaml:/etc/otelcol/collector.debug.yaml:ro
       - ./collector.datadog.yaml:/etc/otelcol/collector.datadog.yaml:ro
+      - ./collector.grafana.yaml:/etc/otelcol/collector.grafana.yaml:ro
     environment:
       DATADOG_OTLP_ENDPOINT: datadog-agent:4317
+      TEMPO_OTLP_ENDPOINT: tempo:4317
+      LOKI_OTLP_ENDPOINT: http://loki:3100/otlp
       LANGFUSE_OTLP_ENDPOINT: http://langfuse-web:3000/api/public/otel
       LANGFUSE_PUBLIC_KEY: pk-lf-coda-local-dev
       LANGFUSE_SECRET_KEY: sk-lf-coda-local-dev
@@ -215,9 +223,132 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
 
+  # Profile `grafana`: the same configs the GKE StatefulSets read
+  # (dev/observability/grafana). Only the collector writes to Tempo and Loki;
+  # their host ports exist for local queries. Tempo and Loki images are
+  # distroless (no shell), so Tempo checks itself with -health and Loki's
+  # readiness is checked by Grafana's depends_on chain plus /ready by hand.
+  tempo:
+    profiles: [grafana]
+    image: docker.io/grafana/tempo:3.1.1
+    restart: unless-stopped
+    command:
+      - -target=all
+      - -config.file=/etc/tempo/tempo.yaml
+      - -config.expand-env=true
+    environment:
+      PROMETHEUS_REMOTE_WRITE_URL: http://prometheus:9090/api/v1/write
+    volumes:
+      - ./grafana/tempo.yaml:/etc/tempo/tempo.yaml:ro
+      - tempo_data:/var/tempo
+    ports:
+      - 127.0.0.1:3200:3200
+    healthcheck:
+      test: ["CMD", "/tempo", "-health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    depends_on:
+      prometheus:
+        condition: service_healthy
+
+  loki:
+    profiles: [grafana]
+    image: docker.io/grafana/loki:3.7.9
+    restart: unless-stopped
+    command:
+      - -config.file=/etc/loki/loki.yaml
+      - -config.expand-env=true
+    volumes:
+      - ./grafana/loki.yaml:/etc/loki/loki.yaml:ro
+      - loki_data:/loki
+    ports:
+      - 127.0.0.1:3100:3100
+
+  prometheus:
+    profiles: [grafana]
+    image: docker.io/prom/prometheus:v3.16.0
+    restart: unless-stopped
+    command:
+      - --config.file=/etc/prometheus/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+      - --storage.tsdb.retention.time=30d
+      - --storage.tsdb.path=/prometheus
+    volumes:
+      - ./grafana/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - prometheus_data:/prometheus
+    ports:
+      # 9090 belongs to MinIO's presigned-URL port above.
+      - 127.0.0.1:9091:9090
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:9090/-/ready"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  grafana:
+    profiles: [grafana]
+    image: docker.io/grafana/grafana:13.3.0
+    restart: unless-stopped
+    environment:
+      # Local-only constants, like the Langfuse values above.
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: coda-local-dev
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      # Locally the Slack contact point posts to the sink, never to Slack.
+      GRAFANA_SLACK_WEBHOOK_URL: http://webhook-sink:8080/slack
+    volumes:
+      - ./grafana/provisioning/datasources.yaml:/etc/grafana/provisioning/datasources/datasources.yaml:ro
+      - ./grafana/provisioning/alerting:/etc/grafana/provisioning/alerting:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      # 3000 is Langfuse's.
+      - 127.0.0.1:3300:3000
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:3000/api/health"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+    depends_on:
+      tempo:
+        condition: service_healthy
+      loki:
+        condition: service_started
+      prometheus:
+        condition: service_healthy
+      webhook-sink:
+        condition: service_healthy
+
+  # Stand-in for Slack's incoming webhook; see grafana/webhook-sink.py.
+  # Received alerts: `docker compose logs webhook-sink` or
+  # http://localhost:3301/received.
+  webhook-sink:
+    profiles: [grafana]
+    image: docker.io/python:3.14.10-alpine3.24
+    restart: unless-stopped
+    command: [python, -u, /app/webhook-sink.py]
+    volumes:
+      - ./grafana/webhook-sink.py:/app/webhook-sink.py:ro
+    ports:
+      - 127.0.0.1:3301:8080
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
 volumes:
   postgres_data:
   clickhouse_data:
   clickhouse_logs:
   minio_data:
   redis_data:
+  tempo_data:
+  loki_data:
+  prometheus_data:
+  grafana_data:

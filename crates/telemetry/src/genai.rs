@@ -12,9 +12,10 @@
 //! `CODA_TELEMETRY_CONTENT=full`. The default, `none`, records neither, for
 //! both origins. Simulation runs may run with `full` anywhere; real runs may
 //! be switched to `full` only when spans go to the self-hosted, in-project
-//! Langfuse. Datadog must never receive content: the collector routing
-//! spans to Datadog drops `langfuse.observation.input` and
-//! `langfuse.observation.output`. [`record_error`] never records content.
+//! Langfuse. The operations backend, Datadog or Grafana, must never receive
+//! content: the collector pipeline routing spans to either backend drops
+//! `langfuse.observation.input` and `langfuse.observation.output`.
+//! [`record_error`] never records content.
 
 use std::env;
 

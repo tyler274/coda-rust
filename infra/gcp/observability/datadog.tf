@@ -1,8 +1,9 @@
 # Datadog: Operator, one DatadogAgent for the Autopilot cluster, and gated
 # per-service monitors. The Agent receives OTLP only from the collector,
-# whose Datadog pipeline has already deleted prompt and completion content.
+# whose operations pipelines have already deleted prompt and completion
+# content. Everything here exists only with telemetry_backend = datadog.
 locals {
-  monitored_services = var.datadog_monitors_enabled ? toset(["physician-sample", "physician-worker", "duet-api"]) : toset([])
+  monitored_services = local.datadog_backend && var.datadog_monitors_enabled ? toset(["physician-sample", "physician-worker", "duet-api"]) : toset([])
   async_services     = local.monitored_services
 
   datadog_agent = {
@@ -53,7 +54,7 @@ locals {
             # logs. OTLP log records are not container logs and still flow.
             { name = "DD_CONTAINER_EXCLUDE_LOGS", value = "kube_namespace:${local.namespace}" },
             # The CRD has no OTLP logs switch; the Agent ingests OTLP logs only
-            # with this set. The gateway's logs/datadog pipeline needs it.
+            # with this set. The gateway's logs/ops pipeline needs it.
             { name = "DD_OTLP_CONFIG_LOGS_ENABLED", value = "true" },
             { name = "DD_ENV", value = local.dd_env },
           ]
@@ -64,6 +65,7 @@ locals {
 }
 
 resource "helm_release" "datadog_operator" {
+  count      = local.datadog_count
   name       = "datadog-operator"
   repository = "https://helm.datadoghq.com"
   chart      = "datadog-operator"
@@ -72,7 +74,19 @@ resource "helm_release" "datadog_operator" {
   atomic     = true
 }
 
+# The releases gained a backend count; keep the applied staging instances.
+moved {
+  from = helm_release.datadog_operator
+  to   = helm_release.datadog_operator[0]
+}
+
+moved {
+  from = helm_release.datadog_agent
+  to   = helm_release.datadog_agent[0]
+}
+
 resource "helm_release" "datadog_agent" {
+  count     = local.datadog_count
   name      = "datadog-agent"
   chart     = local.manifests_chart
   namespace = kubernetes_namespace.observability.metadata[0].name
@@ -110,7 +124,7 @@ resource "datadog_monitor" "site_5xx_rate" {
 # not Datadog's derived operation name. Validate ingestion and trace retention
 # before enabling; the query includes chat and reply-revision generations.
 resource "datadog_monitor" "chat_generation_errors" {
-  count   = var.datadog_monitors_enabled ? 1 : 0
+  count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
   name    = "[${local.dd_env}] physician chat generation errors"
   type    = "trace-analytics alert"
   query   = "trace-analytics(\"service:physician-worker env:${local.dd_env} status:error @coda.job:physician_* @gen_ai.system:*\").rollup(\"count\").last(\"10m\") > ${var.chat_generation_error_threshold}"

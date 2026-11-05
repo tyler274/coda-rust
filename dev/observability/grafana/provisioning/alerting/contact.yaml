@@ -1,0 +1,26 @@
+# Slack contact point and the notification policy that routes every Coda
+# alert to it. Shared by the local stack and GKE (infra reads this file).
+#
+#   GRAFANA_SLACK_WEBHOOK_URL  Slack incoming-webhook URL. A secret on GKE
+#                              (Doppler, synced into Grafana's environment).
+#                              Locally it points at the webhook-sink
+#                              container, never at real Slack.
+apiVersion: 1
+
+contactPoints:
+  - orgId: 1
+    name: coda-slack
+    receivers:
+      - uid: coda-slack
+        type: slack
+        disableResolveMessage: false
+        settings:
+          url: ${GRAFANA_SLACK_WEBHOOK_URL}
+
+policies:
+  - orgId: 1
+    receiver: coda-slack
+    group_by: [grafana_folder, alertname, service, service_name]
+    group_wait: 30s
+    group_interval: 5m
+    repeat_interval: 4h

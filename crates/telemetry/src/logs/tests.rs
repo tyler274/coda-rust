@@ -102,6 +102,39 @@ fn correlated_safe_logs_respect_explicit_current_and_absent_parents() {
     traces.shutdown().unwrap();
 }
 
+/// `init` composes layers that may be absent; the log layer must still learn
+/// its dispatch, or Loki receives records without trace context.
+#[test]
+fn init_layer_composition_keeps_trace_context() {
+    let exporter = InMemoryLogExporter::default();
+    let provider = SdkLoggerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let traces = SdkTracerProvider::builder().build();
+    let subscriber = tracing_subscriber::registry()
+        .with(Some(
+            tracing_opentelemetry::layer().with_tracer(traces.tracer("test")),
+        ))
+        .with(SafeLogs::for_provider(Some(&provider), "test"))
+        .with(None::<SafeLogs>);
+    let expected = tracing::subscriber::with_default(subscriber, || {
+        let span = tracing::info_span!("http.server");
+        let expected = span.context().span().span_context().trace_id();
+        span.in_scope(|| tracing::info!(status = 200_u64, "request"));
+        expected
+    });
+    let logs = exporter.get_emitted_logs().unwrap();
+    assert_eq!(logs.len(), 1);
+    assert_ne!(expected, opentelemetry::TraceId::INVALID);
+    assert_eq!(logs[0].record.trace_context().unwrap().trace_id, expected);
+
+    let disabled = tracing_subscriber::registry().with(SafeLogs::for_provider(None, "test"));
+    tracing::subscriber::with_default(disabled, || tracing::error!("nothing exported"));
+    assert_eq!(exporter.get_emitted_logs().unwrap().len(), 1);
+    provider.shutdown().unwrap();
+    traces.shutdown().unwrap();
+}
+
 #[test]
 fn queue_publish_failure_keeps_identifying_fields_without_content() {
     let exporter = InMemoryLogExporter::default();

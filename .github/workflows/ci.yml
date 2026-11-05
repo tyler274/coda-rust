@@ -854,20 +854,43 @@ jobs:
         uses: cachix/install-nix-action@v31
       - name: Validate the collector configs
         run: |
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml
-          # The gateway before Langfuse exists reads no Langfuse keys.
-          env -u LANGFUSE_PUBLIC_KEY -u LANGFUSE_SECRET_KEY \
-            nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml --config dev/observability/collector.gke-no-langfuse.yaml
+          d=dev/observability
+          validate() {
+            local args=()
+            for file in "$@"; do args+=(--config "$d/$file"); done
+            nix develop .#agent --command otelcol-contrib validate "${args[@]}"
+          }
+          # Base alone: the ops pipelines export to nop.
+          validate collector.yaml
+          # Local: one backend overlay after the base.
+          for backend in debug datadog grafana; do
+            validate collector.yaml "collector.$backend.yaml"
+          done
+          # GKE: gateway overlay, optional no-Langfuse overlay, backend last.
+          for backend in datadog grafana; do
+            validate collector.yaml collector.gke.yaml "collector.$backend.yaml"
+            # The gateway before Langfuse exists reads no Langfuse keys.
+            (unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY
+              validate collector.yaml collector.gke.yaml collector.gke-no-langfuse.yaml "collector.$backend.yaml")
+          done
           # Cloud Run passes the sidecar file inline, so validate that form.
           OTEL_SIDECAR_CONFIG="$(cat dev/observability/sidecar.yaml)" \
             nix develop .#agent --command otelcol-contrib validate --config=env:OTEL_SIDECAR_CONFIG
       - name: Check the local stack
         run: |
           docker compose -f dev/observability/compose.yaml config -q
+          docker compose -f dev/observability/compose.yaml --profile datadog config -q
+          docker compose -f dev/observability/compose.yaml --profile grafana config -q
           bash -n scripts/observability-up.sh
+      - name: Verify the Grafana stack configs
+        run: |
+          g="$PWD/dev/observability/grafana"
+          docker run --rm -v "$g/tempo.yaml:/etc/tempo.yaml:ro" docker.io/grafana/tempo:3.1.1 \
+            -config.file=/etc/tempo.yaml -config.expand-env=true -config.verify=true
+          docker run --rm -v "$g/loki.yaml:/etc/loki.yaml:ro" docker.io/grafana/loki:3.7.9 \
+            -config.file=/etc/loki.yaml -config.expand-env=true -verify-config
+          docker run --rm --entrypoint promtool -v "$g/prometheus.yaml:/etc/prometheus.yaml:ro" \
+            docker.io/prom/prometheus:v3.16.0 check config /etc/prometheus.yaml
       - name: Validate and test the OpenTofu roots
         run: |
           for root in infra/gcp/observability infra/gcp/physician-runtime; do

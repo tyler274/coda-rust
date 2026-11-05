@@ -1,6 +1,9 @@
-# Merged after collector.yaml only on the GKE gateway
-# (`--config collector.yaml --config collector.gke.yaml`). It authenticates
-# every OTLP request and admits only the listed caller service accounts.
+# Merged after collector.yaml only on the GKE gateway. File order:
+#   collector.yaml, collector.gke.yaml, [collector.gke-no-langfuse.yaml],
+#   collector.<backend>.yaml (datadog or grafana, always last)
+# The backend overlay sets only exporters, so the processor lists below
+# survive the merge. This file authenticates every OTLP request and admits
+# only the listed caller service accounts.
 #
 #   OTEL_GATEWAY_AUDIENCE         Audience the caller's Google ID token must
 #                                 carry; the Cloud Run sidecars request the
@@ -78,9 +81,9 @@ processors:
 service:
   extensions: [health_check, basicauth/langfuse, oidc]
   pipelines:
-    traces/datadog:
+    traces/ops:
       processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, transform/strip_content, batch]
     traces/langfuse:
       processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, filter/langfuse_generations, batch]
-    logs/datadog:
+    logs/ops:
       processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, transform/strip_log_content, batch]
