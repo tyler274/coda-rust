@@ -55,6 +55,89 @@ public or copy credentials into the Nix store. Object-age deletion is not a safe
 cache garbage collector: deleting a NAR while retaining its metadata or references
 can break substitution. Retention changes must account for the reference graph.
 
+### Local cache warming with act
+
+[The local workflow](/.github/workflows/nix-cache-local.yml) builds the same
+[allowlisted roots](/scripts/nix_cache_roots.py) as the hosted writer: three
+dependency artifacts and six runtime, migration and job images. It only warms the
+binary cache; it does not load or push images, deploy services, or replace the
+hosted image proofs. Hosted publication remains a protected `main`-push operation.
+Local publication is an explicit operator-authorized exception for a reviewed,
+full commit SHA. Serialize it with every other writer: do not run it while a
+hosted or another local publication is active. `act` does not participate in
+GitHub's writer concurrency group.
+
+Use a clean, standalone checkout containing the reviewed commit, not a linked
+worktree: `act` copies files into the container, and a worktree's `.git` file points
+outside that copy. A local `git clone --no-hardlinks /path/to/repository
+/path/to/cache-warm-checkout` provides a standalone checkout without a GitHub token;
+check out the reviewed SHA there. Commit the reviewed changes before running; do
+not bypass cleanliness checks. The workflow verifies `HEAD` and tracked/untracked
+changes before installation and credentials, and the publisher rechecks the
+revision. Never pass unreviewed local code signing credentials.
+
+From that checkout, enter `nix develop .#agent`. First check workflow selection and
+syntax without credentials or a build:
+
+```bash
+EXPECTED_SHA="$(git rev-parse HEAD)"
+act workflow_dispatch -W .github/workflows/nix-cache-local.yml -j nix-cache-local \
+  --var ACT=true --input expected_sha="$EXPECTED_SHA" \
+  --env-file /dev/null --secret-file /dev/null --var-file /dev/null --input-file /dev/null \
+  --container-daemon-socket - --list
+# Repeat the command with --dryrun instead of --list to validate step planning.
+```
+
+The explicit `-W` and `-j nix-cache-local` are required: [`.actrc`](/.actrc)
+defaults to `-j ci`. Both the manual event and the local `ACT` checks are required;
+a hosted manual dispatch cannot publish. The installer uses
+`cachix/install-nix-action@v31` with `--no-daemon`: its single-user branch clears
+`build-users-group` and exports the user profile, without systemd. The container
+uses its own disposable `/nix`, with sandboxing disabled inside Docker. Do not add
+host `/nix`, systemd, home, credential or Docker-socket mounts, `--bind`,
+`--privileged`, or `--reuse`. The Docker daemon is needed by `act` on the host, not
+inside the job. A cold build can need substantial time and disk space.
+
+For an authorized write, first record the current `NIX_CACHE_ENABLED` repository
+variable, set it to `false` with operator approval, and wait for active hosted
+writers to finish. This pauses private reads as well as writes. Restore the exact
+previous value after the local run, including failures. Do not assume a local lock
+coordinates with GitHub's concurrency group.
+
+The [launcher](/scripts/warm_nix_cache.py) fetches only seven named settings from
+Doppler: bucket, public key, writer HMAC pair, signing key, and reader HMAC pair.
+It passes names rather than values on `act` arguments; no unrelated Doppler
+secrets are forwarded. The writer HMAC remains bucket-scoped and create-only.
+
+```bash
+# Inside nix develop .#agent, with a clean reviewed standalone checkout
+# and hosted publishers paused/drained under operator authorization:
+python scripts/warm_nix_cache.py \
+  --expected-sha "$(git rev-parse HEAD)" \
+  --doppler-config stg_nix_cache --acknowledge-exclusive-writer
+```
+
+Do not use broad Doppler export/forwarding, `.secrets` files, literal secret
+arguments, shell tracing, `--verbose`, `--insecure-secrets`, or environment dumps.
+Only publication receives writer/signing credentials; the subsequent fresh-reader
+step receives only reader credentials and the public key. Publication first sends
+a leaf-derivation smoke closure, then the full closure twice to prove safe reuse.
+The reader copies the server-dependency closure into an empty disposable store
+from the private cache alone, without builds, and verifies contents and trust.
+All temporary credential files and the reader store are removed on normal failure
+or completion; `act --rm` also removes the job container on failure. Abrupt host
+termination can require removing that specific stopped act container/volume; do
+not prune unrelated Docker resources.
+
+The helper reports stages, elapsed heartbeats, exit codes, and fixed error categories
+without printing raw SDK output. A heartbeat means the process is alive, not that
+an object was uploaded. It seeds repeated NAR content before the parallel copy to
+avoid create-only HEAD/PUT races within one publisher. This does not make multiple
+publishers safe. Unknown errors remain withheld; reproduce with synthetic local
+transport credentials rather than enabling verbose real-secret logs. Failures
+are fatal locally. No cache credentials are needed for list, dry-run, checkout
+verification, installation, or building from the upstream cache.
+
 ## CI timing reports
 
 [`scripts/ci_timings.py`](/scripts/ci_timings.py) collects GitHub job and step
