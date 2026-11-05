@@ -362,9 +362,12 @@ try {
   await rpc('request_chart', {patient_id: patient});
   const waiting = new Promise(resolve => {hangingRead = resolve;});
   vm.listeners.alarm({name: 'coda-hint-sandbox'}); await waiting; hangingRead = null;
-  const stopResult = await message('stop');
+  const stopping = performance.now(); const stopResult = await message('stop');
+  const stopSeconds = (performance.now() - stopping) / 1000;
   assert.equal(stopResult.state.state, 'stopped'); assert.equal(session.map.access, undefined);
-  evidence('Stop aborts an in-flight response body and clears Chrome-memory token');
+  // Stop waits for the tick holding the body, so this bounds the abort, not the deadline.
+  assert(stopSeconds < 5, `Stop ended the hanging body after ${stopSeconds}s`);
+  evidence('Stop aborts an in-flight response body and clears Chrome-memory token', {seconds: stopSeconds});
 
   await resetConnection(); refuseBridge = true;
   const workerRefused = await message('start');
