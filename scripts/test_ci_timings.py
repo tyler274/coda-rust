@@ -120,6 +120,13 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(result.steps[0].seconds, 80)
         self.assertTrue(result.baseline)
 
+    def test_cache_publication_is_not_validation_time(self):
+        jobs = deepcopy(JOBS) + [job("Publish reusable Nix outputs", start="2026-11-04T10:02:00Z",
+                                     end="2026-11-04T10:30:00Z")]
+        result = timings.analyze("o/r", RUN, jobs)
+        self.assertEqual(result.elapsed, 125)
+        self.assertEqual(len(result.deployments), 2)
+
     def test_running_result_is_explicitly_omitted_including_steps(self):
         jobs = deepcopy(JOBS)
         jobs[2] = job("CI result", status="in_progress", conclusion=None, end=None,

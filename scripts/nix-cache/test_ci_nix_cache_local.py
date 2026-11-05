@@ -109,7 +109,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", publish)
         self.assertIn('scripts/nix-cache/nix_cache.py publish --build-json', publish)
         self.assertNotIn('publish-local', self.hosted)
-        self.assertIn("&& 'nix-cache-write' || 'nix-cache-read'", self.hosted)
+        self.assertIn('    environment: nix-cache-write\n', self.hosted)
 
 
 if __name__ == '__main__':

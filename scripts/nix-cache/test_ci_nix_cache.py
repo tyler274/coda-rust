@@ -14,30 +14,33 @@ class WorkflowTests(unittest.TestCase):
         cls.jobs = yaml.safe_load((ROOT / '.github/workflows/ci.yml').read_text())['jobs']
 
     def test_signing_only_in_protected_main_environment(self):
-        images = self.jobs['images']
-        environment = images['environment']
-        self.assertIn("github.event_name == 'push'", environment)
-        self.assertIn("github.ref == 'refs/heads/main'", environment)
-        self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", environment)
-        self.assertIn("'nix-cache-write'", environment)
+        publisher = self.jobs['nix-cache-publish']
+        self.assertEqual(publisher['environment'], 'nix-cache-write')
+        for clause in ("github.event_name == 'push'", "github.ref == 'refs/heads/main'",
+                       "vars.NIX_CACHE_ENABLED == 'true'", "needs.images.result == 'success'"):
+            self.assertIn(clause, publisher['if'])
         for job_id, job in self.jobs.items():
+            if job_id != 'nix-cache-publish':
+                self.assertNotIn('nix-cache-write', str(job.get('environment', '')))
             for step in job.get('steps', []):
                 if 'NIX_CACHE_SIGNING_KEY' in step.get('env', {}):
-                    self.assertEqual(job_id, 'images')
+                    self.assertEqual(job_id, 'nix-cache-publish')
                     self.assertIn("github.event_name == 'push'", step['if'])
                     self.assertIn("github.ref == 'refs/heads/main'", step['if'])
                     self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", step['if'])
 
-    def test_cache_writers_are_serialized_without_cancelling_active_builds(self):
-        concurrency = self.jobs['images']['concurrency']
+    def test_only_the_publisher_is_serialized(self):
+        concurrency = self.jobs['nix-cache-publish']['concurrency']
+        self.assertEqual(concurrency['group'], 'nix-cache-main-writer')
         self.assertIs(concurrency['cancel-in-progress'], False)
-        group = concurrency['group']
-        self.assertIn("github.event_name == 'push'", group)
-        self.assertIn("github.ref == 'refs/heads/main'", group)
-        self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", group)
-        self.assertIn("'nix-cache-main-writer'", group)
-        self.assertIn('github.run_id', group)
-        self.assertIn('github.run_attempt', group)
+        for job_id, job in self.jobs.items():
+            if job_id != 'nix-cache-publish':
+                self.assertNotIn('nix-cache-main-writer', str(job.get('concurrency', '')))
+
+    def test_publication_never_gates_or_delays_deployment(self):
+        for job_id, job in self.jobs.items():
+            needs = job.get('needs', [])
+            self.assertNotIn('nix-cache-publish', needs if isinstance(needs, list) else [needs], job_id)
 
     def test_cache_and_reporting_do_not_replace_gate(self):
         result = self.jobs['result']
@@ -58,7 +61,7 @@ class WorkflowTests(unittest.TestCase):
                 cleanup = [s for s in job['steps'] if s.get('run') == 'python3 scripts/nix-cache/nix_cache.py cleanup']
                 self.assertEqual(len(cleanup), 1)
                 self.assertIn('always()', cleanup[0]['if'])
-        self.assertEqual(readers, 6)
+        self.assertEqual(readers, 7)
 
     def test_image_proof_remains_mandatory(self):
         proof = next(s for s in self.jobs['images']['steps'] if 'bash scripts/check-images.sh' in s.get('run', ''))

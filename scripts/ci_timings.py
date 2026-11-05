@@ -121,7 +121,8 @@ def interval(item):
 
 
 def deployment(job):
-    return job["name"].lower().startswith("deploy")
+    # Cache publication runs after the gate, like a deployment.
+    return job["name"].lower().startswith(("deploy", "publish"))
 
 
 def executed(job):

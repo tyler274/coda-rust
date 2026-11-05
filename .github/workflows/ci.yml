@@ -486,13 +486,8 @@ jobs:
     # A dependency change rebuilds the Rust dependency derivations from
     # source, which takes 15-40 min on 2 vCPU. Warm runs only fetch them.
     runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
-    # The write environment must restrict deployment branches to main. Its
-    # signing key and writer credentials must never be repository-level secrets.
-    environment: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && 'nix-cache-write' || 'nix-cache-read' }}
-    # Create-only GCS writes require one publisher at a time. Readers stay parallel.
-    concurrency:
-      group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && 'nix-cache-main-writer' || format('nix-cache-reader-{0}-{1}', github.run_id, github.run_attempt) }}
-      cancel-in-progress: false
+    # Proofs stay out of the writer concurrency group: a pending job in that
+    # group is cancelled by the next main push (run 42121621650).
     timeout-minutes: 90
     permissions:
       contents: read
@@ -583,9 +578,43 @@ jobs:
           path: physician-pr-image
           retention-days: 3
           compression-level: 0
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
 
+  # Best effort and outside `result`: deployments and the gate never wait for
+  # the upload. The roots are rebuilt here; dependencies come from the cache.
+  nix-cache-publish:
+    needs: [scope, images]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && needs.images.result == 'success'
+    name: Publish reusable Nix outputs
+    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    # The write environment must restrict deployment branches to main. Its
+    # signing key and writer credentials must never be repository-level secrets.
+    environment: nix-cache-write
+    # Create-only GCS writes require one publisher at a time. GitHub keeps one
+    # pending publisher and cancels older ones; the newer commit's closure
+    # supersedes theirs.
+    concurrency:
+      group: nix-cache-main-writer
+      cancel-in-progress: false
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
       - name: Collect reusable Nix build roots
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true'
         id: cache-roots
         continue-on-error: true
         run: >-

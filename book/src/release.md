@@ -33,14 +33,17 @@ outside any environment; it grants only object reads on this bucket. The GitHub
 `nix-cache-write` environment must restrict deployment branches to `main` before
 installing any writer or signing secrets. Never put those secrets at repository
 scope: a workflow condition alone cannot protect secrets from edited PR code.
-Only the `images` job on a `main` push enters `nix-cache-write`; its PR and
-disabled-cache runs use `nix-cache-read`, which holds no secrets.
+Only the `nix-cache-publish` job enters `nix-cache-write`. It runs on a `main`
+push after `images` passes, rebuilds the allowlisted roots from the cache, and
+uploads them. `images` itself holds no cache-writer secrets on any event.
 Changing cache trust or rotating its signing key requires operator review.
-Cache-writing main image jobs share a concurrency group because create-only
+Publishers share the `nix-cache-main-writer` concurrency group because create-only
 object permissions cannot safely handle simultaneous uploads of the same object.
-An active job is not cancelled; GitHub may replace an older pending job with a
-newer one. Reader-only jobs remain parallel. Any additional publisher must use
-the same serialization policy rather than weakening the bucket permissions.
+An active publisher is not cancelled; GitHub may replace an older pending one
+with a newer one, whose closure supersedes it. The image proofs, `CI result` and
+deployments stay outside that group and do not wait for publication, so a burst
+of merges cannot cancel them. Any additional publisher must use the same
+serialization policy rather than weakening the bucket permissions.
 
 The cache retains compiled dependency artifacts as well as application outputs;
 final image closures alone do not retain the intermediate Rust compilation work.
