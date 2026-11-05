@@ -28,6 +28,9 @@ jobs:
       - name: Verify act and the clean expected revision
         run: |
           test "${ACT:-}" = true
+          # act omits empty, uninitialized gitlink directories during its copy.
+          # Restore only those placeholders, never source files or submodule contents.
+          git restore --worktree -- submodules/Coda-Computer-Use submodules/coda-agents submodules/coda-app submodules/coda-gym
           python3 scripts/nix_cache_roots.py verify-checkout --expected-sha "$EXPECTED_SHA"
       # v31 selects single-user mode for --no-daemon, clears build-users-group,
       # and adds the user profile to GITHUB_PATH. No systemd or host /nix mount.
