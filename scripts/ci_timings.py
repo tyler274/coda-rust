@@ -181,7 +181,9 @@ class ReportRun:
 def analyze(repo, run, jobs):
     validation, deployments, steps, deployment_steps, omitted = [], [], [], [], []
     complete = True
-    names = {j["name"] for j in jobs if executed(j) and not deployment(j)}
+    # Matrix jobs append their entry, as in "Fresh Postgres ... (shard 1)".
+    names = {re.sub(r" \(shard \d+\)$", "", j["name"])
+             for j in jobs if executed(j) and not deployment(j)}
     scope = "full" if names & FULL_JOBS else "light" if LIGHT_JOB in names else "unknown"
     for job in jobs:
         times = interval(job)
