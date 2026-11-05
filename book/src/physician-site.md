@@ -7,8 +7,7 @@ The web build calls the API at a loopback `?api=` URL when one is given, otherwi
 ## Product direction and proof
 
 The <a href="/intent/physician%2Emd">physician spec</a> owns product intent; each
-feature's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>,
-starting with <a href="/verification/physician/sign-in/README%2Emd">sign-in</a>.
+feature's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>.
 
 ## Current execution paths
 
