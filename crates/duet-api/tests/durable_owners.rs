@@ -57,6 +57,20 @@ impl ReceiptJournal for FaultJournal {
         self.inner.read(id).await
     }
 }
+/// An independently listed receipt whose bytes cannot be read must close the restore gate.
+struct IncompleteJournal;
+#[async_trait]
+impl ReceiptJournal for IncompleteJournal {
+    async fn put_if_absent(&self, _: Uuid, _: &[u8]) -> Result<(), ApiError> {
+        Err(ApiError::Unavailable("read-only restore fault fixture"))
+    }
+    async fn read(&self, _: Uuid) -> Result<Option<Vec<u8>>, ApiError> {
+        Ok(None)
+    }
+    async fn inventory(&self) -> Result<Vec<Uuid>, ApiError> {
+        Ok(vec![Uuid::nil()])
+    }
+}
 #[test]
 fn durable_identity_evidence_privacy_and_restore() {
     // Keep the large all-owner integration future and renderer on an explicitly
@@ -797,7 +811,28 @@ async fn run_durable_owners() {
         .bind(current.canonical_record_id).bind(a.account_id).bind(&mutation.payload).execute(&mut owner).await.unwrap();
     sqlx::query("insert into canonical_evidence_revisions(revision,user_id,evidence_id,payload,content_sha256) overriding system value values($1,$2,$3,$4,repeat('0',64))")
         .bind(i64::from(first.revision)).bind(a.account_id).bind(first.canonical_record_id).bind(&mutation.payload).execute(&mut owner).await.unwrap();
-    assert!(restored.replay(deletion).await.unwrap());
+    // Restore the pre-deletion membership metadata too. Otherwise the retained
+    // tombstone alone refuses reads and makes a broken/no-op replay look successful.
+    sqlx::query("update evidence_sync_changes set deleted=false,source_removed=false where user_id=$1 and record_id=$2")
+        .bind(a.account_id).bind(first.canonical_record_id).execute(&mut owner).await.unwrap();
+    assert_eq!(
+        evidence.exact(&a, &first, false).await.unwrap().payload,
+        mutation.payload
+    );
+    // The rollback must not be admitted by an adapter without independent inventory.
+    assert!(restored.reconcile_inventory().await.is_err());
+    let incomplete = PrivacyStore::new(db.clone(), Arc::new(IncompleteJournal));
+    assert!(incomplete.reconcile_inventory().await.is_err());
+    // Replay the entire independently retained journal, not selected IDs from restored SQL.
+    assert!(gate.reconcile_inventory().await.unwrap() > 0);
+    assert!(evidence.exact(&a, &first, false).await.is_err());
+    let persisted: i64 = sqlx::query_scalar("select (select count(*) from health_evidence where user_id=$1 and id=$2) + (select count(*) from canonical_evidence_revisions where user_id=$1 and evidence_id=$2)")
+        .bind(a.account_id).bind(first.canonical_record_id).fetch_one(&mut owner).await.unwrap();
+    assert_eq!(
+        persisted, 0,
+        "full inventory replay must erase restored payload bytes, not only hide reads"
+    );
+    assert!(gate.reconcile_inventory().await.unwrap() > 0);
     assert!(evidence.exact(&a, &first, false).await.is_err());
     let signed_out = Uuid::new_v4();
     privacy
