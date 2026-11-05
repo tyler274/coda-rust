@@ -18,7 +18,15 @@ export CODA_REQUIRE_POSTGRES_TESTS=1
 packages=(-p physician-sample -p physician-auth -p front-door -p duet-api
   -p local-product -p physician-bus -p pubsub -p gmail)
 pg_test() { cargo test --locked "${packages[@]}" "$@"; }
-pg_test --tests --no-run
+# Build only the targets run below; the packages' other test binaries would
+# add link time on a 2 vCPU runner for nothing.
+pg_test --no-run --lib --test migrations_postgres --test postgres \
+  --test front_door_postgres --test identity --test luna_journal \
+  --test database_foundation --test pg_moments --test steering \
+  --test runtime_postgres --test runtime_publication --test runtime_recovery \
+  --test redis --test fanout --test worker --test recovery --test try_again \
+  --test stop --test chat_draft --test reply_revision --test instance_loss \
+  --test emulator --test push_wake
 
 # This ignored test fails closed if its URL is missing. It tests each of the
 # two workspace migration chains separately and together, with two reruns.
