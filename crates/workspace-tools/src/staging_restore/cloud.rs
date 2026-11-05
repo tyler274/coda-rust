@@ -1,4 +1,7 @@
-use super::{Error, NETWORK, PROJECT, Result, receipt::Receipt};
+use super::{
+    BackupId, Error, NETWORK, OperationKind, OperationStatus, PROJECT, Product, RestoreTarget,
+    Result, SqlOperationId, receipt::Receipt,
+};
 use serde::Deserialize;
 use std::{collections::BTreeMap, process::Command, time::Duration};
 
@@ -68,14 +71,25 @@ pub(super) struct Address {
 #[derive(Clone, Debug, Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(super) struct Backup {
-    pub id: String,
+    pub id: BackupId,
     pub instance: String,
     pub status: String,
     pub end_time: String,
 }
-#[derive(Clone, Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Clone, Debug)]
 pub(super) struct Operation {
+    pub name: SqlOperationId,
+    pub target_id: String,
+    pub target_project: String,
+    pub operation_type: OperationKind,
+    // Retain a validated identity even when a mutation returns an unknown status.
+    pub status: std::result::Result<OperationStatus, super::types::UnknownOperationStatus>,
+    pub error: Option<serde_json::Value>,
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(super) struct RawOperation {
     pub name: String,
     pub target_id: String,
     pub target_project: String,
@@ -83,16 +97,29 @@ pub(super) struct Operation {
     pub status: String,
     pub error: Option<serde_json::Value>,
 }
+impl TryFrom<RawOperation> for Operation {
+    type Error = Error;
+    fn try_from(raw: RawOperation) -> Result<Self> {
+        Ok(Self {
+            name: raw.name.try_into()?,
+            target_id: raw.target_id,
+            target_project: raw.target_project,
+            operation_type: raw.operation_type.as_str().try_into()?,
+            status: raw.status.as_str().try_into(),
+            error: raw.error,
+        })
+    }
+}
 
 /// The orchestrator owns safety checks; this replaceable boundary owns cloud I/O only.
 pub(super) trait Cloud {
     fn instances(&mut self) -> Result<Vec<Instance>>;
-    fn instance(&mut self, target: &str) -> Result<Instance>;
-    fn backup(&mut self, source: &str, id: &str) -> Result<Backup>;
+    fn instance(&mut self, target: &RestoreTarget) -> Result<Instance>;
+    fn backup(&mut self, product: Product, id: &BackupId) -> Result<Backup>;
     fn create(&mut self, receipt: &Receipt) -> Result<Operation>;
     fn restore(&mut self, receipt: &Receipt) -> Result<Operation>;
-    fn operation(&mut self, id: &str) -> Result<Operation>;
-    fn delete(&mut self, target: &str) -> Result<Operation>;
+    fn operation(&mut self, id: &SqlOperationId) -> Result<Operation>;
+    fn delete(&mut self, target: &RestoreTarget) -> Result<Operation>;
     fn pause(&mut self, duration: Duration) {
         std::thread::sleep(duration);
     }
@@ -122,34 +149,45 @@ impl Cloud for Gcloud {
     fn instances(&mut self) -> Result<Vec<Instance>> {
         self.json(&["sql", "instances", "list"])
     }
-    fn instance(&mut self, target: &str) -> Result<Instance> {
-        self.json(&["sql", "instances", "describe", target])
+    fn instance(&mut self, target: &RestoreTarget) -> Result<Instance> {
+        self.json(&["sql", "instances", "describe", target.as_str()])
     }
-    fn backup(&mut self, source: &str, id: &str) -> Result<Backup> {
-        self.json(&["sql", "backups", "describe", id, "--instance", source])
-    }
-    fn create(&mut self, receipt: &Receipt) -> Result<Operation> {
-        let args = create_args(receipt);
-        self.json(&args.iter().map(String::as_str).collect::<Vec<_>>())
-    }
-    fn restore(&mut self, receipt: &Receipt) -> Result<Operation> {
+    fn backup(&mut self, product: Product, id: &BackupId) -> Result<Backup> {
         self.json(&[
             "sql",
             "backups",
-            "restore",
-            &receipt.backup.id,
-            "--backup-instance",
-            &receipt.source,
-            "--restore-instance",
-            &receipt.target,
-            "--async",
+            "describe",
+            id.as_str(),
+            "--instance",
+            &product.source(),
         ])
     }
-    fn operation(&mut self, id: &str) -> Result<Operation> {
-        self.json(&["sql", "operations", "describe", id])
+    fn create(&mut self, receipt: &Receipt) -> Result<Operation> {
+        let args = create_args(receipt);
+        self.json::<RawOperation>(&args.iter().map(String::as_str).collect::<Vec<_>>())?
+            .try_into()
     }
-    fn delete(&mut self, target: &str) -> Result<Operation> {
-        self.json(&["sql", "instances", "delete", target, "--async"])
+    fn restore(&mut self, receipt: &Receipt) -> Result<Operation> {
+        self.json::<RawOperation>(&[
+            "sql",
+            "backups",
+            "restore",
+            receipt.backup.id.as_str(),
+            "--backup-instance",
+            &receipt.product.source(),
+            "--restore-instance",
+            receipt.target.as_str(),
+            "--async",
+        ])?
+        .try_into()
+    }
+    fn operation(&mut self, id: &SqlOperationId) -> Result<Operation> {
+        self.json::<RawOperation>(&["sql", "operations", "describe", id.as_str()])?
+            .try_into()
+    }
+    fn delete(&mut self, target: &RestoreTarget) -> Result<Operation> {
+        self.json::<RawOperation>(&["sql", "instances", "delete", target.as_str(), "--async"])?
+            .try_into()
     }
 }
 
@@ -167,7 +205,7 @@ pub(super) fn create_args(receipt: &Receipt) -> Vec<String> {
         "sql",
         "instances",
         "create",
-        &receipt.target,
+        receipt.target.as_str(),
         "--database-version=POSTGRES_17",
         "--edition=ENTERPRISE",
         "--tier=db-custom-1-3840",

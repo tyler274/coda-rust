@@ -3,7 +3,7 @@ use super::*;
 use std::io::Read;
 use std::process::{Output, Stdio};
 
-pub(super) const BUDGET_EXHAUSTED: &str = "release-command-budget-exhausted";
+pub(super) const BUDGET_EXHAUSTED: LocalCode = LocalCode::ReleaseCommandBudgetExhausted;
 
 pub(super) trait Runner {
     fn output(&mut self, args: &[String]) -> Result<Output>;
@@ -25,8 +25,14 @@ fn bounded_output(command: &mut Command, timeout: Duration) -> Result<Output> {
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()?;
-    let mut stdout = child.stdout.take().ok_or(Error::Cloud("missing-stdout"))?;
-    let mut stderr = child.stderr.take().ok_or(Error::Cloud("missing-stderr"))?;
+    let mut stdout = child
+        .stdout
+        .take()
+        .ok_or(Error::Cloud(LocalCode::MissingStdout))?;
+    let mut stderr = child
+        .stderr
+        .take()
+        .ok_or(Error::Cloud(LocalCode::MissingStderr))?;
     let out = std::thread::spawn(move || {
         let mut bytes = Vec::new();
         stdout.read_to_end(&mut bytes).map(|_| bytes)
@@ -52,19 +58,19 @@ fn bounded_output(command: &mut Command, timeout: Duration) -> Result<Output> {
     let drain_deadline = Instant::now() + Duration::from_secs(1);
     while !out.is_finished() || !err.is_finished() {
         if Instant::now() >= drain_deadline {
-            return Err(Error::Cloud("command-pipe-drain-timeout"));
+            return Err(Error::Cloud(LocalCode::CommandPipeDrainTimeout));
         }
         std::thread::sleep(Duration::from_millis(10));
     }
     let stdout = out
         .join()
-        .map_err(|_panic| Error::Cloud("stdout-reader-panicked"))??;
+        .map_err(|_panic| Error::Cloud(LocalCode::StdoutReaderPanicked))??;
     let stderr = err
         .join()
-        .map_err(|_panic| Error::Cloud("stderr-reader-panicked"))??;
+        .map_err(|_panic| Error::Cloud(LocalCode::StderrReaderPanicked))??;
     if timed_out {
         return Err(Error::Command {
-            code: "gcloud-timeout",
+            code: LocalCode::GcloudTimeout,
             source: Arc::new(CommandFailure {
                 status: status.code(),
                 stdout,
@@ -122,7 +128,7 @@ impl<R: Runner> Gcloud<R> {
 }
 pub(super) fn command_error(output: Output) -> Error {
     Error::Command {
-        code: "gcloud-command-failed",
+        code: LocalCode::GcloudCommandFailed,
         source: Arc::new(CommandFailure {
             status: output.status.code(),
             stdout: output.stdout,
@@ -194,7 +200,7 @@ mod tests {
                 },
                 Duration::from_secs(1),
             );
-            let result = cloud.service("physician-worker");
+            let result = cloud.service(ReleaseService::PhysicianWorker);
             if absent {
                 assert_eq!(result.expect("absent"), Observation::Absent);
             } else {
@@ -225,8 +231,8 @@ mod tests {
             },
             Duration::from_secs(1),
         );
-        let error = cloud.execute("physician-migrate").expect_err("failed");
-        assert_eq!(error.safe_code(), "gcloud-command-failed");
+        let error = cloud.execute(Product::Physician).expect_err("failed");
+        assert_eq!(error.safe_code().as_str(), "gcloud-command-failed");
         let Error::Command { source, .. } = error else {
             panic!("typed command cause");
         };
@@ -236,9 +242,18 @@ mod tests {
     }
     #[test]
     fn service_and_execution_json_contracts_and_mutation_arguments() {
-        let service = serde_json::json!({"spec":{"template":{"spec":{"containers":[{"image":"image@sha256:abc"}]}}},"status":{"latestCreatedRevisionName":"rev", "latestReadyRevisionName":"rev", "traffic":[{"revisionName":"rev","percent":100,"latestRevision":true}]}});
-        let revision = serde_json::json!({"spec":{"containers":[{"image":"image@sha256:abc"}]}});
-        let execution = serde_json::json!({"spec":{"template":{"spec":{"containers":[{"image":"image@sha256:abc"}]}}},"status":{"conditions":[{"type":"Completed","status":"False"}]}});
+        let receipt = super::super::tests::receipt();
+        let image = receipt
+            .images
+            .get(ImageRole::PhysicianRuntime)
+            .expect("image");
+        let service = serde_json::json!({"spec":{"template":{"spec":{"containers":[{"image":image.as_str()}]}}},"status":{"latestCreatedRevisionName":"rev", "latestReadyRevisionName":"rev", "traffic":[{"revisionName":"rev","percent":100,"latestRevision":true}]}});
+        let revision = serde_json::json!({"spec":{"containers":[{"image":image.as_str()}]}});
+        let migration_image = receipt
+            .images
+            .get(ImageRole::PhysicianMigration)
+            .expect("migration image");
+        let execution = serde_json::json!({"spec":{"template":{"spec":{"containers":[{"image":migration_image.as_str()}]}}},"status":{"conditions":[{"type":"Completed","status":"False"}]}});
         let mut cloud = Gcloud::new(
             Fake {
                 outputs: VecDeque::from([
@@ -253,20 +268,24 @@ mod tests {
             Duration::from_secs(1),
         );
         assert!(serving(
-            &cloud.service("physician").expect("service"),
-            "image@sha256:abc"
+            &cloud.service(ReleaseService::Physician).expect("service"),
+            image
         ));
         assert_eq!(
             cloud
-                .execution("job-execution", "image@sha256:abc")
+                .execution(
+                    &ExecutionId::try_from("job-execution".to_owned()).expect("id"),
+                    migration_image
+                )
                 .expect("execution"),
             Execution::Failed
         );
+        assert!(receipt.images.complete());
         cloud
-            .update_job("physician-migrate", "image@sha256:abc")
+            .update_job(Product::Physician, &receipt.images)
             .expect("job");
         cloud
-            .update_service("physician-worker", "image@sha256:abc")
+            .update_service(ReleaseService::PhysicianWorker, &receipt.images)
             .expect("worker");
         assert_eq!(
             &cloud.runner.args[3][3..8],
@@ -275,7 +294,10 @@ mod tests {
                 "update",
                 "physician-migrate",
                 "--image",
-                "image@sha256:abc"
+                &format!(
+                    "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-migrate@sha256:{}",
+                    "b".repeat(64)
+                )
             ]
         );
         assert_eq!(
@@ -285,10 +307,59 @@ mod tests {
                 "update",
                 "physician-worker",
                 "--image",
-                "image@sha256:abc",
+                &format!(
+                    "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-physician-worker@sha256:{}",
+                    "b".repeat(64)
+                ),
                 "--async"
             ]
         );
+    }
+    #[test]
+    fn mutations_reject_missing_target_images_before_invoking_runner() {
+        let receipt = super::super::tests::receipt();
+        for missing in ImageRole::ALL {
+            let mut images = Images::default();
+            for role in ImageRole::ALL {
+                if role != missing {
+                    images.insert(receipt.images.get(role).expect("image").clone());
+                }
+            }
+            let mut cloud = Gcloud::new(
+                Fake {
+                    outputs: VecDeque::new(),
+                    args: vec![],
+                },
+                Duration::from_secs(1),
+            );
+            let (result, message) = match missing {
+                ImageRole::PhysicianMigration => (
+                    cloud.update_job(Product::Physician, &images),
+                    "missing migration digest",
+                ),
+                ImageRole::DuetMigration => (
+                    cloud.update_job(Product::Duet, &images),
+                    "missing migration digest",
+                ),
+                ImageRole::PhysicianRuntime => (
+                    cloud.update_service(ReleaseService::Physician, &images),
+                    "missing runtime digest",
+                ),
+                ImageRole::DuetRuntime => (
+                    cloud.update_service(ReleaseService::Duet, &images),
+                    "missing runtime digest",
+                ),
+                ImageRole::PhysicianWorker => (
+                    cloud.update_service(ReleaseService::PhysicianWorker, &images),
+                    "missing runtime digest",
+                ),
+            };
+            assert!(matches!(result, Err(Error::Input(actual)) if actual == message));
+            assert!(
+                cloud.runner.args.is_empty(),
+                "runner invoked for {missing:?}"
+            );
+        }
     }
     #[test]
     fn raw_command_diagnostics_never_enter_receipt_or_summary() {
@@ -316,7 +387,7 @@ mod tests {
         };
         retain_cause(&mut receipt, failure());
         let error = Error::Related {
-            primary: Box::new(Error::Cloud("rollout-not-confirmed")),
+            primary: Box::new(Error::Cloud(LocalCode::RolloutNotConfirmed)),
             causes: receipt.causes.clone(),
         };
         let message = failure_message(&error);
@@ -341,7 +412,7 @@ mod tests {
             Duration::from_millis(30),
         )
         .expect_err("timeout");
-        assert_eq!(error.safe_code(), "gcloud-timeout");
+        assert_eq!(error.safe_code().as_str(), "gcloud-timeout");
         assert!(start.elapsed() < Duration::from_secs(2));
     }
 }

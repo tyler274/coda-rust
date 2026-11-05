@@ -3,6 +3,7 @@ mod cloud;
 mod receipt;
 #[cfg(test)]
 mod tests;
+mod types;
 
 use crate::failure::Failure;
 use cloud::{Cloud, Gcloud, Instance, Operation};
@@ -12,6 +13,7 @@ use std::{
     path::PathBuf,
     time::{Duration, Instant, SystemTime, UNIX_EPOCH},
 };
+use types::{BackupId, OperationKind, OperationStatus, RestoreTarget, SqlOperationId};
 
 const PROJECT: &str = "coda-rust-staging";
 const NETWORK: &str = "projects/coda-rust-staging/global/networks/rust-private";
@@ -24,6 +26,8 @@ const POLL_INTERVAL: Duration = Duration::from_secs(5);
 pub(super) enum Error {
     #[error("restore refused: {0}")]
     Unsafe(String),
+    #[error(transparent)]
+    UnknownOperationStatus(#[from] types::UnknownOperationStatus),
     #[error("restore I/O failed: {0}")]
     Io(#[from] std::io::Error),
     #[error("invalid cloud/receipt JSON: {0}")]
@@ -54,7 +58,7 @@ impl Error {
     fn receipt_code(&self) -> receipt::FailureCode {
         use receipt::FailureCode;
         match self {
-            Self::Unsafe(_) => FailureCode::ValidationRefused,
+            Self::Unsafe(_) | Self::UnknownOperationStatus(_) => FailureCode::ValidationRefused,
             Self::Io(_) => FailureCode::Io,
             Self::Json(_) => FailureCode::InvalidJson,
             Self::Cloud { .. } => FailureCode::CloudCommand,
@@ -94,29 +98,11 @@ struct Request {
     target: String,
 }
 impl Request {
-    fn validate(&self) -> Result<()> {
-        let prefix = format!("rust-restore-{}-", self.product.name());
-        if !self.target.starts_with(&prefix)
-            || self.target.len() <= prefix.len()
-            || self.target.len() > 63
-            || !self
-                .target
-                .bytes()
-                .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'-')
-            || !self
-                .target
-                .as_bytes()
-                .last()
-                .is_some_and(u8::is_ascii_alphanumeric)
-        {
-            return Err(refuse(
-                "target must be a fresh rust-restore-<product>-<run> instance",
-            ));
-        }
-        if self.backup.is_empty() || !self.backup.bytes().all(|c| c.is_ascii_digit()) {
-            return Err(refuse("backup must be a numeric Cloud SQL backup ID"));
-        }
-        Ok(())
+    fn validate(&self) -> Result<(RestoreTarget, BackupId)> {
+        Ok((
+            RestoreTarget::new(self.product, self.target.clone())?,
+            BackupId::try_from(self.backup.clone())?,
+        ))
     }
 }
 
@@ -264,7 +250,7 @@ fn source_instance(instances: &[Instance], product: Product) -> Result<&Instance
 }
 
 fn preflight(cloud: &mut impl Cloud, request: &Request) -> Result<Receipt> {
-    request.validate()?;
+    let (target, backup_id) = request.validate()?;
     let instances = cloud.instances()?;
     let source = source_instance(&instances, request.product)?;
     if instances
@@ -275,8 +261,8 @@ fn preflight(cloud: &mut impl Cloud, request: &Request) -> Result<Receipt> {
             "target already exists: never overwrite or trust a name prefix/label as ownership",
         ));
     }
-    let backup = cloud.backup(&request.product.source(), &request.backup)?;
-    if backup.id != request.backup
+    let backup = cloud.backup(request.product, &backup_id)?;
+    if backup.id != backup_id
         || backup.instance != request.product.source()
         || backup.status != "SUCCESSFUL"
     {
@@ -302,7 +288,7 @@ fn preflight(cloud: &mut impl Cloud, request: &Request) -> Result<Receipt> {
         })?;
     Ok(Receipt::new(
         request.product,
-        request.target.clone(),
+        target,
         backup,
         source.region.clone(),
         storage_size_gb,
@@ -360,18 +346,18 @@ fn execute_restore(
     // Repeat the preflight immediately before the first mutation; create is exclusive in Cloud SQL.
     let instances = cloud.instances()?;
     source_instance(&instances, receipt.product)?;
-    if instances.iter().any(|i| i.name == receipt.target) {
+    if instances.iter().any(|i| i.name == receipt.target.as_str()) {
         return Err(refuse("target appeared after preflight"));
     }
     receipt.phase = Phase::CreateRequested;
     receipt.cleanup = Cleanup::RequiredOrCreationUncertain;
     store.save(receipt)?;
     let operation = cloud.create(receipt)?;
-    check_operation_identity(&operation, receipt, "CREATE")?;
+    check_operation_identity(&operation, receipt, OperationKind::Create)?;
     receipt.create_operation = Some(operation.name.clone());
-    let checked = check_operation(&operation, receipt, "CREATE");
+    let checked = check_operation(&operation, receipt, OperationKind::Create);
     save_settled(store, receipt, checked)?;
-    wait(cloud, &operation.name, receipt, "CREATE")?;
+    wait(cloud, &operation.name, receipt, OperationKind::Create)?;
     let target = cloud.instance(&receipt.target)?;
     validate_target(&target, receipt, false)?;
     receipt.target_created_at = Some(target.create_time.clone());
@@ -385,11 +371,16 @@ fn execute_restore(
     store.save(receipt)?;
     let start = Instant::now();
     let operation = cloud.restore(receipt)?;
-    check_operation_identity(&operation, receipt, "RESTORE_VOLUME")?;
+    check_operation_identity(&operation, receipt, OperationKind::RestoreVolume)?;
     receipt.restore_operation = Some(operation.name.clone());
-    let checked = check_operation(&operation, receipt, "RESTORE_VOLUME");
+    let checked = check_operation(&operation, receipt, OperationKind::RestoreVolume);
     save_settled(store, receipt, checked)?;
-    wait(cloud, &operation.name, receipt, "RESTORE_VOLUME")?;
+    wait(
+        cloud,
+        &operation.name,
+        receipt,
+        OperationKind::RestoreVolume,
+    )?;
     let target = cloud.instance(&receipt.target)?;
     validate_target(&target, receipt, true)?;
     receipt.restore_elapsed_seconds = Some(start.elapsed().as_secs());
@@ -406,7 +397,7 @@ fn execute_restore(
 
 fn validate_target(instance: &Instance, receipt: &Receipt, require_identity: bool) -> Result<()> {
     receipt.validate()?;
-    if instance.name != receipt.target
+    if instance.name != receipt.target.as_str()
         || instance.project != PROJECT
         || instance.region != receipt.region
         || instance.state != "RUNNABLE"
@@ -454,25 +445,13 @@ fn validate_target(instance: &Instance, receipt: &Receipt, require_identity: boo
     Ok(())
 }
 
-fn valid_operation_id(id: &str) -> bool {
-    id.len() == 36
-        && id.bytes().enumerate().all(|(index, byte)| {
-            if [8, 13, 18, 23].contains(&index) {
-                byte == b'-'
-            } else {
-                byte.is_ascii_hexdigit()
-            }
-        })
-}
-
 fn check_operation_identity(
     operation: &Operation,
     receipt: &Receipt,
-    expected: &str,
+    expected: OperationKind,
 ) -> Result<()> {
-    if !valid_operation_id(&operation.name)
-        || operation.target_project != PROJECT
-        || operation.target_id != receipt.target
+    if operation.target_project != PROJECT
+        || operation.target_id != receipt.target.as_str()
         || operation.operation_type != expected
     {
         return Err(refuse("operation identity/type does not match this target"));
@@ -480,38 +459,47 @@ fn check_operation_identity(
     Ok(())
 }
 
-fn check_operation(operation: &Operation, receipt: &Receipt, expected: &str) -> Result<()> {
+fn check_operation(
+    operation: &Operation,
+    receipt: &Receipt,
+    expected: OperationKind,
+) -> Result<()> {
     check_operation_identity(operation, receipt, expected)?;
     if let Some(details) = &operation.error {
         return Err(Error::Operation {
             details: details.clone(),
         });
     }
+    operation.status?;
     Ok(())
 }
 
-fn wait(cloud: &mut impl Cloud, id: &str, receipt: &Receipt, expected: &str) -> Result<()> {
+fn wait(
+    cloud: &mut impl Cloud,
+    id: &SqlOperationId,
+    receipt: &Receipt,
+    expected: OperationKind,
+) -> Result<()> {
     wait_bounded(cloud, id, receipt, expected, WAIT_LIMIT)
 }
 
 fn wait_bounded(
     cloud: &mut impl Cloud,
-    id: &str,
+    id: &SqlOperationId,
     receipt: &Receipt,
-    expected: &str,
+    expected: OperationKind,
     limit: Duration,
 ) -> Result<()> {
     let started = Instant::now();
     loop {
         let operation = cloud.operation(id)?;
         check_operation(&operation, receipt, expected)?;
-        if operation.name != id {
+        if &operation.name != id {
             return Err(refuse("operation ID changed"));
         }
-        match operation.status.as_str() {
-            "DONE" => return Ok(()),
-            "PENDING" | "RUNNING" => {}
-            _ => return Err(refuse("unknown operation status")),
+        match operation.status? {
+            OperationStatus::Done => return Ok(()),
+            OperationStatus::Pending | OperationStatus::Running => {}
         }
         if started.elapsed() >= limit {
             return Err(Error::Timeout);
@@ -530,8 +518,8 @@ fn cleanup(cloud: &mut impl Cloud, store: &mut impl receipt::Persistence) -> Res
     }
     let target = cloud.instance(&receipt.target)?;
     validate_target(&target, &receipt, true)?;
-    let (operation_id, kind) = if let Some(id) = receipt.restore_operation.as_deref() {
-        (id, "RESTORE_VOLUME")
+    let (operation_id, kind) = if let Some(id) = receipt.restore_operation.as_ref() {
+        (id, OperationKind::RestoreVolume)
     } else if receipt.phase == Phase::RestoreRequested {
         return Err(refuse(
             "restore submission outcome unknown; inspect cloud operations before cleanup",
@@ -540,9 +528,9 @@ fn cleanup(cloud: &mut impl Cloud, store: &mut impl receipt::Persistence) -> Res
         (
             receipt
                 .create_operation
-                .as_deref()
+                .as_ref()
                 .ok_or_else(|| refuse("missing create operation"))?,
-            "CREATE",
+            OperationKind::Create,
         )
     };
     let prior_operation = cloud.operation(operation_id)?;
@@ -550,21 +538,21 @@ fn cleanup(cloud: &mut impl Cloud, store: &mut impl receipt::Persistence) -> Res
     let mut identity_only = prior_operation.clone();
     identity_only.error = None;
     check_operation(&identity_only, &receipt, kind)?;
-    if prior_operation.name != operation_id || prior_operation.status != "DONE" {
+    if &prior_operation.name != operation_id || prior_operation.status? != OperationStatus::Done {
         return Err(refuse("target operation is not terminal; cleanup refused"));
     }
     receipt.cleanup = Cleanup::DeleteRequested;
     store.save(&receipt)?;
     let operation = cloud.delete(&receipt.target)?;
-    check_operation_identity(&operation, &receipt, "DELETE")?;
+    check_operation_identity(&operation, &receipt, OperationKind::Delete)?;
     receipt.delete_operation = Some(operation.name.clone());
-    let checked = check_operation(&operation, &receipt, "DELETE");
+    let checked = check_operation(&operation, &receipt, OperationKind::Delete);
     save_settled(store, &receipt, checked)?;
-    wait(cloud, &operation.name, &receipt, "DELETE")?;
+    wait(cloud, &operation.name, &receipt, OperationKind::Delete)?;
     if cloud
         .instances()?
         .iter()
-        .any(|instance| instance.name == receipt.target)
+        .any(|instance| instance.name == receipt.target.as_str())
     {
         return Err(refuse("delete completed but target still present"));
     }

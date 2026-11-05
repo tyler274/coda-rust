@@ -1,4 +1,4 @@
-use super::{PROJECT, Product, Request, Result, cloud::Backup, refuse};
+use super::{PROJECT, Product, RestoreTarget, Result, SqlOperationId, cloud::Backup, refuse};
 use serde::{Deserialize, Serialize};
 use std::{
     fs::{File, OpenOptions},
@@ -32,7 +32,7 @@ pub(super) struct Receipt {
     pub project: String,
     pub product: Product,
     pub source: String,
-    pub target: String,
+    pub target: RestoreTarget,
     pub region: String,
     pub run_id: String,
     pub backup: Backup,
@@ -40,14 +40,14 @@ pub(super) struct Receipt {
     pub storage_size_gb: u64,
     pub preflight_at_unix_seconds: u64,
     pub phase: Phase,
-    pub create_operation: Option<String>,
+    pub create_operation: Option<SqlOperationId>,
     pub target_created_at: Option<String>,
-    pub restore_operation: Option<String>,
+    pub restore_operation: Option<SqlOperationId>,
     pub restore_started_at: Option<u64>,
     pub restore_elapsed_seconds: Option<u64>,
     pub recovery_age_seconds: u64,
     pub cleanup: Cleanup,
-    pub delete_operation: Option<String>,
+    pub delete_operation: Option<SqlOperationId>,
     pub failure: Option<FailureCode>,
     pub qualification: Qualification,
     pub pending_validation: Vec<String>,
@@ -75,7 +75,7 @@ pub(super) enum Qualification {
 impl Receipt {
     pub fn new(
         product: Product,
-        target: String,
+        target: RestoreTarget,
         backup: Backup,
         region: String,
         storage_size_gb: u64,
@@ -127,6 +127,7 @@ impl Receipt {
         if self.schema_version != 2
             || self.project != PROJECT
             || self.source != self.product.source()
+            || self.target.product() != self.product
             || self.backup.instance != self.source
             || self.backup.status != "SUCCESSFUL"
             || !super::STORAGE_GB.contains(&self.storage_size_gb)
@@ -140,25 +141,7 @@ impl Receipt {
         {
             return Err(refuse("receipt identity is not a staging restore drill"));
         }
-        Request {
-            product: self.product,
-            backup: self.backup.id.clone(),
-            target: self.target.clone(),
-        }
-        .validate()?;
         self.backup_epoch()?;
-        for operation in [
-            &self.create_operation,
-            &self.restore_operation,
-            &self.delete_operation,
-        ]
-        .into_iter()
-        .flatten()
-        {
-            if !super::valid_operation_id(operation) {
-                return Err(refuse("invalid persisted operation ID"));
-            }
-        }
         if let Some(created) = &self.target_created_at {
             chrono::DateTime::parse_from_rfc3339(created)?;
         }

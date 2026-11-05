@@ -18,18 +18,19 @@ fn instance(name: &str) -> Instance {
     }))
     .unwrap()
 }
-fn operation(target: &str, kind: &str) -> Operation {
+fn operation(target: &RestoreTarget, kind: OperationKind) -> Operation {
     Operation {
-        name: match kind {
-            "CREATE" => "11111111-1111-1111-1111-111111111111",
-            "RESTORE_VOLUME" => "22222222-2222-2222-2222-222222222222",
-            _ => "33333333-3333-3333-3333-333333333333",
-        }
-        .into(),
-        target_id: target.into(),
+        name: String::from(match kind {
+            OperationKind::Create => "11111111-1111-1111-1111-111111111111",
+            OperationKind::RestoreVolume => "22222222-2222-2222-2222-222222222222",
+            OperationKind::Delete => "33333333-3333-3333-3333-333333333333",
+        })
+        .try_into()
+        .unwrap(),
+        target_id: target.as_str().into(),
         target_project: PROJECT.into(),
-        operation_type: kind.into(),
-        status: "DONE".into(),
+        operation_type: kind,
+        status: Ok(OperationStatus::Done),
         error: None,
     }
 }
@@ -38,6 +39,8 @@ struct FakeCloud {
     backup: Backup,
     writes: Vec<String>,
     operation: Option<Operation>,
+    mutation_response: Option<(OperationKind, serde_json::Value)>,
+    polls: usize,
     bad_operation: bool,
     restore_failure: bool,
     command_failure: bool,
@@ -50,13 +53,15 @@ impl FakeCloud {
         Self {
             instances: vec![instance(&product.source())],
             backup: Backup {
-                id: "1234".into(),
+                id: String::from("1234").try_into().unwrap(),
                 instance: product.source(),
                 status: "SUCCESSFUL".into(),
                 end_time: "2026-01-01T00:00:00Z".into(),
             },
             writes: vec![],
             operation: None,
+            mutation_response: None,
+            polls: 0,
             bad_operation: false,
             restore_failure: false,
             command_failure: false,
@@ -64,6 +69,15 @@ impl FakeCloud {
             reads: 0,
             race: false,
         }
+    }
+    fn mutation_result(&self, operation: Operation) -> Result<Operation> {
+        if let Some((kind, response)) = &self.mutation_response
+            && *kind == operation.operation_type
+        {
+            let raw: cloud::RawOperation = serde_json::from_value(response.clone())?;
+            return raw.try_into();
+        }
+        Ok(operation)
     }
 }
 impl Cloud for FakeCloud {
@@ -75,14 +89,14 @@ impl Cloud for FakeCloud {
         }
         Ok(self.instances.clone())
     }
-    fn instance(&mut self, target: &str) -> Result<Instance> {
+    fn instance(&mut self, target: &RestoreTarget) -> Result<Instance> {
         self.instances
             .iter()
-            .find(|i| i.name == target)
+            .find(|i| i.name == target.as_str())
             .cloned()
             .ok_or_else(|| refuse("missing instance"))
     }
-    fn backup(&mut self, _: &str, _: &str) -> Result<Backup> {
+    fn backup(&mut self, _: Product, _: &BackupId) -> Result<Backup> {
         Ok(self.backup.clone())
     }
     fn create(&mut self, receipt: &Receipt) -> Result<Operation> {
@@ -93,7 +107,7 @@ impl Cloud for FakeCloud {
                 stderr: "SECRET-cloud-stderr".into(),
             });
         }
-        let mut target = instance(&receipt.target);
+        let mut target = instance(receipt.target.as_str());
         target.settings.user_labels = [
             ("coda-purpose".into(), "restore-drill".into()),
             ("coda-product".into(), receipt.product.name().into()),
@@ -101,36 +115,47 @@ impl Cloud for FakeCloud {
         ]
         .into();
         self.instances.push(target);
-        let mut op = operation(&receipt.target, "CREATE");
+        let mut op = operation(&receipt.target, OperationKind::Create);
         if self.malicious_operation {
-            op.name = "SECRET-operation?token=private".into();
+            return cloud::RawOperation {
+                name: "SECRET-operation?token=private".into(),
+                target_id: receipt.target.as_str().into(),
+                target_project: PROJECT.into(),
+                operation_type: "CREATE".into(),
+                status: "DONE".into(),
+                error: None,
+            }
+            .try_into();
         }
         if self.bad_operation {
             op.target_id = receipt.source.clone();
         }
         self.operation = Some(op.clone());
-        Ok(op)
+        self.mutation_result(op)
     }
     fn restore(&mut self, receipt: &Receipt) -> Result<Operation> {
         self.writes.push("restore".into());
-        let mut op = operation(&receipt.target, "RESTORE_VOLUME");
+        let mut op = operation(&receipt.target, OperationKind::RestoreVolume);
         if self.restore_failure {
             op.error = Some(
                 serde_json::json!({"errors":[{"code":"SECRET-provider-code", "message":"SECRET-operation-detail"}]}),
             );
         }
         self.operation = Some(op.clone());
-        Ok(op)
+        self.mutation_result(op)
     }
-    fn operation(&mut self, _: &str) -> Result<Operation> {
-        Ok(self.operation.clone().unwrap())
+    fn operation(&mut self, id: &SqlOperationId) -> Result<Operation> {
+        self.polls += 1;
+        let operation = self.operation.clone().unwrap();
+        assert_eq!(&operation.name, id);
+        Ok(operation)
     }
-    fn delete(&mut self, target: &str) -> Result<Operation> {
+    fn delete(&mut self, target: &RestoreTarget) -> Result<Operation> {
         self.writes.push("delete".into());
-        self.instances.retain(|i| i.name != target);
-        let op = operation(target, "DELETE");
+        self.instances.retain(|i| i.name != target.as_str());
+        let op = operation(target, OperationKind::Delete);
         self.operation = Some(op.clone());
-        Ok(op)
+        self.mutation_result(op)
     }
     fn pause(&mut self, _: Duration) {
         panic!("fake completed operations should not wait");
@@ -239,7 +264,7 @@ fn source_backup_and_private_configuration_are_validated() {
             2 => cloud.backup.instance = "rust-physician".into(),
             3 => cloud.backup.status = "FAILED".into(),
             4 => cloud.backup.end_time = "9999-01-01T00:00:00Z".into(),
-            5 => cloud.backup.id = "9999".into(),
+            5 => cloud.backup.id = String::from("9999").try_into().unwrap(),
             _ => {
                 cloud.instances[0].settings.ip_configuration.private_network =
                     "other-network".into()
@@ -284,6 +309,200 @@ fn race_and_wrong_operation_fail_closed() {
     );
     assert_eq!(cloud.writes, ["create"]);
 }
+fn unknown_status_response(kind: OperationKind) -> serde_json::Value {
+    let (id, kind) = match kind {
+        OperationKind::Create => ("11111111-1111-1111-1111-111111111111", "CREATE"),
+        OperationKind::RestoreVolume => ("22222222-2222-2222-2222-222222222222", "RESTORE_VOLUME"),
+        OperationKind::Delete => ("33333333-3333-3333-3333-333333333333", "DELETE"),
+    };
+    serde_json::json!({
+        "name": id, "targetId": request(Product::Duet).target,
+        "targetProject": PROJECT, "operationType": kind, "status": "UNKNOWN"
+    })
+}
+
+#[test]
+fn unknown_mutation_status_retains_identity_without_further_mutation() {
+    for kind in [
+        OperationKind::RestoreVolume,
+        OperationKind::Create,
+        OperationKind::Delete,
+    ] {
+        let mut cloud = FakeCloud::new(Product::Duet);
+        let mut store = Memory::default();
+        cloud.mutation_response = Some((kind, unknown_status_response(kind)));
+        let error = if kind == OperationKind::Delete {
+            restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap();
+            cleanup(&mut cloud, &mut store).unwrap_err()
+        } else {
+            restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap_err()
+        };
+        assert_eq!(
+            error.receipt_code(),
+            receipt::FailureCode::ValidationRefused
+        );
+        let receipt = store.snapshots.last().unwrap();
+        let (id, writes, polls) = match kind {
+            OperationKind::Create => {
+                assert_eq!(receipt.phase, Phase::CreateRequested);
+                (&receipt.create_operation, vec!["create"], 0)
+            }
+            OperationKind::RestoreVolume => {
+                assert_eq!(receipt.phase, Phase::RestoreRequested);
+                assert_eq!(
+                    receipt.failure,
+                    Some(receipt::FailureCode::ValidationRefused)
+                );
+                assert!(receipt.restore_elapsed_seconds.is_none());
+                (&receipt.restore_operation, vec!["create", "restore"], 1)
+            }
+            OperationKind::Delete => {
+                assert_eq!(receipt.cleanup, Cleanup::DeleteRequested);
+                (
+                    &receipt.delete_operation,
+                    vec!["create", "restore", "delete"],
+                    3,
+                )
+            }
+        };
+        assert_eq!(id.as_ref(), Some(&cloud.operation.as_ref().unwrap().name));
+        assert_eq!(cloud.writes, writes);
+        assert_eq!(
+            cloud.polls, polls,
+            "unknown submission status must stop before polling"
+        );
+        if kind == OperationKind::RestoreVolume {
+            cloud.operation.as_mut().unwrap().status = Err(types::UnknownOperationStatus);
+            assert!(matches!(
+                cleanup(&mut cloud, &mut store),
+                Err(Error::UnknownOperationStatus(_))
+            ));
+            assert_eq!(cloud.writes, ["create", "restore"]);
+            // The same validated operation is now DONE; explicit cleanup can recover.
+            cloud.operation.as_mut().unwrap().status = Ok(OperationStatus::Done);
+            cleanup(&mut cloud, &mut store).unwrap();
+            assert_eq!(cloud.writes, ["create", "restore", "delete"]);
+            assert_eq!(store.snapshots.last().unwrap().cleanup, Cleanup::Deleted);
+        }
+    }
+}
+
+#[test]
+fn unknown_status_preserves_provider_error_and_identity() {
+    for kind in [
+        OperationKind::Create,
+        OperationKind::RestoreVolume,
+        OperationKind::Delete,
+    ] {
+        for fail_save in [false, true] {
+            let mut cloud = FakeCloud::new(Product::Duet);
+            let mut store = Memory::default();
+            if kind == OperationKind::Delete {
+                restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap();
+            }
+            if fail_save && kind == OperationKind::Delete {
+                store.fail_at = Some(store.snapshots.len() + 1);
+            } else {
+                store.fail_recording_failure = fail_save;
+            }
+            let details = serde_json::json!({"errors": [{
+                "code": "SYNTHETIC_PROVIDER_ERROR", "message": "synthetic operation failure"
+            }]});
+            let mut response = unknown_status_response(kind);
+            response["error"] = details.clone();
+            cloud.mutation_response = Some((kind, response));
+            let error = if kind == OperationKind::Delete {
+                cleanup(&mut cloud, &mut store).unwrap_err()
+            } else {
+                restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap_err()
+            };
+            let primary = if fail_save {
+                let Error::Unrecorded {
+                    primary,
+                    persistence,
+                } = &error
+                else {
+                    panic!("expected primary and persistence errors: {error:?}");
+                };
+                assert!(matches!(**persistence, Error::Unsafe(_)));
+                primary.as_ref()
+            } else {
+                let receipt = store.snapshots.last().unwrap();
+                let id = match kind {
+                    OperationKind::Create => &receipt.create_operation,
+                    OperationKind::RestoreVolume => &receipt.restore_operation,
+                    OperationKind::Delete => &receipt.delete_operation,
+                };
+                assert_eq!(id.as_ref(), Some(&cloud.operation.as_ref().unwrap().name));
+                if kind != OperationKind::Delete {
+                    assert_eq!(receipt.failure, Some(receipt::FailureCode::CloudOperation));
+                }
+                &error
+            };
+            assert!(
+                matches!(primary, Error::Operation { details: actual } if actual == &details),
+                "provider error must take precedence over unknown status: {primary:?}"
+            );
+            let (writes, polls) = match kind {
+                OperationKind::Create => (vec!["create"], 0),
+                OperationKind::RestoreVolume => (vec!["create", "restore"], 1),
+                OperationKind::Delete => (vec!["create", "restore", "delete"], 3),
+            };
+            assert_eq!(cloud.writes, writes);
+            assert_eq!(cloud.polls, polls);
+        }
+    }
+}
+
+#[test]
+fn unknown_mutation_status_does_not_persist_malformed_or_mismatched_identity() {
+    for kind in [
+        OperationKind::RestoreVolume,
+        OperationKind::Create,
+        OperationKind::Delete,
+    ] {
+        for (field, invalid) in [
+            ("name", "malformed"),
+            ("targetId", "rust-duet"),
+            ("targetProject", "production"),
+            ("operationType", "UPDATE"),
+            (
+                "operationType",
+                if kind == OperationKind::Create {
+                    "DELETE"
+                } else {
+                    "CREATE"
+                },
+            ),
+        ] {
+            let mut cloud = FakeCloud::new(Product::Duet);
+            let mut store = Memory::default();
+            let mut response = unknown_status_response(kind);
+            response[field] = invalid.into();
+            cloud.mutation_response = Some((kind, response));
+            if kind == OperationKind::Delete {
+                restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap();
+                assert!(cleanup(&mut cloud, &mut store).is_err());
+            } else {
+                assert!(restore(&mut cloud, &mut store, request(Product::Duet), true).is_err());
+            }
+            let receipt = store.snapshots.last().unwrap();
+            let (id, expected_writes) = match kind {
+                OperationKind::Create => (&receipt.create_operation, vec!["create"]),
+                OperationKind::RestoreVolume => {
+                    (&receipt.restore_operation, vec!["create", "restore"])
+                }
+                OperationKind::Delete => (
+                    &receipt.delete_operation,
+                    vec!["create", "restore", "delete"],
+                ),
+            };
+            assert!(id.is_none(), "{kind:?}: persisted invalid {field}");
+            assert_eq!(cloud.writes, expected_writes);
+        }
+    }
+}
+
 #[test]
 fn restore_error_keeps_cleanup_required_and_never_reports_completion() {
     let mut cloud = FakeCloud::new(Product::Duet);
@@ -380,7 +599,11 @@ fn cleanup_refuses_replaced_public_or_mislabeled_target() {
                     "ALLOW_UNENCRYPTED_AND_ENCRYPTED".into()
             }
             4 => cloud.instances[1].settings.storage_auto_resize_limit = "0".into(),
-            _ => store.snapshots.last_mut().unwrap().target = "rust-duet".into(),
+            _ => {
+                store.snapshots.last_mut().unwrap().target =
+                    RestoreTarget::new(Product::Physician, "rust-restore-physician-test".into())
+                        .unwrap()
+            }
         }
         assert!(cleanup(&mut cloud, &mut store).is_err());
         assert_eq!(cloud.writes, ["create", "restore"]);
@@ -544,14 +767,165 @@ fn installed_sdk_accepts_creation_flags() {
 fn pending_operation_has_bounded_wait() {
     let mut cloud = FakeCloud::new(Product::Duet);
     let receipt = preflight(&mut cloud, &request(Product::Duet)).unwrap();
-    let mut op = operation(&receipt.target, "CREATE");
-    op.status = "RUNNING".into();
+    let mut op = operation(&receipt.target, OperationKind::Create);
+    op.status = Ok(OperationStatus::Running);
     cloud.operation = Some(op.clone());
     assert!(matches!(
-        wait_bounded(&mut cloud, &op.name, &receipt, "CREATE", Duration::ZERO),
+        wait_bounded(
+            &mut cloud,
+            &op.name,
+            &receipt,
+            OperationKind::Create,
+            Duration::ZERO
+        ),
         Err(Error::Timeout)
     ));
 }
+#[test]
+fn validated_ids_preserve_string_identity_and_reject_invalid_input() {
+    for id in ["", "-1", "1.0", "１２", "12/34", "123\n"] {
+        assert!(BackupId::try_from(id.to_owned()).is_err());
+        assert!(serde_json::from_value::<BackupId>(serde_json::json!(id)).is_err());
+    }
+    let backup: BackupId = serde_json::from_value(serde_json::json!("0001234")).unwrap();
+    assert_eq!(backup.as_str(), "0001234");
+    assert_eq!(serde_json::to_value(backup).unwrap(), "0001234");
+    assert!(serde_json::from_value::<BackupId>(serde_json::json!(1234)).is_err());
+
+    let id = "ABCDEF01-2345-6789-ABCD-EF0123456789";
+    let operation: SqlOperationId = serde_json::from_value(serde_json::json!(id)).unwrap();
+    assert_eq!(operation.as_str(), id);
+    assert_eq!(serde_json::to_value(operation).unwrap(), id);
+    for id in [
+        "",
+        "abcdef0123456789abcdef0123456789",
+        "ABCDEF01_2345-6789-ABCD-EF0123456789",
+        "GBCDEF01-2345-6789-ABCD-EF0123456789",
+    ] {
+        assert!(SqlOperationId::try_from(id.to_owned()).is_err());
+        assert!(serde_json::from_value::<SqlOperationId>(serde_json::json!(id)).is_err());
+    }
+}
+
+#[test]
+fn selected_operations_reject_unknown_types_statuses_and_invalid_ids() {
+    let value = serde_json::json!({
+        "name": "11111111-1111-1111-1111-111111111111",
+        "targetId": "rust-restore-duet-test", "targetProject": PROJECT,
+        "operationType": "CREATE", "status": "DONE"
+    });
+    for (kind, expected_kind) in [
+        ("CREATE", OperationKind::Create),
+        ("RESTORE_VOLUME", OperationKind::RestoreVolume),
+        ("DELETE", OperationKind::Delete),
+    ] {
+        for (status, expected_status) in [
+            ("PENDING", OperationStatus::Pending),
+            ("RUNNING", OperationStatus::Running),
+            ("DONE", OperationStatus::Done),
+        ] {
+            let mut value = value.clone();
+            value["operationType"] = kind.into();
+            value["status"] = status.into();
+            let raw: cloud::RawOperation = serde_json::from_value(value).unwrap();
+            let selected = Operation::try_from(raw).unwrap();
+            assert_eq!(selected.operation_type, expected_kind);
+            assert_eq!(selected.status, Ok(expected_status));
+        }
+    }
+    for (field, invalid) in [
+        ("operationType", "UPDATE"),
+        ("operationType", "create"),
+        ("status", "UNKNOWN"),
+        ("status", "done"),
+        ("name", "invalid"),
+    ] {
+        let mut value = value.clone();
+        value[field] = invalid.into();
+        let raw: cloud::RawOperation = serde_json::from_value(value).unwrap();
+        let selected = Operation::try_from(raw);
+        if field == "status" {
+            assert!(selected.unwrap().status.is_err());
+        } else {
+            assert!(selected.is_err());
+        }
+    }
+}
+
+#[test]
+fn receipt_v2_round_trip_preserves_strings_and_timestamp_lexemes() {
+    let mut receipt =
+        preflight(&mut FakeCloud::new(Product::Duet), &request(Product::Duet)).unwrap();
+    receipt.backup.id = String::from("0001234").try_into().unwrap();
+    receipt.backup.end_time = "2026-01-01T01:00:00.000+01:00".into();
+    receipt.target_created_at = Some("2026-01-02T03:04:05.000+00:00".into());
+    let id: SqlOperationId = String::from("ABCDEF01-2345-6789-ABCD-EF0123456789")
+        .try_into()
+        .unwrap();
+    receipt.create_operation = Some(id.clone());
+    receipt.restore_operation = Some(id.clone());
+    receipt.delete_operation = Some(id);
+    let value = serde_json::to_value(&receipt).unwrap();
+    assert_eq!(value["schema_version"], 2);
+    assert_eq!(value["target"], "rust-restore-duet-test");
+    assert_eq!(value["backup"]["id"], "0001234");
+    for field in ["create_operation", "restore_operation", "delete_operation"] {
+        assert_eq!(value[field], "ABCDEF01-2345-6789-ABCD-EF0123456789");
+        let mut invalid = value.clone();
+        invalid[field] = "invalid".into();
+        assert!(serde_json::from_value::<Receipt>(invalid).is_err());
+    }
+    let loaded: Receipt = serde_json::from_value(value.clone()).unwrap();
+    loaded.validate().unwrap();
+    assert_eq!(serde_json::to_value(loaded).unwrap(), value);
+    for target in [
+        "rust-duet",
+        "rust-restore-duet-",
+        "rust-restore-duet-upperA",
+        "rust-restore-duet-test-",
+    ] {
+        let mut invalid = value.clone();
+        invalid["target"] = target.into();
+        assert!(serde_json::from_value::<Receipt>(invalid).is_err());
+    }
+    let mut wrong_product = value;
+    wrong_product["target"] = "rust-restore-physician-test".into();
+    assert!(
+        serde_json::from_value::<Receipt>(wrong_product)
+            .unwrap()
+            .validate()
+            .is_err()
+    );
+}
+
+#[test]
+fn cleanup_retains_lexical_creation_identity_check() {
+    let mut cloud = FakeCloud::new(Product::Duet);
+    let mut store = Memory::default();
+    restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap();
+    // Equal instants are not equal provider identity strings.
+    cloud.instances[1].create_time = "2026-01-02T03:04:05+00:00".into();
+    assert!(cleanup(&mut cloud, &mut store).is_err());
+    assert_eq!(cloud.writes, ["create", "restore"]);
+}
+
+#[test]
+fn target_types_do_not_restrict_unrelated_instance_listing() {
+    let mut cloud = FakeCloud::new(Product::Duet);
+    let mut unrelated = instance("unrelated-db");
+    unrelated.state = "FUTURE_PROVIDER_STATE".into();
+    unrelated.instance_type = "FUTURE_PROVIDER_TYPE".into();
+    cloud.instances.push(unrelated);
+    preflight(&mut cloud, &request(Product::Duet)).unwrap();
+    let max = format!(
+        "rust-restore-duet-{}",
+        "a".repeat(63 - "rust-restore-duet-".len())
+    );
+    assert!(RestoreTarget::new(Product::Duet, max.clone()).is_ok());
+    assert!(RestoreTarget::new(Product::Duet, format!("{max}a")).is_err());
+    assert!(RestoreTarget::new(Product::Physician, max).is_err());
+}
+
 #[test]
 fn cli_rejects_unknown_duplicate_and_partial_authorization() {
     for args in [

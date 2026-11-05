@@ -38,30 +38,15 @@ enum Phase {
     DuetRollout,
     WorkerRollout,
 }
-fn migration_phase(app: &str, step: u8) -> Phase {
-    match (app, step) {
-        ("physician", 0) => Phase::PhysicianMigrationUpdate,
-        ("physician", 1) => Phase::PhysicianMigrationExecute,
-        ("physician", _) => Phase::PhysicianMigrationWait,
-        (_, 0) => Phase::DuetMigrationUpdate,
-        (_, 1) => Phase::DuetMigrationExecute,
-        _ => Phase::DuetMigrationWait,
-    }
-}
+mod domain;
+use domain::*;
 
 /// Polls after an async service update: 120 x 5 s covers image pull plus the
 /// 120 s startup probe budget, and the shared `Gcloud` deadline still applies.
 const ROLLOUT_POLLS: usize = 120;
 const PROJECT: &str = "coda-rust-staging";
 const REGION: &str = "us-east1";
-const SERVICES: [&str; 3] = ["physician", "duet", "physician-worker"];
-const IMAGES: [(&str, &str); 5] = [
-    ("physician-runtime", "coda-physician-sample"),
-    ("physician-worker", "coda-physician-worker"),
-    ("physician-migration", "coda-physician-migrate"),
-    ("duet-runtime", "coda-duet-api"),
-    ("duet-migration", "coda-duet-migrate"),
-];
+const SERVICES: [ReleaseService; 3] = ReleaseService::ALL;
 
 type Result<T> = std::result::Result<T, Error>;
 #[derive(Debug, thiserror::Error)]
@@ -73,10 +58,10 @@ enum Error {
     #[error("invalid structured release data")]
     Json(#[from] serde_json::Error),
     #[error("staging operation failed: {0}")]
-    Cloud(&'static str),
+    Cloud(LocalCode),
     #[error("cloud command failed ({code})")]
     Command {
-        code: &'static str,
+        code: LocalCode,
         #[source]
         source: Arc<CommandFailure>,
     },
@@ -104,20 +89,20 @@ struct CommandFailure {
     stderr: Vec<u8>,
 }
 impl Error {
-    fn safe_code(&self) -> &'static str {
+    fn safe_code(&self) -> LocalCode {
         match self {
-            Self::Command { code, .. } | Self::Cloud(code) => code,
-            Self::Input(_) => "invalid-input",
-            Self::Io(_) => "io-failed",
-            Self::Json(_) => "json-invalid",
-            Self::Observations(_) => "observations-failed",
+            Self::Command { code, .. } | Self::Cloud(code) => *code,
+            Self::Input(_) => LocalCode::InvalidInput,
+            Self::Io(_) => LocalCode::IoFailed,
+            Self::Json(_) => LocalCode::JsonInvalid,
+            Self::Observations(_) => LocalCode::ObservationsFailed,
             Self::Related { primary, .. } | Self::Unrecorded { primary, .. } => primary.safe_code(),
         }
     }
     /// Allowlisted provider status of the primary cloud command failure, if any.
-    fn api_status(&self) -> Option<&'static str> {
+    fn api_status(&self) -> Option<ApiStatus> {
         match self {
-            Self::Command { source, .. } => crate::failure::api_status(&source.stderr),
+            Self::Command { source, .. } => ApiStatus::from_stderr(&source.stderr),
             Self::Observations(inner) => inner.api_status(),
             Self::Related { primary, causes } => primary
                 .api_status()
@@ -130,16 +115,16 @@ impl Error {
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 struct Traffic {
-    revision: String,
+    revision: RevisionId,
     percent: u64,
     latest: bool,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
 struct Service {
-    created_revision: String,
-    ready_revision: String,
-    image: String,
-    ready_image: String,
+    created_revision: RevisionId,
+    ready_revision: RevisionId,
+    image: ObservedImageRef,
+    ready_image: ObservedImageRef,
     traffic: Vec<Traffic>,
 }
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -157,14 +142,14 @@ struct ServiceRecord {
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 struct Migration {
-    execution_id: Option<String>,
-    executions_before: BTreeSet<String>,
+    execution_id: Option<ExecutionId>,
+    executions_before: BTreeSet<ExecutionId>,
     outcome: Outcome,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 struct Diagnostic {
     phase: Phase,
-    code: String,
+    code: DiagnosticCode,
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
 struct Receipt {
@@ -176,9 +161,9 @@ struct Receipt {
     run_id: String,
     run_attempt: String,
     tested_artifact_id: String,
-    images: BTreeMap<String, Option<String>>,
-    services: BTreeMap<String, ServiceRecord>,
-    migrations: BTreeMap<String, Migration>,
+    images: Images,
+    services: Services,
+    migrations: Migrations,
     phase: Phase,
     outcome: Outcome,
     diagnostics: Vec<Diagnostic>,
@@ -208,13 +193,13 @@ impl Store for DiskStore {
 }
 
 trait Cloud {
-    fn service(&mut self, name: &str) -> Result<Observation>;
-    fn update_job(&mut self, name: &str, image: &str) -> Result<()>;
-    fn job_image(&mut self, name: &str) -> Result<String>;
-    fn executions(&mut self, name: &str) -> Result<BTreeSet<String>>;
-    fn execute(&mut self, name: &str) -> Result<String>;
-    fn execution(&mut self, id: &str, image: &str) -> Result<Execution>;
-    fn update_service(&mut self, name: &str, image: &str) -> Result<()>;
+    fn service(&mut self, service: ReleaseService) -> Result<Observation>;
+    fn update_job(&mut self, product: Product, images: &Images) -> Result<()>;
+    fn job_image(&mut self, product: Product) -> Result<ObservedImageRef>;
+    fn executions(&mut self, product: Product) -> Result<BTreeSet<ExecutionId>>;
+    fn execute(&mut self, product: Product) -> Result<ExecutionId>;
+    fn execution(&mut self, id: &ExecutionId, image: &PublishedImage) -> Result<Execution>;
+    fn update_service(&mut self, service: ReleaseService, images: &Images) -> Result<()>;
     fn pause(&mut self);
 }
 #[derive(Debug, PartialEq, Eq)]
@@ -228,20 +213,23 @@ fn checkpoint(receipt: &mut Receipt, store: &mut impl Store, phase: Phase) -> Re
     receipt.phase = phase.to_owned();
     store.save(receipt)
 }
-fn diagnostic(receipt: &mut Receipt, code: &str) {
+fn diagnostic(receipt: &mut Receipt, code: DiagnosticCode) {
     receipt.diagnostics.push(Diagnostic {
         phase: receipt.phase,
-        code: code.to_owned(),
+        code,
     });
 }
+fn local_diagnostic(receipt: &mut Receipt, code: LocalCode) {
+    diagnostic(receipt, DiagnosticCode::Local(code));
+}
 fn retain_cause(receipt: &mut Receipt, error: Error) {
-    diagnostic(receipt, error.safe_code());
+    local_diagnostic(receipt, error.safe_code());
     if let Some(status) = error.api_status() {
-        diagnostic(receipt, status);
+        diagnostic(receipt, DiagnosticCode::Api(status));
     }
     receipt.causes.push(Arc::new(error));
 }
-fn observe(receipt: &mut Receipt, cloud: &mut impl Cloud, name: &str) -> Observation {
+fn observe(receipt: &mut Receipt, cloud: &mut impl Cloud, name: ReleaseService) -> Observation {
     match cloud.service(name) {
         Ok(state) => state,
         Err(error) => {
@@ -261,7 +249,7 @@ fn snapshot(receipt: &mut Receipt, cloud: &mut impl Cloud, before: bool) -> bool
     for name in SERVICES {
         let observation = observe(receipt, cloud, name);
         complete &= observation != Observation::Unknown;
-        let record = receipt.services.get_mut(name).expect("validated services");
+        let record = receipt.services.get_mut(name);
         if before {
             record.before = observation.clone();
         }
@@ -271,17 +259,16 @@ fn snapshot(receipt: &mut Receipt, cloud: &mut impl Cloud, before: bool) -> bool
 }
 /// Whether a known service still specifies an image other than the target.
 /// An accepted update records the new spec image at once.
-fn spec_not_updated(service: &Observation, image: &str) -> bool {
-    matches!(service, Observation::Known(service) if service.image != image)
+fn spec_not_updated(service: &Observation, image: &PublishedImage) -> bool {
+    matches!(service, Observation::Known(service) if !service.image.matches(image))
 }
-fn serving(service: &Observation, image: &str) -> bool {
+fn serving(service: &Observation, image: &PublishedImage) -> bool {
     let Observation::Known(service) = service else {
         return false;
     };
-    !service.ready_revision.is_empty()
-        && service.ready_revision == service.created_revision
-        && service.image == image
-        && service.ready_image == image
+    service.ready_revision == service.created_revision
+        && service.image.matches(image)
+        && service.ready_image.matches(image)
         && service
             .traffic
             .iter()
@@ -301,86 +288,79 @@ fn migrate(
     receipt: &mut Receipt,
     store: &mut impl Store,
     cloud: &mut impl Cloud,
-    app: &str,
+    app: Product,
 ) -> Result<()> {
-    let job = format!("{app}-migrate");
-    let key = format!("{app}-migration");
-    let image = receipt.images[&key]
-        .clone()
+    let image = receipt
+        .images
+        .get(app.migration_image())
+        .cloned()
         .ok_or(Error::Input("missing migration digest"))?;
-    checkpoint(receipt, store, migration_phase(app, 0))?;
-    if let Err(error) = cloud.update_job(&job, &image) {
+    checkpoint(receipt, store, app.phase(MigrationStep::Update))?;
+    if let Err(error) = cloud.update_job(app, &receipt.images) {
         retain_cause(receipt, error);
-        if cloud.job_image(&job)? != image {
-            return Err(Error::Cloud("migration-update-not-confirmed"));
+        if !cloud.job_image(app)?.matches(&image) {
+            return Err(Error::Cloud(LocalCode::MigrationUpdateNotConfirmed));
         }
-        diagnostic(receipt, "job-update-response-reconciled");
+        local_diagnostic(receipt, LocalCode::JobUpdateResponseReconciled);
         store.save(receipt)?;
     }
-    let previous = cloud.executions(&job)?;
-    let migration = receipt.migrations.get_mut(app).expect("migration");
+    let previous = cloud.executions(app)?;
+    let migration = receipt.migrations.get_mut(app);
     migration.outcome = Outcome::Unknown;
     migration.executions_before = previous.clone();
-    checkpoint(receipt, store, migration_phase(app, 1))?;
-    let execution = match cloud.execute(&job) {
+    checkpoint(receipt, store, app.phase(MigrationStep::Execute))?;
+    let execution = match cloud.execute(app) {
         Ok(id) => id,
         Err(error) => {
             retain_cause(receipt, error);
             // Never retry an ambiguous execute: it may already have changed the database.
-            let current = cloud.executions(&job)?;
+            let current = cloud.executions(app)?;
             let added: Vec<_> = current.difference(&previous).collect();
             if added.len() != 1 {
-                return Err(Error::Cloud("migration-execution-unknown"));
+                return Err(Error::Cloud(LocalCode::MigrationExecutionUnknown));
             }
-            diagnostic(receipt, "execute-response-reconciled");
+            local_diagnostic(receipt, LocalCode::ExecuteResponseReconciled);
             added[0].clone()
         }
     };
-    receipt
-        .migrations
-        .get_mut(app)
-        .expect("migration")
-        .execution_id = Some(execution.clone());
-    checkpoint(receipt, store, migration_phase(app, 2))?;
+    receipt.migrations.get_mut(app).execution_id = Some(execution.clone());
+    checkpoint(receipt, store, app.phase(MigrationStep::Wait))?;
     for _ in 0..120 {
         match cloud.execution(&execution, &image)? {
             Execution::Succeeded => {
-                receipt.migrations.get_mut(app).expect("migration").outcome = Outcome::Succeeded;
+                receipt.migrations.get_mut(app).outcome = Outcome::Succeeded;
                 store.save(receipt)?;
                 return Ok(());
             }
             Execution::Failed => {
-                receipt.migrations.get_mut(app).expect("migration").outcome = Outcome::Failed;
-                return save_settled(store, receipt, Err(Error::Cloud("migration-failed")));
+                receipt.migrations.get_mut(app).outcome = Outcome::Failed;
+                return save_settled(
+                    store,
+                    receipt,
+                    Err(Error::Cloud(LocalCode::MigrationFailed)),
+                );
             }
             Execution::Pending => cloud.pause(),
         }
     }
-    Err(Error::Cloud("migration-timeout"))
+    Err(Error::Cloud(LocalCode::MigrationTimeout))
 }
 fn rollout(
     receipt: &mut Receipt,
     store: &mut impl Store,
     cloud: &mut impl Cloud,
-    name: &str,
-    key: &str,
+    name: ReleaseService,
 ) -> Result<()> {
-    let image = receipt.images[key]
-        .clone()
+    let image = receipt
+        .images
+        .get(name.image())
+        .cloned()
         .ok_or(Error::Input("missing runtime digest"))?;
-    receipt.services.get_mut(name).expect("service").outcome = Outcome::Unknown;
-    checkpoint(
-        receipt,
-        store,
-        match name {
-            "physician" => Phase::PhysicianRollout,
-            "duet" => Phase::DuetRollout,
-            _ => Phase::WorkerRollout,
-        },
-    )?;
+    receipt.services.get_mut(name).outcome = Outcome::Unknown;
+    checkpoint(receipt, store, name.phase())?;
     // The update is submitted asynchronously; readiness is confirmed by bounded
     // polling rather than by a synchronous call that a per-call cap could kill.
-    let update = cloud.update_service(name, &image);
+    let update = cloud.update_service(name, &receipt.images);
     let mut observed = observe(receipt, cloud, name);
     // A failed submit may still land shortly after it returns, so the update is
     // judged unapplied only after two consecutive reads, a pause apart, both
@@ -399,7 +379,7 @@ fn rollout(
         }
     }
     let ready = serving(&observed, &image);
-    let record = receipt.services.get_mut(name).expect("service");
+    let record = receipt.services.get_mut(name);
     record.final_state = observed;
     record.outcome = if ready {
         Outcome::Succeeded
@@ -408,19 +388,19 @@ fn rollout(
     };
     if let Err(error) = update {
         retain_cause(receipt, error);
-        diagnostic(
+        local_diagnostic(
             receipt,
             if unapplied {
-                "update-failed-spec-unchanged"
+                LocalCode::UpdateFailedSpecUnchanged
             } else {
-                "update-response-failed-reconciled"
+                LocalCode::UpdateResponseFailedReconciled
             },
         );
     }
     let result = if ready {
         Ok(())
     } else {
-        Err(Error::Cloud("rollout-not-confirmed"))
+        Err(Error::Cloud(LocalCode::RolloutNotConfirmed))
     };
     save_settled(store, receipt, result)
 }
@@ -430,7 +410,7 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
             "receipt already attempted; initialize a new run attempt",
         ));
     }
-    if receipt.images.values().any(Option::is_none) {
+    if !receipt.images.complete() {
         return Err(Error::Input("all five published images required"));
     }
     receipt.outcome = Outcome::InProgress;
@@ -439,43 +419,36 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
     store.save(receipt)?;
     let result = (|| {
         if !before {
-            return Err(Error::Cloud("before-state-unknown"));
+            return Err(Error::Cloud(LocalCode::BeforeStateUnknown));
         }
-        for app in ["physician", "duet"] {
-            if receipt.services[app].before == Observation::Absent {
-                return Err(Error::Cloud("required-service-absent"));
+        for app in Product::ALL {
+            if receipt.services.get(app.service()).before == Observation::Absent {
+                return Err(Error::Cloud(LocalCode::RequiredServiceAbsent));
             }
             migrate(receipt, store, cloud, app)?;
-            rollout(receipt, store, cloud, app, &format!("{app}-runtime"))?;
+            rollout(receipt, store, cloud, app.service())?;
         }
-        if receipt.services["physician-worker"].before == Observation::Absent {
+        if receipt.services.get(ReleaseService::PhysicianWorker).before == Observation::Absent {
             receipt
                 .services
-                .get_mut("physician-worker")
-                .expect("worker")
+                .get_mut(ReleaseService::PhysicianWorker)
                 .outcome = Outcome::BootstrapSkippedAbsent;
             store.save(receipt)?;
         } else {
-            rollout(
-                receipt,
-                store,
-                cloud,
-                "physician-worker",
-                "physician-worker",
-            )?;
+            rollout(receipt, store, cloud, ReleaseService::PhysicianWorker)?;
         }
         Ok(())
     })();
     if let Err(error) = &result {
-        diagnostic(
+        local_diagnostic(
             receipt,
             match error {
-                Error::Cloud(code) => code,
-                _ => "release-stopped",
+                Error::Cloud(code) => *code,
+                _ => LocalCode::ReleaseStopped,
             },
         );
         if let Some(status) = error.api_status() {
-            diagnostic(receipt, status);
+            diagnostic(receipt, DiagnosticCode::Api(status));
         }
     }
     let observed = snapshot(receipt, cloud, false);
@@ -489,13 +462,12 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
             primary: Box::new(error),
             causes: receipt.causes.clone(),
         }),
-        Ok(()) if receipt.outcome != Outcome::Succeeded => Some(
-            receipt
-                .causes
-                .last()
-                .cloned()
-                .map_or(Error::Cloud("final-state-unknown"), Error::Observations),
-        ),
+        Ok(()) if receipt.outcome != Outcome::Succeeded => {
+            Some(receipt.causes.last().cloned().map_or(
+                Error::Cloud(LocalCode::FinalStateUnknown),
+                Error::Observations,
+            ))
+        }
         Ok(()) => None,
     };
     save_settled(store, receipt, failure.map_or(Ok(()), Err))
@@ -514,16 +486,13 @@ fn save_settled(store: &mut impl Store, receipt: &Receipt, result: Result<()>) -
 }
 fn reconcile_migrations(receipt: &mut Receipt, cloud: &mut impl Cloud) {
     let mut causes = Vec::new();
-    for app in ["physician", "duet"] {
-        let migration = receipt
-            .migrations
-            .get_mut(app)
-            .expect("validated migration");
+    for app in Product::ALL {
+        let migration = receipt.migrations.get_mut(app);
         if migration.outcome != Outcome::Unknown {
             continue;
         }
         if migration.execution_id.is_none() {
-            match cloud.executions(&format!("{app}-migrate")) {
+            match cloud.executions(app) {
                 Ok(current) => {
                     let added: Vec<_> = current.difference(&migration.executions_before).collect();
                     if added.len() == 1 {
@@ -535,10 +504,7 @@ fn reconcile_migrations(receipt: &mut Receipt, cloud: &mut impl Cloud) {
         }
         if let (Some(id), Some(image)) = (
             &migration.execution_id,
-            receipt
-                .images
-                .get(&format!("{app}-migration"))
-                .and_then(Option::as_deref),
+            receipt.images.get(app.migration_image()),
         ) {
             migration.outcome = match cloud.execution(id, image) {
                 Ok(Execution::Succeeded) => Outcome::Succeeded,
@@ -556,20 +522,16 @@ fn reconcile_migrations(receipt: &mut Receipt, cloud: &mut impl Cloud) {
     }
 }
 fn final_matches(receipt: &Receipt) -> bool {
-    SERVICES.iter().all(|name| {
-        let record = &receipt.services[*name];
-        if *name == "physician-worker" && record.outcome == Outcome::BootstrapSkippedAbsent {
+    SERVICES.into_iter().all(|name| {
+        let record = receipt.services.get(name);
+        if name == ReleaseService::PhysicianWorker
+            && record.outcome == Outcome::BootstrapSkippedAbsent
+        {
             return record.final_state == Observation::Absent;
         }
-        let key = if *name == "physician-worker" {
-            (*name).into()
-        } else {
-            format!("{name}-runtime")
-        };
         receipt
             .images
-            .get(&key)
-            .and_then(Option::as_deref)
+            .get(name.image())
             .is_some_and(|image| serving(&record.final_state, image))
     })
 }
@@ -587,30 +549,22 @@ fn text(value: &Value, pointer: &str) -> Result<String> {
     let value = value
         .pointer(pointer)
         .and_then(Value::as_str)
-        .ok_or(Error::Cloud("missing-cloud-field"))?;
+        .ok_or(Error::Cloud(LocalCode::MissingCloudField))?;
     if !identifier(value) {
-        return Err(Error::Cloud("invalid-cloud-identifier"));
+        return Err(Error::Cloud(LocalCode::InvalidCloudIdentifier));
     }
     Ok(value.to_owned())
 }
-fn cloud_image(value: &Value, pointer: &str) -> Result<String> {
+fn cloud_image(value: &Value, pointer: &str) -> Result<ObservedImageRef> {
     let image = value
         .pointer(pointer)
         .and_then(Value::as_str)
-        .ok_or(Error::Cloud("missing-cloud-image"))?;
-    // Only image references are retained, never arbitrary cloud messages or container settings.
-    if image.len() > 512
-        || !image
-            .bytes()
-            .all(|byte| byte.is_ascii_alphanumeric() || b"-._/:@".contains(&byte))
-    {
-        return Err(Error::Cloud("invalid-cloud-image"));
-    }
-    Ok(image.to_owned())
+        .ok_or(Error::Cloud(LocalCode::MissingCloudImage))?;
+    ObservedImageRef::try_from(image.to_owned())
 }
 impl<R: command::Runner> Cloud for Gcloud<R> {
-    fn service(&mut self, name: &str) -> Result<Observation> {
-        let output = self.call(&["services", "describe", name])?;
+    fn service(&mut self, name: ReleaseService) -> Result<Observation> {
+        let output = self.call(&["services", "describe", name.name()])?;
         if !output.status.success() {
             if command::structured_not_found(&output.stderr) {
                 return Ok(Observation::Absent);
@@ -618,16 +572,16 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
             return Err(command::command_error(output));
         }
         let service: Value = serde_json::from_slice(&output.stdout)?;
-        let ready = text(&service, "/status/latestReadyRevisionName")?;
-        let revision = self.json(&["revisions", "describe", &ready])?;
+        let ready = RevisionId::try_from(text(&service, "/status/latestReadyRevisionName")?)?;
+        let revision = self.json(&["revisions", "describe", ready.as_str()])?;
         let traffic = service
             .pointer("/status/traffic")
             .and_then(Value::as_array)
-            .ok_or(Error::Cloud("missing-traffic"))?
+            .ok_or(Error::Cloud(LocalCode::MissingTraffic))?
             .iter()
             .map(|entry| {
                 Ok(Traffic {
-                    revision: text(entry, "/revisionName")?,
+                    revision: RevisionId::try_from(text(entry, "/revisionName")?)?,
                     percent: entry.get("percent").and_then(Value::as_u64).unwrap_or(0),
                     latest: entry
                         .get("latestRevision")
@@ -637,48 +591,54 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
             })
             .collect::<Result<Vec<_>>>()?;
         Ok(Observation::Known(Service {
-            created_revision: text(&service, "/status/latestCreatedRevisionName")?,
+            created_revision: RevisionId::try_from(text(
+                &service,
+                "/status/latestCreatedRevisionName",
+            )?)?,
             ready_revision: ready,
             image: cloud_image(&service, "/spec/template/spec/containers/0/image")?,
             ready_image: cloud_image(&revision, "/spec/containers/0/image")?,
             traffic,
         }))
     }
-    fn update_job(&mut self, name: &str, image: &str) -> Result<()> {
-        self.json(&["jobs", "update", name, "--image", image])
+    fn update_job(&mut self, product: Product, images: &Images) -> Result<()> {
+        let image = images
+            .get(product.migration_image())
+            .ok_or(Error::Input("missing migration digest"))?;
+        self.json(&["jobs", "update", product.job(), "--image", image.as_str()])
             .map(|_| ())
     }
-    fn job_image(&mut self, name: &str) -> Result<String> {
+    fn job_image(&mut self, product: Product) -> Result<ObservedImageRef> {
         cloud_image(
-            &self.json(&["jobs", "describe", name])?,
+            &self.json(&["jobs", "describe", product.job()])?,
             "/spec/template/spec/template/spec/containers/0/image",
         )
     }
-    fn executions(&mut self, name: &str) -> Result<BTreeSet<String>> {
-        self.json(&["jobs", "executions", "list", "--job", name])?
+    fn executions(&mut self, product: Product) -> Result<BTreeSet<ExecutionId>> {
+        self.json(&["jobs", "executions", "list", "--job", product.job()])?
             .as_array()
-            .ok_or(Error::Cloud("invalid-executions"))?
+            .ok_or(Error::Cloud(LocalCode::InvalidExecutions))?
             .iter()
-            .map(|value| text(value, "/metadata/name"))
+            .map(|value| ExecutionId::try_from(text(value, "/metadata/name")?))
             .collect()
     }
-    fn execute(&mut self, name: &str) -> Result<String> {
-        let output = self.call(&["jobs", "execute", name, "--async"])?;
+    fn execute(&mut self, product: Product) -> Result<ExecutionId> {
+        let output = self.call(&["jobs", "execute", product.job(), "--async"])?;
         if !output.status.success() {
             return Err(command::command_error(output));
         }
         let value: Value = serde_json::from_slice(&output.stdout)?;
-        text(&value, "/metadata/name")
+        ExecutionId::try_from(text(&value, "/metadata/name")?)
     }
-    fn execution(&mut self, id: &str, image: &str) -> Result<Execution> {
-        let value = self.json(&["jobs", "executions", "describe", id])?;
-        if cloud_image(&value, "/spec/template/spec/containers/0/image")? != image {
-            return Err(Error::Cloud("execution-image-mismatch"));
+    fn execution(&mut self, id: &ExecutionId, image: &PublishedImage) -> Result<Execution> {
+        let value = self.json(&["jobs", "executions", "describe", id.as_str()])?;
+        if !cloud_image(&value, "/spec/template/spec/containers/0/image")?.matches(image) {
+            return Err(Error::Cloud(LocalCode::ExecutionImageMismatch));
         }
         let conditions = value
             .pointer("/status/conditions")
             .and_then(Value::as_array)
-            .ok_or(Error::Cloud("missing-execution-status"))?;
+            .ok_or(Error::Cloud(LocalCode::MissingExecutionStatus))?;
         match conditions
             .iter()
             .find(|condition| condition.get("type").and_then(Value::as_str) == Some("Completed"))
@@ -690,9 +650,19 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
             _ => Ok(Execution::Pending),
         }
     }
-    fn update_service(&mut self, name: &str, image: &str) -> Result<()> {
-        self.json(&["services", "update", name, "--image", image, "--async"])
-            .map(|_| ())
+    fn update_service(&mut self, name: ReleaseService, images: &Images) -> Result<()> {
+        let image = images
+            .get(name.image())
+            .ok_or(Error::Input("missing runtime digest"))?;
+        self.json(&[
+            "services",
+            "update",
+            name.name(),
+            "--image",
+            image.as_str(),
+            "--async",
+        ])
+        .map(|_| ())
     }
     fn pause(&mut self) {
         std::thread::sleep(Duration::from_secs(5));
@@ -762,36 +732,17 @@ fn initialize(options: &BTreeMap<String, String>) -> Result<Receipt> {
         run_id: required(options, "--run-id")?.into(),
         run_attempt: required(options, "--run-attempt")?.into(),
         tested_artifact_id: required(options, "--artifact-id")?.into(),
-        images: IMAGES
-            .iter()
-            .map(|(key, _)| ((*key).into(), None))
-            .collect(),
-        services: SERVICES
-            .iter()
-            .map(|name| {
-                (
-                    (*name).into(),
-                    ServiceRecord {
-                        before: Observation::Unknown,
-                        final_state: Observation::Unknown,
-                        outcome: Outcome::NotAttempted,
-                    },
-                )
-            })
-            .collect(),
-        migrations: ["physician", "duet"]
-            .iter()
-            .map(|name| {
-                (
-                    (*name).into(),
-                    Migration {
-                        execution_id: None,
-                        executions_before: BTreeSet::new(),
-                        outcome: Outcome::NotAttempted,
-                    },
-                )
-            })
-            .collect(),
+        images: Images::default(),
+        services: Services::new(ServiceRecord {
+            before: Observation::Unknown,
+            final_state: Observation::Unknown,
+            outcome: Outcome::NotAttempted,
+        }),
+        migrations: Migrations::new(Migration {
+            execution_id: None,
+            executions_before: BTreeSet::new(),
+            outcome: Outcome::NotAttempted,
+        }),
         phase: Phase::Publication,
         outcome: Outcome::Initialized,
         diagnostics: Vec::new(),
@@ -799,10 +750,7 @@ fn initialize(options: &BTreeMap<String, String>) -> Result<Receipt> {
     })
 }
 fn published_images(receipt: &mut Receipt, directory: &Path) -> Result<()> {
-    receipt.images = IMAGES
-        .iter()
-        .map(|(key, _)| ((*key).into(), None))
-        .collect();
+    receipt.images = Images::default();
     let manifest = directory.join("tested-images.json");
     if manifest.exists() {
         let manifest: Value = serde_json::from_slice(&fs::read(manifest)?)?;
@@ -811,30 +759,23 @@ fn published_images(receipt: &mut Receipt, directory: &Path) -> Result<()> {
                 "published bundle differs from receipt source SHA",
             ));
         }
-    } else if IMAGES.iter().any(|(key, _)| directory.join(key).exists()) {
+    } else if ImageRole::ALL
+        .iter()
+        .any(|role| directory.join(role.key()).exists())
+    {
         return Err(Error::Input(
             "published digest has no tested bundle identity",
         ));
     }
-    for (key, repository) in IMAGES {
-        let path = directory.join(key);
+    for role in ImageRole::ALL {
+        let path = directory.join(role.key());
         if !path.exists() {
             continue;
         }
         let image = fs::read_to_string(path)?;
-        let image = image.trim();
-        let prefix = format!("{REGION}-docker.pkg.dev/{PROJECT}/apps/{repository}@sha256:");
-        let digest = image
-            .strip_prefix(&prefix)
-            .ok_or(Error::Input("unexpected image repository"))?;
-        if digest.len() != 64
-            || !digest
-                .bytes()
-                .all(|byte| byte.is_ascii_hexdigit() && !byte.is_ascii_uppercase())
-        {
-            return Err(Error::Input("immutable digest required"));
-        }
-        receipt.images.insert(key.into(), Some(image.into()));
+        receipt
+            .images
+            .insert(PublishedImage::parse(role, image.trim())?);
     }
     Ok(())
 }
@@ -859,24 +800,14 @@ fn run(args: &[String]) -> Result<()> {
         return record_initial_state(&mut receipt, &mut store, &mut cloud);
     }
     let mut receipt: Receipt = serde_json::from_slice(&fs::read(&store.0)?)?;
-    if receipt.schema_version != 1
-        || receipt.project != PROJECT
-        || receipt.region != REGION
-        || receipt.services.len() != 3
-        || SERVICES
-            .iter()
-            .any(|name| !receipt.services.contains_key(*name))
-        || ["physician", "duet"]
-            .iter()
-            .any(|name| !receipt.migrations.contains_key(*name))
-    {
+    if receipt.schema_version != 1 || receipt.project != PROJECT || receipt.region != REGION {
         return Err(Error::Input("invalid receipt contract"));
     }
     match command.as_str() {
         "deploy" => {
             let images = published_images(&mut receipt, directory);
             if images.is_err() {
-                diagnostic(&mut receipt, "invalid-publication-evidence");
+                local_diagnostic(&mut receipt, LocalCode::InvalidPublicationEvidence);
             }
             save_settled(&mut store, &receipt, images)?;
             deploy(&mut receipt, &mut store, &mut Gcloud::default())
@@ -892,17 +823,16 @@ fn run(args: &[String]) -> Result<()> {
                 || !final_matches(&receipt)
             {
                 receipt.outcome = Outcome::PartialOrUnknown;
-                diagnostic(&mut receipt, "finalized-incomplete-release");
+                local_diagnostic(&mut receipt, LocalCode::FinalizedIncompleteRelease);
             }
             let result = images.and_then(|()| {
                 if receipt.outcome == Outcome::Succeeded {
                     Ok(())
                 } else {
-                    Err(receipt
-                        .causes
-                        .last()
-                        .cloned()
-                        .map_or(Error::Cloud("release-incomplete"), Error::Observations))
+                    Err(receipt.causes.last().cloned().map_or(
+                        Error::Cloud(LocalCode::ReleaseIncomplete),
+                        Error::Observations,
+                    ))
                 }
             });
             settle_finalize(
@@ -931,11 +861,10 @@ fn record_initial_state(
     let result = if snapshot(receipt, cloud, true) {
         Ok(())
     } else {
-        Err(receipt
-            .causes
-            .last()
-            .cloned()
-            .map_or(Error::Cloud("initial-state-unknown"), Error::Observations))
+        Err(receipt.causes.last().cloned().map_or(
+            Error::Cloud(LocalCode::InitialStateUnknown),
+            Error::Observations,
+        ))
     };
     save_settled(store, receipt, result)
 }
@@ -967,7 +896,8 @@ fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
         receipt.outcome, receipt.phase
     )?;
     for name in SERVICES {
-        let record = &receipt.services[name];
+        let record = receipt.services.get(name);
+        let name = name.name();
         writeln!(
             writer,
             "- {name}: `{:?}`; final observation: `{}`",
@@ -979,11 +909,12 @@ fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
             }
         )?;
     }
-    for name in ["physician", "duet"] {
+    for product in Product::ALL {
         writeln!(
             writer,
-            "- {name} migration: `{:?}`",
-            receipt.migrations[name].outcome
+            "- {} migration: `{:?}`",
+            product.name(),
+            receipt.migrations.get(product).outcome
         )?;
     }
     writeln!(
@@ -1026,7 +957,7 @@ mod tests {
                         .values()
                         .any(|migration| migration.outcome == Outcome::Failed))
             {
-                return Err(Error::Cloud("receipt-unwritable"));
+                return Err(Error::Cloud(LocalCode::ReceiptUnwritable));
             }
             self.receipts.push(receipt.clone());
             Ok(())
@@ -1057,7 +988,7 @@ mod tests {
     }
     fn denied() -> Error {
         Error::Command {
-            code: "gcloud-command-failed",
+            code: LocalCode::GcloudCommandFailed,
             source: Arc::new(CommandFailure {
                 status: Some(1),
                 stdout: b"secret-stdout".to_vec(),
@@ -1070,7 +1001,7 @@ mod tests {
             Self {
                 services: SERVICES
                     .iter()
-                    .map(|name| ((*name).into(), known("old-image")))
+                    .map(|name| (name.name().into(), known("old-image")))
                     .collect(),
                 writes: Vec::new(),
                 fail_migration: false,
@@ -1093,19 +1024,20 @@ mod tests {
     }
     fn known(image: &str) -> Observation {
         Observation::Known(Service {
-            created_revision: "ready-revision".into(),
-            ready_revision: "ready-revision".into(),
-            image: image.into(),
-            ready_image: image.into(),
+            created_revision: RevisionId::try_from("ready-revision".to_owned()).expect("revision"),
+            ready_revision: RevisionId::try_from("ready-revision".to_owned()).expect("revision"),
+            image: ObservedImageRef::try_from(image.to_owned()).expect("image"),
+            ready_image: ObservedImageRef::try_from(image.to_owned()).expect("image"),
             traffic: vec![Traffic {
-                revision: "ready-revision".into(),
+                revision: RevisionId::try_from("ready-revision".to_owned()).expect("revision"),
                 percent: 100,
                 latest: true,
             }],
         })
     }
     impl Cloud for FakeCloud {
-        fn service(&mut self, name: &str) -> Result<Observation> {
+        fn service(&mut self, name: ReleaseService) -> Result<Observation> {
+            let name = name.name();
             if let Some(remaining) = &mut self.reads_before_failure {
                 if *remaining == 0 {
                     return Err(denied());
@@ -1123,58 +1055,73 @@ mod tests {
             }
             Ok(self.services[name].clone())
         }
-        fn update_job(&mut self, name: &str, _: &str) -> Result<()> {
-            self.writes.push(format!("job:{name}"));
+        fn update_job(&mut self, product: Product, images: &Images) -> Result<()> {
+            images
+                .get(product.migration_image())
+                .ok_or(Error::Input("missing migration digest"))?;
+            self.writes.push(format!("job:{}", product.job()));
             Ok(())
         }
-        fn job_image(&mut self, _: &str) -> Result<String> {
-            Err(Error::Cloud("unused"))
+        fn job_image(&mut self, _: Product) -> Result<ObservedImageRef> {
+            Err(Error::Cloud(LocalCode::Unused))
         }
-        fn executions(&mut self, name: &str) -> Result<BTreeSet<String>> {
+        fn executions(&mut self, product: Product) -> Result<BTreeSet<ExecutionId>> {
+            let name = product.job();
             Ok(
                 if !self.unknown_execution && self.writes.contains(&format!("execute:{name}")) {
-                    BTreeSet::from([format!("{name}-execution")])
+                    BTreeSet::from([
+                        ExecutionId::try_from(format!("{name}-execution")).expect("execution")
+                    ])
                 } else {
                     BTreeSet::new()
                 },
             )
         }
-        fn execute(&mut self, name: &str) -> Result<String> {
+        fn execute(&mut self, product: Product) -> Result<ExecutionId> {
+            let name = product.job();
             self.writes.push(format!("execute:{name}"));
             if self.ambiguous_execute {
-                Err(Error::Cloud("lost-response"))
+                Err(Error::Cloud(LocalCode::LostResponse))
             } else {
-                Ok(format!("{name}-execution"))
+                ExecutionId::try_from(format!("{name}-execution"))
             }
         }
-        fn execution(&mut self, id: &str, _: &str) -> Result<Execution> {
+        fn execution(&mut self, id: &ExecutionId, _: &PublishedImage) -> Result<Execution> {
             if self.denied_execution {
                 return Err(denied());
             }
             Ok(
-                if self.fail_migration || (self.fail_duet_migration && id.starts_with("duet-")) {
+                if self.fail_migration
+                    || (self.fail_duet_migration && id.as_str().starts_with("duet-"))
+                {
                     Execution::Failed
                 } else {
                     Execution::Succeeded
                 },
             )
         }
-        fn update_service(&mut self, name: &str, image: &str) -> Result<()> {
+        fn update_service(&mut self, service: ReleaseService, images: &Images) -> Result<()> {
+            let name = service.name();
+            let image = images
+                .get(service.image())
+                .ok_or(Error::Input("missing runtime digest"))?
+                .as_str();
             self.writes.push(format!("service:{name}"));
             if self.denied_update {
                 return Err(denied());
             }
             if self.late_update {
                 self.pending.insert(name.into(), (known(image), 1));
-                return Err(Error::Cloud("gcloud-timeout"));
+                return Err(Error::Cloud(LocalCode::GcloudTimeout));
             }
             if name == "physician-worker" && self.worker_failure {
-                return Err(Error::Cloud("worker-update-failed"));
+                return Err(Error::Cloud(LocalCode::WorkerUpdateFailed));
             }
             let mut state = known(image);
             if let Observation::Known(service) = &mut state {
                 if self.wrong_ready_image {
-                    service.ready_image = "unrelated-image".into();
+                    service.ready_image =
+                        ObservedImageRef::try_from("unrelated-image".to_owned()).expect("image");
                 }
                 if self.split_traffic {
                     service.traffic[0].percent = 50;
@@ -1183,7 +1130,7 @@ mod tests {
             if self.not_ready_observations > 0 {
                 // Cloud Run records the new spec at once; readiness lags behind it.
                 if let Some(Observation::Known(current)) = self.services.get_mut(name) {
-                    current.image = image.into();
+                    current.image = ObservedImageRef::try_from(image.to_owned()).expect("image");
                 }
                 self.pending
                     .insert(name.into(), (state, self.not_ready_observations));
@@ -1191,7 +1138,7 @@ mod tests {
                 self.services.insert(name.into(), state);
             }
             if self.ambiguous_update {
-                Err(Error::Cloud("lost-response"))
+                Err(Error::Cloud(LocalCode::LostResponse))
             } else {
                 Ok(())
             }
@@ -1211,13 +1158,17 @@ mod tests {
             ("--artifact-id".into(), "456".into()),
         ]);
         let mut receipt = initialize(&options).expect("receipt");
-        for (key, repository) in IMAGES {
+        for role in ImageRole::ALL {
             receipt.images.insert(
-                key.into(),
-                Some(format!(
-                    "{REGION}-docker.pkg.dev/{PROJECT}/apps/{repository}@sha256:{}",
-                    "b".repeat(64)
-                )),
+                PublishedImage::parse(
+                    role,
+                    &format!(
+                        "{REGION}-docker.pkg.dev/{PROJECT}/apps/{}@sha256:{}",
+                        role.repository(),
+                        "b".repeat(64)
+                    ),
+                )
+                .expect("published image"),
             );
         }
         receipt
@@ -1229,7 +1180,7 @@ mod tests {
         let mut cloud = FakeCloud::new();
         deploy(&mut receipt, &mut store, &mut cloud).expect("release");
         assert_eq!(receipt.outcome, Outcome::Succeeded);
-        assert_eq!(receipt.images.len(), 5);
+        assert!(receipt.images.complete());
         assert!(
             receipt
                 .migrations
@@ -1274,10 +1225,18 @@ mod tests {
             ["job:physician-migrate", "execute:physician-migrate"]
         );
         assert_eq!(
-            receipt.migrations["physician"].execution_id.as_deref(),
+            receipt
+                .migrations
+                .get(Product::Physician)
+                .execution_id
+                .as_ref()
+                .map(ExecutionId::as_str),
             Some("physician-migrate-execution")
         );
-        assert_eq!(receipt.migrations["physician"].outcome, Outcome::Failed);
+        assert_eq!(
+            receipt.migrations.get(Product::Physician).outcome,
+            Outcome::Failed
+        );
         assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
         assert!(
             receipt
@@ -1306,8 +1265,17 @@ mod tests {
         cloud.unknown_execution = true;
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
         assert_eq!(cloud.writes.len(), 2);
-        assert_eq!(receipt.migrations["physician"].outcome, Outcome::Unknown);
-        assert!(receipt.migrations["physician"].execution_id.is_none());
+        assert_eq!(
+            receipt.migrations.get(Product::Physician).outcome,
+            Outcome::Unknown
+        );
+        assert!(
+            receipt
+                .migrations
+                .get(Product::Physician)
+                .execution_id
+                .is_none()
+        );
     }
     #[test]
     fn bootstrap_skip_requires_confirmed_absence() {
@@ -1321,7 +1289,10 @@ mod tests {
             if observation == Observation::Absent {
                 result.expect("bootstrap");
                 assert_eq!(
-                    receipt.services["physician-worker"].outcome,
+                    receipt
+                        .services
+                        .get(ReleaseService::PhysicianWorker)
+                        .outcome,
                     Outcome::BootstrapSkippedAbsent
                 );
                 assert_eq!(cloud.writes.len(), 6);
@@ -1372,10 +1343,13 @@ mod tests {
         cloud.not_ready_observations = usize::MAX;
         let error =
             deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("not ready");
-        assert_eq!(error.safe_code(), "rollout-not-confirmed");
+        assert_eq!(error.safe_code().as_str(), "rollout-not-confirmed");
         assert_eq!(cloud.pauses, ROLLOUT_POLLS);
         assert_eq!(cloud.writes.len(), 3);
-        assert_eq!(receipt.services["physician"].outcome, Outcome::Unknown);
+        assert_eq!(
+            receipt.services.get(ReleaseService::Physician).outcome,
+            Outcome::Unknown
+        );
     }
     #[test]
     fn refused_update_that_left_the_old_spec_stops_after_one_confirming_read() {
@@ -1384,10 +1358,13 @@ mod tests {
         cloud.denied_update = true;
         let error =
             deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("denied");
-        assert_eq!(error.safe_code(), "rollout-not-confirmed");
+        assert_eq!(error.safe_code().as_str(), "rollout-not-confirmed");
         // One confirming read a pause after the first, then no more polling.
         assert_eq!(cloud.pauses, 1);
-        assert_eq!(receipt.services["physician"].outcome, Outcome::Unknown);
+        assert_eq!(
+            receipt.services.get(ReleaseService::Physician).outcome,
+            Outcome::Unknown
+        );
         let encoded = serde_json::to_string(&receipt).expect("receipt");
         assert!(encoded.contains("\"PERMISSION_DENIED\""));
         assert!(encoded.contains("\"update-failed-spec-unchanged\""));
@@ -1406,11 +1383,11 @@ mod tests {
         let Error::Unrecorded { primary, .. } = &error else {
             panic!("save error replaced the snapshot failure: {error:?}");
         };
-        assert_eq!(primary.safe_code(), "observations-failed");
+        assert_eq!(primary.safe_code().as_str(), "observations-failed");
         let Error::Unrecorded { persistence, .. } = &error else {
             unreachable!()
         };
-        assert_eq!(persistence.safe_code(), "receipt-unwritable");
+        assert_eq!(persistence.safe_code().as_str(), "receipt-unwritable");
     }
     fn broken_summary(_: &Receipt) -> Result<()> {
         Err(std::io::Error::other("summary unwritable").into())
@@ -1418,13 +1395,13 @@ mod tests {
     #[test]
     fn failed_release_still_writes_its_step_summary() {
         let mut written = false;
-        let failed = Err(Error::Cloud("release-incomplete"));
+        let failed = Err(Error::Cloud(LocalCode::ReleaseIncomplete));
         let error = settle_finalize(&mut MemoryStore::default(), &receipt(), failed, |_| {
             written = true;
             Ok(())
         })
         .unwrap_err();
-        assert_eq!(error.safe_code(), "release-incomplete");
+        assert_eq!(error.safe_code().as_str(), "release-incomplete");
         assert!(written);
     }
     #[test]
@@ -1432,7 +1409,7 @@ mod tests {
         for (result, code) in [
             (Ok(()), "receipt-unwritable"),
             (
-                Err(Error::Cloud("release-incomplete")),
+                Err(Error::Cloud(LocalCode::ReleaseIncomplete)),
                 "release-incomplete",
             ),
         ] {
@@ -1447,7 +1424,7 @@ mod tests {
                 Ok(())
             })
             .unwrap_err();
-            assert_eq!(error.safe_code(), code);
+            assert_eq!(error.safe_code().as_str(), code);
             assert_eq!(matches!(error, Error::Unrecorded { .. }), failed);
             assert!(!written, "summary points to a receipt that was not saved");
         }
@@ -1455,9 +1432,9 @@ mod tests {
     #[test]
     fn unwritable_step_summary_keeps_the_release_result() {
         let mut store = MemoryStore::default();
-        let failed = Err(Error::Cloud("release-incomplete"));
+        let failed = Err(Error::Cloud(LocalCode::ReleaseIncomplete));
         let error = settle_finalize(&mut store, &receipt(), failed, broken_summary).unwrap_err();
-        assert_eq!(error.safe_code(), "release-incomplete");
+        assert_eq!(error.safe_code().as_str(), "release-incomplete");
         assert_eq!(store.receipts.len(), 1);
         let error = settle_finalize(&mut store, &receipt(), Ok(()), broken_summary).unwrap_err();
         assert!(matches!(error, Error::Io(_)), "{error:?}");
@@ -1500,9 +1477,9 @@ mod tests {
                 panic!("persistence failure replaced the operation error: {error:?}");
             };
             assert!(matches!(**primary, Error::Related { .. }));
-            assert_eq!(persistence.safe_code(), "receipt-unwritable");
+            assert_eq!(persistence.safe_code().as_str(), "receipt-unwritable");
             assert_eq!(
-                error.safe_code(),
+                error.safe_code().as_str(),
                 if scenario == 0 {
                     "migration-failed"
                 } else {
@@ -1521,7 +1498,7 @@ mod tests {
         };
         let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
         assert!(matches!(error, Error::Unrecorded { .. }), "{error:?}");
-        assert_eq!(error.safe_code(), "migration-failed");
+        assert_eq!(error.safe_code().as_str(), "migration-failed");
         assert!(
             !cloud
                 .writes
@@ -1541,7 +1518,7 @@ mod tests {
         };
         let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
         assert!(matches!(error, Error::Unrecorded { .. }), "{error:?}");
-        assert_eq!(error.safe_code(), "migration-failed");
+        assert_eq!(error.safe_code().as_str(), "migration-failed");
         assert_eq!(store.receipts.len(), 5);
         assert!(
             !cloud
@@ -1579,8 +1556,8 @@ mod tests {
             panic!("persistence failure replaced the observation error: {error:?}");
         };
         assert!(matches!(**primary, Error::Observations(_)));
-        assert_eq!(error.safe_code(), "observations-failed");
-        assert_eq!(error.api_status(), Some("PERMISSION_DENIED"));
+        assert_eq!(error.safe_code().as_str(), "observations-failed");
+        assert_eq!(error.api_status(), Some(ApiStatus::PermissionDenied));
     }
     #[test]
     fn wrong_ready_digest_and_split_traffic_fail_before_duet() {
@@ -1597,7 +1574,13 @@ mod tests {
     #[test]
     fn partial_publication_cannot_start_migrations() {
         let mut receipt = receipt();
-        receipt.images.insert("duet-migration".into(), None);
+        let mut images = Images::default();
+        for role in ImageRole::ALL {
+            if role != ImageRole::DuetMigration {
+                images.insert(receipt.images.get(role).expect("image").clone());
+            }
+        }
+        receipt.images = images;
         let mut cloud = FakeCloud::new();
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
         assert!(cloud.writes.is_empty());
@@ -1609,36 +1592,47 @@ mod tests {
         cloud.fail_duet_migration = true;
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
         assert_eq!(cloud.writes.len(), 5);
-        assert_eq!(receipt.services["physician"].outcome, Outcome::Succeeded);
+        assert_eq!(
+            receipt.services.get(ReleaseService::Physician).outcome,
+            Outcome::Succeeded
+        );
         assert!(serving(
-            &receipt.services["physician"].final_state,
-            receipt.images["physician-runtime"]
-                .as_deref()
+            &receipt.services.get(ReleaseService::Physician).final_state,
+            receipt
+                .images
+                .get(ImageRole::PhysicianRuntime)
                 .expect("image")
         ));
-        assert_eq!(receipt.migrations["duet"].outcome, Outcome::Failed);
         assert_eq!(
-            receipt.services["duet"].before,
-            receipt.services["duet"].final_state
+            receipt.migrations.get(Product::Duet).outcome,
+            Outcome::Failed
+        );
+        assert_eq!(
+            receipt.services.get(ReleaseService::Duet).before,
+            receipt.services.get(ReleaseService::Duet).final_state
         );
     }
     #[test]
     fn finalization_recovers_execution_id_after_interrupted_response() {
         let mut receipt = receipt();
-        receipt
-            .migrations
-            .get_mut("physician")
-            .expect("migration")
-            .outcome = Outcome::Unknown;
+        receipt.migrations.get_mut(Product::Physician).outcome = Outcome::Unknown;
         let mut cloud = FakeCloud::new();
         cloud.writes.push("execute:physician-migrate".into());
         cloud.fail_migration = true;
         reconcile_migrations(&mut receipt, &mut cloud);
         assert_eq!(
-            receipt.migrations["physician"].execution_id.as_deref(),
+            receipt
+                .migrations
+                .get(Product::Physician)
+                .execution_id
+                .as_ref()
+                .map(ExecutionId::as_str),
             Some("physician-migrate-execution")
         );
-        assert_eq!(receipt.migrations["physician"].outcome, Outcome::Failed);
+        assert_eq!(
+            receipt.migrations.get(Product::Physician).outcome,
+            Outcome::Failed
+        );
         assert_eq!(cloud.writes.len(), 1);
     }
     #[test]
@@ -1649,14 +1643,23 @@ mod tests {
         assert!(deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).is_err());
         assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
         assert_eq!(cloud.writes.len(), 7);
-        for app in ["physician", "duet"] {
-            assert_eq!(receipt.services[app].outcome, Outcome::Succeeded);
+        for app in Product::ALL {
+            assert_eq!(
+                receipt.services.get(app.service()).outcome,
+                Outcome::Succeeded
+            );
         }
         assert_eq!(
-            receipt.services["physician-worker"].before,
-            receipt.services["physician-worker"].final_state
+            receipt.services.get(ReleaseService::PhysicianWorker).before,
+            receipt
+                .services
+                .get(ReleaseService::PhysicianWorker)
+                .final_state
         );
-        assert_eq!(receipt.causes[0].safe_code(), "worker-update-failed");
+        assert_eq!(
+            receipt.causes[0].safe_code().as_str(),
+            "worker-update-failed"
+        );
         let mut summary = Vec::new();
         write_summary(&receipt, &mut summary).expect("summary");
         assert!(
@@ -1687,6 +1690,150 @@ mod tests {
         let args = ["--project", "production", "--region", REGION].map(str::to_owned);
         assert!(initialize(&options(&args).expect("options")).is_err());
         assert!(options(&["--directory", "one", "--directory", "two"].map(str::to_owned)).is_err());
+    }
+    #[test]
+    fn receipt_wire_shape_round_trips_without_changing_keys() {
+        let mut receipt = receipt();
+        deploy(
+            &mut receipt,
+            &mut MemoryStore::default(),
+            &mut FakeCloud::new(),
+        )
+        .expect("deploy");
+        local_diagnostic(&mut receipt, LocalCode::UpdateResponseFailedReconciled);
+        diagnostic(
+            &mut receipt,
+            DiagnosticCode::Api(ApiStatus::PermissionDenied),
+        );
+        let value = serde_json::to_value(&receipt).expect("json");
+        let keys = |value: &Value| {
+            value
+                .as_object()
+                .expect("object")
+                .keys()
+                .cloned()
+                .collect::<BTreeSet<_>>()
+        };
+        assert_eq!(
+            keys(&value["services"]),
+            ["duet", "physician", "physician-worker"]
+                .map(str::to_owned)
+                .into()
+        );
+        assert_eq!(
+            keys(&value["migrations"]),
+            ["duet", "physician"].map(str::to_owned).into()
+        );
+        assert_eq!(
+            keys(&value["images"]),
+            [
+                "duet-migration",
+                "duet-runtime",
+                "physician-migration",
+                "physician-runtime",
+                "physician-worker"
+            ]
+            .map(str::to_owned)
+            .into()
+        );
+        assert_eq!(value["schema_version"], 1);
+        assert_eq!(
+            value["migrations"]["physician"]["execution_id"],
+            "physician-migrate-execution"
+        );
+        assert_eq!(
+            value["services"]["physician"]["final_state"]["summary"]["ready_revision"],
+            "ready-revision"
+        );
+        assert_eq!(
+            value["diagnostics"][0]["code"],
+            "update-response-failed-reconciled"
+        );
+        assert_eq!(value["diagnostics"][1]["code"], "PERMISSION_DENIED");
+        let decoded: Receipt = serde_json::from_value(value.clone()).expect("receipt");
+        assert_eq!(serde_json::to_value(decoded).expect("json"), value);
+    }
+    #[test]
+    fn fixed_containers_require_every_key_but_allow_null_images() {
+        let mut receipt = receipt();
+        receipt.images = Images::default();
+        let value = serde_json::to_value(receipt).expect("json");
+        let decoded: Receipt = serde_json::from_value(value.clone()).expect("null images");
+        assert!(!decoded.images.complete());
+        for container in ["images", "services", "migrations"] {
+            for key in value[container].as_object().expect("object").keys() {
+                let mut missing = value.clone();
+                missing[container]
+                    .as_object_mut()
+                    .expect("object")
+                    .remove(key);
+                assert!(
+                    serde_json::from_value::<Receipt>(missing).is_err(),
+                    "{container}.{key} required"
+                );
+            }
+            let mut extra = value.clone();
+            extra[container]["invented"] = Value::Null;
+            assert!(serde_json::from_value::<Receipt>(extra).is_err());
+        }
+    }
+    #[test]
+    fn receipt_rejects_misassigned_or_invalid_images_and_diagnostics() {
+        let value = serde_json::to_value(receipt()).expect("json");
+        for invalid in [
+            "arbitrary-text",
+            "PERMISSION_DENIED: secret",
+            "permission_denied",
+        ] {
+            let mut bad = value.clone();
+            bad["diagnostics"] = serde_json::json!([{"phase":"publication", "code": invalid}]);
+            assert!(serde_json::from_value::<Receipt>(bad).is_err());
+        }
+        for role in ImageRole::ALL {
+            let mut swapped = value.clone();
+            let other = if role == ImageRole::DuetRuntime {
+                ImageRole::PhysicianRuntime
+            } else {
+                ImageRole::DuetRuntime
+            };
+            swapped["images"][role.key()] = value["images"][other.key()].clone();
+            assert!(serde_json::from_value::<Receipt>(swapped).is_err());
+        }
+        let mut invalid = value;
+        invalid["images"]["physician-runtime"] = "image:tag".into();
+        assert!(serde_json::from_value::<Receipt>(invalid).is_err());
+    }
+    #[test]
+    fn publication_still_requires_matching_tested_bundle_identity() {
+        let directory = std::env::temp_dir().join(format!("release-domain-{}", std::process::id()));
+        fs::create_dir_all(&directory).expect("directory");
+        let mut receipt = receipt();
+        let image = receipt
+            .images
+            .get(ImageRole::PhysicianRuntime)
+            .expect("image")
+            .clone();
+        fs::write(directory.join("physician-runtime"), image.as_str()).expect("digest");
+        assert!(published_images(&mut receipt, &directory).is_err());
+        fs::write(
+            directory.join("tested-images.json"),
+            serde_json::json!({"source_revision": "c".repeat(40)}).to_string(),
+        )
+        .expect("manifest");
+        assert!(published_images(&mut receipt, &directory).is_err());
+        fs::write(
+            directory.join("tested-images.json"),
+            serde_json::json!({"source_revision": receipt.source_sha}).to_string(),
+        )
+        .expect("manifest");
+        published_images(&mut receipt, &directory).expect("partial publication");
+        assert_eq!(
+            receipt.images.get(ImageRole::PhysicianRuntime),
+            Some(&image)
+        );
+        assert!(receipt.images.get(ImageRole::DuetRuntime).is_none());
+        assert!(!receipt.images.complete());
+        fs::remove_dir_all(directory).expect("cleanup");
     }
     #[test]
     fn receipts_only_include_allowlisted_diagnostics_and_summaries() {
