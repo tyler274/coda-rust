@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local create-only S3 transport probe; no cloud service or real credentials.
 
-Opt in: NIX_CACHE_TRANSPORT_TEST=1 python -m unittest discover -s scripts \
+Opt in: NIX_CACHE_TRANSPORT_TEST=1 python -m unittest discover -s scripts/nix-cache \
     -p test_nix_cache_transport.py -v
 Optional NIX_CACHE_TRANSPORT_NIX selects an already available Nix executable.
 This tests a hypothesized failure mechanism, not the cause of a historical run.
