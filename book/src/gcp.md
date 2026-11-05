@@ -7,6 +7,11 @@ for production SMTP in `coda-health-prod`, with separate state and explicit
 saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
+Run every command on this page inside `nix develop` from the repository root. The
+shell provides `gcloud`, `tofu`, `doppler` and `jq`; do not use host copies.
+Commands that read Doppler secrets need the default shell after `doppler login`,
+not `.#agent`, which loads no credentials.
+
 ## Public marketing site
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the
@@ -49,8 +54,8 @@ GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars) and
 [`backend/staging.gcs.tfbackend`](/infra/gcp/rust-environments/backend/staging.gcs.tfbackend).
 
-From an authorized engineering account, in a Doppler-authorized `nix develop`
-shell (not `.#agent`). Database-enabled plans read the four existing
+From an authorized engineering account, in the Doppler-authorized default
+shell. Database-enabled plans read the four existing
 application passwords without printing them; this changes no password or
 version:
 
@@ -257,8 +262,8 @@ cloud writes require both explicit execution and authorization flags. The
 operator must separately authorize the billable target and cleanup. The normal
 release identity receives no SQL administration privileges.
 
-Run `cargo run -p workspace-tools -- staging-restore --help` in the dev shell for
-the command interface. Use a fresh receipt path for execution after preflight.
+Run `cargo run -p workspace-tools -- staging-restore --help` for the command
+interface. Use a fresh receipt path for execution after preflight.
 The command creates a private PostgreSQL target sized from the source's data disk
 (preflight refuses sources outside 10-50 GB), records its creation identity,
 restores the selected backup and waits for bounded operations. It refuses an
