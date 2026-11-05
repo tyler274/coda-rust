@@ -3,6 +3,8 @@ use super::*;
 use std::io::Read;
 use std::process::{Output, Stdio};
 
+pub(super) const BUDGET_EXHAUSTED: &str = "release-command-budget-exhausted";
+
 pub(super) trait Runner {
     fn output(&mut self, args: &[String]) -> Result<Output>;
 }
@@ -95,7 +97,7 @@ impl<R: Runner> Gcloud<R> {
     }
     pub fn call(&mut self, args: &[&str]) -> Result<Output> {
         if Instant::now() >= self.deadline {
-            return Err(Error::Cloud("release-command-budget-exhausted"));
+            return Err(Error::Cloud(BUDGET_EXHAUSTED));
         }
         let mut all: Vec<String> = ["--project", PROJECT, "run"]
             .into_iter()
@@ -277,13 +279,14 @@ mod tests {
             ]
         );
         assert_eq!(
-            &cloud.runner.args[4][3..8],
+            &cloud.runner.args[4][3..9],
             [
                 "services",
                 "update",
                 "physician-worker",
                 "--image",
-                "image@sha256:abc"
+                "image@sha256:abc",
+                "--async"
             ]
         );
     }
@@ -300,6 +303,35 @@ mod tests {
         assert!(!encoded.contains("secret"));
         assert!(!String::from_utf8(summary).expect("utf8").contains("secret"));
         assert_eq!(receipt.causes.len(), 1);
+    }
+    #[test]
+    fn failure_output_names_only_the_allowlisted_api_status() {
+        let mut receipt = super::super::tests::receipt();
+        let failure = || {
+            command_error(output(
+                1,
+                "secret-stdout",
+                "ERROR: (gcloud.run.services.update) PERMISSION_DENIED: secret-stderr",
+            ))
+        };
+        retain_cause(&mut receipt, failure());
+        let error = Error::Related {
+            primary: Box::new(Error::Cloud("rollout-not-confirmed")),
+            causes: receipt.causes.clone(),
+        };
+        let message = failure_message(&error);
+        assert_eq!(
+            message,
+            "staging release failed: rollout-not-confirmed (API status PERMISSION_DENIED)"
+        );
+        let encoded = serde_json::to_string(&receipt).expect("receipt");
+        assert!(encoded.contains("\"PERMISSION_DENIED\""));
+        assert!(!encoded.contains("secret") && !message.contains("secret"));
+        assert_eq!(
+            failure_message(&command_error(output(1, "", "secret-stderr"))),
+            "staging release failed: gcloud-command-failed"
+        );
+        assert_eq!(failure_message(&failure()).matches("PERMISSION").count(), 1);
     }
     #[test]
     fn process_timeout_is_bounded_and_retains_cause() {

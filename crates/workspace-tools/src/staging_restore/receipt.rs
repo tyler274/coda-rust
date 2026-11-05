@@ -36,6 +36,8 @@ pub(super) struct Receipt {
     pub region: String,
     pub run_id: String,
     pub backup: Backup,
+    /// Initial target disk, copied from the source so the backup fits.
+    pub storage_size_gb: u64,
     pub preflight_at_unix_seconds: u64,
     pub phase: Phase,
     pub create_operation: Option<String>,
@@ -76,11 +78,13 @@ impl Receipt {
         target: String,
         backup: Backup,
         region: String,
+        storage_size_gb: u64,
         now: u64,
         age: u64,
     ) -> Self {
         Self {
-            schema_version: 1,
+            schema_version: 2,
+            storage_size_gb,
             project: PROJECT.into(),
             source: product.source(),
             product,
@@ -120,11 +124,12 @@ impl Receipt {
             .map_err(super::Error::from)
     }
     pub fn validate(&self) -> Result<()> {
-        if self.schema_version != 1
+        if self.schema_version != 2
             || self.project != PROJECT
             || self.source != self.product.source()
             || self.backup.instance != self.source
             || self.backup.status != "SUCCESSFUL"
+            || !super::STORAGE_GB.contains(&self.storage_size_gb)
             || self.run_id.is_empty()
             || !self.run_id.bytes().all(|b| b.is_ascii_digit() || b == b'-')
             || self.region.is_empty()

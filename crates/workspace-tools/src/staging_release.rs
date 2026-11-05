@@ -49,6 +49,9 @@ fn migration_phase(app: &str, step: u8) -> Phase {
     }
 }
 
+/// Polls after an async service update: 120 x 5 s covers image pull plus the
+/// 120 s startup probe budget, and the shared `Gcloud` deadline still applies.
+const ROLLOUT_POLLS: usize = 120;
 const PROJECT: &str = "coda-rust-staging";
 const REGION: &str = "us-east1";
 const SERVICES: [&str; 3] = ["physician", "duet", "physician-worker"];
@@ -85,6 +88,13 @@ enum Error {
         primary: Box<Error>,
         causes: Vec<Arc<Error>>,
     },
+    /// The operation failed and its receipt could not record that failure.
+    #[error("release failed and its receipt could not be saved ({})", persistence)]
+    Unrecorded {
+        #[source]
+        primary: Box<Error>,
+        persistence: Box<Error>,
+    },
 }
 #[derive(Debug, thiserror::Error)]
 #[error("gcloud exited with {status:?}")]
@@ -101,7 +111,19 @@ impl Error {
             Self::Io(_) => "io-failed",
             Self::Json(_) => "json-invalid",
             Self::Observations(_) => "observations-failed",
-            Self::Related { primary, .. } => primary.safe_code(),
+            Self::Related { primary, .. } | Self::Unrecorded { primary, .. } => primary.safe_code(),
+        }
+    }
+    /// Allowlisted provider status of the primary cloud command failure, if any.
+    fn api_status(&self) -> Option<&'static str> {
+        match self {
+            Self::Command { source, .. } => crate::failure::api_status(&source.stderr),
+            Self::Observations(inner) => inner.api_status(),
+            Self::Related { primary, causes } => primary
+                .api_status()
+                .or_else(|| causes.iter().rev().find_map(|cause| cause.api_status())),
+            Self::Unrecorded { primary, .. } => primary.api_status(),
+            _ => None,
         }
     }
 }
@@ -214,6 +236,9 @@ fn diagnostic(receipt: &mut Receipt, code: &str) {
 }
 fn retain_cause(receipt: &mut Receipt, error: Error) {
     diagnostic(receipt, error.safe_code());
+    if let Some(status) = error.api_status() {
+        diagnostic(receipt, status);
+    }
     receipt.causes.push(Arc::new(error));
 }
 fn observe(receipt: &mut Receipt, cloud: &mut impl Cloud, name: &str) -> Observation {
@@ -224,6 +249,12 @@ fn observe(receipt: &mut Receipt, cloud: &mut impl Cloud, name: &str) -> Observa
             Observation::Unknown
         }
     }
+}
+fn budget_exhausted(receipt: &Receipt) -> bool {
+    receipt
+        .causes
+        .last()
+        .is_some_and(|cause| cause.safe_code() == command::BUDGET_EXHAUSTED)
 }
 fn snapshot(receipt: &mut Receipt, cloud: &mut impl Cloud, before: bool) -> bool {
     let mut complete = true;
@@ -343,8 +374,17 @@ fn rollout(
             _ => Phase::WorkerRollout,
         },
     )?;
+    // The update is submitted asynchronously; readiness is confirmed by bounded
+    // polling rather than by a synchronous call that a per-call cap could kill.
     let update = cloud.update_service(name, &image);
-    let observed = observe(receipt, cloud, name);
+    let mut observed = observe(receipt, cloud, name);
+    for _ in 0..ROLLOUT_POLLS {
+        if serving(&observed, &image) || budget_exhausted(receipt) {
+            break;
+        }
+        cloud.pause();
+        observed = observe(receipt, cloud, name);
+    }
     let ready = serving(&observed, &image);
     let record = receipt.services.get_mut(name).expect("service");
     record.final_state = observed;
@@ -421,13 +461,21 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
     } else {
         Outcome::PartialOrUnknown
     };
-    store.save(receipt)?;
+    let saved = store.save(receipt);
     if let Err(error) = result {
-        return Err(Error::Related {
+        let primary = Error::Related {
             primary: Box::new(error),
             causes: receipt.causes.clone(),
+        };
+        return Err(match saved {
+            Ok(()) => primary,
+            Err(persistence) => Error::Unrecorded {
+                primary: Box::new(primary),
+                persistence: Box::new(persistence),
+            },
         });
     }
+    saved?;
     if receipt.outcome == Outcome::Succeeded {
         Ok(())
     } else {
@@ -617,7 +665,7 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
         }
     }
     fn update_service(&mut self, name: &str, image: &str) -> Result<()> {
-        self.json(&["services", "update", name, "--image", image])
+        self.json(&["services", "update", name, "--image", image, "--async"])
             .map(|_| ())
     }
     fn pause(&mut self) {
@@ -882,14 +930,17 @@ fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
     )?;
     Ok(())
 }
+fn failure_message(error: &Error) -> String {
+    match error.api_status() {
+        Some(status) => format!(
+            "staging release failed: {} (API status {status})",
+            error.safe_code()
+        ),
+        None => format!("staging release failed: {}", error.safe_code()),
+    }
+}
 pub fn from_args(args: &[String]) -> std::result::Result<(), Failure> {
-    run(args).map_err(|error| {
-        Failure::with_source(
-            1,
-            format!("staging release failed: {}", error.safe_code()),
-            error,
-        )
-    })
+    run(args).map_err(|error| Failure::with_source(1, failure_message(&error), error))
 }
 
 #[cfg(test)]
@@ -900,10 +951,13 @@ mod tests {
     struct MemoryStore {
         receipts: Vec<Receipt>,
         fail_at: Option<usize>,
+        fail_final_partial: bool,
     }
     impl Store for MemoryStore {
         fn save(&mut self, receipt: &Receipt) -> Result<()> {
-            if self.fail_at == Some(self.receipts.len()) {
+            if self.fail_at == Some(self.receipts.len())
+                || (self.fail_final_partial && receipt.outcome == Outcome::PartialOrUnknown)
+            {
                 return Err(Error::Cloud("receipt-unwritable"));
             }
             self.receipts.push(receipt.clone());
@@ -921,6 +975,10 @@ mod tests {
         wrong_ready_image: bool,
         worker_failure: bool,
         split_traffic: bool,
+        // Observations of an updated service that still show the previous revision.
+        not_ready_observations: usize,
+        pending: BTreeMap<String, (Observation, usize)>,
+        pauses: usize,
     }
     impl FakeCloud {
         fn new() -> Self {
@@ -938,6 +996,9 @@ mod tests {
                 wrong_ready_image: false,
                 worker_failure: false,
                 split_traffic: false,
+                not_ready_observations: 0,
+                pending: BTreeMap::new(),
+                pauses: 0,
             }
         }
     }
@@ -956,6 +1017,15 @@ mod tests {
     }
     impl Cloud for FakeCloud {
         fn service(&mut self, name: &str) -> Result<Observation> {
+            if let Some((state, remaining)) = self.pending.get_mut(name) {
+                if *remaining > 0 {
+                    *remaining -= 1;
+                } else {
+                    let state = state.clone();
+                    self.pending.remove(name);
+                    self.services.insert(name.into(), state);
+                }
+            }
             Ok(self.services[name].clone())
         }
         fn update_job(&mut self, name: &str, _: &str) -> Result<()> {
@@ -1005,14 +1075,21 @@ mod tests {
                     service.traffic[0].percent = 50;
                 }
             }
-            self.services.insert(name.into(), state);
+            if self.not_ready_observations > 0 {
+                self.pending
+                    .insert(name.into(), (state, self.not_ready_observations));
+            } else {
+                self.services.insert(name.into(), state);
+            }
             if self.ambiguous_update {
                 Err(Error::Cloud("lost-response"))
             } else {
                 Ok(())
             }
         }
-        fn pause(&mut self) {}
+        fn pause(&mut self) {
+            self.pauses += 1;
+        }
     }
     pub(super) fn receipt() -> Receipt {
         let options = BTreeMap::from([
@@ -1160,6 +1237,65 @@ mod tests {
                 assert!(cloud.writes.is_empty());
             }
             assert_eq!(store.receipts.len(), checkpoint);
+        }
+    }
+    #[test]
+    fn slow_rollout_is_polled_until_ready_without_repeating_the_update() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.not_ready_observations = 3;
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
+        assert_eq!(receipt.outcome, Outcome::Succeeded);
+        assert_eq!(
+            cloud
+                .writes
+                .iter()
+                .filter(|write| write.starts_with("service:"))
+                .count(),
+            3
+        );
+        assert_eq!(cloud.pauses, 9);
+    }
+    #[test]
+    fn never_ready_rollout_stops_after_bounded_polls() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.not_ready_observations = usize::MAX;
+        let error =
+            deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("not ready");
+        assert_eq!(error.safe_code(), "rollout-not-confirmed");
+        assert_eq!(cloud.pauses, ROLLOUT_POLLS);
+        assert_eq!(cloud.writes.len(), 3);
+        assert_eq!(receipt.services["physician"].outcome, Outcome::Unknown);
+    }
+    #[test]
+    fn final_receipt_failure_keeps_the_operation_error() {
+        for scenario in 0..2 {
+            let mut cloud = FakeCloud::new();
+            cloud.fail_migration = scenario == 0;
+            cloud.worker_failure = scenario == 1;
+            let mut store = MemoryStore {
+                fail_final_partial: true,
+                ..MemoryStore::default()
+            };
+            let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
+            let Error::Unrecorded {
+                primary,
+                persistence,
+            } = &error
+            else {
+                panic!("persistence failure replaced the operation error: {error:?}");
+            };
+            assert!(matches!(**primary, Error::Related { .. }));
+            assert_eq!(persistence.safe_code(), "receipt-unwritable");
+            assert_eq!(
+                error.safe_code(),
+                if scenario == 0 {
+                    "migration-failed"
+                } else {
+                    "rollout-not-confirmed"
+                }
+            );
         }
     }
     #[test]

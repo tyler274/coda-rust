@@ -49,14 +49,23 @@ GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars) and
 [`backend/staging.gcs.tfbackend`](/infra/gcp/rust-environments/backend/staging.gcs.tfbackend).
 
-From an authorized engineering account:
+From an authorized engineering account, in a Doppler-authorized `nix develop`
+shell (not `.#agent`). Database-enabled plans read the four existing
+application passwords without printing them; this changes no password or
+version:
 
 ```bash
 root=infra/gcp/rust-environments
-nix develop .#release --command tofu -chdir="$root" init -input=false \
+tofu -chdir="$root" init -input=false \
   -backend-config=backend/staging.gcs.tfbackend
-nix develop .#release --command tofu -chdir="$root" plan -input=false \
-  -var-file=env/staging.tfvars -out=staging.tfplan
+export TF_VAR_database_passwords="$(jq -cn \
+  --arg pr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_runtime)" \
+  --arg pm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_migration)" \
+  --arg dr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_runtime)" \
+  --arg dm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_migration)" \
+  '{"physician-runtime":$pr,"physician-migration":$pm,"duet-runtime":$dr,"duet-migration":$dm}')"
+tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars -out=staging.tfplan
+unset TF_VAR_database_passwords
 ```
 
 Review the saved plan before any separately authorized apply. Engineering-group
@@ -199,7 +208,8 @@ runs on pushes to `main`, after every check job, when the repository variable
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
-   traffic;
+   traffic. The update is submitted with `--async` and readiness is polled every
+   5 s for at most 10 minutes, within the release's overall command budget;
 3. updates `physician-worker` to its digest once that service exists, with the same
    Ready-revision check. Until then it reports the digest to record as
    `images.physician.worker` for the scaling apply;
@@ -246,12 +256,20 @@ release identity receives no SQL administration privileges.
 
 Run `cargo run -p workspace-tools -- staging-restore --help` in the dev shell for
 the command interface. Use a fresh receipt path for execution after preflight.
-The command creates a private PostgreSQL target, records its creation identity,
+The command creates a private PostgreSQL target sized from the source's data disk
+(preflight refuses sources outside 10-50 GB), records its creation identity,
 restores the selected backup and waits for bounded operations. It refuses an
 existing target rather than trusting its name or labels. Receipts retain operation
 IDs, backup age, elapsed restore time and cleanup state; an interrupted create
 may leave a billable resource whose identity requires manual investigation.
 Never blindly retry or delete a target solely by its name.
+
+When cleanup refuses because the receipt has no `target_created_at` (the create
+failed or timed out before its identity was recorded), the authorizing operator
+owns the investigation. Describe the receipt's `create_operation`, then describe
+the instance and match its `coda-run` label to the receipt's `run_id`, and its
+project, network and create time to the receipt. Delete it only under a separate
+explicit authorization, and record the result beside the receipt.
 
 Cloud restore completion is explicitly **unqualified**. Before a rehearsal:
 

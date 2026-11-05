@@ -15,6 +15,8 @@ use std::{
 
 const PROJECT: &str = "coda-rust-staging";
 const NETWORK: &str = "projects/coda-rust-staging/global/networks/rust-private";
+/// Cloud SQL's minimum through the target's auto-resize cap (`--storage-auto-increase-limit`).
+const STORAGE_GB: std::ops::RangeInclusive<u64> = 10..=50;
 const WAIT_LIMIT: Duration = Duration::from_secs(1800);
 const POLL_INTERVAL: Duration = Duration::from_secs(5);
 
@@ -40,6 +42,13 @@ pub(super) enum Error {
     Clock(#[from] std::time::SystemTimeError),
     #[error("backup timestamp precedes Unix epoch: {0}")]
     Epoch(#[from] std::num::TryFromIntError),
+    /// The operation failed and its receipt could not record that failure.
+    #[error("restore failed and its receipt could not be saved ({persistence})")]
+    Unrecorded {
+        #[source]
+        primary: Box<Error>,
+        persistence: Box<Error>,
+    },
 }
 impl Error {
     fn receipt_code(&self) -> receipt::FailureCode {
@@ -52,6 +61,7 @@ impl Error {
             Self::Operation { .. } => FailureCode::CloudOperation,
             Self::Timeout => FailureCode::Timeout,
             Self::Timestamp(_) | Self::Clock(_) | Self::Epoch(_) => FailureCode::InvalidTime,
+            Self::Unrecorded { primary, .. } => primary.receipt_code(),
         }
     }
 }
@@ -110,8 +120,28 @@ impl Request {
     }
 }
 
+impl Error {
+    /// Allowlisted provider status of the primary cloud command failure, if any.
+    fn api_status(&self) -> Option<&'static str> {
+        match self {
+            Self::Cloud { stderr, .. } => crate::failure::api_status(stderr.as_bytes()),
+            Self::Unrecorded { primary, .. } => primary.api_status(),
+            _ => None,
+        }
+    }
+}
+fn failure_message(error: &Error) -> String {
+    let status = error
+        .api_status()
+        .map(|status| format!(" (API status {status})"))
+        .unwrap_or_default();
+    format!(
+        "staging restore failed: {:?}{status}; inspect the receipt phase and operation with the authorized operator",
+        error.receipt_code()
+    )
+}
 pub fn from_args(args: &[String]) -> std::result::Result<(), Failure> {
-    run_cli(args).map_err(|error| Failure::with_source(1, format!("staging restore failed: {:?}; inspect the receipt phase and operation with the authorized operator", error.receipt_code()), error))
+    run_cli(args).map_err(|error| Failure::with_source(1, failure_message(&error), error))
 }
 
 const USAGE: &str = "staging-restore --product physician|duet --backup ID --target rust-restore-<product>-<run> --receipt PATH [--execute --authorize-staging-restore]\n\
@@ -260,11 +290,22 @@ fn preflight(cloud: &mut impl Cloud, request: &Request) -> Result<Receipt> {
     let age = now
         .checked_sub(backup_epoch)
         .ok_or_else(|| refuse("backup timestamp is in the future"))?;
+    // Cloud SQL refuses to restore into a smaller disk than the source's.
+    let storage_size_gb = source
+        .settings
+        .data_disk_size_gb
+        .parse()
+        .ok()
+        .filter(|size| STORAGE_GB.contains(size))
+        .ok_or_else(|| {
+            refuse("source disk size is unknown or outside the drill's 10-50 GB bound")
+        })?;
     Ok(Receipt::new(
         request.product,
         request.target.clone(),
         backup,
         source.region.clone(),
+        storage_size_gb,
         now,
         age,
     ))
@@ -282,13 +323,19 @@ fn restore(
         println!("Preflight passed; no cloud writes. Product validation remains pending.");
         return Ok(());
     }
-    let outcome = execute_restore(cloud, store, &mut receipt);
-    if let Err(error) = &outcome {
-        receipt.failure = Some(error.receipt_code());
-        // Persistence failure is an error too; never continue cloud writes after it.
-        store.save(&receipt)?;
-    }
-    outcome
+    let Err(error) = execute_restore(cloud, store, &mut receipt) else {
+        return Ok(());
+    };
+    receipt.failure = Some(error.receipt_code());
+    // Persistence failure is an error too; never continue cloud writes after it,
+    // and keep the operation error that the receipt failed to record.
+    Err(match store.save(&receipt) {
+        Ok(()) => error,
+        Err(persistence) => Error::Unrecorded {
+            primary: Box::new(error),
+            persistence: Box::new(persistence),
+        },
+    })
 }
 
 fn execute_restore(

@@ -14,7 +14,7 @@ fn instance(name: &str) -> Instance {
         "name": name, "project": PROJECT, "region": "us-central1", "state": "RUNNABLE",
         "databaseVersion": "POSTGRES_17", "instanceType": "CLOUD_SQL_INSTANCE",
         "createTime": "2026-01-02T03:04:05Z", "ipAddresses": [{"type": "PRIVATE"}],
-        "settings": {"storageAutoResize": true, "storageAutoResizeLimit": "50", "ipConfiguration": {"ipv4Enabled": false, "privateNetwork": NETWORK, "sslMode": "ENCRYPTED_ONLY"}}
+        "settings": {"dataDiskSizeGb": "20", "storageAutoResize": true, "storageAutoResizeLimit": "50", "ipConfiguration": {"ipv4Enabled": false, "privateNetwork": NETWORK, "sslMode": "ENCRYPTED_ONLY"}}
     }))
     .unwrap()
 }
@@ -140,13 +140,16 @@ impl Cloud for FakeCloud {
 struct Memory {
     snapshots: Vec<Receipt>,
     fail_at: Option<usize>,
+    fail_recording_failure: bool,
 }
 impl Persistence for Memory {
     fn create(&mut self, r: &Receipt) -> Result<()> {
         self.save(r)
     }
     fn save(&mut self, r: &Receipt) -> Result<()> {
-        if self.fail_at == Some(self.snapshots.len()) {
+        if self.fail_at == Some(self.snapshots.len())
+            || (self.fail_recording_failure && r.failure.is_some())
+        {
             return Err(refuse("injected persistence failure"));
         }
         self.snapshots.push(r.clone());
@@ -292,6 +295,27 @@ fn restore_error_keeps_cleanup_required_and_never_reports_completion() {
     assert_eq!(receipt.cleanup, Cleanup::RequiredOrCreationUncertain);
 }
 #[test]
+fn failure_receipt_persistence_error_keeps_the_operation_error() {
+    let mut cloud = FakeCloud::new(Product::Duet);
+    cloud.restore_failure = true;
+    let mut store = Memory {
+        fail_recording_failure: true,
+        ..Memory::default()
+    };
+    let error = restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap_err();
+    let Error::Unrecorded {
+        primary,
+        persistence,
+    } = &error
+    else {
+        panic!("persistence failure replaced the operation error: {error:?}");
+    };
+    assert!(matches!(**primary, Error::Operation { .. }));
+    assert!(matches!(**persistence, Error::Unsafe(_)));
+    assert_eq!(error.receipt_code(), receipt::FailureCode::CloudOperation);
+    assert_eq!(cloud.writes, ["create", "restore"]);
+}
+#[test]
 fn persistence_failure_stops_further_cloud_writes() {
     for fail_at in [0, 1, 2, 3, 4] {
         let mut cloud = FakeCloud::new(Product::Duet);
@@ -381,10 +405,45 @@ fn receipts_exclude_provider_diagnostics_codes_and_untrusted_operation_ids() {
     }
     assert!(serde_json::from_str::<receipt::FailureCode>("\"SECRET-provider-code\"").is_err());
 }
+#[test]
+fn failure_message_names_only_the_allowlisted_api_status() {
+    let error = Error::Cloud {
+        code: Some(1),
+        stderr: "ERROR: (gcloud.sql.instances.create) RESOURCE_EXHAUSTED: SECRET-quota".into(),
+    };
+    let message = failure_message(&error);
+    assert!(
+        message
+            .starts_with("staging restore failed: CloudCommand (API status RESOURCE_EXHAUSTED);")
+    );
+    assert!(!message.contains("SECRET"));
+    let plain = failure_message(&Error::Cloud {
+        code: Some(1),
+        stderr: "SECRET".into(),
+    });
+    assert!(plain.starts_with("staging restore failed: CloudCommand;"));
+}
 
 #[test]
+fn source_disk_outside_the_drill_bound_is_refused_before_writes() {
+    for size in ["9", "51", "60", "unknown"] {
+        let mut cloud = FakeCloud::new(Product::Duet);
+        cloud.instances[0].settings.data_disk_size_gb = size.into();
+        let mut store = Memory::default();
+        assert!(matches!(
+            restore(&mut cloud, &mut store, request(Product::Duet), true),
+            Err(Error::Unsafe(_))
+        ));
+        assert!(cloud.writes.is_empty());
+        assert!(store.snapshots.is_empty());
+    }
+}
+#[test]
 fn creation_command_uses_supported_beta_labels_tls_and_bounded_storage() {
-    let receipt = preflight(&mut FakeCloud::new(Product::Duet), &request(Product::Duet)).unwrap();
+    let mut cloud = FakeCloud::new(Product::Duet);
+    cloud.instances[0].settings.data_disk_size_gb = "30".into();
+    let receipt = preflight(&mut cloud, &request(Product::Duet)).unwrap();
+    assert_eq!(receipt.storage_size_gb, 30);
     let args = cloud::create_args(&receipt);
     assert_eq!(&args[..4], ["beta", "sql", "instances", "create"]);
     for required in [
@@ -392,7 +451,7 @@ fn creation_command_uses_supported_beta_labels_tls_and_bounded_storage() {
         "--ssl-mode=ENCRYPTED_ONLY",
         "--storage-auto-increase",
         "--storage-auto-increase-limit=50",
-        "--storage-size=20",
+        "--storage-size=30",
         "--async",
     ] {
         assert!(args.iter().any(|arg| arg == required));
@@ -426,9 +485,24 @@ fn installed_sdk_accepts_creation_flags() {
         String::from_utf8_lossy(&output.stderr)
     );
     let help = String::from_utf8_lossy(&output.stdout);
-    for flag in ["--labels", "--ssl-mode", "--storage-auto-increase-limit"] {
+    for flag in [
+        "--labels",
+        "--ssl-mode",
+        "--storage-auto-increase-limit",
+        "--storage-size",
+    ] {
         assert!(help.contains(flag), "missing supported flag {flag}");
     }
+    // The staging release submits service updates asynchronously and polls readiness.
+    let output = std::process::Command::new("timeout")
+        .args(["--kill-after=5s", "30s", "gcloud"])
+        .args(["run", "services", "update", "--help"])
+        .env("CLOUDSDK_CORE_DISABLE_PROMPTS", "1")
+        .env("PAGER", "cat")
+        .output()
+        .unwrap();
+    assert!(output.status.success());
+    assert!(String::from_utf8_lossy(&output.stdout).contains("--async"));
 }
 
 #[test]

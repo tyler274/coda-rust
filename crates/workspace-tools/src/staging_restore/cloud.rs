@@ -40,6 +40,9 @@ impl Instance {
 #[serde(rename_all = "camelCase")]
 pub(super) struct Settings {
     pub ip_configuration: IpConfiguration,
+    /// Cloud SQL serializes this int64 as a JSON string.
+    #[serde(default)]
+    pub data_disk_size_gb: String,
     pub storage_auto_resize: bool,
     pub storage_auto_resize_limit: String,
     #[serde(default)]
@@ -156,6 +159,7 @@ pub(super) fn create_args(receipt: &Receipt) -> Vec<String> {
         receipt.product.name(),
         receipt.run_id
     );
+    let storage = format!("--storage-size={}", receipt.storage_size_gb);
     // No bindings, SQL users, Cloud Run revisions, subscriptions, worker processes or messages.
     // Existing release identities retain their instance-scoped grants; this adds no IAM.
     [
@@ -174,7 +178,7 @@ pub(super) fn create_args(receipt: &Receipt) -> Vec<String> {
         NETWORK,
         "--no-assign-ip",
         "--no-deletion-protection",
-        "--storage-size=20",
+        &storage,
         "--storage-auto-increase",
         "--storage-auto-increase-limit=50",
         "--ssl-mode=ENCRYPTED_ONLY",
