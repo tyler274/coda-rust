@@ -346,8 +346,7 @@ fn migrate(
             }
             Execution::Failed => {
                 receipt.migrations.get_mut(app).expect("migration").outcome = Outcome::Failed;
-                store.save(receipt)?;
-                return Err(Error::Cloud("migration-failed"));
+                return save_settled(store, receipt, Err(Error::Cloud("migration-failed")));
             }
             Execution::Pending => cloud.pause(),
         }
@@ -397,12 +396,12 @@ fn rollout(
         retain_cause(receipt, error);
         diagnostic(receipt, "update-response-failed-reconciled");
     }
-    store.save(receipt)?;
-    if ready {
+    let result = if ready {
         Ok(())
     } else {
         Err(Error::Cloud("rollout-not-confirmed"))
-    }
+    };
+    save_settled(store, receipt, result)
 }
 fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud) -> Result<()> {
     if receipt.outcome != Outcome::Initialized {
@@ -478,10 +477,15 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
         ),
         Ok(()) => None,
     };
-    match (failure, store.save(receipt)) {
-        (None, saved) => saved,
-        (Some(primary), Ok(())) => Err(primary),
-        (Some(primary), Err(persistence)) => Err(Error::Unrecorded {
+    save_settled(store, receipt, failure.map_or(Ok(()), Err))
+}
+/// Save a receipt that records an already-settled result. A save failure never
+/// replaces the operation error it was meant to record.
+fn save_settled(store: &mut impl Store, receipt: &Receipt, result: Result<()>) -> Result<()> {
+    match (result, store.save(receipt)) {
+        (Ok(()), saved) => saved,
+        (Err(primary), Ok(())) => Err(primary),
+        (Err(primary), Err(persistence)) => Err(Error::Unrecorded {
             primary: Box::new(primary),
             persistence: Box::new(persistence),
         }),
@@ -863,8 +867,7 @@ fn run(args: &[String]) -> Result<()> {
             if images.is_err() {
                 diagnostic(&mut receipt, "invalid-publication-evidence");
             }
-            store.save(&receipt)?;
-            images?;
+            save_settled(&mut store, &receipt, images)?;
             deploy(&mut receipt, &mut store, &mut Gcloud::default())
         }
         "finalize" => {
@@ -880,21 +883,31 @@ fn run(args: &[String]) -> Result<()> {
                 receipt.outcome = Outcome::PartialOrUnknown;
                 diagnostic(&mut receipt, "finalized-incomplete-release");
             }
-            store.save(&receipt)?;
+            let result = images.and_then(|()| {
+                if receipt.outcome == Outcome::Succeeded {
+                    Ok(())
+                } else {
+                    Err(receipt
+                        .causes
+                        .last()
+                        .cloned()
+                        .map_or(Error::Cloud("release-incomplete"), Error::Observations))
+                }
+            });
+            if let Err(persistence) = store.save(&receipt) {
+                return Err(match result {
+                    Ok(()) => persistence,
+                    Err(primary) => Error::Unrecorded {
+                        primary: Box::new(primary),
+                        persistence: Box::new(persistence),
+                    },
+                });
+            }
             if let Some(path) = std::env::var_os("GITHUB_STEP_SUMMARY") {
                 let mut file = OpenOptions::new().append(true).create(true).open(path)?;
                 write_summary(&receipt, &mut file)?;
             }
-            images?;
-            if receipt.outcome == Outcome::Succeeded {
-                Ok(())
-            } else {
-                Err(receipt
-                    .causes
-                    .last()
-                    .cloned()
-                    .map_or(Error::Cloud("release-incomplete"), Error::Observations))
-            }
+            result
         }
         _ => Err(Error::Input("expected init, deploy, or finalize")),
     }
@@ -953,11 +966,17 @@ mod tests {
         receipts: Vec<Receipt>,
         fail_at: Option<usize>,
         fail_final_partial: bool,
+        fail_failed_migration: bool,
     }
     impl Store for MemoryStore {
         fn save(&mut self, receipt: &Receipt) -> Result<()> {
             if self.fail_at == Some(self.receipts.len())
                 || (self.fail_final_partial && receipt.outcome == Outcome::PartialOrUnknown)
+                || (self.fail_failed_migration
+                    && receipt
+                        .migrations
+                        .values()
+                        .any(|migration| migration.outcome == Outcome::Failed))
             {
                 return Err(Error::Cloud("receipt-unwritable"));
             }
@@ -1322,6 +1341,24 @@ mod tests {
                 }
             );
         }
+    }
+    #[test]
+    fn failed_migration_survives_an_unwritable_receipt() {
+        let mut cloud = FakeCloud::new();
+        cloud.fail_migration = true;
+        let mut store = MemoryStore {
+            fail_failed_migration: true,
+            ..MemoryStore::default()
+        };
+        let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("failed");
+        assert!(matches!(error, Error::Unrecorded { .. }), "{error:?}");
+        assert_eq!(error.safe_code(), "migration-failed");
+        assert!(
+            !cloud
+                .writes
+                .iter()
+                .any(|write| write.starts_with("service:"))
+        );
     }
     #[test]
     fn propagated_command_failure_records_only_its_api_status() {

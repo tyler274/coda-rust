@@ -326,16 +326,30 @@ fn restore(
     let Err(error) = execute_restore(cloud, store, &mut receipt) else {
         return Ok(());
     };
+    if matches!(error, Error::Unrecorded { .. }) {
+        return Err(error);
+    }
     receipt.failure = Some(error.receipt_code());
     // Persistence failure is an error too; never continue cloud writes after it,
     // and keep the operation error that the receipt failed to record.
-    Err(match store.save(&receipt) {
-        Ok(()) => error,
-        Err(persistence) => Error::Unrecorded {
-            primary: Box::new(error),
+    save_settled(store, &receipt, Err(error))
+}
+
+/// Save a receipt that records an already-settled result. A save failure never
+/// replaces the operation error it was meant to record.
+fn save_settled(
+    store: &mut impl receipt::Persistence,
+    receipt: &Receipt,
+    result: Result<()>,
+) -> Result<()> {
+    match (result, store.save(receipt)) {
+        (Ok(()), saved) => saved,
+        (Err(primary), Ok(())) => Err(primary),
+        (Err(primary), Err(persistence)) => Err(Error::Unrecorded {
+            primary: Box::new(primary),
             persistence: Box::new(persistence),
-        },
-    })
+        }),
+    }
 }
 
 fn execute_restore(
@@ -355,8 +369,8 @@ fn execute_restore(
     let operation = cloud.create(receipt)?;
     check_operation_identity(&operation, receipt, "CREATE")?;
     receipt.create_operation = Some(operation.name.clone());
-    store.save(receipt)?;
-    check_operation(&operation, receipt, "CREATE")?;
+    let checked = check_operation(&operation, receipt, "CREATE");
+    save_settled(store, receipt, checked)?;
     wait(cloud, &operation.name, receipt, "CREATE")?;
     let target = cloud.instance(&receipt.target)?;
     validate_target(&target, receipt, false)?;
@@ -373,8 +387,8 @@ fn execute_restore(
     let operation = cloud.restore(receipt)?;
     check_operation_identity(&operation, receipt, "RESTORE_VOLUME")?;
     receipt.restore_operation = Some(operation.name.clone());
-    store.save(receipt)?;
-    check_operation(&operation, receipt, "RESTORE_VOLUME")?;
+    let checked = check_operation(&operation, receipt, "RESTORE_VOLUME");
+    save_settled(store, receipt, checked)?;
     wait(cloud, &operation.name, receipt, "RESTORE_VOLUME")?;
     let target = cloud.instance(&receipt.target)?;
     validate_target(&target, receipt, true)?;
@@ -544,8 +558,8 @@ fn cleanup(cloud: &mut impl Cloud, store: &mut impl receipt::Persistence) -> Res
     let operation = cloud.delete(&receipt.target)?;
     check_operation_identity(&operation, &receipt, "DELETE")?;
     receipt.delete_operation = Some(operation.name.clone());
-    store.save(&receipt)?;
-    check_operation(&operation, &receipt, "DELETE")?;
+    let checked = check_operation(&operation, &receipt, "DELETE");
+    save_settled(store, &receipt, checked)?;
     wait(cloud, &operation.name, &receipt, "DELETE")?;
     if cloud
         .instances()?

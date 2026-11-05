@@ -141,6 +141,7 @@ struct Memory {
     snapshots: Vec<Receipt>,
     fail_at: Option<usize>,
     fail_recording_failure: bool,
+    fail_recording_restore: bool,
 }
 impl Persistence for Memory {
     fn create(&mut self, r: &Receipt) -> Result<()> {
@@ -149,6 +150,7 @@ impl Persistence for Memory {
     fn save(&mut self, r: &Receipt) -> Result<()> {
         if self.fail_at == Some(self.snapshots.len())
             || (self.fail_recording_failure && r.failure.is_some())
+            || (self.fail_recording_restore && r.restore_operation.is_some())
         {
             return Err(refuse("injected persistence failure"));
         }
@@ -313,6 +315,21 @@ fn failure_receipt_persistence_error_keeps_the_operation_error() {
     assert!(matches!(**primary, Error::Operation { .. }));
     assert!(matches!(**persistence, Error::Unsafe(_)));
     assert_eq!(error.receipt_code(), receipt::FailureCode::CloudOperation);
+    assert_eq!(cloud.writes, ["create", "restore"]);
+}
+#[test]
+fn failed_operation_survives_an_unwritable_operation_record() {
+    let mut cloud = FakeCloud::new(Product::Duet);
+    cloud.restore_failure = true;
+    let mut store = Memory {
+        fail_recording_restore: true,
+        ..Memory::default()
+    };
+    let error = restore(&mut cloud, &mut store, request(Product::Duet), true).unwrap_err();
+    let Error::Unrecorded { primary, .. } = &error else {
+        panic!("persistence failure replaced the operation error: {error:?}");
+    };
+    assert!(matches!(**primary, Error::Operation { .. }), "{primary:?}");
     assert_eq!(cloud.writes, ["create", "restore"]);
 }
 #[test]
