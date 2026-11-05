@@ -56,38 +56,20 @@ its spec, and the code whose changes call for it. When a change touches that cod
 acceptance evidence comes from the skill. A change outside every skill's code proves itself
 with focused tests and the observations its criteria name.
 
-Each verify skill lives in `.agents/skills/coda-verify-*/`. Its description says what it proves,
-and its "When a change needs this" section names the code that calls for it.
-
-## The agent harness
-
-The agent harness stays out of the models and meets them only at declared events. An agent's
-event is the harness's output, and each tool it admits is one such event: the product host checks
-that event's `needs` before the effect commits, and the model decides when to use it. Retries,
-timeouts, cadence, memory and prompts stay in the harness, whose guarantees the
-[harness spec](../intent/harness.md) states. An app's own session and request handling is not the
-harness: when a rule depends on it, it belongs in the model.
+Each verify skill lives in `.agents/skills/coda-verify-*/`, with a `.claude/skills` link. Its
+description says what it proves, and its "When a change needs this" section names the code that
+calls for it.
 
 ## PStack
 
-Coda uses PStack's five verification skills as they are:
-
-- `statechart` checks a feature's model.
-- `create-formal-verification-skill` and `maintain-formal-verification-skill` connect the model to
-  the code and keep them in step.
-- `create-verification-skill` and `maintain-verification-skill` do the same for driving a running
-  app.
-
-Each create skill writes a project skill, such as
-[coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md), that names Coda's commands
-and what each check covers. `create-verification-skill` says to write it under
-`.cursor/skills/verify-<app>/`; in Coda it goes in `.agents/skills/coda-verify-<feature>/` with a
-`.claude/skills` link, like every repository skill. The maintain skills find a verify skill by
-what it does, not by its path. A project skill refers to `statechart` by name and copies none of its commands, options
-or paths, which change between PStack releases.
-
-The skills in `.agents/skills` are [PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
+`statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`,
+`create-verification-skill` and `maintain-verification-skill` in `.agents/skills` are
+[PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
 copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
 Their [MIT license](PSTACK-LICENSE) comes with them. The
 [daily check](../.github/workflows/pstack-watch.yml) opens or refreshes one review PR when these
 five imported skills change. [CI setup](../book/src/release.md#continuous-integration) covers PR publication.
+
+A verify skill the create skills write goes where [Verify skills](#verify-skills) says, not in
+`.cursor/skills/`. It refers to `statechart` by name and copies none of its commands, options or
+paths, which change between PStack releases.
