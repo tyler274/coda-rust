@@ -58,7 +58,7 @@ can break substitution. Retention changes must account for the reference graph.
 ### Local cache warming with act
 
 [The local workflow](/.github/workflows/nix-cache-local.yml) builds the same
-[allowlisted roots](/scripts/nix_cache_roots.py) as the hosted writer: three
+[allowlisted roots](/scripts/nix-cache/nix_cache_roots.py) as the hosted writer: three
 dependency artifacts and six runtime, migration and job images. It only warms the
 binary cache; it does not load or push images, deploy services, or replace the
 hosted image proofs. Hosted publication remains a protected `main`-push operation.
@@ -104,7 +104,7 @@ writers to finish. This pauses private reads as well as writes. Restore the exac
 previous value after the local run, including failures. Do not assume a local lock
 coordinates with GitHub's concurrency group.
 
-The [launcher](/scripts/warm_nix_cache.py) fetches only seven named settings from
+The [launcher](/scripts/nix-cache/warm_nix_cache.py) fetches only seven named settings from
 Doppler: bucket, public key, writer HMAC pair, signing key, and reader HMAC pair.
 It passes names rather than values on `act` arguments; no unrelated Doppler
 secrets are forwarded. The writer HMAC remains bucket-scoped and create-only.
@@ -112,7 +112,7 @@ secrets are forwarded. The writer HMAC remains bucket-scoped and create-only.
 ```bash
 # Inside nix develop .#agent, with a clean reviewed standalone checkout
 # and hosted publishers paused/drained under operator authorization:
-python scripts/warm_nix_cache.py \
+python scripts/nix-cache/warm_nix_cache.py \
   --expected-sha "$(git rev-parse HEAD)" \
   --doppler-config stg_nix_cache --acknowledge-exclusive-writer
 ```

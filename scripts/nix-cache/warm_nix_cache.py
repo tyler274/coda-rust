@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 SECRET_NAMES = (
     'NIX_CACHE_WRITE_ACCESS_KEY_ID', 'NIX_CACHE_WRITE_SECRET_ACCESS_KEY',
     'NIX_CACHE_SIGNING_KEY', 'NIX_CACHE_READ_ACCESS_KEY_ID',

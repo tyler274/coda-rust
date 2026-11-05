@@ -42,7 +42,7 @@ class LocalPolicyTests(unittest.TestCase):
             self.check()
 
     def test_dirty_tracked_or_untracked_source(self):
-        for status in (' M scripts/nix_cache.py', '?? extra.nix'):
+        for status in (' M scripts/nix-cache/nix_cache.py', '?? extra.nix'):
             self.run.side_effect = [self.sha, status]
             with self.subTest(status=status), self.assertRaisesRegex(ValueError, 'clean checkout'):
                 self.check()

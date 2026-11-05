@@ -31,7 +31,7 @@ jobs:
           # act omits empty, uninitialized gitlink directories during its copy.
           # Restore only those placeholders, never source files or submodule contents.
           git restore --worktree -- submodules/Coda-Computer-Use submodules/coda-agents submodules/coda-app submodules/coda-gym
-          python3 scripts/nix_cache_roots.py verify-checkout --expected-sha "$EXPECTED_SHA"
+          python3 scripts/nix-cache/nix_cache_roots.py verify-checkout --expected-sha "$EXPECTED_SHA"
       # v31 selects single-user mode for --no-daemon, clears build-users-group,
       # and adds the user profile to GITHUB_PATH. No systemd or host /nix mount.
       - name: Install isolated single-user Nix
@@ -42,10 +42,10 @@ jobs:
           extra_nix_config: |
             sandbox = false
       - name: Collect reusable Nix build roots
-        run: python3 scripts/nix_cache_roots.py build --output "$RUNNER_TEMP/nix-cache-build.json"
+        run: python3 scripts/nix-cache/nix_cache_roots.py build --output "$RUNNER_TEMP/nix-cache-build.json"
       - name: Select a small closure for the signed smoke publish
         run: |
-          python3 scripts/nix_cache_roots.py smoke --build-json "$RUNNER_TEMP/nix-cache-build.json" --output "$RUNNER_TEMP/nix-cache-smoke.json"
+          python3 scripts/nix-cache/nix_cache_roots.py smoke --build-json "$RUNNER_TEMP/nix-cache-build.json" --output "$RUNNER_TEMP/nix-cache-smoke.json"
       - name: Publish signed reusable Nix outputs
         timeout-minutes: 90
         env:
@@ -55,13 +55,13 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.NIX_CACHE_WRITE_SECRET_ACCESS_KEY }}
           NIX_CACHE_SIGNING_KEY: ${{ secrets.NIX_CACHE_SIGNING_KEY }}
         run: |
-          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-smoke.json"
-          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
-          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
+          python3 scripts/nix-cache/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-smoke.json"
+          python3 scripts/nix-cache/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
+          python3 scripts/nix-cache/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
       - name: Prove fresh signed substitution using reader credentials
         env:
           NIX_CACHE_BUCKET: ${{ secrets.NIX_CACHE_BUCKET }}
           NIX_CACHE_PUBLIC_KEY: ${{ secrets.NIX_CACHE_PUBLIC_KEY }}
           NIX_CACHE_READ_ACCESS_KEY_ID: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           NIX_CACHE_READ_SECRET_ACCESS_KEY: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
-        run: python3 scripts/nix_cache_verify.py --build-json "$RUNNER_TEMP/nix-cache-build.json"
+        run: python3 scripts/nix-cache/nix_cache_verify.py --build-json "$RUNNER_TEMP/nix-cache-build.json"

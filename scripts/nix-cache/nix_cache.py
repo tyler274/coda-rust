@@ -42,7 +42,7 @@ from nix_cache_local import authorize
 from nix_cache_copy import copy_closure
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DAEMON_DIR = Path('/run/coda-nix-cache')
 DROPIN = Path('/run/systemd/system/nix-daemon.service.d/90-coda-nix-cache.conf')
 SECRET_VARS = ('AWS_ACCESS_KEY_ID', 'AWS_SECRET_ACCESS_KEY', 'AWS_SESSION_TOKEN',
