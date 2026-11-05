@@ -118,7 +118,7 @@ compose credentials are fixed local development values, and every port binds to
 ## Validation
 
 CI (`.github/workflows/ci.yml`, job `observability`) runs these inside
-`nix develop`:
+`nix develop .#observability`, a shell with only the collector and OpenTofu:
 
 ```sh
 LANGFUSE_PUBLIC_KEY=x LANGFUSE_SECRET_KEY=y otelcol-contrib validate --config dev/observability/collector.yaml

@@ -29,13 +29,13 @@ use ui::{
     MeasurementTile, Menu, MenuItem, MenuSection, Message, MessageActions, MessageEditor,
     MessageState, MessageStatus, NavigationControl, NavigationRow, Notice, PageTitle, Paper,
     PaperSection, Placeholder, PlaceholderShape, Popover, ProgressBar, ProposedChange, Prose,
-    ProseNames, ProsePart, Quote, RadioGroup, Rating, RowFrame, RowGroup, RunningChart,
+    ProseNames, ProsePart, Quote, RadioGroup, RailCard, Rating, RowFrame, RowGroup, RunningChart,
     SearchField, SectionHeader, Segmented, Select, SeriesChart, SeriesPoint, SeriesShape,
     SettingRow, Slider, SortOrder, SourceDetails, SourcePane, SourceReading, SourceText,
     SourcesButton, Sparkline, Spinner, StatePill, StatusLine, StepState, Suggestion, TabBar, Table,
-    TableRow, Task, TaskList, TaskState, TaskWords, TextField, Toast, ToggleChip, Tone, Tooltip,
-    TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark, WorkingPresence,
-    use_live_rows,
+    TableRow, Task, TaskList, TaskState, TaskWords, TextField, TextKind, Toast, ToggleChip, Tone,
+    Tooltip, TopBar, TryAgain, Value, VersionSwitch, WorkStep, WorkTrace, WorkingMark,
+    WorkingPresence, use_live_rows,
 };
 #[cfg(feature = "web")]
 use wasm_bindgen::{JsCast, closure::Closure};
@@ -513,6 +513,7 @@ fn IconDemo() -> Element {
 #[cfg(feature = "web")]
 #[component]
 fn CardDemo() -> Element {
+    let mut rail_folded = use_signal(|| false);
     rsx! {
         div { class: "gallery-cards",
             Card {
@@ -552,6 +553,18 @@ fn CardDemo() -> Element {
                 Card { tinted: true, overline: "Your later context", footer: "Added October 21",
                     Quote { text: "I now walk four mornings a week." }
                 }
+            }
+            RailCard {
+                icon: IconName::Calendar,
+                title: "Upcoming visits",
+                count: 2,
+                count_words: "left",
+                collapsed: rail_folded(),
+                on_collapsed: move |folded| rail_folded.set(folded),
+                expand_label: "Show upcoming visits",
+                collapse_label: "Fold upcoming visits",
+                "data-gallery": "rail-card",
+                p { class: "card-detail", "What the card holds stands under its heading." }
             }
         }
     }
@@ -3005,7 +3018,7 @@ fn InputsDemo() -> Element {
             }
             TextField {
                 label: "What I want to discuss",
-                multiline: true,
+                kind: TextKind::Multiline,
                 value: discuss(),
                 on_input: move |words| discuss.set(words),
             }
@@ -3017,6 +3030,7 @@ fn InputsDemo() -> Element {
             }
             TextField {
                 label: "Email",
+                kind: TextKind::Email,
                 value: email(),
                 on_input: move |words| email.set(words),
                 error: (!email().contains('.')).then(|| "That address looks incomplete.".to_owned()),

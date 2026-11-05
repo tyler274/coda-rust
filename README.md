@@ -30,6 +30,25 @@ cargo test --workspace
 
 `scripts/ui-gallery.sh` builds the UI gallery and serves it at <http://127.0.0.1:8080/>, each section at its own address, such as `/#charts`.
 
+### Coding agent connections
+
+Open the checkout in Codex and trust the project to load [its MCP config](.codex/config.toml).
+In Claude Code, approve the [project servers](.mcp.json) when prompted.
+In Cursor, approve the [project servers](.cursor/mcp.json) in Customize, once in each checkout or worktree.
+Launch the client with any required token variables in its environment. Each developer uses their own credentials.
+Cursor starts its local servers with the `PATH` from the environment it was launched in. That `PATH` needs `uvx` for NixOS, and `gh` plus `nix` or `github-mcp-server` for GitHub. If a server can't find one, quit Cursor fully, then start it from a shell that has them.
+
+| Server | Setup |
+| --- | --- |
+| [GitHub](https://github.com/github/github-mcp-server#remote-github-mcp-server) | For Codex and Claude Code, set `GITHUB_MCP_TOKEN` to a personal access token scoped to the repositories and operations you need. Cursor runs the [local server](https://github.com/github/github-mcp-server#local-github-mcp-server) through [`scripts/github-mcp.sh`](scripts/github-mcp.sh). It uses `GITHUB_MCP_TOKEN` when that is set, and otherwise your `gh auth login` with all of that login's scopes. With Nix it runs the server from the flake's locked nixpkgs. On the [Apple container](#apple-silicon-mac-without-nix-apple-container) route, `brew bundle` installs `gh` and the current Homebrew `github-mcp-server`, which is not pinned and can offer different tools. |
+| [Linear](https://linear.app/docs/mcp) | From this checkout, run `codex mcp login linear`, open `/mcp` in Claude Code, or connect Linear in Cursor's Customize. |
+| [NixOS](https://github.com/utensils/mcp-nixos) | Put `uvx` on the client's PATH. The dev shell includes it through `uv`. On the [Apple container](#apple-silicon-mac-without-nix-apple-container) route, the client runs on the Mac, and `brew bundle` installs `uv` there. On first use it downloads the pinned server for package and option lookups. |
+| [Slack](https://docs.slack.dev/ai/slack-mcp-server/) | In Claude Code, open `/mcp` and sign in with the [Slack integration for Claude Code](https://docs.slack.dev/ai/slack-mcp-server/connect-to-claude/) approved by your workspace admin. In Cursor, connect Slack in Customize; the config names [Slack's app for Cursor](https://docs.slack.dev/ai/slack-mcp-server/connect-to-cursor/), which your workspace admin approves. For Codex, set `SLACK_MCP_USER_TOKEN` to a user token from a workspace-approved, MCP-enabled Slack app with the scopes you need. |
+| [Datadog](https://docs.datadoghq.com/mcp_server/setup/) | Sign in to the US1 site with `codex mcp login datadog`, through `/mcp` in Claude Code, or in Cursor's Customize. Use a role with MCP Read and read access to the logs, monitors and traces you investigate. |
+| [Local Langfuse](dev/observability/README.md) | Run `scripts/observability-up.sh` on the client host. It needs Docker Compose there, which Apple's `container` tool does not provide. All three clients use port 3000 and the local Compose project's fixed synthetic-data credentials. If you override `LANGFUSE_PORT`, set that port in a personal client entry rather than the committed config, and keep the hostname `localhost`. In Cursor, add the entry under another name in `~/.cursor/mcp.json` and turn off the project `langfuse` server in Customize. The v3 stack exposes project tools such as `getHealth` and `listPrompts` through MCP. Use the local UI for generation inputs and outputs. |
+
+Open `/mcp` in Codex or Claude Code, or Customize in Cursor, to inspect the servers. To check access, ask for a known pull request, Linear issue, Nix package, or Slack thread you can read.
+
 ### Local practice
 
 `scripts/local-practice.sh` runs the synthetic practice on a local Postgres database. It runs the migration and the chart load, then starts the site with sign-in required. Sign in as `physician@codahealth.test`; the local site redeems the link itself.
@@ -44,7 +63,7 @@ PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-pr
 
 Local physician chat uses the Codex CLI subscription. Live, record, and replay do not read `OPENAI_API_KEY`.
 
-Sign in once, outside this repo's nix shell if that is where the CLI is installed:
+The dev shell provides the CLI. Sign in once:
 
 ```sh
 codex login
@@ -144,65 +163,66 @@ or host networking, so "Reopen in Container" and `act` do not work with it, and
 Rosetta cannot host the x86_64 shell because it does not preserve `argv[0]`,
 which Nix's Python wrappers rely on. CI remains the x86_64 proof.
 
+Each checkout or worktree gets its own container, called a session, so several
+agents can build and run the app side by side. Set up once, then use a session
+per worktree:
+
 ```sh
-brew install --formula container
-dev/apple-container.sh
-dev/apple-container.sh exec cargo test -p ui
+brew bundle
+dev/apple-session.sh seed
+dev/apple-session.sh up
+dev/apple-session.sh exec cargo test -p ui
+dev/apple-session.sh down
 ```
 
-`exec` runs one command in the dev shell of the checkout or worktree you run it
-from, using that tree's own flake, and starts the container if it is stopped. It
-needs no terminal, so agents use it the same way. `dev/apple-container.sh exec bash`
-opens a shell for the longer steps below.
+`seed` builds the shared starting point: the Nix store, the Cargo home and the
+third-party build output. It takes about 20 minutes and rerunning it picks up new
+dependencies; a session also fetches and builds whatever the seed lacks, so
+rerun it when sessions start spending their time there. `up` takes seconds, because
+it makes APFS clones of those volumes, which share disk with the seed until they
+diverge. A session's own builds take 20 to 30 GB at their peak, and `down` returns
+them. `prune` removes the sessions of worktrees that no longer exist, and `status`
+lists them all.
 
-`exec` occasionally fails before the command starts with `failed to read index:
-... no longer exists`. The cause is unknown. Run the same command again; the error
-does not mean the container is broken or justify `--no-verify`.
+The session mounts the worktree and the shared `.git` at their Mac paths, so edit
+files with your usual tools. `target/` is a volume inside the container, so build
+output is not visible from the Mac, except `target/verification`, which stays on
+the Mac after `down`. `exec` runs one command in the
+[unattended dev shell](#unattended-development) and needs no terminal, so agents
+use it the same way; `dev/apple-session.sh exec bash` opens a shell for the longer
+steps below.
 
-One container serves the main checkout and every worktree inside it. A worktree
-outside the checkout is not visible to it. Build output goes to the shared
-`/workspace/target` volume (`CARGO_TARGET_DIR`), so concurrent builds wait for each
-other. Browser tests build their WASM in the worktree's own `target`, on the Mac's
-disk, which removing the worktree frees.
+A file replaced from the Mac or another session can read as missing for about a
+second, which shows up as errors like `failed to read index: ... no longer exists`.
+Run the same command again; the error does not mean the session is broken or
+justify `--no-verify`.
 
-The script takes `CODA_CONTAINER_NAME`, `CODA_CONTAINER_CPUS` and
-`CODA_CONTAINER_MEMORY`. The Nix store, Cargo home and `target` live in volumes
-named after the container.
+Sessions run with `CODA_SESSION_CPUS`, `CODA_SESSION_MEMORY` (12 GB by default)
+and `CODA_SESSION_JOBS`. A second clone of the repository on the same Mac needs its
+own `CODA_SESSION_PREFIX` and `CODA_SESSION_PORT_BASE`. The cloning swaps the image
+file inside a volume, which `container` has no command for, so a new release of
+the tool could need a change here.
 
-Those images grow as needed and never shrink on their own, so `exec` starts a
-background cleanup once a day and logs it to `/tmp/coda-clean.log` in the container.
-It removes abandoned shell temporary directories, collects Nix garbage while keeping
-the dev shell of the worktree that started it, deletes Cargo artifacts older than
-three days from target directories no build holds, and trims the images.
-`dev/apple-container.sh clean` does the same now. Trimming needs a container created
-with `CAP_SYS_ADMIN`: run `container rm -f <name>`, then this script, to recreate an
-older one. The volumes stay, but the container's own disk, including `/tmp` and the
-Git identity below, does not.
-
-The script publishes ports 8790 and 8080 on loopback, so stop
-one container before starting another under a new name, which only a second clone
-needs. Rerun the script after a restart rather than `container start` alone.
-
-Bind a server to `0.0.0.0` to reach it from the Mac. The physician page needs its
-bundle first:
+Servers keep their usual ports inside the session. `up` prints the Mac address of
+each one, and `exec` binds them where those addresses reach. The local practice
+builds the physician page and runs on the session's own Postgres:
 
 ```sh
-cargo build -p physician-app --target wasm32-unknown-unknown --features web
-wasm-bindgen --target web --out-dir target/physician-web "$CARGO_TARGET_DIR/wasm32-unknown-unknown/debug/physician-app.wasm"
-PHYSICIAN_LISTEN_ADDR=0.0.0.0:8790 cargo run -p physician-sample
+url=$(dev/apple-session.sh postgres)
+dev/apple-session.sh exec env PHYSICIAN_DATABASE_URL="$url" scripts/local-practice.sh
 ```
 
 The UI gallery builds and serves with one command, here on the published port:
 
 ```sh
-UI_GALLERY_LISTEN_ADDR=0.0.0.0:8080 scripts/ui-gallery.sh
+dev/apple-session.sh exec scripts/ui-gallery.sh
 ```
 
-Live chat on the physician page needs the Codex CLI and `codex login` in the container, or
-a [replay cassette](#physician-chat-codex-cli). The dev shell does not include it.
+Live chat on the physician page needs `codex login` in the session, or a
+[replay cassette](#physician-chat-codex-cli). The dev shell provides the Codex CLI.
 
-The script starts no Postgres service, and the database-backed tests fail without
-one. Start a disposable cluster, point the tests at it as
+The session's Postgres lasts as long as the session. The database-backed tests
+need a cluster of their own, so run these in `dev/apple-session.sh exec bash`. Point the tests at it as
 [CI](.github/workflows/ci.yml) does, and clear the encoder model path unless that
 directory exists, because the dev shell always sets it. The browser tests build
 offline, so fetch their crates first:
@@ -216,18 +236,17 @@ export FRONT_DOOR_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
 unset DUET_DISCOVERY_ENCODER_MODEL CODA_PATIENT_ENCODER_MODEL
 cargo test --workspace
 cargo fetch --locked --target wasm32-unknown-unknown
-cargo test -p physician-sample --test site --test auth_browser -- --ignored
+cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states -- --ignored
 ```
 
 `duet-api` also needs the [schema setup](book/src/backend-architecture.md#persistence-and-migrations)
-and its Doppler secrets; bind it with `DUET_LISTEN_ADDR=0.0.0.0:8080`.
+and its Doppler secrets, which the unattended shell leaves out.
 
-Commit through the container, so the pre-commit hook runs. The hook cannot run on a
-Mac without Nix. Set your Git identity there once; pushing stays on the Mac, which
-holds your credentials:
+Commit through the session, so the pre-commit hook runs. The hook cannot run on a
+Mac without Nix. `up` copies your Git identity from the Mac. Fetching submodules and
+pushing stay on the Mac, which holds your credentials:
 
 ```sh
-dev/apple-container.sh exec git config --global user.name "Your Name"
-dev/apple-container.sh exec git config --global user.email you@example.com
-dev/apple-container.sh exec git commit -m "Your message"
+dev/apple-session.sh exec git commit -m "Your message"
+git push
 ```

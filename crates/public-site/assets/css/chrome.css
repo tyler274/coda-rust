@@ -1,5 +1,4 @@
-/* Coda Health site chrome: tokens, base type, page opening, cards, nav, buttons and footer shared by every page.
-   The homepage imports it as is; the other pages import it into Tailwind's components layer. */
+/* Coda Health site chrome: tokens, base type, page layout, page opening, cards, nav, buttons and footer shared by every page. */
 :root{
   --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display",system-ui,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --bg:#F8F7F4; --card:#FFFFFF; --ink:#17211B; --ink2:#3A4540; --muted:#5E6963; --faint:#8C958F;
@@ -21,6 +20,9 @@ h1,h2,h3,h4,h5{margin:0;font-weight:500}
 p{margin:0}
 svg{display:block}
 h1{font-size:64px;line-height:1.02;letter-spacing:-.022em;text-wrap:balance}
+/* The layout around document pages: the footer stays at the foot of a short page. */
+.page{display:flex;min-height:100svh;flex-direction:column;background-color:var(--bg);color:var(--ink)}
+.page-content{flex:1}
 .wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut)}
 h2{font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}h3{font-size:30px;line-height:1.2;letter-spacing:-.018em}
 .lede{font-size:18px;line-height:1.6;font-weight:500;color:var(--ink2);text-wrap:balance}
@@ -33,7 +35,7 @@ h2{font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}h3{fo
 .hero-meta{margin-top:24px}
 .hero-cta{margin-top:30px;display:flex;flex-direction:column;align-items:center;gap:12px}
 /* ---------- nav ---------- */
-.nav{position:sticky;top:0;z-index:50;background:rgba(248,247,244,.82);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent}
+.nav{position:sticky;top:0;z-index:50;background:rgba(248,247,244,.82);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid transparent}
 .nav-in{max-width:var(--wrap);margin:0 auto;padding:0 var(--gut);height:68px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
 .logo img{height:24px;width:auto}
 .nav-links{display:flex;gap:30px}
@@ -55,15 +57,15 @@ h2{font-size:44px;line-height:1.08;letter-spacing:-.02em;text-wrap:balance}h3{fo
 .kicker{display:inline-block;font-size:19px;font-weight:500;letter-spacing:-.01em;color:var(--muted);margin-bottom:14px}
 .kicker b{color:var(--green);font-weight:650}
 /* Approved Duet artwork, shared by the homepage introduction and Duet page. */
-.duet-brand{display:inline-flex;align-items:center;gap:16px;margin-bottom:20px}
-.duet-brand-lockup{display:inline-flex;align-items:center;gap:9px;flex-shrink:0}
-.duet-brand-mark{width:40px;height:40px}
-.duet-brand-wordmark{width:76px;height:auto}
-.duet-brand-label{font-size:17px;font-weight:500;letter-spacing:-.01em;color:var(--muted)}
-.duet-brand-hero{display:flex;justify-content:center;margin-bottom:26px}
-.duet-brand-hero .duet-brand-lockup{gap:12px}
-.duet-brand-hero .duet-brand-mark{width:56px;height:56px}
-.duet-brand-hero .duet-brand-wordmark{width:106px}
+.product{display:inline-flex;align-items:center;gap:16px;margin-bottom:20px}
+.product-lockup{display:inline-flex;align-items:center;gap:9px;flex-shrink:0}
+.product-mark{width:40px;height:40px}
+.product-wordmark{width:76px;height:auto}
+.product-label{font-size:17px;font-weight:500;letter-spacing:-.01em;color:var(--muted)}
+.product-hero{display:flex;justify-content:center;margin-bottom:26px}
+.product-hero .product-lockup{gap:12px}
+.product-hero .product-mark{width:56px;height:56px}
+.product-hero .product-wordmark{width:106px}
 .idx{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.04em}
 .idx i{width:6px;height:6px;border-radius:2px;background:var(--green)}
 /* ---------- footer ---------- */

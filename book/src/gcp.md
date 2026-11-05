@@ -32,14 +32,14 @@ configuration, checks, and the
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
-| `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains |
+| `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains; packaged synthetic charts for explicit `load-charts` |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
 | `duet-privacy-delivery-image` | `coda-duet-privacy-delivery` | job | `duet-privacy-delivery`, a bounded Luna receipt job |
 
 - The runtime servers never migrate. They bind `0.0.0.0:$PORT`, where `PORT` defaults to 8080. `/health` reports liveness. Hosted startup accepts only the explicit `stg` / `staging-preview` profile with its required stores and identity configuration; other hosted profiles refuse to start. `/readyz` checks the configured schemas. The startup owners are [`physician-sample/src/hosting.rs`](/crates/physician-sample/src/hosting.rs) and [`duet-api/src/main.rs`](/crates/duet-api/src/main.rs).
 - Each image contains the binary and the libraries it links, Doppler, CA roots, tzdata and a passwd entry for uid `65532`. The image has no shell or toolchain. It runs as `65532:65532` with working directory `/tmp`.
 - Every entrypoint is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in [`crates/workspace-tools/src/doppler.rs`](/crates/workspace-tools/src/doppler.rs). Nix reads the version and SHA-256 from that file, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
-- `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and checks rejection of missing credentials or an unconfigured hosted profile. Against disposable PostgreSQL it runs both migration images twice, then starts both servers to check `/health` 200, schema readiness 200, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
+- `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and checks rejection of missing credentials or an unconfigured hosted profile. Against disposable PostgreSQL it runs both migration images twice and explicitly imports the packaged physician chart bank twice, checking its manifest totals, zero failures and an unchanged reload. It then starts the servers to check `/health` 200, schema readiness 200, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
 
 ## Rust staging bootstrap and deployment gate
 
@@ -144,6 +144,42 @@ Enable the relay in this order:
    its mail transport at startup.
 4. Send an explicitly approved test message and verify recipient delivery, the
    branded sender, sign-in, reload, sign-out, and rejection of a reused link.
+
+### Staging synthetic charts
+
+The physician migration image carries the charts and manifest from the
+[synthetic patient bank](patient-bank.md), built offline from accepted ledgers and
+their seeds at the image's revision. `PHYSICIAN_SYNTHETIC_CHARTS` names the packaged
+folder. Runtime images read the imported records from physician Postgres.
+
+After a successful schema migration and account bootstrap, a staging operator with
+`run.jobs.runWithOverrides` loads the charts explicitly. The CI release role does
+not have this permission.
+
+```bash
+gcloud run jobs execute physician-migrate --project coda-rust-staging \
+  --region us-east1 --args=load-charts --task-timeout=30m --wait
+```
+
+Read the summary in Cloud Logging using the execution name returned by that command:
+
+```bash
+gcloud logging read \
+  'resource.type="cloud_run_job" AND resource.labels.job_name="physician-migrate" AND labels."run.googleapis.com/execution_name"="EXECUTION_NAME"' \
+  --project coda-rust-staging --format='value(textPayload)'
+```
+
+The longer deadline applies only to this full-bank import execution; the job's
+default schema-migration deadline stays unchanged. The execution must report the
+packaged bank's patient and record totals and zero
+failures. After a completed import, repeating the same image's import must report
+zero changed records. A failed or timed-out import can be retried: completed
+patients remain stored, and a retry can still report changes for the rest.
+The command requires the `staging-preview` profile and preserves panel choices.
+The execution override leaves the job's default schema-migration command
+unchanged; ordinary deploys do not load charts. Verify imported patients and their
+charts through the normal signed-in physician roster before treating the staging
+journey as qualified.
 
 ### Direct staging rollout
 

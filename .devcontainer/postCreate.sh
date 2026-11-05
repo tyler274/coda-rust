@@ -3,7 +3,7 @@
 # so reopening the container reuses the bound store and the applied database.
 set -euo pipefail
 
-workspace=/workspace
+workspace=${CODA_WORKSPACE:-/workspace}
 nix_version=2.34.8
 nix_arch=$(uname -m)
 nix_tarball="nix-${nix_version}-${nix_arch}-linux.tar.xz"
@@ -63,11 +63,14 @@ sudo ln -sf "$(command -v nix)" /usr/local/bin/nix
 
 # --- Submodules: fetch only what is missing ---------------------------------
 # Never overwrite an existing checkout; the host's checkout binds here.
-for sub in $(git -C "$workspace" config --file .gitmodules --get-regexp path | awk '{print $3}'); do
-  if [ -z "$(ls -A "$workspace/$sub" 2>/dev/null)" ]; then
-    git -C "$workspace" submodule update --init --depth 1 -- "$sub"
-  fi
-done
+# Parallel sessions skip this: they hold no SSH credentials.
+if [ -z "${CODA_SKIP_SUBMODULES:-}" ]; then
+  for sub in $(git -C "$workspace" config --file .gitmodules --get-regexp path | awk '{print $3}'); do
+    if [ -z "$(ls -A "$workspace/$sub" 2>/dev/null)" ]; then
+      git -C "$workspace" submodule update --init --depth 1 -- "$sub"
+    fi
+  done
+fi
 
 # --- Materialize the nix dev shell ------------------------------------------
 # Also the first real exercise of the flake inside the container.

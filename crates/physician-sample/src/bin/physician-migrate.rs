@@ -18,6 +18,18 @@ use physician_sample::chart_load::load_synthetic_practice;
 use physician_sample::hosting::{
     StagingAccount, staging_accounts, staging_physician_id, synthetic_charts,
 };
+use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
+
+async fn migration_connection(url: &str) -> Result<DatabaseConnection, DbErr> {
+    let mut options = ConnectOptions::new(url);
+    // The job runs each store operation in sequence. Share one connection so
+    // independent store pools cannot exhaust the migration role's four slots.
+    options
+        .max_connections(1)
+        .connect_timeout(std::time::Duration::from_secs(10))
+        .sqlx_logging(false);
+    Database::connect(options).await
+}
 
 #[tokio::main]
 async fn main() {
@@ -54,15 +66,18 @@ async fn main() {
 }
 
 async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
-    let auth = physician_auth::PostgresAuthStore::connect_with_migrations(url)
+    let db = migration_connection(url)
+        .await
+        .map_err(|error| format!("physician database connection: {error}"))?;
+    let auth = physician_auth::PostgresAuthStore::from_connection(db.clone());
+    auth.migrate()
         .await
         .map_err(|error| format!("physician-auth: {error}"))?;
-    front_door::PostgresFrontDoorStore::connect_with_migrations(url)
+    front_door::PostgresFrontDoorStore::from_connection(db.clone())
+        .migrate()
         .await
         .map_err(|error| format!("front-door: {error}"))?;
-    let runtime = local_product::runtime::Store::connect(url)
-        .await
-        .map_err(|error| format!("physician runtime connection: {error}"))?;
+    let runtime = local_product::runtime::Store::from_connection(db);
     runtime
         .migrate()
         .await
@@ -98,12 +113,11 @@ async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
 
 async fn load_charts(url: &str) -> Result<(), String> {
     let charts = synthetic_charts(|key| std::env::var(key).ok())?;
-    let auth = physician_auth::PostgresAuthStore::connect_without_migrations(url)
+    let db = migration_connection(url)
         .await
-        .map_err(|error| format!("physician-auth: {error}"))?;
-    let runtime = local_product::runtime::Store::connect(url)
-        .await
-        .map_err(|error| format!("physician runtime connection: {error}"))?;
+        .map_err(|error| format!("physician database connection: {error}"))?;
+    let auth = physician_auth::PostgresAuthStore::from_connection(db.clone());
+    let runtime = local_product::runtime::Store::from_connection(db);
     let summary = load_synthetic_practice(&charts, &auth, &runtime).await?;
     for failure in &summary.failed {
         eprintln!("synthetic patient failed: {failure}");

@@ -8,6 +8,13 @@ use crate::common;
 
 pub const STAGING_EMAIL: &str = "physician@codahealth.test";
 
+/// What a signed-in Today says while nothing waits.
+pub const SIGNED_IN: &str = "Nothing needs you right now.";
+
+/// Ends the page's session on the server, as expiry does; the page is not told.
+pub const END_THE_SESSION: &str = "fetch('/auth/sign-out', { method: 'POST', headers: { \
+     Authorization: 'Bearer ' + localStorage.getItem('coda.physician.session') } }); 'sent'";
+
 /// Boots the recorded practice with `PHYSICIAN_AUTH=required`. The server
 /// seeds its staging account and panel itself on the memory store. Its
 /// physician session is a temporary file and its execution is offline replay.
@@ -27,7 +34,7 @@ pub async fn spawn_required_server() -> common::IsolatedServer {
 
 /// Builds the WASM site once for this test binary; the two browser tests
 /// would otherwise race two cargo builds over one output directory.
-fn shared_site() -> PathBuf {
+pub fn shared_site() -> PathBuf {
     static SITE: OnceLock<PathBuf> = OnceLock::new();
     SITE.get_or_init(build_site).clone()
 }

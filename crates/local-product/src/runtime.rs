@@ -200,7 +200,22 @@ pub enum Resumed {
     },
     /// The exact same Try again was already taken; do not publish again.
     Duplicate,
-    /// The named work or run is not the current failed or held work.
+    /// The named work or run is not the current failed or held work, or a
+    /// command field is blank.
+    Refused,
+}
+
+/// Outcome of a physician's Stop on the current chat work.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Stopped {
+    /// The conversation is held until Resume or newer input. Do not publish a
+    /// wakeup.
+    Held,
+    /// The exact same Stop was already taken, or the named work is already
+    /// held.
+    Duplicate,
+    /// Nothing open to hold: missing, completed, or a different work identity,
+    /// or a command field is blank.
     Refused,
 }
 
@@ -254,9 +269,12 @@ impl Store {
     pub async fn connect(url: &str) -> Result<Self, DbErr> {
         let mut options = sea_orm::ConnectOptions::new(url);
         options.max_connections(8).sqlx_logging(false);
-        Ok(Self {
-            db: Database::connect(options).await?,
-        })
+        Ok(Self::from_connection(Database::connect(options).await?))
+    }
+
+    /// Uses an existing pool without applying migrations or changing its limits.
+    pub fn from_connection(db: DatabaseConnection) -> Self {
+        Self { db }
     }
 
     /// Explicit additive, rerunnable migration, never invoked by connect.
@@ -435,10 +453,9 @@ impl Store {
             role: "user".into(),
             text: input.text.clone(),
         });
-        // New input steers ordinary work, but does not silently release intentional Stop.
-        if state.status != "held" {
-            state.status = "pending".into();
-        }
+        // New input steers ordinary work. After Stop it is the physician
+        // sending something else, which releases the hold and drops Resume.
+        state.status = "pending".into();
         Self::save(tx, scope, &state).await?;
         Ok(Accepted::New)
     }
@@ -533,13 +550,24 @@ impl Store {
         tx.commit().await
     }
 
+    /// Whether the claim is still the current attempt: not stopped, not
+    /// replaced by a newer message, and not expired. `Err` means currentness
+    /// could not be read: the database, or a missing or unreadable
+    /// conversation.
+    pub async fn is_current(&self, claim: &Claim) -> Result<bool, DbErr> {
+        let (tx, state, now) = self.locked(&claim.scope).await?;
+        let current = Self::current(&state, claim, now);
+        tx.commit().await?;
+        Ok(current)
+    }
+
     /// Rechecks the current attempt against durable Stop, steering and expiry.
     pub async fn assert_current(&self, claim: &Claim) -> Result<(), DbErr> {
-        let (tx, state, now) = self.locked(&claim.scope).await?;
-        if !Self::current(&state, claim, now) {
-            return Err(error("attempt no longer current"));
+        if self.is_current(claim).await? {
+            Ok(())
+        } else {
+            Err(error("attempt no longer current"))
         }
-        tx.commit().await
     }
 
     /// Acknowledges an ordered event only after commit. Exact replay is idempotent.
@@ -669,8 +697,9 @@ impl Store {
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
     /// and its latest attempt is `expected_run_id`, so a stale page never
-    /// restarts newer work and completed work is never reopened. The receipt is
-    /// saved with the change: the same `key` and target answers `Duplicate`.
+    /// restarts newer work and completed work is never reopened. A blank field
+    /// is refused. The receipt is saved with the change: the same `key` and
+    /// target answers `Duplicate`.
     /// The accepted session moves to the physician's current session, because
     /// the original one may have ended while the work sat failed.
     pub async fn resume_authorized(
@@ -696,7 +725,7 @@ impl Store {
         .iter()
         .any(|s| s.trim().is_empty())
         {
-            return Err(error("empty command field"));
+            return Ok(Resumed::Refused);
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({
@@ -739,6 +768,104 @@ impl Store {
         state.session_hash = Some(session_hash);
         Self::save(tx, scope, &state).await?;
         Ok(Resumed::Pending { input_id })
+    }
+
+    /// Hosted Stop. Holds the named work until Resume or newer input, and
+    /// only while that work is still pending or active. Each hold names its
+    /// own run, so Resume keyed by that run is never a replay of an earlier
+    /// Resume. A failed turn stays failed, so Try again can resume it. The
+    /// receipt is saved with the change: the same `key` and work answers
+    /// [`Stopped::Duplicate`], and so does a new key while that work is
+    /// already held. A different command under that key is refused.
+    /// Completed work, a failed turn, a different work identity, a blank
+    /// field, and a scope with no conversation are refused. Only a new hold
+    /// keeps its receipt. No wakeup is published.
+    pub async fn stop_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        work_item_id: &str,
+    ) -> Result<Stopped, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        if [
+            key,
+            work_item_id,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|part| part.trim().is_empty())
+        {
+            return Ok(Stopped::Refused);
+        }
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": scope,
+            "stop": {"work_item_id": work_item_id},
+        });
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Stopped::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(Stopped::Refused);
+            }
+        }
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            return Ok(Stopped::Refused);
+        };
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        // Another press on work that is already held, from a page that has
+        // not caught up or a second tab, finds what it asked for. Nothing
+        // changes, so its receipt is not kept.
+        if state.status == "held" && state.work == work_item_id {
+            return Ok(Stopped::Duplicate);
+        }
+        // A failed turn stays Try again. Stop does not turn it into a hold.
+        if !matches!(state.status.as_str(), "pending" | "active") || state.work != work_item_id {
+            return Ok(Stopped::Refused);
+        }
+        if let Some(attempt) = state
+            .attempts
+            .last_mut()
+            .filter(|attempt| attempt.status == "active")
+        {
+            attempt.status = "cancelled".into();
+        } else {
+            // Stop before a claim still needs a run Resume can name. The last
+            // run may be the one an earlier hold named and Resume already
+            // took, so this hold gets its own run, or Resume would be a replay.
+            state.attempts.push(Attempt {
+                id: Uuid::new_v4().to_string(),
+                predecessor: state
+                    .attempts
+                    .last()
+                    .filter(|a| a.work == state.work)
+                    .map(|a| a.id.clone()),
+                work: state.work.clone(),
+                revision: state.revision,
+                status: "cancelled".into(),
+                expires: 0,
+                events: vec![],
+            });
+        }
+        state.status = "held".into();
+        state.session_hash = Some(session_hash);
+        Self::save(tx, scope, &state).await?;
+        Ok(Stopped::Held)
     }
 
     /// The physician's chats in one workspace, latest activity first, then
@@ -1010,10 +1137,17 @@ impl<A: Authority> PhysicianHost<A> {
                     .map_err(|e| e.to_string())
             }
             Err(failure) => {
-                self.store
-                    .interrupt(&self.claim, failure.failure != engine::Failure::Cancelled)
-                    .await
-                    .map_err(|e| e.to_string())?;
+                // A reached bound would be reached again, so the turn ends
+                // as couldn't finish. Any other failure leaves the attempt
+                // leased: Stop has already cancelled it, and an
+                // infrastructure failure stays active so `retry_delivery` or
+                // lease expiry counts it even if this process dies first.
+                if matches!(failure.failure, engine::Failure::Limit(_)) {
+                    self.store
+                        .interrupt(&self.claim, true)
+                        .await
+                        .map_err(|e| e.to_string())?;
+                }
                 Err(format!("execution ended: {:?}", failure.failure))
             }
         }

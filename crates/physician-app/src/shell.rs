@@ -4,7 +4,7 @@
 use physician_wire::{
     AutomationRun, CitationDestination, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse,
     PracticeDayResponse, ReplyRevisionRun, SourcePresentation, TodayConnection, TodayListResponse,
-    TodayRow, VisitPreparation, WorkspaceReply,
+    TodayRow, VisitPreparation, WhoamiResponse, WorkspaceReply,
 };
 
 pub const TODAY_LOADING: &str = "Loading Today…";
@@ -18,6 +18,13 @@ pub const WORKSPACE_UNAVAILABLE: &str = "Coda couldn’t load what needs you for
 #[allow(dead_code)]
 pub const READER_EMPTY: &str = "Nothing is open to read.";
 pub const TRY_AGAIN: &str = "Try again";
+/// Stops the chat turn Coda is still writing.
+pub const STOP: &str = "Stop";
+/// Resumes a turn the physician stopped. Failure still says [`TRY_AGAIN`].
+pub const RESUME: &str = "Resume";
+/// The hosted snapshot's held-turn sentence, checked by the conversation line test.
+#[cfg(test)]
+pub const STOPPED: &str = "Coda stopped this response. Your message is saved.";
 /// Past work with no history dates or items on the projection.
 pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available.";
 /// An open conversation whose snapshot has no turns.
@@ -235,6 +242,16 @@ pub fn connection_sentence(channel: Option<&str>, condition: &str) -> Option<Str
 /// Today shows the schedule unless the calendar is absent. An empty usable day still shows it.
 pub fn shows_today_schedule(day: &PracticeDayResponse) -> bool {
     !matches!(day.source_state.state.as_str(), "unavailable" | "absent")
+}
+
+/// Who a panel change is for: the physician chosen while the practice still lists them, else the
+/// signed-in physician. The picker shows this one, and Assign and Remove send it.
+pub fn panel_target<'a>(account: &'a WhoamiResponse, chosen: &str) -> &'a str {
+    account
+        .practice_accounts
+        .iter()
+        .find(|listed| listed.physician_id == chosen)
+        .map_or(&account.physician_id, |listed| &listed.physician_id)
 }
 
 /// The line under an empty schedule: none were scheduled, or none remain ahead.
@@ -1248,6 +1265,33 @@ pub fn reader_view(line: Option<&TodayLine>) -> ReaderView {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn admin_with_colleague() -> WhoamiResponse {
+        serde_json::from_value(serde_json::json!({
+            "physician_id": "phys-admin",
+            "practice_id": "practice",
+            "display_name": "Dr. Admin",
+            "admin": true,
+            "practice_accounts": [
+                { "physician_id": "phys-admin", "display_name": "Dr. Admin" },
+                { "physician_id": "phys-colleague", "display_name": "Dr. Colleague" },
+            ],
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn a_panel_change_is_for_the_physician_chosen_while_the_practice_lists_them() {
+        let account = admin_with_colleague();
+        assert_eq!(panel_target(&account, "phys-colleague"), "phys-colleague");
+    }
+
+    #[test]
+    fn a_panel_change_is_never_for_a_physician_the_practice_no_longer_lists() {
+        let account = admin_with_colleague();
+        assert_eq!(panel_target(&account, "phys-gone"), "phys-admin");
+        assert_eq!(panel_target(&account, ""), "phys-admin");
+    }
 
     fn today_json(rows: &str) -> TodayListResponse {
         serde_json::from_str(&format!(

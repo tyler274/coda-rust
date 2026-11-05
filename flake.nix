@@ -4,9 +4,10 @@
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.rust-overlay.url = "github:oxalica/rust-overlay";
   inputs.rust-overlay.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.crane.url = "github:ipetkov/crane";
 
   outputs =
-    { self, nixpkgs, rust-overlay }:
+    { self, nixpkgs, rust-overlay, crane }:
     let
       system = "x86_64-linux";
       # aarch64-linux adds only the dev shells, for Linux containers on Apple
@@ -61,6 +62,11 @@
           release = pkgs.mkShell {
             packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny postgres opentofu ];
           };
+          # The CI observability job: collector config validation and the
+          # OpenTofu roots it rides on, without the agent shell's toolchain.
+          observability = pkgs.mkShell {
+            packages = with pkgs; [ opentelemetry-collector-contrib opentofu ];
+          };
           default = import ./nix/dev-shell.nix {
             inherit pkgs postgres wheelLibs chromiumBin;
           };
@@ -72,7 +78,7 @@
         };
     in
     {
-      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self; };
+      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self crane; };
       devShells = nixpkgs.lib.genAttrs devSystems devShellsFor;
     };
 }

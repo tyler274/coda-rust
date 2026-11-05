@@ -6,7 +6,7 @@
 //! to `crates/ui` shows in the diff.
 //!
 //! Review still covers what this can't see: a local component duplicating a shared one under a new
-//! name, a card under an app's own class such as `simulation-card`, a class held in a variable, a
+//! name, a card under an app's own class such as `thread-card`, a class held in a variable, a
 //! CSS rule reaching a shared control through only an app's own class, and how a screen looks.
 //!
 //! Each file is read alone, so a test-only module in its own file starts with `#![cfg(test)]`.
@@ -117,36 +117,6 @@ const TABLE: &[Entry] = &[
         kind: Input,
         count: 1,
         reason: "The consent checkbox for ending a conflicting retry, which moves to `Checkbox` with the Duet forms.",
-    },
-    Entry {
-        file: "crates/physician-app/assets/shell.css",
-        kind: CssOverride,
-        count: 13,
-        reason: "The sidebar, dialogs and composer adjust the shared `.icon`, `.key-hint`, `.control`, `.dialog`, `.search-field`, `.dialog-body` and `.composer` to fit the physician layout, and its font reset and `button` rules reach the shared `Button` and `NavigationRow` in the sidebar and patient search, until the library carries those fits.",
-    },
-    Entry {
-        file: "crates/physician-app/src/lib.rs",
-        kind: Input,
-        count: 1,
-        reason: "The sign-in email, which moves to `TextField` with sign-in.",
-    },
-    Entry {
-        file: "crates/physician-app/src/lib.rs",
-        kind: Select,
-        count: 1,
-        reason: "The practice's physician panel choice, which moves to the shared `Select` with the remaining controls.",
-    },
-    Entry {
-        file: "crates/physician-app/src/lib.rs",
-        kind: Button,
-        count: 8,
-        reason: "Sign-in's six actions, plus the logo images that reopen the app and return to Today, which stay raw until the remaining controls move.",
-    },
-    Entry {
-        file: "crates/physician-app/src/lib.rs",
-        kind: CardMarkup,
-        count: 2,
-        reason: "The schedule rail's header uses `card-header` and `card-title` because `Card` has no collapsible rail form yet.",
     },
 ];
 

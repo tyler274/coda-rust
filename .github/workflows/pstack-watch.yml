@@ -1,0 +1,44 @@
+name: PStack verification skill updates
+
+on:
+  schedule:
+    - cron: '43 12 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: pstack-verification-skills
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Compare the five vendored skills
+        env:
+          GIT_LFS_SKIP_SMUDGE: '1'
+        run: |
+          git clone --branch main --single-branch --filter=blob:none --no-checkout https://github.com/cursor/plugins.git "$RUNNER_TEMP/cursor-plugins"
+          scripts/sync-pstack.sh "$RUNNER_TEMP/cursor-plugins"
+
+      - name: Open or refresh the update PR
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          branch: codex/update-pstack-skills
+          delete-branch: true
+          title: Update PStack verification skills
+          commit-message: Update PStack verification skills
+          body: Review the imported verification skills and the upstream revision linked in verification/README.md.
+          add-paths: |
+            .agents/skills/
+            verification/PSTACK-LICENSE
+            verification/README.md

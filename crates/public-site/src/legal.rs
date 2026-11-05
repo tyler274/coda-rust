@@ -1,207 +1,220 @@
-//! Frozen legal copy imported from the reference publication, not product runtime types.
-use dioxus::prelude::*;
-use serde_json::Value;
-use std::sync::LazyLock;
+//! The site's legal documents. Each current document is one record in
+//! `data/<document>.json` and each archived version one in
+//! `data/archive/<document>/<slug>.json`, holding all of its wording. Startup loads them
+//! into a [`Legal`] before rendering; a record that doesn't parse is a [`LegalError`]
+//! naming the file, and startup stops.
+use crate::Route;
+use serde::{Deserialize, Deserializer, de::DeserializeOwned};
+use url::Url;
 
-pub static CURRENT: LazyLock<Value> = LazyLock::new(|| {
-    serde_json::from_str(include_str!("../data/current.json")).expect("valid current legal copy")
-});
-pub static ARCHIVES: LazyLock<Value> = LazyLock::new(|| {
-    serde_json::from_str(include_str!("../data/archives.json"))
-        .expect("valid frozen legal archives")
-});
-pub fn text(value: &Value) -> String {
-    value.as_str().unwrap_or_default().to_owned()
+/// A current legal document the site publishes.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Document {
+    /// A document whose earlier versions stay published.
+    WithArchive(Archive),
+    ConsumerHealthData,
+    Privacy,
+    Terms,
+    ClinicalTransparency,
 }
-pub fn items(value: &Value) -> Vec<Value> {
-    value.as_array().cloned().unwrap_or_default()
+
+/// A document whose earlier versions stay published.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Archive {
+    DuetPrivacy,
+    DuetTerms,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn publication_dates_and_acceptance_version_are_distinct() {
-        assert_eq!(CURRENT["duet"]["duetTermsVersion"], "2026-09-23");
-        assert_eq!(CURRENT["duet"]["duetTermsEffective"], "September 24, 2026");
-        assert_eq!(CURRENT["duet"]["duetPrivacyEffective"], "October 3, 2026");
-    }
-
-    #[test]
-    fn archives_keep_the_frozen_sections() {
-        for (kind, slug, original) in [
-            (
-                "duetPrivacyArchive",
-                "2026-09-09",
-                include_str!("../data/privacy-2026-09-09.json"),
-            ),
-            (
-                "duetPrivacyArchive",
-                "2026-09-23",
-                include_str!("../data/privacy-2026-09-23.json"),
-            ),
-            (
-                "duetPrivacyArchive",
-                "2026-09-24",
-                include_str!("../data/privacy-2026-09-24.json"),
-            ),
-            (
-                "duetTermsArchive",
-                "2026-09-08",
-                include_str!("../data/terms-2026-09-08.json"),
-            ),
-        ] {
-            let entry = ARCHIVES[kind]
-                .as_array()
-                .unwrap()
-                .iter()
-                .find(|entry| entry["slug"] == slug)
-                .unwrap();
-            assert_eq!(
-                entry["sections"],
-                serde_json::from_str::<Value>(original).unwrap()
-            );
+impl Document {
+    /// The archive of this document's earlier versions, if it keeps one.
+    pub fn archive(self) -> Option<Archive> {
+        match self {
+            Self::WithArchive(archive) => Some(archive),
+            Self::ConsumerHealthData | Self::Privacy | Self::Terms | Self::ClinicalTransparency => {
+                None
+            }
         }
     }
-
-    #[test]
-    fn terminology_notices_remain_in_current_terms() {
-        let notices: Vec<Value> =
-            serde_json::from_str(include_str!("../data/clinical-terminology-notices.json"))
-                .unwrap();
-        assert!(items(&CURRENT["duet"]["duetTermsSections"]).ends_with(&notices));
-    }
 }
 
-#[derive(Clone, PartialEq, Default)]
-pub struct Document {
+/// A current document: its page heading and every word of its text.
+#[derive(Debug, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct LegalDocument {
     pub eyebrow: String,
     pub title: String,
     pub intro: String,
-    pub effective: String,
-    pub revised: Option<String>,
+    /// The word before the date, such as "Effective".
     pub date_label: String,
+    pub effective: String,
+    /// The version users accept, on a document they accept by version.
     pub version: Option<String>,
-    pub summary: Vec<Value>,
-    pub sections: Vec<Value>,
-    pub links_title: String,
-    pub links: Vec<(String, String)>,
+    #[serde(default)]
+    pub summary: Vec<String>,
+    pub sections: Vec<Section>,
 }
 
-#[component]
-pub fn LegalPage(document: Document) -> Element {
-    rsx! {
-        header { class: "hero pb-14 sm:pb-16",
-            div { class: "hero-copy",
-                p { class: "kicker", "{document.eyebrow}" }
-                h1 { "{document.title}" }
-                p { class: "lede", "{document.intro}" }
-                p { class: "hero-meta micro",
-                    if let Some(version) = &document.version { span { class: "mb-2 block", "Version {version}" } }
-                    "{document.date_label} {document.effective}"
-                    if let Some(revised) = &document.revised { span { class: "mt-2 block", "Last updated {revised}" } }
-                }
-            }
-        }
-        div { class: "wrap pb-20 sm:pb-28",
-            if !document.summary.is_empty() {
-                div { class: "card mb-10 p-6 sm:mb-14 sm:p-8",
-                    h2 { class: "micro text-accent", "The short version" }
-                    ul { class: "mt-5 grid gap-x-10 gap-y-3 min-[900px]:grid-cols-2",
-                        for point in &document.summary {
-                            li { class: "relative pl-5 text-[16px] leading-[1.6] text-ink before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-accent", "{text(point)}" }
-                        }
-                    }
-                }
-            }
-            for (index, section) in document.sections.iter().enumerate() {
-                section { id: section["id"].as_str().map(str::to_owned), class: "scroll-mt-28 border-t border-hairline py-10 sm:py-12 min-[900px]:grid min-[900px]:grid-cols-[5fr_7fr] min-[900px]:gap-x-16",
-                    div {
-                        span { class: "idx", i {} "{index + 1:02}" }
-                        h2 { class: "mt-3 max-w-[14em] text-[22px] leading-snug tracking-[-0.02em] text-ink min-[900px]:text-[26px]", {text(&section["title"])} }
-                    }
-                    div { class: "mt-5 min-w-0 space-y-4 min-[900px]:mt-0",
-                        for block in items(&section["body"]) { LegalBlock { block } }
-                    }
-                }
-            }
-            if !document.links.is_empty() {
-                p { class: "flex flex-wrap items-baseline gap-x-3 gap-y-2 border-t border-hairline pt-8 text-[14px] font-medium text-ink-mid",
-                    span { class: "micro mr-2", "{document.links_title}" }
-                    for (index, (href, label)) in document.links.iter().enumerate() {
-                        span { class: "flex items-baseline gap-x-3",
-                            if index > 0 { span { aria_hidden: "true", class: "text-ink-faint", "·" } }
-                            a { href: "{href}", class: "underline decoration-accent decoration-1 underline-offset-4 hover:text-accent", "{label}" }
-                        }
-                    }
-                }
-            }
-        }
+/// An earlier version of a document, kept unchanged with its own heading and text.
+#[derive(Debug, PartialEq, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+pub struct ArchivedVersion {
+    /// The version's URL segment under its document: its record's file name.
+    #[serde(skip)]
+    pub slug: &'static str,
+    pub eyebrow: String,
+    pub title: String,
+    pub effective: String,
+    pub last_updated: String,
+    /// The version users accepted, on a document they accept by version.
+    pub version: Option<String>,
+    #[serde(default)]
+    pub summary: Vec<String>,
+    pub sections: Vec<Section>,
+}
+
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Section {
+    /// The anchor other documents link to, where one does.
+    pub id: Option<String>,
+    pub title: String,
+    pub body: Vec<Block>,
+}
+
+/// One block of a section's body, written as an object with one key naming its kind.
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum Block {
+    Paragraph(String),
+    Linked(LinkedParagraph),
+    List(Vec<String>),
+    Table(Table),
+    /// Where a notice's terms are published, shown by its host.
+    Source(Url),
+}
+/// A paragraph with one phrase linked: `before`, the link's label, then `after`.
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct LinkedParagraph {
+    pub before: String,
+    pub link: Link,
+    pub after: String,
+}
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Link {
+    pub label: String,
+    #[serde(deserialize_with = "route")]
+    pub href: Route,
+}
+/// Rows of cells under named columns, one cell per column; the first cell names the row.
+#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Table {
+    pub columns: Vec<String>,
+    pub rows: Vec<Vec<String>>,
+}
+
+/// Reads a link target as one of the site's pages.
+fn route<'de, D: Deserializer<'de>>(deserializer: D) -> Result<Route, D::Error> {
+    let href = String::deserialize(deserializer)?;
+    match href.parse::<Route>() {
+        Ok(Route::NotFound { .. }) | Err(_) => Err(serde::de::Error::custom(format_args!(
+            "link target {href} is not one of the site's pages"
+        ))),
+        Ok(route) => Ok(route),
     }
 }
 
-#[component]
-fn LegalBlock(block: Value) -> Element {
-    let paragraph_class = "text-[16px] leading-[1.7] text-ink-mid";
-    if let Some(paragraph) = block.as_str() {
-        if paragraph.starts_with("https://") {
-            let host = paragraph
-                .strip_prefix("https://")
-                .unwrap()
-                .split('/')
-                .next()
-                .unwrap_or_default();
-            return rsx! { p { class: paragraph_class, a { href: paragraph, class: "break-words underline underline-offset-4", "Source and license: {host}" } } };
-        }
-        return rsx! { p { class: paragraph_class, "{paragraph}" } };
+/// A legal record in `data/` that doesn't parse.
+#[derive(Debug, thiserror::Error)]
+#[error("{file} is not a valid legal record")]
+pub struct LegalError {
+    file: &'static str,
+    #[source]
+    source: serde_json::Error,
+}
+
+fn parse<T: DeserializeOwned>(file: &'static str, text: &str) -> Result<T, LegalError> {
+    serde_json::from_str(text).map_err(|source| LegalError { file, source })
+}
+
+/// Parses the record at `data/<path>`, naming that path if it fails.
+macro_rules! record {
+    ($path:expr) => {
+        parse(
+            concat!("data/", $path),
+            include_str!(concat!("../data/", $path)),
+        )
+    };
+}
+
+/// Parses an archived version at `data/archive/<directory>/<slug>.json`; its slug is
+/// its file name.
+macro_rules! archived {
+    ($directory:literal, $slug:literal) => {
+        record!(concat!("archive/", $directory, "/", $slug, ".json")).map(
+            |version: ArchivedVersion| ArchivedVersion {
+                slug: $slug,
+                ..version
+            },
+        )
+    };
+}
+
+/// Every legal record, loaded once at startup and read by the routes and pages.
+pub struct Legal {
+    duet_privacy: LegalDocument,
+    duet_terms: LegalDocument,
+    consumer_health_data: LegalDocument,
+    privacy: LegalDocument,
+    terms: LegalDocument,
+    clinical_transparency: LegalDocument,
+    /// Each archive's versions, newest first.
+    duet_privacy_archive: Vec<ArchivedVersion>,
+    duet_terms_archive: Vec<ArchivedVersion>,
+}
+
+impl Legal {
+    pub fn load() -> Result<Self, LegalError> {
+        Ok(Self {
+            duet_privacy: record!("duet-privacy.json")?,
+            duet_terms: record!("duet-terms.json")?,
+            consumer_health_data: record!("consumer-health-data.json")?,
+            privacy: record!("privacy.json")?,
+            terms: record!("terms.json")?,
+            clinical_transparency: record!("clinical-transparency.json")?,
+            duet_privacy_archive: vec![
+                archived!("duet-privacy", "2026-09-24")?,
+                archived!("duet-privacy", "2026-09-23")?,
+                archived!("duet-privacy", "2026-09-09")?,
+            ],
+            duet_terms_archive: vec![archived!("duet-terms", "2026-09-08")?],
+        })
     }
-    if let Some(link) = block.get("link") {
-        let paragraph = text(&block["text"]);
-        let label = text(&link["label"]);
-        let (before, after) = paragraph.split_once(&label).unwrap_or((&paragraph, ""));
-        return rsx! { p { class: paragraph_class,
-            "{before}"
-            a { href: text(&link["href"]), class: "text-ink! underline! decoration-accent! decoration-1! underline-offset-4 hover:text-accent!", "{label}" }
-            "{after}"
-        } };
-    }
-    if let Some(list) = block.get("list") {
-        return rsx! { ul { class: "space-y-2",
-            for item in items(list) {
-                li { class: "relative pl-5 text-[16px] leading-[1.7] text-ink-mid before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-accent", "{text(&item)}" }
-            }
-        } };
-    }
-    let columns = items(&block["table"]["columns"]);
-    let rows = items(&block["table"]["rows"]);
-    rsx! {
-        table { class: "w-full border-collapse text-left text-[0.92rem] leading-7 text-ink-mid max-md:hidden",
-            thead { tr { class: "border-b border-hairline-strong",
-                for column in &columns { th { scope: "col", class: "py-2.5 pr-5 align-bottom last:pr-0 micro text-ink-faint", "{text(column)}" } }
-            } }
-            tbody {
-                for row in &rows {
-                    tr { class: "border-b border-hairline last:border-b-0",
-                        for (index, cell) in items(row).iter().enumerate() {
-                            if index == 0 { th { scope: "row", class: "py-3 pr-5 align-top font-medium text-ink", "{text(cell)}" } }
-                            else { td { class: "py-3 pr-5 align-top last:pr-0", "{text(cell)}" } }
-                        }
-                    }
-                }
-            }
+
+    pub fn document(&self, document: Document) -> &LegalDocument {
+        match document {
+            Document::WithArchive(Archive::DuetPrivacy) => &self.duet_privacy,
+            Document::WithArchive(Archive::DuetTerms) => &self.duet_terms,
+            Document::ConsumerHealthData => &self.consumer_health_data,
+            Document::Privacy => &self.privacy,
+            Document::Terms => &self.terms,
+            Document::ClinicalTransparency => &self.clinical_transparency,
         }
-        div { class: "md:hidden",
-            for row in &rows {
-                dl { class: "border-b border-hairline py-3 text-[0.92rem] leading-7 text-ink-mid last:border-b-0",
-                    for (index, cell) in items(row).iter().enumerate() {
-                        div { class: "py-1",
-                            dt { class: if index == 0 { "sr-only" } else { "micro text-ink-faint" }, "{text(&columns[index])}" }
-                            dd { class: if index == 0 { "font-medium text-ink" } else { "" }, "{text(cell)}" }
-                        }
-                    }
-                }
-            }
+    }
+
+    /// An archive's earlier versions, newest first.
+    pub fn versions(&self, archive: Archive) -> &[ArchivedVersion] {
+        match archive {
+            Archive::DuetPrivacy => &self.duet_privacy_archive,
+            Archive::DuetTerms => &self.duet_terms_archive,
         }
+    }
+
+    pub fn version(&self, archive: Archive, slug: &str) -> Option<&ArchivedVersion> {
+        self.versions(archive)
+            .iter()
+            .find(|version| version.slug == slug)
     }
 }

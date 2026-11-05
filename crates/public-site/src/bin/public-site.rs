@@ -15,7 +15,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = config.listen_addr;
     let probe_addr = runtime.internal_probe_addr;
     let ready = Readiness::ready();
-    let app = router_with_options(prerender(&config), runtime, [], ready.clone());
+    let app = router_with_options(prerender(&config)?, runtime, [], ready.clone());
     let listener = tokio::net::TcpListener::bind(addr).await?;
     let (shutdown_tx, shutdown_rx) = tokio::sync::watch::channel(false);
     let probe = if let Some(addr) = probe_addr {

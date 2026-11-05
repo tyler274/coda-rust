@@ -31,7 +31,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 7. **Build for every practice.** What differs between practices is configuration or a declared adapter, never a constant or a branch written for one practice.
 8. **Silence that looks like health is a failure.** If something is behind, stuck or degraded, someone who can act on it sees it, with the reason. Recovery is the system's job, and retries never become the physician's workflow.
 9. **Live where you work; history as it was.** What the physician is looking at updates live. Anything already said or sent keeps the version it used and is marked when something newer exists.
-10. **Messages stay in the practice's channels.** Gmail and Spruce remain the inbox, and Coda has no inbox of its own.
+10. **Messages stay in the practice’s channels.** For the MVP, Spruce is the practice inbox. The physician reviews Spruce messages in Coda and sends replies in the original Spruce conversation. Coda has no inbox of its own.
 11. **Never anchor on FHIR or any one API.** Every source comes through its own adapter.
 12. **Fail closed on access, consent and patient data; fail gracefully everywhere else.** A small failure never closes a whole screen, and a list never reads as complete when something is missing.
 13. **The shared UI principles apply** (PRINCIPLES.md U1–U9). In particular, a label or control exists only because a real state or capability exists.
@@ -47,7 +47,7 @@ Things Coda typically puts on Today:
 - a concern, cleared with Done;
 - one row per patient message, carrying the drafted reply and any concern about that message (Review reply);
 - a message waiting to be matched to a patient, on the messaging manager's Today, and an urgent-looking unmatched message as Now for everyone who sees it;
-- a message Coda can't read, linking to it in Gmail or Spruce until it's read or marked Done;
+- a message Coda can't read, linking to it in Spruce until it's read or marked Done;
 - a visit nudge, when Coda sees something new before a visit;
 - work Coda can't restart that left something unhandled, one row per patient, cleared with Done;
 - running work the physician would recognize, such as a reply to a patient's message or something they started;
@@ -73,7 +73,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Briefing.** Coda's preparation for a visit: the patient's meaningful trajectory, what's new, what's unresolved and the decisions the visit can settle, every point opening its source. A briefing belongs to one visit time. A finished briefing doesn't mean its recommendations were accepted.
 
-**Patient message and reply.** A message arrives in Gmail or Spruce, is linked to one patient, and wakes that patient's review. If a reply would help, Coda proposes one grounded in the chart and the whole conversation. The physician edits it or asks Coda to revise it, then copies it and sends it themselves.
+**Patient message and reply.** A message arrives in Spruce, is linked to one patient, and wakes that patient's review. If a reply would help, Coda proposes one grounded in the chart and the whole conversation. The physician edits it or asks Coda to revise it, then copies it and sends it themselves.
 
 **Conversation.** The physician's chat with Coda about one patient, distinct from a patient's message to the physician. Away from a patient, the sidebar lists recent conversations; a patient's page keeps that patient's conversations.
 
@@ -137,8 +137,8 @@ Along the way:
 
 Connecting a channel:
 
-1. Each physician connects their own Gmail with read-only access; Spruce connects once per practice. Each physician sees only conversations for patients they may access.
-2. Gmail watches the whole mailbox by default, Promotions included. Labels are an optional restriction, and Spam and Trash stay out unless included.
+1. The practice connects Spruce once for read-only patient-message intake.
+2. Each physician sees linked conversations only for patients they may access.
 3. Coda starts with new messages and offers an explicit option to review a backlog.
 4. Catching up and temporary sync problems are never shown. Only a revoked grant or an administrator's block asks the physician to Reconnect, with the reason.
 5. Disconnecting and reconnecting loses and duplicates nothing. A completed disconnect deletes messages that were never accepted into a patient's record, and reply drafts; accepted evidence stays under the record's policy.
@@ -166,7 +166,7 @@ Revise:
 
 Hand off:
 
-18. The physician copies the reply and sends it themselves from Gmail or Spruce (Copy reply, Open in Gmail or Spruce). Coda keeps no approval state for patient mail and never sends it in the MVP.
+18. The physician copies the reply and sends it themselves in the original Spruce conversation (Copy reply, Open in Spruce). Coda keeps no approval state for patient mail and never sends it in the MVP.
 19. The row stays until Coda sees the sent reply. A reply the practice sent outside Coda shows on the card right away and wakes the review, which decides whether anything is left to track. The patient's history records that the practice answered.
 20. In the ideal product, after the MVP, the card offers Send beside Copy, and Coda sends exactly the words the physician approved, shown as sent by Coda for the physician, with accepted, sent and delivered kept distinct.
 
@@ -176,7 +176,7 @@ Along the way:
 - **Ask Coda to reply.** If no reply is ready, the physician asks for one and Coda always drafts one. The ask waits behind a review that's already running, and a reply from that review answers it.
 - **Wrong patient.** The messaging manager uses Wrong patient? on a confirmed link (another patient, or not a patient). The fix applies going forward: the message stops affecting the wrong patient and moves to the right one, and one correction never starts two reviews. Undo within a few seconds restores the reply exactly.
 - **Wrong link after use.** Until the re-review decides, anything that relied on the moved message is withheld (never left blank), then redrafted or closed. Everything Coda wrote while its memory held the moved message is marked and can't surface. The audit trail stays.
-- **Message Coda can't read.** The patient goes on Today with a link to the message in Gmail or Spruce until Coda reads it or the physician marks it Done. A message Coda is holding or retrying is never invisible.
+- **Message Coda can't read.** The patient goes on Today with a link to the message in Spruce until Coda reads it or the physician marks it Done. A message Coda is holding or retrying is never invisible.
 - **Urgent message.** Coda raises a Now concern on the message's row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
 - **A connected patient sends For my doctor.** Duet hands what the patient sent, including any question, to Coda Agents, where the patient's agent talks to the practice's care team agent and the practice's agents judge what the physician needs to see. If needed, it reaches Today. The physician's approved answer goes to the patient's Duet as a message from the practice in their thread, delivered by Coda exactly as approved. Any edit after approval needs approval again. This is the one message Coda delivers in the MVP.
 
@@ -241,7 +241,7 @@ Inside the workspace:
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
-5. Correcting a confirmed message link belongs to the messaging manager, who is whoever connected the Gmail account or set up Spruce.
+5. Correcting a confirmed message link belongs to the messaging manager, who is the person who set up the practice’s Spruce connection.
 6. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
 7. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
 8. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
@@ -333,7 +333,7 @@ Everything Coda reads in the MVP is read only.
 - **The practice's EHR**, with Elation and Hint the two we're focused on first.
 - **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
-- **Patient mail** from each physician's own Gmail and the practice's Spruce.
+- **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **Outside records** from other organizations through Kno2, with Coda acting as the physician's delegate. They complement the practice's chart and never replace it.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
@@ -351,7 +351,7 @@ In the MVP:
 - One practice using Coda Agents on the web, with patients on Duet, the two connected through Connected care.
 - Journeys P1 to P5 and L1, with P1 first.
 - Elation and Hint as EHRs, read only.
-- Gmail and Spruce as the patient-message channels, both first-class, with Copy reply and native send.
+- Spruce for practice patient messaging, with Copy reply and Open in Spruce.
 - Delivering the physician-approved answer to a connected patient's Duet question.
 - Reading attachments, including scans and faxes through OCR.
 - Dictation into the composer.
@@ -382,7 +382,7 @@ Later:
 - Practice-wide direction from Today, such as panel sweeps.
 - Rich results in chat, such as lab tables and trend charts, every value a cited record value.
 - Coda-chosen visualizations of vitals that stay with the patient's understanding.
-- More patient-message channels: native EHR messaging, email and text.
+- Additional practice patient-message channels, including patient email through Gmail, native EHR messaging and text outside Spruce.
 - The shared patient–physician space.
 - Self-serve for hundreds of practices.
 
@@ -392,7 +392,7 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
 
-**Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push, such as a Gmail notification, only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
+**Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
@@ -415,7 +415,7 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Live status.** Run steps are projected from structured tool calls and recorded facts, the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
 
-**Mail.** Each Gmail or Spruce mailbox has one lease, so no message is filed twice or lost. After a rollback, a mailbox a newer release has touched stops filing and shows on the health page until an operator acts.
+**Mail.** Each practice’s Spruce connection has one intake lease, so no message is filed twice or lost. After a rollback, a connection a newer release has touched stops filing and shows on the health page until an operator acts.
 
 **Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. The literature service is an optional gateway, and chart answers work without it.
 

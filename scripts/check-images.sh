@@ -8,7 +8,8 @@
 #     refuses to start without a token, servers refuse Cloud Run hosting
 #     (K_SERVICE) and jobs refuse missing database configuration.
 #  3. Start a disposable PostgreSQL (initdb in mktemp, loopback only), run
-#     both migration images twice, and start the servers with PORT set:
+#     both migration images twice, import the packaged physician bank twice,
+#     and start the servers with PORT set:
 #     /health and /readyz must answer 200. physician-worker starts hosted
 #     on the image's own PHYSICIAN_AUTH and packaged skill catalog, and
 #     refuses to start when its catalog directory is missing.
@@ -94,8 +95,11 @@ initdb -D "$pgdata/data" -U postgres --auth=trust >/dev/null
 pg_ctl -D "$pgdata/data" -l "$pgdata/log" -w \
   -o "-c listen_addresses=127.0.0.1 -p $pgport -k $pgdata -c fsync=off" start >/dev/null
 admin="postgres://postgres@127.0.0.1:$pgport/postgres"
-psql -q "$admin" -c 'create database physician' -c 'create database duet'
-physician_db="postgres://postgres@127.0.0.1:$pgport/physician"
+psql -q "$admin" \
+  -c 'create role physician_migration login nosuperuser nobypassrls nocreatedb nocreaterole connection limit 4' \
+  -c 'create database physician owner physician_migration' -c 'create database duet'
+physician_db="postgres://physician_migration@127.0.0.1:$pgport/physician"
+physician_runtime_db="postgres://postgres@127.0.0.1:$pgport/physician"
 duet_db="postgres://postgres@127.0.0.1:$pgport/duet"
 run_job() {
   local tag=$1; shift
@@ -109,13 +113,51 @@ schema_state() {
 }
 states=()
 for attempt in 1 2; do
-  run_job "${tag_of[coda-physician-migrate]}" -e PHYSICIAN_DATABASE_URL="$physician_db"
+  run_job "${tag_of[coda-physician-migrate]}" -e PHYSICIAN_DATABASE_URL="$physician_db" \
+    -e CODA_HOSTED_PROFILE=staging-preview \
+    -e 'PHYSICIAN_STAGING_ACCOUNTS=dev@codahealth.test|Dev|admin,tyler@codahealth.test|Tyler|admin,physician@codahealth.test|Staging Physician|admin,ops@codahealth.test|Ops|admin,eli@codahealth.test|Eli|admin'
   states+=("$(schema_state "$physician_db")")
   printf 'physician migration run %s: ok (%s)\n' "$attempt" "$(tail -n2 <<<"${states[-1]}" | paste -sd' ')"
 done
 [ "${states[0]}" = "${states[1]}" ] || { echo "physician rerun changed the schema" >&2; exit 1; }
 grep -q physician_runtime_commands <<<"${states[0]}" || { echo "runtime chain missing" >&2; exit 1; }
 echo "physician migration rerun is idempotent"
+
+# The explicit import must work from the image alone, without a source mount or
+# a manually supplied chart directory. Ordinary schema migrations above do not
+# import charts. The second load must preserve the stored records unchanged.
+charts=$(nix build --no-link --print-out-paths .#physician-synthetic-charts)
+expected=$(python3 - "$charts/manifest.json" <<'PY'
+import json, sys
+bank = json.load(open(sys.argv[1]))
+assert bank['patients'], 'the packaged bank is empty'
+print(f"{len(bank['patients'])} patients, {sum(bank['totals'].values())} records")
+PY
+)
+[ "$(psql -At "$physician_db" -c 'select count(*) from physician_runtime_sources')" = 0 ] || {
+  echo "ordinary migrations imported charts" >&2; exit 1;
+}
+chart_summaries=()
+for attempt in 1 2; do
+  if ! output=$(run "${locked[@]}" --network host \
+    --entrypoint "$(binary_of "${tag_of[coda-physician-migrate]}")" \
+    -e PHYSICIAN_DATABASE_URL="$physician_db" \
+    -e CODA_HOSTED_PROFILE=staging-preview \
+    "${tag_of[coda-physician-migrate]}" load-charts); then
+    printf '%s\n' "$output" >&2
+    exit 1
+  fi
+  printf '%s\n' "$output"
+  summary=$(grep '^synthetic charts:' <<<"$output")
+  [[ "$summary" == "synthetic charts: $expected, "*", 0 failed" ]] || {
+    echo "packaged chart import did not match its manifest without failures" >&2; exit 1;
+  }
+  chart_summaries+=("$summary")
+done
+[[ "${chart_summaries[1]}" == *", 0 changed, 0 failed" ]] || {
+  echo "packaged chart reload changed stored records" >&2; exit 1;
+}
+echo "packaged chart import and reload are idempotent"
 
 # duet-migrate applies the doctor-page chain as the unprivileged runtime role,
 # then the front-door chain. Both runs must record the same ledger.
@@ -175,7 +217,7 @@ physician_port=$(free_port)
 # API mode needs an explicit allowance and a key value to construct the
 # router; this placeholder is never sent anywhere because no chat is submitted.
 serve coda-physician-sample "$physician_port" \
-  -e PHYSICIAN_DATABASE_URL="$physician_db" -e PHYSICIAN_AUTH=required \
+  -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" -e PHYSICIAN_AUTH=required \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
   -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder
 expect_status "http://127.0.0.1:$physician_port/health" 200
@@ -189,7 +231,7 @@ expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 # configure token verification.
 worker_port=$(free_port)
 serve coda-physician-worker "$worker_port" \
-  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
+  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
   -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
   -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \

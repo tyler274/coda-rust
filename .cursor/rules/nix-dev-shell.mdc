@@ -18,7 +18,7 @@ Nix development shell. Host tools outside the shell are missing or mismatched.
 - The flake provides: rustc, cargo, clippy, rustfmt, lld, pkg-config, openssl,
   dioxus-cli, openapi-generator-cli, nodejs_22, python314, uv, poppler-utils,
   postgres (with pgvector), gcc, gnumake, jq, gnupg, unzip, zip, **doppler**,
-  act, actionlint, mdbook, opentofu, wasm-bindgen-cli.
+  act, actionlint, mdbook, opentofu, wasm-bindgen-cli, codex, claude-code.
 
 ## Rules
 
@@ -36,6 +36,13 @@ Nix development shell. Host tools outside the shell are missing or mismatched.
    # Or activate an interactive shell once
    nix develop
    ```
+
+   On an Apple silicon Mac where `nix` is not on PATH, the unattended dev shell
+   (`.#agent`, without Doppler) runs in that worktree's Apple container session
+   instead. Run `dev/apple-session.sh up` once per worktree, then
+   `dev/apple-session.sh exec <command>`; see AGENTS.md and the README's Apple
+   container section. Push and publish proof from the Mac. Mac-side tools come
+   from the repo's `Brewfile` through `brew bundle`.
 
 4. ❌ NEVER `npm install -g`, `pip install --user`, `apt install`, or download
    ad-hoc binaries to get a missing tool. First check whether the flake already

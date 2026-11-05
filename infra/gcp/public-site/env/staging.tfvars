@@ -1,6 +1,6 @@
 # Non-secret public-site staging inputs. No secret values belong here.
 # image: the 3609430 (main) build, pushed by digest to the private public-site
-# repository; the earlier b18760e copy came from scripts/staging-admin-bootstrap.sh.
+# repository.
 project_id     = "coda-health-staging"
 project_number = "134570912572"
 region         = "us-east1"

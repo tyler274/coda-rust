@@ -14,7 +14,7 @@ mod devtools;
 mod required_auth;
 
 use devtools::{Browser, DESKTOP, PHONE};
-use required_auth::{STAGING_EMAIL, spawn_required_server};
+use required_auth::{END_THE_SESSION, SIGNED_IN, STAGING_EMAIL, spawn_required_server};
 
 /// What a tab tells the others when the browser's session changes. It names no
 /// session: each tab reads what the browser stores.
@@ -38,8 +38,8 @@ async fn sign_in_and_sign_out_walk_the_browser() {
 
     // The email stage: type the address and send the link.
     browser.resize(DESKTOP);
-    browser.type_into(".sign-in-input", STAGING_EMAIL);
-    browser.click(".sign-in-primary");
+    browser.type_into(r#"input[type="email"]"#, STAGING_EMAIL);
+    browser.click(".control-primary");
     let text = browser.wait_for(SIGNED_IN);
     assert!(
         text.contains("Today"),
@@ -116,10 +116,6 @@ fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
     );
 }
 
-/// Ends the page's session on the server, as expiry does; the page is not told.
-const END_THE_SESSION: &str = "fetch('/auth/sign-out', { method: 'POST', headers: { \
-     Authorization: 'Bearer ' + localStorage.getItem('coda.physician.session') } }); 'sent'";
-
 /// The prompt covers the page, hides it from assistive technology, and takes
 /// it out of the tab order.
 const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app'); \
@@ -127,9 +123,6 @@ const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app
      const top = document.elementFromPoint(innerWidth / 2, innerHeight / 2); \
      return !!prompt && !!shell && prompt.contains(top) \
          && shell.getAttribute('aria-hidden') === 'true' && shell.hasAttribute('inert'); })()";
-
-/// What a signed-in Today says while nothing waits.
-const SIGNED_IN: &str = "Nothing needs you right now.";
 
 /// What every patient's page says.
 const PATIENT_PAGE: &str = "Records as of";
@@ -177,8 +170,8 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
         "window.__news = []; new BroadcastChannel('coda.physician.session').onmessage = \
          event => window.__news.push(JSON.parse(event.data)); 'listening'",
     );
-    browser.type_into(".sign-in-input", STAGING_EMAIL);
-    browser.click(".sign-in-primary");
+    browser.type_into(r#"input[type="email"]"#, STAGING_EMAIL);
+    browser.click(".control-primary");
     browser.wait_for(SIGNED_IN);
     wait_until(
         &mut browser,
@@ -201,7 +194,7 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     );
 
     // Signing in under the prompt picks up on the same patient.
-    browser.click(".session-prompt .sign-in-primary");
+    browser.click(".session-prompt .control-primary");
     wait_until(
         &mut browser,
         RESUMED_ON_THE_PATIENT,
@@ -247,7 +240,7 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
         }
     }
     wait_until(&mut browser, COVERED, "the prompt still up after Escape");
-    browser.click(".session-prompt .sign-in-primary");
+    browser.click(".session-prompt .control-primary");
     wait_until(
         &mut browser,
         &format!("{RESUMED_ON_THE_PATIENT} && {FIND_PATIENT_OPEN}"),
@@ -312,8 +305,8 @@ async fn a_sign_out_answered_after_you_signed_in_again_elsewhere_keeps_the_new_s
 
 fn sign_in(browser: &mut Browser, base: &str) {
     browser.text_until(base, "Sign in to Coda");
-    browser.type_into(".sign-in-input", STAGING_EMAIL);
-    browser.click(".sign-in-primary");
+    browser.type_into(r#"input[type="email"]"#, STAGING_EMAIL);
+    browser.click(".control-primary");
     browser.wait_for(SIGNED_IN);
 }
 

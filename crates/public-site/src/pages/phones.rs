@@ -9,15 +9,14 @@ use dioxus::prelude::*;
 /// on the page a clinician receives.
 ///
 /// Each screen is laid out at the mockups' native 390-point width and scaled into the
-/// phone, so its sizes are the mockups' own. Site-owned (see the Public site book):
-/// styled by /css/duet.css and played by /homepage/duet.js. The markup is the story's
+/// phone, so its sizes are the mockups' own. It is styled by /css/duet.css and played
+/// by /homepage/duet.js. The markup is the story's
 /// last frame, which reduced-motion and no-script visitors see; duet.js starts each
-/// pass from the opening frame. `data-owner="site"` marks it as outside the
-/// production-parity oracle.
+/// pass from the opening frame.
 #[component]
 pub fn Phones() -> Element {
     rsx! {
-        div { "data-owner": "site",
+        div {
             div { class: "frame frame-wide rv", "data-art": "dawn", "data-seed": "5",
                 div {
                     class: "stage-wrap",

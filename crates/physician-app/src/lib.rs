@@ -21,30 +21,32 @@ use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
     ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
-    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkspaceReply,
+    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
+    WorkspaceReply,
 };
 
 use panels::Panel;
 use shell::{
     CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
     REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
-    ReadView, ReplyReviewAction, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET,
-    TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine,
-    WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to, chat_view, chip_name,
-    citation_inspection, connection_lines, demographic_card_view, format_calendar_date,
-    format_clock, format_local_date, format_waited, keyboard_command, need_you_words, opens_reader,
-    past_work_copy, patient_upcoming_visits, read_view, records_time, reply_channel_label,
-    reply_review_actions, reply_revision_words, reply_urgency_words, row_icon, row_tone,
-    schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces, today_lines,
-    today_view, upcoming_visits, work_end_reason, work_heading,
+    RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
+    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
+    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
+    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
+    format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
+    need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
+    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
+    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
+    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
+    work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
 use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Count, Dialog, DraftConflict, EmptyLine, Icon,
-    IconName, IconTile, LiveDot, NavigationControl, NavigationRow, SearchField, StatePill,
-    StatusLine, Tone,
+    ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
+    IconName, LiveDot, NavigationControl, NavigationRow, PageTitle, ProgressBar, SearchField,
+    StatePill, StatusLine, TextField, TextKind, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -911,6 +913,7 @@ fn PhysicianShell(
     let send_slot = use_command_slot();
     let resume_slot = use_command_slot();
     let chat_resume_slot = use_command_slot();
+    let chat_stop_slot = use_command_slot();
     let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
@@ -965,9 +968,6 @@ fn PhysicianShell(
         let client = client.read().clone();
         async move {
             if let Ok(account) = client.whoami().await {
-                if target_physician.read().is_empty() {
-                    target_physician.set(account.physician_id.clone());
-                }
                 whoami_name.set(account.display_name.clone());
                 whoami.set(Some(account));
             }
@@ -1518,9 +1518,8 @@ fn PhysicianShell(
     rsx! {
         ui::Stylesheet { app: SHELL_STYLES }
         if app_collapsed() {
-            button {
+            Button {
                 class: "coda-restore",
-                r#type: "button",
                 aria_label: "Open Coda",
                 onclick: move |_| app_collapsed.set(false),
                 img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
@@ -1629,9 +1628,9 @@ fn PhysicianShell(
             aside { class: "glass-sidebar",
                 div { class: "sidebar-content",
                     div { class: "sidebar-brand-row",
-                        button {
+                        Button {
+                            variant: ButtonVariant::Quiet,
                             class: "sidebar-brand",
-                            r#type: "button",
                             aria_label: "Coda Health",
                             onclick: move |_| {
                                 place.set(Place::Today);
@@ -1700,7 +1699,7 @@ fn PhysicianShell(
                             },
                             Icon { name: IconName::Search }
                             strong { class: "item-text", "Find patient" }
-                            kbd { class: "key-hint", aria_hidden: "true", "⌘ K" }
+                            ui::KeyHint { key_label: "⌘ K" }
                         }
                     }
                     div { class: "sidebar-rule" }
@@ -1946,38 +1945,23 @@ fn PhysicianShell(
                                 .as_ref()
                                 .map(|account| account.practice_accounts.clone())
                                 .unwrap_or_default(),
-                            target_physician_id: {
-                                let chosen = target_physician();
-                                if !chosen.is_empty() {
-                                    chosen
-                                } else {
-                                    whoami
-                                        .read()
-                                        .as_ref()
-                                        .map(|account| account.physician_id.clone())
-                                        .unwrap_or_default()
-                                }
-                            },
+                            target_physician_id: whoami
+                                .read()
+                                .as_ref()
+                                .map(|account| panel_target(account, &target_physician()).to_owned())
+                                .unwrap_or_default(),
                             panel_busy: panel_busy(),
                             panel_notice: panel_notice(),
                             on_select_physician: move |value: String| target_physician.set(value),
                             on_assign_panel: move |_| {
                                 let Some(patient_id) = selected() else { return };
-                                let physician_id = {
-                                    let chosen = target_physician();
-                                    if !chosen.is_empty() {
-                                        chosen
-                                    } else {
-                                        whoami
-                                            .read()
-                                            .as_ref()
-                                            .map(|account| account.physician_id.clone())
-                                            .unwrap_or_default()
-                                    }
-                                };
-                                if physician_id.is_empty() {
+                                let Some(physician_id) = whoami
+                                    .read()
+                                    .as_ref()
+                                    .map(|account| panel_target(account, &target_physician()).to_owned())
+                                else {
                                     return;
-                                }
+                                };
                                 let client = client.read().clone();
                                 spawn(async move {
                                     panel_busy.set(true);
@@ -1996,21 +1980,13 @@ fn PhysicianShell(
                             },
                             on_remove_panel: move |_| {
                                 let Some(patient_id) = selected() else { return };
-                                let physician_id = {
-                                    let chosen = target_physician();
-                                    if !chosen.is_empty() {
-                                        chosen
-                                    } else {
-                                        whoami
-                                            .read()
-                                            .as_ref()
-                                            .map(|account| account.physician_id.clone())
-                                            .unwrap_or_default()
-                                    }
-                                };
-                                if physician_id.is_empty() {
+                                let Some(physician_id) = whoami
+                                    .read()
+                                    .as_ref()
+                                    .map(|account| panel_target(account, &target_physician()).to_owned())
+                                else {
                                     return;
-                                }
+                                };
                                 let client = client.read().clone();
                                 spawn(async move {
                                     panel_busy.set(true);
@@ -2096,6 +2072,17 @@ fn PhysicianShell(
                                     chat_resume_command(selected(), open_chat(), &target)
                                 {
                                     chat_resume_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
+                            conversation_stop_busy: chat_stop_slot.sending(),
+                            conversation_stop_notice: chat_stop_slot.notice(client),
+                            on_conversation_stop: move |target: WorkStopTarget| {
+                                if let Some(command) =
+                                    chat_stop_command(selected(), open_chat(), &target)
+                                {
+                                    chat_stop_slot.run(client.read().clone(), command, move || {
                                         *snapshot_attempt.write() += 1;
                                     });
                                 }
@@ -2479,12 +2466,10 @@ fn SignInScreen(
             SignInStage::Email
         }
     });
-    let mut error = use_signal(String::new);
 
     let mut verify_link = move |link: SignInLink| {
         let client = client.peek().clone();
         stage.set(SignInStage::SigningIn);
-        error.set(String::new());
         spawn(async move {
             match client.verify(&link.email, &link.code).await {
                 Ok(verified) => {
@@ -2511,8 +2496,7 @@ fn SignInScreen(
                             "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
                         }
                     };
-                    error.set(message.to_owned());
-                    stage.set(SignInStage::Recovery);
+                    stage.set(SignInStage::Recovery(message.to_owned()));
                 }
             }
         });
@@ -2571,7 +2555,6 @@ fn SignInScreen(
         let client = client.peek().clone();
         let email_value = email.peek().trim().to_owned();
         stage.set(SignInStage::Requesting);
-        error.set(String::new());
         spawn(async move {
             match client.begin_sign_in(&email_value).await {
                 Ok(answer) => match sign_in_followup(&answer) {
@@ -2589,115 +2572,110 @@ fn SignInScreen(
                         stage.set(SignInStage::CheckEmail);
                     }
                     SignInFollowup::Failed(text) => {
-                        error.set(text);
-                        stage.set(SignInStage::Recovery);
+                        stage.set(SignInStage::Recovery(text));
                     }
                 },
                 Err(_) => {
-                    error.set(SIGN_IN_UNAVAILABLE.to_owned());
-                    stage.set(SignInStage::Recovery);
+                    stage.set(SignInStage::Recovery(SIGN_IN_UNAVAILABLE.to_owned()));
                 }
             }
         });
     };
     let working = matches!(stage(), SignInStage::Requesting | SignInStage::SigningIn);
+    let ways_on = move || {
+        rsx! {
+            ActionRow {
+                Button {
+                    onclick: move |_| request_token(()),
+                    "Send a new link"
+                }
+                if !resuming {
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        onclick: move |_| stage.set(SignInStage::Email),
+                        "Use a different email"
+                    }
+                }
+            }
+        }
+    };
     rsx! {
         div { class: "sign-in-screen",
             section {
-                class: "sign-in-card",
+                class: "sign-in-column",
                 aria_label: "Sign in to Coda",
                 img {
-                    class: "sign-in-logo",
+                    class: "coda-logo",
                     src: "./assets/coda-health-logo-transparent.png",
                     alt: "Coda Health",
-                    width: "152",
                 }
-                div { class: "sign-in-content", aria_live: "polite", aria_busy: working,
-                    h1 {
+                Card {
+                    div { class: "sign-in-content", aria_live: "polite", aria_busy: working,
+                        PageTitle { text: stage().heading(resuming) }
                         match stage() {
-                            SignInStage::CheckEmail => "Check your email",
-                            SignInStage::Requesting => "Sending your link…",
-                            SignInStage::SigningIn => "Signing you in…",
-                            SignInStage::Recovery => "Let’s get you signed in",
-                            SignInStage::NoAccess => "No access to this practice",
-                            SignInStage::Email if resuming => "Sign in to continue",
-                            SignInStage::Email => "Sign in to Coda",
-                        }
-                    }
-                    match stage() {
-                        SignInStage::Email if resuming => rsx! {
-                            p { class: "sign-in-sub", "{SESSION_ENDED}" }
-                            p { class: "sign-in-email", "{email}" }
-                            div { class: "sign-in-form",
-                                button {
-                                    class: "sign-in-primary",
-                                    r#type: "button",
-                                    disabled: email.read().trim().is_empty(),
-                                    onclick: move |_| request_token(()),
-                                    "Email me a sign-in link"
+                            SignInStage::Email if resuming => rsx! {
+                                p { class: "sign-in-sub", "{SESSION_ENDED}" }
+                                p { class: "sign-in-sub sign-in-email", "{email}" }
+                                div { class: "sign-in-form",
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: email.read().trim().is_empty(),
+                                        onclick: move |_| request_token(()),
+                                        "Email me a sign-in link"
+                                    }
+                                    p { class: "sign-in-sub", "Open it to pick up where you were." }
                                 }
-                                p { class: "sign-in-hint", "Open it to pick up where you were." }
-                            }
-                        },
-                        SignInStage::NoAccess => rsx! {
-                            p { class: "sign-in-sub",
-                                if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
-                            }
-                            div { class: "sign-in-actions",
-                                button {
-                                    class: "sign-in-text-action",
-                                    r#type: "button",
-                                    onclick: move |_| {
-                                        removed.set(false);
-                                        email.set(String::new());
-                                        stage.set(SignInStage::Email);
-                                    },
-                                    "Use a different email"
+                            },
+                            SignInStage::NoAccess => rsx! {
+                                p { class: "sign-in-sub",
+                                    if removed() { "{ACCESS_REMOVED}" } else { "{NO_ACCESS}" }
                                 }
-                            }
-                        },
-                        SignInStage::Email => rsx! {
-                            p { class: "sign-in-sub", "Your practice, with you." }
-                            div { class: "sign-in-form",
-                                label { "Work email"
-                                    input {
-                                        class: "sign-in-input",
-                                        r#type: "email",
-                                        autocomplete: "email",
+                                ActionRow {
+                                    Button {
+                                        onclick: move |_| {
+                                            removed.set(false);
+                                            email.set(String::new());
+                                            stage.set(SignInStage::Email);
+                                        },
+                                        "Use a different email"
+                                    }
+                                }
+                            },
+                            SignInStage::Email => rsx! {
+                                p { class: "sign-in-sub", "Your practice, with you." }
+                                div { class: "sign-in-form",
+                                    TextField {
+                                        label: "Work email",
+                                        kind: TextKind::Email,
                                         placeholder: "you@practice.com",
-                                        value: "{email}",
-                                        oninput: move |event| email.set(event.value()),
-                                        onkeydown: move |event| {
-                                            if event.key().to_string() == "Enter" && !email.peek().trim().is_empty() {
+                                        hint: "We’ll email you a link. No password needed.",
+                                        value: email(),
+                                        on_input: move |words| email.set(words),
+                                        onkeydown: move |event: KeyboardEvent| {
+                                            if event.key() == Key::Enter && !email.peek().trim().is_empty() {
                                                 request_token(());
                                             }
                                         },
                                     }
+                                    Button {
+                                        variant: ButtonVariant::Primary,
+                                        disabled: email.read().trim().is_empty(),
+                                        onclick: move |_| request_token(()),
+                                        "Send sign-in link"
+                                    }
                                 }
-                                button {
-                                    class: "sign-in-primary",
-                                    r#type: "button",
-                                    disabled: email.read().trim().is_empty(),
-                                    onclick: move |_| request_token(()),
-                                    "Send sign-in link"
-                                }
-                                p { class: "sign-in-hint", "We’ll email you a link. No password needed." }
-                            }
-                        },
-                        SignInStage::Requesting | SignInStage::SigningIn => rsx! {
-                            p { class: "sign-in-sub", role: "status",
-                                if stage() == SignInStage::Requesting {
-                                    "This may take a moment."
-                                } else {
-                                    "Opening your Coda workspace."
-                                }
-                            }
-                            div { class: "sign-in-progress", aria_hidden: "true", span {} }
-                        },
-                        SignInStage::CheckEmail | SignInStage::Recovery => rsx! {
-                            if stage() == SignInStage::CheckEmail {
+                            },
+                            SignInStage::Requesting => rsx! {
+                                p { class: "sign-in-sub", role: "status", "This may take a moment." }
+                                ProgressBar { label: "Sending your link", bare: true }
+                            },
+                            SignInStage::SigningIn => rsx! {
+                                p { class: "sign-in-sub", role: "status", "Opening your Coda workspace." }
+                                ProgressBar { label: "Signing you in", bare: true }
+                            },
+                            SignInStage::CheckEmail => rsx! {
                                 p { class: "sign-in-sub", "{LINK_ON_THE_WAY}" }
-                                p { class: "sign-in-email", "{email}" }
+                                p { class: "sign-in-sub sign-in-email", "{email}" }
                                 p { class: "sign-in-sub",
                                     if resuming {
                                         "Choose Sign in in the email to pick up where you were."
@@ -2705,38 +2683,20 @@ fn SignInScreen(
                                         "Choose Sign in in the email to open your workspace."
                                     }
                                 }
-                            }
-                            if !error().is_empty() {
-                                p { class: "sign-in-error", role: "alert", "{error}" }
-                            }
-                            div { class: "sign-in-actions",
-                                button {
-                                    class: "sign-in-text-action",
-                                    r#type: "button",
-                                    onclick: move |_| request_token(()),
-                                    "Send a new link"
+                                {ways_on()}
+                            },
+                            SignInStage::Recovery(message) => rsx! {
+                                ui::Notice { tone: Tone::Error, icon: IconName::Alert, title: message }
+                                {ways_on()}
+                            },
+                        }
+                        if let Some(sign_out) = on_sign_out {
+                            ActionRow {
+                                Button {
+                                    variant: ButtonVariant::Quiet,
+                                    onclick: move |_| sign_out.call(()),
+                                    "Sign out"
                                 }
-                                if !resuming {
-                                    button {
-                                        class: "sign-in-text-action sign-in-change",
-                                        r#type: "button",
-                                        onclick: move |_| {
-                                            error.set(String::new());
-                                            stage.set(SignInStage::Email);
-                                        },
-                                        "Use a different email"
-                                    }
-                                }
-                            }
-                        },
-                    }
-                    if let Some(sign_out) = on_sign_out {
-                        div { class: "sign-in-actions",
-                            button {
-                                class: "sign-in-text-action sign-in-change",
-                                r#type: "button",
-                                onclick: move |_| sign_out.call(()),
-                                "Sign out"
                             }
                         }
                     }
@@ -2746,15 +2706,31 @@ fn SignInScreen(
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, PartialEq, Eq)]
 enum SignInStage {
     Email,
     Requesting,
     CheckEmail,
     SigningIn,
-    Recovery,
+    /// What went wrong, with the ways on from it.
+    Recovery(String),
     /// A held link whose account no longer has access to this practice.
     NoAccess,
+}
+
+impl SignInStage {
+    /// What the page is called at this stage; `resuming` when it covers a page whose session ended.
+    fn heading(&self, resuming: bool) -> &'static str {
+        match self {
+            Self::CheckEmail => "Check your email",
+            Self::Requesting => "Sending your link…",
+            Self::SigningIn => "Signing you in…",
+            Self::Recovery(_) => "Let’s get you signed in",
+            Self::NoAccess => "No access to this practice",
+            Self::Email if resuming => "Sign in to continue",
+            Self::Email => "Sign in to Coda",
+        }
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -2974,7 +2950,7 @@ fn SimulationPanel(
         .map(|scenario| scenario.description.clone())
         .unwrap_or_default();
     rsx! {
-        section { class: "simulation-panel", aria_label: "Local practice simulation",
+        Card { class: "simulation-panel", aria_label: "Local practice simulation",
             div { class: "simulation-header",
                 h2 { "Simulated practice walk — {sim.active_scenario_label}" }
                 span { class: "simulation-clock", "{sim.current_time}" }
@@ -2982,15 +2958,15 @@ fn SimulationPanel(
             if !active_description.is_empty() {
                 p { class: "simulation-description", "{active_description}" }
             }
-            div { class: "investor-metric-card", aria_label: "Investor metric",
-                span { class: "investor-metric-label", "Items the physician touched per 100 patients per week" }
-                strong { class: "investor-metric-value", "{items_per_100}" }
-                span { class: "investor-metric-detail",
-                    "{metric.physician_touched_items} physician touches across {metric.panel_size} patients ({metric.ambient_handled_items} handled ambiently)"
-                }
-                span { class: "investor-metric-aggregate",
-                    "Across {agg.runs_count} simulation runs: {agg_items_per_100} items per 100 patients per week"
-                }
+            InvestorMetric {
+                value: items_per_100,
+                detail: format!(
+                    "{} physician touches across {} patients ({} handled ambiently). Across {} simulation runs: {agg_items_per_100} items per 100 patients per week.",
+                    metric.physician_touched_items,
+                    metric.panel_size,
+                    metric.ambient_handled_items,
+                    agg.runs_count,
+                ),
             }
             div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
                 for scenario in sim.scenarios.iter() {
@@ -3023,6 +2999,19 @@ fn SimulationPanel(
                     }
                 }
             }
+        }
+    }
+}
+
+/// What the local simulation measures, on Today and on a patient's page.
+#[component]
+fn InvestorMetric(value: String, detail: String) -> Element {
+    rsx! {
+        ui::MeasurementTile {
+            icon: IconName::Users,
+            label: "Items the physician touched per 100 patients per week",
+            value: vec![(value, String::new())],
+            detail,
         }
     }
 }
@@ -3094,44 +3083,18 @@ fn ScheduleRail(
     on_open: EventHandler<VisitLine>,
 ) -> Element {
     let count = visits.len();
-    let rail_class = if collapsed {
-        "schedule-rail card is-collapsed"
-    } else {
-        "schedule-rail card"
-    };
     rsx! {
-        aside { class: "{rail_class}", aria_label: "{title}",
-            if collapsed {
-                NavigationRow {
-                    class: "schedule-rail-expand",
-                    aria_expanded: "false",
-                    aria_label: "Show {title}",
-                    onclick: move |_| on_collapsed.call(false),
-                    IconTile { name: IconName::Calendar }
-                    if count > 0 {
-                        Count { value: count }
-                    }
-                }
-            }
-            div { class: "schedule-rail-body",
-            header { class: "card-header",
-                IconTile { name: IconName::Calendar }
-                div { class: "card-title title-with-count",
-                    h2 { "{title}" }
-                    if count > 0 {
-                        Count { value: count, words: "left" }
-                    }
-                }
-                Button {
-                    variant: ButtonVariant::Quiet,
-                    icon_only: true,
-                    class: "schedule-rail-collapse",
-                    aria_expanded: "true",
-                    aria_label: "Collapse {title}",
-                    onclick: move |_| on_collapsed.call(true),
-                    Icon { name: IconName::PanelRightClose }
-                }
-            }
+        ui::RailCard {
+            class: if collapsed { "schedule-rail is-collapsed" } else { "schedule-rail" },
+            aria_label: "{title}",
+            icon: IconName::Calendar,
+            title,
+            count,
+            count_words: "left",
+            collapsed,
+            on_collapsed: move |folded| on_collapsed.call(folded),
+            expand_label: "Show {title}",
+            collapse_label: "Collapse {title}",
             ReadNotice {
                 stage: read,
                 loading: SCHEDULE_LOADING,
@@ -3167,7 +3130,6 @@ fn ScheduleRail(
                         }
                     }
                 }
-            }
             }
         }
     }
@@ -3257,6 +3219,9 @@ fn PatientSurface(
     conversation_resume_busy: bool,
     conversation_resume_notice: Element,
     on_conversation_resume: EventHandler<WorkResumeTarget>,
+    conversation_stop_busy: bool,
+    conversation_stop_notice: Element,
+    on_conversation_stop: EventHandler<WorkStopTarget>,
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
     conversation_open: bool,
@@ -3410,11 +3375,10 @@ fn PatientSurface(
                 on_retry,
             }
             if clinic_demographic {
-                section {
-                    class: "patient-section clinic-demographic-card",
+                Card {
                     aria_label: "Clinic demographic record",
+                    mark: rsx! { StatePill { "Clinic record · Not on your panel" } },
                     div { class: "clinic-demographic-header",
-                        span { class: "clinic-demographic-badge", "Clinic record · Not on your panel" }
                         h2 { "Patient demographics" }
                         p { class: "clinic-demographic-copy",
                             "Basic clinic demographics are visible to physicians in this practice. Assign this patient to a physician panel to open clinical summaries, records, and conversations."
@@ -3461,20 +3425,27 @@ fn PatientSurface(
                             class: "panel-assignment-controls",
                             aria_label: "Panel assignment",
                             if practice_accounts.len() > 1 {
-                                label { class: "panel-physician-label",
-                                    "Physician panel"
-                                    select {
-                                        class: "panel-physician-select field",
-                                        aria_label: "Physician panel",
-                                        value: "{target_physician_id}",
-                                        onchange: move |event| on_select_physician.call(event.value()),
-                                        for account in practice_accounts {
-                                            option {
-                                                value: "{account.physician_id}",
-                                                "{account.display_name} ({account.email})"
+                                ui::Select {
+                                    label: "Physician panel",
+                                    placeholder: "Choose a physician",
+                                    selected: practice_accounts
+                                        .iter()
+                                        .position(|account| account.physician_id == target_physician_id),
+                                    options: practice_accounts
+                                        .iter()
+                                        .map(|account| ui::Choice {
+                                            label: format!("{} ({})", account.display_name, account.email),
+                                            ..ui::Choice::default()
+                                        })
+                                        .collect::<Vec<_>>(),
+                                    on_select: {
+                                        let accounts = practice_accounts.clone();
+                                        move |index: usize| {
+                                            if let Some(account) = accounts.get(index) {
+                                                on_select_physician.call(account.physician_id.clone());
                                             }
                                         }
-                                    }
+                                    },
                                 }
                             }
                             Button {
@@ -3492,11 +3463,15 @@ fn PatientSurface(
                 }
             } else {
             if let Some(sim) = &simulation {
-                div { class: "investor-metric-card", aria_label: "Investor metric",
-                    span { class: "investor-metric-label", "Items the physician touched per 100 patients per week" }
-                    strong { class: "investor-metric-value", "{sim.investor_metric.items_per_100_patients_per_week:.1}" }
-                    span { class: "investor-metric-detail",
-                        "Scenario: {sim.active_scenario_label} · {sim.investor_metric.physician_touched_items} touches across {sim.investor_metric.panel_size} patients"
+                div { class: "patient-metric",
+                    InvestorMetric {
+                        value: format!("{:.1}", sim.investor_metric.items_per_100_patients_per_week),
+                        detail: format!(
+                            "Scenario: {} · {} touches across {} patients",
+                            sim.active_scenario_label,
+                            sim.investor_metric.physician_touched_items,
+                            sim.investor_metric.panel_size,
+                        ),
                     }
                     if !replies.is_empty() {
                         Button {
@@ -3541,16 +3516,12 @@ fn PatientSurface(
                         }
                     }
                     for superseded in superseded_replies {
-                        article {
-                            class: "simulation-card is-superseded",
+                        Card {
+                            tinted: true,
                             "data-reply-state": "superseded_by_correction",
-                            div { class: "simulation-card-header",
-                                strong { "{superseded.headline}" }
-                                StatePill { "Superseded by corrected labs" }
-                            }
-                            if let Some(reason) = superseded.superseded_reason {
-                                p { class: "patient-synopsis-meta", "{reason}" }
-                            }
+                            mark: rsx! { StatePill { "Superseded by corrected labs" } },
+                            title: superseded.headline,
+                            detail: superseded.superseded_reason,
                         }
                     }
                 }
@@ -3614,11 +3585,10 @@ fn PatientSurface(
                 section { class: "patient-section", aria_label: "Active plan",
                     h2 { "Active plan" }
                     for item in active_plan_items {
-                        article {
-                            class: "simulation-card",
+                        Card {
                             "data-plan-item": "{item.item_id}",
-                            strong { "{item.title}" }
-                            p { class: "patient-synopsis-meta", "{item.detail}" }
+                            title: item.title,
+                            detail: item.detail,
                         }
                     }
                 }
@@ -3630,11 +3600,12 @@ fn PatientSurface(
                         p { class: "patient-synopsis-meta", "No undecided medication recommendations." }
                     }
                     for rec in undecided_recommendations {
-                        article {
-                            class: "simulation-card",
+                        Card {
                             "data-recommendation-id": "{rec.recommendation_id}",
-                            div { class: "simulation-card-header",
-                                strong { "{rec.medication} — Held (undecided)" }
+                            title: format!("{} — Held (undecided)", rec.medication),
+                            detail: rec.rationale,
+                            footer: format!("Source: {}", rec.source_label),
+                            ActionRow {
                                 Button {
                                     compact: true,
                                     "data-decide-recommendation": "{rec.recommendation_id}",
@@ -3646,8 +3617,6 @@ fn PatientSurface(
                                     "Approve into plan"
                                 }
                             }
-                            p { class: "patient-synopsis-meta", "{rec.rationale}" }
-                            p { class: "patient-synopsis-meta", "Source: {rec.source_label}" }
                         }
                     }
                 }
@@ -3739,14 +3708,24 @@ fn PatientSurface(
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
                         for line in conversation.content().cloned().unwrap_or_default() {
-                            if let Some(target) = line.resume {
+                            if let Some(target) = line.stop {
+                                div { class: "conversation-mechanical", role: "status",
+                                    p { "{line.text}" }
+                                    Button {
+                                        compact: true,
+                                        disabled: conversation_stop_busy,
+                                        onclick: move |_| on_conversation_stop.call(target.clone()),
+                                        "{STOP}"
+                                    }
+                                }
+                            } else if let Some(target) = line.resume {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
                                     Button {
                                         compact: true,
                                         disabled: conversation_resume_busy,
                                         onclick: move |_| on_conversation_resume.call(target.clone()),
-                                        "{TRY_AGAIN}"
+                                        if line.held { "{RESUME}" } else { "{TRY_AGAIN}" }
                                     }
                                 }
                             } else if line.author == Some(Author::Person) {
@@ -3762,35 +3741,38 @@ fn PatientSurface(
                             }
                         }
                         {conversation_resume_notice}
-                        ui::Composer {
-                            label: "Message",
-                            placeholder: "Write a message",
-                            value: draft.clone(),
-                            on_input: move |text| on_draft.call(text),
-                            on_submit: move |_| on_send.call(()),
-                            on_editing: move |editing| {
-                                on_editing.call(editing);
-                                if !editing {
-                                    on_draft_blur.call(());
-                                }
-                            },
-                            status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
-                            notices: conflict.map(|newer| rsx! {
-                                DraftConflict {
-                                    message: DRAFT_CONFLICT,
-                                    saved: newer.text,
-                                    "data-revision": "{newer.revision}",
-                                    p { class: "quiet-line",
-                                        if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                        {conversation_stop_notice}
+                        div { class: "composer-dock",
+                            ui::Composer {
+                                label: "Message",
+                                placeholder: "Write a message",
+                                value: draft.clone(),
+                                on_input: move |text| on_draft.call(text),
+                                on_submit: move |_| on_send.call(()),
+                                on_editing: move |editing| {
+                                    on_editing.call(editing);
+                                    if !editing {
+                                        on_draft_blur.call(());
                                     }
-                                    ActionRow {
-                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
-                                        Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                },
+                                status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                                notices: conflict.map(|newer| rsx! {
+                                    DraftConflict {
+                                        message: DRAFT_CONFLICT,
+                                        saved: newer.text,
+                                        "data-revision": "{newer.revision}",
+                                        p { class: "quiet-line",
+                                            if clearing { "{CLEAR_CONFLICT_HELP}" } else { "{DRAFT_CONFLICT_HELP}" }
+                                        }
+                                        ActionRow {
+                                            Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                            Button { compact: true, onclick: move |_| on_conflict_use_newer.call(()), "{DRAFT_USE_NEWER}" }
+                                        }
                                     }
-                                }
-                            }),
-                            Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
-                            Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
+                                }),
+                                Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
+                                Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
+                            }
                         }
                         if recovery_unavailable {
                             p { class: "quiet-line composer-recovery", role: "status", "{RECOVERY_UNAVAILABLE}" }
@@ -3844,46 +3826,57 @@ fn SearchDialog(
     let none = !query.trim().is_empty() && state.content().is_some_and(Vec::is_empty);
     rsx! {
         Dialog { close_label: "Close", title: "Find patient", on_close,
-                SearchField {
-                    label: "Search your panel",
-                    placeholder: "Name, DOB or phone",
-                    clear_label: "Clear search",
-                    value: query.clone(),
-                    autofocus: true,
-                    onfocus: move |_| on_editing.call(true),
-                    onblur: move |_| on_editing.call(false),
-                    on_input: move |words| on_query.call(words),
-                    onkeydown: move |event: KeyboardEvent| {
-                        if event.key().to_string() == "Enter" {
-                            event.stop_propagation();
-                            if let Some(id) = first.clone() {
-                                on_open.call(id);
+                div { class: "patient-search",
+                    SearchField {
+                        label: "Search your panel",
+                        placeholder: "Name, DOB or phone",
+                        clear_label: "Clear search",
+                        value: query.clone(),
+                        autofocus: true,
+                        onfocus: move |_| on_editing.call(true),
+                        onblur: move |_| on_editing.call(false),
+                        on_input: move |words| on_query.call(words),
+                        onkeydown: move |event: KeyboardEvent| {
+                            if event.key().to_string() == "Enter" {
+                                event.stop_propagation();
+                                if let Some(id) = first.clone() {
+                                    on_open.call(id);
+                                }
                             }
-                        }
-                    },
-                }
-                ReadNotice {
-                    stage: state.stage(),
-                    loading: SEARCH_LOADING,
-                    stale: "",
-                    unavailable: SEARCH_UNAVAILABLE,
-                    retry: TRY_AGAIN,
-                    on_retry,
-                }
-                if none {
-                    EmptyLine { message: SEARCH_NONE }
-                }
-                ul { class: "dialog-results",
-                    for (index, patient) in results.iter().enumerate() {
-                        li {
-                            NavigationRow {
-                                class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
-                                onclick: {
-                                    let id = patient.patient_workspace_id.clone();
-                                    move |_| on_open.call(id.clone())
-                                },
-                                span { "{patient.patient_display_name}" }
-                                span { class: "search-dob", "DOB {patient.birth_date.as_deref().map(format_calendar_date).unwrap_or_else(|| \"not recorded\".to_owned())}" }
+                        },
+                    }
+                    ReadNotice {
+                        stage: state.stage(),
+                        loading: SEARCH_LOADING,
+                        stale: "",
+                        unavailable: SEARCH_UNAVAILABLE,
+                        retry: TRY_AGAIN,
+                        on_retry,
+                    }
+                    if none {
+                        EmptyLine { message: SEARCH_NONE }
+                    }
+                    if !results.is_empty() {
+                        ui::RowGroup { class: "dialog-results",
+                            for (index, patient) in results.iter().enumerate() {
+                                li {
+                                    ui::ListRow {
+                                        class: if focused == Some(index as i32) { "is-keyboard-focus" } else { "" },
+                                        title: patient.patient_display_name.clone(),
+                                        detail: format!(
+                                            "DOB {}",
+                                            patient
+                                                .birth_date
+                                                .as_deref()
+                                                .map(format_calendar_date)
+                                                .unwrap_or_else(|| "not recorded".to_owned())
+                                        ),
+                                        onclick: {
+                                            let id = patient.patient_workspace_id.clone();
+                                            move |_| on_open.call(id.clone())
+                                        },
+                                    }
+                                }
                             }
                         }
                     }
@@ -3897,9 +3890,9 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
     rsx! {
         Dialog { close_label: "Close", title: CONNECTIONS, on_close,
                 if failed {
-                    p { "{TODAY_UNAVAILABLE}" }
+                    p { class: "dialog-note", "{TODAY_UNAVAILABLE}" }
                 } else if lines.is_empty() {
-                    p { "Nothing needs you right now." }
+                    p { class: "dialog-note", "Nothing needs you right now." }
                 } else {
                     for line in lines {
                         p { class: "today-connection", "{line}" }
@@ -3984,20 +3977,22 @@ fn ReaderDialog(reading: OpenReading, on_close: EventHandler) -> Element {
     let link_uri = reading.link_uri.clone();
     rsx! {
         Dialog { close_label: "Close", class: "{section_class}", title, subtitle: eyebrow, on_close,
-                if quiet {
-                    p { "Nothing is open to read." }
-                }
-                if let Some(unavailable) = unavailable {
-                    p { class: "citation-unavailable", "{unavailable}" }
-                }
-                for paragraph in reading.paragraphs {
-                    p { class: "reader-body", "{paragraph}" }
-                }
-                if let Some(provenance) = provenance {
-                    p { class: "reader-provenance", "{provenance}" }
-                }
-                if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
-                    a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
+                div { class: "reader-content",
+                    if quiet {
+                        p { class: "dialog-note", "Nothing is open to read." }
+                    }
+                    if let Some(unavailable) = unavailable {
+                        p { class: "citation-unavailable", "{unavailable}" }
+                    }
+                    for paragraph in reading.paragraphs {
+                        p { class: "reader-body", "{paragraph}" }
+                    }
+                    if let Some(provenance) = provenance {
+                        p { class: "reader-provenance", "{provenance}" }
+                    }
+                    if let (Some(link_label), Some(link_uri)) = (link_label, link_uri) {
+                        a { class: "citation-open", href: "{link_uri}", target: "_blank", rel: "noreferrer", "{link_label}" }
+                    }
                 }
         }
     }
@@ -4080,17 +4075,15 @@ fn ReplyReviewCard(
         instruction.set(String::new());
     };
     rsx! {
-        article {
-            class: "simulation-card reply-review",
+        Card {
+            class: "reply-review",
             "data-reply-state": "{state}",
             "data-draft-revision": "{revision_attr}",
             "data-revision-status": "{run_status}",
             aria_label: "{label}",
-            div { class: "simulation-card-header",
-                strong { "{headline}" }
-                StatePill { tone: Tone::Warning, "{urgency}" }
-            }
-            p { class: "patient-synopsis-meta", "{label}" }
+            mark: rsx! { StatePill { tone: Tone::Warning, "{urgency}" } },
+            title: headline,
+            detail: label.clone(),
             LiteralWords { text: draft.clone() }
             if let Some(words) = run_words {
                 p {
@@ -4186,7 +4179,7 @@ fn ShortcutsDialog(on_close: EventHandler) -> Element {
                 div { class: "shortcut", span { "Update the response in progress" } kbd { "⌘ Enter" } }
                 div { class: "shortcut", span { "Close the current preview or dialog" } kbd { "Esc" } }
                 div { class: "shortcut", span { "Hold to record; release to transcribe" } kbd { "Ctrl+Shift+Space" } }
-                p { "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
+                p { class: "dialog-note", "Navigation shortcuts pause while you are typing. Dictation works in text fields while this tab has focus. Esc cancels dictation." }
         }
     }
 }
@@ -4499,7 +4492,8 @@ fn message_command(
 }
 
 /// One line of the open conversation. A turn Coda couldn't finish carries the
-/// work and run its Try again resumes.
+/// work and run its Try again resumes. A running turn carries Stop, and a
+/// stopped turn carries Resume.
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
@@ -4507,6 +4501,9 @@ struct ConversationLine {
     /// doesn't say shows without a speaker rather than as either.
     author: Option<Author>,
     resume: Option<WorkResumeTarget>,
+    stop: Option<WorkStopTarget>,
+    /// This resume is an intentional Stop. A failed turn's resume is Try again.
+    held: bool,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4517,10 +4514,18 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         .iter()
         .filter_map(|turn| {
             let text = turn.body()?.to_owned();
+            let mechanical = turn.kind.as_deref() == Some("mechanical");
+            let stop = turn.stop_target.clone().filter(|_| mechanical);
             let resume = turn
                 .resume_target
                 .clone()
-                .filter(|_| turn.kind.as_deref() == Some("mechanical"));
+                .filter(|_| mechanical && stop.is_none());
+            let held = resume.as_ref().is_some_and(|target| {
+                snapshot
+                    .runs
+                    .iter()
+                    .any(|run| run.run_id == target.expected_run_id && run.state == "held")
+            });
             let author = match turn.kind.as_deref() {
                 Some("physician") => Some(Author::Person),
                 Some("model") => Some(Author::Assistant),
@@ -4530,6 +4535,8 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 text,
                 author,
                 resume,
+                stop,
+                held,
             })
         })
         .collect()
@@ -4551,6 +4558,25 @@ fn chat_resume_command(
             "chat_id": chat_id,
             "work_item_id": target.work_item_id,
             "expected_run_id": target.expected_run_id,
+        }),
+    ))
+}
+
+/// Stop on the chat turn Coda is writing. Resume keeps the work's identity,
+/// so each press is its own command; a key that named the work would make a
+/// second Stop after Resume a replay of the first, which leaves the run going.
+fn chat_stop_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    target: &WorkStopTarget,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::new(
+        "work.stop",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "work_item_id": target.work_item_id,
         }),
     ))
 }
@@ -4632,8 +4658,11 @@ fn now_millis() -> u128 {
 
 #[cfg(test)]
 mod conversation_line_tests {
-    use super::{ConversationLine, chat_resume_command, conversation_lines, new_chat_id};
-    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget};
+    use super::{
+        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
+    };
+    use crate::shell::STOPPED;
+    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget, WorkStopTarget};
     use ui::Author;
 
     #[test]
@@ -4673,11 +4702,15 @@ mod conversation_line_tests {
                     text: "Hello".into(),
                     author: Some(Author::Person),
                     resume: None,
+                    stop: None,
+                    held: false,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
                     author: None,
                     resume: Some(target()),
+                    stop: None,
+                    held: false,
                 },
             ]
         );
@@ -4716,8 +4749,70 @@ mod conversation_line_tests {
         assert!(
             conversation_lines(&page.snapshot)
                 .iter()
-                .all(|line| line.resume.is_none())
+                .all(|line| line.resume.is_none() && line.stop.is_none())
         );
+    }
+
+    #[test]
+    fn a_writing_line_offers_stop_and_a_stopped_line_offers_resume() {
+        let writing: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Hello" },
+                { "kind": "mechanical", "text": "Coda is writing this response.",
+                  "stop_target": { "work_item_id": "work-1" } },
+            ] }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&writing.snapshot);
+        assert_eq!(
+            lines[1].stop,
+            Some(WorkStopTarget {
+                work_item_id: "work-1".into(),
+            })
+        );
+        assert!(lines[1].resume.is_none());
+        let stopped: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "mechanical",
+                      "text": "Coda stopped this response. Your message is saved.",
+                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                ],
+                "runs": [{ "run_id": "run-1", "state": "held" }],
+            }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&stopped.snapshot);
+        assert_eq!(lines[0].text, STOPPED);
+        assert_eq!(lines[0].resume, Some(target()));
+        assert!(lines[0].held);
+        assert!(lines[0].stop.is_none());
+    }
+
+    #[test]
+    fn each_stop_press_is_its_own_command_for_the_named_work() {
+        let target = WorkStopTarget {
+            work_item_id: "work-1".into(),
+        };
+        let command =
+            chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();
+        assert_eq!(command.0["type"], "work.stop");
+        assert_eq!(
+            command.0["payload"],
+            serde_json::json!({
+                "patient_workspace_id": "pw-1",
+                "chat_id": "chat-1",
+                "work_item_id": "work-1",
+            })
+        );
+        // Resume keeps the work's identity, so a Stop after Resume must not
+        // reuse the earlier Stop's key: the server would answer it as that
+        // earlier, already-taken Stop and leave the resumed turn running.
+        let again = chat_stop_command(Some("pw-1".into()), Some("chat-1".into()), &target).unwrap();
+        assert_ne!(command.0["idempotency_key"], again.0["idempotency_key"]);
+        assert_eq!(command.0["payload"], again.0["payload"]);
+        assert!(chat_stop_command(None, Some("chat-1".into()), &target).is_none());
+        assert!(chat_stop_command(Some("pw-1".into()), None, &target).is_none());
     }
 
     #[test]

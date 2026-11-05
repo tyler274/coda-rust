@@ -348,9 +348,12 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         DeliveryState::Claimed
     );
 
-    // A failed run is released for broker redelivery as a successor attempt.
+    // A failed run is released for broker redelivery as a successor attempt,
+    // and its history says it failed: a lost lease is "interrupted" instead.
     store.retry_delivery(&claim).await.unwrap();
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "pending");
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "pending");
+    assert_eq!(state.attempts.last().unwrap().status, "failed");
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
         DeliveryState::Due
@@ -536,6 +539,21 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
             .await
             .is_err()
     );
+    for (key, work_id, run_id) in [
+        ("", work.as_str(), run.as_str()),
+        ("blank-work", " ", run.as_str()),
+        ("blank-run", work.as_str(), ""),
+    ] {
+        assert_eq!(
+            store
+                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id)
+                .await
+                .unwrap(),
+            Resumed::Refused,
+            "{key:?}"
+        );
+    }
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "failed");
 
     // The named failed run resumes with a fresh budget and the current session.
     assert_eq!(
@@ -588,6 +606,433 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
         store.conversation(&scope).await.unwrap().status,
         "completed"
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = delivery_scope(&practice, "chat");
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .await
+        .unwrap();
+    let claim = store
+        .claim(&scope, 60)
+        .await
+        .unwrap()
+        .expect("pending work");
+    let work = store.conversation(&scope).await.unwrap().work.clone();
+    store
+        .persist(
+            &claim,
+            engine::Event {
+                attempt_id: claim.attempt.clone(),
+                sequence: 1,
+                kind: engine::EventKind::Candidate {
+                    text: "late".into(),
+                },
+            },
+        )
+        .await
+        .unwrap();
+    let candidate = engine::Candidate {
+        text: "late".into(),
+        transcript: vec![],
+        usage: engine::Usage::default(),
+    };
+
+    let mut other = scope.clone();
+    other.physician = "someone-else".into();
+    assert_eq!(
+        store
+            .stop_authorized(&other, "theirs", vec![8; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    let mut other_practice = scope.clone();
+    other_practice.practice = uuid::Uuid::new_v4().to_string();
+    assert_eq!(
+        store
+            .stop_authorized(&other_practice, "other-practice", vec![7; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "mismatch", vec![6; 32], "other-work")
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert!(
+        store
+            .stop_authorized(&scope, "short", vec![6; 4], &work)
+            .await
+            .is_err()
+    );
+    // A blank field is the caller's mistake, refused as a value, not an error.
+    for (key, work_id) in [(" ", work.as_str()), ("blank-work", "")] {
+        assert_eq!(
+            store
+                .stop_authorized(&scope, key, vec![6; 32], work_id)
+                .await
+                .unwrap(),
+            Stopped::Refused,
+            "{key:?} {work_id:?}"
+        );
+    }
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert!(store.is_current(&claim).await.unwrap());
+
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    assert!(!store.is_current(&claim).await.unwrap());
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    assert_eq!(held.session_hash.as_deref(), Some(&[6u8; 32][..]));
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], "other-work")
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    assert!(
+        store
+            .commit_authorized(&claim, &candidate, &mut OpenAuthority)
+            .await
+            .is_err()
+    );
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.messages.len(), 1);
+    assert!(
+        !store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .iter()
+            .any(|delivery| delivery.scope == scope)
+    );
+
+    drop(store);
+    let store = Store::connect(&url).await.unwrap();
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    let run = held.attempts.last().unwrap().id.clone();
+    assert_eq!(
+        store
+            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "turn".into()
+        }
+    );
+    let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
+
+    // Resume keeps the work identity. Replaying the first Stop is that same,
+    // already-taken command and leaves the resumed run going; a second Stop
+    // is a command of its own and holds it.
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-again", vec![6; 32], &work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let held = store.conversation(&scope).await.unwrap();
+    assert_eq!(held.status, "held");
+    assert_eq!(held.attempts.last().unwrap().id, successor.attempt);
+    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+
+    // Sending something else releases the hold and the new message is
+    // answered. Neither stopped run can publish over it, and its Resume is gone.
+    assert_eq!(
+        store
+            .accept_authorized(&scope, &delivery_input("steered"), vec![4; 32])
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    let steered = store.conversation(&scope).await.unwrap();
+    assert_eq!(steered.status, "pending");
+    assert_eq!(
+        steered
+            .messages
+            .iter()
+            .map(|message| message.text.as_str())
+            .collect::<Vec<_>>(),
+        ["turn", "steered"]
+    );
+    for stopped in [&claim, &successor] {
+        assert!(
+            store
+                .commit_authorized(stopped, &candidate, &mut OpenAuthority)
+                .await
+                .is_err()
+        );
+    }
+    assert!(
+        store
+            .dispatch_due(100, Some(&start))
+            .await
+            .unwrap()
+            .deliveries
+            .contains(&Delivery::chat_turn(scope.clone(), "steered".into()))
+    );
+    assert_eq!(
+        store
+            .resume_authorized(
+                &scope,
+                "resume-stopped",
+                vec![9; 32],
+                &work,
+                &successor.attempt
+            )
+            .await
+            .unwrap(),
+        Resumed::Refused
+    );
+    let answering = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(answering.attempt, successor.attempt);
+
+    let quiet = delivery_scope(&practice, "before-claim");
+    store
+        .accept_authorized(&quiet, &delivery_input("early"), vec![5; 32])
+        .await
+        .unwrap();
+    let early = store.conversation(&quiet).await.unwrap();
+    assert!(early.attempts.is_empty());
+    assert_eq!(
+        store
+            .stop_authorized(&quiet, "early-stop", vec![6; 32], &early.work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let stopped = store.conversation(&quiet).await.unwrap();
+    assert_eq!(stopped.attempts.len(), 1);
+    assert_eq!(stopped.attempts[0].status, "cancelled");
+    // Pressing Stop again on the held work is not a refusal: it is held.
+    assert_eq!(
+        store
+            .stop_authorized(&quiet, "early-stop-again", vec![6; 32], &early.work)
+            .await
+            .unwrap(),
+        Stopped::Duplicate
+    );
+    let unchanged = store.conversation(&quiet).await.unwrap();
+    assert_eq!(
+        (unchanged.status.as_str(), unchanged.attempts.len()),
+        ("held", 1)
+    );
+    let first_run = stopped.attempts[0].id.clone();
+    // The page keys Resume by the run it names, as `resume-{work}-{run}`.
+    assert_eq!(
+        store
+            .resume_authorized(
+                &quiet,
+                &format!("resume-{}-{first_run}", stopped.work),
+                vec![9; 32],
+                &stopped.work,
+                &first_run,
+            )
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "early".into()
+        }
+    );
+    // Stop again before any worker claims the resumed turn. That hold names
+    // a run of its own, so the next Resume is a new command and is taken.
+    assert_eq!(
+        store
+            .stop_authorized(&quiet, "early-stop-resumed", vec![6; 32], &stopped.work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    let again = store.conversation(&quiet).await.unwrap();
+    assert_eq!(again.status, "held");
+    let second_run = again.attempts.last().unwrap().id.clone();
+    assert_ne!(second_run, first_run);
+    assert_eq!(
+        again.attempts.last().unwrap().predecessor.as_deref(),
+        Some(first_run.as_str())
+    );
+    assert_eq!(
+        store
+            .resume_authorized(
+                &quiet,
+                &format!("resume-{}-{second_run}", again.work),
+                vec![9; 32],
+                &again.work,
+                &second_run,
+            )
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "early".into()
+        }
+    );
+    assert_eq!(store.conversation(&quiet).await.unwrap().status, "pending");
+
+    // Couldn't finish stays Try again. Stop does not turn it into a hold.
+    let failed_scope = delivery_scope(&practice, "failed");
+    store
+        .accept_authorized(&failed_scope, &delivery_input("gave-up"), vec![5; 32])
+        .await
+        .unwrap();
+    let turn = Delivery::chat_turn(failed_scope.clone(), "gave-up".into());
+    for _ in 0..MAX_FAILED_ATTEMPTS {
+        let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+        store.retry_delivery(&claim).await.unwrap();
+    }
+    let failed = store.conversation(&failed_scope).await.unwrap();
+    assert_eq!(failed.status, "failed");
+    assert_eq!(
+        store
+            .stop_authorized(&failed_scope, "stop-failed", vec![6; 32], &failed.work)
+            .await
+            .unwrap(),
+        Stopped::Refused
+    );
+    let still = store.conversation(&failed_scope).await.unwrap();
+    assert_eq!(still.status, "failed");
+    let run = still.attempts.last().unwrap().id.clone();
+    assert_eq!(
+        store
+            .resume_authorized(&failed_scope, "try-again", vec![9; 32], &still.work, &run,)
+            .await
+            .unwrap(),
+        Resumed::Pending {
+            input_id: "gave-up".into()
+        }
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn engine_failure_stays_leased_until_the_lease_expires() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
+    store.accept(&scope, &delivery_input("turn")).await.unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = PhysicianHost {
+        store: store.clone(),
+        claim: claim.clone(),
+        authority: OpenAuthority,
+        instructions: "versioned test".into(),
+        skills: None,
+    };
+    assert!(
+        host.run(
+            &mut Fails,
+            &engine_limits(),
+            &engine::Cancellation::default()
+        )
+        .await
+        .is_err()
+    );
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts.last().unwrap().status, "active");
+    assert_eq!(state.failures, 0);
+    assert_eq!(state.messages.len(), 1);
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
+    let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "active");
+    assert_eq!(state.failures, 1);
+    assert_eq!(state.messages.len(), 1);
+}
+
+struct OpenAuthority;
+
+#[async_trait]
+impl Authority for OpenAuthority {
+    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+        Ok(())
+    }
+
+    async fn lock_publication(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
+        Ok(())
+    }
+}
+
+struct Fails;
+
+#[async_trait]
+impl engine::Provider for Fails {
+    fn request_bytes(&self, _: &engine::Request<'_>) -> Result<usize, String> {
+        Ok(1)
+    }
+
+    async fn complete(&mut self, _: engine::Request<'_>) -> Result<engine::Turn, String> {
+        Err("provider failed".into())
+    }
+}
+
+fn engine_limits() -> engine::Limits {
+    engine::Limits {
+        model_calls: 2,
+        tool_calls: 0,
+        calls_per_turn: 4,
+        request_bytes: 10_000,
+        response_bytes: 10_000,
+        tool_result_bytes: 1000,
+        total_tool_result_bytes: 1000,
+        output_tokens: 500,
+        elapsed: std::time::Duration::from_secs(5),
+    }
 }
 
 #[tokio::test]

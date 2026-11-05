@@ -47,7 +47,7 @@ try {
   };
   const stages = "#heroStage, #memStage, .f-today, .f-brief, .f-ask, .f-follow, .t-src, .t-you, .duet-story";
   const snapshot = `JSON.stringify([...document.querySelectorAll(${JSON.stringify(stages)})].map(stage => stage.outerHTML))`;
-  // The original site.js shows the hero's final frame under reduced motion.
+  // site.js shows the hero's final frame under reduced motion.
   const staticContent = `(() => {
     const hero = document.querySelector('#heroStage');
     return hero.classList.contains('s-read') && hero.classList.contains('drawn') && !hero.classList.contains('s-disc')

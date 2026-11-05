@@ -1,4 +1,9 @@
-use crate::{chrome::Chrome, pages::*, site};
+use crate::{
+    chrome::Chrome,
+    legal::{Archive, Document, Legal},
+    pages::*,
+    site,
+};
 use dioxus::prelude::*;
 
 /// Single route authority for both Dioxus layout rendering and startup enumeration.
@@ -41,26 +46,27 @@ pub struct PageMeta {
     pub noindex: bool,
 }
 
-/// The original's two page systems. Each decides a document's stylesheets and the
-/// markup around its main content, as the original's homepage and utility layouts do.
+/// The site's two page families, which differ in the stylesheets they load and the
+/// layout around their main content. Both use `chrome.css`.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Shell {
-    /// The homepage and /duet: the original styles and motion script.
+    /// The homepage and /duet: the homepage styles and motion script.
     Homepage,
-    /// Every other page: the original's compiled Tailwind stylesheet.
-    Utility,
+    /// Every other page: the legal documents, scheduling and not-found, styled by
+    /// `document.css`.
+    Document,
 }
 
 impl Route {
     pub fn shell(&self) -> Shell {
         match self {
             Self::Home {} | Self::Duet {} => Shell::Homepage,
-            _ => Shell::Utility,
+            _ => Shell::Document,
         }
     }
 
-    /// Finite documents use the same frozen archive enumeration as their legal links.
-    pub fn pages() -> Vec<Self> {
+    /// Finite documents use the same archive enumeration as their legal links.
+    pub fn pages(legal: &Legal) -> Vec<Self> {
         let mut pages = vec![
             Self::Home {},
             Self::Duet {},
@@ -72,21 +78,39 @@ impl Route {
             Self::ClinicalTransparency {},
             Self::Scheduling {},
         ];
-        use crate::pages::legal_content::{ARCHIVES, items, text};
-        pages.extend(items(&ARCHIVES["duetPrivacyArchive"]).iter().map(|entry| {
-            Self::DuetPrivacyArchive {
-                version: text(&entry["slug"]),
-            }
-        }));
-        pages.extend(items(&ARCHIVES["duetTermsArchive"]).iter().map(|entry| {
-            Self::DuetTermsArchive {
-                version: text(&entry["slug"]),
-            }
-        }));
+        for archive in [Archive::DuetPrivacy, Archive::DuetTerms] {
+            pages.extend(
+                legal
+                    .versions(archive)
+                    .iter()
+                    .map(|version| Self::archived(archive, version.slug)),
+            );
+        }
         pages
     }
 
-    /// The pages the sitemap lists, in the original's order: current documents only.
+    /// A current legal document's page.
+    pub fn document(document: Document) -> Self {
+        match document {
+            Document::WithArchive(Archive::DuetPrivacy) => Self::DuetPrivacy {},
+            Document::WithArchive(Archive::DuetTerms) => Self::DuetTerms {},
+            Document::ConsumerHealthData => Self::ConsumerHealthData {},
+            Document::Privacy => Self::Privacy {},
+            Document::Terms => Self::Terms {},
+            Document::ClinicalTransparency => Self::ClinicalTransparency {},
+        }
+    }
+
+    /// The page of one archived version.
+    pub fn archived(archive: Archive, slug: &str) -> Self {
+        let version = slug.to_owned();
+        match archive {
+            Archive::DuetPrivacy => Self::DuetPrivacyArchive { version },
+            Archive::DuetTerms => Self::DuetTermsArchive { version },
+        }
+    }
+
+    /// The pages the sitemap lists, in order: current documents only.
     /// Archived policy versions stay reachable from their policy pages, not advertised.
     pub fn sitemap() -> Vec<Self> {
         vec![
@@ -101,22 +125,26 @@ impl Route {
         ]
     }
 
-    pub fn meta(&self) -> PageMeta {
+    /// The page's metadata. An archived version the records don't hold gets the
+    /// not-found page's.
+    pub fn meta(&self, legal: &Legal) -> PageMeta {
         let (title, description) = match self {
             Self::Home {} => (site::HOME_TITLE.to_owned(), "Coda is a physician-directed AI care team that handles what happens between visits.".to_owned()),
             Self::Duet {} => ("Duet".into(), "Duet helps you bring your health information together, notice what matters, and prepare for conversations with your doctor.".into()),
             Self::DuetPrivacy {} => ("Duet Privacy Policy".into(), "How Duet handles the health information and sources you choose to connect.".into()),
-            Self::DuetPrivacyArchive { version } => {
-                use crate::pages::legal_content::{ARCHIVES, items, text};
-                let updated = items(&ARCHIVES["duetPrivacyArchive"]).iter().find(|entry| entry["slug"].as_str() == Some(version.as_str())).map(|entry| text(&entry["lastUpdated"])).unwrap_or_default();
-                (format!("Duet Privacy Policy, last updated {updated}"), "An earlier version of the Privacy Policy for Duet by Coda Health.".into())
-            }
+            Self::DuetPrivacyArchive { version } => match legal.version(Archive::DuetPrivacy, version) {
+                Some(entry) => (format!("Duet Privacy Policy, last updated {}", entry.last_updated), "An earlier version of the Privacy Policy for Duet by Coda Health.".into()),
+                None => return Self::NotFound { segments: Vec::new() }.meta(legal),
+            },
             Self::DuetTerms {} => ("Duet Terms of Service".into(), "Terms of Service for Duet, Coda Health's patient-facing iPhone app.".into()),
-            Self::DuetTermsArchive { version } => (format!("Duet Terms of Service, version {version}"), format!("Version {version} of the Terms of Service for Duet by Coda Health.")),
+            Self::DuetTermsArchive { version } => match legal.version(Archive::DuetTerms, version).and_then(|entry| entry.version.as_deref()) {
+                Some(accepted) => (format!("Duet Terms of Service, version {accepted}"), format!("Version {accepted} of the Terms of Service for Duet by Coda Health.")),
+                None => return Self::NotFound { segments: Vec::new() }.meta(legal),
+            },
             Self::ConsumerHealthData {} => ("Duet Consumer Health Data Privacy Policy".into(), "Consumer Health Data Privacy Policy for Duet by Coda Health, under Washington's My Health My Data Act.".into()),
             Self::Privacy {} => ("Privacy Policy".into(), "How Coda Health handles information through its website and related services.".into()),
             Self::Terms {} => ("Terms of Service".into(), "Terms of Service for the Coda Health website and related services.".into()),
-            Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Coda supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
+            Self::ClinicalTransparency {} => ("Clinical Transparency".into(), "How Chords supports physician-directed care, preserves reviewable evidence, and keeps clinical authority with the physician.".into()),
             Self::Scheduling {} => ("Schedule with Dev Patale".into(), "Book a conversation with Dev Patale about clinical environments, health-agent evaluation, and health AI research.".into()),
             Self::NotFound { .. } => ("Page Not Found".into(), "The requested page could not be found.".into()),
         };

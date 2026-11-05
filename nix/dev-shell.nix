@@ -26,6 +26,10 @@ pkgs.mkShell {
     unzip
     zip
     doppler
+    # Local physician chat and the local-review and review-pr reviewers run
+    # these. Each developer signs in once: `codex login`, `claude auth login`.
+    codex
+    claude-code
     # The Pub/Sub emulator backs the physician chat-turn queue tests
     # (crates/physician-sample/tests/worker.rs). It is a Java server.
     ((google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.pubsub-emulator ]).overrideAttrs (old: {
@@ -202,7 +206,7 @@ PGCTL
     # Git hooks live in .githooks (pre-commit runs rustfmt + clippy).
     # Idempotent: only set when not already configured, so a local
     # override survives.
-    if [ "$(git rev-parse --git-dir 2>/dev/null)" ]; then
+    if [ "$(git rev-parse --git-dir 2>/dev/null)" ] && ! git config --get core.hooksPath >/dev/null; then
       git config core.hooksPath .githooks
     fi
     # Set last, after every PATH and linker fix above, so a hook that

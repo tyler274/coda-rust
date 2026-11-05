@@ -707,7 +707,7 @@ async fn a_later_revision_keeps_the_earlier_revisions_execution_evidence() {
 }
 
 #[tokio::test]
-async fn a_terminally_failed_revision_is_visible_over_http() {
+async fn a_terminally_failed_revision_is_visible_over_http_and_cannot_be_resumed() {
     let Some(running) = Running::start("reply_failed", MAX_FAILED_ATTEMPTS, 0).await else {
         return;
     };
@@ -720,6 +720,45 @@ async fn a_terminally_failed_revision_is_visible_over_http() {
         .await;
     assert_eq!(failed.attempts.len(), MAX_FAILED_ATTEMPTS as usize);
     assert_eq!(failed.revision, 1);
+    let history = running.store.earlier_revisions(&scope).await.unwrap();
+    let resume = json!({
+        "type": "work.resume",
+        "idempotency_key": "resume-failed-revision",
+        "payload": {
+            "patient_workspace_id": scope.workspace,
+            "chat_id": scope.chat,
+            "work_item_id": scope.chat,
+            "expected_run_id": failed.attempts.last().unwrap().id,
+        }
+    });
+    // A failed reply is not a resumable chat turn. Replaying the same command
+    // on the other site must still refuse it, not find an accepted receipt.
+    for site in [0, 1, 0] {
+        let (status, body) = support::post(
+            &running.hosts[site],
+            "/commands",
+            Some(&running.session),
+            &resume,
+        )
+        .await;
+        assert_eq!(status, 200, "{body}\n{}", running.logs());
+        assert_eq!(body["outcome"], "rejected", "{body}");
+        assert_eq!(body["message"], "Coda couldn’t resume that work.");
+        assert_eq!(
+            serde_json::to_value(running.store.draft(&scope).await.unwrap().unwrap()).unwrap(),
+            serde_json::to_value(&failed).unwrap(),
+            "refusal must preserve the failed draft and every attempt"
+        );
+        assert_eq!(
+            serde_json::to_value(running.store.earlier_revisions(&scope).await.unwrap()).unwrap(),
+            serde_json::to_value(&history).unwrap(),
+            "refusal must preserve revision history"
+        );
+        assert!(
+            running.store.read(&scope).await.unwrap().is_none(),
+            "refusal must not create chat work"
+        );
+    }
     for site in 0..2 {
         let (status, read) = running.read(site, &scope).await;
         assert_eq!(status, 200, "{read}");
@@ -1152,8 +1191,8 @@ fn open_workspace(browser: &mut devtools::Browser, host: &str) {
         physician_sample::WORKSPACE_IDS[0]
     );
     browser.text_until(&url, "Sign in to Coda");
-    browser.type_into(".sign-in-input", "physician@codahealth.test");
-    browser.click(".sign-in-primary");
+    browser.type_into(r#"input[type="email"]"#, "physician@codahealth.test");
+    browser.click(".control-primary");
     browser.wait_for("Records as of");
 }
 

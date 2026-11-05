@@ -53,25 +53,44 @@ fn FieldFrame(
     }
 }
 
-/// A field with its label above it: one line, or with `multiline` words that grow with what is
-/// written. The host owns its value and hears each change. A `hint` stands beneath it; an `error`
-/// says what is wrong in its place and outlines the field in red.
+/// What a `TextField` takes, which decides its control and what the platform offers to fill it.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum TextKind {
+    /// One line of words.
+    #[default]
+    Line,
+    /// Words that grow with what is written.
+    Multiline,
+    /// One address: a phone offers its email keys, and the browser the person's own addresses.
+    Email,
+}
+
+/// A field with its label above it, taking what its `kind` says. The host owns its value and hears
+/// each change and, with `onkeydown`, each key. A `hint` stands beneath it; an `error` says what is
+/// wrong in its place and outlines the field in red.
 #[component]
 pub fn TextField(
     label: String,
     value: String,
     on_input: EventHandler<String>,
-    #[props(default)] multiline: bool,
+    #[props(default)] kind: TextKind,
     #[props(default)] placeholder: String,
     hint: Option<String>,
     error: Option<String>,
+    onkeydown: Option<EventHandler<KeyboardEvent>>,
 ) -> Element {
     let id = use_hook(field_id);
     let note = note_id(&id, &hint, &error);
     let invalid = error.is_some().then_some("true");
+    let email = kind == TextKind::Email;
+    let key = move |event: KeyboardEvent| {
+        if let Some(handler) = onkeydown {
+            handler.call(event);
+        }
+    };
     rsx! {
         FieldFrame { id: id.clone(), label, hint, error,
-            if multiline {
+            if kind == TextKind::Multiline {
                 textarea {
                     id: "{id}",
                     class: "field text-field-input",
@@ -81,16 +100,20 @@ pub fn TextField(
                     aria_describedby: note,
                     aria_invalid: invalid,
                     oninput: move |event| on_input.call(event.value()),
+                    onkeydown: key,
                 }
             } else {
                 input {
                     id: "{id}",
                     class: "field text-field-input",
+                    r#type: email.then_some("email"),
+                    autocomplete: email.then_some("email"),
                     placeholder: "{placeholder}",
                     value: "{value}",
                     aria_describedby: note,
                     aria_invalid: invalid,
                     oninput: move |event| on_input.call(event.value()),
+                    onkeydown: key,
                 }
             }
         }

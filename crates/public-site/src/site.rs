@@ -1,5 +1,4 @@
-//! Site-wide facts, each stated once. Ported from kytos `lib/site.ts` and
-//! `lib/metadata.ts`.
+//! Site-wide facts, each stated once.
 
 /// The canonical origin every canonical URL and share image resolves against.
 pub const SITE_ORIGIN: &str = "https://codahealth.ai";
@@ -13,8 +12,8 @@ pub const CONTACT_EMAIL: &str = "hello@codahealth.ai";
 /// The homepage document title; every other page uses `"{title} | Coda Health"`.
 pub const HOME_TITLE: &str = "Coda Health | The physician-directed AI care team";
 
-/// The HSTS policy production sends on every response (Vercel's default for custom
-/// domains). Browsers ignore it over plain HTTP, so local runs are unaffected.
+/// The HSTS policy production sends on every response: two years, for this host only.
+/// Browsers ignore it over plain HTTP, so local runs are unaffected.
 pub const STRICT_TRANSPORT_SECURITY: &str = "max-age=63072000";
 
 /// Default listen address for the `public-site` binary.
@@ -26,7 +25,7 @@ pub fn contact_mailto() -> String {
 }
 
 /// Resolves a site path against [`SITE_ORIGIN`]. The homepage resolves to the
-/// bare origin, as Next.js printed it (`https://codahealth.ai`, no slash).
+/// bare origin (`https://codahealth.ai`, no slash).
 pub fn absolute_url(path: &str) -> String {
     if path == "/" {
         SITE_ORIGIN.to_string()

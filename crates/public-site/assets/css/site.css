@@ -1,4 +1,7 @@
-/* Coda Health homepage. Tokens, base type, nav, buttons and footer live in app/chrome.css. */
+/* Coda Health homepage. Tokens, base type, nav, buttons and footer live in chrome.css. */
+/* The homepage's nav is frosted in every browser; on document pages only chrome.css's
+   -webkit- blur applies, which Safari honours. */
+.nav{backdrop-filter:saturate(1.4) blur(14px)}
 
 .tlink{display:inline-flex;gap:6px;align-items:center;color:var(--green);font-size:14px;font-weight:600}
 .tlink span{transition:transform .25s var(--ease)}
@@ -248,8 +251,8 @@
 .sec-head.center p{margin-left:auto;margin-right:auto}
 
 /* ================= product UI kit =================
-   Rendered from the coda-agents physician client: its tokens (tokens.css), its words
-   (physician-experience.md) and its surfaces (Today, reader, briefing, conversation, follow-ups). */
+   The physician product's surfaces as the homepage shows them (Today, reader, briefing,
+   conversation, follow-ups), in the product's own colour tokens. */
 .app{--ag:#126c5a;--agc:#e5f2ea;--agd:#0b4a3d;--aac:#fbf0db;--aad:#6b4408;--abody:#35463e;--amut:#64716a;
   --asurf:#f1f3f0;--alow:#f6f7f5;--ahigh:#ecefeb;--aol:rgba(35,60,46,.21);--aolv:rgba(35,60,46,.12);
   font-family:var(--sans);color:#23332d;text-align:left}

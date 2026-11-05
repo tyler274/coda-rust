@@ -4,18 +4,21 @@
 use std::env;
 use std::fs;
 use std::path::PathBuf;
-use std::process::{Child, Command, Stdio};
+use std::process::Command;
 use std::sync::{Arc, OnceLock};
 use std::time::{Duration, Instant};
 
 use axum::response::IntoResponse;
 use base64::Engine as _;
 use physician_auth::{AuthStore, Membership, MemoryAuthStore, PhysicianIdentity};
-use tokio::io::{AsyncReadExt, AsyncWriteExt};
-use tokio::net::TcpStream;
 use tokio::sync::Mutex;
 
 mod common;
+#[allow(dead_code)]
+#[path = "../../mobile/tests/common/devtools.rs"]
+mod devtools;
+
+use devtools::{Browser, Key};
 
 static TEST_MUTEX: OnceLock<Mutex<()>> = OnceLock::new();
 static BUILT_SITE: OnceLock<PathBuf> = OnceLock::new();
@@ -152,7 +155,7 @@ async fn the_practice_and_its_patients_are_visible() {
 
 /// New conversation, send, then a reload without `?chat=`: the workspace
 /// lists the chat the physician started, titled by its first message.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let _guard = test_lock().lock().await;
@@ -171,36 +174,17 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let address = server.address;
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let workspace_url = format!("http://{address}/?patient={patient}");
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, &workspace_url).await;
-    browser
-        .wait_for_text("This workspace has no chats.", Duration::from_secs(20))
-        .await;
+    let mut browser = Tab::open(&workspace_url);
+    browser.wait_for_text("This workspace has no chats.", Duration::from_secs(20));
 
     // The empty state and the sidebar both offer it; use the sidebar's.
-    let clicked = browser
-        .eval("(() => { const b = document.querySelector('button.sidebar-new-conversation'); if (!b) return false; b.click(); return true; })()")
-        .await;
-    assert_eq!(
-        clicked.pointer("/result/result/value"),
-        Some(&serde_json::json!(true)),
-        "no New conversation button in the sidebar: {}",
-        browser.dom().await
+    browser.click("button.sidebar-new-conversation");
+    browser.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(10),
     );
-    browser
-        .wait_for_text(
-            "What would you like Coda to review?",
-            Duration::from_secs(10),
-        )
-        .await;
-    let address_chat = browser
-        .eval("new URL(location.href).searchParams.get('chat')")
-        .await;
-    let chat = address_chat
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
-        .unwrap_or_default()
-        .to_owned();
+    let address_chat = browser.eval("new URL(location.href).searchParams.get('chat')");
+    let chat = address_chat.as_str().unwrap_or_default().to_owned();
     assert!(
         chat.starts_with("chat-"),
         "the address names no chat: {address_chat}"
@@ -209,71 +193,41 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let message = "Review the discharge summary before the follow-up visit";
     // There is no Save button: typing saves itself once the physician
     // pauses, confirms beside the composer, and an edit clears the mark.
-    let notice = r#"document.querySelector('.composer-context [role=status]')?.textContent ?? ''"#;
-    let buttons = browser
-        .eval("[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())")
-        .await;
+    let buttons = browser.eval(
+        "[...document.querySelectorAll('.composer-toolbar button')].map(b => b.textContent.trim())",
+    );
     assert_eq!(
-        buttons.pointer("/result/result/value"),
-        Some(&serde_json::json!(["Dictate", "Send"])),
+        buttons,
+        serde_json::json!(["Dictate", "Send"]),
         "the composer still offers a manual Save: {buttons}"
     );
-    browser.type_composer(message).await;
+    browser.type_composer(message);
     assert_eq!(
-        browser.settled_mark().await,
+        browser.settled_mark(),
         "Saved",
         "autosave gave no confirmation"
     );
-    let edited = browser
-        .eval(&format!(
-            r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer-input');
-            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, box.value + ' ');
-            box.dispatchEvent(new Event('input', {{bubbles: true}}));
-            setTimeout(() => resolve({notice}), 200);
-        }})"#
-        ))
-        .await;
-    assert_eq!(
-        edited.pointer("/result/result/value"),
-        Some(&serde_json::json!("")),
-        "an edit left the Saved mark: {edited}"
-    );
-    browser
-        .eval(&format!(
-            r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer-input');
-            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
-            box.dispatchEvent(new Event('input', {{bubbles: true}}));
-            setTimeout(() => {{
-                const send = [...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send');
-                send.click();
-                resolve(true);
-            }}, 100);
-        }})"#,
-            serde_json::to_string(message).unwrap()
-        ))
-        .await;
+    let (typed, _) = browser.composer();
+    browser.type_composer(&format!("{typed} "));
+    std::thread::sleep(Duration::from_millis(100));
+    let (_, edited) = browser.composer();
+    assert_eq!(edited, "", "an edit left the Saved mark: {edited}");
+    browser.type_composer(message);
+    browser.click_named(".composer-toolbar button", "Send");
     // The inline session saves the turn before calling the (empty) replay.
-    browser
-        .wait_for_text(message, Duration::from_secs(15))
-        .await;
+    browser.wait_for_text(message, Duration::from_secs(15));
 
-    browser.navigate(&workspace_url).await;
-    let html = browser
-        .wait_for_text(message, Duration::from_secs(20))
-        .await;
+    browser.navigate(&workspace_url);
+    let html = browser.wait_for_text(message, Duration::from_secs(20));
     assert!(
         !html.contains("This workspace has no chats.")
             && html.contains("sidebar-conversation-link"),
         "the reloaded workspace did not list the new chat:\n{html}"
     );
-    let reopened = browser
-        .eval("new URL(location.href).searchParams.get('chat')")
-        .await;
+    let reopened = browser.eval("new URL(location.href).searchParams.get('chat')");
     assert_eq!(
-        reopened.pointer("/result/result/value"),
-        Some(&serde_json::json!(chat)),
+        reopened,
+        serde_json::json!(chat),
         "the address must reflect the conversation selected after a workspace-only reload: {reopened}"
     );
 
@@ -281,91 +235,49 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     // for the frame before its own (empty) read answers. Every render after the
     // click is checked until the empty state; the click itself changes no DOM,
     // so the page before it (still showing the old chat) is not counted.
-    let stale = browser
-        .eval(&format!(
-            r#"new Promise(resolve => {{
-            const old = {};
-            const region = () => document.querySelector('[aria-label="Conversation"]');
-            const lines = () => [...(region()?.querySelectorAll('.message') ?? [])].map(m => m.textContent);
-            let seen = false;
-            const check = () => {{
-                if (lines().some(t => t.includes(old))) seen = true;
-                if (region()?.querySelector('.conversation-empty')) {{ observer.disconnect(); resolve({{seen, done: true}}); }}
-            }};
-            const observer = new MutationObserver(check);
-            observer.observe(document.body, {{subtree: true, childList: true, characterData: true}});
-            document.querySelector('button.sidebar-new-conversation').click();
-            setTimeout(() => {{ observer.disconnect(); resolve({{seen, done: false}}); }}, 10000);
-        }})"#,
-            serde_json::to_string(message).unwrap()
-        ))
-        .await;
+    let stale = browser.step("newConversationShowing", serde_json::json!([message]));
     assert_eq!(
-        stale.pointer("/result/result/value"),
-        Some(&serde_json::json!({"seen": false, "done": true})),
+        stale,
+        serde_json::json!({"seen": false, "done": true}),
         "a new conversation showed the previous chat's lines: {stale}"
     );
-    browser
-        .eval("document.querySelector('button.sidebar-conversation-link').click()")
-        .await;
-    browser
-        .wait_for_text(message, Duration::from_secs(10))
-        .await;
-    let selected = browser
-        .eval("new URL(location.href).searchParams.get('chat')")
-        .await;
+    browser.click("button.sidebar-conversation-link");
+    browser.wait_for_text(message, Duration::from_secs(10));
+    let selected = browser.eval("new URL(location.href).searchParams.get('chat')");
     assert_eq!(
-        selected.pointer("/result/result/value"),
-        Some(&serde_json::json!(chat)),
+        selected,
+        serde_json::json!(chat),
         "selecting the saved conversation left the new conversation in the address: {selected}"
     );
-    let previous_document = browser.eval("performance.timeOrigin").await;
-    browser.reload().await;
-    let reloaded_document = browser.eval("performance.timeOrigin").await;
+    let previous_document = browser.eval("performance.timeOrigin");
+    browser.reload();
+    let reloaded_document = browser.eval("performance.timeOrigin");
     assert_ne!(
-        reloaded_document.pointer("/result/result/value"),
-        previous_document.pointer("/result/result/value"),
+        reloaded_document, previous_document,
         "the conversation must be reopened in a new document, not read from the old page"
     );
-    browser
-        .wait_for_text(message, Duration::from_secs(20))
-        .await;
-    browser
-        .eval("document.querySelector('button[aria-label=\"Open Today\"]').click()")
-        .await;
-    browser
-        .wait_for_text("Nothing needs you right now.", Duration::from_secs(10))
-        .await;
-    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    browser.wait_for_text(message, Duration::from_secs(20));
+    browser.click("button[aria-label=\"Open Today\"]");
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(10));
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]");
     assert_eq!(
-        address.pointer("/result/result/value"),
-        Some(&serde_json::json!([null, null])),
+        address,
+        serde_json::json!([null, null]),
         "Today retained a patient conversation in its address: {address}"
     );
-    browser
-        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
-        .await;
-    browser.search_for("Jake").await;
-    browser.wait_for_text("DOB", Duration::from_secs(10)).await;
-    browser
-        .eval("document.querySelector('.dialog-results button').click()")
-        .await;
-    browser
-        .wait_for_text("Records as of", Duration::from_secs(10))
-        .await;
-    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]").await;
+    browser.click("button[aria-label=\"Find patient\"]");
+    browser.search_for("Jake");
+    browser.wait_for_text("DOB", Duration::from_secs(10));
+    browser.click(".dialog-results button");
+    browser.wait_for_text("Records as of", Duration::from_secs(10));
+    let address = browser.eval("[new URL(location.href).searchParams.get('patient'), new URL(location.href).searchParams.get('chat')]");
     assert_eq!(
-        address.pointer("/result/result/value"),
-        Some(&serde_json::json!([
-            "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
-            null
-        ])),
+        address,
+        serde_json::json!(["pw-82c44e9b-58c0-4af1-bd21-771bf77e101d", null]),
         "changing patient retained the previous patient's conversation: {address}"
     );
-    browser.reload().await;
-    browser
-        .wait_for_text("Records as of", Duration::from_secs(20))
-        .await;
+    browser.reload();
+    browser.wait_for_text("Records as of", Duration::from_secs(20));
 }
 
 /// Two tabs on one chat with debounced autosave: a tab whose save names an
@@ -375,7 +287,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
 /// another conflict instead of being overwritten. Typing during a long save
 /// gets a trailing save, and a save still running when the physician opens
 /// another chat never marks that chat.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     let _guard = test_lock().lock().await;
@@ -405,28 +317,26 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         .await
         .unwrap()
     };
-    let chrome = chromium();
-    let mut tab_a = CdpBrowser::launch(&chrome, &chat_url).await;
-    let mut tab_b = CdpBrowser::launch(&chrome, &chat_url).await;
+    let mut tab_a = Tab::open(&chat_url);
+    let mut tab_b = Tab::open(&chat_url);
     for tab in [&mut tab_a, &mut tab_b] {
         tab.wait_for_text(
             "What would you like Coda to review?",
             Duration::from_secs(20),
-        )
-        .await;
+        );
     }
 
     // Both tabs read the empty draft (revision 0). A's autosave lands first.
-    tab_a.type_composer("Older text from tab A").await;
-    assert_eq!(tab_a.settled_mark().await, "Saved");
+    tab_a.type_composer("Older text from tab A");
+    assert_eq!(tab_a.settled_mark(), "Saved");
     assert_eq!(
         server_draft().await,
         serde_json::json!({"revision": 1, "text": "Older text from tab A"})
     );
     // B still names revision 0: its autosave is refused, nothing is written,
     // B keeps its text and is shown the newer draft with both choices.
-    tab_b.type_composer("Newer text from tab B").await;
-    let conflict = tab_b.wait_conflict().await;
+    tab_b.type_composer("Newer text from tab B");
+    let conflict = tab_b.wait_conflict();
     assert_eq!(
         conflict,
         (1, "Older text from tab A".to_owned()),
@@ -438,23 +348,19 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         "a refused save wrote the stale text"
     );
     assert_eq!(
-        tab_b.composer().await.0,
+        tab_b.composer().0,
         "Newer text from tab B",
         "a refused save dropped the stale tab's text"
     );
     // Autosave stays paused while the choice waits: more typing writes nothing.
-    tab_b
-        .type_composer("Newer text from tab B, still mine")
-        .await;
+    tab_b.type_composer("Newer text from tab B, still mine");
     tokio::time::sleep(Duration::from_millis(1_500)).await;
     assert_eq!(server_draft().await["revision"], 1);
 
     // Use newer text discards B's edit and shows A's saved draft.
-    tab_b.click_conflict("Use newer text").await;
-    tab_b
-        .wait_composer("Older text from tab A", Duration::from_secs(5))
-        .await;
-    assert!(tab_b.conflict().await.is_none());
+    tab_b.click_conflict("Use newer text");
+    tab_b.wait_composer("Older text from tab A", Duration::from_secs(5));
+    assert!(tab_b.conflict().is_none());
     tokio::time::sleep(Duration::from_millis(1_500)).await;
     assert_eq!(
         server_draft().await,
@@ -463,28 +369,28 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     );
 
     // B saves over revision 1; A, still at revision 1, now conflicts.
-    tab_b.type_composer("Newer text from tab B").await;
-    assert_eq!(tab_b.settled_mark().await, "Saved");
-    tab_a.type_composer("Tab A insists").await;
+    tab_b.type_composer("Newer text from tab B");
+    assert_eq!(tab_b.settled_mark(), "Saved");
+    tab_a.type_composer("Tab A insists");
     assert_eq!(
-        tab_a.wait_conflict().await,
+        tab_a.wait_conflict(),
         (2, "Newer text from tab B".to_owned())
     );
     // The draft moves again before A chooses: Retry names the revision A was
     // shown (2), so it is refused and the newest draft is shown instead.
-    tab_b.type_composer("Tab B moved again").await;
-    assert_eq!(tab_b.settled_mark().await, "Saved");
+    tab_b.type_composer("Tab B moved again");
+    assert_eq!(tab_b.settled_mark(), "Saved");
     assert_eq!(server_draft().await["revision"], 3);
-    tab_a.click_conflict("Retry").await;
+    tab_a.click_conflict("Retry");
     let started = Instant::now();
     loop {
-        if tab_a.conflict().await == Some((3, "Tab B moved again".to_owned())) {
+        if tab_a.conflict() == Some((3, "Tab B moved again".to_owned())) {
             break;
         }
         assert!(
             started.elapsed() < Duration::from_secs(10),
             "Retry over a draft that moved again showed no new conflict: {:?}",
-            tab_a.conflict().await
+            tab_a.conflict()
         );
         tokio::time::sleep(Duration::from_millis(60)).await;
     }
@@ -494,8 +400,8 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         "Retry overwrote a revision the physician was never shown"
     );
     // Retry over the revision now shown replaces it with A's text.
-    tab_a.click_conflict("Retry").await;
-    assert_eq!(tab_a.settled_mark().await, "Saved");
+    tab_a.click_conflict("Retry");
+    assert_eq!(tab_a.settled_mark(), "Saved");
     assert_eq!(
         server_draft().await,
         serde_json::json!({"revision": 4, "text": "Tab A insists"})
@@ -503,38 +409,34 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     drop(tab_b);
 
     // Reopened, the chat shows its saved draft.
-    tab_a.navigate(&chat_url).await;
-    tab_a
-        .wait_composer("Tab A insists", Duration::from_secs(20))
-        .await;
+    tab_a.navigate(&chat_url);
+    tab_a.wait_composer("Tab A insists", Duration::from_secs(20));
 
     // Typing during a long save still gets a trailing save of the newer text.
-    tab_a
-        .call(
-            "Fetch.enable",
-            serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
-        )
-        .await;
-    tab_a.type_composer("Edited during").await;
-    let put = tab_a.held_request("PUT").await;
-    assert_eq!(tab_a.composer().await.1, "Saving…");
-    tab_a.type_composer("Edited during a long save").await;
-    tab_a.release(&put).await;
-    let trailing = tab_a.held_request("PUT").await;
-    let body = CdpBrowser::held_body(&trailing);
+    tab_a.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
+    );
+    tab_a.type_composer("Edited during");
+    let put = tab_a.held_request("PUT");
+    assert_eq!(tab_a.composer().1, "Saving…");
+    tab_a.type_composer("Edited during a long save");
+    tab_a.release(&put);
+    let trailing = tab_a.held_request("PUT");
+    let body = held_body(&trailing);
     assert_eq!(
         body,
         serde_json::json!({"expected_revision": 5, "text": "Edited during a long save"}),
         "the trailing save did not name the revision the first save produced"
     );
-    tab_a.release(&trailing).await;
+    tab_a.release(&trailing);
     let started = Instant::now();
     while server_draft().await["revision"] != 6 {
         assert!(
             started.elapsed() < Duration::from_secs(10),
             "the trailing save never landed"
         );
-        tab_a.release_all().await;
+        tab_a.release_all();
         tokio::time::sleep(Duration::from_millis(30)).await;
     }
     assert_eq!(
@@ -543,18 +445,16 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     );
 
     // Hold the next save in flight, open another chat, then let it land.
-    tab_a.type_composer("Edited after reopening").await;
-    let put = tab_a.held_request("PUT").await;
+    tab_a.type_composer("Edited after reopening");
+    let put = tab_a.held_request("PUT");
     assert_eq!(
-        tab_a.composer().await.1,
+        tab_a.composer().1,
         "Saving…",
         "a running save showed no Saving mark"
     );
-    tab_a
-        .eval("document.querySelector('button.sidebar-new-conversation').click()")
-        .await;
+    tab_a.click("button.sidebar-new-conversation");
     let started = Instant::now();
-    while new_chat(&mut tab_a).await == chat {
+    while new_chat(&mut tab_a) == chat {
         assert!(
             started.elapsed() < Duration::from_secs(10),
             "New conversation did not open"
@@ -562,11 +462,11 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
         tokio::time::sleep(Duration::from_millis(30)).await;
     }
     assert_eq!(
-        tab_a.composer().await,
+        tab_a.composer(),
         (String::new(), String::new()),
         "the new chat showed the other chat's draft or its Saving mark"
     );
-    tab_a.release(&put).await;
+    tab_a.release(&put);
     // The save lands on the server for its own chat ...
     let started = Instant::now();
     while server_draft().await["revision"] != 7 {
@@ -574,7 +474,7 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
             started.elapsed() < Duration::from_secs(10),
             "the held save never landed"
         );
-        tab_a.release_all().await;
+        tab_a.release_all();
         tokio::time::sleep(Duration::from_millis(30)).await;
     }
     assert_eq!(
@@ -583,15 +483,15 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     );
     // ... and its answer never marks the chat now shown.
     for _ in 0..10 {
-        tab_a.release_all().await;
+        tab_a.release_all();
         assert_eq!(
-            tab_a.composer().await,
+            tab_a.composer(),
             (String::new(), String::new()),
             "another chat's save marked this chat"
         );
         tokio::time::sleep(Duration::from_millis(50)).await;
     }
-    tab_a.call("Fetch.disable", serde_json::json!({})).await;
+    tab_a.call("Fetch.disable", serde_json::json!({}));
 }
 
 /// Same-tab recovery through `sessionStorage`, signed in (a page restores
@@ -600,7 +500,7 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
 /// answer was lost all come back without a duplicate write; a stale local
 /// baseline asks for an explicit choice; sign-out forgets every record; and
 /// denied storage keeps the text in memory and says reload recovery is off.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     let _guard = test_lock().lock().await;
@@ -621,17 +521,13 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-recovery";
     let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
-    let mut tab = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
-    tab.wait_for_text("Work email", Duration::from_secs(20))
-        .await;
-    tab.request_sign_in("physician@codahealth.test").await;
-    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
-        .await;
+    let mut tab = Tab::open(&format!("http://{address}/"));
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
     let bearer = tab
         .eval("localStorage.getItem('coda.physician.session')")
-        .await
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
+        .as_str()
         .expect("signed-in bearer session")
         .to_owned();
     let http = reqwest::Client::new();
@@ -646,29 +542,24 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
             .await
             .unwrap()
     };
-    let open_chat = async |tab: &mut CdpBrowser| {
-        tab.wait_for_text(
-            "What would you like Coda to review?",
-            Duration::from_secs(20),
-        )
-        .await;
-    };
-    tab.navigate(&chat_url).await;
-    open_chat(&mut tab).await;
+    tab.navigate(&chat_url);
+    tab.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(20),
+    );
 
     // 1. Reloaded before the debounce: the text is only in this tab's
     // storage, comes back, and then saves.
-    tab.type_composer("Typed just before the reload").await;
+    tab.type_composer("Typed just before the reload");
     assert_eq!(server_draft().await["revision"], 0);
     assert_eq!(
-        tab.recovery_keys().await.len(),
+        tab.recovery_keys().len(),
         1,
         "the unsent text was not kept for a reload"
     );
-    tab.reload().await;
-    tab.wait_composer("Typed just before the reload", Duration::from_secs(20))
-        .await;
-    assert_eq!(tab.settled_mark().await, "Saved");
+    tab.reload();
+    tab.wait_composer("Typed just before the reload", Duration::from_secs(20));
+    assert_eq!(tab.settled_mark(), "Saved");
     assert_eq!(
         server_draft().await,
         serde_json::json!({"revision": 1, "text": "Typed just before the reload"})
@@ -679,17 +570,15 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.call(
         "Fetch.enable",
         serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
-    )
-    .await;
-    tab.type_composer("Typed while a save was on its way").await;
-    let _held = tab.held_request("PUT").await;
-    tab.reload().await;
-    tab.release_all().await;
-    tab.call("Fetch.disable", serde_json::json!({})).await;
-    tab.release_all().await;
-    tab.wait_composer("Typed while a save was on its way", Duration::from_secs(20))
-        .await;
-    assert_eq!(tab.settled_mark().await, "Saved");
+    );
+    tab.type_composer("Typed while a save was on its way");
+    let _held = tab.held_request("PUT");
+    tab.reload();
+    tab.release_all();
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.wait_composer("Typed while a save was on its way", Duration::from_secs(20));
+    assert_eq!(tab.settled_mark(), "Saved");
     assert_eq!(
         server_draft().await,
         serde_json::json!({"revision": 2, "text": "Typed while a save was on its way"})
@@ -704,10 +593,9 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
             "urlPattern": "*/physician-state/drafts/*",
             "requestStage": "Response"
         }] }),
-    )
-    .await;
-    tab.type_composer("Saved but never answered").await;
-    let answer = tab.held_request("PUT").await;
+    );
+    tab.type_composer("Saved but never answered");
+    let answer = tab.held_request("PUT");
     assert_eq!(
         server_draft().await,
         serde_json::json!({"revision": 3, "text": "Saved but never answered"})
@@ -715,17 +603,15 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.call(
         "Fetch.failRequest",
         serde_json::json!({ "requestId": answer["requestId"], "errorReason": "Failed" }),
-    )
-    .await;
-    assert_eq!(tab.settled_mark().await, "Not saved");
-    tab.call("Fetch.disable", serde_json::json!({})).await;
-    tab.release_all().await;
-    tab.reload().await;
-    tab.wait_composer("Saved but never answered", Duration::from_secs(20))
-        .await;
+    );
+    assert_eq!(tab.settled_mark(), "Not saved");
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.reload();
+    tab.wait_composer("Saved but never answered", Duration::from_secs(20));
     tokio::time::sleep(Duration::from_millis(2_500)).await;
     assert!(
-        tab.conflict().await.is_none(),
+        tab.conflict().is_none(),
         "this tab's own lost save showed as a conflict"
     );
     assert_eq!(
@@ -734,7 +620,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         "the recovered text was written twice"
     );
     assert!(
-        tab.recovery_keys().await.is_empty(),
+        tab.recovery_keys().is_empty(),
         "a record outlived the text it kept"
     );
 
@@ -743,10 +629,9 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     tab.call(
         "Fetch.enable",
         serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/drafts/*" }] }),
-    )
-    .await;
-    tab.type_composer("Local edit nobody saved").await;
-    let _held = tab.held_request("PUT").await;
+    );
+    tab.type_composer("Local edit nobody saved");
+    let _held = tab.held_request("PUT");
     let moved = http
         .put(&draft_url)
         .bearer_auth(&bearer)
@@ -755,96 +640,62 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await
         .unwrap();
     assert!(moved.status().is_success());
-    tab.reload().await;
-    tab.call("Fetch.disable", serde_json::json!({})).await;
-    tab.release_all().await;
-    assert_eq!(
-        tab.wait_conflict().await,
-        (4, "Written elsewhere".to_owned())
-    );
-    assert_eq!(tab.composer().await.0, "Local edit nobody saved");
+    tab.reload();
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    assert_eq!(tab.wait_conflict(), (4, "Written elsewhere".to_owned()));
+    assert_eq!(tab.composer().0, "Local edit nobody saved");
     assert_eq!(server_draft().await["revision"], 4);
-    tab.click_conflict("Use newer text").await;
-    tab.wait_composer("Written elsewhere", Duration::from_secs(5))
-        .await;
-    assert!(tab.recovery_keys().await.is_empty());
+    tab.click_conflict("Use newer text");
+    tab.wait_composer("Written elsewhere", Duration::from_secs(5));
+    assert!(tab.recovery_keys().is_empty());
 
     // 5. Sign-out forgets every record before anything else can read it.
-    tab.type_composer("Unsent at sign-out").await;
-    assert_eq!(tab.recovery_keys().await.len(), 1);
-    tab.eval("document.querySelector('button[aria-label=\"Sign out of Coda\"]').click()")
-        .await;
-    tab.wait_for_text("Sign in to Coda", Duration::from_secs(10))
-        .await;
+    tab.type_composer("Unsent at sign-out");
+    assert_eq!(tab.recovery_keys().len(), 1);
+    tab.click("button[aria-label=\"Sign out of Coda\"]");
+    tab.wait_for_text("Sign in to Coda", Duration::from_secs(10));
     assert!(
-        tab.recovery_keys().await.is_empty(),
+        tab.recovery_keys().is_empty(),
         "sign-out left unsent text in this tab's storage"
     );
     drop(tab);
 
     // 6. Denied storage: the text stays on screen and saves; the page says
     // a reload cannot bring it back.
-    let mut denied = CdpBrowser::launch(&chromium(), "about:blank").await;
-    denied
-        .call(
-            "Page.addScriptToEvaluateOnNewDocument",
-            serde_json::json!({"source": r#"(() => {
-        const set = Storage.prototype.setItem;
-        Storage.prototype.setItem = function (key, value) {
-            if (String(key).startsWith('coda.physician.draft.')) {
-                throw new DOMException('quota', 'QuotaExceededError');
-            }
-            return set.call(this, key, value);
-        };
-    })()"#}),
-        )
-        .await;
-    denied.navigate(&format!("http://{address}/")).await;
-    denied
-        .wait_for_text("Work email", Duration::from_secs(20))
-        .await;
-    denied.request_sign_in("physician@codahealth.test").await;
-    denied
-        .wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
-        .await;
-    denied.navigate(&chat_url).await;
-    denied
-        .wait_composer("Written elsewhere", Duration::from_secs(20))
-        .await;
-    denied.type_composer("Kept only in memory").await;
-    denied
-        .wait_for_text(
-            "This tab can’t keep a reload copy of your draft.",
-            Duration::from_secs(5),
-        )
-        .await;
-    assert_eq!(denied.composer().await.0, "Kept only in memory");
-    assert_eq!(denied.settled_mark().await, "Saved");
+    let mut denied = Tab::open("about:blank");
+    denied.call(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({"source": include_str!("js/deny_draft_storage.js")}),
+    );
+    denied.navigate(&format!("http://{address}/"));
+    denied.wait_for_text("Work email", Duration::from_secs(20));
+    denied.request_sign_in("physician@codahealth.test");
+    denied.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    denied.navigate(&chat_url);
+    denied.wait_composer("Written elsewhere", Duration::from_secs(20));
+    denied.type_composer("Kept only in memory");
+    denied.wait_for_text(
+        "This tab can’t keep a reload copy of your draft.",
+        Duration::from_secs(5),
+    );
+    assert_eq!(denied.composer().0, "Kept only in memory");
+    assert_eq!(denied.settled_mark(), "Saved");
     drop(denied);
 
     // 7. Same-clinic panel removal answers 200 with demographics, not 404.
     // Recovery must be purged even on this successful workspace read.
-    let mut removed = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
-    removed
-        .wait_for_text("Work email", Duration::from_secs(20))
-        .await;
-    removed.request_sign_in("physician@codahealth.test").await;
-    removed
-        .wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
-        .await;
-    removed.navigate(&chat_url).await;
-    removed
-        .wait_composer("Kept only in memory", Duration::from_secs(20))
-        .await;
-    removed
-        .type_composer("Must not survive panel removal")
-        .await;
-    assert_eq!(removed.recovery_keys().await.len(), 1);
+    let mut removed = Tab::open(&format!("http://{address}/"));
+    removed.wait_for_text("Work email", Duration::from_secs(20));
+    removed.request_sign_in("physician@codahealth.test");
+    removed.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    removed.navigate(&chat_url);
+    removed.wait_composer("Kept only in memory", Duration::from_secs(20));
+    removed.type_composer("Must not survive panel removal");
+    assert_eq!(removed.recovery_keys().len(), 1);
     let removed_bearer = removed
         .eval("localStorage.getItem('coda.physician.session')")
-        .await
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
+        .as_str()
         .unwrap()
         .to_owned();
     let revoked = http
@@ -856,12 +707,10 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
         .await
         .unwrap();
     assert!(revoked.status().is_success());
-    removed.reload().await;
-    removed
-        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(20))
-        .await;
+    removed.reload();
+    removed.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(20));
     assert!(
-        removed.recovery_keys().await.is_empty(),
+        removed.recovery_keys().is_empty(),
         "demographic-only access retained clinical recovery"
     );
 }
@@ -871,7 +720,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
 /// the later text, and the durable draft follows. A Send whose answer is lost
 /// across a reload is asked about again with the same command key, never a
 /// new one, and the message appears once.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command() {
     let _guard = test_lock().lock().await;
@@ -892,17 +741,13 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-keyboard-send";
     let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
-    let mut tab = CdpBrowser::launch(&chromium(), &format!("http://{address}/")).await;
-    tab.wait_for_text("Work email", Duration::from_secs(20))
-        .await;
-    tab.request_sign_in("physician@codahealth.test").await;
-    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20))
-        .await;
+    let mut tab = Tab::open(&format!("http://{address}/"));
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
     let bearer = tab
         .eval("localStorage.getItem('coda.physician.session')")
-        .await
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
+        .as_str()
         .expect("signed-in bearer session")
         .to_owned();
     let http = reqwest::Client::new();
@@ -917,45 +762,36 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
             .await
             .unwrap()
     };
-    let ctrl_enter = r#"(() => {
-        const box = document.querySelector('textarea.composer-input');
-        box.focus();
-        box.dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', ctrlKey: true, bubbles: true}));
-        return true;
-    })()"#;
-    tab.navigate(&chat_url).await;
+    tab.navigate(&chat_url);
     tab.wait_for_text(
         "What would you like Coda to review?",
         Duration::from_secs(20),
-    )
-    .await;
+    );
 
     // 1. Typed, autosaved, then sent from the keyboard while the command is
     // held; more typing lands before the answer.
     let first = "Check the potassium trend";
-    tab.type_composer(first).await;
-    assert_eq!(tab.settled_mark().await, "Saved");
+    tab.type_composer(first);
+    assert_eq!(tab.settled_mark(), "Saved");
     assert_eq!(server_draft().await["text"], first);
     tab.call(
         "Fetch.enable",
         serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
-    )
-    .await;
-    tab.eval(ctrl_enter).await;
-    let held = tab.held_request("POST").await;
-    let key = CdpBrowser::held_body(&held)["idempotency_key"].clone();
+    );
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    let held = tab.held_request("POST");
+    let key = held_body(&held)["idempotency_key"].clone();
     assert_eq!(
-        CdpBrowser::held_body(&held)["payload"]["text"],
+        held_body(&held)["payload"]["text"],
         first,
         "keyboard Send did not submit the composer text"
     );
-    tab.type_composer(&format!("{first} and the sodium")).await;
-    tab.release(&held).await;
-    tab.call("Fetch.disable", serde_json::json!({})).await;
-    tab.wait_composer("and the sodium", Duration::from_secs(10))
-        .await;
-    tab.wait_for_text(first, Duration::from_secs(10)).await;
-    assert_eq!(tab.settled_mark().await, "Saved");
+    tab.type_composer(&format!("{first} and the sodium"));
+    tab.release(&held);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.wait_composer("and the sodium", Duration::from_secs(10));
+    tab.wait_for_text(first, Duration::from_secs(10));
+    assert_eq!(tab.settled_mark(), "Saved");
     assert_eq!(
         server_draft().await["text"],
         "and the sodium",
@@ -965,56 +801,47 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
     // 2. Sent, but the answer is lost and the page reloads: the reload asks
     // again with the same key; the message lands once and clears.
     let second = "Order a repeat BMP";
-    tab.type_composer(second).await;
-    assert_eq!(tab.settled_mark().await, "Saved");
+    tab.type_composer(second);
+    assert_eq!(tab.settled_mark(), "Saved");
     tab.call(
         "Fetch.enable",
         serde_json::json!({ "patterns": [{
             "urlPattern": "*/commands",
             "requestStage": "Response"
         }] }),
-    )
-    .await;
-    tab.eval(
-        "[...document.querySelectorAll('.composer-toolbar button')].find(b => b.textContent.trim() === 'Send').click()",
-    )
-    .await;
-    let answered = tab.held_request("POST").await;
-    let lost_key = CdpBrowser::held_body(&answered)["idempotency_key"].clone();
+    );
+    tab.click_named(".composer-toolbar button", "Send");
+    let answered = tab.held_request("POST");
+    let lost_key = held_body(&answered)["idempotency_key"].clone();
     assert_ne!(lost_key, key);
     tab.call(
         "Fetch.failRequest",
         serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
-    )
-    .await;
+    );
     tab.call(
         "Fetch.enable",
         serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
-    )
-    .await;
-    tab.reload().await;
-    let reasked = tab.held_request("POST").await;
+    );
+    tab.reload();
+    let reasked = tab.held_request("POST");
     assert_eq!(
-        CdpBrowser::held_body(&reasked)["idempotency_key"],
+        held_body(&reasked)["idempotency_key"],
         lost_key,
         "the reload issued a new command for a Send whose answer was lost"
     );
-    tab.release(&reasked).await;
-    tab.call("Fetch.disable", serde_json::json!({})).await;
-    tab.release_all().await;
-    tab.wait_for_text(second, Duration::from_secs(20)).await;
-    tab.wait_composer("", Duration::from_secs(10)).await;
-    let lines = tab
-        .eval(&format!(
-            "[...document.querySelectorAll('[aria-label=\"Conversation\"] .message')].filter(m => m.textContent.includes({})).length",
-            serde_json::to_string(second).unwrap()
-        ))
-        .await;
-    assert_eq!(
-        lines.pointer("/result/result/value"),
-        Some(&serde_json::json!(1)),
-        "the re-asked message did not appear exactly once"
-    );
+    tab.release(&reasked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.wait_for_text(second, Duration::from_secs(20));
+    tab.wait_composer("", Duration::from_secs(10));
+    let lines = tab.step("conversationLines", serde_json::json!([]));
+    let sent = lines
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|line| line.as_str().is_some_and(|text| text.contains(second)))
+        .count();
+    assert_eq!(sent, 1, "the re-asked message did not appear exactly once");
     let started = Instant::now();
     while server_draft().await["text"] != "" {
         assert!(
@@ -1147,7 +974,7 @@ fn overflowing_recents() -> String {
 }
 
 /// Sign out stays on screen, and a long recent list scrolls instead of pushing it off.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn sign_out_stays_on_screen_and_a_long_recent_list_scrolls() {
     let _guard = test_lock().lock().await;
@@ -1164,43 +991,36 @@ async fn sign_out_stays_on_screen_and_a_long_recent_list_scrolls() {
     })
     .await;
     let url = format!("http://{}/", server.address);
-    let chrome = chromium();
 
     let mut cut_off = Vec::new();
     for case in SIDEBAR_CASES {
-        let mut browser = CdpBrowser::launch(&chrome, "about:blank").await;
-        browser.set_viewport(case.width, case.height, true).await;
+        let mut browser = Tab::open("about:blank");
+        browser.set_viewport(case.width, case.height, true);
         match case.recents {
             Recents::None => {
-                browser.navigate(&url).await;
-                browser.wait_for_recent_rows(0, None).await;
+                browser.navigate(&url);
+                browser.wait_for_recent_rows(0, None);
             }
             Recents::Overflowing => {
                 browser
                     .call(
                         "Fetch.enable",
                         serde_json::json!({ "patterns": [{ "urlPattern": "*/recent-conversations*" }] }),
-                    )
-                    .await;
-                browser.navigate(&url).await;
+                    );
+                browser.navigate(&url);
                 let recents = overflowing_recents();
-                browser
-                    .wait_for_recent_rows(OVERFLOWING_RECENTS, Some(&recents))
-                    .await;
+                browser.wait_for_recent_rows(OVERFLOWING_RECENTS, Some(&recents));
             }
         }
         // Below 900px the sidebar is a drawer, and Sign out is in it once it is open.
         if case.width < 900 {
-            open_the_drawer(&mut browser).await;
+            open_the_drawer(&mut browser);
         }
         for theme in [Theme::Light, Theme::Dark] {
             let layout = browser
                 .sidebar_layout(theme)
-                .await
                 .expect("the sidebar stays rendered");
-            browser
-                .save_picture(&format!("{}-{}", case.name, theme.attribute()))
-                .await;
+            browser.save_picture(&format!("{}-{}", case.name, theme.attribute()));
             if !layout.sign_out_on_screen() {
                 cut_off.push((case.name, theme, layout));
                 continue;
@@ -1216,17 +1036,15 @@ async fn sign_out_stays_on_screen_and_a_long_recent_list_scrolls() {
     assert!(cut_off.is_empty(), "Sign out is cut off: {cut_off:#?}");
 }
 
-async fn new_chat(browser: &mut CdpBrowser) -> String {
+fn new_chat(browser: &mut Tab) -> String {
     browser
         .eval("new URL(location.href).searchParams.get('chat') ?? ''")
-        .await
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
+        .as_str()
         .unwrap_or_default()
         .to_owned()
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     let _guard = test_lock().lock().await;
@@ -1244,40 +1062,19 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     let base = format!("http://{}", server.address);
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-before-events";
-    let mut browser = CdpBrowser::launch(&chromium(), "about:blank").await;
+    let mut browser = Tab::open("about:blank");
     // Hold the actual first event request before it reaches the server. The
     // initial snapshot can complete, then another client saves a turn while
     // this page has no subscription. No synthetic event or refresh is sent.
-    browser
-        .call(
-            "Page.addScriptToEvaluateOnNewDocument",
-            serde_json::json!({"source": r#"(() => {
-        const original = window.fetch.bind(window);
-        window.__eventRequests = 0;
-        window.fetch = (input, init) => {
-            const url = input instanceof Request ? input.url : String(input);
-            if (url.includes('/patient-workspaces/events')) {
-                window.__eventRequests++;
-                if (window.__eventRequests === 1) {
-                    return new Promise(resolve => {
-                        window.__connectEvents = () => resolve(original(input, init));
-                    });
-                }
-            }
-            return original(input, init);
-        };
-    })()"#}),
-        )
-        .await;
-    browser
-        .navigate(&format!("{base}/?patient={patient}&chat={chat}"))
-        .await;
-    browser
-        .wait_for_text(
-            "What would you like Coda to review?",
-            Duration::from_secs(20),
-        )
-        .await;
+    browser.call(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({"source": include_str!("js/hold_first_event_request.js")}),
+    );
+    browser.navigate(&format!("{base}/?patient={patient}&chat={chat}"));
+    browser.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(20),
+    );
     let message = "Review the update accepted before this page subscribed";
     let client = reqwest::Client::new();
     let accepted: serde_json::Value = client.post(format!("{base}/commands"))
@@ -1304,26 +1101,21 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
         "{snapshot}"
     );
     assert!(
-        !browser.dom().await.contains(message),
+        !browser.dom().contains(message),
         "the page must still hold the earlier snapshot"
     );
-    let connected = browser.eval("(() => { if (!window.__connectEvents) return false; window.__connectEvents(); return true; })()").await;
+    let connected = browser.eval("window.__connectEvents()");
+    assert_eq!(connected, serde_json::json!(true));
+    browser.wait_for_text(message, Duration::from_secs(10));
+    let count = browser.eval("window.__eventRequests");
     assert_eq!(
-        connected.pointer("/result/result/value"),
-        Some(&serde_json::json!(true))
-    );
-    browser
-        .wait_for_text(message, Duration::from_secs(10))
-        .await;
-    let count = browser.eval("window.__eventRequests").await;
-    assert_eq!(
-        count.pointer("/result/result/value"),
-        Some(&serde_json::json!(1)),
+        count,
+        serde_json::json!(1),
         "the first connection must reconcile without waiting for reconnect"
     );
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects() {
     use std::sync::atomic::{AtomicUsize, Ordering};
@@ -1376,27 +1168,12 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
             },
         ));
     let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/physician/")).await;
-    browser
-        .wait_for_text("Nothing needs you right now.", Duration::from_secs(15))
-        .await;
-    let assets = browser
-        .eval(
-            r#"(async () => {
-        const logo = document.querySelector('img.coda-logo');
-        await logo.decode();
-        const icon = document.querySelector('link[rel="icon"]');
-        const response = await fetch(icon.href);
-        return logo.naturalWidth > 0 && new URL(logo.src).pathname.startsWith('/physician/assets/')
-            && new URL(icon.href).pathname === '/physician/favicon.svg' && response.ok
-            && (await response.text()).includes('<svg');
-    })()"#,
-        )
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/physician/"));
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(15));
+    let assets = browser.step("prefixAssetsLoad", serde_json::json!([]));
     assert_eq!(
-        assets.pointer("/result/result/value"),
-        Some(&serde_json::json!(true)),
+        assets,
+        serde_json::json!(true),
         "prefix assets must load: {assets}"
     );
     let deadline = Instant::now() + Duration::from_secs(10);
@@ -1418,14 +1195,10 @@ async fn the_same_bundle_runs_under_a_stripped_physician_prefix_and_reconnects()
     );
 
     // Explicit query API still wins over the page prefix, with the same wasm.
-    browser
-        .navigate(&format!(
-            "http://{address}/physician/?api=http%3A%2F%2F{address}%2Foverride"
-        ))
-        .await;
-    browser
-        .wait_for_text("Nothing needs you right now.", Duration::from_secs(15))
-        .await;
+    browser.navigate(&format!(
+        "http://{address}/physician/?api=http%3A%2F%2F{address}%2Foverride"
+    ));
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(15));
     let deadline = Instant::now() + Duration::from_secs(10);
     while !requests
         .lock()
@@ -1459,14 +1232,15 @@ fn public_proxy(upstream: std::net::SocketAddr, public: std::net::SocketAddr) ->
         public_site::prerender(&public_site::Config {
             listen_addr: public,
             physician_sign_in: true,
-        }),
+        })
+        .unwrap(),
         runtime,
         [],
         public_site::server::Readiness::ready(),
     )
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     use base64::Engine;
@@ -1525,15 +1299,10 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
             .unwrap()
     });
 
-    let mut browser =
-        CdpBrowser::launch(&chromium(), &format!("http://{address}/physician/")).await;
-    browser
-        .wait_for_text("Work email", Duration::from_secs(15))
-        .await;
-    browser.request_sign_in(email).await;
-    let waiting = browser
-        .wait_for_text("Check your email", Duration::from_secs(10))
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/physician/"));
+    browser.wait_for_text("Work email", Duration::from_secs(15));
+    browser.request_sign_in(email);
+    let waiting = browser.wait_for_text("Check your email", Duration::from_secs(10));
     assert!(
         !waiting.contains("Sign-in code") && !waiting.contains("codas-"),
         "requesting an email must not show a code field or expose the token"
@@ -1545,41 +1314,29 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     };
     // Render the actual delivered HTML and click its button. Nothing in the
     // test submits the token or clicks a second confirmation in the app.
-    browser
-        .navigate(&format!(
-            "data:text/html;base64,{}",
-            base64::engine::general_purpose::STANDARD.encode(html)
-        ))
-        .await;
-    browser
-        .wait_for_text("This link expires", Duration::from_secs(10))
-        .await;
-    browser.eval("document.querySelector('a').click()").await;
-    let signed_in = browser
-        .wait_for_text("Staging Physician", Duration::from_secs(15))
-        .await;
+    browser.navigate(&format!(
+        "data:text/html;base64,{}",
+        base64::engine::general_purpose::STANDARD.encode(html)
+    ));
+    browser.wait_for_text("This link expires", Duration::from_secs(10));
+    browser.click("a");
+    let signed_in = browser.wait_for_text("Staging Physician", Duration::from_secs(15));
     assert!(
         !signed_in.contains("Sign-in code"),
         "the email link must sign in without a code field or another confirmation"
     );
-    let location = browser.eval("location.href").await;
+    let location = browser.eval("location.href");
     assert_eq!(
-        location["result"]["result"]["value"].as_str(),
+        location.as_str(),
         Some(format!("http://{address}/physician/").as_str()),
         "the email and token must leave the address bar before redemption"
     );
-    browser.call("Page.reload", serde_json::json!({})).await;
-    browser
-        .wait_for_text("Staging Physician", Duration::from_secs(10))
-        .await;
+    browser.call("Page.reload", serde_json::json!({}));
+    browser.wait_for_text("Staging Physician", Duration::from_secs(10));
     // A newly mailed link signs in once, after sign-out. (Opened while you are
     // signed in, your own link keeps your session; sign_in_model covers that.)
-    browser
-        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
-        .await;
-    browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
-        .await;
+    browser.click("[aria-label=\"Sign out of Coda\"]");
+    browser.wait_for_text("Sign in to Coda", Duration::from_secs(10));
     reqwest::Client::new()
         .post(format!("http://{address}/physician/auth/sign-in"))
         .header("Origin", format!("http://{address}"))
@@ -1596,22 +1353,14 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
         .lines()
         .find(|line| line.starts_with("http://"))
         .expect("second mailed link");
-    browser.navigate(next_link).await;
-    browser
-        .wait_for_text("Staging Physician", Duration::from_secs(10))
-        .await;
-    browser
-        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
-        .await;
-    browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
-        .await;
+    browser.navigate(next_link);
+    browser.wait_for_text("Staging Physician", Duration::from_secs(10));
+    browser.click("[aria-label=\"Sign out of Coda\"]");
+    browser.wait_for_text("Sign in to Coda", Duration::from_secs(10));
 
     // The same message cannot establish another session after its first use.
-    browser.navigate(next_link).await;
-    let invalid = browser
-        .wait_for_text("That sign-in link", Duration::from_secs(10))
-        .await;
+    browser.navigate(next_link);
+    let invalid = browser.wait_for_text("That sign-in link", Duration::from_secs(10));
     assert!(invalid.contains("Send a new link") && !invalid.contains("Sign-in code"));
     assert_eq!(
         fake.sent.lock().unwrap().len(),
@@ -1628,7 +1377,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
     }
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignment() {
     let _guard = test_lock().lock().await;
@@ -1693,13 +1442,10 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     let app = public_proxy(upstream_address, address);
     let proxy = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
 
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/physician/")).await;
+    let mut browser = Tab::open(&format!("http://{address}/physician/"));
 
     // 1. Unauthenticated visit renders SignInScreen (never Today or clinical content).
-    let sign_in_dom = browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(15))
-        .await;
+    let sign_in_dom = browser.wait_for_text("Sign in to Coda", Duration::from_secs(15));
     assert!(
         sign_in_dom.contains("Work email")
             && sign_in_dom.contains("Send sign-in link")
@@ -1708,10 +1454,8 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     );
 
     // 2. Local proof delivery signs in through the same redemption path.
-    browser.request_sign_in("admin@clinic-a.test").await;
-    let today_dom = browser
-        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
-        .await;
+    browser.request_sign_in("admin@clinic-a.test");
+    let today_dom = browser.wait_for_text("Dr. Clinic Admin", Duration::from_secs(10));
     assert!(
         today_dom.contains("Today") && !today_dom.contains("Mary Louis"),
         "Mary Louis is not on Dr. Clinic Admin's panel yet and must not appear on Today:\n{today_dom}"
@@ -1719,28 +1463,17 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 
     // Reload through the real proxy: localStorage must restore the bearer
     // session rather than rely on the prior in-memory client.
-    browser.call("Page.reload", serde_json::json!({})).await;
+    browser.call("Page.reload", serde_json::json!({}));
     tokio::time::sleep(Duration::from_millis(250)).await;
-    browser
-        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
-        .await;
-    let session = browser
-        .eval("localStorage.getItem('coda.physician.session')")
-        .await;
-    let token = session
-        .pointer("/result/result/value")
-        .and_then(|value| value.as_str())
-        .expect("stored bearer session")
-        .to_owned();
+    browser.wait_for_text("Dr. Clinic Admin", Duration::from_secs(10));
+    let session = browser.eval("localStorage.getItem('coda.physician.session')");
+    let token = session.as_str().expect("stored bearer session").to_owned();
     assert!(!token.is_empty());
 
     // 3. Cross-practice patient (Jake in practice-clinic-b) returns 404: not available, with zero data leak.
-    browser
-        .navigate(&format!("http://{address}/physician/?patient={jake}"))
-        .await;
-    let cross_practice_dom = browser
-        .wait_for_text("That patient is not available.", Duration::from_secs(10))
-        .await;
+    browser.navigate(&format!("http://{address}/physician/?patient={jake}"));
+    let cross_practice_dom =
+        browser.wait_for_text("That patient is not available.", Duration::from_secs(10));
     assert!(
         cross_practice_dom.contains("Go to Today")
             && !cross_practice_dom.contains("Coda couldn’t load what needs you for this patient.")
@@ -1751,12 +1484,9 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     );
 
     // 4. Same-clinic non-panel patient (Mary in practice-clinic-a) renders clean Clinic Demographic Card.
-    browser
-        .navigate(&format!("http://{address}/physician/?patient={mary}"))
-        .await;
-    let demographic_dom = browser
-        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
-        .await;
+    browser.navigate(&format!("http://{address}/physician/?patient={mary}"));
+    let demographic_dom =
+        browser.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10));
     assert!(
         demographic_dom.contains("Patient demographics")
             && demographic_dom.contains("Mary Louis")
@@ -1771,27 +1501,17 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     );
 
     // Verify phone viewport (390x844) and prefers-reduced-motion on the demographic card.
-    browser.set_viewport(390, 844, true).await;
-    let mobile_dom = browser.dom().await;
+    browser.set_viewport(390, 844, true);
+    let mobile_dom = browser.dom();
     assert!(
         mobile_dom.contains("Patient demographics") && mobile_dom.contains("Assign to panel"),
         "demographic card should remain intact on phone viewport:\n{mobile_dom}"
     );
-    browser.set_viewport(1280, 800, false).await;
+    browser.set_viewport(1280, 800, false);
 
     // 5. Admin clicks "Assign to panel" -> PUT /auth/panels/... unlocks full clinical workspace live.
-    browser
-        .eval(
-            r#"(() => {
-                const btn = document.querySelector('button.assign-panel-button');
-                if (btn) btn.click();
-                return Boolean(btn);
-            })()"#,
-        )
-        .await;
-    let unlocked_dom = browser
-        .wait_for_text("Records as of", Duration::from_secs(10))
-        .await;
+    browser.click("button.assign-panel-button");
+    let unlocked_dom = browser.wait_for_text("Records as of", Duration::from_secs(10));
     assert!(
         unlocked_dom.contains("Mary Louis")
             && unlocked_dom.contains("Remove from panel")
@@ -1800,18 +1520,9 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     );
 
     // 6. Admin clicks "Remove from panel" -> DELETE /auth/panels/... returns live to demographic card.
-    browser
-        .eval(
-            r#"(() => {
-                const btn = document.querySelector('button.remove-panel-button');
-                if (btn) btn.click();
-                return Boolean(btn);
-            })()"#,
-        )
-        .await;
-    let relocked_dom = browser
-        .wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10))
-        .await;
+    browser.click("button.remove-panel-button");
+    let relocked_dom =
+        browser.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10));
     assert!(
         relocked_dom.contains("Patient demographics") && !relocked_dom.contains("Records as of"),
         "removing patient from panel must lock clinical workspace back to demographic card:\n{relocked_dom}"
@@ -1819,19 +1530,10 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
 
     // Sign-out crosses the proxy, revokes the real server session, and clears
     // browser persistence. Reload must remain at the gate.
-    browser
-        .eval("document.querySelector('[aria-label=\"Sign out of Coda\"]').click()")
-        .await;
-    browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
-        .await;
-    let stored = browser
-        .eval("localStorage.getItem('coda.physician.session')")
-        .await;
-    assert_eq!(
-        stored.pointer("/result/result/value"),
-        Some(&serde_json::Value::Null)
-    );
+    browser.click("[aria-label=\"Sign out of Coda\"]");
+    browser.wait_for_text("Sign in to Coda", Duration::from_secs(10));
+    let stored = browser.eval("localStorage.getItem('coda.physician.session')");
+    assert_eq!(stored, serde_json::Value::Null);
     let response = reqwest::Client::new()
         .get(format!("http://{address}/physician/today"))
         .bearer_auth(&token)
@@ -1839,21 +1541,15 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
         .await
         .unwrap();
     assert_eq!(response.status(), reqwest::StatusCode::UNAUTHORIZED);
-    browser.call("Page.reload", serde_json::json!({})).await;
+    browser.call("Page.reload", serde_json::json!({}));
     tokio::time::sleep(Duration::from_millis(250)).await;
-    browser
-        .wait_for_text("Sign in to Coda", Duration::from_secs(10))
-        .await;
-    browser.sign_in_again().await;
-    browser
-        .wait_for_text("Dr. Clinic Admin", Duration::from_secs(10))
-        .await;
+    browser.wait_for_text("Sign in to Coda", Duration::from_secs(10));
+    browser.sign_in_again();
+    browser.wait_for_text("Dr. Clinic Admin", Duration::from_secs(10));
 
     // 7. Deactivating the physician account terminates SSE through the proxy, signs the browser out and says why.
     assert!(store.deactivate("admin@clinic-a.test").await);
-    let revoked_dom = browser
-        .wait_for_text("No access to this practice", Duration::from_secs(10))
-        .await;
+    let revoked_dom = browser.wait_for_text("No access to this practice", Duration::from_secs(10));
     assert!(
         revoked_dom.contains("Use a different email") && !revoked_dom.contains("Mary Louis"),
         "removing access must terminate SSE and show No access:\n{revoked_dom}"
@@ -1975,7 +1671,7 @@ async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_int
     );
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     let _guard = test_lock().lock().await;
@@ -1993,106 +1689,57 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
     .await;
     let address = server.address;
 
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, "about:blank").await;
+    let mut browser = Tab::open("about:blank");
     // Requests whose URL matches `__hold` wait in the page until `__release()`,
     // so the test sees what shows while an answer is still on its way.
-    browser
-        .call(
-            "Page.addScriptToEvaluateOnNewDocument",
-            serde_json::json!({ "source": r#"(() => {
-                const fetch = window.fetch.bind(window);
-                window.__hold = '/practice-day';
-                window.__held = [];
-                window.fetch = (input, init) => {
-                    const answer = fetch(input, init);
-                    const url = typeof input === 'string' ? input : input.url;
-                    if (window.__hold && new RegExp(window.__hold).test(url)) {
-                        return new Promise(resolve => window.__held.push(() => resolve(answer)));
-                    }
-                    return answer;
-                };
-                window.__release = () => {
-                    window.__hold = null;
-                    window.__held.splice(0).forEach(release => release());
-                };
-            })()"# }),
-        )
-        .await;
-    browser.navigate(&format!("http://{address}/")).await;
+    browser.call(
+        "Page.addScriptToEvaluateOnNewDocument",
+        serde_json::json!({ "source": include_str!("js/hold_matching_requests.js") }),
+    );
+    browser.navigate(&format!("http://{address}/"));
 
     // The schedule rail shows its own loading line; it never waits hidden.
-    browser
-        .wait_for_text("Loading the schedule…", Duration::from_secs(15))
-        .await;
-    browser.eval("window.__release()").await;
-    browser
-        .wait_for_text("Aug 27, 2026", Duration::from_secs(10))
-        .await;
+    browser.wait_for_text("Loading the schedule…", Duration::from_secs(15));
+    browser.eval("window.__release()");
+    browser.wait_for_text("Aug 27, 2026", Duration::from_secs(10));
 
-    browser
-        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
-        .await;
-    browser.search_for("Mary").await;
-    browser.wait_for_text("DOB", Duration::from_secs(10)).await;
-    browser
-        .eval("document.querySelector('.dialog-results button').click()")
-        .await;
-    browser
-        .wait_for_text("MRN 00000005", Duration::from_secs(10))
-        .await;
+    browser.click("button[aria-label=\"Find patient\"]");
+    browser.search_for("Mary");
+    browser.wait_for_text("DOB", Duration::from_secs(10));
+    browser.click(".dialog-results button");
+    browser.wait_for_text("MRN 00000005", Duration::from_secs(10));
 
     // A new query never shows the last query's rows or a false "No patients match."
-    browser
-        .eval("document.querySelector('button[aria-label=\"Find patient\"]').click()")
-        .await;
-    browser.eval("window.__hold = '/patient-roster'").await;
-    browser.search_for("Tanvir").await;
-    browser
-        .wait_for_text("Searching…", Duration::from_secs(10))
-        .await;
-    let searching = browser.dialog_text().await;
+    browser.click("button[aria-label=\"Find patient\"]");
+    browser.eval("window.__hold = '/patient-roster'");
+    browser.search_for("Tanvir");
+    browser.wait_for_text("Searching…", Duration::from_secs(10));
+    let searching = browser.dialog_text();
     assert!(
         !searching.contains("Mary Louis") && !searching.contains("No patients match."),
         "a search still on its way showed another answer:\n{searching}"
     );
-    browser.eval("window.__release()").await;
-    browser
-        .wait_for_text("Tanvir Chowdhury", Duration::from_secs(10))
-        .await;
+    browser.eval("window.__release()");
+    browser.wait_for_text("Tanvir Chowdhury", Duration::from_secs(10));
 
     // Switching patients never shows the last patient while the next one opens.
-    browser
-        .eval("window.__hold = 'pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee'")
-        .await;
-    browser
-        .eval("document.querySelector('.dialog-results button').click()")
-        .await;
-    let opening = browser
-        .wait_for_text("Opening the patient…", Duration::from_secs(10))
-        .await;
+    browser.eval("window.__hold = 'pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee'");
+    browser.click(".dialog-results button");
+    let opening = browser.wait_for_text("Opening the patient…", Duration::from_secs(10));
     assert!(
         !opening.contains("MRN 00000005"),
         "the next patient's page still showed the last patient:\n{opening}"
     );
-    browser.eval("window.__release()").await;
-    browser
-        .wait_for_text("MRN 00000003", Duration::from_secs(10))
-        .await;
+    browser.eval("window.__release()");
+    browser.wait_for_text("MRN 00000003", Duration::from_secs(10));
 
     // A patient link opened directly shows the patient's rail loading too.
-    browser
-        .navigate(&format!(
-            "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"
-        ))
-        .await;
-    browser
-        .wait_for_text("Loading the schedule…", Duration::from_secs(15))
-        .await;
-    browser.eval("window.__release()").await;
-    browser
-        .wait_for_text("Records as of", Duration::from_secs(10))
-        .await;
+    browser.navigate(&format!(
+        "http://{address}/?patient=pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e"
+    ));
+    browser.wait_for_text("Loading the schedule…", Duration::from_secs(15));
+    browser.eval("window.__release()");
+    browser.wait_for_text("Records as of", Duration::from_secs(10));
 }
 
 /// A reply using everything a physician's reply can hold: a kept line break, a list, words in angle
@@ -2195,9 +1842,6 @@ async fn with_draft(
 
 const REVIEW_PATIENT: &str = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
 
-/// What the reply journeys do and read in the page.
-const REPLY_JOURNEY: &str = include_str!("reply_journey.js");
-
 const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";
 const CONVERSATION_REPLY: &str = "[aria-label=\"Conversation\"] .message-assistant";
 const REVIEW_FIELD: &str = ".reply-review-ask input";
@@ -2267,115 +1911,81 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
     wait_until_ready(address).await;
 
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
-    let chrome = chromium();
-    let mut browser =
-        CdpBrowser::launch(&chrome, &format!("http://{address}/?patient={patient}")).await;
-    browser
-        .wait_for_text("This workspace has no chats.", Duration::from_secs(20))
-        .await;
-    browser
-        .journey(
-            "click",
-            serde_json::json!(["button.sidebar-new-conversation"]),
-        )
-        .await;
-    browser
-        .wait_for_text(
-            "What would you like Coda to review?",
-            Duration::from_secs(10),
-        )
-        .await;
-    browser
-        .save_pictures("thread-empty", ".conversation-empty")
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/?patient={patient}"));
+    browser.wait_for_text("This workspace has no chats.", Duration::from_secs(20));
+    browser.step(
+        "click",
+        serde_json::json!(["button.sidebar-new-conversation"]),
+    );
+    browser.wait_for_text(
+        "What would you like Coda to review?",
+        Duration::from_secs(10),
+    );
+    browser.save_pictures("thread-empty", ".conversation-empty");
 
-    browser
-        .type_composer("Please review **Friday**\nand the panel")
-        .await;
-    browser
-        .journey(
-            "clickNamed",
-            serde_json::json!([".composer-toolbar button", "Send"]),
-        )
-        .await;
-    browser
-        .wait_for_text("Recheck on Friday", Duration::from_secs(30))
-        .await;
-    browser
-        .save_pictures("thread-reply", ".message-assistant")
-        .await;
+    browser.type_composer("Please review **Friday**\nand the panel");
+    browser.step(
+        "clickNamed",
+        serde_json::json!([".composer-toolbar button", "Send"]),
+    );
+    browser.wait_for_text("Recheck on Friday", Duration::from_secs(30));
+    browser.save_pictures("thread-reply", ".message-assistant");
 
     // Reached by reopening the conversation, as the page itself would.
     set_snapshot_gate(SnapshotGate::Held);
-    browser.reload().await;
-    browser
-        .wait_for_text("Opening the conversation…", Duration::from_secs(20))
-        .await;
-    browser.save_pictures("thread-loading", ".composer").await;
+    browser.reload();
+    browser.wait_for_text("Opening the conversation…", Duration::from_secs(20));
+    browser.save_pictures("thread-loading", ".composer");
     set_snapshot_gate(SnapshotGate::Fails);
-    browser
-        .wait_for_text(
-            "Coda couldn’t open this conversation.",
-            Duration::from_secs(20),
-        )
-        .await;
-    browser.save_pictures("thread-error", ".composer").await;
+    browser.wait_for_text(
+        "Coda couldn’t open this conversation.",
+        Duration::from_secs(20),
+    );
+    browser.save_pictures("thread-error", ".composer");
     set_snapshot_gate(SnapshotGate::Open);
-    browser
-        .journey(
-            "clickNamed",
-            serde_json::json!(["[aria-label=\"Conversation\"] button", "Try again"]),
-        )
-        .await;
-    browser
-        .wait_for_text("Recheck on Friday", Duration::from_secs(20))
-        .await;
-    browser
-        .save_pictures("thread-recovered", ".message-assistant")
-        .await;
+    browser.step(
+        "clickNamed",
+        serde_json::json!(["[aria-label=\"Conversation\"] button", "Try again"]),
+    );
+    browser.wait_for_text("Recheck on Friday", Duration::from_secs(20));
+    browser.save_pictures("thread-recovered", ".message-assistant");
 
     // Physicians don't write Markdown, so their words show as they wrote them.
-    let person = browser
-        .journey(
-            "readText",
-            serde_json::json!([format!("{CONVERSATION_PERSON} p")]),
-        )
-        .await;
+    let person = browser.step(
+        "readText",
+        serde_json::json!([format!("{CONVERSATION_PERSON} p")]),
+    );
     assert_eq!(
         person.as_str(),
         Some("Please review **Friday**\nand the panel"),
         "the physician's own words read as Markdown"
     );
-    let reply = browser
-        .journey("readReply", serde_json::json!([CONVERSATION_REPLY]))
-        .await;
+    let reply = browser.step("readReply", serde_json::json!([CONVERSATION_REPLY]));
     assert_rich(&reply, "15px / 22px");
 
-    browser.set_viewport(390, 844, true).await;
+    browser.set_viewport(390, 844, true);
     // A table too wide for a phone scrolls; it doesn't split its words to fit.
-    let lines = browser
-        .journey(
-            "headerLines",
-            serde_json::json!([
-                format!("{CONVERSATION_REPLY} .prose-table-scroll"),
-                "Potassium"
-            ]),
-        )
-        .await;
+    let lines = browser.step(
+        "headerLines",
+        serde_json::json!([
+            format!("{CONVERSATION_REPLY} .prose-table-scroll"),
+            "Potassium"
+        ]),
+    );
     assert_eq!(lines, 1, "a table header split across lines: {lines}");
     for part in [".code-block-body", ".prose-table-scroll"] {
         let target = format!("{CONVERSATION_REPLY} {part}");
-        browser.tab_to(&target).await;
-        browser.press_key("ArrowRight", 39).await;
-        browser.wait_for_scroll(&target, |left| left > 0.0).await;
-        browser.press_key("ArrowLeft", 37).await;
-        browser.wait_for_scroll(&target, |left| left == 0.0).await;
+        browser.tab_to(&target);
+        browser.press_key(Key::ARROW_RIGHT);
+        browser.wait_for_scroll(&target, |left| left > 0.0);
+        browser.press_key(Key::ARROW_LEFT);
+        browser.wait_for_scroll(&target, |left| left == 0.0);
     }
     let _ = fs::remove_dir_all(&state);
 }
 
 /// A threshold at the start of a line reads as written, so the physician reviews what Copy sends.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_draft_keeps_a_threshold_that_markdown_would_read_as_a_quote() {
     let _guard = test_lock().lock().await;
@@ -2391,36 +2001,25 @@ async fn a_draft_keeps_a_threshold_that_markdown_would_read_as_a_quote() {
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
 
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(
-        &chrome,
-        &format!("http://{address}/?patient={REVIEW_PATIENT}"),
-    )
-    .await;
-    browser
-        .wait_for_text("Synthetic draft to review", Duration::from_secs(20))
-        .await;
-    let shown = browser
-        .journey("readText", serde_json::json!(["article.reply-review"]))
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/?patient={REVIEW_PATIENT}"));
+    browser.wait_for_text("Synthetic draft to review", Duration::from_secs(20));
+    let shown = browser.step("readText", serde_json::json!(["article.reply-review"]));
     assert!(
         shown
             .as_str()
             .is_some_and(|words| words.contains(THRESHOLD_DRAFT)),
         "the review shows other words than the draft holds: {shown}"
     );
-    let copied = browser
-        .journey(
-            "copied",
-            serde_json::json!(["[data-reply-action=\"copy\"]"]),
-        )
-        .await;
+    let copied = browser.step(
+        "copied",
+        serde_json::json!(["[data-reply-action=\"copy\"]"]),
+    );
     assert_eq!(copied.as_str(), Some(THRESHOLD_DRAFT));
 }
 
 /// A reply draft goes to a patient as plain text, so the review shows exactly what Copy sends, and
 /// the instruction to revise it takes keys as it did.
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
     let _guard = test_lock().lock().await;
@@ -2436,40 +2035,23 @@ async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
 
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(
-        &chrome,
-        &format!("http://{address}/?patient={REVIEW_PATIENT}"),
-    )
-    .await;
-    browser
-        .wait_for_text("Synthetic draft to review", Duration::from_secs(20))
-        .await;
-    browser
-        .save_pictures("review-draft", "article.reply-review")
-        .await;
-    browser
-        .save_pictures("patient-summary-citations", "div.synopsis")
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/?patient={REVIEW_PATIENT}"));
+    browser.wait_for_text("Synthetic draft to review", Duration::from_secs(20));
+    browser.save_pictures("review-draft", "article.reply-review");
+    browser.save_pictures("patient-summary-citations", "div.synopsis");
 
-    let copied = browser
-        .journey(
-            "copied",
-            serde_json::json!(["[data-reply-action=\"copy\"]"]),
-        )
-        .await;
+    let copied = browser.step(
+        "copied",
+        serde_json::json!(["[data-reply-action=\"copy\"]"]),
+    );
     assert_eq!(
         copied.as_str(),
         Some(RICH_REPLY),
         "Copy no longer sends the draft's own words"
     );
-    browser
-        .wait_for_text("Copied", Duration::from_secs(5))
-        .await;
+    browser.wait_for_text("Copied", Duration::from_secs(5));
 
-    let field = browser
-        .journey("field", serde_json::json!([REVIEW_FIELD]))
-        .await;
+    let field = browser.step("field", serde_json::json!([REVIEW_FIELD]));
     assert_eq!(
         field["labelContained"], true,
         "a hidden label reaches past its field and can scroll the page"
@@ -2479,41 +2061,29 @@ async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
         "the instruction is not named by what it asks: {field}"
     );
     // Stacked on a phone, the field takes only its own height.
-    browser.set_viewport(390, 844, true).await;
-    let stacked = browser
-        .journey("field", serde_json::json!([REVIEW_FIELD]))
-        .await;
-    browser.set_viewport(1440, 900, true).await;
+    browser.set_viewport(390, 844, true);
+    let stacked = browser.step("field", serde_json::json!([REVIEW_FIELD]));
+    browser.set_viewport(1440, 900, true);
     assert_eq!(
         stacked["hostHeight"], stacked["inputHeight"],
         "the instruction field holds empty space on a phone: {stacked}"
     );
-    browser.tab_to(REVIEW_FIELD).await;
-    browser
-        .call(
-            "Input.insertText",
-            serde_json::json!({ "text": "Make it shorter" }),
-        )
-        .await;
-    browser
-        .wait_for_text("Ask Coda", Duration::from_secs(5))
-        .await;
-    browser
-        .save_pictures("review-instruction", ".reply-review-ask")
-        .await;
-    browser.press_key("Enter", 13).await;
-    let cleared = browser
-        .journey("valueSoon", serde_json::json!([REVIEW_FIELD]))
-        .await;
+    browser.tab_to(REVIEW_FIELD);
+    browser.call(
+        "Input.insertText",
+        serde_json::json!({ "text": "Make it shorter" }),
+    );
+    browser.wait_for_text("Ask Coda", Duration::from_secs(5));
+    browser.save_pictures("review-instruction", ".reply-review-ask");
+    browser.press_key(Key::ENTER);
+    let cleared = browser.step("valueSoon", serde_json::json!([REVIEW_FIELD]));
     assert_eq!(
         cleared.as_str(),
         Some(""),
         "Enter did not ask for the revision"
     );
 
-    let shown = browser
-        .journey("readText", serde_json::json!(["article.reply-review"]))
-        .await;
+    let shown = browser.step("readText", serde_json::json!(["article.reply-review"]));
     assert!(
         shown
             .as_str()
@@ -2523,26 +2093,24 @@ async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
 }
 
 /// Reads the shell until `settled` holds; the page answers a press a moment later.
-async fn shell_when(
-    browser: &mut CdpBrowser,
+fn shell_when(
+    browser: &mut Tab,
     what: &str,
     settled: impl Fn(&serde_json::Value) -> bool,
 ) -> serde_json::Value {
     let deadline = Instant::now() + Duration::from_secs(5);
     loop {
-        let shell = browser.journey("readShell", serde_json::json!([])).await;
+        let shell = browser.step("readShell", serde_json::json!([]));
         if settled(&shell) {
             return shell;
         }
         assert!(Instant::now() < deadline, "{what}: {shell}");
-        tokio::time::sleep(Duration::from_millis(50)).await;
+        std::thread::sleep(Duration::from_millis(50));
     }
 }
 
-async fn open_the_drawer(browser: &mut CdpBrowser) {
-    browser
-        .journey("click", serde_json::json!(["button.stage-menu"]))
-        .await;
+fn open_the_drawer(browser: &mut Tab) {
+    browser.click("button.stage-menu");
     let open = shell_when(
         browser,
         "the drawer did not open with focus inside",
@@ -2553,8 +2121,7 @@ async fn open_the_drawer(browser: &mut CdpBrowser) {
                 && shell["backdrop"] == true
                 && shell["focus"] == "Close navigation"
         },
-    )
-    .await;
+    );
     assert_eq!(open["close"], true, "the drawer has no close: {open}");
     assert_eq!(open["labels"], true, "the drawer is not a rail: {open}");
     assert_eq!(
@@ -2568,7 +2135,7 @@ fn drawer_closed(shell: &serde_json::Value) -> bool {
     shell["sidebar"] == false && shell["stageInert"] == false && shell["backdrop"] == false
 }
 
-#[tokio::test]
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_otherwise() {
     let _guard = test_lock().lock().await;
@@ -2583,19 +2150,14 @@ async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_ot
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
 
-    let chrome = chromium();
-    let mut browser = CdpBrowser::launch(&chrome, &format!("http://{address}/")).await;
-    browser
-        .wait_for_text("Today", Duration::from_secs(20))
-        .await;
+    let mut browser = Tab::open(&format!("http://{address}/"));
+    browser.wait_for_text("Today", Duration::from_secs(20));
 
     // A phone starts on the whole page, with the sidebar out of sight, focus and reach.
-    browser.set_viewport(390, 844, true).await;
-    browser.reload().await;
-    browser
-        .wait_for_text("Today", Duration::from_secs(20))
-        .await;
-    let start = shell_when(&mut browser, "a phone did not start closed", drawer_closed).await;
+    browser.set_viewport(390, 844, true);
+    browser.reload();
+    browser.wait_for_text("Today", Duration::from_secs(20));
+    let start = shell_when(&mut browser, "a phone did not start closed", drawer_closed);
     assert_eq!(
         start["stageLeft"], 0,
         "the page is not at the edge: {start}"
@@ -2606,100 +2168,73 @@ async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_ot
         "the page scrolls sideways: {start}"
     );
     assert_eq!(start["menu"], true, "a phone has no way in: {start}");
-    browser.save_picture("drawer-closed-phone-light").await;
+    browser.save_picture("drawer-closed-phone-light");
 
     // Every way out closes it; its own controls hand focus back to the menu.
-    open_the_drawer(&mut browser).await;
-    browser.save_picture("drawer-open-phone-light").await;
+    open_the_drawer(&mut browser);
+    browser.save_picture("drawer-open-phone-light");
     // Tab walks the drawer's own controls round to its first, never stopping on the shell.
     let mut came_round = false;
     for _ in 0..60 {
-        browser.press_key("Tab", 9).await;
-        let on_shell = browser
-            .journey("hasFocus", serde_json::json!([".glass-app"]))
-            .await;
+        browser.press_key(Key::TAB);
+        let on_shell = browser.step("hasFocus", serde_json::json!([".glass-app"]));
         assert_ne!(on_shell, true, "Tab stopped on the shell behind the drawer");
-        let on_close = browser
-            .journey("hasFocus", serde_json::json!(["button.sidebar-close"]))
-            .await;
+        let on_close = browser.step("hasFocus", serde_json::json!(["button.sidebar-close"]));
         if on_close == true {
             came_round = true;
             break;
         }
     }
     assert!(came_round, "Tab never came back round the drawer");
-    browser.press_key("Escape", 27).await;
+    browser.press_key(Key::ESCAPE);
     shell_when(&mut browser, "Escape left the drawer open", |shell| {
         drawer_closed(shell) && shell["focus"] == "Open navigation"
-    })
-    .await;
-    open_the_drawer(&mut browser).await;
-    browser
-        .journey("click", serde_json::json!([".glass-sidebar-backdrop"]))
-        .await;
+    });
+    open_the_drawer(&mut browser);
+    browser.click(".glass-sidebar-backdrop");
     shell_when(&mut browser, "the backdrop left the drawer open", |shell| {
         drawer_closed(shell) && shell["focus"] == "Open navigation"
-    })
-    .await;
-    open_the_drawer(&mut browser).await;
-    browser
-        .journey("click", serde_json::json!(["button.sidebar-close"]))
-        .await;
+    });
+    open_the_drawer(&mut browser);
+    browser.click("button.sidebar-close");
     shell_when(&mut browser, "Close left the drawer open", |shell| {
         drawer_closed(shell) && shell["focus"] == "Open navigation"
-    })
-    .await;
+    });
     // A dialog opened from it hands focus back to the menu when it closes.
-    open_the_drawer(&mut browser).await;
-    browser
-        .journey(
-            "clickNamed",
-            serde_json::json!(["button", "Keyboard shortcuts"]),
-        )
-        .await;
-    browser
-        .wait_for_text("Keyboard shortcuts", Duration::from_secs(5))
-        .await;
+    open_the_drawer(&mut browser);
+    browser.click_named("button", "Keyboard shortcuts");
+    browser.wait_for_text("Keyboard shortcuts", Duration::from_secs(5));
     shell_when(
         &mut browser,
         "the dialog left the drawer open",
         drawer_closed,
-    )
-    .await;
-    tokio::time::sleep(Duration::from_millis(300)).await;
-    browser.press_key("Escape", 27).await;
+    );
+    std::thread::sleep(Duration::from_millis(300));
+    browser.press_key(Key::ESCAPE);
     shell_when(&mut browser, "the dialog lost the page's focus", |shell| {
         drawer_closed(shell) && shell["focus"] == "Open navigation"
-    })
-    .await;
+    });
     // Going to the page already open still closes it, as going elsewhere does.
     for place in ["Today", "Updates"] {
-        open_the_drawer(&mut browser).await;
-        browser
-            .journey(
-                "clickNamed",
-                serde_json::json!([".sidebar-nav-item", place]),
-            )
-            .await;
+        open_the_drawer(&mut browser);
+        browser.click_named(".sidebar-nav-item", place);
         shell_when(
             &mut browser,
             "going somewhere left the drawer open",
             drawer_closed,
-        )
-        .await;
+        );
     }
 
     // A window grown past the drawer has the sidebar beside the page and nothing left inert.
-    open_the_drawer(&mut browser).await;
-    browser.set_viewport(900, 800, true).await;
+    open_the_drawer(&mut browser);
+    browser.set_viewport(900, 800, true);
     let beside = shell_when(
         &mut browser,
         "growing left the drawer over the page",
         |shell| {
             shell["sidebar"] == true && shell["stageInert"] == false && shell["backdrop"] == false
         },
-    )
-    .await;
+    );
     assert_eq!(
         beside["stageLeft"], 244,
         "the page isn't beside it: {beside}"
@@ -2717,22 +2252,20 @@ async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_ot
         beside["collapse"], true,
         "a wide window lost collapse: {beside}"
     );
-    browser.set_viewport(899, 800, true).await;
-    shell_when(&mut browser, "899px is not a drawer", drawer_closed).await;
+    browser.set_viewport(899, 800, true);
+    shell_when(&mut browser, "899px is not a drawer", drawer_closed);
 
     // The rail still collapses and expands beside the page.
-    browser.set_viewport(1280, 800, true).await;
-    browser
-        .journey("click", serde_json::json!(["button.sidebar-collapse"]))
-        .await;
+    browser.set_viewport(1280, 800, true);
+    browser.click("button.sidebar-collapse");
     let rail = |shell: &serde_json::Value| {
         shell["sidebarWidth"] == 56 && shell["stageLeft"] == 56 && shell["expand"] == true
     };
-    shell_when(&mut browser, "collapse did not make a rail", rail).await;
+    shell_when(&mut browser, "collapse did not make a rail", rail);
 
     // A phone ignores the rail, and the drawer opens whole, without forgetting it.
-    browser.set_viewport(390, 844, true).await;
-    let collapsed = shell_when(&mut browser, "the rail stayed on a phone", drawer_closed).await;
+    browser.set_viewport(390, 844, true);
+    let collapsed = shell_when(&mut browser, "the rail stayed on a phone", drawer_closed);
     assert_eq!(
         collapsed["stageWidth"], 390,
         "the page is not whole: {collapsed}"
@@ -2741,23 +2274,20 @@ async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_ot
         collapsed["expand"], false,
         "a phone offers expand: {collapsed}"
     );
-    open_the_drawer(&mut browser).await;
-    browser.press_key("Escape", 27).await;
-    shell_when(&mut browser, "Escape left the drawer open", drawer_closed).await;
-    browser.set_viewport(1280, 800, true).await;
-    shell_when(&mut browser, "the phone forgot the rail", rail).await;
-    browser
-        .journey("click", serde_json::json!(["button.sidebar-expand"]))
-        .await;
+    open_the_drawer(&mut browser);
+    browser.press_key(Key::ESCAPE);
+    shell_when(&mut browser, "Escape left the drawer open", drawer_closed);
+    browser.set_viewport(1280, 800, true);
+    shell_when(&mut browser, "the phone forgot the rail", rail);
+    browser.click("button.sidebar-expand");
     shell_when(
         &mut browser,
         "expand did not bring the sidebar back",
         |shell| {
             shell["sidebarWidth"] == 244 && shell["stageLeft"] == 244 && shell["collapse"] == true
         },
-    )
-    .await;
-    browser.save_picture("sidebar-desktop-light").await;
+    );
+    browser.save_picture("sidebar-desktop-light");
 }
 
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
@@ -2925,169 +2455,94 @@ async fn wait_until_ready(address: std::net::SocketAddr) {
     }
 }
 
-struct CdpBrowser {
-    child: Child,
-    user_data_dir: PathBuf,
-    stream: TcpStream,
-    next_id: u64,
-    /// `Fetch.requestPaused` events not yet handled, oldest first.
-    paused: Vec<serde_json::Value>,
+/// One physician page in its own headless Chromium, driven through the shared
+/// DevTools client, and the requests it holds before they reach the server.
+struct Tab {
+    browser: Browser,
+    /// Requests paused by `Fetch.enable` and not yet let go, oldest first.
+    held: Vec<serde_json::Value>,
 }
 
-impl CdpBrowser {
-    async fn launch(chrome: &std::path::Path, initial_url: &str) -> Self {
-        // One profile per browser, even with two open at once.
-        static NEXT_PROFILE: std::sync::atomic::AtomicUsize =
-            std::sync::atomic::AtomicUsize::new(0);
-        let user_data_dir = env::temp_dir().join(format!(
-            "coda-cdp-profile-{}-{}",
-            std::process::id(),
-            NEXT_PROFILE.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
-        ));
-        let _ = fs::remove_dir_all(&user_data_dir);
-        fs::create_dir_all(&user_data_dir).unwrap();
-        let mut child = Command::new(chrome)
-            .env_remove("LD_LIBRARY_PATH")
-            .args([
-                "--headless=new",
-                "--disable-gpu",
-                "--no-sandbox",
-                "--remote-debugging-port=0",
-                "--window-size=1280,800",
-                &format!("--user-data-dir={}", user_data_dir.display()),
-                initial_url,
-            ])
-            .stdout(Stdio::null())
-            .stderr(Stdio::piped())
-            .spawn()
-            .expect("spawn headless chromium");
-
-        let stderr = child.stderr.take().expect("chromium stderr");
-        let (tx, rx) = tokio::sync::oneshot::channel();
-        std::thread::spawn(move || {
-            use std::io::BufRead;
-            let mut tx = Some(tx);
-            let reader = std::io::BufReader::new(stderr);
-            for line in reader.lines().map_while(Result::ok) {
-                if let Some((_, url)) = line.split_once("DevTools listening on ")
-                    && let Some(sender) = tx.take()
-                {
-                    let _ = sender.send(url.trim().to_owned());
-                }
-            }
-        });
-        let ws_browser_url = tokio::time::timeout(Duration::from_secs(15), rx)
-            .await
-            .expect("chromium devtools startup timeout")
-            .expect("DevTools listening URL");
-        let host_port = ws_browser_url
-            .strip_prefix("ws://")
-            .and_then(|rest| rest.split('/').next())
-            .expect("ws host:port");
-
-        let page_ws_url = Self::find_page_ws_url(host_port).await;
-        let stream = Self::connect_ws(&page_ws_url).await;
-        let mut browser = Self {
-            child,
-            user_data_dir,
-            stream,
-            next_id: 1,
-            paused: Vec::new(),
-        };
-        browser.call("Page.enable", serde_json::json!({})).await;
-        browser.call("Runtime.enable", serde_json::json!({})).await;
+impl Tab {
+    fn open(url: &str) -> Self {
+        let mut browser = Browser::launch();
         browser
-    }
-
-    async fn find_page_ws_url(host_port: &str) -> String {
-        let client = reqwest::Client::new();
-        let list_url = format!("http://{host_port}/json/list");
-        let started = Instant::now();
-        loop {
-            if let Ok(resp) = client.get(&list_url).send().await
-                && let Ok(targets) = resp.json::<Vec<serde_json::Value>>().await
-                && let Some(ws) = targets.iter().find_map(|target| {
-                    (target.get("type").and_then(|t| t.as_str()) == Some("page"))
-                        .then(|| target.get("webSocketDebuggerUrl").and_then(|u| u.as_str()))
-                        .flatten()
-                })
-            {
-                return ws.to_owned();
-            }
-            assert!(
-                started.elapsed() <= Duration::from_secs(10),
-                "timed out waiting for page target on {list_url}"
-            );
-            tokio::time::sleep(Duration::from_millis(50)).await;
+            .page()
+            .call_session("Page.enable", serde_json::json!({}));
+        browser
+            .page()
+            .call_session("Runtime.enable", serde_json::json!({}));
+        browser.page().navigate(url);
+        Self {
+            browser,
+            held: Vec::new(),
         }
     }
 
-    async fn connect_ws(ws_url: &str) -> TcpStream {
-        let without_scheme = ws_url.strip_prefix("ws://").expect("ws:// scheme");
-        let (host_port, path) = without_scheme.split_once('/').expect("ws path");
-        let mut stream = TcpStream::connect(host_port).await.expect("connect cdp ws");
-        let request = format!(
-            "GET /{path} HTTP/1.1\r\n\
-             Host: {host_port}\r\n\
-             Upgrade: websocket\r\n\
-             Connection: Upgrade\r\n\
-             Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n\
-             Sec-WebSocket-Version: 13\r\n\r\n"
+    fn eval(&mut self, expression: &str) -> serde_json::Value {
+        self.browser.page().evaluate(expression)
+    }
+
+    fn call(&mut self, method: &str, params: serde_json::Value) -> serde_json::Value {
+        self.browser.page().call_session(method, params)
+    }
+
+    /// Runs one step of `js/site.js` with `args`, a JSON array, as real
+    /// arguments, and returns what it answers. A step that throws fails the test.
+    fn step(&mut self, name: &str, args: serde_json::Value) -> serde_json::Value {
+        let mut arguments = vec![serde_json::json!(name)];
+        arguments.extend(args.as_array().expect("a step's arguments").iter().cloned());
+        self.browser
+            .page()
+            .call_function(include_str!("js/site.js"), &arguments)
+    }
+
+    /// Puts the page in `theme` and reads the sidebar's layout, once it has rendered.
+    fn sidebar_layout(&mut self, theme: Theme) -> Option<SidebarLayout> {
+        let answer = self.browser.page().call_function(
+            include_str!("js/sidebar_layout.js"),
+            &[serde_json::json!(theme.attribute())],
         );
-        stream.write_all(request.as_bytes()).await.unwrap();
-        let mut header_buf = Vec::new();
-        let mut byte = [0u8; 1];
-        while !header_buf.ends_with(b"\r\n\r\n") {
-            stream.read_exact(&mut byte).await.unwrap();
-            header_buf.push(byte[0]);
-        }
-        let header_str = String::from_utf8_lossy(&header_buf);
-        assert!(
-            header_str.starts_with("HTTP/1.1 101"),
-            "unexpected websocket handshake response:\n{header_str}"
-        );
-        stream
+        serde_json::from_value(answer.clone())
+            .unwrap_or_else(|error| panic!("sidebar_layout.js answered {answer}: {error}"))
     }
 
-    async fn call(&mut self, method: &str, params: serde_json::Value) -> serde_json::Value {
-        let id = self.next_id;
-        self.next_id += 1;
-        let payload = serde_json::json!({
-            "id": id,
-            "method": method,
-            "params": params,
-        })
-        .to_string();
-        self.send_frame(payload.as_bytes()).await;
-        loop {
-            let text = self.read_frame().await;
-            let Ok(message) = serde_json::from_str::<serde_json::Value>(&text) else {
-                continue;
-            };
-            if message.get("id").and_then(|v| v.as_u64()) == Some(id) {
-                return message;
-            }
-            if message.get("method").and_then(|m| m.as_str()) == Some("Fetch.requestPaused") {
-                self.paused.push(message["params"].clone());
-            }
-        }
+    fn navigate(&mut self, url: &str) {
+        self.browser.page().navigate(url);
+    }
+
+    fn click(&mut self, selector: &str) {
+        self.browser.click(selector);
+    }
+
+    /// Clicks the first `selector` whose words are exactly `words`.
+    fn click_named(&mut self, selector: &str, words: &str) {
+        self.step("clickNamed", serde_json::json!([selector, words]));
+    }
+
+    /// One real key press.
+    fn press_key(&mut self, key: Key) {
+        self.browser.press_key(key);
+    }
+
+    fn dom(&mut self) -> String {
+        self.browser.html()
     }
 
     /// Lets every held draft read go on, and returns the first held request
     /// with `method`, waiting up to ten seconds for it.
-    async fn held_request(&mut self, method: &str) -> serde_json::Value {
+    fn held_request(&mut self, method: &str) -> serde_json::Value {
         let started = Instant::now();
         loop {
-            // A cheap call drains pending events into `paused`.
-            self.eval("0").await;
+            self.held.extend(self.browser.take_paused_requests());
             let mut found = None;
-            for request in std::mem::take(&mut self.paused) {
+            for request in std::mem::take(&mut self.held) {
                 if found.is_none() && request["request"]["method"] == method {
                     found = Some(request);
                 } else if request["request"]["method"] == "GET" {
-                    self.release(&request).await;
+                    self.release(&request);
                 } else {
-                    self.paused.push(request);
+                    self.held.push(request);
                 }
             }
             if let Some(request) = found {
@@ -3097,22 +2552,185 @@ impl CdpBrowser {
                 started.elapsed() < Duration::from_secs(10),
                 "no {method} request was held"
             );
-            tokio::time::sleep(Duration::from_millis(30)).await;
+            std::thread::sleep(Duration::from_millis(30));
         }
     }
 
     /// Lets one held request go on to the server.
-    async fn release(&mut self, request: &serde_json::Value) {
+    fn release(&mut self, request: &serde_json::Value) {
         self.call(
             "Fetch.continueRequest",
             serde_json::json!({ "requestId": request["requestId"] }),
+        );
+    }
+
+    /// Lets every held request go on.
+    fn release_all(&mut self) {
+        self.held.extend(self.browser.take_paused_requests());
+        for request in std::mem::take(&mut self.held) {
+            self.release(&request);
+        }
+    }
+
+    /// Types `text` into the composer as the physician would.
+    fn type_composer(&mut self, text: &str) {
+        self.browser.type_into("textarea.composer-input", text);
+        std::thread::sleep(Duration::from_millis(100));
+    }
+
+    /// The composer's text, and the mark beside it.
+    fn composer(&mut self) -> (String, String) {
+        let pair = self.step("composer", serde_json::json!([]));
+        (
+            pair[0].as_str().unwrap_or("<no composer>").to_owned(),
+            pair[1].as_str().unwrap_or_default().to_owned(),
         )
-        .await;
+    }
+
+    /// Waits for the autosave after typing to settle, and returns its mark:
+    /// Saved or Not saved. There is no Save button to click.
+    fn settled_mark(&mut self) -> String {
+        let started = Instant::now();
+        loop {
+            let (_, mark) = self.composer();
+            if mark == "Saved" || mark == "Not saved" {
+                return mark;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "autosave settled on no mark: {mark:?}\n{}",
+                self.dom()
+            );
+            std::thread::sleep(Duration::from_millis(50));
+        }
+    }
+
+    /// Waits until the composer shows `text`.
+    fn wait_composer(&mut self, text: &str, timeout: Duration) {
+        let started = Instant::now();
+        loop {
+            let (shown, _) = self.composer();
+            if shown == text {
+                return;
+            }
+            assert!(
+                started.elapsed() < timeout,
+                "the composer never showed {text:?}; it shows {shown:?}"
+            );
+            std::thread::sleep(Duration::from_millis(60));
+        }
+    }
+
+    /// The conflict the composer shows: the newer revision and its text.
+    fn conflict(&mut self) -> Option<(u64, String)> {
+        let pair = self.step("conflict", serde_json::json!([]));
+        Some((pair.get(0)?.as_u64()?, pair.get(1)?.as_str()?.to_owned()))
+    }
+
+    /// Waits for the composer to show a conflict, and returns it.
+    fn wait_conflict(&mut self) -> (u64, String) {
+        let started = Instant::now();
+        loop {
+            if let Some(conflict) = self.conflict() {
+                return conflict;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "no conflict showed: {:?}",
+                self.composer()
+            );
+            std::thread::sleep(Duration::from_millis(60));
+        }
+    }
+
+    /// Clicks the conflict's `label` button (Retry or Use newer text).
+    fn click_conflict(&mut self, label: &str) {
+        self.click_named(".draft-conflict button", label);
+    }
+
+    /// This tab's same-tab draft recovery keys.
+    fn recovery_keys(&mut self) -> Vec<String> {
+        self.step("draftRecoveryKeys", serde_json::json!([]))
+            .as_array()
+            .map(|keys| {
+                keys.iter()
+                    .filter_map(|key| key.as_str().map(str::to_owned))
+                    .collect()
+            })
+            .unwrap_or_default()
+    }
+
+    fn request_sign_in(&mut self, email: &str) {
+        self.browser.type_into("input[type=\"email\"]", email);
+        std::thread::sleep(Duration::from_millis(50));
+        self.click("button.control-primary");
+    }
+
+    fn search_for(&mut self, query: &str) {
+        self.browser.type_into(".search-field input", query);
+    }
+
+    fn dialog_text(&mut self) -> String {
+        self.step("dialogText", serde_json::json!([]))
+            .as_str()
+            .unwrap_or_default()
+            .to_owned()
+    }
+
+    fn sign_in_again(&mut self) {
+        self.request_sign_in("admin@clinic-a.test");
+    }
+
+    fn wait_for_text(&mut self, expected: &str, timeout: Duration) -> String {
+        let started = Instant::now();
+        loop {
+            // Read visible text and its HTML in one browser turn. Hidden text or
+            // a CSS class cannot satisfy the wait, nor can we return older HTML.
+            let snapshot = self.step("pageSnapshot", serde_json::json!([]));
+            let html = snapshot["html"].as_str().unwrap_or_default();
+            if snapshot["text"]
+                .as_str()
+                .is_some_and(|text| text.contains(expected))
+            {
+                return html.to_owned();
+            }
+            if started.elapsed() > timeout {
+                panic!("timed out waiting for {expected:?} in DOM:\n{html}");
+            }
+            std::thread::sleep(Duration::from_millis(60));
+        }
+    }
+
+    fn reload(&mut self) {
+        let previous = self.document_loader();
+        self.call("Page.reload", serde_json::json!({}));
+        let started = Instant::now();
+        // The same conversation text is visible before and after a reload.
+        // Wait for a different document before text waits or clicks can run;
+        // otherwise they can act on the page the browser is about to discard.
+        while self.document_loader() == previous {
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "reload did not replace the document"
+            );
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    fn document_loader(&mut self) -> String {
+        self.call("Page.getFrameTree", serde_json::json!({}))
+            .pointer("/result/frameTree/frame/loaderId")
+            .and_then(|id| id.as_str())
+            .expect("main frame document loader")
+            .to_owned()
     }
 
     /// Answers one held request with `body` instead of the server.
-    async fn fulfill_json(&mut self, request: &serde_json::Value, body: &str) {
-        self.call(
+    /// Answers a held request with `body`. The page may have dropped the
+    /// request for a newer one while it was held; Chrome then no longer knows
+    /// it, and there is nothing left to answer.
+    fn fulfill_json(&mut self, request: &serde_json::Value, body: &str) {
+        let answer = self.browser.page().try_call_session(
             "Fetch.fulfillRequest",
             serde_json::json!({
                 "requestId": request["requestId"],
@@ -3120,20 +2738,25 @@ impl CdpBrowser {
                 "responseHeaders": [{ "name": "content-type", "value": "application/json" }],
                 "body": base64::engine::general_purpose::STANDARD.encode(body),
             }),
-        )
-        .await;
+        );
+        if let Err(error) = answer
+            && error["message"] != "Invalid InterceptionId."
+        {
+            panic!("Fetch.fulfillRequest failed: {error}");
+        }
     }
 
     /// Waits for the sidebar to list `rows` recent conversations, answering every
     /// held request with `recents` meanwhile: the app reads the list again as its
     /// session settles.
-    async fn wait_for_recent_rows(&mut self, rows: usize, recents: Option<&str>) {
+    fn wait_for_recent_rows(&mut self, rows: usize, recents: Option<&str>) {
         let started = Instant::now();
         loop {
-            let layout = self.sidebar_layout(Theme::Light).await;
+            let layout = self.sidebar_layout(Theme::Light);
             if let Some(recents) = recents {
-                for request in std::mem::take(&mut self.paused) {
-                    self.fulfill_json(&request, recents).await;
+                self.held.extend(self.browser.take_paused_requests());
+                for request in std::mem::take(&mut self.held) {
+                    self.fulfill_json(&request, recents);
                 }
             }
             match layout {
@@ -3143,424 +2766,58 @@ impl CdpBrowser {
                     "the sidebar did not list {rows} recent conversations: {seen:?}"
                 ),
             }
-            tokio::time::sleep(Duration::from_millis(50)).await;
+            std::thread::sleep(Duration::from_millis(50));
         }
     }
 
-    /// Runs `sidebar_layout.js` in `theme`, passing the theme as a real argument.
-    async fn sidebar_layout(&mut self, theme: Theme) -> Option<SidebarLayout> {
-        let global = self
-            .call(
-                "Runtime.evaluate",
-                serde_json::json!({ "expression": "globalThis" }),
-            )
-            .await;
-        let object = global["result"]["result"]["objectId"]
-            .as_str()
-            .expect("the page's global object");
-        let answer = self
-            .call(
-                "Runtime.callFunctionOn",
-                serde_json::json!({
-                    "functionDeclaration": include_str!("sidebar_layout.js"),
-                    "objectId": object,
-                    "arguments": [{ "value": theme.attribute() }],
-                    "returnByValue": true,
-                }),
-            )
-            .await;
-        serde_json::from_value(answer["result"]["result"]["value"].clone())
-            .unwrap_or_else(|error| panic!("sidebar_layout.js answered {answer}: {error}"))
+    /// The page as it stands, as PNG bytes.
+    fn screenshot(&mut self) -> Vec<u8> {
+        let shot = self.call(
+            "Page.captureScreenshot",
+            serde_json::json!({ "format": "png" }),
+        );
+        let encoded = shot["result"]["data"].as_str().expect("a screenshot");
+        base64::engine::general_purpose::STANDARD
+            .decode(encoded)
+            .expect("a screenshot in base64")
     }
 
     /// Saves the page as it stands, when `PHYSICIAN_PROOF_SHOTS` names a folder for it.
-    async fn save_picture(&mut self, name: &str) {
+    fn save_picture(&mut self, name: &str) {
         let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") else {
             return;
         };
-        let shot = self
-            .call(
-                "Page.captureScreenshot",
-                serde_json::json!({ "format": "png" }),
-            )
-            .await;
-        let encoded = shot["result"]["data"].as_str().expect("a screenshot");
-        let png = base64::engine::general_purpose::STANDARD
-            .decode(encoded)
-            .expect("a screenshot in base64");
+        let png = self.screenshot();
         let folder = PathBuf::from(folder);
         fs::create_dir_all(&folder).expect("the screenshot folder");
         fs::write(folder.join(format!("{name}.png")), png).expect("the screenshot");
     }
 
-    /// Types `text` into the composer as the physician would.
-    async fn type_composer(&mut self, text: &str) {
-        self.eval(&format!(
-            r#"new Promise(resolve => {{
-            const box = document.querySelector('textarea.composer-input');
-            Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(box, {});
-            box.dispatchEvent(new Event('input', {{bubbles: true}}));
-            setTimeout(() => resolve(true), 100);
-        }})"#,
-            serde_json::to_string(text).unwrap()
-        ))
-        .await;
-    }
-
-    /// The composer's text, and the mark beside it.
-    async fn composer(&mut self) -> (String, String) {
-        let value = self
-            .eval("[document.querySelector('textarea.composer-input')?.value ?? null, document.querySelector('.composer-context [role=status]')?.textContent ?? '']")
-            .await;
-        let pair = &value["result"]["result"]["value"];
-        (
-            pair[0].as_str().unwrap_or("<no composer>").to_owned(),
-            pair[1].as_str().unwrap_or_default().to_owned(),
-        )
-    }
-
-    /// Waits for the autosave after typing to settle, and returns its mark:
-    /// Saved or Not saved. There is no Save button to click.
-    async fn settled_mark(&mut self) -> String {
-        let started = Instant::now();
-        loop {
-            let (_, mark) = self.composer().await;
-            if mark == "Saved" || mark == "Not saved" {
-                return mark;
-            }
-            assert!(
-                started.elapsed() < Duration::from_secs(10),
-                "autosave settled on no mark: {mark:?}\n{}",
-                self.dom().await
-            );
-            tokio::time::sleep(Duration::from_millis(50)).await;
+    /// With `PHYSICIAN_PROOF_SHOTS` set, saves `state` scrolled to `anchor` at desktop and phone
+    /// sizes in light and dark, then returns the page to desktop light. The phone shots collapse
+    /// the sidebar first, which otherwise covers most of a phone's width.
+    fn save_pictures(&mut self, state: &str, anchor: &str) {
+        if env::var_os("PHYSICIAN_PROOF_SHOTS").is_none() {
+            return;
         }
-    }
-
-    /// Waits until the composer shows `text`.
-    async fn wait_composer(&mut self, text: &str, timeout: Duration) {
-        let started = Instant::now();
-        loop {
-            let (shown, _) = self.composer().await;
-            if shown == text {
-                return;
-            }
-            assert!(
-                started.elapsed() < timeout,
-                "the composer never showed {text:?}; it shows {shown:?}"
-            );
-            tokio::time::sleep(Duration::from_millis(60)).await;
-        }
-    }
-
-    /// The conflict the composer shows: the newer revision and its text.
-    async fn conflict(&mut self) -> Option<(u64, String)> {
-        let value = self
-            .eval("(() => { const c = document.querySelector('.draft-conflict'); return c ? [Number(c.dataset.revision), c.querySelector('pre')?.textContent ?? ''] : null; })()")
-            .await;
-        let pair = value.pointer("/result/result/value")?.as_array()?.clone();
-        Some((pair[0].as_u64()?, pair[1].as_str()?.to_owned()))
-    }
-
-    /// Waits for the composer to show a conflict, and returns it.
-    async fn wait_conflict(&mut self) -> (u64, String) {
-        let started = Instant::now();
-        loop {
-            if let Some(conflict) = self.conflict().await {
-                return conflict;
-            }
-            assert!(
-                started.elapsed() < Duration::from_secs(10),
-                "no conflict showed: {:?}",
-                self.composer().await
-            );
-            tokio::time::sleep(Duration::from_millis(60)).await;
-        }
-    }
-
-    /// Clicks the conflict's `label` button (Retry or Use newer text).
-    async fn click_conflict(&mut self, label: &str) {
-        let clicked = self
-            .eval(&format!(
-                "(() => {{ const b = [...document.querySelectorAll('.draft-conflict button')].find(b => b.textContent.trim() === {}); if (!b) return false; b.click(); return true; }})()",
-                serde_json::to_string(label).unwrap()
-            ))
-            .await;
-        assert_eq!(
-            clicked.pointer("/result/result/value"),
-            Some(&serde_json::json!(true)),
-            "no {label} button in the conflict"
-        );
-    }
-
-    /// This tab's same-tab draft recovery keys.
-    async fn recovery_keys(&mut self) -> Vec<String> {
-        self.eval("Object.keys(sessionStorage).filter(k => k.startsWith('coda.physician.draft.'))")
-            .await
-            .pointer("/result/result/value")
-            .and_then(|value| value.as_array())
-            .map(|keys| {
-                keys.iter()
-                    .filter_map(|key| key.as_str().map(str::to_owned))
-                    .collect()
-            })
-            .unwrap_or_default()
-    }
-
-    /// Lets every held request go on.
-    async fn release_all(&mut self) {
-        self.eval("0").await;
-        for request in std::mem::take(&mut self.paused) {
-            self.release(&request).await;
-        }
-    }
-
-    /// The JSON body of a held request.
-    fn held_body(request: &serde_json::Value) -> serde_json::Value {
-        use base64::Engine;
-        let text = match request["request"]["postData"].as_str() {
-            Some(text) => text.to_owned(),
-            None => request["request"]["postDataEntries"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .filter_map(|entry| entry["bytes"].as_str())
-                .filter_map(|bytes| base64::engine::general_purpose::STANDARD.decode(bytes).ok())
-                .map(|bytes| String::from_utf8_lossy(&bytes).into_owned())
-                .collect(),
-        };
-        serde_json::from_str(&text).unwrap_or(serde_json::Value::Null)
-    }
-
-    async fn send_frame(&mut self, payload: &[u8]) {
-        let mut frame = Vec::with_capacity(14 + payload.len());
-        frame.push(0x81); // FIN + text frame
-        if payload.len() < 126 {
-            frame.push(0x80 | (payload.len() as u8));
-        } else if payload.len() <= u16::MAX as usize {
-            frame.push(0x80 | 126);
-            frame.extend_from_slice(&(payload.len() as u16).to_be_bytes());
-        } else {
-            frame.push(0x80 | 127);
-            frame.extend_from_slice(&(payload.len() as u64).to_be_bytes());
-        }
-        // Masking key of all zeroes keeps payload bytes unchanged while satisfying RFC 6455.
-        frame.extend_from_slice(&[0, 0, 0, 0]);
-        frame.extend_from_slice(payload);
-        self.stream.write_all(&frame).await.unwrap();
-    }
-
-    async fn read_frame(&mut self) -> String {
-        loop {
-            let mut head = [0u8; 2];
-            self.stream.read_exact(&mut head).await.unwrap();
-            let opcode = head[0] & 0x0f;
-            let masked = (head[1] & 0x80) != 0;
-            let mut len = (head[1] & 0x7f) as usize;
-            if len == 126 {
-                let mut ext = [0u8; 2];
-                self.stream.read_exact(&mut ext).await.unwrap();
-                len = u16::from_be_bytes(ext) as usize;
-            } else if len == 127 {
-                let mut ext = [0u8; 8];
-                self.stream.read_exact(&mut ext).await.unwrap();
-                len = u64::from_be_bytes(ext) as usize;
-            }
-            let mut mask = [0u8; 4];
-            if masked {
-                self.stream.read_exact(&mut mask).await.unwrap();
-            }
-            let mut data = vec![0u8; len];
-            self.stream.read_exact(&mut data).await.unwrap();
-            if masked {
-                for (i, byte) in data.iter_mut().enumerate() {
-                    *byte ^= mask[i % 4];
-                }
-            }
-            if opcode == 0x9 {
-                // Reply to ping with pong.
-                let mut pong = vec![0x8a, 0x80, 0, 0, 0, 0];
-                pong[1] |= data.len() as u8;
-                pong.extend_from_slice(&data);
-                let _ = self.stream.write_all(&pong).await;
-                continue;
-            }
-            if opcode == 0x1 {
-                return String::from_utf8_lossy(&data).into_owned();
+        for (size, width, height) in [("desktop", 1440, 900), ("phone", 390, 844)] {
+            self.set_viewport(width, height, true);
+            for theme in ["light", "dark"] {
+                self.step("setTheme", serde_json::json!([theme]));
+                self.step("scrollToStart", serde_json::json!([anchor]));
+                std::thread::sleep(Duration::from_millis(400));
+                self.save_picture(&format!("{state}-{size}-{theme}"));
             }
         }
-    }
-
-    async fn eval(&mut self, expression: &str) -> serde_json::Value {
-        self.call(
-            "Runtime.evaluate",
-            serde_json::json!({
-                "expression": expression,
-                "returnByValue": true,
-                "awaitPromise": true,
-            }),
-        )
-        .await
-    }
-
-    async fn request_sign_in(&mut self, email: &str) {
-        self.eval(&format!(r#"new Promise(resolve => {{
-            const input = document.querySelector('input.sign-in-input[type="email"]');
-            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
-            input.dispatchEvent(new Event('input', {{bubbles: true}}));
-            setTimeout(() => {{ document.querySelector('button.sign-in-primary').click(); resolve(true); }}, 50);
-        }})"#, serde_json::to_string(email).unwrap())).await;
-    }
-
-    async fn search_for(&mut self, query: &str) {
-        self.eval(&format!(r#"(() => {{
-            const input = document.querySelector('.search-field input');
-            Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set.call(input, {});
-            input.dispatchEvent(new Event('input', {{bubbles: true}}));
-        }})()"#, serde_json::to_string(query).unwrap())).await;
-    }
-
-    async fn dialog_text(&mut self) -> String {
-        self.eval("document.querySelector('dialog.dialog')?.innerText ?? ''")
-            .await
-            .pointer("/result/result/value")
-            .and_then(|v| v.as_str())
-            .unwrap_or_default()
-            .to_owned()
-    }
-
-    async fn sign_in_again(&mut self) {
-        self.request_sign_in("admin@clinic-a.test").await;
-    }
-
-    async fn dom(&mut self) -> String {
-        let response = self
-            .eval("document.documentElement ? document.documentElement.outerHTML : ''")
-            .await;
-        response
-            .pointer("/result/result/value")
-            .and_then(|v| v.as_str())
-            .unwrap_or_default()
-            .to_owned()
-    }
-
-    async fn wait_for_text(&mut self, expected: &str, timeout: Duration) -> String {
-        let started = Instant::now();
-        loop {
-            // Read visible text and its HTML in one browser turn. Hidden text or
-            // a CSS class cannot satisfy the wait, nor can we return older HTML.
-            let snapshot = self
-                .eval("({ text: document.body ? document.body.innerText : '', html: document.documentElement ? document.documentElement.outerHTML : '' })")
-                .await;
-            let value = &snapshot["result"]["result"]["value"];
-            let html = value["html"].as_str().unwrap_or_default();
-            if value["text"]
-                .as_str()
-                .is_some_and(|text| text.contains(expected))
-            {
-                return html.to_owned();
-            }
-            if started.elapsed() > timeout {
-                panic!("timed out waiting for {expected:?} in DOM:\n{html}");
-            }
-            tokio::time::sleep(Duration::from_millis(60)).await;
-        }
-    }
-
-    async fn navigate(&mut self, url: &str) {
-        self.call("Page.navigate", serde_json::json!({ "url": url }))
-            .await;
-    }
-
-    async fn reload(&mut self) {
-        let previous = self.document_loader().await;
-        self.call("Page.reload", serde_json::json!({})).await;
-        let started = Instant::now();
-        // The same conversation text is visible before and after a reload.
-        // Wait for a different document before text waits or clicks can run;
-        // otherwise they can act on the page the browser is about to discard.
-        while self.document_loader().await == previous {
-            assert!(
-                started.elapsed() < Duration::from_secs(10),
-                "reload did not replace the document"
-            );
-            tokio::time::sleep(Duration::from_millis(20)).await;
-        }
-    }
-
-    async fn document_loader(&mut self) -> String {
-        self.call("Page.getFrameTree", serde_json::json!({}))
-            .await
-            .pointer("/result/frameTree/frame/loaderId")
-            .and_then(|id| id.as_str())
-            .expect("main frame document loader")
-            .to_owned()
-    }
-
-    /// One real key press.
-    async fn press_key(&mut self, key: &str, code: u32) {
-        for kind in ["rawKeyDown", "keyUp"] {
-            self.call(
-                "Input.dispatchKeyEvent",
-                serde_json::json!({
-                    "type": kind,
-                    "key": key,
-                    "code": key,
-                    "windowsVirtualKeyCode": code,
-                    "nativeVirtualKeyCode": code,
-                }),
-            )
-            .await;
-        }
-        // Enter makes a character as well; the field's own handler reads it from `key`.
-    }
-
-    /// Runs one step of `reply_journey.js` with `args` as real arguments, and returns what it
-    /// answers. A step that throws fails the test.
-    async fn journey(&mut self, step: &str, args: serde_json::Value) -> serde_json::Value {
-        let global = self
-            .call(
-                "Runtime.evaluate",
-                serde_json::json!({ "expression": "globalThis" }),
-            )
-            .await;
-        let object = global["result"]["result"]["objectId"]
-            .as_str()
-            .expect("the page's global object");
-        let mut arguments = vec![serde_json::json!({ "value": step })];
-        arguments.extend(
-            args.as_array()
-                .expect("a step's arguments")
-                .iter()
-                .map(|arg| serde_json::json!({ "value": arg })),
-        );
-        let response = self
-            .call(
-                "Runtime.callFunctionOn",
-                serde_json::json!({
-                    "functionDeclaration": REPLY_JOURNEY,
-                    "objectId": object,
-                    "arguments": arguments,
-                    "returnByValue": true,
-                    "awaitPromise": true,
-                }),
-            )
-            .await;
-        assert!(
-            response["result"].get("exceptionDetails").is_none() && response.get("error").is_none(),
-            "journey step {step} failed: {response}"
-        );
-        response["result"]["result"]["value"].clone()
+        self.set_viewport(1440, 900, true);
+        self.step("setTheme", serde_json::json!(["light"]));
     }
 
     /// Presses Tab until the element `selector` names has focus.
-    async fn tab_to(&mut self, selector: &str) {
+    fn tab_to(&mut self, selector: &str) {
         for _ in 0..120 {
-            self.press_key("Tab", 9).await;
-            let focused = self
-                .journey("hasFocus", serde_json::json!([selector]))
-                .await;
-            if focused == true {
+            self.press_key(Key::TAB);
+            if self.step("hasFocus", serde_json::json!([selector])) == true {
                 return;
             }
         }
@@ -3568,12 +2825,10 @@ impl CdpBrowser {
     }
 
     /// Waits out the browser's smooth scroll for `selector`'s scroll position to answer `arrived`.
-    async fn wait_for_scroll(&mut self, selector: &str, arrived: impl Fn(f64) -> bool) {
+    fn wait_for_scroll(&mut self, selector: &str, arrived: impl Fn(f64) -> bool) {
         let deadline = Instant::now() + Duration::from_secs(5);
         loop {
-            let left = self
-                .journey("scrollLeft", serde_json::json!([selector]))
-                .await;
+            let left = self.step("scrollLeft", serde_json::json!([selector]));
             if left.as_f64().is_some_and(&arrived) {
                 return;
             }
@@ -3581,31 +2836,11 @@ impl CdpBrowser {
                 Instant::now() < deadline,
                 "{selector} never reached the scroll position it should: {left}"
             );
-            tokio::time::sleep(Duration::from_millis(50)).await;
+            std::thread::sleep(Duration::from_millis(50));
         }
     }
 
-    /// With `PHYSICIAN_PROOF_SHOTS` set, saves `state` scrolled to `anchor` at desktop and phone
-    /// sizes in light and dark, then returns the page to desktop light.
-    async fn save_pictures(&mut self, state: &str, anchor: &str) {
-        if env::var_os("PHYSICIAN_PROOF_SHOTS").is_none() {
-            return;
-        }
-        for (size, width, height) in [("desktop", 1440, 900), ("phone", 390, 844)] {
-            self.set_viewport(width, height, true).await;
-            for theme in ["light", "dark"] {
-                self.journey("setTheme", serde_json::json!([theme])).await;
-                self.journey("scrollToStart", serde_json::json!([anchor]))
-                    .await;
-                tokio::time::sleep(Duration::from_millis(400)).await;
-                self.save_picture(&format!("{state}-{size}-{theme}")).await;
-            }
-        }
-        self.set_viewport(1440, 900, true).await;
-        self.journey("setTheme", serde_json::json!(["light"])).await;
-    }
-
-    async fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {
+    fn set_viewport(&mut self, width: u32, height: u32, reduced_motion: bool) {
         self.call(
             "Emulation.setDeviceMetricsOverride",
             serde_json::json!({
@@ -3614,8 +2849,7 @@ impl CdpBrowser {
                 "deviceScaleFactor": 1,
                 "mobile": width < 600,
             }),
-        )
-        .await;
+        );
         self.call(
             "Emulation.setEmulatedMedia",
             serde_json::json!({
@@ -3624,15 +2858,22 @@ impl CdpBrowser {
                     "value": if reduced_motion { "reduce" } else { "no-preference" },
                 }]
             }),
-        )
-        .await;
+        );
     }
 }
 
-impl Drop for CdpBrowser {
-    fn drop(&mut self) {
-        let _ = self.child.kill();
-        let _ = self.child.wait();
-        let _ = fs::remove_dir_all(&self.user_data_dir);
-    }
+/// The JSON body of a held request.
+fn held_body(request: &serde_json::Value) -> serde_json::Value {
+    let text = match request["request"]["postData"].as_str() {
+        Some(text) => text.to_owned(),
+        None => request["request"]["postDataEntries"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .filter_map(|entry| entry["bytes"].as_str())
+            .filter_map(|bytes| base64::engine::general_purpose::STANDARD.decode(bytes).ok())
+            .map(|bytes| String::from_utf8_lossy(&bytes).into_owned())
+            .collect(),
+    };
+    serde_json::from_str(&text).unwrap_or(serde_json::Value::Null)
 }

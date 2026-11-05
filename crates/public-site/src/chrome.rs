@@ -2,26 +2,22 @@ use crate::{Config, Route, route::Shell, site};
 use dioxus::prelude::*;
 
 /// Shared server-rendered layout. Ordinary anchors deliberately need no JS router.
-/// Each shell's markup is the original layout's, so the original stylesheets apply as-is.
+/// Document pages wrap their content so the footer stays at the foot of a short page.
+/// The homepage family's pages are never short and stay unwrapped: inside the wrapper
+/// the floating nav would sit lower once the page scrolls.
 #[component]
 pub fn Chrome() -> Element {
-    let route = use_route::<Route>();
-    // The original's legal pages share one page component, which marks its main.
-    let main_class = match route {
-        Route::Home {} | Route::Duet {} | Route::Scheduling {} | Route::NotFound { .. } => None,
-        _ => Some("legal-page"),
-    };
-    match route.shell() {
+    match use_route::<Route>().shell() {
         Shell::Homepage => rsx! {
             Nav {}
             main { Outlet::<Route> {} }
             Footer {}
         },
-        Shell::Utility => rsx! {
-            div { class: "flex min-h-svh flex-col bg-bg text-ink",
+        Shell::Document => rsx! {
+            div { class: "page",
                 Nav {}
-                div { class: "flex-1",
-                    main { class: main_class, Outlet::<Route> {} }
+                div { class: "page-content",
+                    main { Outlet::<Route> {} }
                 }
                 Footer {}
             }
@@ -62,13 +58,13 @@ fn Footer() -> Element {
                     }
                     span { class: "foot-copy", "© 2026 Coda Health" }
                 }
+                // One column per product and one for the company, whose privacy
+                // policy and terms cover the site and both products.
                 div { class: "foot-cols",
                     div {
-                        span { class: "micro", "Coda" }
+                        span { class: "micro", "Chords" }
                         a { href: "/#physicians", "For physicians" }
                         a { href: "/clinical-transparency", "Clinical Transparency" }
-                        a { href: "/privacy", "Privacy" }
-                        a { href: "/terms", "Terms" }
                     }
                     div {
                         span { class: "micro", "Duet" }
@@ -78,8 +74,10 @@ fn Footer() -> Element {
                         a { href: "/duet/consumer-health-data", "Consumer Health Data Privacy Policy" }
                     }
                     div {
-                        span { class: "micro", "Contact" }
+                        span { class: "micro", "Coda Health" }
                         a { href: site::contact_mailto(), "{site::CONTACT_EMAIL}" }
+                        a { href: "/privacy", "Privacy" }
+                        a { href: "/terms", "Terms" }
                     }
                 }
             }

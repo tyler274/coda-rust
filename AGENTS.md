@@ -30,7 +30,11 @@ submodule or a generated wire schema is not a specification, and is not restored
   prerequisites, effects and exits explicit. Handle cases that end the operation
   where they become clear, often with an early return, so the remaining work
   reads in sequence. Do the work, then branch on its result; don't fold an
-  action into a condition.
+  action into a condition. Keep each decision with the code that owns it. When
+  changing one behavior requires reasoning about unrelated state, separate those
+  responsibilities so the change can be understood locally. When control flow is
+  hard to follow, use cyclomatic complexity to locate branch-heavy functions and
+  check whether their decisions belong together.
 
 Move code toward these as you touch it; don't mass-convert just to comply.
 Clippy's rules in `[workspace.lints]` hold what a rule can tell right from wrong;
@@ -136,7 +140,7 @@ importing the other's crates.
 
 `nix develop` in this repository is the shell for the monorepo. It carries the Rust toolchain, the product tools, Doppler, and `act`. For unattended work, run builds, tests and Git commits with `nix develop .#agent --command <command>`; [unattended development](README.md#unattended-development) describes that profile.
 
-On an Apple silicon Mac where `nix` is not on PATH, the dev shell is in Apple's container: run the same builds, tests and Git commits with `dev/apple-container.sh exec <command>` from the checkout or worktree. [That route](README.md#apple-silicon-mac-without-nix-apple-container) has the setup. Try it before reporting a missing toolchain as a proof gap, and do not skip the pre-commit hook with `--no-verify` because the host lacks one.
+On an Apple silicon Mac where `nix` is not on PATH, each checkout or worktree has its own Apple container: run `dev/apple-session.sh up` once, then the same builds, tests and Git commits with `dev/apple-session.sh exec <command>`, and `dev/apple-session.sh down` when the worktree's work is finished. Files are shared with the Mac, except `target/` outside `target/verification`, and `up` prints the Mac address of each server. Push and publish proof from the Mac. [That route](README.md#apple-silicon-mac-without-nix-apple-container) has the setup. Try it before reporting a missing toolchain as a proof gap, and do not skip the pre-commit hook with `--no-verify` because the host lacks one.
 
 Doppler holds every secret value, and GCP Secret Manager holds only a read-only `DOPPLER_TOKEN` scoped to one config. Never copy Doppler values into Secret Manager or the repository. Tests and the sample server need no Doppler account. [Secrets](book/src/release.md#secrets-doppler) has the configs and commands.
 
