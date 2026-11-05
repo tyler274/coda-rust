@@ -594,7 +594,8 @@ jobs:
       - name: Publish signed reusable Nix outputs
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && steps.cache-roots.outcome == 'success'
         continue-on-error: true
-        timeout-minutes: 10
+        # A cold cache uploads the whole build closure, including toolchains.
+        timeout-minutes: 45
         env:
           NIX_CACHE_BUCKET: ${{ vars.NIX_CACHE_BUCKET }}
           NIX_CACHE_PUBLIC_KEY: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
