@@ -9,7 +9,7 @@ How a patient's message in the practice's channel reaches the right patient in C
 - **Review:** Coda's work on one patient. It decides whether a reply would help, and drafts it.
 - **Reply:** the one reply Coda proposes for a conversation, answering every patient message the practice hasn't answered. It shows as one Today row, and opens as the card.
 - **Draft:** one physician's own version of the reply.
-- **Handled:** a patient message is handled once the practice has answered it, it needs no reply, it was left unlinked, it isn't from a patient, or someone marked it Done.
+- **Handled:** a patient message is handled once the practice has answered it, it needs no reply, it was left unlinked, it isn't from a patient, someone marked it Done, or a completed disconnect deleted it.
 
 ## Journey
 
@@ -26,7 +26,7 @@ Linking:
 
 - Coda decides whether a message is from a patient, with no brittle filters. Until it decides, or for 15 minutes, the message shows nowhere.
 - A message Coda judges isn't from a patient goes to the Filtered list, where This is a patient brings it back.
-- A message links on its own when its conversation or sender is confirmed for exactly one patient, or the channel ties its conversation to exactly one patient. In Spruce, that's a conversation whose one outside participant is saved as the contact of exactly one patient, linked to exactly one EHR record that matches exactly one Coda patient.
+- A message links on its own when its conversation is already linked, its sender is confirmed for exactly one patient, or the channel ties its conversation to exactly one patient. When the sender and the channel point to different patients, it waits for a person. In Spruce, that's a conversation whose one outside participant is saved as the contact of exactly one patient, linked to exactly one EHR record that matches exactly one Coda patient.
 - Any other message waits on Messages to match and on Today, with Coda's suggested patient and alternatives. Scores never show as confidence.
 - A physician links it to a patient they may access, or leaves it unlinked. A suggestion never names a patient the viewer may not access.
 - Leaving a message unlinked covers only that message; the conversation's next message waits again.
@@ -77,11 +77,12 @@ No reply needed:
 Wrong patient:
 
 - A physician who may access the patient moves a linked conversation to another patient they may access, or to not a patient. The whole conversation moves, and later messages follow it.
+- Moving it to not a patient closes its reply and any concern about it.
 - At once nothing of it stays readable on the patient it left, and a physician who may not access the new patient loses its reply.
 - The moved messages are marked entered in error and never deleted, and what Coda wrote from them can't surface.
 - A reply that relied on them is withheld, never left blank, until a review redrafts or closes it. Each patient the move affects gets one review.
 - A physician's draft of the withheld reply stays theirs and never moves to the new patient's reply.
-- Undo within a few seconds restores the reply exactly.
+- Undo within a few seconds restores the reply exactly, and a physician who may not access the patient it returns to loses it.
 
 A message Coda can't read:
 
@@ -96,19 +97,20 @@ The channel stops:
 
 ## Rules
 
-1. A physician sees a conversation, its reply, their draft, or a suggestion naming a patient, only while they may access that patient.
-2. A message links on its own only when its conversation or sender is confirmed for that one patient, or the channel ties its conversation to that one patient.
-3. Once a conversation moves to another patient, nothing of it stays readable on the patient it left.
-4. Once Coda has decided or 15 minutes have passed, every patient message shows to someone who can act on it until it's handled.
-5. Only a review that read the practice's message closes a reply as answered.
-6. Closing a reply never closes a concern about the same messages.
-7. Coda never replaces a physician's draft unless they choose its update, and one physician never changes another's draft.
-8. Copy reply copies exactly the text the physician sees.
-9. The card shows every patient message linked after its reply was drafted.
-10. One message, practice message or correction starts at most one review for each patient it affects.
-11. What the patient's history says the practice sent is what the channel shows it sent.
-12. While Coda can't read the channel, Today says so.
-13. A completed disconnect leaves no message that was never linked to a patient.
+1. A physician sees a conversation, its reply or their draft only while they may access its patient.
+2. A suggestion never names a patient the viewer may not access.
+3. A message links on its own only when its conversation is already linked to that patient, its sender is confirmed for that one patient, or the channel ties its conversation to that one patient.
+4. Once a conversation moves to another patient, nothing of it stays readable on the patient it left.
+5. Once Coda has decided or 15 minutes have passed, every patient message shows to someone who can act on it until it's handled.
+6. Only a review that read the practice's message closes a reply as answered, and an automatic reply never answers it.
+7. Closing a reply never closes a concern about the same messages, unless the conversation moves to not a patient.
+8. Coda never replaces a physician's draft unless they ask it to revise or choose its update, and one physician never changes another's draft.
+9. Copy reply copies exactly the text the physician sees.
+10. The card shows every patient message linked after its reply was drafted.
+11. One message, practice message or correction starts at most one review for each patient it affects.
+12. What the patient's history says the practice sent is what the channel shows it sent.
+13. While Coda can't read the channel, Today says so.
+14. A completed disconnect leaves no message that was never linked to a patient.
 
 ## Outside this spec
 
