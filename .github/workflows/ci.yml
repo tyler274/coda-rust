@@ -614,9 +614,15 @@ jobs:
   postgres:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
-    name: Fresh Postgres migrations and tests
+    name: Fresh Postgres migrations and tests (shard ${{ matrix.shard }})
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
+    # check-postgres.sh splits its suites in two; together the shards run every
+    # suite once. `result` needs postgres, which fails if either shard fails.
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
     services:
       postgres:
         # PostgreSQL 16 + pgvector matches flake.nix and the devcontainer.
@@ -661,10 +667,13 @@ jobs:
             target
           # The script chooses the package set, and so the dependency features
           # in target/. An exact hit never saves, so a new set needs a new key.
-          key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}
+          # Each shard links its own test binaries, so each keeps its own entry.
+          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}
           restore-keys: |
+            postgres-${{ runner.os }}-shard${{ matrix.shard }}-
             postgres-${{ runner.os }}-
       - name: Check authored SQL formatting
+        if: matrix.shard == 1
         run: nix develop .#agent --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
@@ -673,6 +682,7 @@ jobs:
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+          POSTGRES_SHARD: ${{ matrix.shard }}
         run: |
           nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
           nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci

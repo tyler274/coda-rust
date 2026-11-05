@@ -139,6 +139,8 @@ class AnalysisTests(unittest.TestCase):
             (dict(RUN, conclusion="failure"), JOBS, "full"),
             (dict(RUN, event="workflow_dispatch"), JOBS, "full"),
             (RUN, [job("Something else")], "unknown"),
+            (dict(RUN, conclusion="failure"),
+             [job("Fresh Postgres migrations and tests (shard 2)")], "full"),
         ]
         cohorts = set()
         for run, jobs, scope in cases:
