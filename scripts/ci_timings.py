@@ -27,6 +27,10 @@ FULL_JOBS = {
     "Collector config and observability OpenTofu",
 }
 LIGHT_JOB = "Documentation and engineering skills"
+# Cache setup and teardown should take about a second. A 15-second helper
+# stall once hid in these steps across every Nix job.
+SETUP_STEPS = {"Read private Nix cache", "Remove private cache credentials"}
+SLOW_SETUP_SECONDS = 10
 METHOD = (
     "Validation elapsed = attempt start to last completed validation job; "
     "deployment jobs are excluded. Job/step durations are execution time, not "
@@ -248,6 +252,11 @@ def chart(title, rows):
     return "".join(parts)
 
 
+def slow_setup(run):
+    return [row for row in run.steps + run.deployment_steps
+            if row.label.rsplit(" / ", 1)[-1] in SETUP_STEPS and row.seconds >= SLOW_SETUP_SECONDS]
+
+
 def markdown(runs):
     baseline = [r.elapsed for r in runs if r.baseline]
     lines = ["## CI timing report", "", METHOD, "",
@@ -264,6 +273,11 @@ def markdown(runs):
             # API job names are untrusted Markdown; use inline code with no backticks/newlines.
             omitted = "; ".join(run.omitted).replace("`", "'").replace("\n", " ")
             lines.append(f"  - Omitted: `{omitted}`.")
+        slow = slow_setup(run)
+        if slow:
+            text = "; ".join(f"{row.label} {row.seconds:.0f}s" for row in slow)
+            lines.append(f"  - Warning: slow cache setup (≥{SLOW_SETUP_SECONDS}s): "
+                         f"`{text.replace('`', chr(39))}`.")
         if run.deployments:
             lines.append("  - Deployment execution (separate): " + "; ".join(
                 f"{duration(row.seconds)}" for row in run.deployments) + ".")
