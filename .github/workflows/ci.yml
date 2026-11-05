@@ -950,8 +950,8 @@ jobs:
         run: python3 scripts/nix-cache/nix_cache.py cleanup
 
   # ENG-65: the shared collector config (deployed and local overlays) and the
-  # OpenTofu roots it rides on. otelcol-contrib and tofu come from the nix
-  # shell. Providers download, but no backend initializes and no plan
+  # OpenTofu roots it rides on. otelcol-contrib and tofu come from the small
+  # `.#observability` nix shell. Providers download, but no backend initializes and no plan
   # touches a real project: the tests run against mock providers.
   observability:
     needs: [scope, lightweight]
@@ -981,9 +981,9 @@ jobs:
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
       - name: Validate the collector config
         run: |
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
-          nix develop .#agent --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
+          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml
+          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
+          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
       - name: Check the local stack
         run: |
           docker compose -f dev/observability/compose.yaml config -q
@@ -991,10 +991,10 @@ jobs:
       - name: Validate and test the OpenTofu roots
         run: |
           for root in infra/gcp/observability infra/gcp/physician-runtime; do
-            nix develop .#agent --command tofu fmt -check -recursive "$root"
-            nix develop .#agent --command tofu -chdir="$root" init -backend=false -input=false
-            nix develop .#agent --command tofu -chdir="$root" validate
-            nix develop .#agent --command tofu -chdir="$root" test
+            nix develop .#observability --command tofu fmt -check -recursive "$root"
+            nix develop .#observability --command tofu -chdir="$root" init -backend=false -input=false
+            nix develop .#observability --command tofu -chdir="$root" validate
+            nix develop .#observability --command tofu -chdir="$root" test
           done
       - name: Remove private cache credentials
         if: always() && env.NIX_CACHE_STATE_DIR != ''

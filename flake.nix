@@ -62,6 +62,11 @@
           release = pkgs.mkShell {
             packages = with pkgs; [ nix git gh jq python3 docker-client skopeo actionlint cargo-deny postgres opentofu ];
           };
+          # The CI observability job: collector config validation and the
+          # OpenTofu roots it rides on, without the agent shell's toolchain.
+          observability = pkgs.mkShell {
+            packages = with pkgs; [ opentelemetry-collector-contrib opentofu ];
+          };
           default = import ./nix/dev-shell.nix {
             inherit pkgs postgres wheelLibs chromiumBin;
           };
