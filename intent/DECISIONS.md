@@ -6,7 +6,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 **Physician**
 
-- **P2. Practice roles.** Who manages messaging and who may send, once practices have real roles. Until then the messaging manager is the person who set up the practice’s Spruce connection.
+- **P2. Practice access and roles.** Which patients each physician may access, and whether a practice has roles. Patient messaging waits on it for who sees a message before it's matched, who sees a patient's phone and email while matching, and who may send.
 - **P3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
 
 **Duet**
