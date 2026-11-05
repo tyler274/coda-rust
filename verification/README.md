@@ -91,6 +91,6 @@ or paths, which change between PStack releases.
 
 The skills in `.agents/skills` are [PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
 copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
-The [MIT license](PSTACK-LICENSE) retains Lauren Tan's attribution. The
+Their [MIT license](PSTACK-LICENSE) comes with them. The
 [daily check](../.github/workflows/pstack-watch.yml) opens or refreshes one review PR when these
 five imported skills change. [CI setup](../book/src/release.md#continuous-integration) covers PR publication.

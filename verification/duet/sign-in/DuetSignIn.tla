@@ -27,7 +27,7 @@
 (*                                                                         *)
 (* Not modeled, since they rest on Duet's records: one account per        *)
 (* verified email, a link or code that signs in once and expires, and a   *)
-(* link for every email. No test holds them yet.                          *)
+(* link for every email.                                                  *)
 (*                                                                         *)
 (* `event` names the step just taken, for traces; VIEW leaves it out of   *)
 (* the state.                                                              *)

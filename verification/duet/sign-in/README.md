@@ -23,7 +23,8 @@ Signing up or in:
 - If Duet can't be reached, the screen says so.
 - A link opened while the phone is signed in opens Duet as it was.
 - There's no guest, anonymous or local-only mode.
-- Duet is for adults 18 and over in the U.S. Physicians never sign in to Duet.
+- Duet is for adults 18 and over in the U.S.
+- Physicians never sign in to Duet.
 
 The Terms:
 
@@ -76,4 +77,4 @@ One phone, another person:
 
 ## Outside this spec
 
-The rest of first run, newer Terms, AI permission, notifications, invitations, signing out everywhere, changing an email, getting back in without access to one's email, deletion, and how messages and entries reach Duet follow [duet.md](../../../intent/duet.md) and connected care. Where they meet sign-in, they act as one event: another phone signing out everywhere ends this phone's session the way a revoke does.
+The rest of first run, newer Terms, AI permission, notifications, invitations, signing out everywhere, changing an email, getting back in without access to one's email, deletion, and how messages and entries reach Duet follow [duet.md](../../../intent/duet.md) and connected care; how the app shows newer Terms is open decision P7 in [DECISIONS.md](../../../intent/DECISIONS.md). Where they meet sign-in, they act as one event: another phone signing out everywhere ends this phone's session the way a revoke does.
