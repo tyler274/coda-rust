@@ -6,25 +6,27 @@
 (***************************************************************************)
 EXTENDS DuetSignIn
 
-\* You're signed in, in the conversation, with a draft and entries Duet hasn't confirmed.
-SignedInWithWork ==
+\* You're signed in, in the conversation, with entries Duet hasn't confirmed and `draft`'s unsent draft.
+SignedInWith(draft) ==
   /\ session = [s \in Sessions |-> IF s = SessionOrder[1] THEN Live("Yours") ELSE Unused]
   /\ accepted = [a \in Accounts |-> a = "Yours"]
   /\ phone = [screen |-> Conversation, place |-> Conversation, holds |-> SessionOrder[1], whose |-> "Yours",
-              heard |-> TRUE, draft |-> "Yours", entries |-> "Yours", asks |-> NoAsk, sync |-> NoSync,
+              heard |-> TRUE, draft |-> draft, entries |-> "Yours", asks |-> NoAsk, sync |-> NoSync,
               signIn |-> NoLink, told |-> FALSE, owes |-> {}]
   /\ removed = FALSE
   /\ refused = {}
   /\ event = "start"
+SignedInWithWork == SignedInWith("Yours")
 
 \* One person signs in with nothing unsent.
 NothingUnsentSteps == event' \notin {"you write a draft", "you add entries"}
 
-\* You sign out of this phone with a draft and entries Duet hasn't confirmed.
+\* You sign out of this phone with entries Duet hasn't confirmed, and maybe a draft you write first,
+\* until Duet closes.
 SignOutSteps ==
-  event' \in {"you sign out", "Duet confirms the entries", "Duet can't be reached", "you stay signed in",
-              "you sign out anyway", "Duet closes", "you open Duet", "Duet answers the check"}
-SignOutSpec == SignedInWithWork /\ [][Next]_vars
+  event' \in {"you write a draft", "you sign out", "Duet confirms the entries", "Duet can't be reached",
+              "you stay signed in", "you sign out anyway", "Duet closes"}
+SignOutSpec == SignedInWith(Nobody) /\ [][Next]_vars
 
 \* Duet ends your session elsewhere while the phone may not reach Duet.
 EndedSteps ==

@@ -1,36 +1,38 @@
-// The words of the chart of signing out with unsent work, for PStack's statechart skill. Run it
-// with Charts.tla and chart-sign-out.cfg: you're signed in with a draft and entries Duet hasn't
-// confirmed, and you sign out of this phone. It leaves out a session ended elsewhere, which
-// chart-ended draws, telling Duet of the sign-out, signing back in, and writing or logging
-// anything new.
+// The words of the chart of signing out with work Duet hasn't confirmed, for PStack's statechart
+// skill. Run it with Charts.tla and chart-sign-out.cfg: you're signed in with entries Duet hasn't
+// confirmed, may write a draft, and sign out of this phone. Closing Duet ends the scene; the main
+// chart draws reopening in the conversation. It leaves out a session ended elsewhere, which
+// chart-ended draws, telling Duet of the sign-out, signing back in, and logging more entries.
 
-export const title = "Signing out with a draft and unconfirmed entries";
+export const title = "Signing out with work Duet hasn't confirmed";
 
-const unsent = (p) =>
-  p.draft !== "Nobody" && p.entries !== "Nobody" ? "draft and entries unsent"
-    : p.draft !== "Nobody" ? "draft unsent" : p.entries !== "Nobody" ? "entries unsent" : "nothing unsent";
+const held = (p) =>
+  p.draft !== "Nobody" && p.entries !== "Nobody" ? "draft unsent, entries unconfirmed"
+    : p.draft !== "Nobody" ? "draft unsent" : p.entries !== "Nobody" ? "entries unconfirmed" : "nothing unconfirmed";
 
 // What the warning says goes, from what the phone still holds.
 const warned = (p) =>
   p.entries === "Nobody" ? "Warned the draft goes"
     : p.draft === "Nobody" ? "Warned the entries go" : "Warned the draft and entries go";
 
+// Sending says whether a draft is held, since that decides where Duet's confirmation leads.
 export const state = (v) => {
   const p = v.phone;
   if (p.holds === "No session") return "Signed out";
-  if (p.screen === "Duet closed") return `Closed, ${unsent(p)}`;
-  if (p.screen === "Signing out: sending unconfirmed entries") return "Signing out, sending entries";
+  if (p.screen === "Duet closed") return `Closed, reopens the conversation: ${held(p)}`;
+  if (p.screen === "Signing out: sending unconfirmed entries") {
+    return `Signing out, sending entries${p.draft !== "Nobody" ? ", draft unsent" : ""}`;
+  }
   if (p.screen === "Signing out removes what Duet hasn't confirmed") return warned(p);
-  return `Conversation, ${unsent(p)}${p.asks.startsWith("Checking") ? ", checking" : ""}`;
+  return `Conversation, ${held(p)}`;
 };
 
 const steps = {
-  OpenDuet: "you open Duet",
+  WriteDraft: "you write a draft",
   CloseDuet: "Duet closes",
   StartSignOut: "you sign out",
   DuetConfirmsEntries: "Duet confirms the entries",
   CantReach: "Duet can't be reached",
-  DuetAnswersCheck: "Duet answers the check",
   StaySignedIn: "you stay signed in",
   SignOutAnyway: "you sign out anyway",
 };
