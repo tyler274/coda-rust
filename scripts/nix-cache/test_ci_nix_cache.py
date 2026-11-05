@@ -5,7 +5,7 @@ from pathlib import Path
 import yaml
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
 
 class WorkflowTests(unittest.TestCase):
@@ -55,7 +55,7 @@ class WorkflowTests(unittest.TestCase):
         for job in self.jobs.values():
             if any(s.get('uses') == './.github/actions/nix-cache' for s in job.get('steps', [])):
                 readers += 1
-                cleanup = [s for s in job['steps'] if s.get('run') == 'python3 scripts/nix_cache.py cleanup']
+                cleanup = [s for s in job['steps'] if s.get('run') == 'python3 scripts/nix-cache/nix_cache.py cleanup']
                 self.assertEqual(len(cleanup), 1)
                 self.assertIn('always()', cleanup[0]['if'])
         self.assertEqual(readers, 6)

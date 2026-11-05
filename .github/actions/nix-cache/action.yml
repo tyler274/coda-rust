@@ -24,4 +24,4 @@ runs:
         NIX_CACHE_PUBLIC_KEY: ${{ inputs.public-key }}
         AWS_ACCESS_KEY_ID: ${{ inputs.access-key-id }}
         AWS_SECRET_ACCESS_KEY: ${{ inputs.secret-access-key }}
-      run: python3 scripts/nix_cache.py setup --disposable-runner
+      run: python3 scripts/nix-cache/nix_cache.py setup --disposable-runner

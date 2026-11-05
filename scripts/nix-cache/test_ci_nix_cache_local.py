@@ -10,7 +10,7 @@ from unittest.mock import patch
 import nix_cache_roots as roots
 
 
-REPO = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[2]
 
 
 class RootTests(unittest.TestCase):
@@ -79,7 +79,7 @@ class WorkflowTests(unittest.TestCase):
 
     def test_both_writers_use_shared_collector(self):
         for workflow in (self.local, self.hosted):
-            self.assertIn('python3 scripts/nix_cache_roots.py build', workflow)
+            self.assertIn('python3 scripts/nix-cache/nix_cache_roots.py build', workflow)
             self.assertNotIn('.#coda-servers-deps', workflow)
 
     def test_local_credentials_only_reach_publish(self):
@@ -107,7 +107,7 @@ class WorkflowTests(unittest.TestCase):
         publish = self.hosted.split('      - name: Publish signed reusable Nix outputs\n')[1].split('      - name:')[0]
         self.assertIn("github.event_name == 'push' && github.ref == 'refs/heads/main'", publish)
         self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", publish)
-        self.assertIn('scripts/nix_cache.py publish --build-json', publish)
+        self.assertIn('scripts/nix-cache/nix_cache.py publish --build-json', publish)
         self.assertNotIn('publish-local', self.hosted)
         self.assertIn("&& 'nix-cache-write' || 'nix-cache-read'", self.hosted)
 

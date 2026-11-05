@@ -8,7 +8,7 @@ import re
 import subprocess
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DEPENDENCY_ROOTS = ('coda-servers-deps', 'coda-web-deps', 'patient-bank-deps')
 IMAGE_ROOTS = (
     'physician-sample-image', 'physician-worker-image', 'duet-api-image',
