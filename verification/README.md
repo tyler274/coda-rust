@@ -21,10 +21,11 @@ the model. Features not modeled yet follow the intent specs alone.
   carries it out. An `event` variable names each step, and the config's `VIEW` leaves it out.
   The config sets the scope the rules are checked at: large enough for the races the feature's
   risks come from, never cut to fit a chart.
-- **`chart.cfg` and `chart.mjs`:** the chart PStack's `statechart` skill draws, in the words of
-  the person who decides whether the behavior is right. `chart.cfg` runs the same model at a
-  scope of 500 states or fewer, so the whole chart can be drawn. `chart.mjs` names its states
-  and steps, and says what the chart leaves out.
+- **`chart*.cfg` and `chart*.mjs`:** the charts PStack's `statechart` skill draws, in the words
+  of the person who decides whether the behavior is right. Each runs the same model at a scope
+  of 500 states or fewer, so the whole chart can be drawn: `chart.cfg` from the start, and the
+  others from a moment `Charts.tla` sets, with only the steps that chart shows. Each `.mjs`
+  names its states and steps, and says what its chart leaves out.
 
 ## How a feature is checked
 
@@ -32,7 +33,7 @@ the model. Features not modeled yet follow the intent specs alone.
    code does today separate from what was agreed.
 2. **Check the model.** PStack's `statechart` skill runs TLC, which visits every state the model
    can reach and checks every rule. A deliberately broken copy of the model shows each rule can
-   fail. The skill also draws the chart, which is how the flows are read and agreed.
+   fail. The skill also draws the charts, which is how the flows are read and agreed.
 3. **Hold the code to it.** The code follows the model. When TLC or review finds a path on which
    the code breaks a rule, that path goes into the feature's browser test. There,
    [replay.mjs](replay.mjs) gives the model's state after each step, and the test plays the path
