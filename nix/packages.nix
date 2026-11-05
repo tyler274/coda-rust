@@ -144,10 +144,12 @@ let
         # Secrets arrive only at start: Cloud Run mounts DOPPLER_TOKEN and
         # Doppler injects the config. No fallback file is written or read, so
         # no secret copy lands on the container filesystem. Cloud Run's PORT
-        # wins over any PORT value stored in Doppler.
+        # wins over any PORT value stored in Doppler. Infrastructure telemetry
+        # settings and the image's immutable version also win over Doppler.
         Entrypoint = [
           "${doppler}/bin/doppler" "run"
-          "--no-check-version" "--no-fallback" "--forward-signals" "--preserve-env=PORT"
+          "--no-check-version" "--no-fallback" "--forward-signals"
+          "--preserve-env=PORT,DD_VERSION,DD_ENV,OTEL_EXPORTER_OTLP_ENDPOINT,CODA_LOG_FORMAT,CODA_TELEMETRY_CONTENT"
           "--" "${binary}/bin/${executable}"
         ];
         Env = [
@@ -155,6 +157,8 @@ let
           "TMPDIR=/tmp"
           "SSL_CERT_FILE=${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
           "TZDIR=${zoneinfo}"
+          # Immutable image version, preserved across Doppler injection.
+          "DD_VERSION=${revision}"
         ] ++ lib.optional (role == "runtime") "PORT=8080" ++ environment;
         Labels = {
           "org.opencontainers.image.revision" = revision;

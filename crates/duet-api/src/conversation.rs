@@ -1058,11 +1058,12 @@ pub struct ConversationOwner {
     steer_revision: i64,
 }
 impl ConversationOwner {
-    /// Whether this attempt was fenced out by a steer and its command is back
-    /// in `accepted` for an immediate same-command reclaim.
+    /// Whether this attempt was fenced out by a steer, even if another launch
+    /// has already reclaimed or completed the command. Claim remains the authority
+    /// for deciding whether an immediate same-command reclaim is available.
     pub async fn steered(&self) -> Result<bool, ApiError> {
         let mut tx = self.database.begin(self.context.account_id).await?;
-        let steered: bool = sqlx::query_scalar("select exists(select 1 from duet_commands where user_id=$1 and id=$2 and state='accepted' and steer_revision<>$3)")
+        let steered: bool = sqlx::query_scalar("select exists(select 1 from duet_commands where user_id=$1 and id=$2 and steer_revision<>$3)")
             .bind(self.context.account_id).bind(self.id).bind(self.steer_revision).fetch_one(&mut *tx).await?;
         tx.rollback().await?;
         Ok(steered)

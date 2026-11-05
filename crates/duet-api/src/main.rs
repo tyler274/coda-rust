@@ -113,18 +113,7 @@ async fn main() {
     tokio::spawn(duet_api::conversation_routes::recover_pending(
         conversation.clone(),
     ));
-    let recovery = state.privacy.clone();
-    tokio::spawn(async move {
-        let mut interval = tokio::time::interval(std::time::Duration::from_secs(30));
-        loop {
-            interval.tick().await;
-            if let Ok(accounts) = recovery.database.pending_privacy_accounts().await {
-                for account in accounts {
-                    let _pending = recovery.recover(account).await;
-                }
-            }
-        }
-    });
+    tokio::spawn(duet_api::background::recover_privacy(state.privacy.clone()));
     let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
         Ok(front_url) => Some(Arc::new(
             front_door::PostgresFrontDoorStore::connect_without_migrations(&front_url)

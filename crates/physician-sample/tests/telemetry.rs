@@ -31,6 +31,59 @@ fn attribute(span: &SpanData, key: &str) -> Option<String> {
         .map(|kv| kv.value.to_string())
 }
 
+fn queue_context_round_trips(exporter: &InMemorySpanExporter, provider: &SdkTracerProvider) {
+    use local_product::runtime::{Scope, delivery::Delivery};
+    use telemetry::propagation::{self, Relation, TRACEPARENT};
+    let delivery = Delivery::chat_turn(
+        Scope {
+            practice: "practice".into(),
+            physician: "physician".into(),
+            workspace: "workspace".into(),
+            chat: "chat".into(),
+        },
+        "accepted-input".into(),
+    );
+    let publisher = tracing::info_span!(parent: None, "queue-test-publisher");
+    let message = publisher.in_scope(|| physician_sample::queue::message(&delivery).unwrap());
+    let remote = propagation::remote_context(&message.attributes).expect("publisher context");
+    assert_eq!(
+        serde_json::from_slice::<Delivery>(&message.data).unwrap(),
+        delivery
+    );
+    assert!(!String::from_utf8_lossy(&message.data).contains(TRACEPARENT));
+    drop(publisher);
+    for (name, attributes, expected) in [
+        ("valid", message.attributes.clone(), Relation::Child),
+        ("missing", Default::default(), Relation::Root),
+        (
+            "invalid",
+            [(TRACEPARENT.into(), "not-a-parent".into())].into(),
+            Relation::Root,
+        ),
+    ] {
+        let span = tracing::info_span!(parent: None, "queue-test-consumer", otel.name = name);
+        assert_eq!(
+            propagation::relate(
+                &span,
+                propagation::remote_context(&attributes).as_ref(),
+                Relation::Child
+            ),
+            expected,
+        );
+    }
+    provider.force_flush().unwrap();
+    let spans = exporter.get_finished_spans().unwrap();
+    let valid = spans.iter().find(|span| span.name == "valid").unwrap();
+    assert_eq!(valid.span_context.trace_id(), remote.trace_id());
+    assert_eq!(valid.parent_span_id, remote.span_id());
+    for name in ["missing", "invalid"] {
+        let span = spans.iter().find(|span| span.name == name).unwrap();
+        assert_eq!(span.parent_span_id, opentelemetry::trace::SpanId::INVALID);
+        assert_ne!(span.span_context.trace_id(), remote.trace_id());
+        assert!(span.links.is_empty());
+    }
+}
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn a_chat_turn_is_one_trace_with_the_run_contract_and_no_content() {
     // SAFETY: this test binary has one test; nothing else reads the env.
@@ -49,6 +102,8 @@ async fn a_chat_turn_is_one_trace_with_the_run_contract_and_no_content() {
     let subscriber = tracing_subscriber::registry()
         .with(tracing_opentelemetry::layer().with_tracer(provider.tracer("test")));
     tracing::subscriber::set_global_default(subscriber).expect("one subscriber");
+    queue_context_round_trips(&exporter, &provider);
+    exporter.reset();
 
     let dir = std::env::temp_dir().join(format!("coda-telemetry-{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&dir);

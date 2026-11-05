@@ -1,8 +1,10 @@
 # Merged on top of collector.yaml when the local Datadog Agent is off
 # (`--config collector.yaml --config collector.debug.yaml`). Lists replace on
-# merge, so this keeps the content-stripping processor and swaps only the
-# exporter: the debug output shows exactly what Datadog would receive.
+# merge, so this keeps the content-stripping processors and swaps only the
+# exporters: the debug output shows exactly what Datadog would receive.
 service:
   pipelines:
     traces/datadog:
+      exporters: [debug]
+    logs/datadog:
       exporters: [debug]

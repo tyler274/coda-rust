@@ -204,13 +204,16 @@ services:
       DD_APM_ENABLED: "true"
       DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_GRPC_ENDPOINT: 0.0.0.0:4317
       DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: 0.0.0.0:4318
+      # Same as the GKE Agent: without it the Agent drops OTLP log records.
+      DD_OTLP_CONFIG_LOGS_ENABLED: "true"
       DD_LOGS_ENABLED: "true"
       DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL: "false"
       DD_PROCESS_AGENT_ENABLED: "false"
+    # No host /proc or cgroup mounts: this Agent only relays OTLP. Mounting the
+    # host /proc without the host PID namespace stops its OTLP pipeline from
+    # starting ("failed to register process metrics: process does not exist").
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /proc/:/host/proc/:ro
-      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
 
 volumes:
   postgres_data:

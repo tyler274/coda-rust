@@ -28,11 +28,19 @@ locals {
   langfuse_web_url        = "http://${local.langfuse_web_service}.${local.namespace}.svc.cluster.local:3000"
   langfuse_otlp_endpoint  = "${local.langfuse_web_url}/api/public/otel"
 
-  # What every instrumented service reads (crates/telemetry). Rendered as an
-  # output so physician-runtime and later Cloud Run roots bind the same values.
+  # Cloud Run sidecars reach the collector only through the internal gateway
+  # (collector.tf); the ClusterIP names above serve in-cluster callers.
+  otel_gateway_otlp_http = "http://${var.otel_gateway_ip}:4318"
+
+  # What every instrumented Cloud Run product container reads
+  # (crates/telemetry). The product exports to its own sidecar on localhost;
+  # the sidecar forwards to otel_gateway_otlp_http with a Google ID token.
+  # infra/gcp/rust-environments sets these on the product containers;
+  # DD_VERSION is baked into each image, never set here.
   service_telemetry_env = {
-    OTEL_EXPORTER_OTLP_ENDPOINT = local.collector_otlp_http
+    OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318"
     DD_ENV                      = local.dd_env
+    CODA_LOG_FORMAT             = "json"
     CODA_TELEMETRY_CONTENT      = var.telemetry_content
   }
 }
@@ -41,8 +49,10 @@ data "google_project" "runtime" {
   project_id = var.project_id
 }
 
+# Read only: infra/gcp/rust-environments owns rust-private and its Private
+# Service Access range, which Langfuse's Cloud SQL attaches to.
 data "google_compute_network" "runtime" {
-  project = var.project_id
+  project = var.cluster_project
   name    = var.network_name
 }
 

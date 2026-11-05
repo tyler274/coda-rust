@@ -1,28 +1,68 @@
 # One collector deployment fans every service's OTLP out to the Datadog Agent
-# and to Langfuse. It runs dev/observability/collector.yaml unchanged: the
-# file's ${env:...} references are resolved by the collector at start, so it
-# is read with file(), not templatefile(), which would try to interpolate them.
+# and to Langfuse. It runs dev/observability/collector.yaml merged with the
+# gateway overlay collector.gke.yaml (oidc receiver auth and the caller
+# allowlist), both unchanged: their ${env:...} references are resolved by the
+# collector at start, so they are read with file(), not templatefile(), which
+# would try to interpolate them.
+#
+# Cloud Run reaches it through the otel-gateway Service below: an internal
+# passthrough load balancer on the reserved gateway IP, open only to the
+# Cloud Run egress range, OTLP/HTTP 4318 only. Every request carries a Google
+# ID token minted by the calling service's own runtime identity for
+# otel_gateway_audience; the overlay refuses anything else.
+#
+# With langfuse_enabled off, a third file, collector.gke-no-langfuse.yaml,
+# sends the generation pipeline to nop, so the collector needs no Langfuse
+# endpoint or keys.
 locals {
-  collector_config_path = "${path.module}/../../../dev/observability/collector.yaml"
-  collector_config      = file(local.collector_config_path)
-  collector_image       = "otel/opentelemetry-collector-contrib:0.155.0"
-  collector_replicas    = 2
+  collector_config_path         = "${path.module}/../../../dev/observability/collector.yaml"
+  collector_config              = file(local.collector_config_path)
+  collector_gateway_config_path = "${path.module}/../../../dev/observability/collector.gke.yaml"
+  collector_gateway_config      = file(local.collector_gateway_config_path)
+  collector_no_langfuse_config  = file("${path.module}/../../../dev/observability/collector.gke-no-langfuse.yaml")
+  collector_config_data = merge(
+    {
+      "collector.yaml"     = local.collector_config
+      "collector.gke.yaml" = local.collector_gateway_config
+    },
+    var.langfuse_enabled ? {} : { "collector.gke-no-langfuse.yaml" = local.collector_no_langfuse_config },
+  )
+  # Later files merge over earlier ones, so the order is fixed here.
+  collector_config_files = concat(
+    ["collector.yaml", "collector.gke.yaml"],
+    var.langfuse_enabled ? [] : ["collector.gke-no-langfuse.yaml"],
+  )
+  collector_image    = "otel/opentelemetry-collector-contrib:0.155.0"
+  collector_replicas = 2
   collector_labels = {
     application = "observability"
     component   = "otel-collector"
   }
+  # The gateway admits these callers by exact email claim. The overlay splits
+  # on commas without trimming, so the list is joined with no spaces.
+  collector_allowed_callers = join(",", sort(distinct(var.otel_gateway_allowed_callers)))
+  otel_gateway_service      = "otel-gateway"
 
-  # Parsed for tests/observability.tftest.hcl, which proves the Datadog
-  # pipeline deletes content and Langfuse receives only generation spans.
-  # The OTTL string literal escapes its backslashes; unescape them the way
-  # OTTL does so the test applies the exact regex the collector runs.
+  # Parse the shared policy's explicit attribute allowlists for focused
+  # infrastructure contracts. Runtime privacy behavior is tested by telemetry.
   collector_parsed = yamldecode(local.collector_config)
-  collector_strip_patterns = {
+  collector_trace_allowed_keys = {
     for group in local.collector_parsed.processors["transform/strip_content"].trace_statements :
-    group.context => [
-      for s in group.statements : replace(regex("^delete_matching_keys\\(attributes, \"(.*)\"\\)$", s)[0], "\\\\", "\\")
-    ]
+    group.context => jsondecode(one([
+      for statement in group.statements : regex("^keep_keys\\(attributes, (.*)\\)$", statement)[0]
+      if startswith(statement, "keep_keys(attributes,")
+    ]))
   }
+  collector_log_allowed_keys = {
+    for group in local.collector_parsed.processors["transform/strip_log_content"].log_statements :
+    group.context => jsondecode(one([
+      for statement in group.statements : regex("^keep_keys\\(attributes, (.*)\\)$", statement)[0]
+      if startswith(statement, "keep_keys(attributes,")
+    ]))
+  }
+  # The gateway overlay restates every pipeline's processors; tests prove it
+  # keeps the content-stripping and generation-filter steps.
+  collector_gateway_parsed = yamldecode(local.collector_gateway_config)
 }
 
 resource "kubernetes_config_map_v1" "collector" {
@@ -31,9 +71,7 @@ resource "kubernetes_config_map_v1" "collector" {
     namespace = kubernetes_namespace.observability.metadata[0].name
   }
 
-  data = {
-    "collector.yaml" = local.collector_config
-  }
+  data = local.collector_config_data
 }
 
 resource "kubernetes_service_account_v1" "collector" {
@@ -64,8 +102,12 @@ resource "kubernetes_deployment_v1" "collector" {
       metadata {
         labels = local.collector_labels
         annotations = {
-          # Roll the pods when the shared config changes.
-          "checksum/config" = sha256(local.collector_config)
+          # Roll the pods when the shared config, the overlay or the caller
+          # allowlist changes.
+          "checksum/config" = sha256(join("\n", concat(
+            [for file in local.collector_config_files : local.collector_config_data[file]],
+            [var.otel_gateway_audience, local.collector_allowed_callers],
+          )))
         }
       }
 
@@ -76,7 +118,8 @@ resource "kubernetes_deployment_v1" "collector" {
         container {
           name  = "otel-collector"
           image = local.collector_image
-          args  = ["--config=/etc/otelcol/collector.yaml"]
+          # Later files merge over earlier ones: the gateway overlay adds auth.
+          args = [for file in local.collector_config_files : "--config=/etc/otelcol/${file}"]
 
           env {
             name  = "DATADOG_OTLP_ENDPOINT"
@@ -84,14 +127,30 @@ resource "kubernetes_deployment_v1" "collector" {
           }
 
           env {
-            name  = "LANGFUSE_OTLP_ENDPOINT"
-            value = local.langfuse_otlp_endpoint
+            name  = "OTEL_GATEWAY_AUDIENCE"
+            value = var.otel_gateway_audience
+          }
+
+          env {
+            name  = "OTEL_GATEWAY_ALLOWED_CALLERS"
+            value = local.collector_allowed_callers
+          }
+
+          dynamic "env" {
+            for_each = var.langfuse_enabled ? [local.langfuse_otlp_endpoint] : []
+            content {
+              name  = "LANGFUSE_OTLP_ENDPOINT"
+              value = env.value
+            }
           }
 
           # LANGFUSE_PUBLIC_KEY / LANGFUSE_SECRET_KEY, synced from Doppler.
-          env_from {
-            secret_ref {
-              name = "otel-collector-langfuse"
+          dynamic "env_from" {
+            for_each = var.langfuse_enabled ? ["otel-collector-langfuse"] : []
+            content {
+              secret_ref {
+                name = env_from.value
+              }
             }
           }
 
@@ -180,5 +239,52 @@ resource "kubernetes_service_v1" "collector" {
     }
 
     type = "ClusterIP"
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0].annotations["cloud.google.com/neg"]]
+  }
+}
+
+# The only path into the collector from outside the cluster: a GKE internal
+# passthrough Network Load Balancer on the reserved gateway address that
+# infra/gcp/rust-environments owns. GKE turns loadBalancerSourceRanges into
+# the VPC firewall rule, so only the Cloud Run egress subnet reaches it, and
+# only on OTLP/HTTP 4318. Traffic stays inside the VPC, which Google
+# encrypts in transit; the receiver itself is plain HTTP with oidc bearer
+# authentication (collector.gke.yaml), no TLS of its own.
+resource "kubernetes_service_v1" "otel_gateway" {
+  metadata {
+    name      = local.otel_gateway_service
+    namespace = kubernetes_namespace.observability.metadata[0].name
+    annotations = {
+      "networking.gke.io/load-balancer-type" = "Internal"
+    }
+  }
+
+  spec {
+    type                        = "LoadBalancer"
+    selector                    = local.collector_labels
+    load_balancer_ip            = var.otel_gateway_ip
+    load_balancer_source_ranges = var.otel_gateway_source_ranges
+    # Keep the client IP so the source-range firewall sees Cloud Run's
+    # address, and route only to nodes running a collector pod.
+    external_traffic_policy = "Local"
+
+    port {
+      name        = "otlp-http"
+      protocol    = "TCP"
+      port        = 4318
+      target_port = 4318
+    }
+  }
+
+  # GKE's NEG controller writes these after creation; removing them would
+  # fight the controller on every apply.
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["cloud.google.com/neg"],
+      metadata[0].annotations["cloud.google.com/neg-status"],
+    ]
   }
 }

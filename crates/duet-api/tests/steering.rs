@@ -23,7 +23,62 @@ use std::sync::{
 };
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tower::ServiceExt;
+use tracing::{Instrument, instrument::WithSubscriber};
 use uuid::Uuid;
+
+#[derive(Clone, Default)]
+struct TraceCapture(Arc<Mutex<Vec<u8>>>);
+
+impl std::io::Write for TraceCapture {
+    fn write(&mut self, bytes: &[u8]) -> std::io::Result<usize> {
+        self.0.lock().unwrap().extend_from_slice(bytes);
+        Ok(bytes.len())
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        Ok(())
+    }
+}
+
+impl TraceCapture {
+    fn output(&self) -> String {
+        String::from_utf8(self.0.lock().unwrap().clone()).unwrap()
+    }
+
+    fn subscriber(&self) -> impl tracing::Subscriber + Send + Sync + 'static {
+        let writer = self.clone();
+        tracing_subscriber::fmt()
+            .with_ansi(false)
+            .with_max_level(tracing::Level::INFO)
+            .with_span_events(
+                tracing_subscriber::fmt::format::FmtSpan::NEW
+                    | tracing_subscriber::fmt::format::FmtSpan::CLOSE,
+            )
+            .with_writer(move || writer.clone())
+            .finish()
+    }
+
+    async fn completed(&self) -> String {
+        tokio::time::timeout(std::time::Duration::from_secs(10), async {
+            loop {
+                let output = self.output();
+                if output.lines().any(|line| {
+                    line.contains("duet.conversation.execute") && line.contains("close")
+                }) {
+                    return output;
+                }
+                tokio::time::sleep(std::time::Duration::from_millis(10)).await;
+            }
+        })
+        .await
+        .unwrap_or_else(|_| {
+            panic!(
+                "spawned conversation span must close after privacy confirmation: {}",
+                self.output()
+            )
+        })
+    }
+}
 
 const FIRST: &str = "First question about my sleep";
 const SECOND: &str = "Second thought: I also wake at 4am";
@@ -234,6 +289,119 @@ async fn request(app: &Router, method: &str, path: &str, body: Value) -> (u16, V
     (code, serde_json::from_slice(&bytes).unwrap_or(Value::Null))
 }
 
+async fn observed_request(app: &Router, body: Value, capture: &TraceCapture) -> (u16, Value) {
+    async {
+        request(app, "POST", "/api/conversation/messages", body)
+            .instrument(tracing::info_span!("test.accepted_request"))
+            .await
+    }
+    .with_subscriber(capture.subscriber())
+    .await
+}
+
+#[tokio::test]
+async fn accepted_provider_failure_is_safe_and_correlated() {
+    accepted_failure(false).await;
+}
+
+#[tokio::test]
+async fn failed_steer_lookup_still_attempts_privacy_confirmation() {
+    accepted_failure(true).await;
+}
+
+async fn accepted_failure(database_failure: bool) {
+    let (admin, f) = fixture("async_failure").await;
+    let owner_url = f.owner_url.clone();
+    let role = f.role.clone();
+    let release = Arc::new(tokio::sync::Notify::new());
+    let provider_release = release.clone();
+    let received = Arc::new(tokio::sync::Notify::new());
+    let provider_received = received.clone();
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
+    let provider = Router::new().route(
+        "/responses",
+        axum::routing::post(move || {
+            let release = provider_release.clone();
+            let received = provider_received.clone();
+            async move {
+                received.notify_one();
+                release.notified().await;
+                (
+                    axum::http::StatusCode::INTERNAL_SERVER_ERROR,
+                    "PRIVATE-PROVIDER-ERROR",
+                )
+            }
+        }),
+    );
+    let server = tokio::spawn(async move { axum::serve(listener, provider).await.unwrap() });
+    let app = app(&f, Some((endpoint, "PRIVATE-PROVIDER-KEY".into())));
+    enroll(&app).await;
+    let c = f.durable.identity.authenticate("a", true).await.unwrap();
+    let id = Uuid::new_v4();
+    let capture = TraceCapture::default();
+    let accepted = observed_request(
+        &app,
+        json!({"id":id,"text":"PRIVATE-PATIENT-COMMAND","timezone":"UTC"}),
+        &capture,
+    )
+    .await;
+    assert_eq!(accepted.0, 202, "{accepted:?}");
+    // The accepted route has returned before the provider is allowed to fail.
+    tokio::time::timeout(std::time::Duration::from_secs(10), received.notified())
+        .await
+        .unwrap();
+    if database_failure {
+        let mut owner = PgConnection::connect(&owner_url).await.unwrap();
+        // Test-only fault injection on this fixture's isolated runtime role.
+        // Removing table access makes both steer lookup and confirmation fail.
+        sqlx::query(AssertSqlSafe(format!(
+            "revoke all on duet_commands, privacy_recovery_events from {role}"
+        )))
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    }
+    release.notify_one();
+    let output = capture.completed().await;
+    let expected = if database_failure {
+        vec![("steered", "database"), ("confirm", "database")]
+    } else {
+        vec![("execute", "execution")]
+    };
+    let events: Vec<_> = output
+        .lines()
+        .filter(|line| line.contains("duet.conversation.failed"))
+        .collect();
+    assert_eq!(events.len(), expected.len(), "{output}");
+    for (event, (step, class)) in events.iter().zip(expected) {
+        for field in [
+            "test.accepted_request".to_owned(),
+            "duet.conversation.execute".to_owned(),
+            "otel.status_code=\"ERROR\"".to_owned(),
+            format!("step=\"{step}\""),
+            format!("error_class=\"{class}\""),
+        ] {
+            assert!(event.contains(&field), "missing {field}: {output}");
+        }
+    }
+    for private in [
+        "PRIVATE-PATIENT-COMMAND",
+        "PRIVATE-PROVIDER-ERROR",
+        "PRIVATE-PROVIDER-KEY",
+        &id.to_string(),
+        &c.account_id.to_string(),
+    ] {
+        assert!(
+            !output.contains(private),
+            "private content in trace: {output}"
+        );
+    }
+    server.abort();
+    drop(app);
+    teardown(admin, f).await;
+}
+
 async fn enroll(app: &Router) {
     for (path, body) in [
         ("/api/auth/account", json!({})),
@@ -359,6 +527,10 @@ async fn steer_reaches_the_reply_in_progress_once() {
         .await
         .unwrap();
     assert_eq!(reply.text, "You asked about sleep and waking at 4am.");
+    assert!(
+        fenced.steered().await.unwrap(),
+        "a replaced attempt remains steered after another launch reclaims and completes"
+    );
     let sent_requests = requests.lock().unwrap().clone();
     assert_eq!(sent_requests.len(), 1);
     assert_eq!(user_messages(&sent_requests[0], FIRST), 1);
@@ -684,11 +856,11 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     let c: AccountContext = f.durable.identity.authenticate("a", true).await.unwrap();
 
     let a = Uuid::new_v4();
-    let (status, first) = request(
+    let first_capture = TraceCapture::default();
+    let (status, first) = observed_request(
         &app,
-        "POST",
-        "/api/conversation/messages",
         json!({"id":a,"text":FIRST,"timezone":"UTC"}),
+        &first_capture,
     )
     .await;
     assert_eq!(status, 202, "{first}");
@@ -701,11 +873,11 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     .expect("first provider request");
 
     let b = Uuid::new_v4();
-    let (status, second) = request(
+    let second_capture = TraceCapture::default();
+    let (status, second) = observed_request(
         &app,
-        "POST",
-        "/api/conversation/messages",
         json!({"id":b,"text":SECOND,"timezone":"UTC"}),
+        &second_capture,
     )
     .await;
     assert_eq!(status, 202, "{second}");
@@ -736,6 +908,20 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
         .map(|m| m["text"].as_str().unwrap())
         .collect();
     assert_eq!(texts, vec![FIRST, SECOND, "Both messages answered."]);
+    // The steer route may find the first launch still claimed; that no-op
+    // legitimately creates no execution span. Wait only for actual launches.
+    first_capture.completed().await;
+    for capture in [&first_capture, &second_capture] {
+        let output = if capture.output().contains("duet.conversation.execute") {
+            capture.completed().await
+        } else {
+            capture.output()
+        };
+        assert!(!output.contains("duet.conversation.failed"), "{output}");
+        assert!(!output.contains("otel.status_code=\"ERROR\""), "{output}");
+        assert!(!output.contains(FIRST), "{output}");
+        assert!(!output.contains(SECOND), "{output}");
+    }
     let sent = bodies.lock().unwrap().clone();
     assert_eq!(sent.len(), 2, "held request + one steered request");
     assert!(!sent[0].to_string().contains(SECOND));

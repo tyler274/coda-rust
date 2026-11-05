@@ -125,7 +125,9 @@ class Contract(unittest.TestCase):
         # Only physician is ever handed the chat topic; Duet has no PHYSICIAN_* env.
         workloads = config_text("workloads.tf")
         self.assertIn('for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}', workloads)
-        self.assertIn('cpu_idle          = each.key != "physician"', workloads)
+        # Without observability only physician keeps CPU between requests; the
+        # otel-collector sidecar needs idle CPU on every service it joins.
+        self.assertIn('cpu_idle          = !local.observability && each.key != "physician"', workloads)
         # Only physician keeps a minimum instance, and only while its queue exists.
         self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
 
@@ -135,7 +137,7 @@ class Contract(unittest.TestCase):
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
         self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
         self.assertRegex(worker, r"iap_enabled\s+= false")
-        self.assertRegex(worker, r"cpu_idle\s+= true")
+        self.assertRegex(worker, r"cpu_idle\s+= !local\.observability\n")
         invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
         self.assertIn('members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]', invoker)
         # No additive run.invoker grant may widen the authoritative binding.

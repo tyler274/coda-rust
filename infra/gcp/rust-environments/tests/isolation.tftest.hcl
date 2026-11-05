@@ -663,3 +663,284 @@ run "physician_scale_active" {
     error_message = "The sites keep direct IAP."
   }
 }
+
+# --- Observability (observability-cluster.tf and the workloads.tf sidecars) --
+
+run "observability_default_off" {
+  # Active staging with physician scaling, both observability gates at their
+  # defaults: no cluster, no sidecar, one unnamed container per service.
+  command = plan
+  variables {
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        worker    = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-worker@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+  assert {
+    condition = (
+      length(google_container_cluster.observability) == 0 && length(google_compute_subnetwork.observability) == 0 &&
+      length(google_compute_address.otel_gateway) == 0 && length(google_compute_router_nat.observability) == 0 &&
+      !contains(keys(google_project_service.api), "container.googleapis.com")
+    )
+    error_message = "With the gates off there is no observability cluster, subnet, gateway address, NAT or GKE API."
+  }
+  assert {
+    condition = alltrue([for containers in concat(
+      [for service in google_cloud_run_v2_service.app : service.template[0].containers],
+      [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
+    ) : length(containers) == 1 && containers[0].name == null])
+    error_message = "With observability off, physician, duet and physician-worker each run one unnamed container, as before."
+  }
+  assert {
+    condition = alltrue([for containers in concat(
+      [for service in google_cloud_run_v2_service.app : service.template[0].containers],
+      [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
+      ) : (
+      contains([for env in containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "DD_ENV=staging") &&
+      length([for env in containers[0].env : env.name if contains(["DD_VERSION", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT"], env.name)]) == 0
+    )])
+    error_message = "DD_ENV=staging is always set; DD_VERSION never, and the telemetry settings only while observability is on."
+  }
+  assert {
+    condition     = output.observability_cluster == null && output.otel_gateway == null && output.otel_gateway_endpoint == null
+    error_message = "Observability outputs are null while the cluster gate is off."
+  }
+}
+
+run "reject_observability_without_cluster" {
+  command = plan
+  variables { observability_enabled = true }
+  expect_failures = [google_project.environment]
+}
+
+run "reject_runtime_override_of_telemetry_env" {
+  command = plan
+  variables {
+    runtime_environment = { physician = { DD_VERSION = "pretend" } }
+  }
+  expect_failures = [google_project.environment]
+}
+
+run "reject_production_observability_cluster" {
+  command = plan
+  variables {
+    environment                   = "prd"
+    observability_cluster_enabled = true
+  }
+  expect_failures = [var.observability_cluster_enabled]
+}
+
+run "reject_unpinned_sidecar_image" {
+  command = plan
+  variables { otel_sidecar_image = "otel/opentelemetry-collector-contrib:latest" }
+  expect_failures = [var.otel_sidecar_image]
+}
+
+run "observability_cluster_only" {
+  # The cluster can come up (and the gateway be deployed into it) before any
+  # service sends telemetry.
+  command = plan
+  variables { observability_cluster_enabled = true }
+  assert {
+    condition = (
+      length(google_container_cluster.observability) == 1 && length(google_compute_address.otel_gateway) == 1 &&
+      contains(keys(google_project_service.api), "container.googleapis.com") &&
+      length(google_cloud_run_v2_service.app) == 0
+    )
+    error_message = "The cluster gate alone creates the cluster, its gateway address and the GKE API, and no service."
+  }
+  assert {
+    condition = (
+      google_container_cluster.observability[0].private_cluster_config[0].enable_private_endpoint &&
+      length(google_container_cluster.observability[0].master_authorized_networks_config) == 1 &&
+      length(google_container_cluster.observability[0].master_authorized_networks_config[0].cidr_blocks) == 0
+    )
+    error_message = "GKE requires authorized networks with a private endpoint; none may be listed."
+  }
+  assert {
+    condition     = output.otel_gateway.audience == "coda-otel-gateway-stg" && jsonencode(output.otel_gateway.source_ranges) == jsonencode(["10.80.0.0/24"])
+    error_message = "The gateway audience defaults per environment and admits only the Cloud Run egress subnet."
+  }
+}
+
+run "observability_active" {
+  command = plan
+  override_resource {
+    target = google_compute_address.otel_gateway
+    values = { address = "10.82.0.10" }
+  }
+  override_resource {
+    target = google_service_account.physician_worker
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+  variables {
+    observability_cluster_enabled          = true
+    observability_enabled                  = true
+    enable_databases                       = true
+    enable_workloads                       = true
+    enable_physician_scale                 = true
+    runtime_and_database_contract_approved = true
+    images = {
+      physician = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-migrate@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+        worker    = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/physician-worker@sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+      }
+      duet = {
+        runtime   = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet@sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+        migration = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/duet-migrate@sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      }
+    }
+    doppler_configs = {
+      physician-runtime   = "stg_physician_runtime"
+      physician-migration = "stg_physician_migration"
+      duet-runtime        = "stg_duet_runtime"
+      duet-migration      = "stg_duet_migration"
+    }
+    doppler_token_versions = {
+      physician = { runtime = "1", migration = "2" }
+      duet      = { runtime = "3", migration = "4" }
+    }
+    runtime_environment = {
+      physician = { TEST_CONTRACT_ONLY = "true" }
+      duet      = { TEST_CONTRACT_ONLY = "true" }
+    }
+  }
+
+  # Cluster: private Autopilot on rust-private with the agreed ranges.
+  assert {
+    condition = (
+      google_compute_subnetwork.observability[0].name == "rust-observability" &&
+      google_compute_subnetwork.observability[0].ip_cidr_range == "10.82.0.0/22" &&
+      google_compute_subnetwork.observability[0].network == "projects/test-rust-stg-only/global/networks/rust-private" &&
+      { for range in google_compute_subnetwork.observability[0].secondary_ip_range : range.range_name => range.ip_cidr_range } == { "observability-pods" = "10.84.0.0/14", "observability-services" = "10.88.0.0/20" }
+    )
+    error_message = "rust-observability is 10.82.0.0/22 on rust-private with pods 10.84.0.0/14 and services 10.88.0.0/20."
+  }
+  assert {
+    condition = alltrue([for cluster in google_container_cluster.observability :
+      cluster.enable_autopilot && cluster.deletion_protection && cluster.network == "projects/test-rust-stg-only/global/networks/rust-private" &&
+      cluster.private_cluster_config[0].enable_private_nodes && cluster.private_cluster_config[0].enable_private_endpoint &&
+      cluster.private_cluster_config[0].master_ipv4_cidr_block == "172.16.80.0/28" &&
+      cluster.control_plane_endpoints_config[0].dns_endpoint_config[0].allow_external_traffic &&
+      cluster.ip_allocation_policy[0].cluster_secondary_range_name == "observability-pods" &&
+      cluster.ip_allocation_policy[0].services_secondary_range_name == "observability-services" &&
+      cluster.workload_identity_config[0].workload_pool == "test-rust-stg-only.svc.id.goog" &&
+      cluster.release_channel[0].channel == "REGULAR"
+    ]) && length(google_container_cluster.observability) == 1
+    error_message = "The cluster is private Autopilot (private nodes and IP endpoint, DNS endpoint for operators) with Workload Identity, REGULAR channel and deletion protection."
+  }
+  assert {
+    # Every range on rust-private, read from the resources themselves. Two
+    # aligned blocks overlap exactly when one contains the other's base.
+    condition = alltrue([for ranges in [[
+      google_compute_subnetwork.run.ip_cidr_range,
+      "${google_compute_global_address.sql.address}/${google_compute_global_address.sql.prefix_length}",
+      google_compute_subnetwork.observability[0].ip_cidr_range,
+      google_compute_subnetwork.observability[0].secondary_ip_range[0].ip_cidr_range,
+      google_compute_subnetwork.observability[0].secondary_ip_range[1].ip_cidr_range,
+      google_container_cluster.observability[0].private_cluster_config[0].master_ipv4_cidr_block,
+      ]] : length(distinct(ranges)) == 6 && alltrue([for pair in setproduct(ranges, ranges) : pair[0] == pair[1] || (
+        cidrhost(pair[0], 0) != cidrhost("${cidrhost(pair[1], 0)}/${split("/", pair[0])[1]}", 0) &&
+        cidrhost(pair[1], 0) != cidrhost("${cidrhost(pair[0], 0)}/${split("/", pair[1])[1]}", 0)
+    )])])
+    error_message = "No rust-private range (run, SQL peering, observability nodes, pods, services, control plane) may overlap another."
+  }
+  assert {
+    condition = (
+      google_compute_address.otel_gateway[0].address_type == "INTERNAL" && google_compute_address.otel_gateway[0].name == "otel-gateway" &&
+      [for subnet in google_compute_router_nat.observability[0].subnetwork : subnet.source_ip_ranges_to_nat] == [toset(["ALL_IP_RANGES"])] &&
+      google_compute_router_nat.observability[0].source_subnetwork_ip_ranges_to_nat == "LIST_OF_SUBNETWORKS"
+    )
+    error_message = "The gateway has an internal address in the observability subnet, which alone gets the observability NAT."
+  }
+  assert {
+    condition = (
+      output.observability_cluster.name == "rust-observability" && output.observability_cluster.location == "us-east1" &&
+      output.observability_cluster.project == "test-rust-stg-only" && output.observability_cluster.network == "rust-private" &&
+      output.otel_gateway.ip == "10.82.0.10" && output.otel_gateway.endpoint == "http://10.82.0.10:4318" &&
+      output.otel_gateway_endpoint == "http://10.82.0.10:4318" && output.otel_gateway.audience == "coda-otel-gateway-stg" &&
+      jsonencode(output.otel_gateway.source_ranges) == jsonencode(["10.80.0.0/24"]) &&
+      contains(output.otel_gateway.allowed_callers, "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com")
+    )
+    error_message = "The observability root gets the cluster, the gateway endpoint, audience, Cloud Run source range and caller identities."
+  }
+
+  # Sidecars: product at index 0 (named, ingress, no depends_on), collector at
+  # index 1 on every observed service.
+  assert {
+    condition = alltrue([for name, containers in merge(
+      { for app, service in google_cloud_run_v2_service.app : app => service.template[0].containers },
+      { for _, worker in google_cloud_run_v2_service.physician_worker : "physician-worker" => worker.template[0].containers },
+      ) : (
+      length(containers) == 2 &&
+      !containers[0].resources[0].cpu_idle && !containers[1].resources[0].cpu_idle &&
+      containers[0].name == name && containers[0].ports[0].container_port == 8080 && length(coalesce(containers[0].depends_on, [])) == 0 &&
+      containers[0].startup_probe[0].http_get[0].path == "/readyz" &&
+      containers[1].name == "otel-collector" && containers[1].image == "otel/opentelemetry-collector-contrib:0.155.0" &&
+      containers[1].args == tolist(["--config=env:OTEL_SIDECAR_CONFIG"]) && length(containers[1].ports) == 0 &&
+      length(coalesce(containers[1].depends_on, [])) == 0 &&
+      containers[1].resources[0].limits == tomap({ cpu = "1", memory = "256Mi" }) &&
+      containers[1].startup_probe[0].http_get[0].path == "/" && containers[1].startup_probe[0].http_get[0].port == 13133
+    )]) && length(google_cloud_run_v2_service.physician_worker) == 1
+    error_message = "physician, duet and physician-worker run the named product container at index 0 (port 8080, no depends_on) and the pinned otel-collector at index 1 with its health probe."
+  }
+  assert {
+    condition = alltrue([for containers in concat(
+      [for service in google_cloud_run_v2_service.app : service.template[0].containers],
+      [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
+      ) : (
+      { for env in containers[1].env : env.name => env.value } == {
+        OTEL_SIDECAR_CONFIG   = file("${path.module}/../../../dev/observability/sidecar.yaml")
+        OTEL_GATEWAY_ENDPOINT = "http://10.82.0.10:4318"
+        OTEL_GATEWAY_AUDIENCE = "coda-otel-gateway-stg"
+      }
+    )])
+    error_message = "Each sidecar gets the shared sidecar config, the gateway endpoint and the audience, and nothing else."
+  }
+  assert {
+    condition = alltrue([for containers in concat(
+      [for service in google_cloud_run_v2_service.app : service.template[0].containers],
+      [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
+      ) : (
+      length(setsubtract(
+        ["DD_ENV=staging", "OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318", "CODA_LOG_FORMAT=json", "CODA_TELEMETRY_CONTENT=none"],
+        [for env in containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"],
+      )) == 0 &&
+      !contains([for env in containers[0].env : env.name], "DD_VERSION")
+    )])
+    error_message = "Every product container exports to its sidecar on localhost with DD_ENV=staging, JSON logs and no content; DD_VERSION stays baked into the image."
+  }
+  assert {
+    condition     = google_cloud_run_v2_service.app["physician"].template[0].containers[0].image == var.images["physician"].runtime && google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].image == var.images["physician"].worker
+    error_message = "Index 0 stays the release-owned product image (ignore_changes covers containers[0].image)."
+  }
+}

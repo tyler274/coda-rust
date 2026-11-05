@@ -1,23 +1,7 @@
-# One OpenTelemetry Collector config for the local compose stack and for
-# infra/gcp/observability (mounted there through a ConfigMap). Every endpoint
-# and credential is an environment variable, so the file carries no secret
-# and no environment-specific address.
-#
-#   DATADOG_OTLP_ENDPOINT   Datadog Agent OTLP gRPC address (host:port).
-#   LANGFUSE_OTLP_ENDPOINT  Langfuse OTLP/HTTP base, ending in /api/public/otel.
-#   LANGFUSE_PUBLIC_KEY     Langfuse project public key (Basic auth user).
-#   LANGFUSE_SECRET_KEY     Langfuse project secret key (Basic auth password).
-#
-# Two pipelines fan out from one OTLP receiver:
-#   traces/datadog   every span, with prompt and completion content removed.
-#   traces/langfuse  generation spans only, content as the service sent it
-#                    (the service gates it with CODA_TELEMETRY_CONTENT).
-#
-# The deployed collector runs this file alone. Locally, compose merges one
-# overlay on top: collector.debug.yaml (default, no Datadog Agent) swaps the
-# Datadog exporter for the debug exporter so the content-free span is still
-# visible; collector.datadog.yaml keeps the Agent exporter.
-
+# Shared local and GKE gateway policy. collector.gke.yaml adds caller auth.
+# Datadog receives operational fields only; Langfuse receives generation content
+# when the producer explicitly enabled it for synthetic traffic. Never forward
+# Cloud Run stdout wholesale: only the explicit OTLP log path is covered here.
 extensions:
   health_check:
     endpoint: 0.0.0.0:13133
@@ -39,38 +23,54 @@ processors:
     check_interval: 1s
     limit_percentage: 80
     spike_limit_percentage: 20
-
   batch: {}
 
-  # Datadog never receives agent content until the Datadog BAA scope is
-  # confirmed. This runs whatever CODA_TELEMETRY_CONTENT says, on span
-  # attributes and on span event attributes (gen_ai content events).
+  # This is an allowlist, not a vocabulary of possible content key names.
+  # Retained values are product-owned operational metadata, not arbitrary text.
+  # Free-form errors, status descriptions, event names and log bodies are never
+  # exported. Error codes and severity remain available for grouping/alerts.
   transform/strip_content:
-    error_mode: ignore
+    error_mode: propagate
     trace_statements:
+      - context: resource
+        statements:
+          - keep_keys(attributes, ["service.name", "service.version", "service.namespace", "deployment.environment", "deployment.environment.name", "telemetry.sdk.name", "telemetry.sdk.language", "telemetry.sdk.version"])
+      - context: scope
+        statements:
+          - keep_keys(attributes, [])
       - context: span
         statements:
-          - delete_matching_keys(attributes, "^gen_ai\\.prompt.*")
-          - delete_matching_keys(attributes, "^gen_ai\\.completion.*")
-          - delete_matching_keys(attributes, "^gen_ai\\.(input|output)\\.messages.*")
-          - delete_matching_keys(attributes, "^langfuse\\.(observation|trace)\\.(input|output).*")
+          - keep_keys(attributes, ["http.request.method", "http.route", "http.response.status_code", "messaging.system", "messaging.destination.name", "messaging.operation.name", "messaging.operation.type", "messaging.message.id", "messaging.gcp_pubsub.message.delivery_attempt", "coda.run_id", "coda.work_id", "coda.predecessor_run_id", "coda.input_revision", "coda.attempt_number", "coda.trace_relation", "coda.delivery_kind", "coda.republished", "coda.job", "coda.outcome", "coda.recipe_version", "coda.origin", "coda.scenario_id", "coda.adapter", "gen_ai.system", "gen_ai.request.model", "gen_ai.response.model", "gen_ai.operation.name", "gen_ai.usage.input_tokens", "gen_ai.usage.output_tokens", "error.type"])
+          - set(status.message, "")
+          # Only known instrumentation names survive; callers may otherwise
+          # put free text into a span name. HTTP route remains a safe attribute.
+          - set(name, "operation") where not IsMatch(name, "^(gen_ai\\.generation|http\\.server|physician\\.(worker\\.attempt|queue\\.publish|recovery\\.sweep)|duet\\.((recovery|privacy_recovery)\\.sweep|conversation\\.execute)|codex\\.exec|coda\\.simulation)$")
+          - set(name, "http.server") where attributes["http.request.method"] != nil
       - context: spanevent
         statements:
-          - delete_matching_keys(attributes, "^gen_ai\\.prompt.*")
-          - delete_matching_keys(attributes, "^gen_ai\\.completion.*")
-          - delete_matching_keys(attributes, "^gen_ai\\.(input|output)\\.messages.*")
-          - delete_matching_keys(attributes, "^langfuse\\.(observation|trace)\\.(input|output).*")
+          - keep_keys(attributes, ["event", "step", "error_class", "error.type", "coda.run_id", "coda.job", "coda.outcome", "status", "latency_ms"])
+          - set(name, "operational.event")
+  transform/strip_log_content:
+    error_mode: propagate
+    log_statements:
+      - context: resource
+        statements:
+          - keep_keys(attributes, ["service.name", "service.version", "service.namespace", "deployment.environment", "deployment.environment.name", "telemetry.sdk.name", "telemetry.sdk.language", "telemetry.sdk.version"])
+      - context: scope
+        statements:
+          - keep_keys(attributes, [])
+      - context: log
+        statements:
+          - keep_keys(attributes, ["event", "step", "error_class", "error.type", "coda.run_id", "coda.work_id", "coda.predecessor_run_id", "coda.job", "coda.outcome", "coda.attempt_number", "http.request.method", "http.route", "http.response.status_code", "status", "latency_ms"])
+          - set(body, "operational.event")
+          - set(severity_text, "")
 
-  # Langfuse is the agent-run workbench: HTTP server spans and other
-  # infrastructure spans stay in Datadog. A span is kept when it carries the
-  # Langfuse observation type or a gen_ai attribute the telemetry crate sets
-  # on every generation span; the filter drops spans matching the condition.
   filter/langfuse_generations:
-    error_mode: ignore
+    error_mode: propagate
     traces:
       span:
         - >-
-          attributes["langfuse.observation.type"] == nil and
+          attributes["langfuse.observation.type"] != "generation" and
           attributes["gen_ai.system"] == nil and
           attributes["gen_ai.request.model"] == nil and
           attributes["gen_ai.operation.name"] == nil and
@@ -82,13 +82,24 @@ exporters:
     endpoint: ${env:DATADOG_OTLP_ENDPOINT:-datadog-agent:4317}
     tls:
       insecure: true
-
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
   otlphttp/langfuse:
-    # The exporter appends /v1/traces to this base.
     endpoint: ${env:LANGFUSE_OTLP_ENDPOINT:-http://langfuse-web:3000/api/public/otel}
     auth:
       authenticator: basicauth/langfuse
-
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
   debug:
     verbosity: detailed
 
@@ -103,3 +114,7 @@ service:
       receivers: [otlp]
       processors: [memory_limiter, filter/langfuse_generations, batch]
       exporters: [otlphttp/langfuse]
+    logs/datadog:
+      receivers: [otlp]
+      processors: [memory_limiter, transform/strip_log_content, batch]
+      exporters: [otlp/datadog]
