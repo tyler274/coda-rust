@@ -452,6 +452,11 @@ jobs:
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
       - name: Prove mocked release adapters (no cloud credentials)
         run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      - name: Validate staging resource and backup limits without cloud access
+        run: |
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments init -backend=false -input=false
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments validate
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments test
       - name: Validate private Nix cache infrastructure without cloud access
         run: |
           nix develop .#release --command tofu fmt -check -recursive infra/gcp/nix-cache
@@ -830,8 +835,8 @@ jobs:
   # moves to the new runtime digest and must report a Ready revision serving
   # it. physician-worker is updated once that Cloud Run service exists; the
   # first push only publishes the digest so the scaling plan can pin it.
-  # Cloud Run only shifts traffic to a revision that passes its /readyz
-  # startup probe, so a failed rollout leaves the previous revision serving.
+  # The Rust command checkpoints a sanitized receipt before each mutation and
+  # reconciles observed revisions/traffic on failure; it never rolls back.
   # Only a push to main, after every check job is green.
   #
   # This direct rollout stands in for the scripts/gcp/release.py evidence
@@ -894,7 +899,16 @@ jobs:
           token_format: access_token
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v3
+      - name: Initialize the release receipt before cloud writes
+        timeout-minutes: 8
+        run: |
+          nix develop .#agent --command cargo run -p workspace-tools -- staging-release init \
+            --directory release --project "$PROJECT" --region "$REGION" \
+            --source-sha "$GITHUB_SHA" --workflow .github/workflows/ci.yml \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --artifact-id '${{ needs.images.outputs.tested-artifact-id }}'
       - name: Publish the tested images by digest
+        timeout-minutes: 30
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
@@ -902,65 +916,20 @@ jobs:
           nix develop .#release --command python scripts/staging_images.py publish \
             tested-images release --revision "$GITHUB_SHA" --registry "$REGISTRY"
           cat release/tested-images.json >> "$GITHUB_STEP_SUMMARY"
-      - name: Migrate and roll out physician, then duet
-        run: |
-          set -euo pipefail
-          run() { gcloud --project "$PROJECT" run "$@" --region "$REGION" --quiet; }
-          for app in physician duet; do
-            migration=$(cat "release/$app-migration")
-            runtime=$(cat "release/$app-runtime")
-            # The migration runs to completion before the service moves.
-            run jobs update "$app-migrate" --image "$migration"
-            execution=$(run jobs execute "$app-migrate" --wait --format 'value(metadata.name)')
-            echo "$execution" > "release/$app-migration-execution"
-            echo "$app-migrate execution $execution succeeded" >> "$GITHUB_STEP_SUMMARY"
-            # Waits for the new revision; a revision that never becomes Ready
-            # fails this step and keeps traffic on the previous one.
-            run services update "$app" --image "$runtime"
-            service=$(run services describe "$app" --format json)
-            ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
-            created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
-            served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
-            [ "$ready" = "$created" ] || { echo "::error::$app revision $created is not Ready ($ready is)"; exit 1; }
-            [ "$served" = "$runtime" ] || { echo "::error::$app serves $served, expected $runtime"; exit 1; }
-            jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
-              || { echo "::error::$app's latest revision does not serve all traffic"; exit 1; }
-            echo "$ready" > "release/$app-revision"
-            echo "$app revision $ready serves $runtime" >> "$GITHUB_STEP_SUMMARY"
-          done
-      - name: Roll out physician-worker when the service exists
-        run: |
-          set -euo pipefail
-          run() { gcloud --project "$PROJECT" run "$@" --region "$REGION" --quiet; }
-          worker=$(cat "release/physician-worker")
-          # The scaling plan creates this service from the digest published
-          # above. Until then, a missing service is the expected first push.
-          if ! run services describe physician-worker --format 'value(metadata.name)' >/dev/null 2>physician-worker-describe.err; then
-            if grep -Eq 'Cannot find service|NOT_FOUND' physician-worker-describe.err; then
-              echo "physician-worker is not in this project yet. Record \`$worker\` as images.physician.worker, then apply the reviewed scaling plan." >> "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
-            echo "::error::could not describe physician-worker"
-            cat physician-worker-describe.err >&2
-            exit 1
-          fi
-          run services update physician-worker --image "$worker"
-          service=$(run services describe physician-worker --format json)
-          ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
-          created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
-          served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
-          [ "$ready" = "$created" ] || { echo "::error::physician-worker revision $created is not Ready ($ready is)"; exit 1; }
-          [ "$served" = "$worker" ] || { echo "::error::physician-worker serves $served, expected $worker"; exit 1; }
-          jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
-            || { echo "::error::physician-worker's latest revision does not serve all traffic"; exit 1; }
-          echo "physician-worker revision $ready serves $worker" >> "$GITHUB_STEP_SUMMARY"
+      - name: Migrate and roll out the tested staging digests
+        timeout-minutes: 40
+        run: nix develop .#agent --command cargo run -p workspace-tools -- staging-release deploy --directory release
+      - name: Finalize the release receipt
+        timeout-minutes: 8
+        if: always()
+        run: nix develop .#agent --command cargo run -p workspace-tools -- staging-release finalize --directory release
       - name: Save the release receipt
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: release-receipt-${{ github.run_id }}-${{ github.run_attempt }}
           path: release/
-          if-no-files-found: ignore
+          if-no-files-found: error
       - name: Remove private cache credentials
         if: always() && env.NIX_CACHE_STATE_DIR != ''
         run: python3 scripts/nix-cache/nix_cache.py cleanup
