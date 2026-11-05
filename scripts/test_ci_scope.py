@@ -65,7 +65,10 @@ class ScopeTests(unittest.TestCase):
         result = subprocess.run([sys.executable, str(SCRIPT), "select"], cwd=self.repo,
                                 env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
-        return output.read_text().strip()
+        lines = output.read_text().splitlines()
+        self.assertEqual([line.split("=")[0] for line in lines], ["full", "deps"])
+        self.last_deps = lines[1]
+        return lines[0]
 
     def test_scope_matches_approved_categories_not_file_size(self):
         cases = {
@@ -90,6 +93,24 @@ class ScopeTests(unittest.TestCase):
                 self.write(path, "changed\n")
                 self.commit()
                 self.assertEqual(self.scope(), f"full={str(full).lower()}")
+
+    def test_dependency_changes_report_deps(self):
+        cases = {
+            "Cargo.lock": True, "Cargo.toml": True, "crates/app/Cargo.toml": True,
+            "flake.lock": True, "flake.nix": True, "nix/packages.nix": True,
+            "crates/app/src/lib.rs": False, "scripts/check.sh": False,
+            "book/src/page.md": False, "crates/app/Cargo.toml.md": False,
+        }
+        for path, deps in cases.items():
+            with self.subTest(path=path):
+                self.git("reset", "--hard", self.base)
+                self.write(path, "changed\n")
+                self.commit()
+                self.scope()
+                self.assertEqual(self.last_deps, f"deps={str(deps).lower()}")
+        # An uncertain comparison runs everything but does not guess cold.
+        self.scope("workflow_dispatch", event={})
+        self.assertEqual(self.last_deps, "deps=false")
 
     def test_complete_pr_and_push_include_earlier_code_change(self):
         self.write("crates/app/src/lib.rs", "pub fn changed() {}\n")
