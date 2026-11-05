@@ -454,6 +454,9 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
                 _ => "release-stopped",
             },
         );
+        if let Some(status) = error.api_status() {
+            diagnostic(receipt, status);
+        }
     }
     let observed = snapshot(receipt, cloud, false);
     receipt.outcome = if result.is_ok() && observed && final_matches(receipt) {
@@ -461,29 +464,27 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
     } else {
         Outcome::PartialOrUnknown
     };
-    let saved = store.save(receipt);
-    if let Err(error) = result {
-        let primary = Error::Related {
+    let failure = match result {
+        Err(error) => Some(Error::Related {
             primary: Box::new(error),
             causes: receipt.causes.clone(),
-        };
-        return Err(match saved {
-            Ok(()) => primary,
-            Err(persistence) => Error::Unrecorded {
-                primary: Box::new(primary),
-                persistence: Box::new(persistence),
-            },
-        });
-    }
-    saved?;
-    if receipt.outcome == Outcome::Succeeded {
-        Ok(())
-    } else {
-        Err(receipt
-            .causes
-            .last()
-            .cloned()
-            .map_or(Error::Cloud("final-state-unknown"), Error::Observations))
+        }),
+        Ok(()) if receipt.outcome != Outcome::Succeeded => Some(
+            receipt
+                .causes
+                .last()
+                .cloned()
+                .map_or(Error::Cloud("final-state-unknown"), Error::Observations),
+        ),
+        Ok(()) => None,
+    };
+    match (failure, store.save(receipt)) {
+        (None, saved) => saved,
+        (Some(primary), Ok(())) => Err(primary),
+        (Some(primary), Err(persistence)) => Err(Error::Unrecorded {
+            primary: Box::new(primary),
+            persistence: Box::new(persistence),
+        }),
     }
 }
 fn reconcile_migrations(receipt: &mut Receipt, cloud: &mut impl Cloud) {
@@ -979,6 +980,19 @@ mod tests {
         not_ready_observations: usize,
         pending: BTreeMap<String, (Observation, usize)>,
         pauses: usize,
+        denied_execution: bool,
+        // Service reads fail once this many have succeeded.
+        reads_before_failure: Option<usize>,
+    }
+    fn denied() -> Error {
+        Error::Command {
+            code: "gcloud-command-failed",
+            source: Arc::new(CommandFailure {
+                status: Some(1),
+                stdout: b"secret-stdout".to_vec(),
+                stderr: b"ERROR: PERMISSION_DENIED: secret-stderr".to_vec(),
+            }),
+        }
     }
     impl FakeCloud {
         fn new() -> Self {
@@ -999,6 +1013,8 @@ mod tests {
                 not_ready_observations: 0,
                 pending: BTreeMap::new(),
                 pauses: 0,
+                denied_execution: false,
+                reads_before_failure: None,
             }
         }
     }
@@ -1017,6 +1033,12 @@ mod tests {
     }
     impl Cloud for FakeCloud {
         fn service(&mut self, name: &str) -> Result<Observation> {
+            if let Some(remaining) = &mut self.reads_before_failure {
+                if *remaining == 0 {
+                    return Err(denied());
+                }
+                *remaining -= 1;
+            }
             if let Some((state, remaining)) = self.pending.get_mut(name) {
                 if *remaining > 0 {
                     *remaining -= 1;
@@ -1053,6 +1075,9 @@ mod tests {
             }
         }
         fn execution(&mut self, id: &str, _: &str) -> Result<Execution> {
+            if self.denied_execution {
+                return Err(denied());
+            }
             Ok(
                 if self.fail_migration || (self.fail_duet_migration && id.starts_with("duet-")) {
                     Execution::Failed
@@ -1297,6 +1322,38 @@ mod tests {
                 }
             );
         }
+    }
+    #[test]
+    fn propagated_command_failure_records_only_its_api_status() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.denied_execution = true;
+        let error =
+            deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("denied");
+        assert_eq!(
+            failure_message(&error),
+            "staging release failed: gcloud-command-failed (API status PERMISSION_DENIED)"
+        );
+        let encoded = serde_json::to_string(&receipt).expect("receipt");
+        assert!(encoded.contains("\"PERMISSION_DENIED\""));
+        assert!(!encoded.contains("secret"));
+    }
+    #[test]
+    fn final_snapshot_failure_survives_an_unwritable_receipt() {
+        let mut cloud = FakeCloud::new();
+        // Three initial reads, then one per rollout; the final snapshot fails.
+        cloud.reads_before_failure = Some(6);
+        let mut store = MemoryStore {
+            fail_final_partial: true,
+            ..MemoryStore::default()
+        };
+        let error = deploy(&mut receipt(), &mut store, &mut cloud).expect_err("unknown");
+        let Error::Unrecorded { primary, .. } = &error else {
+            panic!("persistence failure replaced the observation error: {error:?}");
+        };
+        assert!(matches!(**primary, Error::Observations(_)));
+        assert_eq!(error.safe_code(), "observations-failed");
+        assert_eq!(error.api_status(), Some("PERMISSION_DENIED"));
     }
     #[test]
     fn wrong_ready_digest_and_split_traffic_fail_before_duet() {
