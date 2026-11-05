@@ -9,6 +9,7 @@ import stat
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from unittest.mock import patch
 
@@ -331,6 +332,18 @@ class CaptureTests(unittest.TestCase):
                 self.assertEqual(cache.classify_failure(message), expected)
         self.assertEqual(cache.classify_failure('x' * cache.DIAGNOSTIC_LIMIT + '403'),
                          cache.Failure.UNKNOWN)
+
+    def test_child_that_closes_its_pipes_early_returns_at_exit(self):
+        # sudo, systemctl and daemons often close output before exiting. The
+        # helper must notice the exit, not wait out the 15-second heartbeat.
+        started = time.monotonic()
+        result = cache.capture_command(
+            ['sh', '-c', 'exec >&- 2>&-; sleep 1; exit 3'],
+            env=os.environ.copy(), input=None, label=cache.Stage.HELPER)
+        elapsed = time.monotonic() - started
+        self.assertEqual(result.returncode, 3)
+        self.assertGreaterEqual(elapsed, 1)
+        self.assertLess(elapsed, 3, f'child exit noticed after {elapsed:.1f}s')
 
     def test_real_subprocess_live_heartbeat_and_synthetic_failure(self):
         # The child waits for a marker written only when a heartbeat is flushed.

@@ -172,6 +172,19 @@ class AnalysisTests(unittest.TestCase):
         self.assertFalse(result.baseline)
         self.assertIn("Validation jobs", timings.render_html([result], "o/r"))
 
+    def test_slow_cache_setup_is_flagged(self):
+        steps = [job("Read private Nix cache", end="2026-11-04T10:00:25Z"),
+                 job("Remove private cache credentials", end="2026-11-04T10:00:11Z"),
+                 job("Build", end="2026-11-04T10:01:30Z")]
+        result = timings.analyze("o/r", RUN, [job("Fresh Postgres migrations and tests", steps=steps)])
+        report = timings.markdown([result])
+        self.assertIn("Warning: slow cache setup", report)
+        self.assertIn("Fresh Postgres migrations and tests / Read private Nix cache 15s", report)
+        self.assertNotIn("Remove private cache credentials", report)
+        self.assertNotIn("Warning", timings.markdown([timings.analyze("o/r", RUN, JOBS)]))
+        hostile = timings.analyze("o/r", RUN, [job("a`b\nc", steps=steps[:1])])
+        self.assertIn("`a'b c / Read private Nix cache 15s`", timings.markdown([hostile]))
+
     def test_skipped_steps_reported_and_zero_duration_valid(self):
         result = timings.analyze("o/r", RUN, [job(steps=[job("skip", conclusion="skipped"),
             job("instant", start="2026-11-04T10:00:10Z", end="2026-11-04T10:00:10Z")])])
