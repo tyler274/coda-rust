@@ -4,26 +4,30 @@ The [intent specs](../intent/README.md) say what Coda does. This folder checks i
 time: each feature gets a precise spec, a TLA+ model of that spec, and a way to hold the code to
 the model. Features not modeled yet follow the intent specs alone.
 
-| Feature | Folder |
-| --- | --- |
-| Physician sign-in | [physician/sign-in](physician/sign-in/README.md) |
-| Duet sign-in | [duet/sign-in](duet/sign-in/README.md) |
-
 ## A feature's folder
 
 `verification/<product>/<feature>/` holds:
 
-- **`README.md`:** the feature's spec: the journey in words and its agreed rules, and nothing
-  about how they're checked. The intent spec keeps a short summary and links here.
+- **`README.md`:** the feature's spec in plain words, with nothing about how it's checked. The
+  intent spec keeps a short summary and links here. Its sections, in order:
+  - **Intro:** what the spec covers, and the link to the intent spec.
+  - **Words:** each word a rule or journey line depends on, defined once, so each rule has one
+    meaning and maps to one thing in the model.
+  - **Journey:** what happens, one claim per line, grouped by step. A promise that rests on
+    stored records stays here as a plain promise; the verify skill names the tests that hold it.
+  - **Rules:** numbered, one sentence each, with every condition the check uses written into
+    the sentence.
+  - **Outside this spec:** what other specs own, and open decisions with their
+    [DECISIONS.md](../intent/DECISIONS.md) link.
 - **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Its
-  header says what it takes as one step, its scope, and what it leaves to records and their
-  tests. Each `INVARIANT` is one rule, quoted in its comment. Each action's comment names the code that
-  carries it out. An `event` variable names each step, and the config's `VIEW` leaves it out.
-  The config sets the scope the rules are checked at: large enough for the races the feature's
-  risks come from, never cut to fit a chart.
+  header says what it takes as one step, its scope, and what it leaves to records. Each
+  `INVARIANT` or `PROPERTY` is one rule, quoting its sentence word for word with nothing added.
+  Each action's comment names the code that carries it out. An `event` variable names each
+  step, and the config's `VIEW` leaves it out. The config sets the scope the rules are checked
+  at: large enough for the races the feature's risks come from, never cut to fit a chart.
 - **`chart*.cfg` and `chart*.mjs`:** the charts PStack's `statechart` skill draws, in the words
   of the person who decides whether the behavior is right. Each runs the same model at a scope
-  of 500 states or fewer, so the whole chart can be drawn: `chart.cfg` from the start, and the
+  small enough that `statechart` draws the whole chart: `chart.cfg` from the start, and the
   others from a moment `Charts.tla` sets, with only the steps that chart shows. Each `.mjs`
   names its states and steps, and says what its chart leaves out.
 
@@ -42,14 +46,8 @@ the model. Features not modeled yet follow the intent specs alone.
    fix.
 
 Each feature's browser test lives in its own file named for the feature, such as
-`sign_in_model.rs`, and runs locally. CI doesn't run TLC.
-
-```sh
-.agents/skills/statechart/scripts/statechart verification/physician/sign-in/SignIn.tla
-```
-
-The first run installs PStack's pinned TLC and Java with mise. The feature's verify skill names
-its browser test.
+`sign_in_model.rs`, and runs locally. CI doesn't run TLC. The `statechart` skill gives its own
+command and setup; the feature's verify skill names the model, its charts and its browser test.
 
 ## Verify skills
 
@@ -60,7 +58,7 @@ with focused tests and the observations its criteria name.
 
 | Skill | Proves | Run when a change touches |
 | --- | --- | --- |
-| [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md#when-a-change-needs-this) | Physician sign-in against its TLA+ model: TLC on the five rules, then the bug paths replayed in the browser | Physician session, sign-in and tab code, the auth server's answers, or the sign-in spec or model |
+| [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md#when-a-change-needs-this) | Physician sign-in against its TLA+ model: TLC on its rules, then the bug paths replayed in the browser | Physician session, sign-in and tab code, the auth server's answers, or the sign-in spec or model |
 | [coda-verify-physician](../.agents/skills/coda-verify-physician/SKILL.md#when-a-change-needs-this) | Physician chat across two site instances and a worker: fan-out, couldn't-finish and Try again, resync, duplicate and retry delivery | Physician chat delivery, the worker, the event bus, durable chat runs, or the conversation renderer |
 
 ## The agent harness
@@ -82,14 +80,17 @@ Coda uses PStack's five verification skills as they are:
 - `create-verification-skill` and `maintain-verification-skill` do the same for driving a running
   app.
 
-Each skill writes a project skill, such as
+Each create skill writes a project skill, such as
 [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md), that names Coda's commands
-and what each check covers. The PStack skills say to write it under `.cursor/skills/verify-<app>/`;
-in Coda it goes in `.agents/skills/coda-verify-<feature>/` with a `.claude/skills` link, like every
-repository skill, and gets a row under [Verify skills](#verify-skills). The maintain skills look
-for it there.
+and what each check covers. `create-verification-skill` says to write it under
+`.cursor/skills/verify-<app>/`; in Coda it goes in `.agents/skills/coda-verify-<feature>/` with a
+`.claude/skills` link, like every repository skill, and gets a row under
+[Verify skills](#verify-skills). The maintain skills find a verify skill by what it does, not by
+its path. A project skill refers to `statechart` by name and copies none of its commands, options
+or paths, which change between PStack releases.
 
 The skills in `.agents/skills` are [PStack at 519d36a](https://github.com/cursor/plugins/tree/519d36aa98955bf680db01bcde5fdfba686dc901/pstack/skills),
 copied unchanged except that `statechart/scripts/test`, the tool's own test corpus, is left out.
-The [MIT license](PSTACK-LICENSE) retains Lauren Tan's attribution. To move to a newer PStack,
-replace the folders from that commit and update the commit here.
+The [MIT license](PSTACK-LICENSE) retains Lauren Tan's attribution. The
+[daily check](../.github/workflows/pstack-watch.yml) opens or refreshes one review PR when these
+five imported skills change. [CI setup](../book/src/release.md#continuous-integration) covers PR publication.
