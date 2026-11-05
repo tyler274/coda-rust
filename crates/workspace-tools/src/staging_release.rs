@@ -856,17 +856,7 @@ fn run(args: &[String]) -> Result<()> {
         reservation.sync_all()?;
         store.save(&receipt)?;
         let mut cloud = Gcloud::new(command::ProcessRunner, Duration::from_secs(300));
-        let observed = snapshot(&mut receipt, &mut cloud, true);
-        store.save(&receipt)?;
-        return if observed {
-            Ok(())
-        } else {
-            Err(receipt
-                .causes
-                .last()
-                .cloned()
-                .map_or(Error::Cloud("initial-state-unknown"), Error::Observations))
-        };
+        return record_initial_state(&mut receipt, &mut store, &mut cloud);
     }
     let mut receipt: Receipt = serde_json::from_slice(&fs::read(&store.0)?)?;
     if receipt.schema_version != 1
@@ -915,23 +905,60 @@ fn run(args: &[String]) -> Result<()> {
                         .map_or(Error::Cloud("release-incomplete"), Error::Observations))
                 }
             });
-            if let Err(persistence) = store.save(&receipt) {
-                return Err(match result {
-                    Ok(()) => persistence,
-                    Err(primary) => Error::Unrecorded {
-                        primary: Box::new(primary),
-                        persistence: Box::new(persistence),
-                    },
-                });
-            }
-            if let Some(path) = std::env::var_os("GITHUB_STEP_SUMMARY") {
-                let mut file = OpenOptions::new().append(true).create(true).open(path)?;
-                write_summary(&receipt, &mut file)?;
-            }
-            result
+            settle_finalize(
+                &mut store,
+                &receipt,
+                result,
+                |receipt| match std::env::var_os("GITHUB_STEP_SUMMARY") {
+                    Some(path) => write_summary(
+                        receipt,
+                        &mut OpenOptions::new().append(true).create(true).open(path)?,
+                    ),
+                    None => Ok(()),
+                },
+            )
         }
         _ => Err(Error::Input("expected init, deploy, or finalize")),
     }
+}
+/// Records the release's state before any change; a failed save keeps the
+/// snapshot failure it was recording.
+fn record_initial_state(
+    receipt: &mut Receipt,
+    store: &mut impl Store,
+    cloud: &mut impl Cloud,
+) -> Result<()> {
+    let result = if snapshot(receipt, cloud, true) {
+        Ok(())
+    } else {
+        Err(receipt
+            .causes
+            .last()
+            .cloned()
+            .map_or(Error::Cloud("initial-state-unknown"), Error::Observations))
+    };
+    save_settled(store, receipt, result)
+}
+/// Saves the final receipt and, only once it is saved, appends the step
+/// summary that points to it. Neither failure replaces an already-settled
+/// release failure.
+fn settle_finalize(
+    store: &mut impl Store,
+    receipt: &Receipt,
+    result: Result<()>,
+    summarize: impl FnOnce(&Receipt) -> Result<()>,
+) -> Result<()> {
+    if let Err(persistence) = store.save(receipt) {
+        return Err(match result {
+            Ok(()) => persistence,
+            Err(primary) => Error::Unrecorded {
+                primary: Box::new(primary),
+                persistence: Box::new(persistence),
+            },
+        });
+    }
+    let summarized = summarize(receipt);
+    result.and(summarized)
 }
 fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
     writeln!(
@@ -1366,6 +1393,74 @@ mod tests {
         assert!(encoded.contains("\"update-failed-spec-unchanged\""));
         assert!(!encoded.contains("\"update-response-failed-reconciled\""));
         assert!(!encoded.contains("secret"));
+    }
+    #[test]
+    fn failed_initial_snapshot_survives_an_unwritable_receipt() {
+        let mut cloud = FakeCloud::new();
+        cloud.reads_before_failure = Some(0);
+        let mut store = MemoryStore {
+            fail_at: Some(0),
+            ..MemoryStore::default()
+        };
+        let error = record_initial_state(&mut receipt(), &mut store, &mut cloud).unwrap_err();
+        let Error::Unrecorded { primary, .. } = &error else {
+            panic!("save error replaced the snapshot failure: {error:?}");
+        };
+        assert_eq!(primary.safe_code(), "observations-failed");
+        let Error::Unrecorded { persistence, .. } = &error else {
+            unreachable!()
+        };
+        assert_eq!(persistence.safe_code(), "receipt-unwritable");
+    }
+    fn broken_summary(_: &Receipt) -> Result<()> {
+        Err(std::io::Error::other("summary unwritable").into())
+    }
+    #[test]
+    fn failed_release_still_writes_its_step_summary() {
+        let mut written = false;
+        let failed = Err(Error::Cloud("release-incomplete"));
+        let error = settle_finalize(&mut MemoryStore::default(), &receipt(), failed, |_| {
+            written = true;
+            Ok(())
+        })
+        .unwrap_err();
+        assert_eq!(error.safe_code(), "release-incomplete");
+        assert!(written);
+    }
+    #[test]
+    fn unwritable_final_receipt_skips_the_summary_and_keeps_both_errors() {
+        for (result, code) in [
+            (Ok(()), "receipt-unwritable"),
+            (
+                Err(Error::Cloud("release-incomplete")),
+                "release-incomplete",
+            ),
+        ] {
+            let failed = result.is_err();
+            let mut store = MemoryStore {
+                fail_at: Some(0),
+                ..MemoryStore::default()
+            };
+            let mut written = false;
+            let error = settle_finalize(&mut store, &receipt(), result, |_| {
+                written = true;
+                Ok(())
+            })
+            .unwrap_err();
+            assert_eq!(error.safe_code(), code);
+            assert_eq!(matches!(error, Error::Unrecorded { .. }), failed);
+            assert!(!written, "summary points to a receipt that was not saved");
+        }
+    }
+    #[test]
+    fn unwritable_step_summary_keeps_the_release_result() {
+        let mut store = MemoryStore::default();
+        let failed = Err(Error::Cloud("release-incomplete"));
+        let error = settle_finalize(&mut store, &receipt(), failed, broken_summary).unwrap_err();
+        assert_eq!(error.safe_code(), "release-incomplete");
+        assert_eq!(store.receipts.len(), 1);
+        let error = settle_finalize(&mut store, &receipt(), Ok(()), broken_summary).unwrap_err();
+        assert!(matches!(error, Error::Io(_)), "{error:?}");
     }
     #[test]
     fn timed_out_update_that_lands_after_the_first_read_is_still_confirmed() {
