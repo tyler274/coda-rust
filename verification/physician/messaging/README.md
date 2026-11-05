@@ -1,63 +1,115 @@
 # Patient messages
 
-This folder is the spec for how a patient's message reaches the right patient in Coda Agents, and how its reply works until the practice has answered. The model is the agreed behavior, TLC checks that it keeps its rules, and the code follows it. [physician.md P3](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) owns the intent this follows.
+How a patient's message in the practice's channel reaches the right patient in Coda Agents, and how Coda's reply works until the practice has answered. Spruce is the channel in the MVP; another channel differs only in configuration. [physician.md P3](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) links here.
 
-Spruce is the practice's channel in the MVP, and the spec holds for any channel a practice connects later: what differs between channels is configuration. Urgent messages, attachments, Ask Coda to reply and the Duet For my doctor message follow physician.md, outside this spec.
+## Words
 
-Which patients a physician may access, and whether a practice has roles, are open ([P2](../../../intent/DECISIONS.md)). This spec follows whatever that decides: where it says a physician may access a patient, access decides. Who sees a message before it's matched waits on P2.
+- **Conversation:** a thread in the channel between the practice and a patient, or someone writing for them. It's linked to at most one patient.
+- **Linked:** a conversation is linked to a patient, and its messages join that patient's record.
+- **Review:** Coda's work on one patient. It decides whether a reply would help, and drafts it.
+- **Reply:** the one reply Coda proposes for a conversation, answering every patient message the practice hasn't answered. It shows as one Today row, and opens as the card.
+- **Draft:** one physician's own version of the reply.
+- **Handled:** a patient message is handled once the practice has answered it, it needs no reply, it was left unlinked, it isn't from a patient, or someone marked it Done.
 
-## How patient messages work
+## Journey
 
-- **Arriving.** Coda reads the channel and never sends in it. Each message Coda reads is filed once, whatever order or how often the channel delivers it. Routine catching up is never shown. A message shows nowhere until the model decides whether it's patient mail, or for 15 minutes if it hasn't; mail it judges isn't from a patient goes to the Filtered list, where This is a patient brings it back.
-- **Matching.** A conversation already confirmed for a patient routes to them, and so does a sender confirmed for exactly one patient, or a conversation the channel itself ties to exactly one patient. Any other message waits on Messages to match and on Today, with Coda's suggestion. A physician can confirm it for a patient they may access, and a suggestion never names a patient the viewer may not access. Leaving it unlinked covers only that message, so the conversation's next message waits again.
-- **Reviewing.** Once linked, the message joins the patient's record and wakes their review, and the patient shows Coda is reviewing until it finishes. The review reads the whole conversation, including what the practice sent, and reads again if something new arrives first. It drafts a reply only where one would help; acknowledgments and resolved conversations end quietly.
-- **The reply.** A conversation has one reply, answering every message the practice hasn't answered, and one Today row. Everyone who may access the patient and can reply in the conversation sees it. Each physician edits their own draft of it, or asks Coda to revise that draft, and Restore my version brings their text back. The card always shows the messages and the reply from one version, and every action acts on the text on screen.
-- **The patient writes again.** The card says so at once. A draft nobody edited updates in place with one quiet line; an edited draft stays, and Coda's update replaces it only if the physician chooses it. A message Coda reads late, older than the reply, shows the same way without saying the patient wrote again.
-- **Handing off.** The physician copies the reply and sends it in the channel, as it is, edited, or in their own words. Copying changes nothing about the reply; the other physicians see who copied it and when, until Coda sees what was sent.
-- **The practice answers.** A message the practice sends in the conversation shows on the card at once and wakes the review. Only that review closes the reply, when it finds the patient answered, citing that message; an automatic reply or an acknowledgment doesn't. A draft Coda was still writing then is dropped. The patient's history records the words the practice actually sent.
-- **No reply needed.** Any physician who sees the reply can close it without a reason, for everyone, with a short Undo. A concern about the same messages stays. A newer message's reply replaces it.
-- **Wrong patient.** A physician who may access the patient moves a confirmed conversation to another patient they may access, or to not a patient. The whole conversation moves, and later messages route there. At once nothing of it stays readable on the patient it left, a physician who may not access the new patient loses its reply, and anything that relied on it is withheld until a review redrafts or closes it. The correction starts one review for each patient it affects. A physician's draft of the withheld reply stays theirs and never moves to the new patient's reply. Undo within a few seconds restores the reply exactly.
-- **A message Coda can't read.** The patient goes on Today with a link to the message in the channel, until Coda reads it or someone marks it Done.
-- **The channel stops.** If Coda can't read the channel, Today says so with the reason and when Coda last read it. Only a revoked grant or an administrator's block asks for Reconnect. A completed disconnect deletes messages never accepted into a patient's record; replies and drafts stay. An open reply says the channel is disconnected until someone marks it Done or Coda, reconnected, sees the reply.
+Reading the channel:
+
+- Coda reads the channel and never sends in it.
+- Coda starts with new messages and offers to review the backlog.
+- Coda reads each message once, whatever order or however often the channel delivers it, and saves it before moving on in the channel.
+- Each practice's channel has one reader at a time.
+- Catching up and retries are never shown.
+- One unreadable message, or one patient whose linking fails, never holds up the others.
+
+Linking:
+
+- Coda decides whether a message is from a patient, with no brittle filters. Until it decides, or for 15 minutes, the message shows nowhere.
+- A message Coda judges isn't from a patient goes to the Filtered list, where This is a patient brings it back.
+- A message links on its own when its conversation or sender is confirmed for exactly one patient, or the channel ties its conversation to exactly one patient. In Spruce, that's a conversation whose one outside participant is saved as the contact of exactly one patient, linked to exactly one EHR record that matches exactly one Coda patient.
+- Any other message waits on Messages to match and on Today, with Coda's suggested patient and alternatives. Scores never show as confidence.
+- A physician links it to a patient they may access, or leaves it unlinked. A suggestion never names a patient the viewer may not access.
+- Leaving a message unlinked covers only that message; the conversation's next message waits again.
+- Later messages in a linked conversation link to the same patient.
+- Coda reads an unlinked message only to decide who it's from. A review never reads it.
+
+Reviewing:
+
+- A linked message wakes the patient's review, and the patient shows Coda is reviewing until it finishes.
+- A review starts once for its event, across restarts and retries.
+- The review reads the whole conversation, including what the practice sent, and can cite any of it. It reads again if something new arrives first.
+- The review drafts a reply only where one would help. Acknowledgments and resolved conversations get no reply and no Today row.
+
+The reply:
+
+- The Today row shows the start of the patient's newest words, Drafted a reply (with Flagged when Coda has a concern), and Review reply. It names the channel's sender, never the linked patient. It leaves once the reply and any concern are both closed.
+- Every physician who may access the patient sees the reply.
+- The card shows the patient's unanswered messages, then what Coda flagged, then the reply, with Basis and Sources.
+- The patient's words are never changed, only formatted, with unsafe content stripped.
+- Each physician edits their own draft, or asks Coda to revise it. Restore my version brings back their own text.
+- The card shows the messages and the reply from one version, and every action acts on what's on screen.
+
+The patient writes again:
+
+- The card shows the new message at once.
+- A draft nobody edited updates in place, with one line saying so.
+- An edited draft stays. Coda's update replaces it only if the physician chooses it.
+- A message Coda reads late, older than the reply, shows the same way without saying the patient wrote again.
+
+Sending:
+
+- The physician copies the reply (Copy reply, Open in Spruce) and sends it in the channel, as it is, edited, or in their own words.
+- Copying changes nothing about the reply, and Coda keeps no approval state. The other physicians see who copied it and when, until Coda sees what was sent.
+
+The practice answers:
+
+- A message the practice sends shows on the card at once and wakes the review.
+- Only that review closes the reply as answered, citing the practice's message. An automatic reply or an acknowledgment doesn't.
+- A draft Coda was still writing then is dropped.
+- The patient's history records the words the practice actually sent.
+
+No reply needed:
+
+- Any physician who sees the reply closes it for everyone, without a reason, with a short Undo.
+- A concern about the same messages stays.
+- The patient's next message gets a new reply.
+
+Wrong patient:
+
+- A physician who may access the patient moves a linked conversation to another patient they may access, or to not a patient. The whole conversation moves, and later messages follow it.
+- At once nothing of it stays readable on the patient it left, and a physician who may not access the new patient loses its reply.
+- The moved messages are marked entered in error and never deleted, and what Coda wrote from them can't surface.
+- A reply that relied on them is withheld, never left blank, until a review redrafts or closes it. Each patient the move affects gets one review.
+- A physician's draft of the withheld reply stays theirs and never moves to the new patient's reply.
+- Undo within a few seconds restores the reply exactly.
+
+A message Coda can't read:
+
+- The patient goes on Today with a link to the message in the channel, until Coda reads it or someone marks it Done.
+
+The channel stops:
+
+- If Coda can't read the channel, Today says so, with the reason and when Coda last read it. Only a revoked grant or an administrator's block asks for Reconnect.
+- Disconnecting and reconnecting loses and duplicates nothing.
+- A completed disconnect deletes messages never linked to a patient. Linked messages stay under the record's policy, and so do replies and drafts.
+- An open reply says the channel is disconnected and links to the message, until someone marks it Done or Coda, reconnected, sees the reply.
 
 ## Rules
 
-The model checks these in every state it reaches.
+1. A physician sees a conversation, its reply, their draft, or a suggestion naming a patient, only while they may access that patient.
+2. A message links on its own only when its conversation or sender is confirmed for that one patient, or the channel ties its conversation to that one patient.
+3. Once a conversation moves to another patient, nothing of it stays readable on the patient it left.
+4. Once Coda has decided or 15 minutes have passed, every patient message shows to someone who can act on it until it's handled.
+5. Only a review that read the practice's message closes a reply as answered.
+6. Closing a reply never closes a concern about the same messages.
+7. Coda never replaces a physician's draft unless they choose its update, and one physician never changes another's draft.
+8. Copy reply copies exactly the text the physician sees.
+9. The card shows every patient message linked after its reply was drafted.
+10. One message, practice message or correction starts at most one review for each patient it affects.
+11. What the patient's history says the practice sent is what the channel shows it sent.
+12. While Coda can't read the channel, Today says so.
+13. A completed disconnect leaves no message that was never linked to a patient.
 
-- A physician sees a conversation, its reply and their draft only while they may access its patient.
-- A conversation reaches only the patient it's linked to: once it moves, nothing of it stays readable on the patient it left.
-- Until it's settled, every patient message Coda filed shows to someone who can act on it.
-- Only a review that read the practice's message closes a reply as answered. Copying, opening, an automatic reply or an acknowledgment never does.
-- Closing a reply never closes a concern about the same messages.
-- Coda never replaces a physician's draft unless they choose its update, and one physician never changes another's draft.
-- A reply never misses a message Coda filed after it without the card saying so.
-- One message, practice reply or correction starts at most one review for each patient it affects.
-- What the patient's history says the practice sent is what the channel shows it sent.
+## Outside this spec
 
-These rest on stored records or the channel, which the model can't hold, and no test holds them yet:
-
-- Coda saves each page it reads before it moves its place in the channel, and files an item delivered twice as one.
-- Each practice's channel has one reader at a time.
-- A review starts once for its event across restarts and retries.
-- The patient's words are never changed, only formatted, with unsafe content stripped.
-- Undo restores the reply exactly.
-- A moved message is marked entered in error and never deleted, and what Coda wrote from it can't surface.
-- One unreadable message, or one patient whose filing fails, never holds up the others.
-
-## Files
-
-| File | Holds |
-| --- | --- |
-| [Messaging.tla](Messaging.tla), [Messaging.cfg](Messaging.cfg) | The design as a TLA+ model: one conversation, the channel, the link, each patient's review, the shared reply, each physician's draft, and the patient's history, with the rules, one `INVARIANT` each. The config checks the rules with two patients and two physicians, one of whom may access only one patient, so a correction can take a reply from someone. |
-| [chart.cfg](chart.cfg), [chart.mjs](chart.mjs) | The chart: one message and its reply, for one physician and one patient, in the physician's words. |
-
-Check the rules, then draw the chart, from the repository root:
-
-```bash
-.agents/skills/statechart/scripts/statechart verification/physician/messaging/Messaging.tla
-.agents/skills/statechart/scripts/statechart verification/physician/messaging/Messaging.tla --config verification/physician/messaging/chart.cfg --view verification/physician/messaging/chart.mjs
-```
-
-The chart leaves out a second physician, a second patient and the corrections they need, the patient writing twice, unreadable messages, concerns and disconnecting, and every message waits for a person to match it. It doesn't draw copying, revising, or the practice writing before Coda sees it, since none of them changes what the physician sees on Today. The rules are checked in both runs.
-
-The channel owns the conversation and everything sent in it. The link owns which patient a conversation belongs to; each patient's review owns whether a reply would help and what it says; each physician owns their draft. Today is read from these through each physician's current access, never stored. The model lets the patient, the practice, Coda's reads and reviews, the physicians and the messaging manager act in any order, and the channel deliver late or go away. TLC checks the rules in every state the model reaches; it doesn't reach the code.
+Urgent messages, attachments, Ask Coda to reply and Duet's For my doctor follow [physician.md P3](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off). Which patients a physician may access, whether a practice has roles, who sees a message before it's linked, and who sees a patient's phone and email while matching are open ([P2](../../../intent/DECISIONS.md)); this spec follows whatever P2 decides.
