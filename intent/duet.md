@@ -92,7 +92,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 11. **App restart.** The person is still signed in, the conversation is intact, and Duet reopens where they were, with any draft they left.
 12. **Signing out before a message is confirmed.** The message still arrives and Duet replies; both show when they sign back in anywhere.
 13. **Interrupted reply.** The person's message is kept, text already streamed is kept, and an action the reply already committed is neither erased nor done twice.
-14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed.
+14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed. A phone that can't reach Duet learns this only once it can, and keeps showing the account until then, behind the app's screen cover and the phone's own passcode.
 15. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The cached conversation and drafts stay usable while Duet checks the account.
 16. **AI not allowed.** Empty chat shows a small symbol, the real reason, and the matching settings action or View Today. The draft is kept.
 
@@ -211,6 +211,8 @@ Alerts:
 Access and identity:
 
 - Each person has one account, tied to their verified email, and joining a practice links to that account.
+- Sessions don't expire with time. A session ends when the person signs out of that phone, signs out everywhere, or Duet revokes it.
+- A signed-in person can change their email, and Duet confirms the new address with a link. Someone signed out who can no longer reach their email gets back in through support.
 - Each request sees only its own person's data.
 - There's no guest, anonymous or local-only mode.
 - Duet is for adults 18 and over in the U.S.
