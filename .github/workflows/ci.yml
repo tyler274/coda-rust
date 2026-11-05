@@ -659,7 +659,9 @@ jobs:
             ~/.cargo/registry/cache
             ~/.cargo/git/db
             target
-          key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock') }}
+          # The script chooses the package set, and so the dependency features
+          # in target/. An exact hit never saves, so a new set needs a new key.
+          key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}
           restore-keys: |
             postgres-${{ runner.os }}-
       - name: Check authored SQL formatting
