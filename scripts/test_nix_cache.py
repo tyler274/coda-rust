@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import stat
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -44,13 +45,13 @@ class CacheTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(cache, 'DAEMON_DIR', self.daemon).start()
         patch.object(cache, 'DROPIN', self.dropin).start()
-        self.runner = patch.object(cache.subprocess, 'run', side_effect=self.fake_run).start()
+        self.runner = patch.object(cache, 'capture_command', side_effect=self.fake_run).start()
         self.output = io.StringIO()
         self.enterContext(contextlib.redirect_stdout(self.output))
 
     def fake_run(self, args, **kwargs):
         self.calls.append((args, kwargs))
-        self.assertTrue(kwargs['capture_output'])
+        self.assertIsInstance(kwargs['label'], cache.Stage)
         self.assertFalse(any(secret in ' '.join(args) for secret in (SECRET, 'privateAccessSecret/+=')))
         for name in cache.SECRET_VARS:
             self.assertNotIn(name, kwargs['env'])
@@ -58,6 +59,8 @@ class CacheTests(unittest.TestCase):
             value = self.env['GITHUB_SHA']
         elif args[0] == 'nix-store':
             value = '\n'.join([DRV, OUT, BUILD_DEP])
+        elif args[:3] == ['nix', 'path-info', '--json']:
+            value = json.dumps({p: {'narHash': p, 'references': []} for p in (DRV, OUT, BUILD_DEP)})
         elif args[:3] == ['nix', 'key', 'convert-secret-to-public']:
             self.assertEqual(kwargs['input'], SECRET)
             value = PUBLIC
@@ -181,6 +184,33 @@ class CacheTests(unittest.TestCase):
         self.assertNotIn('--all', args[copy])
         self.assertFalse(list(self.directory.glob('coda-nix-publish-*')))
 
+    def test_publish_stages_and_summary_are_sanitized(self):
+        cache.publish(self.env, [DRV, OUT])
+        log = self.output.getvalue()
+        for label in ('check', 'version', 'closure', 'key', 'sign', 'copy', 'cleanup'):
+            self.assertIn(f'stage={label} status=started', log)
+            self.assertIn(f'stage={label} status=completed', log)
+        self.assertIn('summary status=completed closure_paths=3', log)
+        self.assertIn('not uploaded path count', log)
+        for value in (*self.env.values(), DRV, OUT, BUILD_DEP, 's3://', 'https://'):
+            self.assertNotIn(value, log)
+
+    def test_copy_classification_and_cleanup_precede_failed_summary(self):
+        original = self.fake_run
+        def fail(args, **kwargs):
+            if args[:2] == ['nix', 'copy']:
+                return subprocess.CompletedProcess(args, 1, '', '403 ' + SECRET)
+            return original(args, **kwargs)
+        self.runner.side_effect = fail
+        with self.assertRaises(cache.CacheError):
+            cache.publish(self.env, [DRV, OUT])
+        log = self.output.getvalue()
+        self.assertIn('stage=copy status=failed', log)
+        self.assertIn('classification=permission-or-403', log)
+        self.assertLess(log.index('stage=cleanup status=completed'), log.index('summary status=failed'))
+        self.assertNotIn('summary status=completed', log)
+        self.assertNotIn(SECRET, log)
+
     def test_build_json_selects_drv_and_outputs(self):
         path = self.directory / 'build.json'
         path.write_text(json.dumps([{'drvPath': DRV, 'outputs': {'out': OUT}}]))
@@ -197,6 +227,17 @@ class CacheTests(unittest.TestCase):
             with self.subTest(update=update), self.assertRaises(cache.CacheError):
                 cache.publish(dict(self.env, **update), [DRV, OUT])
         self.assertFalse(self.calls)
+
+    def test_act_cannot_use_hosted_publish_even_with_main_metadata(self):
+        with self.assertRaisesRegex(cache.CacheError, 'publish-local'):
+            cache.publish(dict(self.env, ACT='true'), [DRV, OUT])
+        self.assertFalse(self.calls)
+
+    def test_local_publish_reuses_transport_after_explicit_authorization(self):
+        sha = 'a' * 40
+        self.env.update(ACT='true', GITHUB_SHA=sha, GITHUB_EVENT_NAME='workflow_dispatch')
+        cache.publish(self.env, [DRV, OUT], local_sha=sha, acknowledged=True)
+        self.assertTrue(any(args[:2] == ['nix', 'copy'] for args, _ in self.calls))
 
     def test_wrong_sha_refused(self):
         self.runner.return_value = subprocess.CompletedProcess([], 0, 'different', '')
@@ -263,6 +304,102 @@ class CacheTests(unittest.TestCase):
         with self.assertRaises(cache.CacheError):
             cache.cleanup(dict(self.env, NIX_CACHE_STATE_DIR='/tmp'))
         self.assertFalse(self.calls)
+
+
+class CaptureTests(unittest.TestCase):
+    def test_fixed_failure_classification(self):
+        for message, expected in (
+            ('HTTP 403 Forbidden', cache.Failure.PERMISSION),
+            ('Permission denied', cache.Failure.PERMISSION),
+            ('Connection reset by peer', cache.Failure.NETWORK),
+            ('No space left on device', cache.Failure.DISK),
+            ('path is not valid', cache.Failure.MISSING_PATH),
+            ('unrecognized secret diagnostic', cache.Failure.UNKNOWN),
+        ):
+            with self.subTest(expected=expected):
+                self.assertEqual(cache.classify_failure(message), expected)
+        self.assertEqual(cache.classify_failure('x' * cache.DIAGNOSTIC_LIMIT + '403'),
+                         cache.Failure.UNKNOWN)
+
+    def test_real_subprocess_live_heartbeat_and_synthetic_failure(self):
+        # The child waits for a marker written only when a heartbeat is flushed.
+        # Thus this proves a live heartbeat, not buffered logs after completion.
+        with tempfile.TemporaryDirectory() as directory:
+            marker = Path(directory) / 'heartbeat'
+            class LiveOutput(io.StringIO):
+                def flush(self):
+                    if self.getvalue().count('status=heartbeat') >= 2:
+                        marker.touch()
+                    super().flush()
+            output = LiveOutput()
+            script = (
+                'import os, pathlib, sys, time\n'
+                'print(os.environ["SYNTHETIC_SECRET"], flush=True)\n'
+                'sys.stderr.write("https://secret.invalid/path?token=hidden 403 Forbidden\\n")\n'
+                'sys.stderr.flush()\n'
+                'deadline = time.monotonic() + 5\n'
+                'while not pathlib.Path(sys.argv[1]).exists() and time.monotonic() < deadline:\n'
+                '    time.sleep(0.01)\n'
+                'sys.exit(1)\n'
+            )
+            with patch.object(cache, 'HEARTBEAT_SECONDS', 0.05), contextlib.redirect_stdout(output):
+                with self.assertRaises(cache.CacheError) as error:
+                    with cache.stage(cache.Stage.COPY):
+                        cache.run([sys.executable, '-c', script, str(marker)],
+                                  env=dict(os.environ, SYNTHETIC_SECRET=SECRET), label=cache.Stage.COPY)
+            self.assertTrue(marker.exists())
+            log = output.getvalue() + str(error.exception)
+            self.assertIn('stage=copy status=heartbeat', log)
+            self.assertIn('still running; not an upload count', log)
+            self.assertIn('classification=permission-or-403', log)
+            for value in (SECRET, 'https://', 'secret.invalid', 'token=hidden', str(marker), script):
+                self.assertNotIn(value, log)
+
+    def test_real_subprocess_failure_categories_never_echo_output(self):
+        for message, expected in (
+            ('Permission denied', 'permission-or-403'),
+            ('Connection refused', 'network'),
+            ('Disk quota exceeded', 'disk'),
+            ('No such file or directory', 'missing-path'),
+            ('unexpected arbitrary output', 'unknown'),
+        ):
+            with self.subTest(expected=expected):
+                output = io.StringIO()
+                script = 'import sys; sys.stderr.write(sys.argv[1]); sys.exit(2)'
+                with contextlib.redirect_stdout(output), self.assertRaises(cache.CacheError) as error:
+                    cache.run([sys.executable, '-c', script, message + ' ' + SECRET],
+                              label=cache.Stage.COPY)
+                self.assertEqual(error.exception.category.value, expected)
+                self.assertNotIn(SECRET, str(error.exception) + output.getvalue())
+                self.assertNotIn(message, str(error.exception) + output.getvalue())
+
+    def test_copy_does_not_retain_or_limit_unused_stdout(self):
+        with patch.object(cache, 'OUTPUT_LIMIT', 8):
+            result = cache.run([sys.executable, '-c', 'print("private" * 10000)'],
+                               label=cache.Stage.COPY)
+        self.assertEqual(result, '')
+
+    def test_real_subprocess_drains_large_stderr_and_bounds_stdout(self):
+        output = io.StringIO()
+        script = 'import sys; sys.stderr.write("secret" * 100000); sys.stdout.write("x" * 8192)'
+        with patch.object(cache, 'OUTPUT_LIMIT', 1024), contextlib.redirect_stdout(output):
+            with self.assertRaisesRegex(cache.CacheError, 'safe capture limit'):
+                cache.run([sys.executable, '-c', script], label=cache.Stage.CLOSURE)
+        self.assertNotIn('secret', output.getvalue())
+
+    def test_real_subprocess_input_and_invalid_utf8_are_not_logged(self):
+        output = io.StringIO()
+        script = 'import sys; assert sys.stdin.read() == "private"; sys.stdout.buffer.write(b"ok\\xff")'
+        with contextlib.redirect_stdout(output):
+            result = cache.run([sys.executable, '-c', script], data='private')
+        self.assertEqual(result, 'ok\ufffd')
+        self.assertEqual(output.getvalue(), '')
+
+    def test_spawn_error_does_not_echo_executable(self):
+        with self.assertRaises(cache.CacheError) as error:
+            cache.run(['/nonexistent/private-token'], label=cache.Stage.VERSION)
+        self.assertIn('classification=missing-path', str(error.exception))
+        self.assertNotIn('private-token', str(error.exception))
 
 
 if __name__ == '__main__':

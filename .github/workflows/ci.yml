@@ -586,12 +586,10 @@ jobs:
         id: cache-roots
         continue-on-error: true
         run: >-
-          nix build --no-link --json
-          .#coda-servers-deps .#coda-web-deps .#patient-bank-deps
-          .#physician-sample-image .#physician-worker-image .#duet-api-image
-          .#physician-migration-image .#duet-migration-image .#duet-privacy-delivery-image
-          > "$RUNNER_TEMP/nix-cache-build.json"
+          python3 scripts/nix_cache_roots.py build
+          --output "$RUNNER_TEMP/nix-cache-build.json"
       - name: Publish signed reusable Nix outputs
+        id: cache-publish
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && steps.cache-roots.outcome == 'success'
         continue-on-error: true
         # A cold cache uploads the whole build closure, including toolchains.
@@ -603,6 +601,12 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.NIX_CACHE_WRITE_SECRET_ACCESS_KEY }}
           NIX_CACHE_SIGNING_KEY: ${{ secrets.NIX_CACHE_SIGNING_KEY }}
         run: python3 scripts/nix_cache.py publish --build-json "$RUNNER_TEMP/nix-cache-build.json"
+      - name: Summarize cache publication outcome
+        if: always() && steps.cache-publish.outcome != ''
+        env:
+          PUBLISH_OUTCOME: ${{ steps.cache-publish.outcome }}
+        run: |
+          printf 'Nix cache publication: **%s** (best effort; see sanitized stage diagnostics).\n' "$PUBLISH_OUTCOME" >> "$GITHUB_STEP_SUMMARY"
       - name: Remove private cache credentials
         if: always() && env.NIX_CACHE_STATE_DIR != ''
         run: python3 scripts/nix_cache.py cleanup

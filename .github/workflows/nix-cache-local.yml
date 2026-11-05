@@ -1,0 +1,64 @@
+name: Local Nix cache warm
+
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Full reviewed commit SHA in the clean local checkout
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  nix-cache-local:
+    # No hosted writer path: act supplies ACT, GitHub does not.
+    if: github.event_name == 'workflow_dispatch' && github.actor != '' && github.event.inputs.expected_sha != '' && vars.ACT == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      EXPECTED_SHA: ${{ inputs.expected_sha }}
+    steps:
+      - name: Copy the local checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          submodules: false
+      - name: Verify act and the clean expected revision
+        run: |
+          test "${ACT:-}" = true
+          python3 scripts/nix_cache_roots.py verify-checkout --expected-sha "$EXPECTED_SHA"
+      # v31 selects single-user mode for --no-daemon, clears build-users-group,
+      # and adds the user profile to GITHUB_PATH. No systemd or host /nix mount.
+      - name: Install isolated single-user Nix
+        uses: cachix/install-nix-action@v31
+        with:
+          install_options: --no-daemon --yes
+          enable_kvm: false
+          extra_nix_config: |
+            sandbox = false
+      - name: Collect reusable Nix build roots
+        run: python3 scripts/nix_cache_roots.py build --output "$RUNNER_TEMP/nix-cache-build.json"
+      - name: Select a small closure for the signed smoke publish
+        run: |
+          python3 scripts/nix_cache_roots.py smoke --build-json "$RUNNER_TEMP/nix-cache-build.json" --output "$RUNNER_TEMP/nix-cache-smoke.json"
+      - name: Publish signed reusable Nix outputs
+        timeout-minutes: 90
+        env:
+          NIX_CACHE_BUCKET: ${{ secrets.NIX_CACHE_BUCKET }}
+          NIX_CACHE_PUBLIC_KEY: ${{ secrets.NIX_CACHE_PUBLIC_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.NIX_CACHE_WRITE_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.NIX_CACHE_WRITE_SECRET_ACCESS_KEY }}
+          NIX_CACHE_SIGNING_KEY: ${{ secrets.NIX_CACHE_SIGNING_KEY }}
+        run: |
+          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-smoke.json"
+          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
+          python3 scripts/nix_cache.py publish-local --expected-sha "$EXPECTED_SHA" --acknowledge-local-write --build-json "$RUNNER_TEMP/nix-cache-build.json"
+      - name: Prove fresh signed substitution using reader credentials
+        env:
+          NIX_CACHE_BUCKET: ${{ secrets.NIX_CACHE_BUCKET }}
+          NIX_CACHE_PUBLIC_KEY: ${{ secrets.NIX_CACHE_PUBLIC_KEY }}
+          NIX_CACHE_READ_ACCESS_KEY_ID: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          NIX_CACHE_READ_SECRET_ACCESS_KEY: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+        run: python3 scripts/nix_cache_verify.py --build-json "$RUNNER_TEMP/nix-cache-build.json"
