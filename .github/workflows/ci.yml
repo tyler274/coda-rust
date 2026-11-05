@@ -951,8 +951,9 @@ jobs:
 
   # ENG-65: the shared collector config (deployed and local overlays) and the
   # OpenTofu roots it rides on. otelcol-contrib and tofu come from the small
-  # `.#observability` nix shell. Providers download, but no backend initializes and no plan
-  # touches a real project: the tests run against mock providers.
+  # `.#observability` nix shell. Providers download, but no backend
+  # initializes and no plan touches a real project: the tests run against
+  # mock providers.
   observability:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
