@@ -1,5 +1,9 @@
 // The words of the Duet sign-in chart, for PStack's statechart skill. Run it with chart.cfg,
-// which draws one person's sign-in: one account and one session.
+// which draws one person's sign-in: one account and one session. It leaves out a second person on
+// the phone and signing in again after signing out. It draws the two sign-in screens that didn't
+// finish as one, and a session Duet ended elsewhere on the arrows of its refusal, since both look
+// and lead on the same way. It doesn't draw closing Duet from a sign-in screen or while the Terms
+// are being accepted, or opening a link anywhere but where the person waits for it.
 
 export const title = "Duet sign-in on one phone";
 

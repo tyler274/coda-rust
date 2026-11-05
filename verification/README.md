@@ -13,18 +13,18 @@ the model. Features not modeled yet follow the intent specs alone.
 
 `verification/<product>/<feature>/` holds:
 
-- **`README.md`:** the feature's spec in words, with its agreed rules. The intent spec keeps a
-  short summary and links here. A promise the model can't hold, such as identity, revisions,
-  collections or single use, is listed with the test that holds it, or says none does yet.
-- **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Each
-  `INVARIANT` is one rule, quoted in its comment. Each action's comment names the code that
+- **`README.md`:** the feature's spec: the journey in words and its agreed rules, and nothing
+  about how they're checked. The intent spec keeps a short summary and links here.
+- **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Its
+  header says what it takes as one step, its scope, and what it leaves to records and their
+  tests. Each `INVARIANT` is one rule, quoted in its comment. Each action's comment names the code that
   carries it out. An `event` variable names each step, and the config's `VIEW` leaves it out.
   The config sets the scope the rules are checked at: large enough for the races the feature's
   risks come from, never cut to fit a chart.
 - **`chart.cfg` and `chart.mjs`:** the chart PStack's `statechart` skill draws, in the words of
   the person who decides whether the behavior is right. `chart.cfg` runs the same model at a
-  scope of 500 states or fewer, so the whole chart can be drawn, and the README says what it
-  leaves out. `chart.mjs` names its states and steps.
+  scope of 500 states or fewer, so the whole chart can be drawn. `chart.mjs` names its states
+  and steps, and says what the chart leaves out.
 
 ## How a feature is checked
 
@@ -47,8 +47,8 @@ Each feature's browser test lives in its own file named for the feature, such as
 .agents/skills/statechart/scripts/statechart verification/physician/sign-in/SignIn.tla
 ```
 
-The first run installs PStack's pinned TLC and Java with mise. The feature's README names its
-browser test.
+The first run installs PStack's pinned TLC and Java with mise. The feature's verify skill names
+its browser test.
 
 ## Verify skills
 
