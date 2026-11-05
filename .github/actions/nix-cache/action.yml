@@ -1,0 +1,27 @@
+name: Private Nix cache reader
+description: Configure job-scoped GCS substitution without exposing writer authority
+inputs:
+  enabled:
+    description: Explicit operator activation switch
+    default: 'false'
+  bucket:
+    description: Private GCS bucket name
+  public-key:
+    description: Trusted Nix cache signing public key
+  access-key-id:
+    description: Reader HMAC access ID
+  secret-access-key:
+    description: Reader HMAC secret
+runs:
+  using: composite
+  steps:
+    - name: Configure private substitution
+      if: inputs.enabled == 'true' && inputs.access-key-id != '' && inputs.secret-access-key != ''
+      continue-on-error: true
+      shell: bash
+      env:
+        NIX_CACHE_BUCKET: ${{ inputs.bucket }}
+        NIX_CACHE_PUBLIC_KEY: ${{ inputs.public-key }}
+        AWS_ACCESS_KEY_ID: ${{ inputs.access-key-id }}
+        AWS_SECRET_ACCESS_KEY: ${{ inputs.secret-access-key }}
+      run: python3 scripts/nix_cache.py setup --disposable-runner
