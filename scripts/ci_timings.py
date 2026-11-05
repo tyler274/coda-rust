@@ -27,8 +27,7 @@ FULL_JOBS = {
     "Collector config and observability OpenTofu",
 }
 LIGHT_JOB = "Documentation and engineering skills"
-# Cache setup and teardown should take about a second. A 15-second helper
-# stall once hid in these steps across every Nix job.
+# Cache setup and cleanup take about a second; 10s or more means a stall.
 SETUP_STEPS = {"Read private Nix cache", "Remove private cache credentials"}
 SLOW_SETUP_SECONDS = 10
 METHOD = (
@@ -252,6 +251,11 @@ def chart(title, rows):
     return "".join(parts)
 
 
+def inline_code(text):
+    # API job names are untrusted Markdown; use inline code with no backticks/newlines.
+    return "`" + text.replace("`", "'").replace("\n", " ") + "`"
+
+
 def slow_setup(run):
     return [row for row in run.steps + run.deployment_steps
             if row.label.rsplit(" / ", 1)[-1] in SETUP_STEPS and row.seconds >= SLOW_SETUP_SECONDS]
@@ -270,14 +274,11 @@ def markdown(runs):
         lines.append(f"- [{run.label}]({run.url}) — {run.cohort}; "
                      f"validation {duration(run.elapsed)}{partial}; revision `{run.sha}`.")
         if run.omitted:
-            # API job names are untrusted Markdown; use inline code with no backticks/newlines.
-            omitted = "; ".join(run.omitted).replace("`", "'").replace("\n", " ")
-            lines.append(f"  - Omitted: `{omitted}`.")
+            lines.append(f"  - Omitted: {inline_code('; '.join(run.omitted))}.")
         slow = slow_setup(run)
         if slow:
             text = "; ".join(f"{row.label} {row.seconds:.0f}s" for row in slow)
-            lines.append(f"  - Warning: slow cache setup (≥{SLOW_SETUP_SECONDS}s): "
-                         f"`{text.replace('`', chr(39))}`.")
+            lines.append(f"  - Warning: slow cache setup (≥{SLOW_SETUP_SECONDS}s): {inline_code(text)}.")
         if run.deployments:
             lines.append("  - Deployment execution (separate): " + "; ".join(
                 f"{duration(row.seconds)}" for row in run.deployments) + ".")

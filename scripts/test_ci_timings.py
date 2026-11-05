@@ -182,6 +182,8 @@ class AnalysisTests(unittest.TestCase):
         self.assertIn("Fresh Postgres migrations and tests / Read private Nix cache 15s", report)
         self.assertNotIn("Remove private cache credentials", report)
         self.assertNotIn("Warning", timings.markdown([timings.analyze("o/r", RUN, JOBS)]))
+        hostile = timings.analyze("o/r", RUN, [job("a`b\nc", steps=steps[:1])])
+        self.assertIn("`a'b c / Read private Nix cache 15s`", timings.markdown([hostile]))
 
     def test_skipped_steps_reported_and_zero_duration_valid(self):
         result = timings.analyze("o/r", RUN, [job(steps=[job("skip", conclusion="skipped"),
