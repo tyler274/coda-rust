@@ -22,13 +22,23 @@ def lightweight_path(path):
     )
 
 
+def dependency_path(path):
+    # Changing these rebuilds the Nix dependency derivations from source.
+    return (
+        path in {"Cargo.lock", "Cargo.toml", "flake.lock", "flake.nix"}
+        or path.endswith("/Cargo.toml")
+        or path.startswith("nix/")
+    )
+
+
 def git(*args):
     return subprocess.check_output(["git", *args], stderr=subprocess.PIPE)
 
 
 def select(event_name, event):
+    """Return (full, deps, reason). deps means a dependency build is likely cold."""
     if event_name == "workflow_dispatch":
-        return True, "manual qualification"
+        return True, False, "manual qualification"
     try:
         if event_name == "pull_request":
             base = event["pull_request"]["base"]["sha"]
@@ -36,23 +46,24 @@ def select(event_name, event):
         elif event_name == "push":
             base, head = event["before"], event["after"]
         else:
-            return True, "event has no supported comparison"
+            return True, False, "event has no supported comparison"
         if not all(isinstance(sha, str) and re.fullmatch(r"[0-9a-f]{40}", sha)
                    and sha != "0" * 40 for sha in (base, head)):
-            return True, "comparison revisions unavailable"
+            return True, False, "comparison revisions unavailable"
         if event_name == "pull_request":
             base = git("merge-base", base, head).decode().strip()
         # No rename detection: both the deletion and addition must qualify.
         # NUL separation preserves spaces/newlines; Git has no API file limit.
         changed = git("diff", "--name-only", "--no-renames", "-z", base, head, "--")
     except (KeyError, TypeError, subprocess.CalledProcessError):
-        return True, "complete comparison unavailable"
+        return True, False, "complete comparison unavailable"
     paths = [os.fsdecode(path) for path in changed.split(b"\0") if path]
     if not paths:
-        return True, "empty comparison"
+        return True, False, "empty comparison"
     if all(lightweight_path(path) for path in paths):
-        return False, "only engineering skills and documentation changed"
-    return True, "change includes product, build, or other files"
+        return False, False, "only engineering skills and documentation changed"
+    deps = any(dependency_path(path) for path in paths)
+    return True, deps, "change includes product, build, or other files"
 
 
 def check_results(needs):
@@ -84,9 +95,10 @@ def main():
         event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
     except (KeyError, OSError, ValueError):
         event = {}
-    full, reason = select(os.environ.get("GITHUB_EVENT_NAME", ""), event)
-    output = f"full={str(full).lower()}\n"
-    print(f"CI scope: {'full' if full else 'lightweight'} ({reason})")
+    full, deps, reason = select(os.environ.get("GITHUB_EVENT_NAME", ""), event)
+    output = f"full={str(full).lower()}\ndeps={str(deps).lower()}\n"
+    print(f"CI scope: {'full' if full else 'lightweight'} ({reason})"
+          + ("; dependencies changed" if deps else ""))
     if os.environ.get("GITHUB_OUTPUT"):
         with open(os.environ["GITHUB_OUTPUT"], "a") as stream:
             stream.write(output)

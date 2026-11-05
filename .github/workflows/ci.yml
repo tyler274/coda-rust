@@ -25,6 +25,7 @@ jobs:
       contents: read
     outputs:
       full: ${{ steps.select.outputs.full }}
+      deps: ${{ steps.select.outputs.deps }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -482,7 +483,9 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Locked Nix images (build, run, migrate; no push)
-    runs-on: blacksmith-2vcpu-ubuntu-2404
+    # A dependency change rebuilds the Rust dependency derivations from
+    # source, which takes 15-40 min on 2 vCPU. Warm runs only fetch them.
+    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
     # The write environment must restrict deployment branches to main. Its
     # signing key and writer credentials must never be repository-level secrets.
     environment: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && 'nix-cache-write' || 'nix-cache-read' }}
