@@ -197,7 +197,7 @@ impl IdentityVerifier for LocalIdentity {
         validation.set_audience(&[LOCAL_ISSUER]);
         validation.set_required_spec_claims(&["exp", "iss", "aud", "sub"]);
         let claims = jsonwebtoken::decode::<LocalClaims>(bearer, &self.key, &validation)
-            .map_err(|_| ApiError::Unauthorized)?
+            .map_err(ApiError::InvalidToken)?
             .claims;
         if claims.sub.is_empty()
             || claims.sub.len() > 128
@@ -433,7 +433,7 @@ mod local_tests {
         ] {
             assert!(matches!(
                 local.verify(&bearer).await,
-                Err(ApiError::Unauthorized)
+                Err(ApiError::Unauthorized | ApiError::InvalidToken(_))
             ));
         }
     }
