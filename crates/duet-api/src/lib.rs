@@ -11,6 +11,7 @@
 )]
 
 pub mod accounting;
+pub mod background;
 pub mod care;
 pub mod conversation;
 mod conversation_context;

@@ -1,0 +1,81 @@
+# OpenTelemetry Collector sidecar for a Cloud Run service. The service's
+# telemetry crate exports OTLP to this container on localhost; the sidecar
+# forwards traces and logs to the shared gateway collector (collector.yaml +
+# collector.gke.yaml) over the VPC. Cloud Run passes the file inline:
+# `otelcol-contrib --config=env:OTEL_SIDECAR_CONFIG`.
+#
+#   OTEL_SIDECAR_CONFIG    This file's contents (Cloud Run env, not a secret).
+#   OTEL_GATEWAY_ENDPOINT  Gateway OTLP/HTTP base, e.g. http://10.82.x.y:4318.
+#                          The exporter appends /v1/traces and /v1/logs.
+#   OTEL_GATEWAY_AUDIENCE  Audience of the ID token the sidecar presents; the
+#                          gateway's oidc extension checks the same value.
+#
+# Authentication: googleclientauth asks the metadata server for an ID token
+# for the service's own runtime service account, with OTEL_GATEWAY_AUDIENCE as
+# the audience, and sends it as a bearer token. Google mints and rotates the
+# token; no key or secret is configured. The gateway admits only the service
+# accounts it lists (collector.gke.yaml).
+#
+# The exporter is OTLP/HTTP, not gRPC: Google per-RPC OAuth credentials
+# require transport security on gRPC, and the in-VPC hop is plain HTTP.
+#
+# No content handling happens here. The gateway strips prompt and completion
+# content before anything reaches Datadog.
+#
+# Failure and shutdown: the product never depends on this container. Receivers
+# listen on localhost only, the queue is bounded and drops on overflow instead
+# of blocking the service's exporter, and each retry cycle gives up after 5s.
+# On SIGTERM the collector attempts a best-effort flush; Cloud Run may kill it
+# at the shutdown deadline and lose queued telemetry. Product shutdown must
+# never wait for this flush. The startup probe reads health_check on port 13133.
+
+extensions:
+  health_check:
+    endpoint: 0.0.0.0:13133
+  googleclientauth:
+    token_type: id_token
+    audience: ${env:OTEL_GATEWAY_AUDIENCE}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 127.0.0.1:4317
+      http:
+        endpoint: 127.0.0.1:4318
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 150
+    spike_limit_mib: 40
+
+  batch: {}
+
+exporters:
+  otlphttp/gateway:
+    endpoint: ${env:OTEL_GATEWAY_ENDPOINT}
+    auth:
+      authenticator: googleclientauth
+    timeout: 2s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      enabled: true
+      initial_interval: 500ms
+      max_interval: 2s
+      max_elapsed_time: 5s
+
+service:
+  extensions: [health_check, googleclientauth]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/gateway]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlphttp/gateway]

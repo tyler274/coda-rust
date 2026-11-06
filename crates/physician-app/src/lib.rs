@@ -92,6 +92,8 @@ const CONNECTIONS: &str = "Connections";
 const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
+const SIGN_IN_UNCONFIRMED: &str =
+    "Coda couldn’t confirm sign-in. Open your email link again or request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
@@ -611,21 +613,23 @@ impl SessionState {
     /// tab no longer holds is about the past and changes nothing. An ended
     /// session covers a page this tab already showed with the sign-in prompt;
     /// a tab that showed nothing yet was opened without a session, so it shows
-    /// the sign-in page and keeps the patient link it was opened at. Removed
-    /// access signs out and says "No access to this practice".
+    /// the sign-in page and keeps the patient link it was opened at. Either
+    /// way the browser keeps storing the ended session: only a sign-out
+    /// forgets it, so a tab that later finds nothing stored knows one came.
+    /// Removed access signs out and says "No access to this practice".
     fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
         if self.bearer() != presented {
             return;
         }
         let presented = presented.as_deref();
         match refusal {
-            Refusal::SessionEnded if shown => {
+            Refusal::SessionEnded if shown => self.expired.set(true),
+            Refusal::SessionEnded => {
                 if let Some(presented) = presented {
-                    forget_stored_session(presented);
+                    self.client.peek().session().clear_if(presented);
                 }
-                self.expired.set(true);
+                self.no_session_here();
             }
-            Refusal::SessionEnded => self.no_session(presented),
             Refusal::AccessRemoved => {
                 self.sign_out(presented);
                 self.removed.set(true);
@@ -2492,9 +2496,7 @@ fn SignInScreen(
                 Err(failure) => {
                     let message = match failure {
                         physician_client::HttpError::Status { status: 401, .. } => SIGN_IN_INVALID,
-                        _ => {
-                            "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
-                        }
+                        _ => SIGN_IN_UNCONFIRMED,
                     };
                     stage.set(SignInStage::Recovery(message.to_owned()));
                 }
@@ -2503,22 +2505,20 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
-    // While this browser holds another physician's session, the link signs
-    // the browser out before it is redeemed. Your own link changes nothing
-    // while your session stands, and signs you back in once it has ended;
-    // when Coda can't say which, your session stays and the link is not used.
-    // Either way the session must still be the one this browser stores when
-    // Coda answers; otherwise the link is redeemed.
+    // Coda says whether the session this browser stores is still signed in.
+    // Your own link changes nothing while your session stands, and signs you
+    // back in once it has ended; when Coda can't say which, your session
+    // stays and the link is not used. Another physician still signed in is
+    // signed out before the link is redeemed; an ended session needs no
+    // sign-out. When Coda can't say for another physician, nobody is signed
+    // out: the page says Coda couldn't confirm sign-in, and the link stays
+    // unused for another try. Either way the session must still be the one
+    // this browser stores when Coda answers; otherwise the link is redeemed.
     use_effect(move || {
         if let Some(link) = link.clone() {
             let held = client.peek().clone();
             let yours = read_stored_owner()
                 .is_some_and(|owner| owner.eq_ignore_ascii_case(link.email.trim()));
-            if held.session().is_some() && !yours {
-                session.end();
-                verify_link(link);
-                return;
-            }
             let checked = held.session().get();
             spawn(async move {
                 if let Some(checked) = checked {
@@ -2531,13 +2531,18 @@ fn SignInScreen(
                             return;
                         }
                         Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {}
-                        Ok(_) => session.end(),
+                        Ok(_) if still_stored(&checked) => session.end(),
+                        Ok(_) => {}
                         Err(failure) if refusal(&failure).is_some() => {}
-                        Err(_) if still_stored(&checked) => {
+                        Err(_) if !still_stored(&checked) => {}
+                        Err(_) if yours => {
                             on_signed_in.call(None);
                             return;
                         }
-                        Err(_) => {}
+                        Err(_) => {
+                            stage.set(SignInStage::Recovery(SIGN_IN_UNCONFIRMED.to_owned()));
+                            return;
+                        }
                     }
                 }
                 verify_link(link);

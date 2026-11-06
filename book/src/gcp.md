@@ -7,11 +7,21 @@ for production SMTP in `coda-health-prod`, with separate state and explicit
 saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
+Staging observability spans two workspace-owned roots, applied in order by an
+operator from reviewed saved plans:
+
+| Root | Owns | State |
+| --- | --- | --- |
+| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment. | `rust-environments/stg` |
+| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, the Datadog Agent, self-hosted Langfuse with its Cloud SQL and bucket, the Doppler operator, the Datadog monitors, and (off by default) the project-scoped Datadog GCP integration. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
+
+[Observability](observability.md) describes the per-signal paths and the
+content policy.
+
 Run every command on this page inside `nix develop` from the repository root. The
-shell provides `gcloud`, `tofu`, `doppler` and `jq`; do not use host copies.
+shell provides `gcloud`, `tofu`, `doppler`, `timeout` and `jq`; do not use host copies.
 Commands that read Doppler secrets need the default shell after `doppler login`,
 not `.#agent`, which loads no credentials.
-
 ## Public marketing site
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the
@@ -54,24 +64,46 @@ GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars) and
 [`backend/staging.gcs.tfbackend`](/infra/gcp/rust-environments/backend/staging.gcs.tfbackend).
 
-From an authorized engineering account, in the Doppler-authorized default
-shell. Database-enabled plans read the four existing
-application passwords without printing them; this changes no password or
-version:
+### Review and apply a staging plan
+
+From an authorized engineering account, inside the Doppler-authorized default
+`nix develop` shell at the repository root, with current Google application
+default credentials (`gcloud auth application-default login`).
+[`staging-reconcile`](/crates/workspace-tools/src/staging_reconcile.rs) reads the
+four existing role passwords from Doppler and passes them only to the OpenTofu
+child that needs them, never in arguments or output; it rotates no credentials.
+It refuses a failed or empty lookup before OpenTofu runs.
 
 ```bash
-root=infra/gcp/rust-environments
-tofu -chdir="$root" init -input=false \
-  -backend-config=backend/staging.gcs.tfbackend
-export TF_VAR_database_passwords="$(jq -cn \
-  --arg pr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_runtime)" \
-  --arg pm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_migration)" \
-  --arg dr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_runtime)" \
-  --arg dm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_migration)" \
-  '{"physician-runtime":$pr,"physician-migration":$pm,"duet-runtime":$dr,"duet-migration":$dm}')"
-tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars -out=staging.tfplan
-unset TF_VAR_database_passwords
+dir=$(mktemp -u /tmp/staging-plan.XXXXXX)
+cargo run -p workspace-tools -- staging-reconcile plan --output-dir "$dir"
+less "$dir/review.txt"
 ```
+
+`plan` creates the owner-only directory outside the repository, saves the plan,
+its review text and a manifest binding the plan's digest to the root's
+configuration digest and the fixed staging backend. The plan, review and
+`diagnostics.log` can contain credentials: never publish or attach them.
+
+**STOP:** review every change and obtain operator approval before continuing.
+Unexpected deletes, replacements, IAM/network changes, image changes, or new
+billable resources require investigation and explicit approval. Coordinate with
+releases so no deployment races the saved plan. Do not use `-target` or
+`-refresh-only` to hide differences. Image digests remain release-owned.
+
+```bash
+cargo run -p workspace-tools -- staging-reconcile apply --plan-dir "$dir" --authorize-staging-apply
+cargo run -p workspace-tools -- staging-reconcile verify --plan-dir "$dir"
+```
+
+`apply` refuses a plan whose bytes, root inputs or backend changed since review,
+and applies a plan at most once. A failed, timed-out or interrupted apply is
+uncertain: inspect state, the lock and live resources rather than retrying.
+`verify` runs a fresh plan that must report no changes, then requires the
+physician service's scaling, CPU and egress settings from the reviewed plan, a
+Ready latest revision and all traffic on it. It writes a nonsecret
+`*-verification.json` receipt and exits 3 on any difference. Securely dispose of
+the directory when no longer needed.
 
 Review the saved plan before any separately authorized apply. Engineering-group
 access owns routine infrastructure administration and state access. Project IAM,
@@ -113,6 +145,22 @@ A new environment needs these operator steps, in order:
    record the versions in `doppler_token_versions`.
 5. Apply the migration jobs, execute both (a second execution is a no-op), then
    apply the services.
+
+### Reconcile staging configuration
+
+Do not patch Cloud Run flags by hand. Use [the saved-plan
+procedure](#review-and-apply-a-staging-plan) for approved corrections; its
+`verify` compares live physician settings with the reviewed plan, which follows
+`env/staging.tfvars` and the [physician
+scaling](#physician-scaling-redis-fan-out-and-pubsub-chat-turns) and [SMTP
+relay](#staging-sign-in-accounts) contracts. Repeat `verify` after the next
+separately approved release. If settings regress, fix the release owner rather
+than reapplying in a loop.
+
+A Ready revision is not database or journey qualification; use the existing
+[rollout](#direct-staging-rollout), [scaling verification](#physician-scaling-redis-fan-out-and-pubsub-chat-turns)
+and [isolated recovery](#disposable-database-recovery-rehearsal) procedures.
+Correct and rerun failed browser qualification; an infra apply does not waive it.
 
 ### Staging sign-in accounts
 
@@ -402,9 +450,10 @@ To turn scaling on:
    `api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', []).hasOnly(['roles/cloudsql.client', 'roles/cloudsql.instanceUser'])`,
    and remove both afterwards. Do not apply part of the plan: the physician service
    would get `PHYSICIAN_CHAT_TOPIC` without permission to publish.
-3. **Plan, review, apply.** Plan right before applying, because a saved plan goes
-   stale once `deploy-staging` or another apply touches state. The plan must not name
-   Duet or destroy anything. Apply exactly that file.
+3. **Plan, review, apply.** Use [the saved-plan procedure](#review-and-apply-a-staging-plan)
+   right before applying, because a saved plan goes stale once `deploy-staging` or
+   another apply touches state. A scaling-only plan must not change Duet or destroy
+   anything. Apply exactly the reviewed file.
 4. **Write Redis into Doppler and start new revisions,** with the commands below.
    OpenTofu doesn't write these two values. Without them each process keeps an
    in-process bus, so the worker's events never reach the site. Runtimes read Doppler

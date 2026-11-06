@@ -47,6 +47,14 @@ mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gservi
 # images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 
+# Private GKE Autopilot cluster for the OpenTelemetry gateway, Datadog Agent and
+# Langfuse (observability-cluster.tf); infra/gcp/observability deploys into it.
+observability_cluster_enabled = true
+
+# The otel-collector sidecar on physician, duet and physician-worker, sending to
+# the gateway above. Needs the observability root applied and its gateway ready.
+observability_enabled = true
+
 images = {
   # Initial digests only; later releases own the image field.
   physician = {
