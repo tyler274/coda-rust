@@ -7,6 +7,11 @@ for production SMTP in `coda-health-prod`, with separate state and explicit
 saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
+Run every command on this page inside `nix develop` from the repository root. The
+shell provides `gcloud`, `tofu`, `doppler` and `jq`; do not use host copies.
+Commands that read Doppler secrets need the default shell after `doppler login`,
+not `.#agent`, which loads no credentials.
+
 ## Public marketing site
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the
@@ -49,14 +54,23 @@ GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
 [`env/staging.tfvars`](/infra/gcp/rust-environments/env/staging.tfvars) and
 [`backend/staging.gcs.tfbackend`](/infra/gcp/rust-environments/backend/staging.gcs.tfbackend).
 
-From an authorized engineering account:
+From an authorized engineering account, in the Doppler-authorized default
+shell. Database-enabled plans read the four existing
+application passwords without printing them; this changes no password or
+version:
 
 ```bash
 root=infra/gcp/rust-environments
-nix develop .#release --command tofu -chdir="$root" init -input=false \
+tofu -chdir="$root" init -input=false \
   -backend-config=backend/staging.gcs.tfbackend
-nix develop .#release --command tofu -chdir="$root" plan -input=false \
-  -var-file=env/staging.tfvars -out=staging.tfplan
+export TF_VAR_database_passwords="$(jq -cn \
+  --arg pr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_runtime)" \
+  --arg pm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_migration)" \
+  --arg dr "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_runtime)" \
+  --arg dm "$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_migration)" \
+  '{"physician-runtime":$pr,"physician-migration":$pm,"duet-runtime":$dr,"duet-migration":$dm}')"
+tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars -out=staging.tfplan
+unset TF_VAR_database_passwords
 ```
 
 Review the saved plan before any separately authorized apply. Engineering-group
@@ -255,12 +269,22 @@ runs on pushes to `main`, after every check job, when the repository variable
 2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
    and executes it to completion, then updates the `<app>` service to the runtime
    digest and requires its latest Ready revision to serve that digest with all
-   traffic;
+   traffic. The update is submitted with `--async` and readiness is polled every
+   5 s for at most 10 minutes, within the release's overall command budget.
+   Polling stops early when the submit failed and two consecutive reads, 5 s
+   apart, still show a different image in the service spec. The release then
+   stops with an unconfirmed rollout rather than waiting out the poll bound;
 3. updates `physician-worker` to its digest once that service exists, with the same
    Ready-revision check. Until then it reports the digest to record as
    `images.physician.worker` for the scaling apply;
-4. uploads a receipt (tested-archive manifest, digests, executions, revisions) as the
-   `release-receipt-*` artifact.
+4. finalizes and uploads the structured `receipt.json`, tested-archive manifest
+   and digest files as the `release-receipt-*` artifact, including failed runs.
+   [`staging-release`](/crates/workspace-tools/src/staging_release.rs) initializes
+   the receipt before publication and checkpoints before rollout mutations. It
+   retains previous and observed final service states, migration execution IDs,
+   explicit worker bootstrap skips and sanitized failure codes. Missing receipts
+   and failed uploads fail visibly. Reconciliation is observational: it never
+   reexecutes an uncertain migration or silently rolls traffic back.
 
 The tested archive artifact is produced only while staging deployment is enabled
 and retained for three days. A failed-job rerun uses
@@ -269,15 +293,103 @@ a new artifact for that attempt. A missing, expired or invalid artifact stops th
 release; rerun the image proof to produce a new handoff.
 
 Cloud Run moves traffic only to a revision that passes its `/readyz` startup
-probe, so a failed rollout leaves the previous revision serving; fix forward.
-OpenTofu ignores the image fields, so a later saved-plan apply does not roll
-the services back. Unsetting the variable stops staging deploys without editing
+probe. This protects an individual failed candidate, not the whole release:
+physician can already be serving a new revision when Duet or the worker fails.
+A timed-out update can also have completed remotely. Inspect each service's
+observed traffic before deciding what to do; an unavailable read means unknown,
+not unchanged. Fix forward by default. Returning traffic to a previous digest
+requires proof that it can use the migrated schema; never reverse migrations
+automatically. OpenTofu ignores the image fields, so a later saved-plan apply
+does not roll the services back. Unsetting the variable stops staging deploys without editing
 the workflow:
 
 ```bash
 gh variable set RUST_STAGING_DEPLOY --body enabled   # on
 gh variable delete RUST_STAGING_DEPLOY               # off
 ```
+
+### Disposable database recovery rehearsal
+
+[`workspace-tools staging-restore`](/crates/workspace-tools/src/staging_restore.rs)
+is an operator command, not part of automatic deployment. It accepts only the
+canonical staging physician or Duet source, a successful backup and a fresh
+`rust-restore-<product>-<run>` target. Its default is read-only cloud preflight;
+cloud writes require both explicit execution and authorization flags. The
+operator must separately authorize the billable target and cleanup. The normal
+release identity receives no SQL administration privileges.
+
+Run `cargo run -p workspace-tools -- staging-restore --help` for the command
+interface. Use a fresh receipt path for execution after preflight.
+The command creates a private PostgreSQL target sized from the source's data disk
+(preflight refuses sources outside 10-50 GB), records its creation identity,
+restores the selected backup and waits for bounded operations. It refuses an
+existing target rather than trusting its name or labels. Receipts retain operation
+IDs, backup age, elapsed restore time and cleanup state; an interrupted create
+may leave a billable resource whose identity requires manual investigation.
+Never blindly retry or delete a target solely by its name.
+
+When cleanup refuses because the receipt has no `target_created_at` (the create
+failed or timed out before its identity was recorded), the authorizing operator
+owns the investigation. Describe the receipt's `create_operation`, then describe
+the instance and match its `coda-run` label to the receipt's `run_id`, and its
+project, network and create time to the receipt. Delete it only under a separate
+explicit authorization, and record the result beside the receipt.
+
+Cloud restore completion is explicitly **unqualified**. Before a rehearsal:
+
+1. Establish synthetic sentinel records through each product's existing owners
+   and record their identities without clinical content in the evidence bundle.
+   Select a successful backup containing them. For Duet, retain independent
+   privacy receipts for a deletion/withdrawal accepted after that backup.
+2. Review the target resources and operator access. Keep restored databases out
+   of service routing, workers, subscriptions and outbound effects. Do not reuse
+   a managed staging or production instance as a restore target.
+3. Restore each product separately. Through an isolated validation process, check
+   the owning migration ledger, synthetic saved-state readback and runtime versus
+   migrator permissions. Run Duet's complete independent journal replay and check
+   deletion/withdrawal refusal as described in [privacy recovery](privacy-recovery.md#isolated-restore-qualification).
+4. Record validation commands/results beside the cloud receipt, tied to the
+   target and revision. Record measured recovery duration and recovery-point age;
+   retention settings do not establish an RPO or RTO. No production availability
+   target is implied by this rehearsal.
+5. After separate cleanup authorization, use the receipt-bound cleanup command.
+   It checks project, creation identity, private network and drill labels before
+   deleting only its disposable target. Record deletion completion; unresolved
+   or uncertain creation/deletion remains an operating obligation.
+
+Neither local Postgres recovery tests nor mocked cloud operations replace an
+actual authorized Cloud SQL restore and product readback. Keep those proof types
+separate in the release handoff. Do not reopen serving based only on a successful
+cloud operation or a manually asserted status.
+
+### Operating limits and failure investigation
+
+The [environment root](/infra/gcp/rust-environments) owns resource bounds, not an
+aggregate spending ceiling. Its runtime and worker instance caps apply per
+revision, so overlapping revisions can consume more than one revision's cap.
+CPU, memory, request concurrency and timeouts bound individual executions;
+migration jobs have one task, a 600-second timeout and no automatic retries.
+SQL disk growth is capped and backups/PITR are retained for seven days. Redis,
+SQL, minimum instances and networking can incur charges while no requests run.
+
+Before a rehearsal, compare the deployed Cloud Run services/jobs, SQL settings
+and Pub/Sub retry policy with the reviewed root inputs. Record identifiers and
+nonsecret limits, not full service descriptions containing environment values.
+Have the billing administrator verify the project budget's thresholds and
+notification recipients, and the model-provider owner verify account limits.
+A budget alert is not a hard cap; a per-turn bound is not an aggregate provider
+limit. Record inaccessible settings as unverified rather than treating them as
+absent or effective. Changes to budgets, IAM or capacity need their owners'
+authorization.
+
+For a failed release, start with its workflow run and release receipt. Use the
+recorded execution name to find migration logs, and the recorded revision names
+to find runtime/worker logs. Inspect current traffic independently before a
+retry. Do not copy raw environment values, tokens or clinical content into a
+receipt or public diagnostic. For worker failures also inspect the
+`physician-chat-turns-dead-letter` subscription; inspect without acknowledging or
+replaying messages unless that action is separately authorized. A deployment
+check and a ready process do not establish that a clinical journey succeeded.
 
 ### Physician scaling (Redis fan-out and Pub/Sub chat turns)
 
