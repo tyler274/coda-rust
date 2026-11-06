@@ -88,6 +88,9 @@ pub struct Citation {
     pub revision: String,
     /// Source record type.
     pub record_type: String,
+    /// Source-labeled dates retained by the exact read.
+    #[serde(default)]
+    pub dates: Vec<crate::physician_sources::RecordDate>,
     /// Exact retained bytes the model read.
     pub content: String,
     /// Original decoded evidence alongside the source-native bytes.
@@ -131,6 +134,10 @@ pub fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Ci
                         reference: string("reference")?,
                         revision: string("revision")?,
                         record_type: string("record_type")?,
+                        dates: serde_json::from_value(
+                            value.get("dates").cloned().unwrap_or_else(|| json!([])),
+                        )
+                        .map_err(|e| e.to_string())?,
                         content: string("content")?,
                         readable_parts: serde_json::from_value(value["readable_parts"].clone())
                             .map_err(|e| e.to_string())?,

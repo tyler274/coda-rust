@@ -33,6 +33,7 @@ mod publication_tests;
 pub mod queue;
 mod reply;
 mod simulation;
+pub mod source_inspection;
 pub mod synthetic_chart;
 mod synthetic_reply;
 

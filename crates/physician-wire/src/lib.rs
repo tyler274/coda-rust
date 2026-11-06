@@ -674,9 +674,62 @@ pub struct SourcePresentation {
     #[serde(default)]
     /// The preview body and its as-of date.
     pub content: Option<SourcePreviewContent>,
+    /// Readable source content, independent of a Coda-authored preview.
+    #[serde(default)]
+    pub inspection: Option<SourceInspection>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]
+/// A presentation of retained evidence, never a statement of current chart truth.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceInspection {
+    /// A statement or title supplied by the record.
+    pub title: String,
+    /// Human-readable record kind.
+    pub record_kind: String,
+    /// Dates with their source meaning and precision preserved.
+    pub dates: Vec<SourceField>,
+    /// Readable source text and deterministic field presentation.
+    pub sections: Vec<SourceField>,
+    /// An exact passage identified by the citation owner, when available.
+    pub cited_passage: Option<String>,
+    /// A separately retained Coda-authored preview, not source text.
+    pub coda_preview: Option<SourcePreviewContent>,
+    /// Supplied source system, author and patient display labels.
+    pub attribution: Vec<SourceField>,
+    /// Recorded statuses and other source facts, not clinical conclusions.
+    pub record_details: Vec<SourceField>,
+    /// Exact retained representation and provenance.
+    pub technical: SourceTechnicalDetails,
+}
+
+/// A labeled source value, without clinical inference.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceField {
+    /// The meaning of the source value.
+    pub label: String,
+    /// Text as supplied by the source.
+    pub text: String,
+}
+
+/// Storage details kept separate from clinical dates and readable content.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceTechnicalDetails {
+    /// Unchanged retained UTF-8 bytes.
+    pub original: String,
+    /// Source-owned record identity.
+    pub reference: String,
+    /// Exact retained revision.
+    pub revision: String,
+    /// Digest of the original bytes.
+    pub sha256: String,
+    /// Serialized source-owned provenance, not a clinical date.
+    pub provenance: String,
+    /// Storage timestamps such as `meta.lastUpdated`, kept out of the record's dates.
+    #[serde(default)]
+    pub storage_dates: Vec<SourceField>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
 /// The text a source chip opens.
 pub struct SourcePreviewContent {
     #[serde(default)]

@@ -107,6 +107,19 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 .sidebar-footer { --control-width: 100%; --control-justify: flex-start; display: grid; gap: var(--space-1); padding: var(--space-2) var(--space-2) 0; border-top: var(--hairline) solid var(--outline-variant); }
 
 .glass-stage { position: relative; height: 100dvh; min-width: 0; overflow: auto; background: var(--surface); }
+.clinical-source-reader { display: grid; gap: var(--space-3); color: var(--ink); font: var(--type-body-md); overflow-wrap: anywhere; }
+.clinical-source-reader p, .clinical-source-reader h3 { margin: 0; }
+.clinical-source-reader h3 { font: var(--type-title-sm); }
+.source-record-kind, .source-record-date { font: var(--type-label-lg); }
+.source-record-notice, .source-coda-preview { padding: var(--space-3); background: var(--surface-low); border-radius: var(--radius-md); }
+.source-record-section, .source-coda-preview { display: grid; gap: var(--space-2); }
+.clinical-source-reader dl { margin: 0; display: grid; gap: var(--space-1); }
+.clinical-source-reader dt { color: var(--muted); font: var(--type-label-md); }
+.clinical-source-reader dd { margin: 0 0 var(--space-2); }
+.source-technical-details { border-top: var(--hairline) solid var(--outline-variant); padding-top: var(--space-3); }
+.source-technical-details summary { cursor: pointer; padding-block: var(--space-2); font: var(--type-label-lg); }
+.source-original-data { white-space: pre-wrap; overflow-wrap: anywhere; font: var(--type-body-sm); }
+.glass-stage > .source-reading-layout { --source-reading-ratio: minmax(0, 1.25fr) minmax(22rem, 1fr); }
 .stage-minimize { position: absolute; top: var(--space-3); right: var(--space-4); }
 .glass-toolbar { display: contents; }
 .glass-toolbar .stage-menu, .glass-sidebar .sidebar-close, .glass-sidebar-backdrop { display: none; }
