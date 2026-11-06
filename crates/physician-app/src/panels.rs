@@ -1,7 +1,6 @@
 //! The physician's remembered panel choices: whether the sidebar and the
-//! schedule are collapsed. They belong to the physician, not the session, so
-//! they live in this browser's localStorage under the physician's id and
-//! outlive sign-out.
+//! schedule are collapsed. They live in this browser's localStorage under the
+//! physician's id while signed in, and sign-out or a session end removes them.
 // Storage is browser-only; native builds read every panel as expanded.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 
@@ -46,6 +45,19 @@ pub(crate) fn remember(physician_id: &str, panel: Panel, collapsed: bool) {
 
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn remember(_physician_id: &str, _panel: Panel, _collapsed: bool) {}
+
+/// Removes this physician's panel choices, so the browser no longer names them.
+#[cfg(target_arch = "wasm32")]
+pub(crate) fn forget(physician_id: &str) {
+    if let Some(storage) = storage() {
+        for panel in [Panel::Sidebar, Panel::Schedule] {
+            let _ = storage.remove_item(&key(physician_id, panel));
+        }
+    }
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+pub(crate) fn forget(_physician_id: &str) {}
 
 #[cfg(target_arch = "wasm32")]
 fn storage() -> Option<web_sys::Storage> {
