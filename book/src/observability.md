@@ -18,7 +18,7 @@ reviewed plans; the observability operator owns their application.
 `datadog` is the compatibility default. `both` runs Datadog and Grafana
 concurrently with independent bounded exporter queues. Datadog owns operational
 notifications; Grafana rules evaluate in shadow mode without service paging.
-See [concurrent qualification](../../infra/gcp/observability/README.md#concurrent-shadow-qualification)
+See <a href="/infra/gcp/observability/README%2Emd#concurrent-shadow-qualification">concurrent qualification</a>
 for the default-off compatibility metrics source, separately gated synthetic
 notification route, storage review and rollback requirements.
 
