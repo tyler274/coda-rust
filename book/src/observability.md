@@ -18,7 +18,7 @@ reviewed plans; the observability operator owns their application.
 `datadog` is the compatibility default. `both` runs Datadog and Grafana
 concurrently with independent bounded exporter queues. Datadog owns operational
 notifications; Grafana rules evaluate in shadow mode without service paging.
-See [concurrent qualification](../../infra/gcp/observability/README.md#concurrent-shadow-qualification)
+See <a href="/infra/gcp/observability/README%2Emd#concurrent-shadow-qualification">concurrent qualification</a>
 for the default-off compatibility metrics source, separately gated synthetic
 notification route, storage review and rollback requirements.
 
@@ -307,10 +307,10 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
 4. For Grafana/collector loss or storage pressure, inspect stable workload
    readiness, restart/OOM evidence and mounted PVC used/capacity series. Do not
    resize from host-memory percentage alone or retain stale node groups as
-   current workload failures. Use the [private stack access procedure](../../infra/gcp/observability/README.md)
+   current workload failures. Use the <a href="/infra/gcp/observability/README%2Emd">private stack access procedure</a>
    and provisioned dashboards; preserve IAP and private access.
 
-Follow the infrastructure README's [maintenance and rollback procedure](../../infra/gcp/observability/README.md#maintenance-and-rollback-ownership)
+Follow the infrastructure README's <a href="/infra/gcp/observability/README%2Emd#maintenance-and-rollback-ownership">maintenance and rollback procedure</a>
 for scoped, expiring mutes and reviewed saved-plan rollback. Keep the independent
 watchdog active during collector or Grafana maintenance. Image-only releases
 must preserve sidecars, environment, IAM and networking; an ordinary release's
