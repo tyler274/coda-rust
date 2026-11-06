@@ -135,7 +135,7 @@ Along the way:
 
 ### P3. A patient message is linked, a reply is proposed, revised and handed off
 
-A patient's message in Spruce reaches the right patient, Coda proposes a reply when one would help, and the physician revises it and sends it themselves in Spruce. Coda reads the channel and never sends patient mail in the MVP. The full behavior, with its rules and model, lives in [patient messages](../verification/physician/messaging/README.md).
+A patient's message in Spruce reaches the right patient, Coda proposes a reply when one would help, and the physician revises it and sends it themselves in Spruce. Coda reads the channel and never sends patient mail in the MVP. The full behavior and its rules live in [message matching](../verification/physician/message-matching/README.md) and [message reply](../verification/physician/message-reply/README.md).
 
 Beyond it:
 
