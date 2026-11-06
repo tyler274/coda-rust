@@ -55,7 +55,7 @@ Postgres database.
 | <a href="/.agents/skills/coda-verify-physician/SKILL%2Emd">Local physician scale recipe</a> | Real site/worker binaries, Postgres, Valkey and Pub/Sub emulator support the exercised cross-instance chat and recovery journeys. | Fixed provider, proof sign-in and emulator delivery; not real model quality, mail delivery or hosted push authentication. |
 ## Physician sign-in and practice access
 
-[`physician-auth`](/crates/physician-auth/src/lib.rs) is one durable owner for who a clinic user or physician is, which practice they belong to, who holds panel-assignment permission, and which patients are on each physician's panel. Sign-in is a per-user email magic token: the server issues a one-time token (24-hour TTL, stored `sha256`-hashed), and its verification mints one bearer session (30-day TTL) with a revocation fence (`sessions_ended_before`) so deactivating an account ends every session it holds.
+[`physician-auth`](/crates/physician-auth/src/lib.rs) is one durable owner for who a clinic user or physician is, which practice they belong to, who holds panel-assignment permission, and which patients are on each physician's panel. Sign-in is a per-user email magic token: the server issues a one-time token (24-hour TTL, stored `sha256`-hashed), and its verification mints one bearer session (idle for 12 hours, and never past 7 days after sign-in) with a revocation fence (`sessions_ended_before`) so deactivating an account ends every session it holds.
 
 Access follows three concentric boundaries:
 1. **Practice boundary (cross-clinic isolation):** Any patient or workspace outside the signed-in user's `practice_id` answers 404 — never 403 — and never appears in roster search.

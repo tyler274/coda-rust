@@ -342,7 +342,8 @@ HearsNews(t) ==
   /\ UNCHANGED <<session, stores, access>>
   /\ Did("this tab hears the news", t)
 
-\* The session reaches its end. store.rs session: expires_at; the event stream ends.
+\* The session reaches its end. SessionLifetime keeps that deadline in expires_at.
+\* This stays one step. The event stream ends.
 Expires(s) ==
   /\ session[s] \in Live
   /\ session' = [session EXCEPT ![s] = IF @ = YoursLive THEN YoursExpired ELSE TheirsExpired]
