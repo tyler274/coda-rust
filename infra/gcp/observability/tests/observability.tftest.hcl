@@ -633,13 +633,14 @@ run "monitors_notify_the_alert_handle" {
   }
   assert {
     condition = (
-      strcontains(datadog_monitor.observability_container_memory[0].query, "kubernetes.memory.working_set") &&
+      # min over the window: above the ratio for all 10 minutes, not one sample.
+      startswith(datadog_monitor.observability_container_memory[0].query, "min(last_10m):max:kubernetes.memory.working_set") &&
       strcontains(datadog_monitor.observability_container_memory[0].query, "/ max:kubernetes_state.container.memory_limit") &&
       endswith(datadog_monitor.observability_container_memory[0].query, "> 0.9") &&
       strcontains(datadog_monitor.observability_container_oom[0].query, "kubernetes.containers.last_state.terminated") &&
       strcontains(datadog_monitor.observability_container_oom[0].query, "reason:oomkilled")
     )
-    error_message = "Memory alerts compare the working set with the container's limit at 90% and count OOM-killed terminations."
+    error_message = "Memory alerts compare the working set with the container's limit at 90% for the whole window and count OOM-killed terminations."
   }
 }
 

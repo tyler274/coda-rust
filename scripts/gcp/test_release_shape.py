@@ -54,7 +54,7 @@ def released(service, image=NEW, name="physician"):
     """What `gcloud run services update --container NAME --image` leaves behind."""
     after = deepcopy(service)
     template = after["spec"]["template"]
-    template["metadata"]["labels"]["client.knative.dev/nonce"] = "two"
+    template["metadata"].setdefault("labels", {})["client.knative.dev/nonce"] = "two"
     template["metadata"]["annotations"]["run.googleapis.com/client-version"] = "591.0.0"
     for container in template["spec"]["containers"]:
         if container.get("name") in (name, None):
@@ -129,6 +129,13 @@ class Verify(unittest.TestCase):
             with self.subTest(sidecar=len(containers(before)) == 2):
                 verify(before, released(before), "physician", NEW)
 
+    def test_first_client_label_on_a_template_without_labels_passes(self):
+        # gcloud adds the nonce label even when the template had no labels.
+        for before in (observed(), single()):
+            del before["spec"]["template"]["metadata"]["labels"]
+            with self.subTest(sidecar=len(containers(before)) == 2):
+                verify(before, released(before), "physician", NEW)
+
     def test_dropped_sidecar_fails(self):
         before = observed()
         after = released(before)
@@ -152,6 +159,14 @@ class Verify(unittest.TestCase):
             after["spec"]["template"]["metadata"]["annotations"][key] = value
             with self.subTest(key=key), self.assertRaisesRegex(ShapeError, "infrastructure-owned"):
                 verify(before, after, "physician", NEW)
+
+    def test_new_non_client_label_fails(self):
+        before = observed()
+        del before["spec"]["template"]["metadata"]["labels"]
+        after = released(before)
+        after["spec"]["template"]["metadata"]["labels"]["team"] = "other"
+        with self.assertRaisesRegex(ShapeError, "infrastructure-owned"):
+            verify(before, after, "physician", NEW)
 
     def test_wrong_image_fails(self):
         before = observed()

@@ -172,7 +172,7 @@ Service in this root:
   Under `datadog` with `datadog_monitors_enabled`, `datadog.tf` instead watches
   this namespace's containers: `kubernetes.memory.working_set` above
   `container_memory_limit_ratio` (0.9) of `kubernetes_state.container.memory_limit`
-  for 10 minutes, and any container terminated with `OOMKilled`. Both group
+  for every sample in 10 minutes, and any container terminated with `OOMKilled`. Both group
   by `kube_container_name`, which survives node and pod replacement, wait
   `new_group_delay` (300 s) before judging a new group, and resolve a group
   after `timeout_h` (1 h) without data. The Datadog default host monitors (such

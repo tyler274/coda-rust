@@ -268,10 +268,14 @@ not change how CPU is allocated:
 | `duet` | `true` | 0 | All work happens inside a request |
 | `physician-worker` | `true` | 0 | Every turn runs inside the Pub/Sub push request it answers |
 
-Under request-based CPU a batch exported after the last response waits until
-the next request or until shutdown, when Cloud Run gives the instance CPU again
-and the telemetry guard flushes. Telemetry is delayed, not dropped; an instance
-killed before it flushes loses at most its last batch.
+Telemetry is best effort, as the sidecar's own configuration states. Under
+request-based CPU, a batch queued after the last response waits until the next
+request or until shutdown, when Cloud Run gives the instance CPU again. At
+shutdown, Cloud Run sends SIGTERM to the product and the sidecar together, so
+the product's final flush can race the collector's own exit. The collector's
+queue is bounded and drops on overflow, and its retries give up after 5 s.
+Telemetry still queued in either process when the instance stops is lost.
+Services never wait on it.
 
 Cost at Cloud Run tier-1 prices ($0.000018 per vCPU-second, $0.000002 per
 GiB-second, instance-based) for an instance kept warm for a month:

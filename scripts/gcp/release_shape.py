@@ -124,10 +124,13 @@ def infrastructure_view(service: dict, name: str) -> dict:
     """The revision template without the release-owned image and client metadata."""
     template = deepcopy(service.get("spec", {}).get("template", {}))
     metadata = template.setdefault("metadata", {})
-    for key in CLIENT_ANNOTATIONS:
-        metadata.get("annotations", {}).pop(key, None)
-    for key in CLIENT_LABELS:
-        metadata.get("labels", {}).pop(key, None)
+    for field, keys in (("annotations", CLIENT_ANNOTATIONS), ("labels", CLIENT_LABELS)):
+        for key in keys:
+            metadata.get(field, {}).pop(key, None)
+        # gcloud may add the first label to a template that had none, so an
+        # absent map and an empty one are the same configuration.
+        if not metadata.get(field, True):
+            metadata.pop(field)
     metadata.pop("name", None)
     product({"spec": {"template": template}}, name).pop("image", None)
     return template

@@ -178,7 +178,7 @@ resource "datadog_monitor" "observability_container_memory" {
   count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
   name    = "[${local.dd_env}] ${var.cluster_name} container memory near its limit"
   type    = "query alert"
-  query   = "max(last_10m):max:kubernetes.memory.working_set{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} / max:kubernetes_state.container.memory_limit{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} > ${var.container_memory_limit_ratio}"
+  query   = "min(last_10m):max:kubernetes.memory.working_set{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} / max:kubernetes_state.container.memory_limit{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} > ${var.container_memory_limit_ratio}"
   message = <<-EOT
     {{kube_container_name.name}} in ${local.namespace} on ${var.cluster_name} has used more than ${var.container_memory_limit_ratio * 100}% of its memory limit for 10 minutes. The kernel kills it at the limit.
     Compare kubernetes.memory.working_set with kubernetes_state.container.memory_limit for the container, then raise its limit in infra/gcp/observability or find the queue that is growing. Node memory is managed by Autopilot.
