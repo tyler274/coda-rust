@@ -5,7 +5,7 @@ use axum::{Router, body::Body, http::Request as HttpRequest};
 use duet_api::{
     ApiError,
     conversation::ConversationStore,
-    conversation_routes::ConversationState,
+    conversation_routes::{ConversationState, ModelProvider},
     database::{AccountDatabase, migrate},
     durable::DurableState,
     evidence::EvidenceStore,
@@ -248,7 +248,7 @@ async fn enroll(app: &Router) {
     }
 }
 
-fn app(f: &Fixture, provider: Option<(String, String)>) -> Router {
+fn app(f: &Fixture, provider: Option<ModelProvider>) -> Router {
     duet_api::durable::router(f.durable.clone()).merge(duet_api::conversation_routes::router(
         ConversationState {
             durable: f.durable.clone(),
@@ -679,7 +679,13 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
     let bodies = Arc::new(Mutex::new(vec![]));
     let server = tokio::spawn(fake_responses(listener, bodies.clone()));
-    let app = app(&f, Some((endpoint, "loopback-test-key".into())));
+    let app = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint,
+            key: "loopback-test-key".into(),
+        }),
+    );
     enroll(&app).await;
     let c: AccountContext = f.durable.identity.authenticate("a", true).await.unwrap();
 

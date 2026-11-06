@@ -20,8 +20,57 @@ pub struct ConversationState {
     pub store: ConversationStore,
     /// Server-controlled model, never supplied by a patient command.
     pub model: String,
-    /// Authorized transport URL and credential. None leaves commands unavailable rather than faking replies.
-    pub provider: Option<(String, String)>,
+    /// Configured model transport. None leaves commands unavailable rather than faking replies.
+    pub provider: Option<ModelProvider>,
+}
+/// Model transport selected at startup.
+#[derive(Clone)]
+pub enum ModelProvider {
+    /// An authorized OpenAI Responses endpoint and credential.
+    Responses {
+        /// Responses URL.
+        endpoint: String,
+        /// Provider credential.
+        key: String,
+    },
+    /// Local-stack stand-in answering every exchange with one fixed text after
+    /// a delay. Hosted startup refuses it (`hosting::LOCAL_ONLY`).
+    Fixed {
+        /// The reply text.
+        text: String,
+        /// Time the exchange stays open before completing.
+        delay: std::time::Duration,
+    },
+}
+enum Transport {
+    Responses(harness::provider::ResponsesProvider),
+    Fixed {
+        text: String,
+        delay: std::time::Duration,
+    },
+}
+impl harness::execution::Provider for Transport {
+    async fn exchange(
+        &mut self,
+        request: &harness::execution::Request,
+        cancel: &harness::execution::Cancellation,
+        emit: &mut (dyn FnMut(harness::execution::StreamEvent) -> Result<(), String> + Send),
+    ) -> Result<harness::execution::Response, String> {
+        match self {
+            Self::Responses(provider) => provider.exchange(request, cancel, emit).await,
+            Self::Fixed { text, delay } => {
+                cancel.check()?;
+                tokio::time::sleep(*delay).await;
+                cancel.check()?;
+                Ok(harness::execution::Response {
+                    text: text.clone(),
+                    calls: vec![],
+                    usage: Default::default(),
+                    provenance: json!({"adapter":"duet-local-fixed","mode":"fixed"}),
+                })
+            }
+        }
+    }
 }
 /// Conversation routes use the same owner for admission, execution and event readback.
 pub fn router(state: ConversationState) -> Router {
@@ -168,12 +217,17 @@ pub(crate) async fn launch(
     c: &crate::identity::AccountContext,
     id: Uuid,
 ) -> Result<(), ApiError> {
-    let (endpoint, key) = s
+    let mut provider = match s
         .provider
         .clone()
-        .ok_or(ApiError::Unavailable("conversation provider not enabled"))?;
-    let mut provider = harness::provider::ResponsesProvider::new(endpoint, key)
-        .map_err(|_| ApiError::Unavailable("provider configuration invalid"))?;
+        .ok_or(ApiError::Unavailable("conversation provider not enabled"))?
+    {
+        ModelProvider::Responses { endpoint, key } => Transport::Responses(
+            harness::provider::ResponsesProvider::new(endpoint, key)
+                .map_err(|_| ApiError::Unavailable("provider configuration invalid"))?,
+        ),
+        ModelProvider::Fixed { text, delay } => Transport::Fixed { text, delay },
+    };
     let mut owner = match s.store.claim(c, id).await {
         Ok(o) => o,
         Err(ApiError::Conflict(_)) => return Ok(()),
