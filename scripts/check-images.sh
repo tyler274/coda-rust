@@ -16,7 +16,7 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
-images=(physician-sample-image physician-worker-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image)
+images=(physician-sample-image physician-worker-image duet-api-image physician-migration-image duet-migration-image duet-privacy-delivery-image availability-probe-image)
 nix build --no-link --print-out-paths "${images[@]/#/.#}" > image-paths
 mapfile -t archives < image-paths
 python3 scripts/check-images.py "${archives[@]}"
@@ -63,11 +63,16 @@ expect_failure() {
   printf '%s: fails closed (%s)\n' "$name" "$pattern"
 }
 
-for tag in "${tag_of[@]}"; do
+for name in "${!tag_of[@]}"; do
+  # The availability probe reads no secrets and has no Doppler entrypoint.
+  [[ $name == coda-availability-probe ]] && continue
+  tag=${tag_of[$name]}
   # The real entrypoint: no DOPPLER_TOKEN means no secrets and no process.
   expect_failure "$tag doppler entrypoint" "you must provide a token" \
     run "${locked[@]}" --network none "$tag"
 done
+expect_failure "${tag_of[coda-availability-probe]} without configuration" "AVAILABILITY_PROBE_PROJECT is required" \
+  run "${locked[@]}" --network none "${tag_of[coda-availability-probe]}"
 for name in coda-physician-sample coda-physician-worker coda-duet-api; do
   expect_failure "${tag_of[$name]} hosted start" "hosted activation is not qualified" \
     run "${locked[@]}" --network none -e K_SERVICE=qualification-smoke \

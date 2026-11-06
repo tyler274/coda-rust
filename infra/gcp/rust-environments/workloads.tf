@@ -210,6 +210,7 @@ resource "google_iap_web_cloud_run_service_iam_binding" "team" {
   members = setunion(
     toset(["group:${var.iap_group}"]),
     each.key == "physician" ? var.physician_proxy_invokers : toset([]),
+    toset([for identity in google_service_account.availability : "serviceAccount:${identity.email}"]),
   )
 }
 
@@ -459,7 +460,10 @@ resource "google_cloud_run_v2_service_iam_binding" "physician_worker_invoker" {
   location = var.region
   name     = google_cloud_run_v2_service.physician_worker[each.key].name
   role     = "roles/run.invoker"
-  members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]
+  members = concat(
+    ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"],
+    [for identity in google_service_account.availability : "serviceAccount:${identity.email}"],
+  )
 }
 
 # Release updates the worker image like the app services (deploy-staging).
