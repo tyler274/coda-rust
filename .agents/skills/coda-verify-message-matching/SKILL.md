@@ -24,8 +24,8 @@ Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, 
 
 ## Coverage
 
-The model describes the README as of the last commit that changed `MessageMatching.tla`. That
-commit is the sync commit. No product code carries the model's steps. When code does, each action's
+The sync commit is 20a7839f. At that commit, the model describes the README, and the check passed
+with each journey break below caught. No product code carries the model's steps. When code does, each action's
 comment names that code, and the code joins "When a change needs this". Move the sync commit forward
 only after the check passes and each journey break below is caught again, on a README or code that
 changed since it, as `/maintain-formal-verification-skill` describes.
@@ -63,6 +63,8 @@ Each `.mjs` says what its chart leaves out.
 - Which physicians see a message before it is linked is also open in P2. The model lets a physician act on it, and checks rule 2 for every physician. Who sees Messages to match follows P2.
 - Time is fairness: 15 minutes always pass for a message that Coda has not decided about, and Undo always goes away unless someone presses it. The model doesn't count seconds or minutes.
 - The model stores one link for each conversation, so it can't express messages of one conversation on two patients. The code must keep this, and its browser test checks it.
+- What Coda wrote from a conversation shows wherever the conversation shows, so rule 4 covers it with the conversation. The code must hide both at once, and its browser test checks it.
+- Opening and closing the conversation are screen steps that rule 1 needs. The README's journey does not name them.
 - TLC covers every state of the finite model. It does not reach the code.
 
 ## Journey lines and their checks
@@ -87,7 +89,7 @@ its break at the scope of `MessageMatching.cfg`:
 | Wrong patient | A physician who may access the patient moves it | one who may not access it moves it | 7 |
 | Wrong patient | to a different patient they may access | they move it to a patient they may not access | 7 |
 | Wrong patient | The full conversation moves | a move to not a patient moves only the first message | 5 |
-| Wrong patient | At once, nothing of it shows on the patient it left | it still shows there | 4 |
+| Wrong patient | At once, nothing of it, and nothing Coda wrote from it, shows on the patient it left | it still shows there | 4 |
 | Wrong patient | A physician who may not access the new patient loses it | it stays open for them | 1 |
 | Wrong patient | For a few seconds, Undo shows | Undo never goes away | 6 |
 | Wrong patient | Coda acts on the move only after Undo goes away | Coda acts at once | 6 |
@@ -105,6 +107,11 @@ These journey lines rest on records, the channel or the screen, so tests hold th
 - A review never reads an unlinked message.
 - Coda never deletes moved messages, and nothing it wrote from them shows again.
 - A message Coda can't read, and the channel stops (rules 8 and 9).
+
+These journey lines are not checked:
+
+- Coda uses no brittle filters. This is Coda's judgment, which no model or test holds.
+- Waiting messages show on Today. Who sees a message before it is linked is open in P2.
 
 ## A failure
 
