@@ -3,6 +3,24 @@
 // script text.
 function (name, ...args) {
   const helpers = {
+    scrollTo(selector) {
+      document.querySelector(selector).scrollIntoView({ block: 'center' });
+    },
+    inputValue(selector) {
+      return document.querySelector(selector)?.value ?? null;
+    },
+    beginAccountSwitchProof() {
+      window.accountSwitchDocument = crypto.randomUUID();
+      return window.accountSwitchDocument;
+    },
+    accountSwitchSnapshot() {
+      return {
+        document: window.accountSwitchDocument,
+        text: document.body.innerText,
+        draft: document.querySelector('.composer-input')?.value ?? null,
+        storageKeys: Object.keys(localStorage).filter(k => k !== 'coda-mode'),
+      };
+    },
     // Clicks the first element matching `selector`.
     click(selector) {
       const node = document.querySelector(selector);

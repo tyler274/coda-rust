@@ -18,6 +18,7 @@ ui = { path = "../ui" }
 web-sys = { version = "0.3", features = ["Window", "Storage", "Location"] }
 
 [dev-dependencies]
+base64 = "0.22"
 sea-orm = { version = "2", default-features = false, features = ["macros", "sqlx-postgres", "runtime-tokio-rustls", "with-uuid", "with-chrono", "with-json"] }
 futures-util = "0.3"
 async-trait = "0.1"
