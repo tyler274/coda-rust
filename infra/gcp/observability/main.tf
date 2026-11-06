@@ -28,10 +28,9 @@ locals {
   langfuse_web_url        = "http://${local.langfuse_web_service}.${local.namespace}.svc.cluster.local:3000"
   langfuse_otlp_endpoint  = "${local.langfuse_web_url}/api/public/otel"
 
-  # Exactly one operations backend runs (telemetry_backend). Each gate is a
-  # count/for_each source for that backend's resources.
-  datadog_backend = var.telemetry_backend == "datadog"
-  grafana_backend = var.telemetry_backend == "grafana"
+  # Each selected backend owns its resources; both keeps Datadog primary.
+  datadog_backend = contains(["datadog", "both"], var.telemetry_backend)
+  grafana_backend = contains(["grafana", "both"], var.telemetry_backend)
   datadog_count   = local.datadog_backend ? 1 : 0
   grafana_count   = local.grafana_backend ? 1 : 0
 

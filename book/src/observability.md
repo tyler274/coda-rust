@@ -15,8 +15,12 @@ reviewed plans; the observability operator owns their application.
 
 ## Choosing a backend
 
-Each environment uses exactly one operations backend; nothing fans out to
-both. `datadog` is the default everywhere.
+`datadog` is the compatibility default. `both` runs Datadog and Grafana
+concurrently with independent bounded exporter queues. Datadog owns operational
+notifications; Grafana rules evaluate in shadow mode without service paging.
+See [concurrent qualification](../../infra/gcp/observability/README.md#concurrent-shadow-qualification)
+for the default-off compatibility metrics source, separately gated synthetic
+notification route, storage review and rollback requirements.
 
 | | `datadog` | `grafana` |
 | --- | --- | --- |
@@ -24,7 +28,7 @@ both. `datadog` is the default everywhere.
 | Logs | Datadog Logs | Loki (OTLP ingestion) |
 | Request metrics | APM trace metrics | Tempo metrics-generator span metrics, remote-written to Prometheus |
 | Platform metrics | Datadog GCP integration (optional) | Cloud Monitoring datasource in Grafana (optional) |
-| Alerts | Four `datadog_monitor`s to `alert_notify` | The same four rules, provisioned in Grafana, to a Slack contact point |
+| Alerts | Four `datadog_monitor`s to `alert_notify` | The same four rules, evaluated in shadow mode without notifications |
 | Where it runs | Datadog SaaS, via the in-cluster Agent | StatefulSets in the observability cluster, ClusterIP only |
 
 The choice lives in three places that must agree:
@@ -35,7 +39,7 @@ The choice lives in three places that must agree:
   export to `nop`, so a missing choice drops data rather than sending it
   somewhere unintended. The privacy and caller processors are the same for
   both.
-- **Services.** `CODA_TELEMETRY_BACKEND` (`datadog` or `grafana`) only changes
+- **Services.** `CODA_TELEMETRY_BACKEND` (`datadog`, `grafana` or `both`) only changes
   the correlation keys in JSON log lines. OTLP export is identical.
 - **Infrastructure.** `telemetry_backend` in both
   [`observability`](/infra/gcp/observability) and
@@ -66,7 +70,7 @@ otel-collector  GKE observability cluster
   └─ logs/ops         … → transform/strip_log_content → batch ─┬ datadog: Datadog Agent (OTLP 4317) → Datadog Logs
                                                                └ grafana: Loki /otlp (OTLP/HTTP 3100)
 
-Grafana (grafana only) reads Tempo, Loki and Prometheus; its alert rules notify Slack
+Grafana (grafana or both) reads Tempo, Loki and Prometheus; operational rules remain shadow-only
 Cloud Run stdout/stderr → Cloud Logging only (not forwarded to either backend)
 Cloud Run and GKE platform metrics → Datadog GCP integration, or Grafana's Cloud Monitoring datasource (optional, project-scoped)
 ```
@@ -187,7 +191,7 @@ what it prints is what either backend would receive.
 | `DD_ENV` | services | `local` or `staging`, exported as `deployment.environment` under either backend; on Cloud Run set by OpenTofu. Falls back to `CODA_ENV`. |
 | `DD_VERSION` | services | Release version (`service.version`), baked into each image's environment at build time from its source revision. Never set by OpenTofu. |
 | `CODA_TELEMETRY_CONTENT` | services | `none` (default) or `full`. |
-| `CODA_TELEMETRY_BACKEND` | services | `datadog` (default) or `grafana`. Under `datadog`, JSON log lines add the `dd.*` correlation keys. An unknown value warns once and falls back to `datadog`. On Cloud Run set from `rust-environments`' `telemetry_backend`. |
+| `CODA_TELEMETRY_BACKEND` | services | `datadog` (default), `grafana` or `both`. Under `datadog` and `both`, JSON log lines add the `dd.*` correlation keys. An unknown value warns once and falls back to `datadog`. On Cloud Run set from `rust-environments`' `telemetry_backend`. |
 | `CODA_LOG_FORMAT` | services | `json` forces JSON logs without an OTLP endpoint. Cloud Run sets it. |
 | `DATADOG_OTLP_ENDPOINT` | collector (`datadog`) | Datadog Agent OTLP gRPC `host:port`. |
 | `TEMPO_OTLP_ENDPOINT` | collector (`grafana`) | Tempo OTLP gRPC `host:port`. |
@@ -242,10 +246,9 @@ compose credentials are fixed local development values, and every port binds to
 
 ## From alert to run
 
-1. Open the notification: under `datadog`, from the configured `alert_notify`
-   destination (staging: Slack `#engineering-observability`); under `grafana`,
-   from the Slack webhook behind `GRAFANA_SLACK_WEBHOOK_URL`. Both carry the
-   same four alerts (service 5xx rate, service p95 latency, physician chat
+1. Open the primary Datadog notification from the confirmed `alert_notify`
+   destination. Grafana evaluates equivalent operational rules in shadow mode;
+   it does not send service notifications. Both evaluate the same four alerts (service 5xx rate, service p95 latency, physician chat
    generation errors, asynchronous failures) with the same thresholds.
    Check the environment, service, release version and incident time window.
    HTTP failures and latency cover service requests; asynchronous worker failures

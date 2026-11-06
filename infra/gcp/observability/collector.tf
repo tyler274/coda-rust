@@ -41,12 +41,13 @@ locals {
     [local.collector_backend_file],
   )
   # Backend endpoints the overlay reads; only the selected backend's are set.
-  collector_backend_env = local.datadog_backend ? {
-    DATADOG_OTLP_ENDPOINT = local.datadog_agent_otlp_grpc
-    } : {
-    TEMPO_OTLP_ENDPOINT = local.tempo_otlp_grpc
-    LOKI_OTLP_ENDPOINT  = local.loki_otlp_http
-  }
+  collector_backend_env = merge(
+    local.datadog_backend ? { DATADOG_OTLP_ENDPOINT = local.datadog_agent_otlp_grpc } : {},
+    local.grafana_backend ? {
+      TEMPO_OTLP_ENDPOINT = local.tempo_otlp_grpc
+      LOKI_OTLP_ENDPOINT  = local.loki_otlp_http
+    } : {},
+  )
   collector_image    = "otel/opentelemetry-collector-contrib:0.155.0"
   collector_replicas = 2
   collector_labels = {

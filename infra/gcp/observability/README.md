@@ -36,8 +36,12 @@ without changing the operations path.
 
 ## Switching the backend
 
-`telemetry_backend` (`datadog`, the default, or `grafana`) selects one
-operations backend; there is no fan-out. `rust-environments` has a variable of
+`telemetry_backend` selects `datadog` (the compatibility default), `grafana`,
+or `both`. Concurrent mode retains both resource sets and fans sanitized traces
+and logs into independent bounded, nonblocking exporter queues (1000 batches,
+5-second requests, 30-second retry budgets). Overflow drops telemetry rather
+than blocking the product; queues are not durable across collector restarts.
+Langfuse keeps its independent generation pipeline. `rust-environments` has a variable of
 the same name that sets `CODA_TELEMETRY_BACKEND` on the product containers,
 and both roots must carry the same value. The Datadog Helm releases moved to
 indexed addresses (`moved` blocks keep an applied Agent in place), so the
@@ -70,6 +74,55 @@ Switching back is the same procedure in reverse with `telemetry_backend =
 (`data-tempo-0`, `data-loki-0`, `data-prometheus-0`, `data-grafana-0`) in the
 namespace; deleting them, and the stored telemetry, is a separate operator
 step.
+
+## Concurrent shadow qualification
+
+Use `both` in both roots to keep Datadog ingestion and its independently gated
+primary notifications. JSON logs retain W3C identifiers and Datadog aliases.
+Grafana operational rules always use the empty `coda-shadow` contact point:
+they evaluate without duplicate Slack paging. `grafana_test_notifications_enabled`
+is default-off and adds only a route requiring both `qualification=synthetic-notification-test`
+and `alertname=Coda synthetic notification test`. Its webhook is synced from
+Doppler only when enabled. Creating or firing that dedicated test rule and
+confirming Slack receipt require separate operator approval. Never relabel a
+service alert to test notifications. The external watchdog must remain outside
+Grafana and GKE; shadow evaluation is not monitoring-loss protection.
+
+Cloud Monitoring is a supported, default-off datasource through Workload
+Identity (`grafana_cloud_monitoring_enabled`), not through Tempo span metrics.
+An optional internal Prometheus-compatible source can be supplied with
+`grafana_compatibility_metrics_url`; empty means no datasource or rules. Its
+adapter contract is one series per expected target per minute, including idle
+periods, with only `environment`, `service`, `target`, `dependency` and `symptom`
+labels from fixed inventories:
+
+- `coda_compat_readiness_consecutive_failures`: integer counter of consecutive
+  failed probes (including authentication failures); reset only after two
+  consecutive successes. The shadow rule tests three failures.
+- `coda_compat_dependency_unhealthy`: 0 for healthy/idle, 1 for unhealthy or
+  overdue work, based on verified source metrics and product retry budgets.
+  The rule requires three minutes of continuous failure.
+- `coda_compat_last_observed_seconds`: last successful observation timestamp
+  per expected target/signal; a five-minute lag fires. Missing series produce
+  NoData, not success. Per-target disappearance must be represented by the
+  adapter retaining its expected inventory and last-observed value.
+
+These are explicit compatibility inputs, not a claim that any probe or cloud
+producer emits them. Qualify the adapter's real metric names, units, labels,
+authentication and missing-data behavior before enabling this source. Never use
+span-derived traffic metrics as proof of dependency availability.
+
+Before authorizing a saved plan, review the additional single-replica requests:
+Tempo 500m/2Gi and 50Gi disk, Loki 500m/1Gi and 50Gi, Prometheus 250m/1Gi and
+20Gi, Grafana 250m/512Mi and 5Gi. Total requested capacity is 1.5 CPU, 4.5Gi
+memory and 125Gi storage, in addition to Datadog/collector/Langfuse. Autopilot
+may adjust requests; price the actual saved-plan allocation, ingestion and
+retention, not these requests alone. Validate non-root volume access, RWO
+reattachment, retention cleanup and restart persistence with synthetic data.
+Retention defaults (14/30/30 days) do not establish that volumes can hold the
+expected load. Rollback to `datadog` retains the Grafana PVCs; deleting telemetry
+requires separate approval. No deployment or durability claim follows from
+local collector tests or mocked infrastructure plans.
 
 ## Inputs from rust-environments
 

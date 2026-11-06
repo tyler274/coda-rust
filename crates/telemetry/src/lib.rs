@@ -14,7 +14,7 @@
 //!   uses for log-to-trace correlation.
 //!
 //! `CODA_TELEMETRY_BACKEND` names the operations backend: `datadog` (the
-//! default) or `grafana`. Under `datadog`, JSON lines also carry
+//! default), `grafana`, or `both`. Under `datadog` and `both`, JSON lines also carry
 //! `dd.trace_id`, `dd.span_id`, `dd.service`, `dd.env` and `dd.version` for
 //! Datadog's log-to-trace correlation. An unknown value prints one warning and
 //! falls back to `datadog`. OTLP export is the same for both backends; the
@@ -201,6 +201,8 @@ enum Backend {
     Datadog,
     /// Grafana (Tempo, Loki, Prometheus): W3C hex ids only.
     Grafana,
+    /// Concurrent destinations: retain W3C ids and Datadog aliases.
+    Both,
 }
 
 impl Backend {
@@ -214,6 +216,8 @@ impl Backend {
             (Self::Datadog, None)
         } else if value.eq_ignore_ascii_case("grafana") {
             (Self::Grafana, None)
+        } else if value.eq_ignore_ascii_case("both") {
+            (Self::Both, None)
         } else {
             (
                 Self::Datadog,
@@ -332,7 +336,7 @@ where
         line.insert("level".into(), Value::String(metadata.level().to_string()));
         line.insert("target".into(), Value::String(metadata.target().to_owned()));
         line.insert("service".into(), Value::String(self.service.to_owned()));
-        let datadog = self.backend == Backend::Datadog;
+        let datadog = matches!(self.backend, Backend::Datadog | Backend::Both);
         if datadog {
             line.insert("dd.service".into(), Value::String(self.service.to_owned()));
             if let Some(env) = &self.env {
@@ -643,6 +647,19 @@ mod tests {
         assert_eq!(line["dd.service"], "physician-sample");
         assert_eq!(line["dd.env"], "staging");
         assert_eq!(line["dd.version"], "rev-7");
+    }
+
+    #[test]
+    fn both_lines_preserve_w3c_and_datadog_correlation() {
+        assert_eq!(Backend::parse(Some(" Both ")), (Backend::Both, None));
+        let line = json_line(Backend::Both);
+        let span_id = assert_common_fields(&line);
+        assert_eq!(
+            line["dd.trace_id"],
+            dd_trace_id(TraceId::from_hex(TRACE).unwrap())
+        );
+        assert_eq!(line["dd.span_id"], dd_span_id(span_id));
+        assert_eq!(line["dd.service"], "physician-sample");
     }
 
     #[test]

@@ -182,6 +182,7 @@ services:
       - ./collector.debug.yaml:/etc/otelcol/collector.debug.yaml:ro
       - ./collector.datadog.yaml:/etc/otelcol/collector.datadog.yaml:ro
       - ./collector.grafana.yaml:/etc/otelcol/collector.grafana.yaml:ro
+      - ./collector.both.yaml:/etc/otelcol/collector.both.yaml:ro
     environment:
       DATADOG_OTLP_ENDPOINT: datadog-agent:4317
       TEMPO_OTLP_ENDPOINT: tempo:4317

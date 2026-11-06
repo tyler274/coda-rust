@@ -217,10 +217,10 @@ variable "observability_enabled" {
 variable "telemetry_backend" {
   type        = string
   default     = "datadog"
-  description = "CODA_TELEMETRY_BACKEND set on the product containers while observability_enabled is on: datadog keeps the dd.* log correlation keys, grafana drops them. Must match infra/gcp/observability's telemetry_backend."
+  description = "CODA_TELEMETRY_BACKEND set on the product containers while observability_enabled is on: datadog and both keep the dd.* log correlation keys alongside W3C ids; grafana drops the aliases. Must match infra/gcp/observability's telemetry_backend."
   validation {
-    condition     = contains(["datadog", "grafana"], var.telemetry_backend)
-    error_message = "telemetry_backend must be datadog or grafana."
+    condition     = contains(["datadog", "grafana", "both"], var.telemetry_backend)
+    error_message = "telemetry_backend must be datadog, grafana or both."
   }
 }
 

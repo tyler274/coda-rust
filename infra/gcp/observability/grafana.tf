@@ -38,6 +38,34 @@ locals {
     }]
   })
 
+  grafana_contact = yamldecode(file("${local.grafana_config_dir}/provisioning/alerting/contact.yaml"))
+  grafana_test_contact = {
+    orgId = 1
+    name  = "coda-slack-test"
+    receivers = [{
+      uid      = "coda-slack-test", type = "slack", disableResolveMessage = false
+      settings = { url = "$${GRAFANA_SLACK_WEBHOOK_URL}" }
+    }]
+  }
+  grafana_contact_config = yamlencode({
+    apiVersion    = 1
+    contactPoints = concat(local.grafana_contact.contactPoints, var.grafana_test_notifications_enabled ? [local.grafana_test_contact] : [])
+    policies = [merge(local.grafana_contact.policies[0], {
+      routes = var.grafana_test_notifications_enabled ? [{
+        receiver        = "coda-slack-test"
+        object_matchers = [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]]
+        continue        = false
+      }] : []
+    })]
+  })
+  grafana_compatibility_config = var.grafana_compatibility_metrics_url == "" ? {} : {
+    "compatibility-datasource.yaml" = yamlencode({
+      apiVersion  = 1
+      datasources = [{ name = "Compatibility metrics", uid = "compatibility", type = "prometheus", access = "proxy", editable = false, url = var.grafana_compatibility_metrics_url }]
+    })
+    "compatibility-rules.yaml" = file("${local.grafana_config_dir}/compatibility-rules.yaml")
+  }
+
   # Uniform shape for the four StatefulSets, empty under datadog. config_items
   # maps each ConfigMap key to its path under config_mount. Images and args
   # match the local compose profile `grafana`, which proves them end to end.
@@ -106,9 +134,10 @@ locals {
         {
           "datasources.yaml" = file("${local.grafana_config_dir}/provisioning/datasources.yaml")
           "rules.yaml"       = local.grafana_rules_config
-          "contact.yaml"     = file("${local.grafana_config_dir}/provisioning/alerting/contact.yaml")
+          "contact.yaml"     = local.grafana_contact_config
         },
         local.grafana_monitoring_enable ? { "cloud-monitoring.yaml" = local.grafana_cloud_monitoring_datasource } : {},
+        local.grafana_compatibility_config,
       )
       config_items = merge(
         {
@@ -117,6 +146,10 @@ locals {
           "contact.yaml"     = "alerting/contact.yaml"
         },
         local.grafana_monitoring_enable ? { "cloud-monitoring.yaml" = "datasources/cloud-monitoring.yaml" } : {},
+        var.grafana_compatibility_metrics_url == "" ? {} : {
+          "compatibility-datasource.yaml" = "datasources/compatibility.yaml"
+          "compatibility-rules.yaml"      = "alerting/compatibility.yaml"
+        },
       )
       config_mount = "/etc/grafana/provisioning"
       data_mount   = "/var/lib/grafana"

@@ -747,8 +747,7 @@ run "grafana_backend_replaces_datadog" {
     condition = (
       !contains(keys(local.doppler_secrets), "datadog-secret") &&
       local.doppler_secrets["grafana-secrets"] == {
-        GRAFANA_ADMIN_PASSWORD    = "GF_SECURITY_ADMIN_PASSWORD"
-        GRAFANA_SLACK_WEBHOOK_URL = "GRAFANA_SLACK_WEBHOOK_URL"
+        GRAFANA_ADMIN_PASSWORD = "GF_SECURITY_ADMIN_PASSWORD"
       } &&
       contains([for m in yamldecode(helm_release.doppler_secrets.values[0]).manifests : m.metadata.name], "grafana-secrets") &&
       !contains([for m in yamldecode(helm_release.doppler_secrets.values[0]).manifests : m.metadata.name], "datadog-secret")
@@ -857,7 +856,7 @@ run "grafana_stack_is_cluster_private_and_bounded" {
       kubernetes_config_map_v1.grafana_stack["loki"].data["loki.yaml"] == file("${path.module}/../../../dev/observability/grafana/loki.yaml") &&
       kubernetes_config_map_v1.grafana_stack["prometheus"].data["prometheus.yaml"] == file("${path.module}/../../../dev/observability/grafana/prometheus.yaml") &&
       kubernetes_config_map_v1.grafana_stack["grafana"].data["datasources.yaml"] == file("${path.module}/../../../dev/observability/grafana/provisioning/datasources.yaml") &&
-      kubernetes_config_map_v1.grafana_stack["grafana"].data["contact.yaml"] == file("${path.module}/../../../dev/observability/grafana/provisioning/alerting/contact.yaml")
+      kubernetes_config_map_v1.grafana_stack["grafana"].data["contact.yaml"] == local.grafana_contact_config
     )
     error_message = "The deployed stack must run the shared dev/observability/grafana files unchanged."
   }
@@ -869,7 +868,9 @@ run "grafana_stack_is_cluster_private_and_bounded" {
       toset([for rule in flatten([for group in yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"]).groups : group.rules]) : rule.uid]) == toset([
         "coda-site-5xx-rate", "coda-site-p95-latency", "coda-chat-generation-errors", "coda-async-failures",
       ]) &&
-      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["contact.yaml"]).contactPoints[0].receivers).type == "slack"
+      length(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["contact.yaml"]).contactPoints[0].receivers) == 0 &&
+      yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" &&
+      length(yamldecode(local.grafana_contact_config).policies[0].routes) == 0
     )
     error_message = "Grafana must provision exactly the four Coda alert rules and the Slack contact point."
   }
@@ -958,9 +959,32 @@ run "grafana_cloud_monitoring_is_read_only_workload_identity" {
   }
 }
 
+run "concurrent_backends_remain_independent_and_shadow" {
+  command = plan
+  variables {
+    telemetry_backend = "both"
+    grafana_compatibility_metrics_url = "http://compatibility.observability.svc.cluster.local:9090"
+    grafana_test_notifications_enabled = true
+    datadog_gcp_integration_enabled = true
+    grafana_cloud_monitoring_enabled = true
+  }
+  assert {
+    condition = length(helm_release.datadog_agent) == 1 && length(kubernetes_stateful_set_v1.grafana_stack) == 4 && length(local.collector_backend_env) == 3
+    error_message = "Both must retain every backend and its collector endpoint."
+  }
+  assert {
+    condition = yamldecode(local.collector_backend_config).service.pipelines["traces/ops"].exporters == ["otlp/datadog", "otlp/tempo"] && yamldecode(local.collector_backend_config).service.pipelines["logs/ops"].exporters == ["otlp/datadog", "otlphttp/loki"] && alltrue([for e in values(yamldecode(local.collector_backend_config).exporters) : e.sending_queue.enabled && e.sending_queue.queue_size == 1000 && !e.sending_queue.block_on_overflow && e.retry_on_failure.max_elapsed_time == "30s"])
+    error_message = "Both signals must fan out with independent bounded nonblocking queues and retries."
+  }
+  assert {
+    condition = yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" && yamldecode(local.grafana_contact_config).policies[0].routes[0].object_matchers == [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]] && length(local.grafana_compatibility_config) == 2 && contains(keys(local.doppler_secrets["grafana-secrets"]), "GRAFANA_SLACK_WEBHOOK_URL")
+    error_message = "Only explicit synthetic labels may notify; compatibility source is separately configured and the webhook is a secret reference."
+  }
+}
+
 run "reject_an_unknown_backend" {
   command = plan
-  variables { telemetry_backend = "both" }
+  variables { telemetry_backend = "unknown" }
   expect_failures = [var.telemetry_backend]
 }
 

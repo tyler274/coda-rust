@@ -22,10 +22,10 @@ locals {
     local.grafana_backend ? {
       # Injected as environment (envFrom) into Grafana: the admin login and
       # the Slack webhook its provisioned contact point reads.
-      "grafana-secrets" = {
-        "GRAFANA_ADMIN_PASSWORD"    = "GF_SECURITY_ADMIN_PASSWORD"
-        "GRAFANA_SLACK_WEBHOOK_URL" = "GRAFANA_SLACK_WEBHOOK_URL"
-      }
+      "grafana-secrets" = merge(
+        { "GRAFANA_ADMIN_PASSWORD" = "GF_SECURITY_ADMIN_PASSWORD" },
+        var.grafana_test_notifications_enabled ? { "GRAFANA_SLACK_WEBHOOK_URL" = "GRAFANA_SLACK_WEBHOOK_URL" } : {},
+      )
     } : {},
     # Without Langfuse, none of its keys need to exist in Doppler.
     var.langfuse_enabled ? {

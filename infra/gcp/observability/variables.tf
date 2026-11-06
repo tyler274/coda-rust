@@ -87,13 +87,37 @@ variable "otel_gateway_allowed_callers" {
 }
 
 variable "telemetry_backend" {
-  description = "Operations backend behind the gateway: datadog (the Datadog Agent and monitors) or grafana (self-hosted Tempo, Loki, Prometheus and Grafana in this cluster). Exactly one; there is no fan-out. Langfuse is independent of this choice."
+  description = "Operations destinations behind the gateway: datadog (compatibility default), grafana, or both with independent exporter queues. Datadog remains the primary operational notifier; Grafana evaluates in shadow mode. Langfuse is independent."
   type        = string
   default     = "datadog"
 
   validation {
-    condition     = contains(["datadog", "grafana"], var.telemetry_backend)
-    error_message = "telemetry_backend must be datadog or grafana."
+    condition     = contains(["datadog", "grafana", "both"], var.telemetry_backend)
+    error_message = "telemetry_backend must be datadog, grafana or both."
+  }
+}
+
+variable "grafana_test_notifications_enabled" {
+  description = "Explicitly enable only the labeled synthetic Grafana Slack route. Operational rules remain shadow-only; requires operator approval and the webhook in Doppler."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.grafana_test_notifications_enabled || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Grafana test notifications require grafana or both."
+  }
+}
+
+variable "grafana_compatibility_metrics_url" {
+  description = "Optional private Prometheus-compatible source for normalized readiness/dependency signals. Empty disables its datasource and rules. The signal producer must implement the documented compatibility contract; Tempo span metrics are not this source. No credentials in URLs."
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || can(regex("^https?://[a-zA-Z0-9.-]+(:[0-9]+)?/?$", var.grafana_compatibility_metrics_url))
+    error_message = "Use a credential-free internal HTTP(S) origin, or empty to disable."
+  }
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Compatibility metrics require grafana or both."
   }
 }
 
@@ -136,7 +160,7 @@ variable "grafana_cloud_monitoring_enabled" {
   default     = false
 
   validation {
-    condition     = !var.grafana_cloud_monitoring_enabled || var.telemetry_backend == "grafana"
+    condition     = !var.grafana_cloud_monitoring_enabled || contains(["grafana", "both"], var.telemetry_backend)
     error_message = "grafana_cloud_monitoring_enabled requires telemetry_backend = grafana."
   }
 }
@@ -147,7 +171,7 @@ variable "datadog_gcp_integration_enabled" {
   default     = false
 
   validation {
-    condition     = !var.datadog_gcp_integration_enabled || var.telemetry_backend == "datadog"
+    condition     = !var.datadog_gcp_integration_enabled || contains(["datadog", "both"], var.telemetry_backend)
     error_message = "The Datadog GCP integration requires telemetry_backend = datadog; grafana uses grafana_cloud_monitoring_enabled."
   }
 }
@@ -217,7 +241,7 @@ variable "datadog_monitors_enabled" {
     error_message = "Enabling monitors requires an explicitly confirmed notification handle."
   }
   validation {
-    condition     = !var.datadog_monitors_enabled || var.telemetry_backend == "datadog"
+    condition     = !var.datadog_monitors_enabled || contains(["datadog", "both"], var.telemetry_backend)
     error_message = "Datadog monitors require telemetry_backend = datadog; grafana provisions its own alert rules."
   }
 }

@@ -31,10 +31,11 @@ fi
 profile_args=()
 overlay=debug
 case "${1:-}" in
-  --datadog)
+  --datadog|--both)
+    overlay="${1#--}"
     shift
     profile_args=(--profile datadog)
-    overlay=datadog
+    if [ "$overlay" = both ]; then profile_args+=(--profile grafana); fi
     if ! "${runner[@]}" sh -c '[ -n "${DD_API_KEY:-}" ]'; then
       echo "DD_API_KEY is not set: run \`doppler login\` (coda-rust/dev holds it) or export it." >&2
       exit 1
@@ -55,7 +56,7 @@ Langfuse:   http://localhost:${LANGFUSE_PORT:-3000}  (dev@coda.local / coda-loca
 Collector:  OTLP http://localhost:4318, gRPC localhost:4317
 Backend:    ${overlay}
 EOF
-if [ "$overlay" = grafana ]; then
+if [ "$overlay" = grafana ] || [ "$overlay" = both ]; then
   cat <<EOF
 Grafana:    http://localhost:3300  (admin / coda-local-dev)
 Tempo API:  http://localhost:3200   Loki API: http://localhost:3100   Prometheus: http://localhost:9091
@@ -63,7 +64,7 @@ Alerts:     Slack contact point posts to the local sink: http://localhost:3301/r
 EOF
 fi
 backend_env=""
-[ "$overlay" = grafana ] && backend_env="CODA_TELEMETRY_BACKEND=grafana "
+[ "$overlay" != debug ] && backend_env="CODA_TELEMETRY_BACKEND=$overlay "
 cat <<EOF
 Point a service at it:
   ${backend_env}OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CONTENT=full \\

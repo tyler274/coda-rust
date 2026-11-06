@@ -36,16 +36,20 @@ RUN = "synthetic-canonical-attempt-1"
 ENV = {**os.environ, "LANGFUSE_PUBLIC_KEY": "synthetic", "LANGFUSE_SECRET_KEY": "synthetic", "OTEL_GATEWAY_AUDIENCE": "collector-test", "OTEL_GATEWAY_ALLOWED_CALLERS": "allowed@example.test", "OTEL_GATEWAY_ENDPOINT": "http://127.0.0.1:1"}
 PROCESSES = []
 SERVERS = []
-BACKENDS = ("datadog", "grafana")
+BACKENDS = ("datadog", "grafana", "both")
 BACKEND = "datadog"
 
 
-def ops_exporters(grpc, http):
+def ops_exporters(grpc, http, grafana=None):
     """The selected backend overlay's exporters, retargeted at loopback sinks."""
     bounded = {"timeout": "500ms", "sending_queue": {"queue_size": 2}, "retry_on_failure": {"initial_interval": "100ms", "max_interval": "200ms", "max_elapsed_time": "1s"}}
-    if BACKEND == "datadog":
-        return {"otlp/datadog": {"endpoint": f"127.0.0.1:{grpc}", **bounded}}
-    return {"otlp/tempo": {"endpoint": f"127.0.0.1:{grpc}", **bounded}, "otlphttp/loki": {"endpoint": f"http://127.0.0.1:{http}", **bounded}}
+    exporters = {}
+    if BACKEND in ("datadog", "both"):
+        exporters["otlp/datadog"] = {"endpoint": f"127.0.0.1:{grpc}", **bounded}
+    if BACKEND in ("grafana", "both"):
+        grpc, http = grafana or (grpc, http)
+        exporters.update({"otlp/tempo": {"endpoint": f"127.0.0.1:{grpc}", **bounded}, "otlphttp/loki": {"endpoint": f"http://127.0.0.1:{http}", **bounded}})
+    return exporters
 
 
 def port():
@@ -166,10 +170,10 @@ def sink(label):
     return (grpc, http), path
 
 
-def gateway(label, ops, lf, issuer=None, langfuse_enabled=True):
+def gateway(label, ops, lf, issuer=None, langfuse_enabled=True, grafana=None):
     """Production file order, backend overlay last; a test-only JSON overlay then moves ports."""
     http, grpc, health = port(), port(), port()
-    overlay = {"extensions": {"health_check": {"endpoint": f"127.0.0.1:{health}"}}, "receivers": {"otlp": {"protocols": {"http": {"endpoint": f"127.0.0.1:{http}"}, "grpc": {"endpoint": f"127.0.0.1:{grpc}"}}}}, "processors": {"batch": {"timeout": "100ms", "send_batch_size": 1}}, "exporters": {**ops_exporters(*ops), "otlphttp/langfuse": {"endpoint": lf.issuer, "encoding": "json", "compression": "none", "timeout": "500ms", "sending_queue": {"queue_size": 2}, "retry_on_failure": {"initial_interval": "100ms", "max_interval": "200ms", "max_elapsed_time": "1s"}}}}
+    overlay = {"extensions": {"health_check": {"endpoint": f"127.0.0.1:{health}"}}, "receivers": {"otlp": {"protocols": {"http": {"endpoint": f"127.0.0.1:{http}"}, "grpc": {"endpoint": f"127.0.0.1:{grpc}"}}}}, "processors": {"batch": {"timeout": "100ms", "send_batch_size": 1}}, "exporters": {**ops_exporters(*ops, grafana=grafana), "otlphttp/langfuse": {"endpoint": lf.issuer, "encoding": "json", "compression": "none", "timeout": "500ms", "sending_queue": {"queue_size": 2}, "retry_on_failure": {"initial_interval": "100ms", "max_interval": "200ms", "max_elapsed_time": "1s"}}}}
     configs = [ROOT / "dev/observability/collector.yaml"]
     if issuer:
         configs.append(ROOT / "dev/observability/collector.gke.yaml")
@@ -316,10 +320,50 @@ def test_auth(langfuse_enabled=True):
     print(f"PASS {label}: missing/malformed/wrong-audience/expired/wrong-issuer rejected (10 HTTP 401s); unlisted email + forged caller dropped; authorized traces/logs exported without content; Langfuse enabled={langfuse_enabled}")
 
 
+def test_fanout(unavailable=None):
+    label = f"both-{unavailable or 'healthy'}"
+    dd, dd_path = sink(f"{label}-dd") if unavailable != "datadog" else ((port(), port()), None)
+    gf, gf_path = sink(f"{label}-grafana") if unavailable != "grafana" else ((port(), port()), None)
+    lf = mock(f"{label}-langfuse", fail=unavailable == "langfuse")
+    http, health = gateway(label, dd, lf, grafana=gf)
+    traces, logs = fixture()
+    started = time.monotonic()
+    for _ in range(30 if unavailable else 1):
+        assert post(http, "traces", traces) == 200
+        assert post(http, "logs", logs) == 200
+    elapsed = time.monotonic() - started
+    assert elapsed < 5, elapsed
+    for path in (dd_path, gf_path):
+        if path is None:
+            continue
+        wait_for(lambda: "resourceSpans" in read_sink(path) and "logRecords" in read_sink(path), "healthy destination did not export both signals")
+        data = read_sink(path)
+        assert all(marker not in data for marker in MARKERS), "fanout content leak"
+        # The file exporter can be appending another batch: parse only
+        # newline-terminated records from this snapshot.
+        payloads = [json.loads(line) for line in data.split("\n")[:-1]]
+        spans = [s for p in payloads for r in p.get("resourceSpans", []) for scope in r["scopeSpans"] for s in scope["spans"]]
+        records = [r for p in payloads for resource in p.get("resourceLogs", []) for scope in resource["scopeLogs"] for r in scope["logRecords"]]
+        assert any(s["traceId"] == TRACE and s["spanId"] == SPAN for s in spans)
+        assert any(r["traceId"] == TRACE and r["spanId"] == SPAN for r in records)
+    if unavailable != "langfuse":
+        wait_for(lambda: bool(lf.received), "Langfuse blocked")
+        assert MARKERS[0] in json.dumps(lf.received)
+    if unavailable:
+        wait_for(lambda: "sending queue is full" in (OUT / f"{label}.log").read_text(), "bounded overflow not exercised")
+    with urllib.request.urlopen(f"http://127.0.0.1:{health}", timeout=1) as response:
+        assert response.status == 200
+    print(f"PASS both unavailable={unavailable}: sanitized correlated traces/logs at each healthy sink; independent Langfuse; bounded ingest {elapsed:.3f}s; healthy collector")
+
+
 def run_backend(backend):
     global BACKEND
     BACKEND = backend
     print(f"== backend overlay: collector.{backend}.yaml", flush=True)
+    if backend == "both":
+        for unavailable in (None, "datadog", "grafana", "langfuse"):
+            test_fanout(unavailable)
+        return
     test_privacy()
     test_operational_failure()
     test_operational_failure("physician-sample", "physician.recovery.sweep", "physician.recovery.failed", {"error.type": "database"})
