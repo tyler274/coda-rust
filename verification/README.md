@@ -55,6 +55,25 @@ with focused tests and the observations its criteria name.
 | [coda-verify-sign-in](../.agents/skills/coda-verify-sign-in/SKILL.md#when-a-change-needs-this) | Physician sign-in against its TLA+ model: TLC on the five rules, then the bug paths replayed in the browser | Physician session, sign-in and tab code, the auth server's answers, or the sign-in spec or model |
 | [coda-verify-physician](../.agents/skills/coda-verify-physician/SKILL.md#when-a-change-needs-this) | Physician chat across two site instances and a worker: fan-out, couldn't-finish and Try again, resync, duplicate and retry delivery | Physician chat delivery, the worker, the event bus, durable chat runs, or the conversation renderer |
 
+## Scenario receipts
+
+`scripts/scenarios.py` runs the product journeys that work on one machine and writes
+`receipt.json` under `target/verification/runs/`. P1, a physician asking about a patient, runs over
+HTTP against the [scale stack](../scripts/physician-scale-stack.py). That stack has two sites, the
+worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet conversation,
+runs the duet-api Postgres suites against the same Postgres. The run reads no credentials.
+
+```sh
+nix develop .#agent --command scripts/scenarios.py
+```
+
+The receipt records the git revision and binary and chart digests. It also records each step's
+actor, command id, observation and artifact, and labels each step `controlled`, `real-model` or
+`clinical-judgment`. The runner produces only controlled steps. It lists every capability a
+journey needs that no local owner provides yet, such as cited chart answers, a phone or a real
+model, under `missing`, so the outcome reads `incomplete` and does not pass silently. A failed step
+exits 1. `--require-complete` exits 3 while anything is missing.
+
 ## The agent harness
 
 The agent harness stays out of the models and meets them only at declared events. An agent's
