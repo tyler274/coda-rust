@@ -805,6 +805,10 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
+      - name: Prepare container workspace
+        run: |
+          git config --global --add safe.directory "$PWD"
+          printf 'CARGO_HOME=%s/.ci-cargo\n' "$PWD" >> "$GITHUB_ENV"
       - name: Restore Postgres proof build
         id: postgres-cache
         continue-on-error: true
@@ -833,6 +837,7 @@ jobs:
         run: python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
+          DUET_TEST_ALLOW_POSTGRES_SERVICE: '1'
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
           PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@postgres:5432/physician_ci
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@postgres:5432/front_door_ci

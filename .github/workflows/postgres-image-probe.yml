@@ -212,6 +212,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+      - name: Prepare container workspace
+        run: |
+          git config --global --add safe.directory "$PWD"
+          printf 'CARGO_HOME=%s/.ci-cargo\n' "$PWD" >> "$GITHUB_ENV"
       - name: Restore exact Postgres target snapshot
         id: target
         uses: actions/cache/restore@v6
@@ -228,6 +232,8 @@ jobs:
           PROBE_TARGET_HIT: ${{ steps.target.outputs.cache-hit }}
         run: python scripts/nix-cache/shell_probe.py cache-ready --directory probe-result
       - name: Exercise full shard 2
+        env:
+          DUET_TEST_ALLOW_POSTGRES_SERVICE: '1'
         run: |
           python scripts/check-sql.py
           createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci

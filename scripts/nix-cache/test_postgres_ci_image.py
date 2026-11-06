@@ -4,6 +4,9 @@ import base64
 import io
 import json
 from pathlib import Path
+import shutil
+import subprocess
+import tempfile
 import unittest
 from unittest.mock import Mock, patch
 import urllib.error
@@ -11,6 +14,7 @@ import urllib.error
 import yaml
 
 import postgres_ci_image as image
+import verify_postgres_image as verify
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -182,6 +186,25 @@ class WorkflowTests(unittest.TestCase):
             checkout = next(s for s in job["steps"] if s.get("uses", "").startswith("actions/checkout@"))
             self.assertIs(checkout["with"]["persist-credentials"], False)
 
+    def test_container_workspace_setup_and_service_permission(self):
+        probe = yaml.safe_load((ROOT / ".github/workflows/postgres-image-probe.yml").read_text())
+        for job in (self.jobs["postgres"], probe["jobs"]["container"]):
+            steps = job["steps"]
+            checkout = next(i for i, step in enumerate(steps)
+                            if step.get("uses", "").startswith("actions/checkout@"))
+            setup = steps[checkout + 1]
+            self.assertEqual(setup["name"], "Prepare container workspace")
+            self.assertIn('git config --global --add safe.directory "$PWD"', setup["run"])
+            self.assertNotIn("safe.directory '*'", setup["run"])
+            self.assertIn('printf \'CARGO_HOME=%s/.ci-cargo\\n\' "$PWD" >> "$GITHUB_ENV"', setup["run"])
+            proof = next(step for step in steps
+                         if "bash scripts/check-postgres.sh" in step.get("run", ""))
+            permission = proof.get("env", {}).get("DUET_TEST_ALLOW_POSTGRES_SERVICE",
+                                                 job.get("env", {}).get("DUET_TEST_ALLOW_POSTGRES_SERVICE"))
+            self.assertEqual(permission, "1")
+        self.assertNotIn("DUET_TEST_ALLOW_POSTGRES_SERVICE", probe.get("env", {}))
+        self.assertNotIn("DUET_TEST_ALLOW_POSTGRES_SERVICE", str(probe["jobs"]["shell"]))
+
     def test_gate_requires_resolution_and_shards(self):
         self.assertIn("postgres-image", self.jobs["result"]["needs"])
         self.assertIn("postgres", self.jobs["result"]["needs"])
@@ -212,6 +235,47 @@ class WorkflowTests(unittest.TestCase):
                 self.assertIn("@postgres:5432/", value)
         cache = next(s for s in postgres["steps"] if s.get("id") == "postgres-cache")
         self.assertIn("nix/postgres-ci-image.nix", cache["with"]["key"])
+
+
+class EmulatorJavaTests(unittest.TestCase):
+    """The Pub/Sub emulator launcher needs `which java` under a PATH-only env."""
+
+    def test_image_contains_which(self):
+        recipe = (ROOT / "nix/postgres-ci-image.nix").read_text()
+        contents = recipe.split("contents = [", 1)[1].split("];", 1)[0]
+        self.assertRegex(contents, r"(?m)^\s*pkgs\.which$")
+
+    def check(self, tools):
+        with tempfile.TemporaryDirectory() as directory:
+            bin_dir = Path(directory)
+            java = bin_dir / "java"
+            java.write_text("#!/bin/sh\necho fake-java >&2\n")
+            java.chmod(0o755)
+            for tool in tools:
+                (bin_dir / tool).symlink_to(shutil.which(tool))
+            return subprocess.run(["/bin/sh", "-c", verify.EMULATOR_JAVA_CHECK], env={"PATH": str(bin_dir)},
+                                  capture_output=True, text=True)
+
+    def test_check_fails_without_which_and_passes_with_it(self):
+        missing = self.check(["env"])
+        self.assertNotEqual(missing.returncode, 0, missing.stderr)
+        present = self.check(["env", "which"])
+        self.assertEqual(present.returncode, 0, present.stderr)
+        self.assertIn("fake-java", present.stderr)
+
+    def test_check_does_not_trust_java_home(self):
+        with tempfile.TemporaryDirectory() as directory:
+            java_home = Path(directory) / "jdk"
+            (java_home / "bin").mkdir(parents=True)
+            (java_home / "bin/java").symlink_to("/bin/true")
+            bin_dir = Path(directory) / "bin"
+            bin_dir.mkdir()
+            for tool in ("env", "which"):
+                (bin_dir / tool).symlink_to(shutil.which(tool))
+            result = subprocess.run(["/bin/sh", "-c", verify.EMULATOR_JAVA_CHECK],
+                                    env={"PATH": str(bin_dir), "JAVA_HOME": str(java_home)},
+                                    capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0, "JAVA_HOME must not satisfy the PATH-only check")
 
 
 if __name__ == "__main__":

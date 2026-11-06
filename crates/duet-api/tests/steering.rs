@@ -25,6 +25,9 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tower::ServiceExt;
 use uuid::Uuid;
 
+#[path = "support/disposable_postgres.rs"]
+mod disposable_postgres;
+
 const FIRST: &str = "First question about my sleep";
 const SECOND: &str = "Second thought: I also wake at 4am";
 
@@ -157,12 +160,8 @@ struct Fixture {
 
 async fn fixture(prefix: &str) -> (PgConnection, Fixture) {
     let url = std::env::var("DUET_TEST_DATABASE_URL").expect("real local PostgreSQL required");
-    let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
-    assert!(matches!(
-        options.get_host(),
-        "localhost" | "127.0.0.1" | "::1"
-    ));
-    let mut admin = PgConnection::connect(&url).await.unwrap();
+    let options = disposable_postgres::options(&url);
+    let mut admin = PgConnection::connect_with(&options).await.unwrap();
     let suffix = Uuid::new_v4().simple().to_string();
     let name = format!("{prefix}_{suffix}");
     let role = format!("{prefix}_role_{suffix}");

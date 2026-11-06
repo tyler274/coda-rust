@@ -41,6 +41,9 @@ pkgs.dockerTools.streamLayeredImage {
     # Python helpers or manuals. Keep the nixpkgs-maintained minimal variant.
     pkgs.gitMinimal
     pkgs.procps
+    # gcloud's Pub/Sub emulator launcher finds Java with `which` when the test
+    # helper's cleared environment drops JAVA_HOME.
+    pkgs.which
     pkgs.dockerTools.caCertificates
     pkgs.dockerTools.fakeNss
     pkgs.dockerTools.usrBinEnv

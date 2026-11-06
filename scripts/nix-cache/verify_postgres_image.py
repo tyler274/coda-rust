@@ -13,6 +13,14 @@ import re
 import subprocess
 
 
+# pubsub::testing clears the emulator's environment and keeps PATH but not
+# JAVA_HOME, so gcloud's launcher falls back to `which java`. Mirror that.
+EMULATOR_JAVA_CHECK = (
+    'env -i PATH="$PATH" HOME=/tmp/emulator-home /bin/sh -c '
+    '\'java=$(which java) && test -x "$java" && "$java" -version\''
+)
+
+
 def output(command, **kwargs):
     return subprocess.check_output(command, text=True, **kwargs).strip()
 
@@ -27,9 +35,7 @@ def main():
     # A local worktree's .git points outside the checkout; Actions checkout is
     # standalone. Expose metadata read-only and override its host worktree path.
     git_dir = output(["git", "rev-parse", "--path-format=absolute", "--git-common-dir"], cwd=root)
-    docker += ["-v", f"{git_dir}:{git_dir}:ro", "-e", "GIT_WORK_TREE=/workspace",
-               "-e", "GIT_CONFIG_COUNT=1", "-e", "GIT_CONFIG_KEY_0=safe.directory",
-               "-e", "GIT_CONFIG_VALUE_0=/workspace"]
+    docker += ["-v", f"{git_dir}:{git_dir}:ro", "-e", "GIT_WORK_TREE=/workspace"]
     context = {
         "HOME": "/github/home", "TMPDIR": "/tmp", "TMP": "/tmp", "TEMP": "/tmp",
         "GITHUB_WORKSPACE": "/workspace", "GITHUB_OUTPUT": "/tmp/job-output",
@@ -68,7 +74,25 @@ def main():
     for key in names | {"PATH", "HOME", "PWD", "TMPDIR"}:
         assert nested.get(key) == actual.get(key), f"nested bash changed {key}"
     print("PASS: runner context, ordered PATH and nested bash preserved")
-    subprocess.run(shell + ["test -r \"$SSL_CERT_FILE\" && python scripts/check-sql.py && cargo --version && rustc --version && createdb --version && pkg-config --modversion openssl && java -version && git --version"], check=True)
+    # The root container sees the host-owned checkout as dubious. Reproduce the
+    # hosted failure before applying the exact setup used by both container jobs.
+    rejected = subprocess.run(shell + ["git ls-files"], text=True, capture_output=True)
+    assert rejected.returncode == 128 and "dubious ownership" in rejected.stderr, rejected.stderr
+    import yaml
+    workflow = yaml.safe_load((root / ".github/workflows/ci.yml").read_text())
+    setup = next(step["run"] for step in workflow["jobs"]["postgres"]["steps"]
+                 if step.get("name") == "Prepare container workspace")
+    subprocess.run(shell + [
+        'mkdir -p "$HOME"; ' + setup + '\n'
+        'source "$GITHUB_ENV"; export CARGO_HOME; '
+        'test "$CARGO_HOME" = "$PWD/.ci-cargo" && '
+        'test "$(git config --global --get-all safe.directory)" = "$PWD" && '
+        'bash -c \'test "$HOME" = /github/home && test "$CARGO_HOME" = "$PWD/.ci-cargo" && git ls-files --error-unmatch Cargo.toml\' && '
+        'test -r "$SSL_CERT_FILE" && python scripts/check-sql.py && cargo --version && rustc --version && createdb --version && pkg-config --modversion openssl && java -version && git --version'
+    ], check=True)
+    print("PASS: reproduced dubious ownership; workflow setup repairs exact trust and Cargo path across nested BASH_ENV")
+    subprocess.run(shell + [EMULATOR_JAVA_CHECK], check=True)
+    print("PASS: `which java` resolves under the Pub/Sub emulator's cleared environment")
     # Preserve native build capability and archive tools used by Actions cache.
     subprocess.run(["docker", "run", "--rm", "--network", "none", args.image,
                     "bash", "--noprofile", "--norc", "-eo", "pipefail", "-c",
