@@ -199,11 +199,10 @@ jobs:
             /usr/local/.ghcup
           sudo docker image prune --all --force || true
           df -h
+      # Installs the rust-toolchain.toml pin, the same one Nix builds with, so
+      # the cache key below changes only in a toolchain PR.
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-          targets: wasm32-unknown-unknown
+        run: rustup toolchain install
       # Release binary, not `cargo install`; matches the flake pin.
       - name: Install wasm-bindgen
         run: |
@@ -1056,9 +1055,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+      - name: Read the pinned Rust version
+        id: toolchain
+        run: python3 -c 'import tomllib; print("channel=" + tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])' >> "$GITHUB_OUTPUT"
       - name: Check dependency guardrails
         uses: EmbarkStudios/cargo-deny-action@v2
+        # The action's image ships an older Rust. Install the pin minimally and
+        # use it instead of letting rustup pull the full toolchain file profile.
+        env:
+          RUSTUP_TOOLCHAIN: ${{ steps.toolchain.outputs.channel }}
         with:
+          rust-version: ${{ steps.toolchain.outputs.channel }}
           command: check
           # `arguments` is word-split into the argv head; `command-arguments`
           # land after `check`. Putting the sections in `arguments` made clap

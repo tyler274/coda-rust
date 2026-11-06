@@ -98,6 +98,7 @@ class ScopeTests(unittest.TestCase):
         cases = {
             "Cargo.lock": True, "Cargo.toml": True, "crates/app/Cargo.toml": True,
             "flake.lock": True, "flake.nix": True, "nix/packages.nix": True,
+            "rust-toolchain.toml": True,
             "crates/app/src/lib.rs": False, "scripts/check.sh": False,
             "book/src/page.md": False, "crates/app/Cargo.toml.md": False,
         }
