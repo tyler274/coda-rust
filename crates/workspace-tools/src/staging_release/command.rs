@@ -105,10 +105,17 @@ impl<R: Runner> Gcloud<R> {
         if Instant::now() >= self.deadline {
             return Err(Error::Cloud(BUDGET_EXHAUSTED));
         }
+        // The GA CLI assigns every flag after `--container` to that container.
+        let split = args.iter().position(|arg| *arg == "--container");
+        let (head, tail) = match split {
+            Some(index) => (&args[..index], &args[index..]),
+            None => (args, &[][..]),
+        };
         let mut all: Vec<String> = ["--project", PROJECT, "run"]
             .into_iter()
-            .chain(args.iter().copied())
+            .chain(head.iter().copied())
             .chain(["--region", REGION, "--quiet", "--format=json"])
+            .chain(tail.iter().copied())
             .map(str::to_owned)
             .collect();
         // The SDK's formatted CLI error is not an absence contract. Capture the
@@ -352,18 +359,26 @@ mod tests {
                 &receipt.images,
             )
             .expect("update");
+        let command = &cloud.runner.args[3];
+        let container = command
+            .iter()
+            .position(|arg| arg == "--container")
+            .expect("--container");
         assert_eq!(
-            &cloud.runner.args[3][3..10],
+            &command[container..],
             [
-                "services",
-                "update",
-                "physician",
-                "--container",
-                "physician",
-                "--image",
-                image.as_str(),
+                "--container".to_owned(),
+                "physician".to_owned(),
+                "--image".to_owned(),
+                image.as_str().to_owned(),
             ]
         );
+        for flag in ["--async", "--region", "--quiet", "--format=json"] {
+            assert!(
+                command[..container].iter().any(|arg| arg == flag),
+                "{flag} follows --container"
+            );
+        }
     }
     #[test]
     fn mutations_reject_missing_target_images_before_invoking_runner() {
