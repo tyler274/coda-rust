@@ -165,7 +165,7 @@ class ScopeTests(unittest.TestCase):
             ("push", {"before": "0" * 40, "after": head}),
             ("push", {"before": "1" * 40, "after": head}),
             ("pull_request", {}), ("pull_request", None),
-            ("workflow_dispatch", {}), ("unknown", {}),
+            ("workflow_dispatch", {}), ("schedule", {}), ("unknown", {}),
         ]:
             with self.subTest(event=event, payload=payload):
                 # Explicit null input is different from the helper's default.
@@ -221,6 +221,42 @@ class ResultTests(unittest.TestCase):
         for name, job in self.jobs.items():
             if name.startswith("deploy-"):
                 self.assertIn("result", job["needs"], name)
+
+
+class WarmRunTests(unittest.TestCase):
+    def setUp(self):
+        self.text = WORKFLOW.read_text()
+        self.workflow = yaml.safe_load(self.text)
+        self.jobs = self.workflow["jobs"]
+
+    def test_weekly_schedule_and_manual_dispatch_both_trigger(self):
+        triggers = self.workflow[True]  # PyYAML reads the bare `on:` key as True.
+        self.assertIn("workflow_dispatch", triggers)
+        self.assertEqual(len(triggers["schedule"]), 1)
+        self.assertEqual(len(triggers["schedule"][0]["cron"].split()[4]), 1)
+
+    def test_scheduled_runs_skip_browsers_and_deployments(self):
+        browser = [s for s in self.jobs["ci"]["steps"] if "browser qualification" in s.get("name", "")]
+        self.assertEqual(len(browser), 1)
+        self.assertEqual(browser[0]["if"], "github.event_name == 'workflow_dispatch'")
+        for name, job in self.jobs.items():
+            if name.startswith("deploy-") or name == "nix-cache-publish":
+                self.assertIn("github.event_name == 'push'", job["if"], name)
+
+    def test_postgres_saves_per_commit_and_restores_by_prefix(self):
+        steps = {s.get("name"): s for s in self.jobs["postgres"]["steps"]}
+        restore = steps["Restore Postgres proof build"]
+        save = steps["Save Postgres proof build"]
+        self.assertTrue(restore["uses"].startswith("actions/cache/restore@"))
+        self.assertTrue(save["uses"].startswith("actions/cache/save@"))
+        self.assertTrue(restore["with"]["key"].endswith("-${{ github.sha }}"))
+        self.assertEqual(save["with"]["key"], "${{ steps.postgres-cache.outputs.cache-primary-key }}")
+        self.assertEqual(save["with"]["path"], restore["with"]["path"])
+        prefixes = restore["with"]["restore-keys"].strip().splitlines()
+        # Each fallback is broader: same dependency set, same shard, any shard.
+        for narrow, broad in zip([restore["with"]["key"], *prefixes], prefixes):
+            self.assertTrue(narrow.startswith(broad), broad)
+            self.assertNotEqual(narrow, broad)
 
 
 if __name__ == "__main__":
