@@ -1,29 +1,30 @@
-//! Cloud Run Job entrypoint: one probe pass, then exit.
-//!
-//! Target failures are data, not job failures: the job exits 0 once it has
-//! published. It exits 1 only when it cannot configure itself or publish, and
-//! the missing heartbeat is what alerts on that.
-
+//! Same image serves the small authenticated dispatcher or runs one job.
 #[tokio::main]
 async fn main() -> std::process::ExitCode {
-    let config = match availability_probe::Config::from_env(|key| std::env::var(key).ok()) {
-        Ok(config) => config,
-        Err(error) => {
-            eprintln!(
-                "{}",
-                serde_json::json!({ "severity": "ERROR", "message": "availability probe misconfigured", "error": error })
-            );
-            return std::process::ExitCode::FAILURE;
-        }
+    let result = if std::env::var("AVAILABILITY_MODE").as_deref() == Ok("dispatch") {
+        availability_probe::dispatch::serve().await
+    } else {
+        run_job().await
     };
-    match availability_probe::run(config).await {
-        Ok(_) => std::process::ExitCode::SUCCESS,
+    match result {
+        Ok(()) => std::process::ExitCode::SUCCESS,
         Err(error) => {
             eprintln!(
                 "{}",
-                serde_json::json!({ "severity": "ERROR", "message": "availability probe could not publish", "error": error })
+                serde_json::json!({"severity": "ERROR", "message": error.to_string()})
             );
             std::process::ExitCode::FAILURE
         }
     }
+}
+async fn run_job() -> Result<(), availability_probe::Error> {
+    use availability_probe::{Config, Error, delivery};
+    let config = Config::from_env(|key| std::env::var(key).ok())?;
+    let slot = std::env::var("AVAILABILITY_PROBE_SLOT")
+        .map_err(|e| Error::caused("explicit scheduler slot required", e))?
+        .parse::<u64>()
+        .map_err(|e| Error::caused("invalid scheduler slot", e))?;
+    let execution = std::env::var("CLOUD_RUN_EXECUTION")
+        .map_err(|e| Error::caused("Cloud Run execution identity required", e))?;
+    delivery::run_slot(config, slot, execution).await
 }

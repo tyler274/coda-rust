@@ -149,6 +149,8 @@ struct Google {
     signed: Mutex<Vec<Value>>,
     identity_audiences: Mutex<Vec<String>>,
     published: Mutex<Option<Value>>,
+    reject_service_metrics: bool,
+    publication_attempts: Mutex<Vec<Value>>,
 }
 
 async fn google(State(state): State<Arc<Google>>, request: Request) -> Response {
@@ -194,7 +196,30 @@ async fn google(State(state): State<Arc<Google>>, request: Request) -> Response 
                 headers.get(header::AUTHORIZATION).unwrap(),
                 "Bearer synthetic-access"
             );
-            *state.published.lock().unwrap() = Some(serde_json::from_slice(&body).unwrap());
+            let batch: Value = serde_json::from_slice(&body).unwrap();
+            state
+                .publication_attempts
+                .lock()
+                .unwrap()
+                .push(batch.clone());
+            if state.reject_service_metrics
+                && batch["timeSeries"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .any(|s| s["metric"]["type"] != HEARTBEAT_METRIC)
+            {
+                return StatusCode::BAD_REQUEST.into_response();
+            }
+            let mut published = state.published.lock().unwrap();
+            if let Some(existing) = published.as_mut() {
+                existing["timeSeries"]
+                    .as_array_mut()
+                    .unwrap()
+                    .extend(batch["timeSeries"].as_array().unwrap().iter().cloned());
+            } else {
+                *published = Some(batch);
+            }
             axum::Json(json!({})).into_response()
         }
         _ => StatusCode::NOT_FOUND.into_response(),
@@ -240,6 +265,7 @@ async fn run_authenticates_each_target_and_publishes_points_and_heartbeat() {
     .await;
     let config = Config {
         project: "test-project".into(),
+        state_bucket: None,
         service_account: "probe@test.iam.gserviceaccount.com".into(),
         targets: vec![
             (Target::Physician, physician.clone()),
@@ -251,6 +277,7 @@ async fn run_authenticates_each_target_and_publishes_points_and_heartbeat() {
             metadata: format!("{api}/metadata"),
             sign_jwt: format!("{api}/iam"),
             monitoring: format!("{api}/monitoring"),
+            storage: api.clone(),
         },
     };
 
@@ -358,6 +385,7 @@ async fn credential_failure_is_auth_failure_without_a_request() {
     .await;
     let config = Config {
         project: "test-project".into(),
+        state_bucket: None,
         // signJwt for another account answers 404 here.
         service_account: "other@test.iam.gserviceaccount.com".into(),
         targets: vec![(Target::Physician, physician)],
@@ -366,6 +394,7 @@ async fn credential_failure_is_auth_failure_without_a_request() {
             metadata: format!("{api}/metadata"),
             sign_jwt: format!("{api}/iam"),
             monitoring: format!("{api}/monitoring"),
+            storage: api.clone(),
         },
     };
     let observations = availability_probe::run(config).await.unwrap();
@@ -389,6 +418,7 @@ async fn publish_failure_fails_the_run() {
     .await;
     let config = Config {
         project: "wrong-project".into(),
+        state_bucket: None,
         service_account: "probe@test.iam.gserviceaccount.com".into(),
         targets: vec![(Target::Physician, physician)],
         timeout: Duration::from_secs(5),
@@ -396,13 +426,47 @@ async fn publish_failure_fails_the_run() {
             metadata: format!("{api}/metadata"),
             sign_jwt: format!("{api}/iam"),
             monitoring: format!("{api}/monitoring"),
+            storage: api.clone(),
         },
     };
     assert!(
         availability_probe::run(config)
             .await
             .unwrap_err()
+            .to_string()
             .contains("404")
+    );
+}
+
+#[tokio::test]
+async fn rejected_service_metrics_never_publish_a_healthy_heartbeat() {
+    let state = Arc::new(Google {
+        reject_service_metrics: true,
+        ..Google::default()
+    });
+    let api = serve(Router::new().fallback(google).with_state(state.clone())).await;
+    let config = Config {
+        project: "test-project".into(),
+        state_bucket: None,
+        service_account: "probe@test.iam.gserviceaccount.com".into(),
+        targets: vec![(Target::Physician, answer(StatusCode::OK).await)],
+        timeout: Duration::from_secs(5),
+        endpoints: Endpoints {
+            metadata: format!("{api}/metadata"),
+            sign_jwt: format!("{api}/iam"),
+            monitoring: format!("{api}/monitoring"),
+            storage: api,
+        },
+    };
+    assert!(availability_probe::run(config).await.is_err());
+    let attempts = state.publication_attempts.lock().unwrap();
+    assert_eq!(attempts.len(), 1);
+    assert!(
+        attempts[0]["timeSeries"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|s| s["metric"]["type"] != HEARTBEAT_METRIC)
     );
 }
 
@@ -411,6 +475,9 @@ fn config_requires_identity_and_https_targets() {
     fn env(pairs: &[(&'static str, &'static str)]) -> impl Fn(&str) -> Option<String> {
         let pairs = pairs.to_vec();
         move |key| {
+            if key == "AVAILABILITY_PROBE_STATE_BUCKET" {
+                return Some("synthetic-bucket".into());
+            }
             pairs
                 .iter()
                 .find(|(k, _)| *k == key)
@@ -428,6 +495,7 @@ fn config_requires_identity_and_https_targets() {
     assert!(
         Config::from_env(env(&[base[0], base[1]]))
             .unwrap_err()
+            .to_string()
             .contains("no AVAILABILITY_PROBE")
     );
     assert!(
