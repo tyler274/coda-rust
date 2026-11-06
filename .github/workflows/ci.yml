@@ -713,9 +713,9 @@ jobs:
           # (PKG_CONFIG_PATH reaches build scripts), so it is in the key too.
           # Main and scheduled runs save one per commit, so concurrent merges don't race for a key ("another job may be
           # creating this cache") and PRs restore the newest main build.
-          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix') }}-${{ github.sha }}
+          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-${{ github.sha }}
           restore-keys: |
-            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix') }}-
+            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-
             postgres-${{ runner.os }}-shard${{ matrix.shard }}-
             postgres-${{ runner.os }}-
       # Shard 2 finishes first, so it also checks SQL formatting.
@@ -739,7 +739,7 @@ jobs:
       - name: Save Postgres proof build
         if: >-
           steps.postgres-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' ||
-          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix'))))
+          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix'))))
         continue-on-error: true
         uses: actions/cache/save@v6
         with:

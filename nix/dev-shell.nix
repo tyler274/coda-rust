@@ -1,6 +1,9 @@
 # Shared repository toolchain for interactive and unattended development.
 # The unattended profile omits desktop tooling and Doppler credential loading.
 { pkgs, postgres, wheelLibs, chromiumBin, rustToolchain, desktop ? true, loadCredentials ? true }:
+let
+  common = import ./shell-common.nix { inherit pkgs; };
+in
 pkgs.mkShell {
   packages = with pkgs; [
     # rustc, cargo, rustfmt, clippy and the wasm32 std from rust-toolchain.toml.
@@ -28,16 +31,7 @@ pkgs.mkShell {
     # these. Each developer signs in once: `codex login`, `claude auth login`.
     codex
     claude-code
-    # The Pub/Sub emulator backs the physician chat-turn queue tests
-    # (crates/physician-sample/tests/worker.rs). It is a Java server.
-    ((google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.pubsub-emulator ]).overrideAttrs (old: {
-      # The component check writes gcloud configuration. Keep it in the build
-      # directory so root builds without sandboxing cannot create /homeless-shelter.
-      buildCommand = ''
-        export CLOUDSDK_CONFIG="$TMPDIR/gcloud"
-        ${old.buildCommand}
-      '';
-    }))
+    common.gcloud
     jre_headless
     # Redis-compatible server for the physician event bus tests
     # (crates/physician-bus/tests, physician-sample/tests/fanout.rs).
@@ -61,22 +55,13 @@ pkgs.mkShell {
     # 3.19.13 build SIGTRAPs under the dev shell's LD_LIBRARY_PATH.
   ] ++ pkgs.lib.optionals desktop [ pkgs.code-cursor-fhs ];
 
-  # Do not inherit host linker search paths (notably ElyLD's -B prefix).
-  # ElyLD placed httparse's AVX constant at a 16-byte rather than 32-byte
-  # boundary, faulting on vmovaps in the physician HTTP proxy unit test.
-  env.NIX_CFLAGS_LINK = "";
-  # Select the existing stdenv BFD linker for native Rust links. Cargo
-  # fingerprints this target-specific flag, unlike NIX_CFLAGS_LINK, so
-  # entering the repaired shell also replaces cached mislinked binaries.
-  # Do not send GCC linker flags to wasm32 or other cross targets.
-  env.CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS = "-C link-arg=-fuse-ld=bfd";
-  # rust-analyzer loads std from the toolchain's rust-src component.
-  env.RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
-  env.OPENSSL_NO_VENDOR = "1";
-  env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
-  # The browser proof tests (crates/mobile/tests, physician-sample/tests)
-  # look this name up when CHROMIUM is unset.
-  env.CHROMIUM = "${pkgs.chromium}/bin/chromium";
+  env = common.env // {
+    # rust-analyzer loads std from the toolchain's rust-src component.
+    RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
+    # The browser proof tests (crates/mobile/tests, physician-sample/tests)
+    # look this name up when CHROMIUM is unset.
+    CHROMIUM = "${pkgs.chromium}/bin/chromium";
+  };
 
   shellHook = ''
     export COREPACK_HOME="$HOME/.cache/coda-dev/corepack"
@@ -135,8 +120,7 @@ CURSOR
     if [ -z "''${CHROMIUM:-}" ]; then
       export CHROMIUM="${chromiumBin}"
     fi
-    export C_INCLUDE_PATH="${pkgs.glibc.dev}/include''${C_INCLUDE_PATH:+:}$C_INCLUDE_PATH"
-    export LIBRARY_PATH="${pkgs.glibc}/lib''${LIBRARY_PATH:+:}$LIBRARY_PATH"
+    ${common.glibcHook}
     # Nix's PostgreSQL puts its Unix socket in /run/postgresql, which a
     # non-root user cannot write on NixOS or a stock Linux host. The test
     # suite's harness starts its own clusters with pg_ctl and passes no
