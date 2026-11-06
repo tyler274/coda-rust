@@ -44,7 +44,7 @@ Linking:
 Wrong patient:
 
 - A physician who may access the patient moves a linked conversation to a different patient they may access, or to not a patient. The full conversation moves, and later messages follow it.
-- At once, nothing of the conversation shows on the patient it left. A physician who may not access the new patient loses it.
+- At once, nothing of the conversation, and nothing Coda wrote from it, shows on the patient it left. A physician who may not access the new patient loses it.
 - For a few seconds, Undo shows. Coda acts on the move only after Undo goes away, so Undo puts everything back as it was. A physician who may not access the patient it goes back to loses it.
 - A message that arrives while Undo shows follows the conversation. Undo takes that message back with the conversation.
 - Coda never deletes moved messages. Nothing Coda wrote from them shows again.

@@ -7,8 +7,11 @@
 (* One conversation. The state is what the physicians see: where each    *)
 (* patient message is, the patient the conversation is linked to, the    *)
 (* patient it shows on, the suggestion on Messages to match, whose        *)
-(* conversation is open, and the Undo of a move. Beside them is one fact: *)
-(* whether Coda has acted on the move.                                     *)
+(* conversation is open, and the Undo of a move. What Coda wrote from the *)
+(* conversation shows wherever the conversation shows, so `on` holds it   *)
+(* too. Beside them is one fact: whether Coda has acted on the move.      *)
+(* Opening and closing the conversation are screen steps for rule 1. The *)
+(* README's journey does not name them.                                    *)
 (*                                                                         *)
 (* One step is one thing a person or Coda does, and the screens change in *)
 (* the same step. The patient writes and Coda reads the message in one    *)
@@ -294,16 +297,18 @@ LinksOnItsOwn == [][\A i \in Messages :
 \* 4. After a conversation moves to a different patient, nothing of it stays readable on the patient it left.
 RightPatient == on \subseteq {link}
 
-\* 5. After Coda decides, or after 15 minutes, every patient message shows to a physician who can act on
-\* it until it is handled.
-\* A message is handled only by its own step: a physician leaves that one message unlinked, Coda decides it
-\* isn't from a patient, or it goes where the conversation is not a patient.
+(* A message is handled only by its own step: a physician leaves that    *)
+(* one message unlinked, Coda decides it isn't from a patient, or it goes *)
+(* where the conversation is not a patient.                                *)
 HandledBy(i) ==
   CASE msg'[i] = Unlinked ->
          event'.name = "you leave it unlinked" /\ \A j \in Messages \ {i} : msg'[j] = Unlinked => msg[j] = Unlinked
     [] msg'[i] = Filtered ->
          event'.name = "Coda decides it isn't from a patient" /\ \A j \in Messages \ {i} : msg'[j] = Filtered => msg[j] = Filtered
     [] OTHER -> link' = NotPatient
+
+\* 5. After Coda decides, or after 15 minutes, every patient message shows to a physician who can act on
+\* it until it is handled.
 NeverInvisible ==
   /\ [](\A i \in Messages : msg[i] = Linked => link \in on /\ \E d \in Physicians : link \in access[d])
   /\ [][\A i \in Messages : (msg[i] # msg'[i] /\ msg'[i] \in {Unlinked, Filtered, NotAPatient}) => HandledBy(i)]_vars
