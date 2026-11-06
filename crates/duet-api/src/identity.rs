@@ -29,7 +29,11 @@ fn provider_failure(status: reqwest::StatusCode, body: &serde_json::Value) -> Ap
             Some("INVALID_ID_TOKEN" | "TOKEN_EXPIRED" | "USER_DISABLED" | "USER_NOT_FOUND")
         )
     {
-        ApiError::Unauthorized
+        if body["error"]["message"].as_str() == Some("TOKEN_EXPIRED") {
+            ApiError::SessionExpired
+        } else {
+            ApiError::Unauthorized
+        }
     } else {
         ApiError::Unavailable("Identity provider could not verify this session")
     }
@@ -59,10 +63,17 @@ mod refusal_tests {
             "USER_NOT_FOUND",
         ] {
             let body = serde_json::json!({"error":{"message":message}});
-            assert!(matches!(
-                provider_failure(reqwest::StatusCode::BAD_REQUEST, &body),
-                ApiError::Unauthorized
-            ));
+            let expected = if message == "TOKEN_EXPIRED" {
+                "expired"
+            } else {
+                "unverified"
+            };
+            let error = provider_failure(reqwest::StatusCode::BAD_REQUEST, &body);
+            assert_eq!(
+                matches!(error, ApiError::SessionExpired),
+                expected == "expired",
+                "{message}"
+            );
         }
     }
 }

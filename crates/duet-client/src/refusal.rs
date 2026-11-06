@@ -37,6 +37,8 @@ pub enum SessionRefusal {
     Invalid,
     /// Duet has ended this session.
     Revoked,
+    /// The verified subject has no Duet account.
+    Absent,
 }
 
 /// Decode only the product's machine-readable contract. Unknown 401s stay recoverable.
@@ -48,6 +50,9 @@ pub fn classify(status: reqwest::StatusCode, body: &str) -> Option<SessionRefusa
     match value["detail"]["code"].as_str()? {
         "session_invalid" => Some(SessionRefusal::Invalid),
         "session_revoked" => Some(SessionRefusal::Revoked),
+        "account_absent" => Some(SessionRefusal::Absent),
+        // An expired token refreshes first. It does not end the session.
+        "session_expired" => None,
         _ => None,
     }
 }
