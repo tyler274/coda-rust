@@ -77,7 +77,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Conversation.** The physician's chat with Coda about one patient, distinct from a patient's message to the physician. Away from a patient, the sidebar lists recent conversations; a patient's page keeps that patient's conversations.
 
-**Run steps.** While Coda works, the physician sees steps that come only from real tool calls, worded for a physician and never as tool names or internal vocabulary. They replay later from the patient's history and never become Today items or notifications. Physicians see steps, not the model's reasoning. Pulsing dots show running work.
+**Run steps.** While Coda works, the physician sees steps built from the [harness's tool-call events](harness.md#events), worded for a physician and never as tool names or internal vocabulary. They replay later from the patient's history and never become Today items or notifications. Physicians see steps, not the model's reasoning. Pulsing dots show running work.
 
 **Citations.** A citation opens the exact source Coda read, with a short dated preview Coda wrote, the passage for that claim highlighted, and a live link into the EHR when one exists. One source can back several claims, and each citation opens its own passage. Citations can point to records, literature, wearables, patient messages and other sources. Every record Coda read gets its preview; "unavailable" only applies to a source Coda couldn't read at all.
 
@@ -92,7 +92,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 1. The physician finds a patient with Find patient, a server-side roster search that respects access and is shared by everything that searches patients, and opens the patient page. If search ever falls back to keywords, someone is told.
 2. The patient page shows identity with DOB and MRN labeled (whenever the source supplies them), the patient summary and when records were last refreshed.
 3. The physician writes a question, or dictates it: hold the shortcut or click the mic, release to transcribe, and the text lands in the box for editing. Nothing sends on its own. Asking from the patient page starts a new conversation about that patient.
-4. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, the clinical literature. Whether to consult literature is Coda's judgment, and chart answers work when the literature service is down. Coda sees how old its copy of the records is and fetches fresh records when it judges it needs to.
+4. Coda reads the chart, prior conversations, its understanding of the patient and, when useful, the clinical literature. Whether to consult literature is Coda's judgment, and chart answers work when the literature service is down. Coda sees how old its copy of the records is and fetches fresh records when it judges it needs to. Coda discovers records in the patient workspace on demand and opens the exact revision behind a chart claim. A large read identifies the passage delivered and where to continue in that revision.
 5. While Coda works, steps appear live. The finished answer arrives whole.
 6. A reworded question still finds the evidence, and one failed read doesn't fail the whole answer.
 7. The answer cites evidence beside each claim and ends with one Sources control and a collapsed Basis and limitations. Missing or unreadable evidence is said plainly, and unavailable literature reads differently from literature that found nothing.
@@ -101,14 +101,14 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 Along the way:
 
-- **Steer.** Sending while Coda answers changes the answer's direction at once. Nothing typed is ever lost.
-- **Queue.** Send next queues a message. Queued messages stay visible, editable and deletable, and one can be sent right away while no answer is running.
-- **Stop.** Stop really stops, and queued text returns to the composer. The stopped answer stays in the transcript marked stopped and keeps its Resume until the physician sends something else.
+- **Steer.** Sending while Coda answers [steers](harness.md#guarantees) the answer at once. Nothing typed is ever lost.
+- **Queue.** Send next queues a message. Coda keeps queued messages, not the browser, so they survive a closed tab and show on every device. They stay visible, editable and deletable. When the answer ends, Coda answers them together in one reply, and one can be sent right away while no answer is running.
+- **Stop.** Stop really stops and never sends queued messages: queued text returns to the composer. The stopped answer stays in the transcript marked stopped and keeps its Resume until the physician sends something else.
 - **News mid-answer.** Records or messages that arrive before the answer finishes are taken in.
 - **News after the answer.** A finished answer stays as it was said and is marked with Update when newer records arrive.
 - **Saving.** Drafts save quietly. Only a draft that can't be kept says "Not saved" with Retry, and a failed send keeps its text in the composer.
 - **Lost receipt.** A command changes its item only once accepted. A lost receipt shows as pending, Coda confirms it on its own and never sends twice, and if it still can't confirm, the item says so with Check again.
-- **Restart.** After a restart the physician finds conversations, drafts, history and feedback exactly as they left them, and interrupted work recovers without duplicate effects.
+- **Restart.** After a restart the physician finds conversations, drafts, history and feedback exactly as they left them, and interrupted work recovers as the [harness](harness.md#guarantees) promises.
 - **Archive.** Archiving a conversation offers Undo. It's allowed only with no running or queued work, and it never clears attention or ends follow-ups. Sending, Resume, Try again and Update each bring an archived conversation back.
 - **Correction.** See K1.
 
@@ -228,7 +228,7 @@ This is how we prove principle 4.
 5. An undecided medication recommendation never becomes a plan, and a corrected lab retires a stale reply.
 6. The run reports physician-touched items per 100 patients per week, read alongside whether necessary care happened.
 7. A clinician on the team starts it locally with one command, uses the physician app, and reruns and shapes scenarios.
-8. The simulation supplies the world, the events and the actors, never the model's conclusions. Evals are the jobs the product must do, run as simulations across patient types and scenarios.
+8. Simulations run the way the [harness](harness.md#how-it-works) describes. Evals are the jobs the product must do, run as simulations across patient types and scenarios.
 9. The synthetic panel has a realistic spread of time since each patient was last seen. Each chart stops at the patient's last contact and ends at the simulation's today, with pending items and booked visits but nothing later.
 
 ### A1. Sign-in and access
@@ -391,28 +391,26 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
 
-**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
+**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
 **Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces.
 
-**Runs.**
+**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Coda Agents:
 
-- Interrupted work resumes without duplicating effects, and a retry reuses work that already finished.
-- A run ends exactly once, whether it completes, is cancelled, shuts down, crashes or gets no answer.
 - A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
 - Recovery never alerts the physician.
-- When context fills, the model writes its own durable working note before older context is released, with room kept for it. The note never replaces patient memory or source evidence.
 - A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
-- Records that change before a run finishes reach the run, and the run keeps the exact source versions it read.
-- Steering prevents stale results from being published.
-- Completion is accepted only after authority and currency are checked.
-- Each patient's work starts independently and runs side by side. How much runs at once is an engineering decision, and code never ranks clinical importance.
+- A new citation requires the exact supporting passage to have reached the answering model in its current window.
+- Working notes are separate from patient memory.
+- Each patient's work starts independently and runs side by side.
+  - How much runs at once is an engineering decision. An admission limit and priority classes come only once load measurements justify them.
+  - Code never ranks clinical importance.
 
 **Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
 
-**Live status.** Run steps are projected from structured tool calls and recorded facts, the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
+**Live status.** Run steps are the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
 
 **Mail.** Each practice’s Spruce connection has one intake lease, so no message is filed twice or lost. After a rollback, a connection a newer release has touched stops filing and shows on the health page until an operator acts.
 
@@ -421,5 +419,3 @@ These are how we build the product above. They matter to its behavior but are en
 **Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
 
 **Storage.** Per-practice database topology is decided when it's needed.
-
-**The harness.** The model owns judgment, and the harness adds tools and guardrails without restricting it.
