@@ -243,6 +243,16 @@ variable "async_failure_threshold" {
   }
 }
 
+variable "container_memory_limit_ratio" {
+  description = "Share of its own memory limit an observability-namespace container may hold for 10 minutes before alerting."
+  type        = number
+  default     = 0.9
+  validation {
+    condition     = var.container_memory_limit_ratio > 0 && var.container_memory_limit_ratio < 1
+    error_message = "container_memory_limit_ratio must be between 0 and 1."
+  }
+}
+
 variable "site_5xx_rate_threshold" {
   description = "physician-site 5xx share of requests over 5 minutes that pages."
   type        = number

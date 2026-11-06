@@ -42,9 +42,8 @@ resource "google_cloud_run_v2_service" "app" {
     }
     containers {
       # Named only beside the otel-collector sidecar (index 1); unset keeps
-      # the single-container template unchanged. Release (gcloud run services
-      # update --image, no --container) targets the container that has ports,
-      # which is always this one.
+      # the single-container template unchanged. Release updates this
+      # container's image by that name (scripts/gcp/release_shape.py).
       name  = local.observability ? each.key : null
       image = try(var.images[each.key].runtime, "")
       ports { container_port = 8080 }
@@ -54,9 +53,11 @@ resource "google_cloud_run_v2_service" "app" {
         # billing): its Postgres authority listener and the Redis bus subscriber
         # run between requests and stall under request-only CPU. With physician
         # scaling on, one instance stays up for the recovery sweep (see
-        # scaling above). Observed services also need idle CPU to drain
-        # bounded telemetry batches after their last response.
-        cpu_idle          = !local.observability && each.key != "physician"
+        # scaling above). Duet keeps request-based CPU with or without the
+        # sidecar: it has no work between requests, and telemetry is not a
+        # reason to bill it for idle time (book/src/gcp.md, "Telemetry
+        # sidecars and CPU allocation").
+        cpu_idle          = each.key != "physician"
         startup_cpu_boost = false
       }
       env {
@@ -129,7 +130,7 @@ resource "google_cloud_run_v2_service" "app" {
           limits = { cpu = "1", memory = "256Mi" }
           # Same CPU allocation as the product container: Cloud Run bills and
           # throttles the instance as a whole.
-          cpu_idle          = !local.observability && each.key != "physician"
+          cpu_idle          = each.key != "physician"
           startup_cpu_boost = false
         }
         env {
@@ -350,9 +351,9 @@ resource "google_cloud_run_v2_service" "physician_worker" {
         limits = { cpu = "1", memory = "1Gi" }
         # Request-based CPU is enough: every unit of work is a push request held
         # open until the turn commits, and the worker keeps no listener or
-        # subscriber between requests (it only PUBLISHes to Redis). With
-        # observability on, idle CPU lets the bounded exporter finish batches.
-        cpu_idle          = !local.observability
+        # subscriber between requests (it only PUBLISHes to Redis). The
+        # sidecar does not change that; see the app services above.
+        cpu_idle          = true
         startup_cpu_boost = false
       }
       env {
@@ -415,7 +416,7 @@ resource "google_cloud_run_v2_service" "physician_worker" {
         args  = containers.value.args
         resources {
           limits            = { cpu = "1", memory = "256Mi" }
-          cpu_idle          = !local.observability
+          cpu_idle          = true
           startup_cpu_boost = false
         }
         env {

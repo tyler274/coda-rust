@@ -207,12 +207,13 @@ runs on pushes to `main`, after every check job, when the repository variable
    commit, checks that each published image's configuration digest (including
    its uncompressed layer identities) matches the tested image, and records the
    registry digest. It never rebuilds an image;
-2. for `physician`, then `duet`: updates `<app>-migrate` to the migration digest
-   and executes it to completion, then updates the `<app>` service to the runtime
-   digest and requires its latest Ready revision to serve that digest with all
-   traffic;
+2. checks the shape of the `physician` and `duet` services before any migration
+   runs, then for `physician`, then `duet`: updates `<app>-migrate` to the migration
+   digest and executes it to completion, then updates the `<app>` service's product
+   container to the runtime digest and requires its latest Ready revision to serve
+   that digest with all traffic;
 3. updates `physician-worker` to its digest once that service exists, with the same
-   Ready-revision check. Until then it reports the digest to record as
+   checks. Until then it reports the digest to record as
    `images.physician.worker` for the scaling apply;
 4. uploads a receipt (tested-archive manifest, digests, executions, revisions) as the
    `release-receipt-*` artifact.
@@ -233,6 +234,54 @@ the workflow:
 gh variable set RUST_STAGING_DEPLOY --body enabled   # on
 gh variable delete RUST_STAGING_DEPLOY               # off
 ```
+
+The release changes one field per service: the product container's image.
+[`rollout-service.sh`](/scripts/gcp/rollout-service.sh) runs
+[`release_shape.py`](/scripts/gcp/release_shape.py) around each
+`gcloud run services update`:
+
+- **Before.** The template must have one container, or exactly the product
+  container (named after the service, with port 8080) and an `otel-collector`
+  sidecar with `OTEL_EXPORTER_OTLP_ENDPOINT` on the product container. Any other
+  shape stops the release. A multi-container service is updated with
+  `--container <service>`, so the image never lands on the sidecar.
+- **After.** The new template must equal the old one except for that image:
+  same containers, environment, resources, CPU allocation, probes and scaling.
+  A lost sidecar or environment variable fails the job and names the field.
+
+Sidecars, telemetry environment, CPU and scaling belong to
+[`rust-environments`](/infra/gcp/rust-environments) and change only through a
+saved-plan apply. The release reads `observability_enabled` from
+`env/staging.tfvars` and warns, without failing, when the live shape does not
+match it yet: that means the apply is still pending, and the release keeps
+whatever shape is live.
+
+### Telemetry sidecars and CPU allocation
+
+With `observability_enabled`, each service runs an `otel-collector` sidecar
+(1 vCPU, 256 MiB) that forwards to the observability gateway. The sidecar does
+not change how CPU is allocated:
+
+| Service | `cpu_idle` | Minimum instances | Why |
+| --- | --- | --- | --- |
+| `physician` | `false` | 1 with scaling on, else 0 | Its Postgres authority listener and Redis subscriber run between requests, and the 10 s recovery sweep needs a live instance |
+| `duet` | `true` | 0 | All work happens inside a request |
+| `physician-worker` | `true` | 0 | Every turn runs inside the Pub/Sub push request it answers |
+
+Under request-based CPU a batch exported after the last response waits until
+the next request or until shutdown, when Cloud Run gives the instance CPU again
+and the telemetry guard flushes. Telemetry is delayed, not dropped; an instance
+killed before it flushes loses at most its last batch.
+
+Cost at Cloud Run tier-1 prices ($0.000018 per vCPU-second, $0.000002 per
+GiB-second, instance-based) for an instance kept warm for a month:
+
+- `physician` with the sidecar: 2 vCPU and 1.25 GiB, about $101 a month instead
+  of about $53 without it. Only scaling's minimum instance keeps it warm all month.
+- `duet` and `physician-worker` stay on request-based billing and scale to zero,
+  so idle time costs nothing. Instance-based CPU on both would have billed each
+  warm instance for up to 15 idle minutes after every request, up to about
+  $101 a month per service at continuous low traffic.
 
 ### Physician scaling (Redis fan-out and Pub/Sub chat turns)
 

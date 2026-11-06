@@ -12,7 +12,7 @@ data flow, content policy, and runbook are in
 | Part | What it is |
 | --- | --- |
 | `collector.tf` | Two-replica OpenTelemetry Collector (`otel/opentelemetry-collector-contrib:0.155.0`) running [`dev/observability/collector.yaml`](/dev/observability/collector.yaml) merged with the gateway overlay [`collector.gke.yaml`](/dev/observability/collector.gke.yaml) and, last, the backend overlay `collector.<telemetry_backend>.yaml`, all unchanged from one ConfigMap. Only the selected backend's endpoints are set (`DATADOG_OTLP_ENDPOINT`, or `TEMPO_OTLP_ENDPOINT` and `LOKI_OTLP_ENDPOINT`). A ClusterIP Service serves in-cluster callers; the `otel-gateway` internal load balancer serves Cloud Run |
-| `datadog.tf` | Only with `telemetry_backend = "datadog"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
+| `datadog.tf` | Only with `telemetry_backend = "datadog"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
 | `grafana.tf` | Only with `telemetry_backend = "grafana"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four alert rules with a Slack contact point. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
 | `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only, and an optional IAP-gated internal Gateway |
@@ -166,6 +166,19 @@ Service in this root:
   logs, because Langfuse can log payloads on errors; it accepts OTLP logs only
   from the gateway. Under `grafana`, only the gateway writes to Tempo and
   Loki, and nothing collects container logs.
+- **Cluster memory alerts.** On Autopilot, Google sizes and replaces the nodes,
+  and its balloon pods reserve spare node memory, so host memory such as
+  `system.mem.pct_usable` stays low on healthy nodes and is not ours to act on.
+  Under `datadog` with `datadog_monitors_enabled`, `datadog.tf` instead watches
+  this namespace's containers: `kubernetes.memory.working_set` above
+  `container_memory_limit_ratio` (0.9) of `kubernetes_state.container.memory_limit`
+  for 10 minutes, and any container terminated with `OOMKilled`. Both group
+  by `kube_container_name`, which survives node and pod replacement, wait
+  `new_group_delay` (300 s) before judging a new group, and resolve a group
+  after `timeout_h` (1 h) without data. The Datadog default host monitors (such
+  as "Memory space is low") are not managed here. On an Autopilot account they
+  alert on every node and leave retired hosts in Alert; mute or delete them in
+  Datadog with operator approval.
 - **Grafana alerts.** `rules.yaml` provisions the same four alerts as the
   Datadog monitors, with fixed thresholds (Grafana provisioning has no
   defaults for unset variables). A precondition on the Grafana ConfigMap

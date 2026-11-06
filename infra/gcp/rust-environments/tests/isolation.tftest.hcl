@@ -916,7 +916,6 @@ run "observability_active" {
       { for _, worker in google_cloud_run_v2_service.physician_worker : "physician-worker" => worker.template[0].containers },
       ) : (
       length(containers) == 2 &&
-      !containers[0].resources[0].cpu_idle && !containers[1].resources[0].cpu_idle &&
       containers[0].name == name && containers[0].ports[0].container_port == 8080 && length(coalesce(containers[0].depends_on, [])) == 0 &&
       containers[0].startup_probe[0].http_get[0].path == "/readyz" &&
       containers[1].name == "otel-collector" && containers[1].image == "otel/opentelemetry-collector-contrib:0.155.0" &&
@@ -926,6 +925,20 @@ run "observability_active" {
       containers[1].startup_probe[0].http_get[0].path == "/" && containers[1].startup_probe[0].http_get[0].port == 13133
     )]) && length(google_cloud_run_v2_service.physician_worker) == 1
     error_message = "physician, duet and physician-worker run the named product container at index 0 (port 8080, no depends_on) and the pinned otel-collector at index 1 with its health probe."
+  }
+  # CPU allocation does not follow the sidecar: only physician, whose
+  # listener, bus subscriber and recovery sweep run between requests, keeps
+  # instance-based CPU and its one minimum instance. Duet and the worker stay
+  # request-billed and scale to zero.
+  assert {
+    condition = alltrue([for name, service in merge(
+      { for app, service in google_cloud_run_v2_service.app : app => service },
+      { for _, worker in google_cloud_run_v2_service.physician_worker : "physician-worker" => worker },
+      ) : (
+      alltrue([for container in service.template[0].containers : container.resources[0].cpu_idle == (name != "physician")]) &&
+      service.template[0].scaling[0].min_instance_count == (name == "physician" ? 1 : 0)
+    )])
+    error_message = "With observability on, only physician keeps CPU allocated (both containers) and one minimum instance; duet and physician-worker keep request-based CPU and scale to zero."
   }
   assert {
     condition = alltrue([for containers in concat(

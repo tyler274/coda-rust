@@ -619,12 +619,40 @@ run "monitors_notify_the_alert_handle" {
     )
     error_message = "All services need HTTP coverage and asynchronous products need failure events independent of HTTP status."
   }
+  # Autopilot memory: per-container against its own limit and OOM kills,
+  # grouped by container name so node and pod churn leaves no stale group.
+  assert {
+    condition = alltrue([for m in concat(datadog_monitor.observability_container_memory, datadog_monitor.observability_container_oom) : (
+      strcontains(m.query, "kube_cluster_name:rust-observability,kube_namespace:observability,env:staging") &&
+      strcontains(m.query, "by {kube_container_name}") &&
+      !strcontains(m.query, "system.mem") && !strcontains(m.query, "by {host}") &&
+      strcontains(m.message, "@slack-confirmed-test") &&
+      !m.notify_no_data && m.new_group_delay == 300 && m.timeout_h == 1
+    )]) && length(datadog_monitor.observability_container_memory) == 1 && length(datadog_monitor.observability_container_oom) == 1
+    error_message = "Cluster memory monitors watch observability containers by name (never host memory), skip new groups for 5 minutes and resolve groups that stop reporting."
+  }
+  assert {
+    condition = (
+      strcontains(datadog_monitor.observability_container_memory[0].query, "kubernetes.memory.working_set") &&
+      strcontains(datadog_monitor.observability_container_memory[0].query, "/ max:kubernetes_state.container.memory_limit") &&
+      endswith(datadog_monitor.observability_container_memory[0].query, "> 0.9") &&
+      strcontains(datadog_monitor.observability_container_oom[0].query, "kubernetes.containers.last_state.terminated") &&
+      strcontains(datadog_monitor.observability_container_oom[0].query, "reason:oomkilled")
+    )
+    error_message = "Memory alerts compare the working set with the container's limit at 90% and count OOM-killed terminations."
+  }
+}
+
+run "reject_container_memory_ratio_out_of_range" {
+  command = plan
+  variables { container_memory_limit_ratio = 1.2 }
+  expect_failures = [var.container_memory_limit_ratio]
 }
 
 run "monitors_default_off" {
   command = plan
   assert {
-    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) == 0
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) == 0
     error_message = "Collection installation must not create monitors before the separately authorized drill."
   }
 }
@@ -702,6 +730,7 @@ run "grafana_backend_replaces_datadog" {
       length(helm_release.datadog_operator) + length(helm_release.datadog_agent) +
       length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) +
       length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) +
+      length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) +
       length(datadog_integration_gcp_sts.staging) + length(google_service_account.datadog_gcp) +
       length(google_project_iam_member.datadog_gcp) + length(google_service_account_iam_member.datadog_gcp_delegate) == 0
     )
