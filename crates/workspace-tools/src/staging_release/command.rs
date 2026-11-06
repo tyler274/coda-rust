@@ -105,10 +105,17 @@ impl<R: Runner> Gcloud<R> {
         if Instant::now() >= self.deadline {
             return Err(Error::Cloud(BUDGET_EXHAUSTED));
         }
+        // The GA CLI assigns every flag after `--container` to that container.
+        let split = args.iter().position(|arg| *arg == "--container");
+        let (head, tail) = match split {
+            Some(index) => (&args[..index], &args[index..]),
+            None => (args, &[][..]),
+        };
         let mut all: Vec<String> = ["--project", PROJECT, "run"]
             .into_iter()
-            .chain(args.iter().copied())
+            .chain(head.iter().copied())
             .chain(["--region", REGION, "--quiet", "--format=json"])
+            .chain(tail.iter().copied())
             .map(str::to_owned)
             .collect();
         // The SDK's formatted CLI error is not an absence contract. Capture the
@@ -352,9 +359,6 @@ mod tests {
                 &receipt.images,
             )
             .expect("update");
-        // gcloud's GA parser assigns every flag after `--container` to that
-        // container. `--async`, `--region`, `--quiet`, and `--format` are
-        // service flags, so they have to precede it. `--image` stays after.
         let command = &cloud.runner.args[3];
         let container = command
             .iter()

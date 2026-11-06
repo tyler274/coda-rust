@@ -722,12 +722,16 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
             .get(name.image())
             .ok_or(Error::Input("missing runtime digest"))?;
         let mut args = vec!["services", "update", name.name()];
-        // Container-scoped flags follow `--container`, so the image never
-        // lands on the otel-collector sidecar.
+        // `--image` follows `--container`, so it never lands on the sidecar.
+        // Service flags stay in front. The GA CLI assigns every later flag
+        // to that container and rejects them before the API call.
         if let Some(container) = container {
-            args.extend(["--container", container]);
+            args.extend(["--async", "--container", container]);
         }
-        args.extend(["--image", image.as_str(), "--async"]);
+        args.extend(["--image", image.as_str()]);
+        if container.is_none() {
+            args.push("--async");
+        }
         self.json(&args).map(|_| ())
     }
     fn pause(&mut self) {
