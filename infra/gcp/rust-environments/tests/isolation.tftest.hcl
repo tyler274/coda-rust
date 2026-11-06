@@ -882,6 +882,7 @@ run "observability_active" {
       google_project_iam_custom_role.availability_readback["probe"].permissions == toset(["monitoring.timeSeries.list"]) &&
       google_cloud_run_v2_service_iam_binding.availability_dispatch["probe"].members == toset(["serviceAccount:${google_service_account.availability_scheduler["probe"].email}"]) &&
       !google_cloud_run_v2_service.availability_dispatch["probe"].invoker_iam_disabled &&
+      google_cloud_run_v2_service.availability_dispatch["probe"].template[0].containers[0].resources[0].cpu_idle &&
       google_storage_bucket.availability["probe"].public_access_prevention == "enforced" &&
       endswith(google_storage_bucket_iam_member.availability["probe"].condition[0].expression, "/objects/state.json'")
     )
@@ -890,6 +891,9 @@ run "observability_active" {
   assert {
     condition = (
       google_monitoring_alert_policy.availability_watchdog["probe"].enabled &&
+      google_monitoring_metric_descriptor.availability_heartbeat["probe"].type == "custom.googleapis.com/coda/availability/heartbeat" &&
+      google_monitoring_metric_descriptor.availability_heartbeat["probe"].metric_kind == "GAUGE" &&
+      google_monitoring_metric_descriptor.availability_heartbeat["probe"].value_type == "INT64" &&
       google_monitoring_alert_policy.availability_watchdog["probe"].conditions[0].condition_absent[0].duration == "300s" &&
       toset(google_monitoring_alert_policy.availability_watchdog["probe"].alert_strategy[0].notification_prompts) == toset(["OPENED", "CLOSED"]) &&
       toset(google_monitoring_alert_policy.availability_watchdog["probe"].notification_channels) == toset(var.availability_watchdog_channels)

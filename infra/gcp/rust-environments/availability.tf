@@ -161,7 +161,11 @@ resource "google_cloud_run_v2_service" "availability_dispatch" {
     containers {
       image = var.availability_probe_image
       ports { container_port = 8080 }
-      resources { limits = { cpu = "1", memory = "256Mi" } }
+      # Request-driven: always-allocated CPU would require 512Mi and bill idle time.
+      resources {
+        limits   = { cpu = "1", memory = "256Mi" }
+        cpu_idle = true
+      }
       env {
         name  = "AVAILABILITY_MODE"
         value = "dispatch"
@@ -223,8 +227,20 @@ resource "google_cloud_scheduler_job" "availability" {
   }
   depends_on = [google_project_service.availability_scheduler, google_cloud_run_v2_service_iam_binding.availability_dispatch]
 }
+# Cloud Monitoring refuses an alert policy on a metric that was never written.
+# Declaring the probe's heartbeat lets the watchdog exist before the first run.
+resource "google_monitoring_metric_descriptor" "availability_heartbeat" {
+  for_each     = local.availability
+  project      = google_project.environment.project_id
+  type         = "custom.googleapis.com/coda/availability/heartbeat"
+  metric_kind  = "GAUGE"
+  value_type   = "INT64"
+  display_name = "Availability probe heartbeat"
+  description  = "1 per completed probe slot, published by the availability-probe job."
+}
 resource "google_monitoring_alert_policy" "availability_watchdog" {
   for_each              = local.availability
+  depends_on            = [google_monitoring_metric_descriptor.availability_heartbeat]
   project               = google_project.environment.project_id
   display_name          = "[staging] availability probe heartbeat missing"
   enabled               = var.availability_watchdog_enabled
