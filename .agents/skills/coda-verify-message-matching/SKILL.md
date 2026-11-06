@@ -20,7 +20,7 @@ rules 1 to 7. Each `INVARIANT` or `PROPERTY` quotes its README rule.
 | 6 | UndoPutsBack | Undo leaves the conversation or its messages in the wrong place, Undo never goes away, or Coda changes records for a move that the physician then undoes. |
 | 7 | OnlyBetweenTheirPatients | A physician puts a message or a conversation on a patient they may not access, or takes it from one. |
 
-Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, so tests hold them.
+Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, so the model leaves them to tests. No test holds them yet. They stay unverified until the channel code and its tests exist.
 
 ## Coverage
 
