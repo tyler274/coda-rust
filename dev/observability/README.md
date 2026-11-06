@@ -29,11 +29,21 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
 - `collector.yaml` is the one collector config. `infra/gcp/observability`
   mounts the same file, so a change here changes that deployment definition. An actual rollout
   and readback are separate.
-  Endpoints and Langfuse keys are `${env:...}` references.
+  Endpoints and Langfuse keys are `${env:...}` references. It carries traces
+  to Datadog and Langfuse and logs to Datadog only.
+- `collector.gke.yaml` is merged after the base file only on the GKE gateway.
+  It requires a Google ID token on both OTLP receivers and keeps only spans
+  and log records from the service accounts in `OTEL_GATEWAY_ALLOWED_CALLERS`.
+- `collector.gke-no-langfuse.yaml` is merged last on the gateway while
+  `infra/gcp/observability` has `langfuse_enabled = false`. It sends the
+  generation pipeline to `nop`, so the gateway needs no Langfuse endpoint or
+  keys; the Datadog pipelines are unchanged.
+- `sidecar.yaml` is the Cloud Run sidecar collector. It forwards the service's
+  localhost OTLP to the gateway with the runtime service account's ID token.
 - `collector.debug.yaml` and `collector.datadog.yaml` are local overlays.
   Compose passes exactly one of them after the base file (`COLLECTOR_OVERLAY`),
-  choosing the exporter of the Datadog pipeline. The content-stripping
-  processor runs in both, so the debug output is exactly what Datadog would get.
+  choosing the exporter of the Datadog pipelines. The content-stripping
+  processors run in both, so the debug output is exactly what Datadog would get.
 - `compose.yaml` pins every image. Its credentials are fixed **local
   development values**, not secrets: the ports bind to 127.0.0.1 and the
   stack holds synthetic data. `LANGFUSE_INIT_*` creates the org, project,
@@ -48,5 +58,12 @@ LANGFUSE_PUBLIC_KEY=x LANGFUSE_SECRET_KEY=y \
   otelcol-contrib validate --config dev/observability/collector.yaml
 LANGFUSE_PUBLIC_KEY=x LANGFUSE_SECRET_KEY=y \
   otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
+LANGFUSE_PUBLIC_KEY=x LANGFUSE_SECRET_KEY=y OTEL_GATEWAY_AUDIENCE=aud OTEL_GATEWAY_ALLOWED_CALLERS=a@p.iam.gserviceaccount.com \
+  otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml
+OTEL_GATEWAY_AUDIENCE=aud OTEL_GATEWAY_ALLOWED_CALLERS=a@p.iam.gserviceaccount.com \
+  otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml \
+  --config dev/observability/collector.gke-no-langfuse.yaml
+OTEL_SIDECAR_CONFIG="$(cat dev/observability/sidecar.yaml)" OTEL_GATEWAY_ENDPOINT=http://10.0.0.1:4318 OTEL_GATEWAY_AUDIENCE=aud \
+  otelcol-contrib validate --config=env:OTEL_SIDECAR_CONFIG
 docker compose -f dev/observability/compose.yaml config -q
 ```

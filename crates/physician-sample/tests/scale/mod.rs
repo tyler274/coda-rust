@@ -467,10 +467,21 @@ impl Emulator {
     }
 
     pub async fn publish(&self, delivery: &Delivery) {
-        let data = serde_json::to_vec(delivery).expect("delivery");
-        self.inner
-            .publish(&topic(), &[pubsub::testing::Outgoing::data(data)])
+        self.publish_with_attributes(delivery, Default::default())
             .await;
+    }
+
+    pub async fn publish_with_attributes(
+        &self,
+        delivery: &Delivery,
+        attributes: std::collections::BTreeMap<String, String>,
+    ) {
+        let data = serde_json::to_vec(delivery).expect("delivery");
+        let message = pubsub::testing::Outgoing {
+            attributes,
+            ..pubsub::testing::Outgoing::data(data)
+        };
+        self.inner.publish(&topic(), &[message]).await;
     }
 
     pub async fn pull_dead_letters(&self) -> Vec<Vec<u8>> {

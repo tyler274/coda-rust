@@ -180,6 +180,32 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(first["spec"], normalize(raw)["spec"])
         self.assertEqual(normalize(resource(job=True), job=True)["spec"]["dopplerTokenVersion"], "3")
 
+    def test_collector_stays_infrastructure_owned_across_product_releases(self):
+        raw = resource()
+        containers = raw["spec"]["template"]["spec"]["containers"]
+        containers[0]["name"] = "physician"
+        containers.append({"name": "otel-collector", "image": "otel:0.155.0",
+                           "env": [{"name": "OTEL_GATEWAY_ENDPOINT", "value": "http://10.82.0.10:4318"}]})
+        baseline = normalize(raw)["spec"]
+        containers[0]["image"] = "new-product-image"
+        self.assertEqual(baseline, normalize(raw)["spec"])
+        containers[1]["image"] = "unapproved-collector"
+        self.assertNotEqual(baseline, normalize(raw)["spec"])
+        containers[1]["image"] = "otel:0.155.0"
+        containers[1]["env"][0]["value"] = "http://public.invalid"
+        self.assertNotEqual(baseline, normalize(raw)["spec"])
+        containers[1]["ports"] = [{"containerPort": 4318}]
+        with self.assertRaises(Rejected):
+            normalize(raw)
+
+    def test_immutable_image_version_survives_secret_injection(self):
+        source = (Path(__file__).resolve().parents[2] / "nix/packages.nix").read_text()
+        self.assertIn('"DD_VERSION=${revision}"', source)
+        self.assertIn('"org.opencontainers.image.revision" = revision;', source)
+        preserve = next(line for line in source.splitlines() if "--preserve-env=" in line)
+        for name in ("DD_VERSION", "DD_ENV", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT"):
+            self.assertIn(name, preserve)
+
     def test_policy_normalization_keeps_conditions_and_audit(self):
         p = {"etag": "volatile", "bindings": [{"role": "test", "members": ["b", "a"],
                                                 "condition": {"expression": "false"}}], "auditConfigs": ["x"]}

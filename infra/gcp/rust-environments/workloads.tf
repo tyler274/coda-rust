@@ -41,6 +41,11 @@ resource "google_cloud_run_v2_service" "app" {
       }
     }
     containers {
+      # Named only beside the otel-collector sidecar (index 1); unset keeps
+      # the single-container template unchanged. Release (gcloud run services
+      # update --image, no --container) targets the container that has ports,
+      # which is always this one.
+      name  = local.observability ? each.key : null
       image = try(var.images[each.key].runtime, "")
       ports { container_port = 8080 }
       resources {
@@ -49,8 +54,9 @@ resource "google_cloud_run_v2_service" "app" {
         # billing): its Postgres authority listener and the Redis bus subscriber
         # run between requests and stall under request-only CPU. With physician
         # scaling on, one instance stays up for the recovery sweep (see
-        # scaling above). Duet serves only request/response work.
-        cpu_idle          = each.key != "physician"
+        # scaling above). Observed services also need idle CPU to drain
+        # bounded telemetry batches after their last response.
+        cpu_idle          = !local.observability && each.key != "physician"
         startup_cpu_boost = false
       }
       env {
@@ -94,12 +100,60 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value.id
         }
       }
+      env {
+        name  = "DD_ENV"
+        value = local.dd_env
+      }
+      dynamic "env" {
+        for_each = local.observability_product_env
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       startup_probe {
         initial_delay_seconds = 0
         period_seconds        = 5
         timeout_seconds       = 2
         failure_threshold     = 24
         http_get { path = "/readyz" }
+      }
+    }
+    dynamic "containers" {
+      for_each = local.otel_sidecar
+      content {
+        name  = containers.value.name
+        image = containers.value.image
+        args  = containers.value.args
+        resources {
+          limits = { cpu = "1", memory = "256Mi" }
+          # Same CPU allocation as the product container: Cloud Run bills and
+          # throttles the instance as a whole.
+          cpu_idle          = !local.observability && each.key != "physician"
+          startup_cpu_boost = false
+        }
+        env {
+          name  = "OTEL_SIDECAR_CONFIG"
+          value = containers.value.config
+        }
+        env {
+          name  = "OTEL_GATEWAY_ENDPOINT"
+          value = local.otel_gateway_endpoint
+        }
+        env {
+          name  = "OTEL_GATEWAY_AUDIENCE"
+          value = local.otel_gateway_audience
+        }
+        startup_probe {
+          initial_delay_seconds = 0
+          period_seconds        = 2
+          timeout_seconds       = 1
+          failure_threshold     = 30
+          http_get {
+            path = "/"
+            port = 13133
+          }
+        }
       }
     }
   }
@@ -289,14 +343,16 @@ resource "google_cloud_run_v2_service" "physician_worker" {
       }
     }
     containers {
+      name  = local.observability ? "physician-worker" : null
       image = try(coalesce(var.images[each.key].worker), "")
       ports { container_port = 8080 }
       resources {
         limits = { cpu = "1", memory = "1Gi" }
         # Request-based CPU is enough: every unit of work is a push request held
         # open until the turn commits, and the worker keeps no listener or
-        # subscriber between requests (it only PUBLISHes to Redis).
-        cpu_idle          = true
+        # subscriber between requests (it only PUBLISHes to Redis). With
+        # observability on, idle CPU lets the bounded exporter finish batches.
+        cpu_idle          = !local.observability
         startup_cpu_boost = false
       }
       env {
@@ -331,12 +387,59 @@ resource "google_cloud_run_v2_service" "physician_worker" {
         name  = "PHYSICIAN_PUSH_SERVICE_ACCOUNT"
         value = google_service_account.physician_pubsub_push[each.key].email
       }
+      env {
+        name  = "DD_ENV"
+        value = local.dd_env
+      }
+      dynamic "env" {
+        for_each = local.observability_product_env
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       startup_probe {
         initial_delay_seconds = 0
         period_seconds        = 5
         timeout_seconds       = 2
         failure_threshold     = 24
         http_get { path = "/readyz" }
+      }
+    }
+    # The same otel-collector sidecar as the app services; see above.
+    dynamic "containers" {
+      for_each = local.otel_sidecar
+      content {
+        name  = containers.value.name
+        image = containers.value.image
+        args  = containers.value.args
+        resources {
+          limits            = { cpu = "1", memory = "256Mi" }
+          cpu_idle          = !local.observability
+          startup_cpu_boost = false
+        }
+        env {
+          name  = "OTEL_SIDECAR_CONFIG"
+          value = containers.value.config
+        }
+        env {
+          name  = "OTEL_GATEWAY_ENDPOINT"
+          value = local.otel_gateway_endpoint
+        }
+        env {
+          name  = "OTEL_GATEWAY_AUDIENCE"
+          value = local.otel_gateway_audience
+        }
+        startup_probe {
+          initial_delay_seconds = 0
+          period_seconds        = 2
+          timeout_seconds       = 1
+          failure_threshold     = 30
+          http_get {
+            path = "/"
+            port = 13133
+          }
+        }
       }
     }
   }

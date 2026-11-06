@@ -6,7 +6,9 @@
 //! - an OpenTelemetry layer exporting OTLP/HTTP protobuf spans, only when
 //!   `OTEL_EXPORTER_OTLP_ENDPOINT` is set (tests and the sample server need no
 //!   infrastructure);
-//! - a log layer: human-readable by default, JSON lines when
+//! - a bounded OTLP log layer when an endpoint is set: fixed body and validated
+//!   operational fields only, correlated to the event's tracing parent;
+//! - a local log layer: human-readable by default, JSON lines when
 //!   `CODA_LOG_FORMAT=json` or an OTLP endpoint is set. JSON lines carry
 //!   `dd.trace_id`/`dd.span_id` for Datadog log-to-trace correlation.
 //!
@@ -44,13 +46,16 @@ use tracing_subscriber::registry::LookupSpan;
 use tracing_subscriber::util::SubscriberInitExt;
 
 pub mod genai;
+mod logs;
+pub mod propagation;
 
-/// Flushes and shuts down the span exporter when dropped.
+/// Flushes and shuts down the span and log exporters when dropped.
 ///
 /// Hold it for the life of `main`. Without an OTLP endpoint it holds nothing.
-#[must_use = "dropping the guard shuts down span export"]
+#[must_use = "dropping the guard shuts down telemetry export"]
 pub struct TelemetryGuard {
     provider: Option<SdkTracerProvider>,
+    logs: Option<opentelemetry_sdk::logs::SdkLoggerProvider>,
 }
 
 impl TelemetryGuard {
@@ -62,6 +67,10 @@ impl TelemetryGuard {
 
 impl Drop for TelemetryGuard {
     fn drop(&mut self) {
+        if let Some(provider) = self.logs.take() {
+            // Shutdown drains the bounded queue; no request ever waits for it.
+            let _ = provider.shutdown_with_timeout(Duration::from_secs(3));
+        }
         if let Some(provider) = self.provider.take() {
             let _ = provider.force_flush();
             let _ = provider.shutdown();
@@ -70,11 +79,13 @@ impl Drop for TelemetryGuard {
 }
 
 /// Installs logging and, when `OTEL_EXPORTER_OTLP_ENDPOINT` is set, span
-/// export for `service`.
+/// and content-safe operational log export for `service`. Logs use a bounded
+/// 2048-record queue, dropping on saturation rather than waiting for export.
 ///
 /// Resource attributes: `service.name` = `service`; `deployment.environment`
 /// (and `deployment.environment.name`) from `DD_ENV`, else `CODA_ENV`;
-/// `service.version` from `DD_VERSION`. The W3C trace-context propagator is
+/// `service.version` from `DD_VERSION`, else Cloud Run's immutable `K_REVISION`.
+/// The W3C trace-context propagator is
 /// installed globally. Safe to call when a global subscriber already exists:
 /// the second install is ignored.
 pub fn init(service: &'static str) -> TelemetryGuard {
@@ -84,6 +95,18 @@ pub fn init(service: &'static str) -> TelemetryGuard {
         || env::var("CODA_LOG_FORMAT").is_ok_and(|format| format.eq_ignore_ascii_case("json"));
     let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
 
+    let log_provider = endpoint
+        .as_ref()
+        .and_then(|_| match logs::provider(service) {
+            Ok(provider) => Some(provider),
+            Err(_) => {
+                eprintln!("telemetry: OTLP log exporter disabled (configuration error)");
+                None
+            }
+        });
+    let otlp_logs = log_provider
+        .as_ref()
+        .map(|provider| logs::SafeLogs::new(provider, service));
     let provider = match endpoint {
         Some(_) => match tracer_provider(service) {
             Ok(provider) => Some(provider),
@@ -101,7 +124,7 @@ pub fn init(service: &'static str) -> TelemetryGuard {
         tracing_subscriber::fmt::layer().event_format(DatadogJson {
             service,
             env: environment(),
-            version: non_empty_env("DD_VERSION"),
+            version: version(),
         })
     });
     let human_logs = (!json).then(|| tracing_subscriber::fmt::layer().with_writer(std::io::stderr));
@@ -109,6 +132,7 @@ pub fn init(service: &'static str) -> TelemetryGuard {
     let installed = tracing_subscriber::registry()
         .with(filter)
         .with(otel)
+        .with(otlp_logs)
         .with(json_logs)
         .with(human_logs)
         .try_init()
@@ -118,6 +142,7 @@ pub fn init(service: &'static str) -> TelemetryGuard {
     }
     TelemetryGuard {
         provider: if installed { provider } else { None },
+        logs: if installed { log_provider } else { None },
     }
 }
 
@@ -142,13 +167,17 @@ pub fn resource(service: &'static str) -> Resource {
         attributes.push(KeyValue::new("deployment.environment", environment.clone()));
         attributes.push(KeyValue::new("deployment.environment.name", environment));
     }
-    if let Some(version) = non_empty_env("DD_VERSION") {
+    if let Some(version) = version() {
         attributes.push(KeyValue::new("service.version", version));
     }
     Resource::builder()
         .with_service_name(service)
         .with_attributes(attributes)
         .build()
+}
+
+fn version() -> Option<String> {
+    non_empty_env("DD_VERSION").or_else(|| non_empty_env("K_REVISION"))
 }
 
 fn environment() -> Option<String> {

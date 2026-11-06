@@ -13,7 +13,7 @@ locals {
   # Infrastructure-owned (or Doppler-owned) physician scaling settings that the
   # nonsecret runtime_environment map may not set or override.
   scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM"]
-  services = toset([
+  services = setunion(toset([
     "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
     "iap.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com",
@@ -21,7 +21,8 @@ locals {
     "run.googleapis.com", "secretmanager.googleapis.com", "serviceusage.googleapis.com",
     "servicenetworking.googleapis.com", "sqladmin.googleapis.com", "storage.googleapis.com",
     "sts.googleapis.com",
-  ])
+    # GKE only for the observability cluster (observability-cluster.tf).
+  ]), var.observability_cluster_enabled ? toset(["container.googleapis.com"]) : toset([]))
 }
 
 resource "google_project" "environment" {
@@ -73,6 +74,14 @@ resource "google_project" "environment" {
         for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
       ]]))
       error_message = "Physician scaling settings are owned by infrastructure (topic, worker audience, push identity) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
+    }
+    precondition {
+      condition     = !var.observability_enabled || var.observability_cluster_enabled
+      error_message = "observability_enabled points the sidecars at the gateway in the observability cluster; enable observability_cluster_enabled first."
+    }
+    precondition {
+      condition     = alltrue(flatten([for config in values(var.runtime_environment) : [for key in keys(config) : !contains(local.observability_owned_env, key)]]))
+      error_message = "DD_ENV and the telemetry settings (OTEL_EXPORTER_OTLP_ENDPOINT, CODA_LOG_FORMAT, CODA_TELEMETRY_CONTENT) are infrastructure-owned, and DD_VERSION is baked into each image; runtime_environment may not set them."
     }
   }
 }

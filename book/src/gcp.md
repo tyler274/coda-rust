@@ -7,11 +7,21 @@ for production SMTP in `coda-health-prod`, with separate state and explicit
 saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
+Staging observability spans two workspace-owned roots, applied in order by an
+operator from reviewed saved plans:
+
+| Root | Owns | State |
+| --- | --- | --- |
+| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment. | `rust-environments/stg` |
+| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, the Datadog Agent, self-hosted Langfuse with its Cloud SQL and bucket, the Doppler operator, the Datadog monitors, and (off by default) the project-scoped Datadog GCP integration. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
+
+[Observability](observability.md) describes the per-signal paths and the
+content policy.
+
 Run every command on this page inside `nix develop` from the repository root. The
 shell provides `gcloud`, `tofu`, `doppler`, `timeout` and `jq`; do not use host copies.
 Commands that read Doppler secrets need the default shell after `doppler login`,
 not `.#agent`, which loads no credentials.
-
 ## Public marketing site
 
 The separate [`infra/gcp/public-site`](/infra/gcp/public-site) root runs the

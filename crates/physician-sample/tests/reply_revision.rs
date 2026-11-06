@@ -292,7 +292,16 @@ fn dispatches(draft: &Draft) -> Vec<&Request> {
 
 #[tokio::test]
 async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources() {
-    let Some(running) = Running::start("reply_retry", 1, 250).await else {
+    let Some(running) = Running::start_full(
+        "reply_retry",
+        1,
+        250,
+        false,
+        &[],
+        &[("CODA_LOG_FORMAT", "json")],
+    )
+    .await
+    else {
         return;
     };
     let scope = running.seed().await;
@@ -344,6 +353,19 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     newest.sort_by(|a, b| a.candidate_id.cmp(&b.candidate_id));
     assert_eq!(complete.attempts[0].sources, accepted.sources);
     assert_eq!(complete.attempts[1].sources, newest);
+    assert_ne!(complete.attempts[0].id, complete.attempts[1].id);
+    let logs = running.worker.tail();
+    let failure = logs
+        .lines()
+        .filter_map(|line| serde_json::from_str::<Value>(line).ok())
+        .find(|event| event["event"] == "physician.worker.attempt_failed")
+        .unwrap_or_else(|| panic!("missing revision failure event: {logs}"));
+    assert_eq!(failure["coda.run_id"], complete.attempts[0].id);
+    assert_eq!(failure["coda.job"], "physician_reply_revision");
+    assert_eq!(failure["error.type"], "revision");
+    for content in [ORIGINAL, INSTRUCTION, SNAPSHOT_CONTENT] {
+        assert!(!logs.contains(content), "clinical content in worker logs");
+    }
     assert_eq!(complete.sources, newest);
     assert!(complete.attempts.iter().all(|a| a.refreshes.is_empty()));
     assert_eq!(complete.revision, 2);

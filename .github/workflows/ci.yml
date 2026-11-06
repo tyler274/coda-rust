@@ -1001,6 +1001,9 @@ jobs:
       # Placeholders only; validate checks the config, never connects.
       LANGFUSE_PUBLIC_KEY: pk-lf-ci
       LANGFUSE_SECRET_KEY: sk-lf-ci
+      OTEL_GATEWAY_ENDPOINT: http://10.0.0.1:4318
+      OTEL_GATEWAY_AUDIENCE: https://otel-gateway.ci.invalid
+      OTEL_GATEWAY_ALLOWED_CALLERS: a@ci.iam.gserviceaccount.com,b@ci.iam.gserviceaccount.com
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -1017,11 +1020,18 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
-      - name: Validate the collector config
+      - name: Validate the collector configs
         run: |
           nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml
           nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
           nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
+          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml
+          # The gateway before Langfuse exists reads no Langfuse keys.
+          env -u LANGFUSE_PUBLIC_KEY -u LANGFUSE_SECRET_KEY \
+            nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.gke.yaml --config dev/observability/collector.gke-no-langfuse.yaml
+          # Cloud Run passes the sidecar file inline, so validate that form.
+          OTEL_SIDECAR_CONFIG="$(cat dev/observability/sidecar.yaml)" \
+            nix develop .#observability --command otelcol-contrib validate --config=env:OTEL_SIDECAR_CONFIG
       - name: Check the local stack
         run: |
           docker compose -f dev/observability/compose.yaml config -q

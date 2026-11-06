@@ -3,18 +3,23 @@
 # and expiry loses nothing. Postgres is Cloud SQL with IAM login; blobs are a
 # GCS bucket through the S3 interoperability API; ClickHouse and Valkey run
 # in-cluster with PVCs. The web service is ClusterIP only.
+#
+# Everything here exists only with langfuse_enabled. Off, the gateway still
+# runs and sends generation spans nowhere (collector.tf); the project IAM
+# grants and the HMAC key the operator mints are not needed yet.
 locals {
+  langfuse_count         = var.langfuse_enabled ? 1 : 0
   langfuse_chart_version = "1.5.41"
   langfuse_image_tag     = "3.225.11"
   langfuse_database      = "langfuse"
   langfuse_ksa           = local.langfuse_release
-  langfuse_gsa           = google_service_account.langfuse.email
-  langfuse_db_user       = trimsuffix(local.langfuse_gsa, ".gserviceaccount.com")
+  langfuse_gsa           = one(google_service_account.langfuse[*].email)
+  langfuse_db_user       = var.langfuse_enabled ? trimsuffix(local.langfuse_gsa, ".gserviceaccount.com") : null
   cloud_sql_proxy_image  = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.20.0"
 
   # Every value the chart sees. Secrets are referenced by Secret name and key;
   # the Doppler operator fills those Secrets (doppler.tf).
-  langfuse_values = {
+  langfuse_values = !var.langfuse_enabled ? null : {
     langfuse = {
       image = { tag = local.langfuse_image_tag }
 
@@ -77,7 +82,7 @@ locals {
           "--auto-iam-authn",
           "--structured-logs",
           "--port=5432",
-          google_sql_database_instance.langfuse.connection_name,
+          one(google_sql_database_instance.langfuse[*].connection_name),
         ]
         securityContext = { runAsNonRoot = true }
         resources = {
@@ -120,7 +125,7 @@ locals {
     s3 = {
       deploy          = false
       storageProvider = "s3"
-      bucket          = google_storage_bucket.langfuse.name
+      bucket          = one(google_storage_bucket.langfuse[*].name)
       region          = "auto"
       endpoint        = "https://storage.googleapis.com"
       forcePathStyle  = false
@@ -134,6 +139,8 @@ locals {
 }
 
 resource "google_service_account" "langfuse" {
+  count = local.langfuse_count
+
   project      = var.project_id
   account_id   = "coda-langfuse"
   display_name = "Coda Langfuse (web and worker)"
@@ -145,6 +152,8 @@ resource "google_service_account" "langfuse" {
 # `gcloud storage hmac create` and stores the pair in Doppler, so the secret
 # half never enters tofu state (google_storage_hmac_key would write it there).
 resource "google_service_account" "langfuse_blobs" {
+  count = local.langfuse_count
+
   project      = var.project_id
   account_id   = "coda-langfuse-blobs"
   display_name = "Coda Langfuse blob storage (S3 interop HMAC)"
@@ -153,16 +162,19 @@ resource "google_service_account" "langfuse_blobs" {
 }
 
 resource "google_service_account_iam_member" "langfuse_workload_identity" {
-  service_account_id = google_service_account.langfuse.name
+  count = local.langfuse_count
+
+  service_account_id = google_service_account.langfuse[0].name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "serviceAccount:${var.project_id}.svc.id.goog[${local.namespace}/${local.langfuse_ksa}]"
+  # The cluster's Workload Identity pool belongs to the cluster project.
+  member = "serviceAccount:${var.cluster_project}.svc.id.goog[${local.namespace}/${local.langfuse_ksa}]"
 }
 
 resource "google_project_iam_member" "langfuse_cloud_sql" {
-  for_each = toset([
+  for_each = var.langfuse_enabled ? toset([
     "roles/cloudsql.client",
     "roles/cloudsql.instanceUser",
-  ])
+  ]) : toset([])
 
   project = var.project_id
   role    = each.value
@@ -170,6 +182,8 @@ resource "google_project_iam_member" "langfuse_cloud_sql" {
 }
 
 resource "google_sql_database_instance" "langfuse" {
+  count = local.langfuse_count
+
   project             = var.project_id
   name                = "coda-langfuse"
   region              = var.region
@@ -222,21 +236,27 @@ resource "google_sql_database_instance" "langfuse" {
 }
 
 resource "google_sql_database" "langfuse" {
+  count = local.langfuse_count
+
   project  = var.project_id
   name     = local.langfuse_database
-  instance = google_sql_database_instance.langfuse.name
+  instance = google_sql_database_instance.langfuse[0].name
 }
 
 # Langfuse runs its own Prisma migrations, so its IAM user owns the schema.
 resource "google_sql_user" "langfuse" {
+  count = local.langfuse_count
+
   project        = var.project_id
   name           = local.langfuse_db_user
-  instance       = google_sql_database_instance.langfuse.name
+  instance       = google_sql_database_instance.langfuse[0].name
   type           = "CLOUD_IAM_SERVICE_ACCOUNT"
   database_roles = ["cloudsqlsuperuser"]
 }
 
 resource "google_storage_bucket" "langfuse" {
+  count = local.langfuse_count
+
   project                     = var.project_id
   name                        = "${var.project_id}-langfuse-blobs"
   location                    = var.region
@@ -264,12 +284,16 @@ resource "google_storage_bucket" "langfuse" {
 }
 
 resource "google_storage_bucket_iam_member" "langfuse_blobs" {
-  bucket = google_storage_bucket.langfuse.name
+  count = local.langfuse_count
+
+  bucket = google_storage_bucket.langfuse[0].name
   role   = "roles/storage.objectUser"
-  member = "serviceAccount:${google_service_account.langfuse_blobs.email}"
+  member = "serviceAccount:${google_service_account.langfuse_blobs[0].email}"
 }
 
 resource "helm_release" "langfuse" {
+  count = local.langfuse_count
+
   name       = local.langfuse_release
   repository = "https://langfuse.github.io/langfuse-k8s"
   chart      = "langfuse"

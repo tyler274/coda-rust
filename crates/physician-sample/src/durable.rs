@@ -7,6 +7,7 @@ use local_product::runtime::{
     reply::{RevisionAccepted, RevisionInput},
 };
 use std::sync::Arc;
+use tracing::Instrument;
 
 /// Receipts reduced per compaction transaction.
 const RECEIPT_BATCH: u64 = 100;
@@ -54,7 +55,8 @@ impl DurableChat {
                 .await
                 .map_err(|e| e.to_string())?;
         } else {
-            tracing::warn!("accepted physician input awaits queue recovery");
+            tracing::error!(event = "physician.queue.publish_failed", error.type = "publish",
+                "accepted physician input awaits queue recovery");
         }
         Ok(accepted)
     }
@@ -81,10 +83,15 @@ impl DurableChat {
             // Acceptance is committed already. Even a dispatch-marker failure
             // must not report accepted work as rejected; recovery can republish.
             if self.store.dispatched(&delivery, 60).await.is_err() {
-                tracing::warn!("accepted physician revision dispatch marker unavailable");
+                tracing::error!(
+                    event = "physician.queue.dispatch_failed",
+                    error.type = "database",
+                    "accepted physician revision dispatch marker unavailable"
+                );
             }
         } else {
-            tracing::warn!("accepted physician revision awaits queue recovery");
+            tracing::error!(event = "physician.queue.publish_failed", error.type = "publish",
+                "accepted physician revision awaits queue recovery");
         }
         Ok(accepted)
     }
@@ -115,7 +122,8 @@ impl DurableChat {
                 .await
                 .map_err(|e| e.to_string())?;
         } else {
-            tracing::warn!("resumed physician input awaits queue recovery");
+            tracing::error!(event = "physician.queue.publish_failed", error.type = "publish",
+                "resumed physician input awaits queue recovery");
         }
         Ok(resumed)
     }
@@ -146,23 +154,35 @@ impl DurableChat {
     }
 
     /// One bounded, fair recovery page. Returns the next keyset cursor.
+    /// Runs in its own root `physician.recovery.sweep` span, so a republished
+    /// wakeup carries the sweep's trace context, never a stale request's.
     pub async fn recover_page(&self, after: Option<&Scope>) -> Result<Option<Scope>, String> {
-        let page = self
-            .store
-            .dispatch_due(100, after)
-            .await
-            .map_err(|e| e.to_string())?;
-        for delivery in page.deliveries {
-            if self.queue.publish(&delivery).await.is_ok() {
-                self.store
-                    .dispatched(&delivery, 60)
-                    .await
-                    .map_err(|e| e.to_string())?;
-            } else {
-                tracing::warn!("physician queue recovery publication failed");
+        let span = sweep_span("chat_turn");
+        async {
+            let page = self
+                .store
+                .dispatch_due(100, after)
+                .await
+                .inspect_err(|_| record_recovery_failure("database"))
+                .map_err(|e| e.to_string())?;
+            let mut republished = 0_u64;
+            for delivery in page.deliveries {
+                if self.queue.publish(&delivery).await.is_ok() {
+                    republished += 1;
+                    self.store
+                        .dispatched(&delivery, 60)
+                        .await
+                        .inspect_err(|_| record_recovery_failure("database"))
+                        .map_err(|e| e.to_string())?;
+                } else {
+                    record_recovery_failure("publish");
+                }
             }
+            tracing::Span::current().record("coda.republished", republished);
+            Ok(page.next)
         }
-        Ok(page.next)
+        .instrument(span)
+        .await
     }
 
     /// Revision recovery has its own keyset, independent of chat pagination.
@@ -170,22 +190,32 @@ impl DurableChat {
         &self,
         after: Option<&Scope>,
     ) -> Result<Option<Scope>, String> {
-        let page = self
-            .store
-            .revisions_due(100, after)
-            .await
-            .map_err(|e| e.to_string())?;
-        for delivery in page.deliveries {
-            if self.queue.publish(&delivery).await.is_ok() {
-                self.store
-                    .dispatched(&delivery, 60)
-                    .await
-                    .map_err(|e| e.to_string())?;
-            } else {
-                tracing::warn!("physician revision queue recovery publication failed");
+        let span = sweep_span("reply_revision");
+        async {
+            let page = self
+                .store
+                .revisions_due(100, after)
+                .await
+                .inspect_err(|_| record_recovery_failure("database"))
+                .map_err(|e| e.to_string())?;
+            let mut republished = 0_u64;
+            for delivery in page.deliveries {
+                if self.queue.publish(&delivery).await.is_ok() {
+                    republished += 1;
+                    self.store
+                        .dispatched(&delivery, 60)
+                        .await
+                        .inspect_err(|_| record_recovery_failure("database"))
+                        .map_err(|e| e.to_string())?;
+                } else {
+                    record_recovery_failure("publish");
+                }
             }
+            tracing::Span::current().record("coda.republished", republished);
+            Ok(page.next)
         }
-        Ok(page.next)
+        .instrument(span)
+        .await
     }
 
     /// Reduces command receipts older than 90 days to their salted digest,
@@ -222,28 +252,65 @@ impl DurableChat {
             loop {
                 ticks.tick().await;
                 if tick.is_multiple_of(COMPACTION_TICKS) {
-                    match self.compact_receipts().await {
-                        Ok(0) => {}
-                        Ok(reduced) => {
-                            tracing::info!(reduced, "physician command receipts reduced to digests")
-                        }
-                        Err(_) => {
-                            tracing::warn!("physician receipt compaction database unavailable")
+                    let span = tracing::info_span!(parent: None, "physician.receipt_compaction",
+                        otel.status_code = tracing::field::Empty,
+                        error.type = tracing::field::Empty);
+                    async {
+                        match self.compact_receipts().await {
+                            Ok(0) => {}
+                            Ok(reduced) => {
+                                tracing::info!(
+                                    reduced,
+                                    "physician command receipts reduced to digests"
+                                )
+                            }
+                            Err(_) => {
+                                tracing::Span::current().record("otel.status_code", "ERROR");
+                                tracing::Span::current().record("error.type", "database");
+                                tracing::error!(
+                                    event = "physician.receipt_compaction.failed",
+                                    error.type = "database",
+                                    "physician receipt compaction database unavailable"
+                                );
+                            }
                         }
                     }
+                    .instrument(span)
+                    .await;
                 }
                 tick = tick.wrapping_add(1);
-                match self.recover_page(after.as_ref()).await {
-                    Ok(next) => after = next,
-                    Err(_) => tracing::warn!("physician queue recovery database unavailable"),
+                // Failures are recorded inside each sweep's trace. Preserve
+                // the last cursor so the next tick retries the same page.
+                if let Ok(next) = self.recover_page(after.as_ref()).await {
+                    after = next;
                 }
-                match self.recover_revision_page(revision_after.as_ref()).await {
-                    Ok(next) => revision_after = next,
-                    Err(_) => tracing::warn!("physician revision recovery database unavailable"),
+                if let Ok(next) = self.recover_revision_page(revision_after.as_ref()).await {
+                    revision_after = next;
                 }
             }
         })
     }
+}
+
+/// A root span for one recovery page: a sweep is never caused by the request
+/// that accepted the work it republishes.
+fn sweep_span(kind: &'static str) -> tracing::Span {
+    tracing::info_span!(
+        parent: None,
+        "physician.recovery.sweep",
+        coda.delivery_kind = kind,
+        coda.republished = tracing::field::Empty,
+        otel.status_code = tracing::field::Empty,
+        error.type = tracing::field::Empty,
+    )
+}
+
+fn record_recovery_failure(class: &'static str) {
+    let span = tracing::Span::current();
+    span.record("otel.status_code", "ERROR");
+    span.record("error.type", class);
+    tracing::error!(event = "physician.recovery.failed", error.type = class,
+        "physician recovery failed");
 }
 
 /// Uses the auth owner's transaction locks, never a cached session projection.

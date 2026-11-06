@@ -198,6 +198,38 @@ variable "max_instances" {
   }
 }
 
+variable "observability_cluster_enabled" {
+  type        = bool
+  default     = false
+  description = "Explicit cost gate for the private GKE Autopilot cluster on rust-private that hosts the OpenTelemetry gateway (observability-cluster.tf). The infra/gcp/observability root deploys the gateway into it."
+  validation {
+    condition     = !var.observability_cluster_enabled || var.environment == "stg"
+    error_message = "Observability is scoped to staging; this gate cannot provision a development or production cluster."
+  }
+}
+
+variable "observability_enabled" {
+  type        = bool
+  default     = false
+  description = "Adds the otel-collector sidecar to physician, duet and physician-worker and points the product container at it. Requires observability_cluster_enabled and a running gateway; product health never depends on the sidecar."
+}
+
+variable "otel_sidecar_image" {
+  type        = string
+  default     = "otel/opentelemetry-collector-contrib:0.155.0"
+  description = "Pinned OpenTelemetry Collector Contrib image for the Cloud Run sidecar, the same release infra/gcp/observability runs as the gateway. No Docker Hub mirror exists in this project, so Cloud Run pulls the exact public release tag; never latest."
+  validation {
+    condition     = can(regex("^[^:@ ]+(:[0-9]+\\.[0-9]+\\.[0-9]+(@sha256:[a-f0-9]{64})?|@sha256:[a-f0-9]{64})$", var.otel_sidecar_image))
+    error_message = "otel_sidecar_image must be pinned to an exact X.Y.Z tag and/or a sha256 digest."
+  }
+}
+
+variable "otel_gateway_audience" {
+  type        = string
+  default     = null
+  description = "OIDC audience the sidecar presents to the gateway and the gateway verifies. Null derives coda-otel-gateway-<environment>."
+}
+
 variable "sql_tier" {
   type        = string
   default     = "db-custom-1-3840"
