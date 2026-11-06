@@ -323,7 +323,10 @@ NeverInvisible ==
 
 \* 6. Undo puts the conversation back on the patient it was on before the move. Coda acts on a move only
 \* after Undo goes away, and then it always acts on it.
+\* A move puts the conversation on a different patient, so Undo shows only while it is away from the
+\* patient it was on before the move.
 UndoPutsBack ==
+  /\ [](undo.by # Nobody => link # undo.from)
   /\ [][/\ (event'.name = "you press Undo" =>
                link' = undo.from /\ on' = {undo.from} /\ (\A i \in Messages : msg'[i] # NotAPatient) /\ ~acted')
          /\ (undo.by # Nobody /\ undo'.by # Nobody => undo'.from = undo.from)
