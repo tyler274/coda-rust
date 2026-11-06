@@ -352,18 +352,29 @@ mod tests {
                 &receipt.images,
             )
             .expect("update");
+        // gcloud's GA parser assigns every flag after `--container` to that
+        // container. `--async`, `--region`, `--quiet`, and `--format` are
+        // service flags, so they have to precede it. `--image` stays after.
+        let command = &cloud.runner.args[3];
+        let container = command
+            .iter()
+            .position(|arg| arg == "--container")
+            .expect("--container");
         assert_eq!(
-            &cloud.runner.args[3][3..10],
+            &command[container..],
             [
-                "services",
-                "update",
-                "physician",
-                "--container",
-                "physician",
-                "--image",
-                image.as_str(),
+                "--container".to_owned(),
+                "physician".to_owned(),
+                "--image".to_owned(),
+                image.as_str().to_owned(),
             ]
         );
+        for flag in ["--async", "--region", "--quiet", "--format=json"] {
+            assert!(
+                command[..container].iter().any(|arg| arg == flag),
+                "{flag} follows --container"
+            );
+        }
     }
     #[test]
     fn mutations_reject_missing_target_images_before_invoking_runner() {
