@@ -192,10 +192,12 @@ def p1(receipt, state, out):
     outcome = (again or {}).get("outcome")
     time.sleep(3)
     body, items = conversation(b, session, chat)
-    durable = run(["psql", state["postgres"]["url"], "-At", "-v", f"chat={chat}", "-c",
-                   "select state->>'status', jsonb_array_length(state->'attempts'), "
-                   "jsonb_array_length(state->'messages') from physician_runtime_conversations "
-                   "where chat = :'chat'"])
+    # psql interpolates :'chat' (quoted, bound) only in stdin scripts, not in -c.
+    durable = run(["psql", state["postgres"]["url"], "-At", "-v", "ON_ERROR_STOP=1",
+                   "-v", f"chat={chat}"],
+                  input="select state->>'status', jsonb_array_length(state->'attempts'), "
+                        "jsonb_array_length(state->'messages') from physician_runtime_conversations "
+                        "where chat = :'chat';\n")
     receipt.step("P1", "duplicate submit has one effect", actor,
                  status == 200 and outcome == "accepted" and durable == "completed|1|2"
                  and items == [("physician", command["payload"]["text"]), ("model", stack.FIXED_TEXT)],
