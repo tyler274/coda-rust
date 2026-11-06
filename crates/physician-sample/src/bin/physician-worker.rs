@@ -829,6 +829,71 @@ fn fixed_call_id(round: usize, index: usize) -> String {
     format!("fixed-{round}-{index}")
 }
 
+/// Controlled chart journey only: fixed text opts in with a citation placeholder.
+/// The source identity and bytes still come from the real product tools.
+fn cited_fixed_turn(text: &str, request: &ModelRequest<'_>) -> Result<Option<Turn>, String> {
+    if !text.contains("{{patient_source}}") {
+        return Ok(None);
+    }
+    let result = |name: &str| -> Result<Value, String> {
+        let call = request
+            .context
+            .items
+            .iter()
+            .find_map(|item| match item {
+                Item::Call(call) if call.name == name => Some(&call.id),
+                _ => None,
+            })
+            .ok_or("missing chart proof call")?;
+        request
+            .context
+            .items
+            .iter()
+            .find_map(|item| match item {
+                Item::Result { call_id, output } if call_id == call => {
+                    Some(serde_json::from_str(output).map_err(|e| e.to_string()))
+                }
+                _ => None,
+            })
+            .ok_or("missing chart proof result")?
+    };
+    let call = |name: &str, arguments: Value| Turn {
+        items: vec![Item::Call(harness::engine::Invocation {
+            id: format!("chart-proof-{}", request.ordinal),
+            name: name.into(),
+            arguments: arguments.to_string(),
+        })],
+        receipt: json!({"provider":"fixed-chart-proof"}),
+    };
+    let turn = match request.ordinal {
+        1 => call("search_patient_sources", json!({"query":"", "offset":0})),
+        2 => {
+            let found = result("search_patient_sources")?;
+            let reference = found["records"][0]["reference"]
+                .as_str()
+                .ok_or("no recorded chart source")?;
+            call(
+                "read_patient_sources",
+                json!({"references":[reference],"max_result_bytes":65536}),
+            )
+        }
+        _ => {
+            let read = result("read_patient_sources")?;
+            let id = read["results"][0]["citation_id"]
+                .as_str()
+                .ok_or("chart source unavailable")?;
+            Turn {
+                items: vec![Item::Message {
+                    role: "assistant".into(),
+                    text: text.replace("{{patient_source}}", &format!("[[patient_source:{id}]]")),
+                }],
+                receipt: json!({"provider":"fixed-chart-proof"}),
+            }
+        }
+    };
+    Ok(Some(turn))
+}
+
 #[async_trait]
 impl Provider for Model {
     fn request_bytes(&self, request: &ModelRequest<'_>) -> Result<usize, String> {
@@ -853,16 +918,18 @@ impl Provider for Model {
             Self::Fixed {
                 failures_remaining, ..
             } if take_one(failures_remaining) => Err("fixed physician reply failed".into()),
-            Self::Fixed { text, rounds, .. } => match scripted_round(rounds, &request)? {
-                Some(turn) => Ok(turn),
-                None => Ok(Turn {
-                    items: vec![Item::Message {
-                        role: "assistant".into(),
-                        text: text.clone(),
-                    }],
-                    receipt: json!({ "provider": "fixed" }),
-                }),
-            },
+            Self::Fixed { text, rounds, .. } => {
+                match cited_fixed_turn(text, &request)?.or(scripted_round(rounds, &request)?) {
+                    Some(turn) => Ok(turn),
+                    None => Ok(Turn {
+                        items: vec![Item::Message {
+                            role: "assistant".into(),
+                            text: text.clone(),
+                        }],
+                        receipt: json!({ "provider": "fixed" }),
+                    }),
+                }
+            }
         }
     }
 }

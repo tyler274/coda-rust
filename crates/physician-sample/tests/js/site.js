@@ -30,6 +30,14 @@ function (step, ...args) {
         font: getComputedStyle(host.querySelector("p:has(strong)")).font,
       };
     },
+    citationReading() {
+      const dialog = one("dialog.citation-inspection");
+      return {
+        content: [...dialog.querySelectorAll(".reader-body")].map(p => p.textContent).join("\n"),
+        provenance: dialog.querySelector(".reader-provenance").textContent,
+        title: dialog.querySelector("h2").textContent,
+      };
+    },
     readText(selector) {
       return one(selector).innerText;
     },

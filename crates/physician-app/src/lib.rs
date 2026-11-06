@@ -3734,7 +3734,11 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
-                                    MessageWords { text: line.text }
+                                    if line.segments.is_empty() {
+                                        MessageWords { text: line.text }
+                                    } else {
+                                        CitedWords { segments: line.segments, on_open_source }
+                                    }
                                 }
                             } else {
                                 MessageWords { text: line.text }
@@ -4010,6 +4014,27 @@ fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
             p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
         }
     }
+}
+
+#[component]
+fn CitedWords(
+    segments: Vec<physician_wire::ClinicalSegment>,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
+    let parts = synopsis_pieces(&segments)
+        .into_iter()
+        .map(|piece| match piece {
+            SynopsisPiece::Text(text) => ui::ProsePart::Words(text),
+            SynopsisPiece::Chips(chips) => ui::ProsePart::Inline(rsx! {
+                for chip in chips { CitationChip { chip, on_open: on_open_source } }
+            }),
+        })
+        .collect();
+    rsx! { ui::Prose {
+        message: true,
+        names: ui::ProseNames { code: "Code".into(), table: "Table".into() },
+        parts,
+    } }
 }
 
 /// What Coda says in a chat snapshot, drawn richly. This doesn't fetch a source or run a model.
@@ -4497,6 +4522,7 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    segments: Vec<physician_wire::ClinicalSegment>,
     /// Who wrote it, when the server says: the physician or Coda. A turn that
     /// doesn't say shows without a speaker rather than as either.
     author: Option<Author>,
@@ -4533,6 +4559,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
             };
             Some(ConversationLine {
                 text,
+                segments: turn.segments.clone(),
                 author,
                 resume,
                 stop,
@@ -4666,6 +4693,24 @@ mod conversation_line_tests {
     use ui::Author;
 
     #[test]
+    fn saved_chat_citation_opens_the_exact_record() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({"snapshot": {
+            "conversation":[{"kind":"model", "text":"Read [[patient_source:exact]]",
+                "segments":[{"kind":"text","text":"Read "},{"kind":"citation","state":"resolved",
+                    "source":"patient","source_id":"exact","handle":"lab","display_label":"Observation",
+                    "source_presentation":{"content":{"text":"{\"potassium\":4.1}","as_of":"revision r1"}}}]}]
+        }})).unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        let pieces = crate::shell::synopsis_pieces(&lines[0].segments);
+        let crate::shell::SynopsisPiece::Chips(chips) = &pieces[1] else {
+            panic!("citation chip");
+        };
+        let inspection = crate::shell::citation_inspection(&chips[0]);
+        assert_eq!(inspection.paragraphs, ["{\"potassium\":4.1}"]);
+        assert!(inspection.unavailable.is_none());
+    }
+
+    #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
         let (first, second) = (new_chat_id(), new_chat_id());
         assert!(first.starts_with("chat-") && second.starts_with("chat-"));
@@ -4700,6 +4745,7 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    segments: vec![],
                     author: Some(Author::Person),
                     resume: None,
                     stop: None,
@@ -4707,6 +4753,7 @@ mod conversation_line_tests {
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    segments: vec![],
                     author: None,
                     resume: Some(target()),
                     stop: None,

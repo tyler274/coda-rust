@@ -1,7 +1,7 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted chat's only tool is the read-only `skill_view`
+//! Hosted chat offers scoped source reads and `skill_view`
 //! ([`crate::physician_chat`]); mutation tools remain unavailable until their
 //! product effect owners are ported. A commit publishes only the attempt's
 //! final model response, never narration from earlier tool rounds. Reply
@@ -74,6 +74,9 @@ pub struct Message {
     pub role: String,
     /// Exact authored text.
     pub text: String,
+    /// Exact sources cited by this answer, retained independently of later chart changes.
+    #[serde(default)]
+    pub citations: Vec<crate::physician_chat::Citation>,
 }
 
 /// Product attempt with its immutable predecessor and durable evidence.
@@ -452,6 +455,7 @@ impl Store {
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
+            citations: vec![],
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -648,12 +652,15 @@ impl Store {
             return Err(error("candidate lacks durable evidence"));
         }
         let answer = terminal_answer(&attempt.events)?;
+        let citations =
+            crate::physician_chat::citations(&answer, &attempt.events).map_err(|e| error(&e))?;
         attempt.status = "completed".into();
         state.status = "completed".into();
         state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
             text: answer,
+            citations,
         });
         Self::save(tx, &claim.scope, &state).await
     }
@@ -1040,10 +1047,8 @@ pub trait Authority: Send {
 /// Transaction borrowed by the auth owner, never a separate connection.
 pub type PublicationTransaction = sea_orm::DatabaseTransaction;
 
-/// Physician Host for the one shared execution loop. The only tool is
-/// `skill_view`, offered when `skills` is supplied; other tools stay
-/// unavailable until their real product effect/read owners exist, never fake
-/// success.
+/// Physician host for the shared execution loop. Scoped chart reads use the
+/// source owner; `skill_view` is offered when `skills` is supplied.
 pub struct PhysicianHost<A> {
     /// Durable owner.
     pub store: Store,
@@ -1054,7 +1059,7 @@ pub struct PhysicianHost<A> {
     /// Product-selected versioned instructions, including the skill catalog
     /// when `skills` is set (see [`PhysicianSkills::instructions`]).
     pub instructions: String,
-    /// The process's loaded skill catalog. `None` offers no tools.
+    /// The process's loaded skill catalog. `None` omits skill reads.
     pub skills: Option<PhysicianSkills>,
 }
 
@@ -1083,11 +1088,13 @@ impl<A: Authority> Host for PhysicianHost<A> {
         Ok(Context {
             instructions: self.instructions.clone(),
             items,
-            tools: self
-                .skills
-                .as_ref()
-                .map(|_| vec![PhysicianSkills::tool()])
-                .unwrap_or_default(),
+            tools: {
+                let mut tools = crate::physician_chat::chart_tools();
+                if self.skills.is_some() {
+                    tools.push(PhysicianSkills::tool());
+                }
+                tools
+            },
         })
     }
     async fn assert_current(&mut self) -> Result<(), String> {
@@ -1104,13 +1111,54 @@ impl<A: Authority> Host for PhysicianHost<A> {
             .map_err(|e| e.to_string())
     }
     async fn admit(&mut self, call: &Invocation, arguments: &Value) -> Result<Admission, String> {
-        // The engine has already rechecked currentness; reads change nothing.
+        if matches!(
+            call.name.as_str(),
+            "search_patient_sources" | "read_patient_sources"
+        ) {
+            return Ok(crate::physician_chat::admit_chart(&call.name, arguments));
+        }
         Ok(match &self.skills {
             Some(skills) => skills.admit(call, arguments),
             None => Admission::Deny("This hosted tool is not yet available".into()),
         })
     }
     async fn execute(&mut self, call: &Invocation, arguments: Value) -> Result<String, String> {
+        self.assert_current().await?;
+        if matches!(
+            call.name.as_str(),
+            "search_patient_sources" | "read_patient_sources"
+        ) {
+            if let Admission::Deny(reason) =
+                crate::physician_chat::admit_chart(&call.name, &arguments)
+            {
+                return Err(reason);
+            }
+            let observation = self
+                .store
+                .sources(&self.claim.scope.workspace)
+                .await
+                .map_err(|e| e.to_string())?;
+            let result = if call.name == "search_patient_sources" {
+                crate::physician_sources::search(
+                    &observation.sources,
+                    &self.claim.scope.workspace,
+                    arguments["query"].as_str().unwrap(),
+                    arguments["offset"].as_u64().unwrap() as usize,
+                )
+            } else {
+                let references: Vec<String> =
+                    serde_json::from_value(arguments["references"].clone())
+                        .map_err(|e| e.to_string())?;
+                crate::physician_sources::exact_read(
+                    &observation.sources,
+                    &self.claim.scope.workspace,
+                    &references,
+                    arguments["max_result_bytes"].as_u64().unwrap() as usize,
+                )?
+            };
+            self.assert_current().await?;
+            return Ok(result.to_string());
+        }
         match &self.skills {
             Some(skills) => Ok(skills.execute(call, &arguments)),
             None => Err("No hosted tool effect owner is configured".into()),

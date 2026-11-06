@@ -764,6 +764,9 @@ pub struct ChatSnapshot {
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `ChatTurn` value exchanged by this crate.
 pub struct ChatTurn {
+    /// Exact persisted citation segments for this turn.
+    #[serde(default)]
+    pub segments: Vec<ClinicalSegment>,
     #[serde(default)]
     /// The `text` value.
     pub text: Option<String>,

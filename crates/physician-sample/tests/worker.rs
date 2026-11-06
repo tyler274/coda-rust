@@ -604,7 +604,11 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
                 .iter()
                 .map(|tool| tool.name.as_str())
                 .collect::<Vec<_>>(),
-            ["skill_view"]
+            [
+                "search_patient_sources",
+                "read_patient_sources",
+                "skill_view"
+            ]
         );
     }
     let returned = tool_returned(&saved);
@@ -655,6 +659,63 @@ async fn skill_reads_run_through_the_worker_and_only_the_answer_is_published() {
     }
     drop(running);
     let _ = std::fs::remove_dir_all(&staging);
+}
+
+#[tokio::test]
+async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery() {
+    let _guard = lock().lock().await;
+    let Some(running) = running_with(
+        "chart_citations",
+        None,
+        None,
+        false,
+        &[(
+            "PHYSICIAN_WORKER_FIXED_TEXT",
+            "Controlled source read {{patient_source}}",
+        )],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
+    let content = "{\"potassium\":4.1}";
+    let mut source = local_product::physician_sources::SourceRevision {
+        workspace: scope.workspace.clone(),
+        source_id: "test-ehr".into(),
+        candidate_id: "lab".into(),
+        revision: "r1".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
+        content: content.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record":"lab"}),
+    };
+    running.store.record_source(&source).await.unwrap();
+    let mut other = source.clone();
+    other.workspace = "another-patient".into();
+    other.candidate_id = "other-lab".into();
+    running.store.record_source(&other).await.unwrap();
+    running.emulator.publish(&delivery).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    let citation = &state.messages.last().unwrap().citations[0];
+    assert_eq!(citation.content, content);
+    assert_eq!(
+        citation.id,
+        local_product::physician_sources::citation_id(&source)
+    );
+    assert!(!serde_json::to_string(&state).unwrap().contains("other-lab"));
+    let original = serde_json::to_value(&state.messages).unwrap();
+    source.revision = "r2".into();
+    source.content = "{\"potassium\":6.8}".into();
+    source.sha256 = local_product::sha256_hex(source.content.as_bytes());
+    running.store.record_source(&source).await.unwrap();
+    running.emulator.publish(&delivery).await;
+    let fresh = Store::connect(&running.database.url).await.unwrap();
+    let saved = fresh.read(&scope).await.unwrap().unwrap();
+    assert_eq!(serde_json::to_value(saved.messages).unwrap(), original);
+    assert_eq!(saved.attempts.len(), 1);
 }
 
 /// A worker pointed at a directory without the catalog exits at startup

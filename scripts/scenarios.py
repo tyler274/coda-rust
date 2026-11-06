@@ -107,7 +107,7 @@ def sources(bin_dir):
         "physician_page_wasm_sha256": digest(page),
         "image_digests": None,
         "image_digests_note": "local binaries built from git_sha; no container image was built or deployed",
-        "model_execution": f"physician-worker PHYSICIAN_WORKER_FIXED_TEXT={stack.FIXED_TEXT!r}; "
+        "model_execution": "physician-worker fixed chart-reading provider (text in services.worker.fixed_text); "
                            "duet-api controlled providers inside its test suites",
     }
 
@@ -182,13 +182,32 @@ def p1(receipt, state, out):
                  f"message.submit answered {status} {(accepted or {}).get('outcome')}", command_id=key,
                  artifact=save(out, "submit", {"request": command, "status": status, "body": accepted}))
 
-    replied = lambda items: ("model", stack.FIXED_TEXT) in items
-    body, items = wait_conversation(b, session, chat, replied)
+    # Interrupt the owned worker during its delayed first provider call, and the
+    # accepting site. Site B and the durable delivery owner recover the same command.
+    deadline = time.monotonic() + 15
+    active = ""
+    while time.monotonic() < deadline:
+        active = run(["psql", state["postgres"]["url"], "-At", "-v", "ON_ERROR_STOP=1",
+                      "-v", f"chat={chat}"], input="select state->>'status' from physician_runtime_conversations where chat = :'chat';\n")
+        if active == "active":
+            break
+        time.sleep(0.1)
+    receipt.step("P1", "worker active before interruption", actor, active == "active",
+                 f"durable state before process loss: {active}", command_id=key)
+    os.kill(state["pid"], signal.SIGUSR2)
+    replied = lambda items: any(kind == "model" and "[[patient_source:" in (text or "")
+                                for kind, text in items)
+    body, items = wait_conversation(b, session, chat, replied, timeout=660)
     receipt.step("P1", "reply read back on site B", actor, replied(items),
                  f"site B snapshot holds {items}", command_id=key,
                  artifact=save(out, "snapshot", body))
 
-    status, again = http(a, "POST", "/commands", command, bearer=session)
+    restarted = json.loads((Path(state["evidence"]) / "stack.json").read_text())
+    receipt.step("P1", "site and worker restarted", actor, restarted.get("application_restarts") == 1,
+                 f"owned application restarts: {restarted.get('application_restarts', 0)}", command_id=key)
+    original_items = items
+    original_body = body
+    status, again = http(b, "POST", "/commands", command, bearer=session)
     outcome = (again or {}).get("outcome")
     time.sleep(3)
     body, items = conversation(b, session, chat)
@@ -199,8 +218,8 @@ def p1(receipt, state, out):
                         "jsonb_array_length(state->'messages') from physician_runtime_conversations "
                         "where chat = :'chat';\n")
     receipt.step("P1", "duplicate submit has one effect", actor,
-                 status == 200 and outcome == "accepted" and durable == "completed|1|2"
-                 and items == [("physician", command["payload"]["text"]), ("model", stack.FIXED_TEXT)],
+                 status == 200 and outcome == "accepted" and durable.startswith("completed|")
+                 and durable.endswith("|2") and len(items) == 2 and items == original_items,
                  f"the same idempotency key answered {status} {outcome}; the chat holds {len(items)} "
                  f"items; durable status|attempts|messages is {durable!r}", command_id=key,
                  artifact=save(out, "duplicate", {"status": status, "body": again,
@@ -219,19 +238,41 @@ def p1(receipt, state, out):
                  signed_out in (200, 204) and status == 401,
                  f"sign-out on A answered {signed_out}; the same bearer on B answered {status}")
 
-    cited = any(key in json.dumps(body) for key in ("citation", "sources", "basis"))
-    receipt.gap("P1", "chart-grounded answer with citations, Sources and Basis",
-                f"the reply carries {'' if cited else 'no '}citation fields; the hosted worker's only "
-                "tool is skill_view, so it cannot read the chart",
-                "crates/local-product/src/physician_chat.rs, crates/physician-sample/src/bin/physician-worker.rs")
-    receipt.gap("P1", "reopen a cited source in the side panel",
-                "no citation exists to open", "crates/physician-sample/src/live.rs, crates/physician-app/src/lib.rs")
+    citations = [segment for item in body.get("snapshot", {}).get("conversation", [])
+                 for segment in item.get("segments", []) if segment.get("kind") == "citation"]
+    exact = all(c.get("state") == "resolved" and c.get("source_presentation", {}).get("content", {}).get("text")
+                for c in citations)
+    receipt.step("P1", "exact cited source survives interrupted worker and readback", actor,
+                 bool(citations) and exact and body == original_body,
+                 f"{len(citations)} persisted source citations; duplicate readback unchanged",
+                 command_id=key, artifact=save(out, "citations-after-restart", body))
+    receipt.gap("P1", "clinical grounding, Sources and Basis", "controlled provider proves source transport, not clinical judgment or the full answer controls",
+                "crates/local-product/src/physician_chat.rs")
+    if citations:
+        proof_input = out / "citation-browser-input.json"
+        proof_input.write_text(json.dumps({
+            "url": f"http://127.0.0.1:{b}/?patient={stack.WORKSPACE}&chat={chat}",
+            "citation": citations[0],
+        }, indent=2))
+        browser_env = dict(os.environ, PHYSICIAN_TEST_DATABASE_URL=state["postgres"]["url"],
+                           PHYSICIAN_CITATION_PROOF=str(proof_input.resolve()),
+                           PHYSICIAN_PROOF_SHOTS=str((out / "browser").resolve()))
+        argv = ["cargo", "test", "--locked", "-p", "physician-sample", "--test", "site",
+                "recovered_chat_citation_opens_exact_source_after_reload", "--", "--ignored", "--exact", "--nocapture"]
+        result = subprocess.run(argv, cwd=REPO, env=browser_env, capture_output=True, text=True)
+        log = out / "citation-browser.log"
+        log.write_text(f"$ {' '.join(argv)}\nexit {result.returncode}\n{result.stdout}{result.stderr}")
+        receipt.step("P1", "reopen exact citation after recovery and page reload", actor,
+                     result.returncode == 0,
+                     "Chromium checks patient and exact source identity, opens the saved citation, corrects the source, reloads and reopens the retained original text and revision/digest",
+                     command_id=key, artifact=str(log.relative_to(REPO)))
+    else:
+        receipt.step("P1", "reopen exact citation after recovery and page reload", actor, False,
+                     "No saved citation available to open", command_id=key)
     receipt.gap("P1", "real-model answer",
                 "this runner answers with the worker's fixed text; real-model proof needs staging "
                 "or CODA_LOCAL_MODEL_EXECUTION=api with an authorized key", "crates/physician-sample/src/bin/physician-worker.rs")
-    receipt.gap("P1", "site and worker restart inside the scenario",
-                "the stack restarts only Valkey; process restart is held by the instance_loss, "
-                "recovery and stop suites in scripts/check-postgres.sh, not run here",
+    receipt.gap("P1", "hosted restart and redeploy", "local process interruption does not qualify deployed recovery",
                 "scripts/physician-scale-stack.py")
     receipt.gap("P1", "dictation", "POST /dictation answers 503 on every site", "crates/physician-sample/src/lib.rs")
 
@@ -278,6 +319,8 @@ def start_stack(evidence, bin_dir):
     log = (evidence / "stack.out").open("w")
     return subprocess.Popen(
         [sys.executable, str(REPO / "scripts/physician-scale-stack.py"), "--bin-dir", str(bin_dir),
+         "--worker-text", "Controlled recorded source {{patient_source}}",
+         "--worker-delay-ms", "2000",
          "--evidence", str(evidence / "stack")], cwd=REPO, stdout=log, stderr=subprocess.STDOUT)
 
 
@@ -339,6 +382,11 @@ def main():
         if not (CHARTS / "manifest.json").is_file():
             subprocess.run(["cargo", "run", "--locked", "-q", "-p", "patient-bank", "--", "build"],
                            cwd=REPO, check=True, stdout=subprocess.DEVNULL)
+        if "P1" in journeys:
+            # Build the served WASM from this revision before fingerprinting it.
+            subprocess.run(["cargo", "test", "--locked", "-p", "physician-sample", "--test", "site",
+                            "the_practice_and_its_patients_are_visible", "--", "--ignored", "--exact"],
+                           cwd=REPO, check=True)
         receipt.data["sources"] = sources(bin_dir)
         process = start_stack(evidence, bin_dir)
         state = wait_ready(process, evidence)

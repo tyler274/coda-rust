@@ -344,7 +344,9 @@ def load_numbers(stack, database, ports, evidence, idle_seconds, worker_failures
 def run(args, root, evidence):
     stack = Stack(root)
     restart = threading.Event()
+    restart_apps = threading.Event()
     signal.signal(signal.SIGUSR1, lambda _signal, _frame: restart.set())
+    signal.signal(signal.SIGUSR2, lambda _signal, _frame: restart_apps.set())
     # Ports remain loopback-only; an allocation race fails startup, never falls
     # back to a public interface or an existing ambient service.
     pg, redis, emulator, site_a, site_b, worker = [free_port() for _ in range(6)]
@@ -363,7 +365,7 @@ def run(args, root, evidence):
         "pid": os.getpid(), "root": str(root), "evidence": str(evidence) if evidence else None,
         "postgres": {"port": pg, "url": database}, "valkey": {"port": redis, "channel": CHANNEL},
         "pubsub": {"host": host, "project": PROJECT, "topic": TOPIC, "dead_letter": DLQ},
-        "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": FIXED_TEXT,
+        "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": args.worker_text or FIXED_TEXT,
                    "fixed_failures": args.worker_failures,
                    "fail_marker": args.worker_fail_marker},
         "sites": {"a": f"http://127.0.0.1:{site_a}", "b": f"http://127.0.0.1:{site_b}"},
@@ -421,7 +423,8 @@ def run(args, root, evidence):
                 "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}",
                 # The local stack is not API mode. The worker refuses to start
                 # without a provider; this fixed reply never leaves the process.
-                "PHYSICIAN_WORKER_FIXED_TEXT": FIXED_TEXT}
+                "PHYSICIAN_WORKER_FIXED_TEXT": args.worker_text or FIXED_TEXT,
+                "PHYSICIAN_WORKER_FIXED_DELAY_MS": str(args.worker_delay_ms)}
             if args.worker_failures:
                 # Non-hosted proof only: the first N provider calls of this
                 # worker process fail, then the fixed text answers.
@@ -463,7 +466,18 @@ def run(args, root, evidence):
             }).returncode
         if not args.check:
             restarts = 0
+            app_restarts = 0
             while True:
+                if restart_apps.is_set():
+                    restart_apps.clear()
+                    stack.stop("worker")
+                    stack.stop("site-a")
+                    stack.start("worker", [str(binary / "physician-worker")], worker_env)
+                    stack.start("site-a", [str(binary / "physician-sample")], site_env | {
+                        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_a}"})
+                    stack.wait(lambda: healthy(worker) and healthy(site_a), "application restart")
+                    app_restarts += 1
+                    write_state(application_restarts=app_restarts)
                 if restart.is_set():
                     restart.clear()
                     restart_valkey(stack, redis)
@@ -509,6 +523,8 @@ def main():
                              "the sites fall back to target/physician-web")
     parser.add_argument("--charts", type=Path, default=Path("target/patient-bank/bank"),
                         help="built synthetic charts (cargo run -p patient-bank -- build)")
+    parser.add_argument("--worker-text", help="controlled fixed answer; {{patient_source}} drives chart reads")
+    parser.add_argument("--worker-delay-ms", type=int, default=0, help="controlled provider delay")
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
                         help="PHYSICIAN_WORKER_FIXED_FAILURES: the worker's first N provider calls "
                              "fail; 5 dead-letters the first turn")

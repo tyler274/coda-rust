@@ -131,7 +131,7 @@ impl engine::Provider for Provider {
         Ok(50)
     }
     async fn complete(&mut self, request: engine::Request<'_>) -> Result<engine::Turn, String> {
-        assert!(request.context.tools.is_empty());
+        assert_eq!(request.context.tools.len(), 2);
         assert!(request.context.items.iter().any(|i| matches!(i, engine::Item::Message { role, text } if role == "user" && text.contains("Exact input"))));
         if request.ordinal == 1 {
             return Ok(engine::Turn {
@@ -428,7 +428,11 @@ impl engine::Provider for SkillReader {
                 .iter()
                 .map(|t| t.name.as_str())
                 .collect::<Vec<_>>(),
-            ["skill_view"]
+            [
+                "search_patient_sources",
+                "read_patient_sources",
+                "skill_view"
+            ]
         );
         let view = |id: &str, name: &str, path: Option<&str>, bytes: u32| {
             let harness = harness::Harness::load(

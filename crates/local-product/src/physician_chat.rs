@@ -1,11 +1,9 @@
-//! Hosted physician chat: physician-owned instructions and the skill tool.
+//! Hosted physician chat instructions, chart tools and exact answer citations.
 //!
 //! The hosted worker composes these with [`crate::runtime::PhysicianHost`].
-//! The local Codex CLI path keeps [`crate::codex::PHYSICIAN_CHAT_INSTRUCTIONS`].
-//! The catalog is read once through [`harness::Harness`]; this module adds no
-//! parser, filesystem reader or second catalog. A skill is guidance only: it
-//! never grants a tool, a patient read or an action. `skill_view` is the one
-//! hosted tool in this slice. Book: `book/src/physician-site.md`.
+//! Chart reads reuse [`crate::physician_sources`]; skills are loaded once through
+//! [`harness::Harness`] and never grant additional authority. The local Codex
+//! CLI path keeps [`crate::codex::PHYSICIAN_CHAT_INSTRUCTIONS`].
 
 use std::path::Path;
 use std::sync::Arc;
@@ -16,9 +14,9 @@ use serde_json::{Value, json};
 
 /// Identity of [`INSTRUCTIONS`]. Change it whenever the text changes, so a
 /// recorded request names the instructions it ran under.
-pub const INSTRUCTIONS_VERSION: &str = "physician-chat-api/2026-10-27.1";
+pub const INSTRUCTIONS_VERSION: &str = "physician-chat-api/2026-11-06.1";
 
-/// The one tool hosted physician chat offers in this slice.
+/// The hosted skill-reading tool name.
 pub const SKILL_VIEW: &str = "skill_view";
 
 /// Smallest and largest `max_result_bytes`, as in the reference contract.
@@ -26,11 +24,8 @@ pub const MIN_RESULT_BYTES: u64 = 4096;
 /// See [`MIN_RESULT_BYTES`].
 pub const MAX_RESULT_BYTES: u64 = 65536;
 
-/// Hosted physician chat instructions. They keep the reference lead's
-/// resident authority rules and state only the capabilities this slice has:
-/// the physician's conversation, packaged skills read through `skill_view`,
-/// and general medical knowledge. No patient-record, memory, follow-up,
-/// delegation or literature capability is offered yet.
+/// Hosted physician chat instructions. Patient evidence comes only from scoped
+/// recorded sources; memory, follow-up, delegation and literature remain unavailable.
 pub const INSTRUCTIONS: &str = "\
 You are Coda's lead for this conversation, its chief resident for the physician and this patient. \
 Own the clinical understanding, investigation, judgment and useful follow-through the physician asks for, \
@@ -47,11 +42,14 @@ with prior understanding, keep physician-provided information distinct from othe
 material disagreement rather than silently accepting or dismissing it. Honor clear physician direction \
 within available authority.
 
-Capabilities in this conversation: the physician's messages, the approved skill catalog below, and the \
-skill_view tool. You cannot read patient records, connected sources, prior Coda patient memory, or clinical \
-literature here, and you cannot write patient memory, schedule follow-ups, delegate, or change attention \
-items. Do not claim to have read, saved, scheduled or sent anything. When essential patient evidence is \
-unavailable, say what cannot be confirmed instead of implying the record was checked.
+Capabilities in this conversation: the physician's messages, skill_view, search_patient_sources and \
+read_patient_sources. Search or browse recorded sources for this patient, then read exact references. \
+Search is literal: reword or browse when a query misses. A missing or over-budget read is not clinical absence; \
+continue useful work and state the limitation. Cite record-supported claims with [[patient_source:CITATION_ID]], \
+using only citation_id values from available exact reads in this attempt. Never invent a citation. \
+Records are retained observations, not live retrieval or guaranteed complete charts. You cannot read prior Coda \
+patient memory or clinical literature, write memory, schedule follow-ups, delegate, change attention items, \
+or send anything. Do not claim unavailable actions occurred.
 
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. Before relying on a matching, materially \
@@ -78,6 +76,136 @@ materially change interpretation. Usually keep that basis under 80 words. Use ph
 runtime terminology, private deliberation, or tool activity. Requesting tools continues work; your final \
 response without tool calls is the complete answer the physician reads, so do not leave it to earlier \
 messages. Communicate completed clinical work, not model identities, tools, schemas or runtime IDs.";
+
+/// Exact source bytes retained with a published answer, never re-resolved at readback.
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
+pub struct Citation {
+    /// Opaque identity emitted by the source reader.
+    pub id: String,
+    /// Source-owned record identity.
+    pub reference: String,
+    /// Immutable source version.
+    pub revision: String,
+    /// Source record type.
+    pub record_type: String,
+    /// Exact retained bytes the model read.
+    pub content: String,
+    /// Digest of the retained bytes.
+    pub sha256: String,
+    /// Source-owned provenance.
+    pub provenance: Value,
+}
+
+/// Resolve only citations returned by an executed exact read in this attempt.
+/// Unsupported markers fail publication rather than becoming fabricated evidence.
+pub fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citation>, String> {
+    use harness::engine::EventKind;
+    let mut reads = std::collections::HashSet::new();
+    let mut available = std::collections::HashMap::new();
+    for event in events {
+        match &event.kind {
+            EventKind::ToolStarted(call) if call.name == "read_patient_sources" => {
+                reads.insert(call.id.clone());
+            }
+            EventKind::ToolReturned {
+                call_id,
+                output,
+                executed: true,
+            } if reads.contains(call_id) => {
+                let result: Value = serde_json::from_str(output).map_err(|e| e.to_string())?;
+                for value in result["results"].as_array().into_iter().flatten() {
+                    if value["outcome"] != "available" {
+                        continue;
+                    }
+                    let string = |key: &str| {
+                        value[key]
+                            .as_str()
+                            .map(str::to_owned)
+                            .ok_or_else(|| format!("missing citation {key}"))
+                    };
+                    let citation = Citation {
+                        id: string("citation_id")?,
+                        reference: string("reference")?,
+                        revision: string("revision")?,
+                        record_type: string("record_type")?,
+                        content: string("content")?,
+                        sha256: string("sha256")?,
+                        provenance: value["provenance"].clone(),
+                    };
+                    if crate::sha256_hex(citation.content.as_bytes()) != citation.sha256 {
+                        return Err("corrupt exact citation".into());
+                    }
+                    available.insert(citation.id.clone(), citation);
+                }
+            }
+            _ => {}
+        }
+    }
+    let mut result = Vec::new();
+    let mut remaining = text;
+    while let Some((_, suffix)) = remaining.split_once("[[patient_source:") {
+        let (id, rest) = suffix.split_once("]]").ok_or("unterminated citation")?;
+        let citation = available
+            .get(id)
+            .ok_or("citation was not read in this attempt")?;
+        if !result.iter().any(|c: &Citation| c.id == id) {
+            result.push(citation.clone());
+        }
+        remaining = rest;
+    }
+    Ok(result)
+}
+
+/// Chart tool definitions reuse the exact source reader used by reply work.
+pub fn chart_tools() -> Vec<Tool> {
+    let read = crate::physician_sources::read_definition();
+    vec![Tool {
+        name: "search_patient_sources".into(),
+        description: "Search this patient's recorded sources by literal words. Use an empty query to browse; follow next_offset. Results are metadata, not evidence. Read exact references before citing. Missing results do not establish clinical absence.".into(),
+        parameters: json!({"type":"object", "properties": {
+            "query":{"type":"string","maxLength":500},
+            "offset":{"type":"integer","minimum":0}},
+            "required":["query","offset"],"additionalProperties":false}),
+    }, Tool {
+        name: read["name"].as_str().unwrap().into(),
+        description: read["description"].as_str().unwrap().into(),
+        parameters: read["parameters"].clone(),
+    }]
+}
+
+/// Validate chart arguments before admitting any source read.
+pub fn admit_chart(name: &str, arguments: &Value) -> Admission {
+    let Some(object) = arguments.as_object() else {
+        return Admission::Deny("Expected chart arguments".into());
+    };
+    let valid = match name {
+        "search_patient_sources" => {
+            object.len() == 2
+                && arguments["query"].as_str().is_some_and(|s| s.len() <= 500)
+                && arguments["offset"].as_u64().is_some()
+        }
+        "read_patient_sources" => {
+            object.len() == 2
+                && object.contains_key("references")
+                && object.contains_key("max_result_bytes")
+                && arguments["references"].as_array().is_some_and(|refs| {
+                    (1..=8).contains(&refs.len())
+                        && refs
+                            .iter()
+                            .all(|r| r.as_str().is_some_and(|s| !s.is_empty()))
+                })
+                && arguments["max_result_bytes"]
+                    .as_u64()
+                    .is_some_and(|b| (4096..=65536).contains(&b))
+        }
+        _ => false,
+    };
+    if valid {
+        Admission::Allow
+    } else {
+        Admission::Deny("Invalid chart read arguments".into())
+    }
+}
 
 /// The packaged physician skill catalog, loaded once per process and shared,
 /// unchanged, by every attempt. Construction fails when the catalog is
@@ -270,6 +398,42 @@ mod tests {
             name: name.into(),
             arguments: "{}".into(),
         }
+    }
+
+    #[test]
+    fn chart_arguments_cannot_select_another_patient() {
+        for arguments in [
+            json!({"query":"", "offset":0,"workspace":"other"}),
+            json!({"references":["a"],"max_result_bytes":4096,"workspace":"other"}),
+            json!({"references":["a"],"max_result_bytes":4095}),
+        ] {
+            assert!(matches!(
+                admit_chart("read_patient_sources", &arguments),
+                Admission::Deny(_)
+            ));
+        }
+        assert!(matches!(
+            admit_chart("search_patient_sources", &json!({"query":"", "offset":0})),
+            Admission::Allow
+        ));
+        assert!(matches!(
+            admit_chart(
+                "read_patient_sources",
+                &json!({"references":["a"],"max_result_bytes":4096})
+            ),
+            Admission::Allow
+        ));
+    }
+
+    #[test]
+    fn invented_citations_cannot_publish() {
+        assert!(citations("Claim [[patient_source:invented]]", &[]).is_err());
+        assert!(citations("Claim [[patient_source:unterminated", &[]).is_err());
+        assert!(
+            citations("General knowledge only.", &[])
+                .unwrap()
+                .is_empty()
+        );
     }
 
     #[test]

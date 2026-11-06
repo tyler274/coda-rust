@@ -147,7 +147,8 @@ pub fn exact_read(
                     "record_type": source.record_type, "dates": source.dates,
                     "read_representation": "native_record", "content": source.content,
                     "readable_parts": source.readable_parts,
-                    "sha256": source.sha256, "provenance": source.provenance})
+                    "sha256": source.sha256, "provenance": source.provenance,
+                    "citation_id": citation_id(source)})
             }
             None => {
                 json!({"reference": reference, "outcome": "unavailable", "reason": "not_in_recorded_observation"})
@@ -164,6 +165,43 @@ pub fn exact_read(
         }
     }
     Ok(json!({"results": results}))
+}
+
+/// Opaque citation identity for one exact record, including its provenance.
+pub fn citation_id(source: &SourceRevision) -> String {
+    crate::sha256_hex(&serde_json::to_vec(source).expect("source serialization"))
+}
+
+/// Bounded discovery over the recorded chart, not a claim of chart completeness.
+/// Metadata identifies candidates; only an exact read grants citation authority.
+pub fn search(sources: &[SourceRevision], workspace: &str, query: &str, offset: usize) -> Value {
+    let words: Vec<String> = query.split_whitespace().map(str::to_lowercase).collect();
+    let matches: Vec<_> = sources
+        .iter()
+        .filter(|source| {
+            source.workspace == workspace
+                && words.iter().all(|word| {
+                    source.content.to_lowercase().contains(word)
+                        || source.record_type.to_lowercase().contains(word)
+                        || source
+                            .readable_parts
+                            .iter()
+                            .any(|part| part.text.to_lowercase().contains(word))
+                })
+        })
+        .collect();
+    let records: Vec<_> = matches
+        .iter()
+        .skip(offset)
+        .take(20)
+        .map(|source| {
+            json!({"reference": source.candidate_id, "revision": source.revision,
+            "record_type": source.record_type, "dates": source.dates})
+        })
+        .collect();
+    let next = offset.saturating_add(records.len());
+    json!({"records": records, "next_offset": (next < matches.len()).then_some(next),
+        "coverage": "recorded_sources_only", "citation_authority": false})
 }
 
 /// A source that changed revision between two pins of the same work.
@@ -446,6 +484,30 @@ mod tests {
             readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
         }
+    }
+
+    #[test]
+    fn discovery_is_scoped_and_exact_reads_name_immutable_citations() {
+        let original = source("r1", "Potassium 4.1");
+        let mut other = source("r2", "Potassium 9.9");
+        other.workspace = "another-patient".into();
+        let all = vec![original.clone(), other];
+        let found = search(&all, "patient", "potassium", 0);
+        assert_eq!(found["records"].as_array().unwrap().len(), 1);
+        assert_eq!(found["records"][0]["revision"], "r1");
+        let read = exact_read(&all, "patient", &["lab".into()], 4096).unwrap();
+        assert_eq!(read["results"][0]["citation_id"], citation_id(&original));
+        assert_eq!(read["results"][0]["content"], original.content);
+        assert_ne!(
+            citation_id(&original),
+            citation_id(&source("r2", "Potassium 6.8"))
+        );
+        assert!(
+            search(&all, "unknown", "", 0)["records"]
+                .as_array()
+                .unwrap()
+                .is_empty()
+        );
     }
 
     #[test]

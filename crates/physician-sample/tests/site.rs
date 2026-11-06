@@ -20,6 +20,97 @@ mod devtools;
 
 use devtools::{Browser, Key};
 
+/// Driven by P1 after real worker/site recovery; never seeds a fake chat snapshot.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "requires the disposable P1 stack; scripts/scenarios.py drives this test"]
+async fn recovered_chat_citation_opens_exact_source_after_reload() {
+    let Ok(input) = env::var("PHYSICIAN_CITATION_PROOF") else {
+        eprintln!("P1 citation browser proof not run: use scripts/scenarios.py --only P1");
+        return;
+    };
+    let _guard = test_lock().lock().await;
+    let proof: serde_json::Value = serde_json::from_slice(&fs::read(input).unwrap()).unwrap();
+    let url = proof["url"].as_str().unwrap();
+    let parsed = reqwest::Url::parse(url).unwrap();
+    assert_eq!(parsed.host_str(), Some("127.0.0.1"));
+    let expected = &proof["citation"];
+    let content = expected["source_presentation"]["content"]["text"]
+        .as_str()
+        .unwrap();
+    let version = expected["source_presentation"]["content"]["as_of"]
+        .as_str()
+        .unwrap();
+    assert!(!content.is_empty());
+    assert!(version.contains("SHA-256"));
+    let mut tab = Tab::open(url);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    for phase in ["recovered-citation", "reloaded-citation"] {
+        tab.wait_for_text("Controlled recorded source", Duration::from_secs(30));
+        tab.wait_for_text("Abigail Lemieux", Duration::from_secs(20));
+        tab.click("section[aria-label='Conversation'] .citation-chip");
+        tab.wait_for_text(version, Duration::from_secs(10));
+        let shown = tab.step("citationReading", serde_json::json!([]));
+        let normalize = |text: &str| text.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert_eq!(
+            normalize(shown["content"].as_str().unwrap()),
+            normalize(content)
+        );
+        assert!(shown["provenance"].as_str().unwrap().contains(version));
+        assert!(
+            shown["title"]
+                .as_str()
+                .unwrap()
+                .contains(expected["display_label"].as_str().unwrap())
+        );
+        tab.save_picture(phase);
+        if let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") {
+            fs::write(
+                PathBuf::from(folder).join(format!("{phase}.json")),
+                serde_json::to_vec_pretty(&shown).unwrap(),
+            )
+            .unwrap();
+        }
+        if phase == "recovered-citation" {
+            let database = env::var("PHYSICIAN_TEST_DATABASE_URL").expect("P1 disposable database");
+            let database_url = reqwest::Url::parse(&database).unwrap();
+            assert_eq!(database_url.host_str(), Some("127.0.0.1"));
+            let store = local_product::runtime::Store::connect(&database)
+                .await
+                .unwrap();
+            let workspace = parsed
+                .query_pairs()
+                .find(|(key, _)| key == "patient")
+                .unwrap()
+                .1
+                .into_owned();
+            let mut source = store
+                .sources(&workspace)
+                .await
+                .unwrap()
+                .sources
+                .into_iter()
+                .find(|source| source.candidate_id == expected["handle"].as_str().unwrap())
+                .unwrap();
+            assert_eq!(source.content, content);
+            assert_eq!(
+                version,
+                format!("revision {} · SHA-256 {}", source.revision, source.sha256)
+            );
+            assert_eq!(
+                local_product::physician_sources::citation_id(&source),
+                expected["source_id"].as_str().unwrap()
+            );
+            source.revision.push_str("-browser-correction");
+            source.content =
+                "Synthetic corrected source: old answer must retain the original record.".into();
+            source.sha256 = local_product::sha256_hex(source.content.as_bytes());
+            store.record_source(&source).await.unwrap();
+        }
+        tab.reload();
+    }
+}
+
 static TEST_MUTEX: OnceLock<Mutex<()>> = OnceLock::new();
 static BUILT_SITE: OnceLock<PathBuf> = OnceLock::new();
 
@@ -1331,7 +1422,7 @@ async fn mailed_sign_in_link_round_trips_through_the_public_mount() {
         Some(format!("http://{address}/physician/").as_str()),
         "the email and token must leave the address bar before redemption"
     );
-    browser.call("Page.reload", serde_json::json!({}));
+    browser.reload();
     browser.wait_for_text("Staging Physician", Duration::from_secs(10));
     // A newly mailed link signs in once, after sign-out. (Opened while you are
     // signed in, your own link keeps your session; sign_in_model covers that.)

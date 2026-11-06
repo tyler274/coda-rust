@@ -716,6 +716,28 @@ fn turn_kind(role: &str) -> &'static str {
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes. A running turn offers Stop. A
 /// held turn offers Resume. The physician's text stays saved.
+fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
+    let mut parts = Vec::new();
+    let mut text = message.text.as_str();
+    while let Some((before, suffix)) = text.split_once("[[patient_source:") {
+        let Some((id, rest)) = suffix.split_once("]]") else {
+            break;
+        };
+        let Some(citation) = message.citations.iter().find(|citation| citation.id == id) else {
+            break;
+        };
+        parts.push(json!({"kind":"text", "text":before}));
+        parts.push(json!({"kind":"citation", "state":"resolved", "source":"patient",
+            "source_id":citation.id, "handle":citation.reference,
+            "display_label":citation.record_type,
+            "source_presentation":{"content":{"text":citation.content,
+                "as_of": format!("revision {} · SHA-256 {}", citation.revision, citation.sha256)}}}));
+        text = rest;
+    }
+    parts.push(json!({"kind":"text", "text":text}));
+    parts
+}
+
 fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -723,7 +745,10 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
+        .map(|message| {
+            json!({ "kind": turn_kind(&message.role), "text": message.text,
+            "segments": citation_segments(message) })
+        })
         .collect();
     let mut runs = Vec::new();
     match conversation.status.as_str() {
@@ -1170,6 +1195,7 @@ mod durable_snapshot_tests {
             messages: vec![Message {
                 role: "user".into(),
                 text: "Hello".into(),
+                citations: vec![],
             }],
             status: status.into(),
             work: "work-1".into(),
