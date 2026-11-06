@@ -100,6 +100,62 @@ A new environment needs these operator steps, in order:
 5. Apply the migration jobs, execute both (a second execution is a no-op), then
    apply the services.
 
+### Reconcile staging configuration
+
+Use the committed `env/staging.tfvars` as the desired configuration; do not patch
+Cloud Run flags by hand. With scaling enabled, physician needs minimum instances
+`1`, maximum `2`, and CPU throttling `false`. With SMTP relay enabled, its VPC
+egress must remain `all-traffic`. Image digests remain release-owned.
+
+From the repository root, use the default dev shell with operator credentials.
+Keep the plan and its output private: they can contain database passwords.
+
+```bash
+nix develop
+# Run the remaining commands inside that shell; never enable shell tracing.
+set -euo pipefail
+umask 077
+root=infra/gcp/rust-environments
+plan_dir=$(mktemp -d)
+plan="$plan_dir/staging.tfplan"
+tofu -chdir="$root" init -input=false -backend-config=backend/staging.gcs.tfbackend
+(
+  # Fail immediately if any secret lookup fails; do not print the values.
+  pr=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_runtime)
+  pm=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_migration)
+  dr=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_runtime)
+  dm=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_migration)
+  export pr pm dr dm TF_VAR_database_passwords
+  TF_VAR_database_passwords=$(jq -cn \
+    '{"physician-runtime":env.pr,"physician-migration":env.pm,"duet-runtime":env.dr,"duet-migration":env.dm}')
+  unset pr pm dr dm
+  tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars -out="$plan"
+)
+tofu -chdir="$root" show -no-color "$plan"
+```
+
+**STOP:** review every change and obtain operator approval before continuing.
+Unexpected deletes, replacements, IAM/network changes, image changes, or new
+billable resources require investigation and explicit approval. Coordinate with
+releases so no deployment races the saved plan. Do not use `-target` or
+`-refresh-only` to hide differences.
+
+```bash
+tofu -chdir="$root" apply "$plan"
+gcloud run services describe physician --project=coda-rust-staging --region=us-east1 \
+  --format='json(spec.template.metadata.annotations,status.conditions,status.latestCreatedRevisionName,status.latestReadyRevisionName,status.traffic)'
+```
+
+Require the expected settings above, Ready status, matching latest-created and
+latest-ready revisions, and 100% intended traffic. Repeat the plan block: it must
+report no changes. Securely dispose of the private plan when no longer needed.
+After a separately approved merge and successful staging release, repeat the
+readback; if settings regress, fix the release owner rather than reapplying in a
+loop. A Ready revision is not database or journey qualification: verify both
+migration executions and signed-in product readback; isolated restore and privacy
+replay retain their separate authorization and proof requirements. A failed
+browser qualification must be corrected and rerun, not waived by an infra apply.
+
 ### Staging sign-in accounts
 
 `physician-migrate` ensures the accounts listed in `PHYSICIAN_STAGING_ACCOUNTS`
