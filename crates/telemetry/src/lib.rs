@@ -59,6 +59,8 @@ pub mod genai;
 mod logs;
 pub mod propagation;
 
+const DEFAULT_FILTER: &str = "info";
+
 /// Flushes and shuts down the span and log exporters when dropped.
 ///
 /// Hold it for the life of `main`. Without an OTLP endpoint it holds nothing.
@@ -103,7 +105,8 @@ pub fn init(service: &'static str) -> TelemetryGuard {
     let endpoint = non_empty_env("OTEL_EXPORTER_OTLP_ENDPOINT");
     let json = endpoint.is_some()
         || env::var("CODA_LOG_FORMAT").is_ok_and(|format| format.eq_ignore_ascii_case("json"));
-    let filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new("info"));
+    let filter =
+        EnvFilter::try_from_default_env().unwrap_or_else(|_| EnvFilter::new(DEFAULT_FILTER));
 
     let log_provider = endpoint
         .as_ref()
@@ -416,7 +419,9 @@ pub type HttpLayer =
 /// route, never the raw path), and `http.response.status_code`. Responses with
 /// status 500 or above set `otel.status_code=ERROR`, which Datadog Error
 /// Tracking and Tempo span metrics both count as errors. Latency is the span
-/// duration.
+/// duration. Each response also emits one `info` log event carrying `status`
+/// and `latency_ms` under the span, so every request yields a log record
+/// beside its span.
 pub fn http_layer() -> HttpLayer {
     TraceLayer::new_for_http()
         .make_span_with(HttpSpan)
