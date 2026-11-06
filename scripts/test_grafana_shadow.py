@@ -86,6 +86,7 @@ def fixture_server():
 
 def provision(enabled):
     variables = {**VARS, "grafana_test_notifications_enabled": enabled,
+                 "grafana_cloud_monitoring_enabled": enabled,
                  "grafana_compatibility_metrics_url": "http://127.0.0.1:9090" if enabled else ""}
     vf = OUT / "synthetic.tfvars.json"
     vf.write_text(json.dumps(variables))
@@ -137,6 +138,35 @@ def provision(enabled):
 
 def api(path):
     return json.loads(run("docker", "exec", NAME, "wget", "-qO-", f"http://admin:admin@127.0.0.1:3000{path}"))
+
+
+def native_query_boundary(rules):
+    query = copy.deepcopy(rules[0]["data"][0]["model"])
+    query["datasource"] = {"uid": "cloud-monitoring", "type": "stackdriver"}
+    payload = json.dumps({"from": str(int(time.time() * 1000) - 600000),
+                          "to": str(int(time.time() * 1000)), "queries": [query]})
+    code = """
+import urllib.request, urllib.error, sys
+request = urllib.request.Request('http://127.0.0.1:3000/api/ds/query',
+    data=sys.argv[1].encode(), headers={'Authorization': 'Basic YWRtaW46YWRtaW4=', 'Content-Type': 'application/json'})
+try:
+    response = urllib.request.urlopen(request, timeout=45)
+except urllib.error.HTTPError as error:
+    response = error
+print(response.read().decode())
+"""
+    response = run("docker", "run", "--rm", "--network", f"container:{NAME}",
+                   "--entrypoint", "python", "docker.io/python:3.14.10-alpine3.24",
+                   "-c", code, payload)
+    (OUT / "native-query-boundary.json").write_text(response)
+    logs = subprocess.run(["docker", "logs", NAME], capture_output=True, text=True, check=True)
+    assert "panic triggered" not in logs.stdout + logs.stderr, "native datasource panic triggered"
+    result = json.loads(response)["results"]["A"]
+    error = result.get("error", "")
+    assert "panic" not in error.lower() and "nil pointer" not in error.lower(), error
+    assert result.get("status") == 200, result
+    assert all(not frame["data"]["values"] for frame in result.get("frames", [])), result
+    print("PASS native model executes without migration panic; network-none returns empty frames, not authenticated evaluation proof", flush=True)
 
 
 def start(folder, volume):
@@ -263,6 +293,10 @@ def main():
             assert policy["routes"][-1]["mute_time_intervals"] == ["coda-shadow-always"]
             assert (any(c["uid"] == "coda-slack-test" for c in contacts)) == enabled
             assert (any(d["uid"] == "compatibility" for d in datasources)) == enabled
+            assert (any(d["uid"] == "cloud-monitoring" for d in datasources)) == enabled
+            cloud_rules = [r for r in rules if r["uid"].startswith("gcp-")]
+            assert len(cloud_rules) == (20 if enabled else 0)
+            assert all(r["labels"]["mode"] == "shadow" for r in cloud_rules)
             assert len([r for r in rules if r["uid"] in ("coda-readiness-shadow", "coda-dependency-shadow", "coda-signal-freshness-shadow")]) == (3 if enabled else 0)
             if enabled:
                 assert sorted(policy["routes"][0]["object_matchers"]) == sorted([["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]])
@@ -270,6 +304,7 @@ def main():
                 assert len(policy["routes"]) == 1
             print(f"PASS {label}: real rendered rules/datasources/contact/policy reconciled; operational catch-all muted", flush=True)
             if enabled:
+                native_query_boundary(cloud_rules)
                 evaluate()
             stop(label)
     finally:

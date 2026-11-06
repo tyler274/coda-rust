@@ -61,6 +61,52 @@ variables {
   ]
 }
 
+run "native_cloud_rules_use_real_source_and_scoped_inventory" {
+  command = plan
+  variables {
+    telemetry_backend                = "both"
+    grafana_cloud_monitoring_enabled  = true
+  }
+  assert {
+    condition = contains(keys(kubernetes_config_map_v1.grafana_stack["grafana"].data), "cloud-rules.yaml")
+    error_message = "Cloud Monitoring must provision rules backed by its native datasource, not an unimplemented compatibility producer."
+  }
+  assert {
+    condition = alltrue([for rule in yamldecode(local.grafana_cloud_rules).groups[0].rules :
+      rule.data[0].datasourceUid == "cloud-monitoring" &&
+      rule.data[0].model.queryType == "promQL" &&
+      rule.data[0].model.promQLQuery.projectName == var.cluster_project &&
+      rule.labels.mode == "shadow" && length(rule.uid) <= 40
+    ])
+    error_message = "Every native rule must query the project through the authenticated cloud datasource and remain shadow-only."
+  }
+  assert {
+    condition = (
+      local.grafana_cloud_conditions["readiness-physician"].no_data == "KeepLast" &&
+      local.grafana_cloud_conditions["dependency-worker_age"].no_data == "OK" &&
+      !contains(keys(local.grafana_cloud_conditions), "absence-worker_age") &&
+      strcontains(local.grafana_cloud_conditions["freshness-duet"].expr, "or vector(1)") &&
+      strcontains(local.grafana_cloud_conditions["dependency-worker_age"].expr, "1200") &&
+      local.grafana_cloud_conditions["dependency-worker_backlog"].duration == "30m"
+    )
+    error_message = "Native rules must preserve readiness on silence, distinguish missing observations, and never page for idle sparse queues."
+  }
+}
+
+run "native_cloud_rules_are_removed_when_disabled" {
+  command = plan
+  variables {
+    telemetry_backend = "both"
+  }
+  assert {
+    condition = (
+      length(yamldecode(local.grafana_cloud_rules).groups) == 0 &&
+      length(yamldecode(local.grafana_cloud_rules).deleteRules) == length(local.grafana_cloud_conditions)
+    )
+    error_message = "Disabling the native source must delete its rules from persisted Grafana state."
+  }
+}
+
 run "langfuse_has_no_public_ingress" {
   command = plan
 
@@ -888,7 +934,7 @@ run "grafana_stack_is_cluster_private_and_bounded" {
   assert {
     condition = (
       length(google_service_account.grafana_monitoring) == 0 &&
-      !contains(keys(kubernetes_config_map_v1.grafana_stack["grafana"].data), "cloud-monitoring.yaml") &&
+      yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["cloud-monitoring.yaml"]).deleteDatasources[0].name == "Google Cloud Monitoring" &&
       length(kubernetes_service_account_v1.grafana[0].metadata[0].annotations) == 0
     )
     error_message = "The Cloud Monitoring datasource and its identity are off by default."

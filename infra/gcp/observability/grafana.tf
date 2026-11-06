@@ -146,8 +146,9 @@ locals {
           "datasources.yaml" = file("${local.grafana_config_dir}/provisioning/datasources.yaml")
           "rules.yaml"       = local.grafana_rules_config
           "contact.yaml"     = local.grafana_contact_config
+          "cloud-rules.yaml" = local.grafana_cloud_rules
         },
-        local.grafana_monitoring_enable ? { "cloud-monitoring.yaml" = local.grafana_cloud_monitoring_datasource } : {},
+        { "cloud-monitoring.yaml" = local.grafana_monitoring_enable ? local.grafana_cloud_monitoring_datasource : yamlencode({ apiVersion = 1, deleteDatasources = [{ orgId = 1, name = "Google Cloud Monitoring" }] }) },
         local.grafana_compatibility_config,
       )
       config_items = merge(
@@ -155,8 +156,9 @@ locals {
           "datasources.yaml" = "datasources/datasources.yaml"
           "rules.yaml"       = "alerting/rules.yaml"
           "contact.yaml"     = "alerting/contact.yaml"
+          "cloud-rules.yaml" = "alerting/cloud-rules.yaml"
         },
-        local.grafana_monitoring_enable ? { "cloud-monitoring.yaml" = "datasources/cloud-monitoring.yaml" } : {},
+        { "cloud-monitoring.yaml" = "datasources/cloud-monitoring.yaml" },
         {
           "compatibility-datasource.yaml" = "datasources/compatibility.yaml"
           "compatibility-rules.yaml"      = "alerting/compatibility.yaml"

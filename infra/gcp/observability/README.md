@@ -89,8 +89,23 @@ confirming Slack receipt require separate operator approval. Never relabel a
 service alert to test notifications. The external watchdog must remain outside
 Grafana and GKE; shadow evaluation is not monitoring-loss protection.
 
-Cloud Monitoring is a supported, default-off datasource through Workload
-Identity (`grafana_cloud_monitoring_enabled`), not through Tempo span metrics.
+Cloud Monitoring is a default-off datasource through Workload Identity
+(`grafana_cloud_monitoring_enabled`), not through Tempo span metrics. Enabling it
+also provisions native PromQL shadow rules from `grafana-cloud-rules.tf` for the
+three probe targets, the two product databases, the physician Redis instance,
+and worker subscriptions. Readiness uses the probe's durable firing metric,
+which owns three-failure and two-success hysteresis. Missing readiness data
+retains the previous alert state. Separate rules detect missing or stale probe
+observations and 20-minute absence of continuous dependency signals. Sparse
+queues have no absence rules. Resource selectors are fixed to the runtime
+infrastructure's resource names and the selected cluster project. Dependency
+thresholds and sustained durations share the Datadog signal catalog.
+
+Disabling the datasource explicitly deletes its rules and datasource from
+persistent Grafana state. Native rules remain on the muted operational route.
+Qualify actual ingestion delays and Workload Identity reads before relying on
+these rules. Provisioning alone does not prove successful evaluation.
+
 An optional internal Prometheus-compatible source can be supplied with
 `grafana_compatibility_metrics_url`; empty means no datasource or rules. Its
 adapter contract is one series per expected target per minute, including idle
