@@ -259,7 +259,36 @@ Service in this root:
   are disabled by id because the integration has no namespace allowlist.
   Confirm those ids against the integration's namespace list in Datadog before
   enabling. The Datadog provider's app key must belong to a user allowed to
-  manage integrations.
+  manage integrations. `datadog_gcp_dependency_collection` is a separate,
+  empty-by-default opt-in for SQL, Redis and Pub/Sub namespaces. Each entry
+  supplies verified exact resource filters to the resource configuration.
+  Namespace metric-name filters stay empty, importing all metrics in each
+  opted-in namespace for matching resources; resource tags are not metric-name
+  filters. Other exclusions, global-location collection and IAM stay unchanged.
+  Inspect resource-filter effectiveness and the projected series volume of all
+  namespace metrics before authorizing collection.
+- **Dependency and storage monitors.** `dependency-monitors.tf` owns scoped
+  SQL, Redis and queue rules; `workload-monitors.tf` owns stable deployment,
+  StatefulSet and PVC targets. Their gates and qualified scope maps default
+  off/empty. Populate only after inspecting actual Datadog series, units and
+  identity tags. Continuously expected gauges have separate absence monitors;
+  sparse queue/failure events do not. Do not register idle scale-to-zero
+  workloads as continuously required. Remove deliberately retired targets from
+  the maps rather than retaining per-node absence groups. PVC collection uses
+  the Agent's existing kubelet `/metrics` volume gauges; verify both used and
+  capacity bytes for a mounted claim, not catalog metadata alone.
+- **Collector self metrics.** `collector_self_metrics_enabled` adds the
+  `collector.self-metrics.yaml` reader and direct Agent OpenMetrics autodiscovery
+  to the gateway pod. Port 8888 is not a gateway Service port. Seven mapped
+  `coda.collector` metric families retain only exporter/data-type labels, with
+  an explicit scrape-endpoint identity for per-replica queue arithmetic.
+  This custom-metric collection is billable and does not enable monitors.
+  `collector_export_monitors_enabled` requires independent series, tag, query
+  and routing qualification. Send/enqueue failures are sparse counters;
+  uptime supplies the separate continuous scrape-absence signal. A cleared
+  failure window or retired pod is not proof that delivery recovered. The
+  direct scrape avoids the collector's exporter path but still shares the
+  Datadog failure domain; it is not an independent watchdog.
 - **Only generation spans reach Langfuse.** A filter keeps spans with
   `langfuse.observation.type` or the `gen_ai.*` attributes the telemetry crate
   sets.
@@ -311,6 +340,24 @@ callers, so a reviewer can compare both roots' plans.
 
 The project's Langfuse data-retention setting (Enterprise in some versions) is
 applied in the UI. The blob lifecycle enforces `langfuse_retention_days` on GCS.
+
+## Notification qualification boundary
+
+Use the [offline qualification flow](/dev/observability/README%2Emd#offline-downtime-notification-rehearsal)
+to prepare and check evidence before requesting a live drill. It makes no
+provider calls and cannot enable monitors or contacts. Read back the actual
+Datadog Slack account/channel and the independent Cloud Monitoring contact;
+configuration in this root alone does not prove delivery. Supply the
+Stage2-owned watchdog identifiers from its verified outputs, not guessed names.
+Keep secrets only in Doppler. The qualification fixture carries only public
+identifiers and evidence references, never webhook URLs or credentials.
+
+Datadog remains the primary `#engineering-observability` operational route;
+concurrent Grafana service evaluation must be shadow-only with a separate
+labeled test route. The current single-backend Grafana contact policy is not
+that concurrent shadow policy. Do not use it to test concurrent service paging.
+A routing-test send and a synthetic evaluator drill each need explicit operator
+approval, separate from approval for any infrastructure saved plan/apply.
 
 ## Testing
 

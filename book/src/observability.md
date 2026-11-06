@@ -244,6 +244,38 @@ point posts to a local sink instead of Slack; received alerts are listed at
 compose credentials are fixed local development values, and every port binds to
 127.0.0.1. See <a href="/dev/observability/README%2Emd">dev/observability</a>.
 
+## Downtime notification qualification
+
+Datadog is the primary staging operational route to
+`#engineering-observability`. An independent Cloud Monitoring watchdog covers
+missing monitoring/probe heartbeat outside GKE. Concurrent Grafana service
+alerts must stay shadow-only; its contact/evaluator qualification uses a
+separately labeled test route, not duplicate operational pages.
+
+The [local qualification rehearsal](/dev/observability/README%2Emd#offline-downtime-notification-rehearsal)
+prints bounded synthetic failure/recovery, reminder, grouping and maintenance
+steps and checks timestamped observations without making any external calls.
+It extends the existing collector/sink tooling but does not substitute a local
+webhook acknowledgment for a Slack receipt or a fixture for an actual evaluator.
+
+Before live work, read back the exact account/contact/channel mapping and the
+synthetic evaluator's signal selector and windows. Obtain explicit approval for
+the labeled routing send, bounded synthetic failure/recovery and maintenance
+window, and independent watchdog heartbeat-loss exercise. Include source and
+deployed revisions, UTC start/end, maximum sends, dedicated target, abort and
+cleanup steps. Infrastructure changes require their own reviewed saved plan and
+authorization; approval for a Slack drill does not authorize an apply or IAM change.
+Restore synthetic healthy signals and end only the drill's mutes at timeout or
+abort, verify evaluator recovery, and retain evidence even when delivery fails.
+
+Capture original signal, evaluator Pending/Firing (where exposed), provider
+notification, human-confirmed Slack alert, evaluator recovery and Slack recovery
+times. Record provider `last_notified` separately from the user's confirmed
+Slack message timestamp/permalink. Measure detection and delivery intervals with
+actual ingestion/evaluation delays. Prove absence of duplicate service paging,
+maintenance silence and expiry behavior, and the independent watchdog route.
+No downtime-to-Slack claim is valid until those live artifacts are inspected.
+
 ## From alert to run
 
 1. Open the primary Datadog notification from the confirmed `alert_notify`

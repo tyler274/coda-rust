@@ -6,6 +6,7 @@ memory; GET /received returns them all as a JSON array. Replies "ok", the
 body Slack's incoming webhooks return on success.
 """
 
+from datetime import datetime, timezone
 import http.server
 import json
 
@@ -38,9 +39,15 @@ class Sink(http.server.BaseHTTPRequestHandler):
             payload = json.loads(raw)
         except ValueError:
             payload = raw.decode(errors="replace")
-        RECEIVED.append({"path": self.path, "payload": payload})
-        print(json.dumps({"path": self.path, "payload": payload}), flush=True)
+        receipt = {
+            "path": self.path, "payload": payload,
+            "received_at": datetime.now(timezone.utc).isoformat(timespec="microseconds").replace("+00:00", "Z"),
+            "source": "local-webhook-sink", "slack_receipt_confirmed": False,
+        }
+        RECEIVED.append(receipt)
+        print(json.dumps(receipt), flush=True)
         self.reply(200, "ok")
 
 
-http.server.ThreadingHTTPServer(("0.0.0.0", 8080), Sink).serve_forever()
+if __name__ == "__main__":
+    http.server.ThreadingHTTPServer(("0.0.0.0", 8080), Sink).serve_forever()
