@@ -133,6 +133,24 @@ resource "kubernetes_deployment_v1" "collector" {
         service_account_name            = kubernetes_service_account_v1.collector.metadata[0].name
         automount_service_account_token = false
 
+        # Autopilot admits the pod with this profile. Declaring it matches
+        # the cluster; leaving it out makes every plan remove it.
+        security_context {
+          run_as_non_root     = false
+          supplemental_groups = []
+
+          seccomp_profile {
+            type = "RuntimeDefault"
+          }
+        }
+
+        toleration {
+          key      = "kubernetes.io/arch"
+          operator = "Equal"
+          value    = "amd64"
+          effect   = "NoSchedule"
+        }
+
         container {
           name  = "otel-collector"
           image = local.collector_image
@@ -208,14 +226,29 @@ resource "kubernetes_deployment_v1" "collector" {
             period_seconds        = 20
           }
 
+          # Autopilot writes these container defaults at admission.
+          security_context {
+            allow_privilege_escalation = false
+            privileged                 = false
+            read_only_root_filesystem  = false
+            run_as_non_root            = false
+
+            capabilities {
+              add  = []
+              drop = ["NET_RAW"]
+            }
+          }
+
           resources {
             requests = {
-              cpu    = "250m"
-              memory = "512Mi"
+              cpu               = "250m"
+              memory            = "512Mi"
+              ephemeral-storage = "1Gi"
             }
             limits = {
-              cpu    = "1"
-              memory = "1Gi"
+              cpu               = "1"
+              memory            = "1Gi"
+              ephemeral-storage = "1Gi"
             }
           }
 
@@ -234,6 +267,15 @@ resource "kubernetes_deployment_v1" "collector" {
         }
       }
     }
+  }
+
+  # Autopilot's warden writes these after admission. The version and the
+  # adjustment record change outside this root.
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["autopilot.gke.io/resource-adjustment"],
+      metadata[0].annotations["autopilot.gke.io/warden-version"],
+    ]
   }
 
   depends_on = [helm_release.doppler_secrets]
