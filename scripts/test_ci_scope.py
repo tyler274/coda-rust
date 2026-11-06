@@ -212,8 +212,9 @@ class ResultTests(unittest.TestCase):
 
     def test_gate_covers_every_validation_job_and_deployment_consumes_gate(self):
         # This is a workflow topology contract, not a copy of the job inventory.
+        # The cache publisher follows images and must not delay the gate.
         validators = {name for name, job in self.jobs.items()
-                      if name != "result" and not name.startswith("deploy-")}
+                      if name not in {"result", "nix-cache-publish"} and not name.startswith("deploy-")}
         self.assertEqual(set(self.dependencies), validators)
         self.assertEqual(self.jobs["result"]["if"], "always()")
         for name, job in self.jobs.items():
