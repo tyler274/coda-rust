@@ -998,6 +998,168 @@ run "reject_grafana_thresholds_that_differ_from_the_rules" {
   expect_failures = [kubernetes_config_map_v1.grafana_stack]
 }
 
+run "dependency_rules_are_opt_in_even_with_existing_monitors" {
+  command = plan
+  variables {
+    datadog_monitors_enabled = true
+    alert_notify             = "@slack-confirmed-test"
+  }
+  assert {
+    condition     = length(datadog_monitor.dependency_symptom) == 0 && length(datadog_monitor.dependency_absence) == 0 && length(datadog_monitor.collector_availability) == 0
+    error_message = "Existing monitor authorization must not enable unqualified dependency signals."
+  }
+}
+
+run "dependency_missing_data_and_idle_contract" {
+  command = plan
+  variables {
+    datadog_monitors_enabled               = true
+    dependency_monitors_enabled            = true
+    collector_availability_monitor_enabled = true
+    alert_notify                           = "@slack-confirmed-test"
+    dependency_metric_scopes = {
+      physician_sql_up    = "env:staging,project_id:test-rust-stg-only,database_id:test-rust-stg-only:rust-physician"
+      redis_uptime        = "env:staging,project_id:test-rust-stg-only,instance_id:test-redis"
+      worker_age          = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker"
+      worker_backlog      = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker"
+      worker_dead_letters = "env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-dead-letter"
+    }
+  }
+  assert {
+    condition     = toset(keys(datadog_monitor.dependency_absence)) == toset(["physician_sql_up", "redis_uptime"]) && alltrue([for monitor in datadog_monitor.dependency_symptom : !monitor.notify_no_data])
+    error_message = "Only continuously expected signals get separate absence monitors; empty queues cannot page on absence."
+  }
+  assert {
+    condition     = datadog_monitor.dependency_symptom["worker_age"].query == "min(last_5m):max:gcp.pubsub.subscription.oldest_unacked_message_age{env:staging,project_id:test-rust-stg-only,subscription_id:physician-chat-turns-worker}.fill(null) > 1200" && datadog_monitor.dependency_symptom["worker_backlog"].monitor_thresholds[0].critical == "0"
+    error_message = "Age must admit a delivery plus maximum retry backoff; backlog must require positive work, not zero instances."
+  }
+  assert {
+    condition     = alltrue([for monitor in datadog_monitor.dependency_absence : monitor.notify_no_data && monitor.no_data_timeframe == 20 && !monitor.require_full_window && monitor.renotify_occurrences == 2])
+    error_message = "Absence must have an explicit delayed NO DATA policy and bounded reminders."
+  }
+  assert {
+    condition     = datadog_monitor.collector_availability["telemetry_absent"].notify_no_data && !datadog_monitor.collector_availability["unavailable"].notify_no_data && datadog_monitor.collector_availability["unavailable"].query == "max(last_5m):min:kubernetes_state.deployment.replicas_available{env:staging,kube_cluster_name:rust-observability,kube_namespace:observability,kube_deployment:otel-collector}.fill(null) < 1"
+    error_message = "Collector availability must use stable deployment identity, never retired node/pod groups, with separate absence."
+  }
+  assert {
+    condition     = datadog_monitor.dependency_symptom["physician_sql_up"].timeout_h == 0 && datadog_monitor.dependency_symptom["worker_backlog"].timeout_h == 1 && datadog_monitor.collector_availability["unavailable"].timeout_h == 0
+    error_message = "Continuous symptoms cannot auto-resolve on missing data; sparse queue resolution is explicitly qualified."
+  }
+  assert {
+    condition     = length(datadog_monitor.site_5xx_rate) == 3 && length(datadog_monitor.site_p95_latency) == 3 && length(datadog_monitor.async_failures) == 3 && length(datadog_monitor.chat_generation_errors) == 1 && length(datadog_monitor.observability_container_memory) == 1 && length(datadog_monitor.observability_container_oom) == 1
+    error_message = "Dependency coverage must preserve existing application and memory monitors."
+  }
+}
+
+run "reject_unscoped_dependency_series" {
+  command = plan
+  variables {
+    dependency_metric_scopes = { worker_age = "env:staging,*" }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
+run "collector_collection_is_independent_of_monitor_activation" {
+  command = plan
+  variables {
+    collector_self_metrics_enabled = true
+  }
+  assert {
+    condition     = contains(keys(kubernetes_config_map_v1.collector.data), "collector.self-metrics.yaml") && contains(kubernetes_deployment_v1.collector.spec[0].template[0].spec[0].container[0].args, "--config=/etc/otelcol/collector.self-metrics.yaml")
+    error_message = "Opt-in must mount and activate the pinned self-metric reader."
+  }
+  assert {
+    condition     = length(datadog_monitor.collector_export_failures) == 0 && length(datadog_monitor.collector_queue_pressure) == 0 && length(datadog_monitor.collector_scrape_absence) == 0
+    error_message = "Collection is not permission to activate unqualified monitors."
+  }
+  assert {
+    condition     = jsondecode(kubernetes_deployment_v1.collector.spec[0].template[0].metadata[0].annotations["ad.datadoghq.com/otel-collector.checks"]).openmetrics.instances[0].openmetrics_endpoint == "http://%%host%%:8888/metrics" && length(jsondecode(kubernetes_deployment_v1.collector.spec[0].template[0].metadata[0].annotations["ad.datadoghq.com/otel-collector.checks"]).openmetrics.instances[0].metrics) == 7
+    error_message = "The Agent must scrape the pod directly with seven explicit mappings, not wildcard application metrics."
+  }
+  assert {
+    condition     = jsondecode(kubernetes_deployment_v1.collector.spec[0].template[0].metadata[0].annotations["ad.datadoghq.com/otel-collector.checks"]).openmetrics.instances[0].include_labels == ["exporter", "data_type"] && alltrue([for port in kubernetes_service_v1.otel_gateway.spec[0].port : port.port != 8888])
+    error_message = "Self metrics retain only bounded labels and cannot be exposed through the gateway LoadBalancer."
+  }
+}
+
+run "collector_export_and_workload_contracts" {
+  command = plan
+  variables {
+    datadog_monitors_enabled                = true
+    collector_self_metrics_enabled          = true
+    collector_export_monitors_enabled       = true
+    observability_workload_monitors_enabled = true
+    alert_notify                            = "@slack-confirmed-test"
+    observability_workload_targets = {
+      datadog-cluster-agent = { kind = "deployment", minimum_ready = 1 }
+      test-stateful         = { kind = "statefulset", minimum_ready = 1 }
+    }
+    observability_pvc_scopes = { test-storage = "persistentvolumeclaim:test-storage" }
+  }
+  assert {
+    condition     = length(datadog_monitor.collector_export_failures) == 4 && alltrue([for monitor in datadog_monitor.collector_export_failures : !monitor.notify_no_data && !monitor.require_full_window]) && datadog_monitor.collector_scrape_absence[0].notify_no_data && datadog_monitor.collector_scrape_absence[0].no_data_timeframe == 10
+    error_message = "Failure counters are sparse, with one separate continuous scrape absence monitor."
+  }
+  assert {
+    condition     = datadog_monitor.collector_queue_pressure[0].monitor_thresholds[0].critical == "0.8" && !datadog_monitor.collector_queue_pressure[0].notify_no_data && datadog_monitor.collector_queue_pressure[0].timeout_h == 1
+    error_message = "Empty queues cannot alert; retired pod pressure groups must expire without pod absence pages."
+  }
+  assert {
+    condition     = strcontains(datadog_monitor.collector_queue_pressure[0].query, "by {collector_replica,exporter,data_type}") && contains(jsondecode(kubernetes_deployment_v1.collector.spec[0].template[0].metadata[0].annotations["ad.datadoghq.com/otel-collector.checks"]).openmetrics.instances[0].tags, "collector_replica:%%host%%")
+    error_message = "Queue arithmetic must pair each scrape endpoint's numerator/denominator without relying on optional Agent pod tag cardinality."
+  }
+  assert {
+    condition     = length(datadog_monitor.workload_health) == 4 && datadog_monitor.workload_health["test-stateful/absence"].notify_no_data && !datadog_monitor.workload_health["test-stateful/availability"].notify_no_data && datadog_monitor.workload_health["datadog-cluster-agent/availability"].timeout_h == 0
+    error_message = "Stable workload identities need independent availability and absence, never node-group retention."
+  }
+  assert {
+    condition     = length(datadog_monitor.pvc_storage) == 3 && datadog_monitor.pvc_storage["test-storage/used_absence"].notify_no_data && datadog_monitor.pvc_storage["test-storage/capacity_absence"].notify_no_data && !datadog_monitor.pvc_storage["test-storage/pressure"].notify_no_data && datadog_monitor.pvc_storage["test-storage/pressure"].monitor_thresholds[0].critical == "0.85"
+    error_message = "PVC ratio needs both continuous numerator and denominator absence checks, not zero filling."
+  }
+}
+
+run "gcp_dependency_opt_in_stays_scoped" {
+  command = plan
+  variables {
+    datadog_gcp_integration_enabled   = true
+    datadog_gcp_dependency_collection = { cloudsql = { verified_resource_filters = ["database_id:test-rust-stg-only:rust-physician"] } }
+  }
+  assert {
+    condition     = length([for config in datadog_integration_gcp_sts.staging["integration"].metric_namespace_configs : config if config.id == "cloudsql" && !config.disabled && length(config.filters) == 0]) == 1 && length([for config in datadog_integration_gcp_sts.staging["integration"].metric_namespace_configs : config if contains(["redis", "pubsub", "storage", "prometheus"], config.id) && config.disabled]) == 4
+    error_message = "Only the opted-in namespace may change; its filters select metric names, not resource tags."
+  }
+  assert {
+    condition     = length([for config in datadog_integration_gcp_sts.staging["integration"].monitored_resource_configs : config if config.type == "cloudsql_database" && config.filters == toset(["database_id:test-rust-stg-only:rust-physician"])]) == 1 && !datadog_integration_gcp_sts.staging["integration"].is_global_location_enabled && length(google_project_iam_member.datadog_gcp) == 4
+    error_message = "Resource allowlist must match the opt-in without global collection or new IAM."
+  }
+}
+
+run "reject_unbounded_gcp_dependency_opt_in" {
+  command = plan
+  variables {
+    datadog_gcp_integration_enabled   = true
+    datadog_gcp_dependency_collection = { pubsub = { verified_resource_filters = [] } }
+  }
+  expect_failures = [var.datadog_gcp_dependency_collection]
+}
+
+run "reject_project_wide_dependency_collection" {
+  command = plan
+  variables {
+    datadog_gcp_integration_enabled   = true
+    datadog_gcp_dependency_collection = { cloudsql = { verified_resource_filters = ["project_id:test-rust-stg-only"] } }
+  }
+  expect_failures = [var.datadog_gcp_dependency_collection]
+}
+
+run "new_collection_defaults_remain_off" {
+  command = plan
+  assert {
+    condition     = !contains(keys(kubernetes_config_map_v1.collector.data), "collector.self-metrics.yaml") && !contains(keys(kubernetes_deployment_v1.collector.spec[0].template[0].metadata[0].annotations), "ad.datadoghq.com/otel-collector.checks") && length(datadog_monitor.pvc_storage) == 0 && length(datadog_monitor.workload_health) == 0
+    error_message = "No self scrape or workload/PVC monitors may appear by default."
+  }
+}
+
 run "reject_grafana_latency_thresholds_that_differ_from_the_rules" {
   command = plan
   variables {

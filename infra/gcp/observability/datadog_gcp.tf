@@ -10,7 +10,25 @@
 # this integration adds the platform view Cloud Run itself reports (cold
 # starts, instance counts, container CPU and memory, 5xx answered before the
 # product container).
+variable "datadog_gcp_dependency_collection" {
+  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL, Redis and Pub/Sub subscriptions may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
+  type        = map(object({ verified_resource_filters = set(string) }))
+  default     = {}
+  validation {
+    condition = alltrue([for namespace, config in var.datadog_gcp_dependency_collection :
+      contains(["cloudsql", "redis", "pubsub"], namespace) && length(config.verified_resource_filters) > 0 &&
+      alltrue([for filter in config.verified_resource_filters : can(regex("^[a-z_]+:[A-Za-z0-9_:/.-]+$", filter)) && !can(regex("patient|run_id|chat_id|^(env|environment|project|project_id|region|zone|location|app|service|purpose):", filter))])
+    ])
+    error_message = "Dependency collection requires known namespace keys and nonempty exact verified resource identity filters; broad environment/project/location/service tags, wildcards and boolean scopes are forbidden."
+  }
+  validation {
+    condition     = length(var.datadog_gcp_dependency_collection) == 0 || (var.environment == "staging" && var.datadog_gcp_integration_enabled)
+    error_message = "Dependency collection requires the staging GCP integration gate."
+  }
+}
+
 locals {
+  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance", pubsub = "pubsub_subscription" }
   # The variable's validation already refuses it under grafana; the backend
   # gate here keeps the resources tied to Datadog regardless.
   datadog_gcp_enabled = local.datadog_backend && var.datadog_gcp_integration_enabled
@@ -29,13 +47,19 @@ locals {
   # project is collected unless its id is disabled. The project itself only
   # holds the Rust staging stack, and the monitored-resource filters below
   # narrow Cloud Run and GCE to the selected services and this cluster.
-  datadog_gcp_metric_namespace_configs = [
-    for namespace in sort(tolist(var.datadog_gcp_disabled_metric_namespaces)) : {
+  datadog_gcp_metric_namespace_configs = concat([
+    for namespace in sort(tolist(setsubtract(var.datadog_gcp_disabled_metric_namespaces, toset(keys(var.datadog_gcp_dependency_collection))))) : {
       id       = namespace
       disabled = true
       filters  = []
     }
-  ]
+    # Namespace filters select metric names, not resource tags. Resource
+    # identity restrictions belong only in monitored_resource_configs.
+    ], [for namespace in keys(var.datadog_gcp_dependency_collection) : {
+      id       = namespace
+      disabled = false
+      filters  = []
+  }])
 }
 
 resource "google_service_account" "datadog_gcp" {
@@ -71,10 +95,13 @@ resource "datadog_integration_gcp_sts" "staging" {
 
   # Only the selected Cloud Run services' revisions and this cluster's nodes
   # are imported; other Cloud Run services and VMs in the project are not.
-  monitored_resource_configs = [
+  monitored_resource_configs = concat([
     { type = "cloud_run_revision", filters = [for service in sort(tolist(var.datadog_gcp_cloud_run_services)) : "service_name:${service}"] },
     { type = "gce_instance", filters = ["goog-k8s-cluster-name:${var.cluster_name}"] },
-  ]
+    ], [for namespace, config in var.datadog_gcp_dependency_collection : {
+      type    = local.dependency_resource_types[namespace]
+      filters = sort(tolist(config.verified_resource_filters))
+  }])
 
   metric_namespace_configs = local.datadog_gcp_metric_namespace_configs
 

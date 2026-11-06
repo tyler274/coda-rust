@@ -32,12 +32,14 @@ locals {
       (local.collector_backend_file) = local.collector_backend_config
     },
     var.langfuse_enabled ? {} : { "collector.gke-no-langfuse.yaml" = local.collector_no_langfuse_config },
+    var.collector_self_metrics_enabled ? { "collector.self-metrics.yaml" = file("${path.module}/../../../dev/observability/collector.self-metrics.yaml") } : {},
   )
   # Later files merge over earlier ones, so the order is fixed here: the
   # backend overlay is always last.
   collector_config_files = concat(
     ["collector.yaml", "collector.gke.yaml"],
     var.langfuse_enabled ? [] : ["collector.gke-no-langfuse.yaml"],
+    var.collector_self_metrics_enabled ? ["collector.self-metrics.yaml"] : [],
     [local.collector_backend_file],
   )
   # Backend endpoints the overlay reads; only the selected backend's are set.
@@ -116,14 +118,14 @@ resource "kubernetes_deployment_v1" "collector" {
     template {
       metadata {
         labels = local.collector_labels
-        annotations = {
+        annotations = merge(local.collector_metrics_annotations, {
           # Roll the pods when the shared config, an overlay (including the
           # backend overlay) or the caller allowlist changes.
           "checksum/config" = sha256(join("\n", concat(
             [for file in local.collector_config_files : local.collector_config_data[file]],
             [var.otel_gateway_audience, local.collector_allowed_callers],
           )))
-        }
+        })
       }
 
       spec {
