@@ -90,6 +90,17 @@ function (step, ...args) {
         document.querySelector(".composer-context [role=status]")?.textContent ?? "",
       ];
     },
+    async savedDraft() {
+      const url = new URL(location.href);
+      const patient = url.searchParams.get("patient");
+      const chat = url.searchParams.get("chat");
+      const session = localStorage.getItem("coda.physician.session");
+      const response = await fetch(`/physician-state/drafts/${patient}/${chat}`, {
+        headers: session ? { Authorization: `Bearer ${session}` } : {},
+      });
+      if (!response.ok) throw new Error(`draft read returned ${response.status}`);
+      return response.json();
+    },
     // This tab's same-tab draft recovery keys.
     draftRecoveryKeys() {
       return Object.keys(sessionStorage).filter((key) => key.startsWith("coda.physician.draft."));
@@ -97,13 +108,6 @@ function (step, ...args) {
     // The open dialog's words, or nothing when no dialog is open.
     dialogText() {
       return document.querySelector("dialog.dialog")?.innerText ?? "";
-    },
-    // The page's visible text and its HTML, read in one turn so they agree.
-    pageSnapshot() {
-      return {
-        text: document.body ? document.body.innerText : "",
-        html: document.documentElement ? document.documentElement.outerHTML : "",
-      };
     },
     // The text of each line in the conversation.
     conversationLines() {

@@ -74,8 +74,6 @@ const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
-const SAVING: &str = "Saving…";
-const SAVED: &str = "Saved";
 const DRAFT_CONFLICT: &str = "A newer version of this draft was saved elsewhere.";
 const DRAFT_CONFLICT_HELP: &str =
     "Retry replaces the saved draft with your text. Use newer text discards your edit.";
@@ -1169,8 +1167,8 @@ fn PhysicianShell(
         };
         workspace.map(|workspace| DraftTarget::new(workspace, open_chat().as_deref()))
     };
-    // Another draft target clears the Saved mark of the one left behind, and
-    // the one left behind saves now instead of waiting for its debounce.
+    // The draft target left behind saves now instead of waiting for its
+    // debounce.
     let mut left_target = use_signal(|| None::<DraftTarget>);
     use_effect(move || {
         let target = draft_target();
@@ -1928,6 +1926,7 @@ fn PhysicianShell(
                                 let target = draft_target();
                                 composer.write().retry(target.as_ref());
                                 if let Some(target) = target {
+                                    composer.write().retry_failed(&target);
                                     autosave(composer, client, target);
                                 }
                             },
@@ -3755,7 +3754,12 @@ fn PatientSurface(
                                         on_draft_blur.call(());
                                     }
                                 },
-                                status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                                status: (!notice.is_empty()).then(|| rsx! {
+                                    span { role: "status", "{notice}" }
+                                    if notice == NOT_SAVED || notice == CLEAR_NOT_SAVED {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                    }
+                                }),
                                 notices: conflict.map(|newer| rsx! {
                                     DraftConflict {
                                         message: DRAFT_CONFLICT,
@@ -4278,11 +4282,29 @@ fn save_outcome(answer: Result<DraftSave, physician_client::HttpError>) -> SaveO
 fn notice_words(notice: Notice, clearing: bool) -> String {
     match notice {
         Notice::None | Notice::Conflict => String::new(),
-        Notice::Saving => SAVING.to_owned(),
-        Notice::Saved => SAVED.to_owned(),
         Notice::NotSaved if clearing => CLEAR_NOT_SAVED.to_owned(),
         Notice::NotSaved => NOT_SAVED.to_owned(),
         Notice::Said(words) => words.to_owned(),
+    }
+}
+
+#[cfg(test)]
+mod draft_notice_tests {
+    use super::*;
+
+    #[test]
+    fn routine_draft_saves_are_silent_but_failures_remain_visible() {
+        for clearing in [false, true] {
+            for notice in [Notice::None, Notice::Conflict] {
+                assert_eq!(notice_words(notice, clearing), "");
+            }
+        }
+        assert_eq!(notice_words(Notice::NotSaved, false), NOT_SAVED);
+        assert_eq!(notice_words(Notice::NotSaved, true), CLEAR_NOT_SAVED);
+        assert_eq!(
+            notice_words(Notice::Said(DICTATION_UNAVAILABLE), false),
+            DICTATION_UNAVAILABLE
+        );
     }
 }
 
