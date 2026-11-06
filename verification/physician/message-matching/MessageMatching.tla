@@ -318,7 +318,8 @@ NeverInvisible ==
 \* goes away.
 UndoPutsBack ==
   /\ [][/\ (event'.name = "you press Undo" =>
-               link' = undo.from /\ on' = {undo.from} /\ \A i \in Messages : msg'[i] # NotAPatient)
+               link' = undo.from /\ on' = {undo.from} /\ (\A i \in Messages : msg'[i] # NotAPatient) /\ ~acted')
+         /\ (~acted /\ acted' => event'.name = "Undo goes away, and Coda acts on the move")
          /\ (undo'.by # Nobody => ~acted')]_vars
   /\ undo.by # Nobody ~> undo.by = Nobody
 
