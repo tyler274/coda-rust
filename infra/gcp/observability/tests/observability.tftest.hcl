@@ -856,12 +856,15 @@ run "grafana_stack_is_cluster_private_and_bounded" {
     condition = alltrue([for name, s in kubernetes_stateful_set_v1.grafana_stack :
       length(s.spec[0].volume_claim_template) == 1 &&
       s.spec[0].volume_claim_template[0].spec[0].access_modes == toset(["ReadWriteOnce"]) &&
-      length(s.spec[0].template[0].spec[0].container[0].resources[0].requests) == 2 &&
+      length(s.spec[0].template[0].spec[0].container[0].resources[0].requests) == 3 &&
       s.spec[0].template[0].spec[0].container[0].resources[0].requests["cpu"] != "" &&
       s.spec[0].template[0].spec[0].container[0].resources[0].requests["memory"] != "" &&
-      s.spec[0].template[0].spec[0].security_context[0].run_as_non_root
+      s.spec[0].template[0].spec[0].container[0].resources[0].requests["ephemeral-storage"] == "1Gi" &&
+      s.spec[0].template[0].spec[0].container[0].resources[0].limits["ephemeral-storage"] == "1Gi" &&
+      s.spec[0].template[0].spec[0].security_context[0].run_as_non_root &&
+      s.spec[0].template[0].spec[0].security_context[0].seccomp_profile[0].type == "RuntimeDefault"
     ])
-    error_message = "Every Grafana stack pod has a persistent disk, explicit CPU and memory requests for Autopilot, and runs as non-root."
+    error_message = "Every Grafana stack pod has a persistent disk, explicit CPU, memory and ephemeral-storage requests for Autopilot, a RuntimeDefault seccomp profile, and runs as non-root."
   }
 
   assert {
@@ -1226,6 +1229,51 @@ run "reject_unbounded_gcp_dependency_opt_in" {
     datadog_gcp_dependency_collection = { pubsub = { verified_resource_filters = [] } }
   }
   expect_failures = [var.datadog_gcp_dependency_collection]
+}
+
+run "autopilot_workloads_declare_admission_defaults" {
+  command = plan
+  variables { telemetry_backend = "both" }
+
+  assert {
+    condition = (
+      length(kubernetes_stateful_set_v1.grafana_stack) == 4 &&
+      alltrue([for container in concat(
+        kubernetes_deployment_v1.collector.spec[0].template[0].spec[0].container,
+        [for set in kubernetes_stateful_set_v1.grafana_stack : set.spec[0].template[0].spec[0].container[0]],
+        ) : (
+        container.resources[0].requests["ephemeral-storage"] == "1Gi" &&
+        container.resources[0].limits["ephemeral-storage"] == "1Gi" &&
+        toset(container.security_context[0].capabilities[0].drop) == toset(["NET_RAW"]) &&
+        container.security_context[0].allow_privilege_escalation == false &&
+        container.security_context[0].privileged == false &&
+        container.security_context[0].read_only_root_filesystem == false &&
+        container.security_context[0].run_as_non_root == false
+      )])
+    )
+    error_message = "The collector and each Grafana container must drop NET_RAW and request and limit ephemeral-storage at 1Gi."
+  }
+
+  assert {
+    condition = alltrue(concat(
+      [for spec in [kubernetes_deployment_v1.collector.spec[0].template[0].spec[0]] : (
+        spec.security_context[0].seccomp_profile[0].type == "RuntimeDefault" &&
+        spec.security_context[0].run_as_non_root == false &&
+        length(spec.security_context[0].supplemental_groups) == 0 &&
+        one([for item in spec.toleration : item if item.key == "kubernetes.io/arch"]).operator == "Equal" &&
+        one([for item in spec.toleration : item if item.key == "kubernetes.io/arch"]).value == "amd64" &&
+        one([for item in spec.toleration : item if item.key == "kubernetes.io/arch"]).effect == "NoSchedule"
+      )],
+      [for set in kubernetes_stateful_set_v1.grafana_stack : (
+        set.spec[0].template[0].spec[0].security_context[0].seccomp_profile[0].type == "RuntimeDefault" &&
+        set.spec[0].template[0].spec[0].security_context[0].run_as_non_root == true &&
+        one([for item in set.spec[0].template[0].spec[0].toleration : item if item.key == "kubernetes.io/arch"]).operator == "Equal" &&
+        one([for item in set.spec[0].template[0].spec[0].toleration : item if item.key == "kubernetes.io/arch"]).value == "amd64" &&
+        one([for item in set.spec[0].template[0].spec[0].toleration : item if item.key == "kubernetes.io/arch"]).effect == "NoSchedule"
+      )],
+    ))
+    error_message = "Each workload pod must use RuntimeDefault seccomp and tolerate kubernetes.io/arch=amd64:NoSchedule. Grafana pods stay non-root."
+  }
 }
 
 run "reject_project_wide_dependency_collection" {

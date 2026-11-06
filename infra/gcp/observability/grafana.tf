@@ -269,6 +269,17 @@ resource "kubernetes_stateful_set_v1" "grafana_stack" {
           run_as_user     = each.value.user
           run_as_group    = each.value.user
           fs_group        = each.value.user
+
+          seccomp_profile {
+            type = "RuntimeDefault"
+          }
+        }
+
+        toleration {
+          key      = "kubernetes.io/arch"
+          operator = "Equal"
+          value    = "amd64"
+          effect   = "NoSchedule"
         }
 
         container {
@@ -310,10 +321,24 @@ resource "kubernetes_stateful_set_v1" "grafana_stack" {
             period_seconds        = 10
           }
 
+          # Autopilot writes these container defaults at admission. The pod
+          # security context above still sets the Grafana user.
+          security_context {
+            allow_privilege_escalation = false
+            privileged                 = false
+            read_only_root_filesystem  = false
+            run_as_non_root            = false
+
+            capabilities {
+              add  = []
+              drop = ["NET_RAW"]
+            }
+          }
+
           # Autopilot bills requests and sets limits to match.
           resources {
-            requests = each.value.resources
-            limits   = each.value.resources
+            requests = merge(each.value.resources, { "ephemeral-storage" = "1Gi" })
+            limits   = merge(each.value.resources, { "ephemeral-storage" = "1Gi" })
           }
 
           volume_mount {
@@ -355,6 +380,15 @@ resource "kubernetes_stateful_set_v1" "grafana_stack" {
         }
       }
     }
+  }
+
+  # Autopilot's warden writes these after admission. The version and the
+  # adjustment record change outside this root.
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["autopilot.gke.io/resource-adjustment"],
+      metadata[0].annotations["autopilot.gke.io/warden-version"],
+    ]
   }
 
   depends_on = [helm_release.doppler_secrets]
