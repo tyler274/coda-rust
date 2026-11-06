@@ -43,7 +43,7 @@ resource "google_cloud_run_v2_service" "app" {
     containers {
       # Named only beside the otel-collector sidecar (index 1); unset keeps
       # the single-container template unchanged. Release updates this
-      # container's image by that name (scripts/gcp/release_shape.py).
+      # container's image by that name (workspace-tools staging-release).
       name  = local.observability ? each.key : null
       image = try(var.images[each.key].runtime, "")
       ports { container_port = 8080 }

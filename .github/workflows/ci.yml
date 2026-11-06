@@ -1060,10 +1060,11 @@ jobs:
             -config.file=/etc/loki.yaml -config.expand-env=true -verify-config
           docker run --rm --entrypoint promtool -v "$g/prometheus.yaml:/etc/prometheus.yaml:ro" \
             docker.io/prom/prometheus:v3.16.0 check config /etc/prometheus.yaml
-      - name: Test offline routing and release preservation contracts
+      # The foundations job runs the mocked release adapters; staging-release's
+      # container-shape checks run with the workspace-tools tests.
+      - name: Test offline routing and staging image contracts
         run: |
           nix develop .#agent --command python -m unittest discover -s scripts -p test_alert_qualification.py -v
-          nix develop .#agent --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
           nix develop .#agent --command python -m unittest discover -s scripts -p test_staging_images.py -v
       - name: Exercise collector privacy and destination failure isolation
         run: nix develop .#agent --command python scripts/test_collector_privacy.py

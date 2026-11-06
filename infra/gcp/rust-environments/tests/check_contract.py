@@ -33,7 +33,8 @@ class Contract(unittest.TestCase):
         self.assertNotIn("ignore_changes = all", text)
 
     def test_release_targets_the_product_container_by_name(self):
-        # scripts/gcp/release_shape.py finds the product container by the
+        # staging-release (crates/workspace-tools/src/staging_release/shape.rs)
+        # finds the product container by the
         # service name and the sidecar by "otel-collector"; index 0 stays the
         # product so ignore_changes covers exactly the release-owned image.
         workloads = config_text("workloads.tf")
@@ -44,8 +45,8 @@ class Contract(unittest.TestCase):
         self.assertIn('name                 = each.key', services["app"])
         sidecar = config_text("observability-cluster.tf")
         self.assertIn('name   = "otel-collector"', sidecar)
-        shape = (ROOT.parents[2] / "scripts/gcp/release_shape.py").read_text()
-        self.assertIn('SIDECAR = "otel-collector"', shape)
+        shape = (ROOT.parents[2] / "crates/workspace-tools/src/staging_release/shape.rs").read_text()
+        self.assertIn('const SIDECAR: &str = "otel-collector";', shape)
         for key in ["DD_ENV", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT", "CODA_TELEMETRY_BACKEND"]:
             self.assertIn(f'"{key}"', shape)
             self.assertIn(key, sidecar + workloads)

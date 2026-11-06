@@ -303,25 +303,28 @@ gh variable delete RUST_STAGING_DEPLOY               # off
 ```
 
 The release changes one field per service: the product container's image.
-[`rollout-service.sh`](/scripts/gcp/rollout-service.sh) runs
-[`release_shape.py`](/scripts/gcp/release_shape.py) around each
-`gcloud run services update`:
+[`staging-release`](/crates/workspace-tools/src/staging_release/shape.rs) checks
+each service's template around its `gcloud run services update`:
 
-- **Before.** The template must have one container, or exactly the product
-  container (named after the service, with port 8080) and an `otel-collector`
-  sidecar with `OTEL_EXPORTER_OTLP_ENDPOINT` on the product container. Any other
-  shape stops the release. A multi-container service is updated with
-  `--container <service>`, so the image never lands on the sidecar.
-- **After.** The new template must equal the old one except for that image:
-  same containers, environment, resources, CPU allocation, probes and scaling.
-  A lost sidecar or environment variable fails the job and names the field.
+- **Before.** Before any migration runs, each existing service's template must
+  have one unnamed container, or exactly the product container (named after the
+  service) and an `otel-collector` sidecar. With the sidecar, the product carries
+  the telemetry environment (`DD_ENV`, `OTEL_EXPORTER_OTLP_ENDPOINT`,
+  `CODA_LOG_FORMAT=json`, `CODA_TELEMETRY_CONTENT=none`,
+  `CODA_TELEMETRY_BACKEND`), the sidecar carries its gateway configuration and
+  takes no port. Any other shape stops the release. A two-container service is
+  updated with `--container <service>`, so the image never lands on the sidecar,
+  and the served image is read from the container named after the service.
+- **After.** Once the new revision serves the image, the template must equal the
+  old one except for that image and gcloud's client annotations and labels: same
+  containers, environment, resources, CPU allocation, probes and scaling. A lost
+  sidecar or any other moved field fails the service's rollout and stops the
+  release before the next service.
 
 Sidecars, telemetry environment, CPU and scaling belong to
 [`rust-environments`](/infra/gcp/rust-environments) and change only through a
-saved-plan apply. The release reads `observability_enabled` from
-`env/staging.tfvars` and warns, without failing, when the live shape does not
-match it yet: that means the apply is still pending, and the release keeps
-whatever shape is live.
+saved-plan apply. The release accepts either well-formed shape, so before that
+apply it keeps releasing the single-container services unchanged.
 
 ### Telemetry sidecars and CPU allocation
 

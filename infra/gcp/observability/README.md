@@ -380,8 +380,8 @@ The observability operator owns collector, Datadog, Grafana and scoped ingestion
 configuration here. The runtime infrastructure operator owns authenticated probe
 identities, scheduler, direct Cloud Monitoring watchdog and Cloud Run sidecars
 in `rust-environments`. Product releases own only the named product image;
-`scripts/gcp/rollout-service.sh` invokes `scripts/gcp/release_shape.py` to check
-the before/after service shape. The separately tested `scripts/gcp/release.py`
+`workspace-tools staging-release` checks the before/after service shape. The
+separately tested `scripts/gcp/release.py`
 state machine is not the ordinary CI rollout path. The product's
 on-call owner investigates service readiness and queue progress; telemetry is
 not a second clinical run ledger.

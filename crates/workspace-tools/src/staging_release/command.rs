@@ -285,7 +285,7 @@ mod tests {
             .update_job(Product::Physician, &receipt.images)
             .expect("job");
         cloud
-            .update_service(ReleaseService::PhysicianWorker, &receipt.images)
+            .update_service(ReleaseService::PhysicianWorker, None, &receipt.images)
             .expect("worker");
         assert_eq!(
             &cloud.runner.args[3][3..8],
@@ -316,6 +316,56 @@ mod tests {
         );
     }
     #[test]
+    fn two_container_service_reads_and_updates_the_named_product() {
+        let receipt = super::super::tests::receipt();
+        let image = receipt
+            .images
+            .get(ImageRole::PhysicianRuntime)
+            .expect("image");
+        // Cloud Run may list the sidecar first: index 0 is not the product.
+        let template = shape::tests::observed("physician", image.as_str());
+        let sidecar = template["spec"]["containers"][0].clone();
+        let service = serde_json::json!({"spec":{"template":template},"status":{"latestCreatedRevisionName":"rev", "latestReadyRevisionName":"rev", "traffic":[{"revisionName":"rev","percent":100,"latestRevision":true}]}});
+        let revision = serde_json::json!({"spec":{"containers":[sidecar, {"name":"physician","image":image.as_str()}]}});
+        let mut cloud = Gcloud::new(
+            Fake {
+                outputs: VecDeque::from([
+                    output(0, &service.to_string(), ""),
+                    output(0, &revision.to_string(), ""),
+                    output(0, &service.to_string(), ""),
+                    output(0, "{}", ""),
+                ]),
+                args: vec![],
+            },
+            Duration::from_secs(1),
+        );
+        assert!(serving(
+            &cloud.service(ReleaseService::Physician).expect("service"),
+            image
+        ));
+        let shape = cloud.shape(ReleaseService::Physician).expect("shape");
+        assert_eq!(shape.container(), Some("physician"));
+        cloud
+            .update_service(
+                ReleaseService::Physician,
+                shape.container(),
+                &receipt.images,
+            )
+            .expect("update");
+        assert_eq!(
+            &cloud.runner.args[3][3..10],
+            [
+                "services",
+                "update",
+                "physician",
+                "--container",
+                "physician",
+                "--image",
+                image.as_str(),
+            ]
+        );
+    }
+    #[test]
     fn mutations_reject_missing_target_images_before_invoking_runner() {
         let receipt = super::super::tests::receipt();
         for missing in ImageRole::ALL {
@@ -342,15 +392,15 @@ mod tests {
                     "missing migration digest",
                 ),
                 ImageRole::PhysicianRuntime => (
-                    cloud.update_service(ReleaseService::Physician, &images),
+                    cloud.update_service(ReleaseService::Physician, None, &images),
                     "missing runtime digest",
                 ),
                 ImageRole::DuetRuntime => (
-                    cloud.update_service(ReleaseService::Duet, &images),
+                    cloud.update_service(ReleaseService::Duet, None, &images),
                     "missing runtime digest",
                 ),
                 ImageRole::PhysicianWorker => (
-                    cloud.update_service(ReleaseService::PhysicianWorker, &images),
+                    cloud.update_service(ReleaseService::PhysicianWorker, None, &images),
                     "missing runtime digest",
                 ),
             };
