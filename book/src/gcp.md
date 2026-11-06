@@ -8,7 +8,7 @@ saved-plan approval. This exception grants no authority over the referenced
 production application or clinical-evidence roots.
 
 Run every command on this page inside `nix develop` from the repository root. The
-shell provides `gcloud`, `tofu`, `doppler` and `jq`; do not use host copies.
+shell provides `gcloud`, `tofu`, `doppler`, `timeout` and `jq`; do not use host copies.
 Commands that read Doppler secrets need the default shell after `doppler login`,
 not `.#agent`, which loads no credentials.
 
@@ -57,32 +57,23 @@ GCS state under `rust-environments/stg`; the reviewed nonsecret inputs are
 ### Review and apply a staging plan
 
 From an authorized engineering account, inside the Doppler-authorized default
-`nix develop` shell at the repository root. Read existing passwords without
-printing them or placing them in command arguments; this rotates no credentials.
-Keep the plan and its output private: they can contain database passwords.
+`nix develop` shell at the repository root, with current Google application
+default credentials (`gcloud auth application-default login`).
+[`staging-reconcile`](/crates/workspace-tools/src/staging_reconcile.rs) reads the
+four existing role passwords from Doppler and passes them only to the OpenTofu
+child that needs them, never in arguments or output; it rotates no credentials.
+It refuses a failed or empty lookup before OpenTofu runs.
 
 ```bash
-# Never enable shell tracing.
-set -euo pipefail
-umask 077
-root=infra/gcp/rust-environments
-plan_dir=$(mktemp -d)
-plan="$plan_dir/staging.tfplan"
-tofu -chdir="$root" init -input=false -backend-config=backend/staging.gcs.tfbackend
-(
-  # Fail immediately if any secret lookup fails; do not print the values.
-  pr=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_runtime)
-  pm=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_physician_migration)
-  dr=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_runtime)
-  dm=$(doppler secrets get DB_PASSWORD --plain --project coda-rust --config stg_duet_migration)
-  export pr pm dr dm TF_VAR_database_passwords
-  TF_VAR_database_passwords=$(jq -cn \
-    '{"physician-runtime":env.pr,"physician-migration":env.pm,"duet-runtime":env.dr,"duet-migration":env.dm}')
-  unset pr pm dr dm
-  tofu -chdir="$root" plan -input=false -var-file=env/staging.tfvars -out="$plan"
-)
-tofu -chdir="$root" show -no-color "$plan"
+dir=$(mktemp -u /tmp/staging-plan.XXXXXX)
+cargo run -p workspace-tools -- staging-reconcile plan --output-dir "$dir"
+less "$dir/review.txt"
 ```
+
+`plan` creates the owner-only directory outside the repository, saves the plan,
+its review text and a manifest binding the plan's digest to the root's
+configuration digest and the fixed staging backend. The plan, review and
+`diagnostics.log` can contain credentials: never publish or attach them.
 
 **STOP:** review every change and obtain operator approval before continuing.
 Unexpected deletes, replacements, IAM/network changes, image changes, or new
@@ -91,11 +82,18 @@ releases so no deployment races the saved plan. Do not use `-target` or
 `-refresh-only` to hide differences. Image digests remain release-owned.
 
 ```bash
-tofu -chdir="$root" apply "$plan"
+cargo run -p workspace-tools -- staging-reconcile apply --plan-dir "$dir" --authorize-staging-apply
+cargo run -p workspace-tools -- staging-reconcile verify --plan-dir "$dir"
 ```
 
-Repeat the plan block after apply: it must report no changes. Securely dispose of
-the private plans when no longer needed.
+`apply` refuses a plan whose bytes, root inputs or backend changed since review,
+and applies a plan at most once. A failed, timed-out or interrupted apply is
+uncertain: inspect state, the lock and live resources rather than retrying.
+`verify` runs a fresh plan that must report no changes, then requires the
+physician service's scaling, CPU and egress settings from the reviewed plan, a
+Ready latest revision and all traffic on it. It writes a nonsecret
+`*-verification.json` receipt and exits 3 on any difference. Securely dispose of
+the directory when no longer needed.
 
 Review the saved plan before any separately authorized apply. Engineering-group
 access owns routine infrastructure administration and state access. Project IAM,
@@ -140,21 +138,14 @@ A new environment needs these operator steps, in order:
 
 ### Reconcile staging configuration
 
-1. Compare live settings with `env/staging.tfvars` and the
-   [physician scaling](#physician-scaling-redis-fan-out-and-pubsub-chat-turns) and
-   [SMTP relay](#staging-sign-in-accounts) contracts. Do not patch Cloud Run flags by hand.
-2. Use [the saved-plan procedure](#review-and-apply-a-staging-plan) above for
-   approved corrections, including its no-change recheck. Then inspect:
-
-```bash
-gcloud run services describe physician --project=coda-rust-staging --region=us-east1 \
-  --format='json(spec.template.metadata.annotations,status.conditions,status.latestCreatedRevisionName,status.latestReadyRevisionName,status.traffic)'
-```
-
-3. Require the declared settings, Ready status, matching latest-created and
-   latest-ready revisions, and 100% intended traffic. Repeat this readback after
-   the next separately approved release. If settings regress, fix the release
-   owner rather than reapplying in a loop.
+Do not patch Cloud Run flags by hand. Use [the saved-plan
+procedure](#review-and-apply-a-staging-plan) for approved corrections; its
+`verify` compares live physician settings with the reviewed plan, which follows
+`env/staging.tfvars` and the [physician
+scaling](#physician-scaling-redis-fan-out-and-pubsub-chat-turns) and [SMTP
+relay](#staging-sign-in-accounts) contracts. Repeat `verify` after the next
+separately approved release. If settings regress, fix the release owner rather
+than reapplying in a loop.
 
 A Ready revision is not database or journey qualification; use the existing
 [rollout](#direct-staging-rollout), [scaling verification](#physician-scaling-redis-fan-out-and-pubsub-chat-turns)
