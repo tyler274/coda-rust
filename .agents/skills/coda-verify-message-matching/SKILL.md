@@ -24,7 +24,7 @@ Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, 
 
 ## Coverage
 
-The sync commit is 20a7839f. At that commit, the model describes the README, and the check passed
+The sync commit is e82cdd05. At that commit, the model describes the README, and the check passed
 with each journey break below caught. No product code carries the model's steps. When code does, each action's
 comment names that code, and the code joins "When a change needs this". Move the sync commit forward
 only after the check passes and each journey break below is caught again, on a README or code that
@@ -62,8 +62,8 @@ Each `.mjs` says what its chart leaves out.
 - Which patients each physician may access is open in P2. It is an input, and TLC sets it in every way in which each patient is someone's. Access does not change during a run.
 - Which physicians see a message before it is linked is also open in P2. The model lets a physician act on it, and checks rule 2 for every physician. Who sees Messages to match follows P2.
 - Time is fairness: 15 minutes always pass for a message that Coda has not decided about, and Undo always goes away unless someone presses it. The model doesn't count seconds or minutes.
-- The model stores one link for each conversation, so it can't express messages of one conversation on two patients. The code must keep this, and its browser test checks it.
-- What Coda wrote from a conversation shows wherever the conversation shows, so rule 4 covers it with the conversation. The code must hide both at once, and its browser test checks it.
+- The model stores one link for each conversation, so it can't express messages of one conversation on two patients. The code must keep this. No test checks it yet; the browser test for the matching code must check it.
+- What Coda wrote from a conversation shows wherever the conversation shows, so rule 4 covers it with the conversation. The code must hide both at once. No test checks it yet; the browser test for the matching code must check it.
 - Opening and closing the conversation are screen steps that rule 1 needs. The README's journey does not name them.
 - TLC covers every state of the finite model. It does not reach the code.
 
@@ -95,11 +95,12 @@ its break at the scope of `MessageMatching.cfg`:
 | Wrong patient | Coda acts on the move only after Undo goes away | Coda acts at once | 6 |
 | Wrong patient | Undo puts everything back: where it shows | it still shows on the new patient | 6 |
 | Wrong patient | Undo puts everything back: its messages | the messages stay not a patient | 6 |
+| Wrong patient | Undo puts everything back: Coda never acts on the undone move | pressing Undo also makes Coda act on the move | 6 |
 | Wrong patient | On Undo, a physician who may not access that patient loses it | it stays open for them | 1 |
 | Wrong patient | A message that arrives while Undo shows follows the conversation | it goes to the patient it left | 4 |
 | Wrong patient | Undo takes that message back with the conversation | Undo takes back only the first message | 6 |
 
-These journey lines rest on records, the channel or the screen, so tests hold them:
+These journey lines rest on records, the channel or the screen, so the model can't hold them. No test holds them yet. They stay unverified until the matching code exists, and its tests must hold each one:
 
 - Reading the channel: Coda never sends in it; it starts with new messages and offers the backlog; it reads each message one time and saves it before it moves on; one reader for each channel; catching up and retries never show; one failure never stops the others.
 - The Spruce tie: one outside participant, one contact, one EHR record, one Coda patient.
