@@ -14,7 +14,10 @@ IMAGE_ROOTS = (
     'physician-sample-image', 'physician-worker-image', 'duet-api-image',
     'physician-migration-image', 'duet-migration-image', 'duet-privacy-delivery-image',
 )
-ROOTS = DEPENDENCY_ROOTS + IMAGE_ROOTS
+# CI jobs enter these shells; otherwise each job rebuilds their wrappers
+# (claude-code, google-cloud-sdk) and refetches them from cache.nixos.org.
+SHELL_ROOTS = tuple(f'devShells.x86_64-linux.{name}' for name in ('agent', 'release', 'observability'))
+ROOTS = DEPENDENCY_ROOTS + IMAGE_ROOTS + SHELL_ROOTS
 
 
 def verify_checkout(expected_sha):
