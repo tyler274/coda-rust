@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Start the local observability stack (dev/observability/compose.yaml):
-# Langfuse v3, its stores, the shared OpenTelemetry Collector, and at most one
-# operations backend.
+# Langfuse v3, its stores, the shared OpenTelemetry Collector, and selected
+# operations backends. --both starts Datadog and Grafana concurrently.
 #
 #   scripts/observability-up.sh            # collector prints the ops-bound spans (debug exporter)
 #   scripts/observability-up.sh --datadog  # also runs the Datadog Agent; needs DD_API_KEY

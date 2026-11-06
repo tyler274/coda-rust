@@ -1,10 +1,21 @@
-# Operational alerts evaluate but do not notify. Datadog owns service paging.
-# A separately gated synthetic rule may reach the test-only Slack route.
+# Grafana requires a real receiver, even for shadow evaluation. Every alert
+# matches the always-muted child route; there is no Slack integration here.
 apiVersion: 1
 contactPoints:
   - orgId: 1
     name: coda-shadow
-    receivers: []
+    receivers:
+      - uid: coda-shadow
+        type: email
+        settings:
+          addresses: shadow@example.test
+muteTimes:
+  - orgId: 1
+    name: coda-shadow-always
+    time_intervals:
+      - times:
+          - start_time: '00:00'
+            end_time: '24:00'
 policies:
   - orgId: 1
     receiver: coda-shadow
@@ -12,3 +23,7 @@ policies:
     group_wait: 30s
     group_interval: 5m
     repeat_interval: 4h
+    routes:
+      - receiver: coda-shadow
+        mute_time_intervals: [coda-shadow-always]
+        continue: false

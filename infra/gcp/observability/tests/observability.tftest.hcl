@@ -868,9 +868,9 @@ run "grafana_stack_is_cluster_private_and_bounded" {
       toset([for rule in flatten([for group in yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"]).groups : group.rules]) : rule.uid]) == toset([
         "coda-site-5xx-rate", "coda-site-p95-latency", "coda-chat-generation-errors", "coda-async-failures",
       ]) &&
-      length(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["contact.yaml"]).contactPoints[0].receivers) == 0 &&
+      yamldecode(local.grafana_contact_config).contactPoints[0].receivers[0].type == "email" &&
       yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" &&
-      length(yamldecode(local.grafana_contact_config).policies[0].routes) == 0
+      yamldecode(local.grafana_contact_config).policies[0].routes[0].mute_time_intervals == ["coda-shadow-always"]
     )
     error_message = "Grafana must provision exactly the four Coda alert rules and the Slack contact point."
   }

@@ -12,9 +12,9 @@ data flow, content policy, and runbook are in
 | Part | What it is |
 | --- | --- |
 | `collector.tf` | Two-replica OpenTelemetry Collector (`otel/opentelemetry-collector-contrib:0.155.0`) running [`dev/observability/collector.yaml`](/dev/observability/collector.yaml) merged with the gateway overlay [`collector.gke.yaml`](/dev/observability/collector.gke.yaml) and, last, the backend overlay `collector.<telemetry_backend>.yaml`, all unchanged from one ConfigMap. Only the selected backend's endpoints are set (`DATADOG_OTLP_ENDPOINT`, or `TEMPO_OTLP_ENDPOINT` and `LOKI_OTLP_ENDPOINT`). A ClusterIP Service serves in-cluster callers; the `otel-gateway` internal load balancer serves Cloud Run |
-| `datadog.tf` | Only with `telemetry_backend = "datadog"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
+| `datadog.tf` | With `telemetry_backend = "datadog"` or `"both"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
-| `grafana.tf` | Only with `telemetry_backend = "grafana"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four alert rules with a Slack contact point. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
+| `grafana.tf` | With `telemetry_backend = "grafana"` or `"both"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four operational alert rules in shadow mode. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
 | `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only, and an optional IAP-gated internal Gateway |
 | `doppler.tf` | Doppler Kubernetes Operator `1.7.3` and one `DopplerSecret` per consuming Kubernetes Secret |
 | `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret, Gateway) so they apply after their operators' CRDs exist |
@@ -47,9 +47,9 @@ and both roots must carry the same value. The Datadog Helm releases moved to
 indexed addresses (`moved` blocks keep an applied Agent in place), so the
 default plan does not recreate them. To switch to `grafana`:
 
-1. Add `GRAFANA_ADMIN_PASSWORD` and `GRAFANA_SLACK_WEBHOOK_URL` to the Doppler
-   config this root syncs from (`coda-rust/stg`). Both are synced only under
-   `grafana`.
+1. Add `GRAFANA_ADMIN_PASSWORD` to the Doppler config this root syncs from
+   (`coda-rust/stg`). A Slack webhook is only required for the separately
+   approved synthetic notification test route.
 2. Set `datadog_monitors_enabled = false` and
    `datadog_gcp_integration_enabled = false`; variable validation refuses
    either with `grafana`. Use `grafana_cloud_monitoring_enabled` for platform
@@ -79,8 +79,9 @@ step.
 
 Use `both` in both roots to keep Datadog ingestion and its independently gated
 primary notifications. JSON logs retain W3C identifiers and Datadog aliases.
-Grafana operational rules always use the empty `coda-shadow` contact point:
-they evaluate without duplicate Slack paging. `grafana_test_notifications_enabled`
+Grafana operational rules match the always-muted `coda-shadow` child route:
+they evaluate without duplicate Slack paging. Grafana requires a receiver, so
+this route references a synthetic `.test` email receiver with no SMTP configured. `grafana_test_notifications_enabled`
 is default-off and adds only a route requiring both `qualification=synthetic-notification-test`
 and `alertname=Coda synthetic notification test`. Its webhook is synced from
 Doppler only when enabled. Creating or firing that dedicated test rule and

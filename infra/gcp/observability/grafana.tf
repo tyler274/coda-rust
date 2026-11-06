@@ -48,17 +48,28 @@ locals {
     }]
   }
   grafana_contact_config = yamlencode({
-    apiVersion    = 1
-    contactPoints = concat(local.grafana_contact.contactPoints, var.grafana_test_notifications_enabled ? [local.grafana_test_contact] : [])
+    apiVersion          = 1
+    contactPoints       = concat(local.grafana_contact.contactPoints, var.grafana_test_notifications_enabled ? [local.grafana_test_contact] : [])
+    muteTimes           = local.grafana_contact.muteTimes
+    deleteContactPoints = var.grafana_test_notifications_enabled ? [] : [{ orgId = 1, uid = "coda-slack-test" }]
     policies = [merge(local.grafana_contact.policies[0], {
-      routes = var.grafana_test_notifications_enabled ? [{
+      routes = concat(var.grafana_test_notifications_enabled ? [{
         receiver        = "coda-slack-test"
         object_matchers = [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]]
         continue        = false
-      }] : []
+      }] : [], local.grafana_contact.policies[0].routes)
     })]
   })
-  grafana_compatibility_config = var.grafana_compatibility_metrics_url == "" ? {} : {
+  grafana_compatibility_config = var.grafana_compatibility_metrics_url == "" ? {
+    "compatibility-datasource.yaml" = yamlencode({
+      apiVersion        = 1
+      deleteDatasources = [{ orgId = 1, name = "Compatibility metrics" }]
+    })
+    "compatibility-rules.yaml" = yamlencode({
+      apiVersion  = 1
+      deleteRules = [for uid in ["coda-readiness-shadow", "coda-dependency-shadow", "coda-signal-freshness-shadow"] : { orgId = 1, uid = uid }]
+    })
+    } : {
     "compatibility-datasource.yaml" = yamlencode({
       apiVersion  = 1
       datasources = [{ name = "Compatibility metrics", uid = "compatibility", type = "prometheus", access = "proxy", editable = false, url = var.grafana_compatibility_metrics_url }]
@@ -146,7 +157,7 @@ locals {
           "contact.yaml"     = "alerting/contact.yaml"
         },
         local.grafana_monitoring_enable ? { "cloud-monitoring.yaml" = "datasources/cloud-monitoring.yaml" } : {},
-        var.grafana_compatibility_metrics_url == "" ? {} : {
+        {
           "compatibility-datasource.yaml" = "datasources/compatibility.yaml"
           "compatibility-rules.yaml"      = "alerting/compatibility.yaml"
         },

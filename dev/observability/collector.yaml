@@ -7,6 +7,7 @@
 # The operations backend is chosen by one overlay merged LAST:
 #   collector.datadog.yaml  otlp/datadog (Datadog Agent)
 #   collector.grafana.yaml  otlp/tempo + otlphttp/loki
+#   collector.both.yaml     all three independent operations exporters
 #   collector.debug.yaml    debug exporter (local only)
 # Without a backend overlay the ops pipelines export to nop: data is dropped,
 # never sent somewhere unintended.

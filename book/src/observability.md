@@ -1,8 +1,8 @@
 # Observability
 
-The observability stack has one **operations backend** (traces, logs, metrics,
-alerts) and **self-hosted Langfuse** for agent runs. The operations backend is
-either Datadog (APM, logs, Error Tracking, monitors) or a self-hosted Grafana
+The observability stack has selectable **operations destinations** (traces,
+logs, metrics, alerts) and **self-hosted Langfuse** for agent runs. Destinations
+are Datadog (APM, logs, Error Tracking, monitors), a self-hosted Grafana
 stack (Tempo, Loki, Prometheus, Grafana). Both use the same OpenTelemetry
 trace. The operations backend gets every span with agent content removed.
 Langfuse gets only model generations and stays inside our GCP project. The

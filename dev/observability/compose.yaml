@@ -173,7 +173,7 @@ services:
     restart: unless-stopped
     # COLLECTOR_OVERLAY picks the ops pipelines' backend: `debug` (default,
     # no backend), `datadog` (observability-up.sh --datadog) or `grafana`
-    # (observability-up.sh --grafana).
+    # (observability-up.sh --grafana), or `both` with both profiles enabled.
     command:
       - --config=/etc/otelcol/collector.yaml
       - --config=/etc/otelcol/collector.${COLLECTOR_OVERLAY:-debug}.yaml

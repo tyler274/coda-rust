@@ -1,8 +1,14 @@
 # Local observability stack
 
 Self-hosted Langfuse v3 (web, worker, Postgres, ClickHouse, Valkey, MinIO),
-the shared OpenTelemetry Collector, and at most one operations backend: the
-Datadog Agent or the Grafana stack (Tempo, Loki, Prometheus, Grafana). The
+the shared OpenTelemetry Collector, and selected operations destinations: the
+Datadog Agent, the Grafana stack (Tempo, Loki, Prometheus, Grafana), or both.
+`--both` selects both compose profiles and `collector.both.yaml`; set the
+product's `CODA_TELEMETRY_BACKEND=both` to retain W3C and Datadog correlation.
+Operational Grafana alerts are always shadow-only. The local sink is not an
+automatically enabled notification route. Infrastructure's separately gated
+synthetic route and compatibility signal inputs are described in the
+[infrastructure runbook](../../infra/gcp/observability/README.md#concurrent-shadow-qualification). The
 full data flow and content policy are in [book/src/observability.md](../../book/src/observability.md).
 
 ```sh
