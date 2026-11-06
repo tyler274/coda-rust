@@ -25,7 +25,7 @@ LinkedToA ==
 
 \* chart-move.cfg: you move the conversation, and press Undo or let Undo go away. The patient writes
 \* again only while Undo shows.
-MoveSpec == LinkedToA /\ [][Next]_vars
+MoveSpec == LinkedToA /\ [][Next]_vars /\ Fairness
 MoveSteps ==
   /\ event'.who \in {"you", Coda, ThePatient}
   /\ event'.name \notin {"you open the conversation", "you close the conversation",

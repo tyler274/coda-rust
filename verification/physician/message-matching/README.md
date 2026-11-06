@@ -33,7 +33,7 @@ Linking:
   - Its conversation is already linked.
   - Its sender is confirmed for exactly one patient.
   - The channel ties its conversation to exactly one patient.
-- When the sender and the channel point to different patients, the message waits for a physician.
+- When the sender or the channel points to a different patient, the message waits for a physician.
 - In Spruce, the channel ties a conversation to a patient when the one outside participant is saved as the contact of exactly one patient. That contact is linked to exactly one EHR record, and that record matches exactly one Coda patient.
 - All other messages wait on Messages to match and on Today, with Coda's suggestion and other choices. Scores never show as confidence.
 - A physician links a waiting message to a patient they may access. The conversation is then linked, and its other waiting messages link too.
@@ -63,12 +63,13 @@ The channel stops:
 
 1. A physician sees a conversation only while they may access its patient.
 2. A suggestion never names a patient the viewer may not access.
-3. A message links on its own only when its conversation is already linked to that patient, its sender is confirmed for that one patient, or the channel ties its conversation to that one patient.
+3. A message joins only the patient its conversation is linked to. A conversation that is not linked yet links on its own only when its sender is confirmed for exactly one patient or the channel ties it to exactly one patient, and nothing points to a different patient.
 4. After a conversation moves to a different patient, nothing of it stays readable on the patient it left.
 5. After Coda decides, or after 15 minutes, every patient message shows to a physician who can act on it until it is handled.
 6. Undo puts the conversation back on the patient it left, and Coda acts on a move only after Undo goes away.
-7. While Coda can't read the channel, Today says so.
-8. A completed disconnect leaves no message that was never linked to a patient.
+7. A physician links a message, or moves a conversation, only between patients they may access.
+8. While Coda can't read the channel, Today says so.
+9. A completed disconnect leaves no message that was never linked to a patient.
 
 ## Outside this spec
 

@@ -26,12 +26,16 @@
 (* open too, so here a physician links, leaves unlinked or brings back a *)
 (* message, and rule 2 is checked for every physician.                    *)
 (*                                                                         *)
+(* Time: 15 minutes always pass for a message Coda has not decided       *)
+(* about, and Undo always goes away unless someone presses it. Spec says  *)
+(* so with fairness, and rules 5 and 6 check that each happens in the end. *)
+(*                                                                         *)
 (* Not modeled, since they rest on Coda's records or the channel: reading *)
 (* each message one time and saving it first, one reader for each         *)
 (* channel, moved messages marked entered in error and never deleted, and *)
 (* one failure never stopping the others. Not modeled, since they are not *)
 (* order problems: a message Coda can't read, the channel stopping        *)
-(* (rules 7 and 8), and what a suggestion or a row says.                   *)
+(* (rules 8 and 9), and what a suggestion or a row says.                   *)
 (*                                                                         *)
 (* `event` names the step just taken; VIEW leaves it out of the state.   *)
 (***************************************************************************)
@@ -108,15 +112,15 @@ Join(i, p) ==
   /\ on' = {p}
   /\ shown' = NoSuggestion
 
+(* The patients the sender is confirmed for and the patient the channel  *)
+(* ties the conversation to.                                               *)
+Points(sender, says) == sender \cup ({says} \ {Nobody})
+
 (* Where Coda links a message in a conversation not yet linked: the one   *)
-(* patient the sender is confirmed for, else the one the channel ties it  *)
-(* to. Nobody when the two point to different patients, or neither points *)
-(* to one patient.                                                          *)
+(* patient that the sender and the channel point to. Nobody when they     *)
+(* point to more than one patient, or to none.                            *)
 OwnTarget(sender, says) ==
-  LET one == IF Cardinality(sender) = 1 THEN CHOOSE p \in sender : TRUE ELSE Nobody
-  IN CASE one # Nobody /\ says # Nobody /\ one # says -> Nobody
-       [] one # Nobody -> one
-       [] OTHER -> says
+  IF Cardinality(Points(sender, says)) = 1 THEN CHOOSE p \in Points(sender, says) : TRUE ELSE Nobody
 
 (* Message i is a patient's: it follows the conversation's link, links on *)
 (* its own, or waits on Messages to match with Coda's suggestion.         *)
@@ -262,12 +266,14 @@ Rest == ~ENABLED Busy /\ UNCHANGED vars
 
 Next == Busy \/ Rest
 
-Spec == Init /\ [][Next]_vars
+\* 15 minutes pass for a message Coda has not decided about, and Undo goes away unless someone presses it.
+Fairness == /\ \A i \in Messages : WF_vars(FifteenMinutesPass(i))
+            /\ WF_vars(UndoGoesAway)
 
-Symmetry == Permutations(Patients) \cup Permutations(Physicians)
+Spec == Init /\ [][Next]_vars /\ Fairness
 
 -----------------------------------------------------------------------------
-(* The rules, in the README's numbering. Rules 7 and 8 are not modeled.    *)
+(* The rules, in the README's numbering. Rules 8 and 9 are not modeled.    *)
 
 \* 1. A physician sees a conversation only while they may access its patient.
 OnlyWithAccess == \A d \in viewing : link \in on /\ link \in access[d]
@@ -275,24 +281,45 @@ OnlyWithAccess == \A d \in viewing : link \in on /\ link \in access[d]
 \* 2. A suggestion never names a patient the viewer may not access.
 SuggestionsWithAccess == \A d \in Physicians : shown[d] \in access[d] \cup {Nobody}
 
-\* 3. A message links on its own only when its conversation is already linked to that patient, its
-\* sender is confirmed for that one patient, or the channel ties its conversation to that one patient.
+\* 3. A message joins only the patient its conversation is linked to. A conversation that is not linked
+\* yet links on its own only when its sender is confirmed for exactly one patient or the channel ties it
+\* to exactly one patient, and nothing points to a different patient.
 LinksOnItsOwn == [][\A i \in Messages :
-  (msg[i] # Linked /\ msg'[i] = Linked /\ event'.name \notin {"you link it to a patient", "you press Undo"})
-    => \/ link \in Patients /\ link' = link
-       \/ event'.sender = {link'}
-       \/ event'.says = link']_vars
+  (msg[i] # Linked /\ msg'[i] = Linked /\ event'.name # "you press Undo")
+    => IF link \in Patients
+       THEN link' = link
+       ELSE \/ event'.name = "you link it to a patient"
+            \/ Points(event'.sender, event'.says) = {link'}]_vars
 
 \* 4. After a conversation moves to a different patient, nothing of it stays readable on the patient it left.
 RightPatient == on \subseteq {link}
 
 \* 5. After Coda decides, or after 15 minutes, every patient message shows to a physician who can act on
 \* it until it is handled.
-NeverInvisible == \A i \in Messages :
-  msg[i] = Linked => link \in on /\ \E d \in Physicians : link \in access[d]
+\* A message is handled only by its own step: a physician leaves that one message unlinked, Coda decides it
+\* isn't from a patient, or it goes where the conversation is not a patient.
+HandledBy(i) ==
+  CASE msg'[i] = Unlinked ->
+         event'.name = "you leave it unlinked" /\ \A j \in Messages \ {i} : msg'[j] = Unlinked => msg[j] = Unlinked
+    [] msg'[i] = Filtered ->
+         event'.name = "Coda decides it isn't from a patient" /\ \A j \in Messages \ {i} : msg'[j] = Filtered => msg[j] = Filtered
+    [] OTHER -> link' = NotPatient
+NeverInvisible ==
+  /\ [](\A i \in Messages : msg[i] = Linked => link \in on /\ \E d \in Physicians : link \in access[d])
+  /\ [][\A i \in Messages : (msg[i] # msg'[i] /\ msg'[i] \in {Unlinked, Filtered, NotAPatient}) => HandledBy(i)]_vars
+  /\ \A i \in Messages : msg[i] = Deciding ~> msg[i] # Deciding
 
 \* 6. Undo puts the conversation back on the patient it left, and Coda acts on a move only after Undo
 \* goes away.
-UndoPutsBack == [][/\ event'.name = "you press Undo" => link' = undo.from /\ on' = {undo.from}
-                   /\ undo'.by # Nobody => ~acted']_vars
+UndoPutsBack ==
+  /\ [][/\ (event'.name = "you press Undo" =>
+               link' = undo.from /\ on' = {undo.from} /\ \A i \in Messages : msg'[i] # NotAPatient)
+         /\ (undo'.by # Nobody => ~acted')]_vars
+  /\ undo.by # Nobody ~> undo.by = Nobody
+
+\* 7. A physician links a message, or moves a conversation, only between patients they may access.
+OnlyBetweenTheirPatients == [][
+  /\ event'.name = "you link it to a patient" => link' \in access[event'.who]
+  /\ event'.name \in {"you move it to the other patient", "you move it to not a patient"} =>
+       link \in access[event'.who] /\ link' \in access[event'.who] \cup {NotPatient}]_vars
 =============================================================================
