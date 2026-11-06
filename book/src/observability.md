@@ -33,8 +33,8 @@ notification route, storage review and rollback requirements.
 
 The choice lives in three places that must agree:
 
-- **Collector.** One backend overlay, `collector.datadog.yaml` or
-  `collector.grafana.yaml`, is merged last and sets only the exporters of the
+- **Collector.** One backend overlay, `collector.datadog.yaml`,
+  `collector.grafana.yaml` or `collector.both.yaml`, is merged last and sets only the exporters of the
   `traces/ops` and `logs/ops` pipelines. Without an overlay those pipelines
   export to `nop`, so a missing choice drops data rather than sending it
   somewhere unintended. The privacy and caller processors are the same for
@@ -275,6 +275,57 @@ Slack message timestamp/permalink. Measure detection and delivery intervals with
 actual ingestion/evaluation delays. Prove absence of duplicate service paging,
 maintenance silence and expiry behavior, and the independent watchdog route.
 No downtime-to-Slack claim is valid until those live artifacts are inspected.
+
+## Qualification and incident ownership
+
+Datadog owns primary staging service notifications to the confirmed
+`#engineering-observability` integration. Grafana evaluates service rules in
+shadow mode; only the separately authorized, exactly labeled synthetic test
+can notify. Cloud Monitoring owns the independent probe-heartbeat absence path
+outside GKE and Grafana. Its heartbeat demonstrates probe execution and direct
+publication, not collector health or clinical workflow success.
+
+The product on-call owner handles service and overdue-work symptoms. The runtime
+infrastructure operator handles probe authentication, scheduler execution and
+state publication; the observability operator handles collection, backend
+freshness, routing and storage. Use the affected service/environment and stable
+resource identity in the alert, never patient, conversation or run IDs as metric
+labels. Correlate a run only in the authorized trace/log investigation surface.
+
+1. For readiness alerts, inspect the probe's fixed outcome and freshness first.
+   Authentication failure or login redirect is not application success. Check
+   IAP audience and caller grants without exposing tokens; do not bypass IAP or
+   internal worker ingress to make a probe green.
+2. For backlog, compare oldest-unacked age, positive queued work and the
+   [worker processing/retry contract](physician-site.md). Zero idle instances
+   and sparse empty queries are not outages. Investigate SQL, Redis and Pub/Sub
+   using the configured exact resource scope and the cloud console.
+3. For missing telemetry, inspect Cloud Scheduler/job execution and the direct
+   Monitoring series separately from collector availability, exporter failures,
+   queues and Datadog ingestion. Keep heartbeat absence distinct from a failing
+   target. A cleared sparse counter or retired pod is not confirmed recovery.
+4. For Grafana/collector loss or storage pressure, inspect stable workload
+   readiness, restart/OOM evidence and mounted PVC used/capacity series. Do not
+   resize from host-memory percentage alone or retain stale node groups as
+   current workload failures. Use the [private stack access procedure](../../infra/gcp/observability/README.md)
+   and provisioned dashboards; preserve IAP and private access.
+
+Follow the infrastructure README's [maintenance and rollback procedure](../../infra/gcp/observability/README.md#maintenance-and-rollback-ownership)
+for scoped, expiring mutes and reviewed saved-plan rollback. Keep the independent
+watchdog active during collector or Grafana maintenance. Image-only releases
+must preserve sidecars, environment, IAM and networking; an ordinary release's
+before/after assertion is part of qualification, not an infrastructure override.
+
+Periodic qualification and every material monitoring change need revision-bound
+proof. Local mock plans, synthetic OTLP, isolated Grafana evaluation and offline
+receipt validation prove regression contracts only. They do not prove cloud
+IAM/token handling, Datadog query/ingestion, real Slack delivery, real dependency
+failure, deployed volume retention or production evaluation delay. Record those
+as separate gates and label each exercise **simulated signal** or **actual
+component failure**. An authorized live drill must capture signal → pending →
+firing → exact Slack receipt → recovery with UTC timestamps and cleanup, plus
+the independent monitoring-loss route. Do not claim downtime notification
+readiness until those observations exist. Production is outside this procedure.
 
 ## From alert to run
 

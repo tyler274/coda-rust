@@ -850,12 +850,13 @@ jobs:
           # Base alone: the ops pipelines export to nop.
           validate collector.yaml
           # Local: one backend overlay after the base.
-          for backend in debug datadog grafana; do
+          for backend in debug datadog grafana both; do
             validate collector.yaml "collector.$backend.yaml"
           done
           # GKE: gateway overlay, optional no-Langfuse overlay, backend last.
-          for backend in datadog grafana; do
+          for backend in datadog grafana both; do
             validate collector.yaml collector.gke.yaml "collector.$backend.yaml"
+            validate collector.yaml collector.gke.yaml collector.gke-no-langfuse.yaml collector.self-metrics.yaml "collector.$backend.yaml"
             # The gateway before Langfuse exists reads no Langfuse keys.
             (unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY
               validate collector.yaml collector.gke.yaml collector.gke-no-langfuse.yaml "collector.$backend.yaml")
@@ -878,9 +879,23 @@ jobs:
             -config.file=/etc/loki.yaml -config.expand-env=true -verify-config
           docker run --rm --entrypoint promtool -v "$g/prometheus.yaml:/etc/prometheus.yaml:ro" \
             docker.io/prom/prometheus:v3.16.0 check config /etc/prometheus.yaml
+      - name: Test offline routing and release preservation contracts
+        run: |
+          nix develop .#agent --command python -m unittest discover -s scripts -p test_alert_qualification.py -v
+          nix develop .#agent --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+          nix develop .#agent --command python -m unittest discover -s scripts -p test_staging_images.py -v
+      - name: Exercise collector privacy and destination failure isolation
+        run: nix develop .#agent --command python scripts/test_collector_privacy.py
+      - name: Exercise Grafana evaluation and persistent shadow provisioning
+        run: |
+          # The harness is network-none and refuses implicit image pulls.
+          docker pull docker.io/grafana/grafana:13.3.0
+          docker pull docker.io/python:3.14.10-alpine3.24
+          docker pull docker.io/prom/prometheus:v3.16.0
+          nix develop .#agent --command python scripts/test_grafana_shadow.py
       - name: Validate and test the OpenTofu roots
         run: |
-          for root in infra/gcp/observability infra/gcp/physician-runtime; do
+          for root in infra/gcp/observability infra/gcp/physician-runtime infra/gcp/rust-environments; do
             nix develop .#agent --command tofu fmt -check -recursive "$root"
             nix develop .#agent --command tofu -chdir="$root" init -backend=false -input=false
             nix develop .#agent --command tofu -chdir="$root" validate

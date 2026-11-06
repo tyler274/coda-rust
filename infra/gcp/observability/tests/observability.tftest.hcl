@@ -962,22 +962,22 @@ run "grafana_cloud_monitoring_is_read_only_workload_identity" {
 run "concurrent_backends_remain_independent_and_shadow" {
   command = plan
   variables {
-    telemetry_backend = "both"
-    grafana_compatibility_metrics_url = "http://compatibility.observability.svc.cluster.local:9090"
+    telemetry_backend                  = "both"
+    grafana_compatibility_metrics_url  = "http://compatibility.observability.svc.cluster.local:9090"
     grafana_test_notifications_enabled = true
-    datadog_gcp_integration_enabled = true
-    grafana_cloud_monitoring_enabled = true
+    datadog_gcp_integration_enabled    = true
+    grafana_cloud_monitoring_enabled   = true
   }
   assert {
-    condition = length(helm_release.datadog_agent) == 1 && length(kubernetes_stateful_set_v1.grafana_stack) == 4 && length(local.collector_backend_env) == 3
+    condition     = length(helm_release.datadog_agent) == 1 && length(kubernetes_stateful_set_v1.grafana_stack) == 4 && length(local.collector_backend_env) == 3
     error_message = "Both must retain every backend and its collector endpoint."
   }
   assert {
-    condition = yamldecode(local.collector_backend_config).service.pipelines["traces/ops"].exporters == ["otlp/datadog", "otlp/tempo"] && yamldecode(local.collector_backend_config).service.pipelines["logs/ops"].exporters == ["otlp/datadog", "otlphttp/loki"] && alltrue([for e in values(yamldecode(local.collector_backend_config).exporters) : e.sending_queue.enabled && e.sending_queue.queue_size == 1000 && !e.sending_queue.block_on_overflow && e.retry_on_failure.max_elapsed_time == "30s"])
+    condition     = yamldecode(local.collector_backend_config).service.pipelines["traces/ops"].exporters == ["otlp/datadog", "otlp/tempo"] && yamldecode(local.collector_backend_config).service.pipelines["logs/ops"].exporters == ["otlp/datadog", "otlphttp/loki"] && alltrue([for e in values(yamldecode(local.collector_backend_config).exporters) : e.sending_queue.enabled && e.sending_queue.queue_size == 1000 && !e.sending_queue.block_on_overflow && e.retry_on_failure.max_elapsed_time == "30s"])
     error_message = "Both signals must fan out with independent bounded nonblocking queues and retries."
   }
   assert {
-    condition = yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" && yamldecode(local.grafana_contact_config).policies[0].routes[0].object_matchers == [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]] && length(local.grafana_compatibility_config) == 2 && contains(keys(local.doppler_secrets["grafana-secrets"]), "GRAFANA_SLACK_WEBHOOK_URL")
+    condition     = yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" && yamldecode(local.grafana_contact_config).policies[0].routes[0].object_matchers == [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]] && length(local.grafana_compatibility_config) == 2 && contains(keys(local.doppler_secrets["grafana-secrets"]), "GRAFANA_SLACK_WEBHOOK_URL")
     error_message = "Only explicit synthetic labels may notify; compatibility source is separately configured and the webhook is a secret reference."
   }
 }
@@ -1037,6 +1037,10 @@ run "dependency_rules_are_opt_in_even_with_existing_monitors" {
 run "dependency_missing_data_and_idle_contract" {
   command = plan
   variables {
+    telemetry_backend                      = "both"
+    availability_monitors_enabled          = true
+    availability_firing_metric             = "synthetic.availability.firing"
+    datadog_gcp_integration_enabled        = true
     datadog_monitors_enabled               = true
     dependency_monitors_enabled            = true
     collector_availability_monitor_enabled = true
@@ -1072,6 +1076,17 @@ run "dependency_missing_data_and_idle_contract" {
   assert {
     condition     = length(datadog_monitor.site_5xx_rate) == 3 && length(datadog_monitor.site_p95_latency) == 3 && length(datadog_monitor.async_failures) == 3 && length(datadog_monitor.chat_generation_errors) == 1 && length(datadog_monitor.observability_container_memory) == 1 && length(datadog_monitor.observability_container_oom) == 1
     error_message = "Dependency coverage must preserve existing application and memory monitors."
+  }
+  assert {
+    condition = (
+      toset(keys(datadog_monitor.availability)) == toset(["physician", "duet", "physician-worker"]) &&
+      alltrue([for name, monitor in datadog_monitor.availability :
+        !monitor.notify_no_data && monitor.timeout_h == 0 &&
+        monitor.query == "avg(last_1m):max:synthetic.availability.firing{project_id:test-rust-stg-only,target:${name}}.fill(null) >= 1" &&
+        strcontains(monitor.message, var.alert_notify) && strcontains(monitor.message, "{{#is_recovery}}")
+      ]) && yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow"
+    )
+    error_message = "Concurrent availability/dependency alerts retain fixed target labels, primary routing and no recovery on silence; Grafana stays shadow-only."
   }
 }
 

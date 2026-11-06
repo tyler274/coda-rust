@@ -756,7 +756,7 @@ run "reject_runtime_override_of_telemetry_backend" {
 
 run "reject_unknown_telemetry_backend" {
   command = plan
-  variables { telemetry_backend = "both" }
+  variables { telemetry_backend = "unknown" }
   expect_failures = [var.telemetry_backend]
 }
 
@@ -816,6 +816,10 @@ run "observability_active" {
     }
   }
   variables {
+    telemetry_backend                      = "both"
+    availability_probe_image               = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/availability-probe@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    availability_watchdog_enabled          = true
+    availability_watchdog_channels         = ["projects/test-rust-stg-only/notificationChannels/synthetic"]
     observability_cluster_enabled          = true
     observability_enabled                  = true
     enable_databases                       = true
@@ -847,6 +851,36 @@ run "observability_active" {
       physician = { TEST_CONTRACT_ONLY = "true" }
       duet      = { TEST_CONTRACT_ONLY = "true" }
     }
+  }
+
+  assert {
+    condition = (
+      google_cloud_scheduler_job.availability["probe"].paused &&
+      google_cloud_scheduler_job.availability["probe"].schedule == "* * * * *" &&
+      google_cloud_run_v2_job.availability["probe"].template[0].template[0].vpc_access[0].egress == "ALL_TRAFFIC" &&
+      google_cloud_run_v2_job.availability["probe"].template[0].template[0].max_retries == 0
+    )
+    error_message = "Provisioning must leave scheduling paused; probes use the VPC and cannot multiply retries."
+  }
+  assert {
+    condition = (
+      google_project_iam_custom_role.availability_signer["probe"].permissions == toset(["iam.serviceAccounts.signJwt"]) &&
+      google_project_iam_custom_role.availability_readback["probe"].permissions == toset(["monitoring.timeSeries.list"]) &&
+      google_cloud_run_v2_service_iam_binding.availability_dispatch["probe"].members == toset(["serviceAccount:${google_service_account.availability_scheduler["probe"].email}"]) &&
+      !google_cloud_run_v2_service.availability_dispatch["probe"].invoker_iam_disabled &&
+      google_storage_bucket.availability["probe"].public_access_prevention == "enforced" &&
+      endswith(google_storage_bucket_iam_member.availability["probe"].condition[0].expression, "/objects/state.json'")
+    )
+    error_message = "Probe signing/readback and dispatch grants must remain minimal, authenticated and object-scoped."
+  }
+  assert {
+    condition = (
+      google_monitoring_alert_policy.availability_watchdog["probe"].enabled &&
+      google_monitoring_alert_policy.availability_watchdog["probe"].conditions[0].condition_absent[0].duration == "300s" &&
+      toset(google_monitoring_alert_policy.availability_watchdog["probe"].alert_strategy[0].notification_prompts) == toset(["OPENED", "CLOSED"]) &&
+      toset(google_monitoring_alert_policy.availability_watchdog["probe"].notification_channels) == toset(var.availability_watchdog_channels)
+    )
+    error_message = "Independent direct-heartbeat absence must preserve five-minute detection and recovery on the explicit channel."
   }
 
   # Cluster: private Autopilot on rust-private with the agreed ranges.
@@ -959,12 +993,12 @@ run "observability_active" {
       [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
       ) : (
       length(setsubtract(
-        ["DD_ENV=staging", "OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318", "CODA_LOG_FORMAT=json", "CODA_TELEMETRY_CONTENT=none", "CODA_TELEMETRY_BACKEND=datadog"],
+        ["DD_ENV=staging", "OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318", "CODA_LOG_FORMAT=json", "CODA_TELEMETRY_CONTENT=none", "CODA_TELEMETRY_BACKEND=both"],
         [for env in containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"],
       )) == 0 &&
       !contains([for env in containers[0].env : env.name], "DD_VERSION")
     )])
-    error_message = "Every product container exports to its sidecar on localhost with DD_ENV=staging, JSON logs, no content and the default datadog backend; DD_VERSION stays baked into the image."
+    error_message = "Every product container exports to its sidecar on localhost with DD_ENV=staging, JSON logs, no content and concurrent backends; DD_VERSION stays baked into the image."
   }
   assert {
     condition     = google_cloud_run_v2_service.app["physician"].template[0].containers[0].image == var.images["physician"].runtime && google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].image == var.images["physician"].worker

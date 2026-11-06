@@ -348,18 +348,88 @@ to prepare and check evidence before requesting a live drill. It makes no
 provider calls and cannot enable monitors or contacts. Read back the actual
 Datadog Slack account/channel and the independent Cloud Monitoring contact;
 configuration in this root alone does not prove delivery. Supply the
-Stage2-owned watchdog identifiers from its verified outputs, not guessed names.
+`rust-environments` watchdog identifiers from its verified outputs, not guessed names.
 Keep secrets only in Doppler. The qualification fixture carries only public
 identifiers and evidence references, never webhook URLs or credentials.
 
 Datadog remains the primary `#engineering-observability` operational route;
-concurrent Grafana service evaluation must be shadow-only with a separate
-labeled test route. The current single-backend Grafana contact policy is not
-that concurrent shadow policy. Do not use it to test concurrent service paging.
+Grafana service evaluation is shadow-only in both `grafana` and `both` modes.
+Its separate test route requires the exact synthetic qualification label and
+alert title; neither alone may bypass the shadow receiver.
 A routing-test send and a synthetic evaluator drill each need explicit operator
 approval, separate from approval for any infrastructure saved plan/apply.
 
+## Maintenance and rollback ownership
+
+The observability operator owns collector, Datadog, Grafana and scoped ingestion
+configuration here. The runtime infrastructure operator owns authenticated probe
+identities, scheduler, direct Cloud Monitoring watchdog and Cloud Run sidecars
+in `rust-environments`. Product releases own only the named product image;
+`scripts/gcp/release.py` checks the before/after service shape. The product's
+on-call owner investigates service readiness and queue progress; telemetry is
+not a second clinical run ledger.
+
+For maintenance, record the staging environment, affected fixed service or
+resource scope, owner, start and automatic expiry, and recovery check in the
+operator change record. Mute only the affected primary monitors. Do not silence
+the independent watchdog to hide a collector or Grafana outage; planned probe
+maintenance needs a separately approved bounded watchdog mute. Grafana service
+rules remain shadow-only, not a backup paging route. Restore and verify every
+mute at expiry; missing data is not evidence of successful recovery.
+
+Before any apply, retain the reviewed saved plan, current image digests and
+rendered configuration, scope/cost review, and rollback plan. Reverting source
+alone changes no deployed resource. Revert the responsible inputs, inspect a
+new saved plan and obtain authorization before rollback. To withdraw concurrent
+export, return both infrastructure roots to `datadog`, preserve the Datadog
+route and direct watchdog, and verify the ordinary release shape again. Do not
+approve deletion of Grafana PVCs or state buckets as a routine rollback;
+inspect retention and export/backup requirements separately. To withdraw a
+synthetic notification test, turn its gate off and verify removal of both its
+contact and policy from persistent Grafana provisioning after restart.
+
+## Periodic qualification
+
+After routing, IAM, exporter, datasource, provisioning or release-path changes,
+and at the team's scheduled notification drill, rerun local contracts first.
+Then request separate authorization for a labeled staging routing send and
+synthetic evaluator failure/recovery exercise. Record source revision, deployed
+digests, actual signal names/labels/units, each rule's evaluation state, exact
+Slack message links, UTC timestamps, observed delay, recovery and cleanup.
+Provider notification metadata alone is not Slack receipt. Exercise collector
+and Grafana loss through dedicated synthetic signals and the direct watchdog;
+never stop real clinical services as an implicit part of qualification.
+
+The [operating runbook](../../../book/src/observability.md#qualification-and-incident-ownership)
+separates simulated failure, actual component failure and live delivery gates.
+Proof and live rollout status belong in the change record, not this document.
+
 ## Testing
+
+Run the commands below inside `nix develop .#agent`. These are mock-only,
+loopback or network-isolated tests; they do not apply, mutate monitors or send
+to Slack. The CI observability job runs the same existing harnesses.
+
+```sh
+python -m unittest discover -s scripts -p test_alert_qualification.py -v
+python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+python -m unittest discover -s scripts -p test_staging_images.py -v
+cargo test -p availability-probe --offline
+python scripts/test_collector_privacy.py
+python scripts/test_grafana_shadow.py
+# Initialize providers only; do not initialize a deployment backend.
+tofu -chdir=infra/gcp/rust-environments init -backend=false -input=false
+tofu -chdir=infra/gcp/rust-environments test
+```
+
+The Grafana harness requires the pinned Grafana, Prometheus and Python images
+listed in the CI job to be present locally. It compresses evaluation intervals
+and uses a loopback Slack-shaped sink; neither its timings nor its receipts
+qualify production timing or real Slack. The collector harness exercises actual
+privacy processors and isolates either unavailable destination. Mock plans
+check keyless IAM, fixed metric scopes, no-data contracts and shadow routing,
+not real cloud authentication or ingestion.
+
 
 ```sh
 tofu -chdir=infra/gcp/observability init -backend=false
