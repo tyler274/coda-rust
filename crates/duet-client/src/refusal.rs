@@ -62,7 +62,7 @@ pub(crate) struct RefusalBinding {
     session: AccountSession,
     fence: SessionFence,
     credential_revision: u64,
-    sender: UnboundedSender<SessionFence>,
+    sender: UnboundedSender<(SessionFence, SessionRefusal)>,
 }
 impl DuetClient {
     /// Bind responses to the exact mounted session which dispatched them.
@@ -70,7 +70,7 @@ impl DuetClient {
         mut self,
         session: AccountSession,
         fence: SessionFence,
-        sender: UnboundedSender<SessionFence>,
+        sender: UnboundedSender<(SessionFence, SessionRefusal)>,
     ) -> Self {
         self.refusal = Some(RefusalBinding {
             credential_revision: session.credential_revision(),
@@ -81,9 +81,9 @@ impl DuetClient {
         self
     }
     pub(crate) fn observe_refusal(&self, status: reqwest::StatusCode, body: &str) {
-        if classify(status, body).is_none() {
+        let Some(refusal) = classify(status, body) else {
             return;
-        }
+        };
         let Some(binding) = &self.refusal else {
             return;
         };
@@ -92,7 +92,9 @@ impl DuetClient {
             .refuse_credential(&binding.fence, binding.credential_revision);
         if invalidated {
             // A dropped receiver means the root has already unmounted.
-            let _ = binding.sender.unbounded_send(binding.fence.clone());
+            let _ = binding
+                .sender
+                .unbounded_send((binding.fence.clone(), refusal));
         }
     }
     pub(crate) fn wire_error<T>(&self, error: duet_wire::apis::Error<T>) -> String {

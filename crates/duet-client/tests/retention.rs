@@ -91,6 +91,41 @@ fn sign_out_switch_and_new_incarnation_remove_queued_health() {
     );
 }
 
+#[test]
+fn sign_out_warning_names_the_draft_the_save_and_the_health_queue() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    owner
+        .retain_operation(
+            &fence,
+            &duet_client::doctor::PendingDoctorOperation::Clear {
+                operation_id: uuid::Uuid::nil(),
+                expected_generation: 1,
+            },
+        )
+        .unwrap();
+    owner
+        .write_health_outbox(&fence, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    let leaving = owner.account_leaving().unwrap();
+    assert!(leaving.draft);
+    assert!(leaving.pending_operation);
+    assert_eq!(leaving.health_uploads, 1);
+    let warning = leaving.warning();
+    assert!(warning.contains("Stay signed in"));
+    assert!(warning.contains("sign out anyway"));
+    assert!(warning.contains("unsaved doctor draft"));
+    assert!(warning.contains("unconfirmed save"));
+    assert!(warning.contains("1 unsent health upload"));
+    let removed = leaving.removed();
+    owner.sign_out().unwrap();
+    assert!(!store_holds(&store, "acct-a:incarnation-1"));
+    assert!(removed.contains("Removed from this phone"));
+    assert!(owner.account_leaving().unwrap().is_empty());
+}
+
 fn store_holds(store: &Store, owner: &str) -> bool {
     store.values.lock().unwrap().iter().any(|(key, value)| {
         key != "active-identity"

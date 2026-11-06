@@ -167,6 +167,80 @@ pub enum DraftRecovery {
     Damaged,
 }
 
+/// What an explicit sign-out or a definitive session refusal would remove.
+///
+/// Counts are for the signed-in account only. An empty value means sign-out can
+/// proceed without a warning, and a refusal has nothing to report.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct AccountLeaving {
+    /// An unsaved doctor draft is still stored for this account.
+    pub draft: bool,
+    /// A save was started and has not been confirmed.
+    pub pending_operation: bool,
+    /// Queued health uploads that have not reached Duet.
+    pub health_uploads: usize,
+}
+
+impl AccountLeaving {
+    /// Nothing of this account is stored on the phone.
+    pub fn is_empty(&self) -> bool {
+        !self.draft && !self.pending_operation && self.health_uploads == 0
+    }
+
+    fn parts(&self) -> Vec<String> {
+        let mut parts = Vec::new();
+        if self.draft {
+            parts.push("an unsaved doctor draft".to_owned());
+        }
+        if self.pending_operation {
+            parts.push("an unconfirmed save".to_owned());
+        }
+        if self.health_uploads == 1 {
+            parts.push("1 unsent health upload".to_owned());
+        } else if self.health_uploads > 1 {
+            parts.push(format!("{} unsent health uploads", self.health_uploads));
+        }
+        parts
+    }
+
+    /// The choice shown before an explicit sign-out removes anything.
+    pub fn warning(&self) -> String {
+        let parts = self.parts();
+        if parts.is_empty() {
+            return String::new();
+        }
+        format!(
+            "Signing out removes {} from this phone. Stay signed in, or sign out anyway.",
+            join_parts(&parts)
+        )
+    }
+
+    /// Said after a definitive refusal has already removed the content.
+    pub fn removed(&self) -> String {
+        let parts = self.parts();
+        if parts.is_empty() {
+            return "This session ended. Nothing of this account was stored on this phone."
+                .to_owned();
+        }
+        format!(
+            "This session ended. Removed from this phone: {}.",
+            join_parts(&parts)
+        )
+    }
+}
+
+fn join_parts(parts: &[String]) -> String {
+    match parts {
+        [] => String::new(),
+        [only] => only.clone(),
+        [first, second] => format!("{first} and {second}"),
+        _ => {
+            let (last, rest) = parts.split_last().expect("at least three parts");
+            format!("{}, and {last}", rest.join(", "))
+        }
+    }
+}
+
 /// Serializes retention and account transitions with request-fence validation.
 #[derive(Clone)]
 pub struct RetentionOwner {
@@ -265,6 +339,24 @@ impl RetentionOwner {
     pub fn activate_ephemeral(&self, owner: String) -> SessionFence {
         let _guard = self.gate.lock().unwrap();
         self.session.switch(Some(owner)).unwrap()
+    }
+    /// What the signed-in account still has on this phone. Empty when nothing would be removed.
+    pub fn account_leaving(&self) -> Result<AccountLeaving, String> {
+        let _guard = self.gate.lock().unwrap();
+        let Some(identity) = self.retained_identity()? else {
+            return Ok(AccountLeaving::default());
+        };
+        Ok(AccountLeaving {
+            draft: self
+                .store
+                .read(&key("doctor-draft", &identity.owner))?
+                .is_some(),
+            pending_operation: self
+                .store
+                .read(&key("doctor-operation", &identity.owner))?
+                .is_some(),
+            health_uploads: self.health_scopes(&identity.owner)?.len(),
+        })
     }
     /// Invalidate visible state FIRST. Failed erase leaves the protected marker for cleanup retry.
     pub fn sign_out(&self) -> Result<(), String> {

@@ -25,6 +25,9 @@ impl AccountContext {
 pub enum IdentityError {
     /// No valid credential; do not infer account deletion.
     Unauthorized,
+    /// The server refused a verified session because it was revoked or the account is gone.
+    /// Local content for that account is removed. An expired token is not this error.
+    Ended,
     /// Provider explicitly rejected an expired/revoked/disabled refresh credential.
     Expired,
     /// Configuration, network, locked storage or service outage; keep drafts.
@@ -36,6 +39,7 @@ impl std::fmt::Display for IdentityError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(match self {
             Self::Unauthorized => "no valid credential",
+            Self::Ended => "this session has ended",
             Self::Expired => "the credential is expired, revoked or disabled",
             Self::Unavailable | Self::Response(_) => {
                 "the identity service is unavailable or not configured"
@@ -100,10 +104,12 @@ async fn decode<T: serde::de::DeserializeOwned>(
             .text()
             .await
             .map_err(|error| IdentityError::Response(error.into()))?;
-        return Err(if crate::refusal::classify(status, &body).is_some() {
-            IdentityError::Unauthorized
-        } else {
-            IdentityError::Unavailable
+        return Err(match crate::refusal::classify(status, &body) {
+            Some(
+                crate::refusal::SessionRefusal::Revoked | crate::refusal::SessionRefusal::Absent,
+            ) => IdentityError::Ended,
+            Some(crate::refusal::SessionRefusal::Invalid) => IdentityError::Unauthorized,
+            None => IdentityError::Unavailable,
         });
     }
     response

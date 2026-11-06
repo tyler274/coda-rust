@@ -20,7 +20,10 @@ pub struct PatientSession {
 }
 #[derive(Clone)]
 pub(crate) struct RefusalSender(
-    pub futures_channel::mpsc::UnboundedSender<duet_client::session::SessionFence>,
+    pub  futures_channel::mpsc::UnboundedSender<(
+        duet_client::session::SessionFence,
+        duet_client::refusal::SessionRefusal,
+    )>,
 );
 
 #[derive(Clone)]
@@ -203,14 +206,16 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         )
     });
     use_context_provider(|| RefusalSender(refusal_sender));
+    let refusal_owner = retention.clone();
     use_future(move || {
+        let owner = refusal_owner.clone();
         let receiver = refusal_receiver.borrow_mut().take();
         async move {
             use futures_util::StreamExt;
             let Some(mut receiver) = receiver else {
                 return;
             };
-            while let Some(fence) = receiver.next().await {
+            while let Some((fence, refusal)) = receiver.next().await {
                 if active
                     .peek()
                     .as_ref()
@@ -223,7 +228,13 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 offline_draft.set(None);
                 signed_out.set(true);
                 busy.set(false);
-                message.set("Duet could not authorize this session. Sign in again. Unsent text on this screen is no longer shown; protected drafts remain on this device. No pending operation was retried.".into());
+                message.set(match refusal {
+                    duet_client::refusal::SessionRefusal::Revoked
+                    | duet_client::refusal::SessionRefusal::Absent => ended_notice(&owner),
+                    duet_client::refusal::SessionRefusal::Invalid => {
+                        "Duet could not authorize this session. Sign in again. Unsent text on this screen is no longer shown; protected drafts remain on this device. No pending operation was retried.".into()
+                    }
+                });
             }
         }
     });
@@ -364,6 +375,16 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         if !owner.session().is_current(&current.fence) {
                             continue;
                         }
+                        if matches!(context, Err(IdentityError::Ended)) {
+                            if owner.session().invalidate(&current.fence) {
+                                active.set(None);
+                                offline_draft.set(None);
+                                signed_out.set(true);
+                                lifecycle.set(lifecycle() + 1);
+                                message.set(ended_notice(&owner));
+                            }
+                            continue;
+                        }
                         if matches!(context, Err(IdentityError::Unauthorized)) {
                             if owner.session().invalidate(&current.fence) {
                                 active.set(None);
@@ -396,11 +417,12 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                         }
                     }
                     Err(duet_client::identity::IdentityError::Expired) => {
-                        owner.session().switch(None);
                         active.set(None);
                         offline_draft
                             .set(step_offline_draft(offline_draft(), DraftTransition::Expire));
-                        message.set("Your sign-in expired or was revoked. Sign in again; your draft is retained. No pending save was replayed.".into());
+                        signed_out.set(true);
+                        lifecycle.set(lifecycle() + 1);
+                        message.set(ended_notice(&owner));
                         continue;
                     }
                     Err(_) => (),
@@ -414,32 +436,25 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
             }
         }
     });
+    let mut confirm_sign_out = use_signal(|| false);
     let logout_owner = retention.clone();
+    let prompt_owner = retention.clone();
+    let anyway_owner = retention.clone();
     let sign_out = move |_| {
-        lifecycle.set(lifecycle() + 1);
-        signed_out.set(true);
-        active.set(None); // Unmount every private component before disk cleanup.
-        offline_draft.set(step_offline_draft(
-            offline_draft(),
-            DraftTransition::SignOut,
-        ));
-        busy.set(false);
-        #[cfg(target_arch = "wasm32")]
-        let cleanup = logout_owner.sign_out();
-        #[cfg(not(target_arch = "wasm32"))]
-        let cleanup = logout_owner.sign_out();
-        match cleanup {
-            Ok(()) => {
-                cleanup_pending.set(false);
-                message.set(String::new());
-            }
-            Err(error) => {
-                cleanup_pending.set(true);
-                message.set(format!(
-                    "Signed out on this screen. Secure cleanup needs retry: {error}"
-                ));
-            }
-        }
+        apply_sign_out(
+            &logout_owner,
+            SignOutUi {
+                lifecycle,
+                signed_out,
+                active,
+                offline_draft,
+                busy,
+                cleanup_pending,
+                message,
+                confirm: confirm_sign_out,
+            },
+            false,
+        );
     };
     let login_owner = retention.clone();
     let login_url = base_url.clone();
@@ -525,7 +540,20 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         if let Some(current) = active() {
             AccountRoutes { key: "{current.fence.generation()}", base_url, bearer: current.bearer, retention: retention.clone(), fence: current.fence }
             if cfg!(target_arch = "wasm32") { p { role: "status", "Browser sign-in, drafts and operation retry identities are memory-only. Keep this tab open while any write is uncertain. After a reload, sign in and use ‘Recover or resolve a previous operation’ to read current server state before a new approval; do not assume the previous operation succeeded or recreate it as a retry." } }
-            Button { variant: ButtonVariant::Quiet, compact: true, onclick: sign_out, "Sign out" }
+            if confirm_sign_out() {
+                p { role: "alert", "{message}" }
+                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
+                    confirm_sign_out.set(false);
+                    message.set(String::new());
+                }, "Stay signed in" }
+                Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
+                    apply_sign_out(&anyway_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true);
+                }, "Sign out anyway" }
+            } else {
+                Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
+                    apply_sign_out(&prompt_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true);
+                }, "Sign out" }
+            }
         } else {
             main { class: "duet theme-duet",
                 h1 { "Duet" }
@@ -638,6 +666,66 @@ fn shown_offline_draft<T>(
 ) -> Option<T> {
     let (owner, draft) = current?;
     (signed_out && viewer == Some(owner.as_str())).then_some(draft)
+}
+
+struct SignOutUi {
+    lifecycle: Signal<u64>,
+    signed_out: Signal<bool>,
+    active: Signal<Option<Active>>,
+    offline_draft: Signal<Option<(String, duet_client::retention::DoctorDraft)>>,
+    busy: Signal<bool>,
+    cleanup_pending: Signal<bool>,
+    message: Signal<String>,
+    confirm: Signal<bool>,
+}
+
+fn ended_notice(owner: &RetentionOwner) -> String {
+    let leaving = owner.account_leaving().unwrap_or_default();
+    match owner.sign_out() {
+        Ok(()) => leaving.removed(),
+        Err(error) => format!("This session ended. Secure cleanup needs retry: {error}"),
+    }
+}
+
+fn apply_sign_out(logout_owner: &RetentionOwner, ui: SignOutUi, warn: bool) {
+    let mut confirm = ui.confirm;
+    let mut lifecycle = ui.lifecycle;
+    let mut signed_out = ui.signed_out;
+    let mut active = ui.active;
+    let mut offline_draft = ui.offline_draft;
+    let mut busy = ui.busy;
+    let mut cleanup_pending = ui.cleanup_pending;
+    let mut message = ui.message;
+    if warn
+        && !confirm()
+        && let Ok(leaving) = logout_owner.account_leaving()
+        && !leaving.is_empty()
+    {
+        confirm.set(true);
+        message.set(leaving.warning());
+        return;
+    }
+    confirm.set(false);
+    lifecycle.set(lifecycle() + 1);
+    signed_out.set(true);
+    active.set(None);
+    offline_draft.set(step_offline_draft(
+        offline_draft(),
+        DraftTransition::SignOut,
+    ));
+    busy.set(false);
+    match logout_owner.sign_out() {
+        Ok(()) => {
+            cleanup_pending.set(false);
+            message.set(String::new());
+        }
+        Err(error) => {
+            cleanup_pending.set(true);
+            message.set(format!(
+                "Signed out on this screen. Secure cleanup needs retry: {error}"
+            ));
+        }
+    }
 }
 
 #[cfg(test)]
