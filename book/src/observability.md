@@ -91,7 +91,9 @@ Per signal:
   with content deleted. Generation spans also go, with content as the service
   sent it, to the self-hosted Langfuse in the same cluster.
 - **Logs.** Services emit their log events as OTLP log records over the same
-  sidecar path. The gateway deletes the same content keys from log record and
+  sidecar path. Every HTTP response emits one `info` record with `status`,
+  `latency_ms` and the request's trace id, so a request with a span and no log
+  record means the log path is broken. The gateway deletes the same content keys from log record and
   resource attributes and sends them to the operations backend only (Datadog
   Logs or Loki); log records never go to Langfuse. Loki indexes only
   `service.name` and `deployment.environment` as labels (`service_name`,
