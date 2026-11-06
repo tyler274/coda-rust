@@ -120,6 +120,13 @@ class AnalysisTests(unittest.TestCase):
         self.assertEqual(result.steps[0].seconds, 80)
         self.assertTrue(result.baseline)
 
+    def test_cache_publication_is_not_validation_time(self):
+        jobs = deepcopy(JOBS) + [job("Publish reusable Nix outputs", start="2026-11-04T10:02:00Z",
+                                     end="2026-11-04T10:30:00Z")]
+        result = timings.analyze("o/r", RUN, jobs)
+        self.assertEqual(result.elapsed, 125)
+        self.assertEqual(len(result.deployments), 2)
+
     def test_running_result_is_explicitly_omitted_including_steps(self):
         jobs = deepcopy(JOBS)
         jobs[2] = job("CI result", status="in_progress", conclusion=None, end=None,
@@ -139,6 +146,8 @@ class AnalysisTests(unittest.TestCase):
             (dict(RUN, conclusion="failure"), JOBS, "full"),
             (dict(RUN, event="workflow_dispatch"), JOBS, "full"),
             (RUN, [job("Something else")], "unknown"),
+            (dict(RUN, conclusion="failure"),
+             [job("Fresh Postgres migrations and tests (shard 2)")], "full"),
         ]
         cohorts = set()
         for run, jobs, scope in cases:
@@ -171,6 +180,19 @@ class AnalysisTests(unittest.TestCase):
         self.assertIsNone(result.elapsed)
         self.assertFalse(result.baseline)
         self.assertIn("Validation jobs", timings.render_html([result], "o/r"))
+
+    def test_slow_cache_setup_is_flagged(self):
+        steps = [job("Read private Nix cache", end="2026-11-04T10:00:25Z"),
+                 job("Remove private cache credentials", end="2026-11-04T10:00:11Z"),
+                 job("Build", end="2026-11-04T10:01:30Z")]
+        result = timings.analyze("o/r", RUN, [job("Fresh Postgres migrations and tests", steps=steps)])
+        report = timings.markdown([result])
+        self.assertIn("Warning: slow cache setup", report)
+        self.assertIn("Fresh Postgres migrations and tests / Read private Nix cache 15s", report)
+        self.assertNotIn("Remove private cache credentials", report)
+        self.assertNotIn("Warning", timings.markdown([timings.analyze("o/r", RUN, JOBS)]))
+        hostile = timings.analyze("o/r", RUN, [job("a`b\nc", steps=steps[:1])])
+        self.assertIn("`a'b c / Read private Nix cache 15s`", timings.markdown([hostile]))
 
     def test_skipped_steps_reported_and_zero_duration_valid(self):
         result = timings.analyze("o/r", RUN, [job(steps=[job("skip", conclusion="skipped"),

@@ -59,7 +59,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
             // Long enough that Stop lands before the reply is published.
-            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "8000"),
+            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "4000"),
         ],
         &home.0,
     );
@@ -201,9 +201,9 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         .to_owned();
     assert_eq!(held["runs"][0]["state"], "held");
 
-    // The fixed reply waits 8s. Stay up past that so a commit that ignored
+    // The fixed reply waits 4s. Stay up past that so a commit that ignored
     // Stop would already be on the snapshot before the worker is dropped.
-    let remain = Duration::from_millis(9_000).saturating_sub(claimed_at.elapsed());
+    let remain = Duration::from_millis(5_000).saturating_sub(claimed_at.elapsed());
     tokio::time::sleep(remain).await;
     assert!(
         worker.exited().is_none(),
@@ -242,7 +242,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
             // The resumed run is still writing when Stop lands again.
-            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "8000"),
+            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "4000"),
         ],
         &home.0,
     );
@@ -301,7 +301,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
         .unwrap()
         .to_owned();
     assert_ne!(resumed_run, run, "{held_again}");
-    let remain = Duration::from_millis(9_000).saturating_sub(resumed_at.elapsed());
+    let remain = Duration::from_millis(5_000).saturating_sub(resumed_at.elapsed());
     tokio::time::sleep(remain).await;
     let (status, body) = get_json(&site_listen, &snapshot_path, &session).await;
     assert_eq!(status, 200, "{body}");

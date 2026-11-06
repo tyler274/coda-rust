@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import re
 import subprocess
 import tempfile
 import unittest
@@ -21,8 +22,14 @@ class RootTests(unittest.TestCase):
             'physician-sample-image', 'physician-worker-image', 'duet-api-image',
             'physician-migration-image', 'duet-migration-image', 'duet-privacy-delivery-image'))
         packages = (REPO / 'nix/packages.nix').read_text()
-        for root in roots.ROOTS:
+        for root in roots.DEPENDENCY_ROOTS + roots.IMAGE_ROOTS:
             self.assertIn(root, packages)
+
+    def test_every_ci_shell_is_a_root(self):
+        workflow = (REPO / '.github/workflows/ci.yml').read_text()
+        used = set(re.findall(r'nix develop \.#(\w+)', workflow))
+        self.assertTrue(used)
+        self.assertEqual({r.rsplit('.', 1)[1] for r in roots.SHELL_ROOTS}, used)
 
     def test_build_preserves_json_and_only_builds_allowlist(self):
         result = [{'drvPath': '/nix/store/example.drv', 'outputs': {'out': '/nix/store/example'}}]
@@ -109,7 +116,7 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("vars.NIX_CACHE_ENABLED == 'true'", publish)
         self.assertIn('scripts/nix-cache/nix_cache.py publish --build-json', publish)
         self.assertNotIn('publish-local', self.hosted)
-        self.assertIn("&& 'nix-cache-write' || 'nix-cache-read'", self.hosted)
+        self.assertIn('    environment: nix-cache-write\n', self.hosted)
 
 
 if __name__ == '__main__':

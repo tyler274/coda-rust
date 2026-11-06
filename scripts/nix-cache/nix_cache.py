@@ -155,7 +155,19 @@ def capture_command(args, *, env, input, label):
                     for stream in (process.stdout, process.stderr):
                         selector.register(stream, selectors.EVENT_READ)
                     while selector.get_map() or process.poll() is None:
-                        for key, _ in selector.select(max(0, next_heartbeat - time.monotonic())):
+                        remaining = max(0, next_heartbeat - time.monotonic())
+                        ready = []
+                        if selector.get_map():
+                            ready = selector.select(remaining)
+                        else:
+                            # Pipes reach EOF just before the exit status is
+                            # visible. An empty select would sleep until the
+                            # next heartbeat instead of noticing the exit.
+                            try:
+                                process.wait(remaining)
+                            except subprocess.TimeoutExpired:
+                                pass
+                        for key, _ in ready:
                             chunk = os.read(key.fd, DIAGNOSTIC_LIMIT // 2)
                             if not chunk:
                                 selector.unregister(key.fileobj)

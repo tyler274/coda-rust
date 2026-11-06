@@ -5,6 +5,11 @@ on:
   pull_request:
   push:
     branches: [main]
+  # Weekly full run on main, so the GitHub cache entries (evicted after 7 days
+  # unused) and the private Nix cache are warm after a quiet week. It skips
+  # browser qualification and deployments.
+  schedule:
+    - cron: '23 10 * * 1'
 
 # Only a newer revision of the same PR cancels validation. Main pushes and
 # manual runs remain distinct; deployment concurrency stays with each deploy job.
@@ -25,6 +30,7 @@ jobs:
       contents: read
     outputs:
       full: ${{ steps.select.outputs.full }}
+      deps: ${{ steps.select.outputs.deps }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -198,11 +204,10 @@ jobs:
             /usr/local/.ghcup
           sudo docker image prune --all --force || true
           df -h
+      # Installs the rust-toolchain.toml pin, the same one Nix builds with, so
+      # the cache key below changes only in a toolchain PR.
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          components: rustfmt, clippy
-          targets: wasm32-unknown-unknown
+        run: rustup toolchain install
       # Release binary, not `cargo install`; matches the flake pin.
       - name: Install wasm-bindgen
         run: |
@@ -451,6 +456,11 @@ jobs:
           nix develop .#release --command python infra/gcp/rust-environments/tests/test_sql_grants.py
       - name: Prove mocked release adapters (no cloud credentials)
         run: nix develop .#release --command python -m unittest discover -s scripts/gcp -p 'test_release*.py' -v
+      - name: Validate staging resource and backup limits without cloud access
+        run: |
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments init -backend=false -input=false
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments validate
+          nix develop .#release --command tofu -chdir=infra/gcp/rust-environments test
       - name: Validate private Nix cache infrastructure without cloud access
         run: |
           nix develop .#release --command tofu fmt -check -recursive infra/gcp/nix-cache
@@ -482,14 +492,11 @@ jobs:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
     name: Locked Nix images (build, run, migrate; no push)
-    runs-on: blacksmith-2vcpu-ubuntu-2404
-    # The write environment must restrict deployment branches to main. Its
-    # signing key and writer credentials must never be repository-level secrets.
-    environment: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && 'nix-cache-write' || 'nix-cache-read' }}
-    # Create-only GCS writes require one publisher at a time. Readers stay parallel.
-    concurrency:
-      group: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && 'nix-cache-main-writer' || format('nix-cache-reader-{0}-{1}', github.run_id, github.run_attempt) }}
-      cancel-in-progress: false
+    # A dependency change rebuilds the Rust dependency derivations from
+    # source, which takes 15-40 min on 2 vCPU. Warm runs only fetch them.
+    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    # Proofs stay out of the writer concurrency group: a pending job in that
+    # group is cancelled by the next main push (run 42121621650).
     timeout-minutes: 90
     permissions:
       contents: read
@@ -580,9 +587,43 @@ jobs:
           path: physician-pr-image
           retention-days: 3
           compression-level: 0
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
 
+  # Best effort and outside `result`: deployments and the gate never wait for
+  # the upload. The roots are rebuilt here; dependencies come from the cache.
+  nix-cache-publish:
+    needs: [scope, images]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true' && needs.images.result == 'success'
+    name: Publish reusable Nix outputs
+    runs-on: ${{ needs.scope.outputs.deps == 'true' && 'blacksmith-8vcpu-ubuntu-2404' || 'blacksmith-2vcpu-ubuntu-2404' }}
+    # The write environment must restrict deployment branches to main. Its
+    # signing key and writer credentials must never be repository-level secrets.
+    environment: nix-cache-write
+    # Create-only GCS writes require one publisher at a time. GitHub keeps one
+    # pending publisher and cancels older ones; the newer commit's closure
+    # supersedes theirs.
+    concurrency:
+      group: nix-cache-main-writer
+      cancel-in-progress: false
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
       - name: Collect reusable Nix build roots
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.NIX_CACHE_ENABLED == 'true'
         id: cache-roots
         continue-on-error: true
         run: >-
@@ -614,9 +655,15 @@ jobs:
   postgres:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
-    name: Fresh Postgres migrations and tests
+    name: Fresh Postgres migrations and tests (shard ${{ matrix.shard }})
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 30
+    # check-postgres.sh splits its suites in two; together the shards run every
+    # suite once. `result` needs postgres, which fails if either shard fails.
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
     services:
       postgres:
         # PostgreSQL 16 + pgvector matches flake.nix and the devcontainer.
@@ -650,19 +697,29 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
-      - name: Cache Postgres proof build
+      - name: Restore Postgres proof build
+        id: postgres-cache
         continue-on-error: true
-        uses: actions/cache@v6
+        uses: actions/cache/restore@v6
         with:
           path: |
             ~/.cargo/registry/index
             ~/.cargo/registry/cache
             ~/.cargo/git/db
             target
-          key: postgres-${{ runner.os }}-${{ hashFiles('flake.lock', 'Cargo.lock') }}
+          # The script chooses the package set, and so the dependency features
+          # in target/. Each shard links its own test binaries, so each keeps
+          # its own entry. Main and scheduled runs save one per commit, so
+          # concurrent merges don't race for a key ("another job may be
+          # creating this cache") and PRs restore the newest main build.
+          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}-${{ github.sha }}
           restore-keys: |
+            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}-
+            postgres-${{ runner.os }}-shard${{ matrix.shard }}-
             postgres-${{ runner.os }}-
+      # Shard 2 finishes first, so it also checks SQL formatting.
       - name: Check authored SQL formatting
+        if: matrix.shard == 2
         run: nix develop .#agent --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
@@ -671,10 +728,26 @@ jobs:
           FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
           PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+          POSTGRES_SHARD: ${{ matrix.shard }}
         run: |
           nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
           nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
           nix develop .#agent --command bash scripts/check-postgres.sh
+      # A PR saves (about 1.5 GB per shard) only when main had nothing for its
+      # dependency set, so ordinary PRs don't evict main's entries.
+      - name: Save Postgres proof build
+        if: >-
+          steps.postgres-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' ||
+          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh'))))
+        continue-on-error: true
+        uses: actions/cache/save@v6
+        with:
+          path: |
+            ~/.cargo/registry/index
+            ~/.cargo/registry/cache
+            ~/.cargo/git/db
+            target
+          key: ${{ steps.postgres-cache.outputs.cache-primary-key }}
       - name: Remove private cache credentials
         if: always() && env.NIX_CACHE_STATE_DIR != ''
         run: python3 scripts/nix-cache/nix_cache.py cleanup
@@ -814,8 +887,8 @@ jobs:
   # moves to the new runtime digest and must report a Ready revision serving
   # it. physician-worker is updated once that Cloud Run service exists; the
   # first push only publishes the digest so the scaling plan can pin it.
-  # Cloud Run only shifts traffic to a revision that passes its /readyz
-  # startup probe, so a failed rollout leaves the previous revision serving.
+  # The Rust command checkpoints a sanitized receipt before each mutation and
+  # reconciles observed revisions/traffic on failure; it never rolls back.
   # Only a push to main, after every check job is green.
   #
   # This direct rollout stands in for the scripts/gcp/release.py evidence
@@ -878,7 +951,16 @@ jobs:
           token_format: access_token
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v3
+      - name: Initialize the release receipt before cloud writes
+        timeout-minutes: 8
+        run: |
+          nix develop .#agent --command cargo run -p workspace-tools -- staging-release init \
+            --directory release --project "$PROJECT" --region "$REGION" \
+            --source-sha "$GITHUB_SHA" --workflow .github/workflows/ci.yml \
+            --run-id "$GITHUB_RUN_ID" --run-attempt "$GITHUB_RUN_ATTEMPT" \
+            --artifact-id '${{ needs.images.outputs.tested-artifact-id }}'
       - name: Publish the tested images by digest
+        timeout-minutes: 30
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
@@ -886,65 +968,20 @@ jobs:
           nix develop .#release --command python scripts/staging_images.py publish \
             tested-images release --revision "$GITHUB_SHA" --registry "$REGISTRY"
           cat release/tested-images.json >> "$GITHUB_STEP_SUMMARY"
-      - name: Migrate and roll out physician, then duet
-        run: |
-          set -euo pipefail
-          run() { gcloud --project "$PROJECT" run "$@" --region "$REGION" --quiet; }
-          for app in physician duet; do
-            migration=$(cat "release/$app-migration")
-            runtime=$(cat "release/$app-runtime")
-            # The migration runs to completion before the service moves.
-            run jobs update "$app-migrate" --image "$migration"
-            execution=$(run jobs execute "$app-migrate" --wait --format 'value(metadata.name)')
-            echo "$execution" > "release/$app-migration-execution"
-            echo "$app-migrate execution $execution succeeded" >> "$GITHUB_STEP_SUMMARY"
-            # Waits for the new revision; a revision that never becomes Ready
-            # fails this step and keeps traffic on the previous one.
-            run services update "$app" --image "$runtime"
-            service=$(run services describe "$app" --format json)
-            ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
-            created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
-            served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
-            [ "$ready" = "$created" ] || { echo "::error::$app revision $created is not Ready ($ready is)"; exit 1; }
-            [ "$served" = "$runtime" ] || { echo "::error::$app serves $served, expected $runtime"; exit 1; }
-            jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
-              || { echo "::error::$app's latest revision does not serve all traffic"; exit 1; }
-            echo "$ready" > "release/$app-revision"
-            echo "$app revision $ready serves $runtime" >> "$GITHUB_STEP_SUMMARY"
-          done
-      - name: Roll out physician-worker when the service exists
-        run: |
-          set -euo pipefail
-          run() { gcloud --project "$PROJECT" run "$@" --region "$REGION" --quiet; }
-          worker=$(cat "release/physician-worker")
-          # The scaling plan creates this service from the digest published
-          # above. Until then, a missing service is the expected first push.
-          if ! run services describe physician-worker --format 'value(metadata.name)' >/dev/null 2>physician-worker-describe.err; then
-            if grep -Eq 'Cannot find service|NOT_FOUND' physician-worker-describe.err; then
-              echo "physician-worker is not in this project yet. Record \`$worker\` as images.physician.worker, then apply the reviewed scaling plan." >> "$GITHUB_STEP_SUMMARY"
-              exit 0
-            fi
-            echo "::error::could not describe physician-worker"
-            cat physician-worker-describe.err >&2
-            exit 1
-          fi
-          run services update physician-worker --image "$worker"
-          service=$(run services describe physician-worker --format json)
-          ready=$(jq -r '.status.latestReadyRevisionName' <<<"$service")
-          created=$(jq -r '.status.latestCreatedRevisionName' <<<"$service")
-          served=$(jq -r '.spec.template.spec.containers[0].image' <<<"$service")
-          [ "$ready" = "$created" ] || { echo "::error::physician-worker revision $created is not Ready ($ready is)"; exit 1; }
-          [ "$served" = "$worker" ] || { echo "::error::physician-worker serves $served, expected $worker"; exit 1; }
-          jq -e '[.status.traffic[] | select(.latestRevision == true) | .percent] | add == 100' <<<"$service" >/dev/null \
-            || { echo "::error::physician-worker's latest revision does not serve all traffic"; exit 1; }
-          echo "physician-worker revision $ready serves $worker" >> "$GITHUB_STEP_SUMMARY"
+      - name: Migrate and roll out the tested staging digests
+        timeout-minutes: 40
+        run: nix develop .#agent --command cargo run -p workspace-tools -- staging-release deploy --directory release
+      - name: Finalize the release receipt
+        timeout-minutes: 8
+        if: always()
+        run: nix develop .#agent --command cargo run -p workspace-tools -- staging-release finalize --directory release
       - name: Save the release receipt
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: release-receipt-${{ github.run_id }}-${{ github.run_attempt }}
           path: release/
-          if-no-files-found: ignore
+          if-no-files-found: error
       - name: Remove private cache credentials
         if: always() && env.NIX_CACHE_STATE_DIR != ''
         run: python3 scripts/nix-cache/nix_cache.py cleanup
@@ -1011,9 +1048,17 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+      - name: Read the pinned Rust version
+        id: toolchain
+        run: python3 -c 'import tomllib; print("channel=" + tomllib.load(open("rust-toolchain.toml", "rb"))["toolchain"]["channel"])' >> "$GITHUB_OUTPUT"
       - name: Check dependency guardrails
         uses: EmbarkStudios/cargo-deny-action@v2
+        # The action's image ships an older Rust. Install the pin minimally and
+        # use it instead of letting rustup pull the full toolchain file profile.
+        env:
+          RUSTUP_TOOLCHAIN: ${{ steps.toolchain.outputs.channel }}
         with:
+          rust-version: ${{ steps.toolchain.outputs.channel }}
           command: check
           # `arguments` is word-split into the argv head; `command-arguments`
           # land after `check`. Putting the sections in `arguments` made clap

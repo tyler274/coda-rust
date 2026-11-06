@@ -56,6 +56,11 @@
           # shellHook resolves the exact store paths by reading chromium's
           # dynamic links at activation time.
           chromiumBin = "${pkgs.chromium}/bin/chromium";
+          # The same pin as the packages and the CI `ci` job, plus the std
+          # source rust-analyzer needs.
+          rustToolchain = (import ./nix/rust-toolchain.nix pkgs).override {
+            extensions = [ "rust-src" ];
+          };
         in
         {
           # No credential-loading shellHook in release builds or CI packaging.
@@ -68,10 +73,10 @@
             packages = with pkgs; [ opentelemetry-collector-contrib opentofu ];
           };
           default = import ./nix/dev-shell.nix {
-            inherit pkgs postgres wheelLibs chromiumBin;
+            inherit pkgs postgres wheelLibs chromiumBin rustToolchain;
           };
           agent = import ./nix/dev-shell.nix {
-            inherit pkgs postgres wheelLibs chromiumBin;
+            inherit pkgs postgres wheelLibs chromiumBin rustToolchain;
             desktop = false;
             loadCredentials = false;
           };

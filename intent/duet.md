@@ -91,7 +91,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 10. **Leaving mid-reply.** If they leave while Duet writes, a generic lock-screen alert arrives with the reply and opens the conversation at it. A reply that can't finish alerts too, as "Duet couldn't finish its reply".
 11. **App restart.** The person is still signed in, the conversation is intact, and Duet reopens where they were, with any draft they left.
 12. **Signing out before a message is confirmed.** The message still arrives and Duet replies; both show when they sign back in anywhere.
-13. **Interrupted reply.** The person's message is kept, text already streamed is kept, and an action the reply already committed is neither erased nor done twice.
+13. **Interrupted reply.** The person's message is kept, and the reply recovers as the [harness](harness.md#guarantees) promises.
 14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed. A phone that can't reach Duet learns this only once it can, and keeps showing the account until then, behind the app's screen cover and the phone's own passcode.
 15. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The cached conversation and drafts stay usable while Duet checks the account.
 16. **AI not allowed.** Empty chat shows a small symbol, the real reason, and the matching settings action or View Today. The draft is kept.
@@ -185,7 +185,7 @@ Alerts:
 ### Chat behavior
 
 1. The person sends a message, it's kept safely and the composer is ready again. If sending definitely failed, they can edit it, and a retry keeps the same message.
-2. **Steering.** A new message while Duet is still writing steers the reply in progress, and the reply answers both. It's never refused or queued, and there's no Stop button.
+2. **Steering.** A new message while Duet is still writing [steers](harness.md#guarantees) the reply in progress. It’s never refused or queued, and there’s no Stop button.
 3. **New information mid-reply.** Duet takes in records and readings that arrive while it writes a reply or runs a Check-in, without asking whether to continue.
 4. **Replying to a message.** The person swipes to reply with a quote, and Duet can do the same. There are no reactions beyond feedback.
 5. **Feedback.** Long-press on a reply gives thumbs up, thumbs down, Copy and Select Text, and quiet thumbs show under the latest reply. Thumbs down takes an optional note, and tapping the chosen thumb again removes the feedback. Feedback stays in the person's account and is counted in metrics; sharing a reply with Coda comes after launch, under its own privacy terms.
@@ -308,25 +308,33 @@ Later:
 
 These are how we build Duet. They shape its behavior but are engineering's to change.
 
-**Model.** Duet's AI is one model whose effort depends on the work; background runs will probably run at max effort.
+**Models.** Two roles. Sol runs the conversation. Luna does Check-ins, Today and Duet's other own work, which will probably run at max effort.
 
 **Chat.** The chat should feel like texting, so we adopt a strong open-source chat implementation instead of building one from scratch.
 
-**Schedules and budgets.** Duet's own work starts with a daily look, a weekly recap and a review when new records arrive. How often it runs, whether a new reading wakes it or waits for the next look, what it costs per person, and how and how often it retries are engineering decisions, as are capacity targets and any daily message limit. At a message limit, the composer shows one quiet line and keeps the draft. The starting capacity targets are 20 simultaneous chats, a reply starting within 30 seconds, Check-ins within 10 minutes and about 1,000 active people a day; they're targets, not measurements. Any backstop on one reply's tool calls is a runaway guard, never a quota on how the model investigates, and when ordinary questions hit it the fix is better tools.
+**Schedules and budgets.** Duet's own work starts with a daily look, a weekly recap and a review when new records arrive. How often it runs, whether a new reading wakes it or waits for the next look, what it costs per person, and how and how often it retries are engineering decisions, as are capacity targets and any daily message limit. At a message limit, the composer shows one quiet line and keeps the draft. The starting capacity targets are 20 simultaneous chats, a reply starting within 30 seconds, Check-ins within 10 minutes and about 1,000 active people a day; they're targets, not measurements.
 
-**Runs.**
+**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Duet:
 
-- When context fills, Duet keeps structural checkpoints of each request rather than a model-written note.
 - A sent message is durable once accepted and is never lost to a model failure, the app exiting or a restart.
-- A message that arrives while a run is active steers that run. Several runs may be active for one account at once, and Duet's own work doesn't wait for the person to stop chatting.
-- A push only wakes work, and the work always pulls current truth.
+- **Several runs at once.** One account can have several active runs, and Duet's own work doesn't wait for the person to stop chatting.
+  - Each account has one active run per kind of work: chat, Check-in and Today. Today never delays a due Check-in.
+  - The rate-limit gate is the one capacity owner.
+  - Held work takes no slot.
+  - Only chat can be steered.
+  - Each kind of work checks its own active run and inputs.
+  - Work waiting its turn says it's waiting.
+  - Accepted results enter the conversation in the order they're saved.
+- **A reply at its run limit.**
+  - Duet keeps the partial answer visible, and Try again continues it.
+  - Sending a new message starts the next turn in the same conversation.
+  - If the person steers a resumed reply, their message stays where they sent it, and the continuation appears below it.
 - Anything background work has for the person goes through the conversation.
-- An interrupted run resumes as the same run: streamed text is kept, and a committed action is reconciled, never duplicated. An interruption the person causes, including their own new message, never uses up an attempt.
 - A permission change takes effect immediately: withdrawal ends the run in progress, and a pause holds work without using it up.
 - A correction fences any unfinished work that read the corrected input, so nothing stale is published.
 - A scheduled Reminder or Check-in fires exactly once, honors pause and cancel, and is skipped if its time passes while it can't deliver. Retry windows count only time Duet was allowed to work.
 - Imports resume without duplicates and end in a stated outcome, and engineering can see which connection is overdue and why.
 - Deletion and sign-out everywhere complete before they're reported done.
-- Each run leaves a record the team can inspect. Run steps come only from real events and never reach Duet's UI, Today or notifications.
+- Run steps never reach Duet's UI, Today or notifications.
 
-**Proof.** We prove Duet by running the jobs it must do as simulations across patient types and scenarios, local and synthetic first, with production traces added over time. A simulation never scripts the model's conclusions.
+**Proof.** We prove Duet by running the jobs it must do as simulations across patient types and scenarios, local and synthetic first, with production traces added over time. Simulations run the way the [harness](harness.md#how-it-works) describes.

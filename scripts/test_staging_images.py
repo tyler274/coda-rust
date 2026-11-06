@@ -39,6 +39,22 @@ def docker_archive(path, repository, revision=REVISION):
             archive.addfile(entry, io.BytesIO(data))
 
 
+class StagingReleaseWorkflow(unittest.TestCase):
+    def test_receipt_precedes_publication_and_finalizes_on_failure(self):
+        workflow = (Path(__file__).resolve().parents[1] / ".github/workflows/ci.yml").read_text()
+        release = workflow.split("  deploy-staging:", 1)[1]
+        self.assertIn("staging-release init", release,
+                      "release must initialize a structured receipt before publication")
+        self.assertLess(release.index("staging-release init"), release.index("staging_images.py publish"))
+        self.assertIn("staging-release deploy", release)
+        self.assertIn("staging-release finalize", release)
+        self.assertNotIn("run jobs execute", release)
+        self.assertNotIn("run services update", release)
+        finalization = release.split("- name: Finalize the release receipt", 1)[1]
+        self.assertIn("if: always()", finalization.split("- name: Save the release receipt", 1)[0])
+        self.assertIn("if-no-files-found: error", finalization)
+
+
 class StagingImages(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()

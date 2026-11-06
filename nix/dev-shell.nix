@@ -1,12 +1,10 @@
 # Shared repository toolchain for interactive and unattended development.
 # The unattended profile omits desktop tooling and Doppler credential loading.
-{ pkgs, postgres, wheelLibs, chromiumBin, desktop ? true, loadCredentials ? true }:
+{ pkgs, postgres, wheelLibs, chromiumBin, rustToolchain, desktop ? true, loadCredentials ? true }:
 pkgs.mkShell {
   packages = with pkgs; [
-    rustc
-    cargo
-    rustfmt
-    clippy
+    # rustc, cargo, rustfmt, clippy and the wasm32 std from rust-toolchain.toml.
+    rustToolchain
     cargo-deny
     lld
     pkg-config
@@ -72,10 +70,8 @@ pkgs.mkShell {
   # entering the repaired shell also replaces cached mislinked binaries.
   # Do not send GCC linker flags to wasm32 or other cross targets.
   env.CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS = "-C link-arg=-fuse-ld=bfd";
-  # Nixpkgs' rustc sysroot has no lib/rustlib/src, so rust-analyzer
-  # cannot load std ("can't load standard library, try installing
-  # `rust-src`"). Point it at the source for this same rustc.
-  env.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
+  # rust-analyzer loads std from the toolchain's rust-src component.
+  env.RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
   env.OPENSSL_NO_VENDOR = "1";
   env.PKG_CONFIG_PATH = "${pkgs.openssl.dev}/lib/pkgconfig";
   # The browser proof tests (crates/mobile/tests, physician-sample/tests)

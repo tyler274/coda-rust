@@ -1,10 +1,8 @@
 { pkgs, self, crane }:
 let
   inherit (pkgs) lib;
-  # The overlay revision in flake.lock pins this toolchain and its WASM std.
-  toolchain = pkgs.rust-bin.stable.latest.default.override {
-    targets = [ "wasm32-unknown-unknown" ];
-  };
+  # rust-toolchain.toml pins this toolchain and its WASM std.
+  toolchain = import ./rust-toolchain.nix pkgs;
   craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
   # Keep crate-local inputs intact: HTML, SQL, JSON, images and generated data
   # are compile-time inputs as well as Rust, including clinical Markdown.
