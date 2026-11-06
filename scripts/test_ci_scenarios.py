@@ -6,6 +6,7 @@ from pathlib import Path
 import re
 import tempfile
 import unittest
+from unittest import mock
 
 REPO = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("scenarios", REPO / "scripts/scenarios.py")
@@ -50,6 +51,34 @@ class DuetSuites(unittest.TestCase):
             source = (REPO / f"crates/duet-api/tests/{suite}.rs").read_text()
             found |= set(re.findall(r"#\[tokio::test[^\]]*\]\s*(?:#\[[^\]]*\]\s*)*async fn (\w+)", source))
         self.assertEqual(found, set(scenarios.D1_TESTS))
+
+
+class RunnerFailures(unittest.TestCase):
+    def test_nonzero_cargo_exit_fails_even_when_every_test_reports_ok(self):
+        stdout = "".join(f"test {name} ... ok\n" for name in scenarios.D1_TESTS)
+        completed = scenarios.subprocess.CompletedProcess([], 101, stdout, "")
+        with tempfile.TemporaryDirectory() as directory, \
+                mock.patch.object(scenarios.subprocess, "run", return_value=completed):
+            written = scenarios.Receipt(Path(directory) / "receipt.json")
+            scenarios.d1(written, {"postgres": {"url": "postgres://x"}}, Path(directory) / "d1")
+        self.assertEqual([s["step"] for s in written.steps if not s["passed"]], ["cargo test exit"])
+
+    def test_readiness_file_mid_write_is_retried(self):
+        process = mock.Mock(**{"poll.return_value": None})
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "stack" / "stack.json"
+            path.parent.mkdir()
+            path.write_text('{"ready_at"')
+            reads = iter(['{"ready_at"', json.dumps({"ready_at": "now"})])
+            with mock.patch.object(Path, "read_text", lambda self: next(reads)), \
+                    mock.patch.object(scenarios.time, "sleep"):
+                self.assertEqual(scenarios.wait_ready(process, Path(directory)), {"ready_at": "now"})
+
+    def test_empty_selection_is_a_usage_error(self):
+        with mock.patch.object(scenarios.sys, "argv", ["scenarios.py", "--only", ""]), \
+                self.assertRaises(SystemExit) as raised:
+            scenarios.main()
+        self.assertEqual(raised.exception.code, 2)
 
 
 if __name__ == "__main__":
