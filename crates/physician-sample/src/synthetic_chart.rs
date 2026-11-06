@@ -163,6 +163,7 @@ fn source_revision(workspace: &str, line: &str) -> Result<SourceRevision, String
         sha256,
         readable_parts: readable_parts(&resource)?,
         provenance: json!({"native_record": candidate_id}),
+        native: None,
     };
     source.validate()?;
     Ok(source)

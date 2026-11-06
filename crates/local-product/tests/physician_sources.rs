@@ -20,6 +20,7 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
             text: "Potassium 4.1 mmol/L".into(),
         }],
         provenance: json!({"source_id":"native-1"}),
+        native: None,
     };
     let read = exact_read(
         std::slice::from_ref(&source),
@@ -56,7 +57,7 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
             },
         },
     ];
-    let citations = local_product::physician_chat::citations(
+    let (_, citations) = local_product::physician_chat::published(
         &format!(
             "Claim [[patient_source:{}]]",
             read["results"][0]["citation_id"].as_str().unwrap()

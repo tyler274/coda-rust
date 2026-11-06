@@ -3995,7 +3995,13 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
                     let chip = chip.clone();
                     move |_| on_open.call(chip.clone())
                 },
-                if let Some(source) = &chip.inspection {
+                original: chip.open_uri.clone(),
+                original_label: chip.open_label.clone(),
+                new_tab_hint: "Opens in a new tab",
+                if let Some(summary) = chip.inspection.as_ref().and_then(|source| source.coda_preview.as_ref()) {
+                    span { class: "citation-summary-label", "Coda's summary" }
+                    ui::SourceText { text: summary.text.clone() }
+                } else if let Some(source) = &chip.inspection {
                     span { "{source.record_kind}" }
                     span { "Statement in the retained record. Open to read source details." }
                 } else {
@@ -4014,7 +4020,17 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
 fn SourceReaderContent(reading: OpenReading) -> Element {
     rsx! {
         article { class: "clinical-source-reader",
+            if let (Some(label), Some(uri)) = (reading.link_label, reading.link_uri) {
+                a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", "{label}" }
+            }
             if let Some(source) = reading.source {
+                if let Some(preview) = source.coda_preview {
+                    section { class: "source-coda-summary",
+                        h3 { "Coda's summary" }
+                        ui::SourceText { text: preview.text }
+                        p { class: "reader-provenance", "{shell::summary_provenance(&preview.as_of_label, &preview.as_of)}" }
+                    }
+                }
                 p { class: "source-record-kind", "{source.record_kind}" }
                 if source.dates.is_empty() {
                     p { class: "reader-provenance", "No record date was retained with this citation." }
@@ -4026,13 +4042,6 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                     p { class: "reader-provenance", "{attribution.label}: {attribution.text}" }
                 }
                 p { class: "source-record-notice", "This is the retained source record, not a current chart-wide conclusion." }
-                if let Some(preview) = source.coda_preview {
-                    section { class: "source-coda-preview",
-                        h3 { "Coda-authored preview" }
-                        ui::SourceText { text: preview.text }
-                        if !preview.as_of.is_empty() { p { "As of {preview.as_of}" } }
-                    }
-                }
                 if let Some(passage) = source.cited_passage {
                     section {
                         h3 { "Exact cited passage" }
@@ -4087,9 +4096,6 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
             }
             if let Some(unavailable) = reading.unavailable {
                 p { class: "citation-unavailable", "{unavailable}" }
-            }
-            if let (Some(label), Some(uri)) = (reading.link_label, reading.link_uri) {
-                a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", "{label}" }
             }
         }
     }

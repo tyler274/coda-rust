@@ -53,6 +53,7 @@ async fn reply_http_reads_exact_source_commits_and_survives_owner_restart() {
         sha256: local_product::sha256_hex(b"Potassium 4.1 mmol/L"),
         readable_parts: vec![],
         provenance: json!({"native_record":"lab-7"}),
+        native: None,
     };
     let binding = local_product::ModelBinding {
         model: "controlled".into(),
@@ -257,6 +258,7 @@ async fn inline_revision_reads_a_source_that_arrives_before_it_finishes() {
         sha256: local_product::sha256_hex(content.as_bytes()),
         readable_parts: vec![],
         provenance: json!({"synthetic": true}),
+        native: None,
     };
     let original = source("lab-old", "Potassium 4.1 mmol/L");
     let lab = source("lab-new", "Potassium 5.9 mmol/L");

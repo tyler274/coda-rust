@@ -728,11 +728,15 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
         };
         parts.push(json!({"kind":"text", "text":before}));
         let inspection = crate::source_inspection::inspection(citation);
+        let destination = citation.native.as_ref().map(
+            |native| json!({"kind":"source_native", "source_label":native.label, "uri":native.uri}),
+        );
         parts.push(
             json!({"kind":"citation", "state":"resolved", "source":"patient",
             "source_id":citation.id, "handle":citation.reference,
             "display_label":inspection.title,
-            "source_presentation":{"inspection":inspection}}),
+            "source_presentation":{"inspection":inspection},
+            "destination":destination}),
         );
         text = rest;
     }
@@ -1254,5 +1258,43 @@ mod durable_snapshot_tests {
         assert!(done["runs"].as_array().unwrap().is_empty());
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
+    }
+}
+
+#[cfg(test)]
+mod citation_segment_tests {
+    use super::citation_segments;
+    use local_product::physician_chat::Citation;
+    use local_product::runtime::Message;
+    use serde_json::json;
+
+    fn cited(id: &str, native: serde_json::Value) -> Citation {
+        serde_json::from_value(json!({
+            "id":id, "reference":id, "revision":"r1", "record_type":"AllergyIntolerance",
+            "content":"{}", "sha256":local_product::sha256_hex(b"{}"),
+            "provenance":{}, "native":native
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn a_source_native_link_becomes_the_citation_destination() {
+        let message = Message {
+            role: "assistant".into(),
+            text: "A [[patient_source:linked]] B [[patient_source:plain]]".into(),
+            citations: vec![
+                cited(
+                    "linked",
+                    json!({"label":"Demo chart","uri":"https://ehr.example/a/1"}),
+                ),
+                cited("plain", json!(null)),
+            ],
+        };
+        let segments = citation_segments(&message);
+        assert_eq!(
+            segments[1]["destination"],
+            json!({"kind":"source_native", "source_label":"Demo chart", "uri":"https://ehr.example/a/1"})
+        );
+        assert!(segments[3]["destination"].is_null());
     }
 }

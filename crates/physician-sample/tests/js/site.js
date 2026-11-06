@@ -57,6 +57,22 @@ function (step, ...args) {
         scrolled: content.scrollTop > 0,
       };
     },
+    // Where a mouse rests on the conversation's citation, in viewport pixels.
+    citationCenter() {
+      const chip = one("section[aria-label='Conversation'] .citation-chip");
+      chip.scrollIntoView({ block: "center" });
+      const box = chip.getBoundingClientRect();
+      return [box.x + box.width / 2, box.y + box.height / 2];
+    },
+    citationPreview() {
+      const chip = one("section[aria-label='Conversation'] .citation-chip");
+      const preview = document.getElementById(chip.getAttribute("aria-controls"));
+      const body = preview?.querySelector(".citation-preview-body");
+      if (!body) return null;
+      const original = preview.querySelector(".citation-preview-actions a");
+      return { text: body.innerText, original: original?.getAttribute("href") ?? null,
+        originalLabel: original?.innerText ?? null };
+    },
     citationClosed() { return !document.querySelector(".source-reading-pane"); },
     citationReading() {
       const pane = one(".source-reading-pane");
@@ -70,6 +86,11 @@ function (step, ...args) {
         technical: technical.textContent,
         original: pane.querySelector(".source-original-data").textContent,
         focused: document.activeElement === pane.querySelector("h2"),
+        order: [...pane.querySelectorAll(
+          ".clinical-source-reader > .citation-open, .source-coda-summary, .source-record-kind",
+        )].map((node) => node.className),
+        link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
+        summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
       };
     },
     // Presses the pane's way out a person can see: Close beside a wide reader, Back over a narrow
