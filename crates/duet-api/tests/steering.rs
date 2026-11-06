@@ -5,7 +5,7 @@ use axum::{Router, body::Body, http::Request as HttpRequest};
 use duet_api::{
     ApiError,
     conversation::ConversationStore,
-    conversation_routes::ConversationState,
+    conversation_routes::{ConversationState, ModelProvider},
     database::{AccountDatabase, migrate},
     durable::DurableState,
     evidence::EvidenceStore,
@@ -345,7 +345,13 @@ async fn accepted_failure(database_failure: bool) {
         }),
     );
     let server = tokio::spawn(async move { axum::serve(listener, provider).await.unwrap() });
-    let app = app(&f, Some((endpoint, "PRIVATE-PROVIDER-KEY".into())));
+    let app = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint,
+            key: "PRIVATE-PROVIDER-KEY".into(),
+        }),
+    );
     enroll(&app).await;
     let c = f.durable.identity.authenticate("a", true).await.unwrap();
     let id = Uuid::new_v4();
@@ -426,7 +432,7 @@ async fn enroll(app: &Router) {
     }
 }
 
-fn app(f: &Fixture, provider: Option<(String, String)>) -> Router {
+fn app(f: &Fixture, provider: Option<ModelProvider>) -> Router {
     duet_api::durable::router(f.durable.clone()).merge(duet_api::conversation_routes::router(
         ConversationState {
             durable: f.durable.clone(),
@@ -861,7 +867,13 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
     let bodies = Arc::new(Mutex::new(vec![]));
     let server = tokio::spawn(fake_responses(listener, bodies.clone()));
-    let app = app(&f, Some((endpoint, "loopback-test-key".into())));
+    let app = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint,
+            key: "loopback-test-key".into(),
+        }),
+    );
     enroll(&app).await;
     let c: AccountContext = f.durable.identity.authenticate("a", true).await.unwrap();
 
@@ -973,7 +985,13 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
 #[tokio::test]
 async fn a_landed_message_is_confirmed_by_reading_it() {
     let (admin, f) = fixture("lookup").await;
-    let router = app(&f, Some(("http://127.0.0.1:9".into(), "unused".into())));
+    let router = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint: "http://127.0.0.1:9".into(),
+            key: "unused".into(),
+        }),
+    );
     enroll(&router).await;
     for (path, body) in [
         ("/api/auth/account", json!({})),

@@ -244,10 +244,10 @@ async fn backend_process() {
                 durable: state,
                 store: duet_api::conversation::ConversationStore::new(database.clone()),
                 model: "no-live-provider".into(),
-                provider: Some((
-                    format!("{base}/controlled-response"),
-                    "local-synthetic".into(),
-                )),
+                provider: Some(duet_api::conversation_routes::ModelProvider::Responses {
+                    endpoint: format!("{base}/controlled-response"),
+                    key: "local-synthetic".into(),
+                }),
             },
         ));
     let app =
