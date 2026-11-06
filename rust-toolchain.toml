@@ -1,0 +1,8 @@
+# The one Rust pin. Nix packages, the dev shells and the CI `ci` job all read
+# this file; bump it in its own PR. nix/rust-toolchain.nix explains why Nix
+# reads only channel, profile and targets.
+[toolchain]
+channel = "1.99.1"
+profile = "default"
+components = ["rustfmt", "clippy"]
+targets = ["wasm32-unknown-unknown"]

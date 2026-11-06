@@ -378,18 +378,17 @@ readiness until those observations exist. Production is outside this procedure.
 
 ## Validation
 
-The `observability` job in [CI](/.github/workflows/ci.yml) validates, inside the
-Nix shell, the base collector alone; the base with each local overlay (debug,
-Datadog, Grafana); the authenticated GKE gateway with each backend, with and
-without Langfuse; and the inline sidecar. It checks the compose file with each
-profile, verifies the Tempo, Loki and Prometheus configs with their pinned
-images, and validates and runs mocked OpenTofu tests for both
-[`observability`](/infra/gcp/observability) and
+The `observability` job in [CI](/.github/workflows/ci.yml) validates, inside
+`nix develop .#observability`, the collector and OpenTofu shell, the base
+collector alone; the base with each local overlay (debug, Datadog, Grafana); the
+authenticated GKE gateway with each backend, with and without Langfuse; and the
+inline sidecar. It checks the compose file with each profile, verifies the Tempo,
+Loki and Prometheus configs with their pinned images, and validates and runs
+mocked OpenTofu tests for both [`observability`](/infra/gcp/observability) and
 [`rust-environments`](/infra/gcp/rust-environments). Backend-free initialization
 belongs in a fresh test checkout, never over an operator's initialized backend.
 
 Run the synthetic collector behavior test separately:
-
 ```sh
 nix develop .#agent --command python scripts/test_collector_privacy.py          # both backends
 nix develop .#agent --command python scripts/test_collector_privacy.py grafana  # one backend

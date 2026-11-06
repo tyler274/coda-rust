@@ -7,6 +7,7 @@
 //! cargo run -p workspace-tools -- pg-docker initdb|pg_ctl|postgres [args...]
 //! cargo run -p workspace-tools -- pg-docker link DEST
 //! cargo run -p workspace-tools -- clinical-serving-startup --data-root PATH --image IMAGE --env-file PATH
+//! cargo run -p workspace-tools -- staging-reconcile plan|apply|verify [options]
 //! ```
 
 mod doppler;
@@ -14,6 +15,9 @@ mod failure;
 mod migrations;
 mod pg_docker;
 mod serving;
+mod staging_reconcile;
+mod staging_release;
+mod staging_restore;
 mod wire;
 
 use std::env;
@@ -53,6 +57,9 @@ fn dispatch() -> Result<(), Failure> {
         Some("apply-migrations") => migrations::from_args(rest),
         Some("pg-docker") => pg_docker::from_args(rest),
         Some("clinical-serving-startup") => serving::from_args(rest),
+        Some("staging-release") => staging_release::from_args(rest),
+        Some("staging-restore") => staging_restore::from_args(rest),
+        Some("staging-reconcile") => staging_reconcile::from_args(rest),
         _ => Err(usage()),
     }
 }
@@ -72,6 +79,9 @@ workspace-tools runs the workspace commands that used to be shell scripts.
   workspace-tools apply-migrations [--] [psql args...]
   workspace-tools pg-docker initdb|pg_ctl|postgres [args...]
   workspace-tools pg-docker link DEST
-  workspace-tools clinical-serving-startup --data-root PATH --image IMAGE --env-file PATH",
+  workspace-tools clinical-serving-startup --data-root PATH --image IMAGE --env-file PATH
+  workspace-tools staging-release init|deploy|finalize [options]
+  workspace-tools staging-restore --help
+  workspace-tools staging-reconcile plan|apply|verify (--help for options)",
     )
 }

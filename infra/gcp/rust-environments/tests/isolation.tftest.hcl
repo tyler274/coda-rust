@@ -203,6 +203,10 @@ run "private_product_databases" {
     condition     = alltrue([for db in google_sql_database_instance.app : !db.settings[0].ip_configuration[0].ipv4_enabled && db.settings[0].backup_configuration[0].enabled && db.settings[0].backup_configuration[0].point_in_time_recovery_enabled && db.settings[0].disk_autoresize_limit == 50])
     error_message = "SQL must be private, backed up, PITR-enabled and capped."
   }
+  assert {
+    condition     = alltrue([for db in google_sql_database_instance.app : db.settings[0].backup_configuration[0].transaction_log_retention_days == 7 && db.settings[0].backup_configuration[0].backup_retention_settings[0].retained_backups == 7 && db.deletion_protection])
+    error_message = "Recovery needs seven retained backups, seven days of PITR logs and protected source instances."
+  }
 }
 
 run "reject_unapproved_runtime" {
@@ -267,6 +271,14 @@ run "active_staging_contract" {
   assert {
     condition     = alltrue([for job in google_cloud_run_v2_job.migration : job.template[0].parallelism == 1 && job.template[0].task_count == 1 && job.template[0].template[0].max_retries == 0])
     error_message = "Migration jobs must be single-task without automatic retries."
+  }
+  assert {
+    condition     = alltrue([for service in google_cloud_run_v2_service.app : service.template[0].timeout == "300s" && service.template[0].max_instance_request_concurrency == 8 && service.template[0].containers[0].resources[0].limits == tomap({ cpu = "1", memory = "1Gi" })])
+    error_message = "Runtime request concurrency, duration and per-instance resources must remain bounded."
+  }
+  assert {
+    condition     = alltrue([for job in google_cloud_run_v2_job.migration : job.template[0].template[0].timeout == "600s" && job.template[0].template[0].containers[0].resources[0].limits == tomap({ cpu = "1", memory = "1Gi" })])
+    error_message = "Migration execution time and per-task resources must remain bounded."
   }
   assert {
     condition     = !contains(google_project_iam_custom_role.release_service.permissions, "run.services.setIamPolicy") && !contains(google_project_iam_custom_role.release_service.permissions, "run.services.create") && !contains(google_project_iam_custom_role.release_job.permissions, "run.jobs.runWithOverrides")
@@ -598,6 +610,8 @@ run "physician_scale_active" {
       w.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY" && !w.iap_enabled && !w.invoker_iam_disabled &&
       w.template[0].service_account == "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com" &&
       w.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" && w.template[0].scaling[0].min_instance_count == 0 && w.template[0].scaling[0].max_instance_count == 2 &&
+      w.template[0].timeout == "600s" && w.template[0].max_instance_request_concurrency == 4 &&
+      w.template[0].containers[0].resources[0].limits == tomap({ cpu = "1", memory = "1Gi" }) &&
       w.template[0].containers[0].resources[0].cpu_idle &&
       w.template[0].containers[0].image == var.images["physician"].worker
     ])

@@ -1,21 +1,30 @@
-{ pkgs, self }:
+{ pkgs, self, crane }:
 let
   inherit (pkgs) lib;
-  # The overlay revision in flake.lock pins this toolchain and its WASM std.
-  toolchain = pkgs.rust-bin.stable.latest.default.override {
-    targets = [ "wasm32-unknown-unknown" ];
-  };
-  rustPlatform = pkgs.makeRustPlatform { cargo = toolchain; rustc = toolchain; };
+  # rust-toolchain.toml pins this toolchain and its WASM std.
+  toolchain = import ./rust-toolchain.nix pkgs;
+  craneLib = (crane.mkLib pkgs).overrideToolchain toolchain;
+  # Keep crate-local inputs intact: HTML, SQL, JSON, images and generated data
+  # are compile-time inputs as well as Rust, including clinical Markdown.
+  # Root-level runtime skills and patient ledgers have separate derivations.
   src = lib.fileset.toSource {
     root = ../.;
-    fileset = lib.fileset.unions [ ../Cargo.toml ../Cargo.lock ../crates ../platform/ios/build_bridge.rs ../skills ];
+    fileset = lib.fileset.unions [
+      ../Cargo.toml
+      ../Cargo.lock
+      ../crates
+      ../platform/ios/build_bridge.rs
+    ];
   };
+  cargoVendorDir = craneLib.vendorCargoDeps { inherit src; };
   common = {
     version = "0.1.0";
-    inherit src;
-    # Crates come only from Cargo.lock checksums (fixed-output vendor); the
-    # build itself runs in the sandbox without network.
-    cargoLock.lockFile = ../Cargo.lock;
+    inherit src cargoVendorDir;
+    # Registry checksums and Git revisions come from Cargo.lock. Both stages
+    # build frozen, offline, in the normal Nix sandbox.
+    cargoExtraArgs = "--frozen";
+    CARGO_BUILD_TARGET = "x86_64-unknown-linux-gnu";
+    cargoProfile = "release";
     nativeBuildInputs = [ pkgs.pkg-config ];
     buildInputs = [ pkgs.openssl ];
     OPENSSL_NO_VENDOR = "1";
@@ -27,16 +36,13 @@ let
   # One locked release build compiles the shared dependency graph once for
   # every server, migration and job binary.
   serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" ];
-  servers = rustPlatform.buildRustPackage (common // {
+  serverArgs = common // {
     pname = "coda-servers";
-    cargoBuildFlags = [ "--locked" "--bins" ] ++ lib.concatMap (p: [ "-p" p ]) serverPackages;
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      find target/x86_64-unknown-linux-gnu/release -maxdepth 1 -type f -executable \
-        -exec install -m755 -t $out/bin {} +
-      runHook postInstall
-    '';
+    cargoExtraArgs = "--frozen --bins " + lib.concatMapStringsSep " " (p: "-p ${p}") serverPackages;
+  };
+  serverDeps = craneLib.buildDepsOnly serverArgs;
+  servers = craneLib.buildPackage (serverArgs // {
+    cargoArtifacts = serverDeps;
   });
   # Each image references exactly one executable, so the others never enter
   # its closure. Copying keeps the store references (glibc, openssl) intact.
@@ -44,9 +50,13 @@ let
     install -Dm755 ${servers}/bin/${binary} $out/bin/${binary}
   '';
 
-  patientBankTool = rustPlatform.buildRustPackage (common // {
+  patientBankArgs = common // {
     pname = "patient-bank";
-    cargoBuildFlags = [ "--locked" "-p" "patient-bank" "--bin" "patient-bank" ];
+    cargoExtraArgs = "--frozen -p patient-bank --bin patient-bank";
+  };
+  patientBankDeps = craneLib.buildDepsOnly patientBankArgs;
+  patientBankTool = craneLib.buildPackage (patientBankArgs // {
+    cargoArtifacts = patientBankDeps;
   });
   # Committed ledgers and seeds enter the offline chart build. The migration
   # image carries only the rendered charts and manifest, never the toolchain.
@@ -57,7 +67,10 @@ let
   };
   physicianCharts = pkgs.runCommand "physician-synthetic-charts" {
     nativeBuildInputs = [ patientBankTool ];
-    PATIENT_BANK_DATA = "${src}/crates/patient-bank/data";
+    PATIENT_BANK_DATA = lib.fileset.toSource {
+      root = ../crates/patient-bank/data;
+      fileset = ../crates/patient-bank/data;
+    };
     PATIENT_BANK_PATIENTS = patientBankInputs;
   } ''
     patient-bank build --out bank
@@ -66,18 +79,22 @@ let
   '';
 
   webPackages = [ "physician-app" "duet-app" ];
-  webBuild = rustPlatform.buildRustPackage (common // {
+  webArgs = common // {
     pname = "coda-web";
-    nativeBuildInputs = common.nativeBuildInputs ++ [ pkgs.wasm-bindgen-cli_0_2_129 ];
-    buildPhase = ''
-      runHook preBuild
+    CARGO_BUILD_TARGET = "wasm32-unknown-unknown";
+    cargoExtraArgs = "--frozen "
+      + lib.concatMapStringsSep " " (p: "-p ${p}") webPackages
+      + " --no-default-features --features "
+      + lib.concatMapStringsSep "," (p: "${p}/web") webPackages;
+    preBuild = ''
       # Ambient credentials and API URLs never enter browser artifacts.
       unset DUET_API_URL DUET_BEARER DUET_API_BEARER PHYSICIAN_API_URL PHYSICIAN_API_BEARER
-      cargo build --frozen --release --target wasm32-unknown-unknown \
-        ${lib.concatMapStringsSep " " (p: "-p ${p}") webPackages} \
-        --no-default-features --features ${lib.concatMapStringsSep "," (p: "${p}/web") webPackages}
-      runHook postBuild
     '';
+  };
+  webDeps = craneLib.buildDepsOnly webArgs;
+  webBuild = craneLib.buildPackage (webArgs // {
+    cargoArtifacts = webDeps;
+    nativeBuildInputs = common.nativeBuildInputs ++ [ pkgs.wasm-bindgen-cli_0_2_129 ];
     installPhase = ''
       runHook preInstall
       for package in ${lib.concatStringsSep " " webPackages}; do
@@ -192,7 +209,11 @@ let
 in
 {
   coda-servers = servers;
+  coda-servers-deps = serverDeps;
   coda-web = webBuild;
+  coda-web-deps = webDeps;
+  patient-bank = patientBankTool;
+  patient-bank-deps = patientBankDeps;
   doppler-cli = doppler;
   physician-sample = physician;
   physician-worker = physicianWorker;
