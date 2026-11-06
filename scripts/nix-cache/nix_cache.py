@@ -265,8 +265,15 @@ def private_file(path, contents):
         out.write(contents)
 
 
+# cache.nixos.org advertises Priority 40. Our bucket's nix-cache-info sets none,
+# which Nix ranks ahead of 40 regardless of list order, so the private cache
+# served public nixpkgs paths too. A larger number is a lower preference: the
+# private cache now supplies only what upstream lacks (our own tool outputs).
+READER_PRIORITY = 50
+
+
 def nix_config(url, key):
-    return (f'extra-substituters = https://cache.nixos.org {url}\n'
+    return (f'extra-substituters = https://cache.nixos.org {url}&priority={READER_PRIORITY}\n'
             f'extra-trusted-public-keys = {key}\n'
             'require-sigs = true\nfallback = true\nconnect-timeout = 5\n'
             'stalled-download-timeout = 30\ndownload-attempts = 2\n')

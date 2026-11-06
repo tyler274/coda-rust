@@ -16,7 +16,8 @@ IMAGE_ROOTS = (
 )
 # CI jobs enter these shells; otherwise each job rebuilds their wrappers
 # (claude-code, google-cloud-sdk) and refetches them from cache.nixos.org.
-SHELL_ROOTS = tuple(f'devShells.x86_64-linux.{name}' for name in ('agent', 'release', 'observability'))
+SHELL_ROOTS = tuple(f'devShells.x86_64-linux.{name}' for name in
+                    ('agent', 'postgres-ci', 'release', 'observability'))
 ROOTS = DEPENDENCY_ROOTS + IMAGE_ROOTS + SHELL_ROOTS
 
 

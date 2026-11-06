@@ -27,7 +27,7 @@ class RootTests(unittest.TestCase):
 
     def test_every_ci_shell_is_a_root(self):
         workflow = (REPO / '.github/workflows/ci.yml').read_text()
-        used = set(re.findall(r'nix develop \.#(\w+)', workflow))
+        used = set(re.findall(r'nix develop \.#([\w-]+)', workflow))
         self.assertTrue(used)
         self.assertEqual({r.rsplit('.', 1)[1] for r in roots.SHELL_ROOTS}, used)
 
