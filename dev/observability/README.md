@@ -160,9 +160,11 @@ Even clean input is only an offline consistency check: it always returns
 authenticate a human assertion. Separate live proof is required for routing,
 no notifications through the complete maintenance/delivery window, re-alerting
 after expiry, watchdog independence and absence of duplicate Grafana pages.
-An evidence check exits nonzero when any route has consistency gaps; the default
-rehearsal exits zero while listing unconfigured inputs. Neither exit status is a
-live acceptance verdict.
+An evidence check exits nonzero when a supplied route has consistency gaps;
+absent routes are listed as unassessed, not failed exercises. Empty ledgers are
+rejected. Supplied Pending transitions must fall between failure and Firing.
+The default rehearsal exits zero while listing unconfigured inputs. Neither
+exit status is a live acceptance verdict.
 
 ## Validate
 

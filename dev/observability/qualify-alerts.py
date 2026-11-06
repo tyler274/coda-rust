@@ -89,9 +89,13 @@ def assess(events):
     allowed = {"signal_failure", "pending", "firing", "provider_notified",
                "slack_alert", "reminder", "signal_restored", "recovered",
                "slack_recovery", "maintenance_start", "maintenance_end"}
+    if not events:
+        raise ValueError("empty observation ledger")
     results = {}
     for route in ROUTES:
         records = [event for event in events if event["route"] == route]
+        if not records:
+            continue
         times = [instant(event["at"]) for event in records]
         if times != sorted(times):
             raise ValueError(f"{route}: observations must be chronological")
@@ -150,6 +154,8 @@ def assess(events):
             ordered = [instant(kinds[kind][0]["at"]) for kind in required]
             if ordered != sorted(ordered):
                 gaps.append("failure, firing, receipt, restore, recovery, receipt order violated")
+            if any(not ordered[0] <= instant(event["at"]) <= ordered[1] for event in kinds.get("pending", [])):
+                gaps.append("pending must occur between signal failure and firing")
             if ordered[-1] - ordered[0] > 2400:
                 gaps.append("exercise exceeded 40-minute bound")
             for name, start, end in (
@@ -166,6 +172,7 @@ def assess(events):
         raise ValueError("unknown observation route")
     return {"mode": "offline-evidence-check", "live_qualified": False,
             "limitation": "Input assertions only. Inspect source artifacts and confirm Slack independently; maintenance, routing test, shadow isolation and watchdog independence need separate live proof.",
+            "unassessed_routes": [route for route in ROUTES if route not in results],
             "routes": results}
 
 

@@ -84,7 +84,32 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(route["records"], events)
         self.assertEqual(route["reported_latencies"]["failure_to_slack_seconds"], "182.000000001")
         self.assertFalse(result["live_qualified"])
-        self.assertTrue(result["routes"]["cloud-monitoring"]["gaps"])
+        self.assertNotIn("cloud-monitoring", result["routes"])
+        self.assertEqual(result["unassessed_routes"], ["cloud-monitoring", "grafana-test"])
+
+    def test_single_route_cli_consistency_passes(self):
+        real_read = Path.read_text
+
+        def read(path, *args, **kwargs):
+            if path.name == "test-observations.json":
+                return json.dumps(observations())
+            return real_read(path, *args, **kwargs)
+
+        with patch.object(Path, "read_text", read), contextlib.redirect_stdout(io.StringIO()):
+            self.assertEqual(qualification.main(["--observations", "test-observations.json"]), 0)
+
+    def test_pending_must_belong_to_failure_firing_sequence(self):
+        for at in ("2025-12-31T23:59:00Z", "2026-01-01T00:07:00Z"):
+            events = observations()
+            events[1]["at"] = at
+            events.sort(key=lambda event: event["at"])
+            self.assertIn("pending must occur between signal failure and firing", gaps(events))
+        events = [event for event in observations() if event["kind"] != "pending"]
+        self.assertEqual(gaps(events), [])
+
+    def test_empty_ledger_rejected(self):
+        with self.assertRaisesRegex(ValueError, "empty observation ledger"):
+            qualification.assess([])
 
     def test_provider_metadata_never_substitutes_for_slack(self):
         events = [event for event in observations() if event["kind"] not in {"slack_alert", "slack_recovery"}]
