@@ -145,7 +145,6 @@ async fn old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify()
     let url = format!("{base}{separator}options=-csearch_path%3D{schema}");
     let db = Database::connect(&url).await.unwrap();
     migration::migrate(&db).await.unwrap();
-    // A database that already applied the old trigger still notifies on UPDATE.
     db.execute_unprepared(
         "DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions; \
          CREATE TRIGGER physician_sessions_authority_notify \

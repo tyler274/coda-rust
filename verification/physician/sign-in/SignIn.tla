@@ -343,7 +343,7 @@ HearsNews(t) ==
   /\ Did("this tab hears the news", t)
 
 \* The session reaches its end. SessionLifetime keeps that deadline in expires_at.
-\* This stays one step. The event stream ends.
+\* The event stream ends.
 Expires(s) ==
   /\ session[s] \in Live
   /\ session' = [session EXCEPT ![s] = IF @ = YoursLive THEN YoursExpired ELSE TheirsExpired]

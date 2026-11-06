@@ -7,7 +7,7 @@
 //! change:
 //!
 //! - a revocation through this store clears the cache before it returns, so a
-//!   replica reads its own writes. An idle slide drops only that session;
+//!   replica reads its own writes;
 //! - a revocation from any replica fires the `physician_authority` trigger,
 //!   and the [`follow`] task's `LISTEN` turns it into a new feed generation.
 //!   A session update is an idle slide and does not notify;
@@ -312,7 +312,6 @@ impl AuthStore for CachedAuthStore {
         }
         let activity = self.inner.note_physician_activity(token, now).await?;
         if activity == SessionActivity::Extended {
-            // An idle slide is not a revocation, so the other authority maps stay.
             let mut cache = self.cache.lock().expect("authority cache");
             cache.sessions.remove(&hash);
         }

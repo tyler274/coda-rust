@@ -14,7 +14,6 @@ CREATE TRIGGER physician_accounts_authority_notify
     FOR EACH STATEMENT
     EXECUTE FUNCTION physician_authority_notify ();
 
--- A session update is an idle slide, not a revocation. Sign-out stays a delete.
 CREATE TRIGGER physician_sessions_authority_notify
     AFTER DELETE OR TRUNCATE ON physician_sessions
     FOR EACH STATEMENT

@@ -310,8 +310,6 @@ pub(crate) async fn resolve(
             SessionError::Invalid => Refused::NoSession,
             SessionError::Inactive => Refused::AccessRemoved,
         })?;
-    // Identity already allowed this request. A missed note leaves the idle
-    // deadline where it was.
     if let Err(error) = auth.store.note_physician_activity(&token, now).await {
         tracing::warn!(?error, "physician session activity was not recorded");
     }

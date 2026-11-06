@@ -399,8 +399,6 @@ impl AuthStore for PostgresAuthStore {
             SessionRenewal::Ended => Ok(SessionActivity::Ended),
             SessionRenewal::Covered => Ok(SessionActivity::Covered),
             SessionRenewal::Extend { idle_deadline } => {
-                // Never shorten expires_at, and never move a deadline already
-                // at or before now.
                 let updated = Sessions::update_many()
                     .col_expr(
                         crate::migration::session::Column::ExpiresAt,

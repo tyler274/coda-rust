@@ -619,15 +619,11 @@ impl MigrationTrait for m20261030_000005_practices {
 
 /// Rows still on the old 30-day gap (`expires_at = created_at + 2592000`)
 /// move to a 12-hour idle deadline (`created_at + 43200`).
-///
-/// Raw SQL by exception: the repair assigns one column from another. The
-/// statement carries no runtime values. SeaQuery has no trigger builder.
 pub const CLAMP_SESSION_LIFETIME: &str = "\
 UPDATE physician_sessions
    SET expires_at = created_at + 43200
  WHERE expires_at = created_at + 2592000";
 
-/// A session update is an idle slide, not a revocation. Sign-out stays a delete.
 const REPLACE_SESSION_NOTIFY: &str = "\
 CREATE TRIGGER physician_sessions_authority_notify
     AFTER DELETE OR TRUNCATE ON physician_sessions
@@ -656,8 +652,6 @@ impl MigrationTrait for m20261106_000006_session_lifetime {
     }
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
-        // New sign-ins store the same 12-hour gap, so the clamp cannot be
-        // undone without lengthening those sessions.
         let db = manager.get_connection();
         db.execute_unprepared(
             "DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions",

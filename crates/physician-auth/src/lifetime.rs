@@ -1,11 +1,7 @@
-//! How long one physician sign-in stays live.
-//!
 //! `physician_sessions.expires_at` stores the idle deadline. The absolute cap
 //! is seven days after `created_at` and is not a second column.
 
 /// What a recorded physician request did to the stored deadline.
-///
-/// The caller does not receive a deadline it could write itself.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SessionActivity {
     /// The stored deadline already covered this moment. Nothing was written.
@@ -16,7 +12,7 @@ pub enum SessionActivity {
     Ended,
 }
 
-/// What [`SessionLifetime::renew`] decides. Pure: nothing is written.
+/// What [`SessionLifetime::renew`] decides.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SessionRenewal {
     /// The stored deadline already covers this moment.
@@ -31,8 +27,6 @@ pub enum SessionRenewal {
 }
 
 /// The idle deadline and the absolute cap for one session.
-///
-/// `idle_deadline` is never later than `absolute_end`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct SessionLifetime {
     absolute_end: u64,
@@ -42,7 +36,6 @@ pub struct SessionLifetime {
 const HOUR: u64 = 60 * 60;
 const IDLE_LIMIT: u64 = 12 * HOUR;
 const ABSOLUTE_CAP: u64 = 7 * 24 * HOUR;
-/// A slide shorter than this is not written, unless it lands on the absolute cap.
 const ACTIVITY_QUANTUM: u64 = 15 * 60;
 
 impl SessionLifetime {
@@ -52,8 +45,6 @@ impl SessionLifetime {
     }
 
     /// Rebuilds a lifetime from the mint time and the stored deadline.
-    ///
-    /// The stored deadline is clamped so it cannot outlive the cap.
     pub fn from_persisted(created_at: u64, expires_at: u64) -> Self {
         let absolute_end = created_at.saturating_add(ABSOLUTE_CAP);
         Self {
@@ -67,17 +58,12 @@ impl SessionLifetime {
         self.idle_deadline
     }
 
-    /// Whether the session is live at `now`.
-    ///
-    /// This is the only liveness check.
+    /// Whether `now` is strictly before the idle deadline.
     pub fn allows(self, now: u64) -> bool {
         now < self.idle_deadline
     }
 
     /// Whether activity at `now` should move the idle deadline.
-    ///
-    /// Reaching the absolute cap still extends inside the 15-minute skip, so
-    /// continuous use ends on the seventh day.
     pub fn renew(self, now: u64) -> SessionRenewal {
         if !self.allows(now) {
             return SessionRenewal::Ended;
