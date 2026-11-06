@@ -287,6 +287,24 @@ callers, so a reviewer can compare both roots' plans.
 The project's Langfuse data-retention setting (Enterprise in some versions) is
 applied in the UI. The blob lifecycle enforces `langfuse_retention_days` on GCS.
 
+## Notification qualification boundary
+
+Use the [offline qualification flow](/dev/observability/README%2Emd#offline-downtime-notification-rehearsal)
+to prepare and check evidence before requesting a live drill. It makes no
+provider calls and cannot enable monitors or contacts. Read back the actual
+Datadog Slack account/channel and the independent Cloud Monitoring contact;
+configuration in this root alone does not prove delivery. Supply the
+Stage2-owned watchdog identifiers from its verified outputs, not guessed names.
+Keep secrets only in Doppler. The qualification fixture carries only public
+identifiers and evidence references, never webhook URLs or credentials.
+
+Datadog remains the primary `#engineering-observability` operational route;
+concurrent Grafana service evaluation must be shadow-only with a separate
+labeled test route. The current single-backend Grafana contact policy is not
+that concurrent shadow policy. Do not use it to test concurrent service paging.
+A routing-test send and a synthetic evaluator drill each need explicit operator
+approval, separate from approval for any infrastructure saved plan/apply.
+
 ## Testing
 
 ```sh
