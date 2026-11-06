@@ -69,10 +69,10 @@ nix develop .#agent --command scripts/scenarios.py
 
 The receipt records the git revision and binary and chart digests. It also records each step's
 actor, command id, observation and artifact, and labels each step `controlled`, `real-model` or
-`clinical-judgment`. The runner produces only controlled steps. It lists every capability a
-journey needs that no local owner provides yet, such as cited chart answers, a phone or a real
-model, under `missing`, so the outcome reads `incomplete` and does not pass silently. A failed step
-exits 1. `--require-complete` exits 3 while anything is missing.
+`clinical-judgment`. The runner produces only controlled steps. Each capability a journey needs
+that the run did not exercise goes under `missing` with the reason and its owning source, so the
+outcome reads `incomplete` and does not pass silently. A failed step, build or shutdown exits 1
+and still writes the receipt. `--require-complete` exits 3 while anything is missing.
 
 ## The agent harness
 

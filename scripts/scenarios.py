@@ -9,10 +9,11 @@ worker's fixed reply. D1 runs the duet-api Postgres suites against that same
 disposable Postgres. Nothing reads Doppler, Google credentials or a model key.
 
 receipt.json records the git revision, binary and chart digests, each step's
-command identity and observation, and capabilities the scenario needs but no
-local owner provides yet. Every step is labeled controlled, real-model or
-clinical-judgment; this runner produces only controlled evidence. A failed step
-exits 1. Missing capabilities are printed and exit 0 unless --require-complete.
+command identity and observation, and each capability the journey needs that
+this run did not exercise. Every step is labeled controlled, real-model or
+clinical-judgment; this runner produces only controlled evidence. A failed step,
+a failed build or an unclean shutdown exits 1 and still writes the receipt.
+Missing capabilities are printed and exit 0 unless --require-complete.
 """
 import argparse
 import datetime
@@ -188,14 +189,20 @@ def p1(receipt, state, out):
                  artifact=save(out, "snapshot", body))
 
     status, again = http(a, "POST", "/commands", command, bearer=session)
+    outcome = (again or {}).get("outcome")
     time.sleep(3)
     body, items = conversation(b, session, chat)
+    durable = run(["psql", state["postgres"]["url"], "-At", "-v", f"chat={chat}", "-c",
+                   "select state->>'status', jsonb_array_length(state->'attempts'), "
+                   "jsonb_array_length(state->'messages') from physician_runtime_conversations "
+                   "where chat = :'chat'"])
     receipt.step("P1", "duplicate submit has one effect", actor,
-                 status == 200 and items == [("physician", command["payload"]["text"]),
-                                             ("model", stack.FIXED_TEXT)],
-                 f"the same idempotency key answered {status} {(again or {}).get('outcome')}; "
-                 f"the chat still holds {len(items)} items", command_id=key,
-                 artifact=save(out, "snapshot-after-duplicate", body))
+                 status == 200 and outcome == "accepted" and durable == "completed|1|2"
+                 and items == [("physician", command["payload"]["text"]), ("model", stack.FIXED_TEXT)],
+                 f"the same idempotency key answered {status} {outcome}; the chat holds {len(items)} "
+                 f"items; durable status|attempts|messages is {durable!r}", command_id=key,
+                 artifact=save(out, "duplicate", {"status": status, "body": again,
+                                                  "durable": durable, "snapshot": body}))
 
     status, page = http(b, "GET", f"/patient-workspaces/{stack.WORKSPACE}", bearer=session)
     chats = [c.get("chat_id") for c in (page or {}).get("chats", [])]
@@ -239,6 +246,8 @@ def d1(receipt, state, out):
                    f"exit {result.returncode}\n{result.stdout}{result.stderr}")
     seen = dict(re.findall(r"^test (\S+) \.\.\. (\w+)", result.stdout, re.M))
     artifact = str(log.relative_to(REPO)) if log.is_relative_to(REPO) else str(log)
+    receipt.step("D1", "cargo test exit", "runner", result.returncode == 0,
+                 f"{' '.join(argv)} exited {result.returncode}", artifact=artifact)
     for name, holds in D1_TESTS.items():
         receipt.step("D1", name, "synthetic Duet accounts", seen.get(name) == "ok",
                      f"{seen.get(name, 'not run')}: {holds}", artifact=artifact)
@@ -257,23 +266,46 @@ def d1(receipt, state, out):
                 "the suites use a synthetic IdentityVerifier", "crates/duet-api/src/identity.rs")
     receipt.gap("D1", "real-model reply", "providers are controlled stand-ins",
                 "crates/duet-api/src/conversation_routes.rs")
+    receipt.gap("D1", "account and command identities in the receipt",
+                "the suites generate their account and command ids and drop their databases; "
+                "they do not export those ids, so D1 steps name the test, not the command",
+                "crates/duet-api/tests")
 
 
 def start_stack(evidence, bin_dir):
     log = (evidence / "stack.out").open("w")
-    process = subprocess.Popen(
+    return subprocess.Popen(
         [sys.executable, str(REPO / "scripts/physician-scale-stack.py"), "--bin-dir", str(bin_dir),
          "--evidence", str(evidence / "stack")], cwd=REPO, stdout=log, stderr=subprocess.STDOUT)
+
+
+def wait_ready(process, evidence, timeout=600):
     path = evidence / "stack" / "stack.json"
-    deadline = time.monotonic() + 600
+    deadline = time.monotonic() + timeout
     while time.monotonic() < deadline:
         if process.poll() is not None:
             raise RuntimeError(f"scale stack exited {process.returncode}; see {evidence / 'stack.out'}")
-        if path.is_file() and "ready_at" in (state := json.loads(path.read_text())):
-            return process, state
+        try:
+            state = json.loads(path.read_text())
+        except (FileNotFoundError, json.JSONDecodeError):  # absent or mid-write
+            state = {}
+        if "ready_at" in state:
+            return state
         time.sleep(0.5)
-    process.terminate()
-    raise RuntimeError(f"scale stack not ready; see {evidence / 'stack.out'}")
+    raise RuntimeError(f"scale stack not ready after {timeout}s; see {evidence / 'stack.out'}")
+
+
+def stop_stack(process):
+    if process.poll() is not None:
+        return None
+    process.send_signal(signal.SIGTERM)
+    try:
+        process.wait(timeout=60)
+        return None
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+        return "scale stack ignored SIGTERM for 60s and was killed"
 
 
 def main():
@@ -286,6 +318,8 @@ def main():
                         "(default target/verification/runs/scenarios-<time>-<pid>)")
     args = parser.parse_args()
     journeys = {j.strip().upper() for j in args.only.split(",") if j.strip()}
+    if not journeys:
+        parser.error("--only selected no journeys; available: P1, D1")
     if not journeys <= {"P1", "D1"}:
         parser.error(f"unknown journeys {sorted(journeys - {'P1', 'D1'})}; available: P1, D1")
     stack.environment(os.environ, Path("/unused"))  # refuses to run in a hosted environment
@@ -294,26 +328,32 @@ def main():
     evidence.mkdir(parents=True, exist_ok=False)
     bin_dir = REPO / "target/debug"
     print(f"Evidence: {evidence}", flush=True)
-    subprocess.run(["cargo", "build", "--locked", "-p", "physician-sample", "--bins"], cwd=REPO, check=True)
-    if not (CHARTS / "manifest.json").is_file():
-        subprocess.run(["cargo", "run", "--locked", "-q", "-p", "patient-bank", "--", "build"],
-                       cwd=REPO, check=True, stdout=subprocess.DEVNULL)
-
     receipt = Receipt(evidence / "receipt.json")
-    receipt.data.update(journeys=sorted(journeys), sources=sources(bin_dir),
-                        evidence_dir=str(evidence))
-    process, state = start_stack(evidence, bin_dir)
-    receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey", "pubsub")}
+    receipt.data.update(journeys=sorted(journeys), evidence_dir=str(evidence))
+    process = None
     try:
+        subprocess.run(["cargo", "build", "--locked", "-p", "physician-sample", "--bins"],
+                       cwd=REPO, check=True)
+        if not (CHARTS / "manifest.json").is_file():
+            subprocess.run(["cargo", "run", "--locked", "-q", "-p", "patient-bank", "--", "build"],
+                           cwd=REPO, check=True, stdout=subprocess.DEVNULL)
+        receipt.data["sources"] = sources(bin_dir)
+        process = start_stack(evidence, bin_dir)
+        state = wait_ready(process, evidence)
+        receipt.data["services"] = {k: state[k] for k in ("sites", "worker", "postgres", "valkey", "pubsub")}
         if "P1" in journeys:
             p1(receipt, state, evidence / "p1")
         if "D1" in journeys:
             d1(receipt, state, evidence / "d1")
-    except Exception as error:
+    except BaseException as error:
         receipt.step("runner", "unexpected error", "runner", False, repr(error))
     finally:
-        process.send_signal(signal.SIGTERM)
-        process.wait(timeout=60)
+        try:
+            stopped = stop_stack(process) if process else None
+        except BaseException as error:
+            stopped = f"stopping the scale stack failed: {error!r}"
+        if stopped:
+            receipt.step("runner", "stack shutdown", "runner", False, stopped)
         receipt.write()
 
     counts = receipt.data["counts"]
