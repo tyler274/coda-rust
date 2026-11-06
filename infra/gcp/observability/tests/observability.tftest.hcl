@@ -962,22 +962,22 @@ run "grafana_cloud_monitoring_is_read_only_workload_identity" {
 run "concurrent_backends_remain_independent_and_shadow" {
   command = plan
   variables {
-    telemetry_backend = "both"
-    grafana_compatibility_metrics_url = "http://compatibility.observability.svc.cluster.local:9090"
+    telemetry_backend                  = "both"
+    grafana_compatibility_metrics_url  = "http://compatibility.observability.svc.cluster.local:9090"
     grafana_test_notifications_enabled = true
-    datadog_gcp_integration_enabled = true
-    grafana_cloud_monitoring_enabled = true
+    datadog_gcp_integration_enabled    = true
+    grafana_cloud_monitoring_enabled   = true
   }
   assert {
-    condition = length(helm_release.datadog_agent) == 1 && length(kubernetes_stateful_set_v1.grafana_stack) == 4 && length(local.collector_backend_env) == 3
+    condition     = length(helm_release.datadog_agent) == 1 && length(kubernetes_stateful_set_v1.grafana_stack) == 4 && length(local.collector_backend_env) == 3
     error_message = "Both must retain every backend and its collector endpoint."
   }
   assert {
-    condition = yamldecode(local.collector_backend_config).service.pipelines["traces/ops"].exporters == ["otlp/datadog", "otlp/tempo"] && yamldecode(local.collector_backend_config).service.pipelines["logs/ops"].exporters == ["otlp/datadog", "otlphttp/loki"] && alltrue([for e in values(yamldecode(local.collector_backend_config).exporters) : e.sending_queue.enabled && e.sending_queue.queue_size == 1000 && !e.sending_queue.block_on_overflow && e.retry_on_failure.max_elapsed_time == "30s"])
+    condition     = yamldecode(local.collector_backend_config).service.pipelines["traces/ops"].exporters == ["otlp/datadog", "otlp/tempo"] && yamldecode(local.collector_backend_config).service.pipelines["logs/ops"].exporters == ["otlp/datadog", "otlphttp/loki"] && alltrue([for e in values(yamldecode(local.collector_backend_config).exporters) : e.sending_queue.enabled && e.sending_queue.queue_size == 1000 && !e.sending_queue.block_on_overflow && e.retry_on_failure.max_elapsed_time == "30s"])
     error_message = "Both signals must fan out with independent bounded nonblocking queues and retries."
   }
   assert {
-    condition = yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" && yamldecode(local.grafana_contact_config).policies[0].routes[0].object_matchers == [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]] && length(local.grafana_compatibility_config) == 2 && contains(keys(local.doppler_secrets["grafana-secrets"]), "GRAFANA_SLACK_WEBHOOK_URL")
+    condition     = yamldecode(local.grafana_contact_config).policies[0].receiver == "coda-shadow" && yamldecode(local.grafana_contact_config).policies[0].routes[0].object_matchers == [["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]] && length(local.grafana_compatibility_config) == 2 && contains(keys(local.doppler_secrets["grafana-secrets"]), "GRAFANA_SLACK_WEBHOOK_URL")
     error_message = "Only explicit synthetic labels may notify; compatibility source is separately configured and the webhook is a secret reference."
   }
 }
