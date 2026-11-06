@@ -52,7 +52,7 @@ pub fn api_error_class(e: &ApiError) -> &'static str {
         | ApiError::AgreementChanged => "identity",
         ApiError::Conflict(_) => "conflict",
         ApiError::NotFound | ApiError::JoinInvalid | ApiError::ConsentUnlinked => "not_found",
-        ApiError::Unavailable(_) => "unavailable",
+        ApiError::Unavailable(_) | ApiError::IdentityResponse(_) => "unavailable",
         ApiError::Storage(_) => DATABASE,
         ApiError::Unprocessable(_) => "invalid",
     }
