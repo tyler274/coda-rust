@@ -33,6 +33,6 @@ export const step = (action, from, to) => {
 
 export const group = (v) =>
   ["Not written", "Coda decides"].includes(v.msg[1]) ? "Nowhere"
-    : ["Filtered", "Waiting to match"].includes(v.msg[1]) ? "Waits for a physician" : "Matching done";
+    : v.msg[1] === "Waiting to match" ? "Waits for a physician" : "Matching done";
 
 export const colors = { Nowhere: "tan", "Waits for a physician": "blue", "Matching done": "teal" };
