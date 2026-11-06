@@ -20,6 +20,45 @@ mod devtools;
 
 use devtools::{Browser, Key};
 
+/// Source-owner fixture, not a chat snapshot: the real worker must discover/read it.
+#[tokio::test]
+#[ignore = "requires disposable P1 database"]
+async fn seed_p1_attachment_source() {
+    let Ok(database) = env::var("PHYSICIAN_TEST_DATABASE_URL") else {
+        return;
+    };
+    assert_eq!(
+        reqwest::Url::parse(&database).unwrap().host_str(),
+        Some("127.0.0.1")
+    );
+    let text =
+        "Authored clinical note: A1c 7.2% collected 2026-08-20. Continue the documented plan. "
+            .repeat(16);
+    let content = serde_json::json!({"resourceType":"DocumentReference", "id":"p1-authored-note",
+        "content":[{"attachment":{"contentType":"text/plain", "data":base64::engine::general_purpose::STANDARD.encode(&text)}}]}).to_string();
+    let source = local_product::physician_sources::SourceRevision {
+        workspace: "pw-2a995cfc98bbfd3c4e6c1d7492ee6998".into(),
+        source_id: "synthetic-ehr".into(),
+        candidate_id: "000-p1-authored-note".into(),
+        revision: "note-original-v1".into(),
+        record_type: "DocumentReference".into(),
+        dates: vec![],
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        content,
+        readable_parts: vec![local_product::physician_sources::ReadablePart {
+            label: "Authored note attachment".into(),
+            text,
+        }],
+        provenance: serde_json::json!({"native_record":"p1-authored-note"}),
+    };
+    local_product::runtime::Store::connect(&database)
+        .await
+        .unwrap()
+        .record_source(&source)
+        .await
+        .unwrap();
+}
+
 /// Driven by P1 after real worker/site recovery; never seeds a fake chat snapshot.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "requires the disposable P1 stack; scripts/scenarios.py drives this test"]
@@ -40,12 +79,17 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
     let version = expected["source_presentation"]["content"]["as_of"]
         .as_str()
         .unwrap();
-    assert!(!content.is_empty());
+    assert!(content.contains("Authored clinical note: A1c 7.2%"));
+    assert!(content.contains("\"data\":"));
     assert!(version.contains("SHA-256"));
     let mut tab = Tab::open(url);
     tab.wait_for_text("Work email", Duration::from_secs(20));
     tab.request_sign_in("physician@codahealth.test");
-    for phase in ["recovered-citation", "reloaded-citation"] {
+    for (phase, width, height) in [
+        ("recovered-citation", 1280, 800),
+        ("reloaded-citation", 390, 844),
+    ] {
+        tab.set_viewport(width, height, false);
         tab.wait_for_text("Controlled recorded source", Duration::from_secs(30));
         tab.wait_for_text("Abigail Lemieux", Duration::from_secs(20));
         tab.click("section[aria-label='Conversation'] .citation-chip");
@@ -63,7 +107,38 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
                 .unwrap()
                 .contains(expected["display_label"].as_str().unwrap())
         );
+        let started = Instant::now();
+        let mut previous = serde_json::Value::Null;
+        loop {
+            let layout = tab.step("citationLayout", serde_json::json!([]));
+            if layout["opacity"] == "1"
+                && layout["animating"] == false
+                && layout["geometry"] == previous
+            {
+                assert_eq!(layout["fits"], true, "{layout}");
+                assert_eq!(layout["separated"], true, "{layout}");
+                assert_eq!(layout["closeVisible"], true, "{layout}");
+                break;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "reader never settled: {layout}"
+            );
+            previous = layout["geometry"].clone();
+            std::thread::sleep(Duration::from_millis(100));
+        }
         tab.save_picture(phase);
+        let scrolled = tab.step("citationLayout", serde_json::json!([true]));
+        assert_eq!(scrolled["scrolled"], true, "{scrolled}");
+        tab.save_picture(&format!("{phase}-scrolled"));
+        let top = tab.step("citationLayout", serde_json::json!([]));
+        assert_eq!(top["closeVisible"], true, "{top}");
+        tab.click(".citation-inspection [aria-label='Close']");
+        let started = Instant::now();
+        while tab.step("citationClosed", serde_json::json!([])) != true {
+            assert!(started.elapsed() < Duration::from_secs(5));
+            std::thread::sleep(Duration::from_millis(20));
+        }
         if let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") {
             fs::write(
                 PathBuf::from(folder).join(format!("{phase}.json")),
@@ -71,7 +146,7 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
             )
             .unwrap();
         }
-        if phase == "recovered-citation" {
+        if phase == "recovered-citation" && proof["correct_source"] != false {
             let database = env::var("PHYSICIAN_TEST_DATABASE_URL").expect("P1 disposable database");
             let database_url = reqwest::Url::parse(&database).unwrap();
             assert_eq!(database_url.host_str(), Some("127.0.0.1"));
@@ -92,7 +167,12 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
                 .into_iter()
                 .find(|source| source.candidate_id == expected["handle"].as_str().unwrap())
                 .unwrap();
-            assert_eq!(source.content, content);
+            assert!(content.contains(&source.content));
+            assert!(source.content.contains("\"data\":"));
+            assert!(!source.readable_parts.is_empty());
+            for part in &source.readable_parts {
+                assert!(content.contains(&part.text));
+            }
             assert_eq!(
                 version,
                 format!("revision {} · SHA-256 {}", source.revision, source.sha256)
@@ -104,6 +184,8 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
             source.revision.push_str("-browser-correction");
             source.content =
                 "Synthetic corrected source: old answer must retain the original record.".into();
+            source.readable_parts[0].text =
+                "Corrected attachment, not the evidence in the published answer.".into();
             source.sha256 = local_product::sha256_hex(source.content.as_bytes());
             store.record_source(&source).await.unwrap();
         }

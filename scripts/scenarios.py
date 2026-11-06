@@ -143,6 +143,20 @@ def wait_conversation(port, session, chat, want, timeout=60):
         time.sleep(0.2)
 
 
+def restart_applications(state, count):
+    os.kill(state["pid"], signal.SIGUSR2)
+    deadline = time.monotonic() + 60
+    while time.monotonic() < deadline:
+        try:
+            current = json.loads((Path(state["evidence"]) / "stack.json").read_text())
+        except json.JSONDecodeError:  # restart state can be mid-write
+            current = {}
+        if current.get("application_restarts") == count:
+            return
+        time.sleep(0.2)
+    raise RuntimeError("owned application restart did not finish")
+
+
 def p1(receipt, state, out):
     a, b = state["ports"]["site-a"], state["ports"]["site-b"]
     actor = f"{stack.EMAIL} ({stack.PRACTICE}/{stack.PHYSICIAN})"
@@ -171,6 +185,9 @@ def p1(receipt, state, out):
                  f"records synchronized_at {synced}",
                  artifact=save(out, "workspace", {"status": status, "body": page}))
 
+    subprocess.run(["cargo", "test", "--locked", "-p", "physician-sample", "--test", "site",
+                    "seed_p1_attachment_source", "--", "--ignored", "--exact"], cwd=REPO,
+                   env=dict(os.environ, PHYSICIAN_TEST_DATABASE_URL=state["postgres"]["url"]), check=True)
     chat, key = f"chat-scenario-{uuid.uuid4().hex}", f"scenario-{uuid.uuid4().hex}"
     command = {"type": "message.submit", "idempotency_key": key,
                "payload": {"patient_workspace_id": stack.WORKSPACE, "chat_id": chat,
@@ -194,7 +211,7 @@ def p1(receipt, state, out):
         time.sleep(0.1)
     receipt.step("P1", "worker active before interruption", actor, active == "active",
                  f"durable state before process loss: {active}", command_id=key)
-    os.kill(state["pid"], signal.SIGUSR2)
+    restart_applications(state, 1)
     replied = lambda items: any(kind == "model" and "[[patient_source:" in (text or "")
                                 for kind, text in items)
     body, items = wait_conversation(b, session, chat, replied, timeout=660)
@@ -207,6 +224,11 @@ def p1(receipt, state, out):
                  f"owned application restarts: {restarted.get('application_restarts', 0)}", command_id=key)
     original_items = items
     original_body = body
+    restart_applications(state, 2)
+    body, items = conversation(b, session, chat)
+    receipt.step("P1", "published answer survives restart of both sites and worker", actor,
+                 body == original_body, "Post-publication restart includes serving site B; exact saved answer unchanged",
+                 command_id=key, artifact=save(out, "published-after-restart", body))
     status, again = http(b, "POST", "/commands", command, bearer=session)
     outcome = (again or {}).get("outcome")
     time.sleep(3)
@@ -266,6 +288,24 @@ def p1(receipt, state, out):
                      result.returncode == 0,
                      "Chromium checks patient and exact source identity, opens the saved citation, corrects the source, reloads and reopens the retained original text and revision/digest",
                      command_id=key, artifact=str(log.relative_to(REPO)))
+        if result.returncode == 0:
+            restart_applications(state, 3)
+            after_correction, _ = conversation(b, session, chat)
+            receipt.step("P1", "corrected chart cannot replace published evidence after restart", actor,
+                         after_correction == original_body,
+                         "Both sites and worker restarted after source correction; saved answer and citation unchanged",
+                         command_id=key, artifact=save(out, "corrected-chart-after-restart", after_correction))
+            proof_input.write_text(json.dumps({
+                "url": f"http://127.0.0.1:{b}/?patient={stack.WORKSPACE}&chat={chat}",
+                "citation": citations[0], "correct_source": False,
+            }, indent=2))
+            browser_env["PHYSICIAN_PROOF_SHOTS"] = str((out / "browser-after-correction-restart").resolve())
+            result = subprocess.run(argv, cwd=REPO, env=browser_env, capture_output=True, text=True)
+            log = out / "citation-browser-after-correction-restart.log"
+            log.write_text(f"$ {' '.join(argv)}\nexit {result.returncode}\n{result.stdout}{result.stderr}")
+            receipt.step("P1", "reopen published attachment after correction and service restart", actor,
+                         result.returncode == 0, "Chromium reopens original readable attachment and native bytes on desktop and phone",
+                         command_id=key, artifact=str(log.relative_to(REPO)))
     else:
         receipt.step("P1", "reopen exact citation after recovery and page reload", actor, False,
                      "No saved citation available to open", command_id=key)

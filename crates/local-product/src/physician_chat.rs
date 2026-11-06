@@ -90,6 +90,9 @@ pub struct Citation {
     pub record_type: String,
     /// Exact retained bytes the model read.
     pub content: String,
+    /// Original decoded evidence alongside the source-native bytes.
+    #[serde(default)]
+    pub readable_parts: Vec<crate::physician_sources::ReadablePart>,
     /// Digest of the retained bytes.
     pub sha256: String,
     /// Source-owned provenance.
@@ -129,6 +132,8 @@ pub fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Ci
                         revision: string("revision")?,
                         record_type: string("record_type")?,
                         content: string("content")?,
+                        readable_parts: serde_json::from_value(value["readable_parts"].clone())
+                            .map_err(|e| e.to_string())?,
                         sha256: string("sha256")?,
                         provenance: value["provenance"].clone(),
                     };

@@ -727,10 +727,16 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
             break;
         };
         parts.push(json!({"kind":"text", "text":before}));
+        let mut inspection = citation
+            .readable_parts
+            .iter()
+            .map(|part| format!("{}\n{}", part.label, part.text))
+            .collect::<Vec<_>>();
+        inspection.push(citation.content.clone());
         parts.push(json!({"kind":"citation", "state":"resolved", "source":"patient",
             "source_id":citation.id, "handle":citation.reference,
             "display_label":citation.record_type,
-            "source_presentation":{"content":{"text":citation.content,
+            "source_presentation":{"content":{"text":inspection.join("\n\n"),
                 "as_of": format!("revision {} · SHA-256 {}", citation.revision, citation.sha256)}}}));
         text = rest;
     }

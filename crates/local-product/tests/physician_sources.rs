@@ -36,6 +36,46 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
         read["results"][0]["readable_parts"][0]["text"],
         "Potassium 4.1 mmol/L"
     );
+    let events = [
+        harness::engine::Event {
+            attempt_id: "attempt".into(),
+            sequence: 1,
+            kind: harness::engine::EventKind::ToolStarted(harness::engine::Invocation {
+                id: "read".into(),
+                name: "read_patient_sources".into(),
+                arguments: "{}".into(),
+            }),
+        },
+        harness::engine::Event {
+            attempt_id: "attempt".into(),
+            sequence: 2,
+            kind: harness::engine::EventKind::ToolReturned {
+                call_id: "read".into(),
+                output: read.to_string(),
+                executed: true,
+            },
+        },
+    ];
+    let citations = local_product::physician_chat::citations(
+        &format!(
+            "Claim [[patient_source:{}]]",
+            read["results"][0]["citation_id"].as_str().unwrap()
+        ),
+        &events,
+    )
+    .unwrap();
+    let saved = serde_json::to_value(&citations[0]).unwrap();
+    assert_eq!(
+        saved["readable_parts"],
+        read["results"][0]["readable_parts"]
+    );
+    assert_eq!(saved["content"], content);
+    assert_eq!(saved["provenance"], source.provenance);
+    let mut legacy = saved;
+    legacy.as_object_mut().unwrap().remove("readable_parts");
+    let decoded: local_product::physician_chat::Citation = serde_json::from_value(legacy).unwrap();
+    assert!(decoded.readable_parts.is_empty());
+    assert_eq!(decoded.content, content);
     let denied = exact_read(
         std::slice::from_ref(&source),
         "two",

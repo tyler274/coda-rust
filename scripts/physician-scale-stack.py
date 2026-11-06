@@ -472,10 +472,13 @@ def run(args, root, evidence):
                     restart_apps.clear()
                     stack.stop("worker")
                     stack.stop("site-a")
+                    stack.stop("site-b")
                     stack.start("worker", [str(binary / "physician-worker")], worker_env)
                     stack.start("site-a", [str(binary / "physician-sample")], site_env | {
                         "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_a}"})
-                    stack.wait(lambda: healthy(worker) and healthy(site_a), "application restart")
+                    stack.start("site-b", [str(binary / "physician-sample")], site_env | {
+                        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_b}"})
+                    stack.wait(lambda: healthy(worker) and healthy(site_a) and healthy(site_b), "application restart")
                     app_restarts += 1
                     write_state(application_restarts=app_restarts)
                 if restart.is_set():

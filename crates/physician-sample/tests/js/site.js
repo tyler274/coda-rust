@@ -30,6 +30,30 @@ function (step, ...args) {
         font: getComputedStyle(host.querySelector("p:has(strong)")).font,
       };
     },
+    citationLayout(scroll = false) {
+      const dialog = one("dialog.citation-inspection");
+      const content = one(".citation-inspection .dialog-body");
+      content.scrollTop = scroll ? content.scrollHeight : 0;
+      const rect = element => {
+        const r = element.getBoundingClientRect();
+        return { x:r.x, y:r.y, width:r.width, height:r.height, bottom:r.bottom, right:r.right };
+      };
+      const d = rect(dialog), close = rect(dialog.querySelector('[aria-label="Close"]'));
+      const blocks = [...dialog.querySelectorAll(".reader-body, .reader-provenance")];
+      return {
+        opacity: getComputedStyle(dialog).opacity,
+        animating: dialog.getAnimations({subtree:true}).some(a => a.playState === "running"),
+        geometry: [d, ...blocks.map(rect)],
+        fits: d.x >= 0 && d.right <= innerWidth && d.y >= 0 && d.bottom <= innerHeight
+          && content.scrollWidth <= content.clientWidth + 1
+          && blocks.every(b => b.scrollWidth <= b.clientWidth + 1),
+        separated: rect(dialog.querySelector('.dialog-header')).bottom <= rect(blocks[0]).y + 1
+          && blocks.every((b, i) => !i || rect(blocks[i-1]).bottom <= rect(b).y + 1),
+        closeVisible: close.y >= 0 && close.bottom <= innerHeight && close.x >= 0 && close.right <= innerWidth,
+        scrolled: content.scrollTop > 0,
+      };
+    },
+    citationClosed() { return !document.querySelector("dialog.citation-inspection[open]"); },
     citationReading() {
       const dialog = one("dialog.citation-inspection");
       return {

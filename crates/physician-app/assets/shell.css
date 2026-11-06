@@ -306,6 +306,7 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 /* A reading dialog reads at the page's one content width. */
 :is(.reader, .past-work-dialog) { --dialog-width: var(--reader-dialog-inline-size); }
 .citation-inspection .reader-content { display: grid; gap: var(--space-3); }
+.citation-inspection :is(.reader-body, .reader-provenance) { min-width: 0; overflow-wrap: anywhere; }
 .citation-open { color: inherit; }
 .past-work-empty { margin: 0; color: var(--body); }
 .reply-review { min-width: 0; }
