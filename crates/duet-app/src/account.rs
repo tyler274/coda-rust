@@ -384,7 +384,6 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                                 )
                                 .is_ok()
                         {
-                            owner.session().rotate_credential(&current.fence);
                             active.set(Some(Active {
                                 bearer: token.id_token,
                                 fence: current.fence,
@@ -586,8 +585,15 @@ fn AccountRoutes(
 ) -> Element {
     let mut access_token = use_signal(|| bearer.clone());
     let fresh = bearer.clone();
+    let credential_session = retention.session();
+    let credential_fence = fence.clone();
     use_effect(use_reactive(&fresh, move |value| {
-        access_token.set(value);
+        if *access_token.peek() != value {
+            // This synchronous publication cannot interleave with a request task:
+            // both its bearer and refusal revision advance in the same effect.
+            credential_session.rotate_credential(&credential_fence);
+            access_token.set(value);
+        }
     }));
     use_context_provider(|| PatientSession {
         retention,
