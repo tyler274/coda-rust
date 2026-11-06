@@ -3,6 +3,19 @@
 //! `physician_sessions.expires_at` stores the idle deadline. The absolute cap
 //! is seven days after `created_at` and is not a second column.
 
+/// What a recorded physician request did to the stored deadline.
+///
+/// The caller does not receive a deadline it could write itself.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SessionActivity {
+    /// The stored deadline already covered this moment. Nothing was written.
+    Covered,
+    /// The stored deadline moved forward.
+    Extended,
+    /// The session was already over, or it is gone. Nothing was written.
+    Ended,
+}
+
 /// What [`SessionLifetime::renew`] decides. Pure: nothing is written.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SessionRenewal {

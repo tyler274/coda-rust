@@ -11,8 +11,8 @@ use crate::migration::{
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
     PhysicianIdentity, PracticeClock, ReviewCadence, SIGN_IN_TOKEN_TTL_SECONDS, Session,
-    SessionError, SessionLifetime, SignInError, StoreUnavailable, mint_patient_token, mint_token,
-    token_hash,
+    SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
+    mint_patient_token, mint_token, token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -377,6 +377,48 @@ impl AuthStore for PostgresAuthStore {
             lifetime,
             created_at,
         })
+    }
+
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<SessionActivity, StoreUnavailable> {
+        let hash = token_hash(token);
+        let row = Sessions::find()
+            .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
+            .one(&self.db)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        let Some(row) = row else {
+            return Ok(SessionActivity::Ended);
+        };
+        let lifetime =
+            SessionLifetime::from_persisted(row.created_at as u64, row.expires_at as u64);
+        match lifetime.renew(now) {
+            SessionRenewal::Ended => Ok(SessionActivity::Ended),
+            SessionRenewal::Covered => Ok(SessionActivity::Covered),
+            SessionRenewal::Extend { idle_deadline } => {
+                // Never shorten expires_at, and never move a deadline already
+                // at or before now.
+                let updated = Sessions::update_many()
+                    .col_expr(
+                        crate::migration::session::Column::ExpiresAt,
+                        Expr::value(idle_deadline as i64),
+                    )
+                    .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
+                    .filter(crate::migration::session::Column::ExpiresAt.gt(now as i64))
+                    .filter(crate::migration::session::Column::ExpiresAt.lt(idle_deadline as i64))
+                    .exec(&self.db)
+                    .await
+                    .map_err(|_| StoreUnavailable)?;
+                Ok(if updated.rows_affected == 0 {
+                    SessionActivity::Covered
+                } else {
+                    SessionActivity::Extended
+                })
+            }
+        }
     }
 
     async fn publish_authorized(

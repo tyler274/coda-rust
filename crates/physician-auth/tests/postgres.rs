@@ -5,7 +5,7 @@
 
 use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
-    PracticeClock, SessionError, SignInError, StoreUnavailable,
+    PracticeClock, SessionActivity, SessionError, SignInError, StoreUnavailable,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -462,6 +462,120 @@ async fn repeated_identity_calls_do_not_move_expires_at() {
         .lifetime
         .expires_at();
     assert_eq!(after, before);
+}
+
+#[tokio::test]
+async fn activity_inside_twelve_hours_keeps_the_session() {
+    let Some(store) = store("used_within_12h").await else {
+        return;
+    };
+    let (_email, session) = invited_account(&store, "pg-proof").await;
+    let used_at = NOW + 11 * 60 * 60;
+    assert_eq!(
+        store
+            .note_physician_activity(&session, used_at)
+            .await
+            .unwrap(),
+        SessionActivity::Extended
+    );
+    assert!(store.identity(&session, NOW + 12 * 60 * 60).await.is_ok());
+    assert!(
+        store
+            .identity(&session, used_at + 12 * 60 * 60)
+            .await
+            .is_err()
+    );
+}
+
+#[tokio::test]
+async fn continuous_activity_is_refused_seven_days_after_sign_in() {
+    let Some(store) = store("used_for_7d").await else {
+        return;
+    };
+    let (_email, session) = invited_account(&store, "pg-proof").await;
+    let mut at = NOW;
+    while at < NOW + 7 * 24 * 60 * 60 {
+        assert!(store.identity(&session, at).await.is_ok());
+        store.note_physician_activity(&session, at).await.unwrap();
+        at += 11 * 60 * 60;
+    }
+    assert!(
+        store
+            .identity(&session, NOW + 7 * 24 * 60 * 60 - 1)
+            .await
+            .is_ok()
+    );
+    assert!(
+        store
+            .identity(&session, NOW + 7 * 24 * 60 * 60)
+            .await
+            .is_err()
+    );
+}
+
+#[tokio::test]
+async fn a_burst_of_notes_inside_one_quantum_persists_one_extension() {
+    let Some(store) = store("note_quantum").await else {
+        return;
+    };
+    let (_email, session) = invited_account(&store, "pg-proof").await;
+    let at = NOW + 15 * 60;
+    let mut extensions = 0;
+    for _ in 0..5 {
+        if store.note_physician_activity(&session, at).await.unwrap() == SessionActivity::Extended {
+            extensions += 1;
+        }
+    }
+    assert_eq!(extensions, 1);
+    let once = column_expires_at(&store, &session).await;
+    assert_eq!(once, (at + 12 * 60 * 60) as i64);
+    assert_eq!(
+        store
+            .note_physician_activity(&session, at + 15 * 60 - 1)
+            .await
+            .unwrap(),
+        SessionActivity::Covered
+    );
+    assert_eq!(column_expires_at(&store, &session).await, once);
+    assert_eq!(
+        store
+            .note_physician_activity(&session, at + 15 * 60)
+            .await
+            .unwrap(),
+        SessionActivity::Extended
+    );
+    assert_eq!(
+        column_expires_at(&store, &session).await,
+        (at + 15 * 60 + 12 * 60 * 60) as i64
+    );
+}
+
+#[tokio::test]
+async fn a_dead_sessions_note_does_not_move_expires_at() {
+    let Some(store) = store("dead_note").await else {
+        return;
+    };
+    let (_email, session) = invited_account(&store, "pg-proof").await;
+    let deadline = column_expires_at(&store, &session).await;
+    assert_eq!(
+        store
+            .note_physician_activity(&session, deadline as u64)
+            .await
+            .unwrap(),
+        SessionActivity::Ended
+    );
+    assert!(store.identity(&session, deadline as u64).await.is_err());
+    assert_eq!(column_expires_at(&store, &session).await, deadline);
+}
+
+async fn column_expires_at(store: &PostgresAuthStore, token: &str) -> i64 {
+    use sea_orm::sqlx::Row;
+    sea_orm::sqlx::query("SELECT expires_at FROM physician_sessions WHERE token_hash = $1")
+        .bind(PostgresAuthStore::session_reference(token))
+        .fetch_one(store.pool())
+        .await
+        .expect("session row")
+        .get("expires_at")
 }
 
 #[tokio::test]

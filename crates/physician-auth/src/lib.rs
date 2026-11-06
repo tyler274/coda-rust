@@ -27,7 +27,7 @@ mod error;
 mod lifetime;
 mod store;
 
-pub use lifetime::{SessionLifetime, SessionRenewal};
+pub use lifetime::{SessionActivity, SessionLifetime, SessionRenewal};
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
 pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
@@ -217,6 +217,15 @@ pub trait AuthStore: Send + Sync {
     }
     /// Resolves an active session with its persisted expiry.
     async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError>;
+    /// Slides the idle deadline for one physician request.
+    ///
+    /// This is the only write of that deadline. A session that no longer
+    /// allows `now` is left unchanged.
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<SessionActivity, StoreUnavailable>;
     /// Executes synchronous publication while holding the actual session,
     /// account, panel and patient authority fence. Implementations must exclude
     /// direct mutations too, not only HTTP handlers. The callback must not call
@@ -677,6 +686,27 @@ impl AuthStore for MemoryAuthStore {
             return Err(SessionError::Inactive);
         }
         Ok(session.clone())
+    }
+
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<SessionActivity, StoreUnavailable> {
+        let hash = token_hash(token);
+        let mut state = self.state.lock().expect("auth state");
+        let Some(session) = state.sessions.get_mut(&hash) else {
+            return Ok(SessionActivity::Ended);
+        };
+        match session.lifetime.renew(now) {
+            SessionRenewal::Covered => Ok(SessionActivity::Covered),
+            SessionRenewal::Ended => Ok(SessionActivity::Ended),
+            SessionRenewal::Extend { idle_deadline } => {
+                session.lifetime =
+                    SessionLifetime::from_persisted(session.created_at, idle_deadline);
+                Ok(SessionActivity::Extended)
+            }
+        }
     }
 
     async fn publish_authorized(
@@ -1439,6 +1469,120 @@ mod tests {
             .lifetime
             .expires_at();
         assert_eq!(after, before);
+    }
+
+    #[tokio::test]
+    async fn activity_inside_twelve_hours_keeps_the_session() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
+        let (_, session) = signed_in(&store, "doc@example.test").await;
+        let used_at = NOW + 11 * 60 * 60;
+        assert_eq!(
+            store
+                .note_physician_activity(&session, used_at)
+                .await
+                .unwrap(),
+            SessionActivity::Extended
+        );
+        assert!(store.identity(&session, NOW + 12 * 60 * 60).await.is_ok());
+        assert!(
+            store
+                .identity(&session, used_at + 12 * 60 * 60)
+                .await
+                .is_err()
+        );
+    }
+
+    #[tokio::test]
+    async fn continuous_activity_is_refused_seven_days_after_sign_in() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
+        let (_, session) = signed_in(&store, "doc@example.test").await;
+        let mut at = NOW;
+        while at < NOW + 7 * 24 * 60 * 60 {
+            assert!(store.identity(&session, at).await.is_ok());
+            store.note_physician_activity(&session, at).await.unwrap();
+            at += 11 * 60 * 60;
+        }
+        assert!(
+            store
+                .identity(&session, NOW + 7 * 24 * 60 * 60 - 1)
+                .await
+                .is_ok()
+        );
+        assert!(
+            store
+                .identity(&session, NOW + 7 * 24 * 60 * 60)
+                .await
+                .is_err()
+        );
+    }
+
+    #[tokio::test]
+    async fn a_burst_of_notes_inside_one_quantum_persists_one_extension() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
+        let (_, session) = signed_in(&store, "doc@example.test").await;
+        let at = NOW + 15 * 60;
+        let mut extensions = 0;
+        for _ in 0..5 {
+            if store.note_physician_activity(&session, at).await.unwrap()
+                == SessionActivity::Extended
+            {
+                extensions += 1;
+            }
+        }
+        assert_eq!(extensions, 1);
+        let once = stored_deadline(&store, &session);
+        assert_eq!(once, at + 12 * 60 * 60);
+        assert_eq!(
+            store
+                .note_physician_activity(&session, at + 15 * 60 - 1)
+                .await
+                .unwrap(),
+            SessionActivity::Covered
+        );
+        assert_eq!(stored_deadline(&store, &session), once);
+        assert_eq!(
+            store
+                .note_physician_activity(&session, at + 15 * 60)
+                .await
+                .unwrap(),
+            SessionActivity::Extended
+        );
+        assert_eq!(
+            stored_deadline(&store, &session),
+            at + 15 * 60 + 12 * 60 * 60
+        );
+    }
+
+    #[tokio::test]
+    async fn a_dead_sessions_note_does_not_move_expires_at() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
+        let (_, session) = signed_in(&store, "doc@example.test").await;
+        let deadline = stored_deadline(&store, &session);
+        assert_eq!(
+            store
+                .note_physician_activity(&session, deadline)
+                .await
+                .unwrap(),
+            SessionActivity::Ended
+        );
+        assert!(store.identity(&session, deadline).await.is_err());
+        assert_eq!(stored_deadline(&store, &session), deadline);
+    }
+
+    fn stored_deadline(store: &MemoryAuthStore, token: &str) -> u64 {
+        store
+            .state
+            .lock()
+            .expect("auth state")
+            .sessions
+            .get(&token_hash(token))
+            .expect("stored session")
+            .lifetime
+            .expires_at()
     }
 
     #[tokio::test]
