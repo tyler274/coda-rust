@@ -379,6 +379,22 @@ def d1_binary(receipt, state, out):
                      f"{enrolled}; context answered {status} with account {ids['account_id']}",
                      artifact=save(out, "account", {"enrolled": enrolled, "context": context}))
 
+        other_subject = f"scenario-other-{suffix}"
+        other_bearer = local_token(secret, other_subject, int(time.time()))
+        other_enrolled = [(path, http(duet.port, "PUT", path, body, other_bearer)[0]) for path, body in (
+            ("/api/auth/account", {}),
+            ("/api/auth/account/terms", {"version": D1_TERMS}),
+            ("/api/auth/account/luna-consent",
+             {"decision": "accepted", "version": D1_CONSENT, "expected_revision": 0}))]
+        status, other_context = http(duet.port, "GET", "/api/auth/account/context", bearer=other_bearer)
+        ids["other_subject"] = other_subject
+        ids["other_account_id"] = (other_context or {}).get("account_id")
+        receipt.step("D1", "second account has a distinct durable identity", other_subject,
+                     all(code == 200 for _, code in other_enrolled) and status == 200
+                     and ids["other_account_id"] and ids["other_account_id"] != ids["account_id"],
+                     f"{other_enrolled}; context answered {status} with account {ids['other_account_id']}",
+                     artifact=save(out, "other-account", {"enrolled": other_enrolled, "context": other_context}))
+
         status, page = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
         receipt.step("D1", "start a conversation", actor,
                      status == 200 and (page or {}).get("messages") == []
@@ -441,6 +457,8 @@ def d1_binary(receipt, state, out):
                      f"{commands} durable commands", command_id=command,
                      artifact=save(out, "retry", {"status": status, "body": again, "page": page}))
 
+        d1_account_isolation(receipt, duet.port, out, other_bearer, ids, "after worker loss")
+
         event = str(uuid.uuid4())
         ids["sign_out_event_id"] = event
         status, signed_out = http(duet.port, "POST", "/api/auth/privacy-restrictions",
@@ -466,9 +484,28 @@ def d1_binary(receipt, state, out):
                      actor, stopped == 0 and refused_status == 401 and status == 200 and latest == roles,
                      f"SIGTERM exit {stopped}; the earlier bearer answered {refused_status}; a new "
                      f"session answered {status} with {latest}", command_id=command)
+        d1_account_isolation(receipt, duet.port, out, other_bearer, ids, "after revocation and restart")
     finally:
         stopped = duet.stop()
         receipt.step("D1", "duet-api shutdown", "runner", stopped in (0, None), f"SIGTERM exit {stopped}")
+
+
+def d1_account_isolation(receipt, port, out, bearer, ids, phase):
+    context_status, context = http(port, "GET", "/api/auth/account/context", bearer=bearer)
+    page_status, page = http(port, "GET", "/api/conversation/messages", bearer=bearer)
+    command = ids["command_id"]
+    refusals = [(method, suffix, *http(port, method, f"/api/conversation/commands/{command}/{suffix}",
+                                      bearer=bearer))
+                for method, suffix in (("GET", "events"), ("GET", "usage"), ("POST", "resume"))]
+    passed = (context_status == 200 and (context or {}).get("account_id") == ids["other_account_id"]
+              and page_status == 200 and (page or {}).get("messages") == []
+              and all(status == 404 for _, _, status, _ in refusals))
+    receipt.step("D1", f"two-account refusal {phase}", ids["other_subject"], passed,
+                 f"second account context {context_status}, transcript {page_status}; "
+                 f"foreign command endpoints {[(method, path, status) for method, path, status, _ in refusals]}",
+                 command_id=command,
+                 artifact=save(out, f"isolation-{phase.replace(' ', '-')}",
+                               {"context": context, "page": page, "refusals": refusals}))
 
 
 def d1_command_query(command):
