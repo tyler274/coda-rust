@@ -32,6 +32,28 @@ class Contract(unittest.TestCase):
         self.assertNotIn("ignore_changes = [template]", text)
         self.assertNotIn("ignore_changes = all", text)
 
+    def test_release_targets_the_product_container_by_name(self):
+        # staging-release (crates/workspace-tools/src/staging_release/shape.rs)
+        # finds the product container by the
+        # service name and the sidecar by "otel-collector"; index 0 stays the
+        # product so ignore_changes covers exactly the release-owned image.
+        workloads = config_text("workloads.tf")
+        services = resource_blocks(workloads, "google_cloud_run_v2_service")
+        self.assertIn("name  = local.observability ? each.key : null", services["app"])
+        self.assertIn('name  = local.observability ? "physician-worker" : null', services["physician_worker"])
+        self.assertIn('name                 = "physician-worker"', services["physician_worker"])
+        self.assertIn('name                 = each.key', services["app"])
+        sidecar = config_text("observability-cluster.tf")
+        self.assertIn('name   = "otel-collector"', sidecar)
+        shape = (ROOT.parents[2] / "crates/workspace-tools/src/staging_release/shape.rs").read_text()
+        self.assertIn('const SIDECAR: &str = "otel-collector";', shape)
+        for key in ["DD_ENV", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT", "CODA_TELEMETRY_BACKEND"]:
+            self.assertIn(f'"{key}"', shape)
+            self.assertIn(key, sidecar + workloads)
+        for key in ["OTEL_SIDECAR_CONFIG", "OTEL_GATEWAY_ENDPOINT", "OTEL_GATEWAY_AUDIENCE"]:
+            self.assertIn(f'"{key}"', shape)
+            self.assertIn(f'name  = "{key}"', workloads)
+
     def test_no_secret_values_or_public_access(self):
         text = "\n".join(path.read_text() for path in ROOT.glob("*.tf"))
         for forbidden in ["allUsers", "allAuthenticatedUsers", 'resource "google_secret_manager_secret_version"', 'data "google_secret_manager_secret_version"', 'resource "google_service_account_key"', 'role    = "roles/run.admin"']:
@@ -125,21 +147,28 @@ class Contract(unittest.TestCase):
         # Only physician is ever handed the chat topic; Duet has no PHYSICIAN_* env.
         workloads = config_text("workloads.tf")
         self.assertIn('for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}', workloads)
-        # Without observability only physician keeps CPU between requests; the
-        # otel-collector sidecar needs idle CPU on every service it joins.
-        self.assertIn('cpu_idle          = !local.observability && each.key != "physician"', workloads)
+        # Only physician keeps CPU between requests, with or without the
+        # otel-collector sidecar: telemetry never makes Duet or the worker
+        # bill for idle instance time.
+        self.assertEqual(workloads.count('cpu_idle          = each.key != "physician"'), 2)
+        self.assertNotRegex(workloads, r"cpu_idle\s+=.*observability")
         # Only physician keeps a minimum instance, and only while its queue exists.
         self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
 
-    def test_worker_is_internal_and_push_invoked_only(self):
+    def test_worker_is_internal_and_invoked_only_by_push_and_probe(self):
         workloads = config_text("workloads.tf")
         worker = resource_blocks(workloads, "google_cloud_run_v2_service")["physician_worker"]
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
         self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
         self.assertRegex(worker, r"iap_enabled\s+= false")
-        self.assertRegex(worker, r"cpu_idle\s+= !local\.observability\n")
+        self.assertEqual(len(re.findall(r"cpu_idle\s+= true\n", worker)), 2)
         invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
-        self.assertIn('members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]', invoker)
+        members = invoker.split("members", 1)[1]
+        self.assertEqual(
+            re.sub(r"\s+", " ", members).strip(),
+            '= concat( ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"], '
+            '[for identity in google_service_account.availability : "serviceAccount:${identity.email}"], )',
+        )
         # No additive run.invoker grant may widen the authoritative binding.
         for kind in ["google_cloud_run_v2_service_iam_member", "google_cloud_run_service_iam_member", "google_project_iam_member"]:
             for name, body in resource_blocks(config_text(), kind).items():

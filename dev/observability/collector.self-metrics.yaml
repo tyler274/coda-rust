@@ -1,0 +1,16 @@
+# Opt-in GKE self-telemetry only; scraped directly by the Datadog Agent,
+# independent of the collector's failing OTLP export path. No service/clinical
+# metrics receiver or pipeline is added. Collector 0.155.0 schema.
+service:
+  telemetry:
+    metrics:
+      level: normal
+      readers:
+        - pull:
+            exporter:
+              prometheus:
+                host: 0.0.0.0
+                port: 8888
+                without_scope_info: true
+                without_units: true
+                without_type_suffix: true

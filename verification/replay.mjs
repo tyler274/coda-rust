@@ -6,7 +6,7 @@
 // names each step in an `event` variable, a record with `name` and, for a tab's step, `tab`. TLC
 // takes each path's steps and fails when one can't happen in the model. Prints, as JSON, the start
 // state and each path's steps, each with its event and the model's state after it, flattened to
-// keys such as "tab.A.shows". TLC and Java are the ones the pinned statechart skill uses.
+// keys such as "tab.A.shows", each value as text. TLC and Java are the ones the pinned statechart skill uses.
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
@@ -83,7 +83,7 @@ function traces(output) {
 const flat = (value, prefix, out = {}) => {
   if (value && typeof value === "object" && !Array.isArray(value))
     for (const [k, v] of Object.entries(value)) flat(v, prefix ? `${prefix}.${k}` : k, out);
-  else out[prefix] = value;
+  else out[prefix] = typeof value === "string" ? value : JSON.stringify(value);
   return out;
 };
 const stateOf = (s) => { const { event, step, ...rest } = s; return flat(rest, ""); };
@@ -106,7 +106,10 @@ function replay(spec, events, n) {
     "Unfinished == step < Len(Steps)",
     "====",
   ].join("\n"));
-  fs.writeFileSync(path.join(dir, "Path.cfg"), "INIT PathInit\nNEXT PathNext\nINVARIANT Unfinished\n");
+  // The feature's own config sets the model's scope.
+  const scope = fs.readFileSync(spec.replace(/\.tla$/, ".cfg"), "utf8")
+    .match(/^CONSTANTS?\b[\s\S]*?(?=^[A-Z_]+\b(?<!CONSTANTS?)|(?![\s\S]))/m)?.[0] ?? "";
+  fs.writeFileSync(path.join(dir, "Path.cfg"), `${scope}INIT PathInit\nNEXT PathNext\nINVARIANT Unfinished\n`);
   const { java, jar } = tlc();
   const r = spawnSync(java, [`-DTLA-Library=${path.dirname(path.resolve(spec))}`, "-XX:+UseParallelGC", "-cp", jar, "tlc2.TLC",
     "-workers", "1", "-metadir", path.join(dir, "meta"), "-config", "Path.cfg", "-deadlock", "Path.tla"],

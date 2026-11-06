@@ -74,8 +74,6 @@ const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
-const SAVING: &str = "Saving…";
-const SAVED: &str = "Saved";
 const DRAFT_CONFLICT: &str = "A newer version of this draft was saved elsewhere.";
 const DRAFT_CONFLICT_HELP: &str =
     "Retry replaces the saved draft with your text. Use newer text discards your edit.";
@@ -92,6 +90,8 @@ const CONNECTIONS: &str = "Connections";
 const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
+const SIGN_IN_UNCONFIRMED: &str =
+    "Coda couldn’t confirm sign-in. Open your email link again or request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
 const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
@@ -611,21 +611,23 @@ impl SessionState {
     /// tab no longer holds is about the past and changes nothing. An ended
     /// session covers a page this tab already showed with the sign-in prompt;
     /// a tab that showed nothing yet was opened without a session, so it shows
-    /// the sign-in page and keeps the patient link it was opened at. Removed
-    /// access signs out and says "No access to this practice".
+    /// the sign-in page and keeps the patient link it was opened at. Either
+    /// way the browser keeps storing the ended session: only a sign-out
+    /// forgets it, so a tab that later finds nothing stored knows one came.
+    /// Removed access signs out and says "No access to this practice".
     fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
         if self.bearer() != presented {
             return;
         }
         let presented = presented.as_deref();
         match refusal {
-            Refusal::SessionEnded if shown => {
+            Refusal::SessionEnded if shown => self.expired.set(true),
+            Refusal::SessionEnded => {
                 if let Some(presented) = presented {
-                    forget_stored_session(presented);
+                    self.client.peek().session().clear_if(presented);
                 }
-                self.expired.set(true);
+                self.no_session_here();
             }
-            Refusal::SessionEnded => self.no_session(presented),
             Refusal::AccessRemoved => {
                 self.sign_out(presented);
                 self.removed.set(true);
@@ -1169,8 +1171,8 @@ fn PhysicianShell(
         };
         workspace.map(|workspace| DraftTarget::new(workspace, open_chat().as_deref()))
     };
-    // Another draft target clears the Saved mark of the one left behind, and
-    // the one left behind saves now instead of waiting for its debounce.
+    // The draft target left behind saves now instead of waiting for its
+    // debounce.
     let mut left_target = use_signal(|| None::<DraftTarget>);
     use_effect(move || {
         let target = draft_target();
@@ -1928,6 +1930,7 @@ fn PhysicianShell(
                                 let target = draft_target();
                                 composer.write().retry(target.as_ref());
                                 if let Some(target) = target {
+                                    composer.write().retry_failed(&target);
                                     autosave(composer, client, target);
                                 }
                             },
@@ -2492,9 +2495,7 @@ fn SignInScreen(
                 Err(failure) => {
                     let message = match failure {
                         physician_client::HttpError::Status { status: 401, .. } => SIGN_IN_INVALID,
-                        _ => {
-                            "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
-                        }
+                        _ => SIGN_IN_UNCONFIRMED,
                     };
                     stage.set(SignInStage::Recovery(message.to_owned()));
                 }
@@ -2503,22 +2504,20 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
-    // While this browser holds another physician's session, the link signs
-    // the browser out before it is redeemed. Your own link changes nothing
-    // while your session stands, and signs you back in once it has ended;
-    // when Coda can't say which, your session stays and the link is not used.
-    // Either way the session must still be the one this browser stores when
-    // Coda answers; otherwise the link is redeemed.
+    // Coda says whether the session this browser stores is still signed in.
+    // Your own link changes nothing while your session stands, and signs you
+    // back in once it has ended; when Coda can't say which, your session
+    // stays and the link is not used. Another physician still signed in is
+    // signed out before the link is redeemed; an ended session needs no
+    // sign-out. When Coda can't say for another physician, nobody is signed
+    // out: the page says Coda couldn't confirm sign-in, and the link stays
+    // unused for another try. Either way the session must still be the one
+    // this browser stores when Coda answers; otherwise the link is redeemed.
     use_effect(move || {
         if let Some(link) = link.clone() {
             let held = client.peek().clone();
             let yours = read_stored_owner()
                 .is_some_and(|owner| owner.eq_ignore_ascii_case(link.email.trim()));
-            if held.session().is_some() && !yours {
-                session.end();
-                verify_link(link);
-                return;
-            }
             let checked = held.session().get();
             spawn(async move {
                 if let Some(checked) = checked {
@@ -2531,13 +2530,18 @@ fn SignInScreen(
                             return;
                         }
                         Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {}
-                        Ok(_) => session.end(),
+                        Ok(_) if still_stored(&checked) => session.end(),
+                        Ok(_) => {}
                         Err(failure) if refusal(&failure).is_some() => {}
-                        Err(_) if still_stored(&checked) => {
+                        Err(_) if !still_stored(&checked) => {}
+                        Err(_) if yours => {
                             on_signed_in.call(None);
                             return;
                         }
-                        Err(_) => {}
+                        Err(_) => {
+                            stage.set(SignInStage::Recovery(SIGN_IN_UNCONFIRMED.to_owned()));
+                            return;
+                        }
                     }
                 }
                 verify_link(link);
@@ -3755,7 +3759,12 @@ fn PatientSurface(
                                         on_draft_blur.call(());
                                     }
                                 },
-                                status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                                status: (!notice.is_empty()).then(|| rsx! {
+                                    span { role: "status", "{notice}" }
+                                    if notice == NOT_SAVED || notice == CLEAR_NOT_SAVED {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                    }
+                                }),
                                 notices: conflict.map(|newer| rsx! {
                                     DraftConflict {
                                         message: DRAFT_CONFLICT,
@@ -4278,11 +4287,29 @@ fn save_outcome(answer: Result<DraftSave, physician_client::HttpError>) -> SaveO
 fn notice_words(notice: Notice, clearing: bool) -> String {
     match notice {
         Notice::None | Notice::Conflict => String::new(),
-        Notice::Saving => SAVING.to_owned(),
-        Notice::Saved => SAVED.to_owned(),
         Notice::NotSaved if clearing => CLEAR_NOT_SAVED.to_owned(),
         Notice::NotSaved => NOT_SAVED.to_owned(),
         Notice::Said(words) => words.to_owned(),
+    }
+}
+
+#[cfg(test)]
+mod draft_notice_tests {
+    use super::*;
+
+    #[test]
+    fn routine_draft_saves_are_silent_but_failures_remain_visible() {
+        for clearing in [false, true] {
+            for notice in [Notice::None, Notice::Conflict] {
+                assert_eq!(notice_words(notice, clearing), "");
+            }
+        }
+        assert_eq!(notice_words(Notice::NotSaved, false), NOT_SAVED);
+        assert_eq!(notice_words(Notice::NotSaved, true), CLEAR_NOT_SAVED);
+        assert_eq!(
+            notice_words(Notice::Said(DICTATION_UNAVAILABLE), false),
+            DICTATION_UNAVAILABLE
+        );
     }
 }
 

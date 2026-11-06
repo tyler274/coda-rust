@@ -383,8 +383,27 @@ codes!(LocalCode {
     ReceiptUnwritable => "receipt-unwritable",
     Unused => "unused",
     LostResponse => "lost-response",
-    WorkerUpdateFailed => "worker-update-failed"
+    WorkerUpdateFailed => "worker-update-failed",
+    ProductContainerNotFound => "product-container-not-found",
+    UnexpectedContainerSet => "unexpected-container-set",
+    TelemetryContractIncomplete => "telemetry-contract-incomplete",
+    ContainerSetChanged => "container-set-changed",
+    InfrastructureFieldChanged => "infrastructure-field-changed"
 });
+impl LocalCode {
+    /// The service's template is not one infrastructure produces, or a
+    /// rollout moved a field infrastructure owns.
+    pub fn is_shape_refusal(self) -> bool {
+        matches!(
+            self,
+            Self::ProductContainerNotFound
+                | Self::UnexpectedContainerSet
+                | Self::TelemetryContractIncomplete
+                | Self::ContainerSetChanged
+                | Self::InfrastructureFieldChanged
+        )
+    }
+}
 codes!(ApiStatus {
     PermissionDenied => "PERMISSION_DENIED",
     Unauthenticated => "UNAUTHENTICATED",
