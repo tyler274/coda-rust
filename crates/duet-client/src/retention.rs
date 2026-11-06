@@ -90,6 +90,27 @@ fn health_scopes_key(owner: &str) -> String {
     key("health-scopes", owner)
 }
 
+/// Kinds this phone is allowed to store. A new write has to be named here or
+/// the inventory test fails.
+const STORAGE_KINDS: &[&str] = &[
+    "credential",
+    "doctor-draft",
+    "doctor-operation",
+    "doctor-conflict",
+    "doctor-operation-archive",
+    "health-outbox",
+    "health-scopes",
+];
+const DEVICE_KEYS: &[&str] = &["cleanup-pending", "health-installation", "active-identity"];
+
+/// Whether `key` is one this phone is allowed to write.
+pub fn registered_storage_key(key: &str) -> bool {
+    DEVICE_KEYS.contains(&key)
+        || STORAGE_KINDS
+            .iter()
+            .any(|kind| key.starts_with(&format!("{kind}:")))
+}
+
 /// Storage failures shared with the health outbox.
 pub use duet_health::outbox::StorageError as HealthStorageError;
 

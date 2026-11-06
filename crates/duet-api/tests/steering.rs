@@ -1036,6 +1036,39 @@ async fn a_landed_message_is_confirmed_by_reading_it() {
     )
     .await;
     assert_eq!(code, 404, "another account reads the message as missing");
+    let (code, _) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/commands/{id}/events"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404, "another account's event read is not found");
+    let (code, _) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/commands/{id}/usage"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404, "another account's usage read is not found");
+    let (code, body) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/{}", c.account_id),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 200, "{body}");
+    assert_eq!(
+        body["commands"],
+        json!([]),
+        "another account's conversation id answers an empty list, not that account's messages"
+    );
+    assert!(!body.to_string().contains("How did I sleep"));
 
     let mut owner = PgConnection::connect(&f.owner_url).await.unwrap();
     sqlx::query("update users set intelligence_enabled = false where id = $1")

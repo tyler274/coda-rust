@@ -126,6 +126,33 @@ fn sign_out_warning_names_the_draft_the_save_and_the_health_queue() {
     assert!(owner.account_leaving().unwrap().is_empty());
 }
 
+#[test]
+fn every_key_this_account_writes_is_registered() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    owner
+        .retain_operation(
+            &fence,
+            &duet_client::doctor::PendingDoctorOperation::Clear {
+                operation_id: uuid::Uuid::nil(),
+                expected_generation: 1,
+            },
+        )
+        .unwrap();
+    owner
+        .write_health_outbox(&fence, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    for key in store.values.lock().unwrap().keys() {
+        assert!(
+            registered_storage_key(key),
+            "{key} was stored without being named in the inventory"
+        );
+    }
+    assert!(!registered_storage_key("patient-note:secret"));
+}
+
 fn store_holds(store: &Store, owner: &str) -> bool {
     store.values.lock().unwrap().iter().any(|(key, value)| {
         key != "active-identity"
