@@ -163,8 +163,7 @@ async fn sign_out_and_account_switch_pause_and_isolate_the_queue() {
         report.progress(&outbox_a),
         Err(RefreshStop::WaitingForUpload)
     );
-    let pending_a = outbox_a.view().unwrap().items;
-    assert_eq!(pending_a.len(), 25);
+    assert_eq!(outbox_a.view().unwrap().items.len(), 25);
 
     // Switch to B: A's fence is dead, so A's outbox handle can neither read
     // nor upload, and B's outbox does not see A's work.
@@ -186,14 +185,14 @@ async fn sign_out_and_account_switch_pause_and_isolate_the_queue() {
     let report = sync(&outbox_b, &adapter, &transport, 0, SyncBudget::default()).await;
     assert_eq!(report.paused, Some(SyncPause::NotConnected));
     assert_eq!(transport.sent.borrow().len(), 1);
-    // Sign out pauses everything.
+    // Sign out pauses everything and removes the signed-in account's queue.
     retention.sign_out().unwrap();
     let paused = sync(&outbox_b, &adapter, &transport, 0, SyncBudget::default()).await;
     assert_eq!(paused.paused, Some(SyncPause::AccountChanged));
     assert_eq!(transport.sent.borrow().len(), 1);
 
-    // A signs back in: A's queue was retained (paused, not consumed) and
-    // resumes with the original operation ids.
+    // A signs back in to an empty queue. Switching accounts removed A's
+    // unsent health uploads instead of keeping them for the next person.
     let a_again = retention.activate(identity("owner-a")).unwrap();
     let outbox_a = open_outbox(
         &retention,
@@ -202,23 +201,7 @@ async fn sign_out_and_account_switch_pause_and_isolate_the_queue() {
         PhoneSource::AppleHealth,
         limits(),
     );
-    assert_eq!(outbox_a.view().unwrap().items, pending_a);
-    let first_ops = transport.sent.borrow()[0].operation_ids();
-    let budget = SyncBudget {
-        pages: 1,
-        batches: 1,
-    };
-    let mut acknowledged = 0;
-    for expected_more in [true, true, false] {
-        let report = sync(&outbox_a, &adapter, &transport, 0, budget).await;
-        acknowledged += report.uploaded.acknowledged;
-        assert_eq!(
-            report.progress(&outbox_a).unwrap().is_continue(),
-            expected_more
-        );
-    }
-    assert_eq!(acknowledged, 25);
-    assert_eq!(transport.sent.borrow()[1].operation_ids(), first_ops);
+    assert!(outbox_a.view().unwrap().items.is_empty());
 }
 
 #[tokio::test]

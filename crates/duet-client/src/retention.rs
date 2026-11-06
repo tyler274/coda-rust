@@ -85,6 +85,10 @@ fn key(kind: &str, owner: &str) -> String {
 fn health_key(owner: &str, scope: &str) -> String {
     format!("{}:{}:{scope}", key("health-outbox", owner), scope.len())
 }
+/// Scopes written for one owner, so sign-out can erase them without listing the store.
+fn health_scopes_key(owner: &str) -> String {
+    key("health-scopes", owner)
+}
 
 /// Storage failures shared with the health outbox.
 pub use duet_health::outbox::StorageError as HealthStorageError;
@@ -210,13 +214,7 @@ impl RetentionOwner {
             && (previous.owner != identity.owner || previous.subject != identity.subject)
         {
             self.store.set_cleanup_pending(true)?;
-            self.store.remove(&key("doctor-draft", &previous.owner))?;
-            self.store
-                .remove(&key("doctor-operation", &previous.owner))?;
-            self.store
-                .remove(&key("doctor-conflict", &previous.owner))?;
-            self.store
-                .remove(&key("doctor-operation-archive", &previous.owner))?;
+            self.erase_account(&previous.owner)?;
             self.store.remove("active-identity")?;
             self.store.set_cleanup_pending(false)?;
         }
@@ -274,13 +272,7 @@ impl RetentionOwner {
         self.session.switch(None);
         self.store.set_cleanup_pending(true)?;
         if let Some(identity) = self.retained_identity()? {
-            self.store.remove(&key("doctor-draft", &identity.owner))?;
-            self.store
-                .remove(&key("doctor-operation", &identity.owner))?;
-            self.store
-                .remove(&key("doctor-conflict", &identity.owner))?;
-            self.store
-                .remove(&key("doctor-operation-archive", &identity.owner))?;
+            self.erase_account(&identity.owner)?;
         }
         self.store.remove("active-identity")?;
         self.store.set_cleanup_pending(false)
@@ -480,9 +472,42 @@ impl RetentionOwner {
     ) -> Result<(), HealthStorageError> {
         let _guard = self.gate.lock().unwrap();
         self.require_health_session(fence)?;
+        self.remember_health_scope(fence.owner(), scope)
+            .map_err(HealthStorageError::Unavailable)?;
         self.store
             .write(&health_key(fence.owner(), scope), bytes)
             .map_err(HealthStorageError::Unavailable)
+    }
+    /// Drops every account-owned record: drafts, operations, and queued health uploads.
+    fn erase_account(&self, owner: &str) -> Result<(), String> {
+        self.store.remove(&key("doctor-draft", owner))?;
+        self.store.remove(&key("doctor-operation", owner))?;
+        self.store.remove(&key("doctor-conflict", owner))?;
+        self.store.remove(&key("doctor-operation-archive", owner))?;
+        let scopes = self.health_scopes(owner)?;
+        for scope in scopes {
+            self.store.remove(&health_key(owner, &scope))?;
+        }
+        self.store.remove(&health_scopes_key(owner))
+    }
+    fn health_scopes(&self, owner: &str) -> Result<Vec<String>, String> {
+        match self.store.read(&health_scopes_key(owner))? {
+            None => Ok(Vec::new()),
+            Some(bytes) => {
+                serde_json::from_slice(&bytes).map_err(|_| "Health scope index is damaged".into())
+            }
+        }
+    }
+    fn remember_health_scope(&self, owner: &str, scope: &str) -> Result<(), String> {
+        let mut scopes = self.health_scopes(owner)?;
+        if scopes.iter().any(|known| known == scope) {
+            return Ok(());
+        }
+        scopes.push(scope.to_owned());
+        self.store.write(
+            &health_scopes_key(owner),
+            &serde_json::to_vec(&scopes).map_err(|_| "Cannot encode health scopes")?,
+        )
     }
     fn require_health_session(&self, fence: &SessionFence) -> Result<(), HealthStorageError> {
         if !self.session.is_current(fence) {

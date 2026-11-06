@@ -51,6 +51,54 @@ fn draft() -> DoctorDraft {
     }
 }
 #[test]
+fn sign_out_switch_and_new_incarnation_remove_queued_health() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.sign_out().unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "sign-out left the account's health queue"
+    );
+
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.activate(identity("acct-b:incarnation-1")).unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "account switch left the previous account's health queue"
+    );
+
+    let same_subject = RetainedIdentity {
+        subject: "acct-a:incarnation-1".into(),
+        owner: "acct-a:incarnation-2".into(),
+        refresh_token: "secret".into(),
+    };
+    // The switch above signed B in. Put A back, then return as a new incarnation.
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.activate(same_subject).unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "a new incarnation left the deleted incarnation's health queue"
+    );
+}
+
+fn store_holds(store: &Store, owner: &str) -> bool {
+    store.values.lock().unwrap().iter().any(|(key, value)| {
+        key != "active-identity"
+            && (key.contains(owner) || String::from_utf8_lossy(value).contains(owner))
+    })
+}
+
+#[test]
 fn refusal_invalidates_views_without_deleting_protected_patient_work() {
     let store = Arc::new(Store::default());
     let owner = RetentionOwner::new(store.clone());
