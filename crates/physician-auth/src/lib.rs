@@ -24,7 +24,10 @@ use uuid::Uuid;
 
 mod cache;
 mod error;
+mod lifetime;
 mod store;
+
+pub use lifetime::{SessionLifetime, SessionRenewal};
 
 pub use cache::{AUTHORITY_CHANNEL, CachedAuthStore, ENTRY_TTL, follow};
 pub use error::{PanelError, SessionError, SignInError, StoreUnavailable};
