@@ -38,7 +38,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 
 **Consent.** One record per connection, granted for a given wording. In the MVP the wording is fixed and consent is given once, at join, by tapping Share, after a plain preview of everything it covers, including appointment details coming back. Only the patient changes it, and in the MVP the way to change it is to leave. Data crosses only while connected and consent is current.
 
-**What the patient shares.** What the patient connected in Duet: portal records, phone health readings, and notes and medications they entered. What the patient tells Duet's AI crosses only as a note the patient saved, either one they asked Duet to save or one Duet proposed and they approved. Duet's AI keeps private notes about the patient, and those never cross. Copies of records the practice's chart or Kno2 already holds arrive labeled as duplicates, and a corrected record arrives as a new version. Plan Check-in answers reach the practice's next review.
+**What the patient shares.** What the patient connected in Duet: portal records, phone health readings, and notes and medications they entered. What the patient tells Duet's AI crosses only as a note the patient saved, either one they asked Duet to save or one Duet proposed and they approved. Duet's AI keeps private notes about the patient, and those never cross. Copies of records the practice’s chart already holds arrive labeled as duplicates, and a corrected record arrives as a new version. Plan Check-in answers reach the practice's next review.
 
 **How the practice picks it up.** A patient joining or rejoining starts the practice's agents on what they shared right away. After that, the practice's agents pick up what arrives on their scheduled reviews and judge what matters to the physician. This is the practice's care-team work, separate from Duet's own work for the person.
 
@@ -83,7 +83,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 3. Duet's AI's private notes about the patient never cross.
 4. The practice's agents pick up what arrived on their scheduled reviews and judge whether a physician needs to see it.
 5. The physician sees Duet data in the patient's chart, reviews, preparation and answers, each item labeled with its origin and date ("from Epic, via the patient's Duet"), and reads each record exactly as it was sent.
-6. Copies of records the chart or Kno2 already holds arrive labeled as duplicates.
+6. Copies of records the chart already holds arrive labeled as duplicates.
 7. When a record is corrected at its source, the new version arrives as its own event. Unfinished work doesn't publish from the version it replaced, and the practice keeps the earlier version it received, dated.
 8. The patient sees no "your care team looked" receipt on anything they share.
 9. If sharing is behind or failing, someone who can act sees it, with the reason. The patient sees problems with their own sources in Duet, and Coda's operations team sees problems in the sharing pipeline.
@@ -190,7 +190,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 11. For my doctor crosses only when the patient sends it, once, as the version sent, with each record at its current version and marked if corrected.
 12. Every item that crosses keeps its origin and date.
 13. A corrected record is a new version and its own event, and unfinished work never publishes from the version it replaced.
-14. Records the chart or Kno2 already holds arrive labeled as duplicates.
+14. Records the chart already holds arrive labeled as duplicates.
 15. Physicians don't approve Duet's wording or manage Duet, and Duet never claims physician review.
 16. Every message from the practice to the patient needs the physician's approval.
 17. Duet never invents or amends care instructions, and an undecided recommendation stays an unconfirmed suggestion.

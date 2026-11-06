@@ -10,7 +10,7 @@ Coda Agents is a team of health agents that works for a physician. It isn't a co
 
 Our customer is the physician-owned membership practice, concierge or direct primary care. These physicians know their patients well and want to stay close to them, but the work between visits (new results, patient messages, follow-through on care plans, getting ready for the next visit) eats their time. The wedge is tracking patients between visits and carrying follow-through to completion, with visit preparation as a core promise. Follow-through and help with the patient inbox are sold as one product.
 
-The EHR stays the system of record and Coda is the system of action. Coda reads the EHR, the practice's patient mail, outside records, a connected patient's Duet data and the clinical literature, and connects the dots across all of it. The EHR is one input among several. In the MVP Coda keeps a dated working copy of what it reads, with the EHR as the source of truth.
+The EHR stays the system of record and Coda is the system of action. Coda reads the EHR, the practice's patient mail, a connected patient's Duet data and the clinical literature, and connects the dots across all of it. The EHR is one input among several. In the MVP Coda keeps a dated working copy of what it reads, with the EHR as the source of truth.
 
 Coda carries five jobs for the physician: preparing for encounters, reviewing new information, carrying follow-through, reconsidering the broader trajectory, and investigating the physician's questions. Those jobs are where Coda focuses, and they never limit what the model may do.
 
@@ -335,7 +335,6 @@ Everything Coda reads in the MVP is read only.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
-- **Outside records** from other organizations through Kno2, with Coda acting as the physician's delegate. They complement the practice's chart and never replace it.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
 - **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch. Coda searches it as often as a question needs, reads as many sources as it judges useful, and keeps going until it has enough to answer.
 - **Outside clinical AI** under a BAA, such as UpToDate's Expert AI.
@@ -356,7 +355,6 @@ In the MVP:
 - Reading attachments, including scans and faxes through OCR.
 - Dictation into the composer.
 - The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports, plus outside clinical AI under a BAA.
-- Outside records through Kno2.
 - A Filtered list of mail the linking pass judged not to be from a patient, with "This is a patient" to restore it, and the same through plain words in chat.
 - No paid tier; everything is free.
 - Done when every journey is walked on real services, hosting and real-patient readiness are in place, and we decide to go.
@@ -373,6 +371,7 @@ Not in the MVP:
 
 Later:
 
+- Read-only outside records through Kno2, with Coda acting as the physician’s delegate. These records complement the practice’s chart.
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
 - EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
 - Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
@@ -392,7 +391,7 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
 
-**Schedules and cadence.** Proactive review of every source (the EHR, Kno2, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
+**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. A push only wakes work, and the work always pulls current truth. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
