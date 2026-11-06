@@ -65,10 +65,10 @@ run "native_cloud_rules_use_real_source_and_scoped_inventory" {
   command = plan
   variables {
     telemetry_backend                = "both"
-    grafana_cloud_monitoring_enabled  = true
+    grafana_cloud_monitoring_enabled = true
   }
   assert {
-    condition = contains(keys(kubernetes_config_map_v1.grafana_stack["grafana"].data), "cloud-rules.yaml")
+    condition     = contains(keys(kubernetes_config_map_v1.grafana_stack["grafana"].data), "cloud-rules.yaml")
     error_message = "Cloud Monitoring must provision rules backed by its native datasource, not an unimplemented compatibility producer."
   }
   assert {
