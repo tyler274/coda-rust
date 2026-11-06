@@ -31,6 +31,23 @@ pub use duet_wire::models::IntelligenceSettings;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
 use serde::{Deserialize, Serialize};
 
+/// Result of reading one message without sending it again.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum MessageLookup {
+    /// This account already accepted the message.
+    Landed {
+        /// Server state, such as `accepted` or `running`.
+        state: String,
+    },
+    /// This account has no message with that id.
+    Missing,
+}
+
+/// A landed read confirms the send. Anything else is the warning, not a resend.
+pub fn message_confirmed(lookup: Result<MessageLookup, String>) -> bool {
+    matches!(lookup, Ok(MessageLookup::Landed { .. }))
+}
+
 /// Status of the patient's practice link and versioned `"share with my physician"` consent (`ENG-47`).
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PhysicianSharingStatus {
@@ -204,6 +221,49 @@ impl DuetClient {
         )
         .await
         .map_err(|error| self.wire_error(error))
+    }
+
+    /// Reads one message by id. Does not send it again.
+    ///
+    /// `Landed` means Duet accepted it. `Missing` means this account has no such
+    /// message. A transport failure is the error, and the caller warns instead
+    /// of retrying the send.
+    pub async fn read_message(&self, id: uuid::Uuid) -> Result<MessageLookup, String> {
+        let response = self
+            .configuration
+            .client
+            .get(format!(
+                "{}/api/conversation/messages/{id}",
+                self.configuration.base_path
+            ))
+            .bearer_auth(
+                self.configuration
+                    .bearer_access_token
+                    .as_deref()
+                    .unwrap_or_default(),
+            )
+            .send()
+            .await
+            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
+        let status = response.status();
+        if status == reqwest::StatusCode::NOT_FOUND {
+            return Ok(MessageLookup::Missing);
+        }
+        let body = response
+            .text()
+            .await
+            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
+        self.observe_refusal(status, &body);
+        if !status.is_success() {
+            return Err("Duet did not confirm the message".into());
+        }
+        let value: serde_json::Value = serde_json::from_str(&body)
+            .map_err(|_| "Duet did not confirm the message".to_owned())?;
+        let state = value["state"]
+            .as_str()
+            .ok_or_else(|| "Duet did not confirm the message".to_owned())?
+            .to_owned();
+        Ok(MessageLookup::Landed { state })
     }
 
     /// Lists insight cycles for Today.
@@ -996,6 +1056,40 @@ mod tests {
     use axum::Json;
     use axum::routing::get;
     use duet_wire::models::MomentKind;
+
+    #[tokio::test]
+    async fn read_message_confirms_a_landed_id_and_warns_otherwise() {
+        let landed = uuid::Uuid::new_v4();
+        let app = axum::Router::new().route(
+            "/api/conversation/messages/{message_id}",
+            get(
+                move |axum::extract::Path(id): axum::extract::Path<uuid::Uuid>| async move {
+                    if id == landed {
+                        (
+                            reqwest::StatusCode::OK,
+                            Json(serde_json::json!({"id": id, "state": "accepted"})),
+                        )
+                    } else {
+                        (
+                            reqwest::StatusCode::NOT_FOUND,
+                            Json(serde_json::json!("missing")),
+                        )
+                    }
+                },
+            ),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client =
+            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
+        assert!(message_confirmed(client.read_message(landed).await));
+        assert!(!message_confirmed(
+            client.read_message(uuid::Uuid::new_v4()).await
+        ));
+        let silent = DuetClient::new("http://127.0.0.1:1", "test-token", "200", "1.0.0").unwrap();
+        assert!(!message_confirmed(silent.read_message(landed).await));
+    }
 
     #[tokio::test]
     async fn lists_moments_from_a_json_server() {

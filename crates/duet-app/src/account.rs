@@ -18,6 +18,9 @@ pub struct PatientSession {
     /// Current ID token; never persisted. New requests observe rotations; no mutation is replayed.
     pub access_token: Signal<String>,
 }
+#[derive(Clone, Copy)]
+pub(crate) struct UncertainMessage(pub Signal<Option<uuid::Uuid>>);
+
 #[derive(Clone)]
 pub(crate) struct RefusalSender(
     pub  futures_channel::mpsc::UnboundedSender<(
@@ -437,6 +440,10 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         }
     });
     let mut confirm_sign_out = use_signal(|| false);
+    let mut uncertain_message = use_signal(|| None::<uuid::Uuid>);
+    let mut message_unconfirmed = use_signal(|| false);
+    let mut lookup_started = use_signal(|| false);
+    use_context_provider(|| UncertainMessage(uncertain_message));
     let logout_owner = retention.clone();
     let prompt_owner = retention.clone();
     let anyway_owner = retention.clone();
@@ -453,6 +460,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 message,
                 confirm: confirm_sign_out,
             },
+            false,
             false,
         );
     };
@@ -530,6 +538,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
         });
     };
     let offline_owner = retention.clone();
+    let settle_url = base_url.clone();
     let draft_viewer = offline_owner
         .retained_identity()
         .ok()
@@ -544,14 +553,38 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                 p { role: "alert", "{message}" }
                 Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
                     confirm_sign_out.set(false);
+                    message_unconfirmed.set(false);
+                    lookup_started.set(false);
                     message.set(String::new());
                 }, "Stay signed in" }
                 Button { variant: ButtonVariant::Primary, compact: true, onclick: move |_| {
-                    apply_sign_out(&anyway_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true);
+                    apply_sign_out(&anyway_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true, message_unconfirmed());
                 }, "Sign out anyway" }
             } else {
                 Button { variant: ButtonVariant::Quiet, compact: true, onclick: move |_| {
-                    apply_sign_out(&prompt_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true);
+                    let pending = uncertain_message();
+                    let bearer = active().map(|current| current.bearer);
+                    if let (Some(id), Some(bearer)) = (pending, bearer)
+                        && !lookup_started()
+                    {
+                        lookup_started.set(true);
+                        message.set("Checking whether Duet received your message.".into());
+                        let base = settle_url.clone();
+                        let owner = prompt_owner.clone();
+                        spawn(async move {
+                            let confirmed = match DuetClient::new(&base, &bearer, "0", "0.1.0") {
+                                Ok(api) => duet_client::message_confirmed(api.read_message(id).await),
+                                Err(_) => false,
+                            };
+                            if confirmed {
+                                uncertain_message.set(None);
+                            }
+                            message_unconfirmed.set(!confirmed);
+                            apply_sign_out(&owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true, !confirmed);
+                        });
+                        return;
+                    }
+                    apply_sign_out(&prompt_owner, SignOutUi { lifecycle, signed_out, active, offline_draft, busy, cleanup_pending, message, confirm: confirm_sign_out }, true, message_unconfirmed());
                 }, "Sign out" }
             }
         } else {
@@ -687,7 +720,12 @@ fn ended_notice(owner: &RetentionOwner) -> String {
     }
 }
 
-fn apply_sign_out(logout_owner: &RetentionOwner, ui: SignOutUi, warn: bool) {
+fn apply_sign_out(
+    logout_owner: &RetentionOwner,
+    ui: SignOutUi,
+    warn: bool,
+    unconfirmed_message: bool,
+) {
     let mut confirm = ui.confirm;
     let mut lifecycle = ui.lifecycle;
     let mut signed_out = ui.signed_out;
@@ -698,12 +736,14 @@ fn apply_sign_out(logout_owner: &RetentionOwner, ui: SignOutUi, warn: bool) {
     let mut message = ui.message;
     if warn
         && !confirm()
-        && let Ok(leaving) = logout_owner.account_leaving()
-        && !leaving.is_empty()
+        && let Ok(mut leaving) = logout_owner.account_leaving()
     {
-        confirm.set(true);
-        message.set(leaving.warning());
-        return;
+        leaving.unconfirmed_message = unconfirmed_message;
+        if !leaving.is_empty() {
+            confirm.set(true);
+            message.set(leaving.warning());
+            return;
+        }
     }
     confirm.set(false);
     lifecycle.set(lifecycle() + 1);

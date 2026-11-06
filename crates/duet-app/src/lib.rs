@@ -319,6 +319,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut cache = use_signal(|| None);
     let mut draft = use_signal(String::new);
     let mut pending_id = use_signal(|| None::<(uuid::Uuid, String)>);
+    let uncertain = try_use_context::<account::UncertainMessage>();
+    use_effect(move || {
+        if let Some(mut slot) = uncertain {
+            slot.0.set(pending_id().map(|(id, _)| id));
+        }
+    });
     let mut sending = use_signal(|| false);
     let mut send_failed = use_signal(|| false);
     let mut accepted = use_signal(|| None::<ConversationMessage>);

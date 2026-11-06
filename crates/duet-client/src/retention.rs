@@ -179,12 +179,17 @@ pub struct AccountLeaving {
     pub pending_operation: bool,
     /// Queued health uploads that have not reached Duet.
     pub health_uploads: usize,
+    /// A message was sent and Duet has not confirmed it.
+    pub unconfirmed_message: bool,
 }
 
 impl AccountLeaving {
     /// Nothing of this account is stored on the phone.
     pub fn is_empty(&self) -> bool {
-        !self.draft && !self.pending_operation && self.health_uploads == 0
+        !self.draft
+            && !self.pending_operation
+            && self.health_uploads == 0
+            && !self.unconfirmed_message
     }
 
     fn parts(&self) -> Vec<String> {
@@ -199,6 +204,9 @@ impl AccountLeaving {
             parts.push("1 unsent health upload".to_owned());
         } else if self.health_uploads > 1 {
             parts.push(format!("{} unsent health uploads", self.health_uploads));
+        }
+        if self.unconfirmed_message {
+            parts.push("an unconfirmed message".to_owned());
         }
         parts
     }
@@ -356,6 +364,7 @@ impl RetentionOwner {
                 .read(&key("doctor-operation", &identity.owner))?
                 .is_some(),
             health_uploads: self.health_scopes(&identity.owner)?.len(),
+            unconfirmed_message: false,
         })
     }
     /// Invalidate visible state FIRST. Failed erase leaves the protected marker for cleanup retry.
