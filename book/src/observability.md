@@ -202,13 +202,13 @@ compose credentials are fixed local development values, and every port binds to
 
 The `observability` job in [CI](/.github/workflows/ci.yml) validates the shared,
 debug, Datadog, authenticated GKE, GKE-without-Langfuse, and inline sidecar
-configurations inside the Nix shell. It validates and runs mocked OpenTofu tests
+configurations inside `nix develop .#observability`, the collector and OpenTofu
+shell. It validates and runs mocked OpenTofu tests
 for both [`observability`](/infra/gcp/observability) and
 [`rust-environments`](/infra/gcp/rust-environments). Backend-free initialization
 belongs in a fresh test checkout, never over an operator's initialized backend.
 
 Run the synthetic collector behavior test separately:
-
 ```sh
 nix develop .#agent --command python scripts/test_collector_privacy.py
 ```
