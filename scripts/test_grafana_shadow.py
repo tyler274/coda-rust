@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Render real Terraform locals; verify Grafana provisioning on isolated Docker.
 
-No network, real endpoints, keys, or Slack. Reuse one disposable database to
-prove optional provisioning is deleted when disabled. Docker image must exist.
+Network-none Docker with loopback-only Prometheus and notification fixtures;
+no real endpoints, keys or Slack. Reuse one disposable database to prove optional
+provisioning deletion. Test-only intervals are compressed, production queries,
+thresholds and route matchers are retained. Docker images must already exist.
 """
+import copy
+import http.server
 import json
+import sys
 import pathlib
 import re
 import subprocess
@@ -32,6 +37,53 @@ def run(*args, **kwargs):
     return result.stdout
 
 
+def fixture_server():
+    """Bounded synthetic Prometheus source and Slack-shaped loopback sink."""
+    class Handler(http.server.BaseHTTPRequestHandler):
+        state = {"shadow": 0, "test": 0}
+        receipts = []
+
+        def log_message(self, *_):
+            pass
+
+        def do_GET(self):
+            if self.path == "/metrics":
+                payload = '\n'.join([
+                    f'coda_compat_readiness_consecutive_failures{{environment="staging",service="synthetic",target="synthetic"}} {4 * self.state["shadow"]}',
+                    f'coda_compat_dependency_unhealthy{{environment="staging",service="synthetic",dependency="synthetic"}} {self.state["shadow"]}',
+                    f'coda_compat_last_observed_seconds{{environment="staging",service="synthetic",target="synthetic"}} {time.time()}',
+                    f'synthetic_alert_value{{case="shadow"}} {self.state["shadow"]}',
+                    f'synthetic_alert_value{{case="test"}} {self.state["test"]}', '',
+                ]).encode()
+                content_type = "text/plain; version=0.0.4"
+            else:
+                payload = json.dumps(self.receipts).encode()
+                content_type = "application/json"
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.end_headers()
+            self.wfile.write(payload)
+
+        def do_POST(self):
+            length = int(self.headers.get("Content-Length", 0))
+            assert length < 65536
+            value = json.loads(self.rfile.read(length))
+            if self.path == "/state":
+                assert set(value) == {"shadow", "test"} and all(v in (0, 1) for v in value.values())
+                self.state.update(value)
+            elif self.path == "/slack":
+                assert len(self.receipts) < 20
+                self.receipts.append({"time": time.time(), "payload": value})
+            else:
+                self.send_error(404)
+                return
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"ok")
+
+    http.server.ThreadingHTTPServer(("127.0.0.1", 9099), Handler).serve_forever()
+
+
 def provision(enabled):
     variables = {**VARS, "grafana_test_notifications_enabled": enabled,
                  "grafana_compatibility_metrics_url": "http://127.0.0.1:9090" if enabled else ""}
@@ -48,7 +100,7 @@ def provision(enabled):
             if 'backend "gcs"' in text:
                 source.write_text(re.sub(r'backend "gcs"\s*\{[^}]*\}', 'backend "local" {}', text))
         run("tofu", f"-chdir={harness}", "init", "-input=false")
-    expression = "jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items})"
+    expression = 'jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items, contact=jsondecode(jsonencode(yamldecode(local.grafana_contact_config))), rules=yamldecode(file("${local.grafana_config_dir}/compatibility-rules.yaml"))})'
     result = run("tofu", f"-chdir={harness}", "console", f"-var-file={vf}", input=expression)
     config = json.loads(json.loads(result))
     folder = OUT / ("enabled" if enabled else "disabled")
@@ -56,6 +108,30 @@ def provision(enabled):
         path = folder / config["paths"][key]
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(value)
+    if enabled:
+        # JSON is YAML-compatible. Preserve rendered matchers, mute interval,
+        # source queries and thresholds; only compress evaluator timings.
+        contact = config["contact"]
+        contact["policies"][0].update(group_wait="1s", group_interval="5s", repeat_interval="1h")
+        (folder / "alerting/contact.yaml").write_text(json.dumps(contact))
+        rules = config["rules"]
+        group = rules["groups"][0]
+        group["interval"] = "10s"
+        for rule in group["rules"]:
+            rule["for"] = "20s"
+        template = group["rules"][0]
+        # Negative controls prove neither matcher alone bypasses shadow mode.
+        for uid, title, labels, case in [
+            ("synthetic-qualified", "Coda synthetic notification test", {"qualification": "synthetic-notification-test"}, "test"),
+            ("synthetic-title-only", "Coda synthetic notification test", {}, "shadow"),
+            ("synthetic-label-only", "Synthetic wrong title", {"qualification": "synthetic-notification-test"}, "shadow"),
+        ]:
+            rule = copy.deepcopy(template)
+            rule.update(uid=uid, title=title, labels={"team": "coda", **labels})
+            rule["data"][0]["model"]["expr"] = f'synthetic_alert_value{{case="{case}"}} * 4'
+            group["rules"].append(rule)
+        (folder / "alerting/compatibility.yaml").write_text(json.dumps(rules))
+        (folder / "datasources/compatibility.yaml").write_text(json.dumps({"apiVersion": 1, "datasources": [{"name": "Compatibility metrics", "uid": "compatibility", "type": "prometheus", "access": "proxy", "url": "http://127.0.0.1:9090", "jsonData": {"httpMethod": "GET"}}]}))
     return folder
 
 
@@ -67,7 +143,8 @@ def start(folder, volume):
     run("docker", "run", "-d", "--name", NAME, "--network", "none",
         "-e", "GF_ANALYTICS_REPORTING_ENABLED=false", "-e", "GF_ANALYTICS_CHECK_FOR_UPDATES=false",
         "-e", "GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES=false", "-e", "GF_SECURITY_ADMIN_PASSWORD=admin",
-        "-e", "GRAFANA_SLACK_WEBHOOK_URL=http://127.0.0.1:1/synthetic-only",
+        "-e", "GRAFANA_SLACK_WEBHOOK_URL=http://127.0.0.1:9099/slack",
+        "-e", "GF_UNIFIED_ALERTING_MIN_INTERVAL=10s",
         "-v", f"{folder}:/etc/grafana/provisioning:ro", "-v", f"{volume}:/var/lib/grafana", IMAGE)
     deadline = time.monotonic() + 45
     while time.monotonic() < deadline:
@@ -80,7 +157,90 @@ def start(folder, volume):
     raise AssertionError("Grafana failed startup")
 
 
+def evaluate():
+    # Both helpers share Grafana's network-none namespace. All three services
+    # communicate exclusively over loopback; no port is published.
+    run("docker", "run", "-d", "--name", NAME + "-fixture", "--network", f"container:{NAME}",
+        "-v", f"{pathlib.Path(__file__).resolve()}:/app/scripts/fixture.py:ro",
+        "--entrypoint", "python", "docker.io/python:3.14.10-alpine3.24", "/app/scripts/fixture.py", "--serve")
+    prometheus = OUT / "prometheus.json"
+    prometheus.write_text(json.dumps({"global": {"scrape_interval": "1s"}, "scrape_configs": [{"job_name": "synthetic", "static_configs": [{"targets": ["127.0.0.1:9099"]}]}]}))
+    run("docker", "run", "-d", "--name", NAME + "-prometheus", "--network", f"container:{NAME}",
+        "-v", f"{prometheus}:/etc/prometheus/prometheus.yml:ro", "docker.io/prom/prometheus:v3.16.0",
+        "--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=1h")
+    history = []
+
+    def fixture(path, state=None):
+        args = ["docker", "exec", NAME, "wget", "-qO-"]
+        if state is not None:
+            args.append("--post-data=" + json.dumps(state))
+        result = run(*args, f"http://127.0.0.1:9099/{path}")
+        return json.loads(result) if state is None else None
+
+    def states():
+        groups = api("/api/prometheus/grafana/api/v1/rules")["data"]["groups"]
+        result = {r["name"] + ":" + r.get("labels", {}).get("qualification", ""): r for g in groups for r in g["rules"]}
+        history.append({"time": time.time(), "rules": result})
+        (OUT / "evaluation-history.json").write_text(json.dumps(history, indent=2))
+        return result
+
+    def wait(predicate, label, seconds=100):
+        deadline = time.monotonic() + seconds
+        while time.monotonic() < deadline:
+            if predicate():
+                return
+            time.sleep(1)
+        raise AssertionError(f"Timed out: {label}")
+
+    def matches(name, state, qualification=""):
+        rule = states().get(name + ":" + qualification, {})
+        return rule.get("state") == state and rule.get("health") == "ok" and rule.get("lastEvaluation", "")[:4].isdigit() and int(rule["lastEvaluation"][:4]) > 2000
+
+    qualified = "synthetic-notification-test"
+    title = "Coda synthetic notification test"
+    wait(lambda: matches("Dependency compatibility failure", "inactive"), "healthy baseline")
+    assert fixture("received") == []
+    fixture("state", {"shadow": 1, "test": 0})
+    wait(lambda: matches("Dependency compatibility failure", "pending"), "operational pending")
+    wait(lambda: matches("Dependency compatibility failure", "firing"), "operational firing")
+    wait(lambda: matches(title, "firing") and matches("Synthetic wrong title", "firing", qualified), "both one-label negative controls firing")
+    # Hold shadow-only firing beyond group_wait + group_interval.
+    until = time.monotonic() + 12
+    while time.monotonic() < until:
+        assert fixture("received") == [], "shadow/one-label alert notified"
+        time.sleep(1)
+    fixture("state", {"shadow": 1, "test": 1})
+    wait(lambda: matches(title, "pending", qualified), "qualified test pending")
+    wait(lambda: matches(title, "firing", qualified), "qualified test firing")
+    wait(lambda: len(fixture("received")) >= 1, "local firing receipt")
+    firing = fixture("received")
+    (OUT / "local-firing-receipts.json").write_text(json.dumps(firing, indent=2))
+    assert len(firing) == 1 and "FIRING" in json.dumps(firing)
+    assert "Synthetic wrong title" not in json.dumps(firing) and "Dependency compatibility" not in json.dumps(firing)
+    fixture("state", {"shadow": 0, "test": 0})
+    wait(lambda: matches(title, "inactive", qualified) and matches("Dependency compatibility failure", "inactive"), "recovery")
+    wait(lambda: len(fixture("received")) >= 2, "local recovery receipt")
+    receipts = fixture("received")
+    (OUT / "local-receipts.json").write_text(json.dumps(receipts, indent=2))
+    assert len(receipts) == 2 and "RESOLVED" in json.dumps(receipts[-1])
+    for receipt in receipts:
+        attachments = receipt["payload"]["attachments"]
+        assert len(attachments) == 1
+        assert "/synthetic-qualified/" in attachments[0]["title_link"]
+        assert "qualification = synthetic-notification-test" in attachments[0]["text"]
+    # Allow a notification grouping cycle after recovery as a negative control.
+    until = time.monotonic() + 12
+    while time.monotonic() < until:
+        assert len(fixture("received")) == 2, "unexpected shadow recovery notification"
+        time.sleep(1)
+    print("PASS real evaluator: normal -> pending -> firing -> recovery; exact local firing/recovery receipts; operational and each single-label control remained muted", flush=True)
+
+
 def stop(label):
+    for helper in ("-prometheus", "-fixture"):
+        logs = subprocess.run(["docker", "logs", NAME + helper], capture_output=True, text=True)
+        (OUT / f"{label}{helper}.log").write_text(logs.stdout + logs.stderr)
+        subprocess.run(["docker", "rm", "-fv", NAME + helper], check=False, capture_output=True)
     result = subprocess.run(["docker", "logs", NAME], capture_output=True, text=True)
     (OUT / f"{label}.log").write_text(result.stdout + result.stderr)
     subprocess.run(["docker", "rm", "-f", NAME], check=False, capture_output=True)
@@ -109,6 +269,8 @@ def main():
             else:
                 assert len(policy["routes"]) == 1
             print(f"PASS {label}: real rendered rules/datasources/contact/policy reconciled; operational catch-all muted", flush=True)
+            if enabled:
+                evaluate()
             stop(label)
     finally:
         stop("cleanup")
@@ -116,4 +278,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if sys.argv[1:] == ["--serve"]:
+        fixture_server()
+    else:
+        main()
