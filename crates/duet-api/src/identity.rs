@@ -105,7 +105,7 @@ impl IdentityVerifier for IdentityPlatform {
         let lookup: serde_json::Value = response
             .json()
             .await
-            .map_err(|_| ApiError::Unavailable("Identity provider response unavailable"))?;
+            .map_err(|error| ApiError::IdentityResponse(error.without_url()))?;
         if !status.is_success() {
             return Err(provider_failure(status, &lookup));
         }

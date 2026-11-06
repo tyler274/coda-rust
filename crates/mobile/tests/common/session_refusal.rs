@@ -44,7 +44,8 @@ async fn definitive_refusal_unmounts_private_content() {
                             .into_response(),
                         2 => duet_api::ApiError::Unavailable("Identity provider unavailable")
                             .into_response(),
-                        _ => duet_api::ApiError::SessionRevoked.into_response(),
+                        3 => duet_api::ApiError::SessionRevoked.into_response(),
+                        _ => duet_api::ApiError::AbsentAccount.into_response(),
                     }
                 } else {
                     stub.oneshot(request).await.unwrap()
@@ -92,6 +93,27 @@ async fn definitive_refusal_unmounts_private_content() {
     assert!(!text.contains("Unconfirmed private send"));
     screenshot(&mut browser, "after-refusal");
     eprintln!("Product session_revoked removed mounted private transcript and composer.");
+    refuse.store(0, Ordering::SeqCst);
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Retry saved sign-in"])),
+        true
+    );
+    browser.wait_for("Today");
+    browser.click("nav.tabs button:nth-of-type(1)");
+    browser.wait_for("Private account transcript");
+    refuse.store(4, Ordering::SeqCst);
+    browser.type_into(".composer-input", "Deleted account send");
+    browser.click(".duet-send");
+    browser.wait_for("Sign in to your Duet account.");
+    assert!(
+        !browser
+            .body_text()
+            .unwrap()
+            .contains("Private account transcript")
+    );
+    eprintln!("Product absent-account refusal removed mounted private transcript.");
     server.abort();
 }
 

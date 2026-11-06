@@ -125,6 +125,7 @@ impl EvidenceTransport for crate::DuetClient {
         {
             Ok(result) => UploadOutcome::Delivered(acks_from_wire(&result)),
             Err(duet_wire::apis::Error::ResponseError(response)) => {
+                self.observe_refusal(response.status, &response.content);
                 outcome_from_http(response.status.as_u16(), response.content.as_bytes())
             }
             Err(_) => UploadOutcome::Uncertain,

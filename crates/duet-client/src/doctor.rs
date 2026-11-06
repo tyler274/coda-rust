@@ -4,7 +4,7 @@ use duet_wire::models::{CanonicalRecordSelection, DoctorCollection, DoctorPageSa
 use serde::{Deserialize, Serialize};
 
 /// Closed failure states; neither response prose nor credential-bearing URLs are logged.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum DoctorError {
     /// Sign-in expired; never automatically replay mutations after refresh.
     Unauthorized,
@@ -20,6 +20,8 @@ pub enum DoctorError {
     Invalid,
     /// Transport, server, receipt confirmation or decode failure: mutation outcome may be uncertain.
     Uncertain,
+    /// Uncertain response with its redacted transport cause retained.
+    Response(crate::refusal::TransportCause),
 }
 impl std::fmt::Display for DoctorError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -30,11 +32,18 @@ impl std::fmt::Display for DoctorError {
             Self::Conflict => "The page, selected sources, or operation changed. Review the current page; your draft is retained.",
             Self::NotFound => "No receipt or resource was found. This alone does not prove an uncertain write failed.",
             Self::Invalid => "The request is invalid. Review the selection and expiry.",
-            Self::Uncertain => "Duet could not confirm the outcome. Retry the same operation, not a new one.",
+            Self::Uncertain | Self::Response(_) => "Duet could not confirm the outcome. Retry the same operation, not a new one.",
         })
     }
 }
-impl std::error::Error for DoctorError {}
+impl std::error::Error for DoctorError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Response(cause) => Some(cause),
+            _ => None,
+        }
+    }
+}
 /// Exact command retained across uncertain acknowledgements. Contains no capability or patient prose.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PublishRequest {
@@ -512,7 +521,10 @@ impl DuetClient {
             200..=299 => Ok(response),
             401 => {
                 let status = response.status();
-                let body = response.text().await.map_err(|_| DoctorError::Uncertain)?;
+                let body = response
+                    .text()
+                    .await
+                    .map_err(|error| DoctorError::Response(error.into()))?;
                 self.observe_refusal(status, &body);
                 if crate::refusal::classify(status, &body).is_some() {
                     Err(DoctorError::Unauthorized)

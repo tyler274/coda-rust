@@ -84,6 +84,8 @@ pub enum ApiError {
     ConsentUnlinked,
     /// The `Unavailable` case.
     Unavailable(&'static str),
+    /// Identity provider response decoding failed; never a product session refusal.
+    IdentityResponse(reqwest::Error),
     /// The `Storage` case.
     Storage(String),
     /// The presented terms version is not the current one.
@@ -115,7 +117,7 @@ impl IntoResponse for ApiError {
             ),
             Self::AbsentAccount => (
                 StatusCode::UNAUTHORIZED,
-                serde_json::json!("Duet account does not exist."),
+                serde_json::json!({"code":"session_invalid", "message":"Duet account does not exist."}),
             ),
             Self::Forbidden => (
                 StatusCode::FORBIDDEN,
@@ -150,6 +152,10 @@ impl IntoResponse for ApiError {
             Self::Unavailable(detail) => {
                 (StatusCode::SERVICE_UNAVAILABLE, serde_json::json!(detail))
             }
+            Self::IdentityResponse(_) => (
+                StatusCode::SERVICE_UNAVAILABLE,
+                serde_json::json!("Identity provider response unavailable"),
+            ),
             Self::Storage(_) => (
                 StatusCode::SERVICE_UNAVAILABLE,
                 serde_json::json!("Backend database is not configured."),
@@ -1100,7 +1106,8 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Duet account does not exist.");
+        assert_eq!(body["detail"]["code"], "session_invalid");
+        assert_eq!(body["detail"]["message"], "Duet account does not exist.");
 
         let (status, body) = auth_call(
             &app,
@@ -1111,7 +1118,8 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Duet account does not exist.");
+        assert_eq!(body["detail"]["code"], "session_invalid");
+        assert_eq!(body["detail"]["message"], "Duet account does not exist.");
 
         let (status, ensured) = auth_call(
             &app,

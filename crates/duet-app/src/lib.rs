@@ -527,9 +527,6 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         let owner = stream_owner.clone();
         let fence = stream_fence.clone();
         async move {
-            let Ok(api) = open_client(url, bearer) else {
-                return;
-            };
             loop {
                 if !owner.session().is_current(&fence) {
                     provisional.set(Default::default());
@@ -542,6 +539,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     .and_then(|run| run.as_ref())
                     .map(|run| run.id);
                 if let Some(command) = command {
+                    let Ok(api) = open_client(url.clone(), bearer.clone()) else {
+                        break;
+                    };
                     let mut next = provisional.peek().clone();
                     if next.command != Some(command) {
                         next = duet_client::streaming::Provisional::new(command);

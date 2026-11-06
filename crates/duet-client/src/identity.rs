@@ -29,17 +29,28 @@ pub enum IdentityError {
     Expired,
     /// Configuration, network, locked storage or service outage; keep drafts.
     Unavailable,
+    /// A response could not be read; the redacted transport cause is retained.
+    Response(crate::refusal::TransportCause),
 }
 impl std::fmt::Display for IdentityError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(match self {
             Self::Unauthorized => "no valid credential",
             Self::Expired => "the credential is expired, revoked or disabled",
-            Self::Unavailable => "the identity service is unavailable or not configured",
+            Self::Unavailable | Self::Response(_) => {
+                "the identity service is unavailable or not configured"
+            }
         })
     }
 }
-impl std::error::Error for IdentityError {}
+impl std::error::Error for IdentityError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Response(cause) => Some(cause),
+            _ => None,
+        }
+    }
+}
 impl DuetClient {
     /// Establish standalone account with the existing identity DTO; no invitation required.
     pub async fn ensure_account(&self) -> Result<duet_wire::models::AccountState, IdentityError> {
@@ -88,7 +99,7 @@ async fn decode<T: serde::de::DeserializeOwned>(
         let body = response
             .text()
             .await
-            .map_err(|_| IdentityError::Unavailable)?;
+            .map_err(|error| IdentityError::Response(error.into()))?;
         return Err(if crate::refusal::classify(status, &body).is_some() {
             IdentityError::Unauthorized
         } else {

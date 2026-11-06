@@ -384,6 +384,7 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                                 )
                                 .is_ok()
                         {
+                            owner.session().rotate_credential(&current.fence);
                             active.set(Some(Active {
                                 bearer: token.id_token,
                                 fence: current.fence,

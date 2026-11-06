@@ -5,6 +5,31 @@ use crate::{
 };
 use futures_channel::mpsc::UnboundedSender;
 
+/// A transport cause with its credential-bearing URL removed.
+#[derive(Clone, Debug)]
+pub struct TransportCause(std::sync::Arc<reqwest::Error>);
+impl From<reqwest::Error> for TransportCause {
+    fn from(error: reqwest::Error) -> Self {
+        Self(std::sync::Arc::new(error.without_url()))
+    }
+}
+impl PartialEq for TransportCause {
+    fn eq(&self, other: &Self) -> bool {
+        std::sync::Arc::ptr_eq(&self.0, &other.0)
+    }
+}
+impl Eq for TransportCause {}
+impl std::fmt::Display for TransportCause {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str("response unavailable")
+    }
+}
+impl std::error::Error for TransportCause {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(self.0.as_ref())
+    }
+}
+
 /// Definitive product refusal, not a proxy challenge or transport failure.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum SessionRefusal {
@@ -31,6 +56,7 @@ pub fn classify(status: reqwest::StatusCode, body: &str) -> Option<SessionRefusa
 pub(crate) struct RefusalBinding {
     session: AccountSession,
     fence: SessionFence,
+    credential_revision: u64,
     sender: UnboundedSender<SessionFence>,
 }
 impl DuetClient {
@@ -42,6 +68,7 @@ impl DuetClient {
         sender: UnboundedSender<SessionFence>,
     ) -> Self {
         self.refusal = Some(RefusalBinding {
+            credential_revision: session.credential_revision(),
             session,
             fence,
             sender,
@@ -55,7 +82,9 @@ impl DuetClient {
         let Some(binding) = &self.refusal else {
             return;
         };
-        let invalidated = binding.session.invalidate(&binding.fence);
+        let invalidated = binding
+            .session
+            .refuse_credential(&binding.fence, binding.credential_revision);
         if invalidated {
             // A dropped receiver means the root has already unmounted.
             let _ = binding.sender.unbounded_send(binding.fence.clone());
@@ -72,6 +101,80 @@ impl DuetClient {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[tokio::test]
+    async fn health_generation_and_upload_refusals_invalidate_bound_session() {
+        use crate::health_upload::EvidenceTransport;
+        let app = axum::Router::new().fallback(|| async {
+            (
+                reqwest::StatusCode::UNAUTHORIZED,
+                r#"{"detail":{"code":"session_revoked"}}"#,
+            )
+        });
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let session = AccountSession::default();
+        for upload in [false, true] {
+            let fence = session.switch(Some("a".into())).unwrap();
+            let (sender, _receiver) = futures_channel::mpsc::unbounded();
+            let client = DuetClient::new(&url, "test", "0", "0")
+                .unwrap()
+                .bind_session(session.clone(), fence.clone(), sender);
+            if upload {
+                client
+                    .send(&duet_health::outbox::UploadBatch {
+                        source_generation: 1,
+                        items: vec![],
+                    })
+                    .await;
+            } else {
+                assert!(crate::apple_health::generation(&client).await.is_err());
+            }
+            assert!(!session.is_current(&fence));
+        }
+        server.abort();
+    }
+    #[tokio::test]
+    async fn refreshed_stream_survives_refusal_of_original_credential() {
+        use axum::{Router, routing::get};
+        let router = Router::new().fallback(get(|headers: axum::http::HeaderMap| async move {
+            if headers.get("authorization").and_then(|v| v.to_str().ok()) == Some("Bearer fresh") {
+                (reqwest::StatusCode::OK, "")
+            } else {
+                (
+                    reqwest::StatusCode::UNAUTHORIZED,
+                    r#"{"detail":{"code":"session_invalid"}}"#,
+                )
+            }
+        }));
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move { axum::serve(listener, router).await.unwrap() });
+        let session = AccountSession::default();
+        let fence = session.switch(Some("a".into())).unwrap();
+        let (sender, _receiver) = futures_channel::mpsc::unbounded();
+        let old = DuetClient::new(&url, "expired", "0", "0")
+            .unwrap()
+            .bind_session(session.clone(), fence.clone(), sender.clone());
+        session.rotate_credential(&fence);
+        let fresh = DuetClient::new(&url, "fresh", "0", "0")
+            .unwrap()
+            .bind_session(session.clone(), fence.clone(), sender);
+        assert!(
+            old.conversation_events(uuid::Uuid::new_v4(), 0)
+                .await
+                .is_err()
+        );
+        assert!(session.is_current(&fence));
+        assert!(
+            fresh
+                .conversation_events(uuid::Uuid::new_v4(), 0)
+                .await
+                .is_ok()
+        );
+        assert!(session.is_current(&fence));
+        server.abort();
+    }
     #[test]
     fn only_product_refusal_ends_the_current_session() {
         let session = AccountSession::default();
@@ -90,6 +193,15 @@ mod tests {
             client.observe_refusal(reqwest::StatusCode::from_u16(status).unwrap(), body);
             assert!(session.is_current(&a));
         }
+        session.rotate_credential(&a);
+        client.observe_refusal(
+            reqwest::StatusCode::UNAUTHORIZED,
+            r#"{"detail":{"code":"session_invalid"}}"#,
+        );
+        assert!(
+            session.is_current(&a),
+            "refusal from replaced access token must not end rotated session"
+        );
         let b = session.switch(Some("b".into())).unwrap();
         client.observe_refusal(
             reqwest::StatusCode::UNAUTHORIZED,

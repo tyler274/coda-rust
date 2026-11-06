@@ -160,15 +160,20 @@ impl<D: AppleHealthDevice> AppleHealth<D> {
     }
 }
 
-async fn generation(client: &DuetClient) -> Result<i32, AppleHealthError> {
+pub(crate) async fn generation(client: &DuetClient) -> Result<i32, AppleHealthError> {
     duet_wire::apis::default_api::read_apple_health_generation(&client.configuration)
         .await
-        .map_err(|error| match &error {
-            duet_wire::apis::Error::ResponseError(response)
-                if authentication_refused(response.status.as_u16()) =>
-            {
-                AppleHealthError::SessionRefused(error)
+        .map_err(|error| {
+            if let duet_wire::apis::Error::ResponseError(response) = &error {
+                client.observe_refusal(response.status, &response.content);
             }
-            _ => AppleHealthError::Generation(error),
+            match &error {
+                duet_wire::apis::Error::ResponseError(response)
+                    if authentication_refused(response.status.as_u16()) =>
+                {
+                    AppleHealthError::SessionRefused(error)
+                }
+                _ => AppleHealthError::Generation(error),
+            }
         })
 }
