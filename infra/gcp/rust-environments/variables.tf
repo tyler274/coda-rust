@@ -214,6 +214,16 @@ variable "observability_enabled" {
   description = "Adds the otel-collector sidecar to physician, duet and physician-worker and points the product container at it. Requires observability_cluster_enabled and a running gateway; product health never depends on the sidecar."
 }
 
+variable "telemetry_backend" {
+  type        = string
+  default     = "datadog"
+  description = "CODA_TELEMETRY_BACKEND set on the product containers while observability_enabled is on: datadog and both keep the dd.* log correlation keys alongside W3C ids; grafana drops the aliases. Must match infra/gcp/observability's telemetry_backend."
+  validation {
+    condition     = contains(["datadog", "grafana", "both"], var.telemetry_backend)
+    error_message = "telemetry_backend must be datadog, grafana or both."
+  }
+}
+
 variable "otel_sidecar_image" {
   type        = string
   default     = "otel/opentelemetry-collector-contrib:0.155.0"

@@ -705,6 +705,44 @@ fn expected_settings_follow_the_reviewed_plan_not_a_second_source() {
     assert!(readback::expected(b"{\"planned_values\":{\"root_module\":{}}}").is_err());
 }
 
+#[test]
+fn expected_cpu_follows_the_named_physician_container_beside_the_sidecar() {
+    let mut plan: serde_json::Value =
+        serde_json::from_str(&planned(1, false, "ALL_TRAFFIC")).unwrap();
+    let template =
+        &mut plan["planned_values"]["root_module"]["resources"][1]["values"]["template"][0];
+    // The sidecar listed first idles its CPU; the product does not.
+    template["containers"] = serde_json::json!([
+        {"name": "otel-collector", "resources": [{"cpu_idle": true}]},
+        {"name": "physician", "resources": [{"cpu_idle": false}]}
+    ]);
+    let expected = readback::expected(plan.to_string().as_bytes()).unwrap();
+    assert_eq!(expected[&readback::Setting::CpuThrottling], "false");
+    let parsed = readback::Service::parse(
+        service(
+            serde_json::json!({
+                "autoscaling.knative.dev/minScale": "1",
+                "autoscaling.knative.dev/maxScale": "2",
+                "run.googleapis.com/cpu-throttling": "false",
+                "run.googleapis.com/vpc-access-egress": "all-traffic"
+            }),
+            "r",
+            "r",
+            serde_json::json!([{"revisionName": "r", "percent": 100}]),
+        )
+        .as_bytes(),
+    )
+    .unwrap();
+    assert!(readback::compare(&expected, &parsed).is_empty());
+
+    // Without a container named physician the plan cannot say which CPU
+    // setting the product has.
+    let template =
+        &mut plan["planned_values"]["root_module"]["resources"][1]["values"]["template"][0];
+    template["containers"][1]["name"] = "app".into();
+    assert!(readback::expected(plan.to_string().as_bytes()).is_err());
+}
+
 /// Real processes: synthetic `doppler`, `tofu` and `gcloud` on PATH record
 /// their argv and whether they received the password variable.
 #[test]

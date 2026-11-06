@@ -81,7 +81,7 @@ resource "google_project" "environment" {
     }
     precondition {
       condition     = alltrue(flatten([for config in values(var.runtime_environment) : [for key in keys(config) : !contains(local.observability_owned_env, key)]]))
-      error_message = "DD_ENV and the telemetry settings (OTEL_EXPORTER_OTLP_ENDPOINT, CODA_LOG_FORMAT, CODA_TELEMETRY_CONTENT) are infrastructure-owned, and DD_VERSION is baked into each image; runtime_environment may not set them."
+      error_message = "DD_ENV and the telemetry settings (OTEL_EXPORTER_OTLP_ENDPOINT, CODA_LOG_FORMAT, CODA_TELEMETRY_CONTENT, CODA_TELEMETRY_BACKEND) are infrastructure-owned, and DD_VERSION is baked into each image; runtime_environment may not set them."
     }
   }
 }

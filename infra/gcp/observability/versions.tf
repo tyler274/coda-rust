@@ -71,6 +71,11 @@ provider "helm" {
 
 # Operator management keys come from the Doppler environment, never variables
 # or state. Runtime ingestion receives only DD_API_KEY, not DD_APP_KEY.
+# Under telemetry_backend = grafana no Datadog resource exists and the
+# provider skips credential validation, so DD_API_KEY / DD_APP_KEY need not
+# be set (provider 4.26: api_key and app_key are required only while validate
+# is true).
 provider "datadog" {
-  api_url = "https://api.${var.datadog_site}/"
+  api_url  = "https://api.${var.datadog_site}/"
+  validate = local.datadog_backend ? "true" : "false"
 }

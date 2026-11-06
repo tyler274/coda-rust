@@ -22,6 +22,8 @@ SECRET_KEYS = {
     "DUET_OPENAI_PHI_READY", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM",
     "PUBSUB_EMULATOR_HOST", "PHYSICIAN_LOCAL_SCALE",
 }
+# Images that read no secrets and therefore start without Doppler.
+SECRET_FREE = ("/availability-probe",)
 TOOLCHAIN = ("/bin/cargo", "/bin/rustc", "/bin/nix", "/bin/gcc", "/bin/sh", "/bin/bash", "/bin/psql")
 # Store paths that must never be runtime references of an image.
 BUILD_ONLY = ("rust-", "rustc-", "cargo-", "gcc-wrapper", "binutils", "bash-",
@@ -49,9 +51,13 @@ def check(path):
         assert not any(k in env for k in ("PHYSICIAN_LISTEN_ADDR", "DUET_LISTEN_ADDR")), \
             "listen address must come from Cloud Run's PORT"
         entry = runtime["Entrypoint"]
-        assert entry[0].endswith("/bin/doppler") and entry[1] == "run", entry
-        assert "--no-fallback" in entry, "Doppler must not persist a secret fallback file"
-        assert entry[entry.index("--") + 1] == labels["com.coda.binary"], entry
+        if labels["com.coda.binary"].endswith(SECRET_FREE):
+            # Its identity is the job's service account; no Doppler, no token.
+            assert entry == [labels["com.coda.binary"]], entry
+        else:
+            assert entry[0].endswith("/bin/doppler") and entry[1] == "run", entry
+            assert "--no-fallback" in entry, "Doppler must not persist a secret fallback file"
+            assert entry[entry.index("--") + 1] == labels["com.coda.binary"], entry
         assert not runtime.get("Cmd"), "no implicit arguments"
         paths = set()
         chart_manifest = None

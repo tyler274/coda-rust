@@ -26,12 +26,15 @@ locals {
   # dashboards (env:staging), not the short root key (stg).
   dd_env = { dev = "dev", stg = "staging", prd = "production" }[var.environment]
   # Product-container settings that only infrastructure sets.
-  observability_owned_env = ["DD_ENV", "DD_VERSION", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT"]
-  # Added to the product container only while the sidecar runs.
+  observability_owned_env = ["DD_ENV", "DD_VERSION", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT", "CODA_TELEMETRY_BACKEND"]
+  # Added to the product container only while the sidecar runs. The same
+  # values as infra/gcp/observability's service_telemetry_env output;
+  # telemetry_backend must match that root's choice.
   observability_product_env = local.observability ? {
     OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318"
     CODA_LOG_FORMAT             = "json"
     CODA_TELEMETRY_CONTENT      = "none"
+    CODA_TELEMETRY_BACKEND      = var.telemetry_backend
   } : {}
   # Index 1 of every observed service. Never a dependency of the product
   # container (index 0, release-owned image), so the product starts on its own.

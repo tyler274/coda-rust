@@ -1,7 +1,16 @@
 # Shared local and GKE gateway policy. collector.gke.yaml adds caller auth.
-# Datadog receives operational fields only; Langfuse receives generation content
-# when the producer explicitly enabled it for synthetic traffic. Never forward
-# Cloud Run stdout wholesale: only the explicit OTLP log path is covered here.
+# The operations pipelines (traces/ops, logs/ops) carry operational fields
+# only; Langfuse receives generation content when the producer explicitly
+# enabled it for synthetic traffic. Never forward Cloud Run stdout wholesale:
+# only the explicit OTLP log path is covered here.
+#
+# The operations backend is chosen by one overlay merged LAST:
+#   collector.datadog.yaml  otlp/datadog (Datadog Agent)
+#   collector.grafana.yaml  otlp/tempo + otlphttp/loki
+#   collector.both.yaml     all three independent operations exporters
+#   collector.debug.yaml    debug exporter (local only)
+# Without a backend overlay the ops pipelines export to nop: data is dropped,
+# never sent somewhere unintended.
 extensions:
   health_check:
     endpoint: 0.0.0.0:13133
@@ -78,17 +87,6 @@ processors:
           attributes["gen_ai.usage.output_tokens"] == nil
 
 exporters:
-  otlp/datadog:
-    endpoint: ${env:DATADOG_OTLP_ENDPOINT:-datadog-agent:4317}
-    tls:
-      insecure: true
-    timeout: 5s
-    sending_queue:
-      enabled: true
-      queue_size: 1000
-      block_on_overflow: false
-    retry_on_failure:
-      max_elapsed_time: 30s
   otlphttp/langfuse:
     endpoint: ${env:LANGFUSE_OTLP_ENDPOINT:-http://langfuse-web:3000/api/public/otel}
     auth:
@@ -102,19 +100,20 @@ exporters:
       max_elapsed_time: 30s
   debug:
     verbosity: detailed
+  nop: {}
 
 service:
   extensions: [health_check, basicauth/langfuse]
   pipelines:
-    traces/datadog:
+    traces/ops:
       receivers: [otlp]
       processors: [memory_limiter, transform/strip_content, batch]
-      exporters: [otlp/datadog]
+      exporters: [nop]
     traces/langfuse:
       receivers: [otlp]
       processors: [memory_limiter, filter/langfuse_generations, batch]
       exporters: [otlphttp/langfuse]
-    logs/datadog:
+    logs/ops:
       receivers: [otlp]
       processors: [memory_limiter, transform/strip_log_content, batch]
-      exporters: [otlp/datadog]
+      exporters: [nop]

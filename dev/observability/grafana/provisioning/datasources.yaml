@@ -1,0 +1,73 @@
+# Grafana datasources, shared by the local stack and GKE (infra reads this
+# file). UIDs are fixed: alert rules and cross-links refer to them.
+#
+# The URLs are in-cluster service names, identical locally (compose service
+# names) and on GKE (ClusterIP Services named tempo, loki and prometheus in
+# Grafana's namespace), so no environment value is needed.
+#
+# Grafana expands $VAR / ${VAR} in provisioning files from its environment.
+# `$$` escapes a literal `$`, so Grafana's own link variables below are
+# written `$${__...}`.
+#
+# Links:
+#   Tempo -> Loki     a span opens its logs: same service, trace_id match on
+#                     structured metadata (log bodies carry no ids).
+#   Loki -> Tempo     the trace_id structured-metadata field links to the trace.
+#   Prometheus -> Tempo  span-metric exemplars (label traceID) open the trace.
+apiVersion: 1
+
+datasources:
+  - name: Tempo
+    uid: tempo
+    type: tempo
+    access: proxy
+    url: http://tempo:3200
+    editable: false
+    jsonData:
+      tracesToLogsV2:
+        datasourceUid: loki
+        spanStartTimeShift: -10m
+        spanEndTimeShift: 10m
+        customQuery: true
+        query: '{service_name="$${__span.tags["service.name"]}"} | trace_id="$${__span.traceId}"'
+      tracesToMetrics:
+        datasourceUid: prometheus
+        tags:
+          - key: service.name
+            value: service
+      serviceMap:
+        datasourceUid: prometheus
+      nodeGraph:
+        enabled: true
+      search:
+        hide: false
+      lokiSearch:
+        datasourceUid: loki
+
+  - name: Loki
+    uid: loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    editable: false
+    jsonData:
+      derivedFields:
+        - name: TraceID
+          matcherType: label
+          matcherRegex: trace_id
+          datasourceUid: tempo
+          url: '$${__value.raw}'
+          urlDisplayLabel: Open trace
+
+  - name: Prometheus
+    uid: prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      httpMethod: POST
+      exemplarTraceIdDestinations:
+        - name: traceID
+          datasourceUid: tempo

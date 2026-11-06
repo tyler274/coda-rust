@@ -47,16 +47,33 @@ fn batch_config(queue: usize, batch: usize) -> opentelemetry_sdk::logs::BatchCon
         .build()
 }
 
+/// Install it directly, never as `Option<SafeLogs>`: `Option<Layer>` does not
+/// forward `on_register_dispatch`, which would leave every record without
+/// trace context. [`SafeLogs::for_provider`] covers the no-exporter case.
 pub(crate) struct SafeLogs {
-    logger: SdkLogger,
+    logger: Option<SdkLogger>,
     dispatch: OnceLock<tracing::dispatcher::WeakDispatch>,
 }
 
 impl SafeLogs {
     pub(crate) fn new(provider: &SdkLoggerProvider, service: &'static str) -> Self {
         Self {
-            logger: provider.logger(service),
+            logger: Some(provider.logger(service)),
             dispatch: OnceLock::new(),
+        }
+    }
+
+    /// The layer `init` installs: exporting through `provider`, or nothing.
+    pub(crate) fn for_provider(
+        provider: Option<&SdkLoggerProvider>,
+        service: &'static str,
+    ) -> Self {
+        match provider {
+            Some(provider) => Self::new(provider, service),
+            None => Self {
+                logger: None,
+                dispatch: OnceLock::new(),
+            },
         }
     }
 }
@@ -74,6 +91,9 @@ where
     fn on_event(&self, event: &Event<'_>, ctx: Context<'_, S>) {
         // SDK diagnostics and the HTTP exporter must never feed back into
         // their own queue, including queue-full diagnostics on request threads.
+        let Some(logger) = &self.logger else {
+            return;
+        };
         let target = event.metadata().target();
         if opentelemetry::Context::is_current_telemetry_suppressed()
             || [
@@ -88,7 +108,7 @@ where
         {
             return;
         }
-        let mut record = self.logger.create_log_record();
+        let mut record = logger.create_log_record();
         record.set_body(BODY.into());
         record.set_severity_text(event.metadata().level().as_str());
         record.set_severity_number(match *event.metadata().level() {
@@ -115,7 +135,7 @@ where
             Some(span_context.trace_flags()),
         );
         event.record(&mut SafeFields(&mut record));
-        self.logger.emit(record);
+        logger.emit(record);
     }
 }
 
