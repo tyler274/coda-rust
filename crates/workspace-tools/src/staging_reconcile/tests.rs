@@ -519,6 +519,9 @@ fn modified_plans_and_changed_roots_are_refused_before_apply() {
         assert!(matches!(error, Error::Refused(_)), "{name}: {error}");
         assert!(fake.calls.is_empty(), "{name}: no command ran");
         assert_eq!(manifest(&sandbox).apply, None);
+        let error = verify_in(&sandbox, &mut fake).unwrap_err();
+        assert!(matches!(error, Error::Refused(_)), "{name}: {error}");
+        assert!(fake.calls.is_empty(), "{name}: verify ran no command");
     }
 }
 
@@ -574,7 +577,8 @@ fn verify_passes_with_no_change_plan_and_reviewed_settings() {
     apply_in(&sandbox, &mut Fake::default()).unwrap();
     let mut fake = Fake::default();
     verify_in(&sandbox, &mut fake).unwrap();
-    assert_eq!(fake.stages()[0], Stage::Show);
+    assert_eq!(&fake.stages()[..4], &[Stage::Credentials; 4]);
+    assert_eq!(fake.stages()[4], Stage::Show);
     assert!(fake.stages().contains(&Stage::DriftPlan) && fake.stages().contains(&Stage::Readback));
     let drift = fake
         .calls
@@ -713,30 +717,15 @@ fn workflow_through_real_processes_keeps_passwords_out_of_argv() {
     fs::write(&show, planned(1, false, "ALL_TRAFFIC")).unwrap();
     let service = sandbox.base.join("service.json");
     fs::write(&service, healthy()).unwrap();
-    let script = |name: &str, body: &str| {
+    for name in ["doppler", "tofu", "gcloud"] {
         let path = bin.join(name);
         fs::write(
             &path,
-            format!(
-                "#!/bin/sh\nprintf '%s argv=%s env=%s\\n' {name} \"$*\" \"${{TF_VAR_database_passwords:-none}}\" >> '{}'\n{body}\n",
-                log.display()
-            ),
+            include_bytes!("../../tests/fixtures/staging-reconcile/tool.sh"),
         )
         .unwrap();
         fs::set_permissions(&path, fs::Permissions::from_mode(0o755)).unwrap();
-    };
-    script(
-        "doppler",
-        "case \"$8\" in stg_physician_runtime) echo pr-synthetic-secret;; *) echo \"${8}-synthetic-secret\";; esac",
-    );
-    script(
-        "tofu",
-        &format!(
-            "case \"$2\" in\n init) ;;\n plan) for a; do case \"$a\" in -out=*) printf bytes > \"${{a#-out=}}\";; esac; done; case \"$*\" in *-out=*) exit 2;; esac;;\n show) if [ \"$3\" = -json ]; then cat '{}'; else echo review; fi;;\n apply) ;;\n *) exit 9;;\nesac",
-            show.display()
-        ),
-    );
-    script("gcloud", &format!("cat '{}'", service.display()));
+    }
     let mut runner = ProcessRunner {
         path_prefix: Some(bin.clone()),
     };
@@ -778,11 +767,84 @@ fn workflow_through_real_processes_keeps_passwords_out_of_argv() {
 }
 
 #[test]
+fn exclusive_apply_claim_blocks_a_second_invocation_before_tools() {
+    let sandbox = Sandbox::new("claimed");
+    plan_in(&sandbox, &mut Fake::default()).unwrap();
+    let dir = PlanDir::open(&sandbox.out()).unwrap();
+    dir.write_new("apply-claimed", b"another invocation")
+        .unwrap();
+    let mut fake = Fake::default();
+    assert!(apply_in(&sandbox, &mut fake).is_err());
+    assert!(fake.calls.is_empty());
+}
+
+#[test]
+fn unsupported_automatic_inputs_cannot_bypass_configuration_identity() {
+    for name in [
+        "override.tf.json",
+        "main.tofu",
+        "terraform.tfvars",
+        "secrets.auto.tfvars.json",
+    ] {
+        let sandbox = Sandbox::new("unsupported");
+        fs::write(sandbox.root().join(name), "{}").unwrap();
+        assert!(artifacts::config_digest(&sandbox.root()).is_err(), "{name}");
+    }
+}
+
+#[test]
+fn credential_encoding_error_preserves_safe_source_chain() {
+    use std::error::Error as _;
+    let bytes = vec![0xff, 0xfe];
+    let source = std::str::from_utf8(&bytes).unwrap_err();
+    let error = Error::Credential {
+        role: Role::PhysicianRuntime,
+        reason: CredentialFailure::Encoding(source),
+        diagnostics: Diagnostics::None,
+    };
+    let reason = error.source().expect("credential failure cause");
+    assert!(reason.source().unwrap().is::<std::str::Utf8Error>());
+    assert!(!format!("{error:?}").contains("255, 254"));
+}
+
+#[test]
+fn raw_process_output_debug_is_redacted() {
+    let output = run_of(Exit::Success, "synthetic-password", "synthetic-password");
+    let debug = format!("{output:?}");
+    assert!(!debug.contains("synthetic-password"));
+    assert!(!debug.contains("115, 121, 110"));
+}
+
+#[test]
+fn verify_lookup_failure_precedes_opentofu() {
+    let sandbox = Sandbox::new("verify-credentials");
+    plan_in(&sandbox, &mut Fake::default()).unwrap();
+    let mut fake = Fake::default();
+    fake.doppler.insert(
+        "stg_physician_runtime",
+        run_of(Exit::Code(Some(1)), "", "lookup refused"),
+    );
+    assert!(matches!(
+        verify_in(&sandbox, &mut fake),
+        Err(Error::Credential { .. })
+    ));
+    assert!(
+        fake.calls
+            .iter()
+            .all(|(call, _)| call.program == Program::Doppler)
+    );
+}
+
+#[test]
 fn process_runner_bounds_a_hung_tool() {
     let sandbox = Sandbox::new("timeout");
     let bin = sandbox.base.join("bin");
     fs::create_dir_all(&bin).unwrap();
-    fs::write(bin.join("gcloud"), "#!/bin/sh\nexec sleep 30\n").unwrap();
+    fs::write(
+        bin.join("gcloud"),
+        include_bytes!("../../tests/fixtures/staging-reconcile/hung.sh"),
+    )
+    .unwrap();
     fs::set_permissions(bin.join("gcloud"), fs::Permissions::from_mode(0o755)).unwrap();
     let started = std::time::Instant::now();
     let run = ProcessRunner {

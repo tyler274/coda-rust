@@ -75,6 +75,17 @@ pub(super) fn config_digest(root: &Path) -> Result<Sha256Hex> {
     let mut files: Vec<String> = fs::read_dir(root)?
         .map(|entry| entry.map(|entry| entry.file_name().to_string_lossy().into_owned()))
         .collect::<std::io::Result<_>>()?;
+    if files.iter().any(|name| {
+        name.ends_with(".tf.json")
+            || name.ends_with(".tofu")
+            || name.ends_with(".tofu.json")
+            || name.ends_with(".tfvars")
+            || name.ends_with(".tfvars.json")
+    }) {
+        return Err(refuse(
+            "unsupported root input: use .tf configuration and the explicit env/staging.tfvars only",
+        ));
+    }
     files.retain(|name| name.ends_with(".tf") || name == ".terraform.lock.hcl");
     files.extend([BACKEND_FILE.to_owned(), VAR_FILE.to_owned()]);
     files.sort();

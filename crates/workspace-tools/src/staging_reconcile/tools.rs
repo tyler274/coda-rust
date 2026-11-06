@@ -92,12 +92,20 @@ pub(super) enum Exit {
     Timeout,
 }
 
-#[derive(Debug)]
 pub(super) struct Run {
     pub exit: Exit,
     pub stdout: Vec<u8>,
     pub stderr: Vec<u8>,
     pub elapsed: Duration,
+}
+
+impl std::fmt::Debug for Run {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("Run")
+            .field("exit", &self.exit)
+            .field("elapsed", &self.elapsed)
+            .finish_non_exhaustive()
+    }
 }
 
 pub(super) trait Runner {
@@ -131,6 +139,17 @@ impl Runner for ProcessRunner {
             .env("TF_IN_AUTOMATION", "1")
             .env("TF_INPUT", "0")
             .env_remove(PASSWORDS_ENV);
+        for (key, _) in std::env::vars_os() {
+            let name = key.to_string_lossy();
+            if name.starts_with("TF_") || name.starts_with("TOFU_") {
+                command.env_remove(key);
+            }
+        }
+        command
+            .env("TF_WORKSPACE", "default")
+            .env("TF_IN_AUTOMATION", "1")
+            .env("TF_INPUT", "0")
+            .env("CLOUDSDK_CORE_DISABLE_FILE_LOGGING", "true");
         if let Some(prefix) = &self.path_prefix {
             let mut path = OsString::from(prefix);
             if let Some(existing) = std::env::var_os("PATH") {

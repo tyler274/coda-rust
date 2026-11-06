@@ -66,6 +66,7 @@ enum Error {
     )]
     Credential {
         role: Role,
+        #[source]
         reason: CredentialFailure,
         diagnostics: Diagnostics,
     },
@@ -365,6 +366,11 @@ fn apply(runner: &mut impl Runner, root: &Path, dir: &PlanDir) -> Result<()> {
         return Err(refuse("the reviewed plan has no changes to apply"));
     }
     check_identity(root, dir, &manifest)?;
+    dir.write_new(
+        "apply-claimed",
+        b"Apply claimed. Inspect outcome before planning again.\n",
+    )?;
+    std::fs::File::open(dir.path())?.sync_all()?;
     manifest.stages.push(init(runner, root, dir)?);
     // Recorded before the mutation: a crash leaves `Started`, which means inspect.
     manifest.apply = Some(ApplyState::Started);
@@ -446,13 +452,8 @@ fn verify(runner: &mut impl Runner, root: &Path, dir: &PlanDir) -> Result<()> {
             manifest.apply
         );
     }
-    if artifacts::config_digest(root)? != manifest.config_digest
-        || Backend::read(root)? != manifest.backend
-    {
-        return Err(refuse(
-            "the staging root changed since the reviewed plan; plan and review again",
-        ));
-    }
+    check_identity(root, dir, &manifest)?;
+    let secret = credentials::fetch(runner, dir)?;
     let shown = stage(
         runner,
         dir,
@@ -471,7 +472,6 @@ fn verify(runner: &mut impl Runner, root: &Path, dir: &PlanDir) -> Result<()> {
     )?;
     let expected = readback::expected(&shown.stdout)?;
     drop(shown);
-    let secret = credentials::fetch(runner, dir)?;
     init(runner, root, dir)?;
     let drift = Invocation::tofu(
         root,

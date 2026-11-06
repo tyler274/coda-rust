@@ -50,8 +50,10 @@ pub(super) enum CredentialFailure {
     Lookup(Option<i32>),
     #[error("doppler exceeded its bound")]
     Timeout,
-    #[error("the value is empty or not UTF-8")]
+    #[error("the value is empty")]
     Empty,
+    #[error("the value is not UTF-8: {0}")]
+    Encoding(#[source] std::str::Utf8Error),
 }
 
 /// A credential value. It has no `Display` and its `Debug` is redacted, so it
@@ -106,15 +108,21 @@ pub(super) fn fetch(runner: &mut impl Runner, dir: &PlanDir) -> Result<Secret> {
                 diagnostics,
             });
         }
-        let value = String::from_utf8(output.stdout)
-            .ok()
-            .map(|text| text.trim_end_matches(['\r', '\n']).to_owned())
-            .filter(|text| !text.trim().is_empty())
-            .ok_or(Error::Credential {
+        let value = std::str::from_utf8(&output.stdout)
+            .map_err(|source| Error::Credential {
+                role,
+                reason: CredentialFailure::Encoding(source),
+                diagnostics: Diagnostics::None,
+            })?
+            .trim_end_matches(['\r', '\n'])
+            .to_owned();
+        if value.trim().is_empty() {
+            return Err(Error::Credential {
                 role,
                 reason: CredentialFailure::Empty,
                 diagnostics: Diagnostics::None,
-            })?;
+            });
+        }
         passwords.insert(role.key().into(), value.into());
     }
     Ok(Secret(serde_json::Value::Object(passwords).to_string()))
