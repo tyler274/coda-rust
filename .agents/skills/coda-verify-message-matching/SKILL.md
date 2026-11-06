@@ -24,7 +24,7 @@ Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, 
 
 ## Coverage
 
-The sync commit is e6f21c9e. At that commit, the model describes the README, and the check passed
+The sync commit is 32df2867. At that commit, the model describes the README, and the check passed
 with each journey break below caught. No product code carries the model's steps. When code does, each action's
 comment names that code, and the code joins "When a change needs this". Move the sync commit forward
 only after the check passes and each journey break below is caught again, on a README or code that
@@ -102,6 +102,7 @@ its break at the scope of `MessageMatching.cfg`:
 | Wrong patient | A move again while Undo shows: it stays one move | the second move takes Undo away, so Coda never acts on the move | 6 |
 | Wrong patient | When Undo goes away, Coda acts one time | the second move makes Coda act on the first move at once | 6 |
 | Wrong patient | Coda acts on a move only after Undo goes away, and then always | Undo goes away, but Coda does not act on the move | 6 |
+| Wrong patient | A move back to the patient it was on before ends the move: Undo stops showing, and Coda does nothing | a move back keeps Undo showing, so Coda acts on a move that moved nothing | 6 |
 | Wrong patient | On Undo, a physician who may not access that patient loses it | it stays open for them | 1 |
 | Wrong patient | A message that arrives while Undo shows follows the conversation | it goes to the patient it left | 4 |
 | Wrong patient | Undo takes that message back with the conversation | Undo takes back only the first message | 6 |
@@ -113,7 +114,6 @@ These journey lines rest on records, the channel or the screen, so the model can
 - Scores never show as confidence.
 - A review never reads an unlinked message.
 - Coda never deletes moved messages, and nothing it wrote from them shows again.
-- A move back to the patient it was on before ends the move: Undo stops showing, and Coda does nothing. The model does this, but no rule sees it, since Coda acting on a move that moved nothing changes no record.
 - A message Coda can't read, and the channel stops (rules 8 and 9).
 
 These journey lines are not checked:
