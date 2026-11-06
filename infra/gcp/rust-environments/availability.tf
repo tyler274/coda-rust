@@ -214,7 +214,8 @@ resource "google_cloud_scheduler_job" "availability" {
   time_zone        = "Etc/UTC"
   paused           = !var.availability_probe_schedule_enabled
   attempt_deadline = "30s"
-  retry_config { retry_count = 0 }
+  # No retry_config: the API stores retry_count = 0 (the default) as no
+  # block, so declaring it plans a change forever. Slots never retry.
   http_target {
     http_method = "POST"
     uri         = "${google_cloud_run_v2_service.availability_dispatch[each.key].uri}/dispatch"

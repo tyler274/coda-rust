@@ -871,6 +871,7 @@ run "observability_active" {
     condition = (
       google_cloud_scheduler_job.availability["probe"].paused &&
       google_cloud_scheduler_job.availability["probe"].schedule == "* * * * *" &&
+      length(google_cloud_scheduler_job.availability["probe"].retry_config) == 0 &&
       google_cloud_run_v2_job.availability["probe"].template[0].template[0].vpc_access[0].egress == "ALL_TRAFFIC" &&
       google_cloud_run_v2_job.availability["probe"].template[0].template[0].max_retries == 0
     )
