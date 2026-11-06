@@ -17,14 +17,14 @@ rules 1 to 7. Each `INVARIANT` or `PROPERTY` quotes its README rule.
 | 3 | LinksOnItsOwn | A message joins a patient that nothing confirmed, or a linked conversation moves to a different patient without a physician, so one patient's words go into another patient's record. |
 | 4 | RightPatient | A moved conversation still shows on the patient it left. |
 | 5 | NeverInvisible | A patient message shows to nobody: it stays undecided, or it counts as handled when nobody handled it. |
-| 6 | UndoPutsBack | Undo leaves the conversation or its messages in the wrong place, Undo never goes away, or Coda changes records for a move that the physician then undoes. |
+| 6 | UndoPutsBack | Undo leaves the conversation or its messages in the wrong place, Undo never goes away, Coda changes records for a move that the physician then undoes, or Coda never acts on a move that stands. |
 | 7 | OnlyBetweenTheirPatients | A physician puts a message or a conversation on a patient they may not access, or takes it from one. |
 
 Rules 8 and 9 (the channel stops) are not modeled. They are not order problems, so the model leaves them to tests. No test holds them yet. They stay unverified until the channel code and its tests exist.
 
 ## Coverage
 
-The sync commit is e82cdd05. At that commit, the model describes the README, and the check passed
+The sync commit is e6f21c9e. At that commit, the model describes the README, and the check passed
 with each journey break below caught. No product code carries the model's steps. When code does, each action's
 comment names that code, and the code joins "When a change needs this". Move the sync commit forward
 only after the check passes and each journey break below is caught again, on a README or code that
@@ -33,13 +33,13 @@ changed since it, as `/maintain-formal-verification-skill` describes.
 ## When a change needs this
 
 Run it when a change touches the message-matching README, `MessageMatching.tla`,
-`MessageMatching.cfg`, `Charts.tla`, `chart.cfg`, `chart.mjs`, `chart-move.cfg` or `chart-move.mjs`.
+`MessageMatching.cfg`, `Charts.tla`, or a chart's `.cfg` or `.mjs`.
 
 ## Run
 
 1. Check the model with the pstack `/statechart` skill: `MessageMatching.tla` with
    `MessageMatching.cfg`. It passes when the report lists all seven rules and NoDeadlock under the
-   rules that hold. TLC reaches 1,997 states in about 3 seconds. That is more than the chart budget,
+   rules that hold. TLC reaches 3,349 states in about 2 seconds. That is more than the chart budget,
    so this run draws no chart.
 2. When the README or the model changed, break the model once for each journey line in the table
    below, in a scratch copy. Run each break against each rule on its own. Each break must make the
@@ -52,12 +52,14 @@ Run it when a change touches the message-matching README, `MessageMatching.tla`,
 | --- | --- | --- |
 | chart | with no message | a message links on its own, or waits on Messages to match or Filtered for a physician to link it or leave it unlinked |
 | chart-move | linked to patient A, open for a physician who may access only A | you move it to patient B or to not a patient, then press Undo or let Undo go away, and the patient writes again while Undo shows |
+| chart-move-again | as chart-move | you move it, then move it again while Undo shows or after Undo goes away |
 
 Each `.mjs` says what its chart leaves out.
 
 ## Bounds and assumptions
 
-- The model header gives the scope: two patients, two physicians, two messages and one move.
+- The model header gives the scope: two patients, two physicians, two messages and two moves.
+- Only the physician whose Undo shows can move the conversation again in those few seconds. Another physician moving it then is not modeled.
 - The config declares no symmetry, so that TLC checks the time properties in rules 5 and 6 on every state.
 - Which patients each physician may access is open in P2. It is an input, and TLC sets it in every way in which each patient is someone's. Access does not change during a run.
 - Which physicians see a message before it is linked is also open in P2. The model lets a physician act on it, and checks rule 2 for every physician. Who sees Messages to match follows P2.
@@ -96,6 +98,10 @@ its break at the scope of `MessageMatching.cfg`:
 | Wrong patient | Undo puts everything back: where it shows | it still shows on the new patient | 6 |
 | Wrong patient | Undo puts everything back: its messages | the messages stay not a patient | 6 |
 | Wrong patient | Undo puts everything back: Coda never acts on the undone move | pressing Undo also makes Coda act on the move | 6 |
+| Wrong patient | A move again while Undo shows: Undo still goes back to the patient before the first move | the second move replaces the Undo, so Undo goes back only to the patient between the moves | 6 |
+| Wrong patient | A move again while Undo shows: it stays one move | the second move takes Undo away, so Coda never acts on the move | 6 |
+| Wrong patient | When Undo goes away, Coda acts one time | the second move makes Coda act on the first move at once | 6 |
+| Wrong patient | Coda acts on a move only after Undo goes away, and then always | Undo goes away, but Coda does not act on the move | 6 |
 | Wrong patient | On Undo, a physician who may not access that patient loses it | it stays open for them | 1 |
 | Wrong patient | A message that arrives while Undo shows follows the conversation | it goes to the patient it left | 4 |
 | Wrong patient | Undo takes that message back with the conversation | Undo takes back only the first message | 6 |
@@ -107,6 +113,7 @@ These journey lines rest on records, the channel or the screen, so the model can
 - Scores never show as confidence.
 - A review never reads an unlinked message.
 - Coda never deletes moved messages, and nothing it wrote from them shows again.
+- A move back to the patient it was on before ends the move: Undo stops showing, and Coda does nothing. The model does this, but no rule sees it, since Coda acting on a move that moved nothing changes no record.
 - A message Coda can't read, and the channel stops (rules 8 and 9).
 
 These journey lines are not checked:
