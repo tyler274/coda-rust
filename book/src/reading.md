@@ -28,7 +28,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Coda's Chrome extension and its EHR reads, Hint first | <a href="/extension/README%2Emd">Chrome extension</a> |
 | Gym cases, promotion and runs | <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |
 | Shared execution and product boundaries | <a href="/intent/harness%2Emd">Harness spec</a>, [crate map](crate-map.md) |
-| Feature models, design decisions and their checks | <a href="/verification/README%2Emd">Verification</a>, <a href="/verification/physician/sign-in/README%2Emd">physician sign-in</a> |
+| Feature models and their checks | <a href="/verification/README%2Emd">Verification</a> |
 | Synthetic patients for running Coda | [Synthetic patients](patient-bank.md) |
 | Builds, deployment and diagnostics | [Release](release.md), [GCP](gcp.md), [observability](observability.md) |
 | Dev container setup, ports and storage | <a href="/README%2Emd#dev-container">Dev container</a> |

@@ -33,11 +33,8 @@ use required_auth::{STAGING_EMAIL, spawn_required_server};
 /// another physician's session.
 const ANOTHER_EMAIL: &str = "another.physician@codahealth.test";
 
-/// Paths on which the code once broke a rule the model holds: a tab opened at
-/// a patient link while signed out, following another tab's sign-in, still
-/// lands on the patient; a sign-in page that followed another tab's sign-in
-/// and then signed out doesn't redeem its link again; and that opening tab,
-/// when a sign-out came between, opens Today.
+/// Paths on which code can break a rule the model holds. A path joins only
+/// after it fails on the code it guards.
 const BUG_PATHS: &str = r#"[
   ["open a patient link in tab A", "open your sign-in link in tab B", "Coda signs in the link in tab B",
    "this tab hears the news in tab A", "Coda answers the read in tab A"],
@@ -46,7 +43,18 @@ const BUG_PATHS: &str = r#"[
    "this tab hears the news in tab A", "sign out in tab A"],
   ["open a patient link in tab A", "open your sign-in link in tab B", "Coda signs in the link in tab B",
    "Coda answers who signed in in tab B", "sign out in tab B", "open your sign-in link in tab B",
-   "Coda signs in the link in tab B", "this tab hears the news in tab A", "Coda answers the read in tab A"]
+   "Coda signs in the link in tab B", "this tab hears the news in tab A", "Coda answers the read in tab A"],
+  ["open Coda in tab A", "open your sign-in link in tab B", "sign out in tab A", "Coda signs in the link in tab B",
+   "Coda answers who signed in in tab B", "Coda answers the read in tab B", "Session 1 expires",
+   "Coda answers the read in tab B", "this tab hears the news in tab B"],
+  ["open your sign-in link in tab B", "Coda signs in the link in tab B", "Coda answers who signed in in tab B",
+   "Session 1 expires", "open a patient link in tab A", "Coda answers the read in tab A",
+   "open another physician's sign-in link in tab B", "Coda checks the link in tab B",
+   "Coda signs in the link in tab B", "this tab hears the news in tab A", "Coda answers the read in tab A"],
+  ["open a patient link in tab B", "open another physician's sign-in link in tab A", "Coda signs in the link in tab A",
+   "Session 1 expires", "open your sign-in link in tab A", "Coda can't reach sign-in in tab A",
+   "open your sign-in link in tab A", "Coda checks the link in tab A", "Coda signs in the link in tab A",
+   "this tab hears the news in tab B", "Coda answers the read in tab B"]
 ]"#;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
@@ -129,7 +137,7 @@ struct Walker {
     address: std::net::SocketAddr,
     base: String,
     /// The real session behind each of the model's sessions.
-    slots: [Option<String>; 3],
+    slots: Vec<Option<String>>,
 }
 
 impl Walker {
@@ -184,7 +192,7 @@ impl Walker {
             b,
             address,
             base: format!("http://{address}"),
-            slots: Default::default(),
+            slots: Vec::new(),
         }
     }
 
@@ -193,6 +201,8 @@ impl Walker {
     }
 
     fn walk(mut self, start: &ModelState, steps: &[Step]) {
+        // The model's config sets how many sessions Coda starts in a run.
+        self.slots = vec![None; start.keys().filter(|k| k.starts_with("session.")).count()];
         let mut before = start.clone();
         for (n, step) in steps.iter().enumerate() {
             self.act(&step.event, &before, &step.state);
@@ -248,7 +258,7 @@ impl Walker {
             "use another email" => self.click_text(&t, "Use a different email"),
             "Coda checks the link" | "Coda answers who signed in" => self.answer(&t, "whoami", before),
             "Coda signs in the link" => {
-                let slot = (0..3).find(|&i| before[&format!("session.Session {}", i + 1)] == "Not signed in yet"
+                let slot = (0..self.slots.len()).find(|&i| before[&format!("session.Session {}", i + 1)] == "Not signed in yet"
                     && after[&format!("session.Session {}", i + 1)] != "Not signed in yet").expect("a new session");
                 let verified = mint(self.address);
                 self.slots[slot] = Some(verified["session"].as_str().unwrap().to_owned());
@@ -276,7 +286,7 @@ impl Walker {
             "this tab hears the news" => { self.tab(&t).evaluate("window.__coda.hear()"); }
             "the practice removes your access" => {
                 // Coda ends the event stream of every workspace on your live sessions.
-                for i in 0..3 {
+                for i in 0..self.slots.len() {
                     if before[&format!("session.Session {}", i + 1)] == "Yours, live" && let Some(token) = self.slots[i].clone() {
                         for t in ["A", "B"] {
                             let page = self.tab(t);
