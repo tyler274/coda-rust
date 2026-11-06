@@ -57,7 +57,7 @@ class RootTests(unittest.TestCase):
         self.assertEqual(commands, [
             ['nix', 'build', '--no-link', '--json', '--no-update-lock-file',
              *[f'.#{r}' for r in roots.ROOTS]],
-            ['nix', 'flake', 'archive', '--json', '--dry-run', '--no-update-lock-file']])
+            ['nix', 'flake', 'archive', '--json', '--no-update-lock-file']])
 
     def test_checkout_checks_full_sha_head_and_untracked_files(self):
         sha = 'a' * 40

@@ -47,6 +47,16 @@ def flake_inputs(archive):
     return found
 
 
+def locked_inputs():
+    # Not --dry-run: that only reports paths. A fresh store may lack them, since
+    # Nix can unpack git-type inputs (crane, rust-overlay) into its fetcher cache
+    # alone. Archiving copies every input into the store or fails.
+    archive = json.loads(subprocess.run(
+        ['nix', 'flake', 'archive', '--json', '--no-update-lock-file'],
+        cwd=ROOT, stdout=subprocess.PIPE, check=True, text=True).stdout)
+    return flake_inputs(archive)
+
+
 def build(output):
     # Do not accept arbitrary installables; both writers use exactly this list.
     results = json.loads(subprocess.run(
@@ -55,10 +65,7 @@ def build(output):
         check=True, text=True).stdout)
     # Readers substitute these instead of downloading GitHub tarballs, so an
     # evaluation does not wait on github.com (book/src/release.md).
-    archive = json.loads(subprocess.run(
-        ['nix', 'flake', 'archive', '--json', '--dry-run', '--no-update-lock-file'],
-        cwd=ROOT, stdout=subprocess.PIPE, check=True, text=True).stdout)
-    results.append({'flakeInputs': flake_inputs(archive)})
+    results.append({'flakeInputs': locked_inputs()})
     output.write_text(json.dumps(results))
 
 
