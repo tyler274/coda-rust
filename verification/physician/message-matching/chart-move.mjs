@@ -11,9 +11,9 @@ export const title = "You move a conversation to the right place";
 const where = (v) => (v.link === "Not a patient" ? "Not a patient" : `On ${v.link}`);
 
 export const state = (v) => {
-  const undo = v.undo.by !== "Nobody" ? ", Undo shows" : v.acted ? ", Coda acted on the move" : "";
+  const undo = v.undo.by !== "Nobody" ? `, Undo shows (back to ${v.undo.from})` : v.acted ? ", Coda acted on the move" : "";
   const other = v.viewing.includes("another physician") ? "the other physician has it open" : "closed for the other physician";
-  const news = { "Not written": "", "Coda decides": "; a new message, Coda decides (shows nowhere)" }[v.msg[2]] ?? "; a new message in it";
+  const news = { undefined: "", "Not written": "", "Coda decides": "; a new message, Coda decides (shows nowhere)" }[v.msg[2]] ?? "; a new message in it";
   return `${where(v)}${undo}; ${other}${news}`;
 };
 
@@ -26,7 +26,7 @@ const steps = {
 };
 
 export const step = (action, from, to) =>
-  action === "Move" ? (to.link === "Not a patient" ? "you move it to not a patient" : "you move it to patient B")
+  action === "Move" ? (to.link === "Not a patient" ? "you move it to not a patient" : `you move it to ${to.link}`)
     : steps[action] ?? null;
 
 export const group = (v) => (v.undo.by !== "Nobody" ? "Undo shows" : v.link === "patient A" ? "On patient A" : "Moved");

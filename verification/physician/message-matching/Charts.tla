@@ -31,4 +31,10 @@ MoveSteps ==
   /\ event'.name \notin {"you open the conversation", "you close the conversation",
                          "Coda decides it isn't from a patient"}
   /\ event'.name = "the patient writes" => undo.by # Nobody
+
+\* chart-move-again.cfg: from the same moment, you move the conversation, and move it again while Undo
+\* shows or after it goes away. Nobody writes, and the other physician does not move it.
+MoveAgainSteps ==
+  /\ event'.who \in {"you", Coda}
+  /\ event'.name \notin {"you open the conversation", "you close the conversation"}
 =============================================================================

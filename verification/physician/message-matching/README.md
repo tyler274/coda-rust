@@ -7,7 +7,7 @@ How a patient's message in the practice's channel gets to the right patient in C
 - **Conversation:** a thread in the channel between the practice and a patient, or a person who writes for the patient. It is linked to one patient at most.
 - **Linked:** a conversation is linked to a patient. Its messages join the record of that patient.
 - **Suggestion:** the patient Coda thinks a waiting message is from.
-- **Move:** a physician puts a linked conversation on a different patient, or on not a patient.
+- **Move:** a physician puts a linked conversation on a different patient, or on not a patient. When they move it again while Undo shows, that is part of the same move.
 - **Coda acts on a move:** Coda marks the moved messages entered in error, removes what it wrote from them, and starts one review for each patient the move affects.
 - **Handled:** a patient message is handled when it is left unlinked or not from a patient, or when a completed disconnect deleted it. A linked message is handled as [the reply](../message-reply/README.md#words) says. Until then, it shows on its patient.
 
@@ -46,6 +46,7 @@ Wrong patient:
 - A physician who may access the patient moves a linked conversation to a different patient they may access, or to not a patient. The full conversation moves, and later messages follow it.
 - At once, nothing of the conversation, and nothing Coda wrote from it, shows on the patient it left. A physician who may not access the new patient loses it.
 - For a few seconds, Undo shows. Coda acts on the move only after Undo goes away, so Undo puts everything back as it was. A physician who may not access the patient it goes back to loses it.
+- If the physician moves it again while Undo shows, Undo still goes back to the patient it was on before the first move. When Undo goes away, Coda acts one time, on where the conversation is then. If they move it back to that patient, there is no move: Undo stops showing, and Coda does nothing.
 - A message that arrives while Undo shows follows the conversation. Undo takes that message back with the conversation.
 - Coda never deletes moved messages. Nothing Coda wrote from them shows again.
 
@@ -66,7 +67,7 @@ The channel stops:
 3. A message joins only the patient its conversation is linked to. A conversation that is not linked yet links on its own only when its sender is confirmed for exactly one patient or the channel ties it to exactly one patient, and nothing points to a different patient.
 4. After a conversation moves to a different patient, nothing of it stays readable on the patient it left.
 5. After Coda decides, or after 15 minutes, every patient message shows to a physician who can act on it until it is handled.
-6. Undo puts the conversation back on the patient it left, and Coda acts on a move only after Undo goes away.
+6. Undo puts the conversation back on the patient it was on before the move. Coda acts on a move only after Undo goes away, and then it always acts on it.
 7. A physician links a message, or moves a conversation, only between patients they may access.
 8. While Coda can't read the channel, Today says so.
 9. A completed disconnect leaves no message that was never linked to a patient.

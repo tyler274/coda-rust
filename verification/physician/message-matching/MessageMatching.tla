@@ -21,7 +21,9 @@
 (* judgment: here each is a choice. The choice of sender and channel is  *)
 (* made each time Coda links, since a contact can be saved between        *)
 (* messages, and the step records it. The time for Undo is one step,      *)
-(* "Undo goes away", which can come at any moment.                          *)
+(* "Undo goes away", which can come at any moment. A physician who moves   *)
+(* it again while their Undo shows makes the same move. Another physician *)
+(* moving it in those few seconds is not modeled.                          *)
 (*                                                                         *)
 (* Which patients each physician may access is open (P2), so it is an    *)
 (* input: TLC checks the rules for every setting in which each patient   *)
@@ -47,7 +49,8 @@ EXTENDS Naturals, Sequences, FiniteSets, TLC
 \* MessageMatching.cfg sets the scope: two patients, so a message can get to the wrong one and move to
 \* a patient a physician may not access; two physicians, so access is different for each; two patient
 \* messages, so a later message can follow the link, arrive during Undo, or wait again after one is
-\* left unlinked; and one move. chart.cfg and chart-move.cfg set smaller scopes, and Charts.tla the
+\* left unlinked; and two moves, so a physician can move it again while Undo shows, or after it goes
+\* away. chart.cfg and chart-move.cfg set smaller scopes, and Charts.tla the
 \* moment and the steps of each chart.
 
 CONSTANTS Patients, Physicians, MaxMessages, MaxMoves
@@ -75,7 +78,7 @@ VARIABLES
   on,       \* the patients the conversation shows on
   shown,    \* the suggestion each physician sees on Messages to match
   viewing,  \* the physicians who have the conversation open
-  undo,     \* the Undo of a move: who may use it, and the patient it goes back to
+  undo,     \* the Undo of a move: who may use it, and the patient it was on before the move
   moves,    \* how many moves there have been
   acted,    \* Coda has acted on the last move
   event
@@ -218,23 +221,27 @@ CloseIt(d) ==
 (* to a different patient they may access, or to not a patient. At once  *)
 (* it shows only in its new place, its messages follow it, and a          *)
 (* physician who may not access the new patient loses it. Undo shows, and *)
-(* Coda does not act on the move yet.                                       *)
+(* Coda does not act on the move yet. A move again while Undo shows is the *)
+(* same move, so Undo still goes back to where it was before. A move back *)
+(* to there ends the move: Undo stops showing, and Coda does nothing.      *)
 Move(d, q) ==
   /\ link \in Patients /\ link \in access[d] /\ moves < MaxMoves
+  /\ undo.by \in {Nobody, d}
   /\ q \in (access[d] \cup {NotPatient}) \ {link}
   /\ link' = q
   /\ on' = {q} \cap Patients
   /\ msg' = IF q = NotPatient THEN [i \in Messages |-> IF msg[i] = Linked THEN NotAPatient ELSE msg[i]] ELSE msg
   /\ viewing' = StillOpen(q)
-  /\ undo' = [by |-> d, from |-> link]
+  /\ undo' = IF undo.by = d /\ q = undo.from THEN NoUndo
+             ELSE [by |-> d, from |-> IF undo.by = d THEN undo.from ELSE link]
   /\ moves' = moves + 1
   /\ acted' = FALSE
   /\ UNCHANGED <<access, shown>>
   /\ Ev(IF q = NotPatient THEN "you move it to not a patient" ELSE "you move it to the other patient", d)
 
-(* Undo puts the conversation back on the patient it left, with every     *)
-(* message, also one that arrived while Undo showed. A physician who may *)
-(* not access that patient loses it.                                        *)
+(* Undo puts the conversation back on the patient it was on before the    *)
+(* move, with every message, also one that arrived while Undo showed. A  *)
+(* physician who may not access that patient loses it.                    *)
 UndoIt(d) ==
   /\ undo.by = d
   /\ link' = undo.from
@@ -314,11 +321,14 @@ NeverInvisible ==
   /\ [][\A i \in Messages : (msg[i] # msg'[i] /\ msg'[i] \in {Unlinked, Filtered, NotAPatient}) => HandledBy(i)]_vars
   /\ \A i \in Messages : msg[i] = Deciding ~> msg[i] # Deciding
 
-\* 6. Undo puts the conversation back on the patient it left, and Coda acts on a move only after Undo
-\* goes away.
+\* 6. Undo puts the conversation back on the patient it was on before the move. Coda acts on a move only
+\* after Undo goes away, and then it always acts on it.
 UndoPutsBack ==
   /\ [][/\ (event'.name = "you press Undo" =>
                link' = undo.from /\ on' = {undo.from} /\ (\A i \in Messages : msg'[i] # NotAPatient) /\ ~acted')
+         /\ (undo.by # Nobody /\ undo'.by # Nobody => undo'.from = undo.from)
+         /\ (undo.by # Nobody /\ undo'.by = Nobody => link' = undo.from \/ event'.name = "Undo goes away, and Coda acts on the move")
+         /\ (event'.name = "Undo goes away, and Coda acts on the move" => acted')
          /\ (~acted /\ acted' => event'.name = "Undo goes away, and Coda acts on the move")
          /\ (undo'.by # Nobody => ~acted')]_vars
   /\ undo.by # Nobody ~> undo.by = Nobody
