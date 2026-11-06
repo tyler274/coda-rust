@@ -154,7 +154,7 @@ class Contract(unittest.TestCase):
         # Only physician keeps a minimum instance, and only while its queue exists.
         self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
 
-    def test_worker_is_internal_and_push_invoked_only(self):
+    def test_worker_is_internal_and_invoked_only_by_push_and_probe(self):
         workloads = config_text("workloads.tf")
         worker = resource_blocks(workloads, "google_cloud_run_v2_service")["physician_worker"]
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
@@ -162,7 +162,12 @@ class Contract(unittest.TestCase):
         self.assertRegex(worker, r"iap_enabled\s+= false")
         self.assertEqual(len(re.findall(r"cpu_idle\s+= true\n", worker)), 2)
         invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
-        self.assertIn('members  = ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"]', invoker)
+        members = invoker.split("members", 1)[1]
+        self.assertEqual(
+            re.sub(r"\s+", " ", members).strip(),
+            '= concat( ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"], '
+            '[for identity in google_service_account.availability : "serviceAccount:${identity.email}"], )',
+        )
         # No additive run.invoker grant may widen the authoritative binding.
         for kind in ["google_cloud_run_v2_service_iam_member", "google_cloud_run_service_iam_member", "google_project_iam_member"]:
             for name, body in resource_blocks(config_text(), kind).items():
