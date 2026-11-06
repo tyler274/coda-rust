@@ -478,7 +478,7 @@ impl<B> OnResponse<B> for RecordStatus {
         if status >= 500 {
             span.record("otel.status_code", "ERROR");
         }
-        tracing::debug!(
+        tracing::info!(
             parent: span,
             status,
             latency_ms = u64::try_from(latency.as_millis()).unwrap_or(u64::MAX),
