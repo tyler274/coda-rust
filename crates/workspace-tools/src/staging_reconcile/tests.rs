@@ -793,6 +793,24 @@ fn unsupported_automatic_inputs_cannot_bypass_configuration_identity() {
 }
 
 #[test]
+fn pre_epoch_clock_error_preserves_its_typed_cause() {
+    use std::error::Error as _;
+    let error = unix_seconds(UNIX_EPOCH - Duration::from_secs(1)).unwrap_err();
+    let source = error.source().expect("typed clock error source");
+    assert_eq!(
+        source
+            .downcast_ref::<std::time::SystemTimeError>()
+            .unwrap()
+            .duration(),
+        Duration::from_secs(1)
+    );
+    assert_eq!(
+        unix_seconds(UNIX_EPOCH + Duration::from_secs(42)).unwrap(),
+        42
+    );
+}
+
+#[test]
 fn credential_encoding_error_preserves_safe_source_chain() {
     use std::error::Error as _;
     let bytes = vec![0xff, 0xfe];

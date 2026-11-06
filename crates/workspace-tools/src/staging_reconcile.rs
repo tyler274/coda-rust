@@ -60,6 +60,8 @@ enum Error {
     Io(#[from] std::io::Error),
     #[error("invalid JSON: {0}")]
     Json(#[from] serde_json::Error),
+    #[error("system clock precedes the Unix epoch: {0}")]
+    Clock(#[from] std::time::SystemTimeError),
     #[error(
         "Doppler lookup for {role} ({config}) failed: {reason}. No OpenTofu command ran{diagnostics}",
         config = role.doppler_config()
@@ -555,8 +557,11 @@ fn read_settled(runner: &mut impl Runner, dir: &PlanDir) -> Result<readback::Ser
 }
 
 fn now() -> Result<u64> {
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
+    unix_seconds(SystemTime::now())
+}
+
+fn unix_seconds(time: SystemTime) -> Result<u64> {
+    time.duration_since(UNIX_EPOCH)
         .map(|elapsed| elapsed.as_secs())
-        .map_err(|error| refuse(format!("system clock precedes the Unix epoch: {error}")))
+        .map_err(Error::from)
 }
