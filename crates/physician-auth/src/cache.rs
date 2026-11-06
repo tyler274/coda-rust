@@ -8,8 +8,9 @@
 //!
 //! - a revocation through this store clears the cache before it returns, so a
 //!   replica reads its own writes. An idle slide drops only that session;
-//! - a write from any replica fires the `physician_authority` trigger, and
-//!   the [`follow`] task's `LISTEN` turns it into a new feed generation;
+//! - a revocation from any replica fires the `physician_authority` trigger,
+//!   and the [`follow`] task's `LISTEN` turns it into a new feed generation.
+//!   A session update is an idle slide and does not notify;
 //! - while that listener is disconnected the feed is not live and every read
 //!   goes to the database, because notifications sent during the gap are lost;
 //! - every entry also expires after [`ENTRY_TTL`], bounding staleness should a

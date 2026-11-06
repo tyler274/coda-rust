@@ -17,6 +17,7 @@ fn names_are_stable_and_distinct() {
             "physician_auth_20261023_000003_unique_physician_identity",
             "physician_auth_20261024_000004_authority_notify",
             "physician_auth_20261030_000005_practices",
+            "physician_auth_20261106_000006_session_lifetime",
         ]
     );
 }
@@ -87,7 +88,7 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
                 .unwrap()
                 .try_get::<i64>("", "n")
                 .unwrap();
-            assert_eq!(count, 5);
+            assert_eq!(count, 6);
             assert!(
                 SchemaManager::new(&db)
                     .has_table("physician_patients")
@@ -126,4 +127,117 @@ async fn postgres_fresh_upgrade_and_partial_schema_regressions() {
             .await
             .unwrap();
     }
+}
+
+#[tokio::test]
+async fn old_thirty_day_sessions_become_twelve_hours_and_updates_do_not_notify() {
+    let base = std::env::var("PHYSICIAN_TEST_DATABASE_URL").expect("loopback PostgreSQL required");
+    let admin = Database::connect(&base).await.unwrap();
+    let schema = format!(
+        "physician_session_lifetime_{}",
+        uuid::Uuid::new_v4().simple()
+    );
+    admin
+        .execute_unprepared(&format!("CREATE SCHEMA {schema}"))
+        .await
+        .unwrap();
+    let separator = if base.contains('?') { '&' } else { '?' };
+    let url = format!("{base}{separator}options=-csearch_path%3D{schema}");
+    let db = Database::connect(&url).await.unwrap();
+    migration::migrate(&db).await.unwrap();
+    // A database that already applied the old trigger still notifies on UPDATE.
+    db.execute_unprepared(
+        "DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions; \
+         CREATE TRIGGER physician_sessions_authority_notify \
+         AFTER UPDATE OR DELETE OR TRUNCATE ON physician_sessions \
+         FOR EACH STATEMENT EXECUTE FUNCTION physician_authority_notify();",
+    )
+    .await
+    .unwrap();
+    db.execute_unprepared(
+        "INSERT INTO physician_accounts(id,practice_id,physician_id,email,display_name,created_at) \
+         VALUES('00000000-0000-0000-0000-000000000010','p','d','lifetime@example.test','Lifetime',1000)",
+    )
+    .await
+    .unwrap();
+    db.execute_unprepared(
+        "INSERT INTO physician_sessions(account_id,token_hash,created_at,expires_at) VALUES \
+         ('00000000-0000-0000-0000-000000000010', decode(repeat('11', 32), 'hex'), 1000, 1000 + 2592000), \
+         ('00000000-0000-0000-0000-000000000010', decode(repeat('22', 32), 'hex'), 2000, 2000 + 43200), \
+         ('00000000-0000-0000-0000-000000000010', decode(repeat('33', 32), 'hex'), 3000, 3000 + 1000)",
+    )
+    .await
+    .unwrap();
+
+    let repair = migration::m20261106_000006_session_lifetime;
+    let manager = SchemaManager::new(&db);
+    repair.up(&manager).await.unwrap();
+    assert_eq!(
+        session_deadlines(&db).await,
+        vec![
+            (1000, 1000 + 43200),
+            (2000, 2000 + 43200),
+            (3000, 3000 + 1000)
+        ]
+    );
+    assert!(
+        !session_trigger(&db).await.to_uppercase().contains("UPDATE"),
+        "a session update is an idle slide and must not notify"
+    );
+    repair.up(&manager).await.unwrap();
+    assert_eq!(
+        session_deadlines(&db).await,
+        vec![
+            (1000, 1000 + 43200),
+            (2000, 2000 + 43200),
+            (3000, 3000 + 1000)
+        ]
+    );
+    let trigger = session_trigger(&db).await.to_uppercase();
+    assert!(trigger.contains("DELETE"));
+    assert!(trigger.contains("TRUNCATE"));
+    assert!(!trigger.contains("UPDATE"));
+
+    db.close().await.unwrap();
+    admin
+        .execute_unprepared(&format!("DROP SCHEMA {schema} CASCADE"))
+        .await
+        .unwrap();
+}
+
+async fn session_deadlines(db: &sea_orm::DatabaseConnection) -> Vec<(i64, i64)> {
+    let rows = db
+        .query_all_raw(Statement::from_string(
+            DbBackend::Postgres,
+            "SELECT created_at, expires_at FROM physician_sessions ORDER BY created_at".to_owned(),
+        ))
+        .await
+        .unwrap();
+    rows.into_iter()
+        .map(|row| {
+            (
+                row.try_get("", "created_at").unwrap(),
+                row.try_get("", "expires_at").unwrap(),
+            )
+        })
+        .collect()
+}
+
+async fn session_trigger(db: &sea_orm::DatabaseConnection) -> String {
+    db.query_one_raw(Statement::from_string(
+        DbBackend::Postgres,
+        "SELECT pg_get_triggerdef(t.oid) AS def \
+         FROM pg_trigger t \
+         JOIN pg_class c ON c.oid = t.tgrelid \
+         JOIN pg_namespace n ON n.oid = c.relnamespace \
+         WHERE t.tgname = 'physician_sessions_authority_notify' \
+           AND NOT t.tgisinternal \
+           AND n.nspname = current_schema()"
+            .to_owned(),
+    ))
+    .await
+    .unwrap()
+    .unwrap()
+    .try_get("", "def")
+    .unwrap()
 }
