@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 
-FULL_JOBS = ("ci", "foundations", "images", "postgres", "observability", "cargo-deny")
+FULL_JOBS = ("ci", "foundations", "images", "postgres-image", "postgres", "observability", "cargo-deny")
 
 
 def lightweight_path(path):

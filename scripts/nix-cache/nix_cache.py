@@ -359,6 +359,10 @@ def selected_paths(paths, build_json):
     if build_json:
         try:
             for result in json.loads(Path(build_json).read_text()):
+                if 'flakeInputs' in result:
+                    # Locked flake input sources (nix_cache_roots.build): plain store paths.
+                    roots.extend(result['flakeInputs'].values())
+                    continue
                 roots.append(result['drvPath'])
                 roots.extend(result['outputs'].values())
         except (KeyError, TypeError, ValueError):

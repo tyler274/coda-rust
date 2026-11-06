@@ -214,10 +214,28 @@ class ResultTests(unittest.TestCase):
     def test_gate_covers_every_validation_job_and_deployment_consumes_gate(self):
         # This is a workflow topology contract, not a copy of the job inventory.
         # The cache publisher follows images and must not delay the gate.
+        # Temporary qualification is not an ordinary validator. Exclude only
+        # this named job, after proving it is opt-in manual routing and that
+        # push/PR/schedule/default manual runs retain the normal result gate.
+        # Remove this exception with the temporary probe workflow and inputs.
+        ordinary = ("github.event_name != 'workflow_dispatch' || "
+                    "inputs.postgres_probe == 'none' || inputs.postgres_probe == ''")
+        probe = self.jobs["postgres-probe"]
+        self.assertEqual(probe["if"],
+                         "github.event_name == 'workflow_dispatch' && "
+                         "inputs.postgres_probe != 'none' && inputs.postgres_probe != ''")
+        self.assertEqual(probe["uses"], "./.github/workflows/postgres-image-probe.yml")
+        workflow = yaml.safe_load(WORKFLOW.read_text())
+        dispatch = workflow[True]["workflow_dispatch"]["inputs"]["postgres_probe"]
+        self.assertEqual(dispatch["default"], "none")
+        self.assertEqual(dispatch["options"], ["none", "baseline", "A", "B", "C"])
+        self.assertEqual(self.jobs["scope"]["if"], ordinary)
+        self.assertEqual(self.jobs["lightweight"]["if"], ordinary)
         validators = {name for name, job in self.jobs.items()
-                      if name not in {"result", "nix-cache-publish"} and not name.startswith("deploy-")}
+                      if name not in {"result", "nix-cache-publish", "postgres-probe"}
+                      and not name.startswith("deploy-")}
         self.assertEqual(set(self.dependencies), validators)
-        self.assertEqual(self.jobs["result"]["if"], "always()")
+        self.assertEqual(self.jobs["result"]["if"], f"always() && ({ordinary})")
         for name, job in self.jobs.items():
             if name.startswith("deploy-"):
                 self.assertIn("result", job["needs"], name)

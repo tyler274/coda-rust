@@ -36,12 +36,30 @@ def verify_checkout(expected_sha):
         raise ValueError('Checkout must be clean, including untracked files')
 
 
+def flake_inputs(archive):
+    """Locked input sources from `nix flake archive --json`, without the repository itself."""
+    found = {}
+    def walk(inputs, prefix):
+        for name, node in inputs.items():
+            found[prefix + name] = node['path']
+            walk(node.get('inputs', {}), f'{prefix}{name}/')
+    walk(archive.get('inputs', {}), '')
+    return found
+
+
 def build(output):
     # Do not accept arbitrary installables; both writers use exactly this list.
-    with output.open('w') as target:
-        subprocess.run(
-            ['nix', 'build', '--no-link', '--json', '--no-update-lock-file',
-             *[f'.#{name}' for name in ROOTS]], cwd=ROOT, stdout=target, check=True)
+    results = json.loads(subprocess.run(
+        ['nix', 'build', '--no-link', '--json', '--no-update-lock-file',
+         *[f'.#{name}' for name in ROOTS]], cwd=ROOT, stdout=subprocess.PIPE,
+        check=True, text=True).stdout)
+    # Readers substitute these instead of downloading GitHub tarballs, so an
+    # evaluation does not wait on github.com (book/src/release.md).
+    archive = json.loads(subprocess.run(
+        ['nix', 'flake', 'archive', '--json', '--dry-run', '--no-update-lock-file'],
+        cwd=ROOT, stdout=subprocess.PIPE, check=True, text=True).stdout)
+    results.append({'flakeInputs': flake_inputs(archive)})
+    output.write_text(json.dumps(results))
 
 
 def smoke(build_json, output):
