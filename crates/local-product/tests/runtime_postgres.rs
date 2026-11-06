@@ -131,7 +131,8 @@ impl engine::Provider for Provider {
         Ok(50)
     }
     async fn complete(&mut self, request: engine::Request<'_>) -> Result<engine::Turn, String> {
-        assert_eq!(request.context.tools.len(), 2);
+        // The zero tool-call budget removes even the host's read tools.
+        assert!(request.context.tools.is_empty());
         assert!(request.context.items.iter().any(|i| matches!(i, engine::Item::Message { role, text } if role == "user" && text.contains("Exact input"))));
         if request.ordinal == 1 {
             return Ok(engine::Turn {
