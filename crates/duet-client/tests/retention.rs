@@ -51,6 +51,19 @@ fn draft() -> DoctorDraft {
     }
 }
 #[test]
+fn refusal_invalidates_views_without_deleting_protected_patient_work() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("account:incarnation")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    let before = store.values.lock().unwrap().clone();
+    assert!(owner.session().invalidate(&fence));
+    assert!(owner.recover(&fence).is_err());
+    assert_eq!(*store.values.lock().unwrap(), before);
+    assert!(!owner.cleanup_required().unwrap());
+}
+
+#[test]
 fn boxed_recovery_preserves_v1_storage_bytes_and_subject_fence() {
     let store = Arc::new(Store::default());
     let owner = RetentionOwner::new(store.clone());

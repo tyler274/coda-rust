@@ -55,6 +55,20 @@ impl AccountSession {
     pub fn is_current(&self, fence: &SessionFence) -> bool {
         self.fence().as_ref() == Some(fence)
     }
+    /// End only the session that dispatched the refused request. Durable storage is untouched.
+    pub fn invalidate(&self, fence: &SessionFence) -> bool {
+        let mut state = self.inner.lock().expect("account session");
+        if state.owner.as_deref() != Some(&fence.owner) || state.generation != fence.generation {
+            return false;
+        }
+        state.generation = state
+            .generation
+            .checked_add(1)
+            .expect("session generation exhausted");
+        state.owner = None;
+        state.drafts.clear();
+        true
+    }
     /// Accept a response/draft atomically with checking ownership. Never stores bearer credentials.
     pub fn store_draft(&self, fence: &SessionFence, key: String, value: Vec<u8>) -> bool {
         let mut state = self.inner.lock().expect("account session");

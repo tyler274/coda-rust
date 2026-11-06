@@ -155,14 +155,14 @@ fn TabHeading(name: String, loading: Signal<bool>) -> Element {
 }
 
 fn open_client(base_url: String, bearer: String) -> Result<DuetClient, String> {
-    let bearer = if let Some(session) = try_consume_context::<PatientSession>() {
+    if let Some(session) = try_consume_context::<PatientSession>() {
         if !session.retention.session().is_current(&session.fence) {
             return Err("Account session ended".into());
         }
-        session.access_token.peek().clone()
-    } else {
-        bearer
-    };
+        let client = DuetClient::new(base_url, session.access_token.peek().clone(), "0", "0.1.0")?;
+        let sender = consume_context::<account::RefusalSender>();
+        return Ok(client.bind_session(session.retention.session(), session.fence, sender.0));
+    }
     DuetClient::new(base_url, bearer, "0", "0.1.0")
 }
 

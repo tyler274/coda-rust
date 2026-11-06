@@ -83,11 +83,17 @@ impl DuetClient {
 async fn decode<T: serde::de::DeserializeOwned>(
     response: reqwest::Response,
 ) -> Result<T, IdentityError> {
-    if response.status() == reqwest::StatusCode::UNAUTHORIZED {
-        return Err(IdentityError::Unauthorized);
-    }
     if !response.status().is_success() {
-        return Err(IdentityError::Unavailable);
+        let status = response.status();
+        let body = response
+            .text()
+            .await
+            .map_err(|_| IdentityError::Unavailable)?;
+        return Err(if crate::refusal::classify(status, &body).is_some() {
+            IdentityError::Unauthorized
+        } else {
+            IdentityError::Unavailable
+        });
     }
     response
         .json()

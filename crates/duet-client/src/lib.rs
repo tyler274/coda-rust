@@ -18,6 +18,8 @@ pub mod retention;
 pub mod session;
 pub mod streaming;
 
+pub mod refusal;
+
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
 pub use duet_wire::models::ConversationAcceptance;
@@ -127,6 +129,7 @@ pub const VERSION_HEADER: &str = "X-Duet-App-Version";
 /// The `DuetClient` value exchanged by this crate. Debug output deliberately omits credentials.
 pub struct DuetClient {
     configuration: Configuration,
+    refusal: Option<refusal::RefusalBinding>,
 }
 
 impl std::fmt::Debug for DuetClient {
@@ -151,6 +154,7 @@ impl DuetClient {
             .build()
             .map_err(|error| error.to_string())?;
         Ok(Self {
+            refusal: None,
             configuration: Configuration {
                 base_path: base_path.into().trim_end_matches('/').to_owned(),
                 user_agent: Some("coda-duet/0.1.0".to_owned()),
@@ -167,7 +171,7 @@ impl DuetClient {
     pub async fn list_moments(&self) -> Result<Vec<AccountMoment>, String> {
         duet_wire::apis::moments_api::list_moments_api_moments_get(&self.configuration)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Lists the conversation page.
@@ -178,7 +182,7 @@ impl DuetClient {
             Some(50),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Sends one message. `id` is the message identity: a retry of an uncertain
@@ -199,7 +203,7 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Lists insight cycles for Today.
@@ -210,14 +214,14 @@ impl DuetClient {
             Some(20),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reads intelligence settings.
     pub async fn intelligence_settings(&self) -> Result<IntelligenceSettings, String> {
         duet_wire::apis::health_intelligence_api::get_intelligence_settings_api_intelligence_settings_get(&self.configuration)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Reads the evidence library.
@@ -229,7 +233,7 @@ impl DuetClient {
             query,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reads one bounded page of the complete exact record inventory. Pass the previous
@@ -244,7 +248,7 @@ impl DuetClient {
         query.include_removed = Some(true);
         duet_wire::apis::default_api::browse_evidence_records(&self.configuration, query)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Reads every page of the record inventory, restarting once if evidence changed
@@ -285,7 +289,7 @@ impl DuetClient {
             duet_wire::models::EvidenceRevisionRequest::new(address),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reopens the exact record revision a message cited, including `unavailable`
@@ -302,7 +306,7 @@ impl DuetClient {
             source_id,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Sends one message about one exact selected record revision.
@@ -329,7 +333,7 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Opens one source cited on a conversation message.
@@ -344,7 +348,7 @@ impl DuetClient {
             source_id,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Replaces the visible title of an existing library row.
@@ -404,7 +408,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Lists saved Plans.
@@ -413,7 +417,7 @@ impl DuetClient {
             &self.configuration,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Lists reminders and check-ins.
@@ -424,7 +428,7 @@ impl DuetClient {
             Some(50),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Saves a new title and body for a Plan. `revision` is the one on screen.
@@ -446,7 +450,7 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Removes a Plan. `revision` is the one on screen.
@@ -458,7 +462,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Pauses a reminder or check-in. `revision` is the one on screen.
@@ -494,7 +498,7 @@ impl DuetClient {
                 request,
             )
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
         } else {
             duet_wire::apis::follow_ups_api::resume_follow_up_api_follow_ups_follow_up_id_resume_post(
                 &self.configuration,
@@ -502,7 +506,7 @@ impl DuetClient {
                 request,
             )
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
         }
     }
 
@@ -605,7 +609,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Redeems the practice's invitation through the front door. The minted
@@ -643,7 +647,10 @@ impl DuetClient {
     pub fn with_bearer(&self, session: impl Into<String>) -> Self {
         let mut configuration = self.configuration.clone();
         configuration.bearer_access_token = Some(session.into());
-        Self { configuration }
+        Self {
+            configuration,
+            refusal: None,
+        }
     }
 
     /// Reads the account's consent state: sharing with the physician.

@@ -155,10 +155,14 @@ impl crate::DuetClient {
             .query(&[("after", after)])
             .send()
             .await
-            .map_err(|_| "stream unavailable")?
-            .error_for_status()
-            .map_err(|_| "stream not authorized or unavailable")?;
-        parse_batch(&response.text().await.map_err(|_| "stream interrupted")?)
+            .map_err(|_| "stream unavailable")?;
+        let status = response.status();
+        let body = response.text().await.map_err(|_| "stream interrupted")?;
+        if !status.is_success() {
+            self.observe_refusal(status, &body);
+            return Err("stream not authorized or unavailable".into());
+        }
+        parse_batch(&body)
     }
 }
 

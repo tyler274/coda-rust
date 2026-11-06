@@ -104,7 +104,7 @@ impl IntoResponse for ApiError {
             ),
             Self::Unauthorized => (
                 StatusCode::UNAUTHORIZED,
-                serde_json::json!("Invalid bearer token."),
+                serde_json::json!({"code":"session_invalid", "message":"Invalid bearer token."}),
             ),
             Self::SessionRevoked => (
                 StatusCode::UNAUTHORIZED,
@@ -1068,7 +1068,8 @@ mod tests {
 
         let (status, body) = auth_call(&app, "PUT", "/api/auth/account", None, Some("{}")).await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Invalid bearer token.");
+        assert_eq!(body["detail"]["code"], "session_invalid");
+        assert_eq!(body["detail"]["message"], "Invalid bearer token.");
 
         let (status, _) = auth_call(
             &app,

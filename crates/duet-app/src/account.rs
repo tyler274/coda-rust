@@ -19,6 +19,11 @@ pub struct PatientSession {
     pub access_token: Signal<String>,
 }
 #[derive(Clone)]
+pub(crate) struct RefusalSender(
+    pub futures_channel::mpsc::UnboundedSender<duet_client::session::SessionFence>,
+);
+
+#[derive(Clone)]
 struct Active {
     bearer: String,
     fence: duet_client::session::SessionFence,
@@ -190,6 +195,38 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
     let mut signed_out = use_signal(|| false);
     let mut cleanup_pending = use_signal(|| false);
     let mut lifecycle = use_signal(|| 0u64);
+    let (refusal_sender, refusal_receiver) = use_hook(|| {
+        let (sender, receiver) = futures_channel::mpsc::unbounded();
+        (
+            sender,
+            std::rc::Rc::new(std::cell::RefCell::new(Some(receiver))),
+        )
+    });
+    use_context_provider(|| RefusalSender(refusal_sender));
+    use_future(move || {
+        let receiver = refusal_receiver.borrow_mut().take();
+        async move {
+            use futures_util::StreamExt;
+            let Some(mut receiver) = receiver else {
+                return;
+            };
+            while let Some(fence) = receiver.next().await {
+                if active
+                    .peek()
+                    .as_ref()
+                    .is_none_or(|value| value.fence != fence)
+                {
+                    continue;
+                }
+                lifecycle.set(lifecycle() + 1);
+                active.set(None);
+                offline_draft.set(None);
+                signed_out.set(true);
+                busy.set(false);
+                message.set("Duet could not authorize this session. Sign in again. Unsent text on this screen is no longer shown; protected drafts remain on this device. No pending operation was retried.".into());
+            }
+        }
+    });
     let restore_owner = retention.clone();
     let restore_url = base_url.clone();
     let supplied = bearer;
@@ -325,6 +362,16 @@ pub fn DuetRoot(base_url: String, bearer: String) -> Element {
                             Err(_) => Err(duet_client::identity::IdentityError::Unavailable),
                         };
                         if !owner.session().is_current(&current.fence) {
+                            continue;
+                        }
+                        if matches!(context, Err(IdentityError::Unauthorized)) {
+                            if owner.session().invalidate(&current.fence) {
+                                active.set(None);
+                                offline_draft.set(None);
+                                signed_out.set(true);
+                                lifecycle.set(lifecycle() + 1);
+                                message.set("Duet could not authorize this session. Sign in again. Protected drafts remain on this device; no pending operation was retried.".into());
+                            }
                             continue;
                         }
                         if let Ok(context) = context
