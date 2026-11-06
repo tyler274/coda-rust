@@ -5,7 +5,7 @@
 
 use physician_auth::{
     Account, AuthStore, Cadence, Membership, PanelError, PhysicianIdentity, PostgresAuthStore,
-    PracticeClock, SESSION_TTL_SECONDS, SessionError, SignInError, StoreUnavailable,
+    PracticeClock, SessionError, SignInError, StoreUnavailable,
 };
 use sea_orm::{ConnectionTrait, EntityTrait, PaginatorTrait, QuerySelect, TransactionTrait};
 
@@ -425,9 +425,43 @@ async fn a_sign_in_token_verifies_once_and_mints_one_session() {
         SignInError::Invalid,
         "a verified token never verifies again"
     );
-    let resolved = store.identity(&session, NOW + SESSION_TTL_SECONDS).await;
-    assert!(resolved.is_err(), "an expired session stops resolving");
+    assert!(
+        store
+            .identity(&session, NOW + 12 * 60 * 60 - 1)
+            .await
+            .is_ok(),
+        "an unused session still resolves inside 12 hours"
+    );
+    let resolved = store.identity(&session, NOW + 12 * 60 * 60).await;
+    assert!(
+        resolved.is_err(),
+        "an unused session stops resolving after 12 hours"
+    );
     assert_eq!(store.identity(&session, NOW).await.unwrap(), who);
+}
+
+#[tokio::test]
+async fn repeated_identity_calls_do_not_move_expires_at() {
+    let Some(store) = store("identity_read").await else {
+        return;
+    };
+    let (_email, session) = invited_account(&store, "pg-proof").await;
+    let before = store
+        .verified_session(&session, NOW)
+        .await
+        .unwrap()
+        .lifetime
+        .expires_at();
+    assert_eq!(before, NOW + 12 * 60 * 60);
+    store.identity(&session, NOW).await.unwrap();
+    store.identity(&session, NOW + 11 * 60 * 60).await.unwrap();
+    let after = store
+        .verified_session(&session, NOW)
+        .await
+        .unwrap()
+        .lifetime
+        .expires_at();
+    assert_eq!(after, before);
 }
 
 #[tokio::test]

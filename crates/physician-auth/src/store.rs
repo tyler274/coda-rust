@@ -10,9 +10,9 @@ use crate::migration::{
 };
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, SESSION_TTL_SECONDS,
-    SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionError, SignInError, StoreUnavailable,
-    mint_patient_token, mint_token, token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SIGN_IN_TOKEN_TTL_SECONDS, Session,
+    SessionError, SessionLifetime, SignInError, StoreUnavailable, mint_patient_token, mint_token,
+    token_hash,
 };
 use async_trait::async_trait;
 use sea_orm::{
@@ -329,7 +329,7 @@ impl AuthStore for PostgresAuthStore {
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
+            expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;
@@ -350,7 +350,9 @@ impl AuthStore for PostgresAuthStore {
             .await
             .map_err(invalid)?
             .ok_or(SessionError::Invalid)?;
-        if session.expires_at <= now as i64 {
+        let created_at = session.created_at as u64;
+        let lifetime = SessionLifetime::from_persisted(created_at, session.expires_at as u64);
+        if !lifetime.allows(now) {
             return Err(SessionError::Invalid);
         }
         let account = Accounts::find_by_id(session.account_id)
@@ -372,8 +374,8 @@ impl AuthStore for PostgresAuthStore {
                 physician_id: account.physician_id,
             },
             token_hash: hash,
-            expires_at: session.expires_at as u64,
-            created_at: session.created_at as u64,
+            lifetime,
+            created_at,
         })
     }
 
@@ -798,7 +800,7 @@ impl AuthStore for PostgresAuthStore {
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
+            expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;

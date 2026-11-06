@@ -182,7 +182,7 @@ impl CachedAuthStore {
                 if let Some((session, at)) = cache.sessions.get(&hash)
                     && at.elapsed() < ENTRY_TTL
                 {
-                    return if now < session.expires_at {
+                    return if session.lifetime.allows(now) {
                         Ok(session.clone())
                     } else {
                         Err(SessionError::Invalid)
@@ -831,12 +831,12 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn cached_session_ends_at_its_absolute_expiry() {
+    async fn cached_session_ends_at_its_idle_deadline() {
         let (_, cache, _tx, _, token) = fixture();
-        let expiry = NOW + crate::SESSION_TTL_SECONDS;
-        assert!(cache.identity(&token, expiry - 1).await.is_ok());
+        let idle_end = NOW + 12 * 60 * 60;
+        assert!(cache.identity(&token, idle_end - 1).await.is_ok());
         assert_eq!(
-            cache.identity(&token, expiry).await,
+            cache.identity(&token, idle_end).await,
             Err(SessionError::Invalid)
         );
     }

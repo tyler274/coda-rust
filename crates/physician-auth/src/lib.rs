@@ -40,8 +40,6 @@ pub mod migration;
 
 /// A sign-in token is verifiable for one day.
 pub const SIGN_IN_TOKEN_TTL_SECONDS: u64 = 86_400;
-/// A sign-in session is valid for thirty days.
-pub const SESSION_TTL_SECONDS: u64 = 30 * 86_400;
 /// An invitation is redeemable for fourteen days.
 pub const INVITATION_TTL_SECONDS: u64 = 14 * 86_400;
 
@@ -185,8 +183,8 @@ pub struct Session {
     pub identity: PhysicianIdentity,
     /// The presented bearer token, `sha256`-hashed at rest.
     pub token_hash: [u8; 32],
-    /// When the session stops being valid, in Unix seconds.
-    pub expires_at: u64,
+    /// The idle deadline, clamped to seven days after [`Self::created_at`].
+    pub lifetime: SessionLifetime,
     /// The Unix second the session was minted, against the account's fence.
     pub created_at: u64,
 }
@@ -596,7 +594,7 @@ impl MemoryAuthStore {
             Session {
                 identity,
                 token_hash: hash,
-                expires_at: now + SESSION_TTL_SECONDS,
+                lifetime: SessionLifetime::mint(now),
                 created_at: now,
             },
         );
@@ -662,7 +660,7 @@ impl AuthStore for MemoryAuthStore {
         let hash = token_hash(token);
         let state = self.state.lock().expect("auth state");
         let session = state.sessions.get(&hash).ok_or(SessionError::Invalid)?;
-        if session.expires_at <= now {
+        if !session.lifetime.allows(now) {
             return Err(SessionError::Invalid);
         }
         let account = state
@@ -700,7 +698,7 @@ impl AuthStore for MemoryAuthStore {
             .find(|a| a.identity == *identity)
             .ok_or("account unavailable")?;
         if session.identity != *identity
-            || session.expires_at <= now
+            || !session.lifetime.allows(now)
             || !account.active
             || session.created_at < account.sessions_ended_before
             || state
@@ -1402,10 +1400,14 @@ mod tests {
         let (_, session) = signed_in(&store, "doc@example.test").await;
         assert!(
             store
-                .identity(&session, NOW + SESSION_TTL_SECONDS)
+                .identity(&session, NOW + 12 * 60 * 60 - 1)
                 .await
-                .is_err(),
-            "an expired session stops resolving"
+                .is_ok(),
+            "an unused session still resolves inside 12 hours"
+        );
+        assert!(
+            store.identity(&session, NOW + 12 * 60 * 60).await.is_err(),
+            "an unused session stops resolving after 12 hours"
         );
         let (_, session) = signed_in(&store, "doc@example.test").await;
         store.end_session(&session).await.unwrap();
@@ -1413,6 +1415,30 @@ mod tests {
             store.identity(&session, NOW).await.is_err(),
             "sign-out ends the session"
         );
+    }
+
+    #[tokio::test]
+    async fn repeated_identity_calls_do_not_move_expires_at() {
+        let store = MemoryAuthStore::new();
+        store.seed_account("practice", "physician", "doc@example.test", "Doc", false);
+        let (_, session) = signed_in(&store, "doc@example.test").await;
+        let before = store
+            .verified_session(&session, NOW)
+            .await
+            .unwrap()
+            .lifetime
+            .expires_at();
+        assert_eq!(before, NOW + 12 * 60 * 60);
+        store.identity(&session, NOW).await.unwrap();
+        store.identity(&session, NOW + 60).await.unwrap();
+        store.identity(&session, NOW + 11 * 60 * 60).await.unwrap();
+        let after = store
+            .verified_session(&session, NOW)
+            .await
+            .unwrap()
+            .lifetime
+            .expires_at();
+        assert_eq!(after, before);
     }
 
     #[tokio::test]
