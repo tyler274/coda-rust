@@ -301,13 +301,19 @@ pub(crate) async fn resolve(
     token: Option<String>,
 ) -> Result<ResolvedSession, Refused> {
     let token = token.ok_or(Refused::NoSession)?;
-    auth.store
-        .identity(&token, now())
+    let now = now();
+    let identity = auth
+        .store
+        .identity(&token, now)
         .await
         .map_err(|error| match error {
             SessionError::Invalid => Refused::NoSession,
             SessionError::Inactive => Refused::AccessRemoved,
-        })
+        })?;
+    if let Err(error) = auth.store.note_physician_activity(&token, now).await {
+        tracing::warn!(?error, "physician session activity was not recorded");
+    }
+    Ok(identity)
 }
 
 /// Whether this path is one the guard protects: exactly the physician

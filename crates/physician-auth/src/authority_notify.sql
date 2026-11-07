@@ -15,7 +15,7 @@ CREATE TRIGGER physician_accounts_authority_notify
     EXECUTE FUNCTION physician_authority_notify ();
 
 CREATE TRIGGER physician_sessions_authority_notify
-    AFTER UPDATE OR DELETE OR TRUNCATE ON physician_sessions
+    AFTER DELETE OR TRUNCATE ON physician_sessions
     FOR EACH STATEMENT
     EXECUTE FUNCTION physician_authority_notify ();
 
