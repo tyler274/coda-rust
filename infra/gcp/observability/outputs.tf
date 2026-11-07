@@ -73,7 +73,7 @@ output "datadog_monitor_ids" {
 
 # The Grafana outputs are null under datadog.
 output "grafana" {
-  description = "In-cluster Grafana stack (telemetry_backend = grafana). Humans reach Grafana with kubectl port-forward svc/grafana 3000; no Service is exposed outside the cluster."
+  description = "In-cluster Grafana stack (telemetry_backend = grafana or both). People reach Grafana through grafana_edge when it is set, otherwise with kubectl port-forward svc/grafana 3000."
   value = local.grafana_backend ? {
     url                   = local.grafana_url
     tempo_otlp_grpc       = local.tempo_otlp_grpc
@@ -83,5 +83,20 @@ output "grafana" {
     traces_retention_days = var.grafana_traces_retention_days
     logs_retention_days   = var.grafana_logs_retention_days
     metrics_retention     = local.prometheus_retention
+  } : null
+}
+
+# Null until grafana_edge is set.
+output "grafana_edge" {
+  description = "The IAP-gated Grafana edge: its URL, the reserved address the hostname's DNS-only A record points at, the CNAME that authorizes its certificate, and the IAP assertion audience Grafana requires (null until the backend is verified). This root changes no DNS."
+  value = local.grafana_edge_enabled ? {
+    url          = local.grafana_edge_url
+    ip           = google_compute_global_address.grafana_edge[0].address
+    iap_audience = local.grafana_iap_audience
+    members      = sort(keys(google_iap_web_backend_service_iam_member.grafana_edge))
+    certificate_dns_records = [
+      for record in google_certificate_manager_dns_authorization.grafana_edge[0].dns_resource_record :
+      { name = record.name, type = record.type, data = record.data }
+    ]
   } : null
 }

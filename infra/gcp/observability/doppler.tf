@@ -56,6 +56,12 @@ locals {
         "LANGFUSE_INIT_PROJECT_SECRET_KEY" = "LANGFUSE_SECRET_KEY"
       }
     } : {},
+    local.grafana_edge_enabled ? {
+      # GCPBackendPolicy reads the IAP OAuth client secret from key `key`.
+      "grafana-iap-oauth" = {
+        "GRAFANA_IAP_CLIENT_SECRET" = "key"
+      }
+    } : {},
     var.langfuse_iap_enabled ? {
       # GCPBackendPolicy reads the IAP OAuth client secret from key `key`.
       "langfuse-iap-oauth" = {

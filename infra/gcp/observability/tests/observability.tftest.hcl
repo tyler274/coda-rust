@@ -14,6 +14,11 @@ mock_provider "google" {
       }]
     }
   }
+  mock_data "google_project" {
+    defaults = {
+      number = "123456789012"
+    }
+  }
   mock_data "google_compute_network" {
     defaults = {
       id        = "projects/test-rust-stg-only/global/networks/rust-private"
@@ -1005,6 +1010,187 @@ run "grafana_stack_is_cluster_private_and_bounded" {
     )
     error_message = "The Cloud Monitoring datasource and its identity are off by default."
   }
+}
+
+run "grafana_has_no_edge_by_default" {
+  command = plan
+  variables { telemetry_backend = "both" }
+
+  assert {
+    condition = (
+      length(helm_release.grafana_edge) == 0 &&
+      length(google_compute_global_address.grafana_edge) == 0 &&
+      length(google_certificate_manager_certificate.grafana_edge) == 0 &&
+      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
+      !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
+      output.grafana_edge == null
+    )
+    error_message = "Without grafana_edge nothing is exposed and no IAP secret is synced."
+  }
+
+  assert {
+    condition = (
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "http://localhost:3000" &&
+      !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED")
+    )
+    error_message = "Without the edge Grafana keeps its port-forward URL and no JWT sign-in."
+  }
+}
+
+run "grafana_edge_bootstrap_grants_nobody" {
+  command = plan
+  variables {
+    telemetry_backend = "both"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+
+  assert {
+    condition = (
+      local.grafana_edge_class == "gke-l7-global-external-managed" &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.iap.enabled if m.kind == "GCPBackendPolicy"]) &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.iap.oauth2ClientSecret.name if m.kind == "GCPBackendPolicy"]) == "grafana-iap-oauth" &&
+      one([for m in local.grafana_edge_manifests : m.spec.targetRef.name if m.kind == "GCPBackendPolicy"]) == "grafana" &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.config.httpHealthCheck.requestPath if m.kind == "HealthCheckPolicy"]) == "/api/health"
+    )
+    error_message = "The Grafana edge must be the global external class with IAP on the Grafana backend and a health check Grafana answers 200 to."
+  }
+
+  assert {
+    condition = (
+      toset([for m in local.grafana_edge_manifests : m.kind]) == toset(["Gateway", "HTTPRoute", "GCPBackendPolicy", "HealthCheckPolicy"]) &&
+      one([for m in local.grafana_edge_manifests : m.spec.rules[0].backendRefs if m.kind == "HTTPRoute"]) == [{ name = "grafana", port = 3000 }] &&
+      one([for m in local.grafana_edge_manifests : m.spec.hostnames if m.kind == "HTTPRoute"]) == ["grafana.staging.example.test"] &&
+      one([for m in local.grafana_edge_manifests : m.spec.listeners[0].protocol if m.kind == "Gateway"]) == "HTTPS"
+    )
+    error_message = "The edge routes only HTTPS on its hostname to the Grafana Service."
+  }
+
+  assert {
+    condition = (
+      length(helm_release.grafana_edge) == 1 &&
+      contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
+      local.doppler_secrets["grafana-iap-oauth"] == { GRAFANA_IAP_CLIENT_SECRET = "key" } &&
+      google_certificate_manager_certificate.grafana_edge[0].managed[0].domains == tolist(["grafana.staging.example.test"]) &&
+      google_certificate_manager_certificate_map_entry.grafana_edge[0].hostname == "grafana.staging.example.test"
+    )
+    error_message = "The edge, its Doppler-synced OAuth secret and its DNS-authorized certificate must exist together."
+  }
+
+  assert {
+    condition = (
+      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
+      local.grafana_iap_audience == null &&
+      !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED") &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "https://grafana.staging.example.test"
+    )
+    error_message = "Before the backend is verified, nobody is granted and Grafana trusts no assertion."
+  }
+
+  assert {
+    condition     = local.langfuse_gateway_class == "gke-l7-rilb" && local.langfuse_values.langfuse.ingress.enabled == false
+    error_message = "The Grafana edge must not change the Langfuse boundary."
+  }
+}
+
+run "grafana_edge_grants_only_the_verified_backend" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname           = "grafana.staging.example.test"
+      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
+      members            = ["group:coda-eng@example.test"]
+      backend_service    = "test-gke-created-grafana-backend"
+      backend_service_id = "4242"
+    }
+  }
+
+  assert {
+    condition = length(google_iap_web_backend_service_iam_member.grafana_edge) == 1 && alltrue([
+      for grant in google_iap_web_backend_service_iam_member.grafana_edge :
+      grant.project == var.project_id && grant.web_backend_service == "test-gke-created-grafana-backend" && grant.role == "roles/iap.httpsResourceAccessor" && grant.member == "group:coda-eng@example.test"
+    ])
+    error_message = "Grafana users must receive access only to the verified global backend."
+  }
+
+  assert {
+    condition = (
+      local.grafana_iap_audience == "/projects/123456789012/global/backendServices/4242" &&
+      jsondecode(one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_EXPECT_CLAIMS"])) == { iss = "https://cloud.google.com/iap", aud = "/projects/123456789012/global/backendServices/4242" } &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_HEADER_NAME"]) == "X-Goog-IAP-JWT-Assertion" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_JWK_SET_URL"]) == "https://www.gstatic.com/iap/verify/public_key-jwk" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_USERS_AUTO_ASSIGN_ORG_ROLE"]) == "Editor" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_ANONYMOUS_ENABLED"]) == "false"
+    )
+    error_message = "Grafana must accept only IAP assertions signed by Google for this backend's audience."
+  }
+}
+
+run "reject_a_public_grafana_member" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname           = "grafana.staging.example.test"
+      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
+      members            = ["allAuthenticatedUsers"]
+      backend_service    = "test-gke-created-grafana-backend"
+      backend_service_id = "4242"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_grafana_members_without_backend_identity" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      members       = ["group:coda-eng@example.test"]
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_backend_without_its_id" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname        = "grafana.staging.example.test"
+      iap_client_id   = "000000000000-test.apps.googleusercontent.com"
+      backend_service = "test-gke-created-grafana-backend"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_under_datadog" {
+  command = plan
+  variables {
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_url_shaped_grafana_hostname" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname      = "https://grafana.staging.example.test/"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
 }
 
 run "grafana_synthetic_rule_is_labeled_and_operational_rules_stay_shadow" {
