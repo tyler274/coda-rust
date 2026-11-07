@@ -67,6 +67,7 @@ output "datadog_monitor_ids" {
     async_failures         = { for service, monitor in datadog_monitor.async_failures : service => monitor.id }
     container_memory       = [for monitor in datadog_monitor.observability_container_memory : monitor.id]
     container_oom          = [for monitor in datadog_monitor.observability_container_oom : monitor.id]
+    qualification          = [for monitor in datadog_monitor.qualification : monitor.id]
   } : null
 }
 

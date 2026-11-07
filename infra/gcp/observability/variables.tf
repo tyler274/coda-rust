@@ -246,6 +246,17 @@ variable "datadog_monitors_enabled" {
   }
 }
 
+variable "datadog_qualification_monitor_enabled" {
+  description = "Separate gate for the synthetic readiness monitor on coda.qualification.synthetic_readiness. Off by default. Does not enable service monitors."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.datadog_qualification_monitor_enabled || (var.alert_notify != "" && contains(["datadog", "both"], var.telemetry_backend))
+    error_message = "The qualification monitor requires telemetry_backend datadog or both, and an explicitly confirmed alert handle."
+  }
+}
+
 variable "alert_notify" {
   description = "Operator-confirmed Datadog notification handle. Empty until routing is approved; there is no guessed Slack channel."
   type        = string

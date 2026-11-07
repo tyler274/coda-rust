@@ -89,6 +89,26 @@ confirming Slack receipt require separate operator approval. Never relabel a
 service alert to test notifications. The external watchdog must remain outside
 Grafana and GKE; shadow evaluation is not monitoring-loss protection.
 
+`datadog_qualification_monitor_enabled` defaults off. When it is on, Datadog
+evaluates `coda.qualification.synthetic_readiness{env:staging}` with the
+readiness thresholds (critical 1, recovery 0.5), tags the monitor
+`qualification:synthetic`, and notifies the confirmed handle. It does not
+enable the service monitors. `grafana_test_notifications_enabled` also
+provisions `alerting/synthetic-rules.yaml`. That rule is titled
+`Coda synthetic notification test`, carries only
+`qualification=synthetic-notification-test`, and counts Loki lines matching
+`{qualification="synthetic-notification-test"} |= "fail"`. With the gate off,
+provisioning deletes that rule. Operational rules stay in `rules.yaml` on the
+shadow route.
+
+`workspace-tools observability-drill` takes `datadog`, `grafana`, or
+`watchdog` and `fail`, `recover`, or `status`. Each run writes observation
+JSON for `qualify-alerts.py --observations`. A run stops at 40 minutes and
+two reminders, and restores the signal on abort. Datadog reads `DD_API_KEY`
+from Doppler project `coda-rust` config `stg` and does not print it. Grafana
+pushes through a local Loki port-forward. Watchdog pauses or resumes the
+`availability-probe` scheduler and does not add an evaluator.
+
 Cloud Monitoring is a default-off datasource through Workload Identity
 (`grafana_cloud_monitoring_enabled`), not through Tempo span metrics. Enabling it
 also provisions native PromQL shadow rules from `grafana-cloud-rules.tf` for the

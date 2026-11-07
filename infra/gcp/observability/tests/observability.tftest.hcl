@@ -699,9 +699,62 @@ run "reject_container_memory_ratio_out_of_range" {
 run "monitors_default_off" {
   command = plan
   assert {
-    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) == 0
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) + length(datadog_monitor.qualification) == 0
     error_message = "Collection installation must not create monitors before the separately authorized drill."
   }
+}
+
+run "qualification_monitor_stays_off_when_service_monitors_are_on" {
+  command = plan
+  variables {
+    datadog_monitors_enabled = true
+    alert_notify             = "@slack-confirmed-test"
+  }
+  assert {
+    condition     = length(datadog_monitor.qualification) == 0
+    error_message = "Service monitor authorization must not enable the synthetic qualification monitor."
+  }
+}
+
+run "qualification_monitor_uses_readiness_thresholds" {
+  command = plan
+  variables {
+    datadog_qualification_monitor_enabled = true
+    alert_notify                          = "@slack-confirmed-test"
+  }
+  assert {
+    condition = (
+      length(datadog_monitor.qualification) == 1 &&
+      datadog_monitor.qualification[0].query == "avg(last_1m):max:coda.qualification.synthetic_readiness{env:staging}.fill(null) >= 1" &&
+      datadog_monitor.qualification[0].monitor_thresholds[0].critical == "1" &&
+      datadog_monitor.qualification[0].monitor_thresholds[0].critical_recovery == "0.5" &&
+      contains(datadog_monitor.qualification[0].tags, "qualification:synthetic") &&
+      strcontains(datadog_monitor.qualification[0].message, var.alert_notify) &&
+      datadog_monitor.qualification[0].renotify_interval == 15 &&
+      datadog_monitor.qualification[0].renotify_occurrences == 2 &&
+      datadog_monitor.qualification[0].renotify_statuses == toset(["alert"]) &&
+      !datadog_monitor.qualification[0].notify_no_data &&
+      datadog_monitor.qualification[0].timeout_h == 0 &&
+      !datadog_monitor.qualification[0].require_full_window
+    )
+    error_message = "The qualification monitor must use the readiness gauge, the synthetic tag, and the confirmed handle."
+  }
+}
+
+run "reject_qualification_monitor_without_alert_handle" {
+  command = plan
+  variables { datadog_qualification_monitor_enabled = true }
+  expect_failures = [var.datadog_qualification_monitor_enabled]
+}
+
+run "reject_qualification_monitor_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend                     = "grafana"
+    datadog_qualification_monitor_enabled = true
+    alert_notify                          = "@slack-confirmed-test"
+  }
+  expect_failures = [var.datadog_qualification_monitor_enabled]
 }
 
 run "reject_unconfirmed_alert_route" {
@@ -926,6 +979,16 @@ run "grafana_stack_is_cluster_private_and_bounded" {
 
   assert {
     condition = (
+      alltrue([for rule in flatten([for group in yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"]).groups : group.rules]) : !contains(keys(rule.labels), "qualification")]) &&
+      yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).deleteRules[0].uid == "coda-synthetic-notification-test" &&
+      length(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups) == 0 &&
+      contains([for item in one([for volume in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].volume : volume if volume.name == "config"]).config_map[0].items : "${item.key}=${item.path}"], "synthetic-rules.yaml=alerting/synthetic-rules.yaml")
+    )
+    error_message = "The synthetic notification rule stays deleted until the test gate is on, and operational rules stay unlabeled."
+  }
+
+  assert {
+    condition = (
       [for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env_from : e.secret_ref[0].name] == ["grafana-secrets"] &&
       !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_SECURITY_ADMIN_PASSWORD") &&
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_ANONYMOUS_ENABLED"]) == "false" &&
@@ -941,6 +1004,24 @@ run "grafana_stack_is_cluster_private_and_bounded" {
       length(kubernetes_service_account_v1.grafana[0].metadata[0].annotations) == 0
     )
     error_message = "The Cloud Monitoring datasource and its identity are off by default."
+  }
+}
+
+run "grafana_synthetic_rule_is_labeled_and_operational_rules_stay_shadow" {
+  command = plan
+  variables {
+    telemetry_backend                  = "grafana"
+    grafana_test_notifications_enabled = true
+  }
+  assert {
+    condition = (
+      kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"] == file("${path.module}/../../../dev/observability/grafana/provisioning/alerting/rules.yaml") &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].title == "Coda synthetic notification test" &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].labels.qualification == "synthetic-notification-test" &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0]["for"] == "1m" &&
+      strcontains(one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].data[0].model.expr, "{qualification=\"synthetic-notification-test\"} |= \"fail\"")
+    )
+    error_message = "The gated Grafana rule must count synthetic fail lines without changing the operational rules file."
   }
 }
 
