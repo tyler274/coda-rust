@@ -1,7 +1,7 @@
 //! How a physician reads a cited record: the source's own statement and dates first, the exact
 //! retained bytes and storage details under Technical details. Nothing here infers clinical truth.
 use local_product::physician_chat::Citation;
-use physician_wire::{SourceField, SourceInspection, SourceTechnicalDetails};
+use physician_wire::{SourceField, SourceInspection, SourcePreviewContent, SourceTechnicalDetails};
 use serde_json::Value;
 
 /// Presents a retained citation exactly as it was read, never a newer revision.
@@ -51,7 +51,30 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
         None if view.sections.is_empty() => view.sections.push(field("Source text", &citation.content)),
         _ => {}
     }
+    view.coda_preview = citation.summary.as_ref().map(|summary| {
+        let (label, as_of) = summary_date(&view.dates);
+        SourcePreviewContent {
+            text: summary.clone(),
+            as_of: as_of.to_owned(),
+            as_of_label: label.to_owned(),
+        }
+    });
     view
+}
+
+/// A date that dates the record, preferred over an onset, abatement, or period bound.
+/// The label is empty when no date was retained.
+fn summary_date(dates: &[SourceField]) -> (&str, &str) {
+    const RECORD_DATES: [&str; 5] = ["Recorded", "Authored", "Effective", "Issued", "Dated"];
+    for label in RECORD_DATES {
+        if let Some(date) = dates.iter().find(|date| date.label == label) {
+            return (date.label.as_str(), date.text.as_str());
+        }
+    }
+    dates
+        .first()
+        .map(|date| (date.label.as_str(), date.text.as_str()))
+        .unwrap_or(("", ""))
 }
 
 fn field(label: &str, value: &str) -> SourceField {
@@ -242,6 +265,59 @@ mod tests {
         assert_eq!(
             view.record_details,
             vec![field("Source status recorded", "active")]
+        );
+    }
+
+    #[test]
+    fn coda_summary_is_kept_apart_from_the_record_and_dated_by_it() {
+        let original = json!({"resourceType":"AllergyIntolerance",
+            "code":{"text":"No known drug allergies"}})
+        .to_string();
+        let mut cited = citation(&original);
+        cited.summary = Some("Records no known drug allergies.".into());
+        cited.dates = vec![local_product::physician_sources::RecordDate {
+            name: "recordedDate".into(),
+            value: "2018-09-11".into(),
+        }];
+        let view = inspection(&cited);
+        assert_eq!(
+            view.coda_preview,
+            Some(SourcePreviewContent {
+                text: "Records no known drug allergies.".into(),
+                as_of: "2018-09-11".into(),
+                as_of_label: "Recorded".into(),
+            })
+        );
+        let mut onset_first = cited.clone();
+        onset_first.dates.insert(
+            0,
+            local_product::physician_sources::RecordDate {
+                name: "onsetDateTime".into(),
+                value: "2010-01-02T08:00:00+00:00".into(),
+            },
+        );
+        onset_first
+            .dates
+            .iter_mut()
+            .find(|date| date.name == "recordedDate")
+            .unwrap()
+            .value = "2018-09-11T12:20:00+00:00".into();
+        let preferred = inspection(&onset_first).coda_preview.unwrap();
+        assert_eq!(preferred.as_of_label, "Recorded");
+        assert_eq!(preferred.as_of, "2018-09-11T12:20:00+00:00");
+        onset_first.dates.retain(|date| date.name != "recordedDate");
+        let onset_only = inspection(&onset_first);
+        assert_eq!(
+            onset_only.coda_preview,
+            Some(SourcePreviewContent {
+                text: "Records no known drug allergies.".into(),
+                as_of: "2010-01-02T08:00:00+00:00".into(),
+                as_of_label: "Onset recorded".into(),
+            })
+        );
+        assert_eq!(
+            view.sections[0],
+            field("Statement in this record", "No known drug allergies")
         );
     }
 

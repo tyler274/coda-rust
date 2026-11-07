@@ -736,8 +736,12 @@ pub struct SourcePreviewContent {
     /// The preview prose.
     pub text: String,
     #[serde(default)]
-    /// The as-of date, already written for display.
+    /// The source date this preview is tied to, as the record gave it.
     pub as_of: String,
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    /// The source's name for `as_of`, such as Recorded or Onset recorded.
+    /// Empty means the date, when present, dates the record.
+    pub as_of_label: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq, Default)]

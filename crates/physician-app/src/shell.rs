@@ -588,7 +588,7 @@ fn native_open(
         .uri
         .as_deref()
         .map(str::trim)
-        .filter(|uri| !uri.is_empty())
+        .filter(|uri| web_address(uri))
     else {
         return (None, None);
     };
@@ -600,6 +600,22 @@ fn native_open(
         .map(|label| format!("Open in {label}"))
         .unwrap_or_else(|| "Open original".to_owned());
     (Some(label), Some(uri.to_owned()))
+}
+
+/// A source adapter supplies this address, so only a web address or a same-origin path
+/// becomes a link. A backslash or a line break is refused: browsers treat those as `/`
+/// or strip them, which turns a path into a protocol-relative address.
+fn web_address(uri: &str) -> bool {
+    if uri
+        .chars()
+        .any(|character| matches!(character, '\\' | '\t' | '\n' | '\r'))
+    {
+        return false;
+    }
+    let lower = uri.to_ascii_lowercase();
+    lower.starts_with("https://")
+        || lower.starts_with("http://")
+        || (uri.starts_with('/') && !uri.starts_with("//"))
 }
 
 fn chip_number(
@@ -716,6 +732,22 @@ pub fn source_date(value: &str) -> String {
         };
     }
     source_day(value)
+}
+
+/// The sentence under Coda's summary. A recorded, authored, effective, issued, or document
+/// date is the record's date. Any other retained date keeps that field's own label.
+pub fn summary_provenance(label: &str, as_of: &str) -> String {
+    let as_of = as_of.trim();
+    if as_of.is_empty() {
+        return "Coda wrote this from the record.".into();
+    }
+    let shown = source_date(as_of);
+    match label {
+        "" | "Recorded" | "Authored" | "Effective" | "Issued" | "Dated" => {
+            format!("Coda wrote this from the record dated {shown}.")
+        }
+        other => format!("Coda wrote this from the record. {other} {shown}."),
+    }
 }
 
 fn source_day(value: &str) -> String {
@@ -1620,6 +1652,7 @@ mod tests {
                 content: Some(physician_wire::SourcePreviewContent {
                     text: "This stays closed.".to_owned(),
                     as_of: "April 13, 2026".to_owned(),
+                    as_of_label: String::new(),
                 }),
             }),
             destination: Some(CitationDestination {
@@ -1649,6 +1682,34 @@ mod tests {
             }),
         );
         assert_eq!(unlabeled.open_label.as_deref(), Some("Open original"));
+        for uri in ["https://ehr.example/a/1", "/local-ehr/lab"] {
+            assert!(web_address(uri), "{uri}");
+        }
+        for uri in [
+            "javascript:alert(1)",
+            "JavaScript:x",
+            "data:text/html,x",
+            "//evil.example",
+            "",
+            "/\\evil.example",
+            "/\\/evil.example",
+            "/\n/evil.example",
+            "/\t/evil.example",
+        ] {
+            assert!(!web_address(uri), "{uri}");
+        }
+        assert_eq!(
+            summary_provenance("Recorded", "2018-09-11T12:20:00+00:00"),
+            "Coda wrote this from the record dated September 11, 2018, 12:20:00+00:00 as recorded."
+        );
+        assert_eq!(
+            summary_provenance("Onset recorded", "2010-01-02T08:00:00+00:00"),
+            "Coda wrote this from the record. Onset recorded January 2, 2010, 08:00:00+00:00 as recorded."
+        );
+        assert_eq!(
+            summary_provenance("", ""),
+            "Coda wrote this from the record."
+        );
         assert!(workspace_event_rereads(
             "workspace_changed",
             r#"{"patient_workspace_id":"pw-mary","cursor":2,"practice_day":true}"#,

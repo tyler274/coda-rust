@@ -829,7 +829,8 @@ fn fixed_call_id(round: usize, index: usize) -> String {
     format!("fixed-{round}-{index}")
 }
 
-/// Controlled chart journey only: fixed text opts in with a citation placeholder.
+/// Controlled chart journey only: fixed text opts in with a citation placeholder;
+/// `{{patient_source_id}}` names the same source bare, as a summary line does.
 /// The source identity and bytes still come from the real product tools.
 fn cited_fixed_turn(text: &str, request: &ModelRequest<'_>) -> Result<Option<Turn>, String> {
     if !text.contains("{{patient_source}}") {
@@ -885,7 +886,9 @@ fn cited_fixed_turn(text: &str, request: &ModelRequest<'_>) -> Result<Option<Tur
             Turn {
                 items: vec![Item::Message {
                     role: "assistant".into(),
-                    text: text.replace("{{patient_source}}", &format!("[[patient_source:{id}]]")),
+                    text: text
+                        .replace("{{patient_source}}", &format!("[[patient_source:{id}]]"))
+                        .replace("{{patient_source_id}}", id),
                 }],
                 receipt: json!({"provider":"fixed-chart-proof"}),
             }
