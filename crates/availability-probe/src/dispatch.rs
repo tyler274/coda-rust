@@ -11,13 +11,22 @@ use axum::{
 use serde_json::{Value, json};
 use std::sync::Arc;
 
+/// Scheduler documents the header only as "the job name". Accept the full
+/// `projects/P/locations/L/jobs/J` resource name or its final `J` segment, and
+/// name what arrived otherwise. A job name is not secret.
+fn is_expected_job(received: &str, expected_job: &str) -> bool {
+    received == expected_job
+        || expected_job.rsplit_once("/jobs/").map(|(_, id)| id) == Some(received)
+}
 pub fn scheduled_slot(headers: &HeaderMap, expected_job: &str) -> Result<u64, Error> {
-    if headers
+    let received = headers
         .get("x-cloudscheduler-jobname")
-        .and_then(|v| v.to_str().ok())
-        != Some(expected_job)
-    {
-        return Err("unexpected scheduler job".into());
+        .ok_or("missing scheduler job name")?
+        .to_str()
+        .map_err(|e| Error::caused("scheduler job name is not text", e))?;
+    if !is_expected_job(received, expected_job) {
+        let shown: String = received.chars().take(200).collect();
+        return Err(format!("unexpected scheduler job {shown:?}").into());
     }
     let value = headers
         .get("x-cloudscheduler-scheduletime")
@@ -120,6 +129,23 @@ mod tests {
             slot.to_string()
         );
         assert!(scheduled_slot(&headers, "other").is_err());
+        headers.insert("x-cloudscheduler-jobname", "probe".parse().unwrap());
+        assert_eq!(
+            scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").unwrap(),
+            slot
+        );
+        headers.insert("x-cloudscheduler-jobname", "jobs/probe".parse().unwrap());
+        let error = scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").unwrap_err();
+        assert_eq!(error.to_string(), "unexpected scheduler job \"jobs/probe\"");
+        headers.insert("x-cloudscheduler-jobname", "other-probe".parse().unwrap());
+        assert!(scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").is_err());
+        headers.remove("x-cloudscheduler-jobname");
+        let error = scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").unwrap_err();
+        assert_eq!(error.to_string(), "missing scheduler job name");
+        headers.insert(
+            "x-cloudscheduler-jobname",
+            "projects/p/locations/r/jobs/probe".parse().unwrap(),
+        );
         headers.remove("x-cloudscheduler-scheduletime");
         assert!(scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").is_err());
     }
