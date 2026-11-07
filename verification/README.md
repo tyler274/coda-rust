@@ -11,14 +11,14 @@ the model. Features not modeled yet follow the intent specs alone.
 - **`README.md`:** the feature's spec in plain words, with nothing about how it's checked. The
   intent spec keeps a short summary and links here. Its sections, in order:
   - **Intro:** what the spec covers, and the link to the intent spec.
-  - **Words:** each word a rule or journey line depends on, defined once, so each rule has one
+  - **Words:** each word a rule or step depends on, defined once, so each rule has one
     meaning and maps to one thing in the model.
-  - **Journey:** what happens, one claim per line, grouped by step. A promise that rests on
-    stored records stays here as a plain promise; the verify skill names the tests that hold it.
-  - **Rules:** numbered, one sentence each, with every condition the check uses written into
-    the sentence.
-  - **Outside this spec:** what other specs own, and open decisions with their
-    [DECISIONS.md](../intent/DECISIONS.md) link.
+  - **States and steps:** the feature's graph, as tables of from, step and to. Each step is one
+    action in the model, and each state is one value of it.
+  - **Rules:** the invariants, numbered, one sentence each, with every condition the check uses
+    written into the sentence. A rule that rests on code or records rather than on the order of
+    steps follows them, marked as one the model doesn't check.
+  - **Outside this spec:** what other specs own.
 - **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Its
   header says what it takes as one step, its scope, and what it leaves to records. Each
   `INVARIANT` or `PROPERTY` is one rule, quoting its sentence word for word with nothing added.
