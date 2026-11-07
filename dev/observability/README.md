@@ -108,6 +108,19 @@ nix develop .#agent --command python dev/observability/qualify-alerts.py
 nix develop .#agent --command python scripts/test_alert_qualification.py -v
 ```
 
+`workspace-tools observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR`
+writes `observations-<route>-<UTC stamp>.json` for `--observations`. The
+checker routes are `datadog`, `grafana-test`, and `cloud-monitoring`. Datadog
+reads `DD_API_KEY` from Doppler project `coda-rust` config `stg` and does not
+print it. Grafana pushes a `fail` or `ok` line through a local Loki
+port-forward. Watchdog pauses or resumes the availability-probe scheduler. The
+command restores the signal when the exercise passes 40 minutes, already has
+more than two reminders, or the provider call fails.
+`workspace-tools observability-drill probe --output-dir DIR` runs one
+availability-probe slot through IAP as the probe identity and writes
+`probe-<slot>.json`. Run it before each drill. It fails on any non-success
+target or a missing heartbeat.
+
 Copy `qualification.json` outside tracked source for a qualification's verified
 input contract. Null fields are deliberate: supply the actual dedicated
 synthetic evaluator/policy ID, signal descriptor/selector, exact query and

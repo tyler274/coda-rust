@@ -297,7 +297,12 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
 1. For readiness alerts, inspect the probe's fixed outcome and freshness first.
    Authentication failure or login redirect is not application success. Check
    IAP audience and caller grants without exposing tokens; do not bypass IAP or
-   internal worker ingress to make a probe green.
+   internal worker ingress to make a probe green. To check reachability on
+   demand, run `workspace-tools observability-drill probe --output-dir DIR`. It
+   executes one probe slot as the probe identity, the only rehearsal caller
+   IAP admits, and fails unless every target's readiness sample and the
+   heartbeat read back as successful. A workstation identity token carries
+   gcloud's own audience, so IAP answers it with 401 by design.
 2. For backlog, compare oldest-unacked age, positive queued work and the
    [worker processing/retry contract](physician-site.md). Zero idle instances
    and sparse empty queries are not outages. Investigate SQL, Redis and Pub/Sub
