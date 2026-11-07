@@ -21,9 +21,11 @@ fn at(value: &str) -> DateTime<Utc> {
 }
 
 fn temp_dir() -> PathBuf {
+    static NEXT: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(0);
     let dir = std::env::temp_dir().join(format!(
-        "observability-drill-{}-{}",
+        "observability-drill-{}-{}-{}",
         std::process::id(),
+        NEXT.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
         std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
@@ -602,6 +604,7 @@ fn scheduler_pause_and_resume_are_idempotent() {
             success: true,
             code: Some(0),
             stdout: b"PAUSED\n".to_vec(),
+            stderr: Vec::new(),
         }],
         calls: Vec::new(),
     };
@@ -614,11 +617,13 @@ fn scheduler_pause_and_resume_are_idempotent() {
                 success: true,
                 code: Some(0),
                 stdout: b"ENABLED\n".to_vec(),
+                stderr: Vec::new(),
             },
             Captured {
                 success: true,
                 code: Some(0),
                 stdout: Vec::new(),
+                stderr: Vec::new(),
             },
         ],
         calls: Vec::new(),
@@ -632,11 +637,13 @@ fn scheduler_pause_and_resume_are_idempotent() {
                 success: true,
                 code: Some(0),
                 stdout: b"PAUSED\n".to_vec(),
+                stderr: Vec::new(),
             },
             Captured {
                 success: true,
                 code: Some(0),
                 stdout: Vec::new(),
+                stderr: Vec::new(),
             },
         ],
         calls: Vec::new(),
@@ -649,6 +656,7 @@ fn scheduler_pause_and_resume_are_idempotent() {
             success: true,
             code: Some(0),
             stdout: b"ENABLED planted-value\n".to_vec(),
+            stderr: Vec::new(),
         }],
         calls: Vec::new(),
     };
@@ -772,6 +780,7 @@ fn ok(stdout: &str) -> Captured {
         success: true,
         code: Some(0),
         stdout: stdout.as_bytes().to_vec(),
+        stderr: Vec::new(),
     }
 }
 
@@ -883,6 +892,7 @@ fn probe_fails_before_readback_when_the_job_fails() {
             success: false,
             code: Some(1),
             stdout: Vec::new(),
+            stderr: b"ERROR: PERMISSION_DENIED planted-secret".to_vec(),
         }],
         calls: Vec::new(),
     };
@@ -893,6 +903,67 @@ fn probe_fails_before_readback_when_the_job_fails() {
         &mut || {},
     )
     .unwrap_err();
-    assert!(error.to_string().contains("probe job exited"));
+    assert_eq!(
+        error.to_string(),
+        "gcloud probe job exited Some(1) (PERMISSION_DENIED)"
+    );
+    assert!(!error.to_string().contains("planted-secret"));
     assert_eq!(shell.calls.len(), 1);
+}
+
+#[test]
+fn probe_retries_a_transient_read_and_names_each_failing_outcome() {
+    let stamp = "2026-11-07T03:08:00Z";
+    let body = readiness(
+        stamp,
+        &[
+            ("physician", "success"),
+            ("duet", "timeout"),
+            ("physician-worker", "success"),
+        ],
+    );
+    let mut shell = Scripted {
+        answers: vec![ok("availability-probe-abcde\n"), ok("token\n")],
+        calls: Vec::new(),
+    };
+    let mut reads = 0;
+    let report = super::probe::probe(
+        at("2026-11-07T03:08:41Z"),
+        &mut shell,
+        &mut |_token, metric, _slot| {
+            reads += 1;
+            if reads == 1 {
+                return Err(super::probe::ProbeError::Refused(503));
+            }
+            Ok(if metric.ends_with("/heartbeat") {
+                heartbeat(stamp)
+            } else {
+                body.clone()
+            })
+        },
+        &mut || {},
+    )
+    .unwrap();
+    let verdict = report.verdict();
+    assert_eq!(
+        verdict,
+        super::probe::Verdict::Unhealthy(vec!["duet: timeout".into()])
+    );
+    assert_eq!(verdict.to_string(), "Readiness failed for duet: timeout.");
+}
+
+#[test]
+fn probe_reports_the_read_error_when_no_read_ever_succeeds() {
+    let mut shell = Scripted {
+        answers: vec![ok("availability-probe-abcde\n"), ok("token\n")],
+        calls: Vec::new(),
+    };
+    let error = super::probe::probe(
+        at("2026-11-07T03:08:41Z"),
+        &mut shell,
+        &mut |_token, _metric, _slot| Err(super::probe::ProbeError::Refused(403)),
+        &mut || {},
+    )
+    .unwrap_err();
+    assert_eq!(error.to_string(), "Cloud Monitoring refused the read (403)");
 }

@@ -12,9 +12,9 @@ const DATADOG_SERIES_URL: &str = "https://api.datadoghq.com/api/v1/series";
 pub(super) const SYNTHETIC_METRIC: &str = "coda.qualification.synthetic_readiness";
 pub(super) const SYNTHETIC_TAG: &str = "env:staging";
 const LOKI_PUSH_URL: &str = "http://127.0.0.1:3100/loki/api/v1/push";
-const SCHEDULER_JOB: &str = "availability-probe";
-const SCHEDULER_PROJECT: &str = "coda-rust-staging";
-const SCHEDULER_LOCATION: &str = "us-east1";
+pub(super) const PROBE_JOB: &str = "availability-probe";
+pub(super) const STAGING_PROJECT: &str = "coda-rust-staging";
+pub(super) const STAGING_REGION: &str = "us-east1";
 pub(super) const QUALIFICATION_CRITICAL: f64 = 1.0;
 pub(super) const QUALIFICATION_BELOW_RECOVERY: f64 = 0.0;
 
@@ -80,6 +80,7 @@ pub(super) struct Captured {
     pub(super) success: bool,
     pub(super) code: Option<i32>,
     pub(super) stdout: Vec<u8>,
+    pub(super) stderr: Vec<u8>,
 }
 
 pub(super) trait Shell {
@@ -100,6 +101,7 @@ impl Shell for ProcessShell {
             success: output.status.success(),
             code: output.status.code(),
             stdout: output.stdout,
+            stderr: output.stderr,
         })
     }
 }
@@ -147,9 +149,9 @@ pub(super) fn describe_args() -> Vec<String> {
         "scheduler".to_string(),
         "jobs".to_string(),
         "describe".to_string(),
-        SCHEDULER_JOB.to_string(),
-        format!("--project={SCHEDULER_PROJECT}"),
-        format!("--location={SCHEDULER_LOCATION}"),
+        PROBE_JOB.to_string(),
+        format!("--project={STAGING_PROJECT}"),
+        format!("--location={STAGING_REGION}"),
         "--format=value(state)".to_string(),
     ]
 }
@@ -159,9 +161,9 @@ pub(super) fn mutate_args(verb: &str) -> Vec<String> {
         "scheduler".to_string(),
         "jobs".to_string(),
         verb.to_string(),
-        SCHEDULER_JOB.to_string(),
-        format!("--project={SCHEDULER_PROJECT}"),
-        format!("--location={SCHEDULER_LOCATION}"),
+        PROBE_JOB.to_string(),
+        format!("--project={STAGING_PROJECT}"),
+        format!("--location={STAGING_REGION}"),
     ]
 }
 

@@ -4,7 +4,9 @@
 Network-none Docker with loopback-only Prometheus and notification fixtures;
 no real endpoints, keys or Slack. Reuse one disposable database to prove optional
 provisioning deletion. Test-only intervals are compressed, production queries,
-thresholds and route matchers are retained. Docker images must already exist.
+thresholds and route matchers are retained. The synthetic notification rule's
+Loki query is the one exception: it reads the loopback fixture instead, so the
+provisioned rule itself drives the test route. Docker images must already exist.
 """
 import copy
 import http.server
@@ -310,6 +312,7 @@ def main():
                 assert sorted(policy["routes"][0]["object_matchers"]) == sorted([["qualification", "=", "synthetic-notification-test"], ["alertname", "=", "Coda synthetic notification test"]])
             else:
                 assert len(policy["routes"]) == 1
+                assert not any(r["uid"] == "coda-synthetic-notification-test" for r in rules)
             print(f"PASS {label}: real rendered rules/datasources/contact/policy reconciled; operational catch-all muted", flush=True)
             if enabled:
                 native_query_boundary(cloud_rules)

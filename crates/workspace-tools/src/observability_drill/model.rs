@@ -521,6 +521,8 @@ impl std::fmt::Display for SignalError {
     }
 }
 
+impl std::error::Error for SignalError {}
+
 pub(super) trait Signal {
     fn fail(&mut self) -> Result<(), SignalError>;
     fn recover(&mut self) -> Result<(), SignalError>;

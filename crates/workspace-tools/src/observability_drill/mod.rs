@@ -32,9 +32,7 @@ A run stops at 40 minutes and 2 reminders, and restores the signal if it aborts.
 
 pub fn from_args(args: &[String]) -> Result<(), Failure> {
     if let Some(("probe", rest)) = args.split_first().map(|(head, tail)| (head.as_str(), tail)) {
-        let path = probe::from_args(rest).map_err(|message| Failure::new(1, message))?;
-        println!("wrote {}", path.display());
-        return Ok(());
+        return probe::from_args(rest);
     }
     let (request, output) = parse_args(args).map_err(|message| Failure::new(2, message))?;
     let mut live = Live::new(request.route);
