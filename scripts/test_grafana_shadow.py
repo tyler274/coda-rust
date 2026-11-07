@@ -101,7 +101,7 @@ def provision(enabled):
             if 'backend "gcs"' in text:
                 source.write_text(re.sub(r'backend "gcs"\s*\{[^}]*\}', 'backend "local" {}', text))
         run("tofu", f"-chdir={harness}", "init", "-input=false")
-    expression = 'jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items, contact=jsondecode(jsonencode(yamldecode(local.grafana_contact_config))), rules=yamldecode(file("${local.grafana_config_dir}/compatibility-rules.yaml"))})'
+    expression = 'jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items, contact=jsondecode(jsonencode(yamldecode(local.grafana_contact_config))), rules=yamldecode(file("${local.grafana_config_dir}/compatibility-rules.yaml")), synthetic=yamldecode(local.grafana_synthetic_rules)})'
     result = run("tofu", f"-chdir={harness}", "console", f"-var-file={vf}", input=expression)
     config = json.loads(json.loads(result))
     folder = OUT / ("enabled" if enabled else "disabled")
@@ -121,9 +121,17 @@ def provision(enabled):
         for rule in group["rules"]:
             rule["for"] = "20s"
         template = group["rules"][0]
+        # The provisioned synthetic rule keeps its title, labels and threshold.
+        # Only its Loki query moves to the loopback fixture.
+        synthetic = config["synthetic"]
+        synthetic_group = synthetic["groups"][0]
+        synthetic_group["interval"] = "10s"
+        for rule in synthetic_group["rules"]:
+            rule["for"] = "20s"
+            rule["data"][0].update(datasourceUid="compatibility", model={"refId": "A", "instant": True, "expr": 'synthetic_alert_value{case="test"} * 4'})
+        (folder / "alerting/synthetic-rules.yaml").write_text(json.dumps(synthetic))
         # Negative controls prove neither matcher alone bypasses shadow mode.
         for uid, title, labels, case in [
-            ("synthetic-qualified", "Coda synthetic notification test", {"qualification": "synthetic-notification-test"}, "test"),
             ("synthetic-title-only", "Coda synthetic notification test", {}, "shadow"),
             ("synthetic-label-only", "Synthetic wrong title", {"qualification": "synthetic-notification-test"}, "shadow"),
         ]:
@@ -256,7 +264,7 @@ def evaluate():
     for receipt in receipts:
         attachments = receipt["payload"]["attachments"]
         assert len(attachments) == 1
-        assert "/synthetic-qualified/" in attachments[0]["title_link"]
+        assert "/coda-synthetic-notification-test/" in attachments[0]["title_link"]
         assert "qualification = synthetic-notification-test" in attachments[0]["text"]
     # Allow a notification grouping cycle after recovery as a negative control.
     until = time.monotonic() + 12
