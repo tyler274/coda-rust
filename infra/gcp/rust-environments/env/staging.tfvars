@@ -54,6 +54,15 @@ observability_cluster_enabled = true
 # The otel-collector sidecar on physician, duet and physician-worker, sending to
 # the gateway above. Needs the observability root applied and its gateway ready.
 observability_enabled = true
+# Both destinations behind the gateway; must match infra/gcp/observability.
+telemetry_backend = "both"
+
+# The authenticated availability probe Cloud Run Job (availability.tf), from
+# the published image. Its schedule and the direct Cloud Monitoring watchdog
+# stay off until each is separately approved.
+availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-availability-probe@sha256:d8a12b49af67f386771e742a512dca575932c1c1d5dc4a378533bab5b19cdac5"
+availability_probe_schedule_enabled = false
+availability_watchdog_enabled       = false
 
 images = {
   # Initial digests only; later releases own the image field.

@@ -1,0 +1,18 @@
+# Prometheus for span metrics and service graphs that Tempo's
+# metrics-generator remote-writes. Shared by the local stack (compose profile
+# `grafana`) and the GKE StatefulSet (infra reads this file). It holds no
+# environment-specific values.
+#
+# Required flags (they are not config-file settings):
+#   --config.file=<this file>
+#   --web.enable-remote-write-receiver   accept Tempo's remote write
+#   --enable-feature=exemplar-storage    keep trace-id exemplars for Grafana
+#   --storage.tsdb.retention.time=30d    metrics retention (720h)
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: [localhost:9090]

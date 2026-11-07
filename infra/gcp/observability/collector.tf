@@ -1,9 +1,12 @@
-# One collector deployment fans every service's OTLP out to the Datadog Agent
-# and to Langfuse. It runs dev/observability/collector.yaml merged with the
-# gateway overlay collector.gke.yaml (oidc receiver auth and the caller
-# allowlist), both unchanged: their ${env:...} references are resolved by the
-# collector at start, so they are read with file(), not templatefile(), which
-# would try to interpolate them.
+# One collector deployment fans every service's OTLP out to the selected
+# operations backend (the Datadog Agent, or Tempo and Loki) and to Langfuse.
+# It runs dev/observability/collector.yaml merged with the gateway overlay
+# collector.gke.yaml (oidc receiver auth and the caller allowlist), then the
+# backend overlay collector.<telemetry_backend>.yaml last, all unchanged:
+# their ${env:...} references are resolved by the collector at start, so they
+# are read with file(), not templatefile(), which would try to interpolate
+# them. The backend overlay sets only the traces/ops and logs/ops exporters;
+# without it those pipelines export to nop.
 #
 # Cloud Run reaches it through the otel-gateway Service below: an internal
 # passthrough load balancer on the reserved gateway IP, open only to the
@@ -20,17 +23,32 @@ locals {
   collector_gateway_config_path = "${path.module}/../../../dev/observability/collector.gke.yaml"
   collector_gateway_config      = file(local.collector_gateway_config_path)
   collector_no_langfuse_config  = file("${path.module}/../../../dev/observability/collector.gke-no-langfuse.yaml")
+  collector_backend_file        = "collector.${var.telemetry_backend}.yaml"
+  collector_backend_config      = file("${path.module}/../../../dev/observability/${local.collector_backend_file}")
   collector_config_data = merge(
     {
-      "collector.yaml"     = local.collector_config
-      "collector.gke.yaml" = local.collector_gateway_config
+      "collector.yaml"               = local.collector_config
+      "collector.gke.yaml"           = local.collector_gateway_config
+      (local.collector_backend_file) = local.collector_backend_config
     },
     var.langfuse_enabled ? {} : { "collector.gke-no-langfuse.yaml" = local.collector_no_langfuse_config },
+    var.collector_self_metrics_enabled ? { "collector.self-metrics.yaml" = file("${path.module}/../../../dev/observability/collector.self-metrics.yaml") } : {},
   )
-  # Later files merge over earlier ones, so the order is fixed here.
+  # Later files merge over earlier ones, so the order is fixed here: the
+  # backend overlay is always last.
   collector_config_files = concat(
     ["collector.yaml", "collector.gke.yaml"],
     var.langfuse_enabled ? [] : ["collector.gke-no-langfuse.yaml"],
+    var.collector_self_metrics_enabled ? ["collector.self-metrics.yaml"] : [],
+    [local.collector_backend_file],
+  )
+  # Backend endpoints the overlay reads; only the selected backend's are set.
+  collector_backend_env = merge(
+    local.datadog_backend ? { DATADOG_OTLP_ENDPOINT = local.datadog_agent_otlp_grpc } : {},
+    local.grafana_backend ? {
+      TEMPO_OTLP_ENDPOINT = local.tempo_otlp_grpc
+      LOKI_OTLP_ENDPOINT  = local.loki_otlp_http
+    } : {},
   )
   collector_image    = "otel/opentelemetry-collector-contrib:0.155.0"
   collector_replicas = 2
@@ -101,29 +119,51 @@ resource "kubernetes_deployment_v1" "collector" {
     template {
       metadata {
         labels = local.collector_labels
-        annotations = {
-          # Roll the pods when the shared config, the overlay or the caller
-          # allowlist changes.
+        annotations = merge(local.collector_metrics_annotations, {
+          # Roll the pods when the shared config, an overlay (including the
+          # backend overlay) or the caller allowlist changes.
           "checksum/config" = sha256(join("\n", concat(
             [for file in local.collector_config_files : local.collector_config_data[file]],
             [var.otel_gateway_audience, local.collector_allowed_callers],
           )))
-        }
+        })
       }
 
       spec {
         service_account_name            = kubernetes_service_account_v1.collector.metadata[0].name
         automount_service_account_token = false
 
+        # Autopilot admits the pod with this profile. Declaring it matches
+        # the cluster; leaving it out makes every plan remove it.
+        security_context {
+          run_as_non_root     = false
+          supplemental_groups = []
+
+          seccomp_profile {
+            type = "RuntimeDefault"
+          }
+        }
+
+        toleration {
+          key      = "kubernetes.io/arch"
+          operator = "Equal"
+          value    = "amd64"
+          effect   = "NoSchedule"
+        }
+
         container {
           name  = "otel-collector"
           image = local.collector_image
-          # Later files merge over earlier ones: the gateway overlay adds auth.
+          # Later files merge over earlier ones: the gateway overlay adds auth
+          # and the backend overlay, last, picks the operations exporters.
           args = [for file in local.collector_config_files : "--config=/etc/otelcol/${file}"]
 
-          env {
-            name  = "DATADOG_OTLP_ENDPOINT"
-            value = local.datadog_agent_otlp_grpc
+          dynamic "env" {
+            for_each = local.collector_backend_env
+            content {
+              name  = env.key
+              value = env.value
+            }
           }
 
           env {
@@ -186,14 +226,29 @@ resource "kubernetes_deployment_v1" "collector" {
             period_seconds        = 20
           }
 
+          # Autopilot writes these container defaults at admission.
+          security_context {
+            allow_privilege_escalation = false
+            privileged                 = false
+            read_only_root_filesystem  = false
+            run_as_non_root            = false
+
+            capabilities {
+              add  = []
+              drop = ["NET_RAW"]
+            }
+          }
+
           resources {
             requests = {
-              cpu    = "250m"
-              memory = "512Mi"
+              cpu               = "250m"
+              memory            = "512Mi"
+              ephemeral-storage = "1Gi"
             }
             limits = {
-              cpu    = "1"
-              memory = "1Gi"
+              cpu               = "1"
+              memory            = "1Gi"
+              ephemeral-storage = "1Gi"
             }
           }
 
@@ -212,6 +267,15 @@ resource "kubernetes_deployment_v1" "collector" {
         }
       }
     }
+  }
+
+  # Autopilot's warden writes these after admission. The version and the
+  # adjustment record change outside this root.
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["autopilot.gke.io/resource-adjustment"],
+      metadata[0].annotations["autopilot.gke.io/warden-version"],
+    ]
   }
 
   depends_on = [helm_release.doppler_secrets]

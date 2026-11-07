@@ -9,8 +9,16 @@ cluster_name     = "rust-observability"
 network_name     = "rust-private"
 region           = "us-east1"
 
-# Datadog-only configuration. Enabling Langfuse requires its Cloud SQL IAM
-# grants and Doppler secrets; the gateway drops generation copies while off.
+# Datadog and Grafana behind the gateway, each with its own exporter queue.
+# Datadog stays the operational notifier; Grafana evaluates in shadow mode,
+# including its native Cloud Monitoring PromQL rules. Datadog monitors, the
+# Datadog GCP integration, Grafana test notifications and availability
+# monitors keep their off defaults until each is separately approved.
+telemetry_backend                = "both"
+grafana_cloud_monitoring_enabled = true
+
+# Enabling Langfuse requires its Cloud SQL IAM grants and Doppler secrets; the
+# gateway drops generation copies while off.
 langfuse_enabled = false
 
 # Slack #engineering-observability through Datadog's Coda_Health Slack account.

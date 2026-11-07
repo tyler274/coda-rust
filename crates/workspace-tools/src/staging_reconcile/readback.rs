@@ -66,8 +66,8 @@ pub(super) fn expected(show_json: &[u8]) -> Result<Expected> {
             .and_then(Value::as_u64)
             .map(|value| value.to_string())
     };
-    let cpu_idle = template
-        .pointer("/containers/0/resources/0/cpu_idle")
+    let cpu_idle = product_container(template)?
+        .pointer("/resources/0/cpu_idle")
         .and_then(Value::as_bool);
     let egress = template
         .pointer("/vpc_access/0/egress")
@@ -102,6 +102,29 @@ pub(super) fn expected(show_json: &[u8]) -> Result<Expected> {
                 .ok_or_else(|| refuse(format!("reviewed plan omits physician {setting:?}")))
         })
         .collect()
+}
+
+/// The planned physician product container: named `physician` beside the
+/// otel-collector sidecar, else the single unnamed container.
+fn product_container(template: &Value) -> Result<&Value> {
+    let containers = template
+        .get("containers")
+        .and_then(Value::as_array)
+        .map_or(&[][..], Vec::as_slice);
+    fn name(container: &Value) -> Option<&str> {
+        container
+            .get("name")
+            .and_then(Value::as_str)
+            .filter(|name| !name.is_empty())
+    }
+    let mut named = containers.iter().filter(|c| name(c) == Some(SERVICE));
+    match (named.next(), named.next(), containers) {
+        (Some(product), None, _) => Ok(product),
+        (None, _, [only]) if name(only).is_none() => Ok(only),
+        _ => Err(refuse(
+            "reviewed plan has no single physician product container",
+        )),
+    }
 }
 
 #[derive(Debug, Deserialize)]

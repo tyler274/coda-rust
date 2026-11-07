@@ -86,10 +86,94 @@ variable "otel_gateway_allowed_callers" {
   }
 }
 
+variable "telemetry_backend" {
+  description = "Operations destinations behind the gateway: datadog (compatibility default), grafana, or both with independent exporter queues. Datadog remains the primary operational notifier; Grafana evaluates in shadow mode. Langfuse is independent."
+  type        = string
+  default     = "datadog"
+
+  validation {
+    condition     = contains(["datadog", "grafana", "both"], var.telemetry_backend)
+    error_message = "telemetry_backend must be datadog, grafana or both."
+  }
+}
+
+variable "grafana_test_notifications_enabled" {
+  description = "Explicitly enable only the labeled synthetic Grafana Slack route. Operational rules remain shadow-only; requires operator approval and the webhook in Doppler."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.grafana_test_notifications_enabled || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Grafana test notifications require grafana or both."
+  }
+}
+
+variable "grafana_compatibility_metrics_url" {
+  description = "Optional private Prometheus-compatible source for normalized readiness/dependency signals. Empty disables its datasource and rules. The signal producer must implement the documented compatibility contract; Tempo span metrics are not this source. No credentials in URLs."
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || can(regex("^https?://[a-zA-Z0-9.-]+(:[0-9]+)?/?$", var.grafana_compatibility_metrics_url))
+    error_message = "Use a credential-free internal HTTP(S) origin, or empty to disable."
+  }
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Compatibility metrics require grafana or both."
+  }
+}
+
+variable "grafana_traces_retention_days" {
+  description = "Days Tempo keeps traces (telemetry_backend = grafana)."
+  type        = number
+  default     = 14
+
+  validation {
+    condition     = var.grafana_traces_retention_days >= 1 && var.grafana_traces_retention_days <= 90 && floor(var.grafana_traces_retention_days) == var.grafana_traces_retention_days
+    error_message = "grafana_traces_retention_days must be a whole number of days between 1 and 90."
+  }
+}
+
+variable "grafana_logs_retention_days" {
+  description = "Days Loki keeps log records (telemetry_backend = grafana)."
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.grafana_logs_retention_days >= 1 && var.grafana_logs_retention_days <= 365 && floor(var.grafana_logs_retention_days) == var.grafana_logs_retention_days
+    error_message = "grafana_logs_retention_days must be a whole number of days between 1 and 365."
+  }
+}
+
+variable "grafana_metrics_retention_days" {
+  description = "Days Prometheus keeps the span metrics Tempo derives (telemetry_backend = grafana)."
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.grafana_metrics_retention_days >= 1 && var.grafana_metrics_retention_days <= 365 && floor(var.grafana_metrics_retention_days) == var.grafana_metrics_retention_days
+    error_message = "grafana_metrics_retention_days must be a whole number of days between 1 and 365."
+  }
+}
+
+variable "grafana_cloud_monitoring_enabled" {
+  description = "Adds a Google Cloud Monitoring datasource to Grafana for Cloud Run and GKE platform metrics in cluster_project, read through Workload Identity by a service account holding only roles/monitoring.viewer. The Grafana counterpart of datadog_gcp_integration_enabled; off by default."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.grafana_cloud_monitoring_enabled || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "grafana_cloud_monitoring_enabled requires telemetry_backend = grafana."
+  }
+}
+
 variable "datadog_gcp_integration_enabled" {
   description = "Creates the Datadog GCP integration for cluster_project only (Cloud Run and GKE metrics through service-account impersonation; no key). Billable and external: off until the operator and the Datadog account owner approve it."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !var.datadog_gcp_integration_enabled || contains(["datadog", "both"], var.telemetry_backend)
+    error_message = "The Datadog GCP integration requires telemetry_backend = datadog; grafana uses grafana_cloud_monitoring_enabled."
+  }
 }
 
 variable "datadog_gcp_cloud_run_services" {
@@ -156,6 +240,10 @@ variable "datadog_monitors_enabled" {
     condition     = !var.datadog_monitors_enabled || var.alert_notify != ""
     error_message = "Enabling monitors requires an explicitly confirmed notification handle."
   }
+  validation {
+    condition     = !var.datadog_monitors_enabled || contains(["datadog", "both"], var.telemetry_backend)
+    error_message = "Datadog monitors require telemetry_backend = datadog; grafana provisions its own alert rules."
+  }
 }
 
 variable "alert_notify" {
@@ -176,6 +264,16 @@ variable "async_failure_threshold" {
   validation {
     condition     = var.async_failure_threshold >= 0
     error_message = "async_failure_threshold cannot be negative."
+  }
+}
+
+variable "container_memory_limit_ratio" {
+  description = "Share of its own memory limit an observability-namespace container may hold for 10 minutes before alerting."
+  type        = number
+  default     = 0.9
+  validation {
+    condition     = var.container_memory_limit_ratio > 0 && var.container_memory_limit_ratio < 1
+    error_message = "container_memory_limit_ratio must be between 0 and 1."
   }
 }
 

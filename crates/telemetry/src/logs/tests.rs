@@ -102,6 +102,77 @@ fn correlated_safe_logs_respect_explicit_current_and_absent_parents() {
     traces.shutdown().unwrap();
 }
 
+/// `init` composes layers that may be absent; the log layer must still learn
+/// its dispatch, or Loki receives records without trace context.
+#[test]
+fn init_layer_composition_keeps_trace_context() {
+    let exporter = InMemoryLogExporter::default();
+    let provider = SdkLoggerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let traces = SdkTracerProvider::builder().build();
+    let subscriber = tracing_subscriber::registry()
+        .with(Some(
+            tracing_opentelemetry::layer().with_tracer(traces.tracer("test")),
+        ))
+        .with(SafeLogs::for_provider(Some(&provider), "test"))
+        .with(None::<SafeLogs>);
+    let expected = tracing::subscriber::with_default(subscriber, || {
+        let span = tracing::info_span!("http.server");
+        let expected = span.context().span().span_context().trace_id();
+        span.in_scope(|| tracing::info!(status = 200_u64, "request"));
+        expected
+    });
+    let logs = exporter.get_emitted_logs().unwrap();
+    assert_eq!(logs.len(), 1);
+    assert_ne!(expected, opentelemetry::TraceId::INVALID);
+    assert_eq!(logs[0].record.trace_context().unwrap().trace_id, expected);
+
+    let disabled = tracing_subscriber::registry().with(SafeLogs::for_provider(None, "test"));
+    tracing::subscriber::with_default(disabled, || tracing::error!("nothing exported"));
+    assert_eq!(exporter.get_emitted_logs().unwrap().len(), 1);
+    provider.shutdown().unwrap();
+    traces.shutdown().unwrap();
+}
+
+#[test]
+fn every_http_response_exports_one_record_under_the_default_filter() {
+    use tower_http::trace::{MakeSpan as _, OnResponse as _};
+
+    let exporter = InMemoryLogExporter::default();
+    let provider = SdkLoggerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let traces = SdkTracerProvider::builder().build();
+    let subscriber = tracing_subscriber::registry()
+        .with(tracing_subscriber::EnvFilter::new(crate::DEFAULT_FILTER))
+        .with(tracing_opentelemetry::layer().with_tracer(traces.tracer("test")))
+        .with(SafeLogs::for_provider(Some(&provider), "test"));
+    let expected = tracing::subscriber::with_default(subscriber, || {
+        let request = http::Request::get("/health").body(()).unwrap();
+        let span = crate::HttpSpan.make_span(&request);
+        let response = http::Response::builder().status(302).body(()).unwrap();
+        crate::RecordStatus.on_response(&response, Duration::from_millis(7), &span);
+        span.context().span().span_context().trace_id()
+    });
+    let logs = exporter.get_emitted_logs().unwrap();
+    assert_eq!(logs.len(), 1, "one record per response");
+    let record = &logs[0].record;
+    assert_eq!(record.trace_context().unwrap().trace_id, expected);
+    assert!(
+        record
+            .attributes_iter()
+            .any(|(k, v)| k.as_str() == "status" && *v == AnyValue::from(302_i64))
+    );
+    assert!(
+        record
+            .attributes_iter()
+            .any(|(k, v)| k.as_str() == "latency_ms" && *v == AnyValue::from(7_i64))
+    );
+    provider.shutdown().unwrap();
+    traces.shutdown().unwrap();
+}
+
 #[test]
 fn queue_publish_failure_keeps_identifying_fields_without_content() {
     let exporter = InMemoryLogExporter::default();

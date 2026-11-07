@@ -35,7 +35,7 @@ let
 
   # One locked release build compiles the shared dependency graph once for
   # every server, migration and job binary.
-  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" ];
+  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" ];
   serverArgs = common // {
     pname = "coda-servers";
     cargoExtraArgs = "--frozen --bins " + lib.concatMapStringsSep " " (p: "-p ${p}") serverPackages;
@@ -142,14 +142,15 @@ let
     extraGroupLines = [ "nonroot:x:65532:" ];
   };
   zoneinfo = "${pkgs.tzdata}/share/zoneinfo";
-  image = { name, binary, executable, role, assets ? null, environment ? [ ] }:
+  image = { name, binary, executable, role, assets ? null, environment ? [ ], secrets ? true }:
     pkgs.dockerTools.buildLayeredImage {
       inherit name;
       tag = revision;
       created = "1970-01-01T00:00:01Z";
       # No shell, package manager or toolchain: the binary, its libraries,
       # Doppler, CA roots, zoneinfo and the passwd/group files.
-      contents = [ binary doppler pkgs.dockerTools.caCertificates pkgs.tzdata passwd ]
+      contents = [ binary pkgs.dockerTools.caCertificates pkgs.tzdata passwd ]
+        ++ lib.optional secrets doppler
         ++ lib.optional (assets != null) assets;
       fakeRootCommands = ''
         mkdir -p tmp
@@ -163,7 +164,8 @@ let
         # no secret copy lands on the container filesystem. Cloud Run's PORT
         # wins over any PORT value stored in Doppler. Infrastructure telemetry
         # settings and the image's immutable version also win over Doppler.
-        Entrypoint = [
+        # A secret-free job (secrets = false) starts its binary directly.
+        Entrypoint = if !secrets then [ "${binary}/bin/${executable}" ] else [
           "${doppler}/bin/doppler" "run"
           "--no-check-version" "--no-fallback" "--forward-signals"
           "--preserve-env=PORT,DD_VERSION,DD_ENV,OTEL_EXPORTER_OTLP_ENDPOINT,CODA_LOG_FORMAT,CODA_TELEMETRY_CONTENT"
@@ -277,6 +279,15 @@ in
     role = "migration";
     binary = duetMigration;
     executable = "duet-migrate";
+  };
+  # Authenticated /readyz probe job. It reads no secrets: its identity is the
+  # Cloud Run Job service account, so the image has no Doppler entrypoint.
+  availability-probe-image = image {
+    name = "coda-availability-probe";
+    role = "job";
+    binary = native "availability-probe";
+    executable = "availability-probe";
+    secrets = false;
   };
   # Bounded Luna privacy receipt delivery job. Not a migration; no scheduler.
   duet-privacy-delivery-image = image {

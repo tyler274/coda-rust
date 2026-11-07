@@ -1,8 +1,9 @@
 # Datadog: Operator, one DatadogAgent for the Autopilot cluster, and gated
 # per-service monitors. The Agent receives OTLP only from the collector,
-# whose Datadog pipeline has already deleted prompt and completion content.
+# whose operations pipelines have already deleted prompt and completion
+# content. Everything here exists only with telemetry_backend = datadog.
 locals {
-  monitored_services = var.datadog_monitors_enabled ? toset(["physician-sample", "physician-worker", "duet-api"]) : toset([])
+  monitored_services = local.datadog_backend && var.datadog_monitors_enabled ? toset(["physician-sample", "physician-worker", "duet-api"]) : toset([])
   async_services     = local.monitored_services
 
   datadog_agent = {
@@ -53,7 +54,7 @@ locals {
             # logs. OTLP log records are not container logs and still flow.
             { name = "DD_CONTAINER_EXCLUDE_LOGS", value = "kube_namespace:${local.namespace}" },
             # The CRD has no OTLP logs switch; the Agent ingests OTLP logs only
-            # with this set. The gateway's logs/datadog pipeline needs it.
+            # with this set. The gateway's logs/ops pipeline needs it.
             { name = "DD_OTLP_CONFIG_LOGS_ENABLED", value = "true" },
             { name = "DD_ENV", value = local.dd_env },
           ]
@@ -64,6 +65,7 @@ locals {
 }
 
 resource "helm_release" "datadog_operator" {
+  count      = local.datadog_count
   name       = "datadog-operator"
   repository = "https://helm.datadoghq.com"
   chart      = "datadog-operator"
@@ -72,7 +74,19 @@ resource "helm_release" "datadog_operator" {
   atomic     = true
 }
 
+# The releases gained a backend count; keep the applied staging instances.
+moved {
+  from = helm_release.datadog_operator
+  to   = helm_release.datadog_operator[0]
+}
+
+moved {
+  from = helm_release.datadog_agent
+  to   = helm_release.datadog_agent[0]
+}
+
 resource "helm_release" "datadog_agent" {
+  count     = local.datadog_count
   name      = "datadog-agent"
   chart     = local.manifests_chart
   namespace = kubernetes_namespace.observability.metadata[0].name
@@ -110,7 +124,7 @@ resource "datadog_monitor" "site_5xx_rate" {
 # not Datadog's derived operation name. Validate ingestion and trace retention
 # before enabling; the query includes chat and reply-revision generations.
 resource "datadog_monitor" "chat_generation_errors" {
-  count   = var.datadog_monitors_enabled ? 1 : 0
+  count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
   name    = "[${local.dd_env}] physician chat generation errors"
   type    = "trace-analytics alert"
   query   = "trace-analytics(\"service:physician-worker env:${local.dd_env} status:error @coda.job:physician_* @gen_ai.system:*\").rollup(\"count\").last(\"10m\") > ${var.chat_generation_error_threshold}"
@@ -146,6 +160,62 @@ resource "datadog_monitor" "async_failures" {
   }
   notify_no_data = false
   tags           = ["service:${each.key}", "env:${local.dd_env}", "team:coda"]
+}
+
+# Memory on the Autopilot cluster, judged per workload container instead of
+# per node. Autopilot sizes and replaces the nodes itself, and every node runs
+# a kube-system balloon pod that reserves its spare capacity, so
+# system.mem.pct_usable reads 4-6% on healthy nodes while MemoryPressure is
+# False; the Datadog host-pack monitor on that metric is not ours to act on
+# (README.md, "Memory alerts on Autopilot"). These monitors watch what this
+# stack controls: its containers against their own limits, and OOM kills.
+#
+# Groups are container names, which survive pod and node churn, so a retired
+# node or a replaced pod never leaves a group behind. timeout_h resolves a
+# group that stops reporting (a removed workload) instead of holding it in
+# Alert, and new_group_delay skips the first minutes of a new container.
+resource "datadog_monitor" "observability_container_memory" {
+  count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
+  name    = "[${local.dd_env}] ${var.cluster_name} container memory near its limit"
+  type    = "query alert"
+  query   = "min(last_10m):max:kubernetes.memory.working_set{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} / max:kubernetes_state.container.memory_limit{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env}} by {kube_container_name} > ${var.container_memory_limit_ratio}"
+  message = <<-EOT
+    {{kube_container_name.name}} in ${local.namespace} on ${var.cluster_name} has used more than ${var.container_memory_limit_ratio * 100}% of its memory limit for 10 minutes. The kernel kills it at the limit.
+    Compare kubernetes.memory.working_set with kubernetes_state.container.memory_limit for the container, then raise its limit in infra/gcp/observability or find the queue that is growing. Node memory is managed by Autopilot.
+    ${var.alert_notify}
+  EOT
+
+  monitor_thresholds {
+    critical = var.container_memory_limit_ratio
+  }
+
+  require_full_window = false
+  notify_no_data      = false
+  new_group_delay     = 300
+  timeout_h           = 1
+  tags                = ["kube_cluster_name:${var.cluster_name}", "kube_namespace:${local.namespace}", "env:${local.dd_env}", "team:coda"]
+}
+
+resource "datadog_monitor" "observability_container_oom" {
+  count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
+  name    = "[${local.dd_env}] ${var.cluster_name} container OOM-killed"
+  type    = "query alert"
+  query   = "max(last_10m):max:kubernetes.containers.last_state.terminated{kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace},env:${local.dd_env},reason:oomkilled} by {kube_container_name} >= 1"
+  message = <<-EOT
+    {{kube_container_name.name}} in ${local.namespace} on ${var.cluster_name} was OOM-killed and restarted.
+    Check its working set against its limit and the restart count. A killed collector drops its queued telemetry; services keep running.
+    ${var.alert_notify}
+  EOT
+
+  monitor_thresholds {
+    critical = 1
+  }
+
+  require_full_window = false
+  notify_no_data      = false
+  new_group_delay     = 300
+  timeout_h           = 1
+  tags                = ["kube_cluster_name:${var.cluster_name}", "kube_namespace:${local.namespace}", "env:${local.dd_env}", "team:coda"]
 }
 
 resource "datadog_monitor" "site_p95_latency" {
