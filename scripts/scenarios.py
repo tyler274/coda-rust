@@ -51,6 +51,8 @@ D1_TESTS = {
         "a provider failure after 202 is traced to the accepted request without private content",
     "failed_steer_lookup_still_attempts_privacy_confirmation":
         "a database failure after 202 still attempts privacy confirmation and is traced without private content",
+    "a_landed_message_is_confirmed_by_reading_it":
+        "an uncertain send is confirmed by reading it back; another account reads it as missing",
 }
 STRIPPED = ("OPENAI_API_KEY", "CODA_ALLOW_MODEL_CALLS", "GOOGLE_APPLICATION_CREDENTIALS")
 
