@@ -58,11 +58,13 @@ observability_enabled = true
 telemetry_backend = "both"
 
 # The authenticated availability probe Cloud Run Job (availability.tf), from
-# the published image. Its schedule and the direct Cloud Monitoring watchdog
-# stay off until each is separately approved.
+# the published image, runs every minute. The direct Cloud Monitoring
+# watchdog notifies Slack #engineering-observability through the existing
+# "GCP Monitoring" channel when its heartbeat stops.
 availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-availability-probe@sha256:d8a12b49af67f386771e742a512dca575932c1c1d5dc4a378533bab5b19cdac5"
-availability_probe_schedule_enabled = false
-availability_watchdog_enabled       = false
+availability_probe_schedule_enabled = true
+availability_watchdog_enabled       = true
+availability_watchdog_channels      = ["projects/coda-rust-staging/notificationChannels/12022100174098334389"]
 
 images = {
   # Initial digests only; later releases own the image field.
