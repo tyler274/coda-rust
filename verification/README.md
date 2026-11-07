@@ -60,6 +60,25 @@ Each verify skill lives in `.agents/skills/coda-verify-*/`, with a `.claude/skil
 description says what it proves, and its "When a change needs this" section names the code that
 calls for it.
 
+## Scenario receipts
+
+`scripts/scenarios.py` runs the product journeys that work on one machine and writes
+`receipt.json` under `target/verification/runs/`. P1, a physician asking about a patient, runs over
+HTTP against the [scale stack](../scripts/physician-scale-stack.py). That stack has two sites, the
+worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet conversation,
+runs the duet-api Postgres suites against the same Postgres. The run reads no credentials.
+
+```sh
+nix develop .#agent --command scripts/scenarios.py
+```
+
+The receipt records the git revision and binary and chart digests. It also records each step's
+actor, command id, observation and artifact, and labels each step `controlled`, `real-model` or
+`clinical-judgment`. The runner produces only controlled steps. Each capability a journey needs
+that the run did not exercise goes under `missing` with the reason and its owning source, so the
+outcome reads `incomplete` and does not pass silently. A failed step, build or shutdown exits 1
+and still writes the receipt. `--require-complete` exits 3 while anything is missing.
+
 ## PStack
 
 `statechart`, `create-formal-verification-skill`, `maintain-formal-verification-skill`,
