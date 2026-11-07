@@ -1,0 +1,12 @@
+Mutation: TellDuet drops the owed sign-out and leaves the session live.
+Config checks only PROPERTY ServerEndsSignOut.
+
+Error: Action property ServerEndsSignOut is violated.
+State 5: <TellDuet>
+/\ event = "the phone tells Duet it signed out"
+/\ phone.owes = {}
+/\ session = ( "Session 1" :> "Yours, live" @@
+  "Session 2" :> "Not signed in yet" @@
+  "Session 3" :> "Not signed in yet" )
+809 states generated, 359 distinct states found.
+The depth of the complete state graph search is 9.

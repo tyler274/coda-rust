@@ -22,6 +22,62 @@ pub trait IdentityVerifier: Send + Sync {
     /// Verify the bearer using the provider authority.
     async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError>;
 }
+fn provider_failure(status: reqwest::StatusCode, body: &serde_json::Value) -> ApiError {
+    if matches!(status.as_u16(), 400 | 401)
+        && matches!(
+            body["error"]["message"].as_str(),
+            Some("INVALID_ID_TOKEN" | "TOKEN_EXPIRED" | "USER_DISABLED" | "USER_NOT_FOUND")
+        )
+    {
+        if body["error"]["message"].as_str() == Some("TOKEN_EXPIRED") {
+            ApiError::SessionExpired
+        } else {
+            ApiError::Unauthorized
+        }
+    } else {
+        ApiError::Unavailable("Identity provider could not verify this session")
+    }
+}
+
+#[cfg(test)]
+mod refusal_tests {
+    use super::*;
+    #[test]
+    fn provider_outage_and_configuration_errors_are_not_session_refusals() {
+        for (status, message) in [
+            (503, "TOKEN_EXPIRED"),
+            (401, "INVALID_API_KEY"),
+            (400, "QUOTA_EXCEEDED"),
+            (429, "TOO_MANY_ATTEMPTS_TRY_LATER"),
+        ] {
+            let body = serde_json::json!({"error":{"message":message}});
+            assert!(matches!(
+                provider_failure(reqwest::StatusCode::from_u16(status).unwrap(), &body),
+                ApiError::Unavailable(_)
+            ));
+        }
+        for message in [
+            "INVALID_ID_TOKEN",
+            "TOKEN_EXPIRED",
+            "USER_DISABLED",
+            "USER_NOT_FOUND",
+        ] {
+            let body = serde_json::json!({"error":{"message":message}});
+            let expected = if message == "TOKEN_EXPIRED" {
+                "expired"
+            } else {
+                "unverified"
+            };
+            let error = provider_failure(reqwest::StatusCode::BAD_REQUEST, &body);
+            assert_eq!(
+                matches!(error, ApiError::SessionExpired),
+                expected == "expired",
+                "{message}"
+            );
+        }
+    }
+}
+
 /// Identity Platform's accounts:lookup validates the supplied ID token online.
 /// This keeps provider revocation/disabled state authoritative, without accepting development tokens.
 pub struct IdentityPlatform {
@@ -56,11 +112,14 @@ impl IdentityVerifier for IdentityPlatform {
             .send()
             .await
             .map_err(|_| ApiError::Unavailable("Identity verification unavailable"))?;
-        if !response.status().is_success() {
-            return Err(ApiError::Unauthorized);
+        let status = response.status();
+        let lookup: serde_json::Value = response
+            .json()
+            .await
+            .map_err(|error| ApiError::IdentityResponse(error.without_url()))?;
+        if !status.is_success() {
+            return Err(provider_failure(status, &lookup));
         }
-        let lookup: serde_json::Value =
-            response.json().await.map_err(|_| ApiError::Unauthorized)?;
         // Parse claims only AFTER the provider has verified this exact bearer.
         let parts: Vec<_> = bearer.split('.').collect();
         if parts.len() != 3 {

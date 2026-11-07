@@ -76,8 +76,8 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
                         let published =
                             api.create_doctor_share_link(request)
                                 .await
-                                .inspect_err(|&e| {
-                                    if e == duet_client::doctor::DoctorError::Conflict {
+                                .inspect_err(|e| {
+                                    if *e == duet_client::doctor::DoctorError::Conflict {
                                         let _ = session
                                             .retention
                                             .mark_operation_conflict(&session.fence, &operation);
@@ -96,8 +96,8 @@ pub(crate) fn PublicationControls(base_url: String, generation: i32) -> Element 
                     } => {
                         api.revoke_doctor_share_link(*operation_id, *publication_id)
                             .await
-                            .inspect_err(|&e| {
-                                if e == duet_client::doctor::DoctorError::Conflict {
+                            .inspect_err(|e| {
+                                if *e == duet_client::doctor::DoctorError::Conflict {
                                     let _ = session
                                         .retention
                                         .mark_operation_conflict(&session.fence, &operation);

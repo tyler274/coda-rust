@@ -709,6 +709,36 @@ impl ConversationStore {
             json!({"messages":messages,"active_run":active,"revision":sequence,"next_before":null,"availability":{"can_send":allowed,"reason":if allowed{Value::Null}else{json!(if configured{"permission_required"}else{"unavailable"})}}}),
         )
     }
+    /// Whether this account's conversation already accepted `id`.
+    ///
+    /// A read, not a resend. The same id with a new timezone or with assistant
+    /// access withdrawn is still found. Another account's id is not found.
+    /// The conversation tables are read with the same SQL owner as the page.
+    pub async fn phone_message(&self, c: &AccountContext, id: Uuid) -> Result<Value, ApiError> {
+        let mut tx = self.database.begin(c.account_id).await?;
+        check_current(&mut tx, c, false).await?;
+        let state: Option<String> = sqlx::query_scalar(
+            "select state from duet_commands where user_id=$1 and conversation_id=$1 and id=$2",
+        )
+        .bind(c.account_id)
+        .bind(id)
+        .fetch_optional(&mut *tx)
+        .await?;
+        if let Some(state) = state {
+            return Ok(json!({"id": id, "state": state}));
+        }
+        let steer: Option<Uuid> = sqlx::query_scalar(
+            "select s.id from duet_command_steers s join duet_commands d on d.user_id=s.user_id and d.id=s.command_id where s.user_id=$1 and s.id=$2 and d.conversation_id=$1",
+        )
+        .bind(c.account_id)
+        .bind(id)
+        .fetch_optional(&mut *tx)
+        .await?;
+        if steer.is_some() {
+            return Ok(json!({"id": id, "state": "accepted"}));
+        }
+        Err(ApiError::NotFound)
+    }
     /// Accept the original phone request shape, using the account's one ongoing conversation.
     pub async fn phone_accept(
         &self,

@@ -428,4 +428,14 @@ NothingRemovedSilently == ~removed
 
 \* Duet warns that signing out removes something only while the phone holds something unconfirmed.
 WarnsOnlyWhenUnconfirmed == phone.screen = Warning => Unconfirmed(phone)
+
+\* A sign-in screen holds none of the account: no draft, no entries, and no account on screen.
+SignInHoldsNothing ==
+  phone.screen \in SignInScreens =>
+    phone.draft = Nobody /\ phone.entries = Nobody /\ phone.whose = Nobody
+
+\* When the phone tells Duet it signed out, Duet ends that session. A signed-out session is refused.
+ServerEndsSignOut ==
+  [][\A s \in Sessions :
+       (s \in phone.owes /\ s \notin phone'.owes) => session'[s] = Ended(Of(s))]_vars
 =============================================================================

@@ -37,6 +37,10 @@ pub fn router(state: ConversationState) -> Router {
             get(phone_read).post(phone_send),
         )
         .route(
+            "/api/conversation/messages/{message_id}",
+            get(phone_message),
+        )
+        .route(
             "/api/conversation/messages/{message_id}/sources/{source_id}",
             get(message_source),
         )
@@ -57,6 +61,14 @@ async fn phone_read(
 ) -> Result<Json<Value>, ApiError> {
     let c = s.durable.authenticate(&h).await?;
     Ok(Json(s.store.phone_page(&c, s.provider.is_some()).await?))
+}
+async fn phone_message(
+    State(s): State<ConversationState>,
+    h: HeaderMap,
+    Path(message_id): Path<Uuid>,
+) -> Result<Json<Value>, ApiError> {
+    let c = s.durable.authenticate(&h).await?;
+    Ok(Json(s.store.phone_message(&c, message_id).await?))
 }
 async fn phone_send(
     State(s): State<ConversationState>,
