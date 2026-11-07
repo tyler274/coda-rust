@@ -1063,7 +1063,9 @@ run "grafana_edge_bootstrap_grants_nobody" {
       toset([for m in local.grafana_edge_manifests : m.kind]) == toset(["Gateway", "HTTPRoute", "GCPBackendPolicy", "HealthCheckPolicy"]) &&
       one([for m in local.grafana_edge_manifests : m.spec.rules[0].backendRefs if m.kind == "HTTPRoute"]) == [{ name = "grafana", port = 3000 }] &&
       one([for m in local.grafana_edge_manifests : m.spec.hostnames if m.kind == "HTTPRoute"]) == ["grafana.staging.example.test"] &&
-      one([for m in local.grafana_edge_manifests : m.spec.listeners[0].protocol if m.kind == "Gateway"]) == "HTTPS"
+      one([for m in local.grafana_edge_manifests : m.spec.listeners if m.kind == "Gateway"])[*].protocol == ["HTTPS"] &&
+      one([for m in local.grafana_edge_manifests : m.metadata.annotations["networking.gke.io/certmap"] if m.kind == "Gateway"]) == google_certificate_manager_certificate_map.grafana_edge[0].name &&
+      one([for m in local.grafana_edge_manifests : m.spec.addresses[0].value if m.kind == "Gateway"]) == google_compute_global_address.grafana_edge[0].name
     )
     error_message = "The edge routes only HTTPS on its hostname to the Grafana Service."
   }
@@ -1173,6 +1175,32 @@ run "reject_a_grafana_backend_without_its_id" {
 run "reject_a_grafana_edge_under_datadog" {
   command = plan
   variables {
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_outside_the_cluster_project" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    cluster_project   = "test-rust-other"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_outside_the_cluster_project" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    cluster_project   = "test-rust-other"
     grafana_edge = {
       hostname      = "grafana.staging.example.test"
       iap_client_id = "000000000000-test.apps.googleusercontent.com"

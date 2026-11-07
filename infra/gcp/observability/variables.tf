@@ -181,6 +181,14 @@ variable "grafana_edge" {
     error_message = "The Grafana edge requires telemetry_backend grafana or both."
   }
 
+  # GKE creates the backend, and resolves the address and certificate map,
+  # in the cluster's project; the edge resources and the IAP audience use
+  # project_id, so the two must be the same project.
+  validation {
+    condition     = var.grafana_edge == null || var.project_id == var.cluster_project
+    error_message = "The Grafana edge requires project_id to equal cluster_project."
+  }
+
   validation {
     condition     = var.grafana_edge == null || can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.grafana_edge.hostname))
     error_message = "grafana_edge.hostname must be a bare lowercase DNS name, without scheme, port or path."

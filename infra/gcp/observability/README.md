@@ -227,8 +227,9 @@ Service in this root:
 ## Grafana edge
 
 `grafana_edge` gives Grafana a browser address, `https://<hostname>`, for
-the people IAP admits. Staging uses `grafana.staging.codahealth.ai` and
-the same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
+the people IAP admits. Staging's edge is `grafana.staging.codahealth.ai`
+(commented in `env/staging.tfvars` until the rollout below), granted to the
+same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
 
 - **Path.** A DNS-only A record points the hostname at the reserved global
   address. A `gke-l7-global-external-managed` Gateway terminates TLS with a
@@ -253,19 +254,24 @@ the same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
 
 Each apply is from a reviewed saved plan with the operator's authorization.
 
-1. In the target project, create an OAuth client for IAP (APIs & Services >
-   Credentials, a Web application client; IAP adds its own redirect URI).
-   Store its secret in Doppler `coda-rust/<config>` as
-   `GRAFANA_IAP_CLIENT_SECRET`.
+1. In the target project, configure the OAuth consent screen as Internal if
+   it is not already, then create a Web application OAuth client (APIs &
+   Services > Credentials). Add
+   `https://iap.googleapis.com/v1/oauth/clientIds/<CLIENT_ID>:handleRedirect`
+   as an authorized redirect URI; IAP adds it only to clients it creates, and
+   sign-in fails with `redirect_uri_mismatch` without it. Store the client
+   secret in Doppler `coda-rust/<config>` as `GRAFANA_IAP_CLIENT_SECRET`.
 2. Phase 1: set `grafana_edge = { hostname, iap_client_id }` with no
    members, then plan and apply. Read `tofu output grafana_edge`. Add its
    `certificate_dns_records` CNAME and an A record from the hostname to
    `ip` in Cloudflare, both DNS-only (not proxied).
-3. Phase 2: after GKE reconciles the Gateway, find the global backend
-   service whose name carries `observability-grafana-3000`:
+3. Phase 2: after GKE reconciles the Gateway, read the backend it created
+   from the Gateway itself:
+   `kubectl -n observability get gateway grafana-edge -o
+   jsonpath='{.metadata.annotations.networking\.gke\.io/backend-services}'`.
+   Look up that name's numeric id with
    `gcloud compute backend-services list --global --project <project>
-   --format='value(name,id)'`. Confirm it is the Grafana HTTPRoute's backend.
-   Set `backend_service` and `backend_service_id` from it, and `members`
+   --format='value(name,id)'`. Set `backend_service` and `backend_service_id` from it, and `members`
    (for example `["group:gcp-engineering@codahealth.ai"]`), then plan and
    apply. A recreated backend needs its new name and id before access
    resumes.
@@ -277,9 +283,12 @@ Each apply is from a reviewed saved plan with the operator's authorization.
    - Through `kubectl port-forward svc/grafana 3000`, a request with a forged
      `X-Goog-IAP-JWT-Assertion` to `/api/user` answers 401.
 
+The edge listens on HTTPS only; `http://` does not answer.
+
 Removing `grafana_edge` deletes the Gateway, address, certificate and grant
-and returns Grafana to port-forward only; the Cloudflare records are removed
-by hand.
+and returns Grafana to port-forward only. GKE removes its load balancer
+asynchronously, so apply again if the address or certificate map is still in
+use. The Cloudflare records are removed by hand.
 
 ## Boundary
 

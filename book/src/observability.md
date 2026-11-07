@@ -179,7 +179,7 @@ collector processors, and the backend overlay changes only the exporters.
 | Tempo, Loki, Prometheus (`grafana`) | Only the gateway collector writes to Tempo and Loki; Prometheus receives only Tempo's span metrics. Nothing scrapes container logs. All ClusterIP only. |
 | Gateway | Accepts only Google ID tokens with the gateway audience from the listed Cloud Run runtime service accounts, over the internal load balancer restricted to the Cloud Run egress range. |
 | Langfuse | ClusterIP only. People use `kubectl port-forward` or the internal IAP gateway (`langfuse_iap_enabled`, default off). Retention defaults to 90 days. |
-| Grafana | ClusterIP Service. With `grafana_edge` (default off; staging `grafana.staging.codahealth.ai`), an external Gateway with IAP on the Grafana backend admits only the granted group, and Grafana signs people in from the IAP assertion after checking its signature, issuer and audience. Without it, `kubectl port-forward`. Grafana-stack retention is 14 days of traces, 30 of logs and 30 of metrics by default. |
+| Grafana | ClusterIP Service. With `grafana_edge` (default off; staging's hostname is `grafana.staging.codahealth.ai`), an external Gateway with IAP on the Grafana backend admits only the granted group, and Grafana signs people in from the IAP assertion after checking its signature, issuer and audience. Without it, `kubectl port-forward`. Grafana-stack retention is 14 days of traces, 30 of logs and 30 of metrics by default. |
 
 `tofu test` in `infra/gcp/observability` reads the deployed collector config
 and asserts that every content key is deleted on both span contexts and that
