@@ -72,7 +72,7 @@ Used == "This link no longer works"
 NoAccess == "No access to this practice"
 Unreached == "Coda couldn't reach sign-in"
 Work == "Your workspace"
-Prompt == "Sign-in prompt over your work"
+Prompt == "Sign-in prompt, with no patient content"
 \* A sign-in page. "Signing you in" is the link's own page, not one of them.
 SignInPages == {Email, Check, Used, NoAccess, Unreached}
 Shell == {Opening, Work, Prompt}
@@ -373,7 +373,9 @@ CodaAnswersRead(t) ==
                                                              !.whose = Nobodys, !.owes = OwesNothing,
                                                              !.linkFor = NoLinkPage])
                        /\ forget
-                  [] r.shows \in {Work, Prompt} -> SetTab(t, [done EXCEPT !.shows = Prompt]) /\ UNCHANGED stores
+                  [] r.shows \in {Work, Prompt} ->
+                       SetTab(t, [ForgetPlace(done) EXCEPT !.shows = Prompt, !.owes = OwesNothing])
+                       /\ UNCHANGED stores
                   [] r.link = Holding /\ r.seen = Saw ->
                        SetTab(t, [SignedOutHere(r) EXCEPT !.owes = OwesPatient]) /\ UNCHANGED stores
                   [] OTHER -> SetTab(t, SignedOutHere(r)) /\ UNCHANGED stores
@@ -500,6 +502,16 @@ Lands == \A t \in Tabs :
 \* Coda acts only for the physician a tab shows, and only while that physician is signed in to the
 \* browser, whether or not the tab has caught up.
 ActsAsShown == ~actedForAnother
+
+\* The sign-in prompt replaces the workspace, so it holds no patient page and no patient link.
+PromptIsEmpty == \A t \in Tabs :
+  tab[t].shows = Prompt =>
+    tab[t].opens = Today /\ tab[t].link = NoLink /\ tab[t].owes = OwesNothing
+
+\* Signing out ends that session on the server. A later answer for it is a refusal.
+ServerRefusesSignedOut ==
+  [][event'.name = "sign out" /\ stores \in Sessions
+       => session'[stores] \in {YoursOut, TheirsOut}]_vars
 
 \* Once you stop acting, every open tab catches up.
 CatchesUp ==
