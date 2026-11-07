@@ -86,7 +86,7 @@ pub(super) trait Shell {
     fn run(&mut self, args: &[String]) -> Result<Captured, SignalError>;
 }
 
-struct ProcessShell;
+pub(super) struct ProcessShell;
 
 impl Shell for ProcessShell {
     fn run(&mut self, args: &[String]) -> Result<Captured, SignalError> {

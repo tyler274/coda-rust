@@ -766,3 +766,133 @@ fn qualify_alerts_accepts_the_ledger_and_rejects_a_partial_one_as_incomplete() {
     assert!(partial.stderr.is_empty());
     assert!(String::from_utf8_lossy(&partial.stdout).contains("require exactly one"));
 }
+
+fn ok(stdout: &str) -> Captured {
+    Captured {
+        success: true,
+        code: Some(0),
+        stdout: stdout.as_bytes().to_vec(),
+    }
+}
+
+fn readiness(stamp: &str, outcomes: &[(&str, &str)]) -> Value {
+    serde_json::json!({
+        "timeSeries": outcomes.iter().map(|(target, outcome)| serde_json::json!({
+            "metric": {"labels": {"target": target, "outcome": outcome}},
+            "points": [{"interval": {"endTime": stamp}, "value": {"int64Value": "0"}}],
+        })).collect::<Vec<_>>()
+    })
+}
+
+fn heartbeat(stamp: &str) -> Value {
+    serde_json::json!({"timeSeries": [{"points": [{"interval": {"endTime": stamp}, "value": {"int64Value": "1"}}]}]})
+}
+
+fn probe_with(
+    readiness_body: Value,
+    heartbeat_body: Value,
+) -> (super::probe::ProbeReport, Vec<Vec<String>>, u32) {
+    let mut shell = Scripted {
+        answers: vec![ok("availability-probe-abcde\n"), ok("token\n")],
+        calls: Vec::new(),
+    };
+    let mut pauses = 0;
+    let report = super::probe::probe(
+        at("2026-11-07T03:08:41Z"),
+        &mut shell,
+        &mut |token, metric, _slot| {
+            assert_eq!(token, "token");
+            Ok(if metric.ends_with("/heartbeat") {
+                heartbeat_body.clone()
+            } else {
+                readiness_body.clone()
+            })
+        },
+        &mut || pauses += 1,
+    )
+    .unwrap();
+    (report, shell.calls, pauses)
+}
+
+#[test]
+fn probe_runs_the_current_slot_as_the_probe_identity_and_passes_when_all_targets_answer() {
+    let stamp = "2026-11-07T03:08:00Z";
+    let all = [
+        ("physician", "success"),
+        ("duet", "success"),
+        ("physician-worker", "success"),
+    ];
+    let (report, calls, pauses) = probe_with(readiness(stamp, &all), heartbeat(stamp));
+    assert_eq!(report.slot, 1_794_020_880);
+    assert_eq!(report.execution, "availability-probe-abcde");
+    assert!(
+        calls[0]
+            .iter()
+            .any(|arg| arg == "--update-env-vars=AVAILABILITY_PROBE_SLOT=1794020880")
+    );
+    assert!(calls[0].iter().any(|arg| arg == "--wait"));
+    assert_eq!(pauses, 0);
+    assert_eq!(report.verdict(), super::probe::Verdict::Reachable);
+}
+
+#[test]
+fn probe_names_targets_that_iap_refused() {
+    let stamp = "2026-11-07T03:08:00Z";
+    let body = readiness(
+        stamp,
+        &[
+            ("physician", "auth_failure"),
+            ("duet", "success"),
+            ("physician-worker", "success"),
+        ],
+    );
+    let (report, _, _) = probe_with(body, heartbeat(stamp));
+    assert_eq!(
+        report.verdict(),
+        super::probe::Verdict::AuthRefused(vec!["physician".into()])
+    );
+}
+
+#[test]
+fn probe_ignores_other_slots_and_fails_without_a_heartbeat() {
+    let stamp = "2026-11-07T03:08:00Z";
+    let earlier = "2026-11-07T03:07:00Z";
+    let all = [
+        ("physician", "success"),
+        ("duet", "success"),
+        ("physician-worker", "success"),
+    ];
+    let (report, _, pauses) = probe_with(readiness(earlier, &all), heartbeat(earlier));
+    assert!(pauses > 0);
+    assert_eq!(
+        report.verdict(),
+        super::probe::Verdict::Unobserved(vec![
+            "physician".into(),
+            "duet".into(),
+            "physician-worker".into()
+        ])
+    );
+    let (report, _, _) = probe_with(readiness(stamp, &all), heartbeat(earlier));
+    assert_eq!(report.verdict(), super::probe::Verdict::NoHeartbeat);
+}
+
+#[test]
+fn probe_fails_before_readback_when_the_job_fails() {
+    let mut shell = Scripted {
+        answers: vec![Captured {
+            success: false,
+            code: Some(1),
+            stdout: Vec::new(),
+        }],
+        calls: Vec::new(),
+    };
+    let error = super::probe::probe(
+        at("2026-11-07T03:08:41Z"),
+        &mut shell,
+        &mut |_token, _metric, _slot| panic!("no readback after a failed job"),
+        &mut || {},
+    )
+    .unwrap_err();
+    assert!(error.to_string().contains("probe job exited"));
+    assert_eq!(shell.calls.len(), 1);
+}

@@ -1,5 +1,6 @@
 mod live;
 mod model;
+mod probe;
 #[cfg(test)]
 mod tests;
 
@@ -16,6 +17,12 @@ use model::{
 
 const USAGE: &str = "\
 observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR
+observability-drill probe --output-dir DIR
+
+Probe runs one availability-probe slot as the probe identity, which IAP admits,
+reads each target's readiness outcome and the heartbeat back from Cloud
+Monitoring, writes probe-SLOT.json, and fails unless every target succeeded.
+Workstation identity tokens carry gcloud's audience, which IAP refuses.
 
 Datadog reads DD_API_KEY from Doppler project coda-rust config stg and does not print it.
 Grafana fail expects a port-forward to Loki on 127.0.0.1:3100.
@@ -24,6 +31,11 @@ Each run writes observation JSON for dev/observability/qualify-alerts.py --obser
 A run stops at 40 minutes and 2 reminders, and restores the signal if it aborts.";
 
 pub fn from_args(args: &[String]) -> Result<(), Failure> {
+    if let Some(("probe", rest)) = args.split_first().map(|(head, tail)| (head.as_str(), tail)) {
+        let path = probe::from_args(rest).map_err(|message| Failure::new(1, message))?;
+        println!("wrote {}", path.display());
+        return Ok(());
+    }
     let (request, output) = parse_args(args).map_err(|message| Failure::new(2, message))?;
     let mut live = Live::new(request.route);
     match run(request, &output, Utc::now(), &mut live) {

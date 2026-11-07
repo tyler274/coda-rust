@@ -116,6 +116,10 @@ print it. Grafana pushes a `fail` or `ok` line through a local Loki
 port-forward. Watchdog pauses or resumes the availability-probe scheduler. The
 command restores the signal when the exercise passes 40 minutes, already has
 more than two reminders, or the provider call fails.
+`workspace-tools observability-drill probe --output-dir DIR` runs one
+availability-probe slot through IAP as the probe identity and writes
+`probe-<slot>.json`. Run it before each drill. It fails on any non-success
+target or a missing heartbeat.
 
 Copy `qualification.json` outside tracked source for a qualification's verified
 input contract. Null fields are deliberate: supply the actual dedicated

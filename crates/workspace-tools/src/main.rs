@@ -9,6 +9,7 @@
 //! cargo run -p workspace-tools -- clinical-serving-startup --data-root PATH --image IMAGE --env-file PATH
 //! cargo run -p workspace-tools -- staging-reconcile plan|apply|verify [options]
 //! cargo run -p workspace-tools -- observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR
+//! cargo run -p workspace-tools -- observability-drill probe --output-dir DIR
 //! ```
 
 mod doppler;
@@ -86,6 +87,7 @@ workspace-tools runs the workspace commands that used to be shell scripts.
   workspace-tools staging-release init|deploy|finalize [options]
   workspace-tools staging-restore --help
   workspace-tools staging-reconcile plan|apply|verify (--help for options)
-  workspace-tools observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR",
+  workspace-tools observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR
+  workspace-tools observability-drill probe --output-dir DIR",
     )
 }
