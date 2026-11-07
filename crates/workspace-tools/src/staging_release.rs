@@ -980,27 +980,52 @@ fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
         )?;
     }
     for product in Product::ALL {
+        let migration = receipt.migrations.get(product);
         writeln!(
             writer,
-            "- {} migration: `{:?}`",
+            "- {} migration: `{:?}`; execution: `{}`",
             product.name(),
-            receipt.migrations.get(product).outcome
+            migration.outcome,
+            migration
+                .execution_id
+                .as_ref()
+                .map_or("not identified", ExecutionId::as_str)
         )?;
+    }
+    for diagnostic in &receipt.diagnostics {
+        let code = match diagnostic.code {
+            DiagnosticCode::Local(code) => code.as_str(),
+            DiagnosticCode::Api(code) => code.as_str(),
+        };
+        writeln!(writer, "- Diagnostic: `{:?}` / `{code}`", diagnostic.phase)?;
     }
     writeln!(
         writer,
         "\nSee the release receipt artifact for digest, execution, revision and traffic evidence."
     )?;
+    if receipt.outcome != Outcome::Succeeded {
+        writeln!(
+            writer,
+            "\nInspect the recorded migration execution and final traffic in `{PROJECT}` / `{REGION}` before recovery. Do not reexecute an uncertain migration or assume a failed release left services unchanged. Fix forward; previous-digest rollback requires schema compatibility proof and operator approval."
+        )?;
+    }
     Ok(())
 }
 fn failure_message(error: &Error) -> String {
-    match error.api_status() {
+    let mut message = match error.api_status() {
         Some(status) => format!(
             "staging release failed: {} (API status {status})",
             error.safe_code()
         ),
         None => format!("staging release failed: {}", error.safe_code()),
+    };
+    if let Error::Unrecorded { persistence, .. } = error {
+        message.push_str(&format!(
+            "; receipt persistence failed: {} (receipt may be incomplete)",
+            persistence.safe_code()
+        ));
     }
+    message
 }
 pub fn from_args(args: &[String]) -> std::result::Result<(), Failure> {
     run(args).map_err(|error| Failure::with_source(1, failure_message(&error), error))
@@ -1561,6 +1586,53 @@ mod tests {
     fn broken_summary(_: &Receipt) -> Result<()> {
         Err(std::io::Error::other("summary unwritable").into())
     }
+    #[test]
+    fn failed_summary_identifies_migration_and_sanitized_cause() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.fail_migration = true;
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).unwrap_err();
+        let mut output = Vec::new();
+        write_summary(&receipt, &mut output).unwrap();
+        let output = String::from_utf8(output).unwrap();
+        let execution = receipt
+            .migrations
+            .get(Product::Physician)
+            .execution_id
+            .as_ref()
+            .unwrap();
+        assert!(
+            output.contains(execution.as_str()),
+            "missing migration execution identity"
+        );
+        assert!(
+            output.contains("migration-failed"),
+            "missing sanitized diagnostic"
+        );
+        assert!(
+            output.contains("Do not reexecute"),
+            "missing ambiguous-execution guidance"
+        );
+    }
+
+    #[test]
+    fn failure_message_exposes_receipt_loss_without_raw_diagnostics() {
+        let error = Error::Unrecorded {
+            primary: Box::new(denied()),
+            persistence: Box::new(
+                std::io::Error::other("private path and credential sentinel").into(),
+            ),
+        };
+        let message = failure_message(&error);
+        assert!(message.contains("PERMISSION_DENIED"));
+        assert!(
+            message.contains("receipt persistence failed: io-failed"),
+            "missing receipt persistence failure"
+        );
+        assert!(!message.contains("sentinel"));
+        assert!(!message.contains("private"));
+    }
+
     #[test]
     fn failed_release_still_writes_its_step_summary() {
         let mut written = false;
