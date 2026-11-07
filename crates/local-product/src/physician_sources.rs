@@ -52,6 +52,19 @@ pub struct SourceRevision {
     pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
+    /// Where the source system can open this record, when its adapter supplies one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub native: Option<NativeLink>,
+}
+
+/// An address in the source system that opens the record itself.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct NativeLink {
+    /// The source system's name, such as the EHR's.
+    pub label: String,
+    /// The address as the source adapter recorded it.
+    pub uri: String,
 }
 impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
@@ -148,6 +161,7 @@ pub fn exact_read(
                     "read_representation": "native_record", "content": source.content,
                     "readable_parts": source.readable_parts,
                     "sha256": source.sha256, "provenance": source.provenance,
+                    "native": source.native,
                     "citation_id": citation_id(source)})
             }
             None => {
@@ -483,6 +497,7 @@ mod tests {
             sha256: crate::sha256_hex(content.as_bytes()),
             readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
+            native: None,
         }
     }
 

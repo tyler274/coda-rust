@@ -14,7 +14,7 @@ use serde_json::{Value, json};
 
 /// Identity of [`INSTRUCTIONS`]. Change it whenever the text changes, so a
 /// recorded request names the instructions it ran under.
-pub const INSTRUCTIONS_VERSION: &str = "physician-chat-api/2026-11-06.1";
+pub const INSTRUCTIONS_VERSION: &str = "physician-chat-api/2026-11-06.2";
 
 /// The hosted skill-reading tool name.
 pub const SKILL_VIEW: &str = "skill_view";
@@ -47,6 +47,10 @@ read_patient_sources. Search or browse recorded sources for this patient, then r
 Search is literal: reword or browse when a query misses. A missing or over-budget read is not clinical absence; \
 continue useful work and state the limitation. Cite record-supported claims with [[patient_source:CITATION_ID]], \
 using only citation_id values from available exact reads in this attempt. Never invent a citation. \
+When you cite, end the final answer with a [[source_summaries]] block: one line per cited source, \
+CITATION_ID: one or two plain sentences on what that record itself says that bears on the answer, then \
+[[/source_summaries]]. The physician sees each line beside its source, not in the answer; it describes \
+the record, adds no new claim and contains no citation markers. \
 Records are retained observations, not live retrieval or guaranteed complete charts. You cannot read prior Coda \
 patient memory or clinical literature, write memory, schedule follow-ups, delegate, change attention items, \
 or send anything. Do not claim unavailable actions occurred.
@@ -88,6 +92,9 @@ pub struct Citation {
     pub revision: String,
     /// Source record type.
     pub record_type: String,
+    /// Source-labeled dates retained by the exact read.
+    #[serde(default)]
+    pub dates: Vec<crate::physician_sources::RecordDate>,
     /// Exact retained bytes the model read.
     pub content: String,
     /// Original decoded evidence alongside the source-native bytes.
@@ -97,11 +104,74 @@ pub struct Citation {
     pub sha256: String,
     /// Source-owned provenance.
     pub provenance: Value,
+    /// Coda's summary of this record for this answer; never source text.
+    #[serde(default)]
+    pub summary: Option<String>,
+    /// Where the source system can open this record, when its adapter supplies one.
+    #[serde(default)]
+    pub native: Option<crate::physician_sources::NativeLink>,
+}
+
+const SUMMARIES_OPEN: &str = "[[source_summaries]]";
+const SUMMARIES_CLOSE: &str = "[[/source_summaries]]";
+const SUMMARY_MAX_CHARS: usize = 400;
+
+/// The answer the physician reads and the citations it publishes with. The model's
+/// `[[source_summaries]]` block leaves the visible text; each line that names a cited
+/// source, fits, and carries no citation marker becomes that citation's summary. A line
+/// that breaks the contract is dropped, leaving that source to read as its record.
+pub fn published(
+    text: &str,
+    events: &[harness::engine::Event],
+) -> Result<(String, Vec<Citation>), String> {
+    let (visible, block) = split_summaries(text);
+    let mut cited = citations(&visible, events)?;
+    for line in block.lines() {
+        let Some((id, summary)) = line.split_once(':') else {
+            continue;
+        };
+        let summary = summary.trim();
+        if summary.is_empty()
+            || summary.chars().count() > SUMMARY_MAX_CHARS
+            || summary.contains("[[")
+        {
+            continue;
+        }
+        let id = id.trim().trim_start_matches(['-', '*']).trim();
+        if let Some(citation) = cited.iter_mut().find(|c| c.id == id) {
+            citation.summary = Some(summary.to_owned());
+        }
+    }
+    Ok((visible, cited))
+}
+
+/// Removes one closed `[[source_summaries]]` block, the last one, and returns its body.
+/// An unclosed marker stays in the answer: it is not a block, and hiding the text after it
+/// would drop part of what the physician asked for.
+fn split_summaries(text: &str) -> (String, &str) {
+    let Some((before, after)) = text.rsplit_once(SUMMARIES_OPEN) else {
+        return (text.to_owned(), "");
+    };
+    let Some((block, tail)) = after.split_once(SUMMARIES_CLOSE) else {
+        return (text.to_owned(), "");
+    };
+    let head = before.trim_end();
+    let tail = tail.trim();
+    let visible = match (head.is_empty(), tail.is_empty()) {
+        (_, true) => head.to_owned(),
+        (true, false) => tail.to_owned(),
+        (false, false) => format!("{head}\n\n{tail}"),
+    };
+    // A block that is the whole turn is not a summary. Removing it would publish a blank answer.
+    if visible.trim().is_empty() {
+        return (text.to_owned(), "");
+    }
+    (visible, block)
 }
 
 /// Resolve only citations returned by an executed exact read in this attempt.
 /// Unsupported markers fail publication rather than becoming fabricated evidence.
-pub fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citation>, String> {
+fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citation>, String> {
     use harness::engine::EventKind;
     let mut reads = std::collections::HashSet::new();
     let mut available = std::collections::HashMap::new();
@@ -131,11 +201,17 @@ pub fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Ci
                         reference: string("reference")?,
                         revision: string("revision")?,
                         record_type: string("record_type")?,
+                        dates: serde_json::from_value(
+                            value.get("dates").cloned().unwrap_or_else(|| json!([])),
+                        )
+                        .map_err(|e| e.to_string())?,
                         content: string("content")?,
                         readable_parts: serde_json::from_value(value["readable_parts"].clone())
                             .map_err(|e| e.to_string())?,
                         sha256: string("sha256")?,
                         provenance: value["provenance"].clone(),
+                        summary: None,
+                        native: serde_json::from_value(value["native"].clone()).ok(),
                     };
                     if crate::sha256_hex(citation.content.as_bytes()) != citation.sha256 {
                         return Err("corrupt exact citation".into());
@@ -432,13 +508,166 @@ mod tests {
 
     #[test]
     fn invented_citations_cannot_publish() {
-        assert!(citations("Claim [[patient_source:invented]]", &[]).is_err());
-        assert!(citations("Claim [[patient_source:unterminated", &[]).is_err());
-        assert!(
-            citations("General knowledge only.", &[])
-                .unwrap()
-                .is_empty()
+        assert!(published("Claim [[patient_source:invented]]", &[]).is_err());
+        assert!(published("Claim [[patient_source:unterminated", &[]).is_err());
+        let invented = "Claim.\n[[source_summaries]]\ninvented: A record.\n[[/source_summaries]]";
+        let (text, cited) = published(invented, &[]).unwrap();
+        assert_eq!(text, "Claim.");
+        assert!(cited.is_empty());
+        let (text, cited) = published("General knowledge only.", &[]).unwrap();
+        assert_eq!(text, "General knowledge only.");
+        assert!(cited.is_empty());
+    }
+
+    fn read_of(
+        sources: &[crate::physician_sources::SourceRevision],
+    ) -> Vec<harness::engine::Event> {
+        use harness::engine::{Event, EventKind};
+        let references: Vec<String> = sources.iter().map(|s| s.candidate_id.clone()).collect();
+        let output =
+            crate::physician_sources::exact_read(sources, "w", &references, 65536).unwrap();
+        vec![
+            Event {
+                attempt_id: "a".into(),
+                sequence: 1,
+                kind: EventKind::ToolStarted(Invocation {
+                    id: "read".into(),
+                    name: "read_patient_sources".into(),
+                    arguments: "{}".into(),
+                }),
+            },
+            Event {
+                attempt_id: "a".into(),
+                sequence: 2,
+                kind: EventKind::ToolReturned {
+                    call_id: "read".into(),
+                    output: output.to_string(),
+                    executed: true,
+                },
+            },
+        ]
+    }
+
+    fn source(
+        id: &str,
+        native: Option<crate::physician_sources::NativeLink>,
+    ) -> crate::physician_sources::SourceRevision {
+        let content = format!("{{\"id\":\"{id}\"}}");
+        crate::physician_sources::SourceRevision {
+            workspace: "w".into(),
+            source_id: "ehr".into(),
+            candidate_id: id.into(),
+            revision: "r1".into(),
+            record_type: "AllergyIntolerance".into(),
+            dates: vec![],
+            sha256: crate::sha256_hex(content.as_bytes()),
+            content,
+            readable_parts: vec![],
+            provenance: json!({"native_record": id}),
+            native,
+        }
+    }
+
+    #[test]
+    fn a_summary_joins_its_citation_and_leaves_the_answer() {
+        let sources = [source("allergy", None), source("note", None)];
+        let events = read_of(&sources);
+        let allergy = crate::physician_sources::citation_id(&sources[0]);
+        let note = crate::physician_sources::citation_id(&sources[1]);
+        let long = "x".repeat(SUMMARY_MAX_CHARS + 1);
+        let answer = format!(
+            "No drug allergies are recorded [[patient_source:{allergy}]].\n\n\
+             [[source_summaries]]\n\
+             {allergy}: Records no known drug allergies, entered September 11, 2018.\n\
+             {note}: Not cited in the answer.\n\
+             unknown: Names no source.\n\
+             [[/source_summaries]]\n"
         );
+        let (text, cited) = published(&answer, &events).unwrap();
+        assert_eq!(
+            text,
+            format!("No drug allergies are recorded [[patient_source:{allergy}]].")
+        );
+        assert_eq!(cited.len(), 1);
+        assert_eq!(
+            cited[0].summary.as_deref(),
+            Some("Records no known drug allergies, entered September 11, 2018.")
+        );
+
+        for broken in [
+            long,
+            format!("Points elsewhere [[patient_source:{note}]]."),
+            " ".into(),
+        ] {
+            let answer = format!(
+                "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: {broken}\n[[/source_summaries]]"
+            );
+            let (text, cited) = published(&answer, &events).unwrap();
+            assert_eq!(text, format!("Claim [[patient_source:{allergy}]]."));
+            assert_eq!(cited[0].summary, None, "kept {broken:?}");
+        }
+
+        let unclosed = format!(
+            "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none."
+        );
+        let (text, cited) = published(&unclosed, &events).unwrap();
+        assert_eq!(text, unclosed);
+        assert_eq!(cited[0].summary, None);
+
+        let around = format!(
+            "Before [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]\nAfter."
+        );
+        let (text, cited) = published(&around, &events).unwrap();
+        assert_eq!(
+            text,
+            format!("Before [[patient_source:{allergy}]].\n\nAfter.")
+        );
+        assert_eq!(cited[0].summary.as_deref(), Some("Records none."));
+
+        let only_block =
+            format!("[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]");
+        let (text, cited) = published(&only_block, &events).unwrap();
+        assert_eq!(text, only_block);
+        assert!(cited.is_empty());
+        let blank_around = format!(
+            " \n[[source_summaries]]\n[[patient_source:{allergy}]]\n[[/source_summaries]]\n "
+        );
+        let (text, cited) = published(&blank_around, &events).unwrap();
+        assert_eq!(text, blank_around);
+        assert_eq!(cited.len(), 1);
+        assert_eq!(cited[0].summary, None);
+    }
+
+    #[test]
+    fn a_citation_marker_inside_the_summary_block_is_not_a_citation() {
+        let sources = [source("allergy", None)];
+        let events = read_of(&sources);
+        let allergy = crate::physician_sources::citation_id(&sources[0]);
+        let answer = format!(
+            "General knowledge only.\n[[source_summaries]]\n{allergy}: See [[patient_source:invented]].\n[[/source_summaries]]"
+        );
+        let (text, cited) = published(&answer, &events).unwrap();
+        assert_eq!(text, "General knowledge only.");
+        assert!(cited.is_empty());
+    }
+
+    #[test]
+    fn a_source_native_link_travels_with_its_citation() {
+        let link = crate::physician_sources::NativeLink {
+            label: "Demo chart".into(),
+            uri: "https://ehr.example/allergy/1".into(),
+        };
+        let sources = [source("allergy", Some(link.clone())), source("note", None)];
+        let events = read_of(&sources);
+        let allergy = crate::physician_sources::citation_id(&sources[0]);
+        let note = crate::physician_sources::citation_id(&sources[1]);
+        let (_, cited) = published(
+            &format!("A [[patient_source:{allergy}]] B [[patient_source:{note}]]"),
+            &events,
+        )
+        .unwrap();
+        assert_eq!(cited[0].native, Some(link));
+        assert_eq!(cited[1].native, None);
     }
 
     #[test]

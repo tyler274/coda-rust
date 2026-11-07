@@ -50,6 +50,7 @@ async fn seed_p1_attachment_source() {
             text,
         }],
         provenance: serde_json::json!({"native_record":"p1-authored-note"}),
+        native: None,
     };
     local_product::runtime::Store::connect(&database)
         .await
@@ -73,15 +74,13 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
     let parsed = reqwest::Url::parse(url).unwrap();
     assert_eq!(parsed.host_str(), Some("127.0.0.1"));
     let expected = &proof["citation"];
-    let content = expected["source_presentation"]["content"]["text"]
-        .as_str()
-        .unwrap();
-    let version = expected["source_presentation"]["content"]["as_of"]
-        .as_str()
-        .unwrap();
-    assert!(content.contains("Authored clinical note: A1c 7.2%"));
-    assert!(content.contains("\"data\":"));
-    assert!(version.contains("SHA-256"));
+    let inspection = &expected["source_presentation"]["inspection"];
+    let original = inspection["technical"]["original"].as_str().unwrap();
+    let revision = inspection["technical"]["revision"].as_str().unwrap();
+    let digest = inspection["technical"]["sha256"].as_str().unwrap();
+    let readable = inspection["sections"][0]["text"].as_str().unwrap();
+    assert!(readable.contains("Authored clinical note: A1c 7.2%"));
+    assert!(original.contains("\"data\":"));
     let mut tab = Tab::open(url);
     tab.wait_for_text("Work email", Duration::from_secs(20));
     tab.request_sign_in("physician@codahealth.test");
@@ -93,20 +92,22 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
         tab.wait_for_text("Controlled recorded source", Duration::from_secs(30));
         tab.wait_for_text("Abigail Lemieux", Duration::from_secs(20));
         tab.click("section[aria-label='Conversation'] .citation-chip");
-        tab.wait_for_text(version, Duration::from_secs(10));
+        tab.wait_for_text("Technical details", Duration::from_secs(10));
         let shown = tab.step("citationReading", serde_json::json!([]));
         let normalize = |text: &str| text.split_whitespace().collect::<Vec<_>>().join(" ");
+        assert!(normalize(shown["sections"].as_str().unwrap()).contains(&normalize(readable)));
+        let visible = shown["visible"].as_str().unwrap();
+        assert!(!visible.contains(digest), "{visible}");
+        assert!(!visible.contains("\"data\":"), "{visible}");
+        assert_eq!(shown["technicalOpen"], false);
+        assert_eq!(shown["original"].as_str().unwrap(), original);
+        let technical = shown["technical"].as_str().unwrap();
+        assert!(technical.contains(revision) && technical.contains(digest));
         assert_eq!(
-            normalize(shown["content"].as_str().unwrap()),
-            normalize(content)
+            shown["title"].as_str().unwrap(),
+            inspection["title"].as_str().unwrap()
         );
-        assert!(shown["provenance"].as_str().unwrap().contains(version));
-        assert!(
-            shown["title"]
-                .as_str()
-                .unwrap()
-                .contains(expected["display_label"].as_str().unwrap())
-        );
+        assert_eq!(shown["focused"], true, "the pane's heading takes focus");
         let started = Instant::now();
         let mut previous = serde_json::Value::Null;
         loop {
@@ -129,14 +130,26 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
         }
         tab.save_picture(phase);
         let scrolled = tab.step("citationLayout", serde_json::json!([true]));
-        assert_eq!(scrolled["scrolled"], true, "{scrolled}");
+        if scrolled["scrollable"] == true {
+            assert_eq!(scrolled["scrolled"], true, "{scrolled}");
+        }
         tab.save_picture(&format!("{phase}-scrolled"));
         let top = tab.step("citationLayout", serde_json::json!([]));
         assert_eq!(top["closeVisible"], true, "{top}");
-        tab.click(".citation-inspection [aria-label='Close']");
+        if phase == "recovered-citation" {
+            tab.press_key(Key::ESCAPE);
+        } else {
+            let way = tab.step("citationDismiss", serde_json::json!([]));
+            assert_eq!(way, "back", "a narrow reader leaves by its visible Back");
+        }
         let started = Instant::now();
-        while tab.step("citationClosed", serde_json::json!([])) != true {
-            assert!(started.elapsed() < Duration::from_secs(5));
+        while tab.step("citationClosed", serde_json::json!([])) != true
+            || tab.step("citationFocusReturned", serde_json::json!([])) != true
+        {
+            assert!(
+                started.elapsed() < Duration::from_secs(5),
+                "the pane closes and focus returns to its citation"
+            );
             std::thread::sleep(Duration::from_millis(20));
         }
         if let Some(folder) = env::var_os("PHYSICIAN_PROOF_SHOTS") {
@@ -167,15 +180,16 @@ async fn recovered_chat_citation_opens_exact_source_after_reload() {
                 .into_iter()
                 .find(|source| source.candidate_id == expected["handle"].as_str().unwrap())
                 .unwrap();
-            assert!(content.contains(&source.content));
+            assert_eq!(original, source.content);
             assert!(source.content.contains("\"data\":"));
             assert!(!source.readable_parts.is_empty());
+            let sections = shown["sections"].as_str().unwrap();
             for part in &source.readable_parts {
-                assert!(content.contains(&part.text));
+                assert!(normalize(sections).contains(&normalize(&part.text)));
             }
             assert_eq!(
-                version,
-                format!("revision {} · SHA-256 {}", source.revision, source.sha256)
+                (revision, digest),
+                (source.revision.as_str(), source.sha256.as_str())
             );
             assert_eq!(
                 local_product::physician_sources::citation_id(&source),
@@ -2014,6 +2028,249 @@ async fn with_draft(
 }
 
 const REVIEW_PATIENT: &str = "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
+
+/// The patient bank's own no-known-drug-allergies record, as the synthetic chart retains it.
+const BANK_ALLERGY: &str = r#"{"resourceType":"AllergyIntolerance","id":"allergy-0493010f2a16","meta":{"versionId":"1","lastUpdated":"2018-09-11T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"active","display":"Active"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification","code":"confirmed","display":"Confirmed"}]},"type":"allergy","category":["medication"],"criticality":"low","code":{"coding":[{"system":"http://snomed.info/sct","code":"409137002","display":"No known drug allergy"}],"text":"No known drug allergies"},"patient":{"reference":"Patient/MRN00001776"},"recordedDate":"2018-09-11T12:20:00+00:00"}"#;
+const ALLERGY_CHAT: &str = "chat-allergy-citation";
+/// The same citation once the model's summary passed the contract and the EHR supplied a link.
+const SUMMARY_CHAT: &str = "chat-allergy-summary";
+const ALLERGY_SUMMARY: &str = "Records no known drug allergies, confirmed and active.";
+
+/// Lists one chat for the review patient whose answer cites `BANK_ALLERGY`, presented by the
+/// same `source_inspection` the live projection uses.
+async fn with_allergy_citation(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    let path = request.uri().path().to_owned();
+    let chat = [ALLERGY_CHAT, SUMMARY_CHAT]
+        .into_iter()
+        .find(|chat| path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{chat}/snapshot"));
+    if let Some(chat) = chat {
+        let funnel = chat == SUMMARY_CHAT;
+        let mut citation: local_product::physician_chat::Citation =
+            serde_json::from_value(serde_json::json!({
+                "id": "allergy-citation", "reference": "AllergyIntolerance/allergy-0493010f2a16",
+                "revision": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
+                "record_type": "AllergyIntolerance", "content": BANK_ALLERGY,
+                "dates": [{"name": "recordedDate", "value": "2018-09-11T12:20:00+00:00"},
+                          {"name": "meta.lastUpdated", "value": "2018-09-11T00:00:00+00:00"}],
+                "sha256": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
+                "provenance": {"native_record": "AllergyIntolerance/allergy-0493010f2a16"},
+            }))
+            .unwrap();
+        let mut destination = serde_json::Value::Null;
+        if funnel {
+            citation.summary = Some(ALLERGY_SUMMARY.into());
+            destination = serde_json::json!({"kind": "source_native", "source_label": "Demo EHR",
+                "uri": "https://ehr.example/allergy/0493010f2a16"});
+        }
+        let inspection = physician_sample::source_inspection::inspection(&citation);
+        return axum::Json(serde_json::json!({"snapshot": {"conversation": [
+            {"kind": "physician", "text": "Any drug allergies?"},
+            {"kind": "model", "text": "The chart records none [[patient_source:allergy-citation]]",
+             "segments": [
+                {"kind": "text", "text": "The chart records none "},
+                {"kind": "citation", "state": "resolved", "source": "patient",
+                 "source_id": "allergy-citation", "handle": citation.reference,
+                 "display_label": inspection.title,
+                 "source_presentation": {"inspection": inspection},
+                 "destination": destination}]}]}}))
+        .into_response();
+    }
+    let response = next.run(request).await;
+    if path != format!("/patient-workspaces/{REVIEW_PATIENT}") {
+        return response;
+    }
+    let (mut parts, body) = response.into_parts();
+    let bytes = axum::body::to_bytes(body, usize::MAX).await.unwrap();
+    let mut workspace: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    workspace["chats"] = serde_json::json!([
+        {"chat_id": ALLERGY_CHAT, "title": "Drug allergies", "created_at": "2026-08-27T12:05:00Z"},
+        {"chat_id": SUMMARY_CHAT, "title": "Drug allergies, summarized", "created_at": "2026-08-27T12:06:00Z"},
+    ]);
+    parts.headers.remove(axum::http::header::CONTENT_LENGTH);
+    axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
+}
+
+/// The reported case: an allergy citation reads as the record's statement and date, with codes,
+/// storage time and bytes kept under Technical details; it leaves by Escape or its visible way
+/// back, and going elsewhere closes it.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app = physician_sample::simulation_router()
+        .layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={ALLERGY_CHAT}");
+    let mut tab = Tab::open(&url);
+    for (phase, width, height) in [("allergy-desktop", 1280, 800), ("allergy-phone", 390, 844)] {
+        tab.set_viewport(width, height, false);
+        tab.wait_for_text("The chart records none", Duration::from_secs(20));
+        tab.click("section[aria-label='Conversation'] .citation-chip");
+        tab.wait_for_text("Technical details", Duration::from_secs(10));
+        std::thread::sleep(Duration::from_millis(400));
+        let shown = tab.step("citationReading", serde_json::json!([]));
+        assert_eq!(shown["title"], "No known drug allergies", "{shown}");
+        assert_eq!(shown["kind"], "Medication allergy record", "{shown}");
+        assert_eq!(shown["focused"], true, "{shown}");
+        assert_eq!(shown["technicalOpen"], false, "{shown}");
+        assert_eq!(
+            shown["order"],
+            serde_json::json!(["source-record-kind"]),
+            "{shown}"
+        );
+        let visible = shown["visible"].as_str().unwrap();
+        for expected in [
+            "Recorded September 11, 2018, 12:20:00+00:00 as recorded",
+            "Source status recorded",
+            "Criticality recorded (not reaction severity)",
+            "Reaction details not supplied in this record.",
+        ] {
+            assert!(visible.contains(expected), "missing {expected}: {visible}");
+        }
+        for hidden in [
+            "lastUpdated",
+            "409137002",
+            "\"resourceType\"",
+            "MRN00001776",
+        ] {
+            assert!(
+                !visible.contains(hidden),
+                "{hidden} leads the view: {visible}"
+            );
+        }
+        assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);
+        assert!(
+            shown["technical"]
+                .as_str()
+                .unwrap()
+                .contains("meta.lastUpdated")
+        );
+        let layout = tab.step("citationLayout", serde_json::json!([]));
+        assert_eq!(layout["closeVisible"], true, "{layout}");
+        assert_eq!(layout["fits"], true, "{layout}");
+        tab.save_picture(phase);
+        if phase == "allergy-desktop" {
+            tab.press_key(Key::ESCAPE);
+        } else {
+            assert_eq!(tab.step("citationDismiss", serde_json::json!([])), "back");
+        }
+        let started = Instant::now();
+        while tab.step("citationClosed", serde_json::json!([])) != true
+            || tab.step("citationFocusReturned", serde_json::json!([])) != true
+        {
+            assert!(
+                started.elapsed() < Duration::from_secs(5),
+                "{phase} did not close"
+            );
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    }
+
+    tab.set_viewport(1280, 800, false);
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    tab.click_named(".sidebar-nav-item", "Today");
+    let started = Instant::now();
+    while tab.step("citationClosed", serde_json::json!([])) != true {
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "the source stayed open after leaving its patient"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}
+
+/// The citation funnel: when the EHR supplies a link and Coda's summary passed its contract, the
+/// hover preview carries both, and the pane reads link, summary, then the retained record.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_summarized_citation_reads_link_then_summary_then_record() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app = physician_sample::simulation_router()
+        .layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={SUMMARY_CHAT}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("The chart records none", Duration::from_secs(20));
+    let center = tab.step("citationCenter", serde_json::json!([]));
+    for step in [8.0, 0.0] {
+        tab.call(
+            "Input.dispatchMouseEvent",
+            serde_json::json!({"type": "mouseMoved",
+                "x": center[0].as_f64().unwrap() - step, "y": center[1].as_f64().unwrap()}),
+        );
+    }
+    let started = Instant::now();
+    let preview = loop {
+        let preview = tab.step("citationPreview", serde_json::json!([]));
+        if !preview.is_null() {
+            break preview;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "hovering the citation opened no preview"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    let text = preview["text"].as_str().unwrap();
+    assert!(text.contains("Coda's summary"), "{preview}");
+    assert!(text.contains(ALLERGY_SUMMARY), "{preview}");
+    assert_eq!(
+        preview["original"], "https://ehr.example/allergy/0493010f2a16",
+        "{preview}"
+    );
+    assert_eq!(preview["originalLabel"], "Open in Demo EHR", "{preview}");
+    std::thread::sleep(Duration::from_millis(200));
+    tab.save_picture("funnel-preview");
+
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(
+        shown["order"],
+        serde_json::json!(["citation-open", "source-coda-summary", "source-record-kind"]),
+        "{shown}"
+    );
+    assert_eq!(
+        shown["link"], "https://ehr.example/allergy/0493010f2a16",
+        "{shown}"
+    );
+    let summary = shown["summary"].as_str().unwrap();
+    assert!(summary.contains(ALLERGY_SUMMARY), "{shown}");
+    assert!(
+        summary.contains(
+            "Coda wrote this from the record dated September 11, 2018, 12:20:00+00:00 as recorded"
+        ),
+        "{shown}"
+    );
+    assert_eq!(shown["kind"], "Medication allergy record", "{shown}");
+    assert_eq!(shown["technicalOpen"], false, "{shown}");
+    assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);
+    tab.save_picture("funnel-reader");
+}
 
 const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";
 const CONVERSATION_REPLY: &str = "[aria-label=\"Conversation\"] .message-assistant";

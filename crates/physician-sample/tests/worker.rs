@@ -671,7 +671,7 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
         false,
         &[(
             "PHYSICIAN_WORKER_FIXED_TEXT",
-            "Controlled source read {{patient_source}}",
+            "Controlled source read {{patient_source}}\n\n[[source_summaries]]\n{{patient_source_id}}: Records potassium 4.1.\n[[/source_summaries]]",
         )],
     )
     .await
@@ -691,6 +691,7 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
         sha256: local_product::sha256_hex(content.as_bytes()),
         readable_parts: vec![],
         provenance: serde_json::json!({"native_record":"lab"}),
+        native: None,
     };
     running.store.record_source(&source).await.unwrap();
     let mut other = source.clone();
@@ -699,8 +700,16 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     running.store.record_source(&other).await.unwrap();
     running.emulator.publish(&delivery).await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
-    let citation = &state.messages.last().unwrap().citations[0];
+    let answer = state.messages.last().unwrap();
+    let citation = &answer.citations[0];
     assert_eq!(citation.content, content);
+    assert!(!answer.text.contains("source_summaries"), "{}", answer.text);
+    assert!(
+        answer
+            .text
+            .starts_with("Controlled source read [[patient_source:")
+    );
+    assert_eq!(citation.summary.as_deref(), Some("Records potassium 4.1."));
     assert_eq!(
         citation.id,
         local_product::physician_sources::citation_id(&source)
@@ -768,4 +777,100 @@ async fn a_worker_without_its_catalog_never_serves() {
     assert!(log.contains("physician skill catalog at"), "{log}");
     assert!(log.contains(&missing_text), "{log}");
     let _ = std::fs::remove_dir_all(&home);
+}
+
+/// The summary contract against a real model, not a fixture: one allergy question over the
+/// patient bank's no-known-drug-allergies record. Run explicitly with an OpenAI key; it writes
+/// what the model answered and summarized to `PHYSICIAN_FUNNEL_EVIDENCE` when set.
+#[tokio::test]
+#[ignore = "calls OpenAI; run with CODA_ALLOW_MODEL_CALLS=1 and OPENAI_API_KEY"]
+async fn a_real_model_summarizes_the_record_it_cites() {
+    let _guard = lock().lock().await;
+    let (Ok(allow), Ok(key)) = (
+        std::env::var("CODA_ALLOW_MODEL_CALLS"),
+        std::env::var("OPENAI_API_KEY"),
+    ) else {
+        panic!("set CODA_ALLOW_MODEL_CALLS=1 and OPENAI_API_KEY");
+    };
+    let Some(running) = running_with(
+        "funnel_live",
+        None,
+        None,
+        false,
+        &[
+            ("PHYSICIAN_WORKER_FIXED_TEXT", ""),
+            ("CODA_LOCAL_MODEL_EXECUTION", "api"),
+            ("CODA_ALLOW_MODEL_CALLS", allow.as_str()),
+            ("OPENAI_API_KEY", key.as_str()),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, delivery) = accept_text(
+        &running.database.url,
+        &running.store,
+        "Does this patient have any drug allergies on record?",
+    )
+    .await;
+    let content = r#"{"resourceType":"AllergyIntolerance","id":"allergy-0493010f2a16","clinicalStatus":{"coding":[{"code":"active","display":"Active"}]},"verificationStatus":{"coding":[{"code":"confirmed","display":"Confirmed"}]},"type":"allergy","category":["medication"],"criticality":"low","code":{"coding":[{"system":"http://snomed.info/sct","code":"409137002","display":"No known drug allergy"}],"text":"No known drug allergies"},"recordedDate":"2018-09-11T12:20:00+00:00"}"#;
+    let source = local_product::physician_sources::SourceRevision {
+        workspace: scope.workspace.clone(),
+        source_id: "synthetic-ehr".into(),
+        candidate_id: "AllergyIntolerance/allergy-0493010f2a16".into(),
+        revision: "1".into(),
+        record_type: "AllergyIntolerance".into(),
+        dates: vec![local_product::physician_sources::RecordDate {
+            name: "recordedDate".into(),
+            value: "2018-09-11T12:20:00+00:00".into(),
+        }],
+        content: content.into(),
+        sha256: local_product::sha256_hex(content.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record":"AllergyIntolerance/allergy-0493010f2a16"}),
+        native: None,
+    };
+    running.store.record_source(&source).await.unwrap();
+    running.emulator.publish(&delivery).await;
+    let deadline = Instant::now() + Duration::from_secs(240);
+    let state = loop {
+        if let Some(state) = running.store.read(&scope).await.unwrap()
+            && (state.messages.iter().any(|m| m.role == "assistant") || state.status == "failed")
+        {
+            break state;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "no answer\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(500)).await;
+    };
+    let raw: Vec<String> = state
+        .attempts
+        .iter()
+        .flat_map(|attempt| &attempt.events)
+        .filter_map(|event| match &event.kind {
+            harness::engine::EventKind::Candidate { text } => Some(text.clone()),
+            _ => None,
+        })
+        .collect();
+    let answer = state.messages.iter().find(|m| m.role == "assistant");
+    let evidence = serde_json::json!({
+        "instructions_version": local_product::physician_chat::INSTRUCTIONS_VERSION,
+        "status": state.status,
+        "model_candidate": raw,
+        "published_text": answer.map(|m| m.text.clone()),
+        "citations": answer.map(|m| m.citations.iter().map(|c| serde_json::json!({
+            "id": c.id, "reference": c.reference, "summary": c.summary,
+        })).collect::<Vec<_>>()),
+    });
+    println!("{}", serde_json::to_string_pretty(&evidence).unwrap());
+    if let Ok(path) = std::env::var("PHYSICIAN_FUNNEL_EVIDENCE") {
+        std::fs::write(path, serde_json::to_string_pretty(&evidence).unwrap()).unwrap();
+    }
+    let answer = answer.unwrap_or_else(|| panic!("no answer\n{}", running.worker.tail()));
+    assert!(!answer.text.contains("source_summaries"), "{evidence}");
+    assert!(!answer.citations.is_empty(), "{evidence}");
 }

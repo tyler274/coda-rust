@@ -262,7 +262,7 @@ def p1(receipt, state, out):
 
     citations = [segment for item in body.get("snapshot", {}).get("conversation", [])
                  for segment in item.get("segments", []) if segment.get("kind") == "citation"]
-    exact = all(c.get("state") == "resolved" and c.get("source_presentation", {}).get("content", {}).get("text")
+    exact = all(c.get("state") == "resolved" and c.get("source_presentation", {}).get("inspection", {}).get("technical", {}).get("original")
                 for c in citations)
     receipt.step("P1", "exact cited source survives interrupted worker and readback", actor,
                  bool(citations) and exact and body == original_body,
