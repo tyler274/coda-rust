@@ -91,10 +91,11 @@ run "native_cloud_rules_use_real_source_and_scoped_inventory" {
       local.grafana_cloud_conditions["dependency-worker_age"].no_data == "OK" &&
       !contains(keys(local.grafana_cloud_conditions), "absence-worker_age") &&
       strcontains(local.grafana_cloud_conditions["freshness-duet"].expr, "or vector(1)") &&
+      alltrue([for key, c in local.grafana_cloud_conditions : strcontains(c.expr, "monitored_resource=\"global\"") if startswith(key, "readiness-") || startswith(key, "freshness-")]) &&
       strcontains(local.grafana_cloud_conditions["dependency-worker_age"].expr, "1200") &&
       local.grafana_cloud_conditions["dependency-worker_backlog"].duration == "30m"
     )
-    error_message = "Native rules must preserve readiness on silence, distinguish missing observations, and never page for idle sparse queues."
+    error_message = "Native rules must select the probe's global resource, preserve readiness on silence, distinguish missing observations, and never page for idle sparse queues."
   }
 }
 
