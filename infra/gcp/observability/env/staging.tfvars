@@ -26,9 +26,8 @@ langfuse_enabled = false
 alert_notify = "@slack-Coda_Health-engineering-observability"
 
 # Grafana at https://grafana.staging.codahealth.ai behind IAP (README.md,
-# "Grafana edge rollout"). Uncomment with the OAuth client id created in step 1;
-# members, backend_service and backend_service_id are added in phase 2.
-# grafana_edge = {
-#   hostname      = "grafana.staging.codahealth.ai"
-#   iap_client_id = "<number>-<id>.apps.googleusercontent.com"
-# }
+# "Grafana edge rollout"). Phase 1 grants nobody; members, backend_service
+# and backend_service_id are added in phase 2.
+grafana_edge = {
+  hostname = "grafana.staging.codahealth.ai"
+}

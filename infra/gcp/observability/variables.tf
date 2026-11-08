@@ -166,10 +166,9 @@ variable "grafana_cloud_monitoring_enabled" {
 }
 
 variable "grafana_edge" {
-  description = "Optional browser edge for Grafana: an external Gateway on hostname with IAP on its backend, and Grafana signing people in from the signed IAP assertion. Null keeps Grafana ClusterIP-only (port-forward). Bootstrap with no members; after GKE creates the backend, the operator supplies its verified name and numeric id together with the members."
+  description = "Optional browser edge for Grafana: an external Gateway on hostname with IAP (Google-managed OAuth, organization members only) on its backend, and Grafana signing people in from the signed IAP assertion. Null keeps Grafana ClusterIP-only (port-forward). Bootstrap with no members; after GKE creates the backend, the operator supplies its verified name and numeric id together with the members."
   type = object({
     hostname           = string
-    iap_client_id      = string
     members            = optional(list(string), [])
     backend_service    = optional(string)
     backend_service_id = optional(string)
@@ -192,11 +191,6 @@ variable "grafana_edge" {
   validation {
     condition     = var.grafana_edge == null || can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.grafana_edge.hostname))
     error_message = "grafana_edge.hostname must be a bare lowercase DNS name, without scheme, port or path."
-  }
-
-  validation {
-    condition     = var.grafana_edge == null || can(regex("^[0-9]+-[a-z0-9]+\\.apps\\.googleusercontent\\.com$", var.grafana_edge.iap_client_id))
-    error_message = "grafana_edge.iap_client_id must be an OAuth client id (<number>-<id>.apps.googleusercontent.com). Its secret syncs from Doppler as GRAFANA_IAP_CLIENT_SECRET."
   }
 
   validation {
