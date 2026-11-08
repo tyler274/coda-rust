@@ -31,6 +31,7 @@ jobs:
     outputs:
       full: ${{ steps.select.outputs.full }}
       deps: ${{ steps.select.outputs.deps }}
+      mobile: ${{ steps.select.outputs.mobile }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -94,7 +95,7 @@ jobs:
   result:
     name: CI result
     if: always()
-    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny]
+    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator]
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
       contents: read
@@ -484,6 +485,76 @@ jobs:
         run: python3 scripts/nix-cache/nix_cache.py cleanup
       # Adapter tests do not authorize deployment. The staging rollout is the
       # deploy-staging job below; hosted runtime qualification is separate.
+
+  # Builds the mobile mode-shell APK and runs ModeShellTest on a headless
+  # x86_64 emulator. Blacksmith runners expose nested KVM; ci_scope.py selects
+  # this job only when a crate or file in the APK's build changes.
+  android-emulator:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.mobile == 'true'
+    name: Android emulator
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Allow the runner user to open /dev/kvm
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+      - uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Restore Rust and Gradle caches
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            target/x86_64-linux-android
+            target/android-dev
+          key: android-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'flake.lock') }}
+          restore-keys: android-${{ runner.os }}-
+      - name: Check the scope list covers the APK's workspace crates
+        run: >-
+          nix develop .#android --command cargo tree --locked -p mobile --features mobile
+          --target x86_64-linux-android -e normal --prefix none
+          | python3 scripts/ci_scope.py check-mobile-crates
+      - name: Test the Android tooling
+        run: nix develop .#android --command cargo test --locked -p android
+      - name: Create the duet AVD
+        run: nix develop .#android --command cargo run --locked -p android -- avd
+      - name: Build the APK and run ModeShellTest headless
+        run: nix develop .#android --command cargo run --locked -p android -- test --headless coda.duet.ModeShellTest
+      - name: Retain test reports and emulator log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-emulator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            target/dx/mobile/debug/android/app/app/build/reports/androidTests/
+            target/dx/mobile/debug/android/app/app/build/outputs/androidTest-results/
+            /tmp/duet-android-emulator/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
 
   # Builds every runtime, migration and job image with Nix on PRs and main and
   # runs them locally; this job pushes nothing. deploy-staging publishes them to
