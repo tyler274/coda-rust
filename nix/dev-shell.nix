@@ -30,7 +30,14 @@ pkgs.mkShell {
     claude-code
     # The Pub/Sub emulator backs the physician chat-turn queue tests
     # (crates/physician-sample/tests/worker.rs). It is a Java server.
-    ((google-cloud-sdk.withExtraComponents [ google-cloud-sdk.components.pubsub-emulator ]).overrideAttrs (old: {
+    # kubectl reaches the GKE observability cluster through
+    # gke-gcloud-auth-plugin, which `gcloud container clusters
+    # get-credentials` writes into the kubeconfig.
+    ((google-cloud-sdk.withExtraComponents (with google-cloud-sdk.components; [
+      pubsub-emulator
+      kubectl
+      gke-gcloud-auth-plugin
+    ])).overrideAttrs (old: {
       # The component check writes gcloud configuration. Keep it in the build
       # directory so root builds without sandboxing cannot create /homeless-shelter.
       buildCommand = ''
