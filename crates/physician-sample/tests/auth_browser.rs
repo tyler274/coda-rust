@@ -8,6 +8,8 @@
 
 use std::time::{Duration, Instant};
 
+use serde_json::json;
+
 mod common;
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
@@ -116,23 +118,39 @@ fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
     );
 }
 
-/// The prompt covers the page, hides it from assistive technology, and takes
-/// it out of the tab order.
-const COVERED: &str = "(() => { const shell = document.querySelector('.glass-app'); \
-     const prompt = document.querySelector('.session-prompt'); \
-     const top = document.elementFromPoint(innerWidth / 2, innerHeight / 2); \
-     return !!prompt && !!shell && prompt.contains(top) \
-         && shell.getAttribute('aria-hidden') === 'true' && shell.hasAttribute('inert'); })()";
-
 /// What every patient's page says.
 const PATIENT_PAGE: &str = "Records as of";
 
-const FIND_PATIENT_OPEN: &str = "[...document.querySelectorAll('dialog[open]')]\
-     .some((dialog) => dialog.innerText.includes('Find patient'))";
+/// A session-end check from `js/session_prompt.js`.
+#[derive(Clone, Copy)]
+enum PromptCheck {
+    /// The prompt stands in place of the workspace and its patient.
+    Replaced,
+    /// The prompt is gone and the workspace shows Today.
+    BackAtToday,
+}
 
-const RESUMED_ON_THE_PATIENT: &str = "!document.querySelector('.session-prompt') \
-     && !document.querySelector('.glass-app').hasAttribute('inert') \
-     && document.body.innerText.includes('Records as of')";
+/// Waits until `check` holds on the page.
+fn wait_for_prompt(browser: &mut Browser, check: PromptCheck, what: &str) {
+    let arguments = match check {
+        PromptCheck::Replaced => vec![json!("promptReplacesWorkspace")],
+        PromptCheck::BackAtToday => vec![json!("backAtToday"), json!(SIGNED_IN)],
+    };
+    let deadline = Instant::now() + Duration::from_secs(30);
+    while Instant::now() < deadline {
+        let holds = browser
+            .page()
+            .call_function(include_str!("js/session_prompt.js"), &arguments);
+        if holds == json!(true) {
+            return;
+        }
+        std::thread::sleep(Duration::from_millis(250));
+    }
+    panic!(
+        "{what} never happened:\n{}",
+        browser.body_text().unwrap_or_default()
+    );
+}
 
 /// Another tab redeems a link: a fresh session for the staging account,
 /// stored with `owner` as its owner. `then` runs once it is stored.
@@ -159,7 +177,7 @@ fn another_tab_signs_in(owner: &str) -> String {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
+async fn an_ended_session_replaces_the_page_and_signing_in_again_opens_today() {
     let server = spawn_required_server().await;
     let base = format!("http://{}", server.address);
     let mut browser = Browser::launch();
@@ -180,56 +198,17 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
     );
     open_mary(&mut browser);
 
-    // The session ends: the prompt covers the patient page, which stays put.
     browser.page().evaluate(END_THE_SESSION);
-    wait_until(
+    wait_for_prompt(
         &mut browser,
-        COVERED,
-        "the sign-in prompt covering the page",
+        PromptCheck::Replaced,
+        "the sign-in prompt replacing the page",
     );
     let text = browser.wait_for("Sign in to continue");
     assert!(
         text.contains(STAGING_EMAIL) && text.contains("Email me a sign-in link"),
         "the prompt did not offer a link to the same address:\n{text}"
     );
-
-    // Signing in under the prompt picks up on the same patient.
-    browser.click(".session-prompt .control-primary");
-    wait_until(
-        &mut browser,
-        RESUMED_ON_THE_PATIENT,
-        "resuming on the patient",
-    );
-
-    // Another tab's link resumes a covered page the same way.
-    browser.page().evaluate(END_THE_SESSION);
-    wait_until(&mut browser, COVERED, "the prompt covering the page again");
-    browser
-        .page()
-        .evaluate(&another_tab_signs_in(STAGING_EMAIL));
-    wait_until(
-        &mut browser,
-        RESUMED_ON_THE_PATIENT,
-        "resuming on another tab's link",
-    );
-
-    // A dialog open when the session ends stays open beneath the prompt, and
-    // is still open once signing in again resumes the page. It opens by a real
-    // click, as a person opens it, since the browser treats Escape differently
-    // over a dialog no gesture opened.
-    let at = browser.page().evaluate(
-        "(() => { const r = document.querySelector('button[aria-label=\"Find patient\"]').getBoundingClientRect(); \
-         return [r.x + r.width / 2, r.y + r.height / 2]; })()",
-    );
-    for kind in ["mousePressed", "mouseReleased"] {
-        browser.page().call_session(
-            "Input.dispatchMouseEvent",
-            serde_json::json!({ "type": kind, "x": at[0], "y": at[1], "button": "left", "clickCount": 1 }),
-        );
-    }
-    wait_until(&mut browser, FIND_PATIENT_OPEN, "Find patient opening");
-    browser.page().evaluate(END_THE_SESSION);
-    wait_until(&mut browser, COVERED, "the prompt covering an open dialog");
     // Escape never dismisses the prompt, even pressed again without other input.
     for _ in 0..3 {
         for kind in ["keyDown", "keyUp"] {
@@ -239,12 +218,41 @@ async fn an_ended_session_covers_the_page_and_signing_in_again_resumes_it() {
             );
         }
     }
-    wait_until(&mut browser, COVERED, "the prompt still up after Escape");
-    browser.click(".session-prompt .control-primary");
-    wait_until(
+    wait_for_prompt(
         &mut browser,
-        &format!("{RESUMED_ON_THE_PATIENT} && {FIND_PATIENT_OPEN}"),
-        "resuming with Find patient still open",
+        PromptCheck::Replaced,
+        "the prompt still up after Escape",
+    );
+
+    browser.click(".session-prompt .control-primary");
+    wait_for_prompt(
+        &mut browser,
+        PromptCheck::BackAtToday,
+        "signing in again opening Today",
+    );
+
+    open_mary(&mut browser);
+    browser.page().evaluate(END_THE_SESSION);
+    wait_for_prompt(
+        &mut browser,
+        PromptCheck::Replaced,
+        "the prompt replacing the page again",
+    );
+    browser
+        .page()
+        .evaluate(&another_tab_signs_in(STAGING_EMAIL));
+    wait_for_prompt(
+        &mut browser,
+        PromptCheck::BackAtToday,
+        "another tab's link opening Today",
+    );
+
+    open_mary(&mut browser);
+    browser.page().evaluate(END_THE_SESSION);
+    wait_for_prompt(
+        &mut browser,
+        PromptCheck::Replaced,
+        "the prompt before another tab signs out",
     );
 
     // Another tab's sign-out reaches this one.

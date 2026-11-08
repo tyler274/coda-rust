@@ -94,7 +94,7 @@ const SIGN_IN_UNCONFIRMED: &str =
     "Coda couldn’t confirm sign-in. Open your email link again or request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
-const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
+const SESSION_ENDED: &str = "Your session ended. Sign in to continue.";
 const SHOW_SESSION_PROMPT: &str = "document.getElementById('session-prompt')?.showModal()";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
@@ -508,8 +508,8 @@ struct SessionState {
     /// Presents this tab's bearer on every read.
     client: Signal<PhysicianClient>,
     signed_in: Signal<bool>,
-    /// The sign-in prompt covers the open page when the session expires.
-    /// Nothing underneath changes.
+    /// The sign-in prompt replaces the workspace when the session expires.
+    /// Patient content is cleared before the prompt is shown.
     expired: Signal<bool>,
     whoami_name: Signal<String>,
     whoami: Signal<Option<WhoamiResponse>>,
@@ -558,8 +558,19 @@ impl SessionState {
         self.no_session_here();
     }
 
-    /// Back to the sign-in page in this tab only.
+    /// Drops patient content this tab was showing: the held link, unsent drafts,
+    /// and stored panel choices. The shell starts at Today if it is shown again.
+    fn drop_patient_content(mut self) {
+        panels::forget_all();
+        local_draft::forget_everything();
+        self.forget_place();
+        *self.generation.write() += 1;
+    }
+
+    /// Back to the sign-in page in this tab only. A tab that never showed the
+    /// workspace keeps the patient link it was opened at.
     fn no_session_here(mut self) {
+        panels::forget_all();
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
@@ -621,7 +632,10 @@ impl SessionState {
         }
         let presented = presented.as_deref();
         match refusal {
-            Refusal::SessionEnded if shown => self.expired.set(true),
+            Refusal::SessionEnded if shown => {
+                self.drop_patient_content();
+                self.expired.set(true);
+            }
             Refusal::SessionEnded => {
                 if let Some(presented) = presented {
                     self.client.peek().session().clear_if(presented);
@@ -689,7 +703,9 @@ impl SessionState {
                 .is_some_and(|mine| mine.eq_ignore_ascii_case(owner))
         });
         if yours && !missed_a_sign_out {
-            // Lifting the prompt re-reads the page; otherwise re-read in place.
+            // The session is yours again. Patient content was cleared when it
+            // ended, so the workspace opens at Today. A newer session of yours
+            // re-reads in place.
             if *self.expired.peek() {
                 self.expired.set(false);
             } else {
@@ -699,13 +715,11 @@ impl SessionState {
         }
         // Someone this tab can't name as you, or you after a sign-out: the tab
         // starts at Today and nothing from before carries over.
-        local_draft::forget_everything();
-        self.forget_place();
+        self.drop_patient_content();
         self.whoami_name.set(String::new());
         self.whoami.set(None);
         self.owner.set(owner);
         self.expired.set(false);
-        *self.generation.write() += 1;
     }
 }
 
@@ -791,6 +805,30 @@ pub fn PhysicianRoot(
                     whoami.set(who);
                     signed_in.set(true);
                 },
+            }
+        }
+    } else if expired() {
+        // The prompt replaces the workspace. PhysicianShell is not mounted, so
+        // no patient view stays in the page.
+        let mut expired = expired;
+        rsx! {
+            ui::Stylesheet { app: SHELL_STYLES }
+            dialog {
+                id: "session-prompt",
+                class: "session-prompt",
+                aria_label: "Sign in to continue",
+                "closedby": "none",
+                onmounted: move |_| {
+                    document::eval(SHOW_SESSION_PROMPT);
+                },
+                SignInScreen {
+                    client,
+                    session,
+                    link: None,
+                    resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
+                    on_signed_in: move |_| expired.set(false),
+                    on_sign_out: move |_| sign_out_everywhere(session),
+                }
             }
         }
     } else {
@@ -926,9 +964,9 @@ fn PhysicianShell(
             past_work_open.set(false);
         }
     });
-    // Signing in again under the prompt, or taking a newer session of yours
-    // from another tab, re-reads the page in place, and the stream restarts on
-    // the session now held. The prompt stops the stream.
+    // Taking a newer session of yours from another tab re-reads the page in
+    // place, and the stream restarts on the session now held. The prompt
+    // unmounts the shell, so signing in from it opens a fresh one at Today.
     let taken = session.taken;
     let mut was_expired = use_signal(|| false);
     let mut read_with = use_signal(|| *taken.peek());
@@ -1527,35 +1565,9 @@ fn PhysicianShell(
                 img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
             }
         }
-        if expired() {
-            // Covers and hides the page; nothing underneath changes. A modal opened last, it
-            // stands over any dialog left open, which stays as it was. Only signing in or out
-            // closes it.
-            dialog {
-                id: "session-prompt",
-                class: "session-prompt",
-                aria_label: "Sign in to continue",
-                "closedby": "none",
-                onmounted: move |_| {
-                    document::eval(SHOW_SESSION_PROMPT);
-                },
-                SignInScreen {
-                    client,
-                    session,
-                    link: None,
-                    resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
-                    on_signed_in: move |_| {
-                        let mut expired = expired;
-                        expired.set(false);
-                    },
-                    on_sign_out: move |_| sign_out_everywhere(session),
-                }
-            }
-        }
         div {
             class: "{shell_class}",
-            aria_hidden: if app_collapsed() || expired() { "true" } else { "false" },
-            "inert": expired().then_some("true"),
+            aria_hidden: if app_collapsed() { "true" } else { "false" },
             // Tab stays on the drawer's own controls while it is open.
             tabindex: if drawer_open { "-1" } else { "0" },
             onkeydown: move |event| {
@@ -2441,8 +2453,8 @@ mod command_answer_tests {
     }
 }
 
-/// The sign-in page, or with `resume_email` the prompt covering a page whose
-/// session ended: it mails the same address, and signing in picks up there.
+/// The sign-in page, or with `resume_email` the prompt in place of a workspace whose
+/// session ended: it mails the same address, and signing in opens Today.
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
@@ -2627,7 +2639,7 @@ fn SignInScreen(
                                         onclick: move |_| request_token(()),
                                         "Email me a sign-in link"
                                     }
-                                    p { class: "sign-in-sub", "Open it to pick up where you were." }
+                                    p { class: "sign-in-sub", "Open it to sign in again." }
                                 }
                             },
                             SignInStage::NoAccess => rsx! {
@@ -2682,7 +2694,7 @@ fn SignInScreen(
                                 p { class: "sign-in-sub sign-in-email", "{email}" }
                                 p { class: "sign-in-sub",
                                     if resuming {
-                                        "Choose Sign in in the email to pick up where you were."
+                                        "Choose Sign in in the email to sign in again."
                                     } else {
                                         "Choose Sign in in the email to open your workspace."
                                     }

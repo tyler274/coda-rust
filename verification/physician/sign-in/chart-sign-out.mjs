@@ -8,7 +8,7 @@ export const title = "You sign out with two tabs open";
 const screen = (t) => {
   if (t.shows === "Your workspace") return "your workspace";
   if (t.shows === "Opening your workspace") return "opening your workspace";
-  if (t.shows === "Sign-in prompt over your work") return "the prompt over your work";
+  if (t.shows === "Sign-in prompt, with no patient content") return "the sign-in prompt";
   return t.shows;
 };
 
