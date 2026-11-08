@@ -10,15 +10,19 @@ locals {
     worker_backlog        = "pubsub_googleapis_com:subscription_num_undelivered_messages{project_id=\"${var.cluster_project}\",subscription_id=\"physician-chat-turns-worker\"}"
     worker_dead_letters   = "pubsub_googleapis_com:subscription_num_undelivered_messages{project_id=\"${var.cluster_project}\",subscription_id=\"physician-chat-turns-dead-letter\"}"
   }
+  # Custom metrics can sit on many resource types, so Cloud Monitoring PromQL
+  # rejects them without a monitored_resource matcher. availability-probe
+  # writes both of its metrics on the global resource.
+  grafana_probe_labels = "monitored_resource=\"global\",project_id=\"${var.cluster_project}\""
   grafana_cloud_conditions = merge(
     { for target in ["physician", "duet", "physician-worker"] : "readiness-${target}" => {
-      expr     = "max(custom_googleapis_com:coda_availability_firing{project_id=\"${var.cluster_project}\",target=\"${target}\"})"
+      expr     = "max(custom_googleapis_com:coda_availability_firing{${local.grafana_probe_labels},target=\"${target}\"})"
       duration = "0s"
       summary  = "${target} failed three scheduled probes; clears after two successes. Missing execution is not recovery."
       no_data  = "KeepLast"
     } },
     { for target in ["physician", "duet", "physician-worker"] : "freshness-${target}" => {
-      expr     = "(time() - max(custom_googleapis_com:coda_availability_observed_at{project_id=\"${var.cluster_project}\",target=\"${target}\"}) > bool 300) or vector(1)"
+      expr     = "(time() - max(custom_googleapis_com:coda_availability_observed_at{${local.grafana_probe_labels},target=\"${target}\"}) > bool 300) or vector(1)"
       duration = "0s"
       summary  = "${target} observation is absent or older than five minutes."
       no_data  = "NoData"
