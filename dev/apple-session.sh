@@ -51,7 +51,9 @@ start_container() {
     /*) mounts+=(-v "$hooks:$hooks") ;;
   esac
   # --init reaps the orphans that Chromium and servers leave behind.
+  # The VM resolver does not answer. Compose pins the same public resolvers.
   container run -d --init --name "$name" --arch arm64 --cpus "$cpus" --memory "$memory" \
+    --dns 1.1.1.1 --dns 8.8.8.8 \
     "${mounts[@]}" "$@" "$image" sleep infinity >/dev/null
 }
 
@@ -167,15 +169,24 @@ seed() {
   remove_container "$seed"
   trap 'remove_container "$seed"' EXIT
   # Old build output only makes every clone bigger. Existing clones keep theirs.
-  container volume rm "$seed-target" >/dev/null 2>&1 || true
+  # A retry keeps the volume: cargo continues, and deleting it throws away the build.
+  if [ "${CODA_SESSION_KEEP_TARGET:-}" != 1 ]; then
+    container volume rm "$seed-target" >/dev/null 2>&1 || true
+  fi
   for volume in $volumes; do
     container volume inspect "$seed-$volume" >/dev/null 2>&1 ||
       container volume create "$seed-$volume" >/dev/null
   done
   # Only the seed trims, so only the seed gets the capability fstrim needs.
   start_container "$seed" "$checkout" --cap-add CAP_SYS_ADMIN
-  # New volumes are root's.
-  container exec "$seed" chown -R vscode:vscode /nix /home/vscode/.cargo "$checkout/target"
+  # New volumes are root's. verification is a host bind mount, and chown there
+  # is rejected; the Mac user already owns it and guest writes map to them.
+  container exec "$seed" chown -R vscode:vscode /nix /home/vscode/.cargo
+  container exec "$seed" sh -ec '
+    root=$1
+    chown vscode:vscode "$root"
+    find "$root" -mindepth 1 -path "$root/verification" -prune -o -exec chown vscode:vscode {} +
+  ' sh "$checkout/target"
   prepare "$seed" "$checkout"
   # Nix's profile links live in the home directory, which clones don't carry.
   container exec --user vscode "$seed" sh -ec '
