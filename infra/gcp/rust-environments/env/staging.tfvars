@@ -61,7 +61,7 @@ telemetry_backend = "both"
 # the published image, runs every minute. The direct Cloud Monitoring
 # watchdog notifies Slack #engineering-observability through the existing
 # "GCP Monitoring" channel when its heartbeat stops.
-availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-availability-probe@sha256:d8a12b49af67f386771e742a512dca575932c1c1d5dc4a378533bab5b19cdac5"
+availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-availability-probe@sha256:f115c044a68556f31800488f8e5cbfebcf02ee73c20727733750067fb78cc458"
 availability_probe_schedule_enabled = true
 availability_watchdog_enabled       = true
 availability_watchdog_channels      = ["projects/coda-rust-staging/notificationChannels/12022100174098334389"]
