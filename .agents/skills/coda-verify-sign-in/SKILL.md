@@ -121,6 +121,6 @@ break it again the same way and confirm TLC reports that rule.
 
 ## Sync
 
-The model and bug paths were last confirmed to describe the code above at commit `6f5e9f13`. Move this
+The model and bug paths were last confirmed to describe the code above at commit `dc77bcc2`. Move this
 forward only after reading each change to that code since then against the model and running both
 checks under Run.
