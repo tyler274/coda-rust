@@ -2237,6 +2237,10 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
     let text = preview["text"].as_str().unwrap();
     assert!(text.contains("Coda's summary"), "{preview}");
     assert!(text.contains(ALLERGY_SUMMARY), "{preview}");
+    assert!(
+        text.contains("Coda wrote this from the record dated September 11, 2018"),
+        "the preview showed Coda's summary without its record date: {preview}"
+    );
     assert_eq!(
         preview["original"], "https://ehr.example/allergy/0493010f2a16",
         "{preview}"
@@ -2258,6 +2262,7 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
         shown["link"], "https://ehr.example/allergy/0493010f2a16",
         "{shown}"
     );
+    assert_eq!(shown["linkTitle"], "Opens in a new tab", "{shown}");
     let summary = shown["summary"].as_str().unwrap();
     assert!(summary.contains(ALLERGY_SUMMARY), "{shown}");
     assert!(

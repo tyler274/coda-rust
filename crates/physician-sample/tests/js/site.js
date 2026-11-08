@@ -90,6 +90,7 @@ function (step, ...args) {
           ".clinical-source-reader > .citation-open, .source-coda-summary, .source-record-kind",
         )].map((node) => node.className),
         link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
+        linkTitle: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("title") ?? null,
         summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
       };
     },
