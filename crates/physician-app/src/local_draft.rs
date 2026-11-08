@@ -4,14 +4,14 @@
 //! Send or clear still being reconciled are kept in this tab's
 //! `sessionStorage`, so a reload of the same tab can put them back. Nothing
 //! is promised after the tab or browser closes, and nothing is kept in
-//! `localStorage` (unlike the long-lived panel preferences in `panels.rs`).
+//! `localStorage` (panel preferences in `panels.rs` are removed on sign-out too).
 //!
 //! Every record is scoped: the key carries a version, the backend the page
 //! talks to, the practice, the physician, the patient workspace, the chat and
 //! the writing document. The scope parts are a JSON array, so no id can be
 //! confused with another. A page restores only under a known physician
 //! identity, and only after the workspace itself was read for that physician.
-//! Sign-out, another physician's sign-in and removed access forget records.
+//! Sign-out, a session end, another physician's sign-in and removed access forget records.
 //!
 //! Storage can be missing, denied or full. Writes then report failure; the
 //! shell keeps the text in memory and says reload recovery is unavailable.

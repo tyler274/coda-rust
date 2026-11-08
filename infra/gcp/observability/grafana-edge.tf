@@ -55,13 +55,10 @@ locals {
       kind       = "GCPBackendPolicy"
       metadata   = { name = "grafana-iap", namespace = local.namespace }
       spec = {
-        default = {
-          iap = {
-            enabled            = true
-            clientID           = try(local.grafana_edge.iap_client_id, null)
-            oauth2ClientSecret = { name = "grafana-iap-oauth" }
-          }
-        }
+        # No clientID or secret: IAP uses Google's managed OAuth client,
+        # which admits only people in the organization. GKE cannot later
+        # switch a backend from a custom client back to the managed one.
+        default   = { iap = { enabled = true } }
         targetRef = { group = "", kind = "Service", name = "grafana" }
       }
     },
@@ -146,7 +143,6 @@ resource "helm_release" "grafana_edge" {
   values = [yamlencode({ manifests = local.grafana_edge_manifests })]
 
   depends_on = [
-    helm_release.doppler_secrets,
     kubernetes_service_v1.grafana_stack,
     google_certificate_manager_certificate_map_entry.grafana_edge,
   ]

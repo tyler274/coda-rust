@@ -228,15 +228,19 @@ Service in this root:
 
 `grafana_edge` gives Grafana a browser address, `https://<hostname>`, for
 the people IAP admits. Staging's edge is `grafana.staging.codahealth.ai`
-(commented in `env/staging.tfvars` until the rollout below), granted to the
-same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
+(`env/staging.tfvars`), granted to the same group as `staging.codahealth.ai`,
+`gcp-engineering@codahealth.ai`.
 
 - **Path.** A DNS-only A record points the hostname at the reserved global
   address. A `gke-l7-global-external-managed` Gateway terminates TLS with a
   Certificate Manager certificate that a DNS record authorizes, so the
   certificate is active before the hostname moves. IAP on the Grafana
   backend sends signed-out people to Google sign-in and refuses anyone
-  without `roles/iap.httpsResourceAccessor` on that backend.
+  without `roles/iap.httpsResourceAccessor` on that backend. IAP uses
+  Google's managed OAuth client, so there is no client or secret to keep,
+  and only accounts in the organization can sign in. GKE cannot switch a
+  backend from the managed client to a custom one and back without
+  recreating it.
 - **Sign-in.** Grafana trusts only the signed assertion IAP adds,
   `X-Goog-IAP-JWT-Assertion`. It checks the signature against Google's IAP keys
   (`https://www.gstatic.com/iap/verify/public_key-jwk`), issuer
@@ -254,18 +258,11 @@ same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
 
 Each apply is from a reviewed saved plan with the operator's authorization.
 
-1. In the target project, configure the OAuth consent screen as Internal if
-   it is not already, then create a Web application OAuth client (APIs &
-   Services > Credentials). Add
-   `https://iap.googleapis.com/v1/oauth/clientIds/<CLIENT_ID>:handleRedirect`
-   as an authorized redirect URI; IAP adds it only to clients it creates, and
-   sign-in fails with `redirect_uri_mismatch` without it. Store the client
-   secret in Doppler `coda-rust/<config>` as `GRAFANA_IAP_CLIENT_SECRET`.
-2. Phase 1: set `grafana_edge = { hostname, iap_client_id }` with no
-   members, then plan and apply. Read `tofu output grafana_edge`. Add its
+1. Phase 1: set `grafana_edge = { hostname }` with no members, then plan
+   and apply. Read `tofu output grafana_edge`. Add its
    `certificate_dns_records` CNAME and an A record from the hostname to
    `ip` in Cloudflare, both DNS-only (not proxied).
-3. Phase 2: after GKE reconciles the Gateway, read the backend it created
+2. Phase 2: after GKE reconciles the Gateway, read the backend it created
    from the Gateway itself:
    `kubectl -n observability get gateway grafana-edge -o
    jsonpath='{.metadata.annotations.networking\.gke\.io/backend-services}'`.
@@ -275,7 +272,7 @@ Each apply is from a reviewed saved plan with the operator's authorization.
    (for example `["group:gcp-engineering@codahealth.ai"]`), then plan and
    apply. A recreated backend needs its new name and id before access
    resumes.
-4. Proof:
+3. Proof:
    - A signed-out `curl -sI https://<hostname>` answers 302 to
      `accounts.google.com`.
    - A member lands in Grafana already signed in as themselves.
@@ -410,8 +407,6 @@ use. The Cloudflare records are removed by hand.
   | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY`, `LANGFUSE_INIT_PROJECT_SECRET_KEY`, `LANGFUSE_INIT_USER_EMAIL`, `LANGFUSE_INIT_USER_PASSWORD` | `langfuse-init` (Langfuse web env) |
   | the same project key pair | `otel-collector-langfuse` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`) |
   | `LANGFUSE_IAP_CLIENT_SECRET` (gateway only) | `langfuse-iap-oauth` (`key`) |
-  | `GRAFANA_IAP_CLIENT_SECRET` (`grafana_edge` only) | `grafana-iap-oauth` (`key`) |
-
   The S3-interop HMAC key belongs to `coda-langfuse-blobs` (output
   `langfuse_hmac_service_account`). The operator mints it with
   `gcloud storage hmac create` and stores both halves in Doppler.

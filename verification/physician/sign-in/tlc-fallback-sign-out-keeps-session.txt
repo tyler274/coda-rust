@@ -1,0 +1,9 @@
+Mutation: signing out with nothing stored ends no session at Coda, so the tab's own session stays live.
+Config checks only PROPERTY ServerRefusesSignedOut.
+
+Error: Action property ServerRefusesSignedOut is violated.
+State 8: <SignOut>
+event = [tab |-> "B", name |-> "sign out"]
+stores = "No session"
+session = ( "Session 1" :> "Yours, live" @@ ... )
+5116 distinct states found. Depth 8.
