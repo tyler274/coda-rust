@@ -110,6 +110,8 @@ async fn pending_conversation_response_cannot_cross_account_switch() {
     browser.type_into(".composer-input", A_DRAFT);
     assert_eq!(composer(&mut browser), A_DRAFT);
     click_button(&mut browser, "Sign out");
+    browser.wait_for("Signing out removes an unconfirmed message from this phone.");
+    click_button(&mut browser, "Sign out anyway");
     browser.wait_for("Sign in to your Duet account.");
     assert_private_absent(&mut browser);
     // The test identity adapter supplies B at the next verification; DuetRoot itself stays mounted.
