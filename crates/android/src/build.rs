@@ -1,8 +1,8 @@
 //! Build the mode-shell debug APK.
 //!
-//! Rustc must be rustup's stable: the Nix rustc has no Android standard
-//! library. `dx build --android` asks Gradle for build-tools 34; the Nix SDK
-//! only has 37, so a build-tools failure is patched and `gradlew assembleDebug`
+//! `nix develop .#android` supplies the SDK, the NDK, a JDK and a Rust
+//! toolchain with the Android standard library. `dx build --android` asks
+//! Gradle for build-tools 34; the Nix SDK only has 37, so a build-tools failure is patched and `gradlew assembleDebug`
 //! continues. Patch steps take the generated tree so tests can run without
 //! `dx` or an emulator.
 
@@ -179,7 +179,7 @@ fn wire_android_manifest(workspace: &Path, manifest: &Path) -> Result<(), Failur
         .arg(&script)
         .arg(manifest)
         .status()
-        .map_err(|error| Failure::new(1, format!("could not run python: {error}")))?;
+        .map_err(Failure::io("could not run python"))?;
     if status.success() {
         Ok(())
     } else {
@@ -198,10 +198,9 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
         "--features",
         "mobile",
     ]);
-    configure(&mut command)?;
     let output = command
         .output()
-        .map_err(|error| Failure::new(1, format!("could not run {}: {error}", dx.display())))?;
+        .map_err(Failure::io(format!("could not run {}", dx.display())))?;
     let mut log = String::from_utf8_lossy(&output.stdout).into_owned();
     log.push_str(&String::from_utf8_lossy(&output.stderr));
     print!("{log}");
@@ -232,10 +231,9 @@ fn assemble_debug(generated: &Path) -> Result<(), Failure> {
     command
         .current_dir(gradle.parent().unwrap_or(Path::new(".")))
         .arg("assembleDebug");
-    configure(&mut command)?;
     let status = command
         .status()
-        .map_err(|error| Failure::new(1, format!("could not run gradlew: {error}")))?;
+        .map_err(Failure::io("could not run gradlew"))?;
     if !status.success() {
         let code = status.code().unwrap_or(1);
         return Err(Failure::new(
@@ -252,61 +250,6 @@ fn assemble_debug(generated: &Path) -> Result<(), Failure> {
         println!("{}", apk.display());
     }
     Ok(())
-}
-
-fn configure(command: &mut Command) -> Result<(), Failure> {
-    let toolchain = env::var("RUSTUP_TOOLCHAIN").unwrap_or_else(|_| "stable".to_owned());
-    command.env("RUSTUP_TOOLCHAIN", toolchain);
-    let java = java_env()?;
-    let path = child_path(java.as_deref());
-    if !path.is_empty() {
-        command.env("PATH", path);
-    }
-    if let Some(home) = java {
-        command.env("JAVA_HOME", home);
-    }
-    Ok(())
-}
-
-fn java_env() -> Result<Option<PathBuf>, Failure> {
-    if let Some(home) = super::java_home() {
-        return Ok(Some(home));
-    }
-    if super::tool("java").is_ok() {
-        Ok(None)
-    } else {
-        Err(Failure::new(
-            1,
-            "java is not on PATH and the Android Studio JBR was not found",
-        ))
-    }
-}
-
-fn child_path(java: Option<&Path>) -> std::ffi::OsString {
-    let mut prefix = Vec::new();
-    if let Some(java) = java {
-        prefix.push(java.join("bin"));
-    }
-    if let Ok(user) = env::var("USER") {
-        let dir = PathBuf::from(format!("/etc/profiles/per-user/{user}/bin"));
-        if dir.is_dir() {
-            prefix.push(dir);
-        }
-    }
-    let mut path = std::ffi::OsString::new();
-    for (index, dir) in prefix.iter().enumerate() {
-        if index > 0 {
-            path.push(":");
-        }
-        path.push(dir);
-    }
-    if let Some(existing) = env::var_os("PATH") {
-        if !path.is_empty() {
-            path.push(":");
-        }
-        path.push(existing);
-    }
-    path
 }
 
 fn patch_build_tools(text: &str) -> String {
@@ -497,27 +440,23 @@ fn append_after_lines(text: &str, needle: &str, insertion: &str) -> String {
 
 fn rewrite(path: &Path, patch: impl Fn(&str) -> String) -> Result<(), Failure> {
     let text = fs::read_to_string(path)
-        .map_err(|error| Failure::new(1, format!("could not read {}: {error}", path.display())))?;
+        .map_err(Failure::io(format!("could not read {}", path.display())))?;
     fs::write(path, patch(&text))
-        .map_err(|error| Failure::new(1, format!("could not write {}: {error}", path.display())))
+        .map_err(Failure::io(format!("could not write {}", path.display())))
 }
 
 fn copy_file(from: &Path, to: &Path) -> Result<(), Failure> {
     if let Some(parent) = to.parent() {
-        fs::create_dir_all(parent).map_err(|error| {
-            Failure::new(1, format!("could not create {}: {error}", parent.display()))
-        })?;
+        fs::create_dir_all(parent).map_err(Failure::io(format!(
+            "could not create {}",
+            parent.display()
+        )))?;
     }
-    fs::copy(from, to).map_err(|error| {
-        Failure::new(
-            1,
-            format!(
-                "could not copy {} to {}: {error}",
-                from.display(),
-                to.display()
-            ),
-        )
-    })?;
+    fs::copy(from, to).map_err(Failure::io(format!(
+        "could not copy {} to {}",
+        from.display(),
+        to.display()
+    )))?;
     Ok(())
 }
 

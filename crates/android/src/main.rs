@@ -3,13 +3,21 @@
 //!
 //! ```text
 //! cargo run -p android -- build
+//! cargo run -p android -- avd
 //! cargo run -p android -- window
 //! cargo run -p android -- test coda.duet.ModeShellTest
 //! cargo run -p android -- test coda.duet.ModeShellTest#clientThenPhysician
+//! cargo run -p android -- test --headless coda.duet.ModeShellTest
 //! ```
 //!
-//! A headless emulator is not a window. `window` replaces one. This does not
-//! create or delete an AVD, and there is no no-argument test suite.
+//! Run these in `nix develop .#android`. A headless emulator is not a window.
+//! `window` and `test` replace one. `test --headless` is the CI form: it needs
+//! no DISPLAY, boots its own headless emulator when none is running, and stops
+//! the one it started. It refuses to take over a window someone is using.
+//! Every adb and Gradle step targets the duet AVD's own serial, so another
+//! emulator is never tested or stopped. `avd` creates the duet AVD when it is
+//! missing, as CI does; nothing here replaces or deletes one. There is no
+//! no-argument test suite.
 #![allow(
     clippy::map_err_ignore,
     reason = "converting to errors that keep their cause"
@@ -42,6 +50,7 @@ unsafe extern "C" {
 struct Failure {
     message: String,
     code: u8,
+    source: Option<io::Error>,
 }
 
 impl Failure {
@@ -49,6 +58,17 @@ impl Failure {
         Self {
             message: message.into(),
             code,
+            source: None,
+        }
+    }
+
+    /// What this command was doing when the operating system refused it.
+    fn io(doing: impl Into<String>) -> impl FnOnce(io::Error) -> Self {
+        let doing = doing.into();
+        move |error| Self {
+            message: doing,
+            code: 1,
+            source: Some(error),
         }
     }
 }
@@ -57,7 +77,10 @@ fn main() -> ExitCode {
     match run(env::args().skip(1)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(failure) => {
-            eprintln!("{}", failure.message);
+            match &failure.source {
+                Some(source) => eprintln!("{}: {source}", failure.message),
+                None => eprintln!("{}", failure.message),
+            }
             ExitCode::from(failure.code)
         }
     }
@@ -68,30 +91,47 @@ fn run(args: impl Iterator<Item = String>) -> Result<(), Failure> {
     let command = parse(&args)?;
     match command {
         Request::Build => build::build(&build::workspace_root()),
+        Request::Avd => create_avd(),
         Request::Window => {
             let _lock = Lock::acquire()?;
-            open_window()
+            open_emulator(Display::Window).map(drop)
         }
-        Request::Test(class_name) => {
+        Request::Test(display, class_name) => {
             let _lock = Lock::acquire()?;
-            open_window()?;
-            run_instrumentation(&class_name)
+            let emulator = open_emulator(display)?;
+            let serial = emulator.serial().ok_or_else(|| {
+                Failure::new(1, format!("the {} emulator left adb", emulator.avd))
+            })?;
+            run_instrumentation(&class_name, &serial)
         }
     }
 }
 
 enum Request {
     Build,
+    Avd,
     Window,
-    Test(String),
+    Test(Display, String),
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+enum Display {
+    Window,
+    Headless,
 }
 
 fn parse(args: &[String]) -> Result<Request, Failure> {
     match args {
         [command] if command == "build" => Ok(Request::Build),
+        [command] if command == "avd" => Ok(Request::Avd),
         [command] if command == "window" => Ok(Request::Window),
         [command, class_name] if command == "test" && valid_selector(class_name) => {
-            Ok(Request::Test(class_name.clone()))
+            Ok(Request::Test(Display::Window, class_name.clone()))
+        }
+        [command, flag, class_name]
+            if command == "test" && flag == "--headless" && valid_selector(class_name) =>
+        {
+            Ok(Request::Test(Display::Headless, class_name.clone()))
         }
         _ => Err(Failure::new(
             2,
@@ -101,9 +141,11 @@ android builds the debug APK, opens the duet emulator window, and runs one UI Au
 There is intentionally no no-argument suite.
 
   cargo run -p android -- build
+  cargo run -p android -- avd
   cargo run -p android -- window
   cargo run -p android -- test coda.duet.ModeShellTest
-  cargo run -p android -- test coda.duet.ModeShellTest#clientThenPhysician",
+  cargo run -p android -- test coda.duet.ModeShellTest#clientThenPhysician
+  cargo run -p android -- test --headless coda.duet.ModeShellTest",
         )),
     }
 }
@@ -135,9 +177,7 @@ struct Lock {
 impl Lock {
     fn acquire() -> Result<Self, Failure> {
         let path = PathBuf::from("/tmp/duet-android-emulator.lock");
-        let file = File::create(&path).map_err(|error| {
-            Failure::new(1, format!("could not open the emulator lock: {error}"))
-        })?;
+        let file = File::create(&path).map_err(Failure::io("could not open the emulator lock"))?;
         let status = unsafe { flock(file.as_raw_fd(), LOCK_EX | LOCK_NB) };
         if status != 0 {
             let owner = fs::read_to_string("/tmp/duet-android-emulator.lock.owner")
@@ -151,9 +191,8 @@ impl Lock {
             ));
         }
         let owner = PathBuf::from("/tmp/duet-android-emulator.lock.owner");
-        fs::write(&owner, format!("PID {} :: android\n", std::process::id())).map_err(|error| {
-            Failure::new(1, format!("could not record the emulator owner: {error}"))
-        })?;
+        fs::write(&owner, format!("PID {} :: android\n", std::process::id()))
+            .map_err(Failure::io("could not record the emulator owner"))?;
         Ok(Self { file, owner })
     }
 }
@@ -165,67 +204,147 @@ impl Drop for Lock {
     }
 }
 
-fn open_window() -> Result<(), Failure> {
-    if env::var_os("DISPLAY").is_none_or(|value| value.is_empty()) {
+/// The duet emulator this run uses. On drop it stops the emulator only when
+/// this run booted it headless; a window, or one already running, stays.
+struct Booted {
+    adb: PathBuf,
+    avd: String,
+    pid: u32,
+    stop: bool,
+}
+
+impl Booted {
+    /// The adb serial of this AVD's emulator, never another device's.
+    fn serial(&self) -> Option<String> {
+        serial_for_avd(&self.adb, &self.avd)
+    }
+}
+
+impl Drop for Booted {
+    fn drop(&mut self) {
+        if self.stop {
+            stop_emulator(&self.adb, &self.avd, self.pid);
+        }
+    }
+}
+
+/// The one system image `nix develop .#android` provides.
+const SYSTEM_IMAGE: &str = "system-images;android-35;google_apis;x86_64";
+
+/// Creates the duet AVD when it is missing. An existing AVD is kept as is.
+fn create_avd() -> Result<(), Failure> {
+    let emulator = tool("emulator")?;
+    let avd = avd_name();
+    if output(&emulator, &["-list-avds"])?
+        .lines()
+        .any(|line| line.trim() == avd)
+    {
+        println!("AVD '{avd}' already exists.");
+        return Ok(());
+    }
+    let mut child = Command::new(tool("avdmanager")?)
+        .args(["create", "avd", "--name", &avd, "--device", "pixel_6"])
+        .args(["--package", SYSTEM_IMAGE])
+        .stdin(Stdio::piped())
+        .spawn()
+        .map_err(Failure::io("could not run avdmanager"))?;
+    // avdmanager asks whether to make a custom hardware profile.
+    if let Some(mut stdin) = child.stdin.take() {
+        let _ = io::Write::write_all(&mut stdin, b"no\n");
+    }
+    let status = child
+        .wait()
+        .map_err(Failure::io("avdmanager did not finish"))?;
+    if status.success() {
+        println!("Created AVD '{avd}' from {SYSTEM_IMAGE}.");
+        Ok(())
+    } else {
+        Err(Failure::new(1, "avdmanager create avd failed"))
+    }
+}
+
+fn avd_name() -> String {
+    env::var("DUET_ANDROID_AVD").unwrap_or_else(|_| "duet".to_owned())
+}
+
+fn open_emulator(display: Display) -> Result<Booted, Failure> {
+    if display == Display::Window && env::var_os("DISPLAY").is_none_or(|value| value.is_empty()) {
         return Err(Failure::new(
             1,
-            "The emulator window needs DISPLAY. Refusing to start headless.",
+            "The emulator window needs DISPLAY. Refusing to start headless; use test --headless.",
         ));
     }
     let emulator = tool("emulator")?;
     let adb = tool("adb")?;
-    let avd = env::var("DUET_ANDROID_AVD").unwrap_or_else(|_| "duet".to_owned());
+    let avd = avd_name();
     let avds = output(&emulator, &["-list-avds"])?;
     if !avds.lines().any(|line| line.trim() == avd) {
         return Err(Failure::new(
             1,
-            format!("AVD '{avd}' does not exist. This command does not create one."),
+            format!("AVD '{avd}' does not exist. Create it with: cargo run -p android -- avd"),
         ));
     }
 
     let mut pid = None;
     if let Some(qemu) = qemu_for_avd(&avd) {
-        if is_headless(&qemu.args) {
-            println!("Replacing the headless {avd} emulator with a window.");
-            stop_headless(&adb, qemu.pid);
-        } else {
-            println!("Waiting for the existing {avd} emulator window.");
-            pid = Some(qemu.pid);
+        match (display, is_headless(&qemu.args)) {
+            (Display::Window, true) => {
+                println!("Replacing the headless {avd} emulator with a window.");
+                stop_emulator(&adb, &avd, qemu.pid);
+            }
+            (Display::Headless, false) => {
+                return Err(Failure::new(
+                    1,
+                    format!(
+                        "The {avd} emulator window is open. Close it, or run test without --headless."
+                    ),
+                ));
+            }
+            _ => {
+                println!("Using the running {avd} emulator.");
+                pid = Some(qemu.pid);
+            }
         }
     }
 
-    let log_path = PathBuf::from("/tmp/duet-android-emulator/window.log");
+    let log_path = PathBuf::from(match display {
+        Display::Window => "/tmp/duet-android-emulator/window.log",
+        Display::Headless => "/tmp/duet-android-emulator/headless.log",
+    });
+    let mut stop = false;
     if pid.is_none() {
         if let Some(parent) = log_path.parent() {
-            fs::create_dir_all(parent).map_err(|error| {
-                Failure::new(
-                    1,
-                    format!("could not create the emulator log directory: {error}"),
-                )
-            })?;
+            fs::create_dir_all(parent)
+                .map_err(Failure::io("could not create the emulator log directory"))?;
         }
-        let log = File::create(&log_path).map_err(|error| {
-            Failure::new(1, format!("could not open the emulator log: {error}"))
-        })?;
-        let log_err = log.try_clone().map_err(|error| {
-            Failure::new(1, format!("could not open the emulator log: {error}"))
-        })?;
+        let log =
+            File::create(&log_path).map_err(Failure::io("could not open the emulator log"))?;
+        let log_err = log
+            .try_clone()
+            .map_err(Failure::io("could not open the emulator log"))?;
         let mut command = Command::new(&emulator);
+        command.args([
+            "-avd",
+            &avd,
+            "-gpu",
+            "swiftshader_indirect",
+            "-no-snapshot-load",
+            "-no-snapshot-save",
+            "-no-boot-anim",
+            "-no-audio",
+        ]);
+        match display {
+            Display::Window => {
+                command.env(
+                    "QT_QPA_PLATFORM",
+                    env::var("QT_QPA_PLATFORM").unwrap_or_else(|_| "xcb".to_owned()),
+                );
+            }
+            Display::Headless => {
+                command.arg("-no-window");
+            }
+        }
         command
-            .args([
-                "-avd",
-                &avd,
-                "-gpu",
-                "swiftshader_indirect",
-                "-no-snapshot-load",
-                "-no-snapshot-save",
-                "-no-boot-anim",
-                "-no-audio",
-            ])
-            .env(
-                "QT_QPA_PLATFORM",
-                env::var("QT_QPA_PLATFORM").unwrap_or_else(|_| "xcb".to_owned()),
-            )
             .stdin(Stdio::null())
             .stdout(Stdio::from(log))
             .stderr(Stdio::from(log_err));
@@ -241,15 +360,27 @@ fn open_window() -> Result<(), Failure> {
         }
         let child = command
             .spawn()
-            .map_err(|error| Failure::new(1, format!("could not start the emulator: {error}")))?;
+            .map_err(Failure::io("could not start the emulator"))?;
         pid = Some(child.id());
+        stop = display == Display::Headless;
     }
-    let mut pid = pid.unwrap_or(0);
+    let mut booted = Booted {
+        adb,
+        avd,
+        pid: pid.unwrap_or(0),
+        stop,
+    };
+    let avd = booted.avd.clone();
 
     let deadline = Instant::now() + Duration::from_secs(300);
     while Instant::now() < deadline {
-        if boot_completed(&adb) {
-            if qemu_for_avd(&avd).is_some_and(|qemu| is_headless(&qemu.args)) {
+        if booted
+            .serial()
+            .is_some_and(|serial| boot_completed(&booted.adb, &serial))
+        {
+            if display == Display::Window
+                && qemu_for_avd(&avd).is_some_and(|qemu| is_headless(&qemu.args))
+            {
                 return Err(Failure::new(
                     1,
                     format!(
@@ -258,12 +389,12 @@ fn open_window() -> Result<(), Failure> {
                     ),
                 ));
             }
-            println!("The {avd} emulator window is ready.");
-            return Ok(());
+            println!("The {avd} emulator is ready.");
+            return Ok(booted);
         }
-        if !process_alive(pid) {
+        if !process_alive(booted.pid) {
             if let Some(qemu) = qemu_for_avd(&avd) {
-                pid = qemu.pid;
+                booted.pid = qemu.pid;
             } else {
                 return Err(exited(&log_path));
             }
@@ -275,7 +406,7 @@ fn open_window() -> Result<(), Failure> {
 
 fn exited(log_path: &Path) -> Failure {
     let mut message = format!(
-        "The emulator window did not finish booting. See {}",
+        "The emulator did not finish booting. See {}",
         log_path.display()
     );
     if let Ok(log) = fs::read_to_string(log_path) {
@@ -289,8 +420,8 @@ fn exited(log_path: &Path) -> Failure {
     Failure::new(1, message)
 }
 
-fn stop_headless(adb: &Path, pid: u32) {
-    if let Some(serial) = emulator_serial(&output(adb, &["devices"]).unwrap_or_default(), false) {
+fn stop_emulator(adb: &Path, avd: &str, pid: u32) {
+    if let Some(serial) = serial_for_avd(adb, avd) {
         let _ = Command::new(adb)
             .args(["-s", &serial, "emu", "kill"])
             .status();
@@ -313,8 +444,19 @@ struct Qemu {
     args: String,
 }
 
+/// Whether a qemu command line runs exactly this AVD: `-avd duet` is not
+/// `-avd duet-probe`.
+fn runs_avd(args: &str, avd: &str) -> bool {
+    let mut words = args.split_whitespace();
+    args.contains("qemu-system")
+        && words
+            .by_ref()
+            .skip_while(|word| *word != "-avd")
+            .nth(1)
+            .is_some_and(|name| name == avd)
+}
+
 fn qemu_for_avd(avd: &str) -> Option<Qemu> {
-    let needle = format!("-avd {avd}");
     let entries = fs::read_dir("/proc").ok()?;
     for entry in entries.flatten() {
         let Ok(pid) = entry.file_name().to_string_lossy().parse::<u32>() else {
@@ -327,10 +469,7 @@ fn qemu_for_avd(avd: &str) -> Option<Qemu> {
             .iter()
             .map(|byte| if *byte == 0 { ' ' } else { *byte as char })
             .collect();
-        if args.contains("qemu-system")
-            && args.split_whitespace().any(|arg| arg == "-avd")
-            && args.contains(&needle)
-        {
+        if runs_avd(&args, avd) {
             return Some(Qemu { pid, args });
         }
     }
@@ -343,71 +482,60 @@ fn is_headless(args: &str) -> bool {
         || (args.contains("qemu-system-") && args.contains("-headless"))
 }
 
-fn boot_completed(adb: &Path) -> bool {
-    let Ok(devices) = output(adb, &["devices"]) else {
-        return false;
-    };
-    let Some(serial) = emulator_serial(&devices, true) else {
-        return false;
-    };
+fn boot_completed(adb: &Path, serial: &str) -> bool {
     output(
         adb,
-        &["-s", &serial, "shell", "getprop", "sys.boot_completed"],
+        &["-s", serial, "shell", "getprop", "sys.boot_completed"],
     )
     .is_ok_and(|value| value.trim() == "1")
 }
 
-fn emulator_serial(devices: &str, require_device: bool) -> Option<String> {
-    devices.lines().find_map(|line| {
-        let mut parts = line.split_whitespace();
-        let serial = parts.next()?;
-        let state = parts.next().unwrap_or("");
-        if serial.starts_with("emulator-") && (!require_device || state == "device") {
-            Some(serial.to_owned())
-        } else {
-            None
-        }
-    })
+/// Asks each attached emulator for its AVD name, so another AVD's emulator
+/// is never booted-checked, tested, or killed in this one's place.
+fn serial_for_avd(adb: &Path, avd: &str) -> Option<String> {
+    emulator_serials(&output(adb, &["devices"]).ok()?)
+        .into_iter()
+        .find(|serial| {
+            output(adb, &["-s", serial, "emu", "avd", "name"])
+                .is_ok_and(|reply| reply.lines().next().map(str::trim) == Some(avd))
+        })
+}
+
+fn emulator_serials(devices: &str) -> Vec<String> {
+    devices
+        .lines()
+        .filter_map(|line| line.split_whitespace().next())
+        .filter(|serial| serial.starts_with("emulator-"))
+        .map(str::to_owned)
+        .collect()
 }
 
 fn process_alive(pid: u32) -> bool {
     pid != 0 && Path::new(&format!("/proc/{pid}")).exists()
 }
 
-fn run_instrumentation(class_name: &str) -> Result<(), Failure> {
+fn run_instrumentation(class_name: &str, serial: &str) -> Result<(), Failure> {
+    // Gradle does not rebuild the Rust library, so build first: testing a
+    // stale or half-generated project would test something else.
     let root = build::workspace_root();
-    let mut gradle = find_gradlew(&root.join("target/dx/mobile"));
-    if gradle.is_none() {
-        println!("Generating the Android project");
-        build::build(&root)?;
-        gradle = find_gradlew(&root.join("target/dx/mobile"));
-    }
-    let Some(gradle) = gradle else {
+    build::build(&root)?;
+    let Some(gradle) = find_gradlew(&root.join("target/dx/mobile")) else {
         return Err(Failure::new(
             1,
             "the Android build did not generate an Android project".to_owned(),
         ));
     };
-    println!("Running {class_name} on the duet emulator window");
-    let mut command = Command::new(&gradle);
-    command
+    println!("Running {class_name} on {serial}");
+    // connectedDebugAndroidTest otherwise installs on every attached device.
+    let status = Command::new(&gradle)
+        .env("ANDROID_SERIAL", serial)
         .current_dir(gradle.parent().unwrap_or(Path::new(".")))
         .arg(":app:connectedDebugAndroidTest")
         .arg(format!(
             "-Pandroid.testInstrumentationRunnerArguments.class={class_name}"
-        ));
-    if let Some(home) = java_home() {
-        command.env("JAVA_HOME", &home);
-        let mut path = home.join("bin").into_os_string();
-        path.push(":");
-        if let Some(existing) = env::var_os("PATH") {
-            path.push(existing);
-        }
-        command.env("PATH", path);
-    }
-    let status = command
+        ))
         .status()
-        .map_err(|error| Failure::new(1, format!("could not run gradlew: {error}")))?;
+        .map_err(Failure::io("could not run gradlew"))?;
     if status.success() {
         Ok(())
     } else {
@@ -437,47 +565,25 @@ fn find_gradlew(dir: &Path) -> Option<PathBuf> {
     None
 }
 
-fn java_home() -> Option<PathBuf> {
-    if tool("java").is_ok() {
-        return None;
-    }
-    let Ok(entries) = fs::read_dir("/nix/store") else {
-        return None;
-    };
-    for entry in entries.flatten() {
-        let name = entry.file_name();
-        let name = name.to_string_lossy();
-        if name.contains("-android-studio-unwrapped-") {
-            let home = entry.path().join("jbr");
-            if home.join("bin/java").is_file() {
-                return Some(home);
-            }
-        }
-    }
-    None
-}
-
 fn tool(name: &str) -> Result<PathBuf, Failure> {
-    let mut dirs = Vec::new();
-    if let Ok(user) = env::var("USER") {
-        dirs.push(PathBuf::from(format!("/etc/profiles/per-user/{user}/bin")));
-    }
-    if let Some(path) = env::var_os("PATH") {
-        dirs.extend(env::split_paths(&path));
-    }
-    for dir in dirs {
-        let candidate = dir.join(name);
-        if candidate.is_file() {
-            return Ok(candidate);
-        }
-    }
-    Err(Failure::new(1, format!("{name} is not on PATH.")))
+    env::var_os("PATH")
+        .iter()
+        .flat_map(env::split_paths)
+        .map(|dir| dir.join(name))
+        .find(|candidate| candidate.is_file())
+        .ok_or_else(|| {
+            Failure::new(
+                1,
+                format!("{name} is not on PATH. Run this in nix develop .#android."),
+            )
+        })
 }
 
 fn output(program: &Path, args: &[&str]) -> Result<String, Failure> {
-    let output = Command::new(program).args(args).output().map_err(|error| {
-        Failure::new(1, format!("could not run {}: {error}", program.display()))
-    })?;
+    let output = Command::new(program)
+        .args(args)
+        .output()
+        .map_err(Failure::io(format!("could not run {}", program.display())))?;
     if output.status.success() {
         Ok(String::from_utf8_lossy(&output.stdout).into_owned())
     } else {
@@ -502,6 +608,16 @@ mod tests {
             "qemu-system-x86_64-headless -avd duet -no-snapshot-save -no-boot-anim -no-audio -no-window"
         ));
         assert!(is_headless("qemu-system-x86_64 -avd duet -no-qt"));
+        assert!(runs_avd("qemu-system-x86_64 -avd duet -no-window", "duet"));
+        assert!(!runs_avd(
+            "qemu-system-x86_64 -avd duet-probe -no-window",
+            "duet"
+        ));
+        assert!(!runs_avd(
+            "qemu-system-x86_64 -avd duet -no-window",
+            "duet-probe"
+        ));
+        assert!(!runs_avd("bash -c emulator -avd duet", "duet"));
         assert!(!is_headless(
             "qemu-system-x86_64 -avd duet -gpu swiftshader_indirect -no-audio"
         ));
@@ -520,20 +636,14 @@ mod tests {
     }
 
     #[test]
-    fn an_emulator_serial_comes_from_adb() {
-        let devices = "List of devices attached\nemulator-5554          device product:sdk\n";
+    fn every_emulator_serial_comes_from_adb() {
+        let devices = "List of devices attached\nemulator-5554\tdevice product:sdk\n\
+                       R5CT12345\tdevice\nemulator-5556\toffline\n";
         assert_eq!(
-            emulator_serial(devices, true).as_deref(),
-            Some("emulator-5554")
+            emulator_serials(devices),
+            ["emulator-5554", "emulator-5556"]
         );
-        assert_eq!(
-            emulator_serial("emulator-5554          offline\n", true),
-            None
-        );
-        assert_eq!(
-            emulator_serial("emulator-5554          offline\n", false).as_deref(),
-            Some("emulator-5554")
-        );
+        assert!(emulator_serials("List of devices attached\n\n").is_empty());
     }
 
     #[test]
@@ -541,10 +651,24 @@ mod tests {
         assert!(parse(&[]).is_err());
         assert!(parse(&["test".to_owned()]).is_err());
         assert!(matches!(parse(&["build".to_owned()]), Ok(Request::Build)));
+        assert!(matches!(parse(&["avd".to_owned()]), Ok(Request::Avd)));
         assert!(matches!(parse(&["window".to_owned()]), Ok(Request::Window)));
         assert!(matches!(
             parse(&["test".to_owned(), "coda.duet.ModeShellTest".to_owned()]),
-            Ok(Request::Test(_))
+            Ok(Request::Test(Display::Window, _))
         ));
+    }
+
+    #[test]
+    fn only_test_runs_headless() {
+        let args = |list: &[&str]| list.iter().map(|arg| (*arg).to_owned()).collect::<Vec<_>>();
+        assert!(matches!(
+            parse(&args(&["test", "--headless", "coda.duet.ModeShellTest"])),
+            Ok(Request::Test(Display::Headless, _))
+        ));
+        assert!(parse(&args(&["window", "--headless"])).is_err());
+        assert!(parse(&args(&["test", "--headless"])).is_err());
+        assert!(parse(&args(&["test", "--headless", "ModeShellTest"])).is_err());
+        assert!(parse(&args(&["test", "--window", "coda.duet.ModeShellTest"])).is_err());
     }
 }
