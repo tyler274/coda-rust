@@ -1026,7 +1026,7 @@ run "grafana_has_no_edge_by_default" {
       !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
       output.grafana_edge == null
     )
-    error_message = "Without grafana_edge nothing is exposed and no IAP secret is synced."
+    error_message = "Without grafana_edge nothing is exposed."
   }
 
   assert {
@@ -1043,8 +1043,7 @@ run "grafana_edge_bootstrap_grants_nobody" {
   variables {
     telemetry_backend = "both"
     grafana_edge = {
-      hostname      = "grafana.staging.example.test"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      hostname = "grafana.staging.example.test"
     }
   }
 
@@ -1052,7 +1051,7 @@ run "grafana_edge_bootstrap_grants_nobody" {
     condition = (
       local.grafana_edge_class == "gke-l7-global-external-managed" &&
       one([for m in local.grafana_edge_manifests : m.spec.default.iap.enabled if m.kind == "GCPBackendPolicy"]) &&
-      one([for m in local.grafana_edge_manifests : m.spec.default.iap.oauth2ClientSecret.name if m.kind == "GCPBackendPolicy"]) == "grafana-iap-oauth" &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.iap if m.kind == "GCPBackendPolicy"]) == { enabled = true } &&
       one([for m in local.grafana_edge_manifests : m.spec.targetRef.name if m.kind == "GCPBackendPolicy"]) == "grafana" &&
       one([for m in local.grafana_edge_manifests : m.spec.default.config.httpHealthCheck.requestPath if m.kind == "HealthCheckPolicy"]) == "/api/health"
     )
@@ -1074,12 +1073,11 @@ run "grafana_edge_bootstrap_grants_nobody" {
   assert {
     condition = (
       length(helm_release.grafana_edge) == 1 &&
-      contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
-      local.doppler_secrets["grafana-iap-oauth"] == { GRAFANA_IAP_CLIENT_SECRET = "key" } &&
+      !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
       google_certificate_manager_certificate.grafana_edge[0].managed[0].domains == tolist(["grafana.staging.example.test"]) &&
       google_certificate_manager_certificate_map_entry.grafana_edge[0].hostname == "grafana.staging.example.test"
     )
-    error_message = "The edge, its Doppler-synced OAuth secret and its DNS-authorized certificate must exist together."
+    error_message = "The edge uses Google's managed OAuth client (no synced secret) and a DNS-authorized certificate."
   }
 
   assert {
@@ -1104,7 +1102,6 @@ run "grafana_edge_grants_only_the_verified_backend" {
     telemetry_backend = "grafana"
     grafana_edge = {
       hostname           = "grafana.staging.example.test"
-      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
       members            = ["group:coda-eng@example.test"]
       backend_service    = "test-gke-created-grafana-backend"
       backend_service_id = "4242"
@@ -1138,7 +1135,6 @@ run "reject_a_public_grafana_member" {
     telemetry_backend = "grafana"
     grafana_edge = {
       hostname           = "grafana.staging.example.test"
-      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
       members            = ["allAuthenticatedUsers"]
       backend_service    = "test-gke-created-grafana-backend"
       backend_service_id = "4242"
@@ -1152,9 +1148,8 @@ run "reject_grafana_members_without_backend_identity" {
   variables {
     telemetry_backend = "grafana"
     grafana_edge = {
-      hostname      = "grafana.staging.example.test"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
-      members       = ["group:coda-eng@example.test"]
+      hostname = "grafana.staging.example.test"
+      members  = ["group:coda-eng@example.test"]
     }
   }
   expect_failures = [var.grafana_edge]
@@ -1166,7 +1161,6 @@ run "reject_a_grafana_backend_without_its_id" {
     telemetry_backend = "grafana"
     grafana_edge = {
       hostname        = "grafana.staging.example.test"
-      iap_client_id   = "000000000000-test.apps.googleusercontent.com"
       backend_service = "test-gke-created-grafana-backend"
     }
   }
@@ -1177,8 +1171,7 @@ run "reject_a_grafana_edge_under_datadog" {
   command = plan
   variables {
     grafana_edge = {
-      hostname      = "grafana.staging.example.test"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      hostname = "grafana.staging.example.test"
     }
   }
   expect_failures = [var.grafana_edge]
@@ -1190,8 +1183,7 @@ run "reject_a_grafana_edge_outside_the_cluster_project" {
     telemetry_backend = "grafana"
     cluster_project   = "test-rust-other"
     grafana_edge = {
-      hostname      = "grafana.staging.example.test"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      hostname = "grafana.staging.example.test"
     }
   }
   expect_failures = [var.grafana_edge]
@@ -1203,8 +1195,7 @@ run "reject_a_grafana_edge_outside_the_cluster_project" {
     telemetry_backend = "grafana"
     cluster_project   = "test-rust-other"
     grafana_edge = {
-      hostname      = "grafana.staging.example.test"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      hostname = "grafana.staging.example.test"
     }
   }
   expect_failures = [var.grafana_edge]
@@ -1215,8 +1206,7 @@ run "reject_a_url_shaped_grafana_hostname" {
   variables {
     telemetry_backend = "grafana"
     grafana_edge = {
-      hostname      = "https://grafana.staging.example.test/"
-      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      hostname = "https://grafana.staging.example.test/"
     }
   }
   expect_failures = [var.grafana_edge]
