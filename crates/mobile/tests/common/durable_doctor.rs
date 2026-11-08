@@ -703,7 +703,7 @@ async fn run_browser_checks(
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
     patient.wait_for("Saved page preview");
-    patient.page().evaluate("(() => { const s = [...document.querySelectorAll('summary')].find(s => s.textContent === 'Read complete page text'); s.click(); return true; })()");
+    click_text(&mut patient, "Read complete page text");
     patient.wait_for("Synthetic Ada");
     // Observe the normal browser download boundary without writing PHI to disk.
     patient.page().evaluate("(() => { const original = HTMLAnchorElement.prototype.click; HTMLAnchorElement.prototype.click = function() { if (this.download === 'for-my-doctor.pdf') { window.__doctorDownload = this.download; return; } return original.call(this); }; return true; })()");
@@ -1090,7 +1090,7 @@ async fn run_browser_checks(
     );
     click_text(&mut patient, "Open For my doctor");
     patient.wait_for("Saved page preview");
-    patient.page().evaluate("(() => { const s = [...document.querySelectorAll('summary')].find(s => s.textContent === 'Read complete page text'); s.click(); return true; })()");
+    click_text(&mut patient, "Read complete page text");
     patient.wait_for("Explicitly approved proposal");
     patient.wait_for("What changed this week?");
     patient.wait_for("Review this proposal?");
