@@ -9,7 +9,7 @@ export const title = "Your session expires with two tabs open";
 const screen = (t) => {
   if (t.shows === "Your workspace") return t.opens === "The linked patient" ? "your workspace at the patient" : "your workspace";
   if (t.shows === "Opening your workspace") return "opening your workspace";
-  if (t.shows === "Sign-in prompt over your work") return t.opens === "The linked patient" ? "the prompt over the patient" : "the prompt over your work";
+  if (t.shows === "Sign-in prompt, with no patient content") return "the sign-in prompt";
   return t.shows;
 };
 
