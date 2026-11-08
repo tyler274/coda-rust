@@ -31,6 +31,9 @@ mod session_refusal;
 #[path = "common/durable_d2.rs"]
 mod durable_d2;
 
+#[path = "common/account_switch.rs"]
+mod account_switch;
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn the_duet_journey_runs_on_a_live_stub_backend() {
