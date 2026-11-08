@@ -541,7 +541,10 @@ jobs:
         run: nix develop .#android --command cargo run --locked -p android -- avd
       - name: Build the APK and run ModeShellTest headless
         run: nix develop .#android --command cargo run --locked -p android -- test --headless coda.duet.ModeShellTest
-      - name: Retain test reports and emulator log
+      # /tmp/duet-android-emulator holds the emulator log and, after a failed
+      # test, failure/logcat.txt and failure/screen.png (the failing screen,
+      # saved by ModeShellTest before the runner closes the app).
+      - name: Retain test reports, logcat, screenshot and emulator log
         if: failure()
         uses: actions/upload-artifact@v7
         with:

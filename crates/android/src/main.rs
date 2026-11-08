@@ -73,14 +73,20 @@ impl Failure {
     }
 }
 
+impl std::fmt::Display for Failure {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match &self.source {
+            Some(source) => write!(f, "{}: {source}", self.message),
+            None => f.write_str(&self.message),
+        }
+    }
+}
+
 fn main() -> ExitCode {
     match run(env::args().skip(1)) {
         Ok(()) => ExitCode::SUCCESS,
         Err(failure) => {
-            match &failure.source {
-                Some(source) => eprintln!("{}: {source}", failure.message),
-                None => eprintln!("{}", failure.message),
-            }
+            eprintln!("{failure}");
             ExitCode::from(failure.code)
         }
     }
@@ -98,13 +104,68 @@ fn run(args: impl Iterator<Item = String>) -> Result<(), Failure> {
         }
         Request::Test(display, class_name) => {
             let _lock = Lock::acquire()?;
+            // A capture from an earlier run would describe a different failure.
+            clear_host_failure()?;
             let emulator = open_emulator(display)?;
             let serial = emulator.serial().ok_or_else(|| {
                 Failure::new(1, format!("the {} emulator left adb", emulator.avd))
             })?;
-            run_instrumentation(&class_name, &serial)
+            output(
+                &emulator.adb,
+                &["-s", &serial, "shell", "rm", "-f", DEVICE_SCREEN],
+            )?;
+            let result = run_instrumentation(&class_name, &serial);
+            if result.is_err() {
+                for problem in capture_failure(&emulator.adb, &serial) {
+                    eprintln!("{problem}");
+                }
+            }
+            result
         }
     }
+}
+
+/// Where a failed test leaves the device's logcat and failing screen.
+const FAILURE_DIR: &str = "/tmp/duet-android-emulator/failure";
+/// `ModeShellTest.FAILURE_SCREEN`: the test saves the screen there when it
+/// fails, before the runner closes the app.
+const DEVICE_SCREEN: &str = "/data/local/tmp/duet-failure.png";
+
+fn clear_host_failure() -> Result<(), Failure> {
+    match fs::remove_dir_all(FAILURE_DIR) {
+        Ok(()) => Ok(()),
+        Err(error) if error.kind() == io::ErrorKind::NotFound => Ok(()),
+        Err(error) => Err(Failure::io(format!("could not clear {FAILURE_DIR}"))(error)),
+    }
+}
+
+/// Saves logcat and the test's failing screen before the emulator stops.
+/// Returns what could not be saved; the test failure stays the error.
+fn capture_failure(adb: &Path, serial: &str) -> Vec<Failure> {
+    let dir = Path::new(FAILURE_DIR);
+    if let Err(error) = fs::create_dir_all(dir) {
+        return vec![Failure::io(format!("could not create {FAILURE_DIR}"))(
+            error,
+        )];
+    }
+    let mut problems = Vec::new();
+    let logcat = dir.join("logcat.txt");
+    match output(adb, &["-s", serial, "logcat", "-d", "-v", "threadtime"]) {
+        Ok(text) => match fs::write(&logcat, text) {
+            Ok(()) => eprintln!("Saved {}", logcat.display()),
+            Err(error) => {
+                problems.push(Failure::io(format!("could not write {}", logcat.display()))(error));
+            }
+        },
+        Err(failure) => problems.push(failure),
+    }
+    let screen = dir.join("screen.png");
+    let screen_arg = screen.to_string_lossy();
+    match output(adb, &["-s", serial, "pull", DEVICE_SCREEN, &screen_arg]) {
+        Ok(_) => eprintln!("Saved {}", screen.display()),
+        Err(failure) => problems.push(failure),
+    }
+    problems
 }
 
 enum Request {

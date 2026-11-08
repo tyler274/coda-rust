@@ -11,7 +11,10 @@ import java.io.ByteArrayOutputStream
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import org.junit.runner.RunWith
 
 /**
@@ -27,6 +30,19 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class ModeShellTest {
     private lateinit var device: UiDevice
+
+    /**
+     * Saves the failing screen before the runner closes the app. The shell
+     * user writes it, so `cargo run -p android -- test` can pull it.
+     */
+    @get:Rule
+    val failureScreen = object : TestWatcher() {
+        override fun failed(e: Throwable, description: Description) {
+            if (::device.isInitialized) {
+                device.executeShellCommand("screencap -p $FAILURE_SCREEN")
+            }
+        }
+    }
 
     @Before
     fun launchChooser() {
@@ -103,5 +119,8 @@ class ModeShellTest {
 
     companion object {
         private const val WAIT = 30_000L
+
+        /** Read by `crates/android` after a failed run. */
+        const val FAILURE_SCREEN = "/data/local/tmp/duet-failure.png"
     }
 }
