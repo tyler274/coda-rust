@@ -690,20 +690,7 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
         if !cloud_image(&value, "/spec/template/spec/containers/0/image")?.matches(image) {
             return Err(Error::Cloud(LocalCode::ExecutionImageMismatch));
         }
-        let conditions = value
-            .pointer("/status/conditions")
-            .and_then(Value::as_array)
-            .ok_or(Error::Cloud(LocalCode::MissingExecutionStatus))?;
-        match conditions
-            .iter()
-            .find(|condition| condition.get("type").and_then(Value::as_str) == Some("Completed"))
-            .and_then(|condition| condition.get("status"))
-            .and_then(Value::as_str)
-        {
-            Some("True") => Ok(Execution::Succeeded),
-            Some("False") => Ok(Execution::Failed),
-            _ => Ok(Execution::Pending),
-        }
+        execution_state(&value)
     }
     fn shape(&mut self, name: ReleaseService) -> Result<Shape> {
         let service = self.json(&["services", "describe", name.name()])?;
@@ -736,6 +723,28 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
     }
     fn pause(&mut self) {
         std::thread::sleep(Duration::from_secs(5));
+    }
+}
+
+/// Cloud Run publishes an execution before it has any conditions; until a
+/// `Completed` condition settles, the execution is still pending. A status
+/// that is present but not a list is malformed.
+fn execution_state(value: &Value) -> Result<Execution> {
+    let conditions = match value.pointer("/status/conditions") {
+        None | Some(Value::Null) => return Ok(Execution::Pending),
+        Some(conditions) => conditions
+            .as_array()
+            .ok_or(Error::Cloud(LocalCode::MissingExecutionStatus))?,
+    };
+    match conditions
+        .iter()
+        .find(|condition| condition.get("type").and_then(Value::as_str) == Some("Completed"))
+        .and_then(|condition| condition.get("status"))
+        .and_then(Value::as_str)
+    {
+        Some("True") => Ok(Execution::Succeeded),
+        Some("False") => Ok(Execution::Failed),
+        _ => Ok(Execution::Pending),
     }
 }
 
@@ -1034,6 +1043,43 @@ pub fn from_args(args: &[String]) -> std::result::Result<(), Failure> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn a_new_execution_without_conditions_is_pending() {
+        let state = |value: Value| execution_state(&value).ok();
+        assert_eq!(state(serde_json::json!({})), Some(Execution::Pending));
+        assert_eq!(
+            state(serde_json::json!({ "status": {} })),
+            Some(Execution::Pending)
+        );
+        assert_eq!(
+            state(serde_json::json!({ "status": { "conditions": null } })),
+            Some(Execution::Pending)
+        );
+        assert_eq!(
+            state(serde_json::json!({ "status": { "conditions": [
+                { "type": "Started", "status": "True" },
+                { "type": "Completed", "status": "Unknown" }
+            ] } })),
+            Some(Execution::Pending)
+        );
+        assert_eq!(
+            state(serde_json::json!({ "status": { "conditions": [
+                { "type": "Completed", "status": "True" }
+            ] } })),
+            Some(Execution::Succeeded)
+        );
+        assert_eq!(
+            state(serde_json::json!({ "status": { "conditions": [
+                { "type": "Completed", "status": "False" }
+            ] } })),
+            Some(Execution::Failed)
+        );
+        assert!(matches!(
+            execution_state(&serde_json::json!({ "status": { "conditions": "Completed" } })),
+            Err(Error::Cloud(LocalCode::MissingExecutionStatus))
+        ));
+    }
 
     #[derive(Default)]
     struct MemoryStore {

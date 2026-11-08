@@ -192,6 +192,13 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
             .run("clickButton", serde_json::json!(["Sign out"])),
         true
     );
+    browser.wait_for("Signing out removes an unconfirmed message from this phone.");
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Sign out anyway"])),
+        true
+    );
     browser.wait_for("Sign in to your Duet account.");
     second.store(1, Ordering::SeqCst);
     assert_eq!(

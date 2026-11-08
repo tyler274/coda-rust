@@ -330,8 +330,8 @@ Work integrity:
 
 Everything Coda reads in the MVP is read only.
 
-- **The practice's EHR.** No EHR is chosen in advance.
-- **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
+- **The practice's EHR.** No EHR is chosen in advance. Use relevant available sandboxes to learn what different sources expose and inform the shared adapter contract. Choose sources based on the first practice's needs, available access, and what the adapters can read.
+- **For practices using Hint**, the planned adapter uses Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
@@ -349,6 +349,7 @@ In the MVP:
 - One practice using Coda Agents on the web, with patients on Duet, the two connected through Connected care.
 - Journeys P1 to P5 and L1, with P1 first.
 - The first practice's EHR, read only.
+- Coda assists the first practice with setup and physician onboarding.
 - Spruce for practice patient messaging, with Copy reply and Open in Spruce.
 - Reading attachments, including scans and faxes through OCR.
 - Dictation into the composer.

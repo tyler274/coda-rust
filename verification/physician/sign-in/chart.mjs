@@ -52,7 +52,7 @@ const waitsForLink = ["Check your email"];
 
 // What Coda's answer to a read says decides where it goes, so the label names it.
 const readFinds = {
-  "Sign-in prompt over your work": "Coda answers the read: the session ended",
+  "Sign-in prompt, with no patient content": "Coda answers the read: the session ended",
   "No access to this practice": "Coda answers the read: your access was removed",
   "Enter your work email": "Coda answers the read: no session",
 };
@@ -74,7 +74,7 @@ export const step = (action, from, to) => {
 export const group = (v) => {
   const shows = tabOf(v).shows;
   if (shows === "Closed") return "Closed";
-  if (["Opening your workspace", "Your workspace", "Sign-in prompt over your work"].includes(shows))
+  if (["Opening your workspace", "Your workspace", "Sign-in prompt, with no patient content"].includes(shows))
     return "Workspace";
   return "Signing in";
 };

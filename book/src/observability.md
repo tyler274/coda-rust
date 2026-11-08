@@ -179,7 +179,7 @@ collector processors, and the backend overlay changes only the exporters.
 | Tempo, Loki, Prometheus (`grafana`) | Only the gateway collector writes to Tempo and Loki; Prometheus receives only Tempo's span metrics. Nothing scrapes container logs. All ClusterIP only. |
 | Gateway | Accepts only Google ID tokens with the gateway audience from the listed Cloud Run runtime service accounts, over the internal load balancer restricted to the Cloud Run egress range. |
 | Langfuse | ClusterIP only. People use `kubectl port-forward` or the internal IAP gateway (`langfuse_iap_enabled`, default off). Retention defaults to 90 days. |
-| Grafana | ClusterIP Service. With `grafana_edge` (default off; staging's hostname is `grafana.staging.codahealth.ai`), an external Gateway with IAP on the Grafana backend admits only the granted group, and Grafana signs people in from the IAP assertion after checking its signature, issuer and audience. Without it, `kubectl port-forward`. Grafana-stack retention is 14 days of traces, 30 of logs and 30 of metrics by default. |
+| Grafana | ClusterIP Service. With `grafana_edge` (default off; staging's hostname is `grafana.staging.codahealth.ai`), an external Gateway with IAP (Google's managed OAuth client, organization accounts only) on the Grafana backend admits only the granted group, and Grafana signs people in from the IAP assertion after checking its signature, issuer and audience. Without it, `kubectl port-forward`. Grafana-stack retention is 14 days of traces, 30 of logs and 30 of metrics by default. |
 
 `tofu test` in `infra/gcp/observability` reads the deployed collector config
 and asserts that every content key is deleted on both span contexts and that
@@ -212,7 +212,7 @@ what it prints is what either backend would receive.
 
 Doppler holds every observability secret: the Datadog API and app keys (under
 `datadog`), `GRAFANA_ADMIN_PASSWORD` and `GRAFANA_SLACK_WEBHOOK_URL` (under
-`grafana`), `GRAFANA_IAP_CLIENT_SECRET` (with `grafana_edge`), the Langfuse salt, NextAuth secret, encryption key, ClickHouse and
+`grafana`), the Langfuse salt, NextAuth secret, encryption key, ClickHouse and
 Valkey passwords, the GCS HMAC pair, and the Langfuse project keys. Only the
 selected backend's keys are synced, so the other backend's keys need not
 exist. The Doppler Kubernetes Operator syncs them into the `observability`
