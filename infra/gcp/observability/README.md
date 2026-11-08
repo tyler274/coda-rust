@@ -15,6 +15,7 @@ data flow, content policy, and runbook are in
 | `datadog.tf` | With `telemetry_backend = "datadog"` or `"both"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
 | `grafana.tf` | With `telemetry_backend = "grafana"` or `"both"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four operational alert rules in shadow mode. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
+| `grafana-edge.tf` | Off by default (`grafana_edge`, `grafana` or `both`): Grafana's only browser edge. A reserved global address, a DNS-authorized Certificate Manager certificate and map, a `gke-l7-global-external-managed` Gateway and HTTPRoute to `grafana:3000`, a `GCPBackendPolicy` with IAP on that backend, a `HealthCheckPolicy` on `/api/health`, and `roles/iap.httpsResourceAccessor` for `grafana_edge.members` on the verified backend only |
 | `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only, and an optional IAP-gated internal Gateway |
 | `doppler.tf` | Doppler Kubernetes Operator `1.7.3` and one `DopplerSecret` per consuming Kubernetes Secret |
 | `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret, Gateway) so they apply after their operators' CRDs exist |
@@ -223,11 +224,79 @@ Service in this root:
 - **Outage.** If the gateway is down, the sidecar retries for a bounded time,
   then drops; the product container never waits on it.
 
+## Grafana edge
+
+`grafana_edge` gives Grafana a browser address, `https://<hostname>`, for
+the people IAP admits. Staging's edge is `grafana.staging.codahealth.ai`
+(commented in `env/staging.tfvars` until the rollout below), granted to the
+same group as `staging.codahealth.ai`, `gcp-engineering@codahealth.ai`.
+
+- **Path.** A DNS-only A record points the hostname at the reserved global
+  address. A `gke-l7-global-external-managed` Gateway terminates TLS with a
+  Certificate Manager certificate that a DNS record authorizes, so the
+  certificate is active before the hostname moves. IAP on the Grafana
+  backend sends signed-out people to Google sign-in and refuses anyone
+  without `roles/iap.httpsResourceAccessor` on that backend.
+- **Sign-in.** Grafana trusts only the signed assertion IAP adds,
+  `X-Goog-IAP-JWT-Assertion`. It checks the signature against Google's IAP keys
+  (`https://www.gstatic.com/iap/verify/public_key-jwk`), issuer
+  `https://cloud.google.com/iap` and audience
+  `/projects/<project number>/global/backendServices/<backend id>` (output
+  `grafana_edge.iap_audience`). It then signs the person in by `email`,
+  creating the account as an Editor on first visit. An assertion for
+  another IAP application, or a header forged by someone who reaches the
+  Service another way, is refused. The Doppler `admin` login remains as
+  break-glass. JWT sign-in stays off until the backend id is supplied.
+- **Scope.** The Gateway routes only `grafana:3000`. Tempo, Loki,
+  Prometheus, the collector and Langfuse are unchanged.
+
+### Grafana edge rollout
+
+Each apply is from a reviewed saved plan with the operator's authorization.
+
+1. In the target project, configure the OAuth consent screen as Internal if
+   it is not already, then create a Web application OAuth client (APIs &
+   Services > Credentials). Add
+   `https://iap.googleapis.com/v1/oauth/clientIds/<CLIENT_ID>:handleRedirect`
+   as an authorized redirect URI; IAP adds it only to clients it creates, and
+   sign-in fails with `redirect_uri_mismatch` without it. Store the client
+   secret in Doppler `coda-rust/<config>` as `GRAFANA_IAP_CLIENT_SECRET`.
+2. Phase 1: set `grafana_edge = { hostname, iap_client_id }` with no
+   members, then plan and apply. Read `tofu output grafana_edge`. Add its
+   `certificate_dns_records` CNAME and an A record from the hostname to
+   `ip` in Cloudflare, both DNS-only (not proxied).
+3. Phase 2: after GKE reconciles the Gateway, read the backend it created
+   from the Gateway itself:
+   `kubectl -n observability get gateway grafana-edge -o
+   jsonpath='{.metadata.annotations.networking\.gke\.io/backend-services}'`.
+   Look up that name's numeric id with
+   `gcloud compute backend-services list --global --project <project>
+   --format='value(name,id)'`. Set `backend_service` and `backend_service_id` from it, and `members`
+   (for example `["group:gcp-engineering@codahealth.ai"]`), then plan and
+   apply. A recreated backend needs its new name and id before access
+   resumes.
+4. Proof:
+   - A signed-out `curl -sI https://<hostname>` answers 302 to
+     `accounts.google.com`.
+   - A member lands in Grafana already signed in as themselves.
+   - A non-member gets the IAP 403.
+   - Through `kubectl port-forward svc/grafana 3000`, a request with a forged
+     `X-Goog-IAP-JWT-Assertion` to `/api/user` answers 401.
+
+The edge listens on HTTPS only; `http://` does not answer.
+
+Removing `grafana_edge` deletes the Gateway, address, certificate and grant
+and returns Grafana to port-forward only. GKE removes its load balancer
+asynchronously, so apply again if the address or certificate map is still in
+use. The Cloudflare records are removed by hand.
+
 ## Boundary
 
-- **No public edge.** The Langfuse chart's Ingress is off and every service is
-  `ClusterIP`, including Tempo, Loki, Prometheus and Grafana. People reach
-  the UIs with
+- **One IAP-gated Grafana edge; everything else stays inside.** The Langfuse
+  chart's Ingress is off and every service is `ClusterIP`, including Tempo,
+  Loki, Prometheus and Grafana. With `grafana_edge` set, the only public
+  listener is the Grafana Gateway (see [Grafana edge](#grafana-edge)); it
+  routes nothing but `grafana:3000`. Without it, people reach the UIs with
   `kubectl -n observability port-forward svc/langfuse-web 3000:3000` or
   `kubectl -n observability port-forward svc/grafana 3000`. Setting
   `langfuse_iap_enabled = true` (with hostname, OAuth client id and certificate)
@@ -341,6 +410,7 @@ Service in this root:
   | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY`, `LANGFUSE_INIT_PROJECT_SECRET_KEY`, `LANGFUSE_INIT_USER_EMAIL`, `LANGFUSE_INIT_USER_PASSWORD` | `langfuse-init` (Langfuse web env) |
   | the same project key pair | `otel-collector-langfuse` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`) |
   | `LANGFUSE_IAP_CLIENT_SECRET` (gateway only) | `langfuse-iap-oauth` (`key`) |
+  | `GRAFANA_IAP_CLIENT_SECRET` (`grafana_edge` only) | `grafana-iap-oauth` (`key`) |
 
   The S3-interop HMAC key belongs to `coda-langfuse-blobs` (output
   `langfuse_hmac_service_account`). The operator mints it with

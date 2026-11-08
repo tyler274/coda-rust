@@ -4,6 +4,8 @@ locals {
   dd_env         = var.environment
 
   workload_services = toset([
+    "certificatemanager.googleapis.com",
+    "compute.googleapis.com",
     "container.googleapis.com",
     "iam.googleapis.com",
     "iap.googleapis.com",
@@ -85,7 +87,8 @@ resource "google_project_service" "workload" {
 }
 
 # Langfuse, its stores, the collector, and the selected backend (the Datadog
-# Agent or the Grafana stack) share one namespace. Nothing in it is exposed outside the cluster by default.
+# Agent or the Grafana stack) share one namespace. Nothing in it is exposed
+# outside the cluster except the optional IAP-gated Grafana edge.
 resource "kubernetes_namespace" "observability" {
   metadata {
     name = local.namespace
