@@ -61,7 +61,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 - **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from. The agents judge which visits to prepare and how far ahead.
 - **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
-- **E3. The patient roster.** How the active roster is kept, likely from the EHR's patient list.
+- **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
 - **E4. Freshness after a one-time pull.** How records from other systems stay fresh. Every source shows when it was last refreshed.
 - **E5. athena.** The patient-access route and what's still missing.
 - **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.
