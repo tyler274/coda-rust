@@ -14,6 +14,11 @@ mock_provider "google" {
       }]
     }
   }
+  mock_data "google_project" {
+    defaults = {
+      number = "123456789012"
+    }
+  }
   mock_data "google_compute_network" {
     defaults = {
       id        = "projects/test-rust-stg-only/global/networks/rust-private"
@@ -699,9 +704,62 @@ run "reject_container_memory_ratio_out_of_range" {
 run "monitors_default_off" {
   command = plan
   assert {
-    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) == 0
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) + length(datadog_monitor.qualification) == 0
     error_message = "Collection installation must not create monitors before the separately authorized drill."
   }
+}
+
+run "qualification_monitor_stays_off_when_service_monitors_are_on" {
+  command = plan
+  variables {
+    datadog_monitors_enabled = true
+    alert_notify             = "@slack-confirmed-test"
+  }
+  assert {
+    condition     = length(datadog_monitor.qualification) == 0
+    error_message = "Service monitor authorization must not enable the synthetic qualification monitor."
+  }
+}
+
+run "qualification_monitor_uses_readiness_thresholds" {
+  command = plan
+  variables {
+    datadog_qualification_monitor_enabled = true
+    alert_notify                          = "@slack-confirmed-test"
+  }
+  assert {
+    condition = (
+      length(datadog_monitor.qualification) == 1 &&
+      datadog_monitor.qualification[0].query == "avg(last_1m):max:coda.qualification.synthetic_readiness{env:staging}.fill(null) >= 1" &&
+      datadog_monitor.qualification[0].monitor_thresholds[0].critical == "1" &&
+      datadog_monitor.qualification[0].monitor_thresholds[0].critical_recovery == "0.5" &&
+      contains(datadog_monitor.qualification[0].tags, "qualification:synthetic") &&
+      strcontains(datadog_monitor.qualification[0].message, var.alert_notify) &&
+      datadog_monitor.qualification[0].renotify_interval == 15 &&
+      datadog_monitor.qualification[0].renotify_occurrences == 2 &&
+      datadog_monitor.qualification[0].renotify_statuses == toset(["alert"]) &&
+      !datadog_monitor.qualification[0].notify_no_data &&
+      datadog_monitor.qualification[0].timeout_h == 0 &&
+      !datadog_monitor.qualification[0].require_full_window
+    )
+    error_message = "The qualification monitor must use the readiness gauge, the synthetic tag, and the confirmed handle."
+  }
+}
+
+run "reject_qualification_monitor_without_alert_handle" {
+  command = plan
+  variables { datadog_qualification_monitor_enabled = true }
+  expect_failures = [var.datadog_qualification_monitor_enabled]
+}
+
+run "reject_qualification_monitor_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend                     = "grafana"
+    datadog_qualification_monitor_enabled = true
+    alert_notify                          = "@slack-confirmed-test"
+  }
+  expect_failures = [var.datadog_qualification_monitor_enabled]
 }
 
 run "reject_unconfirmed_alert_route" {
@@ -926,6 +984,16 @@ run "grafana_stack_is_cluster_private_and_bounded" {
 
   assert {
     condition = (
+      alltrue([for rule in flatten([for group in yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"]).groups : group.rules]) : !contains(keys(rule.labels), "qualification")]) &&
+      yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).deleteRules[0].uid == "coda-synthetic-notification-test" &&
+      length(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups) == 0 &&
+      contains([for item in one([for volume in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].volume : volume if volume.name == "config"]).config_map[0].items : "${item.key}=${item.path}"], "synthetic-rules.yaml=alerting/synthetic-rules.yaml")
+    )
+    error_message = "The synthetic notification rule stays deleted until the test gate is on, and operational rules stay unlabeled."
+  }
+
+  assert {
+    condition = (
       [for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env_from : e.secret_ref[0].name] == ["grafana-secrets"] &&
       !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_SECURITY_ADMIN_PASSWORD") &&
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_ANONYMOUS_ENABLED"]) == "false" &&
@@ -941,6 +1009,233 @@ run "grafana_stack_is_cluster_private_and_bounded" {
       length(kubernetes_service_account_v1.grafana[0].metadata[0].annotations) == 0
     )
     error_message = "The Cloud Monitoring datasource and its identity are off by default."
+  }
+}
+
+run "grafana_has_no_edge_by_default" {
+  command = plan
+  variables { telemetry_backend = "both" }
+
+  assert {
+    condition = (
+      length(helm_release.grafana_edge) == 0 &&
+      length(google_compute_global_address.grafana_edge) == 0 &&
+      length(google_certificate_manager_certificate.grafana_edge) == 0 &&
+      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
+      !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
+      output.grafana_edge == null
+    )
+    error_message = "Without grafana_edge nothing is exposed and no IAP secret is synced."
+  }
+
+  assert {
+    condition = (
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "http://localhost:3000" &&
+      !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED")
+    )
+    error_message = "Without the edge Grafana keeps its port-forward URL and no JWT sign-in."
+  }
+}
+
+run "grafana_edge_bootstrap_grants_nobody" {
+  command = plan
+  variables {
+    telemetry_backend = "both"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+
+  assert {
+    condition = (
+      local.grafana_edge_class == "gke-l7-global-external-managed" &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.iap.enabled if m.kind == "GCPBackendPolicy"]) &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.iap.oauth2ClientSecret.name if m.kind == "GCPBackendPolicy"]) == "grafana-iap-oauth" &&
+      one([for m in local.grafana_edge_manifests : m.spec.targetRef.name if m.kind == "GCPBackendPolicy"]) == "grafana" &&
+      one([for m in local.grafana_edge_manifests : m.spec.default.config.httpHealthCheck.requestPath if m.kind == "HealthCheckPolicy"]) == "/api/health"
+    )
+    error_message = "The Grafana edge must be the global external class with IAP on the Grafana backend and a health check Grafana answers 200 to."
+  }
+
+  assert {
+    condition = (
+      toset([for m in local.grafana_edge_manifests : m.kind]) == toset(["Gateway", "HTTPRoute", "GCPBackendPolicy", "HealthCheckPolicy"]) &&
+      one([for m in local.grafana_edge_manifests : m.spec.rules[0].backendRefs if m.kind == "HTTPRoute"]) == [{ name = "grafana", port = 3000 }] &&
+      one([for m in local.grafana_edge_manifests : m.spec.hostnames if m.kind == "HTTPRoute"]) == ["grafana.staging.example.test"] &&
+      one([for m in local.grafana_edge_manifests : m.spec.listeners if m.kind == "Gateway"])[*].protocol == ["HTTPS"] &&
+      one([for m in local.grafana_edge_manifests : m.metadata.annotations["networking.gke.io/certmap"] if m.kind == "Gateway"]) == google_certificate_manager_certificate_map.grafana_edge[0].name &&
+      one([for m in local.grafana_edge_manifests : m.spec.addresses[0].value if m.kind == "Gateway"]) == google_compute_global_address.grafana_edge[0].name
+    )
+    error_message = "The edge routes only HTTPS on its hostname to the Grafana Service."
+  }
+
+  assert {
+    condition = (
+      length(helm_release.grafana_edge) == 1 &&
+      contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
+      local.doppler_secrets["grafana-iap-oauth"] == { GRAFANA_IAP_CLIENT_SECRET = "key" } &&
+      google_certificate_manager_certificate.grafana_edge[0].managed[0].domains == tolist(["grafana.staging.example.test"]) &&
+      google_certificate_manager_certificate_map_entry.grafana_edge[0].hostname == "grafana.staging.example.test"
+    )
+    error_message = "The edge, its Doppler-synced OAuth secret and its DNS-authorized certificate must exist together."
+  }
+
+  assert {
+    condition = (
+      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
+      local.grafana_iap_audience == null &&
+      !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED") &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "https://grafana.staging.example.test"
+    )
+    error_message = "Before the backend is verified, nobody is granted and Grafana trusts no assertion."
+  }
+
+  assert {
+    condition     = local.langfuse_gateway_class == "gke-l7-rilb" && local.langfuse_values.langfuse.ingress.enabled == false
+    error_message = "The Grafana edge must not change the Langfuse boundary."
+  }
+}
+
+run "grafana_edge_grants_only_the_verified_backend" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname           = "grafana.staging.example.test"
+      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
+      members            = ["group:coda-eng@example.test"]
+      backend_service    = "test-gke-created-grafana-backend"
+      backend_service_id = "4242"
+    }
+  }
+
+  assert {
+    condition = length(google_iap_web_backend_service_iam_member.grafana_edge) == 1 && alltrue([
+      for grant in google_iap_web_backend_service_iam_member.grafana_edge :
+      grant.project == var.project_id && grant.web_backend_service == "test-gke-created-grafana-backend" && grant.role == "roles/iap.httpsResourceAccessor" && grant.member == "group:coda-eng@example.test"
+    ])
+    error_message = "Grafana users must receive access only to the verified global backend."
+  }
+
+  assert {
+    condition = (
+      local.grafana_iap_audience == "/projects/123456789012/global/backendServices/4242" &&
+      jsondecode(one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_EXPECT_CLAIMS"])) == { iss = "https://cloud.google.com/iap", aud = "/projects/123456789012/global/backendServices/4242" } &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_HEADER_NAME"]) == "X-Goog-IAP-JWT-Assertion" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_JWK_SET_URL"]) == "https://www.gstatic.com/iap/verify/public_key-jwk" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_USERS_AUTO_ASSIGN_ORG_ROLE"]) == "Editor" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_ANONYMOUS_ENABLED"]) == "false"
+    )
+    error_message = "Grafana must accept only IAP assertions signed by Google for this backend's audience."
+  }
+}
+
+run "reject_a_public_grafana_member" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname           = "grafana.staging.example.test"
+      iap_client_id      = "000000000000-test.apps.googleusercontent.com"
+      members            = ["allAuthenticatedUsers"]
+      backend_service    = "test-gke-created-grafana-backend"
+      backend_service_id = "4242"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_grafana_members_without_backend_identity" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+      members       = ["group:coda-eng@example.test"]
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_backend_without_its_id" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname        = "grafana.staging.example.test"
+      iap_client_id   = "000000000000-test.apps.googleusercontent.com"
+      backend_service = "test-gke-created-grafana-backend"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_under_datadog" {
+  command = plan
+  variables {
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_outside_the_cluster_project" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    cluster_project   = "test-rust-other"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_grafana_edge_outside_the_cluster_project" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    cluster_project   = "test-rust-other"
+    grafana_edge = {
+      hostname      = "grafana.staging.example.test"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "reject_a_url_shaped_grafana_hostname" {
+  command = plan
+  variables {
+    telemetry_backend = "grafana"
+    grafana_edge = {
+      hostname      = "https://grafana.staging.example.test/"
+      iap_client_id = "000000000000-test.apps.googleusercontent.com"
+    }
+  }
+  expect_failures = [var.grafana_edge]
+}
+
+run "grafana_synthetic_rule_is_labeled_and_operational_rules_stay_shadow" {
+  command = plan
+  variables {
+    telemetry_backend                  = "grafana"
+    grafana_test_notifications_enabled = true
+  }
+  assert {
+    condition = (
+      kubernetes_config_map_v1.grafana_stack["grafana"].data["rules.yaml"] == file("${path.module}/../../../dev/observability/grafana/provisioning/alerting/rules.yaml") &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].title == "Coda synthetic notification test" &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].labels.qualification == "synthetic-notification-test" &&
+      one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0]["for"] == "1m" &&
+      strcontains(one(yamldecode(kubernetes_config_map_v1.grafana_stack["grafana"].data["synthetic-rules.yaml"]).groups).rules[0].data[0].model.expr, "{qualification=\"synthetic-notification-test\"} |= \"fail\"")
+    )
+    error_message = "The gated Grafana rule must count synthetic fail lines without changing the operational rules file."
   }
 }
 

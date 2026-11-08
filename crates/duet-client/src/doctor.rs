@@ -4,7 +4,7 @@ use duet_wire::models::{CanonicalRecordSelection, DoctorCollection, DoctorPageSa
 use serde::{Deserialize, Serialize};
 
 /// Closed failure states; neither response prose nor credential-bearing URLs are logged.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum DoctorError {
     /// Sign-in expired; never automatically replay mutations after refresh.
     Unauthorized,
@@ -20,6 +20,8 @@ pub enum DoctorError {
     Invalid,
     /// Transport, server, receipt confirmation or decode failure: mutation outcome may be uncertain.
     Uncertain,
+    /// Uncertain response with its redacted transport cause retained.
+    Response(crate::refusal::TransportCause),
 }
 impl std::fmt::Display for DoctorError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -30,11 +32,18 @@ impl std::fmt::Display for DoctorError {
             Self::Conflict => "The page, selected sources, or operation changed. Review the current page; your draft is retained.",
             Self::NotFound => "No receipt or resource was found. This alone does not prove an uncertain write failed.",
             Self::Invalid => "The request is invalid. Review the selection and expiry.",
-            Self::Uncertain => "Duet could not confirm the outcome. Retry the same operation, not a new one.",
+            Self::Uncertain | Self::Response(_) => "Duet could not confirm the outcome. Retry the same operation, not a new one.",
         })
     }
 }
-impl std::error::Error for DoctorError {}
+impl std::error::Error for DoctorError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Response(cause) => Some(cause),
+            _ => None,
+        }
+    }
+}
 /// Exact command retained across uncertain acknowledgements. Contains no capability or patient prose.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PublishRequest {
@@ -124,7 +133,7 @@ pub struct DoctorDeviceSnapshot {
 impl DuetClient {
     /// Read the actual latest immutable device snapshot; 404 is explicit absence.
     pub async fn doctor_device_snapshot(&self) -> Result<DoctorDeviceSnapshot, DoctorError> {
-        json(
+        self.doctor_json(
             self.configuration
                 .client
                 .get(format!(
@@ -165,19 +174,20 @@ impl DuetClient {
             .map_err(|_| DoctorError::Invalid)?
             .pop_if_empty()
             .push(fact_id);
-        let value: serde_json::Value = json(
-            self.configuration
-                .client
-                .put(url)
-                .bearer_auth(
-                    self.configuration
-                        .bearer_access_token
-                        .as_deref()
-                        .unwrap_or_default(),
-                )
-                .header(reqwest::header::CACHE_CONTROL, "no-store"),
-        )
-        .await?;
+        let value: serde_json::Value = self
+            .doctor_json(
+                self.configuration
+                    .client
+                    .put(url)
+                    .bearer_auth(
+                        self.configuration
+                            .bearer_access_token
+                            .as_deref()
+                            .unwrap_or_default(),
+                    )
+                    .header(reqwest::header::CACHE_CONTROL, "no-store"),
+            )
+            .await?;
         let matches = value["items"].as_array().is_some_and(|items| {
             items.iter().any(|item| {
                 item["fact_snapshot_id"].as_str() == Some(reviewed.snapshot_id.to_string().as_str())
@@ -203,19 +213,20 @@ impl DuetClient {
             if let Some(cursor) = &cursor {
                 url.query_pairs_mut().append_pair("cursor", cursor);
             }
-            let page: DoctorSourceInventory = json(
-                self.configuration
-                    .client
-                    .get(url)
-                    .bearer_auth(
-                        self.configuration
-                            .bearer_access_token
-                            .as_deref()
-                            .unwrap_or_default(),
-                    )
-                    .header(reqwest::header::CACHE_CONTROL, "no-store"),
-            )
-            .await?;
+            let page: DoctorSourceInventory = self
+                .doctor_json(
+                    self.configuration
+                        .client
+                        .get(url)
+                        .bearer_auth(
+                            self.configuration
+                                .bearer_access_token
+                                .as_deref()
+                                .unwrap_or_default(),
+                        )
+                        .header(reqwest::header::CACHE_CONTROL, "no-store"),
+                )
+                .await?;
             cursor = page.next_cursor.clone();
             if let Some(result) = &mut result {
                 if result.revision != page.revision {
@@ -259,19 +270,20 @@ impl DuetClient {
             if let Some(cursor) = &cursor {
                 url.query_pairs_mut().append_pair("cursor", cursor);
             }
-            let page: serde_json::Value = json(
-                self.configuration
-                    .client
-                    .get(url)
-                    .bearer_auth(
-                        self.configuration
-                            .bearer_access_token
-                            .as_deref()
-                            .unwrap_or_default(),
-                    )
-                    .header(reqwest::header::CACHE_CONTROL, "no-store"),
-            )
-            .await?;
+            let page: serde_json::Value = self
+                .doctor_json(
+                    self.configuration
+                        .client
+                        .get(url)
+                        .bearer_auth(
+                            self.configuration
+                                .bearer_access_token
+                                .as_deref()
+                                .unwrap_or_default(),
+                        )
+                        .header(reqwest::header::CACHE_CONTROL, "no-store"),
+                )
+                .await?;
             let current = page["revision"].as_i64().ok_or(DoctorError::Uncertain)?;
             if revision.is_some_and(|r| r != current) {
                 return Err(DoctorError::Conflict);
@@ -347,14 +359,15 @@ impl DuetClient {
     }
     /// Current durable collection, not an approval.
     pub async fn doctor_workspace(&self) -> Result<DoctorCollection, DoctorError> {
-        json(self.doctor_request(reqwest::Method::GET, "")).await
+        self.doctor_json(self.doctor_request(reqwest::Method::GET, ""))
+            .await
     }
     /// Submit exactly the original save DTO; retries preserve generation/proposal/membership.
     pub async fn save_doctor_workspace(
         &self,
         save: &DoctorPageSave,
     ) -> Result<DoctorCollection, DoctorError> {
-        json(
+        self.doctor_json(
             self.doctor_request(reqwest::Method::PUT, "/page")
                 .json(save),
         )
@@ -365,7 +378,10 @@ impl DuetClient {
         &self,
         expected: i32,
     ) -> Result<DoctorCollection, DoctorError> {
-        json(self.doctor_request(reqwest::Method::GET, &format!("/save-receipts/{expected}"))).await
+        self.doctor_json(
+            self.doctor_request(reqwest::Method::GET, &format!("/save-receipts/{expected}")),
+        )
+        .await
     }
     /// Reject only the reviewed proposal and base generation.
     pub async fn reject_doctor_proposal(
@@ -373,7 +389,7 @@ impl DuetClient {
         id: uuid::Uuid,
         generation: i32,
     ) -> Result<DoctorCollection, DoctorError> {
-        json(
+        self.doctor_json(
             self.doctor_request(reqwest::Method::POST, &format!("/proposals/{id}/reject"))
                 .json(&serde_json::json!({"expected_generation":generation})),
         )
@@ -384,7 +400,7 @@ impl DuetClient {
         &self,
         selection: &CanonicalRecordSelection,
     ) -> Result<DoctorCollection, DoctorError> {
-        json(
+        self.doctor_json(
             self.doctor_request(reqwest::Method::PUT, "/record")
                 .json(selection),
         )
@@ -395,7 +411,7 @@ impl DuetClient {
         &self,
         generation: i32,
     ) -> Result<DoctorCollection, DoctorError> {
-        json(
+        self.doctor_json(
             self.doctor_request(reqwest::Method::POST, "/page/share")
                 .json(&serde_json::json!({"expected_generation":generation})),
         )
@@ -403,7 +419,9 @@ impl DuetClient {
     }
     /// Source-validated server PDF. Caller must compare against reviewed generation/content before sharing.
     pub async fn doctor_pdf(&self) -> Result<Vec<u8>, DoctorError> {
-        let response = checked(self.doctor_request(reqwest::Method::GET, "/pdf")).await?;
+        let response = self
+            .doctor_checked(self.doctor_request(reqwest::Method::GET, "/pdf"))
+            .await?;
         if response
             .headers()
             .get(reqwest::header::CONTENT_TYPE)
@@ -420,7 +438,7 @@ impl DuetClient {
     }
     /// Server SVG preview; never grants export/publication authority.
     pub async fn doctor_preview_svg(&self) -> Result<String, DoctorError> {
-        checked(self.doctor_request(reqwest::Method::GET, "/preview"))
+        self.doctor_checked(self.doctor_request(reqwest::Method::GET, "/preview"))
             .await?
             .text()
             .await
@@ -432,7 +450,7 @@ impl DuetClient {
         operation_id: uuid::Uuid,
         generation: i64,
     ) -> Result<(), DoctorError> {
-        checked(
+        self.doctor_checked(
             self.doctor_request(reqwest::Method::DELETE, "")
                 .header("Idempotency-Key", operation_id.to_string())
                 .header("If-Match", generation.to_string()),
@@ -445,7 +463,7 @@ impl DuetClient {
         &self,
         request: &PublishRequest,
     ) -> Result<PublicationView, DoctorError> {
-        json(
+        self.doctor_json(
             self.doctor_request(reqwest::Method::POST, "/share-link")
                 .json(request),
         )
@@ -453,7 +471,8 @@ impl DuetClient {
     }
     /// Current active/revoked publication readback, or no publication.
     pub async fn doctor_share_status(&self) -> Result<Option<PublicationView>, DoctorError> {
-        json(self.doctor_request(reqwest::Method::GET, "/share-link")).await
+        self.doctor_json(self.doctor_request(reqwest::Method::GET, "/share-link"))
+            .await
     }
     /// Revoke using the same privacy-event UUID after an uncertain acknowledgement.
     pub async fn revoke_doctor_share_link(
@@ -463,7 +482,9 @@ impl DuetClient {
     ) -> Result<(), DoctorError> {
         // Old servers ignore unknown If-Match headers. Do not dispatch a destructive request
         // until the server explicitly advertises the atomic UUID protocol.
-        let capability = checked(self.doctor_request(reqwest::Method::GET, "/share-link")).await?;
+        let capability = self
+            .doctor_checked(self.doctor_request(reqwest::Method::GET, "/share-link"))
+            .await?;
         if capability
             .headers()
             .get("Duet-Publication-Precondition")
@@ -472,12 +493,13 @@ impl DuetClient {
         {
             return Err(DoctorError::UnsupportedPrecondition);
         }
-        let response = checked(
-            self.doctor_request(reqwest::Method::DELETE, "/share-link")
-                .header("Idempotency-Key", operation_id.to_string())
-                .header("If-Match", publication_id.to_string()),
-        )
-        .await?;
+        let response = self
+            .doctor_checked(
+                self.doctor_request(reqwest::Method::DELETE, "/share-link")
+                    .header("Idempotency-Key", operation_id.to_string())
+                    .header("If-Match", publication_id.to_string()),
+            )
+            .await?;
         if response
             .headers()
             .get("Duet-Publication-Precondition")
@@ -489,25 +511,43 @@ impl DuetClient {
         Ok(())
     }
 }
-async fn checked(request: reqwest::RequestBuilder) -> Result<reqwest::Response, DoctorError> {
-    let response = request.send().await.map_err(|_| DoctorError::Uncertain)?;
-    match response.status().as_u16() {
-        200..=299 => Ok(response),
-        401 => Err(DoctorError::Unauthorized),
-        403 => Err(DoctorError::Forbidden),
-        404 => Err(DoctorError::NotFound),
-        409 | 412 => Err(DoctorError::Conflict),
-        400 | 422 => Err(DoctorError::Invalid),
-        405 | 428 | 501 => Err(DoctorError::UnsupportedPrecondition),
-        _ => Err(DoctorError::Uncertain),
+impl DuetClient {
+    async fn doctor_checked(
+        &self,
+        request: reqwest::RequestBuilder,
+    ) -> Result<reqwest::Response, DoctorError> {
+        let response = request.send().await.map_err(|_| DoctorError::Uncertain)?;
+        match response.status().as_u16() {
+            200..=299 => Ok(response),
+            401 => {
+                let status = response.status();
+                let body = response
+                    .text()
+                    .await
+                    .map_err(|error| DoctorError::Response(error.into()))?;
+                self.observe_refusal(status, &body);
+                if crate::refusal::classify(status, &body).is_some() {
+                    Err(DoctorError::Unauthorized)
+                } else {
+                    Err(DoctorError::Uncertain)
+                }
+            }
+            403 => Err(DoctorError::Forbidden),
+            404 => Err(DoctorError::NotFound),
+            409 | 412 => Err(DoctorError::Conflict),
+            400 | 422 => Err(DoctorError::Invalid),
+            405 | 428 | 501 => Err(DoctorError::UnsupportedPrecondition),
+            _ => Err(DoctorError::Uncertain),
+        }
     }
-}
-async fn json<T: serde::de::DeserializeOwned>(
-    request: reqwest::RequestBuilder,
-) -> Result<T, DoctorError> {
-    checked(request)
-        .await?
-        .json()
-        .await
-        .map_err(|_| DoctorError::Uncertain)
+    async fn doctor_json<T: serde::de::DeserializeOwned>(
+        &self,
+        request: reqwest::RequestBuilder,
+    ) -> Result<T, DoctorError> {
+        self.doctor_checked(request)
+            .await?
+            .json()
+            .await
+            .map_err(|_| DoctorError::Uncertain)
+    }
 }

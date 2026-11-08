@@ -38,6 +38,22 @@ locals {
     }]
   })
 
+  # Sign-in from the IAP assertion (grafana-edge.tf), on only once the
+  # backend's audience is known. Grafana verifies the signature against
+  # Google's published IAP keys and requires this edge's issuer and audience,
+  # so an assertion minted for another IAP application is refused. People
+  # join as Editors; the Doppler admin login stays as break-glass.
+  grafana_jwt_env = local.grafana_iap_audience == null ? {} : {
+    GF_AUTH_JWT_ENABLED           = "true"
+    GF_AUTH_JWT_HEADER_NAME       = "X-Goog-IAP-JWT-Assertion"
+    GF_AUTH_JWT_JWK_SET_URL       = "https://www.gstatic.com/iap/verify/public_key-jwk"
+    GF_AUTH_JWT_EXPECT_CLAIMS     = jsonencode({ iss = "https://cloud.google.com/iap", aud = local.grafana_iap_audience })
+    GF_AUTH_JWT_EMAIL_CLAIM       = "email"
+    GF_AUTH_JWT_USERNAME_CLAIM    = "email"
+    GF_AUTH_JWT_AUTO_SIGN_UP      = "true"
+    GF_USERS_AUTO_ASSIGN_ORG_ROLE = "Editor"
+  }
+
   grafana_contact = yamldecode(file("${local.grafana_config_dir}/provisioning/alerting/contact.yaml"))
   grafana_test_contact = {
     orgId = 1
@@ -60,6 +76,54 @@ locals {
       }] : [], local.grafana_contact.policies[0].routes)
     })]
   })
+  grafana_synthetic_rules = yamlencode(var.grafana_test_notifications_enabled ? {
+    apiVersion = 1
+    groups = [{
+      orgId    = 1
+      name     = "coda-synthetic-notification-test"
+      folder   = "Coda"
+      interval = "1m"
+      rules = [{
+        uid          = "coda-synthetic-notification-test"
+        title        = "Coda synthetic notification test"
+        condition    = "C"
+        for          = "1m"
+        noDataState  = "OK"
+        execErrState = "Error"
+        labels       = { qualification = "synthetic-notification-test" }
+        annotations  = { summary = "Synthetic Loki line used to qualify the labeled test route. This is not a service alert." }
+        data = [
+          {
+            refId             = "A"
+            datasourceUid     = "loki"
+            relativeTimeRange = { from = 60, to = 0 }
+            model = {
+              refId     = "A"
+              queryType = "instant"
+              expr      = "sum(count_over_time({qualification=\"synthetic-notification-test\"} |= \"fail\" [1m]))"
+            }
+          },
+          {
+            refId             = "C"
+            datasourceUid     = "__expr__"
+            relativeTimeRange = { from = 0, to = 0 }
+            model = {
+              refId      = "C"
+              type       = "threshold"
+              expression = "A"
+              conditions = [{ evaluator = { type = "gt", params = [0] } }]
+            }
+          }
+        ]
+      }]
+    }]
+    deleteRules = []
+    } : {
+    apiVersion  = 1
+    groups      = []
+    deleteRules = [for uid in ["coda-synthetic-notification-test"] : { orgId = 1, uid = uid }]
+  })
+
   grafana_compatibility_config = var.grafana_compatibility_metrics_url == "" ? {
     "compatibility-datasource.yaml" = yamlencode({
       apiVersion        = 1
@@ -143,20 +207,22 @@ locals {
       args  = []
       config_data = merge(
         {
-          "datasources.yaml" = file("${local.grafana_config_dir}/provisioning/datasources.yaml")
-          "rules.yaml"       = local.grafana_rules_config
-          "contact.yaml"     = local.grafana_contact_config
-          "cloud-rules.yaml" = local.grafana_cloud_rules
+          "datasources.yaml"     = file("${local.grafana_config_dir}/provisioning/datasources.yaml")
+          "rules.yaml"           = local.grafana_rules_config
+          "synthetic-rules.yaml" = local.grafana_synthetic_rules
+          "contact.yaml"         = local.grafana_contact_config
+          "cloud-rules.yaml"     = local.grafana_cloud_rules
         },
         { "cloud-monitoring.yaml" = local.grafana_monitoring_enable ? local.grafana_cloud_monitoring_datasource : yamlencode({ apiVersion = 1, deleteDatasources = [{ orgId = 1, name = "Google Cloud Monitoring" }] }) },
         local.grafana_compatibility_config,
       )
       config_items = merge(
         {
-          "datasources.yaml" = "datasources/datasources.yaml"
-          "rules.yaml"       = "alerting/rules.yaml"
-          "contact.yaml"     = "alerting/contact.yaml"
-          "cloud-rules.yaml" = "alerting/cloud-rules.yaml"
+          "datasources.yaml"     = "datasources/datasources.yaml"
+          "rules.yaml"           = "alerting/rules.yaml"
+          "synthetic-rules.yaml" = "alerting/synthetic-rules.yaml"
+          "contact.yaml"         = "alerting/contact.yaml"
+          "cloud-rules.yaml"     = "alerting/cloud-rules.yaml"
         },
         { "cloud-monitoring.yaml" = "datasources/cloud-monitoring.yaml" },
         {
@@ -168,16 +234,19 @@ locals {
       data_mount   = "/var/lib/grafana"
       disk         = "5Gi"
       user         = 472
-      env = {
-        GF_SERVER_ROOT_URL                    = "http://localhost:3000"
-        GF_USERS_ALLOW_SIGN_UP                = "false"
-        GF_AUTH_ANONYMOUS_ENABLED             = "false"
-        GF_ANALYTICS_REPORTING_ENABLED        = "false"
-        GF_ANALYTICS_CHECK_FOR_UPDATES        = "false"
-        GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES = "false"
-        GF_NEWS_NEWS_FEED_ENABLED             = "false"
-        GF_SECURITY_ADMIN_USER                = "admin"
-      }
+      env = merge(
+        {
+          GF_SERVER_ROOT_URL                    = coalesce(local.grafana_edge_url, "http://localhost:3000")
+          GF_USERS_ALLOW_SIGN_UP                = "false"
+          GF_AUTH_ANONYMOUS_ENABLED             = "false"
+          GF_ANALYTICS_REPORTING_ENABLED        = "false"
+          GF_ANALYTICS_CHECK_FOR_UPDATES        = "false"
+          GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES = "false"
+          GF_NEWS_NEWS_FEED_ENABLED             = "false"
+          GF_SECURITY_ADMIN_USER                = "admin"
+        },
+        local.grafana_jwt_env,
+      )
       # GF_SECURITY_ADMIN_PASSWORD and GRAFANA_SLACK_WEBHOOK_URL (doppler.tf).
       env_from_secret = "grafana-secrets"
       ports           = { http = 3000 }

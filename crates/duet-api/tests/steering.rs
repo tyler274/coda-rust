@@ -5,7 +5,7 @@ use axum::{Router, body::Body, http::Request as HttpRequest};
 use duet_api::{
     ApiError,
     conversation::ConversationStore,
-    conversation_routes::ConversationState,
+    conversation_routes::{ConversationState, ModelProvider},
     database::{AccountDatabase, migrate},
     durable::DurableState,
     evidence::EvidenceStore,
@@ -87,11 +87,11 @@ struct Identity;
 #[async_trait]
 impl IdentityVerifier for Identity {
     async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError> {
-        if bearer != "a" {
+        if bearer != "a" && bearer != "b" {
             return Err(ApiError::Unauthorized);
         }
         Ok(VerifiedIdentity {
-            subject: "steering-a".into(),
+            subject: format!("steering-{bearer}"),
             authenticated_at: chrono::Utc::now(),
         })
     }
@@ -269,13 +269,23 @@ async fn fixture(prefix: &str) -> (PgConnection, Fixture) {
 }
 
 async fn request(app: &Router, method: &str, path: &str, body: Value) -> (u16, Value) {
+    request_as(app, "a", method, path, body).await
+}
+
+async fn request_as(
+    app: &Router,
+    bearer: &str,
+    method: &str,
+    path: &str,
+    body: Value,
+) -> (u16, Value) {
     let response = app
         .clone()
         .oneshot(
             HttpRequest::builder()
                 .method(method)
                 .uri(path)
-                .header("authorization", "Bearer a")
+                .header("authorization", format!("Bearer {bearer}"))
                 .header("content-type", "application/json")
                 .body(Body::from(body.to_string()))
                 .unwrap(),
@@ -335,7 +345,13 @@ async fn accepted_failure(database_failure: bool) {
         }),
     );
     let server = tokio::spawn(async move { axum::serve(listener, provider).await.unwrap() });
-    let app = app(&f, Some((endpoint, "PRIVATE-PROVIDER-KEY".into())));
+    let app = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint,
+            key: "PRIVATE-PROVIDER-KEY".into(),
+        }),
+    );
     enroll(&app).await;
     let c = f.durable.identity.authenticate("a", true).await.unwrap();
     let id = Uuid::new_v4();
@@ -416,7 +432,7 @@ async fn enroll(app: &Router) {
     }
 }
 
-fn app(f: &Fixture, provider: Option<(String, String)>) -> Router {
+fn app(f: &Fixture, provider: Option<ModelProvider>) -> Router {
     duet_api::durable::router(f.durable.clone()).merge(duet_api::conversation_routes::router(
         ConversationState {
             durable: f.durable.clone(),
@@ -851,7 +867,13 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
     let bodies = Arc::new(Mutex::new(vec![]));
     let server = tokio::spawn(fake_responses(listener, bodies.clone()));
-    let app = app(&f, Some((endpoint, "loopback-test-key".into())));
+    let app = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint,
+            key: "loopback-test-key".into(),
+        }),
+    );
     enroll(&app).await;
     let c: AccountContext = f.durable.identity.authenticate("a", true).await.unwrap();
 
@@ -957,5 +979,140 @@ async fn http_steer_relaunches_the_same_command_without_the_recovery_poll() {
     server.abort();
     drop(owner_db);
     drop(app);
+    teardown(admin, f).await;
+}
+
+#[tokio::test]
+async fn a_landed_message_is_confirmed_by_reading_it() {
+    let (admin, f) = fixture("lookup").await;
+    let router = app(
+        &f,
+        Some(ModelProvider::Responses {
+            endpoint: "http://127.0.0.1:9".into(),
+            key: "unused".into(),
+        }),
+    );
+    enroll(&router).await;
+    for (path, body) in [
+        ("/api/auth/account", json!({})),
+        ("/api/auth/account/terms", json!({"version":"2026-09-23"})),
+        (
+            "/api/auth/account/luna-consent",
+            json!({"decision":"accepted","version":"2026-09-24","expected_revision":0}),
+        ),
+    ] {
+        let result = request_as(&router, "b", "PUT", path, body).await;
+        assert!((200..300).contains(&result.0), "{result:?}");
+    }
+    let c = f.durable.identity.authenticate("a", true).await.unwrap();
+    let id = Uuid::new_v4();
+    let utc = duet_api::conversation::Submission {
+        timezone: "UTC".into(),
+        ..Default::default()
+    };
+    f.store
+        .phone_accept_submission(&c, id, "How did I sleep", "local", &utc)
+        .await
+        .unwrap();
+    let later = duet_api::conversation::Submission {
+        timezone: "America/Los_Angeles".into(),
+        ..Default::default()
+    };
+    let resent = f
+        .store
+        .phone_accept_submission(&c, id, "How did I sleep", "local", &later)
+        .await;
+    assert!(
+        matches!(resent, Err(ApiError::Conflict(_))),
+        "a timezone change must not be treated as a new send: {resent:?}"
+    );
+    let (code, body) = request(
+        &router,
+        "GET",
+        &format!("/api/conversation/messages/{id}"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 200, "{body}");
+    assert_eq!(body["id"], json!(id.to_string()));
+    assert_eq!(body["state"], "accepted");
+
+    let (code, _) = request(
+        &router,
+        "GET",
+        &format!("/api/conversation/messages/{}", Uuid::new_v4()),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404);
+    let (code, _) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/messages/{id}"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404, "another account reads the message as missing");
+    let (code, _) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/commands/{id}/events"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404, "another account's event read is not found");
+    let (code, _) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/commands/{id}/usage"),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 404, "another account's usage read is not found");
+    let (code, body) = request_as(
+        &router,
+        "b",
+        "GET",
+        &format!("/api/conversation/{}", c.account_id),
+        json!({}),
+    )
+    .await;
+    assert_eq!(code, 200, "{body}");
+    assert_eq!(
+        body["commands"],
+        json!([]),
+        "another account's conversation id answers an empty list, not that account's messages"
+    );
+    assert!(!body.to_string().contains("How did I sleep"));
+
+    let mut owner = PgConnection::connect(&f.owner_url).await.unwrap();
+    sqlx::query("update users set intelligence_enabled = false where id = $1")
+        .bind(c.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    let withdrawn = f
+        .store
+        .phone_accept_submission(&c, id, "How did I sleep", "local", &utc)
+        .await;
+    assert!(
+        matches!(withdrawn, Err(ApiError::Forbidden)),
+        "resending after the assistant is withdrawn is not confirmation: {withdrawn:?}"
+    );
+    let found = f.store.phone_message(&c, id).await.unwrap();
+    assert_eq!(found["id"], json!(id));
+
+    sqlx::query("update users set sessions_revoked_before = now() where id = $1")
+        .bind(c.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    assert!(matches!(
+        f.store.phone_message(&c, id).await,
+        Err(ApiError::SessionRevoked)
+    ));
     teardown(admin, f).await;
 }

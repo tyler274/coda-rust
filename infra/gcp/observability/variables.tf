@@ -165,6 +165,67 @@ variable "grafana_cloud_monitoring_enabled" {
   }
 }
 
+variable "grafana_edge" {
+  description = "Optional browser edge for Grafana: an external Gateway on hostname with IAP on its backend, and Grafana signing people in from the signed IAP assertion. Null keeps Grafana ClusterIP-only (port-forward). Bootstrap with no members; after GKE creates the backend, the operator supplies its verified name and numeric id together with the members."
+  type = object({
+    hostname           = string
+    iap_client_id      = string
+    members            = optional(list(string), [])
+    backend_service    = optional(string)
+    backend_service_id = optional(string)
+  })
+  default = null
+
+  validation {
+    condition     = var.grafana_edge == null || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "The Grafana edge requires telemetry_backend grafana or both."
+  }
+
+  # GKE creates the backend, and resolves the address and certificate map,
+  # in the cluster's project; the edge resources and the IAP audience use
+  # project_id, so the two must be the same project.
+  validation {
+    condition     = var.grafana_edge == null || var.project_id == var.cluster_project
+    error_message = "The Grafana edge requires project_id to equal cluster_project."
+  }
+
+  validation {
+    condition     = var.grafana_edge == null || can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.grafana_edge.hostname))
+    error_message = "grafana_edge.hostname must be a bare lowercase DNS name, without scheme, port or path."
+  }
+
+  validation {
+    condition     = var.grafana_edge == null || can(regex("^[0-9]+-[a-z0-9]+\\.apps\\.googleusercontent\\.com$", var.grafana_edge.iap_client_id))
+    error_message = "grafana_edge.iap_client_id must be an OAuth client id (<number>-<id>.apps.googleusercontent.com). Its secret syncs from Doppler as GRAFANA_IAP_CLIENT_SECRET."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || alltrue([
+      for member in try(var.grafana_edge.members, []) : can(regex("^(user|group):[^@: ]+@[^@: ]+\\.[^@: ]+$", member))
+    ])
+    error_message = "grafana_edge.members must be user: or group: principals, never allUsers, allAuthenticatedUsers or domains."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || (
+      (try(var.grafana_edge.backend_service, null) == null) == (try(var.grafana_edge.backend_service_id, null) == null)
+    )
+    error_message = "Supply the verified backend service name and its numeric id together."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || try(var.grafana_edge.backend_service, null) == null || (
+      try(trimspace(var.grafana_edge.backend_service) != "", false) && can(regex("^[0-9]+$", var.grafana_edge.backend_service_id))
+    )
+    error_message = "The backend service name must be nonempty and its id numeric."
+  }
+
+  validation {
+    condition     = var.grafana_edge == null || length(try(var.grafana_edge.members, [])) == 0 || try(var.grafana_edge.backend_service, null) != null
+    error_message = "Granting Grafana access requires the operator-verified backend service name and id. Bootstrap the edge with no members until GKE has created it."
+  }
+}
+
 variable "datadog_gcp_integration_enabled" {
   description = "Creates the Datadog GCP integration for cluster_project only (Cloud Run and GKE metrics through service-account impersonation; no key). Billable and external: off until the operator and the Datadog account owner approve it."
   type        = bool
@@ -243,6 +304,17 @@ variable "datadog_monitors_enabled" {
   validation {
     condition     = !var.datadog_monitors_enabled || contains(["datadog", "both"], var.telemetry_backend)
     error_message = "Datadog monitors require telemetry_backend = datadog; grafana provisions its own alert rules."
+  }
+}
+
+variable "datadog_qualification_monitor_enabled" {
+  description = "Separate gate for the synthetic readiness monitor on coda.qualification.synthetic_readiness. Off by default. Does not enable service monitors."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.datadog_qualification_monitor_enabled || (var.alert_notify != "" && contains(["datadog", "both"], var.telemetry_backend))
+    error_message = "The qualification monitor requires telemetry_backend datadog or both, and an explicitly confirmed alert handle."
   }
 }
 

@@ -32,6 +32,7 @@ One session across tabs:
 
 When your session expires:
 
+- Your session ends after 12 hours without a request from you, and always 7 days after you sign in.
 - A sign-in prompt replaces the workspace and can email you a link. The patient page, drafts, the open reader and the conversation are cleared before the prompt is shown.
 - After you sign back in, you start at Today. Coda's running work on the server continues.
 - Once the session has ended, reopening Coda asks you to sign in.

@@ -45,16 +45,19 @@ async fn privacy_sweep(recovery: &PrivacyStore) {
 pub fn api_error_class(e: &ApiError) -> &'static str {
     match e {
         ApiError::Unauthorized
+        | ApiError::InvalidToken(_)
         | ApiError::SessionRevoked
+        | ApiError::SessionExpired
         | ApiError::AbsentAccount
         | ApiError::Forbidden
         | ApiError::TermsRequired
         | ApiError::AgreementChanged => "identity",
         ApiError::Conflict(_) => "conflict",
         ApiError::NotFound | ApiError::JoinInvalid | ApiError::ConsentUnlinked => "not_found",
-        ApiError::Unavailable(_) => "unavailable",
+        ApiError::Unavailable(_) | ApiError::IdentityResponse(_) => "unavailable",
         ApiError::Storage(_) => DATABASE,
         ApiError::Unprocessable(_) => "invalid",
+        ApiError::Internal(_) => "internal",
     }
 }
 
@@ -74,6 +77,10 @@ mod tests {
     fn every_api_error_has_a_class() {
         let cases = [
             (ApiError::Unauthorized, "identity"),
+            (
+                ApiError::InvalidToken(jsonwebtoken::errors::ErrorKind::InvalidToken.into()),
+                "identity",
+            ),
             (ApiError::SessionRevoked, "identity"),
             (ApiError::AbsentAccount, "identity"),
             (ApiError::Forbidden, "identity"),
@@ -86,6 +93,8 @@ mod tests {
             (ApiError::Unavailable("provider"), "unavailable"),
             (ApiError::Storage("SECRET patient text".into()), "database"),
             (ApiError::Unprocessable("body"), "invalid"),
+            (ApiError::SessionExpired, "identity"),
+            (ApiError::Internal("shape"), "internal"),
         ];
         for (error, class) in cases {
             assert_eq!(api_error_class(&error), class);

@@ -18,6 +18,8 @@ pub mod retention;
 pub mod session;
 pub mod streaming;
 
+pub mod refusal;
+
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
 pub use duet_wire::models::ConversationAcceptance;
@@ -28,6 +30,23 @@ pub use duet_wire::models::InsightCyclePage;
 pub use duet_wire::models::IntelligenceSettings;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
 use serde::{Deserialize, Serialize};
+
+/// Result of reading one message without sending it again.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum MessageLookup {
+    /// This account already accepted the message.
+    Landed {
+        /// Server state, such as `accepted` or `running`.
+        state: String,
+    },
+    /// This account has no message with that id.
+    Missing,
+}
+
+/// A landed read confirms the send. Anything else is the warning, not a resend.
+pub fn message_confirmed(lookup: Result<MessageLookup, String>) -> bool {
+    matches!(lookup, Ok(MessageLookup::Landed { .. }))
+}
 
 /// Status of the patient's practice link and versioned `"share with my physician"` consent (`ENG-47`).
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -127,6 +146,7 @@ pub const VERSION_HEADER: &str = "X-Duet-App-Version";
 /// The `DuetClient` value exchanged by this crate. Debug output deliberately omits credentials.
 pub struct DuetClient {
     configuration: Configuration,
+    refusal: Option<refusal::RefusalBinding>,
 }
 
 impl std::fmt::Debug for DuetClient {
@@ -151,6 +171,7 @@ impl DuetClient {
             .build()
             .map_err(|error| error.to_string())?;
         Ok(Self {
+            refusal: None,
             configuration: Configuration {
                 base_path: base_path.into().trim_end_matches('/').to_owned(),
                 user_agent: Some("coda-duet/0.1.0".to_owned()),
@@ -167,7 +188,7 @@ impl DuetClient {
     pub async fn list_moments(&self) -> Result<Vec<AccountMoment>, String> {
         duet_wire::apis::moments_api::list_moments_api_moments_get(&self.configuration)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Lists the conversation page.
@@ -178,7 +199,7 @@ impl DuetClient {
             Some(50),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Sends one message. `id` is the message identity: a retry of an uncertain
@@ -199,7 +220,50 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
+    }
+
+    /// Reads one message by id. Does not send it again.
+    ///
+    /// `Landed` means Duet accepted it. `Missing` means this account has no such
+    /// message. A transport failure is the error, and the caller warns instead
+    /// of retrying the send.
+    pub async fn read_message(&self, id: uuid::Uuid) -> Result<MessageLookup, String> {
+        let response = self
+            .configuration
+            .client
+            .get(format!(
+                "{}/api/conversation/messages/{id}",
+                self.configuration.base_path
+            ))
+            .bearer_auth(
+                self.configuration
+                    .bearer_access_token
+                    .as_deref()
+                    .unwrap_or_default(),
+            )
+            .send()
+            .await
+            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
+        let status = response.status();
+        if status == reqwest::StatusCode::NOT_FOUND {
+            return Ok(MessageLookup::Missing);
+        }
+        let body = response
+            .text()
+            .await
+            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
+        self.observe_refusal(status, &body);
+        if !status.is_success() {
+            return Err("Duet did not confirm the message".into());
+        }
+        let value: serde_json::Value = serde_json::from_str(&body)
+            .map_err(|_| "Duet did not confirm the message".to_owned())?;
+        let state = value["state"]
+            .as_str()
+            .ok_or_else(|| "Duet did not confirm the message".to_owned())?
+            .to_owned();
+        Ok(MessageLookup::Landed { state })
     }
 
     /// Lists insight cycles for Today.
@@ -210,14 +274,14 @@ impl DuetClient {
             Some(20),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reads intelligence settings.
     pub async fn intelligence_settings(&self) -> Result<IntelligenceSettings, String> {
         duet_wire::apis::health_intelligence_api::get_intelligence_settings_api_intelligence_settings_get(&self.configuration)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Reads the evidence library.
@@ -229,7 +293,7 @@ impl DuetClient {
             query,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reads one bounded page of the complete exact record inventory. Pass the previous
@@ -244,7 +308,7 @@ impl DuetClient {
         query.include_removed = Some(true);
         duet_wire::apis::default_api::browse_evidence_records(&self.configuration, query)
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
     }
 
     /// Reads every page of the record inventory, restarting once if evidence changed
@@ -285,7 +349,7 @@ impl DuetClient {
             duet_wire::models::EvidenceRevisionRequest::new(address),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Reopens the exact record revision a message cited, including `unavailable`
@@ -302,7 +366,7 @@ impl DuetClient {
             source_id,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Sends one message about one exact selected record revision.
@@ -329,7 +393,7 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Opens one source cited on a conversation message.
@@ -344,7 +408,7 @@ impl DuetClient {
             source_id,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Replaces the visible title of an existing library row.
@@ -404,7 +468,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Lists saved Plans.
@@ -413,7 +477,7 @@ impl DuetClient {
             &self.configuration,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Lists reminders and check-ins.
@@ -424,7 +488,7 @@ impl DuetClient {
             Some(50),
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Saves a new title and body for a Plan. `revision` is the one on screen.
@@ -446,7 +510,7 @@ impl DuetClient {
             request,
         )
         .await
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Removes a Plan. `revision` is the one on screen.
@@ -458,7 +522,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Pauses a reminder or check-in. `revision` is the one on screen.
@@ -494,7 +558,7 @@ impl DuetClient {
                 request,
             )
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
         } else {
             duet_wire::apis::follow_ups_api::resume_follow_up_api_follow_ups_follow_up_id_resume_post(
                 &self.configuration,
@@ -502,7 +566,7 @@ impl DuetClient {
                 request,
             )
             .await
-            .map_err(|error| error.to_string())
+            .map_err(|error| self.wire_error(error))
         }
     }
 
@@ -605,7 +669,7 @@ impl DuetClient {
         )
         .await
         .map(|_| ())
-        .map_err(|error| error.to_string())
+        .map_err(|error| self.wire_error(error))
     }
 
     /// Redeems the practice's invitation through the front door. The minted
@@ -643,7 +707,10 @@ impl DuetClient {
     pub fn with_bearer(&self, session: impl Into<String>) -> Self {
         let mut configuration = self.configuration.clone();
         configuration.bearer_access_token = Some(session.into());
-        Self { configuration }
+        Self {
+            configuration,
+            refusal: None,
+        }
     }
 
     /// Reads the account's consent state: sharing with the physician.
@@ -989,6 +1056,40 @@ mod tests {
     use axum::Json;
     use axum::routing::get;
     use duet_wire::models::MomentKind;
+
+    #[tokio::test]
+    async fn read_message_confirms_a_landed_id_and_warns_otherwise() {
+        let landed = uuid::Uuid::new_v4();
+        let app = axum::Router::new().route(
+            "/api/conversation/messages/{message_id}",
+            get(
+                move |axum::extract::Path(id): axum::extract::Path<uuid::Uuid>| async move {
+                    if id == landed {
+                        (
+                            reqwest::StatusCode::OK,
+                            Json(serde_json::json!({"id": id, "state": "accepted"})),
+                        )
+                    } else {
+                        (
+                            reqwest::StatusCode::NOT_FOUND,
+                            Json(serde_json::json!("missing")),
+                        )
+                    }
+                },
+            ),
+        );
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let address = listener.local_addr().unwrap();
+        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+        let client =
+            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
+        assert!(message_confirmed(client.read_message(landed).await));
+        assert!(!message_confirmed(
+            client.read_message(uuid::Uuid::new_v4()).await
+        ));
+        let silent = DuetClient::new("http://127.0.0.1:1", "test-token", "200", "1.0.0").unwrap();
+        assert!(!message_confirmed(silent.read_message(landed).await));
+    }
 
     #[tokio::test]
     async fn lists_moments_from_a_json_server() {

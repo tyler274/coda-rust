@@ -25,21 +25,36 @@ impl AccountContext {
 pub enum IdentityError {
     /// No valid credential; do not infer account deletion.
     Unauthorized,
+    /// The server refused a verified session because it was revoked or the account is gone.
+    /// Local content for that account is removed. An expired token is not this error.
+    Ended,
     /// Provider explicitly rejected an expired/revoked/disabled refresh credential.
     Expired,
     /// Configuration, network, locked storage or service outage; keep drafts.
     Unavailable,
+    /// A response could not be read; the redacted transport cause is retained.
+    Response(crate::refusal::TransportCause),
 }
 impl std::fmt::Display for IdentityError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(match self {
             Self::Unauthorized => "no valid credential",
+            Self::Ended => "this session has ended",
             Self::Expired => "the credential is expired, revoked or disabled",
-            Self::Unavailable => "the identity service is unavailable or not configured",
+            Self::Unavailable | Self::Response(_) => {
+                "the identity service is unavailable or not configured"
+            }
         })
     }
 }
-impl std::error::Error for IdentityError {}
+impl std::error::Error for IdentityError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Response(cause) => Some(cause),
+            _ => None,
+        }
+    }
+}
 impl DuetClient {
     /// Establish standalone account with the existing identity DTO; no invitation required.
     pub async fn ensure_account(&self) -> Result<duet_wire::models::AccountState, IdentityError> {
@@ -83,11 +98,19 @@ impl DuetClient {
 async fn decode<T: serde::de::DeserializeOwned>(
     response: reqwest::Response,
 ) -> Result<T, IdentityError> {
-    if response.status() == reqwest::StatusCode::UNAUTHORIZED {
-        return Err(IdentityError::Unauthorized);
-    }
     if !response.status().is_success() {
-        return Err(IdentityError::Unavailable);
+        let status = response.status();
+        let body = response
+            .text()
+            .await
+            .map_err(|error| IdentityError::Response(error.into()))?;
+        return Err(match crate::refusal::classify(status, &body) {
+            Some(
+                crate::refusal::SessionRefusal::Revoked | crate::refusal::SessionRefusal::Absent,
+            ) => IdentityError::Ended,
+            Some(crate::refusal::SessionRefusal::Invalid) => IdentityError::Unauthorized,
+            None => IdentityError::Unavailable,
+        });
     }
     response
         .json()

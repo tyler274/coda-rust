@@ -178,7 +178,7 @@ Along the way:
 - **Wrong link after use.** Until the re-review decides, anything that relied on the moved message is withheld (never left blank), then redrafted or closed. Everything Coda wrote while its memory held the moved message is marked and can't surface. The audit trail stays.
 - **Message Coda can't read.** The patient goes on Today with a link to the message in Spruce until Coda reads it or the physician marks it Done. A message Coda is holding or retrying is never invisible.
 - **Urgent message.** Coda raises a Now concern on the message's row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
-- **A connected patient sends For my doctor.** Duet hands what the patient sent, including any question, to Coda Agents, where the patient's agent talks to the practice's care team agent and the practice's agents judge what the physician needs to see. If needed, it reaches Today. The physician's approved answer goes to the patient's Duet as a message from the practice in their thread, delivered by Coda exactly as approved. Any edit after approval needs approval again. This is the one message Coda delivers in the MVP.
+- **A connected patient sends For my doctor.** It arrives through [Connected care](connected-care.md#c16-sending-for-my-doctor) like any record from the patient's Duet, marked as emphasized by the patient. The practice's agents can give it more priority and judge whether a physician needs to see it. If one does, it reaches Today. Nothing goes back into the patient's Duet in the MVP.
 
 ### P4. Pre-visit preparation and briefings
 
@@ -277,7 +277,7 @@ A wrong message link is fixed with Wrong patient? (P3).
 Authority and sending:
 
 - The physician decides diagnosis, treatment and medication.
-- In the MVP Coda never sends patient mail, orders, or writes back to the EHR. The one message it delivers is a physician-approved answer to a question a connected patient sent through Duet, into Duet's thread, exactly as approved; any edit needs approval again.
+- In the MVP Coda never sends patient mail or anything into a patient's Duet. It never orders and never writes back to the EHR.
 - Coda never sends anything to a patient without the physician, even in an emergency.
 - A retrieved record that tells Coda to do something is evidence, never an instruction.
 - A follow-up grants no access and no authority to message, order, schedule or write back.
@@ -330,14 +330,13 @@ Work integrity:
 
 Everything Coda reads in the MVP is read only.
 
-- **The practice's EHR**, with Elation and Hint the two we're focused on first.
+- **The practice's EHR.** No EHR is chosen in advance.
 - **Hint**, through Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
 - **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch. Coda searches it as often as a question needs, reads as many sources as it judges useful, and keeps going until it has enough to answer.
-- **Outside clinical AI** under a BAA, such as UpToDate's Expert AI.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
@@ -349,12 +348,11 @@ In the MVP:
 
 - One practice using Coda Agents on the web, with patients on Duet, the two connected through Connected care.
 - Journeys P1 to P5 and L1, with P1 first.
-- Elation and Hint as EHRs, read only.
+- The first practice's EHR, read only.
 - Spruce for practice patient messaging, with Copy reply and Open in Spruce.
-- Delivering the physician-approved answer to a connected patient's Duet question.
 - Reading attachments, including scans and faxes through OCR.
 - Dictation into the composer.
-- The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports, plus outside clinical AI under a BAA.
+- The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports.
 - A Filtered list of mail the linking pass judged not to be from a patient, with "This is a patient" to restore it, and the same through plain words in chat.
 - No paid tier; everything is free.
 - Done when every journey is walked on real services, hosting and real-patient readiness are in place, and we decide to go.
@@ -375,6 +373,7 @@ Later:
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
 - EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
 - Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
+- Outside clinical AI under a BAA, such as UpToDate's Expert AI.
 - The Chrome extension also as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
 - Coda reaching out to patients from its own findings.
 - Learned physician preferences, from the physician's own words and edits only, with Undo.

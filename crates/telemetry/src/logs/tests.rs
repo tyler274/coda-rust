@@ -360,6 +360,28 @@ fn rejects_dynamic_values_debug_and_exporter_diagnostics() {
     provider.shutdown().unwrap();
 }
 
+#[test]
+fn an_email_address_and_a_bearer_token_never_reach_the_log() {
+    let exporter = InMemoryLogExporter::default();
+    let provider = SdkLoggerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let subscriber = tracing_subscriber::registry().with(SafeLogs::new(&provider, "test"));
+    tracing::subscriber::with_default(subscriber, || {
+        tracing::info!(
+            email = "patient@example.test",
+            authorization = "Bearer secret-token",
+            "patient@example.test Bearer secret-token"
+        );
+    });
+    let logs = exporter.get_emitted_logs().unwrap();
+    let rendered = format!("{logs:?}");
+    assert!(!rendered.contains("patient@example.test"));
+    assert!(!rendered.contains("secret-token"));
+    assert!(!rendered.contains("Bearer"));
+    provider.shutdown().unwrap();
+}
+
 #[derive(Debug)]
 struct StalledExporter {
     started: mpsc::SyncSender<()>,

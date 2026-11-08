@@ -11,13 +11,36 @@ use axum::{
 use serde_json::{Value, json};
 use std::sync::Arc;
 
+/// Location and job id of a `projects/P/locations/L/jobs/J` resource name.
+fn job_path(name: &str) -> Option<(&str, &str)> {
+    match name.split('/').collect::<Vec<_>>()[..] {
+        ["projects", project, "locations", location, "jobs", id]
+            if !project.is_empty() && !location.is_empty() && !id.is_empty() =>
+        {
+            Some((location, id))
+        }
+        _ => None,
+    }
+}
+/// Scheduler documents the header only as "the job name". Accept the bare job
+/// id, or a resource name with the same location and id, whether it names the
+/// project by id or by number. Cloud Run IAM already limits callers to the
+/// scheduler identity, so the project segment adds no protection here.
+fn is_expected_job(received: &str, expected_job: &str) -> bool {
+    let Some((location, id)) = job_path(expected_job) else {
+        return false;
+    };
+    received == id || job_path(received) == Some((location, id))
+}
 pub fn scheduled_slot(headers: &HeaderMap, expected_job: &str) -> Result<u64, Error> {
-    if headers
+    let received = headers
         .get("x-cloudscheduler-jobname")
-        .and_then(|v| v.to_str().ok())
-        != Some(expected_job)
-    {
-        return Err("unexpected scheduler job".into());
+        .ok_or("missing scheduler job name")?
+        .to_str()
+        .map_err(|e| Error::caused("scheduler job name is not text", e))?;
+    if !is_expected_job(received, expected_job) {
+        let shown: String = received.chars().take(200).collect();
+        return Err(format!("unexpected scheduler job {shown:?}").into());
     }
     let value = headers
         .get("x-cloudscheduler-scheduletime")
@@ -122,5 +145,56 @@ mod tests {
         assert!(scheduled_slot(&headers, "other").is_err());
         headers.remove("x-cloudscheduler-scheduletime");
         assert!(scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").is_err());
+    }
+    #[test]
+    fn scheduler_job_name_matches_id_or_same_location_resource() {
+        let expected = "projects/p/locations/r/jobs/probe";
+        let slot_for = |name: &[u8]| {
+            let mut headers = HeaderMap::new();
+            headers.insert(
+                "x-cloudscheduler-jobname",
+                axum::http::HeaderValue::from_bytes(name).unwrap(),
+            );
+            headers.insert(
+                "x-cloudscheduler-scheduletime",
+                "2026-11-06T00:01:00Z".parse().unwrap(),
+            );
+            scheduled_slot(&headers, expected).map_err(|e| e.to_string())
+        };
+        for accepted in [
+            &b"probe"[..],
+            b"projects/p/locations/r/jobs/probe",
+            b"projects/123456/locations/r/jobs/probe",
+        ] {
+            assert!(slot_for(accepted).is_ok(), "{accepted:?}");
+        }
+        for rejected in [
+            &b"jobs/probe"[..],
+            b"r/jobs/probe",
+            b"other-probe",
+            b"projects/p/locations/other/jobs/probe",
+            b"projects//locations/r/jobs/probe",
+            b"",
+        ] {
+            assert!(slot_for(rejected).is_err(), "{rejected:?}");
+        }
+        assert_eq!(
+            slot_for(b"jobs/probe").unwrap_err(),
+            "unexpected scheduler job \"jobs/probe\""
+        );
+        assert_eq!(
+            slot_for(&[0xff]).unwrap_err(),
+            "scheduler job name is not text"
+        );
+        let mut headers = HeaderMap::new();
+        headers.insert(
+            "x-cloudscheduler-scheduletime",
+            "2026-11-06T00:01:00Z".parse().unwrap(),
+        );
+        assert_eq!(
+            scheduled_slot(&headers, expected).unwrap_err().to_string(),
+            "missing scheduler job name"
+        );
+        assert!(!is_expected_job("probe", "probe"));
     }
 }
