@@ -11,6 +11,7 @@
 )]
 
 pub mod accounting;
+pub mod background;
 pub mod care;
 pub mod conversation;
 mod conversation_context;
@@ -72,8 +73,13 @@ pub enum ApiError {
     Conflict(&'static str),
     /// The bearer was valid, and sign out everywhere ended that session.
     SessionRevoked,
+    /// The bearer verified, and its lifetime has ended. The client refreshes
+    /// before anything local is removed.
+    SessionExpired,
     /// The bearer is valid and this user has no account yet.
     AbsentAccount,
+    /// A data fault. It is not a session refusal and removes nothing.
+    Internal(&'static str),
     /// The `Forbidden` case.
     Forbidden,
     /// Today stats need the current terms on an existing account.
@@ -86,6 +92,8 @@ pub enum ApiError {
     ConsentUnlinked,
     /// The `Unavailable` case.
     Unavailable(&'static str),
+    /// Identity provider response decoding failed; never a product session refusal.
+    IdentityResponse(reqwest::Error),
     /// The `Storage` case.
     Storage(String),
     /// The presented terms version is not the current one.
@@ -106,18 +114,23 @@ impl IntoResponse for ApiError {
             ),
             Self::Unauthorized | Self::InvalidToken(_) => (
                 StatusCode::UNAUTHORIZED,
-                serde_json::json!("Invalid bearer token."),
+                refusal("session_invalid", "unverified"),
             ),
             Self::SessionRevoked => (
                 StatusCode::UNAUTHORIZED,
-                serde_json::json!({
-                    "code": "session_revoked",
-                    "message": "Sign in to Duet again.",
-                }),
+                refusal("session_revoked", "revoked"),
+            ),
+            Self::SessionExpired => (
+                StatusCode::UNAUTHORIZED,
+                refusal("session_expired", "expired"),
             ),
             Self::AbsentAccount => (
                 StatusCode::UNAUTHORIZED,
-                serde_json::json!("Duet account does not exist."),
+                refusal("account_absent", "absent"),
+            ),
+            Self::Internal(cause) => (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                refusal("internal", cause),
             ),
             Self::Forbidden => (
                 StatusCode::FORBIDDEN,
@@ -152,6 +165,10 @@ impl IntoResponse for ApiError {
             Self::Unavailable(detail) => {
                 (StatusCode::SERVICE_UNAVAILABLE, serde_json::json!(detail))
             }
+            Self::IdentityResponse(_) => (
+                StatusCode::SERVICE_UNAVAILABLE,
+                serde_json::json!("Identity provider response unavailable"),
+            ),
             Self::Storage(_) => (
                 StatusCode::SERVICE_UNAVAILABLE,
                 serde_json::json!("Backend database is not configured."),
@@ -159,6 +176,13 @@ impl IntoResponse for ApiError {
         };
         (status, Json(serde_json::json!({ "detail": detail }))).into_response()
     }
+}
+
+/// A refusal body names only a code and an opaque id. The cause stays in the log.
+fn refusal(code: &'static str, cause: &'static str) -> serde_json::Value {
+    let correlation_id = Uuid::new_v4().simple().to_string();
+    tracing::warn!(correlation_id, cause, code, "duet session refusal");
+    serde_json::json!({ "code": code, "correlation_id": correlation_id })
 }
 
 impl From<sqlx::Error> for ApiError {
@@ -1070,7 +1094,8 @@ mod tests {
 
         let (status, body) = auth_call(&app, "PUT", "/api/auth/account", None, Some("{}")).await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Invalid bearer token.");
+        assert_eq!(body["detail"]["code"], "session_invalid");
+        assert!(body["detail"]["correlation_id"].as_str().is_some());
 
         let (status, _) = auth_call(
             &app,
@@ -1101,7 +1126,8 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Duet account does not exist.");
+        assert_eq!(body["detail"]["code"], "account_absent");
+        assert!(body["detail"]["correlation_id"].as_str().is_some());
 
         let (status, body) = auth_call(
             &app,
@@ -1112,7 +1138,8 @@ mod tests {
         )
         .await;
         assert_eq!(status, StatusCode::UNAUTHORIZED);
-        assert_eq!(body["detail"], "Duet account does not exist.");
+        assert_eq!(body["detail"]["code"], "account_absent");
+        assert!(body["detail"]["correlation_id"].as_str().is_some());
 
         let (status, ensured) = auth_call(
             &app,

@@ -1,0 +1,82 @@
+# Explicit normalized Prometheus compatibility input, NOT Tempo metrics.
+# Enabled only when grafana_compatibility_metrics_url names a supplied source.
+# An adapter must emit one target series each minute, including idle targets.
+apiVersion: 1
+groups:
+  - orgId: 1
+    name: coda-compatibility-shadow
+    folder: Coda
+    interval: 1m
+    rules:
+      - uid: coda-readiness-shadow
+        title: Readiness compatibility failure
+        condition: C
+        for: 0s
+        noDataState: NoData
+        execErrState: Error
+        labels: {team: coda, mode: shadow}
+        annotations:
+          summary: 'Readiness failed for three consecutive samples; shadow only.'
+        data:
+          - refId: A
+            datasourceUid: compatibility
+            relativeTimeRange: {from: 300, to: 0}
+            model:
+              refId: A
+              instant: true
+              expr: coda_compat_readiness_consecutive_failures{environment="staging"}
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions: [{evaluator: {type: gt, params: [2]}}]
+      - uid: coda-dependency-shadow
+        title: Dependency compatibility failure
+        condition: C
+        for: 3m
+        noDataState: NoData
+        execErrState: Error
+        labels: {team: coda, mode: shadow}
+        annotations:
+          summary: 'Dependency health or overdue work is unhealthy; shadow only.'
+        data:
+          - refId: A
+            datasourceUid: compatibility
+            relativeTimeRange: {from: 300, to: 0}
+            model:
+              refId: A
+              instant: true
+              expr: coda_compat_dependency_unhealthy{environment="staging"}
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions: [{evaluator: {type: gt, params: [0]}}]
+      - uid: coda-signal-freshness-shadow
+        title: Compatibility signal freshness
+        condition: C
+        for: 0s
+        noDataState: NoData
+        execErrState: Error
+        labels: {team: coda, mode: shadow}
+        annotations:
+          summary: 'Expected signal has not been observed for five minutes; shadow only.'
+        data:
+          - refId: A
+            datasourceUid: compatibility
+            relativeTimeRange: {from: 600, to: 0}
+            model:
+              refId: A
+              instant: true
+              expr: time() - coda_compat_last_observed_seconds{environment="staging"}
+          - refId: C
+            datasourceUid: __expr__
+            model:
+              refId: C
+              type: threshold
+              expression: A
+              conditions: [{evaluator: {type: gt, params: [300]}}]

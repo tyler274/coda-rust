@@ -152,7 +152,7 @@ impl WorkspaceStore {
         let mut tx = self.database.begin(c.account_id).await?;
         check_current(&mut tx, c, false).await?;
         let page = collection(&mut tx, c.account_id).await?;
-        let saved:bool=sqlx::query_scalar("select exists(select 1 from duet_doctor_saves where user_id=$1 and (result->>'note_generation')::bigint=$2)").bind(c.account_id).bind(page["note_generation"].as_i64().ok_or(ApiError::AbsentAccount)?).fetch_one(&mut *tx).await?;
+        let saved:bool=sqlx::query_scalar("select exists(select 1 from duet_doctor_saves where user_id=$1 and (result->>'note_generation')::bigint=$2)").bind(c.account_id).bind(page["note_generation"].as_i64().ok_or(ApiError::Internal("doctor page is missing its generation"))?).fetch_one(&mut *tx).await?;
         if !saved {
             return Err(ApiError::Conflict("explicit page save required"));
         }
@@ -190,7 +190,8 @@ impl WorkspaceStore {
         let mut request = DoctorPageSave::new(
             current["note_generation"]
                 .as_i64()
-                .ok_or(ApiError::AbsentAccount)? as i32,
+                .ok_or(ApiError::Internal("doctor page is missing its generation"))?
+                as i32,
             ids.to_vec(),
             serde_json::from_value(current["page"].clone())
                 .map_err(|_| ApiError::Conflict("invalid page"))?,

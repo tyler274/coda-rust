@@ -52,6 +52,12 @@ D1_TESTS = {
         "account, Terms and AI consent over HTTP, then message and steered reply from a loopback Responses stand-in",
     "durable_tool_recovery_memory_and_permission_fences":
         "interrupted reply resumes its committed tool batch once; withdrawn permission fences effects",
+    "accepted_provider_failure_is_safe_and_correlated":
+        "a provider failure after 202 is traced to the accepted request without private content",
+    "failed_steer_lookup_still_attempts_privacy_confirmation":
+        "a database failure after 202 still attempts privacy confirmation and is traced without private content",
+    "a_landed_message_is_confirmed_by_reading_it":
+        "an uncertain send is confirmed by reading it back; another account reads it as missing",
 }
 STRIPPED = ("OPENAI_API_KEY", "CODA_ALLOW_MODEL_CALLS", "GOOGLE_APPLICATION_CREDENTIALS")
 

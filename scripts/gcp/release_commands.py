@@ -146,7 +146,14 @@ def normalize(raw, *, job=False):
     revision = template.get("metadata", {}).pop("name", None)
     task = template["spec"]["template"]["spec"] if job else template["spec"]
     containers = task["containers"]
-    require(len(containers) == 1, "Only one infrastructure-owned container supported")
+    require(len(containers) == 1 or (
+        not job and len(containers) == 2
+        and containers[1].get("name") == "otel-collector"
+        and not containers[1].get("ports")
+        and containers[0].get("ports")
+    ), "Only the ingress product and optional infrastructure-owned otel-collector are supported")
+    # Only the product image is release-owned. Preserve the complete collector
+    # image/config in the normalized baseline so any sidecar drift is refused.
     container = containers[0]
     image = container.pop("image")
     env = {item["name"]: item for item in container.get("env", [])}

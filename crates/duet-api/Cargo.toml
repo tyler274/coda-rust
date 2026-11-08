@@ -30,6 +30,7 @@ sha2 = "0.11"
 sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "postgres", "uuid", "chrono", "json", "tls-rustls", "derive"] }
 telemetry = { path = "../telemetry" }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "fs", "signal", "time", "sync", "io-util"] }
+tracing = "0.1"
 uuid = { version = "1", features = ["serde", "v4"] }
 
 [dev-dependencies]
@@ -38,3 +39,4 @@ duet-health = { path = "../duet-health" }
 chrono = { version = "0.4", features = ["serde"] }
 http-body-util = "0.1"
 tower = { version = "0.5", features = ["util"] }
+tracing-subscriber = { version = "0.3", features = ["registry", "fmt"] }

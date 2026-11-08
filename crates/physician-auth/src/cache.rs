@@ -6,10 +6,11 @@
 //! process memory and drops everything it holds when the authority tables
 //! change:
 //!
-//! - a write through this store clears the cache before it returns, so a
+//! - a revocation through this store clears the cache before it returns, so a
 //!   replica reads its own writes;
-//! - a write from any replica fires the `physician_authority` trigger, and
-//!   the [`follow`] task's `LISTEN` turns it into a new feed generation;
+//! - a revocation from any replica fires the `physician_authority` trigger,
+//!   and the [`follow`] task's `LISTEN` turns it into a new feed generation.
+//!   A session update is an idle slide and does not notify;
 //! - while that listener is disconnected the feed is not live and every read
 //!   goes to the database, because notifications sent during the gap are lost;
 //! - every entry also expires after [`ENTRY_TTL`], bounding staleness should a
@@ -29,8 +30,8 @@ use tokio::sync::watch;
 
 use crate::{
     Account, AuthStore, AuthorityFeed, Cadence, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, Session, SessionError, SignInError,
-    StoreUnavailable, token_hash,
+    PhysicianIdentity, PracticeClock, ReviewCadence, Session, SessionActivity, SessionError,
+    SessionRenewal, SignInError, StoreUnavailable, token_hash,
 };
 
 /// The Postgres channel the authority triggers notify.
@@ -182,7 +183,7 @@ impl CachedAuthStore {
                 if let Some((session, at)) = cache.sessions.get(&hash)
                     && at.elapsed() < ENTRY_TTL
                 {
-                    return if now < session.expires_at {
+                    return if session.lifetime.allows(now) {
                         Ok(session.clone())
                     } else {
                         Err(SessionError::Invalid)
@@ -282,6 +283,39 @@ impl AuthStore for CachedAuthStore {
 
     async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         self.read_session(token, now).await
+    }
+
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<SessionActivity, StoreUnavailable> {
+        let hash = token_hash(token);
+        let before = *self.feed.borrow();
+        let cached = {
+            let mut cache = self.cache.lock().expect("authority cache");
+            if before.live {
+                cache.align(before.generation);
+                cache.sessions.get(&hash).and_then(|(session, at)| {
+                    (at.elapsed() < ENTRY_TTL).then_some(session.lifetime)
+                })
+            } else {
+                None
+            }
+        };
+        if let Some(lifetime) = cached {
+            match lifetime.renew(now) {
+                SessionRenewal::Covered => return Ok(SessionActivity::Covered),
+                SessionRenewal::Ended => return Ok(SessionActivity::Ended),
+                SessionRenewal::Extend { .. } => {}
+            }
+        }
+        let activity = self.inner.note_physician_activity(token, now).await?;
+        if activity == SessionActivity::Extended {
+            let mut cache = self.cache.lock().expect("authority cache");
+            cache.sessions.remove(&hash);
+        }
+        Ok(activity)
     }
 
     async fn publish_authorized(
@@ -584,6 +618,7 @@ mod tests {
     struct Counting {
         inner: MemoryAuthStore,
         reads: AtomicUsize,
+        notes: AtomicUsize,
         unavailable: AtomicBool,
     }
 
@@ -599,6 +634,14 @@ mod tests {
         async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
             self.reads.fetch_add(1, Ordering::SeqCst);
             self.inner.verified_session(token, now).await
+        }
+        async fn note_physician_activity(
+            &self,
+            token: &str,
+            now: u64,
+        ) -> Result<crate::SessionActivity, StoreUnavailable> {
+            self.notes.fetch_add(1, Ordering::SeqCst);
+            self.inner.note_physician_activity(token, now).await
         }
         async fn membership(&self, identity: &PhysicianIdentity, workspace: &str) -> Membership {
             self.reads.fetch_add(1, Ordering::SeqCst);
@@ -831,13 +874,59 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn cached_session_ends_at_its_absolute_expiry() {
+    async fn cached_session_ends_at_its_idle_deadline() {
         let (_, cache, _tx, _, token) = fixture();
-        let expiry = NOW + crate::SESSION_TTL_SECONDS;
-        assert!(cache.identity(&token, expiry - 1).await.is_ok());
+        let idle_end = NOW + 12 * 60 * 60;
+        assert!(cache.identity(&token, idle_end - 1).await.is_ok());
         assert_eq!(
-            cache.identity(&token, expiry).await,
+            cache.identity(&token, idle_end).await,
             Err(SessionError::Invalid)
+        );
+    }
+
+    #[tokio::test]
+    async fn a_covered_note_skips_the_store_and_an_extension_keeps_other_entries() {
+        let (counting, cached, _tx, identity, token) = fixture();
+        assert!(cached.identity(&token, NOW).await.is_ok());
+        assert_eq!(
+            cached.membership(&identity, "ws-1").await,
+            Membership::Denied
+        );
+        let reads = counting.reads.load(Ordering::SeqCst);
+        let notes = counting.notes.load(Ordering::SeqCst);
+        assert_eq!(
+            cached.note_physician_activity(&token, NOW).await.unwrap(),
+            SessionActivity::Covered
+        );
+        assert_eq!(
+            cached
+                .note_physician_activity(&token, NOW + 12 * 60 * 60)
+                .await
+                .unwrap(),
+            SessionActivity::Ended
+        );
+        assert_eq!(counting.notes.load(Ordering::SeqCst), notes);
+        assert_eq!(
+            cached
+                .note_physician_activity(&token, NOW + 15 * 60)
+                .await
+                .unwrap(),
+            SessionActivity::Extended
+        );
+        assert_eq!(counting.notes.load(Ordering::SeqCst), notes + 1);
+        assert_eq!(
+            cached.membership(&identity, "ws-1").await,
+            Membership::Denied
+        );
+        assert_eq!(counting.reads.load(Ordering::SeqCst), reads);
+        assert_eq!(
+            cached
+                .verified_session(&token, NOW)
+                .await
+                .unwrap()
+                .lifetime
+                .expires_at(),
+            NOW + 15 * 60 + 12 * 60 * 60
         );
     }
 

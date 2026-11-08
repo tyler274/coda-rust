@@ -47,6 +47,25 @@ mail_relay_invokers = ["serviceAccount:workspace-web-staging@coda-gym.iam.gservi
 # images.physician.worker is the initial digest. Later releases own that field.
 enable_physician_scale = true
 
+# Private GKE Autopilot cluster for the OpenTelemetry gateway, Datadog Agent and
+# Langfuse (observability-cluster.tf); infra/gcp/observability deploys into it.
+observability_cluster_enabled = true
+
+# The otel-collector sidecar on physician, duet and physician-worker, sending to
+# the gateway above. Needs the observability root applied and its gateway ready.
+observability_enabled = true
+# Both destinations behind the gateway; must match infra/gcp/observability.
+telemetry_backend = "both"
+
+# The authenticated availability probe Cloud Run Job (availability.tf), from
+# the published image, runs every minute. The direct Cloud Monitoring
+# watchdog notifies Slack #engineering-observability through the existing
+# "GCP Monitoring" channel when its heartbeat stops.
+availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-availability-probe@sha256:d8a12b49af67f386771e742a512dca575932c1c1d5dc4a378533bab5b19cdac5"
+availability_probe_schedule_enabled = true
+availability_watchdog_enabled       = true
+availability_watchdog_channels      = ["projects/coda-rust-staging/notificationChannels/12022100174098334389"]
+
 images = {
   # Initial digests only; later releases own the image field.
   physician = {

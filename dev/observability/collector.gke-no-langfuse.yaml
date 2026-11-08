@@ -1,0 +1,13 @@
+# Merged after collector.yaml and collector.gke.yaml, before the backend
+# overlay, only while the GKE gateway runs without Langfuse
+# (infra/gcp/observability langfuse_enabled = false). The ops pipelines are
+# unchanged. Generation spans still pass the caller and generation filters,
+# then go to nop (defined in collector.yaml) instead of Langfuse, so no
+# Langfuse endpoint or keys are needed. The extension list drops
+# basicauth/langfuse; lists replace on merge, so it is restated in full.
+# Backend overlays never set service.extensions, so this list stands.
+service:
+  extensions: [health_check, oidc]
+  pipelines:
+    traces/langfuse:
+      exporters: [nop]

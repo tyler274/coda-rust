@@ -40,6 +40,8 @@ enum Phase {
 }
 mod domain;
 use domain::*;
+mod shape;
+use shape::Shape;
 
 /// Polls after an async service update: 120 x 5 s covers image pull plus the
 /// 120 s startup probe budget, and the shared `Gcloud` deadline still applies.
@@ -194,12 +196,22 @@ impl Store for DiskStore {
 
 trait Cloud {
     fn service(&mut self, service: ReleaseService) -> Result<Observation>;
+    /// The service's current template shape; refuses one infrastructure
+    /// would not produce.
+    fn shape(&mut self, service: ReleaseService) -> Result<Shape>;
     fn update_job(&mut self, product: Product, images: &Images) -> Result<()>;
     fn job_image(&mut self, product: Product) -> Result<ObservedImageRef>;
     fn executions(&mut self, product: Product) -> Result<BTreeSet<ExecutionId>>;
     fn execute(&mut self, product: Product) -> Result<ExecutionId>;
     fn execution(&mut self, id: &ExecutionId, image: &PublishedImage) -> Result<Execution>;
-    fn update_service(&mut self, service: ReleaseService, images: &Images) -> Result<()>;
+    /// Updates only the image of `container`, or of the single unnamed
+    /// container when it is `None`.
+    fn update_service(
+        &mut self,
+        service: ReleaseService,
+        container: Option<&str>,
+        images: &Images,
+    ) -> Result<()>;
     fn pause(&mut self);
 }
 #[derive(Debug, PartialEq, Eq)]
@@ -350,6 +362,7 @@ fn rollout(
     store: &mut impl Store,
     cloud: &mut impl Cloud,
     name: ReleaseService,
+    before: &Shape,
 ) -> Result<()> {
     let image = receipt
         .images
@@ -360,7 +373,7 @@ fn rollout(
     checkpoint(receipt, store, name.phase())?;
     // The update is submitted asynchronously; readiness is confirmed by bounded
     // polling rather than by a synchronous call that a per-call cap could kill.
-    let update = cloud.update_service(name, &receipt.images);
+    let update = cloud.update_service(name, before.container(), &receipt.images);
     let mut observed = observe(receipt, cloud, name);
     // A failed submit may still land shortly after it returns, so the update is
     // judged unapplied only after two consecutive reads, a pause apart, both
@@ -379,12 +392,14 @@ fn rollout(
         }
     }
     let ready = serving(&observed, &image);
+    // Serving the image is not enough: nothing infrastructure owns may move.
+    let preserved = ready.then(|| cloud.shape(name).and_then(|after| after.preserves(before)));
     let record = receipt.services.get_mut(name);
     record.final_state = observed;
-    record.outcome = if ready {
-        Outcome::Succeeded
-    } else {
-        Outcome::Unknown
+    record.outcome = match &preserved {
+        Some(Ok(())) => Outcome::Succeeded,
+        Some(Err(Error::Cloud(code))) if code.is_shape_refusal() => Outcome::Failed,
+        Some(Err(_)) | None => Outcome::Unknown,
     };
     if let Err(error) = update {
         retain_cause(receipt, error);
@@ -397,12 +412,30 @@ fn rollout(
             },
         );
     }
-    let result = if ready {
-        Ok(())
-    } else {
-        Err(Error::Cloud(LocalCode::RolloutNotConfirmed))
+    let result = match preserved {
+        Some(result) => result,
+        None => Err(Error::Cloud(LocalCode::RolloutNotConfirmed)),
     };
     save_settled(store, receipt, result)
+}
+/// Every present service's shape, read before any migration so a malformed
+/// one stops the release while nothing has changed.
+fn before_shapes(
+    receipt: &Receipt,
+    cloud: &mut impl Cloud,
+) -> Result<Vec<(ReleaseService, Shape)>> {
+    SERVICES
+        .into_iter()
+        .filter(|name| matches!(receipt.services.get(*name).before, Observation::Known(_)))
+        .map(|name| Ok((name, cloud.shape(name)?)))
+        .collect()
+}
+fn shape_of(shapes: &[(ReleaseService, Shape)], name: ReleaseService) -> Result<&Shape> {
+    shapes
+        .iter()
+        .find(|(service, _)| *service == name)
+        .map(|(_, shape)| shape)
+        .ok_or(Error::Cloud(LocalCode::RequiredServiceAbsent))
 }
 fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud) -> Result<()> {
     if receipt.outcome != Outcome::Initialized {
@@ -425,8 +458,17 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
             if receipt.services.get(app.service()).before == Observation::Absent {
                 return Err(Error::Cloud(LocalCode::RequiredServiceAbsent));
             }
+        }
+        let shapes = before_shapes(receipt, cloud)?;
+        for app in Product::ALL {
             migrate(receipt, store, cloud, app)?;
-            rollout(receipt, store, cloud, app.service())?;
+            rollout(
+                receipt,
+                store,
+                cloud,
+                app.service(),
+                shape_of(&shapes, app.service())?,
+            )?;
         }
         if receipt.services.get(ReleaseService::PhysicianWorker).before == Observation::Absent {
             receipt
@@ -435,7 +477,14 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
                 .outcome = Outcome::BootstrapSkippedAbsent;
             store.save(receipt)?;
         } else {
-            rollout(receipt, store, cloud, ReleaseService::PhysicianWorker)?;
+            let worker = shape_of(&shapes, ReleaseService::PhysicianWorker)?;
+            rollout(
+                receipt,
+                store,
+                cloud,
+                ReleaseService::PhysicianWorker,
+                worker,
+            )?;
         }
         Ok(())
     })();
@@ -574,6 +623,12 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
         let service: Value = serde_json::from_slice(&output.stdout)?;
         let ready = RevisionId::try_from(text(&service, "/status/latestReadyRevisionName")?)?;
         let revision = self.json(&["revisions", "describe", ready.as_str()])?;
+        let template = service
+            .pointer("/spec/template/spec")
+            .ok_or(Error::Cloud(LocalCode::MissingCloudField))?;
+        let ready_spec = revision
+            .get("spec")
+            .ok_or(Error::Cloud(LocalCode::MissingCloudField))?;
         let traffic = service
             .pointer("/status/traffic")
             .and_then(Value::as_array)
@@ -596,8 +651,8 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
                 "/status/latestCreatedRevisionName",
             )?)?,
             ready_revision: ready,
-            image: cloud_image(&service, "/spec/template/spec/containers/0/image")?,
-            ready_image: cloud_image(&revision, "/spec/containers/0/image")?,
+            image: cloud_image(shape::product(template, name.name())?, "/image")?,
+            ready_image: cloud_image(shape::product(ready_spec, name.name())?, "/image")?,
             traffic,
         }))
     }
@@ -650,19 +705,34 @@ impl<R: command::Runner> Cloud for Gcloud<R> {
             _ => Ok(Execution::Pending),
         }
     }
-    fn update_service(&mut self, name: ReleaseService, images: &Images) -> Result<()> {
+    fn shape(&mut self, name: ReleaseService) -> Result<Shape> {
+        let service = self.json(&["services", "describe", name.name()])?;
+        let template = service
+            .pointer("/spec/template")
+            .ok_or(Error::Cloud(LocalCode::MissingCloudField))?;
+        shape::read(template, name.name())
+    }
+    fn update_service(
+        &mut self,
+        name: ReleaseService,
+        container: Option<&str>,
+        images: &Images,
+    ) -> Result<()> {
         let image = images
             .get(name.image())
             .ok_or(Error::Input("missing runtime digest"))?;
-        self.json(&[
-            "services",
-            "update",
-            name.name(),
-            "--image",
-            image.as_str(),
-            "--async",
-        ])
-        .map(|_| ())
+        let mut args = vec!["services", "update", name.name()];
+        // `--image` follows `--container`, so it never lands on the sidecar.
+        // Service flags stay in front. The GA CLI assigns every later flag
+        // to that container and rejects them before the API call.
+        if let Some(container) = container {
+            args.extend(["--async", "--container", container]);
+        }
+        args.extend(["--image", image.as_str()]);
+        if container.is_none() {
+            args.push("--async");
+        }
+        self.json(&args).map(|_| ())
     }
     fn pause(&mut self) {
         std::thread::sleep(Duration::from_secs(5));
@@ -910,27 +980,52 @@ fn write_summary(receipt: &Receipt, writer: &mut impl Write) -> Result<()> {
         )?;
     }
     for product in Product::ALL {
+        let migration = receipt.migrations.get(product);
         writeln!(
             writer,
-            "- {} migration: `{:?}`",
+            "- {} migration: `{:?}`; execution: `{}`",
             product.name(),
-            receipt.migrations.get(product).outcome
+            migration.outcome,
+            migration
+                .execution_id
+                .as_ref()
+                .map_or("not identified", ExecutionId::as_str)
         )?;
+    }
+    for diagnostic in &receipt.diagnostics {
+        let code = match diagnostic.code {
+            DiagnosticCode::Local(code) => code.as_str(),
+            DiagnosticCode::Api(code) => code.as_str(),
+        };
+        writeln!(writer, "- Diagnostic: `{:?}` / `{code}`", diagnostic.phase)?;
     }
     writeln!(
         writer,
         "\nSee the release receipt artifact for digest, execution, revision and traffic evidence."
     )?;
+    if receipt.outcome != Outcome::Succeeded {
+        writeln!(
+            writer,
+            "\nInspect the recorded migration execution and final traffic in `{PROJECT}` / `{REGION}` before recovery. Do not reexecute an uncertain migration or assume a failed release left services unchanged. Fix forward; previous-digest rollback requires schema compatibility proof and operator approval."
+        )?;
+    }
     Ok(())
 }
 fn failure_message(error: &Error) -> String {
-    match error.api_status() {
+    let mut message = match error.api_status() {
         Some(status) => format!(
             "staging release failed: {} (API status {status})",
             error.safe_code()
         ),
         None => format!("staging release failed: {}", error.safe_code()),
+    };
+    if let Error::Unrecorded { persistence, .. } = error {
+        message.push_str(&format!(
+            "; receipt persistence failed: {} (receipt may be incomplete)",
+            persistence.safe_code()
+        ));
     }
+    message
 }
 pub fn from_args(args: &[String]) -> std::result::Result<(), Failure> {
     run(args).map_err(|error| Failure::with_source(1, failure_message(&error), error))
@@ -985,6 +1080,11 @@ mod tests {
         late_update: bool,
         // Service reads fail once this many have succeeded.
         reads_before_failure: Option<usize>,
+        // Each service's template, and the container each update targeted.
+        templates: BTreeMap<String, Value>,
+        targets: Vec<Option<String>>,
+        // The update also moves the otel-collector sidecar's image.
+        sidecar_drift: bool,
     }
     fn denied() -> Error {
         Error::Command {
@@ -1019,6 +1119,17 @@ mod tests {
                 denied_update: false,
                 late_update: false,
                 reads_before_failure: None,
+                templates: SERVICES
+                    .iter()
+                    .map(|name| {
+                        (
+                            name.name().into(),
+                            shape::tests::observed(name.name(), "old-image"),
+                        )
+                    })
+                    .collect(),
+                targets: Vec::new(),
+                sidecar_drift: false,
             }
         }
     }
@@ -1054,6 +1165,9 @@ mod tests {
                 }
             }
             Ok(self.services[name].clone())
+        }
+        fn shape(&mut self, name: ReleaseService) -> Result<Shape> {
+            shape::read(&self.templates[name.name()], name.name())
         }
         fn update_job(&mut self, product: Product, images: &Images) -> Result<()> {
             images
@@ -1100,13 +1214,25 @@ mod tests {
                 },
             )
         }
-        fn update_service(&mut self, service: ReleaseService, images: &Images) -> Result<()> {
+        fn update_service(
+            &mut self,
+            service: ReleaseService,
+            container: Option<&str>,
+            images: &Images,
+        ) -> Result<()> {
             let name = service.name();
             let image = images
                 .get(service.image())
                 .ok_or(Error::Input("missing runtime digest"))?
                 .as_str();
             self.writes.push(format!("service:{name}"));
+            self.targets.push(container.map(str::to_owned));
+            // gcloud sets the image of the container it was told to target.
+            let template = self.templates.get_mut(name).expect("template");
+            *template = shape::tests::released(template, container.unwrap_or(""), image);
+            if self.sidecar_drift {
+                template["spec"]["containers"][0]["image"] = image.into();
+            }
             if self.denied_update {
                 return Err(denied());
             }
@@ -1213,6 +1339,74 @@ mod tests {
                 .iter()
                 .any(|receipt| receipt.phase == Phase::PhysicianMigrationExecute)
         );
+    }
+    #[test]
+    fn two_container_services_update_only_the_named_product_container() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud
+            .templates
+            .insert("duet".into(), shape::tests::single("old-image"));
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
+        assert_eq!(receipt.outcome, Outcome::Succeeded);
+        assert_eq!(
+            cloud.targets,
+            [
+                Some("physician".to_owned()),
+                None,
+                Some("physician-worker".to_owned())
+            ]
+        );
+        for name in SERVICES {
+            let template = &cloud.templates[name.name()];
+            let image = receipt.images.get(name.image()).expect("image").as_str();
+            assert_eq!(
+                shape::product(&template["spec"], name.name()).expect("product")["image"],
+                image
+            );
+        }
+        // The sidecar keeps its own image.
+        assert_eq!(
+            cloud.templates["physician"]["spec"]["containers"][0]["image"],
+            "otel/opentelemetry-collector-contrib:0.155.0"
+        );
+    }
+    #[test]
+    fn malformed_sidecar_shape_is_refused_before_any_migration() {
+        for service in ["duet", "physician-worker"] {
+            let mut receipt = receipt();
+            let mut cloud = FakeCloud::new();
+            // The product container is not named after its service.
+            cloud.templates.get_mut(service).expect("template")["spec"]["containers"][1]["name"] =
+                "app".into();
+            let error =
+                deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("refused");
+            assert_eq!(error.safe_code().as_str(), "unexpected-container-set");
+            assert!(cloud.writes.is_empty(), "{service}: {:?}", cloud.writes);
+            assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
+        }
+    }
+    #[test]
+    fn sidecar_drift_after_rollout_fails_and_stops_later_services() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.sidecar_drift = true;
+        let error =
+            deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect_err("drift");
+        assert_eq!(error.safe_code().as_str(), "infrastructure-field-changed");
+        assert_eq!(
+            cloud.writes,
+            [
+                "job:physician-migrate",
+                "execute:physician-migrate",
+                "service:physician"
+            ]
+        );
+        assert_eq!(
+            receipt.services.get(ReleaseService::Physician).outcome,
+            Outcome::Failed
+        );
+        assert_eq!(receipt.outcome, Outcome::PartialOrUnknown);
     }
     #[test]
     fn failed_migration_keeps_execution_and_stops_all_later_writes() {
@@ -1392,6 +1586,53 @@ mod tests {
     fn broken_summary(_: &Receipt) -> Result<()> {
         Err(std::io::Error::other("summary unwritable").into())
     }
+    #[test]
+    fn failed_summary_identifies_migration_and_sanitized_cause() {
+        let mut receipt = receipt();
+        let mut cloud = FakeCloud::new();
+        cloud.fail_migration = true;
+        deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).unwrap_err();
+        let mut output = Vec::new();
+        write_summary(&receipt, &mut output).unwrap();
+        let output = String::from_utf8(output).unwrap();
+        let execution = receipt
+            .migrations
+            .get(Product::Physician)
+            .execution_id
+            .as_ref()
+            .unwrap();
+        assert!(
+            output.contains(execution.as_str()),
+            "missing migration execution identity"
+        );
+        assert!(
+            output.contains("migration-failed"),
+            "missing sanitized diagnostic"
+        );
+        assert!(
+            output.contains("Do not reexecute"),
+            "missing ambiguous-execution guidance"
+        );
+    }
+
+    #[test]
+    fn failure_message_exposes_receipt_loss_without_raw_diagnostics() {
+        let error = Error::Unrecorded {
+            primary: Box::new(denied()),
+            persistence: Box::new(
+                std::io::Error::other("private path and credential sentinel").into(),
+            ),
+        };
+        let message = failure_message(&error);
+        assert!(message.contains("PERMISSION_DENIED"));
+        assert!(
+            message.contains("receipt persistence failed: io-failed"),
+            "missing receipt persistence failure"
+        );
+        assert!(!message.contains("sentinel"));
+        assert!(!message.contains("private"));
+    }
+
     #[test]
     fn failed_release_still_writes_its_step_summary() {
         let mut written = false;

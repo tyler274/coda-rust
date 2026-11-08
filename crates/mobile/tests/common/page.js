@@ -42,6 +42,10 @@ function (name, ...args) {
       return 'typed';
     },
 
+    inputValue(selector) {
+      return document.querySelector(selector)?.value ?? null;
+    },
+
     // Whether anything matches `selector`.
     has(selector) {
       return Boolean(document.querySelector(selector));

@@ -1,0 +1,39 @@
+# Grafana operations backend (self-hosted Tempo and Loki; Prometheus gets
+# span metrics from Tempo's metrics-generator, not from the collector).
+# Merged LAST, after collector.yaml (and on GKE after collector.gke.yaml and
+# the optional collector.gke-no-langfuse.yaml). It defines the two exporters
+# and sets only the ops pipelines' exporters, so the content-stripping and
+# caller processors from earlier files stay. Locally: compose profile
+# `grafana` (scripts/observability-up.sh --grafana).
+#
+#   TEMPO_OTLP_ENDPOINT  Tempo OTLP gRPC, default tempo:4317 (plain, in-cluster).
+#   LOKI_OTLP_ENDPOINT   Loki OTLP/HTTP base, default http://loki:3100/otlp;
+#                        the exporter appends /v1/logs.
+exporters:
+  otlp/tempo:
+    endpoint: ${env:TEMPO_OTLP_ENDPOINT:-tempo:4317}
+    tls:
+      insecure: true
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+  otlphttp/loki:
+    endpoint: ${env:LOKI_OTLP_ENDPOINT:-http://loki:3100/otlp}
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+
+service:
+  pipelines:
+    traces/ops:
+      exporters: [otlp/tempo]
+    logs/ops:
+      exporters: [otlphttp/loki]

@@ -2,6 +2,8 @@
 
 This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
+The MVP is accounts, connected records and readings, and a small workspace in Shared, where the patient writes and sends to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP. Engineering still qualifies the full patient harness, even though the MVP does not release conversation.
+
 ## What Duet is
 
 Duet is a person's own health agent, on iPhone and Android. Think of the personal agents people already use, like Instinct, Muse, Hermes or OpenClaw, managed and maintained for them and focused on their health. The conversation is the product. It helps the person understand their health, use their connected history, remember and correct what matters, follow through, notice changes and get ready for care, without ever having to retell their story.
@@ -67,11 +69,11 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 **Your doctor's plan.** The documented care decisions and open items a connected practice sends back, with source, author, date and status. It's read only, lives on Today, and Duet explains it faithfully. With more than one connected practice, each practice's plan shows separately, labeled with its practice, and Duet explains them together when asked. When a connection ends, the plan stays, marked no longer updated.
 
-**Shared.** The practice-connection tab. It has no person-to-person People list or sharing notices.
+**Shared.** The patient's place to write, select records and readings, save privately and send a saved version to a named connected practice. It also shows the practice connection. It works without a patient-side conversational agent. In the MVP it has no person-to-person People list and no publishing to doctors outside Coda.
 
 **Connected care.** An invited practice's consented connection to the person's Duet account. Patients join a practice only through that practice's invitation and their consent, and joining links to the account they already have. A person may connect to more than one practice, each connection separate. Every Duet flow works without a connected practice.
 
-**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." It's shown at sign-up and kept within reach in chat, without being repeated in every reply.
+**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." Duet shows it at sign-up, and the person can open it from account settings without chat. In the later conversation, it also stays within reach in chat, and Duet doesn't repeat it in every reply.
 
 **Companion.** A small face the person picks during setup. It's Duet's face, not a second assistant, and it changes how Duet looks, not what it can do. Its name stays on the device and is never sent to the AI. It never reacts to health and plays one-shot animations only on the person's own actions.
 
@@ -79,10 +81,12 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 ### D1. Sign up, talk to Duet, keep everything across a restart
 
+The account steps apply to the MVP. After sign-up, the MVP leads to records and Shared, with no conversation. The steps below about conversation, replies and chat notifications describe the later experience. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
+
 1. The person installs Duet from TestFlight on iPhone or from a Google Play testing link on Android. A public store listing is the goal.
-2. They sign up on their own, with no invitation: Apple or email on iPhone, Google or email on Android, and email for practice invitations. Duet has no web surface; an invitation link opens the app.
+2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. Practice invitations use email too. Duet has no web surface; an invitation link opens the app.
 3. They see the standing notice.
-4. They accept the Terms with one explicit "I agree and continue", with no prechecked box. A quiet Sign out sits under this step for a wrong account or declined Terms.
+4. They accept the Terms with one explicit "I agree and continue", with no prechecked box. Accepting them also confirms the person is 18 or over and in the U.S. A quiet Sign out sits under this step for a wrong account or declined Terms.
 5. They make one choice about AI: Allow AI or Not now. Not now keeps every non-AI part of the app working.
 6. An optional last step offers to connect their health, with every available connector on one panel and Not now. Chat never waits on imports.
 7. They land in the conversation. Records and doctor preparation are optional next steps.
@@ -91,10 +95,12 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 10. **Leaving mid-reply.** If they leave while Duet writes, a generic lock-screen alert arrives with the reply and opens the conversation at it. A reply that can't finish alerts too, as "Duet couldn't finish its reply".
 11. **App restart.** The person is still signed in, the conversation is intact, and Duet reopens where they were, with any draft they left.
 12. **Signing out before a message is confirmed.** The message still arrives and Duet replies; both show when they sign back in anywhere.
-13. **Interrupted reply.** The person's message is kept, text already streamed is kept, and an action the reply already committed is neither erased nor done twice.
-14. **Revoked session, or another account.** Either is refused, including after a restart.
+13. **Interrupted reply.** The person's message is kept, and the reply recovers as the [harness](harness.md#guarantees) promises.
+14. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed. A phone that can't reach Duet learns this only once it can, and keeps showing the account until then, behind the app's screen cover and the phone's own passcode.
 15. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The cached conversation and drafts stay usable while Duet checks the account.
 16. **AI not allowed.** Empty chat shows a small symbol, the real reason, and the matching settings action or View Today. The draft is kept.
+
+Signing in, staying signed in and signing out of a phone, with their model, live in [sign-in](../verification/duet/sign-in/README.md).
 
 ### D2. Records come in, citations reopen them, corrections change later answers
 
@@ -156,13 +162,27 @@ Alerts:
 
 ### D4. The For my doctor workspace
 
+In the MVP, this workspace is in Shared.
+
+1. The person writes in their own words and selects records or readings from You. They can save and reopen this content without a practice or an appointment.
+2. Saving is private. The person can edit their words and inspect the selected sources. A failed or unfinished save never shows as complete.
+3. While connected, Send to my practice names the practice and sends the saved version, marked as emphasized by the patient. Without a live connection, there is no Send to my practice.
+4. The practice's agents review it like any shared record and judge whether a physician needs to see it.
+5. The person can inspect what they sent. Nothing comes back into Duet from a send in the MVP, and no receipt claims that a physician looked at it.
+6. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending. Private edits do not change an earlier send. A failed or uncertain send says so honestly, and a retry never sends twice.
+7. Newer saves appear in open editors and keep the person's unsaved words. Ending the connection stops anything new from crossing. What the practice already received keeps where it came from and when. There is no PDF download.
+
+### D4.1 AI preparation and appointment context
+
+This adds to the saved workspace after the MVP. Manual editing and sending to a connected practice do not wait for it.
+
 1. The person opens their For my doctor workspace from Today.
 2. Things get added three ways: the person asks Duet to prepare or revise it; Duet proposes an update when it judges one useful, as a message with Save and Dismiss (replying "yes, add it" works too, and the workspace shows the same proposal); or the person adds something from You or through chat.
 3. Duet picks the relevant evidence and drafts a concise, factual account with sources the person can inspect.
 4. The person reviews the proposed update, sees what changed, edits it and chooses what to save. Nothing is saved without that review. If they save an edit while work is running, its proposal arrives marked "review again" against the latest version.
 5. They add appointment context from their own information or a connected practice's schedule.
 6. They save, and after an interruption or restart they reopen the same content.
-7. **Sending to the practice.** While connected, the patient sends a saved version when they choose, with one Send to my practice that names the practice, and any question for the practice written in it. It reaches the practice once, as the version they sent, like a message from a known patient. Saving alone shares nothing, and what was sent keeps its version, marked when a newer one exists. On the practice's side, the patient's agent hands it to the practice's care team agent, and the practice's agents judge whether a physician needs to see it. Anything that comes back to the patient as a message has the physician's approval.
+7. **Sending to the practice.** Sending works the same way as in D4. Only the patient sends. A patient-side agent never sends on its own.
 8. **Leaving mid-preparation.** A preparation the person asked for finishes in the background. Its result is set aside if its inputs or consent changed, and a failure needs an explicit retry.
 9. **Conflicting appointment dates.** Both dates stay visible and preparation continues, and Duet judges when to clarify. If the date changes, the preparation is kept. A suggested follow-up is never shown as a booked appointment. When a connection ends, the practice's appointment goes away and the patient's own date stays; rejoining brings back any visit the practice's schedule still has ahead.
 10. **Corrections and newer saves.** The workspace always shows and sends each record's current version, says when a record was corrected, and never blocks Send for it. Newer saves appear in any open editor, the person's unsaved words are kept, and only the same words changed in two places ask them to choose.
@@ -176,14 +196,14 @@ Alerts:
 1. **Export.** The person exports everything Duet keeps about them, every kind of data with its source and date. Export never waits on a refresh or on newer Terms; it packages what Duet holds now and says what's still importing.
 2. **Deletion.** The person deletes their account, which removes everything and stops all practice sharing.
 3. **Interrupted deletion.** The deletion finishes, and neither old work nor a restored backup brings deleted or withdrawn data back. A deletion that didn't finish is offered to the person to finish.
-4. **Sign out.** There are two scopes, this device and everywhere. Signing out everywhere ends every session while the account and its history stay, and Duet never says "signed out everywhere" until every session has ended. With unsent notes or medications, Duet tries to sync first, and if it can't, says how many entries would be lost and offers Stay signed in or Sign out anyway.
+4. **Sign out.** There are two scopes, this device and everywhere. Signing out everywhere ends every session while the account and its history stay, and Duet never says "signed out everywhere" until every session has ended. With unsent notes or medications, Duet tries to sync first, and if it can't confirm them, says how many entries it hasn't confirmed and that signing out removes them from this phone, and offers Stay signed in or Sign out anyway. An unsent message draft counts too, and signing out clears it. Signing out of this device takes effect at once, even offline, and Duet hears of it as soon as the phone can reach it.
 5. **Withdrawing AI isn't deletion.** The conversation and Duet's understanding of the person stay viewable, exportable and deletable.
 6. **Rights never wait on Terms.** While newer Terms wait, Settings still open for export, disconnecting a source, leaving a practice, deleting the account and withdrawing AI. Everything else waits.
 
 ### Chat behavior
 
 1. The person sends a message, it's kept safely and the composer is ready again. If sending definitely failed, they can edit it, and a retry keeps the same message.
-2. **Steering.** A new message while Duet is still writing steers the reply in progress, and the reply answers both. It's never refused or queued, and there's no Stop button.
+2. **Steering.** A new message while Duet is still writing [steers](harness.md#guarantees) the reply in progress. It’s never refused or queued, and there’s no Stop button.
 3. **New information mid-reply.** Duet takes in records and readings that arrive while it writes a reply or runs a Check-in, without asking whether to continue.
 4. **Replying to a message.** The person swipes to reply with a quote, and Duet can do the same. There are no reactions beyond feedback.
 5. **Feedback.** Long-press on a reply gives thumbs up, thumbs down, Copy and Select Text, and quiet thumbs show under the latest reply. Thumbs down takes an optional note, and tapping the chosen thumb again removes the feedback. Feedback stays in the person's account and is counted in metrics; sharing a reply with Coda comes after launch, under its own privacy terms.
@@ -208,7 +228,9 @@ Alerts:
 
 Access and identity:
 
-- Each person has one account, whatever the sign-in method, and joining a practice links to that account.
+- Each person has one account, tied to their verified email, and joining a practice links to that account.
+- Sessions don't expire with time. A session ends when the person signs out of that phone, signs out everywhere, or Duet revokes it.
+- A signed-in person can change their email, and Duet confirms the new address with a link. Someone signed out who can no longer reach their email gets back in through support.
 - Each request sees only its own person's data.
 - There's no guest, anonymous or local-only mode.
 - Duet is for adults 18 and over in the U.S.
@@ -261,12 +283,10 @@ In the MVP:
 
 - Duet on iPhone and Android, running on coda-rust, connected through Connected care to one or more practices.
 - Sign-up, the standing notice, Terms, AI permission, preferences, export, deletion and sign-out.
-- One continuous conversation with citations, corrections and reply feedback.
 - Portal records (Epic/MyChart, Oracle Health, healow, and athena once its route works), Apple HealthKit and Health Connect.
-- Notes and medications the person enters.
-- Today with Duet's own work, insights, Plans, Reminders, Check-ins, the doctor's plan, and push.
-- The For my doctor workspace, with the patient's own and the connected practice's appointment context, sent to a connected practice by the patient.
-- Clinical and regulatory qualification of the patient-facing functions before real patients.
+- You, record search, original record details and measurement views with their values, units, dates, sources and corrections.
+- A small workspace in Shared: the patient's words and selected records and readings, private saving, and sends to a named connected practice.
+- Account and records use on their own, with no practice and no general patient chat. Each permission still holds for the AI features that use it, even though those features are not in the MVP.
 - Everything free for everyone, with no paid tier or feature gating.
 
 Not in the MVP, and absent from the app rather than shown as coming soon:
@@ -287,6 +307,11 @@ Not in the MVP, and absent from the app rather than shown as coming soon:
 
 Later:
 
+- General patient conversation, citations, corrections, reply feedback and private memory, as one continuous conversation per person. A new run or model window never starts a new conversation the person can see.
+- Proactive Today, insights, Plans, Reminders, Check-ins, re-engagement and their notifications.
+- AI-proposed notes and medications entered through conversation.
+- Requested and proactive AI workspace preparation, patient review of proposed changes, and patient and practice appointment context.
+- The doctor's plan in Duet, with its explanation and plan Check-ins.
 - Sharing For my doctor with a physician outside Coda: the patient publishes reviewed material as a page, sees exactly what the doctor will get, shares a link with a separate passcode and a visible, editable expiry, and can revoke it. A saved update never changes a snapshot already shared.
 - Clinician lookup against the NPI registry, then release of information, with a confident match and a clarifying question at its core. Nothing is saved, shared or sent to a clinician the patient hasn't confirmed.
 - Document upload.
@@ -304,25 +329,33 @@ Later:
 
 These are how we build Duet. They shape its behavior but are engineering's to change.
 
-**Model.** Duet's AI is one model whose effort depends on the work; background runs will probably run at max effort.
+**Models.** Two roles. Sol runs the conversation. Luna does Check-ins, Today and Duet's other own work, which will probably run at max effort.
 
 **Chat.** The chat should feel like texting, so we adopt a strong open-source chat implementation instead of building one from scratch.
 
-**Schedules and budgets.** Duet's own work starts with a daily look, a weekly recap and a review when new records arrive. How often it runs, whether a new reading wakes it or waits for the next look, what it costs per person, and how and how often it retries are engineering decisions, as are capacity targets and any daily message limit. At a message limit, the composer shows one quiet line and keeps the draft. The starting capacity targets are 20 simultaneous chats, a reply starting within 30 seconds, Check-ins within 10 minutes and about 1,000 active people a day; they're targets, not measurements. Any backstop on one reply's tool calls is a runaway guard, never a quota on how the model investigates, and when ordinary questions hit it the fix is better tools.
+**Schedules and budgets.** Duet's own work starts with a daily look, a weekly recap and a review when new records arrive. How often it runs, whether a new reading wakes it or waits for the next look, what it costs per person, and how and how often it retries are engineering decisions, as are capacity targets and any daily message limit. At a message limit, the composer shows one quiet line and keeps the draft. The starting capacity targets are 20 simultaneous chats, a reply starting within 30 seconds, Check-ins within 10 minutes and about 1,000 active people a day; they're targets, not measurements.
 
-**Runs.**
+**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Duet:
 
-- When context fills, Duet keeps structural checkpoints of each request rather than a model-written note.
 - A sent message is durable once accepted and is never lost to a model failure, the app exiting or a restart.
-- A message that arrives while a run is active steers that run. Several runs may be active for one account at once, and Duet's own work doesn't wait for the person to stop chatting.
-- A push only wakes work, and the work always pulls current truth.
+- **Several runs at once.** One account can have several active runs, and Duet's own work doesn't wait for the person to stop chatting.
+  - Each account has one active run per kind of work: chat, Check-in and Today. Today never delays a due Check-in.
+  - The rate-limit gate is the one capacity owner.
+  - Held work takes no slot.
+  - Only chat can be steered.
+  - Each kind of work checks its own active run and inputs.
+  - Work waiting its turn says it's waiting.
+  - Accepted results enter the conversation in the order they're saved.
+- **A reply at its run limit.**
+  - Duet keeps the partial answer visible, and Try again continues it.
+  - Sending a new message starts the next turn in the same conversation.
+  - If the person steers a resumed reply, their message stays where they sent it, and the continuation appears below it.
 - Anything background work has for the person goes through the conversation.
-- An interrupted run resumes as the same run: streamed text is kept, and a committed action is reconciled, never duplicated. An interruption the person causes, including their own new message, never uses up an attempt.
 - A permission change takes effect immediately: withdrawal ends the run in progress, and a pause holds work without using it up.
 - A correction fences any unfinished work that read the corrected input, so nothing stale is published.
 - A scheduled Reminder or Check-in fires exactly once, honors pause and cancel, and is skipped if its time passes while it can't deliver. Retry windows count only time Duet was allowed to work.
 - Imports resume without duplicates and end in a stated outcome, and engineering can see which connection is overdue and why.
 - Deletion and sign-out everywhere complete before they're reported done.
-- Each run leaves a record the team can inspect. Run steps come only from real events and never reach Duet's UI, Today or notifications.
+- Run steps never reach Duet's UI, Today or notifications.
 
-**Proof.** We prove Duet by running the jobs it must do as simulations across patient types and scenarios, local and synthetic first, with production traces added over time. A simulation never scripts the model's conclusions.
+**Proof.** We prove Duet by running the jobs it must do as simulations across patient types and scenarios, local and synthetic first, with production traces added over time. Simulations run the way the [harness](harness.md#how-it-works) describes.

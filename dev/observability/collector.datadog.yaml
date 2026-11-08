@@ -1,7 +1,26 @@
-# Merged on top of collector.yaml when the Datadog Agent runs (compose profile
-# `datadog`). It restates the base exporter so the local stack always passes
-# exactly two --config files; collector.debug.yaml is the other choice.
+# Datadog operations backend. Merged LAST, after collector.yaml (and on GKE
+# after collector.gke.yaml and the optional collector.gke-no-langfuse.yaml).
+# It defines the Datadog exporter and sets only the ops pipelines' exporters,
+# so the content-stripping and caller processors from earlier files stay.
+# Locally: compose profile `datadog` (scripts/observability-up.sh --datadog).
+#
+#   DATADOG_OTLP_ENDPOINT  Datadog Agent OTLP gRPC, default datadog-agent:4317.
+exporters:
+  otlp/datadog:
+    endpoint: ${env:DATADOG_OTLP_ENDPOINT:-datadog-agent:4317}
+    tls:
+      insecure: true
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+
 service:
   pipelines:
-    traces/datadog:
+    traces/ops:
+      exporters: [otlp/datadog]
+    logs/ops:
       exporters: [otlp/datadog]

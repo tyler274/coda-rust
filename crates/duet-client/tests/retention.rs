@@ -51,6 +51,129 @@ fn draft() -> DoctorDraft {
     }
 }
 #[test]
+fn sign_out_switch_and_new_incarnation_remove_queued_health() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.sign_out().unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "sign-out left the account's health queue"
+    );
+
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.activate(identity("acct-b:incarnation-1")).unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "account switch left the previous account's health queue"
+    );
+
+    let same_subject = RetainedIdentity {
+        subject: "acct-a:incarnation-1".into(),
+        owner: "acct-a:incarnation-2".into(),
+        refresh_token: "secret".into(),
+    };
+    // The switch above signed B in. Put A back, then return as a new incarnation.
+    let a = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner
+        .write_health_outbox(&a, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    owner.activate(same_subject).unwrap();
+    assert!(
+        !store_holds(&store, "acct-a:incarnation-1"),
+        "a new incarnation left the deleted incarnation's health queue"
+    );
+}
+
+#[test]
+fn sign_out_warning_names_the_draft_the_save_and_the_health_queue() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    owner
+        .retain_operation(
+            &fence,
+            &duet_client::doctor::PendingDoctorOperation::Clear {
+                operation_id: uuid::Uuid::nil(),
+                expected_generation: 1,
+            },
+        )
+        .unwrap();
+    owner
+        .write_health_outbox(&fence, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    let leaving = owner.account_leaving().unwrap();
+    assert!(leaving.draft);
+    assert!(leaving.pending_operation);
+    assert_eq!(leaving.health_uploads, 1);
+    let warning = leaving.warning();
+    assert!(warning.contains("Stay signed in"));
+    assert!(warning.contains("sign out anyway"));
+    assert!(warning.contains("unsaved doctor draft"));
+    assert!(warning.contains("unconfirmed save"));
+    assert!(warning.contains("1 unsent health upload"));
+    let removed = leaving.removed();
+    owner.sign_out().unwrap();
+    assert!(!store_holds(&store, "acct-a:incarnation-1"));
+    assert!(removed.contains("Removed from this phone"));
+    assert!(owner.account_leaving().unwrap().is_empty());
+}
+
+#[test]
+fn every_key_this_account_writes_is_registered() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("acct-a:incarnation-1")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    owner
+        .retain_operation(
+            &fence,
+            &duet_client::doctor::PendingDoctorOperation::Clear {
+                operation_id: uuid::Uuid::nil(),
+                expected_generation: 1,
+            },
+        )
+        .unwrap();
+    owner
+        .write_health_outbox(&fence, "install:apple", br#"{"heart":142}"#)
+        .unwrap();
+    for key in store.values.lock().unwrap().keys() {
+        assert!(
+            registered_storage_key(key),
+            "{key} was stored without being named in the inventory"
+        );
+    }
+    assert!(!registered_storage_key("patient-note:secret"));
+}
+
+fn store_holds(store: &Store, owner: &str) -> bool {
+    store.values.lock().unwrap().iter().any(|(key, value)| {
+        key != "active-identity"
+            && (key.contains(owner) || String::from_utf8_lossy(value).contains(owner))
+    })
+}
+
+#[test]
+fn refusal_invalidates_views_without_deleting_protected_patient_work() {
+    let store = Arc::new(Store::default());
+    let owner = RetentionOwner::new(store.clone());
+    let fence = owner.activate(identity("account:incarnation")).unwrap();
+    owner.save(&fence, draft()).unwrap();
+    let before = store.values.lock().unwrap().clone();
+    assert!(owner.session().invalidate(&fence));
+    assert!(owner.recover(&fence).is_err());
+    assert_eq!(*store.values.lock().unwrap(), before);
+    assert!(!owner.cleanup_required().unwrap());
+}
+
+#[test]
 fn boxed_recovery_preserves_v1_storage_bytes_and_subject_fence() {
     let store = Arc::new(Store::default());
     let owner = RetentionOwner::new(store.clone());
