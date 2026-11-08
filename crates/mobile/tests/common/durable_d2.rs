@@ -186,7 +186,10 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
                 durable: state,
                 store: duet_api::conversation::ConversationStore::new(database.clone()),
                 model: "no-live-provider".into(),
-                provider: Some((format!("{base}/controlled-response"), "local".into())),
+                provider: Some(duet_api::conversation_routes::ModelProvider::Responses {
+                    endpoint: format!("{base}/controlled-response"),
+                    key: "local".into(),
+                }),
             },
         ))
         .route(

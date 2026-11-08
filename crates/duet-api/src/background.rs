@@ -45,6 +45,7 @@ async fn privacy_sweep(recovery: &PrivacyStore) {
 pub fn api_error_class(e: &ApiError) -> &'static str {
     match e {
         ApiError::Unauthorized
+        | ApiError::InvalidToken(_)
         | ApiError::SessionRevoked
         | ApiError::SessionExpired
         | ApiError::AbsentAccount
@@ -76,6 +77,10 @@ mod tests {
     fn every_api_error_has_a_class() {
         let cases = [
             (ApiError::Unauthorized, "identity"),
+            (
+                ApiError::InvalidToken(jsonwebtoken::errors::ErrorKind::InvalidToken.into()),
+                "identity",
+            ),
             (ApiError::SessionRevoked, "identity"),
             (ApiError::AbsentAccount, "identity"),
             (ApiError::Forbidden, "identity"),

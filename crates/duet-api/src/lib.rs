@@ -67,6 +67,8 @@ pub const REQUIRED_MIGRATION: &str = "0120_one_review_bookmark";
 pub enum ApiError {
     /// The `Unauthorized` case.
     Unauthorized,
+    /// A bearer token failed validation; renders exactly as `Unauthorized`.
+    InvalidToken(jsonwebtoken::errors::Error),
     /// A stale or mismatched operation cannot replace newer state.
     Conflict(&'static str),
     /// The bearer was valid, and sign out everywhere ended that session.
@@ -110,7 +112,7 @@ impl IntoResponse for ApiError {
                     _ => "stale_state",
                 },"message":message}),
             ),
-            Self::Unauthorized => (
+            Self::Unauthorized | Self::InvalidToken(_) => (
                 StatusCode::UNAUTHORIZED,
                 refusal("session_invalid", "unverified"),
             ),

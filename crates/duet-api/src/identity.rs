@@ -162,6 +162,56 @@ impl IdentityVerifier for IdentityPlatform {
         })
     }
 }
+/// Issuer and audience of [`LocalIdentity`] tokens.
+pub const LOCAL_ISSUER: &str = "duet-local";
+
+/// Local-stack verifier for HS256 tokens signed with an operator-chosen secret.
+/// Hosted startup refuses it (`hosting::validate_startup`); it stands in for
+/// Identity Platform so the served binary runs without cloud identity.
+pub struct LocalIdentity {
+    key: jsonwebtoken::DecodingKey,
+}
+impl LocalIdentity {
+    /// The secret must carry at least 32 bytes.
+    pub fn new(secret: &str) -> Result<Self, ApiError> {
+        if secret.len() < 32 {
+            return Err(ApiError::Unavailable(
+                "local identity secret must be at least 32 bytes",
+            ));
+        }
+        Ok(Self {
+            key: jsonwebtoken::DecodingKey::from_secret(secret.as_bytes()),
+        })
+    }
+}
+#[derive(Deserialize)]
+struct LocalClaims {
+    sub: String,
+    auth_time: i64,
+}
+#[async_trait]
+impl IdentityVerifier for LocalIdentity {
+    async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError> {
+        let mut validation = jsonwebtoken::Validation::new(jsonwebtoken::Algorithm::HS256);
+        validation.set_issuer(&[LOCAL_ISSUER]);
+        validation.set_audience(&[LOCAL_ISSUER]);
+        validation.set_required_spec_claims(&["exp", "iss", "aud", "sub"]);
+        let claims = jsonwebtoken::decode::<LocalClaims>(bearer, &self.key, &validation)
+            .map_err(ApiError::InvalidToken)?
+            .claims;
+        if claims.sub.is_empty()
+            || claims.sub.len() > 128
+            || claims.auth_time > Utc::now().timestamp() + 30
+        {
+            return Err(ApiError::Unauthorized);
+        }
+        Ok(VerifiedIdentity {
+            subject: claims.sub,
+            authenticated_at: DateTime::from_timestamp(claims.auth_time, 0)
+                .ok_or(ApiError::Unauthorized)?,
+        })
+    }
+}
 /// An account incarnation and permission/session fence captured for a request.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct AccountContext {
@@ -327,4 +377,69 @@ pub async fn check_current(
         return Err(ApiError::Forbidden);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod local_tests {
+    use super::*;
+    use jsonwebtoken::{EncodingKey, Header, encode};
+
+    const SECRET: &str = "local-stack-secret-of-at-least-32-bytes";
+
+    fn token(secret: &str, claims: serde_json::Value) -> String {
+        encode(
+            &Header::default(),
+            &claims,
+            &EncodingKey::from_secret(secret.as_bytes()),
+        )
+        .unwrap()
+    }
+
+    fn claims(sub: &str) -> serde_json::Value {
+        let now = Utc::now().timestamp();
+        serde_json::json!({"iss":LOCAL_ISSUER,"aud":LOCAL_ISSUER,"sub":sub,"auth_time":now,"exp":now+300})
+    }
+
+    #[tokio::test]
+    async fn verifies_a_signed_local_token() {
+        let verified = LocalIdentity::new(SECRET)
+            .unwrap()
+            .verify(&token(SECRET, claims("patient-1")))
+            .await
+            .unwrap();
+        assert_eq!(verified.subject, "patient-1");
+    }
+
+    #[tokio::test]
+    async fn refuses_forged_expired_foreign_and_future_tokens() {
+        let local = LocalIdentity::new(SECRET).unwrap();
+        let now = Utc::now().timestamp();
+        let mut expired = claims("p");
+        expired["exp"] = (now - 600).into();
+        let mut foreign = claims("p");
+        foreign["aud"] = "coda-rust-stg".into();
+        let mut future = claims("p");
+        future["auth_time"] = (now + 600).into();
+        let mut no_exp = claims("p");
+        no_exp.as_object_mut().unwrap().remove("exp");
+        for bearer in [
+            token("another-secret-that-is-also-32-bytes-long", claims("p")),
+            token(SECRET, expired),
+            token(SECRET, foreign),
+            token(SECRET, future),
+            token(SECRET, no_exp),
+            token(SECRET, claims("")),
+            "not-a-token".into(),
+        ] {
+            assert!(matches!(
+                local.verify(&bearer).await,
+                Err(ApiError::Unauthorized | ApiError::InvalidToken(_))
+            ));
+        }
+    }
+
+    #[test]
+    fn a_short_secret_is_refused() {
+        assert!(LocalIdentity::new("short").is_err());
+    }
 }

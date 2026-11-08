@@ -4,16 +4,30 @@
 //! `CODA_HOSTED` is set) start only under the explicit staging-preview profile:
 //! `CODA_ENVIRONMENT=stg`, `CODA_HOSTED_PROFILE=staging-preview`, `DATABASE_URL`
 //! and `IDENTITY_PLATFORM_PROJECT_ID` (the Identity Platform project whose tokens
-//! are verified). Production and every other combination refuse to start. The model
-//! execution switch stays off and no health-data attestation is implied.
+//! are verified). Production and every other combination refuse to start, and so
+//! does any hosted run carrying a [`LOCAL_ONLY`] stand-in. The model execution
+//! switch stays off and no health-data attestation is implied.
 
 /// The only hosted profile this binary will start under.
 pub const STAGING_PROFILE: &str = "staging-preview";
+
+/// Local-stack stand-ins for Identity Platform and the model provider. Hosted
+/// startup refuses every one of them, whatever its value.
+pub const LOCAL_ONLY: [&str; 3] = [
+    "DUET_LOCAL_IDENTITY_SECRET",
+    "DUET_LOCAL_MODEL_REPLY",
+    "DUET_LOCAL_MODEL_DELAY_MS",
+];
 
 /// Refuses hosted execution unless the staging-preview profile is complete.
 pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), String> {
     if get("K_SERVICE").is_none() && get("CODA_HOSTED").is_none() {
         return Ok(());
+    }
+    if let Some(name) = LOCAL_ONLY.iter().find(|name| get(name).is_some()) {
+        return Err(format!(
+            "Duet hosted activation refuses the local-only {name}; hosted runs verify Identity Platform tokens and never serve fixed replies"
+        ));
     }
     let environment = get("CODA_ENVIRONMENT").unwrap_or_default();
     let profile = get("CODA_HOSTED_PROFILE").unwrap_or_default();
@@ -115,6 +129,34 @@ mod tests {
                 "{environment}/{profile} must refuse"
             );
         }
+    }
+
+    #[test]
+    fn local_stand_ins_refuse_hosted_even_with_a_complete_profile() {
+        let complete = [
+            ("CODA_ENVIRONMENT", "stg"),
+            ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+            ("DATABASE_URL", "postgres://db/duet"),
+            ("IDENTITY_PLATFORM_PROJECT_ID", "coda-rust-stg"),
+        ];
+        for name in LOCAL_ONLY {
+            for value in ["", "x"] {
+                let mut env = complete.to_vec();
+                env.push((name, value));
+                assert!(hosted(&env).is_err(), "{name}={value:?} must refuse");
+                let marked = validate_startup(|key| {
+                    if key == "CODA_HOSTED" {
+                        return Some("1".into());
+                    }
+                    env.iter()
+                        .find(|(k, _)| *k == key)
+                        .map(|(_, v)| (*v).to_owned())
+                });
+                assert!(marked.is_err(), "CODA_HOSTED with {name} must refuse");
+            }
+        }
+        let local = validate_startup(|key| LOCAL_ONLY.contains(&key).then(|| "x".to_owned()));
+        assert!(local.is_ok(), "local stacks may use the stand-ins");
     }
 
     #[test]

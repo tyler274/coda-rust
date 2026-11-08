@@ -1,8 +1,9 @@
 use duet_api::{
+    conversation_routes::ModelProvider,
     database::AccountDatabase,
     durable::{DurableState, router},
     evidence::EvidenceStore,
-    identity::{IdentityPlatform, IdentityStore},
+    identity::{IdentityPlatform, IdentityStore, IdentityVerifier, LocalIdentity},
     privacy::{FileJournal, PrivacyStore},
 };
 use std::{env, sync::Arc};
@@ -19,11 +20,16 @@ async fn main() {
     let database = AccountDatabase::connect(&url)
         .await
         .expect("account database boundary");
-    let verifier = IdentityPlatform::new(
-        env::var("IDENTITY_PLATFORM_PROJECT_ID").expect("IDENTITY_PLATFORM_PROJECT_ID"),
-        env::var("IDENTITY_PLATFORM_API_KEY").expect("IDENTITY_PLATFORM_API_KEY"),
-    )
-    .expect("identity verifier");
+    let verifier: Arc<dyn IdentityVerifier> = match env::var("DUET_LOCAL_IDENTITY_SECRET") {
+        Ok(secret) => Arc::new(LocalIdentity::new(&secret).expect("local identity secret")),
+        Err(_) => Arc::new(
+            IdentityPlatform::new(
+                env::var("IDENTITY_PLATFORM_PROJECT_ID").expect("IDENTITY_PLATFORM_PROJECT_ID"),
+                env::var("IDENTITY_PLATFORM_API_KEY").expect("IDENTITY_PLATFORM_API_KEY"),
+            )
+            .expect("identity verifier"),
+        ),
+    };
     let journal: Arc<dyn duet_api::privacy::ReceiptJournal> =
         if let Ok(bucket) = env::var("DUET_PRIVACY_JOURNAL_BUCKET") {
             Arc::new(duet_api::journal_gcs::GcsJournal::new(bucket).expect("privacy bucket"))
@@ -49,7 +55,7 @@ async fn main() {
         Err(_) => database.clone(),
     };
     let state = DurableState {
-        identity: IdentityStore::new(database.clone(), Arc::new(verifier)),
+        identity: IdentityStore::new(database.clone(), verifier),
         privacy: PrivacyStore::new(accepted_database.clone(), journal),
         evidence: EvidenceStore::new(database.clone()),
     };
@@ -70,14 +76,7 @@ async fn main() {
         durable: state.clone(),
         store: duet_api::conversation::ConversationStore::new(accepted_database.clone()),
         model: env::var("DUET_MODEL").unwrap_or_else(|_| "gpt-5".into()),
-        provider: if env::var("CODA_ALLOW_MODEL_CALLS").as_deref() == Ok("1") {
-            Some((
-                "https://api.openai.com/v1/responses".into(),
-                env::var("OPENAI_API_KEY").expect("authorized provider key"),
-            ))
-        } else {
-            None
-        },
+        provider: model_provider(),
     };
     let producer_router = if let Ok(url) = env::var("DUET_HEALTH_CONTEXT_DATABASE_URL") {
         assert!(
@@ -156,6 +155,28 @@ async fn main() {
         .with_graceful_shutdown(shutdown())
         .await
         .expect("serve");
+}
+
+fn model_provider() -> Option<ModelProvider> {
+    let allowed = env::var("CODA_ALLOW_MODEL_CALLS").as_deref() == Ok("1");
+    if let Ok(text) = env::var("DUET_LOCAL_MODEL_REPLY") {
+        assert!(
+            !allowed,
+            "DUET_LOCAL_MODEL_REPLY and CODA_ALLOW_MODEL_CALLS are exclusive"
+        );
+        assert!(!text.is_empty(), "DUET_LOCAL_MODEL_REPLY must not be empty");
+        let delay = env::var("DUET_LOCAL_MODEL_DELAY_MS")
+            .map(|ms| ms.parse().expect("DUET_LOCAL_MODEL_DELAY_MS milliseconds"))
+            .unwrap_or(0);
+        return Some(ModelProvider::Fixed {
+            text,
+            delay: std::time::Duration::from_millis(delay),
+        });
+    }
+    allowed.then(|| ModelProvider::Responses {
+        endpoint: "https://api.openai.com/v1/responses".into(),
+        key: env::var("OPENAI_API_KEY").expect("authorized provider key"),
+    })
 }
 
 async fn shutdown() {
