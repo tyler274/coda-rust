@@ -17,9 +17,12 @@ region           = "us-east1"
 telemetry_backend                = "both"
 grafana_cloud_monitoring_enabled = true
 
-# Enabling Langfuse requires its Cloud SQL IAM grants and Doppler secrets; the
-# gateway drops generation copies while off.
-langfuse_enabled = false
+# Langfuse (README.md, "Secrets"). Before the saved plan is applied, the
+# operator seeds the 11 LANGFUSE_* keys in Doppler coda-rust/stg, and the apply
+# identity needs resourcemanager.projects.setIamPolicy for the Cloud SQL grants.
+# The S3 HMAC pair is minted with `gcloud storage hmac create` for
+# coda-langfuse-blobs, which this root creates.
+langfuse_enabled = true
 
 # Slack #engineering-observability through Datadog's Coda_Health Slack account.
 # Monitor creation has a separate datadog_monitors_enabled authorization gate.
