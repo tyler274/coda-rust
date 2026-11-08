@@ -4001,6 +4001,9 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
                 if let Some(summary) = chip.inspection.as_ref().and_then(|source| source.coda_preview.as_ref()) {
                     span { class: "citation-summary-label", "Coda's summary" }
                     ui::SourceText { text: summary.text.clone() }
+                    span { class: "reader-provenance citation-summary-date",
+                        "{shell::summary_provenance(&summary.as_of_label, &summary.as_of)}"
+                    }
                 } else if let Some(source) = &chip.inspection {
                     span { "{source.record_kind}" }
                     span { "Statement in the retained record. Open to read source details." }
@@ -4021,7 +4024,7 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
     rsx! {
         article { class: "clinical-source-reader",
             if let (Some(label), Some(uri)) = (reading.link_label, reading.link_uri) {
-                a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", "{label}" }
+                a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", title: "Opens in a new tab", "{label}" }
             }
             if let Some(source) = reading.source {
                 if let Some(preview) = source.coda_preview {
