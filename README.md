@@ -191,7 +191,7 @@ agents can build and run the app side by side. Set up once, then use a session
 per worktree:
 
 ```sh
-brew bundle
+nix profile add --inputs-from . nixpkgs#container   # or: brew bundle
 dev/apple-session.sh seed
 dev/apple-session.sh up
 dev/apple-session.sh exec cargo test -p ui
@@ -201,7 +201,8 @@ dev/apple-session.sh down
 `seed` builds the shared starting point: the Nix store, the Cargo home and the
 third-party build output. It takes about 20 minutes and rerunning it picks up new
 dependencies; a session also fetches and builds whatever the seed lacks, so
-rerun it when sessions start spending their time there. `up` takes seconds, because
+rerun it when sessions start spending their time there. A seed interrupted
+partway resumes from its build output with `CODA_SESSION_KEEP_TARGET=1`. `up` takes seconds, because
 it makes APFS clones of those volumes, which share disk with the seed until they
 diverge. A session's own builds take 20 to 30 GB at their peak, and `down` returns
 them. `prune` removes the sessions of worktrees that no longer exist, and `status`
