@@ -48,15 +48,12 @@ pub fn scheduled_slot(headers: &HeaderMap, expected_job: &str) -> Result<u64, Er
         .ok_or("missing scheduler time")?;
     let timestamp = chrono::DateTime::parse_from_rfc3339(value)
         .map_err(|e| Error::caused("invalid scheduler time", e))?;
-    if timestamp.timestamp_subsec_nanos() != 0 {
-        return Err("scheduler time must be a whole minute".into());
-    }
-    let slot = u64::try_from(timestamp.timestamp())
+    let seconds = u64::try_from(timestamp.timestamp())
         .map_err(|e| Error::caused("invalid scheduler epoch", e))?;
-    if !slot.is_multiple_of(60) {
-        return Err("scheduler time must be a whole minute".into());
-    }
-    Ok(slot)
+    // Scheduler starts a `* * * * *` job seconds after the minute and stamps
+    // that start, e.g. 11:52:04.253919Z. Retries repeat it, so its minute is
+    // the slot.
+    Ok(seconds - seconds % 60)
 }
 pub fn overrides(slot: u64) -> Value {
     json!({"overrides": {"containerOverrides": [{"env": [{"name": "AVAILABILITY_PROBE_SLOT", "value": slot.to_string()}]}]}})
@@ -145,6 +142,27 @@ mod tests {
         assert!(scheduled_slot(&headers, "other").is_err());
         headers.remove("x-cloudscheduler-scheduletime");
         assert!(scheduled_slot(&headers, "projects/p/locations/r/jobs/probe").is_err());
+    }
+    #[test]
+    fn scheduler_time_within_a_minute_is_that_minute() {
+        let expected = "projects/p/locations/r/jobs/probe";
+        let slot_at = |time: &str| {
+            let mut headers = HeaderMap::new();
+            headers.insert("x-cloudscheduler-jobname", "probe".parse().unwrap());
+            headers.insert("x-cloudscheduler-scheduletime", time.parse().unwrap());
+            scheduled_slot(&headers, expected).map_err(|e| e.to_string())
+        };
+        let minute = slot_at("2026-11-08T11:52:00Z").unwrap();
+        assert!(minute.is_multiple_of(60));
+        for time in [
+            "2026-11-08T11:52:04.253919Z",
+            "2026-11-08T11:52:59.999999999Z",
+            "2026-11-08T06:52:04-05:00",
+        ] {
+            assert_eq!(slot_at(time), Ok(minute), "{time}");
+        }
+        assert_eq!(slot_at("2026-11-08T11:53:00Z"), Ok(minute + 60));
+        assert_eq!(slot_at("not a time").unwrap_err(), "invalid scheduler time");
     }
     #[test]
     fn scheduler_job_name_matches_id_or_same_location_resource() {
