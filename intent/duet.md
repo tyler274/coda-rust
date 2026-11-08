@@ -2,6 +2,8 @@
 
 This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
+The MVP is accounts, connected records and readings, and a small workspace in Shared, where the patient writes and sends to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP. Engineering still qualifies the full patient harness, even though the MVP does not release conversation.
+
 ## What Duet is
 
 Duet is a person's own health agent, on iPhone and Android. Think of the personal agents people already use, like Instinct, Muse, Hermes or OpenClaw, managed and maintained for them and focused on their health. The conversation is the product. It helps the person understand their health, use their connected history, remember and correct what matters, follow through, notice changes and get ready for care, without ever having to retell their story.
@@ -67,17 +69,19 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 **Your doctor's plan.** The documented care decisions and open items a connected practice sends back, with source, author, date and status. It's read only, lives on Today, and Duet explains it faithfully. With more than one connected practice, each practice's plan shows separately, labeled with its practice, and Duet explains them together when asked. When a connection ends, the plan stays, marked no longer updated.
 
-**Shared.** The practice-connection tab. It has no person-to-person People list or sharing notices.
+**Shared.** The patient's place to write, select records and readings, save privately and send a saved version to a named connected practice. It also shows the practice connection. It works without a patient-side conversational agent. In the MVP it has no person-to-person People list and no publishing to doctors outside Coda.
 
 **Connected care.** An invited practice's consented connection to the person's Duet account. Patients join a practice only through that practice's invitation and their consent, and joining links to the account they already have. A person may connect to more than one practice, each connection separate. Every Duet flow works without a connected practice.
 
-**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." It's shown at sign-up and kept within reach in chat, without being repeated in every reply.
+**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." Duet shows it at sign-up, and the person can open it from account settings without chat. In the later conversation, it also stays within reach in chat, and Duet doesn't repeat it in every reply.
 
 **Companion.** A small face the person picks during setup. It's Duet's face, not a second assistant, and it changes how Duet looks, not what it can do. Its name stays on the device and is never sent to the AI. It never reacts to health and plays one-shot animations only on the person's own actions.
 
 ## Journeys
 
 ### D1. Sign up, talk to Duet, keep everything across a restart
+
+The account steps apply to the MVP. After sign-up, the MVP leads to records and Shared, with no conversation. The steps below about conversation, replies and chat notifications describe the later experience. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
 
 1. The person installs Duet from TestFlight on iPhone or from a Google Play testing link on Android. A public store listing is the goal.
 2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. Practice invitations use email too. Duet has no web surface; an invitation link opens the app.
@@ -158,13 +162,27 @@ Alerts:
 
 ### D4. The For my doctor workspace
 
+In the MVP, this workspace is in Shared.
+
+1. The person writes in their own words and selects records or readings from You. They can save and reopen this content without a practice or an appointment.
+2. Saving is private. The person can edit their words and inspect the selected sources. A failed or unfinished save never shows as complete.
+3. While connected, Send to my practice names the practice and sends the saved version, marked as emphasized by the patient. Without a live connection, there is no Send to my practice.
+4. The practice's agents review it like any shared record and judge whether a physician needs to see it.
+5. The person can inspect what they sent. Nothing comes back into Duet from a send in the MVP, and no receipt claims that a physician looked at it.
+6. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending. Private edits do not change an earlier send. A failed or uncertain send says so honestly, and a retry never sends twice.
+7. Newer saves appear in open editors and keep the person's unsaved words. Ending the connection stops anything new from crossing. What the practice already received keeps where it came from and when. There is no PDF download.
+
+### D4.1 AI preparation and appointment context
+
+This adds to the saved workspace after the MVP. Manual editing and sending to a connected practice do not wait for it.
+
 1. The person opens their For my doctor workspace from Today.
 2. Things get added three ways: the person asks Duet to prepare or revise it; Duet proposes an update when it judges one useful, as a message with Save and Dismiss (replying "yes, add it" works too, and the workspace shows the same proposal); or the person adds something from You or through chat.
 3. Duet picks the relevant evidence and drafts a concise, factual account with sources the person can inspect.
 4. The person reviews the proposed update, sees what changed, edits it and chooses what to save. Nothing is saved without that review. If they save an edit while work is running, its proposal arrives marked "review again" against the latest version.
 5. They add appointment context from their own information or a connected practice's schedule.
 6. They save, and after an interruption or restart they reopen the same content.
-7. **Sending to the practice.** While connected, the patient sends a saved version when they choose, with one Send to my practice that names the practice, and any question for the practice written in it. It reaches the practice once, as the version they sent, like a message from a known patient. Saving alone shares nothing, and what was sent keeps its version, marked when a newer one exists. On the practice's side, the patient's agent hands it to the practice's care team agent, and the practice's agents judge whether a physician needs to see it. Anything that comes back to the patient as a message has the physician's approval.
+7. **Sending to the practice.** Sending works the same way as in D4. Only the patient sends. A patient-side agent never sends on its own.
 8. **Leaving mid-preparation.** A preparation the person asked for finishes in the background. Its result is set aside if its inputs or consent changed, and a failure needs an explicit retry.
 9. **Conflicting appointment dates.** Both dates stay visible and preparation continues, and Duet judges when to clarify. If the date changes, the preparation is kept. A suggested follow-up is never shown as a booked appointment. When a connection ends, the practice's appointment goes away and the patient's own date stays; rejoining brings back any visit the practice's schedule still has ahead.
 10. **Corrections and newer saves.** The workspace always shows and sends each record's current version, says when a record was corrected, and never blocks Send for it. Newer saves appear in any open editor, the person's unsaved words are kept, and only the same words changed in two places ask them to choose.
@@ -265,12 +283,10 @@ In the MVP:
 
 - Duet on iPhone and Android, running on coda-rust, connected through Connected care to one or more practices.
 - Sign-up, the standing notice, Terms, AI permission, preferences, export, deletion and sign-out.
-- One continuous conversation with citations, corrections and reply feedback.
 - Portal records (Epic/MyChart, Oracle Health, healow, and athena once its route works), Apple HealthKit and Health Connect.
-- Notes and medications the person enters.
-- Today with Duet's own work, insights, Plans, Reminders, Check-ins, the doctor's plan, and push.
-- The For my doctor workspace, with the patient's own and the connected practice's appointment context, sent to a connected practice by the patient.
-- Clinical and regulatory qualification of the patient-facing functions before real patients.
+- You, record search, original record details and measurement views with their values, units, dates, sources and corrections.
+- A small workspace in Shared: the patient's words and selected records and readings, private saving, and sends to a named connected practice.
+- Account and records use on their own, with no practice and no general patient chat. Each permission still holds for the AI features that use it, even though those features are not in the MVP.
 - Everything free for everyone, with no paid tier or feature gating.
 
 Not in the MVP, and absent from the app rather than shown as coming soon:
@@ -291,6 +307,11 @@ Not in the MVP, and absent from the app rather than shown as coming soon:
 
 Later:
 
+- General patient conversation, citations, corrections, reply feedback and private memory, as one continuous conversation per person. A new run or model window never starts a new conversation the person can see.
+- Proactive Today, insights, Plans, Reminders, Check-ins, re-engagement and their notifications.
+- AI-proposed notes and medications entered through conversation.
+- Requested and proactive AI workspace preparation, patient review of proposed changes, and patient and practice appointment context.
+- The doctor's plan in Duet, with its explanation and plan Check-ins.
 - Sharing For my doctor with a physician outside Coda: the patient publishes reviewed material as a page, sees exactly what the doctor will get, shares a link with a separate passcode and a visible, editable expiry, and can revoke it. A saved update never changes a snapshot already shared.
 - Clinician lookup against the NPI registry, then release of information, with a confident match and a clarifying question at its core. Nothing is saved, shared or sent to a clinician the patient hasn't confirmed.
 - Document upload.
