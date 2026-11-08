@@ -6,9 +6,6 @@ function (name, ...args) {
     scrollTo(selector) {
       document.querySelector(selector).scrollIntoView({ block: 'center' });
     },
-    inputValue(selector) {
-      return document.querySelector(selector)?.value ?? null;
-    },
     beginAccountSwitchProof() {
       window.accountSwitchDocument = crypto.randomUUID();
       return window.accountSwitchDocument;
