@@ -1,21 +1,35 @@
 //! After the session ends, the page holds no patient content and the browser
-//! stores nothing that names the physician.
+//! stores nothing that names the physician or holds their unsent text.
 
 use std::time::{Duration, Instant};
+
+use serde_json::{Value, json};
 
 mod common;
 #[allow(dead_code)]
 #[path = "../../mobile/tests/common/devtools.rs"]
 mod devtools;
+#[allow(dead_code)]
 mod required_auth;
 
 use devtools::{Browser, DESKTOP};
-use required_auth::{END_THE_SESSION, SIGNED_IN, STAGING_EMAIL, spawn_required_server};
+use required_auth::{SIGNED_IN, STAGING_EMAIL, spawn_required_server};
 
-fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
+const PHYSICIAN_ID: &str = "staging-physician";
+const PATIENT: &str = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
+
+fn step(browser: &mut Browser, name: &str, args: Value) -> Value {
+    let mut arguments = vec![json!(name)];
+    arguments.extend(args.as_array().expect("a step's arguments").iter().cloned());
+    browser
+        .page()
+        .call_function(include_str!("js/session_prompt.js"), &arguments)
+}
+
+fn wait_until(browser: &mut Browser, what: &str, mut done: impl FnMut(&mut Browser) -> bool) {
     let deadline = Instant::now() + Duration::from_secs(30);
     while Instant::now() < deadline {
-        if browser.page().evaluate(condition).as_bool() == Some(true) {
+        if done(browser) {
             return;
         }
         std::thread::sleep(Duration::from_millis(250));
@@ -23,13 +37,29 @@ fn wait_until(browser: &mut Browser, condition: &str, what: &str) {
     panic!("{what} never happened");
 }
 
-fn page_text(browser: &mut Browser) -> String {
+fn identifying_keys(browser: &mut Browser) -> Vec<String> {
+    serde_json::from_value(step(browser, "identifyingKeys", json!([PHYSICIAN_ID])))
+        .expect("a list of keys")
+}
+
+/// Signs in, opens a patient's conversation, types a draft and collapses the
+/// navigation, so the browser holds a draft and a panel choice.
+fn leave_work_in_the_browser(browser: &mut Browser, base: &str) {
+    browser.text_until(base, "Sign in to Coda");
+    browser.type_into(r#"input[type="email"]"#, STAGING_EMAIL);
+    browser.click(".control-primary");
+    browser.wait_for(SIGNED_IN);
     browser
         .page()
-        .evaluate("document.body.innerText")
-        .as_str()
-        .unwrap_or_default()
-        .to_owned()
+        .navigate(&format!("{base}/?patient={PATIENT}&chat=chat-privacy"));
+    browser.wait_for("What would you like Coda to review?");
+    browser.type_into("textarea.composer-input", "Unsent note about Mary");
+    browser.click(r#"button[aria-label="Collapse navigation"]"#);
+    wait_until(browser, "the draft and panel choice being stored", |b| {
+        let keys = identifying_keys(b);
+        keys.iter().any(|k| k.starts_with("coda.physician.draft."))
+            && keys.iter().any(|k| k.ends_with("-collapsed"))
+    });
 }
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
@@ -39,43 +69,63 @@ async fn session_end_clears_patient_content() {
     let base = format!("http://{}", server.address);
     let mut browser = Browser::launch();
     browser.resize(DESKTOP);
-    browser.text_until(&base, "Sign in to Coda");
-    browser.type_into(r#"input[type="email"]"#, STAGING_EMAIL);
-    browser.click(".control-primary");
-    browser.wait_for(SIGNED_IN);
-    browser.click(r#"button[aria-label="Find patient"]"#);
-    browser.type_into(".search-field input", "Mary");
-    browser.wait_for("DOB");
-    browser.click(".dialog-results button");
-    browser.wait_for("Records as of");
-    browser.click(r#"button[aria-label="Collapse navigation"]"#);
+    leave_work_in_the_browser(&mut browser, &base);
 
-    browser.page().evaluate(END_THE_SESSION);
-    wait_until(
-        &mut browser,
-        "!!document.querySelector('.session-prompt[open]')",
-        "the sign-in prompt",
-    );
-    let text = page_text(&mut browser);
+    step(&mut browser, "endSession", json!([]));
+    wait_until(&mut browser, "the prompt replacing the workspace", |b| {
+        step(b, "promptReplacesWorkspace", json!([])) == json!(true)
+    });
+    let text = step(&mut browser, "text", json!([]));
+    let text = text.as_str().unwrap_or_default();
     assert!(
-        !text.contains("Mary Louis") && !text.contains("Age 54"),
+        !text.contains("Mary Louis") && !text.contains("Unsent note about Mary"),
         "patient content stayed in the page after the session ended:\n{text}"
     );
+    let keys = identifying_keys(&mut browser);
     assert!(
-        text.contains("Sign in to continue"),
-        "the prompt did not replace the workspace:\n{text}"
+        keys.is_empty(),
+        "the prompt left identifying keys stored: {keys:?}"
     );
 
-    browser.page().evaluate(
-        "[...document.querySelectorAll('.session-prompt button')].find((b) => b.innerText.trim() === 'Sign out')?.click(); 'x'",
-    );
-    browser.wait_for("Sign in to Coda");
-    let storage = browser
-        .page()
-        .evaluate("JSON.stringify([...Object.keys(localStorage), ...Object.keys(sessionStorage)])");
-    let keys = storage.as_str().unwrap_or_default();
+    browser.click(".session-prompt .control-primary");
+    let text = browser.wait_for(SIGNED_IN);
     assert!(
-        !keys.contains("staging-physician") && !keys.contains("sidebar-collapsed"),
-        "a physician-identifying key survived sign-out: {keys}"
+        !text.contains("Unsent note about Mary"),
+        "signing in again brought back the draft:\n{text}"
+    );
+}
+
+/// A tab opened after the session ended never learns who signed in, and
+/// still clears what the last physician left stored.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "runs the physician page in Chromium"]
+async fn reopening_after_the_session_ended_clears_stored_choices() {
+    let server = spawn_required_server().await;
+    let base = format!("http://{}", server.address);
+    let mut browser = Browser::launch();
+    browser.resize(DESKTOP);
+    leave_work_in_the_browser(&mut browser, &base);
+    let session = step(&mut browser, "storedSession", json!([]))
+        .as_str()
+        .expect("a stored session")
+        .to_owned();
+
+    browser.page().navigate("about:blank");
+    let ended = reqwest::Client::new()
+        .post(format!("{base}/auth/sign-out"))
+        .bearer_auth(&session)
+        .send()
+        .await
+        .expect("sign-out request");
+    assert!(
+        ended.status().is_success(),
+        "sign-out answered {}",
+        ended.status()
+    );
+    browser.text_until(&base, "Sign in");
+    let keys = identifying_keys(&mut browser);
+    assert!(
+        keys.iter().all(|k| !k.ends_with("-collapsed")),
+        "reopening after the session ended kept panel choices: {keys:?}"
     );
 }

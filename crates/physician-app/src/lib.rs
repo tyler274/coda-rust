@@ -559,12 +559,9 @@ impl SessionState {
     }
 
     /// Drops patient content this tab was showing: the held link, unsent drafts,
-    /// and panel choices stored under the physician's id. The shell starts at
-    /// Today if it is shown again.
+    /// and stored panel choices. The shell starts at Today if it is shown again.
     fn drop_patient_content(mut self) {
-        if let Some(account) = self.whoami.peek().as_ref() {
-            panels::forget(&account.physician_id);
-        }
+        panels::forget_all();
         local_draft::forget_everything();
         self.forget_place();
         *self.generation.write() += 1;
@@ -573,9 +570,7 @@ impl SessionState {
     /// Back to the sign-in page in this tab only. A tab that never showed the
     /// workspace keeps the patient link it was opened at.
     fn no_session_here(mut self) {
-        if let Some(account) = self.whoami.peek().as_ref() {
-            panels::forget(&account.physician_id);
-        }
+        panels::forget_all();
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
@@ -969,9 +964,9 @@ fn PhysicianShell(
             past_work_open.set(false);
         }
     });
-    // Signing in again under the prompt, or taking a newer session of yours
-    // from another tab, re-reads the page in place, and the stream restarts on
-    // the session now held. The prompt stops the stream.
+    // Taking a newer session of yours from another tab re-reads the page in
+    // place, and the stream restarts on the session now held. The prompt
+    // unmounts the shell, so signing in from it opens a fresh one at Today.
     let taken = session.taken;
     let mut was_expired = use_signal(|| false);
     let mut read_with = use_signal(|| *taken.peek());
@@ -2458,8 +2453,8 @@ mod command_answer_tests {
     }
 }
 
-/// The sign-in page, or with `resume_email` the prompt covering a page whose
-/// session ended: it mails the same address, and signing in picks up there.
+/// The sign-in page, or with `resume_email` the prompt in place of a workspace whose
+/// session ended: it mails the same address, and signing in opens Today.
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
@@ -2644,7 +2639,7 @@ fn SignInScreen(
                                         onclick: move |_| request_token(()),
                                         "Email me a sign-in link"
                                     }
-                                    p { class: "sign-in-sub", "Open it to pick up where you were." }
+                                    p { class: "sign-in-sub", "Open it to sign in again." }
                                 }
                             },
                             SignInStage::NoAccess => rsx! {
@@ -2699,7 +2694,7 @@ fn SignInScreen(
                                 p { class: "sign-in-sub sign-in-email", "{email}" }
                                 p { class: "sign-in-sub",
                                     if resuming {
-                                        "Choose Sign in in the email to pick up where you were."
+                                        "Choose Sign in in the email to sign in again."
                                     } else {
                                         "Choose Sign in in the email to open your workspace."
                                     }

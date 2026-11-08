@@ -46,18 +46,42 @@ pub(crate) fn remember(physician_id: &str, panel: Panel, collapsed: bool) {
 #[cfg(not(target_arch = "wasm32"))]
 pub(crate) fn remember(_physician_id: &str, _panel: Panel, _collapsed: bool) {}
 
-/// Removes this physician's panel choices, so the browser no longer names them.
+/// Removes every physician's panel choices, so the browser no longer names
+/// anyone. A tab whose session ended before it learned who it was still clears them.
 #[cfg(target_arch = "wasm32")]
-pub(crate) fn forget(physician_id: &str) {
-    if let Some(storage) = storage() {
-        for panel in [Panel::Sidebar, Panel::Schedule] {
-            let _ = storage.remove_item(&key(physician_id, panel));
-        }
+pub(crate) fn forget_all() {
+    let Some(storage) = storage() else { return };
+    let length = storage.length().unwrap_or(0);
+    let keys: Vec<String> = (0..length)
+        .filter_map(|index| storage.key(index).ok().flatten())
+        .filter(|key| is_panel_key(key))
+        .collect();
+    for key in keys {
+        let _ = storage.remove_item(&key);
     }
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-pub(crate) fn forget(_physician_id: &str) {}
+pub(crate) fn forget_all() {}
+
+fn is_panel_key(key: &str) -> bool {
+    key.starts_with("coda.physician.")
+        && (key.ends_with(".sidebar-collapsed") || key.ends_with(".schedule-collapsed"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{Panel, is_panel_key, key};
+
+    #[test]
+    fn panel_keys_are_recognised_and_others_are_not() {
+        assert!(is_panel_key(&key("staging-physician", Panel::Sidebar)));
+        assert!(is_panel_key(&key("other", Panel::Schedule)));
+        assert!(!is_panel_key("coda.physician.session"));
+        assert!(!is_panel_key("coda.physician.session.email"));
+        assert!(!is_panel_key("coda.physician.draft.v1|x"));
+    }
+}
 
 #[cfg(target_arch = "wasm32")]
 fn storage() -> Option<web_sys::Storage> {

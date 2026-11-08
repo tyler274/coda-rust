@@ -67,12 +67,14 @@ Losing access:
 
 1. After a sign-out, a caught-up tab never shows the workspace from before it, or any workspace on the session signed out.
 2. A caught-up tab never shows your workspace on an expired session.
-3. Your work, shown or under the prompt, leaves for a sign-in page only when you sign out in that tab, after a sign-out the tab missed, or when your access is removed.
+3. Your workspace, or the prompt that replaced it, leaves for a sign-in page only when you sign out in that tab, after a sign-out the tab missed, or when your access is removed.
 4. While you're signed in, a caught-up tab never shows a sign-in page or the sign-in prompt, except on a page another physician's sign-in link opened.
 5. A workspace opened from a sign-in link's page shows Today.
 6. A patient link opened while you're signed out lands on that patient once you sign in, unless before then comes a sign-out, or that tab loses access, is taken over by another physician, or loads another page.
 7. Coda acts only for the physician a tab shows, and only while that physician is signed in to the browser, whether or not the tab has caught up.
-8. Once you stop acting, every open tab catches up.
+8. The sign-in prompt holds no patient page, no patient link and no patient owed after sign-in.
+9. A sign-out ends that session at Coda, whether you sign out or another physician's link signs you out, so Coda refuses it afterwards.
+10. Once you stop acting, every open tab catches up.
 
 ## Outside this spec
 

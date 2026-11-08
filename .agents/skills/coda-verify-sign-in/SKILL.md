@@ -33,7 +33,7 @@ models.
 
 Check the model, and read every result, with the pstack `/statechart` skill on
 `verification/physician/sign-in/SignIn.tla`. It passes when the report lists OnceOut, Expiry,
-KeepsWork, SignedIn, TodayFirst, Lands, ActsAsShown, CatchesUp and NoDeadlock under the rules that hold. The run is long, most of it checking CatchesUp, so run it in the
+KeepsWork, SignedIn, TodayFirst, Lands, ActsAsShown, PromptIsEmpty, ServerRefusesSignedOut, CatchesUp and NoDeadlock under the rules that hold. The run is long, most of it checking CatchesUp, so run it in the
 background.
 Then draw each chart, render it as the skill says, and read it: `chart.cfg` with `chart.mjs` on
 `SignIn.tla` draws one tab with one session, and `chart-sign-in`, `chart-another`, `chart-expiry`
@@ -80,7 +80,7 @@ These rest on stored records the model can't hold, so tests that read the record
 - A link signs in at most once: `a_sign_in_token_verifies_once_and_mints_one_session` and `concurrent_sign_in_consumes_one_token_and_mints_one_session`, on Postgres. A link expires: `an_expired_sign_in_token_is_invalid`, on the in-memory store only; no test covers expiry on Postgres yet.
 - The emailed link carries no patient: `hosted_sign_in_mails_the_link_and_omits_the_token` checks the link is the code and email alone.
 - Accounts are invite-only: `an_unknown_or_inactive_email_never_receives_a_token`; the site's only way to add a physician is `/auth/invitations`.
-- After signing back in, the page is where it was: `an_ended_session_covers_the_page_and_signing_in_again_resumes_it`. No test yet shows drafts intact, or Coda's running work unaffected.
+- A session end clears the patient page and stored patient content, and signing back in opens Today: `session_end_clears_patient_content` and `an_ended_session_replaces_the_page_and_signing_in_again_opens_today`. No test yet shows Coda's running work unaffected.
 - Work stays with each physician: `missing_and_other_physician_drafts_are_not_created_or_exposed` for reply drafts on the server. No test yet covers seen state, or this tab's drafts when another physician signs in.
 
 ## A failure
@@ -111,6 +111,9 @@ With two tabs and three sessions, each rule fails on its broken copy of the mode
 | Lands | another physician's link signs out a session that has already ended |
 | ActsAsShown | Coda acts on the session the browser stores rather than the one the tab holds |
 | ActsAsShown | Coda acts on any live session the tab holds, whichever physician the browser has signed in |
+| PromptIsEmpty | an ended session's answer shows the prompt and keeps the patient page |
+| ServerRefusesSignedOut | signing out with nothing stored leaves the tab's own session live at Coda |
+| ServerRefusesSignedOut | another physician's link signs you out and leaves your session live at Coda |
 | CatchesUp | a tab at the prompt never hears the news |
 
 A path joins `BUG_PATHS` only after it fails on the code it guards. After a change to the model or a rule,

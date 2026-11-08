@@ -12,7 +12,7 @@ const screen = (t) => {
   // Opening and showing their workspace lead on the same way, so they share a state.
   if (t.shows === "Your workspace" || (t.shows === "Opening your workspace" && whose === "their")) return `${whose} workspace`;
   if (t.shows === "Opening your workspace") return `opening ${whose} workspace`;
-  if (t.shows === "Sign-in prompt over your work") return `the prompt over ${whose} work`;
+  if (t.shows === "Sign-in prompt, with no patient content") return `the sign-in prompt for ${whose} session`;
   // The link page checks with Coda who is signed in before it redeems the link.
   if (t.signIn.startsWith("Checking")) return "checking their link";
   return t.shows;

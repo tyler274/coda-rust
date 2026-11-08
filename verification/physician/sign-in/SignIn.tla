@@ -30,7 +30,7 @@
 (* Not modeled, since they rest on Coda's records or the page's own       *)
 (* contents: an address with no account gets no email, a link signs in   *)
 (* once and expires, the email carries no patient, accounts are           *)
-(* invite-only, drafts and the open reader survive signing back in,       *)
+(* invite-only, a session end clears drafts and the patient page,        *)
 (* Coda's running work never notices, and drafts and seen state stay with *)
 (* each physician. The verify skill names the tests that hold them.       *)
 (*                                                                         *)
@@ -475,7 +475,7 @@ Expiry == \A t \in Tabs :
   (Settled(t) /\ tab[t].shows = Work /\ tab[t].presents \in Sessions)
     => session[tab[t].presents] \notin {YoursExpired, TheirsExpired}
 
-\* Your work, shown or under the prompt, leaves for a sign-in page only when you sign out in that tab,
+\* Your workspace, or the prompt that replaced it, leaves for a sign-in page only when you sign out in that tab,
 \* after a sign-out the tab missed, or when your access is removed.
 KeepsWork ==
   [][\A t \in Tabs :
@@ -509,10 +509,14 @@ PromptIsEmpty == \A t \in Tabs :
   tab[t].shows = Prompt =>
     tab[t].opens = Today /\ tab[t].link = NoLink /\ tab[t].owes = OwesNothing
 
-\* Signing out ends that session on the server. A later answer for it is a refusal.
+\* Signing out ends that session on the server, whether you sign out or another physician's link
+\* signs you out, and whether the browser stores the session or only the tab holds it. A later
+\* answer for it is a refusal.
 ServerRefusesSignedOut ==
-  [][event'.name = "sign out" /\ stores \in Sessions
-       => session'[stores] \in {YoursOut, TheirsOut}]_vars
+  [][(\/ event'.name = "sign out"
+      \/ event'.name = "Coda checks the link" /\ stores # NoSession /\ stores' = NoSession)
+       => LET ending == IF stores # NoSession THEN stores ELSE tab[event'.tab].presents
+          IN ending \in Sessions => session'[ending] \in {YoursOut, TheirsOut}]_vars
 
 \* Once you stop acting, every open tab catches up.
 CatchesUp ==
