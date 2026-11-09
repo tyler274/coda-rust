@@ -1407,6 +1407,7 @@ mod tests {
             status: "failed".into(),
             expires: 0,
             events: vec![],
+            sources_version: None,
         }
     }
 

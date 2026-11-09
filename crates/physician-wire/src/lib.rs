@@ -839,6 +839,12 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
+    #[serde(default)]
+    /// On an answer: what it rests on and its limits, written apart from it.
+    pub basis: Option<String>,
+    #[serde(default)]
+    /// On an answer: patient records arrived after it was written.
+    pub newer_records: bool,
 }
 
 impl ChatTurn {

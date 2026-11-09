@@ -77,6 +77,14 @@ pub struct Message {
     /// Exact sources cited by this answer, retained independently of later chart changes.
     #[serde(default)]
     pub citations: Vec<crate::physician_chat::Citation>,
+    /// What an answer rests on and its limits, kept apart from its text.
+    #[serde(default)]
+    pub basis: Option<String>,
+    /// The workspace source version the answer's attempt started from. A newer
+    /// version means records arrived after the answer. `None` on user messages
+    /// and on answers saved before it was recorded.
+    #[serde(default)]
+    pub sources_version: Option<u64>,
 }
 
 /// Product attempt with its immutable predecessor and durable evidence.
@@ -96,6 +104,9 @@ pub struct Attempt {
     pub expires: i64,
     /// Ordered acknowledged engine evidence, internal only.
     pub events: Vec<Event>,
+    /// The workspace source version when this attempt was claimed.
+    #[serde(default)]
+    pub sources_version: Option<u64>,
 }
 
 /// Durable conversation and work projection.
@@ -456,6 +467,8 @@ impl Store {
             role: "user".into(),
             text: input.text.clone(),
             citations: vec![],
+            basis: None,
+            sources_version: None,
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -486,6 +499,10 @@ impl Store {
         if !(1..=600).contains(&lease_seconds) {
             return Err(error("invalid lease duration"));
         }
+        // Read before the conversation lock, so the claim never holds that row
+        // while waiting on the source tables. A record landing after this read
+        // marks the answer as having newer records, which is the safe side.
+        let sources_version = self.source_version(&scope.workspace).await?;
         let (tx, mut state, now) = self.locked(scope).await?;
         if input_id.is_some_and(|id| state.input_id.as_deref() != Some(id)) {
             tx.commit().await?;
@@ -520,6 +537,7 @@ impl Store {
             status: "active".into(),
             expires: now + lease_seconds,
             events: vec![],
+            sources_version: Some(sources_version),
         });
         state.status = "active".into();
         let claim = Claim {
@@ -653,15 +671,18 @@ impl Store {
         }
         let answer = terminal_answer(&attempt.events)?;
         // DbErr holds only text; the publication error's message already names its cause.
-        let (answer, citations) = crate::physician_chat::published(&answer, &attempt.events)
+        let published = crate::physician_chat::published(&answer, &attempt.events)
             .map_err(|e| error(&e.to_string()))?;
         attempt.status = "completed".into();
+        let sources_version = attempt.sources_version;
         state.status = "completed".into();
         state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
-            text: answer,
-            citations,
+            text: published.text,
+            citations: published.citations,
+            basis: published.basis,
+            sources_version,
         });
         Self::save(tx, &claim.scope, &state).await
     }
@@ -868,6 +889,7 @@ impl Store {
                 status: "cancelled".into(),
                 expires: 0,
                 events: vec![],
+                sources_version: None,
             });
         }
         state.status = "held".into();

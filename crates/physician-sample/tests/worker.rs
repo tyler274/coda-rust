@@ -848,7 +848,7 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
         false,
         &[(
             "PHYSICIAN_WORKER_FIXED_TEXT",
-            "Controlled source read {{patient_source}}\n\n[[source_summaries]]\n{{patient_source_id}}: Records potassium 4.1.\n[[/source_summaries]]",
+            "Controlled source read {{patient_source}}\n\n[[basis]]\nRests on one potassium result.\n[[/basis]]\n[[source_summaries]]\n{{patient_source_id}}: Records potassium 4.1.\n[[/source_summaries]]",
         )],
     )
     .await
@@ -887,6 +887,22 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
             .starts_with("Controlled source read [[patient_source:")
     );
     assert_eq!(citation.summary.as_deref(), Some("Records potassium 4.1."));
+    assert!(!answer.text.contains("basis"), "{}", answer.text);
+    assert_eq!(
+        answer.basis.as_deref(),
+        Some("Rests on one potassium result.")
+    );
+    let answered_at = answer
+        .sources_version
+        .expect("the answer names its sources version");
+    assert_eq!(
+        running
+            .store
+            .source_version(&scope.workspace)
+            .await
+            .unwrap(),
+        answered_at
+    );
     assert_eq!(
         citation.id,
         local_product::physician_sources::citation_id(&source)
@@ -897,6 +913,14 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     source.content = "{\"potassium\":6.8}".into();
     source.sha256 = local_product::sha256_hex(source.content.as_bytes());
     running.store.record_source(&source).await.unwrap();
+    assert!(
+        running
+            .store
+            .source_version(&scope.workspace)
+            .await
+            .unwrap()
+            > answered_at
+    );
     let body = support::push_body(&delivery, "duplicate-citation-delivery");
     let (status, text) = support::exchange(
         &running.worker_host,

@@ -57,14 +57,15 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
             },
         },
     ];
-    let (_, citations) = local_product::physician_chat::published(
+    let citations = local_product::physician_chat::published(
         &format!(
             "Claim [[patient_source:{}]]",
             read["results"][0]["citation_id"].as_str().unwrap()
         ),
         &events,
     )
-    .unwrap();
+    .unwrap()
+    .citations;
     let saved = serde_json::to_value(&citations[0]).unwrap();
     assert_eq!(
         saved["readable_parts"],
