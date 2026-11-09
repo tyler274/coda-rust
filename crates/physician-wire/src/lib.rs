@@ -779,6 +779,69 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
+    #[serde(default)]
+    /// On one of Coda's saved responses: its place among the chat's
+    /// messages, which feedback names. Absent on every other turn.
+    pub response: Option<usize>,
+}
+
+/// A physician's rating of one of Coda's responses.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum FeedbackRating {
+    /// A good response.
+    Up,
+    /// A poor response.
+    Down,
+}
+
+/// A reason picked in a rating's details.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
+#[serde(rename_all = "snake_case")]
+pub enum FeedbackReason {
+    /// "Incorrect information".
+    IncorrectInformation,
+    /// "Missing context".
+    MissingContext,
+    /// "Hard to follow".
+    HardToFollow,
+    /// "Not useful".
+    NotUseful,
+}
+
+/// The optional details on a rating; also the details save's body.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct FeedbackDetails {
+    /// The reasons picked.
+    pub reasons: Vec<FeedbackReason>,
+    /// The physician's words.
+    pub text: String,
+}
+
+/// The rating save's body.
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RateResponse {
+    /// The rating chosen.
+    pub rating: FeedbackRating,
+}
+
+/// The physician's saved feedback on one response.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ResponseFeedback {
+    /// The response's place, as its [`ChatTurn::response`] names it.
+    pub response: usize,
+    /// The saved rating.
+    pub rating: FeedbackRating,
+    #[serde(default)]
+    /// The saved details, if any.
+    pub details: Option<FeedbackDetails>,
+}
+
+/// The physician's saved feedback on one chat's responses.
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ChatFeedback {
+    /// One entry per rated response, by place.
+    pub feedback: Vec<ResponseFeedback>,
 }
 
 impl ChatTurn {

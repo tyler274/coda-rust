@@ -723,7 +723,14 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
+        .enumerate()
+        .map(|(place, message)| {
+            let mut turn = json!({ "kind": turn_kind(&message.role), "text": message.text });
+            if message.role == "assistant" {
+                turn["response"] = json!(place);
+            }
+            turn
+        })
         .collect();
     let mut runs = Vec::new();
     match conversation.status.as_str() {
@@ -1226,5 +1233,36 @@ mod durable_snapshot_tests {
         assert!(done["runs"].as_array().unwrap().is_empty());
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
+    }
+
+    #[test]
+    fn each_response_of_codas_names_its_place_for_feedback() {
+        let mut answered = conversation("completed");
+        for (role, text) in [
+            ("assistant", "Answer"),
+            ("user", "More"),
+            ("assistant", "Again"),
+        ] {
+            answered.messages.push(Message {
+                role: role.into(),
+                text: text.into(),
+            });
+        }
+        let body = durable_snapshot_body(Some(&answered));
+        let places: Vec<_> = body["conversation"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|turn| turn.get("response").cloned())
+            .collect();
+        assert_eq!(
+            places,
+            [
+                None,
+                Some(serde_json::json!(1)),
+                None,
+                Some(serde_json::json!(3))
+            ]
+        );
     }
 }
