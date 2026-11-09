@@ -2159,9 +2159,9 @@ async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
         let visible = shown["visible"].as_str().unwrap();
         for expected in [
             "Recorded September 11, 2018, 12:20:00+00:00 as recorded",
-            "Source status recorded",
-            "Criticality recorded (not reaction severity)",
-            "Reaction details not supplied in this record.",
+            "Clinical status",
+            "Active",
+            "Criticality (not reaction severity)",
         ] {
             assert!(visible.contains(expected), "missing {expected}: {visible}");
         }

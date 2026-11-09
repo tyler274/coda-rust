@@ -86,9 +86,6 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
             general(record, &numbers, &mut view);
             source_layout::render(&layout, &numbers, &mut view);
         }
-        (Some(resource), _) if resource["resourceType"] == "AllergyIntolerance" => {
-            allergy(resource, &mut view)
-        }
         (Some(Value::Object(resource)), _) => general(resource, &numbers, &mut view),
         (Some(_), _) if view.sections.is_empty() => view.sections.push(field(
             "Source content",
@@ -190,16 +187,46 @@ fn date_label(name: &str) -> &str {
     }
 }
 
+/// A concept's first code with its code system, named where the system is well known, for a
+/// concept that carries neither text nor display: `91936005 (SNOMED CT)`.
+fn first_code(value: &Value) -> Option<String> {
+    let coding = value["coding"]
+        .as_array()?
+        .iter()
+        .find(|coding| text(&coding["code"]).is_some())?;
+    let code = text(&coding["code"])?;
+    Some(match text(&coding["system"]) {
+        Some(system) => format!("{code} ({})", code_system_name(system).unwrap_or(system)),
+        None => code.to_owned(),
+    })
+}
+
+/// A CodeableConcept whose codings carry codes alone, with no text or display to read them by;
+/// its members read under their [`coding_label`] instead of as one coded value.
+fn code_only(object: &serde_json::Map<String, Value>) -> bool {
+    !object.contains_key("text")
+        && object
+            .get("coding")
+            .and_then(Value::as_array)
+            .is_some_and(|codings| {
+                !codings.is_empty()
+                    && codings
+                        .iter()
+                        .all(|coding| coding.is_object() && coding.get("display").is_none())
+            })
+}
+
 /// The record's own kind: FHIR `type` separates allergy from intolerance, and an absent
 /// `type` claims neither.
-fn allergy_kind(resource: &Value) -> String {
-    let kind = match resource["type"].as_str() {
+fn allergy_kind(resource: &serde_json::Map<String, Value>) -> String {
+    let kind = match resource.get("type").and_then(Value::as_str) {
         Some("allergy") => "allergy",
         Some("intolerance") => "intolerance",
         _ => "allergy or intolerance",
     };
-    let medication = resource["category"]
-        .as_array()
+    let medication = resource
+        .get("category")
+        .and_then(Value::as_array)
         .is_some_and(|categories| categories.iter().any(|value| value == "medication"));
     if medication {
         format!("Medication {kind} record")
@@ -207,121 +234,6 @@ fn allergy_kind(resource: &Value) -> String {
         let mut kind = kind.to_owned();
         kind[..1].make_ascii_uppercase();
         format!("{kind} record")
-    }
-}
-
-fn allergy(resource: &Value, view: &mut SourceInspection) {
-    let statement = concept(&resource["code"]);
-    view.title = statement
-        .clone()
-        .unwrap_or_else(|| "Allergy or intolerance statement not supplied".into());
-    view.record_kind = allergy_kind(resource);
-    if let Some(value) = text(&resource["type"]) {
-        view.record_details
-            .push(located("Type recorded", value, "type"));
-    }
-    view.sections.insert(
-        0,
-        match &statement {
-            Some(statement) => located("Statement in this record", statement, "code"),
-            None => field("Statement in this record", &view.title),
-        },
-    );
-    for name in ["recordedDate", "onsetDateTime", "lastOccurrence"] {
-        if let Some(value) = text(&resource[name])
-            && !view
-                .dates
-                .iter()
-                .any(|date| date.label == date_label(name) && date.text == value)
-        {
-            view.dates.push(located(date_label(name), value, name));
-        }
-    }
-    for (name, label) in [
-        ("patient", "Patient in source"),
-        ("recorder", "Recorded by"),
-        ("asserter", "Asserted by"),
-    ] {
-        if let Some(value) = text(&resource[name]["display"]) {
-            view.attribution.push(located(
-                label,
-                value,
-                SourcePath::root().member(name).member("display"),
-            ));
-        }
-    }
-    for (name, label) in [
-        ("clinicalStatus", "Source status recorded"),
-        ("verificationStatus", "Verification status recorded"),
-    ] {
-        if let Some(value) = status_text(&resource[name]) {
-            view.statuses.push(located(label, &value, name));
-        }
-    }
-    if let Some(value) = text(&resource["criticality"]) {
-        view.record_details.push(located(
-            "Criticality recorded (not reaction severity)",
-            value,
-            "criticality",
-        ));
-    }
-    let reactions = resource["reaction"]
-        .as_array()
-        .map(Vec::as_slice)
-        .unwrap_or_default();
-    if reactions.is_empty() {
-        view.sections.push(field(
-            "Reactions",
-            "Reaction details not supplied in this record.",
-        ));
-    }
-    for (index, reaction) in reactions.iter().enumerate() {
-        let mut values = Vec::new();
-        if let Some(substance) = concept(&reaction["substance"]) {
-            values.push(format!("Substance: {substance}"));
-        }
-        let manifestations: Vec<_> = reaction["manifestation"]
-            .as_array()
-            .into_iter()
-            .flatten()
-            .filter_map(concept)
-            .collect();
-        values.push(if manifestations.is_empty() {
-            "Manifestation not supplied.".into()
-        } else {
-            format!("Manifestation: {}", manifestations.join("; "))
-        });
-        if let Some(value) = text(&reaction["description"]) {
-            values.push(value.into());
-        }
-        if let Some(value) = text(&reaction["severity"]) {
-            values.push(format!("Reaction severity recorded: {value}"));
-        }
-        if let Some(value) = text(&reaction["onset"]) {
-            values.push(format!("Reaction onset recorded: {value}"));
-        }
-        view.sections.push(located(
-            &format!("Reaction {}", index + 1),
-            &values.join("\n"),
-            SourcePath::root().member("reaction").index(index),
-        ));
-    }
-    for (index, note) in resource["note"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .enumerate()
-    {
-        if let Some(value) = text(&note["text"]) {
-            view.sections.push(located(
-                "Source note",
-                value,
-                SourcePath::root()
-                    .member("note")
-                    .index(index)
-                    .member("text"),
-            ));
-        }
     }
 }
 
@@ -349,7 +261,7 @@ fn is_element(key: &str, name: &str) -> bool {
 }
 
 /// Elements in the order they read within their placement; others follow in record order.
-const READING_ORDER: [&str; 28] = [
+const READING_ORDER: [&str; 29] = [
     "code",
     "vaccineCode",
     "medication",
@@ -360,6 +272,7 @@ const READING_ORDER: [&str; 28] = [
     "low",
     "high",
     "component",
+    "reaction",
     "note",
     "effective",
     "onset",
@@ -395,7 +308,7 @@ impl Placement {
             "resourceType" | "id" | "meta" | "identifier" | "extension" | "modifierExtension"
             | "implicitRules" | "language" | "text" => Self::Technical,
             "code" | "vaccineCode" | "component" | "interpretation" | "referenceRange"
-            | "dataAbsentReason" | "note" => Self::Statement,
+            | "dataAbsentReason" | "reaction" | "note" => Self::Statement,
             _ if element(&["medication", "value"]) => Self::Statement,
             "recordedDate" | "recorded" | "issued" | "authoredOn" | "period" | "date"
             | "lastOccurrence" => Self::Date,
@@ -492,7 +405,11 @@ impl Flattened<'_> {
                     return;
                 }
                 let amount = |value: &Value| self.numbers.recorded(value, &path.member("value"));
-                if let Some(text) = coded(object).or_else(|| quantity(object, amount)) {
+                let reading = match code_only(object) {
+                    true => None,
+                    false => coded(object).or_else(|| quantity(object, amount)),
+                };
+                if let Some(text) = reading {
                     // A concept that is only text points at that text, not its container.
                     let path = match object.len() {
                         1 if object.contains_key("text") => path.member("text"),
@@ -621,15 +538,17 @@ fn general(
     numbers: &NumberLiterals,
     view: &mut SourceInspection,
 ) {
-    let kind = resource
-        .get("resourceType")
-        .and_then(text)
-        .map(words)
-        .unwrap_or_else(|| words(&view.record_kind));
-    view.record_kind = format!("{kind} record");
+    view.record_kind = match resource.get("resourceType").and_then(text) {
+        Some("AllergyIntolerance") => allergy_kind(resource),
+        Some(kind) => format!("{} record", words(kind)),
+        None => format!("{} record", words(&view.record_kind)),
+    };
     view.title = ["code", "medicationCodeableConcept", "vaccineCode"]
         .into_iter()
-        .find_map(|key| resource.get(key).and_then(concept))
+        .find_map(|key| {
+            let value = resource.get(key)?;
+            concept(value).or_else(|| first_code(value))
+        })
         .or_else(|| {
             let reference = resource.get("medicationReference")?;
             text(&reference["display"]).map(str::to_owned)
@@ -725,6 +644,8 @@ fn top_label(key: &str, placement: Placement) -> String {
         ("recorder", _) => "Recorded by".into(),
         ("requester", _) => "Requested by".into(),
         ("asserter", _) => "Asserted by".into(),
+        // An allergy's criticality is its potential harm, not how severe a reaction was.
+        ("criticality", _) => "Criticality (not reaction severity)".into(),
         _ => humanize(key),
     }
 }
@@ -965,7 +886,7 @@ pub(crate) mod tests {
             located(
                 "Statement in this record",
                 "No known drug allergies",
-                "code"
+                "code.text"
             )
         );
         assert!(view.coda_preview.is_none());
@@ -974,13 +895,12 @@ pub(crate) mod tests {
         assert_eq!(view.technical.original.as_bytes(), original.as_bytes());
         assert_eq!(
             view.statuses,
-            vec![located(
-                "Source status recorded",
-                "active",
-                "clinicalStatus"
-            )]
+            vec![located("Clinical status", "active", "clinicalStatus")]
         );
-        assert!(view.record_details.is_empty());
+        assert_eq!(
+            view.record_details,
+            vec![located("Category", "medication", "category[0]")]
+        );
     }
 
     #[test]
@@ -1035,37 +955,50 @@ pub(crate) mod tests {
             located(
                 "Statement in this record",
                 "No known drug allergies",
-                "code"
+                "code.text"
             )
         );
     }
 
     #[test]
     fn reaction_severity_and_criticality_keep_their_different_meanings() {
-        let original = json!({"resourceType":"AllergyIntolerance", "code":{"coding":[{"display":"Penicillin"}]},
+        let record = json!({"resourceType":"AllergyIntolerance", "code":{"coding":[{"display":"Penicillin"}]},
             "criticality":"high", "verificationStatus":{"text":"Confirmed"},
             "reaction":[{"manifestation":[{"text":"Hives"}],"severity":"mild"}],
-            "recorder":{"display":"Dr. Recorded"},"unknownField":{"future":"retained"}}).to_string();
+            "recorder":{"display":"Dr. Recorded"}});
+        let original = record.to_string();
         let view = inspection(&citation(&original));
         assert_eq!(view.title, "Penicillin");
         assert!(view.dates.is_empty());
-        assert!(view.sections.iter().any(
-            |section| section.text == "Manifestation: Hives\nReaction severity recorded: mild"
-        ));
+        for reaction in [
+            located(
+                "Reaction manifestation",
+                "Hives",
+                "reaction[0].manifestation[0].text",
+            ),
+            located("Reaction severity", "mild", "reaction[0].severity"),
+        ] {
+            assert!(view.sections.contains(&reaction), "{reaction:?}");
+        }
         assert!(view.record_details.contains(&located(
-            "Criticality recorded (not reaction severity)",
+            "Criticality (not reaction severity)",
             "high",
             "criticality"
         )));
         assert_eq!(
             view.statuses,
             vec![located(
-                "Verification status recorded",
+                "Verification status",
                 "Confirmed",
                 "verificationStatus"
             )]
         );
+        assert_eq!(
+            view.attribution,
+            vec![located("Recorded by", "Dr. Recorded", "recorder.display")]
+        );
         assert_eq!(view.technical.original, original);
+        assert_nothing_dropped(&record);
     }
 
     #[test]
@@ -1073,12 +1006,14 @@ pub(crate) mod tests {
         let view = inspection(&citation(
             r#"{"resourceType":"AllergyIntolerance","criticality":"low"}"#,
         ));
-        assert_eq!(view.title, "Allergy or intolerance statement not supplied");
+        // No statement is recorded, so the record reads by its kind, never as a finding.
+        assert_eq!(view.title, "Allergy or intolerance record");
         assert!(view.dates.is_empty());
-        assert!(view.sections.contains(&field(
-            "Reactions",
-            "Reaction details not supplied in this record."
-        )));
+        assert!(
+            readable(&view)
+                .iter()
+                .all(|field| !field.text.contains("Not supplied"))
+        );
         assert!(
             !view
                 .sections
@@ -1683,7 +1618,7 @@ pub(crate) mod tests {
         assert_eq!(view.record_kind, "Medication intolerance record");
         assert!(
             view.record_details
-                .contains(&located("Type recorded", "intolerance", "type"))
+                .contains(&located("Type", "intolerance", "type"))
         );
         let food = inspection(&citation(
             r#"{"resourceType":"AllergyIntolerance","type":"allergy","category":["food"],"code":{"text":"Peanut"}}"#,
@@ -1728,20 +1663,139 @@ pub(crate) mod tests {
         assert_eq!(
             view.statuses,
             vec![
-                located("Source status recorded", "Active", "clinicalStatus"),
-                located(
-                    "Verification status recorded",
-                    "Confirmed",
-                    "verificationStatus"
-                ),
+                located("Clinical status", "Active", "clinicalStatus"),
+                located("Verification status", "Confirmed", "verificationStatus"),
             ]
         );
         assert!(view.record_details.contains(&located(
-            "Criticality recorded (not reaction severity)",
+            "Criticality (not reaction severity)",
             "low",
             "criticality"
         )));
         assert_eq!(view.technical.original, line);
+        assert_content_shown(&retained);
+    }
+
+    #[test]
+    fn a_code_only_allergy_reads_as_its_code_and_named_code_system() {
+        let record = json!({"resourceType":"AllergyIntolerance","type":"allergy",
+            "category":["medication"],
+            "code":{"coding":[{"system":"http://snomed.info/sct","code":"91936005"}]},
+            "recordedDate":"2021-04-02"});
+        let view = inspection(&general_citation(&record));
+        assert_eq!(view.title, "91936005 (SNOMED CT)");
+        assert!(!view.title.contains("not supplied"));
+        assert_eq!(
+            view.sections,
+            vec![
+                located(
+                    "Statement in this record SNOMED CT code",
+                    "91936005",
+                    "code.coding[0].code"
+                ),
+                located(
+                    "Statement in this record code system (SNOMED CT)",
+                    "http://snomed.info/sct",
+                    "code.coding[0].system"
+                ),
+            ]
+        );
+        let unnamed = json!({"resourceType":"AllergyIntolerance",
+            "code":{"coding":[{"system":"urn:oid:2.16.840.1.113883.6.88","code":"7980"}]}});
+        assert_eq!(
+            inspection(&general_citation(&unnamed)).title,
+            "7980 (urn:oid:2.16.840.1.113883.6.88)"
+        );
+        assert_nothing_dropped(&record);
+        assert_nothing_dropped(&unnamed);
+    }
+
+    #[test]
+    fn an_allergy_field_coda_does_not_know_reads_with_its_path() {
+        let record = json!({"resourceType":"AllergyIntolerance","code":{"text":"Penicillin"},
+            "lastOccurrence":"2015-07-01",
+            "reaction":[{"substance":{"text":"Amoxicillin"},"manifestation":[{"text":"Hives"}],
+                "exposureRoute":{"text":"Oral"},"futureDetail":"kept"}],
+            "futureAssessment":{"method":"skin test","result":"positive"}});
+        let view = inspection(&general_citation(&record));
+        for expected in [
+            located(
+                "Future assessment method",
+                "skin test",
+                "futureAssessment.method",
+            ),
+            located(
+                "Future assessment result",
+                "positive",
+                "futureAssessment.result",
+            ),
+        ] {
+            assert!(view.record_details.contains(&expected), "{expected:?}");
+        }
+        for expected in [
+            located(
+                "Reaction substance",
+                "Amoxicillin",
+                "reaction[0].substance.text",
+            ),
+            located(
+                "Reaction exposure route",
+                "Oral",
+                "reaction[0].exposureRoute.text",
+            ),
+            located("Reaction future detail", "kept", "reaction[0].futureDetail"),
+        ] {
+            assert!(view.sections.contains(&expected), "{expected:?}");
+        }
+        assert_eq!(
+            view.dates,
+            vec![located(
+                "Last occurrence recorded",
+                "2015-07-01",
+                "lastOccurrence"
+            )]
+        );
+        assert_nothing_dropped(&record);
+    }
+
+    #[test]
+    fn an_inactive_allergy_leads_with_its_status_and_never_reads_as_current() {
+        let record = json!({"resourceType":"AllergyIntolerance","type":"allergy",
+            "category":["medication"],"criticality":"high",
+            "clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"inactive","display":"Inactive"}]},
+            "verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification","code":"confirmed","display":"Confirmed"}]},
+            "code":{"coding":[{"system":"http://www.nlm.nih.gov/research/umls/rxnorm","code":"7980","display":"Penicillin G"}],"text":"Penicillin"},
+            "onsetDateTime":"2009-05-01","recordedDate":"2012-03-14T10:00:00+00:00",
+            "lastOccurrence":"2011-08-20"});
+        let view = inspection(&general_citation(&record));
+        assert_eq!(view.record_kind, "Medication allergy record");
+        assert_eq!(
+            view.statuses,
+            vec![
+                located("Clinical status", "Inactive", "clinicalStatus"),
+                located("Verification status", "Confirmed", "verificationStatus"),
+            ]
+        );
+        assert_eq!(
+            view.dates,
+            vec![
+                located("Onset recorded", "2009-05-01", "onsetDateTime"),
+                located("Recorded", "2012-03-14T10:00:00+00:00", "recordedDate"),
+                located("Last occurrence recorded", "2011-08-20", "lastOccurrence"),
+            ]
+        );
+        assert!(
+            readable(&view)
+                .iter()
+                .all(|field| !field.text.eq_ignore_ascii_case("active")),
+            "an inactive allergy read as active"
+        );
+        assert!(technical(
+            &view,
+            "clinicalStatus.coding[0].code",
+            "inactive"
+        ));
+        assert_nothing_dropped(&record);
     }
 
     /// Every readable field of `view`, wherever it reads.
@@ -1908,7 +1962,7 @@ pub(crate) mod tests {
         ));
         assert_eq!(
             inactive.statuses[0],
-            located("Source status recorded", "Inactive", "clinicalStatus")
+            located("Clinical status", "Inactive", "clinicalStatus")
         );
         assert!(
             inactive
