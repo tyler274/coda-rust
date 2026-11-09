@@ -143,7 +143,8 @@ pub struct Held<'a> {
 }
 
 impl InFlight {
-    /// Holds `key` unless another task on this process already does.
+    /// Holds `key` unless another task on this process already does. Only the task that
+    /// inserted the key gets a [`Held`], so only it releases the key.
     pub fn hold(&self, key: LayoutKey<'_>) -> Option<Held<'_>> {
         let key = (key.source_id.to_owned(), key.record_type.to_owned());
         let inserted = self
@@ -151,7 +152,10 @@ impl InFlight {
             .lock()
             .unwrap_or_else(PoisonError::into_inner)
             .insert(key.clone());
-        inserted.then_some(Held {
+        if !inserted {
+            return None;
+        }
+        Some(Held {
             in_flight: self,
             key,
         })
@@ -554,6 +558,23 @@ mod tests {
             record_type: "Condition",
         };
         assert!(in_flight.hold(other).is_some());
+        drop(held);
+        assert!(in_flight.hold(key).is_some());
+    }
+
+    /// A refused hold must not release the holder's key: every later attempt is refused too,
+    /// until the holder itself lets go.
+    #[test]
+    fn a_refused_hold_leaves_the_holders_key_held() {
+        let in_flight = InFlight::default();
+        let key = LayoutKey {
+            source_id: "ehr",
+            record_type: "Observation",
+        };
+        let held = in_flight.hold(key).unwrap();
+        for _ in 0..3 {
+            assert!(in_flight.hold(key).is_none());
+        }
         drop(held);
         assert!(in_flight.hold(key).is_some());
     }
