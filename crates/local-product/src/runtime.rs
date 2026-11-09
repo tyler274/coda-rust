@@ -31,6 +31,8 @@ pub mod chat_draft;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+/// Send next: the queue of messages waiting behind a running answer.
+pub mod queue;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
 /// Explicit bounded restart activation, separate from construction.
@@ -129,6 +131,25 @@ pub struct Conversation {
     /// Database-clock seconds of the latest accepted message or published reply.
     #[serde(default)]
     pub last_activity_at: i64,
+    /// Send next messages waiting for the running answer to end, in order.
+    /// Only a message still here can be edited or withdrawn; once its turn
+    /// starts it is an authored [`Message`] instead.
+    #[serde(default)]
+    pub queued: Vec<QueuedMessage>,
+}
+
+/// A Send next message that has not started. It leaves the queue exactly
+/// once: into the conversation when the answer ends, to the composer on Stop,
+/// or by withdrawal. Edit and withdraw find only items still queued, so a
+/// message whose turn has started is out of their reach.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct QueuedMessage {
+    /// The queue command's key, which names the item for edit and withdraw.
+    pub id: String,
+    /// Exact authored text, replaced by an edit.
+    pub text: String,
+    /// The session that queued it; its turn runs under that session.
+    pub session_hash: Vec<u8>,
 }
 
 /// One chat in a physician's workspace, for the workspace's chat list.
@@ -166,7 +187,39 @@ impl Default for Conversation {
             failures: 0,
             opened_at: 0,
             last_activity_at: 0,
+            queued: vec![],
         }
+    }
+}
+
+impl Conversation {
+    /// Whether an answer is running: accepted and not yet ended, stopped or
+    /// failed. Send next queues only behind running work.
+    pub fn running(&self) -> bool {
+        matches!(self.status.as_str(), "pending" | "active")
+    }
+
+    /// When an answer ends, every queued message starts one new turn
+    /// together, in the order queued, under the latest queuing session. The
+    /// recovery sweep publishes its wakeup: the turn is pending with no
+    /// dispatch hint. Nothing queued changes nothing.
+    fn start_queued(&mut self) {
+        let queued = std::mem::take(&mut self.queued);
+        let Some(last) = queued.last() else {
+            return;
+        };
+        self.work = Uuid::new_v4().to_string();
+        self.revision += 1;
+        self.input_id = Some(last.id.clone());
+        self.session_hash = Some(last.session_hash.clone());
+        self.dispatch_after = 0;
+        self.failures = 0;
+        self.status = "pending".into();
+        self.messages
+            .extend(queued.into_iter().map(|queued| Message {
+                role: "user".into(),
+                text: queued.text,
+            }));
     }
 }
 
@@ -186,8 +239,19 @@ pub struct Claim {
 pub enum Accepted {
     /// Input saved for execution.
     New,
+    /// Send next behind running work: saved in the queue, not dispatched.
+    Queued,
     /// Exact original command already saved; do not dispatch it again.
     Duplicate,
+}
+
+/// How a physician message is sent.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SendMode {
+    /// Send: steers running work at once, or starts a turn.
+    Now,
+    /// Send next: waits behind running work, or starts a turn when none runs.
+    Next,
 }
 
 /// Outcome of a physician's Try again on failed or held work.
@@ -373,7 +437,7 @@ impl Store {
 
     /// Atomically saves the command receipt and input. Colliding payloads fail.
     pub async fn accept(&self, scope: &Scope, input: &Input) -> Result<Accepted, DbErr> {
-        self.accept_inner(scope, input, None).await
+        self.accept_inner(scope, input, None, SendMode::Now).await
     }
 
     /// Accepts hosted input with its original session reference for restart authorization.
@@ -386,7 +450,27 @@ impl Store {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference"));
         }
-        self.accept_inner(scope, input, Some(session_hash)).await
+        self.accept_inner(scope, input, Some(session_hash), SendMode::Now)
+            .await
+    }
+
+    /// Hosted Send or Send next. Send next behind running work is held in
+    /// [`Conversation::queued`] and answers [`Accepted::Queued`]; it is not
+    /// dispatched until the answer ends. With nothing running it is sent at
+    /// once, like Send. The receipt records which was asked, so the same key
+    /// for the other one collides.
+    pub async fn send_authorized(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        mode: SendMode,
+    ) -> Result<Accepted, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        self.accept_inner(scope, input, Some(session_hash), mode)
+            .await
     }
 
     async fn accept_inner(
@@ -394,6 +478,7 @@ impl Store {
         scope: &Scope,
         input: &Input,
         session_hash: Option<Vec<u8>>,
+        mode: SendMode,
     ) -> Result<Accepted, DbErr> {
         if [
             &input.key,
@@ -410,7 +495,11 @@ impl Store {
             return Err(error("empty command field"));
         }
         let tx = self.db.begin().await?;
-        let command = serde_json::json!({"scope": scope, "input": input});
+        // Send keeps the receipt shape it always had; Send next is marked.
+        let command = match mode {
+            SendMode::Now => serde_json::json!({"scope": scope, "input": input}),
+            SendMode::Next => serde_json::json!({"scope": scope, "input": input, "next": true}),
+        };
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
@@ -433,6 +522,18 @@ impl Store {
             .ok_or_else(|| error("missing conversation"))?;
         let mut state: Conversation =
             serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        if mode == SendMode::Next
+            && state.running()
+            && let Some(session_hash) = session_hash.clone()
+        {
+            state.queued.push(QueuedMessage {
+                id: input.key.clone(),
+                text: input.text.clone(),
+                session_hash,
+            });
+            Self::save(tx, scope, &state).await?;
+            return Ok(Accepted::Queued);
+        }
         if state.status == "completed" {
             state.work = Uuid::new_v4().to_string();
         }
@@ -655,6 +756,7 @@ impl Store {
             role: "assistant".into(),
             text: answer,
         });
+        state.start_queued();
         Self::save(tx, &claim.scope, &state).await
     }
 
@@ -681,6 +783,7 @@ impl Store {
                 a.status = "cancelled".into();
             }
             state.status = "held".into();
+            queue::return_to_draft(&tx, scope, &mut state).await?;
         }
         Self::save(tx, scope, &state).await
     }
@@ -864,6 +967,7 @@ impl Store {
         }
         state.status = "held".into();
         state.session_hash = Some(session_hash);
+        queue::return_to_draft(&tx, scope, &mut state).await?;
         Self::save(tx, scope, &state).await?;
         Ok(Stopped::Held)
     }
