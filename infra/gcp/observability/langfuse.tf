@@ -32,9 +32,10 @@ locals {
   # Sign-in through langfuse-sso (langfuse-sso.tf), Langfuse's generic OIDC
   # provider `custom`. A first sign-in joins the coda organization with the
   # NONE role and no project, so nobody sees traces until an admin grants a
-  # role. LANGFUSE_ALLOWED_ORGANIZATION_CREATORS names the admin, but Langfuse
-  # enforces it only with an EE license; without one an engineer may create an
-  # empty organization of their own, which holds none of coda's traces. Account
+  # role. LANGFUSE_ALLOWED_ORGANIZATION_CREATORS names the admin; Langfuse
+  # enforces it only with an EE license (langfuse_ee_trial). Without one an
+  # engineer may create an empty organization of their own, which holds none
+  # of coda's traces. Account
   # linking lets the admin's existing user sign in the same way. Passwords are
   # off: sign-up is on so SSO can create users, and a password route would let
   # anyone behind IAP register or claim another engineer's email. NextAuth
@@ -78,6 +79,20 @@ locals {
       features = {
         telemetryEnabled = false
         signUpDisabled   = !local.langfuse_sso
+      }
+
+      # Enterprise features (langfuse_ee_trial). Every EE check in 3.225.11
+      # reads only the key's langfuse_ee_ prefix, on web and worker alike.
+      # With a key set, Langfuse's usage report ignores TELEMETRY_ENABLED,
+      # but its PostHog client exists only when NEXT_PUBLIC_POSTHOG_KEY is
+      # set or telemetry is on, and neither ever is here (tested), so the
+      # report goes nowhere. Re-check ServerPosthog and telemetry() on every
+      # image bump. Empty name and key render no env var.
+      licenseKey = {
+        secretKeyRef = {
+          name = var.langfuse_ee_trial ? "langfuse-secrets" : ""
+          key  = var.langfuse_ee_trial ? "LANGFUSE_EE_LICENSE_KEY" : ""
+        }
       }
       logging = { format = "json" }
 

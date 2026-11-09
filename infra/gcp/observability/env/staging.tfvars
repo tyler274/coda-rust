@@ -24,6 +24,11 @@ grafana_cloud_monitoring_enabled = true
 # coda-langfuse-blobs, which this root creates.
 langfuse_enabled = true
 
+# Langfuse Enterprise features for a testing trial (README.md, "Enterprise
+# trial"). Doppler coda-rust/stg holds LANGFUSE_EE_LICENSE_KEY as a
+# langfuse_ee_ placeholder, which ee/LICENSE allows for testing only.
+langfuse_ee_trial = true
+
 # Services attach prompt and completion text to generation spans. Only the
 # Langfuse pipeline keeps it; the ops pipelines strip it. Must match
 # infra/gcp/rust-environments' telemetry_content.

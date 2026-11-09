@@ -161,6 +161,47 @@ run "langfuse_has_no_public_ingress" {
     condition     = google_service_account_iam_member.langfuse_workload_identity[0].member == "serviceAccount:test-rust-stg-only.svc.id.goog[observability/langfuse]"
     error_message = "Langfuse must bind through the observability cluster project's Workload Identity pool."
   }
+
+  assert {
+    condition = (
+      local.langfuse_values.langfuse.licenseKey.secretKeyRef == { name = "", key = "" } &&
+      !contains(keys(local.doppler_secrets["langfuse-secrets"]), "LANGFUSE_EE_LICENSE_KEY")
+    )
+    error_message = "Without langfuse_ee_trial Langfuse gets no license key and Doppler needs none."
+  }
+}
+
+# With a license key Langfuse's usage report ignores TELEMETRY_ENABLED; it
+# stays silent only because no PostHog key or host reaches either container.
+run "langfuse_ee_trial_unlocks_enterprise_without_telemetry" {
+  command = plan
+  variables { langfuse_ee_trial = true }
+
+  assert {
+    condition = (
+      local.langfuse_values.langfuse.licenseKey.secretKeyRef == { name = "langfuse-secrets", key = "LANGFUSE_EE_LICENSE_KEY" } &&
+      local.doppler_secrets["langfuse-secrets"]["LANGFUSE_EE_LICENSE_KEY"] == "LANGFUSE_EE_LICENSE_KEY" &&
+      contains(yamldecode(helm_release.doppler_secrets.values[0]).manifests[index([for m in yamldecode(helm_release.doppler_secrets.values[0]).manifests : m.metadata.name], "langfuse-secrets")].spec.secrets, "LANGFUSE_EE_LICENSE_KEY")
+    )
+    error_message = "The trial must read the license key from the Doppler-synced langfuse-secrets."
+  }
+
+  assert {
+    condition = (
+      !local.langfuse_values.langfuse.features.telemetryEnabled &&
+      !strcontains(upper(yamlencode(local.langfuse_values)), "POSTHOG")
+    )
+    error_message = "With a license key, telemetry must stay off and no PostHog key or host may reach Langfuse, or its usage report would leave the cluster."
+  }
+}
+
+run "reject_the_ee_trial_without_langfuse" {
+  command = plan
+  variables {
+    langfuse_enabled  = false
+    langfuse_ee_trial = true
+  }
+  expect_failures = [var.langfuse_ee_trial]
 }
 
 # Phase one of the staging rollout: the gateway and the Datadog Agent run

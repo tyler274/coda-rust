@@ -327,6 +327,17 @@ variable "langfuse_enabled" {
   default     = true
 }
 
+variable "langfuse_ee_trial" {
+  description = "Sets LANGFUSE_EE_LICENSE_KEY on Langfuse web and worker from Doppler's LANGFUSE_EE_LICENSE_KEY, which unlocks the Enterprise features (project roles, audit logs, data retention, protected prompt labels, organization creators, ingestion masking). For a testing trial Doppler holds a langfuse_ee_ placeholder, which ee/LICENSE permits for development and testing only; a real key replaces it in Doppler alone."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.langfuse_ee_trial || var.langfuse_enabled
+    error_message = "langfuse_ee_trial requires langfuse_enabled."
+  }
+}
+
 variable "langfuse_sql_tier" {
   description = "Cloud SQL machine tier for the Langfuse Postgres."
   type        = string
