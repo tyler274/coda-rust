@@ -28,7 +28,8 @@ static SCHEMA: LazyLock<Value> = LazyLock::new(|| {
 });
 
 /// Bounds for the one model call that makes a layout. The request carries one retained record,
-/// which the chart reader caps at 64 KiB, beside the schema and instructions.
+/// which the chart reader caps at 64 KiB, beside the schema and instructions. The call ends
+/// inside the worker's 100 s layout phase.
 pub fn limits() -> Limits {
     Limits {
         model_calls: 1,
@@ -39,7 +40,7 @@ pub fn limits() -> Limits {
         tool_result_bytes: 0,
         total_tool_result_bytes: 0,
         output_tokens: 16_384,
-        elapsed: Duration::from_secs(120),
+        elapsed: Duration::from_secs(90),
     }
 }
 
