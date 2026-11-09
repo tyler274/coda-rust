@@ -40,7 +40,9 @@ resource "google_service_account" "physician_rehearsal" {
   display_name = "Physician rehearsal (synthetic chats through IAP)"
 }
 
-# Only signJwt, not access tokens, keys or any project role. The drill signs
+# Only signJwt: no keys and no project role. A signed JWT can be exchanged for
+# the account's own tokens, so whoever holds this can act as the account, and
+# the account itself can do nothing but pass physician's IAP. The drill signs
 # an IAP JWT as this account. Besides the account itself, only the operators
 # named one by one in physician_rehearsal_signers may sign as it; no group is
 # ever granted this, so acting as the rehearsal physician is an explicit,
