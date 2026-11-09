@@ -4,7 +4,7 @@
 //! record's own field name, and every heading is a fixed one or the repeated element's own code.
 //! A layout is checked against each record before it renders; a refused layout never shows in
 //! part, and the record reads through the general view instead.
-use crate::source_inspection::{NumberLiterals, humanize, located};
+use crate::source_inspection::{NumberLiterals, coding_label, humanize, located};
 use crate::source_path::{self, SourcePath, Step};
 use physician_wire::{SourceField, SourceInspection, SourceLayoutSection};
 use serde::Deserialize;
@@ -1180,7 +1180,7 @@ pub(crate) fn render(
         .collect();
     let shown = |binding: &Binding| {
         located(
-            &label(binding, &general),
+            &label(binding, &general, layout.record),
             &numbers.recorded(binding.value, &binding.path),
             &binding.path,
         )
@@ -1229,10 +1229,9 @@ pub(crate) fn render(
                 !bound.contains(leaf) && !technical.contains(leaf.to_string().as_str())
             })
             .map(|(leaf, value)| {
-                let label = match leaf_words(leaf.below(path)) {
-                    words if words.is_empty() => field.label.clone(),
-                    words => format!("{} {words}", field.label),
-                };
+                let label = label_below(&field.label, path, leaf.below(path), |coding| {
+                    coding_system(layout.record, coding)
+                });
                 located(&label, &numbers.recorded(value, leaf), leaf)
             })
             .collect()
@@ -1272,7 +1271,7 @@ pub(crate) fn render(
 /// a reference range limit, reads under that role's fixed label; any other role reads under the
 /// record's own name for the field, from `general`, the general view's readable fields by path.
 /// The layout writes no label, so a value bound as `other` can never read as a result.
-fn label(binding: &Binding, general: &[(&SourcePath, &str)]) -> String {
+fn label(binding: &Binding, general: &[(&SourcePath, &str)], record: &Value) -> String {
     let last_member = binding
         .path
         .steps()
@@ -1284,14 +1283,14 @@ fn label(binding: &Binding, general: &[(&SourcePath, &str)]) -> String {
         });
     match binding.role.fixed_label(last_member) {
         Some(fixed) => fixed.to_owned(),
-        None => source_label(&binding.path, general),
+        None => source_label(&binding.path, general, record),
     }
 }
 
 /// The record's own name for the leaf at `leaf`: the label of the nearest general field holding
 /// it, extended by the leaf's path below that field. A concept's text or first coded display
 /// reads as the concept's own label. A leaf no readable field holds reads as its path in words.
-fn source_label(leaf: &SourcePath, general: &[(&SourcePath, &str)]) -> String {
+fn source_label(leaf: &SourcePath, general: &[(&SourcePath, &str)], record: &Value) -> String {
     let nearest = general
         .iter()
         .filter(|(path, _)| leaf.is_under(path))
@@ -1315,11 +1314,61 @@ fn source_label(leaf: &SourcePath, general: &[(&SourcePath, &str)]) -> String {
     if names_the_concept {
         (*label).to_owned()
     } else {
-        format!("{label} {}", leaf_words(below))
+        label_below(label, path, below, |coding| coding_system(record, coding))
     }
 }
 
-/// The steps below a general field, such as `coding[0].system`, in words: "coding 1 system".
+/// The label of a leaf `below` a general field labeled `label`. A member of a concept's coding
+/// reads as the concept's code or code system, naming a known system (see [`coding_label`]);
+/// `system` finds the coding's recorded system by the coding's path. Anything else extends the
+/// label by its steps in words.
+fn label_below(
+    label: &str,
+    field: &SourcePath,
+    below: &[Step],
+    system: impl Fn(&SourcePath) -> Option<String>,
+) -> String {
+    if below.is_empty() {
+        return label.to_owned();
+    }
+    if let [
+        prefix @ ..,
+        Step::Member(coding),
+        Step::Index(index),
+        Step::Member(part),
+    ] = below
+        && coding == "coding"
+    {
+        let concept = match leaf_words(prefix) {
+            words if words.is_empty() => label.to_owned(),
+            words => format!("{label} {words}"),
+        };
+        let mut at = field.clone();
+        for step in prefix {
+            match step {
+                Step::Member(name) => at.push_member(name),
+                Step::Index(index) => at.push_index(*index),
+            }
+        }
+        let coding_path = at.member("coding").index(*index);
+        return coding_label(&concept, *index, part, system(&coding_path).as_deref());
+    }
+    format!("{label} {}", leaf_words(below))
+}
+
+/// The recorded `system` of the coding at `coding` in `record`.
+fn coding_system(record: &Value, coding: &SourcePath) -> Option<String> {
+    let mut value = record;
+    for step in coding.steps() {
+        value = match step {
+            Step::Member(name) => value.get(name)?,
+            Step::Index(index) => value.get(index)?,
+        };
+    }
+    value.get("system")?.as_str().map(str::to_owned)
+}
+
+/// The steps below a general field, such as `low.unit`, in words: "low unit".
 fn leaf_words(steps: &[Step]) -> String {
     steps
         .iter()
@@ -1936,7 +1985,7 @@ mod tests {
             (
                 SlotRole::Code,
                 "/code/coding/0/code",
-                "Statement in this record coding 1 code",
+                "Statement in this record LOINC code",
             ),
             (SlotRole::Date, "/effectiveDateTime", "Effective"),
             (SlotRole::Other, "/performer/0/display", "Performed by"),
@@ -2226,7 +2275,7 @@ mod tests {
                 "valueQuantity.system",
             ),
             located(
-                "Statement in this record coding 1 code",
+                "Statement in this record LOINC code",
                 "4548-4",
                 "code.coding[0].code",
             ),
@@ -2326,7 +2375,7 @@ mod tests {
                 SourceLayoutSection {
                     heading: "Coding".into(),
                     fields: vec![located(
-                        "Statement in this record coding 1 code",
+                        "Statement in this record ICD-10-CM code",
                         "E11.9",
                         "code.coding[0].code"
                     )],
@@ -2334,7 +2383,7 @@ mod tests {
             ]
         );
         assert!(view.other_fields.contains(&located(
-            "Statement in this record coding 1 system",
+            "Statement in this record code system (ICD-10-CM)",
             "http://hl7.org/fhir/sid/icd-10-cm",
             "code.coding[0].system"
         )));

@@ -532,6 +532,14 @@ impl Flattened<'_> {
                         self.absent(value, &path, name.as_deref().unwrap_or(label));
                         continue;
                     }
+                    // A concept's codings read as its codes and code systems.
+                    if key == "coding"
+                        && name.is_none()
+                        && let Value::Array(codings) = value
+                    {
+                        self.codings(codings, &path, label);
+                        continue;
+                    }
                     let label = match &name {
                         Some(name) if is_element(key, "value") => name.clone(),
                         Some(name) => format!("{name} {}", humanize(key).to_lowercase()),
@@ -543,6 +551,29 @@ impl Flattened<'_> {
             scalar => {
                 self.readable
                     .push(located(label, &self.numbers.recorded(scalar, path), path))
+            }
+        }
+    }
+
+    /// The codings of a concept labeled `concept` that did not read as one coded value: each
+    /// member under its [`coding_label`], extensions kept technical.
+    fn codings(&mut self, codings: &[Value], path: &SourcePath, concept: &str) {
+        for (index, coding) in codings.iter().enumerate() {
+            let path = path.index(index);
+            let Value::Object(members) = coding else {
+                self.walk(
+                    coding,
+                    &path,
+                    &coding_label(concept, index, "code", None),
+                    false,
+                );
+                continue;
+            };
+            let system = members.get("system").and_then(Value::as_str);
+            for (part, value) in members {
+                let technical = matches!(part.as_str(), "extension" | "id");
+                let label = coding_label(concept, index, part, system);
+                self.walk(value, &path.member(part), &label, technical);
             }
         }
     }
@@ -738,6 +769,43 @@ pub(crate) fn humanize(key: &str) -> String {
         })
         .unwrap_or(key);
     words(name)
+}
+
+/// The name of a code system the record identifies by a well-known URI.
+fn code_system_name(uri: &str) -> Option<&'static str> {
+    match uri.trim_end_matches('/') {
+        "http://hl7.org/fhir/sid/icd-10-cm" => Some("ICD-10-CM"),
+        "http://snomed.info/sct" => Some("SNOMED CT"),
+        "http://loinc.org" => Some("LOINC"),
+        "http://www.nlm.nih.gov/research/umls/rxnorm" => Some("RxNorm"),
+        _ => None,
+    }
+}
+
+/// The label of the member `part` of a concept's coding at `index`, under `concept`, the
+/// concept's own label. `system` is that coding's recorded system: a known one names the code,
+/// as in "Statement in this record ICD-10-CM code" and "… code system (ICD-10-CM)". The words
+/// come from Coda and the record's own system, never from a model.
+pub(crate) fn coding_label(
+    concept: &str,
+    index: usize,
+    part: &str,
+    system: Option<&str>,
+) -> String {
+    let named = system.and_then(code_system_name);
+    let code = match named {
+        Some(name) => format!("{name} code"),
+        None if index == 0 => "code".to_owned(),
+        None => format!("code {}", index + 1),
+    };
+    match (part, named) {
+        ("code", _) => format!("{concept} {code}"),
+        ("system", Some(name)) => format!("{concept} code system ({name})"),
+        ("system", None) => format!("{concept} {code} system"),
+        ("version", _) => format!("{concept} {code} system version"),
+        ("userSelected", _) => format!("{concept} {code} chosen by the user"),
+        (other, _) => format!("{concept} {code} {}", humanize(other).to_lowercase()),
+    }
 }
 
 /// `MedicationRequest` reads as "Medication request".
@@ -1051,6 +1119,101 @@ pub(crate) mod tests {
                 .text
                 .contains("retained source is available")
         );
+    }
+
+    #[test]
+    fn a_codes_label_names_its_concept_and_a_known_code_system() {
+        let concept = "Statement in this record";
+        for (system, code, system_label) in [
+            (
+                "http://hl7.org/fhir/sid/icd-10-cm",
+                "Statement in this record ICD-10-CM code",
+                "Statement in this record code system (ICD-10-CM)",
+            ),
+            (
+                "http://snomed.info/sct",
+                "Statement in this record SNOMED CT code",
+                "Statement in this record code system (SNOMED CT)",
+            ),
+            (
+                "http://loinc.org",
+                "Statement in this record LOINC code",
+                "Statement in this record code system (LOINC)",
+            ),
+            (
+                "http://www.nlm.nih.gov/research/umls/rxnorm",
+                "Statement in this record RxNorm code",
+                "Statement in this record code system (RxNorm)",
+            ),
+            (
+                "urn:oid:1.2.3",
+                "Statement in this record code",
+                "Statement in this record code system",
+            ),
+        ] {
+            assert_eq!(coding_label(concept, 0, "code", Some(system)), code);
+            assert_eq!(
+                coding_label(concept, 0, "system", Some(system)),
+                system_label
+            );
+        }
+        assert_eq!(
+            coding_label(concept, 1, "display", None),
+            "Statement in this record code 2 display"
+        );
+        assert_eq!(
+            coding_label(concept, 0, "version", Some("http://snomed.info/sct")),
+            "Statement in this record SNOMED CT code system version"
+        );
+    }
+
+    #[test]
+    fn a_concepts_codings_read_as_its_codes_in_the_general_view() {
+        // `version` keeps the coding from reading as one coded value, so its members read alone.
+        let record = json!({"resourceType":"Procedure","code":{"coding":[
+            {"system":"http://snomed.info/sct","version":"2024","code":"80146002"},
+            {"system":"urn:oid:1.2.3","code":"X1","userSelected":true}]}});
+        let view = inspection(&general_citation(&record));
+        let labels: Vec<_> = readable(&view)
+            .into_iter()
+            .filter(|field| {
+                field
+                    .path
+                    .as_deref()
+                    .is_some_and(|path| path.starts_with("code"))
+            })
+            .map(|field| (field.label.clone(), field.path.clone().unwrap()))
+            .collect();
+        let expected = [
+            (
+                "Statement in this record SNOMED CT code",
+                "code.coding[0].code",
+            ),
+            (
+                "Statement in this record code system (SNOMED CT)",
+                "code.coding[0].system",
+            ),
+            (
+                "Statement in this record SNOMED CT code system version",
+                "code.coding[0].version",
+            ),
+            ("Statement in this record code 2", "code.coding[1].code"),
+            (
+                "Statement in this record code 2 system",
+                "code.coding[1].system",
+            ),
+            (
+                "Statement in this record code 2 chosen by the user",
+                "code.coding[1].userSelected",
+            ),
+        ];
+        for (label, path) in expected {
+            assert!(
+                labels.contains(&(label.to_owned(), path.to_owned())),
+                "{label} at {path} in {labels:#?}"
+            );
+        }
+        assert_view_shows_every_leaf(&general_citation(&record), &view);
     }
 
     #[test]
