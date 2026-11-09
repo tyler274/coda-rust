@@ -308,8 +308,9 @@ The release changes one field per service: the product container's image.
 each service's template around its `gcloud run services update`:
 
 - **Before.** Before any migration runs, each existing service's template must
-  have one unnamed container, or exactly the product container (named after the
-  service) and an `otel-collector` sidecar. With the sidecar, the product carries
+  have one unnamed container (`observability-relay`: one container named after
+  the service), or exactly the product container (named after the service) and
+  an `otel-collector` sidecar. With the sidecar, the product carries
   the telemetry environment (`DD_ENV`, `OTEL_EXPORTER_OTLP_ENDPOINT`,
   `CODA_LOG_FORMAT=json`, `CODA_TELEMETRY_CONTENT` of `none` or `full`,
   `CODA_TELEMETRY_BACKEND`), the sidecar carries its gateway configuration and

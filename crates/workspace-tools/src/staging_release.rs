@@ -1161,12 +1161,12 @@ mod tests {
                 denied_update: false,
                 late_update: false,
                 reads_before_failure: None,
-                // The relay runs without the otel-collector sidecar.
+                // The relay runs one named container, without the sidecar.
                 templates: SERVICES
                     .iter()
                     .map(|name| {
                         let template = if name == &ReleaseService::ObservabilityRelay {
-                            shape::tests::single("old-image")
+                            shape::tests::named(name.name(), "old-image")
                         } else {
                             shape::tests::observed(name.name(), "old-image")
                         };
@@ -1401,7 +1401,7 @@ mod tests {
                 Some("physician".to_owned()),
                 None,
                 Some("physician-worker".to_owned()),
-                None
+                Some("observability-relay".to_owned())
             ]
         );
         for name in SERVICES {
