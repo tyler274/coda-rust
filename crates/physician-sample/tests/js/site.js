@@ -115,6 +115,28 @@ function (step, ...args) {
         (line) => line.textContent,
       );
     },
+    // Each response's feedback controls as shown: the pressed thumb, whether the thumbs can be
+    // pressed, what the details button says and the notice beside them.
+    ratings() {
+      return [...document.querySelectorAll('.message-actions[aria-label="Response actions"]')].map(
+        (row) => ({
+          pressed: row.querySelector('.feedback-rating [aria-pressed="true"]')?.getAttribute("aria-label") ?? null,
+          enabled: [...row.querySelectorAll(".feedback-rating button")].every((button) => !button.disabled),
+          details: row.querySelector(".feedback-details-open")?.textContent.trim() ?? null,
+          notice: row.querySelector(".feedback-notice")?.textContent ?? null,
+        }),
+      );
+    },
+    // Clicks the control named `label` in the `index`th response's feedback controls.
+    clickInRating(index, label) {
+      const row = document.querySelectorAll('.message-actions[aria-label="Response actions"]')[index];
+      if (!row) throw new Error(`no response ${index}`);
+      const control = [...row.querySelectorAll("button")].find(
+        (button) => button.getAttribute("aria-label") === label || button.textContent.trim() === label,
+      );
+      if (!control) throw new Error(`response ${index} has no ${label}`);
+      control.click();
+    },
     // The conflict the composer shows: the newer revision and its text, or null.
     conflict() {
       const conflict = document.querySelector(".draft-conflict");

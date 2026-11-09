@@ -8,6 +8,7 @@
 )]
 
 mod composer;
+mod feedback;
 mod local_draft;
 mod panels;
 mod shell;
@@ -938,6 +939,7 @@ fn PhysicianShell(
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
     let mut snapshot_attempt = use_signal(|| 0u32);
+    feedback::use_feedback(client, selected, open_chat, snapshot_attempt);
     let mut search_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
@@ -3750,6 +3752,9 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
+                                    actions: line.response.map(|response| rsx! {
+                                        feedback::ResponseRating { response }
+                                    }),
                                     MessageWords { text: line.text }
                                 }
                             } else {
@@ -4543,6 +4548,8 @@ struct ConversationLine {
     stop: Option<WorkStopTarget>,
     /// This resume is an intentional Stop. A failed turn's resume is Try again.
     held: bool,
+    /// On one of Coda's saved responses: its place, which feedback names.
+    response: Option<usize>,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4576,6 +4583,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 resume,
                 stop,
                 held,
+                response: turn.response.filter(|_| author == Some(Author::Assistant)),
             })
         })
         .collect()
@@ -4743,6 +4751,7 @@ mod conversation_line_tests {
                     resume: None,
                     stop: None,
                     held: false,
+                    response: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -4750,6 +4759,7 @@ mod conversation_line_tests {
                     resume: Some(target()),
                     stop: None,
                     held: false,
+                    response: None,
                 },
             ]
         );
@@ -4773,6 +4783,24 @@ mod conversation_line_tests {
             authors,
             vec![Some(Author::Person), Some(Author::Assistant), None]
         );
+    }
+
+    #[test]
+    fn only_codas_responses_carry_the_place_feedback_names() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?", "response": 0 },
+                { "kind": "model", "text": "Her heart rate allows it.", "response": 1 },
+                { "kind": "model", "text": "From an older server." },
+                { "text": "Recorded in local simulation.", "response": 3 },
+            ] }
+        }))
+        .unwrap();
+        let places: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.response)
+            .collect();
+        assert_eq!(places, vec![None, Some(1), None, None]);
     }
 
     #[test]
