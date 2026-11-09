@@ -1074,6 +1074,157 @@ run "staging_proxy_under_datadog_exposes_only_langfuse" {
   }
 }
 
+run "langfuse_signs_in_through_the_iap_issuer" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip      = "10.82.0.11"
+      langfuse_ip     = "10.82.0.12"
+      langfuse_sso_ip = "10.82.0.13"
+      source_ranges   = ["10.80.1.0/26"]
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+
+  assert {
+    condition = (
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].replicas == "1" &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].strategy[0].type == "Recreate" &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].security_context[0].run_as_non_root &&
+      !kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].automount_service_account_token &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].image == "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111" &&
+      { for e in kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].env : e.name => e.value } == {
+        PORT                       = "3000"
+        LANGFUSE_SSO_ISSUER        = "http://langfuse-sso.observability.svc.cluster.local:3000/langfuse-sso"
+        LANGFUSE_SSO_AUTHORIZE_URL = "https://staging.example.test/langfuse-sso/authorize"
+        LANGFUSE_SSO_CLIENT_ID     = "langfuse"
+        LANGFUSE_SSO_REDIRECT_URI  = "https://staging.example.test/langfuse/api/auth/callback/custom"
+        LANGFUSE_SSO_IAP_AUDIENCE  = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+      } &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].env_from[0].secret_ref[0].name == "langfuse-sso" &&
+      kubernetes_service_v1.langfuse_sso["langfuse-sso"].spec[0].type == "ClusterIP"
+    )
+    error_message = "One non-root issuer replica must read public-site's audience and the exact callback from plain settings and its secrets only from the Doppler-synced Secret, behind a ClusterIP Service."
+  }
+
+  assert {
+    condition = (
+      keys(kubernetes_service_v1.observability_web) == ["langfuse", "langfuse-sso"] &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].load_balancer_ip == "10.82.0.13" &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].load_balancer_source_ranges == toset(["10.80.1.0/26"]) &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].selector == tomap({ application = "observability", component = "langfuse-sso" }) &&
+      output.staging_proxy.internal["langfuse-sso"] == "http://10.82.0.13:3000/langfuse-sso/"
+    )
+    error_message = "The issuer gets its own internal load balancer on its reserved address, open only to the relay subnet."
+  }
+
+  assert {
+    condition = (
+      { for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.name => e.value if can(e.value) } == {
+        LANGFUSE_INIT_ORG_ID                     = "coda"
+        LANGFUSE_INIT_ORG_NAME                   = "Coda"
+        LANGFUSE_INIT_PROJECT_ID                 = "coda-agents-staging"
+        LANGFUSE_INIT_PROJECT_NAME               = "coda-agents"
+        LANGFUSE_INIT_USER_NAME                  = "Coda Admin"
+        AUTH_CUSTOM_NAME                         = "Google (staging IAP)"
+        AUTH_CUSTOM_ISSUER                       = "http://langfuse-sso.observability.svc.cluster.local:3000/langfuse-sso"
+        AUTH_CUSTOM_CLIENT_ID                    = "langfuse"
+        AUTH_CUSTOM_SCOPE                        = "openid email profile"
+        AUTH_CUSTOM_CHECKS                       = "pkce,state"
+        AUTH_CUSTOM_CLIENT_AUTH_METHOD           = "client_secret_basic"
+        AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG = "ES256"
+        AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING        = "true"
+        LANGFUSE_DEFAULT_ORG_ID                  = "coda"
+        LANGFUSE_DEFAULT_ORG_ROLE                = "NONE"
+        AUTH_DISABLE_USERNAME_PASSWORD           = "true"
+      } &&
+      one([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.valueFrom.secretKeyRef if e.name == "LANGFUSE_ALLOWED_ORGANIZATION_CREATORS"]) == { name = "langfuse-init", key = "LANGFUSE_INIT_USER_EMAIL" } &&
+      one([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.valueFrom.secretKeyRef if e.name == "AUTH_CUSTOM_CLIENT_SECRET"]) == { name = "langfuse-secrets", key = "LANGFUSE_SSO_CLIENT_SECRET" } &&
+      !contains([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.name], "LANGFUSE_DEFAULT_PROJECT_ID") &&
+      local.langfuse_values.langfuse.features.signUpDisabled == false
+    )
+    error_message = "Langfuse must sign people in through the issuer into the coda org with no role and no project, refuse every password sign-in and sign-up, name the admin as the organization creator, and read the client secret from the synced Secret."
+  }
+
+  assert {
+    condition = (
+      local.doppler_secrets["langfuse-sso"] == { LANGFUSE_SSO_CLIENT_SECRET = "LANGFUSE_SSO_CLIENT_SECRET", LANGFUSE_SSO_SIGNING_KEY = "LANGFUSE_SSO_SIGNING_KEY" } &&
+      local.doppler_secrets["langfuse-secrets"]["LANGFUSE_SSO_CLIENT_SECRET"] == "LANGFUSE_SSO_CLIENT_SECRET"
+    )
+    error_message = "The issuer's client secret and signing key, and Langfuse's copy of the client secret, come only from Doppler."
+  }
+}
+
+run "langfuse_keeps_password_sign_in_without_the_issuer" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  }
+  assert {
+    condition = (
+      length(kubernetes_deployment_v1.langfuse_sso) == 0 &&
+      !contains(keys(local.doppler_secrets), "langfuse-sso") &&
+      !contains(keys(local.doppler_secrets["langfuse-secrets"]), "LANGFUSE_SSO_CLIENT_SECRET") &&
+      length([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e if startswith(e.name, "AUTH_") || startswith(e.name, "LANGFUSE_DEFAULT_")]) == 0 &&
+      local.langfuse_values.langfuse.features.signUpDisabled
+    )
+    error_message = "Without langfuse_sso_image there is no issuer and no extra Doppler key, the password login stays, and sign-up stays off."
+  }
+}
+
+run "reject_the_issuer_without_its_load_balancer_address" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+  expect_failures = [var.langfuse_sso_image]
+}
+
+run "reject_an_unpinned_issuer_image" {
+  command = plan
+  variables {
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso:latest"
+  }
+  expect_failures = [var.langfuse_sso_image]
+}
+
+run "reject_a_public_issuer_load_balancer_address" {
+  command = plan
+  variables {
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip      = "10.82.0.11"
+      langfuse_ip     = "10.82.0.12"
+      langfuse_sso_ip = "34.1.2.4"
+      source_ranges   = ["10.80.1.0/26"]
+    }
+  }
+  expect_failures = [var.observability_web]
+}
+
 run "reject_staging_proxy_langfuse_without_base_path_image" {
   command = plan
   variables {

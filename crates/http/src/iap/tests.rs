@@ -1,5 +1,7 @@
 //! Local, deliberately public fixtures; never fetch Google keys during tests.
-use super::fixture::{KID, assertion, jwks, key_file, sign, verifier};
+use super::fixture::{
+    EMAIL, KID, SUB, assertion, identity_assertion, jwks, key_file, sign, verifier,
+};
 use super::*;
 use axum::http::HeaderMap;
 use base64::Engine;
@@ -28,7 +30,7 @@ fn signature_claim_types_and_exact_time_boundaries() {
     let now = 2_000_000_000;
     let key = decoding_key(&jwks(), KID).unwrap();
     let good = claims(now);
-    assert!(verify(&sign(&good, Some(KID)), AUDIENCE, &key, now));
+    assert!(verify(&sign(&good, Some(KID)), AUDIENCE, &key, now).is_some());
     for (name, value) in [
         ("iss", json!("https://attacker.test")),
         ("iss", json!(format!("{ISSUER}/"))),
@@ -61,7 +63,7 @@ fn signature_claim_types_and_exact_time_boundaries() {
         let mut bad = good.clone();
         bad[name] = value;
         assert!(
-            !verify(&sign(&bad, Some(KID)), AUDIENCE, &key, now),
+            verify(&sign(&bad, Some(KID)), AUDIENCE, &key, now).is_none(),
             "{bad}"
         );
     }
@@ -69,7 +71,7 @@ fn signature_claim_types_and_exact_time_boundaries() {
         let mut bad = good.clone();
         bad.as_object_mut().unwrap().remove(field);
         assert!(
-            !verify(&sign(&bad, Some(KID)), AUDIENCE, &key, now),
+            verify(&sign(&bad, Some(KID)), AUDIENCE, &key, now).is_none(),
             "missing {field}"
         );
     }
@@ -83,7 +85,7 @@ fn signature_claim_types_and_exact_time_boundaries() {
         valid["exp"] = json!(exp);
         valid["nbf"] = json!(nbf);
         assert!(
-            verify(&sign(&valid, Some(KID)), AUDIENCE, &key, now),
+            verify(&sign(&valid, Some(KID)), AUDIENCE, &key, now).is_some(),
             "{valid}"
         );
     }
@@ -91,7 +93,53 @@ fn signature_claim_types_and_exact_time_boundaries() {
     let mut parts: Vec<String> = token.split('.').map(str::to_owned).collect();
     let replacement = if parts[2].starts_with('A') { "B" } else { "A" };
     parts[2].replace_range(0..1, replacement);
-    assert!(!verify(&parts.join("."), AUDIENCE, &key, now));
+    assert!(verify(&parts.join("."), AUDIENCE, &key, now).is_none());
+}
+
+#[tokio::test]
+async fn identity_needs_a_valid_assertion_naming_subject_and_email() {
+    let gate = cached_gate();
+    let token = identity_assertion(AUDIENCE, "accounts.google.com:42", "a@codahealth.ai");
+    assert_eq!(
+        gate.identity(&token).await,
+        Some(IapIdentity {
+            sub: "accounts.google.com:42".into(),
+            email: "a@codahealth.ai".into(),
+        })
+    );
+    assert_eq!(
+        gate.identity(&assertion(AUDIENCE)).await,
+        Some(IapIdentity {
+            sub: SUB.into(),
+            email: EMAIL.into(),
+        })
+    );
+    let now = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .unwrap()
+        .as_secs();
+    for (field, value) in [
+        ("email", None),
+        ("email", Some(json!(""))),
+        ("sub", None),
+        ("sub", Some(json!(""))),
+    ] {
+        let mut partial = claims(now);
+        match value {
+            Some(value) => partial[field] = value,
+            None => {
+                partial.as_object_mut().unwrap().remove(field);
+            }
+        }
+        let token = sign(&partial, Some(KID));
+        assert!(gate.verifies(&token).await, "{partial}");
+        assert_eq!(gate.identity(&token).await, None, "{partial}");
+    }
+    let other = "/projects/134570912572/locations/us-east1/services/observability-relay";
+    let token = identity_assertion(other, SUB, EMAIL);
+    assert!(!gate.verifies(&token).await);
+    assert_eq!(gate.identity(&token).await, None);
+    assert_eq!(gate.identity("garbage").await, None);
 }
 
 #[tokio::test]

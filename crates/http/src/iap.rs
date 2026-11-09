@@ -77,6 +77,15 @@ pub struct IapVerifier {
     key_url: String,
 }
 
+/// The Google account IAP admitted, from a verified assertion.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct IapIdentity {
+    /// Google's stable account ID, such as `accounts.google.com:123`.
+    pub sub: String,
+    /// The account's email address, as IAP reports it.
+    pub email: String,
+}
+
 #[derive(Deserialize)]
 struct Claims {
     exp: u64,
@@ -85,6 +94,10 @@ struct Claims {
     aud: String,
     #[serde(default, deserialize_with = "present_numeric_date")]
     nbf: Option<u64>,
+    #[serde(default)]
+    sub: Option<String>,
+    #[serde(default)]
+    email: Option<String>,
 }
 
 // An absent nbf is allowed; an explicit null or a nonnumeric value is not.
@@ -121,34 +134,37 @@ impl IapVerifier {
 
     /// True only when `token` is a valid assertion for this audience.
     pub async fn verifies(&self, token: &str) -> bool {
-        let Some(audience) = self
+        self.claims(token).await.is_some()
+    }
+
+    /// The admitted account, only when `token` is a valid assertion for this
+    /// audience that names both a subject and an email.
+    pub async fn identity(&self, token: &str) -> Option<IapIdentity> {
+        let claims = self.claims(token).await?;
+        let sub = claims.sub.filter(|sub| !sub.is_empty())?;
+        let email = claims.email.filter(|email| !email.is_empty())?;
+        Some(IapIdentity { sub, email })
+    }
+
+    async fn claims(&self, token: &str) -> Option<Claims> {
+        let audience = self
             .audience
             .as_deref()
-            .filter(|audience| validate_cloud_run_audience(audience).is_ok())
-        else {
-            return false;
-        };
+            .filter(|audience| validate_cloud_run_audience(audience).is_ok())?;
         if token.len() > MAX_ASSERTION_BYTES {
-            return false;
+            return None;
         }
-        let Ok(header) = decode_header(token) else {
-            return false;
-        };
+        let header = decode_header(token).ok()?;
         if header.alg != Algorithm::ES256 {
-            return false;
+            return None;
         }
-        let Some(kid) = header.kid else {
-            return false;
-        };
-        if kid.is_empty() || kid.len() > 256 {
-            return false;
-        }
-        let Some(key) = self.key(&kid).await else {
-            return false;
-        };
-        let Ok(now) = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH) else {
-            return false;
-        };
+        let kid = header
+            .kid
+            .filter(|kid| !kid.is_empty() && kid.len() <= 256)?;
+        let key = self.key(&kid).await?;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .ok()?;
         verify(token, audience, &key, now.as_secs())
     }
 
@@ -232,7 +248,7 @@ fn decoding_key(keys: &JwkSet, kid: &str) -> Option<DecodingKey> {
     DecodingKey::from_jwk(key).ok()
 }
 
-fn verify(token: &str, audience: &str, key: &DecodingKey, now: u64) -> bool {
+fn verify(token: &str, audience: &str, key: &DecodingKey, now: u64) -> Option<Claims> {
     let mut validation = Validation::new(Algorithm::ES256);
     validation.set_issuer(&[ISSUER]);
     validation.set_audience(&[audience]);
@@ -242,11 +258,8 @@ fn verify(token: &str, audience: &str, key: &DecodingKey, now: u64) -> bool {
     // lifetime: exp > now-30, iat < now+30, and exp > iat. nbf is inclusive.
     validation.validate_exp = false;
     validation.validate_nbf = false;
-    let Ok(token) = decode::<Claims>(token, key, &validation) else {
-        return false;
-    };
-    let claims = token.claims;
-    claims.iss == ISSUER
+    let claims = decode::<Claims>(token, key, &validation).ok()?.claims;
+    let valid = claims.iss == ISSUER
         && claims.aud == audience
         && claims.exp > now.saturating_sub(30)
         && claims.iat < now.saturating_add(30)
@@ -254,7 +267,8 @@ fn verify(token: &str, audience: &str, key: &DecodingKey, now: u64) -> bool {
         && claims.exp - claims.iat <= 660
         && claims
             .nbf
-            .is_none_or(|nbf| nbf <= now.saturating_add(30) && nbf < claims.exp)
+            .is_none_or(|nbf| nbf <= now.saturating_add(30) && nbf < claims.exp);
+    valid.then_some(claims)
 }
 
 /// Deliberately public fixtures for other crates' tests. They never fetch
@@ -288,18 +302,41 @@ pub mod fixture {
         encode(&header, claims, &EncodingKey::from_ec_der(&der)).expect("signed fixture")
     }
 
+    /// The subject [`claims`] carries.
+    pub const SUB: &str = "accounts.google.com:1000";
+    /// The email [`claims`] carries.
+    pub const EMAIL: &str = "engineer@codahealth.ai";
+
     /// Valid claims for `audience`, issued just before `now`.
     pub fn claims(audience: &str, now: u64) -> Value {
-        json!({"iss": ISSUER, "aud": audience, "iat": now - 10, "exp": now + 590})
+        json!({
+            "iss": ISSUER,
+            "aud": audience,
+            "iat": now - 10,
+            "exp": now + 590,
+            "sub": SUB,
+            "email": EMAIL,
+        })
+    }
+
+    fn now() -> u64 {
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .expect("clock")
+            .as_secs()
     }
 
     /// A currently valid assertion for `audience`.
     pub fn assertion(audience: &str) -> String {
-        let now = std::time::SystemTime::now()
-            .duration_since(std::time::UNIX_EPOCH)
-            .expect("clock")
-            .as_secs();
-        sign(&claims(audience, now), Some(KID))
+        sign(&claims(audience, now()), Some(KID))
+    }
+
+    /// A currently valid assertion for `audience` admitting this account.
+    pub fn identity_assertion(audience: &str, sub: &str, email: &str) -> String {
+        let mut claims = claims(audience, now());
+        claims["sub"] = json!(sub);
+        claims["email"] = json!(email);
+        sign(&claims, Some(KID))
     }
 
     /// A verifier whose cache already holds the fixture key. Any refresh it

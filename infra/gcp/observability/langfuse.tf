@@ -29,6 +29,33 @@ locals {
     tag        = "${local.langfuse_image_tag}@${split("@", var.langfuse_web_image)[1]}"
   }
 
+  # Sign-in through langfuse-sso (langfuse-sso.tf), Langfuse's generic OIDC
+  # provider `custom`. A first sign-in joins the coda organization with the
+  # NONE role and no project, so nobody sees traces until an admin grants a
+  # role. LANGFUSE_ALLOWED_ORGANIZATION_CREATORS names the admin, but Langfuse
+  # enforces it only with an EE license; without one an engineer may create an
+  # empty organization of their own, which holds none of coda's traces. Account
+  # linking lets the admin's existing user sign in the same way. Passwords are
+  # off: sign-up is on so SSO can create users, and a password route would let
+  # anyone behind IAP register or claim another engineer's email. NextAuth
+  # checks PKCE and state and verifies the ES256 ID token against the issuer's
+  # JWKS.
+  langfuse_sso_web_env = [for env in [
+    { name = "AUTH_CUSTOM_NAME", value = "Google (staging IAP)" },
+    { name = "AUTH_CUSTOM_ISSUER", value = local.langfuse_sso_issuer },
+    { name = "AUTH_CUSTOM_CLIENT_ID", value = local.langfuse_sso_client },
+    { name = "AUTH_CUSTOM_CLIENT_SECRET", valueFrom = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_SSO_CLIENT_SECRET" } } },
+    { name = "AUTH_CUSTOM_SCOPE", value = "openid email profile" },
+    { name = "AUTH_CUSTOM_CHECKS", value = "pkce,state" },
+    { name = "AUTH_CUSTOM_CLIENT_AUTH_METHOD", value = "client_secret_basic" },
+    { name = "AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG", value = "ES256" },
+    { name = "AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING", value = "true" },
+    { name = "LANGFUSE_DEFAULT_ORG_ID", value = "coda" },
+    { name = "LANGFUSE_DEFAULT_ORG_ROLE", value = "NONE" },
+    { name = "LANGFUSE_ALLOWED_ORGANIZATION_CREATORS", valueFrom = { secretKeyRef = { name = "langfuse-init", key = "LANGFUSE_INIT_USER_EMAIL" } } },
+    { name = "AUTH_DISABLE_USERNAME_PASSWORD", value = "true" },
+  ] : env if local.langfuse_sso]
+
   # Every value the chart sees. Secrets are referenced by Secret name and key;
   # the Doppler operator fills those Secrets (doppler.tf).
   langfuse_values = !var.langfuse_enabled ? null : {
@@ -44,9 +71,13 @@ locals {
         secret = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_NEXTAUTH_SECRET" } }
       }
 
+      # With langfuse-sso, an engineer's first sign-in creates their user,
+      # so sign-up must be on. Staging's IAP gates who reaches the issuer,
+      # and AUTH_DISABLE_USERNAME_PASSWORD refuses password sign-up and
+      # sign-in on every route (langfuse_sso_web_env).
       features = {
         telemetryEnabled = false
-        signUpDisabled   = true
+        signUpDisabled   = !local.langfuse_sso
       }
       logging = { format = "json" }
 
@@ -67,13 +98,13 @@ locals {
         livenessProbe  = { path = "${local.langfuse_base_path}/api/public/health" }
         readinessProbe = { path = "${local.langfuse_base_path}/api/public/ready" }
         pod = {
-          additionalEnv = [
+          additionalEnv = concat([
             { name = "LANGFUSE_INIT_ORG_ID", value = "coda" },
             { name = "LANGFUSE_INIT_ORG_NAME", value = "Coda" },
             { name = "LANGFUSE_INIT_PROJECT_ID", value = "coda-agents-${var.environment}" },
             { name = "LANGFUSE_INIT_PROJECT_NAME", value = "coda-agents" },
             { name = "LANGFUSE_INIT_USER_NAME", value = "Coda Admin" },
-          ]
+          ], local.langfuse_sso_web_env)
           # Init keys and the first admin's login, synced from Doppler.
           additionalEnvFrom = [{ secretRef = { name = "langfuse-init" } }]
         }

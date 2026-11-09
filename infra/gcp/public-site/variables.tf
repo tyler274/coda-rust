@@ -101,6 +101,16 @@ variable "observability_relay_url" {
   }
 }
 
+variable "langfuse_sso" {
+  description = "Staging only: true once infra/gcp/observability deploys langfuse-sso (langfuse_sso_image set). /langfuse/ then signs people in from their IAP identity and /langfuse-sso/authorize is mounted; false passes Langfuse's own login through. It must match that root, or sign-in sends people to a provider Langfuse does not offer."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.langfuse_sso || var.observability_relay_url != null
+    error_message = "langfuse_sso needs observability_relay_url."
+  }
+}
+
 variable "domains" {
   description = "Production hostnames the load balancer serves (apex first). Certificate Manager issues one Google-managed certificate for them through DNS authorization, so it can be active before traffic moves; the operator adds the certificate_dns_records CNAMEs. Staging uses its domain mapping instead and sets none."
   type        = list(string)

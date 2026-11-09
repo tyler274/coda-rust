@@ -445,7 +445,7 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
         ));
     }
     if !receipt.images.complete() {
-        return Err(Error::Input("all six published images required"));
+        return Err(Error::Input("every published image required"));
     }
     receipt.outcome = Outcome::InProgress;
     checkpoint(receipt, store, Phase::BeforeSnapshot)?;
@@ -2029,6 +2029,7 @@ mod tests {
             [
                 "duet-migration",
                 "duet-runtime",
+                "langfuse-sso",
                 "observability-relay",
                 "physician-migration",
                 "physician-runtime",

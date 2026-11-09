@@ -33,15 +33,20 @@ locals {
       # existingSecret); names stay as Doppler holds them. The HMAC pair is
       # minted by the operator for the Langfuse service account and stored
       # in Doppler, so it never passes through tofu state.
-      "langfuse-secrets" = {
-        "LANGFUSE_SALT"                 = "LANGFUSE_SALT"
-        "LANGFUSE_NEXTAUTH_SECRET"      = "LANGFUSE_NEXTAUTH_SECRET"
-        "LANGFUSE_ENCRYPTION_KEY"       = "LANGFUSE_ENCRYPTION_KEY"
-        "LANGFUSE_CLICKHOUSE_PASSWORD"  = "LANGFUSE_CLICKHOUSE_PASSWORD"
-        "LANGFUSE_REDIS_PASSWORD"       = "LANGFUSE_REDIS_PASSWORD"
-        "LANGFUSE_S3_ACCESS_KEY_ID"     = "LANGFUSE_S3_ACCESS_KEY_ID"
-        "LANGFUSE_S3_SECRET_ACCESS_KEY" = "LANGFUSE_S3_SECRET_ACCESS_KEY"
-      }
+      "langfuse-secrets" = merge(
+        {
+          "LANGFUSE_SALT"                 = "LANGFUSE_SALT"
+          "LANGFUSE_NEXTAUTH_SECRET"      = "LANGFUSE_NEXTAUTH_SECRET"
+          "LANGFUSE_ENCRYPTION_KEY"       = "LANGFUSE_ENCRYPTION_KEY"
+          "LANGFUSE_CLICKHOUSE_PASSWORD"  = "LANGFUSE_CLICKHOUSE_PASSWORD"
+          "LANGFUSE_REDIS_PASSWORD"       = "LANGFUSE_REDIS_PASSWORD"
+          "LANGFUSE_S3_ACCESS_KEY_ID"     = "LANGFUSE_S3_ACCESS_KEY_ID"
+          "LANGFUSE_S3_SECRET_ACCESS_KEY" = "LANGFUSE_S3_SECRET_ACCESS_KEY"
+        },
+        # Langfuse authenticates to langfuse-sso with the client secret the
+        # issuer checks (langfuse-sso.tf).
+        local.langfuse_sso ? { "LANGFUSE_SSO_CLIENT_SECRET" = "LANGFUSE_SSO_CLIENT_SECRET" } : {},
+      )
       # Injected as environment (envFrom) into Langfuse web: headless init of
       # the org, the agents project, its ingestion keys, and the first admin.
       "langfuse-init" = {
@@ -54,6 +59,14 @@ locals {
       "otel-collector-langfuse" = {
         "LANGFUSE_INIT_PROJECT_PUBLIC_KEY" = "LANGFUSE_PUBLIC_KEY"
         "LANGFUSE_INIT_PROJECT_SECRET_KEY" = "LANGFUSE_SECRET_KEY"
+      }
+    } : {},
+    # Injected as environment (envFrom) into langfuse-sso: the client secret
+    # Langfuse presents and the ES256 key its ID tokens are signed with.
+    local.langfuse_sso ? {
+      "langfuse-sso" = {
+        "LANGFUSE_SSO_CLIENT_SECRET" = "LANGFUSE_SSO_CLIENT_SECRET"
+        "LANGFUSE_SSO_SIGNING_KEY"   = "LANGFUSE_SSO_SIGNING_KEY"
       }
     } : {},
   )

@@ -13,7 +13,7 @@ DEPENDENCY_ROOTS = ('coda-servers-deps', 'coda-web-deps', 'patient-bank-deps')
 IMAGE_ROOTS = (
     'physician-sample-image', 'physician-worker-image', 'duet-api-image',
     'physician-migration-image', 'duet-migration-image', 'duet-privacy-delivery-image',
-    'observability-relay-image',
+    'observability-relay-image', 'langfuse-sso-image',
 )
 # CI jobs enter these shells; otherwise each job rebuilds their wrappers
 # (claude-code, google-cloud-sdk) and refetches them from cache.nixos.org.

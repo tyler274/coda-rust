@@ -980,7 +980,8 @@ jobs:
   # moves to the new runtime digest and must report a Ready revision serving
   # it. physician-worker and observability-relay are updated once their Cloud
   # Run services exist; until then a push only publishes the digest so the
-  # plan that creates the service can pin it.
+  # plan that creates the service can pin it. langfuse-sso is only published:
+  # OpenTofu pins its digest in the observability root.
   # The Rust command checkpoints a sanitized receipt before each mutation and
   # reconciles observed revisions/traffic on failure; it never rolls back.
   # Only a push to main, after every check job is green.

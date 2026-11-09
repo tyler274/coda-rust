@@ -54,24 +54,27 @@ async fn upstream(
     (origin, handle)
 }
 
-fn config(grafana: &str, langfuse: &str) -> Config {
+fn config(grafana: &str, langfuse: &str, langfuse_sso: &str) -> Config {
     Config::from_lookup(|name| match name {
         "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
         "GRAFANA_UPSTREAM" => Some(grafana.into()),
         "LANGFUSE_UPSTREAM" => Some(langfuse.into()),
+        "LANGFUSE_SSO_UPSTREAM" => Some(langfuse_sso.into()),
         _ => None,
     })
     .unwrap()
 }
 
 #[tokio::test]
-async fn routes_two_prefixes_unchanged_and_only_with_the_relays_own_assertion() {
+async fn routes_three_prefixes_unchanged_and_only_with_the_relays_own_assertion() {
     let grafana_calls = Arc::new(AtomicUsize::new(0));
     let langfuse_calls = Arc::new(AtomicUsize::new(0));
+    let sso_calls = Arc::new(AtomicUsize::new(0));
     let (grafana, g) = upstream("grafana", grafana_calls.clone()).await;
     let (langfuse, l) = upstream("langfuse", langfuse_calls.clone()).await;
+    let (sso, s) = upstream("langfuse-sso", sso_calls.clone()).await;
     let app = router_with_verifier(
-        config(&grafana, &langfuse),
+        config(&grafana, &langfuse, &sso),
         http::iap::fixture::verifier(AUDIENCE),
     );
     let send = |path: &str, assertion: Option<String>| {
@@ -101,6 +104,7 @@ async fn routes_two_prefixes_unchanged_and_only_with_the_relays_own_assertion() 
         ("/grafana/api/health?x=%2F", "grafana"),
         ("/grafana", "grafana"),
         ("/langfuse/api/public/health", "langfuse"),
+        ("/langfuse-sso/authorize?state=s", "langfuse-sso"),
     ] {
         let response = send(path, Some(http::iap::fixture::assertion(AUDIENCE)))
             .await
@@ -132,8 +136,10 @@ async fn routes_two_prefixes_unchanged_and_only_with_the_relays_own_assertion() 
     }
     assert_eq!(grafana_calls.load(Ordering::SeqCst), 2);
     assert_eq!(langfuse_calls.load(Ordering::SeqCst), 1);
+    assert_eq!(sso_calls.load(Ordering::SeqCst), 1);
     g.abort();
     l.abort();
+    s.abort();
 }
 
 #[test]
@@ -143,9 +149,22 @@ fn configuration_is_required_and_origin_only() {
             "RELAY_IAP_AUDIENCE" => Some(audience.into()),
             "GRAFANA_UPSTREAM" => Some(grafana.into()),
             "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
+            "LANGFUSE_SSO_UPSTREAM" => Some("http://10.80.0.12:3000".into()),
             _ => None,
         })
     };
+    let without_sso = Config::from_lookup(|name| match name {
+        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
+        "GRAFANA_UPSTREAM" => Some("http://10.80.0.10:3000".into()),
+        "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
+        _ => None,
+    });
+    assert!(matches!(
+        without_sso,
+        Err(ConfigError::Missing {
+            setting: "LANGFUSE_SSO_UPSTREAM"
+        })
+    ));
     assert!(load(AUDIENCE, "http://10.80.0.10:3000").is_ok());
     let audience = |result| {
         matches!(
