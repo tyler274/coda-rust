@@ -143,6 +143,17 @@ pub(crate) struct Entry {
     pub(crate) details: Option<FeedbackDetails>,
     /// The desk's clock when the page last changed this entry itself.
     changed: u64,
+    /// The desk's clock when its latest rating save started.
+    saving: u64,
+}
+
+/// A rating save the page started, from [`Desk::choose`]. Only the latest
+/// save on a response settles it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct RatingSave {
+    pub(crate) chat: ChatKey,
+    response: usize,
+    started: u64,
 }
 
 /// When a read of the chat's feedback started, from [`Desk::read_started`].
@@ -224,6 +235,7 @@ impl Desk {
                 rating: RatingState::Unrated,
                 details: None,
                 changed: 0,
+                saving: 0,
             });
             if !kept(entry) {
                 entry.rating = RatingState::Rated(feedback.rating);
@@ -245,12 +257,13 @@ impl Desk {
             },
             details: None,
             changed: 0,
+            saving: 0,
         }
     }
 
-    /// Presses `choice` on a response; answers the chat to save to when the
-    /// press starts a save.
-    pub(crate) fn choose(&mut self, response: usize, choice: FeedbackRating) -> Option<ChatKey> {
+    /// Presses `choice` on a response; answers the save to make when the
+    /// press starts one.
+    pub(crate) fn choose(&mut self, response: usize, choice: FeedbackRating) -> Option<RatingSave> {
         let chat = self.chat.clone()?;
         let current = self.entry(response);
         let saving = current.rating.choose(choice)?;
@@ -261,25 +274,34 @@ impl Desk {
                 rating: saving,
                 details: current.details,
                 changed,
+                saving: changed,
             },
         );
-        Some(chat)
+        Some(RatingSave {
+            chat,
+            response,
+            started: changed,
+        })
     }
 
-    /// A rating save on `chat` answered with the saved feedback, or failed.
+    /// `save` answered with the saved feedback, or failed. A save the page
+    /// has since left behind, on another visit or under a newer save,
+    /// changes nothing.
     pub(crate) fn rating_answered(
         &mut self,
-        chat: &ChatKey,
-        response: usize,
+        save: &RatingSave,
         answer: Result<ResponseFeedback, ()>,
     ) {
-        if self.chat.as_ref() != Some(chat) {
+        if self.chat.as_ref() != Some(&save.chat) {
             return;
         }
         let changed = self.tick();
-        let Some(entry) = self.entries.get_mut(&response) else {
+        let Some(entry) = self.entries.get_mut(&save.response) else {
             return;
         };
+        if entry.saving != save.started {
+            return;
+        }
         entry.changed = changed;
         match answer {
             Ok(saved) => {
@@ -305,6 +327,7 @@ impl Desk {
             rating: RatingState::Rated(saved.rating),
             details: None,
             changed,
+            saving: 0,
         });
         entry.changed = changed;
         if !matches!(entry.rating, RatingState::Saving { .. }) {
@@ -375,17 +398,17 @@ pub(crate) fn ResponseRating(response: usize) -> Element {
             ui::Rating::Up => FeedbackRating::Up,
             ui::Rating::Down => FeedbackRating::Down,
         };
-        let Some(chat) = desk.write().choose(response, choice) else {
+        let Some(save) = desk.write().choose(response, choice) else {
             return;
         };
         let client = client.peek().clone();
         Runtime::current().in_scope(owner, || {
             spawn(async move {
                 let answer = client
-                    .rate_response(&chat.workspace, &chat.chat, response, choice)
+                    .rate_response(&save.chat.workspace, &save.chat.chat, response, choice)
                     .await
                     .map_err(|_| ());
-                desk.write().rating_answered(&chat, response, answer);
+                desk.write().rating_answered(&save, answer);
             })
         });
     };
@@ -419,10 +442,16 @@ pub(crate) fn ResponseRating(response: usize) -> Element {
             }
         }
         if open() {
-            DetailsDialog {
-                response,
-                saved: entry.details.clone().unwrap_or_default(),
-                on_close: move |_| open.set(false),
+            // Keys pressed anywhere in the dialog are its own, never the page's
+            // shortcuts or Send; the dialog answers Escape itself.
+            div {
+                class: "feedback-details-host",
+                onkeydown: move |event| event.stop_propagation(),
+                DetailsDialog {
+                    response,
+                    saved: entry.details.clone().unwrap_or_default(),
+                    on_close: move |_| open.set(false),
+                }
             }
         }
     }
@@ -472,14 +501,6 @@ fn DetailsDialog(response: usize, saved: FeedbackDetails, on_close: EventHandler
             subtitle: DETAILS_SUBTITLE,
             close_label: CLOSE,
             on_close: move |_| on_close.call(()),
-            // What the physician types here is details, never the page's shortcuts or Send.
-            div {
-                class: "feedback-details-form",
-                onkeydown: move |event| {
-                    if event.key() != Key::Escape {
-                        event.stop_propagation();
-                    }
-                },
             div { class: "feedback-reasons",
                 for (reason, label) in REASONS {
                     ToggleChip {
@@ -514,7 +535,6 @@ fn DetailsDialog(response: usize, saved: FeedbackDetails, on_close: EventHandler
                     onclick: save,
                     "{SAVE_DETAILS}"
                 }
-            }
             }
         }
     }
@@ -556,10 +576,10 @@ mod tests {
         desk.open(Some(chat("a")));
         read(&mut desk, vec![saved(1, Up)]);
         let stale = desk.read_started();
-        desk.choose(1, Down).unwrap();
-        desk.rating_answered(&chat("a"), 1, Ok(saved(1, Down)));
-        desk.choose(2, Up).unwrap();
-        desk.rating_answered(&chat("a"), 2, Ok(saved(2, Up)));
+        let save = desk.choose(1, Down).unwrap();
+        desk.rating_answered(&save, Ok(saved(1, Down)));
+        let save = desk.choose(2, Up).unwrap();
+        desk.rating_answered(&save, Ok(saved(2, Up)));
         desk.read_answered(
             &chat("a"),
             stale,
@@ -576,6 +596,28 @@ mod tests {
     }
 
     #[test]
+    fn a_save_from_an_earlier_visit_never_settles_a_newer_one() {
+        let mut desk = Desk::default();
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![]);
+        let earlier = desk.choose(1, Up).unwrap();
+        desk.open(Some(chat("b")));
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![]);
+        let newer = desk.choose(1, Down).unwrap();
+        desk.rating_answered(&earlier, Ok(saved(1, Up)));
+        assert!(
+            matches!(
+                desk.entry(1).rating,
+                RatingState::Saving { choice: Down, .. }
+            ),
+            "the earlier save settled the newer one"
+        );
+        desk.rating_answered(&newer, Ok(saved(1, Down)));
+        assert_eq!(desk.entry(1).rating, RatingState::Rated(Down));
+    }
+
+    #[test]
     fn a_rating_saves_shows_the_choice_and_lands_saved() {
         let mut desk = Desk::default();
         desk.open(Some(chat("a")));
@@ -587,11 +629,12 @@ mod tests {
         );
         read(&mut desk, vec![]);
         assert_eq!(desk.entry(1).rating, RatingState::Unrated);
-        assert_eq!(desk.choose(1, Up), Some(chat("a")));
+        let save = desk.choose(1, Up).unwrap();
+        assert_eq!(save.chat, chat("a"));
         let saving = desk.entry(1).rating;
         assert_eq!((saving.shown(), saving.notice()), (Some(Up), None));
         assert_eq!(desk.choose(1, Down), None, "one save at a time");
-        desk.rating_answered(&chat("a"), 1, Ok(saved(1, Up)));
+        desk.rating_answered(&save, Ok(saved(1, Up)));
         assert_eq!(desk.entry(1).rating, RatingState::Rated(Up));
         assert_eq!(desk.choose(1, Up), None, "already saved");
         assert_eq!(desk.entry(3).rating, RatingState::Unrated);
@@ -602,8 +645,8 @@ mod tests {
         let mut desk = Desk::default();
         desk.open(Some(chat("a")));
         read(&mut desk, vec![saved(1, Up)]);
-        desk.choose(1, Down).unwrap();
-        desk.rating_answered(&chat("a"), 1, Err(()));
+        let save = desk.choose(1, Down).unwrap();
+        desk.rating_answered(&save, Err(()));
         let failed = desk.entry(1).rating;
         assert_eq!(
             failed,
@@ -617,8 +660,8 @@ mod tests {
             (Some(Up), Some(NOT_SAVED))
         );
         // Pressing again retries over the same saved rating.
-        desk.choose(1, Down).unwrap();
-        desk.rating_answered(&chat("a"), 1, Ok(saved(1, Down)));
+        let save = desk.choose(1, Down).unwrap();
+        desk.rating_answered(&save, Ok(saved(1, Down)));
         assert_eq!(desk.entry(1).rating, RatingState::Rated(Down));
 
         let unrated = RatingState::Unrated.choose(Up).unwrap().answered(None);
@@ -651,10 +694,10 @@ mod tests {
         let mut desk = Desk::default();
         desk.open(Some(chat("a")));
         read(&mut desk, vec![]);
-        desk.choose(1, Up).unwrap();
+        let save = desk.choose(1, Up).unwrap();
         let earlier = desk.read_started();
         desk.open(Some(chat("b")));
-        desk.rating_answered(&chat("a"), 1, Ok(saved(1, Up)));
+        desk.rating_answered(&save, Ok(saved(1, Up)));
         let started = desk.read_started();
         desk.read_answered(
             &chat("a"),
@@ -683,7 +726,7 @@ mod tests {
         let mut desk = Desk::default();
         desk.open(Some(chat("a")));
         read(&mut desk, vec![saved(1, Up)]);
-        desk.choose(1, Down).unwrap();
+        let save = desk.choose(1, Down).unwrap();
         desk.open(Some(chat("a")));
         read(&mut desk, vec![saved(1, Up)]);
         assert!(matches!(
@@ -695,8 +738,7 @@ mod tests {
             text: "Sodium was rechecked.".into(),
         };
         desk.rating_answered(
-            &chat("a"),
-            1,
+            &save,
             Ok(ResponseFeedback {
                 details: Some(details.clone()),
                 ..saved(1, Down)
