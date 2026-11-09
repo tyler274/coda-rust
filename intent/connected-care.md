@@ -123,7 +123,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 8. The patient sees no receipt that the care team looked, and Duet never claims a physician reviewed it.
 9. If the patient later edits their For my doctor, the sent copy keeps its version and is marked when a newer one exists.
 
-### E1. Patient leaves
+### X1. Patient leaves
 
 1. The patient leaves the practice in Duet.
 2. The connection ends everywhere at once, and new data stops.
@@ -132,7 +132,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 5. The practice keeps the dated copies it already received, and the roster shows Ended, with no notification.
 6. In the MVP, leaving is the only way to stop sharing, short of deleting the account.
 
-### E2. Practice discharges the patient
+### X2. Practice discharges the patient
 
 1. A practice member discharges the patient from the patient's roster row and confirms.
 2. The connection and the data flow end at once.
@@ -141,14 +141,14 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 5. The patient keeps their account and history and the last doctor's plan, marked as no longer updated. The practice's appointment goes away, and practice news already in the thread stays.
 6. The practice keeps the dated copies it already received, and the roster and Duet both show Ended.
 
-### E3. Account deletion
+### X3. Account deletion
 
 1. The patient deletes their Duet account.
 2. Every connection ends and sharing stops at once.
 3. Each practice keeps what it already received, dated.
 4. The practice roster shows Ended.
 
-### E4. Physician leaves the practice
+### X4. Physician leaves the practice
 
 1. The physician's panel is reassigned, and the connection continues.
 2. Telling the patient who their doctor is now comes later.
