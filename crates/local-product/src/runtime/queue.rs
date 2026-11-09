@@ -114,9 +114,12 @@ impl Store {
             // Dropping the transaction rolls the receipt back.
             return Ok(QueueChanged::Refused);
         };
-        // DbErr carries text, not a source; the decode error is kept in it.
-        let mut state: Conversation = serde_json::from_value(row.state)
-            .map_err(|cause| DbErr::Json(format!("corrupt conversation: {cause}")))?;
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|cause| DbErr::TryIntoErr {
+                from: "stored conversation",
+                into: "Conversation",
+                source: std::sync::Arc::new(cause),
+            })?;
         match change {
             Change::Edit(text) => {
                 let Some(queued) = state.queued_mut(queued_id) else {
@@ -151,11 +154,11 @@ pub(super) async fn return_to_draft(
     if queued.is_empty() {
         return Ok(());
     }
-    let queued_texts = queued
+    let returned = queued
         .into_iter()
         .map(|queued| queued.text)
-        .collect::<Vec<_>>();
-    let returned = queued_texts.join("\n\n");
+        .collect::<Vec<_>>()
+        .join("\n\n");
     let now = now(tx).await?;
     let existing = chat_draft::Entity::find_by_id(keys(scope))
         .lock_exclusive()
@@ -163,14 +166,12 @@ pub(super) async fn return_to_draft(
         .await?;
     match existing {
         Some(row) => {
-            // A draft that is exactly a queued message is that message's
-            // clear still on its way (or its receipt lost): the sending tab
-            // removes it once it hears back. Returning it after itself would
-            // give the physician the same words twice.
-            let pending_clear = queued_texts
-                .iter()
-                .any(|text| text.trim() == row.text.trim());
-            let text = if row.text.trim().is_empty() || pending_clear {
+            // The draft can still hold a queued message whose Send clear has
+            // not landed. Appending after it is deliberate: the sending tab
+            // then reads a newer, different draft as a conflict and keeps
+            // both. Collapsing the copy would hand that tab its own words,
+            // and its pending clear would erase what Stop returned.
+            let text = if row.text.trim().is_empty() {
                 returned
             } else {
                 format!("{}\n\n{returned}", row.text)

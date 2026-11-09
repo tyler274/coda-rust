@@ -452,7 +452,9 @@ async fn stop_returns_queued_text_to_the_composer_and_never_sends_it() {
     assert_eq!((draft.revision, draft.text.as_str()), (1, "queued"));
 
     // The draft still holds a queued message whose clear has not landed
-    // (or whose receipt was lost): Stop returns it once, not twice.
+    // (or whose receipt was lost). Stop appends after it rather than
+    // collapsing the copy: the sending tab sees a newer, different draft as a
+    // conflict, so its pending clear can never erase what Stop returned.
     let pending = delivery_scope(&practice, "pending-clear");
     store
         .accept_authorized(&pending, &typed("p1", "p1"), vec![1; 32])
@@ -480,5 +482,8 @@ async fn stop_returns_queued_text_to_the_composer_and_never_sends_it() {
         .await
         .unwrap();
     let draft = store.chat_draft(&pending).await.unwrap();
-    assert_eq!((draft.revision, draft.text.as_str()), (2, "the sodium?"));
+    assert_eq!(
+        (draft.revision, draft.text.as_str()),
+        (2, "the sodium?\n\nthe sodium?")
+    );
 }

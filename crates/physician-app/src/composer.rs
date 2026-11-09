@@ -465,10 +465,13 @@ impl Composer {
                 held.failures = held.failures.saturating_add(1);
             }
         }
+        // A Send's clear this save finished settles first, so a newer read
+        // that waited behind it is taken, not mistaken for a conflict.
+        held.settle();
         if let Some((revision, text)) = held.unread.take() {
             held.reconcile(revision, &text);
+            held.settle();
         }
-        held.settle();
     }
 
     /// How many saves of `target` failed in a row while its last one is
@@ -805,20 +808,43 @@ mod tests {
     }
 
     /// Stop in another tab returns queued text to the draft while this
-    /// page's save is running; the read that brings it is kept for after.
+    /// page's Send clear is saving; the read that brings it is kept for
+    /// after the clear settles, and shows.
     #[test]
-    fn a_newer_read_during_a_save_shows_once_the_save_answers() {
+    fn a_newer_read_during_a_send_clear_shows_once_the_clear_answers() {
         let one = chat("chat-1");
         let at = Some(&one);
         let mut composer = opened(&one, 1, "hello");
-        composer.edit(at, "".into());
-        let attempt = composer.begin(&one).unwrap();
+        let send = composer
+            .begin_send(&one, "k1".into(), "hello", command())
+            .unwrap();
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        let clear = composer.begin(&one).unwrap();
+        assert_eq!((clear.expected_revision, clear.text.as_str()), (1, ""));
         composer.loaded(&one, 3, "returned");
         assert_eq!(composer.text(at), "");
-        composer.finish(&attempt, SaveOutcome::Saved(2));
+        composer.finish(&clear, SaveOutcome::Saved(2));
+        assert!(!composer.clearing(at));
         assert_eq!(composer.text(at), "returned");
         assert_eq!(composer.conflict(at), None);
         assert!(!composer.wants_save(&one));
+    }
+
+    /// Stop returned a queued message after the copy this page still holds
+    /// for an unanswered Send. The newer draft is a conflict, so resolving
+    /// the Send never clears what Stop returned.
+    #[test]
+    fn stop_returned_text_beside_an_unanswered_send_is_a_conflict() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 1, "Q");
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 2, "Q\n\nQ");
+        assert_eq!(composer.conflict(at).unwrap().revision, 2);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert!(composer.begin(&one).is_none(), "no clear over the conflict");
     }
 
     #[test]
