@@ -90,6 +90,12 @@ pub(crate) struct PendingSend {
     pub(crate) text: String,
     pub(crate) generation: u64,
     pub(crate) command: serde_json::Value,
+    /// This page took a draft revision it can't prove it wrote while the
+    /// Send was unanswered, such as Stop returning the queued message. The
+    /// Send is still confirmed by its key, but its acceptance no longer
+    /// clears the composer: the words there may not be the ones it sent.
+    #[serde(default)]
+    pub(crate) fenced: bool,
 }
 
 /// How the server answered a Send.
@@ -177,6 +183,13 @@ impl Held {
                 revision,
                 text: text.to_owned(),
             });
+        }
+    }
+
+    /// The unanswered Send, if any, loses the right to clear the composer.
+    fn fence_send(&mut self) {
+        if let Some(send) = self.pending_send.as_mut() {
+            send.fenced = true;
         }
     }
 
@@ -460,6 +473,9 @@ impl Composer {
                     if revision >= held.revision {
                         held.revision = revision;
                         held.saved = text;
+                        // Another writer, such as Stop, may have written
+                        // these same words.
+                        held.fence_send();
                     }
                 } else {
                     held.conflict = Some(ConflictDraft { revision, text });
@@ -533,6 +549,7 @@ impl Composer {
         held.generation += 1;
         held.failed = false;
         held.pending_clear = false;
+        held.fence_send();
         held.settle();
     }
 
@@ -555,6 +572,7 @@ impl Composer {
             text: text.to_owned(),
             generation: held.generation,
             command,
+            fenced: false,
         };
         held.pending_send = Some(send.clone());
         Some(send)
@@ -570,7 +588,7 @@ impl Composer {
         let Some(send) = held.pending_send.take_if(|send| send.key == key) else {
             return;
         };
-        if answer == SendAnswer::Refused {
+        if answer == SendAnswer::Refused || send.fenced {
             return;
         }
         let rest = if held.generation == send.generation || held.text == send.text {
@@ -873,6 +891,44 @@ mod tests {
             "no empty save over Stop's text"
         );
         assert_eq!(composer.conflict(at).unwrap().text, "Q");
+    }
+
+    /// The physician takes Stop's returned words before the Send is
+    /// answered; the Send's acceptance must not clear what they chose.
+    #[test]
+    fn use_newer_text_fences_an_unanswered_send() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 1, "Q");
+        composer.take_newer(at);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "Q");
+        assert!(!composer.clearing(at));
+        assert!(!composer.wants_save(&one));
+    }
+
+    /// The autosave of the words being sent loses a race with Stop writing
+    /// the same words: its conflict answer is not proof the page wrote
+    /// them, so the Send's acceptance leaves them.
+    #[test]
+    fn an_equal_save_conflict_fences_an_unanswered_send() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let save = composer.begin(&one).unwrap();
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.finish(&save, SaveOutcome::Conflict(1, "Q".into()));
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "Q");
+        assert!(!composer.wants_save(&one));
     }
 
     #[test]
