@@ -36,7 +36,7 @@ review, reply and card code and its tests exist.
 
 ## Coverage
 
-The sync commit is 42848734. At that commit, the model describes the README, the check passed, and each
+The sync commit is 0065473e. At that commit, the model describes the README, the check passed, and each
 rule failed on its break below while the other rules held. No product code carries the model's
 steps. When code does, each action's comment names that code, and the code joins "When a change
 needs this". Move the sync commit forward only after all of that holds again, on a README or code
