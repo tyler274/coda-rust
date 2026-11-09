@@ -61,7 +61,7 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
     }
     let numbers = NumberLiterals::read(&citation.content);
     let layout = layout.zip(resource.as_ref()).and_then(|(layout, record)| {
-        match layout.validate(record) {
+        match layout.validate(&citation.record_type, record) {
             Ok(validated) => Some(validated),
             Err(refusal) => {
                 tracing::warn!(
@@ -1565,7 +1565,7 @@ pub(crate) mod tests {
     }
 
     /// A non-FHIR source: a lab export in its own field names, read as recorded.
-    fn vendor_lab() -> Citation {
+    pub(crate) fn vendor_lab() -> Citation {
         let content = include_str!("../fixtures/records/vendor-lab-result.json");
         let mut cited = citation(content);
         cited.record_type = "LabResult".into();

@@ -210,7 +210,9 @@ pub async fn ensure_layout<P: Provider + ?Sized>(
     let record: Value = serde_json::from_str(&cited.content).map_err(Unsaved::RecordNotJson)?;
     let reply = request_layout(provider, key.record_type, &record, attempt_id).await?;
     let layout = Layout::parse(&reply).map_err(Unsaved::NotALayout)?;
-    layout.validate(&record).map_err(Unsaved::Refused)?;
+    layout
+        .validate(key.record_type, &record)
+        .map_err(Unsaved::Refused)?;
     match store.save_layout(key, &reply).await {
         Ok(Saved::Stored(stored)) => Ok(Outcome::Stored {
             sha256: stored.sha256,
@@ -282,7 +284,7 @@ mod tests {
     use super::*;
     use crate::live::{cited_layouts, durable_snapshot_body};
     use crate::source_inspection::inspection;
-    use crate::source_inspection::tests::{general_citation, observation};
+    use crate::source_inspection::tests::{general_citation, observation, vendor_lab};
     use crate::source_layout::{LayoutRefusal, RoleMismatchReason, SlotRole};
     use harness::engine::Turn;
     use local_product::runtime::{Conversation, Message, async_trait};
@@ -436,6 +438,48 @@ mod tests {
         let view = snapshot_view(&store, &cited).await;
         assert_eq!(view["layout_sections"][0]["heading"], "Result", "{view}");
         assert_ne!(view, general(&cited));
+    }
+
+    /// A vendor lab export names no `resourceType`; the model is told the type its source
+    /// adapter gave it, and a layout for that type is stored while one for another is refused.
+    #[tokio::test]
+    async fn a_record_that_is_not_fhir_gets_a_layout_for_its_adapters_type() {
+        const VENDOR: &str = r#"{"record_type":"LabResult",
+            "sections":[{"heading":"result","repeat":"/results","slots":[
+                {"role":"code","pointer":"/test_name"},
+                {"role":"result","pointer":"/value"}]}]}"#;
+        let store = store().await;
+        let mut cited = vendor_lab();
+        cited.source_id = Some(format!("lab-{}", uuid::Uuid::new_v4()));
+        let mut model = Scripted::replying(&VENDOR.replace("LabResult", "Observation"));
+        let error = ensure_layout(&store, &mut model, key(&cited), &cited, "a1")
+            .await
+            .unwrap_err();
+        assert!(
+            matches!(
+                error,
+                Unsaved::Refused(Refusal {
+                    cause: LayoutRefusal::WrongRecordType { .. },
+                    ..
+                })
+            ),
+            "{error:?}"
+        );
+        assert!(store.layout_for(key(&cited)).await.unwrap().is_none());
+
+        let mut model = Scripted::replying(VENDOR);
+        let outcome = ensure_layout(&store, &mut model, key(&cited), &cited, "a2")
+            .await
+            .unwrap();
+        assert!(matches!(outcome, Outcome::Stored { .. }), "{outcome:?}");
+        let seen = model.seen.unwrap();
+        let [Item::Message { text, .. }] = seen.items.as_slice() else {
+            panic!("one message");
+        };
+        let sent: Value = serde_json::from_str(text).unwrap();
+        assert_eq!(sent["record_type"], "LabResult");
+        let view = snapshot_view(&store, &cited).await;
+        assert_eq!(view["layout_sections"][0]["heading"], "Result 1", "{view}");
     }
 
     #[tokio::test]

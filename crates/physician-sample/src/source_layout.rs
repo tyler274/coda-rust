@@ -17,7 +17,8 @@ use std::fmt;
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Layout {
-    /// The record type it reads, compared with the record's `resourceType`.
+    /// The record type it reads, compared with the type the record's source adapter gave the
+    /// record (a layout key's record type), so a record that is not FHIR can have a layout too.
     pub record_type: String,
     /// Status slots read beside the record's kind and date. The general view's statuses always
     /// read there too, so these add only a status no general status holds.
@@ -408,12 +409,12 @@ pub enum LayoutRefusal {
     NotStructured,
     /// A section takes its heading from an element's code, but does not repeat over elements.
     CodeHeadingWithoutRepeat,
-    /// The record's `resourceType` is not the one the layout reads.
+    /// The record's type, as its source adapter gave it, is not the one the layout reads.
     WrongRecordType {
         /// The record type the layout reads.
         expected: String,
-        /// The record's own type, if it names one.
-        found: Option<String>,
+        /// The record's type, as its source adapter gave it.
+        found: String,
     },
     /// A slot's pointer is not an RFC 6901 JSON pointer.
     MalformedPointer {
@@ -597,8 +598,14 @@ impl Layout {
         serde_json::from_str(stored)
     }
 
-    /// Checks every role and pointer against `record`, refusing at the first fault.
-    pub fn validate<'r>(&self, record: &'r Value) -> Result<ValidatedLayout<'r>, Refusal> {
+    /// Checks the layout against `record`, of `record_type` as its source adapter gave it (the
+    /// type a citation and a layout key carry, never a member of the record), then every role
+    /// and pointer, refusing at the first fault.
+    pub fn validate<'r>(
+        &self,
+        record_type: &str,
+        record: &'r Value,
+    ) -> Result<ValidatedLayout<'r>, Refusal> {
         let whole = |cause| Refusal {
             at: Position::of(Part::Whole),
             role: None,
@@ -607,11 +614,10 @@ impl Layout {
         if !record.is_object() {
             return Err(whole(LayoutRefusal::NotStructured));
         }
-        let found = record["resourceType"].as_str();
-        if found != Some(self.record_type.as_str()) {
+        if record_type != self.record_type {
             return Err(whole(LayoutRefusal::WrongRecordType {
                 expected: self.record_type.clone(),
-                found: found.map(str::to_owned),
+                found: record_type.to_owned(),
             }));
         }
         let mut bound = BTreeSet::new();
@@ -1233,7 +1239,7 @@ mod tests {
     use super::*;
     use crate::source_inspection::tests::{
         assert_view_shows_every_leaf, at, citation, condition, general_citation, observation,
-        readable,
+        readable, vendor_lab,
     };
     use crate::source_inspection::{inspection, inspection_with_layout};
     use local_product::physician_chat::Citation;
@@ -1282,8 +1288,16 @@ mod tests {
         cited
     }
 
+    /// The type a FHIR source adapter gives `record`: its `resourceType`.
+    fn fhir_type(record: &Value) -> &str {
+        record["resourceType"].as_str().unwrap_or_default()
+    }
+
     fn refusal(layout: &Layout, record: &Value) -> LayoutRefusal {
-        layout.validate(record).unwrap_err().cause
+        layout
+            .validate(fhir_type(record), record)
+            .unwrap_err()
+            .cause
     }
 
     /// Clinical text a model or a record could write into a pointer, a type or a label.
@@ -1360,7 +1374,7 @@ mod tests {
             ),
         ];
         for (layout, record, at, role, category) in cases {
-            let refused = layout.validate(&record).unwrap_err();
+            let refused = layout.validate(fhir_type(&record), &record).unwrap_err();
             assert_eq!(
                 (refused.at, refused.role, refused.cause.category()),
                 (at, role, category)
@@ -1580,9 +1594,11 @@ mod tests {
             layout.sections[1].slots.clear();
             layout.sections[0].slots.truncate(1);
             assert!(
-                layout.validate(&observation).is_ok(),
+                layout
+                    .validate(fhir_type(&observation), &observation)
+                    .is_ok(),
                 "{role} at {pointer}: {:?}",
-                layout.validate(&observation).err()
+                layout.validate(fhir_type(&observation), &observation).err()
             );
         }
         let condition = condition();
@@ -1603,11 +1619,18 @@ mod tests {
                     }],
                 }],
             };
-            assert!(layout.validate(&condition).is_ok(), "{role} at {pointer}");
+            assert!(
+                layout.validate(fhir_type(&condition), &condition).is_ok(),
+                "{role} at {pointer}"
+            );
         }
         let mut status = with_role(Status, "/status");
         status.statuses.clear();
-        assert!(status.validate(&observation).is_ok());
+        assert!(
+            status
+                .validate(fhir_type(&observation), &observation)
+                .is_ok()
+        );
     }
 
     #[test]
@@ -1846,7 +1869,7 @@ mod tests {
             refusal(&observation_layout(), &condition()),
             LayoutRefusal::WrongRecordType {
                 expected: "Observation".into(),
-                found: Some("Condition".into()),
+                found: "Condition".into(),
             }
         );
         assert_eq!(
@@ -1903,8 +1926,16 @@ mod tests {
             refusal(&from_code, &record),
             LayoutRefusal::CodeHeadingWithoutRepeat
         );
-        assert!(observation_layout().validate(&record).is_ok());
-        assert!(condition_layout().validate(&condition()).is_ok());
+        assert!(
+            observation_layout()
+                .validate(fhir_type(&record), &record)
+                .is_ok()
+        );
+        assert!(
+            condition_layout()
+                .validate("Condition", &condition())
+                .is_ok()
+        );
     }
 
     #[test]
@@ -1914,7 +1945,7 @@ mod tests {
             json!({"record_type":"Record","sections":[{"heading":"details",
             "slots":[{"role":"other","pointer":"/a~1b/c~0d"}]}]}),
         );
-        let validated = escaped.validate(&record).unwrap();
+        let validated = escaped.validate(fhir_type(&record), &record).unwrap();
         assert_eq!(
             validated.sections[0].bindings[0].path.to_string(),
             "a/b.c~d"
@@ -1993,11 +2024,8 @@ mod tests {
         ];
         for cited in [&observation, &condition, &allergy, &unreadable] {
             for layout in &refused {
-                if cited.record_type == layout.record_type
-                    && layout
-                        .validate(&serde_json::from_str(&cited.content).unwrap())
-                        .is_ok()
-                {
+                let record = serde_json::from_str::<Value>(&cited.content);
+                if record.is_ok_and(|record| layout.validate(&cited.record_type, &record).is_ok()) {
                     continue;
                 }
                 assert_eq!(
@@ -2151,6 +2179,71 @@ mod tests {
         assert_view_shows_every_leaf(&cited, &view);
     }
 
+    /// A layout for a vendor lab export, which names no FHIR `resourceType`: its source adapter
+    /// gives it the type `LabResult`, and the layout reads one section per result.
+    fn vendor_lab_layout(record_type: &str) -> Layout {
+        layout(json!({"record_type":record_type,
+            "statuses":[{"role":"status","pointer":"/status"}],
+            "sections":[{"heading":"result","repeat":"/results","slots":[
+                {"role":"code","pointer":"/test_name"},
+                {"role":"result","pointer":"/value"}]}]}))
+    }
+
+    /// A record that is not FHIR is checked against the record type its source adapter gave it,
+    /// the type its citation and layout key carry, so a matching layout reads it and a layout for
+    /// another type is refused.
+    #[test]
+    fn a_record_that_is_not_fhir_reads_under_a_layout_for_its_adapters_type() {
+        let cited = vendor_lab();
+        assert_eq!(cited.record_type, "LabResult");
+        let record: Value = serde_json::from_str(&cited.content).unwrap();
+        assert!(record.get("resourceType").is_none());
+
+        let matching = vendor_lab_layout("LabResult");
+        let validated = matching.validate(&cited.record_type, &record).unwrap();
+        let headings: Vec<&str> = validated
+            .sections
+            .iter()
+            .map(|section| section.heading.as_str())
+            .collect();
+        assert_eq!(headings, ["Result 1", "Result 2", "Result 3"]);
+        let view = inspection_with_layout(&cited, Some(&matching));
+        assert_eq!(
+            view.layout_sections[0].fields,
+            [
+                located("Results 1 test name", "Potassium", "results[0].test_name"),
+                located("Result", "5.9", "results[0].value"),
+            ]
+        );
+        assert_eq!(view.statuses, inspection(&cited).statuses);
+        assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+
+        let mismatched = vendor_lab_layout("Observation");
+        let refused = mismatched
+            .validate(&cited.record_type, &record)
+            .unwrap_err();
+        assert_eq!(
+            (refused.at, refused.cause),
+            (
+                Position::of(Part::Whole),
+                LayoutRefusal::WrongRecordType {
+                    expected: "Observation".into(),
+                    found: "LabResult".into(),
+                }
+            )
+        );
+        assert_eq!(
+            serde_json::to_value(inspection_with_layout(&cited, Some(&mismatched))).unwrap(),
+            serde_json::to_value(inspection(&cited)).unwrap()
+        );
+        // The record's own members never decide its type: a FHIR-shaped member does not let a
+        // FHIR layout read a record its adapter typed otherwise.
+        let mut claims = record.clone();
+        claims["resourceType"] = json!("Observation");
+        assert!(mismatched.validate("LabResult", &claims).is_err());
+    }
+
     /// The statuses are the record's status metadata, read by the pane header and the hover
     /// preview: a layout that shows the status only in a section still leaves it there.
     #[test]
@@ -2284,7 +2377,9 @@ mod tests {
         for component in record["component"].as_array_mut().unwrap() {
             component.as_object_mut().unwrap().remove("code");
         }
-        let validated = blood_pressure_layout().validate(&record).unwrap();
+        let validated = blood_pressure_layout()
+            .validate(fhir_type(&record), &record)
+            .unwrap();
         let headings: Vec<&str> = validated
             .sections
             .iter()
@@ -2317,7 +2412,9 @@ mod tests {
     fn an_element_may_lack_a_value_whose_absence_is_ordinary() {
         let record = blood_pressure();
         assert!(record["component"][1].get("interpretation").is_none());
-        let validated = blood_pressure_layout().validate(&record).unwrap();
+        let validated = blood_pressure_layout()
+            .validate(fhir_type(&record), &record)
+            .unwrap();
         let roles: Vec<SlotRole> = validated.sections[2]
             .bindings
             .iter()

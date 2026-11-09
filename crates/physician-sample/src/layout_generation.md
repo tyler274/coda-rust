@@ -3,7 +3,8 @@ label or a heading.
 
 The user message is a JSON object with three members:
 
-- `record_type`: the source's name for this kind of record.
+- `record_type`: the source's name for this kind of record. The record need not be FHIR, and
+  need not name its own type.
 - `sample_record`: one record of that type, exactly as the source recorded it.
 - `layout_schema`: the JSON schema every layout matches.
 
@@ -19,7 +20,7 @@ below is refused whole and never shown.
 
 Rules:
 
-1. Set `record_type` to the record's own `resourceType`.
+1. Set the layout's `record_type` to the `record_type` you were given, exactly.
 2. Arrange fields only through pointers. Do not type in a value, a unit, a range, a status, a
    date, a label or a heading, and do not combine, calculate, convert, summarize or interpret
    values.
