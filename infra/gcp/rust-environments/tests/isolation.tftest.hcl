@@ -590,10 +590,9 @@ run "physician_scale_active" {
       google_project_iam_custom_role.physician_rehearsal_signer["physician"].permissions == toset(["iam.serviceAccounts.signJwt"]) &&
       google_service_account_iam_binding.physician_rehearsal_signer["physician"].members == toset([
         "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com",
-        "group:test-team@example.invalid",
       ])
     )
-    error_message = "Only the rehearsal account itself and the engineering group may sign JWTs as it, and nothing more."
+    error_message = "By default only the rehearsal account itself may sign JWTs as it, and nothing more; no group is ever granted it."
   }
   assert {
     condition = alltrue([
@@ -892,6 +891,12 @@ run "reject_rehearsal_sign_in_without_a_rehearsal_practice" {
   command = plan
   variables { physician_rehearsal_enabled = true }
   expect_failures = [var.physician_rehearsal_enabled]
+}
+
+run "reject_a_group_as_rehearsal_signer" {
+  command = plan
+  variables { physician_rehearsal_signers = ["group:test-team@example.invalid"] }
+  expect_failures = [var.physician_rehearsal_signers]
 }
 
 run "rehearsal_is_off_by_default" {

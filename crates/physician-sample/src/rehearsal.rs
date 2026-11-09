@@ -25,6 +25,18 @@ pub const REHEARSAL_PHYSICIAN_ID: &str = "coda-rehearsal-physician";
 /// rehearsal sessions come from the rehearsal sign-in route.
 pub const REHEARSAL_EMAIL: &str = "rehearsal@codahealth.test";
 
+/// How long a rehearsal session lasts. It is fixed at sign-in: activity
+/// never extends it, so a drill signs in again rather than holding a session.
+pub const REHEARSAL_SESSION_SECONDS: u64 = 15 * 60;
+
+/// The rehearsal physician, the only identity a rehearsal session can carry.
+pub fn rehearsal_physician() -> physician_auth::PhysicianIdentity {
+    physician_auth::PhysicianIdentity {
+        practice_id: REHEARSAL_PRACTICE_ID.to_owned(),
+        physician_id: REHEARSAL_PHYSICIAN_ID.to_owned(),
+    }
+}
+
 /// The source the rehearsal panel's charts come from.
 const REHEARSAL_SOURCE: &str = "rehearsal-fixture";
 
@@ -59,10 +71,7 @@ pub async fn seed_rehearsal_practice(
     )
     .await
     .map_err(|error| format!("rehearsal account: {error}"))?;
-    let physician = physician_auth::PhysicianIdentity {
-        practice_id: REHEARSAL_PRACTICE_ID.to_owned(),
-        physician_id: REHEARSAL_PHYSICIAN_ID.to_owned(),
-    };
+    let physician = rehearsal_physician();
     for (fixture, workspace) in crate::WORKSPACE_IDS.iter().zip(rehearsal_workspaces()) {
         let owner = auth
             .patient_practice(&workspace)
@@ -97,7 +106,9 @@ pub async fn seed_rehearsal_practice(
 /// assertion again, checks it against physician's own audience, and requires
 /// the admitted account to be the one configured rehearsal service account.
 /// Only then does it mint a bearer session, always for the rehearsal
-/// physician, so the session can reach nothing but the rehearsal panel. A
+/// physician's exact identity and ending [`REHEARSAL_SESSION_SECONDS`] later
+/// however much it is used, so the session can reach nothing but the
+/// rehearsal panel and cannot be kept alive. A
 /// human IAP user, any other service account, or a request without a valid
 /// assertion gets no session.
 pub(crate) fn sign_in_routes(
@@ -154,17 +165,16 @@ async fn sign_in(
     }
     let now = crate::auth::now();
     let store = &state.auth.store;
-    let minted = match store.begin_sign_in(REHEARSAL_EMAIL, now).await {
-        Ok(token) => store.complete_sign_in(REHEARSAL_EMAIL, &token, now).await,
-        Err(error) => Err(error),
-    };
-    match minted {
-        Ok((identity, session)) => (
+    let physician = rehearsal_physician();
+    let ends_at = now.saturating_add(REHEARSAL_SESSION_SECONDS);
+    match store.mint_fixed_session(&physician, now, ends_at).await {
+        Ok(session) => (
             StatusCode::OK,
             Json(serde_json::json!({
                 "session": session,
-                "physician_id": identity.physician_id,
-                "practice_id": identity.practice_id,
+                "physician_id": physician.physician_id,
+                "practice_id": physician.practice_id,
+                "ends_at": ends_at,
             })),
         )
             .into_response(),
@@ -186,7 +196,7 @@ mod tests {
     use super::*;
     use axum::body::Body;
     use axum::http::{Request, StatusCode};
-    use physician_auth::{Membership, MemoryAuthStore, PhysicianIdentity};
+    use physician_auth::{Membership, MemoryAuthStore};
     use std::sync::Arc;
     use tower::ServiceExt;
 
@@ -216,10 +226,7 @@ mod tests {
             .ensure_practice(REHEARSAL_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK)
             .await
             .unwrap();
-        let rehearsal = PhysicianIdentity {
-            practice_id: REHEARSAL_PRACTICE_ID.to_owned(),
-            physician_id: REHEARSAL_PHYSICIAN_ID.to_owned(),
-        };
+        let rehearsal = rehearsal_physician();
         for workspace in rehearsal_workspaces() {
             store
                 .register_patient(REHEARSAL_PRACTICE_ID, &workspace)
@@ -363,6 +370,68 @@ mod tests {
             assert_eq!(status, StatusCode::FORBIDDEN, "{email}");
             assert!(body.get("session").is_none(), "{email}: {body}");
         }
+    }
+
+    #[tokio::test]
+    async fn the_rehearsal_session_ends_on_time_however_much_it_is_used() {
+        let (app, auth) = rehearsal_app().await;
+        let assertion = http::iap::fixture::identity_assertion(AUDIENCE, SA_SUB, PRINCIPAL);
+        let (status, body) = rehearse(&app, Some(&assertion)).await;
+        assert_eq!(status, StatusCode::OK, "{body}");
+        let session = body["session"].as_str().expect("session").to_owned();
+        let ends_at = body["ends_at"].as_u64().expect("ends_at");
+        let start = ends_at - REHEARSAL_SESSION_SECONDS;
+        let mut now = start;
+        while now < ends_at {
+            auth.store
+                .note_physician_activity(&session, now)
+                .await
+                .expect("activity noted");
+            now += 60;
+        }
+        assert!(
+            auth.store
+                .verified_session(&session, ends_at - 1)
+                .await
+                .is_ok()
+        );
+        assert!(
+            auth.store
+                .verified_session(&session, ends_at)
+                .await
+                .is_err(),
+            "activity must not carry a rehearsal session past its end"
+        );
+    }
+
+    #[tokio::test]
+    async fn the_rehearsal_email_on_another_account_signs_nobody_in() {
+        // The rehearsal practice was never seeded, and the rehearsal email
+        // belongs to a physician in another practice.
+        let store = Arc::new(MemoryAuthStore::new());
+        store.seed_account(
+            crate::STAGING_PRACTICE_ID,
+            "staging-physician",
+            REHEARSAL_EMAIL,
+            "Staging Physician",
+            true,
+        );
+        let auth = crate::auth::Auth::over_fixture(
+            Arc::clone(&store) as Arc<dyn AuthStore>,
+            Arc::new(front_door::MemoryFrontDoorStore::new()),
+        )
+        .await;
+        let state = Arc::new(RehearsalState {
+            verifier: http::iap::fixture::verifier(AUDIENCE),
+            principal: PRINCIPAL.to_owned(),
+            auth: Arc::clone(&auth),
+        });
+        let app =
+            crate::auth::required_router(crate::fixture_site().merge(sign_in_router(state)), auth);
+        let assertion = http::iap::fixture::identity_assertion(AUDIENCE, SA_SUB, PRINCIPAL);
+        let (status, body) = rehearse(&app, Some(&assertion)).await;
+        assert_eq!(status, StatusCode::SERVICE_UNAVAILABLE, "{body}");
+        assert!(body.get("session").is_none(), "{body}");
     }
 
     #[tokio::test]

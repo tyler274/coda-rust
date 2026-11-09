@@ -74,6 +74,7 @@ async fn fresh_chains_and_shared_database_are_idempotent() {
                     "physician_auth_20261024_000004_authority_notify",
                     "physician_auth_20261030_000005_practices",
                     "physician_auth_20261106_000006_session_lifetime",
+                    "physician_auth_20261109_000007_fixed_sessions",
                 ]
             );
             histories.push(("physician_auth_migrations", rows));

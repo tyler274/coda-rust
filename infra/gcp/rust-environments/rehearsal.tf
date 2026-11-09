@@ -13,6 +13,16 @@ variable "physician_rehearsal_enabled" {
   }
 }
 
+variable "physician_rehearsal_signers" {
+  type        = list(string)
+  default     = []
+  description = "Individual operators (user:EMAIL) who may sign IAP JWTs as the rehearsal service account to run the Langfuse drills. Never a group or domain."
+  validation {
+    condition     = alltrue([for member in var.physician_rehearsal_signers : startswith(member, "user:")])
+    error_message = "Rehearsal signers are named individually as user:EMAIL; groups, domains and other service accounts may not act as the rehearsal physician."
+  }
+}
+
 locals {
   physician_rehearsal = var.physician_rehearsal_enabled ? toset(["physician"]) : toset([])
   # The site's own direct Cloud Run IAP audience and the one principal it
@@ -31,8 +41,10 @@ resource "google_service_account" "physician_rehearsal" {
 }
 
 # Only signJwt, not access tokens, keys or any project role. The drill signs
-# an IAP JWT as this account; the engineering group may do the same from an
-# operator workstation, and nothing else may.
+# an IAP JWT as this account. Besides the account itself, only the operators
+# named one by one in physician_rehearsal_signers may sign as it; no group is
+# ever granted this, so acting as the rehearsal physician is an explicit,
+# reviewed decision per person.
 resource "google_project_iam_custom_role" "physician_rehearsal_signer" {
   for_each    = local.physician_rehearsal
   project     = google_project.environment.project_id
@@ -45,8 +57,8 @@ resource "google_service_account_iam_binding" "physician_rehearsal_signer" {
   for_each           = local.physician_rehearsal
   service_account_id = google_service_account.physician_rehearsal[each.key].name
   role               = google_project_iam_custom_role.physician_rehearsal_signer[each.key].name
-  members = [
-    "serviceAccount:${google_service_account.physician_rehearsal[each.key].email}",
-    "group:${var.iap_group}",
-  ]
+  members = concat(
+    ["serviceAccount:${google_service_account.physician_rehearsal[each.key].email}"],
+    var.physician_rehearsal_signers,
+  )
 }

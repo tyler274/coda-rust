@@ -211,6 +211,15 @@ pub trait AuthStore: Send + Sync {
         token: &str,
         now: u64,
     ) -> Result<(PhysicianIdentity, String), SignInError>;
+    /// Mints a session that ends at `ends_at` however much it is used, for
+    /// the active account with exactly this identity. No email or token is
+    /// involved: the caller has already proved who may act as `identity`.
+    async fn mint_fixed_session(
+        &self,
+        identity: &PhysicianIdentity,
+        now: u64,
+        ends_at: u64,
+    ) -> Result<String, SignInError>;
     /// Resolves a bearer token to its physician's identity.
     async fn identity(&self, token: &str, now: u64) -> Result<PhysicianIdentity, SessionError> {
         Ok(self.verified_session(token, now).await?.identity)
@@ -596,6 +605,20 @@ impl MemoryAuthStore {
         identity: PhysicianIdentity,
         now: u64,
     ) -> Option<String> {
+        Some(Self::insert_session(
+            state,
+            identity,
+            now,
+            SessionLifetime::mint(now),
+        ))
+    }
+
+    fn insert_session(
+        state: &mut MemoryState,
+        identity: PhysicianIdentity,
+        now: u64,
+        lifetime: SessionLifetime,
+    ) -> String {
         let token = mint_token();
         let hash = token_hash(&token);
         state.sessions.insert(
@@ -603,11 +626,11 @@ impl MemoryAuthStore {
             Session {
                 identity,
                 token_hash: hash,
-                lifetime: SessionLifetime::mint(now),
+                lifetime,
                 created_at: now,
             },
         );
-        Some(token)
+        token
     }
 }
 
@@ -665,6 +688,30 @@ impl AuthStore for MemoryAuthStore {
         Ok((identity, session_token.expect("token minted")))
     }
 
+    async fn mint_fixed_session(
+        &self,
+        identity: &PhysicianIdentity,
+        now: u64,
+        ends_at: u64,
+    ) -> Result<String, SignInError> {
+        let _announce = self.announce();
+        let mut state = self.state.lock().expect("auth state");
+        let account = state
+            .accounts
+            .values()
+            .find(|account| &account.identity == identity)
+            .ok_or(SignInError::Invalid)?;
+        if !account.active {
+            return Err(SignInError::Inactive);
+        }
+        Ok(Self::insert_session(
+            &mut state,
+            identity.clone(),
+            now,
+            SessionLifetime::fixed(now, ends_at),
+        ))
+    }
+
     async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         let hash = token_hash(token);
         let state = self.state.lock().expect("auth state");
@@ -702,8 +749,7 @@ impl AuthStore for MemoryAuthStore {
             SessionRenewal::Covered => Ok(SessionActivity::Covered),
             SessionRenewal::Ended => Ok(SessionActivity::Ended),
             SessionRenewal::Extend { idle_deadline } => {
-                session.lifetime =
-                    SessionLifetime::from_persisted(session.created_at, idle_deadline);
+                session.lifetime = session.lifetime.with_idle_deadline(idle_deadline);
                 Ok(SessionActivity::Extended)
             }
         }
