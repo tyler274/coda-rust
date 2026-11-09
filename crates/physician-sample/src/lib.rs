@@ -21,6 +21,7 @@ mod care;
 pub mod chart_load;
 mod chat_draft;
 pub mod durable;
+mod feedback;
 mod gmail;
 pub mod hosting;
 mod live;
@@ -189,6 +190,18 @@ fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::Connected
         .route(
             "/physician-state/reply-drafts/{workspace}/{reply}",
             get(reply::read).put(reply::save),
+        )
+        .route(
+            "/physician-state/feedback/{workspace}/{chat}",
+            get(feedback::read),
+        )
+        .route(
+            "/physician-state/feedback/{workspace}/{chat}/{response}/rating",
+            axum::routing::put(feedback::rate),
+        )
+        .route(
+            "/physician-state/feedback/{workspace}/{chat}/{response}/details",
+            axum::routing::put(feedback::save_details),
         )
         .route(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",

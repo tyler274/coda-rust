@@ -776,6 +776,74 @@ pub async fn get_json(host: &str, path: &str, bearer: &str) -> (u16, Value) {
     (status, value)
 }
 
+/// Seeds a chat in which the staging physician asked each question and Coda
+/// answered it, through the store's own accept, claim and commit, with no
+/// worker or model. Coda's answers sit at places 1, 3, 5 and so on.
+pub async fn answered_chat(
+    store: &local_product::runtime::Store,
+    workspace: &str,
+    chat: &str,
+    turns: &[(&str, &str)],
+) {
+    use local_product::runtime::{Input, Scope, engine};
+    let scope = Scope {
+        practice: physician_sample::STAGING_PRACTICE_ID.into(),
+        physician: "staging-physician".into(),
+        workspace: workspace.into(),
+        chat: chat.into(),
+    };
+    for (index, (question, answer)) in turns.iter().enumerate() {
+        let input = Input {
+            key: format!("{chat}-{index}"),
+            text: (*question).into(),
+            timezone: "UTC".into(),
+        };
+        store.accept(&scope, &input).await.expect("accept question");
+        let claim = store
+            .claim(&scope, 60)
+            .await
+            .expect("claim")
+            .expect("pending turn");
+        let said = engine::Item::Message {
+            role: "assistant".into(),
+            text: (*answer).into(),
+        };
+        for (sequence, kind) in [
+            engine::EventKind::ProviderReturned(engine::Turn {
+                items: vec![said.clone()],
+                receipt: json!({}),
+            }),
+            engine::EventKind::Candidate {
+                text: (*answer).into(),
+            },
+        ]
+        .into_iter()
+        .enumerate()
+        {
+            store
+                .persist(
+                    &claim,
+                    engine::Event {
+                        attempt_id: claim.attempt.clone(),
+                        sequence: sequence as u64 + 1,
+                        kind,
+                    },
+                )
+                .await
+                .expect("persist answer evidence");
+        }
+        let candidate = engine::Candidate {
+            text: (*answer).into(),
+            transcript: vec![said],
+            usage: engine::Usage::default(),
+        };
+        store
+            .commit(&claim, &candidate)
+            .await
+            .expect("commit answer");
+    }
+}
+
 /// A `message.submit` command body for one new chat line.
 pub fn submit(workspace: &str, chat: &str, text: &str) -> Value {
     json!({
