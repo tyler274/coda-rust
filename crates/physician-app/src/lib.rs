@@ -988,6 +988,13 @@ fn PhysicianShell(
     // The Undo toast for the latest Archive, keyed by its count: its patient and chat.
     let mut archived_toast = use_signal(|| None::<(u32, String, String)>);
     let mut archives = use_signal(|| 0u32);
+    // An accepted Archive, clicked or recovered after a reload, offers Undo.
+    let mut offer_undo = move |workspace: String, chat: String| {
+        *workspace_attempt.write() += 1;
+        let shown = archives() + 1;
+        archives.set(shown);
+        archived_toast.set(Some((shown, workspace, chat)));
+    };
     // Commands a reload interrupted are asked again under their own keys
     // once this physician is known; every read follows whatever they changed.
     #[cfg(target_arch = "wasm32")]
@@ -1010,10 +1017,19 @@ fn PhysicianShell(
                 chat_stop_slot,
                 queued_slot,
                 work_slot,
-                archive_slot,
                 restore_slot,
             ] {
                 slot.ask_kept(client.peek().clone(), settled);
+            }
+            if let Some(command) = archive_slot.kept_command() {
+                let target = command.archive_target();
+                let accepted = Callback::new(move |()| {
+                    settled.call(());
+                    if let Some((workspace, chat)) = target.clone() {
+                        offer_undo(workspace, chat);
+                    }
+                });
+                archive_slot.send(client.peek().clone(), command, accepted, Some(settled));
             }
         });
     }
@@ -2258,10 +2274,7 @@ fn PhysicianShell(
                                 };
                                 let command = archive_command("conversation.archive", &workspace, &chat);
                                 archive_slot.run(client.read().clone(), command, move || {
-                                    *workspace_attempt.write() += 1;
-                                    let shown = archives() + 1;
-                                    archives.set(shown);
-                                    archived_toast.set(Some((shown, workspace.clone(), chat.clone())));
+                                    offer_undo(workspace.clone(), chat.clone());
                                 });
                             },
                             on_new_chat: move |_| start_chat(),
@@ -2422,6 +2435,17 @@ impl Command {
             .and_then(serde_json::Value::as_str)
             .unwrap_or_default()
             .to_owned()
+    }
+
+    /// The patient and chat an Archive names, so its Undo can name them too.
+    #[cfg(any(target_arch = "wasm32", test))]
+    fn archive_target(&self) -> Option<(String, String)> {
+        if self.0.get("type")?.as_str()? != "conversation.archive" {
+            return None;
+        }
+        let payload = self.0.get("payload")?;
+        let field = |name: &str| payload.get(name)?.as_str().map(str::to_owned);
+        Some((field("patient_workspace_id")?, field("chat_id")?))
     }
 }
 
@@ -2586,18 +2610,18 @@ impl CommandSlot {
     /// the old page.
     #[cfg(target_arch = "wasm32")]
     fn ask_kept(self, client: PhysicianClient, settled: Callback) {
-        let Some((name, scope)) = self.kept else {
-            return;
-        };
-        let Some(scope) = scope.peek().clone() else {
-            return;
-        };
-        let Some(storage) = local_draft::SessionStorage::open() else {
-            return;
-        };
-        if let Some(command) = local_draft::read_command(&storage, &scope, name) {
-            self.send(client, Command(command), settled, Some(settled));
+        if let Some(command) = self.kept_command() {
+            self.send(client, command, settled, Some(settled));
         }
+    }
+
+    /// The command a reload interrupted, if this slot kept one.
+    #[cfg(target_arch = "wasm32")]
+    fn kept_command(&self) -> Option<Command> {
+        let (name, scope) = self.kept?;
+        let scope = scope.peek().clone()?;
+        let storage = local_draft::SessionStorage::open()?;
+        local_draft::read_command(&storage, &scope, name).map(Command)
     }
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
@@ -5278,9 +5302,9 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines,
-        conversation_running, message_command, new_chat_id, queued_edit_command,
-        queued_withdraw_command,
+        ConversationLine, archive_command, chat_resume_command, chat_stop_command,
+        conversation_lines, conversation_running, message_command, new_chat_id,
+        queued_edit_command, queued_withdraw_command,
     };
     use crate::shell::STOPPED;
     use physician_wire::{ChatSnapshotResponse, WorkResumeTarget, WorkStopTarget};
@@ -5480,6 +5504,17 @@ mod conversation_line_tests {
         assert_eq!(lines[0].resume, Some(target()));
         assert!(lines[0].held);
         assert!(lines[0].stop.is_none());
+    }
+
+    #[test]
+    fn a_recovered_archive_names_the_chat_its_undo_restores() {
+        let archive = archive_command("conversation.archive", "pw-1", "chat-1");
+        assert_eq!(
+            archive.archive_target(),
+            Some(("pw-1".to_owned(), "chat-1".to_owned()))
+        );
+        let undo = archive_command("conversation.restore", "pw-1", "chat-1");
+        assert_eq!(undo.archive_target(), None);
     }
 
     #[test]

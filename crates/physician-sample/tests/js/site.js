@@ -156,6 +156,12 @@ function (step, ...args) {
           .filter((text) => text.includes("archive")),
       };
     },
+    // The words on the conversation's mechanical line buttons, such as Stop or Try again.
+    mechanicalActions() {
+      return [...document.querySelectorAll(".conversation-mechanical button")].map((button) =>
+        button.textContent.trim(),
+      );
+    },
     // The composer's primary action words.
     sendWords() {
       return one(".composer-dock button[type=submit]").textContent.trim();

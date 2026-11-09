@@ -2813,6 +2813,54 @@ async fn archive_offers_undo_and_sending_try_again_and_resume_bring_it_back() {
     assert_eq!(undone["archive"], "enabled", "{undone}");
     tab.save_pictures("archive-undone", ".sidebar-content");
 
+    // An Archive whose answer is lost is asked again by the reload under its
+    // own key, and still offers Undo once it is taken.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{
+            "urlPattern": "*/commands",
+            "requestStage": "Response"
+        }] }),
+    );
+    archive_now(&mut tab);
+    let answered = tab.held_request("POST");
+    let lost_key = held_body(&answered)["idempotency_key"].clone();
+    assert_eq!(held_body(&answered)["type"], "conversation.archive");
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    );
+    tab.reload();
+    let reasked = tab.held_request("POST");
+    assert_eq!(
+        held_body(&reasked)["idempotency_key"],
+        lost_key,
+        "the reload issued a new command for an Archive whose answer was lost"
+    );
+    tab.release(&reasked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    let recovered = wait_archive(
+        &mut tab,
+        "a recovered Archive never offered Undo",
+        |state| listed(state, "archived") && state["toast"].as_str().is_some(),
+    );
+    assert_eq!(
+        recovered["toast"], "Conversation archived.Undo",
+        "{recovered}"
+    );
+    tab.save_pictures("archive-recovered-toast", ".sidebar-content");
+    tab.click_named(".toast button", "Undo");
+    wait_archive(
+        &mut tab,
+        "the recovered Archive's Undo never moved the chat back",
+        |state| listed(state, "active") && !listed(state, "archived"),
+    );
+
     // Sending brings it back.
     archive_now(&mut tab);
     wait_archive(
@@ -2938,9 +2986,7 @@ fn wait_mechanical(
 ) {
     let started = Instant::now();
     loop {
-        let shown = tab.eval(
-            "[...document.querySelectorAll('.conversation-mechanical button')].map(b => b.textContent.trim())",
-        );
+        let shown = tab.step("mechanicalActions", serde_json::json!([]));
         if shown
             .as_array()
             .is_some_and(|all| all.iter().any(|w| w == words))
