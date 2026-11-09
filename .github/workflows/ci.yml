@@ -532,6 +532,8 @@ jobs:
           key: android-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'flake.lock') }}
           restore-keys: android-${{ runner.os }}-
       - name: Check the scope list covers the APK's workspace crates
+        # An explicit bash shell adds pipefail, so a failed cargo tree fails the step.
+        shell: bash
         run: >-
           nix develop .#android --command cargo tree --locked -p mobile --features mobile
           --target x86_64-linux-android -e normal --prefix none
