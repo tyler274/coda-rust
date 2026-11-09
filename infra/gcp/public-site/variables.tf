@@ -87,6 +87,20 @@ variable "physician_app_url" {
   }
 }
 
+variable "observability_relay_url" {
+  description = "Staging only: the observability relay's HTTPS origin (infra/gcp/rust-environments output observability_relay.url). It mounts /grafana/ and /langfuse/, which public-site proxies to the relay with the same signed service-account JWT as /physician, plus the caller's verified IAP assertion as X-Coda-IAP-Assertion. Operators add this site's service account to rust-environments' observability_proxy_invokers first. Null means neither mount exists."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.observability_relay_url == null ? true : can(regex("^https://[a-z0-9]([a-z0-9-]*[a-z0-9])?(\\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+(:[0-9]{1,5})?/?$", var.observability_relay_url))
+    error_message = "observability_relay_url must be a fixed HTTPS origin without credentials, path, query, or fragment."
+  }
+  validation {
+    condition     = var.observability_relay_url == null || var.environment == "staging"
+    error_message = "observability_relay_url is staging-only."
+  }
+}
+
 variable "domains" {
   description = "Production hostnames the load balancer serves (apex first). Certificate Manager issues one Google-managed certificate for them through DNS authorization, so it can be active before traffic moves; the operator adds the certificate_dns_records CNAMEs. Staging uses its domain mapping instead and sets none."
   type        = list(string)

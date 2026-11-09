@@ -58,14 +58,24 @@ pub(super) enum ReleaseService {
     Physician,
     Duet,
     PhysicianWorker,
+    ObservabilityRelay,
 }
 impl ReleaseService {
-    pub const ALL: [Self; 3] = [Self::Physician, Self::Duet, Self::PhysicianWorker];
+    pub const ALL: [Self; 4] = [
+        Self::Physician,
+        Self::Duet,
+        Self::PhysicianWorker,
+        Self::ObservabilityRelay,
+    ];
+    /// Services a release rolls when present and only publishes for while
+    /// infrastructure has not created them yet.
+    pub const OPTIONAL: [Self; 2] = [Self::PhysicianWorker, Self::ObservabilityRelay];
     pub fn name(self) -> &'static str {
         match self {
             Self::Physician => "physician",
             Self::Duet => "duet",
             Self::PhysicianWorker => "physician-worker",
+            Self::ObservabilityRelay => "observability-relay",
         }
     }
     pub fn image(self) -> ImageRole {
@@ -73,6 +83,7 @@ impl ReleaseService {
             Self::Physician => ImageRole::PhysicianRuntime,
             Self::Duet => ImageRole::DuetRuntime,
             Self::PhysicianWorker => ImageRole::PhysicianWorker,
+            Self::ObservabilityRelay => ImageRole::ObservabilityRelay,
         }
     }
     pub fn phase(self) -> Phase {
@@ -80,6 +91,7 @@ impl ReleaseService {
             Self::Physician => Phase::PhysicianRollout,
             Self::Duet => Phase::DuetRollout,
             Self::PhysicianWorker => Phase::WorkerRollout,
+            Self::ObservabilityRelay => Phase::RelayRollout,
         }
     }
 }
@@ -91,14 +103,16 @@ pub(super) enum ImageRole {
     PhysicianMigration,
     DuetRuntime,
     DuetMigration,
+    ObservabilityRelay,
 }
 impl ImageRole {
-    pub const ALL: [Self; 5] = [
+    pub const ALL: [Self; 6] = [
         Self::PhysicianRuntime,
         Self::PhysicianWorker,
         Self::PhysicianMigration,
         Self::DuetRuntime,
         Self::DuetMigration,
+        Self::ObservabilityRelay,
     ];
     pub fn key(self) -> &'static str {
         match self {
@@ -107,6 +121,7 @@ impl ImageRole {
             Self::PhysicianMigration => "physician-migration",
             Self::DuetRuntime => "duet-runtime",
             Self::DuetMigration => "duet-migration",
+            Self::ObservabilityRelay => "observability-relay",
         }
     }
     pub fn repository(self) -> &'static str {
@@ -116,6 +131,7 @@ impl ImageRole {
             Self::PhysicianMigration => "coda-physician-migrate",
             Self::DuetRuntime => "coda-duet-api",
             Self::DuetMigration => "coda-duet-migrate",
+            Self::ObservabilityRelay => "coda-observability-relay",
         }
     }
 }
@@ -126,13 +142,16 @@ pub(super) struct Services {
     duet: ServiceRecord,
     #[serde(rename = "physician-worker")]
     worker: ServiceRecord,
+    #[serde(rename = "observability-relay")]
+    relay: ServiceRecord,
 }
 impl Services {
     pub fn new(record: ServiceRecord) -> Self {
         Self {
             physician: record.clone(),
             duet: record.clone(),
-            worker: record,
+            worker: record.clone(),
+            relay: record,
         }
     }
     pub fn get(&self, service: ReleaseService) -> &ServiceRecord {
@@ -140,6 +159,7 @@ impl Services {
             ReleaseService::Physician => &self.physician,
             ReleaseService::Duet => &self.duet,
             ReleaseService::PhysicianWorker => &self.worker,
+            ReleaseService::ObservabilityRelay => &self.relay,
         }
     }
     pub fn get_mut(&mut self, service: ReleaseService) -> &mut ServiceRecord {
@@ -147,11 +167,12 @@ impl Services {
             ReleaseService::Physician => &mut self.physician,
             ReleaseService::Duet => &mut self.duet,
             ReleaseService::PhysicianWorker => &mut self.worker,
+            ReleaseService::ObservabilityRelay => &mut self.relay,
         }
     }
     #[cfg(test)]
     pub fn values(&self) -> impl Iterator<Item = &ServiceRecord> {
-        [&self.physician, &self.duet, &self.worker].into_iter()
+        [&self.physician, &self.duet, &self.worker, &self.relay].into_iter()
     }
 }
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -233,6 +254,11 @@ pub(super) struct Images {
     duet_runtime: Option<PublishedImage>,
     #[serde(rename = "duet-migration", deserialize_with = "duet_migration")]
     duet_migration: Option<PublishedImage>,
+    #[serde(
+        rename = "observability-relay",
+        deserialize_with = "observability_relay"
+    )]
+    observability_relay: Option<PublishedImage>,
 }
 macro_rules! image_parser {
     ($function:ident, $role:ident) => {
@@ -252,6 +278,7 @@ image_parser!(physician_worker, PhysicianWorker);
 image_parser!(physician_migration, PhysicianMigration);
 image_parser!(duet_runtime, DuetRuntime);
 image_parser!(duet_migration, DuetMigration);
+image_parser!(observability_relay, ObservabilityRelay);
 impl Images {
     pub fn get(&self, role: ImageRole) -> Option<&PublishedImage> {
         match role {
@@ -260,6 +287,7 @@ impl Images {
             ImageRole::PhysicianMigration => self.physician_migration.as_ref(),
             ImageRole::DuetRuntime => self.duet_runtime.as_ref(),
             ImageRole::DuetMigration => self.duet_migration.as_ref(),
+            ImageRole::ObservabilityRelay => self.observability_relay.as_ref(),
         }
     }
     pub fn insert(&mut self, image: PublishedImage) {
@@ -269,6 +297,7 @@ impl Images {
             ImageRole::PhysicianMigration => &mut self.physician_migration,
             ImageRole::DuetRuntime => &mut self.duet_runtime,
             ImageRole::DuetMigration => &mut self.duet_migration,
+            ImageRole::ObservabilityRelay => &mut self.observability_relay,
         };
         *slot = Some(image);
     }

@@ -37,6 +37,44 @@ run "no_upstream_means_no_physician_entry" {
   }
 }
 
+run "observability_mounts_use_the_relay_and_own_identity" {
+  command = plan
+  override_resource {
+    target = google_service_account.site
+    values = { email = "public-site-staging@coda-health-staging.iam.gserviceaccount.com" }
+  }
+  variables { observability_relay_url = "https://observability-relay-836508863523.us-east1.run.app" }
+  assert {
+    condition     = local.runtime_env.OBSERVABILITY_RELAY_URL == var.observability_relay_url && local.runtime_env.PHYSICIAN_PROXY_SERVICE_ACCOUNT == "public-site-staging@coda-health-staging.iam.gserviceaccount.com"
+    error_message = "The observability mounts must reach the fixed relay with the site's own signing identity."
+  }
+}
+
+run "no_relay_means_no_observability_mounts" {
+  command = plan
+  assert {
+    condition     = !contains(keys(local.runtime_env), "OBSERVABILITY_RELAY_URL")
+    error_message = "Without a relay URL the site mounts neither /grafana nor /langfuse."
+  }
+}
+
+run "reject_a_relay_url_with_a_path" {
+  command = plan
+  variables { observability_relay_url = "https://observability-relay.example.test/grafana" }
+  expect_failures = [var.observability_relay_url]
+}
+
+run "reject_a_production_relay" {
+  command = plan
+  variables {
+    environment             = "production"
+    domains                 = ["codahealth.ai"]
+    physician_app_url       = null
+    observability_relay_url = "https://observability-relay.example.test"
+  }
+  expect_failures = [var.observability_relay_url]
+}
+
 run "reject_upstream_credentials" {
   command = plan
   variables { physician_app_url = "https://user:password@physician.example.test" }

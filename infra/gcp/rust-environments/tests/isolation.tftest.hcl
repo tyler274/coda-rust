@@ -719,9 +719,11 @@ run "observability_default_off" {
     condition = (
       length(google_container_cluster.observability) == 0 && length(google_compute_subnetwork.observability) == 0 &&
       length(google_compute_address.otel_gateway) == 0 && length(google_compute_router_nat.observability) == 0 &&
+      length(google_cloud_run_v2_service.observability_relay) == 0 && length(google_compute_subnetwork.relay) == 0 &&
+      length(google_compute_address.observability_web) == 0 && output.observability_relay == null &&
       !contains(keys(google_project_service.api), "container.googleapis.com")
     )
-    error_message = "With the gates off there is no observability cluster, subnet, gateway address, NAT or GKE API."
+    error_message = "With the gates off there is no observability cluster, subnet, gateway address, NAT, relay or GKE API."
   }
   assert {
     condition = alltrue([for containers in concat(
@@ -750,6 +752,31 @@ run "reject_observability_without_cluster" {
   command = plan
   variables { observability_enabled = true }
   expect_failures = [google_project.environment]
+}
+
+run "reject_relay_without_cluster" {
+  command = plan
+  variables {
+    observability_relay_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-observability-relay@sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+  expect_failures = [var.observability_relay_image]
+}
+
+run "reject_unpinned_relay_image" {
+  command = plan
+  variables {
+    observability_cluster_enabled = true
+    observability_relay_image     = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-observability-relay:latest"
+  }
+  expect_failures = [var.observability_relay_image]
+}
+
+run "reject_group_observability_proxy_invoker" {
+  command = plan
+  variables {
+    observability_proxy_invokers = ["group:test-team@example.invalid"]
+  }
+  expect_failures = [var.observability_proxy_invokers]
 }
 
 run "reject_runtime_override_of_telemetry_env" {
@@ -835,7 +862,13 @@ run "observability_active" {
       email = "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com"
     }
   }
+  override_resource {
+    target = google_compute_address.observability_web
+    values = { address = "10.82.0.20" }
+  }
   variables {
+    observability_relay_image              = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-observability-relay@sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    observability_proxy_invokers           = ["serviceAccount:public-site-staging@test-site-stg-only.iam.gserviceaccount.com"]
     telemetry_backend                      = "both"
     telemetry_content                      = "full"
     availability_probe_image               = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/availability-probe@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
@@ -942,11 +975,12 @@ run "observability_active" {
       google_compute_subnetwork.observability[0].secondary_ip_range[0].ip_cidr_range,
       google_compute_subnetwork.observability[0].secondary_ip_range[1].ip_cidr_range,
       google_container_cluster.observability[0].private_cluster_config[0].master_ipv4_cidr_block,
-      ]] : length(distinct(ranges)) == 6 && alltrue([for pair in setproduct(ranges, ranges) : pair[0] == pair[1] || (
+      google_compute_subnetwork.relay["relay"].ip_cidr_range,
+      ]] : length(distinct(ranges)) == 7 && alltrue([for pair in setproduct(ranges, ranges) : pair[0] == pair[1] || (
         cidrhost(pair[0], 0) != cidrhost("${cidrhost(pair[1], 0)}/${split("/", pair[0])[1]}", 0) &&
         cidrhost(pair[1], 0) != cidrhost("${cidrhost(pair[0], 0)}/${split("/", pair[1])[1]}", 0)
     )])])
-    error_message = "No rust-private range (run, SQL peering, observability nodes, pods, services, control plane) may overlap another."
+    error_message = "No rust-private range (run, SQL peering, observability nodes, pods, services, control plane, relay) may overlap another."
   }
   assert {
     condition = (
@@ -1029,6 +1063,43 @@ run "observability_active" {
   assert {
     condition     = google_cloud_run_v2_service.app["physician"].template[0].containers[0].image == var.images["physician"].runtime && google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].image == var.images["physician"].worker
     error_message = "Index 0 stays the release-owned product image (ignore_changes covers containers[0].image)."
+  }
+  # The relay: IAP for the group and the site proxy only, invoked only by the
+  # IAP agent, egress on its own subnet, no secrets and no sidecar.
+  assert {
+    condition = (
+      google_cloud_run_v2_service.observability_relay["relay"].iap_enabled &&
+      !google_cloud_run_v2_service.observability_relay["relay"].invoker_iam_disabled &&
+      google_cloud_run_v2_service_iam_binding.observability_relay_invoker["relay"].members == toset(["serviceAccount:service-123456789012@gcp-sa-iap.iam.gserviceaccount.com"]) &&
+      google_iap_web_cloud_run_service_iam_binding.observability_relay["relay"].members == toset(["group:test-team@example.invalid", "serviceAccount:public-site-staging@test-site-stg-only.iam.gserviceaccount.com"]) &&
+      !contains(google_iap_web_cloud_run_service_iam_binding.team["physician"].members, "serviceAccount:public-site-staging@test-site-stg-only.iam.gserviceaccount.com")
+    )
+    error_message = "Only the IAP agent invokes the relay; IAP admits the group and observability_proxy_invokers, which reach nothing else."
+  }
+  assert {
+    condition = (
+      google_compute_subnetwork.relay["relay"].ip_cidr_range == "10.80.1.0/26" &&
+      google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" &&
+      google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].network_interfaces[0].subnetwork == "rust-relay" &&
+      length(google_cloud_run_v2_service.observability_relay["relay"].template[0].containers) == 1 &&
+      google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == null &&
+      { for env in google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].env : env.name => env.value } == {
+        RELAY_IAP_AUDIENCE = "/projects/123456789012/locations/us-east1/services/observability-relay"
+        GRAFANA_UPSTREAM   = "http://10.82.0.20:3000"
+        LANGFUSE_UPSTREAM  = "http://10.82.0.20:3000"
+      } &&
+      jsonencode(output.observability_relay.source_ranges) == jsonencode(["10.80.1.0/26"]) &&
+      keys(google_compute_address.observability_web) == ["grafana", "langfuse"]
+    )
+    error_message = "The relay leaves through rust-relay to the two reserved addresses, with one unnamed container, its own audience and no secrets."
+  }
+
+  assert {
+    condition = (
+      google_artifact_registry_repository_iam_member.observability_nodes["relay"].role == "roles/artifactregistry.reader" &&
+      google_artifact_registry_repository_iam_member.observability_nodes["relay"].member == "serviceAccount:123456789012-compute@developer.gserviceaccount.com"
+    )
+    error_message = "The observability nodes may only read the apps repository, to pull the base-path Langfuse web image."
   }
 }
 

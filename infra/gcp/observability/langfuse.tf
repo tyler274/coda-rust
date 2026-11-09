@@ -2,7 +2,8 @@
 # generation spans (Postgres and git stay the truth), so retention is short
 # and expiry loses nothing. Postgres is Cloud SQL with IAM login; blobs are a
 # GCS bucket through the S3 interoperability API; ClickHouse and Valkey run
-# in-cluster with PVCs. The web service is ClusterIP only.
+# in-cluster with PVCs. The web service is ClusterIP; people reach it only
+# through public-site's /langfuse/ mount (web.tf) or port-forward.
 #
 # Everything here exists only with langfuse_enabled. Off, the gateway still
 # runs and sends generation spans nowhere (collector.tf); the project IAM
@@ -17,6 +18,17 @@ locals {
   langfuse_db_user       = var.langfuse_enabled ? trimsuffix(local.langfuse_gsa, ".gserviceaccount.com") : null
   cloud_sql_proxy_image  = "gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.20.0"
 
+  # Under staging_proxy, Langfuse web serves everything below /langfuse
+  # (main.tf langfuse_base_path). Next.js fixes the base path at build time,
+  # so web runs the digest-pinned base-path build of the same upstream tag
+  # (.github/workflows/langfuse-web-image.yml). The chart renders
+  # repository:tag, and repo:tag@sha256:... resolves by digest. The worker
+  # serves no pages and keeps the stock image.
+  langfuse_web_image = var.langfuse_web_image == null || local.langfuse_base_path == "" ? {} : {
+    repository = split("@", var.langfuse_web_image)[0]
+    tag        = "${local.langfuse_image_tag}@${split("@", var.langfuse_web_image)[1]}"
+  }
+
   # Every value the chart sees. Secrets are referenced by Secret name and key;
   # the Doppler operator fills those Secrets (doppler.tf).
   langfuse_values = !var.langfuse_enabled ? null : {
@@ -26,9 +38,9 @@ locals {
       salt          = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_SALT" } }
       encryptionKey = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_ENCRYPTION_KEY" } }
       nextauth = {
-        # The UI is reached through kubectl port-forward until the IAP
-        # gateway is on; then it is the gateway hostname.
-        url    = var.langfuse_iap_enabled ? "https://${var.langfuse_hostname}" : "http://localhost:3000"
+        # The UI is public-site's /langfuse/ mount under staging_proxy, and
+        # kubectl port-forward otherwise.
+        url    = var.staging_proxy == null ? "http://localhost:3000" : "${var.staging_proxy.origin}/langfuse/api/auth"
         secret = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_NEXTAUTH_SECRET" } }
       }
 
@@ -45,11 +57,15 @@ locals {
       }
 
       # No public edge, ever: the chart's Ingress stays off. Human access is
-      # port-forward or the IAP-gated internal Gateway (iap.tf below).
+      # port-forward or public-site's /langfuse/ mount through the relay and
+      # the internal load balancer (web.tf).
       ingress = { enabled = false }
 
       web = {
-        service = { type = "ClusterIP", port = 3000 }
+        image          = local.langfuse_web_image
+        service        = { type = "ClusterIP", port = 3000 }
+        livenessProbe  = { path = "${local.langfuse_base_path}/api/public/health" }
+        readinessProbe = { path = "${local.langfuse_base_path}/api/public/ready" }
         pod = {
           additionalEnv = [
             { name = "LANGFUSE_INIT_ORG_ID", value = "coda" },
@@ -310,100 +326,5 @@ resource "helm_release" "langfuse" {
     google_sql_user.langfuse,
     google_service_account_iam_member.langfuse_workload_identity,
     google_storage_bucket_iam_member.langfuse_blobs,
-  ]
-}
-
-# Optional human access: an internal (regional, VPC-only) Gateway with IAP in
-# front of langfuse-web. Off by default; there is never an external Gateway.
-locals {
-  langfuse_gateway_class = "gke-l7-rilb"
-
-  # Rendered only by helm_release.langfuse_iap, which exists only when
-  # langfuse_iap_enabled is true.
-  langfuse_iap_manifests = [
-    {
-      apiVersion = "gateway.networking.k8s.io/v1"
-      kind       = "Gateway"
-      metadata   = { name = "langfuse-internal", namespace = local.namespace }
-      spec = {
-        gatewayClassName = local.langfuse_gateway_class
-        listeners = [{
-          name     = "https"
-          protocol = "HTTPS"
-          port     = 443
-          hostname = var.langfuse_hostname
-          tls = {
-            mode    = "Terminate"
-            options = { "networking.gke.io/pre-shared-certs" = var.langfuse_iap_certificate }
-          }
-        }]
-      }
-    },
-    {
-      apiVersion = "gateway.networking.k8s.io/v1"
-      kind       = "HTTPRoute"
-      metadata   = { name = "langfuse-web", namespace = local.namespace }
-      spec = {
-        parentRefs = [{ name = "langfuse-internal" }]
-        hostnames  = [var.langfuse_hostname]
-        rules      = [{ backendRefs = [{ name = local.langfuse_web_service, port = 3000 }] }]
-      }
-    },
-    {
-      apiVersion = "networking.gke.io/v1"
-      kind       = "GCPBackendPolicy"
-      metadata   = { name = "langfuse-web-iap", namespace = local.namespace }
-      spec = {
-        default = {
-          iap = {
-            enabled            = true
-            clientID           = var.langfuse_iap_client_id
-            oauth2ClientSecret = { name = "langfuse-iap-oauth" }
-          }
-        }
-        targetRef = { group = "", kind = "Service", name = local.langfuse_web_service }
-      }
-    },
-  ]
-}
-
-resource "google_compute_subnetwork" "proxy_only" {
-  count = var.langfuse_iap_enabled ? 1 : 0
-
-  project       = var.project_id
-  name          = "coda-observability-proxy-only-${var.region}"
-  region        = var.region
-  network       = data.google_compute_network.runtime.id
-  ip_cidr_range = var.proxy_only_subnet_cidr
-  purpose       = "REGIONAL_MANAGED_PROXY"
-  role          = "ACTIVE"
-}
-
-resource "google_iap_web_region_backend_service_iam_member" "langfuse" {
-  # GKE owns the backend identity. Bootstrap the gateway without a grant,
-  # then bind only the backend the operator verified for its Langfuse route.
-  for_each = var.langfuse_iap_enabled && var.langfuse_iap_backend_service != null ? toset(var.langfuse_iap_members) : toset([])
-
-  project                    = var.project_id
-  region                     = var.region
-  web_region_backend_service = var.langfuse_iap_backend_service
-  role                       = "roles/iap.httpsResourceAccessor"
-  member                     = each.value
-}
-
-resource "helm_release" "langfuse_iap" {
-  count = var.langfuse_iap_enabled ? 1 : 0
-
-  name      = "langfuse-iap"
-  chart     = local.manifests_chart
-  namespace = kubernetes_namespace.observability.metadata[0].name
-  atomic    = true
-
-  values = [yamlencode({ manifests = local.langfuse_iap_manifests })]
-
-  depends_on = [
-    helm_release.langfuse,
-    helm_release.doppler_secrets,
-    google_compute_subnetwork.proxy_only,
   ]
 }

@@ -1,4 +1,6 @@
-//! Transport-only physician mount. No physician identities or application state live here.
+//! Transport-only proxy mounts: `/physician/`, and in staging `/grafana/` and
+//! `/langfuse/` through the observability relay. No identities or application
+//! state live here.
 #[cfg(test)]
 #[path = "proxy_tests.rs"]
 mod tests;
@@ -88,13 +90,62 @@ pub fn validate_origin(value: &str, deployed: bool) -> Result<Url, &'static str>
     Ok(url)
 }
 
+/// One site path family and how it maps onto its upstream. Each mount's
+/// policy is fixed here; nothing about it comes from configuration or clients.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Mount {
+    /// Physician product: the prefix is removed and no cookies cross.
+    Physician,
+    /// Staging Grafana through the observability relay. JWT auth reads the
+    /// forwarded assertion on every request, so no cookies cross.
+    Grafana,
+    /// Staging Langfuse through the observability relay. Only NextAuth's
+    /// session cookies cross; its own login runs behind IAP.
+    Langfuse,
+}
+impl Mount {
+    pub const OBSERVABILITY: [Self; 2] = [Self::Grafana, Self::Langfuse];
+
+    /// The site path, without a trailing slash.
+    pub fn prefix(self) -> &'static str {
+        match self {
+            Self::Physician => "/physician",
+            Self::Grafana => "/grafana",
+            Self::Langfuse => "/langfuse",
+        }
+    }
+    /// True when `path` is this mount's root or anything below it.
+    pub fn owns(self, path: &str) -> bool {
+        path.strip_prefix(self.prefix())
+            .is_some_and(|rest| rest.is_empty() || rest.starts_with('/'))
+    }
+    /// The physician upstream serves at its root. The observability apps are
+    /// configured with their site prefix, so the path passes through unchanged.
+    fn strips_prefix(self) -> bool {
+        self == Self::Physician
+    }
+    /// Sends the site's verified IAP assertion as `X-Coda-IAP-Assertion`.
+    fn forwards_assertion(self) -> bool {
+        self != Self::Physician
+    }
+    fn allows_cookie(self, name: &str) -> bool {
+        self == Self::Langfuse
+            && (name.starts_with("__Secure-next-auth.") || name == "__Host-next-auth.csrf-token")
+    }
+}
+
+/// The verified user assertion, re-sent to the observability apps. Clients can
+/// never set it: every inbound and upstream copy is removed first.
+pub const FORWARDED_ASSERTION: &str = "x-coda-iap-assertion";
+
 #[derive(Clone)]
-pub(crate) struct PhysicianProxy {
+pub(crate) struct Proxy {
+    mount: Mount,
     config: ProxyConfig,
     client: Client,
     credentials: Option<Arc<Credentials>>,
 }
-impl PhysicianProxy {
+impl Proxy {
     pub(crate) fn new(config: ProxyConfig) -> Self {
         // Disable decompression even when other workspace crates enable reqwest features.
         let client = Client::builder()
@@ -118,10 +169,23 @@ impl PhysicianProxy {
             })
         });
         Self {
+            mount: Mount::Physician,
             config,
             client,
             credentials,
         }
+    }
+
+    /// The same upstream and signer, serving another mount.
+    pub(crate) fn mount(&self, mount: Mount) -> Self {
+        Self {
+            mount,
+            ..self.clone()
+        }
+    }
+
+    pub(crate) fn prefix(&self) -> &'static str {
+        self.mount.prefix()
     }
 
     pub(crate) async fn serve(&self, request: Request) -> Response {
@@ -144,10 +208,15 @@ impl PhysicianProxy {
         {
             return failure(StatusCode::FORBIDDEN);
         }
-        if request.uri().path() == "/physician" {
+        let prefix = self.mount.prefix();
+        // Only the stripping mount picks the canonical root. The others pass
+        // the bare prefix through, because each app has its own trailing-slash
+        // rule (Next.js redirects `/langfuse/` to `/langfuse`, Grafana the
+        // reverse) and a redirect here would loop against it.
+        if self.mount.strips_prefix() && request.uri().path() == prefix {
             let location = match request.uri().query() {
-                Some(query) => format!("/physician/?{query}"),
-                None => "/physician/".into(),
+                Some(query) => format!("{prefix}/?{query}"),
+                None => format!("{prefix}/"),
             };
             return (
                 StatusCode::PERMANENT_REDIRECT,
@@ -155,12 +224,25 @@ impl PhysicianProxy {
             )
                 .into_response();
         }
-        let Some(path) = request
-            .uri()
-            .path_and_query()
-            .and_then(|p| p.as_str().strip_prefix("/physician/"))
-        else {
+        let Some(path_and_query) = request.uri().path_and_query().map(|p| p.as_str()) else {
             return failure(StatusCode::NOT_FOUND);
+        };
+        let path = if self.mount.strips_prefix() {
+            let Some(below) = path_and_query
+                .strip_prefix(prefix)
+                .and_then(|rest| rest.strip_prefix('/'))
+            else {
+                return failure(StatusCode::NOT_FOUND);
+            };
+            below.to_owned()
+        } else {
+            let Some(rest) = path_and_query
+                .strip_prefix(prefix)
+                .filter(|rest| rest.is_empty() || rest.starts_with('/') || rest.starts_with('?'))
+            else {
+                return failure(StatusCode::NOT_FOUND);
+            };
+            format!("{}{rest}", &prefix[1..])
         };
         // Concatenate, never Url::join an untrusted path (which permits authority replacement).
         let Ok(target) = Url::parse(&format!(
@@ -174,7 +256,22 @@ impl PhysicianProxy {
         }
         let (parts, body) = request.into_parts();
         let mut headers = parts.headers;
+        // Read before sanitizing: the boundary has already verified it in staging.
+        let assertion = self
+            .mount
+            .forwards_assertion()
+            .then(|| http::iap::single_header(&headers, http::iap::ASSERTION_HEADER))
+            .flatten()
+            .and_then(|value| HeaderValue::from_str(value).ok());
+        let cookie = request_cookie(&headers, self.mount);
         sanitize(&mut headers);
+        if let Some(mut assertion) = assertion {
+            assertion.set_sensitive(true);
+            headers.insert(FORWARDED_ASSERTION, assertion);
+        }
+        if let Some(cookie) = cookie {
+            headers.insert(header::COOKIE, cookie);
+        }
         if let Some(credentials) = &self.credentials {
             let Ok(token) = credentials.token().await else {
                 return failure(StatusCode::BAD_GATEWAY);
@@ -198,12 +295,21 @@ impl PhysicianProxy {
             return failure(StatusCode::BAD_GATEWAY);
         }
         if let Some(location) = headers.get(header::LOCATION) {
-            let Some(location) = rewrite_location(location, &target, &self.config.upstream) else {
+            let location = if self.mount.strips_prefix() {
+                rewrite_location(location, &target, &self.config.upstream)
+            } else {
+                mounted_location(location, &target, &self.config, prefix)
+            };
+            let Some(location) = location else {
                 return failure(StatusCode::BAD_GATEWAY);
             };
             headers.insert(header::LOCATION, location);
         }
+        let set_cookies = response_cookies(&headers, self.mount);
         sanitize(&mut headers);
+        for cookie in set_cookies {
+            headers.append(header::SET_COOKIE, cookie);
+        }
         // Refresh can navigate without Location and Link can disclose the private origin.
         headers.remove("refresh");
         headers.remove(header::LINK);
@@ -215,7 +321,7 @@ impl PhysicianProxy {
 }
 
 fn failure(status: StatusCode) -> Response {
-    (status, "physician proxy request failed").into_response()
+    (status, "proxy request failed").into_response()
 }
 
 fn rewrite_location(value: &HeaderValue, target: &Url, origin: &Url) -> Option<HeaderValue> {
@@ -227,6 +333,37 @@ fn rewrite_location(value: &HeaderValue, target: &Url, origin: &Url) -> Option<H
         return None;
     }
     let mut location = format!("/physician{}", resolved.path());
+    push_query_and_fragment(&mut location, &resolved);
+    HeaderValue::from_str(&location).ok()
+}
+
+/// A mount that keeps its prefix may redirect only within that prefix, on the
+/// upstream or the public origin. The browser sees a path on this site.
+fn mounted_location(
+    value: &HeaderValue,
+    target: &Url,
+    config: &ProxyConfig,
+    prefix: &str,
+) -> Option<HeaderValue> {
+    let resolved = target.join(value.to_str().ok()?).ok()?;
+    let origin = resolved.origin().ascii_serialization();
+    if (resolved.origin() != config.upstream.origin() && origin != config.public_origin)
+        || !resolved.username().is_empty()
+        || resolved.password().is_some()
+        || !(resolved.path() == prefix
+            || resolved
+                .path()
+                .strip_prefix(prefix)
+                .is_some_and(|rest| rest.starts_with('/')))
+    {
+        return None;
+    }
+    let mut location = resolved.path().to_owned();
+    push_query_and_fragment(&mut location, &resolved);
+    HeaderValue::from_str(&location).ok()
+}
+
+fn push_query_and_fragment(location: &mut String, resolved: &Url) {
     if let Some(query) = resolved.query() {
         location.push('?');
         location.push_str(query);
@@ -235,7 +372,54 @@ fn rewrite_location(value: &HeaderValue, target: &Url, origin: &Url) -> Option<H
         location.push('#');
         location.push_str(fragment);
     }
-    HeaderValue::from_str(&location).ok()
+}
+
+/// One `Cookie` header with only the mount's allowlisted pairs, or none.
+fn request_cookie(headers: &HeaderMap, mount: Mount) -> Option<HeaderValue> {
+    let kept: Vec<&str> = headers
+        .get_all(header::COOKIE)
+        .iter()
+        .filter_map(|value| value.to_str().ok())
+        .flat_map(|value| value.split(';'))
+        .map(str::trim)
+        .filter(|pair| {
+            pair.split_once('=')
+                .is_some_and(|(name, _)| mount.allows_cookie(name.trim()))
+        })
+        .collect();
+    if kept.is_empty() {
+        return None;
+    }
+    let mut value = HeaderValue::from_str(&kept.join("; ")).ok()?;
+    value.set_sensitive(true);
+    Some(value)
+}
+
+/// Allowlisted `Set-Cookie` values. A `Domain` attribute could widen the
+/// cookie beyond this host, so those are dropped too.
+fn response_cookies(headers: &HeaderMap, mount: Mount) -> Vec<HeaderValue> {
+    headers
+        .get_all(header::SET_COOKIE)
+        .iter()
+        .filter(|value| {
+            let Ok(text) = value.to_str() else {
+                return false;
+            };
+            let mut attributes = text.split(';');
+            let named = attributes
+                .next()
+                .and_then(|pair| pair.split_once('='))
+                .is_some_and(|(name, _)| mount.allows_cookie(name.trim()));
+            named
+                && !attributes.any(|attribute| {
+                    attribute
+                        .trim()
+                        .get(..6)
+                        .is_some_and(|name| name.eq_ignore_ascii_case("domain"))
+                })
+        })
+        .cloned()
+        .collect()
 }
 
 /// Applied symmetrically, including every Connection-nominated extension header.
@@ -273,6 +457,7 @@ fn sanitize(headers: &mut HeaderMap) {
                     | "via"
                     | "x-real-ip"
                     | "x-coda-staging-token"
+                    | FORWARDED_ASSERTION
             ) || name.starts_with("x-goog-")
                 || name.starts_with("x-google-")
                 || name.starts_with("x-serverless-")

@@ -18,6 +18,7 @@ REPOSITORIES = {
     "physician-migration": "coda-physician-migrate",
     "duet-runtime": "coda-duet-api",
     "duet-migration": "coda-duet-migrate",
+    "observability-relay": "coda-observability-relay",
 }
 
 
@@ -71,7 +72,7 @@ def package(paths, output, revision):
 def verify(bundle, revision):
     manifest = json.loads((bundle / "manifest.json").read_text())
     require(manifest["source_revision"] == revision, "Tested bundle is from another commit")
-    require(set(manifest["images"]) == set(REPOSITORIES), "Expected all five tested staging images")
+    require(set(manifest["images"]) == set(REPOSITORIES), "Expected all six tested staging images")
     for key, repository in REPOSITORIES.items():
         entry = manifest["images"][key]
         require(entry["archive"] == f"{key}.tar.gz", f"Unexpected archive for {key}")

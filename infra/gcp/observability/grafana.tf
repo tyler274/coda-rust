@@ -5,14 +5,15 @@
 # content-stripping processors, so nothing here changes what leaves a service.
 #
 # Each component is one replica of a StatefulSet with its own persistent disk
-# and a ClusterIP Service; nothing is exposed outside the cluster. People use
-# `kubectl port-forward svc/grafana 3000`, as with Langfuse. The configs are
-# the shared files under dev/observability/grafana, read with file() (their
-# ${...} references are expanded by Tempo and Loki with -config.expand-env and
-# by Grafana's provisioning, never by tofu).
+# and a ClusterIP Service. People reach Grafana through public-site's
+# /grafana/ mount (staging_proxy, web.tf) or with
+# `kubectl port-forward svc/grafana 3000`. The configs are the shared files
+# under dev/observability/grafana, read with file() (their ${...} references
+# are expanded by Tempo and Loki with -config.expand-env and by Grafana's
+# provisioning, never by tofu).
 locals {
   grafana_config_dir = "${path.module}/../../../dev/observability/grafana"
-  grafana_url        = "http://grafana.${local.namespace}.svc.cluster.local:3000"
+  grafana_url        = "http://grafana.${local.namespace}.svc.cluster.local:3000${local.grafana_sub_path}"
 
   grafana_rules_config      = file("${local.grafana_config_dir}/provisioning/alerting/rules.yaml")
   grafana_rules_by_uid      = { for rule in flatten([for group in yamldecode(local.grafana_rules_config).groups : group.rules]) : rule.uid => rule }
@@ -38,20 +39,27 @@ locals {
     }]
   })
 
-  # Sign-in from the IAP assertion (grafana-edge.tf), on only once the
-  # backend's audience is known. Grafana verifies the signature against
-  # Google's published IAP keys and requires this edge's issuer and audience,
-  # so an assertion minted for another IAP application is refused. People
-  # join as Editors; the Doppler admin login stays as break-glass.
-  grafana_jwt_env = local.grafana_iap_audience == null ? {} : {
+  # Under staging_proxy Grafana lives at <origin>/grafana/, behind
+  # public-site's IAP and the observability relay (web.tf). public-site
+  # verifies the user's IAP assertion, drops any client copy of
+  # X-Coda-IAP-Assertion, and forwards the verified one in that header.
+  # Grafana checks it again against Google's published IAP keys with
+  # public-site's issuer and audience, so an assertion minted for another IAP
+  # application is refused. People join as Editors; the Doppler admin login
+  # stays as break-glass. Live is off because the proxy carries no WebSockets.
+  grafana_sub_path   = var.staging_proxy == null ? "" : "/grafana"
+  grafana_public_url = var.staging_proxy == null ? "http://localhost:3000" : "${var.staging_proxy.origin}/grafana/"
+  grafana_proxy_env = var.staging_proxy == null ? {} : {
+    GF_SERVER_SERVE_FROM_SUB_PATH = "true"
     GF_AUTH_JWT_ENABLED           = "true"
-    GF_AUTH_JWT_HEADER_NAME       = "X-Goog-IAP-JWT-Assertion"
+    GF_AUTH_JWT_HEADER_NAME       = "X-Coda-IAP-Assertion"
     GF_AUTH_JWT_JWK_SET_URL       = "https://www.gstatic.com/iap/verify/public_key-jwk"
-    GF_AUTH_JWT_EXPECT_CLAIMS     = jsonencode({ iss = "https://cloud.google.com/iap", aud = local.grafana_iap_audience })
+    GF_AUTH_JWT_EXPECT_CLAIMS     = jsonencode({ iss = "https://cloud.google.com/iap", aud = var.staging_proxy.iap_audience })
     GF_AUTH_JWT_EMAIL_CLAIM       = "email"
     GF_AUTH_JWT_USERNAME_CLAIM    = "email"
     GF_AUTH_JWT_AUTO_SIGN_UP      = "true"
     GF_USERS_AUTO_ASSIGN_ORG_ROLE = "Editor"
+    GF_LIVE_MAX_CONNECTIONS       = "0"
   }
 
   grafana_contact = yamldecode(file("${local.grafana_config_dir}/provisioning/alerting/contact.yaml"))
@@ -236,7 +244,7 @@ locals {
       user         = 472
       env = merge(
         {
-          GF_SERVER_ROOT_URL                    = coalesce(local.grafana_edge_url, "http://localhost:3000")
+          GF_SERVER_ROOT_URL                    = local.grafana_public_url
           GF_USERS_ALLOW_SIGN_UP                = "false"
           GF_AUTH_ANONYMOUS_ENABLED             = "false"
           GF_ANALYTICS_REPORTING_ENABLED        = "false"
@@ -245,12 +253,12 @@ locals {
           GF_NEWS_NEWS_FEED_ENABLED             = "false"
           GF_SECURITY_ADMIN_USER                = "admin"
         },
-        local.grafana_jwt_env,
+        local.grafana_proxy_env,
       )
       # GF_SECURITY_ADMIN_PASSWORD and GRAFANA_SLACK_WEBHOOK_URL (doppler.tf).
       env_from_secret = "grafana-secrets"
       ports           = { http = 3000 }
-      probe           = { path = "/api/health", port = 3000 }
+      probe           = { path = "${local.grafana_sub_path}/api/health", port = 3000 }
       resources       = { cpu = "250m", memory = "512Mi" }
     }
   }

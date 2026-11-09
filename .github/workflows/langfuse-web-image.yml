@@ -1,0 +1,94 @@
+name: Build the Langfuse web image
+
+# Langfuse web is a Next.js app whose base path is fixed at build time, so
+# serving it under https://staging.codahealth.ai/langfuse/ needs a build of
+# the pinned upstream tag with NEXT_PUBLIC_BASE_PATH=/langfuse
+# (infra/gcp/observability/README.md, "Staging proxy rollout"). This job
+# checks out that tag, verifies it is still the reviewed commit, builds
+# web/Dockerfile with the build argument and pushes it to the staging apps
+# repository as the staging deployer, which already publishes the release
+# images there. The staging identity provider admits only push tokens from
+# main, so the job runs when a merged change to this file lands: the reviewed
+# pin below is the approval, and bumping it is how a new image is built. The
+# repository's tags are immutable, so each run gets its own tag and the digest
+# is what infrastructure pins. It changes no running service: the operator
+# records the printed digest as langfuse_web_image and applies the
+# observability root from a reviewed saved plan.
+on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/langfuse-web-image.yml]
+
+permissions: {}
+
+env:
+  # Keep in step with langfuse_image_tag in infra/gcp/observability/langfuse.tf.
+  LANGFUSE_TAG: v3.225.11
+  LANGFUSE_COMMIT: ef21c7cbb3e8f4e5ee90afdaa88678e8a51ce622
+  BASE_PATH: /langfuse
+
+jobs:
+  build:
+    name: Build and push langfuse-web
+    if: github.ref == 'refs/heads/main'
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 60
+    concurrency:
+      group: langfuse-web-image
+      cancel-in-progress: false
+    environment: staging
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      IMAGE: ${{ vars.GCP_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/apps/langfuse-web
+    steps:
+      - name: Check out the pinned Langfuse tag
+        uses: actions/checkout@v7
+        with:
+          repository: langfuse/langfuse
+          ref: ${{ env.LANGFUSE_TAG }}
+          path: langfuse
+          persist-credentials: false
+      - name: Require the reviewed upstream commit
+        run: test "$(git -C langfuse rev-parse HEAD)" = "$LANGFUSE_COMMIT"
+      - name: Build the base-path image
+        run: |
+          set -euo pipefail
+          version="${LANGFUSE_TAG#v}"
+          docker build langfuse \
+            --file langfuse/web/Dockerfile \
+            --platform linux/amd64 \
+            --build-arg "NEXT_PUBLIC_BASE_PATH=$BASE_PATH" \
+            --label "org.opencontainers.image.source=https://github.com/langfuse/langfuse" \
+            --label "org.opencontainers.image.revision=$LANGFUSE_COMMIT" \
+            --label "ai.codahealth.langfuse.base-path=$BASE_PATH" \
+            --tag "$IMAGE:$version-langfuse-path-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+      - name: Authenticate as the staging deployer
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOYER_SERVICE_ACCOUNT }}
+          token_format: access_token
+      - name: Push and record the digest
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          REGISTRY_HOST: ${{ vars.GCP_REGION }}-docker.pkg.dev
+        run: |
+          set -euo pipefail
+          printf '%s' "$ACCESS_TOKEN" | docker login -u oauth2accesstoken --password-stdin "https://$REGISTRY_HOST"
+          tag="$IMAGE:${LANGFUSE_TAG#v}-langfuse-path-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          docker push "$tag"
+          digest="$(docker inspect --format '{{index .RepoDigests 0}}' "$tag")"
+          case "$digest" in "$IMAGE@sha256:"*) ;; *) echo "unexpected digest $digest" >&2; exit 1 ;; esac
+          docker logout "https://$REGISTRY_HOST"
+          {
+            echo "### langfuse-web"
+            echo
+            echo "Built from \`$LANGFUSE_TAG\` (\`$LANGFUSE_COMMIT\`) with \`NEXT_PUBLIC_BASE_PATH=$BASE_PATH\`."
+            echo
+            echo '```hcl'
+            echo "langfuse_web_image = \"$digest\""
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -1,53 +1,25 @@
 //! Local, deliberately public fixtures; never fetch Google keys during tests.
+use super::fixture::{KID, assertion, jwks, key_file, sign, verifier};
 use super::*;
+use axum::http::HeaderMap;
 use base64::Engine;
 use jsonwebtoken::{EncodingKey, Header, encode};
 use serde_json::{Value, json};
 use std::sync::atomic::{AtomicUsize, Ordering};
 
-pub(crate) const AUDIENCE: &str =
-    "/projects/134570912572/locations/us-east1/services/public-site-staging";
-const KID: &str = "public-test-key";
+const AUDIENCE: &str = "/projects/134570912572/locations/us-east1/services/public-site-staging";
 fn fixture() -> Value {
-    serde_json::from_str(include_str!("../tests/fixtures/iap-public-test-key.json")).unwrap()
-}
-fn jwks() -> JwkSet {
-    serde_json::from_value(fixture()).unwrap()
+    key_file()
 }
 fn claims(now: u64) -> Value {
-    json!({"iss": ISSUER, "aud": AUDIENCE, "iat": now - 10, "exp": now + 590})
+    super::fixture::claims(AUDIENCE, now)
 }
-fn sign(claims: &Value, kid: Option<&str>) -> String {
-    let der = base64::engine::general_purpose::STANDARD
-        .decode(fixture()["private_pkcs8_base64"].as_str().unwrap())
-        .unwrap();
-    let mut header = Header::new(Algorithm::ES256);
-    header.kid = kid.map(str::to_owned);
-    encode(&header, claims, &EncodingKey::from_ec_der(&der)).unwrap()
-}
-pub(crate) fn assertion() -> String {
-    let now = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_secs();
-    sign(&claims(now), Some(KID))
-}
-pub(crate) fn cached_gate() -> AccessGate {
-    let mut gate = AccessGate::new(AccessConfig {
-        audience: Some(AUDIENCE.into()),
-    });
-    gate.cache = Arc::new(Mutex::new(Cache {
-        keys: Some(jwks()),
-        fetched: Some(Instant::now()),
-        attempted: Some(Instant::now()),
-    }));
-    // A network attempt from a cached fixture can only hit this closed local port.
-    gate.test_key_url = Some("http://127.0.0.1:1".into());
-    gate
+fn cached_gate() -> IapVerifier {
+    verifier(AUDIENCE)
 }
 fn headers(token: &str) -> HeaderMap {
     let mut headers = HeaderMap::new();
-    headers.insert("x-goog-iap-jwt-assertion", token.parse().unwrap());
+    headers.insert(ASSERTION_HEADER, token.parse().unwrap());
     headers
 }
 
@@ -125,7 +97,7 @@ fn signature_claim_types_and_exact_time_boundaries() {
 #[tokio::test]
 async fn only_one_signed_iap_header_authorizes() {
     let gate = cached_gate();
-    let token = assertion();
+    let token = assertion(AUDIENCE);
     assert!(gate.allows(&headers(&token)).await);
     let mut legacy = HeaderMap::new();
     for (name, value) in [
@@ -179,11 +151,7 @@ async fn only_one_signed_iap_header_authorizes() {
             .encode(json!({"alg": algorithm, "kid": KID}).to_string());
         assert!(!gate.allows(&headers(&parts.join("."))).await);
     }
-    assert!(
-        !AccessGate::new(AccessConfig::default())
-            .allows(&headers(&token))
-            .await
-    );
+    assert!(!IapVerifier::new(None).allows(&headers(&token)).await);
 }
 
 #[test]
@@ -210,7 +178,7 @@ fn rejects_wrong_key_type_curve_usage_algorithm_and_ambiguous_kid() {
 async fn source(
     status: u16,
     body: String,
-) -> (AccessGate, Arc<AtomicUsize>, tokio::task::JoinHandle<()>) {
+) -> (IapVerifier, Arc<AtomicUsize>, tokio::task::JoinHandle<()>) {
     use axum::{Router, http::StatusCode, response::IntoResponse, routing::get};
     let calls = Arc::new(AtomicUsize::new(0));
     let count = calls.clone();
@@ -235,16 +203,14 @@ async fn source(
     let task = tokio::spawn(async move {
         axum::serve(listener, app).await.unwrap();
     });
-    let mut gate = AccessGate::new(AccessConfig {
-        audience: Some(AUDIENCE.into()),
-    });
+    let mut gate = IapVerifier::new(Some(AUDIENCE.into()));
     gate.client = reqwest::Client::builder()
         .redirect(reqwest::redirect::Policy::none())
         .timeout(Duration::from_secs(3))
         .connect_timeout(Duration::from_secs(2))
         .build()
         .unwrap();
-    gate.test_key_url = Some(url);
+    gate.key_url = url;
     (gate, calls, task)
 }
 
@@ -288,7 +254,7 @@ async fn transport_bounds_chunked_body_and_stalled_response() {
             .connect_timeout(Duration::from_secs(2))
             .build()
             .unwrap();
-        gate.test_key_url = Some(url);
+        gate.key_url = url;
         let started = Instant::now();
         assert!(
             tokio::time::timeout(Duration::from_secs(5), gate.fetch_keys())
@@ -310,7 +276,7 @@ async fn fetch_rotation_throttle_and_singleflight() {
     for _ in 0..20 {
         let gate = gate.clone();
         callers.push(tokio::spawn(async move {
-            gate.allows(&headers(&assertion())).await
+            gate.allows(&headers(&assertion(AUDIENCE))).await
         }));
     }
     for caller in callers {

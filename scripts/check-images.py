@@ -23,7 +23,7 @@ SECRET_KEYS = {
     "PUBSUB_EMULATOR_HOST", "PHYSICIAN_LOCAL_SCALE",
 }
 # Images that read no secrets and therefore start without Doppler.
-SECRET_FREE = ("/availability-probe",)
+SECRET_FREE = ("/availability-probe", "/observability-relay")
 TOOLCHAIN = ("/bin/cargo", "/bin/rustc", "/bin/nix", "/bin/gcc", "/bin/sh", "/bin/bash", "/bin/psql")
 # Store paths that must never be runtime references of an image.
 BUILD_ONLY = ("rust-", "rustc-", "cargo-", "gcc-wrapper", "binutils", "bash-",
@@ -52,7 +52,7 @@ def check(path):
             "listen address must come from Cloud Run's PORT"
         entry = runtime["Entrypoint"]
         if labels["com.coda.binary"].endswith(SECRET_FREE):
-            # Its identity is the job's service account; no Doppler, no token.
+            # Its identity is its Cloud Run service account; no Doppler, no token.
             assert entry == [labels["com.coda.binary"]], entry
         else:
             assert entry[0].endswith("/bin/doppler") and entry[1] == "run", entry

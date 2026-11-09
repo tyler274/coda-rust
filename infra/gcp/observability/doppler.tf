@@ -56,12 +56,6 @@ locals {
         "LANGFUSE_INIT_PROJECT_SECRET_KEY" = "LANGFUSE_SECRET_KEY"
       }
     } : {},
-    var.langfuse_iap_enabled ? {
-      # GCPBackendPolicy reads the IAP OAuth client secret from key `key`.
-      "langfuse-iap-oauth" = {
-        "LANGFUSE_IAP_CLIENT_SECRET" = "key"
-      }
-    } : {},
   )
 }
 

@@ -15,10 +15,10 @@ data flow, content policy, and runbook are in
 | `datadog.tf` | With `telemetry_backend = "datadog"` or `"both"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
 | `grafana.tf` | With `telemetry_backend = "grafana"` or `"both"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four operational alert rules in shadow mode. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
-| `grafana-edge.tf` | Off by default (`grafana_edge`, `grafana` or `both`): Grafana's only browser edge. A reserved global address, a DNS-authorized Certificate Manager certificate and map, a `gke-l7-global-external-managed` Gateway and HTTPRoute to `grafana:3000`, a `GCPBackendPolicy` with IAP on that backend, a `HealthCheckPolicy` on `/api/health`, and `roles/iap.httpsResourceAccessor` for `grafana_edge.members` on the verified backend only |
-| `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only, and an optional IAP-gated internal Gateway |
+| `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only. Under `staging_proxy` web runs the digest-pinned `/langfuse` base-path build (`langfuse_web_image`) |
+| `web.tf` | Off by default (`observability_web`): internal passthrough load balancers for `grafana:3000` and `langfuse-web:3000` on the reserved addresses, admitting only the relay subnet. People reach them only through public-site's `/grafana/` and `/langfuse/` mounts (see [Staging proxy](#staging-proxy)) |
 | `doppler.tf` | Doppler Kubernetes Operator `1.7.3` and one `DopplerSecret` per consuming Kubernetes Secret |
-| `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret, Gateway) so they apply after their operators' CRDs exist |
+| `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret) so they apply after their operators' CRDs exist |
 
 The default plan deploys the full stack with `telemetry_backend = "datadog"`,
 `CODA_TELEMETRY_CONTENT=none`, no gateway, and a 90-day Langfuse retention
@@ -175,6 +175,7 @@ holds the stable names, and the operator renders the rest from the outputs:
 | `otel_gateway_audience` | `otel_gateway.audience` |
 | `otel_gateway_source_ranges` | `otel_gateway.source_ranges` (the Cloud Run Direct VPC egress subnet `rust-run`) |
 | `otel_gateway_allowed_callers` | `otel_gateway.allowed_callers` (the physician, duet and physician-worker runtime service accounts) |
+| `observability_web` | `observability_relay.{grafana_ip,langfuse_ip,source_ranges}` (the two reserved addresses and the relay subnet `rust-relay`) |
 
 ```sh
 root=infra/gcp/observability
@@ -182,10 +183,13 @@ tofu -chdir=infra/gcp/rust-environments output -json otel_gateway \
   | jq '{otel_gateway_ip: .ip, otel_gateway_audience: .audience,
          otel_gateway_source_ranges: .source_ranges,
          otel_gateway_allowed_callers: .allowed_callers}' > /tmp/otel-gateway.tfvars.json
+tofu -chdir=infra/gcp/rust-environments output -json observability_relay \
+  | jq '{observability_web: {grafana_ip, langfuse_ip, source_ranges}}' > /tmp/observability-web.tfvars.json
 tofu -chdir=$root init -backend-config=backend/staging.gcs.tfbackend
 doppler run --project coda-rust --config stg -- \
   tofu -chdir=$root plan -var-file=env/staging.tfvars \
-  -var-file=/tmp/otel-gateway.tfvars.json -out=observability.tfplan
+  -var-file=/tmp/otel-gateway.tfvars.json \
+  -var-file=/tmp/observability-web.tfvars.json -out=observability.tfplan
 ```
 
 `environment` has no default and accepts only `staging`; production
@@ -225,92 +229,98 @@ Service in this root:
 - **Outage.** If the gateway is down, the sidecar retries for a bounded time,
   then drops; the product container never waits on it.
 
-## Grafana edge
+## Staging proxy
 
-`grafana_edge` gives Grafana a browser address, `https://<hostname>`, for
-the people IAP admits. Staging's edge is `grafana.staging.codahealth.ai`
-(`env/staging.tfvars`), granted to the same group as `staging.codahealth.ai`,
-`gcp-engineering@codahealth.ai`.
+People open Grafana at `https://staging.codahealth.ai/grafana/` and Langfuse at
+`https://staging.codahealth.ai/langfuse/`. Neither app has a listener of its
+own on the internet:
 
-- **Path.** A DNS-only A record points the hostname at the reserved global
-  address. A `gke-l7-global-external-managed` Gateway terminates TLS with a
-  Certificate Manager certificate that a DNS record authorizes, so the
-  certificate is active before the hostname moves. IAP on the Grafana
-  backend sends signed-out people to Google sign-in and refuses anyone
-  without `roles/iap.httpsResourceAccessor` on that backend. IAP uses
-  Google's managed OAuth client, so there is no client or secret to keep,
-  and only accounts in the organization can sign in. GKE cannot switch a
-  backend from the managed client to a custom one and back without
-  recreating it.
-- **Sign-in.** Grafana trusts only the signed assertion IAP adds,
-  `X-Goog-IAP-JWT-Assertion`. It checks the signature against Google's IAP keys
-  (`https://www.gstatic.com/iap/verify/public_key-jwk`), issuer
-  `https://cloud.google.com/iap` and audience
-  `/projects/<project number>/global/backendServices/<backend id>` (output
-  `grafana_edge.iap_audience`). It then signs the person in by `email`,
-  creating the account as an Editor on first visit. An assertion for
-  another IAP application, or a header forged by someone who reaches the
-  Service another way, is refused. The Doppler `admin` login remains as
-  break-glass. JWT sign-in stays off until the backend id is supplied.
-- **Scope.** The Gateway routes only `grafana:3000`. Tempo, Loki,
-  Prometheus, the collector and Langfuse are unchanged.
+```text
+browser -> Cloud Run IAP (public-site-staging, gcp-engineering)
+        -> public-site /grafana/ and /langfuse/ mounts
+        -> Cloud Run IAP (observability-relay: the group and public-site's account)
+        -> observability-relay, Direct VPC egress on rust-relay
+        -> internal LB grafana:3000 or langfuse-web:3000 (this root, web.tf)
+```
 
-### Grafana edge rollout
+- **Path.** public-site ([book/src/public-site.md](/book/src/public-site.md))
+  sends a JWT signed for its own service account to the relay as
+  `Proxy-Authorization`, as it does for `/physician/`.
+  `infra/gcp/rust-environments` owns the relay, its subnet and the two
+  reserved addresses. The load balancers here admit only
+  `observability_web.source_ranges`, the relay's `/26`, so the physician and
+  Duet services on `rust-run` cannot reach either app. The variable refuses
+  ranges wider than `/24`. Neither app rewrites paths: Grafana serves from
+  `/grafana` (`GF_SERVER_SERVE_FROM_SUB_PATH`) and Langfuse from `/langfuse`.
+- **Grafana sign-in.** public-site verifies the person's IAP assertion and
+  drops any copy of `X-Coda-IAP-Assertion` that the client sent. It then
+  forwards the verified assertion in that header. Grafana trusts only that
+  header. It checks the signature against Google's IAP keys
+  (`https://www.gstatic.com/iap/verify/public_key-jwk`), the issuer
+  `https://cloud.google.com/iap`, and the audience
+  `staging_proxy.iap_audience`, which is public-site's
+  (`infra/gcp/public-site` output `iap_audience`). Then it signs the person in
+  by `email`, creating the account as an Editor on the first visit. An
+  assertion for another IAP application is refused. The Doppler `admin` login
+  remains as break-glass. Live is off (`GF_LIVE_MAX_CONNECTIONS = 0`) because
+  the proxy carries no WebSockets.
+- **Langfuse sign-in.** Langfuse keeps its own login. Sign-up is off and the
+  admin adds people; IAP still gates the whole path. public-site passes
+  through only the NextAuth cookies (`__Secure-next-auth.*`,
+  `__Host-next-auth.csrf-token`). `nextauth.url` is
+  `<origin>/langfuse/api/auth`, and the liveness and readiness probes and the
+  collector's in-cluster OTLP endpoint carry the `/langfuse` prefix. Google
+  sign-in inside Langfuse would need an OAuth client, so it is not set up.
+- **Langfuse image.** Next.js fixes the base path when it builds, so the stock
+  web image cannot serve `/langfuse`.
+  [`.github/workflows/langfuse-web-image.yml`](/.github/workflows/langfuse-web-image.yml)
+  builds upstream `v3.225.11` with `NEXT_PUBLIC_BASE_PATH=/langfuse` and
+  pushes it to the staging `apps` repository. It runs when a change to the
+  workflow lands on `main`, because the staging identity provider admits only
+  push tokens from `main`. The run's summary prints the digest, which becomes
+  `langfuse_web_image`. The worker keeps the stock image. The observability
+  nodes may read that repository (`rust-environments`). When
+  `langfuse_image_tag` changes, update the pinned tag and commit in the
+  workflow in the same change; merging it builds the new image.
+
+### Staging proxy rollout
 
 Each apply is from a reviewed saved plan with the operator's authorization.
 
-1. Phase 1: set `grafana_edge = { hostname }` with no members, then plan
-   and apply. Read `tofu output grafana_edge`. Add its
-   `certificate_dns_records` CNAME and an A record from the hostname to
-   `ip` in Cloudflare, both DNS-only (not proxied).
-2. Phase 2: after GKE reconciles the Gateway, read the backend it created
-   from the Gateway itself:
-   `kubectl -n observability get gateway grafana-edge -o
-   jsonpath='{.metadata.annotations.networking\.gke\.io/backend-services}'`.
-   Look up that name's numeric id with
-   `gcloud compute backend-services list --global --project <project>
-   --format='value(name,id)'`. Set `backend_service` and `backend_service_id` from it, and `members`
-   (for example `["group:gcp-engineering@codahealth.ai"]`), then plan and
-   apply. A recreated backend needs its new name and id before access
-   resumes.
-3. Proof:
-   - A signed-out `curl -sI https://<hostname>` answers 302 to
-     `accounts.google.com`.
-   - A member lands in Grafana already signed in as themselves.
-   - A non-member gets the IAP 403.
-   - Through `kubectl port-forward svc/grafana 3000`, a request with a forged
-     `X-Goog-IAP-JWT-Assertion` to `/api/user` answers 401.
+1. Langfuse runs with its Doppler keys and HMAC pair.
+2. Merging this workflow runs the Langfuse web image build; record its digest.
+3. Apply `rust-environments` with `observability_relay_image`, then release
+   the relay image. Its `observability_relay` output feeds `observability_web`
+   here and `observability_relay_url` in `infra/gcp/public-site`.
+4. Set `staging_proxy = { origin = "https://staging.codahealth.ai",
+   iap_audience = <public-site iap_audience> }` and `langfuse_web_image` in
+   `env/staging.tfvars`. Plan and apply this root with the
+   `observability_web` var-file.
+5. Apply `infra/gcp/public-site` with `observability_relay_url`, then release
+   public-site.
+6. Proof:
+   - `/grafana/` signs you in as your Google account.
+   - `/langfuse/` shows the Langfuse login, and the admin can sign in.
+   - A request that skips public-site's IAP is refused.
+   - The relay URL, called directly without public-site's service account, is refused.
+   - `/physician/` still works.
 
-The edge listens on HTTPS only; `http://` does not answer.
-
-Removing `grafana_edge` deletes the Gateway, address, certificate and grant
-and returns Grafana to port-forward only. GKE removes its load balancer
-asynchronously, so apply again if the address or certificate map is still in
-use. The Cloudflare records are removed by hand.
+Removing `staging_proxy` and `observability_web` deletes both load balancers
+and returns both apps to their root paths for port-forward. The Langfuse base
+path changes only together with its image.
 
 ## Boundary
 
-- **One IAP-gated Grafana edge; everything else stays inside.** The Langfuse
-  chart's Ingress is off and every service is `ClusterIP`, including Tempo,
-  Loki, Prometheus and Grafana. With `grafana_edge` set, the only public
-  listener is the Grafana Gateway (see [Grafana edge](#grafana-edge)); it
-  routes nothing but `grafana:3000`. Without it, people reach the UIs with
+- **No public listener; people come through the staging proxy.** The
+  Langfuse chart's Ingress is off and every Service is `ClusterIP`, including
+  Tempo, Loki, Prometheus and Grafana. The only other listeners are the two
+  internal load balancers in `web.tf`. They admit only the relay subnet, so
+  the way in from outside is public-site's IAP, then the relay's IAP
+  ([Staging proxy](#staging-proxy)). Without `observability_web`, people reach
+  the UIs with
   `kubectl -n observability port-forward svc/langfuse-web 3000:3000` or
-  `kubectl -n observability port-forward svc/grafana 3000`. Setting
-  `langfuse_iap_enabled = true` (with hostname, OAuth client id and certificate)
-  adds a `gke-l7-rilb` internal Gateway with IAP on the backend. It is reachable
-  only from inside the VPC. First create the gateway with no
-  `langfuse_iap_members`. After GKE reconciles it, the operator verifies the
-  regional backend serving the `langfuse-web` HTTPRoute and supplies its actual
-  name as `langfuse_iap_backend_service`, together with the intended members.
-  The IAM grant targets only that backend; its name is not the Kubernetes
-  Service name and must not be guessed. A recreated backend needs a new verified
-  name before this root grants it access.
-  If an older version of this root was applied, the reviewed migration plan must
-  remove its project-wide `google_iap_web_iam_member.langfuse` grants and add the
-  scoped grants. Do not move the old state entry to the new resource type or
-  leave the broader grant unmanaged. Verify effective access to Langfuse and
-  refusal on an unrelated IAP application after the operator applies the plan.
+  `kubectl -n observability port-forward svc/grafana 3000`. This root
+  creates no external Gateway and no IAP backend of its own.
 - **Content never reaches the operations backend.** The collector's
   `traces/ops` and `logs/ops` pipelines delete `gen_ai.prompt*`,
   `gen_ai.completion*`, `gen_ai.{input,output}.messages`, and
@@ -407,7 +417,6 @@ use. The Cloudflare records are removed by hand.
   | `LANGFUSE_SALT`, `LANGFUSE_NEXTAUTH_SECRET`, `LANGFUSE_ENCRYPTION_KEY`, `LANGFUSE_CLICKHOUSE_PASSWORD`, `LANGFUSE_REDIS_PASSWORD`, `LANGFUSE_S3_ACCESS_KEY_ID`, `LANGFUSE_S3_SECRET_ACCESS_KEY` | `langfuse-secrets` |
   | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY`, `LANGFUSE_INIT_PROJECT_SECRET_KEY`, `LANGFUSE_INIT_USER_EMAIL`, `LANGFUSE_INIT_USER_PASSWORD` | `langfuse-init` (Langfuse web env) |
   | the same project key pair | `otel-collector-langfuse` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`) |
-  | `LANGFUSE_IAP_CLIENT_SECRET` (gateway only) | `langfuse-iap-oauth` (`key`) |
   The S3-interop HMAC key belongs to `coda-langfuse-blobs` (output
   `langfuse_hmac_service_account`). The operator mints it with
   `gcloud storage hmac create` and stores both halves in Doppler.
@@ -547,8 +556,10 @@ tofu fmt -check -recursive infra/gcp/observability
 ```
 
 The tests plan against mock providers. They assert that no public Langfuse
-ingress exists, that the IAP gateway is internal-only and fails closed without
-its inputs, that the ops trace and log pipelines delete every content key
+ingress exists, that under `staging_proxy` Grafana and Langfuse get internal
+load balancers that admit only the relay subnet, with their sub-paths, Grafana's
+JWT sign-in from `X-Coda-IAP-Assertion` and the pinned base-path Langfuse
+image, that the ops trace and log pipelines delete every content key
 while keeping model, usage, and run ids, that logs never reach Langfuse, that
 the gateway mounts its config files with the backend overlay last and its
 overlay keeps the privacy processors, that `datadog` plans no Grafana

@@ -882,11 +882,12 @@ jobs:
         run: python3 scripts/nix-cache/nix_cache.py cleanup
 
   # Publishes the exact archives tested by images (no rebuild), then rolls the
-  # physician and Duet runtime and migration images, plus physician-worker,
-  # out to staging by digest. Each migration job runs to completion before its service
+  # physician and Duet runtime and migration images, plus physician-worker
+  # and observability-relay, out to staging by digest. Each migration job runs to completion before its service
   # moves to the new runtime digest and must report a Ready revision serving
-  # it. physician-worker is updated once that Cloud Run service exists; the
-  # first push only publishes the digest so the scaling plan can pin it.
+  # it. physician-worker and observability-relay are updated once their Cloud
+  # Run services exist; until then a push only publishes the digest so the
+  # plan that creates the service can pin it.
   # The Rust command checkpoints a sanitized receipt before each mutation and
   # reconciles observed revisions/traffic on failure; it never rolls back.
   # Only a push to main, after every check job is green.
