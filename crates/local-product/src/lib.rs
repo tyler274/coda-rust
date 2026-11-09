@@ -28,6 +28,8 @@ pub mod codex;
 pub mod execution;
 /// Hosted physician chat instructions and the `skill_view` tool.
 pub mod physician_chat;
+/// The stored layout each source's records of one type read through.
+pub mod physician_layouts;
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;

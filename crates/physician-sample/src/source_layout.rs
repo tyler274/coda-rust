@@ -304,6 +304,12 @@ struct Binding<'r> {
 }
 
 impl Layout {
+    /// Reads a layout as the layout store holds it. A layout that does not parse is refused
+    /// whole, the same as one that does not validate.
+    pub fn parse(stored: &str) -> Result<Self, serde_json::Error> {
+        serde_json::from_str(stored)
+    }
+
     /// Checks every heading, label and pointer against `record`, refusing at the first fault.
     pub fn validate<'r>(&self, record: &'r Value) -> Result<ValidatedLayout<'r>, LayoutRefusal> {
         if !record.is_object() {

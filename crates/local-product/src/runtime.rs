@@ -257,7 +257,7 @@ fn database_clock() -> Expr {
     Expr::cust("floor(extract(epoch FROM clock_timestamp()))::bigint")
 }
 
-async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
+pub(crate) async fn now(tx: &sea_orm::DatabaseTransaction) -> Result<i64, DbErr> {
     let query = Query::select()
         .expr_as(database_clock(), Alias::new("now"))
         .to_owned();
@@ -278,6 +278,11 @@ impl Store {
     /// Uses an existing pool without applying migrations or changing its limits.
     pub fn from_connection(db: DatabaseConnection) -> Self {
         Self { db }
+    }
+
+    /// The pool, for the physician stores that share this database.
+    pub(crate) fn connection(&self) -> &DatabaseConnection {
+        &self.db
     }
 
     /// Explicit additive, rerunnable migration, never invoked by connect.
@@ -314,6 +319,7 @@ impl Store {
         let mut source_pulls = schema.create_table_from_entity(entities::source_pull::Entity);
         source_pulls.if_not_exists();
         tx.execute(&source_pulls).await?;
+        crate::physician_layouts::migrate(&tx).await?;
         // Receipts older than this column get the migration's time, so the
         // 90-day reduction counts from when it could first see them. `now()`
         // is stable, so Postgres stores it once instead of rewriting rows.

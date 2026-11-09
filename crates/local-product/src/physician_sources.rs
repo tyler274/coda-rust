@@ -157,7 +157,7 @@ pub fn exact_read(
             Some(source) => {
                 source.validate()?;
                 json!({"reference": reference, "outcome": "available", "revision": source.revision,
-                    "record_type": source.record_type, "dates": source.dates,
+                    "source_id": source.source_id, "record_type": source.record_type, "dates": source.dates,
                     "read_representation": "native_record", "content": source.content,
                     "readable_parts": source.readable_parts,
                     "sha256": source.sha256, "provenance": source.provenance,
