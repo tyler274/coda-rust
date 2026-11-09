@@ -143,6 +143,20 @@ function (step, ...args) {
       if (!conflict) return null;
       return [Number(conflict.dataset.revision), conflict.querySelector("pre")?.textContent ?? ""];
     },
+    // Puts the caret at the end of a field, so the next key types there.
+    focusEnd(selector) {
+      const field = one(selector);
+      field.focus();
+      field.setSelectionRange(field.value.length, field.value.length);
+    },
+    // Presses `key` on `selector` as a keydown that bubbles to the page.
+    keyOn(selector, key) {
+      one(selector).dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+    },
+    // How many open dialogs say `words`.
+    dialogsSaying(words) {
+      return [...document.querySelectorAll("dialog")].filter((dialog) => dialog.innerText.includes(words)).length;
+    },
     // Sends from the keyboard: Ctrl+Enter in the composer.
     sendWithKeyboard() {
       const box = one("textarea.composer-input");

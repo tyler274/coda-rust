@@ -2579,21 +2579,24 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     tab.click_named("dialog.feedback-details .toggle-chip", "Missing context");
     tab.browser
         .type_into("dialog.feedback-details textarea", "It left out the trend");
-    // Keys pressed in the details are words, never the page's shortcuts.
-    tab.eval(
-        "(t => { t.focus(); t.setSelectionRange(t.value.length, t.value.length); return true; })(document.querySelector('dialog.feedback-details textarea'))",
-    );
+    // Keys pressed in the details dialog are its own, never the page's shortcuts.
+    const DETAILS: &str = "dialog.feedback-details textarea";
+    tab.step("focusEnd", serde_json::json!([DETAILS]));
     tab.press_key(Key::typing("?", "Slash", 191));
-    std::thread::sleep(Duration::from_millis(150));
     assert_eq!(
-        tab.eval("document.querySelector('dialog.feedback-details textarea').value"),
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
         "It left out the trend?",
         "a key typed into the details went missing"
     );
+    tab.step(
+        "keyOn",
+        serde_json::json!(["dialog.feedback-details button[aria-label=\"Close\"]", "?"]),
+    );
+    std::thread::sleep(Duration::from_millis(150));
     assert_eq!(
-        tab.eval("[...document.querySelectorAll('dialog')].filter(d => d.innerText.includes('Keyboard shortcuts')).length"),
+        tab.step("dialogsSaying", serde_json::json!(["Keyboard shortcuts"])),
         0,
-        "typing ? in the details opened the page's shortcuts"
+        "a key pressed in the details dialog opened the page's shortcuts"
     );
     tab.save_pictures("feedback-details", "dialog.feedback-details");
     tab.click_named("dialog.feedback-details button", "Save details");

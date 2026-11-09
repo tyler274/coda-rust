@@ -54,6 +54,11 @@ async fn main() {
         Some("feedback") => {
             if let Err(error) = print_feedback(&url).await {
                 eprintln!("feedback not read: {error}");
+                let mut cause = std::error::Error::source(&error);
+                while let Some(inner) = cause {
+                    eprintln!("  caused by: {inner}");
+                    cause = inner.source();
+                }
                 std::process::exit(1);
             }
             return;
@@ -126,18 +131,18 @@ async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
 /// text. The output is clinical text, so it is read on an operator's own
 /// terminal: inside a Cloud Run job, where stdout reaches Cloud Logging, it
 /// refuses and reads nothing.
-async fn print_feedback(url: &str) -> Result<(), String> {
+async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
     use std::io::Write;
     if std::env::var_os("CLOUD_RUN_JOB").is_some() {
-        return Err("it prints clinical text and never runs as a Cloud Run job".into());
+        return Err(FeedbackReadError::InCloudRunJob);
     }
     let db = migration_connection(url)
         .await
-        .map_err(|error| format!("physician database connection: {error}"))?;
+        .map_err(FeedbackReadError::Connect)?;
     let rows = local_product::runtime::Store::from_connection(db)
         .feedback_for_evaluation()
         .await
-        .map_err(|error| format!("feedback read: {error}"))?;
+        .map_err(FeedbackReadError::Read)?;
     let mut out = std::io::stdout().lock();
     for row in rows {
         let details = row.feedback.details.as_ref();
@@ -154,9 +159,40 @@ async fn print_feedback(url: &str) -> Result<(), String> {
             "details_saved_at": row.feedback.details_saved_at,
             "response_text": row.response_text,
         });
-        writeln!(out, "{line}").map_err(|error| format!("stdout: {error}"))?;
+        writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
     }
     Ok(())
+}
+
+/// Why `physician-migrate feedback` read nothing, or stopped part way.
+#[derive(Debug)]
+enum FeedbackReadError {
+    /// It prints clinical text, so it never runs as a Cloud Run job.
+    InCloudRunJob,
+    Connect(DbErr),
+    Read(DbErr),
+    Print(std::io::Error),
+}
+
+impl std::fmt::Display for FeedbackReadError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(match self {
+            Self::InCloudRunJob => "it prints clinical text and never runs as a Cloud Run job",
+            Self::Connect(_) => "the physician database did not connect",
+            Self::Read(_) => "the feedback did not read",
+            Self::Print(_) => "the feedback did not print",
+        })
+    }
+}
+
+impl std::error::Error for FeedbackReadError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::InCloudRunJob => None,
+            Self::Connect(cause) | Self::Read(cause) => Some(cause),
+            Self::Print(cause) => Some(cause),
+        }
+    }
 }
 
 async fn load_charts(url: &str) -> Result<(), String> {
