@@ -4,11 +4,12 @@
 
 pub use http::HttpError;
 use physician_wire::{
-    ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
-    PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
-    PatientWorkspacesResponse, PhysicianDraft, PlanItemWire, PracticeDayResponse,
-    RecentConversationsResponse, ReplyDraftWire, SignInResponse, TodayListResponse,
-    UpdatesResponse, VerifyResponse, WhoamiResponse,
+    ApprovedDoctorPlanWire, ChatFeedback, ChatSnapshotResponse, DoctorPlanDraftWire,
+    FeedbackDetails, FeedbackRating, HealthResponse, PanelAssignmentResponse, PatientSearchResponse,
+    PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft, PlanItemWire,
+    PracticeDayResponse, RateResponse, RecentConversationsResponse, ReplyDraftWire,
+    ResponseFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
+    WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -342,6 +343,48 @@ impl PhysicianClient {
             },
             Err(error) => Err(error),
         }
+    }
+
+    /// Reads the signed-in physician's feedback on one chat's responses.
+    pub async fn chat_feedback(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+    ) -> Result<ChatFeedback, http::HttpError> {
+        self.get(&format!(
+            "/physician-state/feedback/{workspace_id}/{chat_id}"
+        ))
+        .await
+    }
+
+    /// Rates the response at `response` in a chat; answers the saved feedback.
+    pub async fn rate_response(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        response: usize,
+        rating: FeedbackRating,
+    ) -> Result<ResponseFeedback, http::HttpError> {
+        self.put(
+            &format!("/physician-state/feedback/{workspace_id}/{chat_id}/{response}/rating"),
+            &RateResponse { rating },
+        )
+        .await
+    }
+
+    /// Replaces the details on a rated response; answers the saved feedback.
+    pub async fn save_feedback_details(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        response: usize,
+        details: &FeedbackDetails,
+    ) -> Result<ResponseFeedback, http::HttpError> {
+        self.put(
+            &format!("/physician-state/feedback/{workspace_id}/{chat_id}/{response}/details"),
+            details,
+        )
+        .await
     }
 
     /// Reads one reply draft with its exact revision and latest revision run.
