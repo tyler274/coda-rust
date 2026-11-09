@@ -86,7 +86,7 @@ impl MemoryPatients {
 }
 
 /// A fixture patient as one source's pull.
-fn fixture_pull(workspace: &str) -> SourcePull {
+pub(crate) fn fixture_pull(workspace: &str) -> SourcePull {
     let body = crate::simulation::workspace_body(workspace).expect("fixture patient");
     let body: Value = serde_json::from_str(body).expect("fixture patient");
     let identity = &body["identity"];

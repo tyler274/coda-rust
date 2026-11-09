@@ -31,6 +31,7 @@ mod publication;
 #[cfg(test)]
 mod publication_tests;
 pub mod queue;
+pub mod rehearsal;
 mod reply;
 mod simulation;
 pub mod synthetic_chart;
@@ -545,8 +546,10 @@ async fn site_from_env(
             .map_err(|_| "physician source import failed".to_string())?;
         let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
         let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
-        let chat =
-            std::sync::Arc::new(durable::DurableChat::new(store, std::sync::Arc::new(queue)));
+        let chat = std::sync::Arc::new(
+            durable::DurableChat::new(store, std::sync::Arc::new(queue))
+                .with_simulation_practices(hosting::SimulationPractices::from_env(&get)?),
+        );
         let live = live::Live::durable(std::sync::Arc::clone(&bus), std::sync::Arc::clone(&chat))?;
         tracing::info!(
             "physician chat accepts turns onto the configured topic; this process does not run the model"

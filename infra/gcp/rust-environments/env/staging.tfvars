@@ -78,6 +78,11 @@ availability_probe_schedule_enabled = true
 availability_watchdog_enabled       = true
 availability_watchdog_channels      = ["projects/coda-rust-staging/notificationChannels/12022100174098334389"]
 
+# Rehearsal chats (observability-drill langfuse) run in this synthetic practice;
+# their generations are labelled simulation in Langfuse. Real staging accounts
+# stay in roger-synthetic-practice and stay real.
+physician_simulation_practices = ["coda-rehearsal-practice"]
+
 images = {
   # Initial digests only; later releases own the image field.
   physician = {

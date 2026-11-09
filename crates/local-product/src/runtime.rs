@@ -65,6 +65,12 @@ pub struct Input {
     pub text: String,
     /// Physician's timezone.
     pub timezone: String,
+    /// The rehearsal scenario this input belongs to. Only a simulation
+    /// practice's session may set it; the site refuses it from any other.
+    /// Absent inputs serialize exactly as before, so receipts saved earlier
+    /// still compare equal.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
 }
 
 /// A saved authored message, not execution telemetry.
@@ -129,6 +135,9 @@ pub struct Conversation {
     /// Database-clock seconds of the latest accepted message or published reply.
     #[serde(default)]
     pub last_activity_at: i64,
+    /// The latest accepted input's rehearsal scenario; see [`Input::scenario`].
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
 }
 
 /// One chat in a physician's workspace, for the workspace's chat list.
@@ -166,6 +175,7 @@ impl Default for Conversation {
             failures: 0,
             opened_at: 0,
             last_activity_at: 0,
+            scenario: None,
         }
     }
 }
@@ -442,6 +452,7 @@ impl Store {
         state.revision += 1;
         state.session_hash = session_hash;
         state.input_id = Some(input.key.clone());
+        state.scenario = input.scenario.clone();
         state.dispatch_after = 0;
         state.failures = 0;
         let now = now(&tx).await?;

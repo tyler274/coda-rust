@@ -62,13 +62,16 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
             attempt_number: claim.earlier_attempts.saturating_add(1),
         },
     );
+    let (origin, scenario_id) = worker
+        .simulation_practices
+        .origin(&claim.scope.practice, claim.input.scenario.as_deref());
     let generation = genai::generation_span(
         &RunContext {
             run_id: claim.attempt.clone(),
             job: JOB,
             recipe_version: genai::recipe_version(),
-            origin: genai::Origin::Real,
-            scenario_id: None,
+            origin,
+            scenario_id,
             session_id: Some(claim.scope.chat.clone()),
         },
         worker.system,
@@ -419,6 +422,7 @@ mod tests {
                 expected_revision: 7,
                 instruction: "Make shorter".into(),
                 timezone: "America/Los_Angeles".into(),
+                scenario: None,
             },
             base_text: "Original saved reply".into(),
             sources: vec![],

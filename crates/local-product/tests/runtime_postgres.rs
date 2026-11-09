@@ -17,6 +17,7 @@ fn input() -> Input {
         key: "command-a".into(),
         text: "Exact input\n  whitespace".into(),
         timezone: "America/Los_Angeles".into(),
+        scenario: None,
     }
 }
 async fn store() -> Store {

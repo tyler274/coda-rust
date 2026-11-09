@@ -1,5 +1,6 @@
 //! Hosted chat composition. Authoritative acceptance and snapshots share the
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
+use crate::hosting::{ScenarioRefused, SimulationPractices};
 use crate::queue::ChatQueue;
 use local_product::runtime::{
     Accepted, Authority, Conversation, Input, Resumed, Scope, Stopped, Store,
@@ -22,11 +23,39 @@ pub struct DurableChat {
     /// Existing authoritative Postgres runtime.
     pub store: Store,
     queue: Arc<dyn ChatQueue>,
+    /// Practices whose sessions may tag their inputs with a rehearsal scenario.
+    simulation_practices: SimulationPractices,
 }
 impl DurableChat {
-    /// Does not migrate schemas or start background work.
+    /// Does not migrate schemas or start background work. No practice is a
+    /// rehearsal practice until [`Self::with_simulation_practices`] names one.
     pub fn new(store: Store, queue: Arc<dyn ChatQueue>) -> Self {
-        Self { store, queue }
+        Self {
+            store,
+            queue,
+            simulation_practices: SimulationPractices::default(),
+        }
+    }
+
+    /// The same owner, accepting scenario tags from `practices`' sessions.
+    pub fn with_simulation_practices(mut self, practices: SimulationPractices) -> Self {
+        self.simulation_practices = practices;
+        self
+    }
+
+    /// Admits the scenario a session in `practice` sent with its command:
+    /// none is always fine; one is only from a rehearsal practice.
+    pub fn admit_scenario(
+        &self,
+        practice: &str,
+        scenario: Option<String>,
+    ) -> Result<Option<String>, ScenarioRefused> {
+        let Some(scenario) = scenario else {
+            return Ok(None);
+        };
+        self.simulation_practices
+            .admit_scenario(practice, &scenario)?;
+        Ok(Some(scenario))
     }
 
     /// Saves the receipt/input/recovery identity before trying the broker.

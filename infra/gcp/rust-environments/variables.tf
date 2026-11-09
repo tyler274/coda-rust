@@ -71,6 +71,21 @@ variable "physician_proxy_invokers" {
   }
 }
 
+variable "physician_simulation_practices" {
+  description = "Physician practice ids whose chats are rehearsal traffic: telemetry labels their generations simulation and their sessions may tag a message with a scenario. Set on the physician site, worker and migration job (which seeds the rehearsal practice). Staging only; the binaries refuse it outside the staging-preview profile."
+  type        = set(string)
+  default     = []
+  nullable    = false
+  validation {
+    condition     = length(var.physician_simulation_practices) == 0 || var.environment == "stg"
+    error_message = "physician_simulation_practices is staging-only; production never relabels physician traffic."
+  }
+  validation {
+    condition     = alltrue([for practice in var.physician_simulation_practices : can(regex("^[a-z0-9][a-z0-9-]{2,62}$", practice))])
+    error_message = "physician_simulation_practices entries are practice ids: lower-case letters, digits and dashes."
+  }
+}
+
 variable "observability_proxy_invokers" {
   description = "Explicit operator-approved service-account IAP members for the observability relay only: in staging, the public-site service account that serves /grafana/ and /langfuse/. Never grants physician, Duet or direct run.invoker access."
   type        = set(string)

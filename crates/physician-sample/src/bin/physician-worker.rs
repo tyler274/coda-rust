@@ -36,7 +36,7 @@ use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
-use physician_sample::hosting::{self, is_hosted};
+use physician_sample::hosting::{self, SimulationPractices, is_hosted};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
 use tracing::Instrument;
@@ -155,6 +155,12 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
     let workspace_id = claim.scope.workspace.clone();
     let session_id = claim.scope.chat.clone();
     let conversation = worker.store.read(&claim.scope).await.ok().flatten();
+    let (origin, scenario_id) = worker.simulation_practices.origin(
+        &claim.scope.practice,
+        conversation
+            .as_ref()
+            .and_then(|state| state.scenario.as_deref()),
+    );
     let input_text = conversation
         .as_ref()
         .map(|state| last_text(state, "user"))
@@ -181,8 +187,8 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             run_id: run_id.clone(),
             job: CHAT_JOB,
             recipe_version: genai::recipe_version(),
-            origin: genai::Origin::Real,
-            scenario_id: None,
+            origin,
+            scenario_id,
             session_id: Some(session_id),
         },
         worker.system,
@@ -454,6 +460,8 @@ struct Worker {
     skills: PhysicianSkills,
     /// Versioned hosted instructions followed by that catalog's metadata.
     instructions: Arc<str>,
+    /// Practices whose turns are rehearsal traffic in telemetry.
+    simulation_practices: SimulationPractices,
 }
 
 /// The packaged skill catalog. Hosted startup requires `PHYSICIAN_SKILLS_DIR`
@@ -474,6 +482,7 @@ fn skills_dir(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<Pat
 impl Worker {
     async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let hosted = is_hosted(&get);
+        let simulation_practices = SimulationPractices::from_env(&get)?;
         let fixed = configured(&get, "PHYSICIAN_WORKER_FIXED_TEXT");
         let failures = configured(&get, "PHYSICIAN_WORKER_FIXED_FAILURES");
         if hosted && fixed.is_some() {
@@ -631,6 +640,7 @@ impl Worker {
             adapter,
             skills,
             instructions,
+            simulation_practices,
         })
     }
 }
