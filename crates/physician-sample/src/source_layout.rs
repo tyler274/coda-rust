@@ -39,8 +39,57 @@ pub struct Section {
 pub struct Slot {
     /// What the value means, written by the layout.
     pub label: String,
+    /// What part the value plays, checked against where it sits in the record.
+    pub role: SlotRole,
     /// Where the value is in the record.
     pub pointer: String,
+}
+
+/// What part a slot's value plays in the record. A role is checked against the path it binds,
+/// so a layout cannot present a reference-range limit as the result, or a code as a date.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum SlotRole {
+    /// The recorded result; never part of a reference range.
+    Result,
+    /// The unit of a quantity.
+    Unit,
+    /// A reference range's lower limit.
+    ReferenceRangeLow,
+    /// A reference range's upper limit.
+    ReferenceRangeHigh,
+    /// A reference range as its source wrote it.
+    ReferenceRangeText,
+    /// The record's interpretation of its result.
+    Interpretation,
+    /// One of the record's statuses.
+    Status,
+    /// A FHIR date or dateTime.
+    Date,
+    /// A code or coded display.
+    Code,
+    /// A note attached to the record.
+    Note,
+    /// Any other recorded value.
+    Other,
+}
+
+impl fmt::Display for SlotRole {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(match self {
+            Self::Result => "result",
+            Self::Unit => "unit",
+            Self::ReferenceRangeLow => "reference range low",
+            Self::ReferenceRangeHigh => "reference range high",
+            Self::ReferenceRangeText => "reference range text",
+            Self::Interpretation => "interpretation",
+            Self::Status => "status",
+            Self::Date => "date",
+            Self::Code => "code",
+            Self::Note => "note",
+            Self::Other => "other",
+        })
+    }
 }
 
 /// Why a layout cannot read a record. A refused layout is never shown, not even in part.
@@ -87,7 +136,50 @@ pub enum LayoutRefusal {
         /// The slot's pointer as the layout wrote it.
         pointer: String,
     },
+    /// A slot's role does not fit the value it binds.
+    RoleMismatch {
+        /// The slot's pointer as the layout wrote it.
+        pointer: String,
+        /// The role the layout gave the slot.
+        role: SlotRole,
+        /// Why the bound value cannot play that role.
+        reason: RoleMismatchReason,
+    },
 }
+
+/// Why a bound value cannot play the role its slot gives it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RoleMismatchReason {
+    /// A result is never part of a reference range.
+    UnderReferenceRange,
+    /// A unit is the `unit` or `code` of a quantity.
+    NotAQuantityUnit,
+    /// The value lies outside the element the role reads.
+    OutsideItsElement,
+    /// A status is the record's own `status` or one of its `…Status` elements.
+    NotAStatus,
+    /// A date is a FHIR date or dateTime string.
+    NotADate,
+    /// A slot among the record's statuses must have the status role.
+    StatusesHoldOnlyStatuses,
+}
+
+impl fmt::Display for RoleMismatchReason {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::UnderReferenceRange => write!(f, "it lies inside a reference range"),
+            Self::NotAQuantityUnit => write!(f, "it is not the unit of a quantity"),
+            Self::OutsideItsElement => write!(f, "it lies outside the element that role reads"),
+            Self::NotAStatus => write!(f, "it is not one of the record's statuses"),
+            Self::NotADate => write!(f, "it is not a FHIR date or dateTime"),
+            Self::StatusesHoldOnlyStatuses => {
+                write!(f, "the record's statuses hold only status slots")
+            }
+        }
+    }
+}
+
+impl std::error::Error for RoleMismatchReason {}
 
 impl fmt::Display for LayoutRefusal {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -107,6 +199,9 @@ impl fmt::Display for LayoutRefusal {
                 )
             }
             Self::DuplicateBinding { pointer } => write!(f, "{pointer} is bound more than once"),
+            Self::RoleMismatch { pointer, role, .. } => {
+                write!(f, "{pointer} cannot be read as the {role}")
+            }
         }
     }
 }
@@ -115,6 +210,7 @@ impl std::error::Error for LayoutRefusal {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
             Self::MalformedPointer { reason, .. } => Some(reason),
+            Self::RoleMismatch { reason, .. } => Some(reason),
             _ => None,
         }
     }
@@ -178,11 +274,17 @@ impl Layout {
         }
         let mut bound = BTreeSet::new();
         let mut bind = |slot: &Slot| bind(slot, record, &mut bound);
-        let statuses = self
-            .statuses
-            .iter()
-            .map(&mut bind)
-            .collect::<Result<_, _>>()?;
+        let mut statuses = Vec::with_capacity(self.statuses.len());
+        for slot in &self.statuses {
+            if slot.role != SlotRole::Status {
+                return Err(LayoutRefusal::RoleMismatch {
+                    pointer: slot.pointer.clone(),
+                    role: slot.role,
+                    reason: RoleMismatchReason::StatusesHoldOnlyStatuses,
+                });
+            }
+            statuses.push(bind(slot)?);
+        }
         let mut sections = Vec::with_capacity(self.sections.len());
         for (index, section) in self.sections.iter().enumerate() {
             if section.heading.trim().is_empty() {
@@ -219,8 +321,12 @@ fn bind<'r>(
         reason,
     })?;
     let mut value = record;
+    let mut parent = record;
     let mut path = String::new();
+    // The member names along the pointer, without array indexes.
+    let mut members = Vec::new();
     for token in tokens {
+        parent = value;
         value = match value {
             Value::Object(object) => {
                 let member = object
@@ -230,6 +336,7 @@ fn bind<'r>(
                     path.push('.');
                 }
                 path.push_str(&token);
+                members.push(token);
                 member
             }
             Value::Array(items) => {
@@ -246,6 +353,11 @@ fn bind<'r>(
     if value.is_object() || value.is_array() {
         return Err(LayoutRefusal::NotALeaf { pointer: pointer() });
     }
+    fits(slot.role, &members, parent, value).map_err(|reason| LayoutRefusal::RoleMismatch {
+        pointer: pointer(),
+        role: slot.role,
+        reason,
+    })?;
     // Two spellings of one pointer bind the same value, so duplicates compare by path.
     if !bound.insert(path.clone()) {
         return Err(LayoutRefusal::DuplicateBinding { pointer: pointer() });
@@ -255,6 +367,149 @@ fn bind<'r>(
         path,
         value,
     })
+}
+
+/// Whether a value can play `role`, given the member names along its path (`members`, without
+/// array indexes), the object or array holding it, and the value itself.
+fn fits(
+    role: SlotRole,
+    members: &[String],
+    parent: &Value,
+    value: &Value,
+) -> Result<(), RoleMismatchReason> {
+    let has = |name: &str| members.iter().any(|member| member == name);
+    // The member right after `referenceRange`: `low`, `high` or `text`.
+    let range_part = members
+        .iter()
+        .position(|member| member == "referenceRange")
+        .and_then(|at| members.get(at + 1))
+        .map(String::as_str);
+    let holds = |fits: bool, reason| if fits { Ok(()) } else { Err(reason) };
+    match role {
+        SlotRole::Result => holds(
+            !has("referenceRange"),
+            RoleMismatchReason::UnderReferenceRange,
+        ),
+        SlotRole::Unit => {
+            let last = members.last().map(String::as_str);
+            let holder = members.iter().rev().nth(1).map(String::as_str);
+            let quantity = parent.get("value").is_some()
+                || holder.is_some_and(|holder| {
+                    holder.ends_with("Quantity") || holder == "low" || holder == "high"
+                });
+            holds(
+                matches!(last, Some("unit" | "code")) && quantity,
+                RoleMismatchReason::NotAQuantityUnit,
+            )
+        }
+        SlotRole::ReferenceRangeLow => holds(
+            range_part == Some("low"),
+            RoleMismatchReason::OutsideItsElement,
+        ),
+        SlotRole::ReferenceRangeHigh => holds(
+            range_part == Some("high"),
+            RoleMismatchReason::OutsideItsElement,
+        ),
+        SlotRole::ReferenceRangeText => holds(
+            range_part == Some("text"),
+            RoleMismatchReason::OutsideItsElement,
+        ),
+        SlotRole::Interpretation => {
+            holds(has("interpretation"), RoleMismatchReason::OutsideItsElement)
+        }
+        SlotRole::Status => holds(
+            members
+                .first()
+                .is_some_and(|first| first.ends_with("status") || first.ends_with("Status")),
+            RoleMismatchReason::NotAStatus,
+        ),
+        SlotRole::Date => holds(
+            value.as_str().is_some_and(is_fhir_date),
+            RoleMismatchReason::NotADate,
+        ),
+        SlotRole::Note => holds(has("note"), RoleMismatchReason::OutsideItsElement),
+        SlotRole::Code | SlotRole::Other => Ok(()),
+    }
+}
+
+/// Whether `text` is a FHIR `date` (`YYYY`, `YYYY-MM`, `YYYY-MM-DD`) or `dateTime`
+/// (`YYYY-MM-DDThh:mm:ss[.fff]` with `Z` or a `±hh:mm` offset).
+fn is_fhir_date(text: &str) -> bool {
+    let (date, time) = match text.split_once('T') {
+        Some((date, time)) => (date, Some(time)),
+        None => (text, None),
+    };
+    let mut parts = date.split('-');
+    let year = parts.next().and_then(|year| number(year, 4));
+    let month = parts.next().map(|month| number(month, 2));
+    let day = parts.next().map(|day| number(day, 2));
+    if parts.next().is_some() {
+        return false;
+    }
+    let Some(year) = year.filter(|year| *year >= 1) else {
+        return false;
+    };
+    let month = match month {
+        None => return time.is_none(),
+        Some(month) => match month.filter(|month| (1..=12).contains(month)) {
+            Some(month) => month,
+            None => return false,
+        },
+    };
+    let Some(day) = day else {
+        return time.is_none();
+    };
+    let leap = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
+    let days = match month {
+        2 if leap => 29,
+        2 => 28,
+        4 | 6 | 9 | 11 => 30,
+        _ => 31,
+    };
+    if !day.is_some_and(|day| (1..=days).contains(&day)) {
+        return false;
+    }
+    time.is_none_or(is_fhir_time)
+}
+
+/// Whether `text` is `hh:mm:ss[.fff]` followed by `Z` or a `±hh:mm` offset.
+fn is_fhir_time(text: &str) -> bool {
+    let (clock, offset) = match text.strip_suffix('Z') {
+        Some(clock) => (clock, None),
+        None => match text.rfind(['+', '-']) {
+            Some(at) => (&text[..at], Some(&text[at + 1..])),
+            None => return false,
+        },
+    };
+    let (clock, fraction) = match clock.split_once('.') {
+        Some((clock, fraction)) => (clock, Some(fraction)),
+        None => (clock, None),
+    };
+    if fraction.is_some_and(|fraction| {
+        fraction.is_empty() || !fraction.bytes().all(|byte| byte.is_ascii_digit())
+    }) {
+        return false;
+    }
+    fields_within(clock, &[23, 59, 60])
+        && offset.is_none_or(|offset| fields_within(offset, &[14, 59]))
+}
+
+/// Whether `text` is exactly as many `:`-separated two-digit fields as `limits`, each at most
+/// its limit.
+fn fields_within(text: &str, limits: &[u32]) -> bool {
+    let fields: Vec<&str> = text.split(':').collect();
+    fields.len() == limits.len()
+        && fields
+            .iter()
+            .zip(limits)
+            .all(|(field, limit)| number(field, 2).is_some_and(|value| value <= *limit))
+}
+
+/// `text` as a number, when it is exactly `width` ASCII digits.
+fn number(text: &str, width: usize) -> Option<u32> {
+    (text.len() == width && text.bytes().all(|byte| byte.is_ascii_digit()))
+        .then(|| text.parse().ok())
+        .flatten()
 }
 
 /// The unescaped reference tokens of an RFC 6901 pointer; `""` is the whole record.
@@ -430,31 +685,31 @@ mod tests {
     /// A hand-written Observation layout: the result, then its reference range.
     fn observation_layout() -> Layout {
         layout(json!({"record_type":"Observation",
-            "statuses":[{"label":"Result status","pointer":"/status"}],
+            "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
             "sections":[
                 {"heading":"Result","slots":[
-                    {"label":"Test","pointer":"/code/text"},
-                    {"label":"Result","pointer":"/valueQuantity/value"},
-                    {"label":"Unit","pointer":"/valueQuantity/unit"},
-                    {"label":"Interpretation","pointer":"/interpretation/0/coding/0/display"}]},
+                    {"label":"Test","role":"code","pointer":"/code/text"},
+                    {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
+                    {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"},
+                    {"label":"Interpretation","role":"interpretation","pointer":"/interpretation/0/coding/0/display"}]},
                 {"heading":"Reference range","slots":[
-                    {"label":"Low","pointer":"/referenceRange/0/low/value"},
-                    {"label":"High","pointer":"/referenceRange/0/high/value"},
-                    {"label":"Range as recorded","pointer":"/referenceRange/0/text"}]}]}))
+                    {"label":"Low","role":"reference_range_low","pointer":"/referenceRange/0/low/value"},
+                    {"label":"High","role":"reference_range_high","pointer":"/referenceRange/0/high/value"},
+                    {"label":"Range as recorded","role":"reference_range_text","pointer":"/referenceRange/0/text"}]}]}))
     }
 
     /// A hand-written Condition layout: the problem and its note, then its coding.
     fn condition_layout() -> Layout {
         layout(json!({"record_type":"Condition",
             "statuses":[
-                {"label":"Clinical status","pointer":"/clinicalStatus/coding/0/display"},
-                {"label":"Verification status","pointer":"/verificationStatus/coding/0/display"}],
+                {"label":"Clinical status","role":"status","pointer":"/clinicalStatus/coding/0/display"},
+                {"label":"Verification status","role":"status","pointer":"/verificationStatus/coding/0/display"}],
             "sections":[
                 {"heading":"Problem","slots":[
-                    {"label":"Problem","pointer":"/code/text"},
-                    {"label":"Note","pointer":"/note/0/text"}]},
+                    {"label":"Problem","role":"code","pointer":"/code/text"},
+                    {"label":"Note","role":"note","pointer":"/note/0/text"}]},
                 {"heading":"Coding","slots":[
-                    {"label":"ICD-10-CM code","pointer":"/code/coding/0/code"}]}]}))
+                    {"label":"ICD-10-CM code","role":"code","pointer":"/code/coding/0/code"}]}]}))
     }
 
     /// The observation as retained, with its result written `7.20` as some sources write it.
@@ -472,19 +727,203 @@ mod tests {
 
     /// The Observation layout with one slot of its first section replaced.
     fn with_slot(label: &str, pointer: &str) -> Layout {
+        with_role(label, SlotRole::Other, pointer)
+    }
+
+    /// The Observation layout with one slot of its first section replaced by one with `role`.
+    fn with_role(label: &str, role: SlotRole, pointer: &str) -> Layout {
         let mut changed = observation_layout();
         changed.sections[0].slots[0] = Slot {
             label: label.into(),
+            role,
             pointer: pointer.into(),
         };
         changed
     }
 
+    /// The refusal for a slot giving the value at `pointer` the `role`.
+    fn mismatch(role: SlotRole, pointer: &str, reason: RoleMismatchReason) -> LayoutRefusal {
+        LayoutRefusal::RoleMismatch {
+            pointer: pointer.into(),
+            role,
+            reason,
+        }
+    }
+
+    #[test]
+    fn a_reference_range_low_cannot_be_read_as_the_result() {
+        let pointer = "/referenceRange/0/low/value";
+        let mut planted = observation_layout();
+        planted.sections[0].slots[1].pointer = pointer.into();
+        planted.sections[1].slots.remove(0);
+        assert_eq!(
+            refusal(&planted, &observation()),
+            mismatch(
+                SlotRole::Result,
+                pointer,
+                RoleMismatchReason::UnderReferenceRange
+            )
+        );
+        let view = inspection_with_layout(&retained_observation(), Some(&planted));
+        assert!(view.layout_sections.is_empty());
+    }
+
+    #[test]
+    fn a_role_that_does_not_fit_its_value_refuses_the_layout() {
+        use RoleMismatchReason::{
+            NotADate, NotAQuantityUnit, NotAStatus, OutsideItsElement, UnderReferenceRange,
+        };
+        use SlotRole::*;
+        let record = observation();
+        let cases = [
+            (Result, "/referenceRange/0/high/value", UnderReferenceRange),
+            (Result, "/referenceRange/0/text", UnderReferenceRange),
+            (Unit, "/code/text", NotAQuantityUnit),
+            (Unit, "/valueQuantity/system", NotAQuantityUnit),
+            (Unit, "/code/coding/0/code", NotAQuantityUnit),
+            (
+                ReferenceRangeLow,
+                "/referenceRange/0/high/value",
+                OutsideItsElement,
+            ),
+            (ReferenceRangeLow, "/valueQuantity/value", OutsideItsElement),
+            (
+                ReferenceRangeHigh,
+                "/referenceRange/0/low/value",
+                OutsideItsElement,
+            ),
+            (
+                ReferenceRangeText,
+                "/referenceRange/0/low/unit",
+                OutsideItsElement,
+            ),
+            (ReferenceRangeText, "/code/text", OutsideItsElement),
+            (Interpretation, "/code/coding/0/display", OutsideItsElement),
+            (Status, "/code/text", NotAStatus),
+            (Status, "/category/0/coding/0/code", NotAStatus),
+            (Date, "/code/text", NotADate),
+            (Date, "/valueQuantity/value", NotADate),
+            (Note, "/code/text", OutsideItsElement),
+        ];
+        for (role, pointer, reason) in cases {
+            assert_eq!(
+                refusal(&with_role("Field", role, pointer), &record),
+                mismatch(role, pointer, reason),
+                "{role} at {pointer}"
+            );
+        }
+        let mut statuses = observation_layout();
+        statuses.statuses[0].role = SlotRole::Code;
+        assert_eq!(
+            refusal(&statuses, &record),
+            mismatch(
+                SlotRole::Code,
+                "/status",
+                RoleMismatchReason::StatusesHoldOnlyStatuses
+            )
+        );
+    }
+
+    #[test]
+    fn each_role_reads_a_value_that_fits_it() {
+        use SlotRole::*;
+        let observation = observation();
+        let fitting = [
+            (Result, "/valueQuantity/value"),
+            (Unit, "/valueQuantity/unit"),
+            (Unit, "/valueQuantity/code"),
+            (Unit, "/referenceRange/0/low/unit"),
+            (ReferenceRangeLow, "/referenceRange/0/low/value"),
+            (ReferenceRangeHigh, "/referenceRange/0/high/value"),
+            (ReferenceRangeText, "/referenceRange/0/text"),
+            (Interpretation, "/interpretation/0/coding/0/code"),
+            (Date, "/effectiveDateTime"),
+            (Date, "/issued"),
+            (Code, "/code/coding/0/code"),
+            (Other, "/performer/0/display"),
+        ];
+        for (role, pointer) in fitting {
+            let mut layout = with_role("Field", role, pointer);
+            layout.sections[1].slots.clear();
+            layout.sections[0].slots.truncate(1);
+            assert!(
+                layout.validate(&observation).is_ok(),
+                "{role} at {pointer}: {:?}",
+                layout.validate(&observation).err()
+            );
+        }
+        let condition = condition();
+        for (role, pointer) in [
+            (Status, "/clinicalStatus/coding/0/code"),
+            (Note, "/note/0/text"),
+            (Date, "/onsetDateTime"),
+        ] {
+            let layout = Layout {
+                record_type: "Condition".into(),
+                statuses: Vec::new(),
+                sections: vec![Section {
+                    heading: "Fields".into(),
+                    slots: vec![Slot {
+                        label: "Field".into(),
+                        role,
+                        pointer: pointer.into(),
+                    }],
+                }],
+            };
+            assert!(layout.validate(&condition).is_ok(), "{role} at {pointer}");
+        }
+        let mut status = with_role("Status", Status, "/status");
+        status.statuses.clear();
+        assert!(status.validate(&observation).is_ok());
+    }
+
+    #[test]
+    fn a_date_is_a_fhir_date_or_date_time() {
+        for date in [
+            "2019",
+            "2019-03",
+            "2019-03-12",
+            "2020-02-29",
+            "2019-03-12T13:30:00Z",
+            "2019-03-12T13:30:00+00:00",
+            "2019-03-12T13:30:00.123-07:00",
+        ] {
+            assert!(is_fhir_date(date), "{date}");
+        }
+        for not_a_date in [
+            "",
+            "19",
+            "0000",
+            "2019-3",
+            "2019-13",
+            "2019-02-29",
+            "2019-04-31",
+            "2019-03-12-01",
+            "2019-03T13:30:00Z",
+            "2019-03-12T",
+            "2019-03-12T13:30Z",
+            "2019-03-12T13:30:00",
+            "2019-03-12T24:00:00Z",
+            "2019-03-12T13:30:00.Z",
+            "2019-03-12T13:30:00+0000",
+            "March 12, 2019",
+        ] {
+            assert!(!is_fhir_date(not_a_date), "{not_a_date}");
+        }
+    }
+
     #[test]
     fn a_layout_cannot_carry_a_value_of_its_own() {
         let typed_in = json!({"record_type":"Observation","sections":[{"heading":"Result",
-            "slots":[{"label":"Result","pointer":"/valueQuantity/value","value":"5.4"}]}]});
+            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value",
+            "value":"5.4"}]}]});
         assert!(serde_json::from_value::<Layout>(typed_in).is_err());
+        let roleless = json!({"record_type":"Observation","sections":[{"heading":"Result",
+            "slots":[{"label":"Result","pointer":"/valueQuantity/value"}]}]});
+        assert!(serde_json::from_value::<Layout>(roleless).is_err());
+        let unknown_role = json!({"record_type":"Observation","sections":[{"heading":"Result",
+            "slots":[{"label":"Result","role":"headline","pointer":"/valueQuantity/value"}]}]});
+        assert!(serde_json::from_value::<Layout>(unknown_role).is_err());
         let typed_section = json!({"record_type":"Observation","sections":[{"heading":"Result",
             "text":"Normal","slots":[]}]});
         assert!(serde_json::from_value::<Layout>(typed_section).is_err());
@@ -567,7 +1006,7 @@ mod tests {
         let record = json!({"resourceType":"Record","a/b":{"c~d":"recorded"}});
         let escaped = layout(
             json!({"record_type":"Record","sections":[{"heading":"Fields",
-            "slots":[{"label":"Field","pointer":"/a~1b/c~0d"}]}]}),
+            "slots":[{"label":"Field","role":"other","pointer":"/a~1b/c~0d"}]}]}),
         );
         let validated = escaped.validate(&record).unwrap();
         assert_eq!(validated.sections[0].bindings[0].path, "a/b.c~d");
