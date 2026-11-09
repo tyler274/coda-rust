@@ -702,8 +702,25 @@ pub struct SourceInspection {
     pub statuses: Vec<SourceField>,
     /// Other recorded source facts, not clinical conclusions.
     pub record_details: Vec<SourceField>,
+    /// The record's fields as its record type's layout arranges them, each value copied from the
+    /// record at its path. Empty when no layout reads the record.
+    #[serde(default)]
+    pub layout_sections: Vec<SourceLayoutSection>,
+    /// Fields a record type's layout does not place, read under their source labels. Not
+    /// proof that anything the layout expects is absent.
+    #[serde(default)]
+    pub other_fields: Vec<SourceField>,
     /// Exact retained representation and provenance.
     pub technical: SourceTechnicalDetails,
+}
+
+/// A headed group of a layout's fields.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceLayoutSection {
+    /// The layout's heading for the group, not source text.
+    pub heading: String,
+    /// The values the layout places under the heading, in its order.
+    pub fields: Vec<SourceField>,
 }
 
 /// A labeled source value, without clinical inference.

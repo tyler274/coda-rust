@@ -34,6 +34,7 @@ pub mod queue;
 mod reply;
 mod simulation;
 pub mod source_inspection;
+pub mod source_layout;
 pub mod synthetic_chart;
 mod synthetic_reply;
 

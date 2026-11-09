@@ -1,5 +1,6 @@
 //! How a physician reads a cited record: the source's own statement and dates first, the exact
 //! retained bytes and storage details under Technical details. Nothing here infers clinical truth.
+use crate::source_layout::{self, Layout};
 use local_product::physician_chat::Citation;
 use physician_wire::{SourceField, SourceInspection, SourcePreviewContent, SourceTechnicalDetails};
 use serde_json::Value;
@@ -8,6 +9,13 @@ use std::collections::BTreeMap;
 
 /// Presents a retained citation exactly as it was read, never a newer revision.
 pub fn inspection(citation: &Citation) -> SourceInspection {
+    inspection_with_layout(citation, None)
+}
+
+/// Presents a retained citation through its record type's layout when that layout validates
+/// against the record. A refused layout never shows, even in part: the record reads exactly as it
+/// would with no layout.
+pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> SourceInspection {
     let resource = serde_json::from_str::<Value>(&citation.content).ok();
     let mut view = SourceInspection {
         title: citation.record_type.clone(),
@@ -29,6 +37,8 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
         attribution: Vec::new(),
         statuses: Vec::new(),
         record_details: Vec::new(),
+        layout_sections: Vec::new(),
+        other_fields: Vec::new(),
         technical: SourceTechnicalDetails {
             original: citation.content.clone(),
             reference: citation.reference.clone(),
@@ -47,18 +57,25 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
     if let Some(label) = text(&citation.provenance["source_label"]) {
         view.attribution.push(field("Source system", label));
     }
-    match resource {
-        Some(resource) if resource["resourceType"] == "AllergyIntolerance" => allergy(&resource, &mut view),
-        Some(Value::Object(resource)) => general(
-            &resource,
-            &NumberLiterals::read(&citation.content),
-            &mut view,
-        ),
-        Some(_) if view.sections.is_empty() => view.sections.push(field(
+    let numbers = NumberLiterals::read(&citation.content);
+    let layout = layout
+        .zip(resource.as_ref())
+        .and_then(|(layout, record)| layout.validate(record).ok());
+    match (&resource, layout) {
+        // A layout rearranges the general view, which shows every leaf of the record.
+        (Some(Value::Object(record)), Some(layout)) => {
+            general(record, &numbers, &mut view);
+            source_layout::render(&layout, &numbers, &mut view);
+        }
+        (Some(resource), _) if resource["resourceType"] == "AllergyIntolerance" => {
+            allergy(resource, &mut view)
+        }
+        (Some(Value::Object(resource)), _) => general(resource, &numbers, &mut view),
+        (Some(_), _) if view.sections.is_empty() => view.sections.push(field(
             "Source content",
             "A readable presentation is not available for this format. The retained source is available under Technical details.",
         )),
-        None if view.sections.is_empty() => view.sections.push(field("Source text", &citation.content)),
+        (None, _) if view.sections.is_empty() => view.sections.push(field("Source text", &citation.content)),
         _ => {}
     }
     view.coda_preview = citation.summary.as_ref().map(|summary| {
@@ -97,7 +114,7 @@ fn field(label: &str, value: &str) -> SourceField {
 }
 
 /// A value copied from the record at `path`.
-fn located(label: &str, value: &str, path: &str) -> SourceField {
+pub(crate) fn located(label: &str, value: &str, path: &str) -> SourceField {
     SourceField {
         label: label.into(),
         text: value.into(),
@@ -376,10 +393,10 @@ impl Placement {
 
 /// Each number in a record as its source wrote it, by path: `7.20` stays `7.20`, not `7.2`.
 #[derive(Default)]
-struct NumberLiterals(BTreeMap<String, String>);
+pub(crate) struct NumberLiterals(BTreeMap<String, String>);
 
 impl NumberLiterals {
-    fn read(content: &str) -> Self {
+    pub(crate) fn read(content: &str) -> Self {
         let mut literals = Self::default();
         if let Ok(raw) = serde_json::from_str::<&RawValue>(content) {
             literals.collect(raw, "");
@@ -414,7 +431,7 @@ impl NumberLiterals {
     }
 
     /// A scalar exactly as the record wrote it.
-    fn recorded(&self, value: &Value, path: &str) -> String {
+    pub(crate) fn recorded(&self, value: &Value, path: &str) -> String {
         match value {
             Value::String(text) => text.clone(),
             Value::Number(number) => self
@@ -667,7 +684,7 @@ fn top_label(key: &str, placement: Placement) -> String {
 
 /// `dosageInstruction` reads as "Dosage instruction"; a FHIR choice element such as
 /// `valueQuantity` or `effectiveDateTime` reads under its element name.
-fn humanize(key: &str) -> String {
+pub(crate) fn humanize(key: &str) -> String {
     const CHOICE_TYPES: [&str; 13] = [
         "CodeableConcept",
         "Reference",
@@ -835,11 +852,11 @@ fn is_reference(object: &serde_json::Map<String, Value>) -> bool {
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use serde_json::json;
 
-    fn citation(content: &str) -> Citation {
+    pub(crate) fn citation(content: &str) -> Citation {
         serde_json::from_value(json!({
             "id":"citation-1", "reference":"allergy-1", "revision":"original-revision",
             "record_type":"AllergyIntolerance", "content":content,
@@ -1020,7 +1037,7 @@ mod tests {
         );
     }
 
-    fn general_citation(record: &Value) -> Citation {
+    pub(crate) fn general_citation(record: &Value) -> Citation {
         let mut cited = citation(&record.to_string());
         cited.record_type = record["resourceType"].as_str().unwrap_or("Record").into();
         cited
@@ -1059,16 +1076,15 @@ mod tests {
     }
 
     fn assert_content_shown(cited: &Citation) {
+        assert_view_shows_every_leaf(cited, &inspection(cited));
+    }
+
+    /// Fails naming the first leaf of the cited record that `view` does not show.
+    pub(crate) fn assert_view_shows_every_leaf(cited: &Citation, view: &SourceInspection) {
         let record: Value = serde_json::from_str(&cited.content).unwrap();
         let numbers = NumberLiterals::read(&cited.content);
-        let view = inspection(cited);
-        let shown: Vec<&SourceField> = view
-            .sections
-            .iter()
-            .chain(&view.dates)
-            .chain(&view.attribution)
-            .chain(&view.statuses)
-            .chain(&view.record_details)
+        let shown: Vec<&SourceField> = readable(view)
+            .into_iter()
             .chain(&view.technical.fields)
             .chain(&view.technical.storage_dates)
             .collect();
@@ -1088,7 +1104,7 @@ mod tests {
         view.technical.fields.contains(&located(path, value, path))
     }
 
-    fn observation() -> Value {
+    pub(crate) fn observation() -> Value {
         json!({"resourceType":"Observation","id":"obs-1",
             "meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},
             "status":"final",
@@ -1224,7 +1240,7 @@ mod tests {
         assert_nothing_dropped(&blood_pressure());
     }
 
-    fn condition() -> Value {
+    pub(crate) fn condition() -> Value {
         json!({"resourceType":"Condition","id":"cond-db76cb24b2c2",
             "clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-clinical","code":"resolved","display":"Resolved"}]},
             "verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"confirmed","display":"Confirmed"}]},
@@ -1522,18 +1538,24 @@ mod tests {
     }
 
     /// Every readable field of `view`, wherever it reads.
-    fn readable(view: &SourceInspection) -> Vec<&SourceField> {
+    pub(crate) fn readable(view: &SourceInspection) -> Vec<&SourceField> {
         view.sections
             .iter()
             .chain(&view.dates)
             .chain(&view.attribution)
             .chain(&view.statuses)
             .chain(&view.record_details)
+            .chain(
+                view.layout_sections
+                    .iter()
+                    .flat_map(|section| &section.fields),
+            )
+            .chain(&view.other_fields)
             .collect()
     }
 
     /// The value at a dotted, indexed path such as `results[1].units`, if the record has one.
-    fn at<'a>(record: &'a Value, path: &str) -> Option<&'a Value> {
+    pub(crate) fn at<'a>(record: &'a Value, path: &str) -> Option<&'a Value> {
         path.split('.').try_fold(record, |value, step| {
             let (name, indexes) = step.split_once('[').unwrap_or((step, ""));
             let value = value.get(name)?;

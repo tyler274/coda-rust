@@ -4095,6 +4095,28 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                         ui::SourceText { text: section.text }
                     }
                 }
+                for layout_section in source.layout_sections {
+                    section { class: "source-record-section source-layout-section",
+                        h3 { "{layout_section.heading}" }
+                        dl {
+                            for field in layout_section.fields {
+                                dt { title: field.path.clone(), "{field.label}" }
+                                dd { title: field.path.clone(), "data-source-path": field.path, "{field.text}" }
+                            }
+                        }
+                    }
+                }
+                if !source.other_fields.is_empty() {
+                    section { class: "source-record-section source-other-fields",
+                        h3 { "Other fields" }
+                        dl {
+                            for field in source.other_fields {
+                                dt { title: field.path.clone(), "{field.label}" }
+                                dd { title: field.path.clone(), "data-source-path": field.path, "{field.text}" }
+                            }
+                        }
+                    }
+                }
                 if !source.record_details.is_empty() {
                     section { class: "source-record-section",
                         h3 { "Record details" }
