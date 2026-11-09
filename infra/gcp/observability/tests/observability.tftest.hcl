@@ -127,13 +127,14 @@ run "langfuse_has_no_public_ingress" {
   }
 
   assert {
-    condition     = length(helm_release.langfuse_iap) == 0 && length(google_compute_subnetwork.proxy_only) == 0
-    error_message = "No gateway may exist while langfuse_iap_enabled stays false."
-  }
-
-  assert {
-    condition     = length(google_iap_web_region_backend_service_iam_member.langfuse) == 0
-    error_message = "A disabled Langfuse gateway grants no IAP access."
+    condition = (
+      length(kubernetes_service_v1.observability_web) == 0 && output.staging_proxy == null &&
+      local.langfuse_values.langfuse.nextauth.url == "http://localhost:3000" &&
+      length(local.langfuse_values.langfuse.web.image) == 0 &&
+      local.langfuse_values.langfuse.web.readinessProbe.path == "/api/public/ready" &&
+      local.langfuse_web_url == "http://langfuse-web.observability.svc.cluster.local:3000"
+    )
+    error_message = "Without staging_proxy Langfuse keeps the stock image at its root path and no load balancer exposes it."
   }
 
   assert {
@@ -210,96 +211,6 @@ run "the_gateway_runs_without_langfuse" {
     condition     = kubernetes_service_v1.otel_gateway.spec[0].load_balancer_ip == "10.82.0.10" && helm_release.datadog_agent[0].namespace == "observability"
     error_message = "The gateway and the Datadog Agent must still deploy without Langfuse."
   }
-}
-
-run "reject_an_iap_gateway_without_langfuse" {
-  command = plan
-  variables {
-    langfuse_enabled         = false
-    langfuse_iap_enabled     = true
-    langfuse_hostname        = "langfuse.internal.example.test"
-    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
-    langfuse_iap_certificate = "langfuse-internal"
-  }
-  expect_failures = [var.langfuse_iap_enabled]
-}
-
-run "the_iap_gateway_is_internal_only" {
-  command = plan
-
-  variables {
-    langfuse_iap_enabled         = true
-    langfuse_hostname            = "langfuse.internal.example.test"
-    langfuse_iap_client_id       = "000000000000-test.apps.googleusercontent.com"
-    langfuse_iap_certificate     = "langfuse-internal"
-    langfuse_iap_members         = ["group:coda-eng@example.test"]
-    langfuse_iap_backend_service = "test-gke-created-langfuse-backend"
-  }
-
-  assert {
-    condition     = local.langfuse_gateway_class == "gke-l7-rilb"
-    error_message = "The Langfuse gateway must be the regional internal class, never an external one."
-  }
-
-  assert {
-    condition     = one([for m in local.langfuse_iap_manifests : m.spec.default.iap.enabled if m.kind == "GCPBackendPolicy"])
-    error_message = "IAP must guard the Langfuse backend when the gateway is on."
-  }
-
-  assert {
-    condition     = length(helm_release.langfuse_iap) == 1 && contains(keys(local.doppler_secrets), "langfuse-iap-oauth")
-    error_message = "The gateway and its Doppler-synced OAuth secret must exist together."
-  }
-
-  assert {
-    condition = alltrue([
-      for grant in google_iap_web_region_backend_service_iam_member.langfuse :
-      grant.project == var.project_id && grant.region == var.region && grant.web_region_backend_service == "test-gke-created-langfuse-backend" && grant.role == "roles/iap.httpsResourceAccessor" && grant.member == "group:coda-eng@example.test"
-    ]) && length(google_iap_web_region_backend_service_iam_member.langfuse) == 1
-    error_message = "Langfuse users must receive access only to the verified regional backend."
-  }
-}
-
-run "bootstrap_gateway_without_access_grants" {
-  command = plan
-  variables {
-    langfuse_iap_enabled     = true
-    langfuse_hostname        = "langfuse.internal.example.test"
-    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
-    langfuse_iap_certificate = "langfuse-internal"
-  }
-  assert {
-    condition     = length(helm_release.langfuse_iap) == 1 && length(google_iap_web_region_backend_service_iam_member.langfuse) == 0
-    error_message = "GKE must be able to create the backend before its identity is used for a scoped grant."
-  }
-}
-
-run "reject_members_without_backend_identity" {
-  command = plan
-  variables {
-    langfuse_iap_enabled     = true
-    langfuse_hostname        = "langfuse.internal.example.test"
-    langfuse_iap_client_id   = "000000000000-test.apps.googleusercontent.com"
-    langfuse_iap_certificate = "langfuse-internal"
-    langfuse_iap_members     = ["group:coda-eng@example.test"]
-  }
-  expect_failures = [var.langfuse_iap_members]
-}
-
-run "reject_blank_backend_identity" {
-  command = plan
-  variables { langfuse_iap_backend_service = "   " }
-  expect_failures = [var.langfuse_iap_backend_service]
-}
-
-run "reject_an_iap_gateway_without_its_inputs" {
-  command = plan
-
-  variables {
-    langfuse_iap_enabled = true
-  }
-
-  expect_failures = [var.langfuse_iap_enabled]
 }
 
 run "ops_pipeline_deletes_content_keys" {
@@ -1037,203 +948,217 @@ run "grafana_stack_is_cluster_private_and_bounded" {
   }
 }
 
-run "grafana_has_no_edge_by_default" {
+run "grafana_stays_on_port_forward_by_default" {
   command = plan
   variables { telemetry_backend = "both" }
 
   assert {
     condition = (
-      length(helm_release.grafana_edge) == 0 &&
-      length(google_compute_global_address.grafana_edge) == 0 &&
-      length(google_certificate_manager_certificate.grafana_edge) == 0 &&
-      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
+      length(kubernetes_service_v1.observability_web) == 0 &&
+      output.staging_proxy == null &&
       !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
-      output.grafana_edge == null
-    )
-    error_message = "Without grafana_edge nothing is exposed."
-  }
-
-  assert {
-    condition = (
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "http://localhost:3000" &&
+      kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].readiness_probe[0].http_get[0].path == "/api/health" &&
       !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED")
     )
-    error_message = "Without the edge Grafana keeps its port-forward URL and no JWT sign-in."
+    error_message = "Without staging_proxy Grafana keeps its port-forward URL, no JWT sign-in and no load balancer."
   }
 }
 
-run "grafana_edge_bootstrap_grants_nobody" {
+run "staging_proxy_serves_both_apps_under_their_prefixes" {
   command = plan
   variables {
     telemetry_backend = "both"
-    grafana_edge = {
-      hostname = "grafana.staging.example.test"
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
     }
-  }
-
-  assert {
-    condition = (
-      local.grafana_edge_class == "gke-l7-global-external-managed" &&
-      one([for m in local.grafana_edge_manifests : m.spec.default.iap.enabled if m.kind == "GCPBackendPolicy"]) &&
-      one([for m in local.grafana_edge_manifests : m.spec.default.iap if m.kind == "GCPBackendPolicy"]) == { enabled = true } &&
-      one([for m in local.grafana_edge_manifests : m.spec.targetRef.name if m.kind == "GCPBackendPolicy"]) == "grafana" &&
-      one([for m in local.grafana_edge_manifests : m.spec.default.config.httpHealthCheck.requestPath if m.kind == "HealthCheckPolicy"]) == "/api/health"
-    )
-    error_message = "The Grafana edge must be the global external class with IAP on the Grafana backend and a health check Grafana answers 200 to."
-  }
-
-  assert {
-    condition = (
-      toset([for m in local.grafana_edge_manifests : m.kind]) == toset(["Gateway", "HTTPRoute", "GCPBackendPolicy", "HealthCheckPolicy"]) &&
-      one([for m in local.grafana_edge_manifests : m.spec.rules[0].backendRefs if m.kind == "HTTPRoute"]) == [{ name = "grafana", port = 3000 }] &&
-      one([for m in local.grafana_edge_manifests : m.spec.hostnames if m.kind == "HTTPRoute"]) == ["grafana.staging.example.test"] &&
-      one([for m in local.grafana_edge_manifests : m.spec.listeners if m.kind == "Gateway"])[*].protocol == ["HTTPS"] &&
-      one([for m in local.grafana_edge_manifests : m.metadata.annotations["networking.gke.io/certmap"] if m.kind == "Gateway"]) == google_certificate_manager_certificate_map.grafana_edge[0].name &&
-      one([for m in local.grafana_edge_manifests : m.spec.addresses[0].value if m.kind == "Gateway"]) == google_compute_global_address.grafana_edge[0].name
-    )
-    error_message = "The edge routes only HTTPS on its hostname to the Grafana Service."
-  }
-
-  assert {
-    condition = (
-      length(helm_release.grafana_edge) == 1 &&
-      !contains(keys(local.doppler_secrets), "grafana-iap-oauth") &&
-      google_certificate_manager_certificate.grafana_edge[0].managed[0].domains == tolist(["grafana.staging.example.test"]) &&
-      google_certificate_manager_certificate_map_entry.grafana_edge[0].hostname == "grafana.staging.example.test"
-    )
-    error_message = "The edge uses Google's managed OAuth client (no synced secret) and a DNS-authorized certificate."
-  }
-
-  assert {
-    condition = (
-      length(google_iap_web_backend_service_iam_member.grafana_edge) == 0 &&
-      local.grafana_iap_audience == null &&
-      !contains([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.name], "GF_AUTH_JWT_ENABLED") &&
-      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "https://grafana.staging.example.test"
-    )
-    error_message = "Before the backend is verified, nobody is granted and Grafana trusts no assertion."
-  }
-
-  assert {
-    condition     = local.langfuse_gateway_class == "gke-l7-rilb" && local.langfuse_values.langfuse.ingress.enabled == false
-    error_message = "The Grafana edge must not change the Langfuse boundary."
-  }
-}
-
-run "grafana_edge_grants_only_the_verified_backend" {
-  command = plan
-  variables {
-    telemetry_backend = "grafana"
-    grafana_edge = {
-      hostname           = "grafana.staging.example.test"
-      members            = ["group:coda-eng@example.test"]
-      backend_service    = "test-gke-created-grafana-backend"
-      backend_service_id = "4242"
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
     }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   }
 
   assert {
-    condition = length(google_iap_web_backend_service_iam_member.grafana_edge) == 1 && alltrue([
-      for grant in google_iap_web_backend_service_iam_member.grafana_edge :
-      grant.project == var.project_id && grant.web_backend_service == "test-gke-created-grafana-backend" && grant.role == "roles/iap.httpsResourceAccessor" && grant.member == "group:coda-eng@example.test"
-    ])
-    error_message = "Grafana users must receive access only to the verified global backend."
+    condition = alltrue([
+      for name, lb in kubernetes_service_v1.observability_web :
+      lb.spec[0].type == "LoadBalancer" &&
+      lb.metadata[0].annotations["networking.gke.io/load-balancer-type"] == "Internal" &&
+      lb.spec[0].load_balancer_source_ranges == toset(["10.80.1.0/26"]) &&
+      lb.spec[0].port[0].port == 3000 && lb.spec[0].port[0].target_port == "3000"
+    ]) && length(kubernetes_service_v1.observability_web) == 2
+    error_message = "Grafana and Langfuse each get one internal passthrough load balancer on port 3000 that admits only the relay subnet."
   }
 
   assert {
     condition = (
-      local.grafana_iap_audience == "/projects/123456789012/global/backendServices/4242" &&
-      jsondecode(one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_EXPECT_CLAIMS"])) == { iss = "https://cloud.google.com/iap", aud = "/projects/123456789012/global/backendServices/4242" } &&
-      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_HEADER_NAME"]) == "X-Goog-IAP-JWT-Assertion" &&
+      kubernetes_service_v1.observability_web["grafana"].spec[0].load_balancer_ip == "10.82.0.11" &&
+      kubernetes_service_v1.observability_web["grafana"].spec[0].selector == tomap({ application = "observability", component = "grafana" }) &&
+      kubernetes_service_v1.observability_web["langfuse"].spec[0].load_balancer_ip == "10.82.0.12" &&
+      kubernetes_service_v1.observability_web["langfuse"].spec[0].selector == tomap({ "app.kubernetes.io/name" = "langfuse", "app.kubernetes.io/instance" = "langfuse", app = "web" })
+    )
+    error_message = "Each load balancer must use its reserved address and select only its own app's pods."
+  }
+
+  assert {
+    condition = (
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_ROOT_URL"]) == "https://staging.example.test/grafana/" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_SERVER_SERVE_FROM_SUB_PATH"]) == "true" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_LIVE_MAX_CONNECTIONS"]) == "0" &&
+      kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].readiness_probe[0].http_get[0].path == "/grafana/api/health" &&
+      local.grafana_url == "http://grafana.observability.svc.cluster.local:3000/grafana"
+    )
+    error_message = "Grafana must serve from /grafana/ on the staging origin, with Live off and its probe under the sub-path."
+  }
+
+  assert {
+    condition = (
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_ENABLED"]) == "true" &&
+      one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_HEADER_NAME"]) == "X-Coda-IAP-Assertion" &&
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_JWK_SET_URL"]) == "https://www.gstatic.com/iap/verify/public_key-jwk" &&
+      jsondecode(one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_JWT_EXPECT_CLAIMS"])) == { iss = "https://cloud.google.com/iap", aud = "/projects/134570912572/locations/us-east1/services/public-site-staging" } &&
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_USERS_AUTO_ASSIGN_ORG_ROLE"]) == "Editor" &&
       one([for e in kubernetes_stateful_set_v1.grafana_stack["grafana"].spec[0].template[0].spec[0].container[0].env : e.value if e.name == "GF_AUTH_ANONYMOUS_ENABLED"]) == "false"
     )
-    error_message = "Grafana must accept only IAP assertions signed by Google for this backend's audience."
+    error_message = "Grafana must accept only Google-signed IAP assertions for public-site's audience, read from the header public-site forwards."
+  }
+
+  assert {
+    condition = (
+      local.langfuse_values.langfuse.web.image == tomap({
+        repository = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web"
+        tag        = "3.225.11@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+      }) &&
+      !can(local.langfuse_values.langfuse.worker.image) &&
+      local.langfuse_values.langfuse.nextauth.url == "https://staging.example.test/langfuse/api/auth" &&
+      local.langfuse_values.langfuse.web.livenessProbe.path == "/langfuse/api/public/health" &&
+      local.langfuse_values.langfuse.web.readinessProbe.path == "/langfuse/api/public/ready" &&
+      local.langfuse_otlp_endpoint == "http://langfuse-web.observability.svc.cluster.local:3000/langfuse/api/public/otel" &&
+      local.langfuse_values.langfuse.ingress.enabled == false && local.langfuse_values.langfuse.web.service.type == "ClusterIP"
+    )
+    error_message = "Langfuse web must run the digest-pinned base-path build with its auth URL, probes and in-cluster URL under /langfuse, and the worker stays stock."
+  }
+
+  assert {
+    condition = output.staging_proxy == {
+      grafana_url  = "https://staging.example.test/grafana/"
+      langfuse_url = "https://staging.example.test/langfuse/"
+      internal = {
+        grafana  = "http://10.82.0.11:3000/grafana/"
+        langfuse = "http://10.82.0.12:3000/langfuse/"
+      }
+    }
+    error_message = "The staging_proxy output must name the public URLs and the relay upstreams."
   }
 }
 
-run "reject_a_public_grafana_member" {
+run "staging_proxy_under_datadog_exposes_only_langfuse" {
   command = plan
   variables {
-    telemetry_backend = "grafana"
-    grafana_edge = {
-      hostname           = "grafana.staging.example.test"
-      members            = ["allAuthenticatedUsers"]
-      backend_service    = "test-gke-created-grafana-backend"
-      backend_service_id = "4242"
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
     }
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
   }
-  expect_failures = [var.grafana_edge]
+  assert {
+    condition     = keys(kubernetes_service_v1.observability_web) == ["langfuse"] && output.staging_proxy.grafana_url == null
+    error_message = "Without the Grafana backend no Grafana load balancer exists."
+  }
 }
 
-run "reject_grafana_members_without_backend_identity" {
+run "reject_staging_proxy_langfuse_without_base_path_image" {
   command = plan
   variables {
-    telemetry_backend = "grafana"
-    grafana_edge = {
-      hostname = "grafana.staging.example.test"
-      members  = ["group:coda-eng@example.test"]
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
     }
   }
-  expect_failures = [var.grafana_edge]
+  expect_failures = [var.langfuse_web_image]
 }
 
-run "reject_a_grafana_backend_without_its_id" {
+run "reject_an_unpinned_langfuse_web_image" {
   command = plan
-  variables {
-    telemetry_backend = "grafana"
-    grafana_edge = {
-      hostname        = "grafana.staging.example.test"
-      backend_service = "test-gke-created-grafana-backend"
-    }
-  }
-  expect_failures = [var.grafana_edge]
+  variables { langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web:3.225.11" }
+  expect_failures = [var.langfuse_web_image]
 }
 
-run "reject_a_grafana_edge_under_datadog" {
+run "reject_a_staging_proxy_origin_with_a_path" {
   command = plan
   variables {
-    grafana_edge = {
-      hostname = "grafana.staging.example.test"
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test/"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
     }
   }
-  expect_failures = [var.grafana_edge]
+  expect_failures = [var.staging_proxy]
 }
 
-run "reject_a_grafana_edge_outside_the_cluster_project" {
+run "reject_a_backend_service_audience" {
   command = plan
   variables {
-    telemetry_backend = "grafana"
-    cluster_project   = "test-rust-other"
-    grafana_edge = {
-      hostname = "grafana.staging.example.test"
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/123456789012/global/backendServices/4242"
     }
   }
-  expect_failures = [var.grafana_edge]
+  expect_failures = [var.staging_proxy]
 }
 
-run "reject_a_grafana_edge_outside_the_cluster_project" {
+run "reject_load_balancers_open_to_the_cloud_run_subnet" {
   command = plan
   variables {
-    telemetry_backend = "grafana"
-    cluster_project   = "test-rust-other"
-    grafana_edge = {
-      hostname = "grafana.staging.example.test"
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.0.0/16"]
     }
   }
-  expect_failures = [var.grafana_edge]
+  expect_failures = [var.observability_web]
 }
 
-run "reject_a_url_shaped_grafana_hostname" {
+run "reject_public_load_balancer_addresses" {
   command = plan
   variables {
-    telemetry_backend = "grafana"
-    grafana_edge = {
-      hostname = "https://grafana.staging.example.test/"
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip    = "34.1.2.3"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
     }
   }
-  expect_failures = [var.grafana_edge]
+  expect_failures = [var.observability_web]
+}
+
+run "reject_load_balancers_without_the_sub_paths" {
+  command = plan
+  variables {
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
+    }
+  }
+  expect_failures = [var.observability_web]
 }
 
 run "grafana_synthetic_rule_is_labeled_and_operational_rules_stay_shadow" {

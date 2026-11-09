@@ -36,7 +36,7 @@ output "datadog_gcp_integration" {
 
 # The Langfuse outputs are null while langfuse_enabled is off.
 output "langfuse_web_url" {
-  description = "In-cluster Langfuse URL. Humans use kubectl port-forward svc/langfuse-web 3000 until the IAP gateway is on."
+  description = "In-cluster Langfuse URL. It carries the /langfuse base path under staging_proxy; people use <origin>/langfuse/ then, otherwise kubectl port-forward svc/langfuse-web 3000."
   value       = var.langfuse_enabled ? local.langfuse_web_url : null
 }
 
@@ -73,7 +73,7 @@ output "datadog_monitor_ids" {
 
 # The Grafana outputs are null under datadog.
 output "grafana" {
-  description = "In-cluster Grafana stack (telemetry_backend = grafana or both). People reach Grafana through grafana_edge when it is set, otherwise with kubectl port-forward svc/grafana 3000."
+  description = "In-cluster Grafana stack (telemetry_backend = grafana or both). People reach Grafana at <staging_proxy origin>/grafana/ when staging_proxy is set, otherwise with kubectl port-forward svc/grafana 3000."
   value = local.grafana_backend ? {
     url                   = local.grafana_url
     tempo_otlp_grpc       = local.tempo_otlp_grpc
@@ -86,17 +86,12 @@ output "grafana" {
   } : null
 }
 
-# Null until grafana_edge is set.
-output "grafana_edge" {
-  description = "The IAP-gated Grafana edge: its URL, the reserved address the hostname's DNS-only A record points at, the CNAME that authorizes its certificate, and the IAP assertion audience Grafana requires (null until the backend is verified). This root changes no DNS."
-  value = local.grafana_edge_enabled ? {
-    url          = local.grafana_edge_url
-    ip           = google_compute_global_address.grafana_edge[0].address
-    iap_audience = local.grafana_iap_audience
-    members      = sort(keys(google_iap_web_backend_service_iam_member.grafana_edge))
-    certificate_dns_records = [
-      for record in google_certificate_manager_dns_authorization.grafana_edge[0].dns_resource_record :
-      { name = record.name, type = record.type, data = record.data }
-    ]
-  } : null
+# Null until staging_proxy is set.
+output "staging_proxy" {
+  description = "Where people reach Grafana and Langfuse through public-site, and the internal load balancer addresses the relay forwards to."
+  value = var.staging_proxy == null ? null : {
+    grafana_url  = local.grafana_backend ? local.grafana_public_url : null
+    langfuse_url = var.langfuse_enabled ? "${var.staging_proxy.origin}/langfuse/" : null
+    internal     = { for name, lb in local.observability_web : name => "http://${lb.ip}:3000/${name}/" }
+  }
 }

@@ -8,6 +8,8 @@
 #
 # Address plan on rust-private (no range may overlap another):
 #   10.80.0.0/24    rust-run, Cloud Run Direct VPC egress (database.tf)
+#   10.80.1.0/26    rust-relay, the observability relay's Direct VPC egress
+#                   (observability-relay.tf)
 #   10.81.0.0/16    rust-sql-private, Private Service Access for SQL and Redis
 #   10.82.0.0/22    rust-observability nodes and the gateway's internal LB IP
 #   10.84.0.0/14    observability-pods (10.84.0.0 - 10.87.255.255)

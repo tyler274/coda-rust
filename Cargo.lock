@@ -1121,10 +1121,15 @@ dependencies = [
 name = "coda-http"
 version = "0.1.0"
 dependencies = [
+ "axum",
+ "base64 0.23.1",
+ "coda-http",
+ "jsonwebtoken 9.3.1",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
  "thiserror 2.0.21",
+ "tokio",
 ]
 
 [[package]]
@@ -5927,6 +5932,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "observability-relay"
+version = "0.1.0"
+dependencies = [
+ "axum",
+ "coda-http",
+ "reqwest 0.12.28",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+ "tower",
+ "tower-http 0.7.1",
+ "url",
+]
+
+[[package]]
 name = "once_cell"
 version = "1.21.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6806,14 +6826,13 @@ name = "public-site"
 version = "0.1.0"
 dependencies = [
  "axum",
- "base64 0.23.1",
  "brotli",
+ "coda-http",
  "dioxus",
  "dioxus-history",
  "dioxus-router",
  "dioxus-ssr",
  "flate2",
- "jsonwebtoken 9.3.1",
  "mime_guess",
  "reqwest 0.12.28",
  "serde",

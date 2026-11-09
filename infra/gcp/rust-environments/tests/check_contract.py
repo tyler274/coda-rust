@@ -28,6 +28,8 @@ class Contract(unittest.TestCase):
         text = (ROOT / "workloads.tf").read_text()
         # Both the app services and the physician-worker: release owns the image only.
         self.assertEqual(text.count(SERVICE_IGNORE), 2)
+        # The relay is release-updated the same way.
+        self.assertEqual((ROOT / "observability-relay.tf").read_text().count(SERVICE_IGNORE), 1)
         self.assertIn("ignore_changes = [template[0].template[0].containers[0].image, client, client_version]", text)
         self.assertNotIn("ignore_changes = [template]", text)
         self.assertNotIn("ignore_changes = all", text)

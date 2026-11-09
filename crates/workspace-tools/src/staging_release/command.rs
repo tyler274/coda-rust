@@ -418,6 +418,10 @@ mod tests {
                     cloud.update_service(ReleaseService::PhysicianWorker, None, &images),
                     "missing runtime digest",
                 ),
+                ImageRole::ObservabilityRelay => (
+                    cloud.update_service(ReleaseService::ObservabilityRelay, None, &images),
+                    "missing runtime digest",
+                ),
             };
             assert!(matches!(result, Err(Error::Input(actual)) if actual == message));
             assert!(

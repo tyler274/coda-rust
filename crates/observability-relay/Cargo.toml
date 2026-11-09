@@ -1,0 +1,30 @@
+[package]
+name = "observability-relay"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "observability-relay"
+path = "src/main.rs"
+
+[dependencies]
+axum = "0.8"
+http = { path = "../http", package = "coda-http", features = ["iap"] }
+reqwest = { version = "0.12", default-features = false, features = ["stream"] }
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
+tower-http = { version = "0.7", features = ["limit"] }
+url = "2"
+
+[dev-dependencies]
+serde_json = "1"
+http = { path = "../http", package = "coda-http", features = ["test-util"] }
+tower = { version = "0.5", features = ["util"] }

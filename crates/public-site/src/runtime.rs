@@ -12,6 +12,10 @@ pub struct RuntimeConfig {
     /// decides whether this deployment offers sign-in: the nav link and the
     /// `/physician/` mount both follow it.
     pub physician_proxy: Option<crate::proxy::ProxyConfig>,
+    /// Present only when `OBSERVABILITY_RELAY_URL` names the staging relay. It
+    /// alone mounts `/grafana/` and `/langfuse/`, signed with the same
+    /// `PHYSICIAN_PROXY_SERVICE_ACCOUNT` identity as the physician mount.
+    pub observability_proxy: Option<crate::proxy::ProxyConfig>,
     pub health_token: Option<String>,
     pub release_sha: Option<String>,
     pub max_concurrency: usize,
@@ -26,6 +30,7 @@ impl Default for RuntimeConfig {
             staging: false,
             access: AccessConfig::default(),
             physician_proxy: None,
+            observability_proxy: None,
             health_token: None,
             release_sha: None,
             max_concurrency: 1024,
@@ -55,38 +60,51 @@ impl RuntimeConfig {
             access.validate()?;
         }
         let deployed = staging || environment.eq_ignore_ascii_case("production");
-        let physician_proxy = nonempty("PHYSICIAN_APP_URL")
-            .map(|upstream| -> Result<_, Box<dyn std::error::Error>> {
-                let default_origin = if staging {
-                    "https://staging.codahealth.ai".to_owned()
-                } else if deployed {
-                    crate::site::SITE_ORIGIN.to_owned()
-                } else {
-                    // Wildcard bind addresses are not browser destinations. Keep the
-                    // image's bare local startup usable without relaxing URL validation.
-                    let mut address: SocketAddr = nonempty("PUBLIC_SITE_LISTEN_ADDR")
-                        .unwrap_or_else(|| crate::site::DEFAULT_LISTEN_ADDR.into())
-                        .parse()?;
-                    if address.ip().is_unspecified() {
-                        address.set_ip(if address.is_ipv4() {
-                            std::net::Ipv4Addr::LOCALHOST.into()
-                        } else {
-                            std::net::Ipv6Addr::LOCALHOST.into()
-                        });
-                    }
-                    format!("http://{address}")
-                };
-                Ok(crate::proxy::ProxyConfig::new(
-                    &upstream,
-                    &nonempty("PUBLIC_SITE_ORIGIN").unwrap_or(default_origin),
-                    nonempty("PHYSICIAN_PROXY_SERVICE_ACCOUNT"),
-                    deployed,
-                    staging,
-                )?)
+        let public_origin = || -> Result<String, Box<dyn std::error::Error>> {
+            if let Some(origin) = nonempty("PUBLIC_SITE_ORIGIN") {
+                return Ok(origin);
+            }
+            Ok(if staging {
+                "https://staging.codahealth.ai".to_owned()
+            } else if deployed {
+                crate::site::SITE_ORIGIN.to_owned()
+            } else {
+                // Wildcard bind addresses are not browser destinations. Keep the
+                // image's bare local startup usable without relaxing URL validation.
+                let mut address: SocketAddr = nonempty("PUBLIC_SITE_LISTEN_ADDR")
+                    .unwrap_or_else(|| crate::site::DEFAULT_LISTEN_ADDR.into())
+                    .parse()?;
+                if address.ip().is_unspecified() {
+                    address.set_ip(if address.is_ipv4() {
+                        std::net::Ipv4Addr::LOCALHOST.into()
+                    } else {
+                        std::net::Ipv6Addr::LOCALHOST.into()
+                    });
+                }
+                format!("http://{address}")
             })
-            .transpose()?;
+        };
+        let proxy = |name: &str| {
+            nonempty(name)
+                .map(|upstream| -> Result<_, Box<dyn std::error::Error>> {
+                    Ok(crate::proxy::ProxyConfig::new(
+                        &upstream,
+                        &public_origin()?,
+                        nonempty("PHYSICIAN_PROXY_SERVICE_ACCOUNT"),
+                        deployed,
+                        staging,
+                    )?)
+                })
+                .transpose()
+        };
+        let physician_proxy = proxy("PHYSICIAN_APP_URL")?;
+        let observability_proxy = proxy("OBSERVABILITY_RELAY_URL")?;
+        if observability_proxy.is_some() && !staging {
+            return Err("OBSERVABILITY_RELAY_URL is staging-only".into());
+        }
         let mut config = Self {
             physician_proxy,
+            observability_proxy,
             environment,
             staging,
             access,
@@ -263,6 +281,40 @@ mod tests {
                 .unwrap()
                 .physician_proxy
                 .is_some()
+        );
+    }
+
+    #[test]
+    fn observability_relay_is_staging_only_https_and_signed() {
+        let load_relay = |env: &str, relay: &str, signer: Option<&str>| {
+            RuntimeConfig::from_lookup(|name| match name {
+                "APP_ENV" => Some(env.into()),
+                "PUBLIC_SITE_IAP_AUDIENCE" => Some(crate::access::tests::AUDIENCE.into()),
+                "OBSERVABILITY_RELAY_URL" => Some(relay.into()),
+                "PHYSICIAN_PROXY_SERVICE_ACCOUNT" => signer.map(str::to_owned),
+                _ => None,
+            })
+        };
+        let signer = Some("site@project.iam.gserviceaccount.com");
+        let config = load_relay("staging", "https://relay.example.test", signer).unwrap();
+        let relay = config.observability_proxy.unwrap();
+        assert_eq!(relay.upstream.as_str(), "https://relay.example.test/");
+        assert_eq!(relay.public_origin, "https://staging.codahealth.ai");
+        assert!(config.physician_proxy.is_none());
+        assert!(load_relay("staging", "https://relay.example.test", None).is_err());
+        assert!(load_relay("staging", "http://127.0.0.1:8790", signer).is_err());
+        assert!(load_relay("staging", "https://relay.example.test/grafana", signer).is_err());
+        for env in ["local", "production"] {
+            assert!(
+                load_relay(env, "https://relay.example.test", signer).is_err(),
+                "{env}"
+            );
+        }
+        assert!(
+            load_relay("staging", "", signer)
+                .unwrap()
+                .observability_proxy
+                .is_none()
         );
     }
 

@@ -27,7 +27,8 @@ locals {
   datadog_agent_otlp_grpc = "${local.datadog_agent_name}-agent.${local.namespace}.svc.cluster.local:4317"
   langfuse_release        = "langfuse"
   langfuse_web_service    = "${local.langfuse_release}-web"
-  langfuse_web_url        = "http://${local.langfuse_web_service}.${local.namespace}.svc.cluster.local:3000"
+  langfuse_base_path      = var.staging_proxy == null ? "" : "/langfuse"
+  langfuse_web_url        = "http://${local.langfuse_web_service}.${local.namespace}.svc.cluster.local:3000${local.langfuse_base_path}"
   langfuse_otlp_endpoint  = "${local.langfuse_web_url}/api/public/otel"
 
   # Each selected backend owns its resources; both keeps Datadog primary.

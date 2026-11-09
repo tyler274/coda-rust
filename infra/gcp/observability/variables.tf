@@ -165,61 +165,6 @@ variable "grafana_cloud_monitoring_enabled" {
   }
 }
 
-variable "grafana_edge" {
-  description = "Optional browser edge for Grafana: an external Gateway on hostname with IAP (Google-managed OAuth, organization members only) on its backend, and Grafana signing people in from the signed IAP assertion. Null keeps Grafana ClusterIP-only (port-forward). Bootstrap with no members; after GKE creates the backend, the operator supplies its verified name and numeric id together with the members."
-  type = object({
-    hostname           = string
-    members            = optional(list(string), [])
-    backend_service    = optional(string)
-    backend_service_id = optional(string)
-  })
-  default = null
-
-  validation {
-    condition     = var.grafana_edge == null || contains(["grafana", "both"], var.telemetry_backend)
-    error_message = "The Grafana edge requires telemetry_backend grafana or both."
-  }
-
-  # GKE creates the backend, and resolves the address and certificate map,
-  # in the cluster's project; the edge resources and the IAP audience use
-  # project_id, so the two must be the same project.
-  validation {
-    condition     = var.grafana_edge == null || var.project_id == var.cluster_project
-    error_message = "The Grafana edge requires project_id to equal cluster_project."
-  }
-
-  validation {
-    condition     = var.grafana_edge == null || can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.grafana_edge.hostname))
-    error_message = "grafana_edge.hostname must be a bare lowercase DNS name, without scheme, port or path."
-  }
-
-  validation {
-    condition = var.grafana_edge == null || alltrue([
-      for member in try(var.grafana_edge.members, []) : can(regex("^(user|group):[^@: ]+@[^@: ]+\\.[^@: ]+$", member))
-    ])
-    error_message = "grafana_edge.members must be user: or group: principals, never allUsers, allAuthenticatedUsers or domains."
-  }
-
-  validation {
-    condition = var.grafana_edge == null || (
-      (try(var.grafana_edge.backend_service, null) == null) == (try(var.grafana_edge.backend_service_id, null) == null)
-    )
-    error_message = "Supply the verified backend service name and its numeric id together."
-  }
-
-  validation {
-    condition = var.grafana_edge == null || try(var.grafana_edge.backend_service, null) == null || (
-      try(trimspace(var.grafana_edge.backend_service) != "", false) && can(regex("^[0-9]+$", var.grafana_edge.backend_service_id))
-    )
-    error_message = "The backend service name must be nonempty and its id numeric."
-  }
-
-  validation {
-    condition     = var.grafana_edge == null || length(try(var.grafana_edge.members, [])) == 0 || try(var.grafana_edge.backend_service, null) != null
-    error_message = "Granting Grafana access requires the operator-verified backend service name and id. Bootstrap the edge with no members until GKE has created it."
-  }
-}
-
 variable "datadog_gcp_integration_enabled" {
   description = "Creates the Datadog GCP integration for cluster_project only (Cloud Run and GKE metrics through service-account impersonation; no key). Billable and external: off until the operator and the Datadog account owner approve it."
   type        = bool
@@ -416,69 +361,70 @@ variable "clickhouse_disk_gb" {
   default     = 50
 }
 
-variable "langfuse_iap_enabled" {
-  description = "Adds an IAP-gated internal Gateway for the Langfuse UI. Off: reach it with kubectl port-forward."
-  type        = bool
-  default     = false
+variable "staging_proxy" {
+  description = "People reach Grafana and Langfuse at <origin>/grafana/ and <origin>/langfuse/ through public-site's mounts and the observability relay (README.md, \"Boundary\"). iap_audience is public-site's IAP audience (infra/gcp/public-site output iap_audience): Grafana signs people in from that verified assertion, which public-site forwards as X-Coda-IAP-Assertion. Null keeps both apps at their root paths for kubectl port-forward."
+  type = object({
+    origin       = string
+    iap_audience = string
+  })
+  default = null
 
   validation {
-    condition = !var.langfuse_iap_enabled || (
-      var.langfuse_hostname != null && var.langfuse_iap_client_id != null && var.langfuse_iap_certificate != null
-    )
-    error_message = "langfuse_iap_enabled requires langfuse_hostname, langfuse_iap_client_id, and langfuse_iap_certificate."
+    condition     = var.staging_proxy == null || can(regex("^https://([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.staging_proxy.origin))
+    error_message = "staging_proxy.origin must be a bare https origin without a path, port or trailing slash."
   }
 
   validation {
-    condition     = !var.langfuse_iap_enabled || var.langfuse_enabled
-    error_message = "The Langfuse IAP gateway requires langfuse_enabled."
+    condition     = var.staging_proxy == null || can(regex("^/projects/[0-9]+/locations/[a-z0-9-]+/services/[a-z0-9-]+$", var.staging_proxy.iap_audience))
+    error_message = "staging_proxy.iap_audience must be the Cloud Run IAP audience /projects/NUMBER/locations/REGION/services/NAME."
   }
 }
 
-variable "langfuse_hostname" {
-  description = "Internal hostname the IAP gateway serves Langfuse on."
-  type        = string
-  default     = null
-  nullable    = true
-}
-
-variable "langfuse_iap_client_id" {
-  description = "OAuth client id for IAP. Its secret syncs from Doppler as LANGFUSE_IAP_CLIENT_SECRET."
-  type        = string
-  default     = null
-  nullable    = true
-}
-
-variable "langfuse_iap_certificate" {
-  description = "Existing regional SSL certificate name the internal gateway terminates TLS with."
-  type        = string
-  default     = null
-  nullable    = true
-}
-
-variable "langfuse_iap_members" {
-  description = "IAM principals (user:, group:) allowed through IAP to the Langfuse UI."
-  type        = list(string)
-  default     = []
+variable "observability_web" {
+  description = "Internal passthrough load balancers for grafana:3000 and langfuse-web:3000, from infra/gcp/rust-environments' observability_relay output: the two reserved INTERNAL addresses and the only source range they admit (the relay's rust-relay subnet). Null keeps both ClusterIP-only."
+  type = object({
+    grafana_ip    = string
+    langfuse_ip   = string
+    source_ranges = list(string)
+  })
+  default = null
 
   validation {
-    condition     = !var.langfuse_iap_enabled || length(var.langfuse_iap_members) == 0 || var.langfuse_iap_backend_service != null
-    error_message = "Granting Langfuse access requires its operator-verified regional backend service name. Bootstrap the gateway with no members until that name is known."
+    condition = var.observability_web == null || alltrue([
+      for ip in [try(var.observability_web.grafana_ip, ""), try(var.observability_web.langfuse_ip, "")] :
+      can(cidrhost("${ip}/32", 0)) && can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", ip))
+    ])
+    error_message = "observability_web addresses must be private RFC1918 IPv4 addresses."
+  }
+
+  validation {
+    condition = var.observability_web == null || try(length(var.observability_web.source_ranges) > 0 && alltrue([
+      for cidr in var.observability_web.source_ranges : try(
+        can(cidrhost(cidr, 0)) && tonumber(split("/", cidr)[1]) >= 24 &&
+        can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", cidr)), false
+      )
+    ]), false)
+    error_message = "observability_web.source_ranges must list private CIDRs no wider than /24: only the relay subnet, never the Cloud Run or node ranges."
+  }
+
+  validation {
+    condition     = var.observability_web == null || var.staging_proxy != null
+    error_message = "observability_web requires staging_proxy: the apps it exposes must be configured for their /grafana and /langfuse sub-paths."
   }
 }
 
-variable "langfuse_iap_backend_service" {
-  description = "GKE-created regional backend service name, verified by the operator for the Langfuse HTTPRoute. Null bootstraps the gateway without granting access; never inferred from the Kubernetes Service name."
+variable "langfuse_web_image" {
+  description = "Digest-pinned Langfuse web image built from the pinned upstream tag with NEXT_PUBLIC_BASE_PATH=/langfuse (.github/workflows/langfuse-web-image.yml). Next.js bakes the base path in at build time, so the stock image cannot serve /langfuse; required with staging_proxy and langfuse_enabled. The worker stays stock."
   type        = string
   default     = null
 
   validation {
-    condition     = var.langfuse_iap_backend_service == null || try(trimspace(var.langfuse_iap_backend_service) != "", false)
-    error_message = "The Langfuse regional backend service name must be nonempty when supplied."
+    condition     = var.langfuse_web_image == null || can(regex("^[a-z0-9.-]+-docker\\.pkg\\.dev/[a-z0-9-]+/[a-z0-9-]+/langfuse-web@sha256:[0-9a-f]{64}$", var.langfuse_web_image))
+    error_message = "langfuse_web_image must be an Artifact Registry langfuse-web image pinned by sha256 digest."
   }
-}
 
-variable "proxy_only_subnet_cidr" {
-  description = "Proxy-only subnet the regional internal load balancer needs; created only with the IAP gateway."
-  type        = string
-  default     = "10.36.8.0/23"
+  validation {
+    condition     = var.staging_proxy == null || !var.langfuse_enabled || var.langfuse_web_image != null
+    error_message = "staging_proxy with langfuse_enabled requires langfuse_web_image, the /langfuse base-path build."
+  }
 }

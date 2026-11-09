@@ -12,8 +12,8 @@ operator from reviewed saved plans:
 
 | Root | Owns | State |
 | --- | --- | --- |
-| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
-| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource and an IAP-gated external Grafana edge on its own hostname), self-hosted Langfuse with its Cloud SQL and bucket, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
+| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_relay_image`: the IAP-protected `observability-relay` Cloud Run service, its `rust-relay` Direct VPC egress subnet and the reserved addresses of the Grafana and Langfuse internal load balancers. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
+| <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), self-hosted Langfuse with its Cloud SQL and bucket, the internal load balancers that admit only the relay subnet, so people reach Grafana and Langfuse only at `staging.codahealth.ai/grafana/` and `/langfuse/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
 
 [Observability](observability.md) describes the per-signal paths and the
 content policy.
@@ -46,6 +46,7 @@ configuration, checks, and the
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
+| `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/` and `/langfuse/` requests to the internal load balancers. It reads no secrets and starts without Doppler |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains; packaged synthetic charts for explicit `load-charts` |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -53,7 +54,7 @@ configuration, checks, and the
 
 - The runtime servers never migrate. They bind `0.0.0.0:$PORT`, where `PORT` defaults to 8080. `/health` reports liveness. Hosted startup accepts only the explicit `stg` / `staging-preview` profile with its required stores and identity configuration; other hosted profiles refuse to start. `/readyz` checks the configured schemas. The startup owners are [`physician-sample/src/hosting.rs`](/crates/physician-sample/src/hosting.rs) and [`duet-api/src/main.rs`](/crates/duet-api/src/main.rs).
 - Each image contains the binary and the libraries it links, Doppler, CA roots, tzdata and a passwd entry for uid `65532`. The image has no shell or toolchain. It runs as `65532:65532` with working directory `/tmp`.
-- Every entrypoint is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in [`crates/workspace-tools/src/doppler.rs`](/crates/workspace-tools/src/doppler.rs). Nix reads the version and SHA-256 from that file, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
+- Every entrypoint except the secret-free images (`secrets = false`, such as `observability-relay`) is `doppler run --no-fallback --preserve-env=PORT -- <binary>`. The Doppler CLI is the static release pinned in [`crates/workspace-tools/src/doppler.rs`](/crates/workspace-tools/src/doppler.rs). Nix reads the version and SHA-256 from that file, so the runners and the images run the same verified binary. Cloud Run mounts `DOPPLER_TOKEN` from Secret Manager. No secret is in a layer or in `Env`, and `--no-fallback` keeps secrets off the filesystem.
 - `scripts/check-images.sh` (run with `nix develop .#release`) builds every image and inspects each archive. It loads them into Docker and checks rejection of missing credentials or an unconfigured hosted profile. Against disposable PostgreSQL it runs both migration images twice and explicitly imports the packaged physician chart bank twice, checking its manifest totals, zero failures and an unchanged reload. It then starts the servers to check `/health` 200, schema readiness 200, the WASM assets and a clean SIGTERM exit. The `images` CI job runs this script. Nothing is pushed.
 
 ## Rust staging bootstrap and deployment gate
@@ -268,9 +269,9 @@ runs on pushes to `main`, after every check job, when the repository variable
    consecutive reads, 5 s apart, still show a different image in the service spec.
    The release then stops with an unconfirmed rollout rather than waiting out the
    poll bound;
-3. updates `physician-worker` to its digest once that service exists, with the same
-   checks. Until then it reports the digest to record as
-   `images.physician.worker` for the scaling apply;
+3. updates `physician-worker` and `observability-relay` to their digests once each
+   service exists, with the same checks. Until then it reports the digest to record as
+   `images.physician.worker` or `observability_relay_image` for the infrastructure apply;
 4. finalizes and uploads the structured `receipt.json`, tested-archive manifest
    and digest files as the `release-receipt-*` artifact, including failed runs.
    [`staging-release`](/crates/workspace-tools/src/staging_release.rs) initializes

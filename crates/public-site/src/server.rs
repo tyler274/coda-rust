@@ -79,6 +79,12 @@ fn router_with_gate(
             .validate()
             .expect("invalid staging IAP configuration");
     }
+    // The observability mounts re-send the caller's IAP assertion, which only
+    // the staging boundary verifies.
+    assert!(
+        runtime.staging || runtime.observability_proxy.is_none(),
+        "the observability relay is staging-only"
+    );
     let assets = AssetTable::embedded_with(extra_assets);
     let document = |page: crate::Page| Document {
         representation: Representation::new(
@@ -131,14 +137,14 @@ fn router_with_gate(
         .layer(RequestBodyLimitLayer::new(16 * 1024));
     // Without a physician upstream there is no mount: /physician/ is an ordinary 404.
     if let Some(config) = state.runtime.physician_proxy.clone() {
-        app = app.merge(
-            Router::new()
-                .route("/physician", axum::routing::any(serve_physician))
-                .route("/physician/", axum::routing::any(serve_physician))
-                .route("/physician/{*path}", axum::routing::any(serve_physician))
-                .layer(RequestBodyLimitLayer::new(crate::proxy::REQUEST_LIMIT))
-                .with_state(crate::proxy::PhysicianProxy::new(config)),
-        );
+        app = app.merge(mount(crate::proxy::Proxy::new(config)));
+    }
+    // Likewise /grafana/ and /langfuse/ exist only with the staging relay.
+    if let Some(config) = state.runtime.observability_proxy.clone() {
+        let relay = crate::proxy::Proxy::new(config);
+        for observability in crate::proxy::Mount::OBSERVABILITY {
+            app = app.merge(mount(relay.mount(observability)));
+        }
     }
     app.with_state(state.clone())
         // Outermost middleware gates even health, assets, rejected methods and
@@ -155,21 +161,35 @@ fn xml_escape(value: &str) -> String {
         .replace('\'', "&apos;")
 }
 
-async fn serve_physician(
-    State(proxy): State<crate::proxy::PhysicianProxy>,
-    request: Request,
-) -> Response {
+fn mount<S>(proxy: crate::proxy::Proxy) -> Router<S> {
+    let prefix = proxy.prefix();
+    Router::new()
+        .route(prefix, axum::routing::any(serve_proxy))
+        .route(&format!("{prefix}/"), axum::routing::any(serve_proxy))
+        .route(
+            &format!("{prefix}/{{*path}}"),
+            axum::routing::any(serve_proxy),
+        )
+        .layer(RequestBodyLimitLayer::new(crate::proxy::REQUEST_LIMIT))
+        .with_state(proxy)
+}
+
+async fn serve_proxy(State(proxy): State<crate::proxy::Proxy>, request: Request) -> Response {
     proxy.serve(request).await
 }
 
 async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: Next) -> Response {
-    let physician = state.runtime.physician_proxy.is_some()
-        && (request.uri().path() == "/physician"
-            || request.uri().path().starts_with("/physician/"));
-    // This is the single deadline for response headers. Physician requests can
-    // include a Cloud Run cold start and mail delivery; the static-page budget
-    // must not cut off their acknowledgement. Streaming bodies stay unbounded.
-    let response_timeout = if physician {
+    let path = request.uri().path();
+    let proxied = (state.runtime.physician_proxy.is_some()
+        && crate::proxy::Mount::Physician.owns(path))
+        || (state.runtime.observability_proxy.is_some()
+            && crate::proxy::Mount::OBSERVABILITY
+                .iter()
+                .any(|mount| mount.owns(path)));
+    // This is the single deadline for response headers. Proxied requests can
+    // include a Cloud Run cold start, mail delivery or a slow dashboard query;
+    // the static-page budget must not cut them off. Streaming bodies stay unbounded.
+    let response_timeout = if proxied {
         std::time::Duration::from_secs(60)
     } else {
         state.runtime.request_timeout
@@ -222,7 +242,7 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
         // origin headers cannot defend against an edge configured to ignore them.
         headers.insert(header::VARY, "*".parse().unwrap());
     }
-    if physician {
+    if proxied {
         let headers = response.headers_mut();
         headers.insert(
             header::CACHE_CONTROL,
@@ -591,6 +611,110 @@ mod tests {
             "the proxy must not retry a POST"
         );
         task.abort();
+    }
+
+    #[tokio::test]
+    async fn observability_mounts_keep_prefixes_and_forward_only_the_verified_assertion() {
+        use crate::proxy::FORWARDED_ASSERTION;
+        let upstream = Router::new().fallback(|request: Request| async move {
+            let headers = request.headers();
+            let forwarded = headers
+                .get(FORWARDED_ASSERTION)
+                .map(|value| value.to_str().unwrap().to_owned());
+            assert_eq!(headers.get_all(FORWARDED_ASSERTION).iter().count(), 1);
+            assert!(!headers.contains_key("x-goog-iap-jwt-assertion"));
+            let cookie = headers
+                .get(header::COOKIE)
+                .map(|value| value.to_str().unwrap().to_owned());
+            axum::Json(serde_json::json!({
+                "path": request.uri().to_string(),
+                "assertion": forwarded,
+                "cookie": cookie,
+            }))
+        });
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let origin = format!("http://{}", listener.local_addr().unwrap());
+        let task = tokio::spawn(async move {
+            axum::serve(listener, upstream).await.unwrap();
+        });
+        let mut runtime = staged();
+        runtime.request_timeout = std::time::Duration::from_millis(100);
+        runtime.observability_proxy = Some(
+            crate::proxy::ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false)
+                .unwrap(),
+        );
+        let app = router_with_options(pages(), runtime, [], Readiness::ready());
+        for path in ["/grafana/", "/langfuse/api/auth/session"] {
+            assert_eq!(
+                app.clone()
+                    .oneshot(request(path, false))
+                    .await
+                    .unwrap()
+                    .status(),
+                StatusCode::FORBIDDEN
+            );
+        }
+        // Without a physician upstream, /physician is an ordinary missing page.
+        assert_eq!(
+            app.clone()
+                .oneshot(request("/physician", true))
+                .await
+                .unwrap()
+                .status(),
+            StatusCode::NOT_FOUND
+        );
+        let cookies = "grafana_session=g; __Secure-next-auth.session-token=s; \
+                       __Host-next-auth.csrf-token=c; next-auth.session-token=insecure";
+        for (path, cookie) in [
+            ("/grafana/d/abc?orgId=1", None),
+            (
+                "/langfuse/api/auth/session",
+                Some("__Secure-next-auth.session-token=s; __Host-next-auth.csrf-token=c"),
+            ),
+        ] {
+            let verified = crate::access::tests::assertion();
+            let mut req = request(path, false);
+            req.headers_mut()
+                .insert("x-goog-iap-jwt-assertion", verified.parse().unwrap());
+            req.headers_mut()
+                .insert(FORWARDED_ASSERTION, "client-spoof".parse().unwrap());
+            req.headers_mut()
+                .insert(header::COOKIE, cookies.parse().unwrap());
+            let response = app.clone().oneshot(req).await.unwrap();
+            assert_eq!(response.status(), StatusCode::OK, "{path}");
+            assert_eq!(
+                response.headers()[header::CACHE_CONTROL],
+                "private, no-store, max-age=0"
+            );
+            assert_eq!(response.headers()[header::VARY], "*");
+            let body = axum::body::to_bytes(response.into_body(), 4096)
+                .await
+                .unwrap();
+            let body: serde_json::Value = serde_json::from_slice(&body).unwrap();
+            assert_eq!(body["path"], path, "the prefix is kept");
+            assert_eq!(body["assertion"], verified.as_str());
+            assert_eq!(body["cookie"].as_str(), cookie, "{path}");
+        }
+        task.abort();
+    }
+
+    #[test]
+    #[should_panic(expected = "staging-only")]
+    fn observability_relay_never_mounts_outside_staging() {
+        let runtime = RuntimeConfig {
+            observability_proxy: Some(
+                crate::proxy::ProxyConfig::new(
+                    "http://127.0.0.1:8790",
+                    "http://127.0.0.1:8791",
+                    None,
+                    false,
+                    false,
+                )
+                .unwrap(),
+            ),
+            ..Default::default()
+        };
+        let _ = router_with_options(pages(), runtime, [], Readiness::ready());
     }
 
     #[tokio::test]

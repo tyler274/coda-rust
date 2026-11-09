@@ -37,6 +37,7 @@ enum Phase {
     PhysicianRollout,
     DuetRollout,
     WorkerRollout,
+    RelayRollout,
 }
 mod domain;
 use domain::*;
@@ -48,7 +49,7 @@ use shape::Shape;
 const ROLLOUT_POLLS: usize = 120;
 const PROJECT: &str = "coda-rust-staging";
 const REGION: &str = "us-east1";
-const SERVICES: [ReleaseService; 3] = ReleaseService::ALL;
+const SERVICES: [ReleaseService; 4] = ReleaseService::ALL;
 
 type Result<T> = std::result::Result<T, Error>;
 #[derive(Debug, thiserror::Error)]
@@ -444,7 +445,7 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
         ));
     }
     if !receipt.images.complete() {
-        return Err(Error::Input("all five published images required"));
+        return Err(Error::Input("all six published images required"));
     }
     receipt.outcome = Outcome::InProgress;
     checkpoint(receipt, store, Phase::BeforeSnapshot)?;
@@ -470,21 +471,16 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
                 shape_of(&shapes, app.service())?,
             )?;
         }
-        if receipt.services.get(ReleaseService::PhysicianWorker).before == Observation::Absent {
-            receipt
-                .services
-                .get_mut(ReleaseService::PhysicianWorker)
-                .outcome = Outcome::BootstrapSkippedAbsent;
-            store.save(receipt)?;
-        } else {
-            let worker = shape_of(&shapes, ReleaseService::PhysicianWorker)?;
-            rollout(
-                receipt,
-                store,
-                cloud,
-                ReleaseService::PhysicianWorker,
-                worker,
-            )?;
+        // Until infrastructure creates an optional service, a release only
+        // publishes its digest so the plan that creates it can pin one.
+        for optional in ReleaseService::OPTIONAL {
+            if receipt.services.get(optional).before == Observation::Absent {
+                receipt.services.get_mut(optional).outcome = Outcome::BootstrapSkippedAbsent;
+                store.save(receipt)?;
+            } else {
+                let shape = shape_of(&shapes, optional)?;
+                rollout(receipt, store, cloud, optional, shape)?;
+            }
         }
         Ok(())
     })();
@@ -573,7 +569,7 @@ fn reconcile_migrations(receipt: &mut Receipt, cloud: &mut impl Cloud) {
 fn final_matches(receipt: &Receipt) -> bool {
     SERVICES.into_iter().all(|name| {
         let record = receipt.services.get(name);
-        if name == ReleaseService::PhysicianWorker
+        if ReleaseService::OPTIONAL.contains(&name)
             && record.outcome == Outcome::BootstrapSkippedAbsent
         {
             return record.final_state == Observation::Absent;
@@ -1165,13 +1161,16 @@ mod tests {
                 denied_update: false,
                 late_update: false,
                 reads_before_failure: None,
+                // The relay runs without the otel-collector sidecar.
                 templates: SERVICES
                     .iter()
                     .map(|name| {
-                        (
-                            name.name().into(),
-                            shape::tests::observed(name.name(), "old-image"),
-                        )
+                        let template = if name == &ReleaseService::ObservabilityRelay {
+                            shape::tests::single("old-image")
+                        } else {
+                            shape::tests::observed(name.name(), "old-image")
+                        };
+                        (name.name().into(), template)
                     })
                     .collect(),
                 targets: Vec::new(),
@@ -1376,7 +1375,8 @@ mod tests {
                 "job:duet-migrate",
                 "execute:duet-migrate",
                 "service:duet",
-                "service:physician-worker"
+                "service:physician-worker",
+                "service:observability-relay"
             ]
         );
         assert!(
@@ -1400,7 +1400,8 @@ mod tests {
             [
                 Some("physician".to_owned()),
                 None,
-                Some("physician-worker".to_owned())
+                Some("physician-worker".to_owned()),
+                None
             ]
         );
         for name in SERVICES {
@@ -1492,10 +1493,11 @@ mod tests {
         cloud.ambiguous_execute = true;
         cloud.ambiguous_update = true;
         deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("reconciled");
-        assert_eq!(cloud.writes.len(), 7);
+        assert_eq!(cloud.writes.len(), 8);
         assert_eq!(receipt.outcome, Outcome::Succeeded);
-        assert_eq!(receipt.diagnostics.len(), 10);
-        assert_eq!(receipt.causes.len(), 5);
+        // Two per reconciled service update, one per reconciled execution.
+        assert_eq!(receipt.diagnostics.len(), 12);
+        assert_eq!(receipt.causes.len(), 6);
     }
     #[test]
     fn unidentifiable_execution_is_unknown_and_never_reexecuted() {
@@ -1519,23 +1521,29 @@ mod tests {
     }
     #[test]
     fn bootstrap_skip_requires_confirmed_absence() {
-        for observation in [Observation::Absent, Observation::Unknown] {
+        for (optional, observation) in ReleaseService::OPTIONAL
+            .into_iter()
+            .flat_map(|name| [(name, Observation::Absent), (name, Observation::Unknown)])
+        {
             let mut receipt = receipt();
             let mut cloud = FakeCloud::new();
             cloud
                 .services
-                .insert("physician-worker".into(), observation.clone());
+                .insert(optional.name().into(), observation.clone());
             let result = deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud);
             if observation == Observation::Absent {
                 result.expect("bootstrap");
                 assert_eq!(
-                    receipt
-                        .services
-                        .get(ReleaseService::PhysicianWorker)
-                        .outcome,
+                    receipt.services.get(optional).outcome,
                     Outcome::BootstrapSkippedAbsent
                 );
-                assert_eq!(cloud.writes.len(), 6);
+                assert_eq!(receipt.outcome, Outcome::Succeeded);
+                assert_eq!(cloud.writes.len(), 7);
+                assert!(
+                    !cloud
+                        .writes
+                        .contains(&format!("service:{}", optional.name()))
+                );
             } else {
                 assert!(result.is_err());
                 assert!(cloud.writes.is_empty());
@@ -1572,9 +1580,9 @@ mod tests {
                 .iter()
                 .filter(|write| write.starts_with("service:"))
                 .count(),
-            3
+            4
         );
-        assert_eq!(cloud.pauses, 9);
+        assert_eq!(cloud.pauses, 12);
     }
     #[test]
     fn never_ready_rollout_stops_after_bounded_polls() {
@@ -1733,7 +1741,7 @@ mod tests {
         cloud.late_update = true;
         deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
         assert_eq!(receipt.outcome, Outcome::Succeeded);
-        assert_eq!(cloud.pauses, 3);
+        assert_eq!(cloud.pauses, 4);
     }
     #[test]
     fn applied_update_with_lost_response_keeps_polling_until_ready() {
@@ -1743,7 +1751,7 @@ mod tests {
         cloud.not_ready_observations = 3;
         deploy(&mut receipt, &mut MemoryStore::default(), &mut cloud).expect("release");
         assert_eq!(receipt.outcome, Outcome::Succeeded);
-        assert_eq!(cloud.pauses, 9);
+        assert_eq!(cloud.pauses, 12);
     }
     #[test]
     fn final_receipt_failure_keeps_the_operation_error() {
@@ -1832,8 +1840,8 @@ mod tests {
     #[test]
     fn final_snapshot_failure_survives_an_unwritable_receipt() {
         let mut cloud = FakeCloud::new();
-        // Three initial reads, then one per rollout; the final snapshot fails.
-        cloud.reads_before_failure = Some(6);
+        // Four initial reads, then one per rollout; the final snapshot fails.
+        cloud.reads_before_failure = Some(8);
         let mut store = MemoryStore {
             fail_final_partial: true,
             ..MemoryStore::default()
@@ -2003,9 +2011,14 @@ mod tests {
         };
         assert_eq!(
             keys(&value["services"]),
-            ["duet", "physician", "physician-worker"]
-                .map(str::to_owned)
-                .into()
+            [
+                "duet",
+                "observability-relay",
+                "physician",
+                "physician-worker"
+            ]
+            .map(str::to_owned)
+            .into()
         );
         assert_eq!(
             keys(&value["migrations"]),
@@ -2016,6 +2029,7 @@ mod tests {
             [
                 "duet-migration",
                 "duet-runtime",
+                "observability-relay",
                 "physician-migration",
                 "physician-runtime",
                 "physician-worker"

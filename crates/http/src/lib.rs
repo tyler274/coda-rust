@@ -2,6 +2,9 @@
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 
+#[cfg(feature = "iap")]
+pub mod iap;
+
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 

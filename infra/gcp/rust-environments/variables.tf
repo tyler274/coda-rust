@@ -71,6 +71,28 @@ variable "physician_proxy_invokers" {
   }
 }
 
+variable "observability_proxy_invokers" {
+  description = "Explicit operator-approved service-account IAP members for the observability relay only: in staging, the public-site service account that serves /grafana/ and /langfuse/. Never grants physician, Duet or direct run.invoker access."
+  type        = set(string)
+  default     = []
+  nullable    = false
+  validation {
+    condition     = alltrue([for member in var.observability_proxy_invokers : can(regex("^serviceAccount:[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\\.iam\\.gserviceaccount\\.com$", member))])
+    error_message = "observability_proxy_invokers must contain explicit serviceAccount:NAME@PROJECT.iam.gserviceaccount.com members, never groups, users, domains, or wildcards."
+  }
+}
+
+variable "observability_relay_image" {
+  type        = string
+  default     = null
+  nullable    = true
+  description = "Initial digest-pinned observability-relay image (observability-relay.tf); null creates no relay resources. Later releases own the image field."
+  validation {
+    condition     = var.observability_relay_image == null ? true : var.environment == "stg" && var.observability_cluster_enabled && can(regex("^${var.region}-docker\\.pkg\\.dev/[a-z0-9-]+/apps/coda-observability-relay@sha256:[a-f0-9]{64}$", var.observability_relay_image))
+    error_message = "The observability relay requires staging, the observability cluster and a digest-pinned coda-observability-relay image."
+  }
+}
+
 variable "state_admin_members" {
   type        = set(string)
   description = "Environment-specific operator principals allowed to manage state objects. Never deployers or federated CI principals."

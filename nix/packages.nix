@@ -35,7 +35,7 @@ let
 
   # One locked release build compiles the shared dependency graph once for
   # every server, migration and job binary.
-  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" ];
+  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" "observability-relay" ];
   serverArgs = common // {
     pname = "coda-servers";
     cargoExtraArgs = "--frozen --bins " + lib.concatMapStringsSep " " (p: "-p ${p}") serverPackages;
@@ -287,6 +287,16 @@ in
     role = "job";
     binary = native "availability-probe";
     executable = "availability-probe";
+    secrets = false;
+  };
+  # Staging hop from public-site to the private Grafana and Langfuse load
+  # balancers. Cloud Run IAP authenticates its callers and it reads no
+  # secrets, so the image has no Doppler entrypoint.
+  observability-relay-image = image {
+    name = "coda-observability-relay";
+    role = "runtime";
+    binary = native "observability-relay";
+    executable = "observability-relay";
     secrets = false;
   };
   # Bounded Luna privacy receipt delivery job. Not a migration; no scheduler.

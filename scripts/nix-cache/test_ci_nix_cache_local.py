@@ -20,7 +20,8 @@ class RootTests(unittest.TestCase):
             'coda-servers-deps', 'coda-web-deps', 'patient-bank-deps'))
         self.assertEqual(roots.IMAGE_ROOTS, (
             'physician-sample-image', 'physician-worker-image', 'duet-api-image',
-            'physician-migration-image', 'duet-migration-image', 'duet-privacy-delivery-image'))
+            'physician-migration-image', 'duet-migration-image', 'duet-privacy-delivery-image',
+            'observability-relay-image'))
         packages = (REPO / 'nix/packages.nix').read_text()
         for root in roots.DEPENDENCY_ROOTS + roots.IMAGE_ROOTS:
             self.assertIn(root, packages)

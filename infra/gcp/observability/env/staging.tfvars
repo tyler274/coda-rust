@@ -33,9 +33,8 @@ telemetry_content = "full"
 # Monitor creation has a separate datadog_monitors_enabled authorization gate.
 alert_notify = "@slack-Coda_Health-engineering-observability"
 
-# Grafana at https://grafana.staging.codahealth.ai behind IAP (README.md,
-# "Grafana edge rollout"). Phase 1 grants nobody; members, backend_service
-# and backend_service_id are added in phase 2.
-grafana_edge = {
-  hostname = "grafana.staging.codahealth.ai"
-}
+# Grafana and Langfuse under https://staging.codahealth.ai/grafana/ and
+# /langfuse/ (README.md, "Staging proxy rollout"). staging_proxy and
+# langfuse_web_image are added together once the base-path Langfuse image is
+# built and its digest recorded; observability_web is rendered from
+# rust-environments' observability_relay output.

@@ -25,6 +25,10 @@ sql_tier         = "db-f1-micro"
 # Operator approval/application is required before enabling the public proxy.
 physician_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com"]
 
+# The same public-site principal reaches /grafana/ and /langfuse/ through the
+# observability relay (observability-relay.tf); it gets no other access.
+observability_proxy_invokers = ["serviceAccount:public-site-staging@coda-health-staging.iam.gserviceaccount.com"]
+
 # Staging-preview workloads remain behind direct IAP. SQL grants were
 # installed with bootstrap-grants.sql; DB credentials live only in the four
 # per-role Doppler configs below. Physician sign-in is still the proof-token
@@ -50,6 +54,10 @@ enable_physician_scale = true
 # Private GKE Autopilot cluster for the OpenTelemetry gateway, Datadog Agent and
 # Langfuse (observability-cluster.tf); infra/gcp/observability deploys into it.
 observability_cluster_enabled = true
+
+# The observability relay (observability-relay.tf). Set to the first published
+# coda-observability-relay digest; later releases own the image field.
+# observability_relay_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-observability-relay@sha256:..."
 
 # The otel-collector sidecar on physician, duet and physician-worker, sending to
 # the gateway above. Needs the observability root applied and its gateway ready.

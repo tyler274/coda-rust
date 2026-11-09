@@ -18,6 +18,11 @@ locals {
       PHYSICIAN_APP_URL               = var.physician_app_url
       PHYSICIAN_PROXY_SERVICE_ACCOUNT = google_service_account.site.email
     } : {},
+    # The relay mounts sign with the same runtime identity as /physician.
+    var.observability_relay_url == null ? {} : {
+      OBSERVABILITY_RELAY_URL         = var.observability_relay_url
+      PHYSICIAN_PROXY_SERVICE_ACCOUNT = google_service_account.site.email
+    },
   )
 }
 

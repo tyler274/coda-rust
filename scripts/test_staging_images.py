@@ -79,7 +79,7 @@ class StagingImages(unittest.TestCase):
         manifest = verify(self.bundle, REVISION)
         for key, original in self.originals.items():
             self.assertEqual((self.bundle / manifest["images"][key]["archive"]).read_bytes(), original)
-        self.assertEqual(len(list(self.bundle.glob("*.tar.gz"))), 5)
+        self.assertEqual(len(list(self.bundle.glob("*.tar.gz"))), len(REPOSITORIES))
 
     def test_rejects_changed_missing_wrong_revision_and_swapped_images(self):
         mutations = {

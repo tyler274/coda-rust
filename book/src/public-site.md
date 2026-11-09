@@ -100,8 +100,13 @@ Runtime configuration:
   Sign in; when unset, neither exists. There is no default: a local run against the
   sample physician server sets `http://127.0.0.1:8790`. Deployed values must use
   HTTPS; credentials, non-root paths, queries and fragments are rejected.
+- `OBSERVABILITY_RELAY_URL`: staging only, optional. It is the fixed HTTPS origin of
+  the observability relay. When set, the site mounts `/grafana/` and `/langfuse/`
+  (see [Observability mounts](#observability-mounts)); when unset, both are 404.
+  It has the same validation as `PHYSICIAN_APP_URL`.
 - `PHYSICIAN_PROXY_SERVICE_ACCOUNT`: service identity used for keyless upstream
-  IAP authentication. Required in staging whenever `PHYSICIAN_APP_URL` is set.
+  IAP authentication. Required in staging whenever `PHYSICIAN_APP_URL` or
+  `OBSERVABILITY_RELAY_URL` is set.
   No browser credential supplies this value.
 - `PUBLIC_SITE_ORIGIN`: optional exact browser origin for the physician proxy's
   unsafe-method Origin validation. Defaults to `https://staging.codahealth.ai` in staging,
@@ -120,7 +125,7 @@ Runtime configuration:
 - `PUBLIC_SITE_MAX_CONCURRENCY`: default 1024, accepted range 1–65536; excess
   concurrent requests receive 503 with `Retry-After: 1`.
 - `PUBLIC_SITE_REQUEST_TIMEOUT_MS`: static-site response deadline; default 5000,
-  accepted range 100–30000. `/physician/` requests have one 60-second deadline
+  accepted range 100–30000. `/physician/`, `/grafana/` and `/langfuse/` requests have one 60-second deadline
   through authentication, upstream startup and response headers. The proxy
   does not impose a second deadline, and streaming response bodies are not
   capped by this header deadline.
@@ -168,6 +173,31 @@ can access the physician session stored in local storage. The entire origin
 must therefore be treated as trusted physician-session code. Proxy responses
 must never enter public or CDN caches. Cloud Run streams are finite; clients
 reconnect rather than relying on a longer request timeout.
+
+## Observability mounts
+
+In staging, `/grafana/` and `/langfuse/` are proxied to one upstream: the
+IAP-protected `observability-relay` Cloud Run service
+([`crates/observability-relay`](/crates/observability-relay)). The relay
+forwards each prefix to its internal load balancer
+([observability README](/infra/gcp/observability/README%2Emd#staging-proxy)).
+Each mount is a policy in [`proxy.rs`](/crates/public-site/src/proxy.rs) and
+differs from `/physician/` as follows:
+
+| Mount | Path | Cookies | Identity forwarded |
+| --- | --- | --- | --- |
+| `/physician/` | prefix stripped; `Location` rewritten back under it | none | none |
+| `/grafana/` | prefix kept; `Location` must stay under `/grafana` on the public origin, otherwise 502 | none, because Grafana signs in from the assertion on every request | the caller's verified IAP assertion as `X-Coda-IAP-Assertion` |
+| `/langfuse/` | prefix kept; same `Location` rule under `/langfuse` | only the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`), in both directions, without `Domain` | the same assertion |
+
+The site drops any `X-Coda-IAP-Assertion` that the client sent before it forwards
+the verified one. It also drops every `x-goog-*` header and the hop-by-hop
+headers. Like `/physician/`, both mounts authenticate to the relay with a JWT
+signed for the site's own service account, sent as `Proxy-Authorization`. The
+responses are `no-store` with `Vary: *`. The relay's own IAP admits only the
+engineering group and the accounts in `rust-environments`'
+`observability_proxy_invokers`. The relay checks its own IAP assertion again
+before forwarding. The proxy carries no WebSockets, so Grafana Live is off.
 
 ## Image
 
@@ -375,7 +405,9 @@ keep their product-repository apply authority; this ownership covers only
   operator-reviewed image digest in the private `public-site` repository, release
   SHA, and `physician_app_url`, the physician preview service in `coda-rust-staging`
   behind its own IAP. Setting it mounts `/physician/`, renders Sign in and gives the
-  runtime its proxy signing identity.
+  runtime its proxy signing identity. `observability_relay_url` (staging only) is
+  `rust-environments`' `observability_relay.url`; setting it mounts `/grafana/`
+  and `/langfuse/` with the same signing identity.
 - **No Doppler.** The running site and its deploy read no Doppler config and no
   secret; these files and the CI inputs are the only deploy values.
 
