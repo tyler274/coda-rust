@@ -9,7 +9,7 @@
 use std::sync::{Arc, Mutex};
 
 use local_product::runtime::delivery::Delivery;
-use local_product::runtime::{Accepted, Input, Scope, Store};
+use local_product::runtime::{Accepted, Input, Scope, SendMode, Store};
 use physician_sample::durable::DurableChat;
 use physician_sample::queue::ChatQueue;
 #[path = "scale/mod.rs"]
@@ -130,7 +130,7 @@ async fn recovery_failures_are_named_correlated_errors_without_content() {
     use tracing::Instrument as _;
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .instrument(request)
             .await
             .unwrap(),
@@ -252,7 +252,7 @@ async fn failed_publish_is_republished_once_by_the_recovery_sweep() {
 
     let accepted = h
         .chat
-        .accept(&scope, &input, session())
+        .accept(&scope, &input, session(), SendMode::Now)
         .await
         .expect("a failed publish must not fail acceptance");
     assert_eq!(accepted, Accepted::New);
@@ -303,7 +303,7 @@ async fn failed_recovery_publish_stays_due_for_the_next_sweep() {
 
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .await
             .expect("accept"),
         Accepted::New
@@ -334,7 +334,7 @@ async fn duplicate_accept_is_never_published_again() {
     let (scope, input, delivery) = turn();
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .await
             .expect("accept"),
         Accepted::New
@@ -342,7 +342,7 @@ async fn duplicate_accept_is_never_published_again() {
     assert_eq!(h.queue.published(), std::slice::from_ref(&delivery));
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .await
             .expect("duplicate accept"),
         Accepted::Duplicate
@@ -376,7 +376,7 @@ async fn duplicate_accept_after_failed_publish_leaves_delivery_to_recovery() {
     let (scope, input, delivery) = turn();
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .await
             .expect("accept"),
         Accepted::New
@@ -384,7 +384,7 @@ async fn duplicate_accept_after_failed_publish_leaves_delivery_to_recovery() {
     assert_eq!(h.queue.attempts(), 1);
     assert_eq!(
         h.chat
-            .accept(&scope, &input, session())
+            .accept(&scope, &input, session(), SendMode::Now)
             .await
             .expect("duplicate accept"),
         Accepted::Duplicate

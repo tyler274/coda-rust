@@ -2,7 +2,7 @@
 //! existing physician runtime; the broker is only a recoverable wakeup hint.
 use crate::queue::ChatQueue;
 use local_product::runtime::{
-    Accepted, Authority, Conversation, Input, Resumed, Scope, Stopped, Store,
+    Accepted, Authority, Conversation, Input, Resumed, Scope, SendMode, Stopped, Store,
     delivery::Delivery,
     reply::{RevisionAccepted, RevisionInput},
 };
@@ -37,15 +37,18 @@ impl DurableChat {
         scope: &Scope,
         input: &Input,
         session_hash: Vec<u8>,
+        mode: SendMode,
     ) -> Result<Accepted, String> {
         let accepted = self
             .store
-            .accept_authorized(scope, input, session_hash)
+            .send_authorized(scope, input, session_hash, mode)
             .await
             .map_err(|e| e.to_string())?;
         // A duplicate receipt is already accepted. Publishing again would run
         // the turn twice; the first wakeup, or recovery, still owns delivery.
-        if matches!(accepted, Accepted::Duplicate) {
+        // A queued message waits for the running answer; the recovery sweep
+        // wakes its turn once that answer ends.
+        if matches!(accepted, Accepted::Duplicate | Accepted::Queued) {
             return Ok(accepted);
         }
         let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
