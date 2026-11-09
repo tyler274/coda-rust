@@ -290,11 +290,11 @@ mod tests {
     use std::sync::atomic::{AtomicU32, Ordering};
 
     const LAYOUT: &str = r#"{"record_type":"Observation",
-        "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
-        "sections":[{"heading":"Result","slots":[
-            {"label":"Test","role":"code","pointer":"/code/text"},
-            {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-            {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+        "statuses":[{"role":"status","pointer":"/status"}],
+        "sections":[{"heading":"result","slots":[
+            {"role":"code","pointer":"/code/text"},
+            {"role":"result","pointer":"/valueQuantity/value"},
+            {"role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
 
     /// A scripted layout model: each call returns its reply, or fails, and is counted.
     struct Scripted {
@@ -548,7 +548,8 @@ mod tests {
     async fn racing_writers_settle_on_the_first_stored_layout() {
         let store = store().await;
         let cited = cited();
-        let relabelled = LAYOUT.replace("\"Test\"", "\"Test name\"");
+        let relabelled = LAYOUT.replace("\"heading\":\"result\"", "\"heading\":\"results\"");
+        assert_ne!(relabelled, LAYOUT);
         let mut first = Scripted::replying(LAYOUT);
         let mut second = Scripted::replying(&relabelled);
         let (a, b) = tokio::join!(

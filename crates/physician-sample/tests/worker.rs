@@ -1056,7 +1056,7 @@ async fn a_real_model_summarizes_the_record_it_cites() {
 const OBSERVATION: &str = r#"{"resourceType":"Observation","id":"k-1","status":"final","code":{"text":"Potassium"},"valueQuantity":{"value":4.1,"unit":"mmol/L"},"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L"},"high":{"value":5.1,"unit":"mmol/L"}}]}"#;
 
 /// A layout that reads [`OBSERVATION`].
-const OBSERVATION_LAYOUT: &str = r#"{"record_type":"Observation","statuses":[{"label":"Result status","role":"status","pointer":"/status"}],"sections":[{"heading":"Result","slots":[{"label":"Test","role":"code","pointer":"/code/text"},{"label":"Result","role":"result","pointer":"/valueQuantity/value"},{"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+const OBSERVATION_LAYOUT: &str = r#"{"record_type":"Observation","statuses":[{"role":"status","pointer":"/status"}],"sections":[{"heading":"result","slots":[{"role":"code","pointer":"/code/text"},{"role":"result","pointer":"/valueQuantity/value"},{"role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
 
 const CITING_TEXT: &str = "Controlled source read {{patient_source}}";
 

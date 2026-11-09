@@ -315,9 +315,9 @@ mod tests {
         let record = json!({"resourceType":"Observation","status":"final",
             "valueQuantity":{"value":5.9,"unit":"mmol/L"}});
         let section = |pointer: &str| {
-            json!({"record_type":"Observation","sections":[{"heading":"Result","slots":[
-                {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-                {"label":CLINICAL,"role":"unit","pointer":pointer}]}]})
+            json!({"record_type":"Observation","sections":[{"heading":"result","slots":[
+                {"role":"result","pointer":"/valueQuantity/value"},
+                {"role":"unit","pointer":pointer}]}]})
         };
         let typed = json!({"record_type":CLINICAL,"sections":[]});
         let cases = [

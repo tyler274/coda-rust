@@ -51,6 +51,11 @@ impl SourcePath {
         self.0.push(Step::Index(index));
     }
 
+    /// The steps from the record root.
+    pub(crate) fn steps(&self) -> &[Step] {
+        &self.0
+    }
+
     /// Whether this path is `path` or lies under it.
     pub(crate) fn is_under(&self, path: &SourcePath) -> bool {
         self.0.starts_with(&path.0)

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "title": "Layout",
-  "description": "Headings, labels, roles and JSON pointers into one record type. It holds no values.",
+  "description": "Fixed heading choices, roles and JSON pointers into one record type. It holds no values and no wording: labels come from roles or the record's own field names, headings from the fixed list or the repeated element's own code.",
   "type": "object",
   "additionalProperties": false,
   "required": ["record_type", "sections"],
@@ -22,16 +22,50 @@
     }
   },
   "$defs": {
+    "fixed_heading": {
+      "description": "One of the fixed section headings.",
+      "enum": [
+        "result",
+        "results",
+        "panel",
+        "component",
+        "reference_range",
+        "interpretation",
+        "problem",
+        "substance",
+        "reaction",
+        "medication",
+        "dosage",
+        "coding",
+        "status",
+        "dates",
+        "notes",
+        "details"
+      ]
+    },
+    "heading": {
+      "oneOf": [
+        {
+          "description": "A fixed heading. In a repeated section it reads numbered from 1 for each element.",
+          "$ref": "#/$defs/fixed_heading"
+        },
+        {
+          "description": "Only in a repeated section: each element reads under its own code's display or text, or else under this fixed heading numbered from 1.",
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from_code"],
+          "properties": {
+            "from_code": { "$ref": "#/$defs/fixed_heading" }
+          }
+        }
+      ]
+    },
     "section": {
       "type": "object",
       "additionalProperties": false,
       "required": ["heading", "slots"],
       "properties": {
-        "heading": {
-          "description": "The group's heading. A repeated group reads under its element's own code when it has one.",
-          "type": "string",
-          "minLength": 1
-        },
+        "heading": { "$ref": "#/$defs/heading" },
         "repeat": {
           "description": "A JSON pointer to an array in the record. The section repeats once per element, and each slot's pointer is relative to that element.",
           "type": "string"
@@ -45,15 +79,10 @@
     "slot": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["label", "role", "pointer"],
+      "required": ["role", "pointer"],
       "properties": {
-        "label": {
-          "description": "What the value means. Never the value itself.",
-          "type": "string",
-          "minLength": 1
-        },
         "role": {
-          "description": "What part the value plays in the record.",
+          "description": "What part the value plays in the record. It also names the value: a result, unit, reference range or interpretation reads under its role's fixed label, and any other role under the record's own name for the field.",
           "enum": [
             "result",
             "unit",

@@ -1,7 +1,9 @@
-//! A layout arranges records of one type into headed sections. It holds only headings, labels
-//! and JSON pointers (RFC 6901) into the record, never a value, so everything it shows is copied
-//! from the record. A layout is checked against each record before it renders; a refused layout
-//! never shows in part, and the record reads through the general view instead.
+//! A layout arranges records of one type into headed sections. It holds only fixed heading
+//! choices, roles and JSON pointers (RFC 6901) into the record, never text of its own: every
+//! value it shows is copied from the record, every label comes from the slot's role or the
+//! record's own field name, and every heading is a fixed one or the repeated element's own code.
+//! A layout is checked against each record before it renders; a refused layout never shows in
+//! part, and the record reads through the general view instead.
 use crate::source_inspection::{NumberLiterals, humanize, located};
 use crate::source_path::{self, SourcePath, Step};
 use physician_wire::{SourceField, SourceInspection, SourceLayoutSection};
@@ -28,10 +30,8 @@ pub struct Layout {
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Section {
-    /// The group's heading, written by the layout and never read as source text. A repeated
-    /// group reads under its element's own code instead, and under this heading numbered from 1
-    /// when the element has none.
-    pub heading: String,
+    /// Where the group's heading comes from; a layout never writes one.
+    pub heading: Heading,
     /// A pointer to an array in the record, such as `/component`. When set, the section repeats
     /// once per element and each slot's pointer is relative to that element.
     #[serde(default)]
@@ -40,12 +40,114 @@ pub struct Section {
     pub slots: Vec<Slot>,
 }
 
-/// A label for the single value at `pointer`, such as `/valueQuantity/value`.
+/// Where a section's heading comes from: `"result"`, one of the fixed headings, or
+/// `{"from_code": "component"}`, each repeated element's own code with a fixed heading to fall
+/// back on. Neither holds text the layout wrote, so a heading cannot state a finding.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(untagged)]
+pub enum Heading {
+    /// The fixed heading, numbered from 1 for each element when the section repeats.
+    Fixed(FixedHeading),
+    /// Each element's own code; only a section that repeats has elements to read it from.
+    FromCode(FromCode),
+}
+
+/// A repeated section's heading taken from each element's `code.coding[0].display`, else its
+/// `code.text`, else the fixed heading numbered from 1.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct FromCode {
+    /// The heading an element without a code reads under, numbered from 1.
+    pub from_code: FixedHeading,
+}
+
+/// The headings a layout may give a section, each with its fixed wording.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum FixedHeading {
+    /// Reads “Result”.
+    Result,
+    /// Reads “Results”.
+    Results,
+    /// Reads “Panel”.
+    Panel,
+    /// Reads “Component”.
+    Component,
+    /// Reads “Reference range”.
+    ReferenceRange,
+    /// Reads “Interpretation”.
+    Interpretation,
+    /// Reads “Problem”.
+    Problem,
+    /// Reads “Substance”.
+    Substance,
+    /// Reads “Reaction”.
+    Reaction,
+    /// Reads “Medication”.
+    Medication,
+    /// Reads “Dosage”.
+    Dosage,
+    /// Reads “Coding”.
+    Coding,
+    /// Reads “Status”.
+    Status,
+    /// Reads “Dates”.
+    Dates,
+    /// Reads “Notes”.
+    Notes,
+    /// Reads “Details”.
+    Details,
+}
+
+impl FixedHeading {
+    /// Every fixed heading, in the order the schema lists them.
+    pub const ALL: [Self; 16] = [
+        Self::Result,
+        Self::Results,
+        Self::Panel,
+        Self::Component,
+        Self::ReferenceRange,
+        Self::Interpretation,
+        Self::Problem,
+        Self::Substance,
+        Self::Reaction,
+        Self::Medication,
+        Self::Dosage,
+        Self::Coding,
+        Self::Status,
+        Self::Dates,
+        Self::Notes,
+        Self::Details,
+    ];
+
+    /// The heading as the physician reads it.
+    pub fn text(self) -> &'static str {
+        match self {
+            Self::Result => "Result",
+            Self::Results => "Results",
+            Self::Panel => "Panel",
+            Self::Component => "Component",
+            Self::ReferenceRange => "Reference range",
+            Self::Interpretation => "Interpretation",
+            Self::Problem => "Problem",
+            Self::Substance => "Substance",
+            Self::Reaction => "Reaction",
+            Self::Medication => "Medication",
+            Self::Dosage => "Dosage",
+            Self::Coding => "Coding",
+            Self::Status => "Status",
+            Self::Dates => "Dates",
+            Self::Notes => "Notes",
+            Self::Details => "Details",
+        }
+    }
+}
+
+/// The single value at `pointer`, such as `/valueQuantity/value`, read as `role`. Its label is
+/// never written by the layout: the role names it, or the record's own field name does.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Slot {
-    /// What the value means, written by the layout.
-    pub label: String,
     /// What part the value plays, checked against where it sits in the record.
     pub role: SlotRole,
     /// Where the value is in the record.
@@ -82,6 +184,37 @@ pub enum SlotRole {
 }
 
 impl SlotRole {
+    /// Every role, in the order the schema lists them.
+    pub const ALL: [Self; 11] = [
+        Self::Result,
+        Self::Unit,
+        Self::ReferenceRangeLow,
+        Self::ReferenceRangeHigh,
+        Self::ReferenceRangeText,
+        Self::Interpretation,
+        Self::Status,
+        Self::Date,
+        Self::Code,
+        Self::Note,
+        Self::Other,
+    ];
+
+    /// The fixed label a value bound in this role reads under, given the last member of its
+    /// path. `None` for a role whose values read under the record's own name for the field, so a
+    /// value bound as `other` can never read as a result or a range limit.
+    pub fn fixed_label(self, last_member: Option<&str>) -> Option<&'static str> {
+        match self {
+            Self::Result => Some("Result"),
+            Self::Unit if last_member == Some("code") => Some("Unit code"),
+            Self::Unit => Some("Unit"),
+            Self::ReferenceRangeLow => Some("Reference range low"),
+            Self::ReferenceRangeHigh => Some("Reference range high"),
+            Self::ReferenceRangeText => Some("Reference range"),
+            Self::Interpretation => Some("Interpretation"),
+            Self::Status | Self::Date | Self::Code | Self::Note | Self::Other => None,
+        }
+    }
+
     /// The role in words, as logs and refusals name it.
     pub fn name(self) -> &'static str {
         match self {
@@ -272,22 +405,14 @@ impl fmt::Display for JsonFault<'_> {
 pub enum LayoutRefusal {
     /// The record is not a JSON object.
     NotStructured,
+    /// A section takes its heading from an element's code, but does not repeat over elements.
+    CodeHeadingWithoutRepeat,
     /// The record's `resourceType` is not the one the layout reads.
     WrongRecordType {
         /// The record type the layout reads.
         expected: String,
         /// The record's own type, if it names one.
         found: Option<String>,
-    },
-    /// A section's heading is empty or whitespace.
-    EmptyHeading {
-        /// The section's position in the layout.
-        index: usize,
-    },
-    /// A slot's label is empty or whitespace.
-    EmptyLabel {
-        /// The slot's pointer as the layout wrote it.
-        pointer: String,
     },
     /// A slot's pointer is not an RFC 6901 JSON pointer.
     MalformedPointer {
@@ -374,9 +499,8 @@ impl LayoutRefusal {
     pub fn category(&self) -> &'static str {
         match self {
             Self::NotStructured => "not_structured",
+            Self::CodeHeadingWithoutRepeat => "code_heading_without_repeat",
             Self::WrongRecordType { .. } => "wrong_record_type",
-            Self::EmptyHeading { .. } => "empty_heading",
-            Self::EmptyLabel { .. } => "empty_label",
             Self::MalformedPointer { .. } => "malformed_pointer",
             Self::Unresolved { .. } => "unresolved",
             Self::RepeatNotAnArray { .. } => "repeat_not_an_array",
@@ -388,15 +512,16 @@ impl LayoutRefusal {
     }
 }
 
-/// Names the fault without the pointers, record types or labels it carries: those are written by
-/// the model or the record, and can hold clinical text.
+/// Names the fault without the pointers or record types it carries: those are written by the
+/// model or the record, and can hold clinical text.
 impl fmt::Display for LayoutRefusal {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(match self {
             Self::NotStructured => "the record is not a structured object",
+            Self::CodeHeadingWithoutRepeat => {
+                "a section that does not repeat takes its heading from an element's code"
+            }
             Self::WrongRecordType { .. } => "the record is not of the type the layout reads",
-            Self::EmptyHeading { .. } => "a section has no heading",
-            Self::EmptyLabel { .. } => "a slot has no label",
             Self::MalformedPointer { .. } => "a pointer is not an RFC 6901 JSON pointer",
             Self::Unresolved { .. } => "a pointer names nothing in this record",
             Self::RepeatNotAnArray { .. } => "a section repeats over something other than an array",
@@ -455,10 +580,11 @@ struct BoundSection<'r> {
     bindings: Vec<Binding<'r>>,
 }
 
-/// A label bound to the recorded value at `path`.
+/// The recorded value at `path`, bound in `role`. It carries no label: one is derived from the
+/// role or the record's own name for the field when it renders.
 #[derive(Debug)]
 struct Binding<'r> {
-    label: String,
+    role: SlotRole,
     path: SourcePath,
     value: &'r Value,
 }
@@ -470,7 +596,7 @@ impl Layout {
         serde_json::from_str(stored)
     }
 
-    /// Checks every heading, label and pointer against `record`, refusing at the first fault.
+    /// Checks every role and pointer against `record`, refusing at the first fault.
     pub fn validate<'r>(&self, record: &'r Value) -> Result<ValidatedLayout<'r>, Refusal> {
         let whole = |cause| Refusal {
             at: Position::of(Part::Whole),
@@ -503,25 +629,25 @@ impl Layout {
         let mut sections = Vec::with_capacity(self.sections.len());
         for (index, section) in self.sections.iter().enumerate() {
             let part = Part::Section(index);
-            if section.heading.trim().is_empty() {
-                return Err(Refusal {
-                    at: Position::of(part),
-                    role: None,
-                    cause: LayoutRefusal::EmptyHeading { index },
-                });
-            }
-            match &section.repeat {
-                Some(repeat) => {
+            match (&section.repeat, section.heading) {
+                (Some(repeat), _) => {
                     sections.extend(repeated(section, part, repeat, record, &mut bound)?);
                 }
-                None => {
+                (None, Heading::FromCode(_)) => {
+                    return Err(Refusal {
+                        at: Position::of(part),
+                        role: None,
+                        cause: LayoutRefusal::CodeHeadingWithoutRepeat,
+                    });
+                }
+                (None, Heading::Fixed(heading)) => {
                     let mut bindings = Vec::with_capacity(section.slots.len());
                     for (at_slot, slot) in section.slots.iter().enumerate() {
                         let at = in_slot(Position::slot(part, at_slot), slot);
                         bindings.push(bind(slot, record, &mut bound).map_err(at)?);
                     }
                     sections.push(BoundSection {
-                        heading: section.heading.clone(),
+                        heading: heading.text().to_owned(),
                         bindings,
                     });
                 }
@@ -592,7 +718,7 @@ fn repeated<'r>(
             pointer: repeat.to_owned(),
         }));
     };
-    // Labels and pointers are checked even when the array is empty.
+    // Pointers are checked even when the array is empty.
     let slots = section
         .slots
         .iter()
@@ -630,31 +756,31 @@ fn repeated<'r>(
             }
         }
         sections.push(BoundSection {
-            heading: element_heading(element, &section.heading, index),
+            heading: element_heading(element, section.heading, index),
             bindings,
         });
     }
     Ok(sections)
 }
 
-/// A repeated section's heading for one element: the element's own coded display or code text,
-/// or else the layout's heading numbered from 1.
-fn element_heading(element: &Value, heading: &str, index: usize) -> String {
+/// A repeated section's heading for one element. A fixed heading reads numbered from 1; a code
+/// heading reads the element's own coded display or code text, else its fixed heading numbered.
+fn element_heading(element: &Value, heading: Heading, index: usize) -> String {
+    let numbered = |fixed: FixedHeading| format!("{} {}", fixed.text(), index + 1);
+    let fixed = match heading {
+        Heading::Fixed(fixed) => return numbered(fixed),
+        Heading::FromCode(FromCode { from_code }) => from_code,
+    };
     let code = &element["code"];
     [&code["coding"][0]["display"], &code["text"]]
         .into_iter()
         .filter_map(Value::as_str)
         .find(|text| !text.trim().is_empty())
-        .map_or_else(|| format!("{heading} {}", index + 1), str::to_owned)
+        .map_or_else(|| numbered(fixed), str::to_owned)
 }
 
-/// The slot's pointer tokens, once its label and pointer are well formed.
+/// The slot's pointer tokens, once its pointer is well formed.
 fn checked(slot: &Slot) -> Result<Vec<String>, LayoutRefusal> {
-    if slot.label.trim().is_empty() {
-        return Err(LayoutRefusal::EmptyLabel {
-            pointer: slot.pointer.clone(),
-        });
-    }
     tokens(&slot.pointer).map_err(|reason| LayoutRefusal::MalformedPointer {
         pointer: slot.pointer.clone(),
         reason,
@@ -733,7 +859,7 @@ fn place<'r>(
         return Err(LayoutRefusal::DuplicateBinding { pointer: pointer() });
     }
     Ok(Binding {
-        label: slot.label.clone(),
+        role: slot.role,
         path: found.path,
         value: found.value,
     })
@@ -916,24 +1042,53 @@ fn index(token: &str) -> Option<usize> {
     (digits && canonical).then(|| token.parse().ok()).flatten()
 }
 
-/// Rearranges the record's general view under the layout. Bound values read under the layout's
-/// labels with their source paths, and bound statuses lead the statuses. A general field the
-/// layout binds part of gives way to its unbound leaves, each under the general label extended by
-/// its own path; leaves already under Technical details stay only there. Every other general field
-/// reads under Other fields. Dates, attribution, readable source text and Technical details keep
-/// their general reading, so nothing in the record is dropped.
+/// Rearranges the record's general view under the layout. Bound values read under labels derived
+/// from their roles or the record's own field names (see [`label`]), with their source paths, and
+/// bound statuses lead the statuses. A general field the layout binds part of gives way to its
+/// unbound leaves, each under the general label extended by its own path; leaves already under
+/// Technical details stay only there. Every other general field reads under Other fields. Dates,
+/// attribution, readable source text and Technical details keep their general reading, so
+/// nothing in the record is dropped.
 pub(crate) fn render(
     layout: &ValidatedLayout<'_>,
     numbers: &NumberLiterals,
     view: &mut SourceInspection,
 ) {
+    let nodes = source_path::nodes(layout.record);
+    // A field carries its path in the readable form, which no two paths share.
+    let path_of: BTreeMap<String, &SourcePath> = nodes
+        .iter()
+        .map(|(path, _)| (path.to_string(), path))
+        .collect();
+    // The general view's readable fields by path: the record's own names for its values.
+    let general: Vec<(&SourcePath, &str)> = view
+        .sections
+        .iter()
+        .chain(&view.record_details)
+        .chain(&view.statuses)
+        .chain(&view.dates)
+        .chain(&view.attribution)
+        .filter_map(|field| {
+            let path = path_of.get(field.path.as_deref()?)?;
+            Some((*path, field.label.as_str()))
+        })
+        .collect();
     let shown = |binding: &Binding| {
         located(
-            &binding.label,
+            &label(binding, &general),
             &numbers.recorded(binding.value, &binding.path),
             &binding.path,
         )
     };
+    let placed_statuses: Vec<SourceField> = layout.statuses.iter().map(shown).collect();
+    let placed_sections: Vec<SourceLayoutSection> = layout
+        .sections
+        .iter()
+        .map(|section| SourceLayoutSection {
+            heading: section.heading.clone(),
+            fields: section.bindings.iter().map(shown).collect(),
+        })
+        .collect();
     let bound: BTreeSet<&SourcePath> = layout
         .statuses
         .iter()
@@ -945,12 +1100,6 @@ pub(crate) fn render(
         .fields
         .iter()
         .filter_map(|field| field.path.as_deref())
-        .collect();
-    let nodes = source_path::nodes(layout.record);
-    // A field carries its path in the readable form, which no two paths share.
-    let path_of: BTreeMap<String, &SourcePath> = nodes
-        .iter()
-        .map(|(path, _)| (path.to_string(), path))
         .collect();
     let leaves: Vec<(&SourcePath, &Value)> = nodes
         .iter()
@@ -984,7 +1133,7 @@ pub(crate) fn render(
             .collect()
     };
     let general_statuses = std::mem::take(&mut view.statuses);
-    view.statuses = layout.statuses.iter().map(shown).collect();
+    view.statuses = placed_statuses;
     view.statuses
         .extend(general_statuses.into_iter().flat_map(&remaining));
     let (readable_text, fields): (Vec<_>, Vec<_>) = std::mem::take(&mut view.sections)
@@ -996,14 +1145,58 @@ pub(crate) fn render(
         .chain(std::mem::take(&mut view.record_details))
         .flat_map(&remaining)
         .collect();
-    view.layout_sections = layout
-        .sections
+    view.layout_sections = placed_sections;
+}
+
+/// The label a bound value reads under. A role that names its value's part, such as a result or
+/// a reference range limit, reads under that role's fixed label; any other role reads under the
+/// record's own name for the field, from `general`, the general view's readable fields by path.
+/// The layout writes no label, so a value bound as `other` can never read as a result.
+fn label(binding: &Binding, general: &[(&SourcePath, &str)]) -> String {
+    let last_member = binding
+        .path
+        .steps()
         .iter()
-        .map(|section| SourceLayoutSection {
-            heading: section.heading.clone(),
-            fields: section.bindings.iter().map(shown).collect(),
-        })
-        .collect();
+        .rev()
+        .find_map(|step| match step {
+            Step::Member(name) => Some(name.as_str()),
+            Step::Index(_) => None,
+        });
+    match binding.role.fixed_label(last_member) {
+        Some(fixed) => fixed.to_owned(),
+        None => source_label(&binding.path, general),
+    }
+}
+
+/// The record's own name for the leaf at `leaf`: the label of the nearest general field holding
+/// it, extended by the leaf's path below that field. A concept's text or first coded display
+/// reads as the concept's own label. A leaf no readable field holds reads as its path in words.
+fn source_label(leaf: &SourcePath, general: &[(&SourcePath, &str)]) -> String {
+    let nearest = general
+        .iter()
+        .filter(|(path, _)| leaf.is_under(path))
+        .max_by_key(|(path, _)| path.steps().len());
+    let Some((path, label)) = nearest else {
+        let mut words = leaf_words(leaf.steps());
+        if let Some(first) = words.get_mut(..1) {
+            first.make_ascii_uppercase();
+        }
+        return words;
+    };
+    let below = leaf.below(path);
+    let names_the_concept = match below {
+        [] => true,
+        [Step::Member(name)] => name == "text" || name == "display",
+        [Step::Member(coding), Step::Index(0), Step::Member(display)] => {
+            coding == "coding" && display == "display"
+        }
+        _ => false,
+    };
+    if names_the_concept {
+        (*label).to_owned()
+    } else {
+        format!("{label} {}", leaf_words(below))
+    }
 }
 
 /// The steps below a general field, such as `coding[0].system`, in words: "coding 1 system".
@@ -1036,31 +1229,31 @@ mod tests {
     /// A hand-written Observation layout: the result, then its reference range.
     fn observation_layout() -> Layout {
         layout(json!({"record_type":"Observation",
-            "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
+            "statuses":[{"role":"status","pointer":"/status"}],
             "sections":[
-                {"heading":"Result","slots":[
-                    {"label":"Test","role":"code","pointer":"/code/text"},
-                    {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-                    {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"},
-                    {"label":"Interpretation","role":"interpretation","pointer":"/interpretation/0/coding/0/display"}]},
-                {"heading":"Reference range","slots":[
-                    {"label":"Low","role":"reference_range_low","pointer":"/referenceRange/0/low/value"},
-                    {"label":"High","role":"reference_range_high","pointer":"/referenceRange/0/high/value"},
-                    {"label":"Range as recorded","role":"reference_range_text","pointer":"/referenceRange/0/text"}]}]}))
+                {"heading":"result","slots":[
+                    {"role":"code","pointer":"/code/text"},
+                    {"role":"result","pointer":"/valueQuantity/value"},
+                    {"role":"unit","pointer":"/valueQuantity/unit"},
+                    {"role":"interpretation","pointer":"/interpretation/0/coding/0/display"}]},
+                {"heading":"reference_range","slots":[
+                    {"role":"reference_range_low","pointer":"/referenceRange/0/low/value"},
+                    {"role":"reference_range_high","pointer":"/referenceRange/0/high/value"},
+                    {"role":"reference_range_text","pointer":"/referenceRange/0/text"}]}]}))
     }
 
     /// A hand-written Condition layout: the problem and its note, then its coding.
     fn condition_layout() -> Layout {
         layout(json!({"record_type":"Condition",
             "statuses":[
-                {"label":"Clinical status","role":"status","pointer":"/clinicalStatus/coding/0/display"},
-                {"label":"Verification status","role":"status","pointer":"/verificationStatus/coding/0/display"}],
+                {"role":"status","pointer":"/clinicalStatus/coding/0/display"},
+                {"role":"status","pointer":"/verificationStatus/coding/0/display"}],
             "sections":[
-                {"heading":"Problem","slots":[
-                    {"label":"Problem","role":"code","pointer":"/code/text"},
-                    {"label":"Note","role":"note","pointer":"/note/0/text"}]},
-                {"heading":"Coding","slots":[
-                    {"label":"ICD-10-CM code","role":"code","pointer":"/code/coding/0/code"}]}]}))
+                {"heading":"problem","slots":[
+                    {"role":"code","pointer":"/code/text"},
+                    {"role":"note","pointer":"/note/0/text"}]},
+                {"heading":"coding","slots":[
+                    {"role":"code","pointer":"/code/coding/0/code"}]}]}))
     }
 
     /// The observation as retained, with its result written `7.20` as some sources write it.
@@ -1085,8 +1278,10 @@ mod tests {
         let in_pointer = format!("/{CLINICAL}");
         let mut typed = observation_layout();
         typed.record_type = CLINICAL.into();
-        let mut unlabelled = with_slot(" ", &in_pointer);
-        unlabelled.sections[0].slots[0].label = " ".into();
+        let mut from_code = observation_layout();
+        from_code.sections[0].heading = Heading::FromCode(FromCode {
+            from_code: FixedHeading::Result,
+        });
         let mut status = observation_layout();
         status.statuses[0].pointer = in_pointer.clone();
         let mut keyed = record.clone();
@@ -1102,25 +1297,25 @@ mod tests {
                 "wrong_record_type",
             ),
             (
-                with_slot("Result", &in_pointer),
+                with_slot(&in_pointer),
                 record.clone(),
                 Position::slot(Part::Section(0), 0),
                 Some(SlotRole::Other),
                 "unresolved",
             ),
             (
-                with_slot("Result", CLINICAL),
+                with_slot(CLINICAL),
                 record.clone(),
                 Position::slot(Part::Section(0), 0),
                 Some(SlotRole::Other),
                 "malformed_pointer",
             ),
             (
-                unlabelled,
+                from_code,
                 record.clone(),
-                Position::slot(Part::Section(0), 0),
-                Some(SlotRole::Other),
-                "empty_label",
+                Position::of(Part::Section(0)),
+                None,
+                "code_heading_without_repeat",
             ),
             (
                 status,
@@ -1130,11 +1325,7 @@ mod tests {
                 "unresolved",
             ),
             (
-                with_role(
-                    "Result",
-                    SlotRole::Date,
-                    &format!("/{}", CLINICAL.replace('/', "~1")),
-                ),
+                with_role(SlotRole::Date, &format!("/{}", CLINICAL.replace('/', "~1"))),
                 keyed,
                 Position::slot(Part::Section(0), 0),
                 Some(SlotRole::Date),
@@ -1160,8 +1351,11 @@ mod tests {
             let logged = Loggable(&refused).to_string();
             assert!(!logged.contains("Potassium"), "{logged}");
             assert!(logged.contains(&at.to_string()), "{logged}");
-            // The typed cause keeps what the layout wrote, for programmatic use.
-            assert!(format!("{:?}", refused.cause).contains("Potassium"));
+            // The typed cause keeps what the layout or record wrote, for programmatic use; a
+            // heading's cause has nothing written to keep.
+            if refused.cause != LayoutRefusal::CodeHeadingWithoutRepeat {
+                assert!(format!("{:?}", refused.cause).contains("Potassium"));
+            }
         }
     }
 
@@ -1223,7 +1417,7 @@ mod tests {
         let mut cited = retained_observation();
         let source_id = format!("ehr-{}", uuid::Uuid::new_v4());
         cited.source_id = Some(source_id.clone());
-        let planted = with_slot("Result", &format!("/{CLINICAL}"));
+        let planted = with_slot(&format!("/{CLINICAL}"));
         let view = inspection_with_layout(&cited, Some(&planted));
         assert_eq!(view, inspection(&cited));
         let lines: Vec<String> = logs
@@ -1249,15 +1443,14 @@ mod tests {
     }
 
     /// The Observation layout with one slot of its first section replaced.
-    fn with_slot(label: &str, pointer: &str) -> Layout {
-        with_role(label, SlotRole::Other, pointer)
+    fn with_slot(pointer: &str) -> Layout {
+        with_role(SlotRole::Other, pointer)
     }
 
     /// The Observation layout with one slot of its first section replaced by one with `role`.
-    fn with_role(label: &str, role: SlotRole, pointer: &str) -> Layout {
+    fn with_role(role: SlotRole, pointer: &str) -> Layout {
         let mut changed = observation_layout();
         changed.sections[0].slots[0] = Slot {
-            label: label.into(),
             role,
             pointer: pointer.into(),
         };
@@ -1330,7 +1523,7 @@ mod tests {
         ];
         for (role, pointer, reason) in cases {
             assert_eq!(
-                refusal(&with_role("Field", role, pointer), &record),
+                refusal(&with_role(role, pointer), &record),
                 mismatch(role, pointer, reason),
                 "{role} at {pointer}"
             );
@@ -1366,7 +1559,7 @@ mod tests {
             (Other, "/performer/0/display"),
         ];
         for (role, pointer) in fitting {
-            let mut layout = with_role("Field", role, pointer);
+            let mut layout = with_role(role, pointer);
             layout.sections[1].slots.clear();
             layout.sections[0].slots.truncate(1);
             assert!(
@@ -1385,10 +1578,9 @@ mod tests {
                 record_type: "Condition".into(),
                 statuses: Vec::new(),
                 sections: vec![Section {
-                    heading: "Fields".into(),
+                    heading: Heading::Fixed(FixedHeading::Details),
                     repeat: None,
                     slots: vec![Slot {
-                        label: "Field".into(),
                         role,
                         pointer: pointer.into(),
                     }],
@@ -1396,7 +1588,7 @@ mod tests {
             };
             assert!(layout.validate(&condition).is_ok(), "{role} at {pointer}");
         }
-        let mut status = with_role("Status", Status, "/status");
+        let mut status = with_role(Status, "/status");
         status.statuses.clear();
         assert!(status.validate(&observation).is_ok());
     }
@@ -1438,19 +1630,196 @@ mod tests {
 
     #[test]
     fn a_layout_cannot_carry_a_value_of_its_own() {
-        let typed_in = json!({"record_type":"Observation","sections":[{"heading":"Result",
-            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value",
+        let typed_in = json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"role":"result","pointer":"/valueQuantity/value",
             "value":"5.4"}]}]});
         assert!(serde_json::from_value::<Layout>(typed_in).is_err());
-        let roleless = json!({"record_type":"Observation","sections":[{"heading":"Result",
+        let roleless = json!({"record_type":"Observation","sections":[{"heading":"result",
             "slots":[{"label":"Result","pointer":"/valueQuantity/value"}]}]});
         assert!(serde_json::from_value::<Layout>(roleless).is_err());
-        let unknown_role = json!({"record_type":"Observation","sections":[{"heading":"Result",
-            "slots":[{"label":"Result","role":"headline","pointer":"/valueQuantity/value"}]}]});
+        let unknown_role = json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"role":"headline","pointer":"/valueQuantity/value"}]}]});
         assert!(serde_json::from_value::<Layout>(unknown_role).is_err());
-        let typed_section = json!({"record_type":"Observation","sections":[{"heading":"Result",
+        let typed_section = json!({"record_type":"Observation","sections":[{"heading":"result",
             "text":"Normal","slots":[]}]});
         assert!(serde_json::from_value::<Layout>(typed_section).is_err());
+    }
+
+    /// A layout writes no wording: a slot's label and a section's heading text are refused
+    /// when the layout is read, wherever the model puts them.
+    #[test]
+    fn a_layout_cannot_write_a_label_or_a_heading() {
+        let read = |layout: Value| serde_json::from_value::<Layout>(layout);
+        let fixed = json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"role":"result","pointer":"/valueQuantity/value"}]}]});
+        assert!(read(fixed).is_ok());
+        let labelled = json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"label":"Result: 99 mmol/L","role":"result","pointer":"/valueQuantity/value"}]}]});
+        assert!(read(labelled).is_err());
+        let status_labelled = json!({"record_type":"Observation","statuses":[{"label":"Final",
+            "role":"status","pointer":"/status"}],"sections":[]});
+        assert!(read(status_labelled).is_err());
+        for heading in [
+            json!("Potassium is normal at 4.0 mmol/L"),
+            json!("Result"),
+            json!({"text":"Result"}),
+            json!({"from_code":"Potassium is normal"}),
+            json!({"from_code":"component","text":"Potassium"}),
+            json!({"fixed":"result"}),
+        ] {
+            let written = json!({"record_type":"Observation","sections":[{"heading":heading,
+                "slots":[{"role":"result","pointer":"/valueQuantity/value"}]}]});
+            assert!(read(written).is_err(), "{heading}");
+        }
+    }
+
+    /// The schema the model fills offers exactly the headings and roles a layout can hold, in
+    /// the same order, so the model is never offered a choice the reader refuses or denied one
+    /// it accepts.
+    #[test]
+    fn the_schemas_headings_and_roles_are_the_layouts() {
+        let schema: Value = serde_json::from_str(crate::layout_generation::LAYOUT_SCHEMA).unwrap();
+        let listed = |pointer: &str| -> Vec<Value> {
+            schema
+                .pointer(pointer)
+                .and_then(Value::as_array)
+                .unwrap_or_else(|| panic!("the schema lists {pointer}"))
+                .clone()
+        };
+        let headings: Vec<FixedHeading> = listed("/$defs/fixed_heading/enum")
+            .into_iter()
+            .map(|name| serde_json::from_value(name).unwrap())
+            .collect();
+        assert_eq!(headings, FixedHeading::ALL);
+        let roles: Vec<SlotRole> = listed("/$defs/slot/properties/role/enum")
+            .into_iter()
+            .map(|name| serde_json::from_value(name).unwrap())
+            .collect();
+        assert_eq!(roles, SlotRole::ALL);
+        // `ALL` holds every variant: each one's position is fixed by an exhaustive match.
+        for (position, heading) in FixedHeading::ALL.into_iter().enumerate() {
+            let expected = match heading {
+                FixedHeading::Result => 0,
+                FixedHeading::Results => 1,
+                FixedHeading::Panel => 2,
+                FixedHeading::Component => 3,
+                FixedHeading::ReferenceRange => 4,
+                FixedHeading::Interpretation => 5,
+                FixedHeading::Problem => 6,
+                FixedHeading::Substance => 7,
+                FixedHeading::Reaction => 8,
+                FixedHeading::Medication => 9,
+                FixedHeading::Dosage => 10,
+                FixedHeading::Coding => 11,
+                FixedHeading::Status => 12,
+                FixedHeading::Dates => 13,
+                FixedHeading::Notes => 14,
+                FixedHeading::Details => 15,
+            };
+            assert_eq!(position, expected, "{heading:?}");
+        }
+        for (position, role) in SlotRole::ALL.into_iter().enumerate() {
+            let expected = match role {
+                SlotRole::Result => 0,
+                SlotRole::Unit => 1,
+                SlotRole::ReferenceRangeLow => 2,
+                SlotRole::ReferenceRangeHigh => 3,
+                SlotRole::ReferenceRangeText => 4,
+                SlotRole::Interpretation => 5,
+                SlotRole::Status => 6,
+                SlotRole::Date => 7,
+                SlotRole::Code => 8,
+                SlotRole::Note => 9,
+                SlotRole::Other => 10,
+            };
+            assert_eq!(position, expected, "{role:?}");
+        }
+    }
+
+    /// Labels come from roles, so a value bound under another role cannot borrow a role's
+    /// label: the reviewer's range low bound as `other` reads under the record's own name.
+    #[test]
+    fn a_range_limit_bound_as_other_reads_under_its_source_name_not_as_the_result() {
+        let cited = retained_observation();
+        let mut planted = observation_layout();
+        planted.sections[0].slots[1] = Slot {
+            role: SlotRole::Other,
+            pointer: "/referenceRange/0/low/value".into(),
+        };
+        planted.sections[1].slots.remove(0);
+        let view = inspection_with_layout(&cited, Some(&planted));
+        let low = view.layout_sections[0]
+            .fields
+            .iter()
+            .find(|field| field.path.as_deref() == Some("referenceRange[0].low.value"))
+            .unwrap_or_else(|| panic!("{:#?}", view.layout_sections));
+        assert_eq!(low.label, "Reference range low value");
+        assert_eq!(low.text, "4.0");
+        let labels: Vec<&str> = view
+            .layout_sections
+            .iter()
+            .flat_map(|section| &section.fields)
+            .map(|field| field.label.as_str())
+            .collect();
+        assert!(!labels.contains(&"Result"), "{labels:?}");
+        assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    /// Each role that names its value reads under its fixed label, and the others read under the
+    /// record's own name for the field: a code under the general view's label for its concept.
+    #[test]
+    fn each_bound_value_reads_under_its_roles_label_or_its_source_name() {
+        let cited = retained_observation();
+        let roles = [
+            (SlotRole::Result, "/valueQuantity/value", "Result"),
+            (SlotRole::Unit, "/valueQuantity/unit", "Unit"),
+            (SlotRole::Unit, "/valueQuantity/code", "Unit code"),
+            (
+                SlotRole::ReferenceRangeLow,
+                "/referenceRange/0/low/value",
+                "Reference range low",
+            ),
+            (
+                SlotRole::ReferenceRangeHigh,
+                "/referenceRange/0/high/value",
+                "Reference range high",
+            ),
+            (
+                SlotRole::ReferenceRangeText,
+                "/referenceRange/0/text",
+                "Reference range",
+            ),
+            (
+                SlotRole::Interpretation,
+                "/interpretation/0/coding/0/display",
+                "Interpretation",
+            ),
+            (SlotRole::Code, "/code/text", "Statement in this record"),
+            (
+                SlotRole::Code,
+                "/code/coding/0/code",
+                "Statement in this record coding 1 code",
+            ),
+            (SlotRole::Date, "/effectiveDateTime", "Effective"),
+            (SlotRole::Other, "/performer/0/display", "Performed by"),
+            (SlotRole::Other, "/valueQuantity/system", "Value system"),
+        ];
+        for (role, pointer, expected) in roles {
+            let mut layout = with_role(role, pointer);
+            layout.statuses.clear();
+            layout.sections[1].slots.clear();
+            layout.sections[0].slots.truncate(1);
+            let view = inspection_with_layout(&cited, Some(&layout));
+            assert_eq!(
+                view.layout_sections[0].fields[0].label, expected,
+                "{role} at {pointer}"
+            );
+        }
+        let condition = general_citation(&condition());
+        let view = inspection_with_layout(&condition, Some(&condition_layout()));
+        assert_eq!(view.statuses[0].label, "Clinical status");
+        assert_eq!(view.layout_sections[0].fields[1].label, "Note");
     }
 
     #[test]
@@ -1468,14 +1837,14 @@ mod tests {
             LayoutRefusal::NotStructured
         );
         assert_eq!(
-            refusal(&with_slot("Result", "valueQuantity/value"), &record),
+            refusal(&with_slot("valueQuantity/value"), &record),
             LayoutRefusal::MalformedPointer {
                 pointer: "valueQuantity/value".into(),
                 reason: PointerError::MissingLeadingSlash,
             }
         );
         assert_eq!(
-            refusal(&with_slot("Result", "/value~2"), &record),
+            refusal(&with_slot("/value~2"), &record),
             LayoutRefusal::MalformedPointer {
                 pointer: "/value~2".into(),
                 reason: PointerError::BadEscape,
@@ -1489,7 +1858,7 @@ mod tests {
             "/status/text",
         ] {
             assert_eq!(
-                refusal(&with_slot("Result", pointer), &record),
+                refusal(&with_slot(pointer), &record),
                 LayoutRefusal::Unresolved {
                     pointer: pointer.into()
                 },
@@ -1497,29 +1866,25 @@ mod tests {
         }
         for pointer in ["/valueQuantity", "/referenceRange", ""] {
             assert_eq!(
-                refusal(&with_slot("Result", pointer), &record),
+                refusal(&with_slot(pointer), &record),
                 LayoutRefusal::NotALeaf {
                     pointer: pointer.into()
                 },
             );
         }
         assert_eq!(
-            refusal(&with_slot("Result status", "/status"), &record),
+            refusal(&with_slot("/status"), &record),
             LayoutRefusal::DuplicateBinding {
                 pointer: "/status".into()
             }
         );
+        let mut from_code = observation_layout();
+        from_code.sections[1].heading = Heading::FromCode(FromCode {
+            from_code: FixedHeading::ReferenceRange,
+        });
         assert_eq!(
-            refusal(&with_slot(" ", "/code/text"), &record),
-            LayoutRefusal::EmptyLabel {
-                pointer: "/code/text".into()
-            }
-        );
-        let mut headless = observation_layout();
-        headless.sections[1].heading = String::new();
-        assert_eq!(
-            refusal(&headless, &record),
-            LayoutRefusal::EmptyHeading { index: 1 }
+            refusal(&from_code, &record),
+            LayoutRefusal::CodeHeadingWithoutRepeat
         );
         assert!(observation_layout().validate(&record).is_ok());
         assert!(condition_layout().validate(&condition()).is_ok());
@@ -1529,8 +1894,8 @@ mod tests {
     fn an_escaped_pointer_reads_the_member_it_names() {
         let record = json!({"resourceType":"Record","a/b":{"c~d":"recorded"}});
         let escaped = layout(
-            json!({"record_type":"Record","sections":[{"heading":"Fields",
-            "slots":[{"label":"Field","role":"other","pointer":"/a~1b/c~0d"}]}]}),
+            json!({"record_type":"Record","sections":[{"heading":"details",
+            "slots":[{"role":"other","pointer":"/a~1b/c~0d"}]}]}),
         );
         let validated = escaped.validate(&record).unwrap();
         assert_eq!(
@@ -1564,8 +1929,8 @@ mod tests {
         assert_view_shows_every_leaf(&cited, &general);
 
         let result = layout(
-            json!({"record_type":"Observation","sections":[{"heading":"Result",
-            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value"}]}]}),
+            json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"role":"result","pointer":"/valueQuantity/value"}]}]}),
         );
         let view = inspection_with_layout(&cited, Some(&result));
         assert_eq!(
@@ -1580,16 +1945,16 @@ mod tests {
 
         // The two are two values, so a layout may bind both.
         let both = layout(
-            json!({"record_type":"Observation","sections":[{"heading":"Result",
-            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-                     {"label":"Other value","role":"other","pointer":"/valueQuantity.value"}]}]}),
+            json!({"record_type":"Observation","sections":[{"heading":"result",
+            "slots":[{"role":"result","pointer":"/valueQuantity/value"},
+                     {"role":"other","pointer":"/valueQuantity.value"}]}]}),
         );
         let view = inspection_with_layout(&cited, Some(&both));
         assert_eq!(
             view.layout_sections[0].fields,
             [
                 located("Result", "7.20", nested),
-                located("Other value", "999", dotted)
+                located("Value quantity.value", "999", dotted)
             ]
         );
         assert_shown_values_are_recorded(&cited, &view);
@@ -1604,9 +1969,9 @@ mod tests {
         );
         let unreadable = citation("Plain text note");
         let refused = [
-            with_slot("Result", "/valueString"),
-            with_slot("", "/code/text"),
-            with_slot("Result", "/valueQuantity"),
+            with_slot("/valueString"),
+            with_role(SlotRole::Date, "/code/text"),
+            with_slot("/valueQuantity"),
             condition_layout(),
         ];
         for cited in [&observation, &condition, &allergy, &unreadable] {
@@ -1641,7 +2006,7 @@ mod tests {
                 SourceLayoutSection {
                     heading: "Result".into(),
                     fields: vec![
-                        located("Test", "Hemoglobin A1c", "code.text"),
+                        located("Statement in this record", "Hemoglobin A1c", "code.text"),
                         located("Result", "7.20", "valueQuantity.value"),
                         located("Unit", "%", "valueQuantity.unit"),
                         located(
@@ -1654,9 +2019,13 @@ mod tests {
                 SourceLayoutSection {
                     heading: "Reference range".into(),
                     fields: vec![
-                        located("Low", "4.0", "referenceRange[0].low.value"),
-                        located("High", "5.6", "referenceRange[0].high.value"),
-                        located("Range as recorded", "4.0-5.6 %", "referenceRange[0].text"),
+                        located("Reference range low", "4.0", "referenceRange[0].low.value"),
+                        located(
+                            "Reference range high",
+                            "5.6",
+                            "referenceRange[0].high.value"
+                        ),
+                        located("Reference range", "4.0-5.6 %", "referenceRange[0].text"),
                     ],
                 },
             ]
@@ -1733,7 +2102,7 @@ mod tests {
                     heading: "Problem".into(),
                     fields: vec![
                         located(
-                            "Problem",
+                            "Statement in this record",
                             "Type 2 diabetes mellitus without complications",
                             "code.text"
                         ),
@@ -1746,7 +2115,11 @@ mod tests {
                 },
                 SourceLayoutSection {
                     heading: "Coding".into(),
-                    fields: vec![located("ICD-10-CM code", "E11.9", "code.coding[0].code")],
+                    fields: vec![located(
+                        "Statement in this record coding 1 code",
+                        "E11.9",
+                        "code.coding[0].code"
+                    )],
                 },
             ]
         );
@@ -1802,15 +2175,15 @@ mod tests {
     /// The panel's name, then one section per component.
     fn blood_pressure_layout() -> Layout {
         layout(json!({"record_type":"Observation",
-            "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
+            "statuses":[{"role":"status","pointer":"/status"}],
             "sections":[
-                {"heading":"Panel","slots":[
-                    {"label":"Test","role":"code","pointer":"/code/text"}]},
-                {"heading":"Component","repeat":"/component","slots":[
-                    {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-                    {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"},
-                    {"label":"Unit code","role":"unit","pointer":"/valueQuantity/code"},
-                    {"label":"Interpretation","role":"interpretation",
+                {"heading":"panel","slots":[
+                    {"role":"code","pointer":"/code/text"}]},
+                {"heading":{"from_code":"component"},"repeat":"/component","slots":[
+                    {"role":"result","pointer":"/valueQuantity/value"},
+                    {"role":"unit","pointer":"/valueQuantity/unit"},
+                    {"role":"unit","pointer":"/valueQuantity/code"},
+                    {"role":"interpretation",
                      "pointer":"/interpretation/0/coding/0/display"}]}]}))
     }
 
@@ -1826,7 +2199,11 @@ mod tests {
             vec![
                 SourceLayoutSection {
                     heading: "Panel".into(),
-                    fields: vec![located("Test", "Blood pressure", "code.text")],
+                    fields: vec![located(
+                        "Statement in this record",
+                        "Blood pressure",
+                        "code.text"
+                    )],
                 },
                 SourceLayoutSection {
                     heading: "Systolic blood pressure".into(),
@@ -1880,7 +2257,11 @@ mod tests {
             view.layout_sections,
             vec![SourceLayoutSection {
                 heading: "Panel".into(),
-                fields: vec![located("Test", "Blood pressure", "code.text")],
+                fields: vec![located(
+                    "Statement in this record",
+                    "Blood pressure",
+                    "code.text"
+                )],
             }]
         );
         assert_view_shows_every_leaf(&cited, &view);
@@ -1891,12 +2272,12 @@ mod tests {
         let record = blood_pressure();
         assert!(record["component"][1].get("interpretation").is_none());
         let validated = blood_pressure_layout().validate(&record).unwrap();
-        let labels: Vec<&str> = validated.sections[2]
+        let roles: Vec<SlotRole> = validated.sections[2]
             .bindings
             .iter()
-            .map(|binding| binding.label.as_str())
+            .map(|binding| binding.role)
             .collect();
-        assert_eq!(labels, ["Result", "Unit", "Unit code"]);
+        assert_eq!(roles, [SlotRole::Result, SlotRole::Unit, SlotRole::Unit]);
     }
 
     #[test]
@@ -1915,7 +2296,6 @@ mod tests {
         );
         let mut coded = blood_pressure_layout();
         coded.sections[1].slots = vec![Slot {
-            label: "Code".into(),
             role: SlotRole::Code,
             pointer: "/code/coding/0/code".into(),
         }];
@@ -1977,7 +2357,6 @@ mod tests {
         // A plain section and a repeated one cannot both bind one value.
         let mut twice = blood_pressure_layout();
         twice.sections[0].slots.push(Slot {
-            label: "Systolic".into(),
             role: SlotRole::Result,
             pointer: "/component/0/valueQuantity/value".into(),
         });
@@ -1987,15 +2366,16 @@ mod tests {
                 pointer: "/component/0/valueQuantity/value".into()
             }
         );
-        // An empty array still checks the slots' labels and pointers.
+        // An empty array still checks the slots' pointers.
         let mut empty = record.clone();
         empty["component"] = json!([]);
-        let mut unlabelled = blood_pressure_layout();
-        unlabelled.sections[1].slots[0].label = " ".into();
+        let mut malformed = blood_pressure_layout();
+        malformed.sections[1].slots[0].pointer = "valueQuantity/value".into();
         assert_eq!(
-            refusal(&unlabelled, &empty),
-            LayoutRefusal::EmptyLabel {
-                pointer: "/valueQuantity/value".into()
+            refusal(&malformed, &empty),
+            LayoutRefusal::MalformedPointer {
+                pointer: "valueQuantity/value".into(),
+                reason: PointerError::MissingLeadingSlash,
             }
         );
     }

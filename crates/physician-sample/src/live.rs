@@ -1402,11 +1402,11 @@ mod cited_layout_tests {
     use serde_json::{Value, json};
 
     const OBSERVATION_LAYOUT: &str = r#"{"record_type":"Observation",
-        "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
-        "sections":[{"heading":"Result","slots":[
-            {"label":"Test","role":"code","pointer":"/code/text"},
-            {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
-            {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+        "statuses":[{"role":"status","pointer":"/status"}],
+        "sections":[{"heading":"result","slots":[
+            {"role":"code","pointer":"/code/text"},
+            {"role":"result","pointer":"/valueQuantity/value"},
+            {"role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
 
     async fn store() -> Store {
         let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL")
@@ -1507,7 +1507,7 @@ mod cited_layout_tests {
                 .map(|field| (field["label"].clone(), field["text"].clone()))
                 .collect::<Vec<_>>(),
             [
-                (json!("Test"), json!("Hemoglobin A1c")),
+                (json!("Statement in this record"), json!("Hemoglobin A1c")),
                 (json!("Result"), json!("7.2")),
                 (json!("Unit"), json!("%")),
             ]
