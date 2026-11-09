@@ -171,6 +171,7 @@ jobs:
             echo "DUET_TEST_DATABASE_URL=${url}"
             echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
             echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
+            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
           } >> "$GITHUB_ENV"
       - name: Check out repository
         uses: actions/checkout@v7

@@ -1,0 +1,29 @@
+[package]
+name = "clinical-library"
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+version.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+async-trait = "0.1"
+sea-orm = { version = "2", default-features = false, features = [
+    "macros",
+    "sqlx-postgres",
+    "runtime-tokio-rustls",
+    "with-uuid",
+] }
+sea-orm-migration = { version = "2", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "sqlx-postgres",
+] }
+thiserror = "2"
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+uuid = { version = "1", features = ["v4"] }
+
+[[bin]]
+name = "clinical-library-migrate"
+path = "src/bin/clinical-library-migrate.rs"

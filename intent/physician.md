@@ -419,7 +419,7 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
-**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces.
+**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces. The nightly's rules are in [Clinical library nightly](../verification/clinical-library/nightly/README.md).
 
 **Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Chords:
 

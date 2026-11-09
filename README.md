@@ -233,6 +233,7 @@ pg_ctl -D /tmp/coda-pg -o "-p 5544 -k /tmp" -l /tmp/coda-pg.log start
 export DUET_TEST_DATABASE_URL=postgresql://postgres@127.0.0.1:5544/postgres
 export PHYSICIAN_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
 export FRONT_DOOR_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
+export CLINICAL_LIBRARY_TEST_DATABASE_URL=$DUET_TEST_DATABASE_URL
 unset DUET_DISCOVERY_ENCODER_MODEL CODA_PATIENT_ENCODER_MODEL
 cargo test --workspace
 cargo fetch --locked --target wasm32-unknown-unknown
