@@ -330,13 +330,40 @@ Work integrity:
 
 Everything Coda reads in the MVP is read only.
 
-- **The practice's EHR.** No EHR is chosen in advance. Use relevant available sandboxes to learn what different sources expose and inform the shared adapter contract. Choose sources based on the first practice's needs, available access, and what the adapters can read.
+- **The practice's EHR.** No EHR is chosen in advance. Choose sources based on the first practice's needs, available access, and what the adapters can read.
 - **For practices using Hint**, the planned adapter uses Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
 - **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch. Coda searches it as often as a question needs, reads as many sources as it judges useful, and keeps going until it has enough to answer.
+
+Every EHR names and shapes its records in its own way. If each part of Coda had to learn each EHR, every new practice would mean changes everywhere. So Coda files every patient record into one fixed set of buckets, and search, reviews, visit preparation and citations read only the buckets. A new source then needs only its own adapter. The adapter says where each record goes and never changes what the record says, so nothing clinical is lost or guessed on the way in.
+
+Each adapter files every record it reads into one bucket. The bucket comes from the source's own name for that kind of record. A record whose kind the adapter doesn't know goes to Other and is never dropped. One record has one bucket, and Coda never splits a record to file its parts. The bucket only says where to find a record. Its status, dates, codes and values stay exactly as the source sent them, and what they mean is the model's judgment.
+
+| Bucket | What belongs in it |
+|---|---|
+| Patient | Who the patient is: name, birth date, sex, identifiers and contact details. |
+| Problems | Diagnoses and health concerns on the problem list. |
+| Medications | Medications prescribed, dispensed or reported, including stopped ones. |
+| Allergies | Allergies and intolerances, including a record that none are known. |
+| Labs | Laboratory results. |
+| Vitals | Vital signs and body measurements. |
+| Reports | Imaging, pathology and other diagnostic reports that are not lab results. |
+| Notes | Notes a clinician wrote: visit notes, phone notes and other chart notes. |
+| Documents | Files kept in the chart: scans, faxes, letters and outside records. |
+| Visits | Appointments and encounters. |
+| Procedures | Procedures and surgeries that were done. |
+| Immunizations | Vaccines given or reported. |
+| Orders | Orders and referrals. |
+| History | Family, social, past medical and past surgical history. |
+| Care plans | Plans and goals. |
+| Forms | Forms and questionnaires that were filled in. |
+| Messages | Messages between the patient and the practice. |
+| Other | Any kind of record the adapter does not know. |
+
+A record is filed by what its source calls it, never by what it contains. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
@@ -416,6 +443,6 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. The literature service is an optional gateway, and chart answers work without it.
 
-**Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence, and new sources come as new adapters. An adapter is a declared table plus the code that signs in and fetches. For each kind of record the source has, the table names its bucket, the role of each date field, and where its status, codes and title are. An adapter copies. It never rewrites a value and never makes a clinical call. Every record carries the same envelope: its bucket, the source's own name for its kind, its source, ID and version, its dates with their role and the source's field name, its status in the source's words, its codes, a title, and the exact record with its hash, readable text and link into the source. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the exact record. Sources that share a format share a table. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
 
 **Storage.** Per-practice database topology is decided when it's needed.
