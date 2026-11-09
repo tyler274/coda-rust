@@ -461,13 +461,16 @@ fn chats_list_conversations_newest_first_and_skip_reply_drafts() {
     let chats = session.chats(None, "ws");
     let listed: Vec<_> = chats
         .iter()
-        .map(|(chat, first, _)| (chat.as_str(), first.as_str()))
+        .map(|(chat, first, _, archived)| {
+            assert!(!archived);
+            (chat.as_str(), first.as_str())
+        })
         .collect();
     assert_eq!(
         listed,
         [("chat-new", "Second chat"), ("chat-old", "First question")]
     );
-    assert!(chats.iter().all(|(_, _, opened_at)| *opened_at > 0));
+    assert!(chats.iter().all(|(_, _, opened_at, _)| *opened_at > 0));
     assert!(session.chats(None, "missing").is_empty());
 }
 
@@ -477,4 +480,78 @@ fn said(turns: &[(&str, &str)]) -> Vec<(String, String)> {
         .iter()
         .map(|(role, text)| ((*role).to_owned(), (*text).to_owned()))
         .collect()
+}
+
+#[test]
+fn archive_and_undo_each_take_effect_once_and_wait_for_running_work() {
+    use local_product::runtime::{Archive, Archived};
+    let mut session = PhysicianSession::memory();
+    let scope = || ChatScope {
+        owner: None,
+        workspace: "ws",
+        chat: "chat",
+    };
+    let archived = |session: &PhysicianSession| session.chats(None, "ws")[0].3;
+    let work = session
+        .submit(&binding(), "send-1", scope(), "Question")
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        session.archive("archive-1", scope(), Archive::Archive),
+        Ok(Archived::Busy),
+        "an answer being written keeps the conversation active"
+    );
+    assert!(!archived(&session));
+    session.complete(&work, "Answer").unwrap();
+
+    assert_eq!(
+        session.archive("archive-1", scope(), Archive::Archive),
+        Ok(Archived::Done),
+        "the same key is asked again once the answer ends"
+    );
+    assert!(archived(&session));
+    assert_eq!(
+        session.archive("undo-1", scope(), Archive::Restore),
+        Ok(Archived::Done)
+    );
+    assert!(!archived(&session));
+    // The Archive's answer was lost and it is asked again after Undo: it was
+    // already taken, so the Undo stands.
+    assert_eq!(
+        session.archive("archive-1", scope(), Archive::Archive),
+        Ok(Archived::Duplicate)
+    );
+    assert!(!archived(&session));
+    assert_eq!(
+        session.archive("archive-2", scope(), Archive::Archive),
+        Ok(Archived::Done)
+    );
+    // Undo's lost answer re-asked after a newer Archive leaves that Archive.
+    assert_eq!(
+        session.archive("undo-1", scope(), Archive::Restore),
+        Ok(Archived::Duplicate)
+    );
+    assert!(archived(&session));
+    assert_eq!(
+        session.archive("archive-2", scope(), Archive::Restore),
+        Ok(Archived::Refused),
+        "one key never names both directions"
+    );
+    assert_eq!(
+        session.archive(
+            "archive-3",
+            ChatScope {
+                chat: "missing",
+                ..scope()
+            },
+            Archive::Archive
+        ),
+        Ok(Archived::Refused)
+    );
+
+    // Sending brings it back.
+    session
+        .submit(&binding(), "send-2", scope(), "Another")
+        .unwrap();
+    assert!(!archived(&session));
 }

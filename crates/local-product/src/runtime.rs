@@ -136,6 +136,11 @@ pub struct Conversation {
     /// starts it is an authored [`Message`] instead.
     #[serde(default)]
     pub queued: Vec<QueuedMessage>,
+    /// Database-clock seconds the physician archived the conversation, or
+    /// `None` while it is in the active list. Sending, Resume and Try again
+    /// clear it in the same transaction as their change.
+    #[serde(default)]
+    pub archived_at: Option<i64>,
 }
 
 /// A Send next message that has not started. It leaves the queue exactly
@@ -163,6 +168,8 @@ pub struct ChatSummary {
     pub opened_at: i64,
     /// Database-clock seconds of the latest visible activity (0 when unknown).
     pub last_activity_at: i64,
+    /// Listed under Archived rather than with the active chats.
+    pub archived: bool,
 }
 
 /// The chat list reads at most this many conversations of one workspace.
@@ -188,6 +195,7 @@ impl Default for Conversation {
             opened_at: 0,
             last_activity_at: 0,
             queued: vec![],
+            archived_at: None,
         }
     }
 }
@@ -280,6 +288,30 @@ pub enum Stopped {
     Duplicate,
     /// Nothing open to hold: missing, completed, or a different work identity,
     /// or a command field is blank.
+    Refused,
+}
+
+/// Which way an archive command moves a conversation.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Archive {
+    /// Out of the active list, into Archived.
+    Archive,
+    /// Undo: back into the active list.
+    Restore,
+}
+
+/// Outcome of a physician's Archive or its Undo.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Archived {
+    /// The conversation moved; tell open pages.
+    Done,
+    /// The same command was already taken, or the conversation was already
+    /// where it asked; nothing changed.
+    Duplicate,
+    /// Archive while an answer is running or a message is queued. Nothing is
+    /// saved, so the same key may be asked again once the work ends.
+    Busy,
+    /// No such conversation, a blank field, or another command under this key.
     Refused,
 }
 
@@ -522,6 +554,8 @@ impl Store {
             .ok_or_else(|| error("missing conversation"))?;
         let mut state: Conversation =
             serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        // Sending to an archived conversation brings it back.
+        state.archived_at = None;
         if mode == SendMode::Next
             && state.running()
             && let Some(session_hash) = session_hash.clone()
@@ -794,6 +828,7 @@ impl Store {
         if state.status == "held" || state.status == "failed" {
             state.status = "pending".into();
             state.failures = 0;
+            state.archived_at = None;
         }
         Self::save(tx, scope, &state).await
     }
@@ -869,6 +904,8 @@ impl Store {
         state.failures = 0;
         state.dispatch_after = 0;
         state.session_hash = Some(session_hash);
+        // Resume and Try again bring an archived conversation back.
+        state.archived_at = None;
         Self::save(tx, scope, &state).await?;
         Ok(Resumed::Pending { input_id })
     }
@@ -972,6 +1009,76 @@ impl Store {
         Ok(Stopped::Held)
     }
 
+    /// Hosted Archive, or its Undo. The receipt is saved with the change: the
+    /// same `key` and direction answers [`Archived::Duplicate`], so an Archive
+    /// re-asked after a lost answer never undoes a later Undo, and the other
+    /// direction under that key is refused. Archive is [`Archived::Busy`]
+    /// while an answer runs or a message waits in the queue. Only the
+    /// conversation's own row changes: attention and follow-ups are not the
+    /// conversation's, and are never touched.
+    pub async fn archive_authorized(
+        &self,
+        scope: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        direction: Archive,
+    ) -> Result<Archived, DbErr> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference"));
+        }
+        if [
+            key,
+            &scope.practice,
+            &scope.physician,
+            &scope.workspace,
+            &scope.chat,
+        ]
+        .iter()
+        .any(|part| part.trim().is_empty())
+        {
+            return Ok(Archived::Refused);
+        }
+        let tx = self.db.begin().await?;
+        let name = match direction {
+            Archive::Archive => "archive",
+            Archive::Restore => "restore",
+        };
+        let command = serde_json::json!({"scope": scope, name: true});
+        match receipt::record(&tx, &scope.practice, &scope.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Archived::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(Archived::Refused);
+            }
+        }
+        // Every early return below drops the transaction, which rolls the
+        // receipt back: only a change keeps it.
+        let Some(row) = conversation::Entity::find_by_id(keys(scope))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            return Ok(Archived::Refused);
+        };
+        let mut state: Conversation =
+            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        match direction {
+            Archive::Archive if state.archived_at.is_some() => return Ok(Archived::Duplicate),
+            Archive::Archive if state.running() || !state.queued.is_empty() => {
+                return Ok(Archived::Busy);
+            }
+            Archive::Archive => state.archived_at = Some(now(&tx).await?),
+            Archive::Restore if state.archived_at.is_none() => return Ok(Archived::Duplicate),
+            Archive::Restore => state.archived_at = None,
+        }
+        Self::save(tx, scope, &state).await?;
+        Ok(Archived::Done)
+    }
+
     /// The physician's chats in one workspace, latest activity first, then
     /// chat id descending. Another physician's chats are never listed.
     pub async fn chats(
@@ -1024,6 +1131,7 @@ impl Store {
                 first_message: first.text.clone(),
                 opened_at: state.opened_at,
                 last_activity_at: Ord::max(state.last_activity_at, state.opened_at),
+                archived: state.archived_at.is_some(),
             });
         }
         chats.sort_by(|a, b| {

@@ -1012,6 +1012,8 @@ pub enum ChatView {
 pub struct ChatLine {
     pub id: String,
     pub title: String,
+    /// Listed under Archived until a message, Resume, Try again or Undo.
+    pub archived: bool,
 }
 
 /// The workspace's conversations. `opened` is the conversation the page has
@@ -1035,12 +1037,14 @@ pub fn chat_view(
                 .map(|chat| ChatLine {
                     id: chat.chat_id.clone(),
                     title: chat.title.clone().unwrap_or_else(|| "Untitled".to_owned()),
+                    archived: chat.archived,
                 })
                 .collect();
             if let Some(id) = opened.filter(|id| lines.iter().all(|line| line.id != *id)) {
                 lines.push(ChatLine {
                     id: id.to_owned(),
                     title: "Untitled".to_owned(),
+                    archived: false,
                 });
             }
             if lines.is_empty() {
@@ -1365,6 +1369,7 @@ mod tests {
         let morning = ChatLine {
             id: "c1".to_owned(),
             title: "Morning".to_owned(),
+            archived: false,
         };
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&open)), None),
@@ -1379,6 +1384,7 @@ mod tests {
         let started = ChatLine {
             id: "c9".to_owned(),
             title: "Untitled".to_owned(),
+            archived: false,
         };
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&empty)), Some("c9")),
@@ -1386,7 +1392,18 @@ mod tests {
         );
         assert_eq!(
             chat_view(Some("p1"), Some(Ok(&open)), Some("c9")),
-            ChatView::Chats(vec![morning, started])
+            ChatView::Chats(vec![morning.clone(), started])
+        );
+        let filed: PatientWorkspaceResponse = serde_json::from_str(
+            r#"{"patient_workspace_id":"p1","display_name":"Ada","chats":[{"chat_id":"c1","title":"Morning","created_at":"2026-10-09T12:00:00Z","archived":true}]}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            chat_view(Some("p1"), Some(Ok(&filed)), None),
+            ChatView::Chats(vec![ChatLine {
+                archived: true,
+                ..morning
+            }])
         );
         assert_eq!(chat_view(Some("p1"), None, Some("c9")), ChatView::Pending);
         assert_eq!(chat_view(None, None, Some("c9")), ChatView::Closed);

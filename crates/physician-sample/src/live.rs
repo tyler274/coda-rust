@@ -229,7 +229,7 @@ impl Live {
         ctx: Option<&AuthContext>,
         workspace: &str,
     ) -> Result<Vec<Value>, ()> {
-        let chats: Vec<(String, String, i64)> = match (&self.durable, ctx) {
+        let chats: Vec<(String, String, i64, bool)> = match (&self.durable, ctx) {
             // Hosted routes always carry a session; without one there is no physician.
             (Some(_), None) => vec![],
             (Some(durable), Some(ctx)) => durable
@@ -242,7 +242,7 @@ impl Live {
                 .await
                 .map_err(|_| ())?
                 .into_iter()
-                .map(|chat| (chat.chat, chat.first_message, chat.opened_at))
+                .map(|chat| (chat.chat, chat.first_message, chat.opened_at, chat.archived))
                 .collect(),
             (None, _) => self
                 .session
@@ -250,14 +250,19 @@ impl Live {
                 .expect("chat session")
                 .chats(chat_owner(ctx).as_ref(), workspace)
                 .into_iter()
-                .map(|(chat, first, opened_at)| {
-                    (chat, first, i64::try_from(opened_at).unwrap_or_default())
+                .map(|(chat, first, opened_at, archived)| {
+                    (
+                        chat,
+                        first,
+                        i64::try_from(opened_at).unwrap_or_default(),
+                        archived,
+                    )
                 })
                 .collect(),
         };
         Ok(chats
             .into_iter()
-            .map(|(chat_id, first, opened_at)| {
+            .map(|(chat_id, first, opened_at, archived)| {
                 let created_at = local_product::codex::format_rfc3339(
                     std::time::UNIX_EPOCH + std::time::Duration::from_secs(opened_at.max(0) as u64),
                 );
@@ -265,6 +270,7 @@ impl Live {
                     "chat_id": chat_id,
                     "title": chat_title(&first),
                     "created_at": created_at,
+                    "archived": archived,
                 })
             })
             .collect())
@@ -428,9 +434,9 @@ struct QueuedPayload {
     text: Option<String>,
 }
 
-/// Accepts `message.submit`, and, on the hosted path, `message.edit`,
-/// `message.withdraw`, `work.resume`, `work.stop`, and `reply.revise`. Every
-/// other command is rejected.
+/// Accepts `message.submit`, `conversation.archive`, `conversation.restore`,
+/// and, on the hosted path, `message.edit`, `message.withdraw`, `work.resume`,
+/// `work.stop`, and `reply.revise`. Every other command is rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -450,6 +456,12 @@ pub(crate) async fn submit(
     }
     if matches!(body.kind.as_str(), "message.edit" | "message.withdraw") && live.durable.is_some() {
         return change_queued(live, auth_ctx, body).await;
+    }
+    if matches!(
+        body.kind.as_str(),
+        "conversation.archive" | "conversation.restore"
+    ) {
+        return archive(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -994,6 +1006,96 @@ async fn change_queued(
         }
         Err(_) => {
             tracing::warn!(command = kind, "physician queued message change failed");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message(kind),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+/// `conversation.archive` and `conversation.restore` name one chat.
+#[derive(Deserialize)]
+struct ArchivePayload {
+    patient_workspace_id: String,
+    chat_id: String,
+}
+
+/// Why Archive waits, shown beside the control.
+const ARCHIVE_BUSY: &str = "Coda can archive this conversation once nothing is running or queued.";
+
+/// `conversation.archive` and its Undo, `conversation.restore`, once per key,
+/// on the hosted and the one-process paths alike. The workspace is checked by
+/// the auth middleware; only this physician's chat moves.
+async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    use local_product::runtime::{Archive, Archived};
+    let kind = body.kind.as_str();
+    let direction = if kind == "conversation.archive" {
+        Archive::Archive
+    } else {
+        Archive::Restore
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<ArchivePayload>(value).ok())
+    else {
+        return rejected(kind);
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected(kind);
+    };
+    let outcome = match (&live.durable, &ctx) {
+        (Some(_), None) => return StatusCode::UNAUTHORIZED.into_response(),
+        (Some(chat), Some(ctx)) => {
+            let scope = local_product::runtime::Scope {
+                practice: ctx.identity.practice_id.clone(),
+                physician: ctx.identity.physician_id.clone(),
+                workspace: payload.patient_workspace_id.clone(),
+                chat: payload.chat_id.clone(),
+            };
+            let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+            chat.store
+                .archive_authorized(&scope, &key, session_hash, direction)
+                .await
+                .map_err(|error| error.to_string())
+        }
+        (None, _) => {
+            let owner = chat_owner(ctx.as_ref());
+            live.session.lock().expect("chat session").archive(
+                &key,
+                ChatScope {
+                    owner: owner.as_ref(),
+                    workspace: &payload.patient_workspace_id,
+                    chat: &payload.chat_id,
+                },
+                direction,
+            )
+        }
+    };
+    match outcome {
+        Ok(Archived::Refused) => rejected(kind),
+        Ok(Archived::Busy) => Json(json!({
+            "outcome": "rejected",
+            "message": ARCHIVE_BUSY,
+        }))
+        .into_response(),
+        Ok(outcome) => {
+            if outcome == Archived::Done {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+            }))
+            .into_response()
+        }
+        Err(_) => {
+            tracing::warn!(command = kind, "physician conversation archive failed");
             (
                 StatusCode::SERVICE_UNAVAILABLE,
                 Json(json!({

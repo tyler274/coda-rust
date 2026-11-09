@@ -104,6 +104,13 @@ struct Target {
     /// Unix seconds when the target was created; 0 on older session files.
     #[serde(default)]
     opened_at: u64,
+    /// Listed under Archived until a new message or Undo.
+    #[serde(default)]
+    archived: bool,
+    /// Each archive command taken on this chat: its key and whether it
+    /// archived (`true`) or restored, so a re-asked key changes nothing.
+    #[serde(default)]
+    archive_keys: Vec<(String, bool)>,
 }
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 struct State {
@@ -258,10 +265,13 @@ impl PhysicianSession {
                         draft: None,
                         restore_text: None,
                         opened_at: unix_now(),
+                        archived: false,
+                        archive_keys: vec![],
                     });
                     state.targets.len() - 1
                 });
             let target_state = &mut state.targets[index];
+            target_state.archived = false;
             target_state.revision += 1;
             target_state.turns.push(("user".into(), text.into()));
             let work = Work {
@@ -322,6 +332,8 @@ impl PhysicianSession {
                     draft: None,
                     restore_text: None,
                     opened_at: unix_now(),
+                    archived: false,
+                    archive_keys: vec![],
                 });
             }
             let t = state
@@ -373,6 +385,8 @@ impl PhysicianSession {
                 draft: Some(text.into()),
                 restore_text: None,
                 opened_at: unix_now(),
+                archived: false,
+                archive_keys: vec![],
             });
             Ok(1)
         })
@@ -587,9 +601,13 @@ impl PhysicianSession {
             .unwrap_or_default()
     }
     /// This owner's chats in a workspace that have a physician turn, newest opened first,
-    /// each with its first physician message and opening Unix second. Reply
-    /// drafts have no turns and are not chats.
-    pub fn chats(&self, owner: Option<&ChatOwner>, workspace: &str) -> Vec<(String, String, u64)> {
+    /// each with its first physician message, opening Unix second, and whether
+    /// it is archived. Reply drafts have no turns and are not chats.
+    pub fn chats(
+        &self,
+        owner: Option<&ChatOwner>,
+        workspace: &str,
+    ) -> Vec<(String, String, u64, bool)> {
         self.state
             .targets
             .iter()
@@ -597,9 +615,62 @@ impl PhysicianSession {
             .filter(|t| t.owner.as_ref() == owner && t.workspace == workspace)
             .filter_map(|t| {
                 let (_, first) = t.turns.iter().find(|(role, _)| role == "user")?;
-                Some((t.id.clone(), first.clone(), t.opened_at))
+                Some((t.id.clone(), first.clone(), t.opened_at, t.archived))
             })
             .collect()
+    }
+    /// Archive, or its Undo, on one of this owner's chats, once per key: a
+    /// re-asked key answers [`Archived::Duplicate`] and changes nothing, and
+    /// the other direction under that key is refused. Archive is
+    /// [`Archived::Busy`] while an answer is being written.
+    pub fn archive(
+        &mut self,
+        key: &str,
+        scope: ChatScope<'_>,
+        direction: crate::runtime::Archive,
+    ) -> Result<crate::runtime::Archived, String> {
+        use crate::runtime::{Archive, Archived};
+        let ChatScope {
+            owner,
+            workspace,
+            chat,
+        } = scope;
+        if [key, workspace, chat].iter().any(|s| s.trim().is_empty()) {
+            return Ok(Archived::Refused);
+        }
+        let archive = direction == Archive::Archive;
+        self.change(|state| {
+            let running = state.work.iter().any(|w| {
+                w.owner.as_ref() == owner
+                    && w.workspace == workspace
+                    && w.target == chat
+                    && w.status == Status::Active
+            });
+            let Some(target) = state.targets.iter_mut().find(|t| {
+                t.owner.as_ref() == owner
+                    && t.workspace == workspace
+                    && t.id == chat
+                    && !t.turns.is_empty()
+            }) else {
+                return Ok(Archived::Refused);
+            };
+            if let Some((_, taken)) = target.archive_keys.iter().find(|(k, _)| k == key) {
+                return Ok(if *taken == archive {
+                    Archived::Duplicate
+                } else {
+                    Archived::Refused
+                });
+            }
+            if target.archived == archive {
+                return Ok(Archived::Duplicate);
+            }
+            if archive && running {
+                return Ok(Archived::Busy);
+            }
+            target.archived = archive;
+            target.archive_keys.push((key.to_owned(), archive));
+            Ok(Archived::Done)
+        })
     }
     /// Saved draft revision, current text, and replaced text.
     pub fn draft(&self, workspace: &str, target: &str) -> Option<(u64, String, Option<String>)> {

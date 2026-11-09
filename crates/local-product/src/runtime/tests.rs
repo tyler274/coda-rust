@@ -1,3 +1,5 @@
+#[path = "tests/archive.rs"]
+mod archive_tests;
 #[path = "tests/queue.rs"]
 mod queue_tests;
 #[path = "tests/reply.rs"]
