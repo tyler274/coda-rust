@@ -181,7 +181,7 @@ The Send button and Cmd/Ctrl+Enter share one path. Acceptance removes only the s
 
 `GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Postgres orders them by latest activity, then chat id, before taking the newest 200, so a chat that just got a message lists however many older chats the workspace has. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id. The navigation owner keeps `?patient=` and `?chat=` aligned with the selected conversation, including sidebar selection and patient changes, and removes both when leaving the patient page. A chat is listed after a reload once its first message is accepted.
 
-The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
+The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker also sets `cpu_idle = false` and keeps one instance up, so it stays running between the push requests that deliver its turns. Duet has no Redis instance and no chat-turn topic.
 
 `nix develop` provides `valkey` and the Pub/Sub emulator.
 

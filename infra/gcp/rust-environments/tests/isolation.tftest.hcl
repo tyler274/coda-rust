@@ -665,13 +665,13 @@ run "physician_scale_active" {
     condition = keys(google_cloud_run_v2_service.physician_worker) == ["physician"] && alltrue([for w in google_cloud_run_v2_service.physician_worker :
       w.ingress == "INGRESS_TRAFFIC_INTERNAL_ONLY" && !w.iap_enabled && !w.invoker_iam_disabled &&
       w.template[0].service_account == "physician-worker-runtime@test-rust-stg-only.iam.gserviceaccount.com" &&
-      w.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" && w.template[0].scaling[0].min_instance_count == 0 && w.template[0].scaling[0].max_instance_count == 2 &&
+      w.template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" && w.template[0].scaling[0].min_instance_count == 1 && w.template[0].scaling[0].max_instance_count == 2 &&
       w.template[0].timeout == "600s" && w.template[0].max_instance_request_concurrency == 4 &&
       w.template[0].containers[0].resources[0].limits == tomap({ cpu = "1", memory = "1Gi" }) &&
-      w.template[0].containers[0].resources[0].cpu_idle &&
+      !w.template[0].containers[0].resources[0].cpu_idle &&
       w.template[0].containers[0].image == var.images["physician"].worker
     ])
-    error_message = "The worker is internal-only, IAM-checked, private-egress, scale-capped and runs the recorded worker digest."
+    error_message = "The worker is internal-only, IAM-checked, private-egress, scale-capped, keeps one instance with CPU allocated between requests, and runs the recorded worker digest."
   }
   assert {
     condition     = google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].role == "roles/run.invoker" && google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].members == toset(["serviceAccount:physician-pubsub-push@test-rust-stg-only.iam.gserviceaccount.com"])
@@ -698,7 +698,7 @@ run "physician_scale_active" {
   # Site: physician keeps CPU between requests and learns the topic; Duet is unchanged.
   assert {
     condition     = !google_cloud_run_v2_service.app["physician"].template[0].containers[0].resources[0].cpu_idle && google_cloud_run_v2_service.app["duet"].template[0].containers[0].resources[0].cpu_idle
-    error_message = "Only the physician site keeps CPU allocated between requests."
+    error_message = "Of the two sites, only physician keeps CPU allocated between requests."
   }
   assert {
     condition     = google_cloud_run_v2_service.app["physician"].template[0].scaling[0].min_instance_count == 1 && google_cloud_run_v2_service.app["physician"].template[0].scaling[0].max_instance_count == 2 && google_cloud_run_v2_service.app["duet"].template[0].scaling[0].min_instance_count == 0
@@ -1136,19 +1136,19 @@ run "observability_active" {
     )]) && length(google_cloud_run_v2_service.physician_worker) == 1
     error_message = "physician, duet and physician-worker run the named product container at index 0 (port 8080, no depends_on) and the pinned otel-collector at index 1 with its health probe."
   }
-  # CPU allocation does not follow the sidecar: only physician, whose
-  # listener, bus subscriber and recovery sweep run between requests, keeps
-  # instance-based CPU and its one minimum instance. Duet and the worker stay
-  # request-billed and scale to zero.
+  # CPU allocation does not follow the sidecar. Physician, whose listener, bus
+  # subscriber and recovery sweep run between requests, and the worker, which
+  # stays running between requests, keep instance-based CPU and one minimum
+  # instance each. Duet stays request-billed and scales to zero.
   assert {
     condition = alltrue([for name, service in merge(
       { for app, service in google_cloud_run_v2_service.app : app => service },
       { for _, worker in google_cloud_run_v2_service.physician_worker : "physician-worker" => worker },
       ) : (
-      alltrue([for container in service.template[0].containers : container.resources[0].cpu_idle == (name != "physician")]) &&
-      service.template[0].scaling[0].min_instance_count == (name == "physician" ? 1 : 0)
+      alltrue([for container in service.template[0].containers : container.resources[0].cpu_idle == (name == "duet")]) &&
+      service.template[0].scaling[0].min_instance_count == (name == "duet" ? 0 : 1)
     )])
-    error_message = "With observability on, only physician keeps CPU allocated (both containers) and one minimum instance; duet and physician-worker keep request-based CPU and scale to zero."
+    error_message = "With observability on, physician and physician-worker keep CPU allocated (both containers) and one minimum instance each; duet keeps request-based CPU and scales to zero."
   }
   assert {
     condition = alltrue([for containers in concat(
