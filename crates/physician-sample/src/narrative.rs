@@ -209,6 +209,8 @@ mod tests {
             "<div xmlns=\"http://www.w3.org/1999/xhtml\"></div>",
             "<div>\n  <p> </p>\n</div>",
             "<div><!-- nothing --></div>",
+            "<div><p>&nbsp;&#160;</p><br/></div>",
+            "<div><script>alert(1)</script><style>p{}</style></div>",
         ] {
             let record = json!({"text":{"status":"generated","div":div}});
             assert_eq!(narrative(&record), None, "{div:?}");
