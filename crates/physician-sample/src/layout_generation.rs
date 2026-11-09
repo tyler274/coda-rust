@@ -15,7 +15,7 @@ use local_product::physician_layouts::{LayoutKey, LayoutStoreError, Saved};
 use local_product::runtime::Store;
 use serde_json::{Value, json};
 
-use crate::source_layout::{Layout, LayoutRefusal};
+use crate::source_layout::{Layout, Refusal};
 
 /// What the model is told: its task, the roles and the rule that it never writes a value.
 pub const INSTRUCTIONS: &str = include_str!("layout_generation.md");
@@ -80,11 +80,29 @@ pub enum Unsaved {
     /// The reply is not a layout.
     NotALayout(serde_json::Error),
     /// The layout does not read the record it was made from.
-    Refused(LayoutRefusal),
+    Refused(Refusal),
     /// The layout store could not be read or written.
     Store(LayoutStoreError),
 }
 
+impl Unsaved {
+    /// Why nothing was saved, as a fixed name that logs can carry.
+    pub fn category(&self) -> &'static str {
+        match self {
+            Self::RecordNotJson(_) => "record_not_json",
+            Self::RequestTooLarge { .. } => "request_too_large",
+            Self::Model(_) => "model",
+            Self::TimedOut => "timed_out",
+            Self::NotALayout(_) => "not_a_layout",
+            Self::Refused(_) => "refused",
+            Self::Store(_) => "store",
+        }
+    }
+}
+
+/// Names no record or model text: a model failure's reason is the provider adapter's own fixed
+/// wording, and a refusal's or JSON error's detail stays in its source (see
+/// [`crate::source_layout::Loggable`]).
 impl fmt::Display for Unsaved {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -265,7 +283,7 @@ mod tests {
     use crate::live::{cited_layouts, durable_snapshot_body};
     use crate::source_inspection::inspection;
     use crate::source_inspection::tests::{general_citation, observation};
-    use crate::source_layout::{RoleMismatchReason, SlotRole};
+    use crate::source_layout::{LayoutRefusal, RoleMismatchReason, SlotRole};
     use harness::engine::Turn;
     use local_product::runtime::{Conversation, Message, async_trait};
     use std::sync::Arc;
@@ -429,7 +447,13 @@ mod tests {
         let cases: [(&str, Expected); 4] = [
             (&typed_in, |e| matches!(e, Unsaved::NotALayout(_))),
             (&missing, |e| {
-                matches!(e, Unsaved::Refused(LayoutRefusal::Unresolved { .. }))
+                matches!(
+                    e,
+                    Unsaved::Refused(Refusal {
+                        cause: LayoutRefusal::Unresolved { .. },
+                        ..
+                    })
+                )
             }),
             ("Here is the layout you asked for.", |e| {
                 matches!(e, Unsaved::NotALayout(_))
@@ -459,10 +483,14 @@ mod tests {
         let error = ensure_layout(&store, &mut model, key(&cited), &cited, "a1")
             .await
             .unwrap_err();
-        let Unsaved::Refused(LayoutRefusal::RoleMismatch {
-            pointer,
-            role,
-            reason,
+        let Unsaved::Refused(Refusal {
+            cause:
+                LayoutRefusal::RoleMismatch {
+                    pointer,
+                    role,
+                    reason,
+                },
+            ..
         }) = error
         else {
             panic!("{error:?}");

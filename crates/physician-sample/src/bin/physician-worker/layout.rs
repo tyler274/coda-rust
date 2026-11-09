@@ -15,6 +15,7 @@ use local_product::ModelBinding;
 use local_product::physician_layouts::LayoutKey;
 use local_product::runtime::{Scope, async_trait};
 use physician_sample::layout_generation::{Outcome, Unsaved, ensure_layout, first_of_each_key};
+use physician_sample::source_layout::{Loggable, SlotRole};
 use serde_json::json;
 
 use super::{Worker, configured};
@@ -242,42 +243,113 @@ async fn one(
                 "another writer stored this source layout first; it stays"
             );
         }
-        Err(error) => {
-            tracing::warn!(
-                source_id,
-                record_type,
-                error = causes(&error),
-                "source layout not saved; its records read through the general view"
-            );
-        }
+        Err(error) => log_unsaved(key, &error),
     }
 }
 
-/// `error` and its causes, outermost first: a refused pointer and role, or a store failure. A
-/// JSON error names only its kind and position, since its text can quote the record or the reply,
-/// and worker logs carry no clinical content.
-fn causes(error: &Unsaved) -> String {
-    if let Unsaved::RecordNotJson(json) | Unsaved::NotALayout(json) = error {
-        return format!(
-            "{error}: {:?} error at line {}, column {}",
-            json.classify(),
-            json.line(),
-            json.column()
-        );
-    }
-    let mut text = error.to_string();
-    let mut source = std::error::Error::source(error);
-    while let Some(cause) = source {
-        text.push_str(": ");
-        text.push_str(&cause.to_string());
-        source = cause.source();
-    }
-    text
+/// Logs why `key`'s layout was not saved: its category, and for a refusal the role and the
+/// place in the layout, never a pointer, record type or label the model or record wrote.
+fn log_unsaved(key: LayoutKey<'_>, error: &Unsaved) {
+    let LayoutKey {
+        source_id,
+        record_type,
+    } = key;
+    let refusal = match error {
+        Unsaved::Refused(refusal) => Some(refusal),
+        _ => None,
+    };
+    tracing::warn!(
+        source_id,
+        record_type,
+        unsaved = error.category(),
+        refusal = refusal.map(|refusal| refusal.cause.category()),
+        role = refusal.and_then(|refusal| refusal.role).map(SlotRole::name),
+        part = refusal.map(|refusal| refusal.at.part.name()),
+        section = refusal.and_then(|refusal| refusal.at.section()),
+        slot = refusal.and_then(|refusal| refusal.at.slot),
+        element = refusal.and_then(|refusal| refusal.at.element),
+        error = %Loggable(error),
+        "source layout not saved; its records read through the general view"
+    );
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use physician_sample::source_layout::Layout;
+    use std::sync::{Arc, Mutex};
+
+    /// Every field of every event, as text, so a test can search what a log line carries.
+    #[derive(Clone, Default)]
+    struct Captured(Arc<Mutex<Vec<String>>>);
+
+    impl<S: tracing::Subscriber> tracing_subscriber::Layer<S> for Captured {
+        fn on_event(
+            &self,
+            event: &tracing::Event<'_>,
+            _: tracing_subscriber::layer::Context<'_, S>,
+        ) {
+            struct Fields<'a>(&'a mut String);
+            impl tracing::field::Visit for Fields<'_> {
+                fn record_debug(
+                    &mut self,
+                    field: &tracing::field::Field,
+                    value: &dyn std::fmt::Debug,
+                ) {
+                    self.0.push_str(&format!("{}={value:?} ", field.name()));
+                }
+            }
+            let mut line = String::new();
+            event.record(&mut Fields(&mut line));
+            self.0.lock().unwrap().push(line);
+        }
+    }
+
+    /// A model reply that puts clinical text where a pointer, a record type and a label go is
+    /// refused, and the worker's log of that refusal carries its category, role and place but
+    /// none of that text.
+    #[test]
+    fn a_refused_layout_logs_its_place_and_no_clinical_text() {
+        use tracing_subscriber::layer::SubscriberExt;
+        const CLINICAL: &str = "Potassium 5.9 mmol/L";
+        let record = json!({"resourceType":"Observation","status":"final",
+            "valueQuantity":{"value":5.9,"unit":"mmol/L"}});
+        let section = |pointer: &str| {
+            json!({"record_type":"Observation","sections":[{"heading":"Result","slots":[
+                {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
+                {"label":CLINICAL,"role":"unit","pointer":pointer}]}]})
+        };
+        let typed = json!({"record_type":CLINICAL,"sections":[]});
+        let cases = [
+            (section(&format!("/{CLINICAL}")), "unresolved"),
+            (section(CLINICAL), "malformed_pointer"),
+            (typed, "wrong_record_type"),
+        ];
+        let key = LayoutKey {
+            source_id: "ehr",
+            record_type: "Observation",
+        };
+        // No other test reaches this log, so its callsite first registers under this subscriber.
+        let captured = Captured::default();
+        let subscriber = tracing_subscriber::registry().with(captured.clone());
+        tracing::subscriber::with_default(subscriber, || {
+            for (layout, _) in &cases {
+                let layout: Layout = serde_json::from_value(layout.clone()).unwrap();
+                let refusal = layout.validate(&record).unwrap_err();
+                log_unsaved(key, &Unsaved::Refused(refusal));
+            }
+        });
+        let lines = captured.0.lock().unwrap();
+        assert_eq!(lines.len(), cases.len());
+        for (line, (_, category)) in lines.iter().zip(cases) {
+            assert!(!line.contains("Potassium"), "{line}");
+            assert!(line.contains("unsaved=\"refused\""), "{line}");
+            assert!(line.contains(&format!("refusal=\"{category}\"")), "{line}");
+        }
+        assert!(lines[0].contains("role=\"unit\""), "{}", lines[0]);
+        assert!(lines[0].contains("section=0"), "{}", lines[0]);
+        assert!(lines[0].contains("slot=1"), "{}", lines[0]);
+    }
 
     /// The phase gets its full bound early in a push, is cut short so it ends before the push
     /// deadline with time left to acknowledge, and gets nothing once that time is gone.

@@ -766,11 +766,12 @@ fn usable_layout(
     match Layout::parse(&stored.layout) {
         Ok(layout) => Some(layout),
         Err(error) => {
+            // A JSON error's text can quote the layout, so only its kind and position are logged.
             tracing::warn!(
                 source_id,
                 record_type,
                 layout_sha256 = stored.sha256,
-                error = &error as &dyn std::error::Error,
+                error = %crate::source_layout::JsonFault(&error),
                 "stored source layout does not parse; reading through the general view"
             );
             None

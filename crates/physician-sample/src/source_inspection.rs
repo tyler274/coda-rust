@@ -1,6 +1,6 @@
 //! How a physician reads a cited record: the source's own statement and dates first, the exact
 //! retained bytes and storage details under Technical details. Nothing here infers clinical truth.
-use crate::source_layout::{self, Layout};
+use crate::source_layout::{self, Layout, Loggable, SlotRole};
 use local_product::physician_chat::Citation;
 use physician_wire::{SourceField, SourceInspection, SourcePreviewContent, SourceTechnicalDetails};
 use serde_json::Value;
@@ -58,9 +58,26 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
         view.attribution.push(field("Source system", label));
     }
     let numbers = NumberLiterals::read(&citation.content);
-    let layout = layout
-        .zip(resource.as_ref())
-        .and_then(|(layout, record)| layout.validate(record).ok());
+    let layout = layout.zip(resource.as_ref()).and_then(|(layout, record)| {
+        match layout.validate(record) {
+            Ok(validated) => Some(validated),
+            Err(refusal) => {
+                tracing::warn!(
+                    source_id = citation.source_id.as_deref(),
+                    record_type = citation.record_type,
+                    refusal = refusal.cause.category(),
+                    role = refusal.role.map(SlotRole::name),
+                    part = refusal.at.part.name(),
+                    section = refusal.at.section(),
+                    slot = refusal.at.slot,
+                    element = refusal.at.element,
+                    error = %Loggable(&refusal),
+                    "stored source layout refused for this record; reading through the general view"
+                );
+                None
+            }
+        }
+    });
     match (&resource, layout) {
         // A layout rearranges the general view, which shows every leaf of the record.
         (Some(Value::Object(record)), Some(layout)) => {

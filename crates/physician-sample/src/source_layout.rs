@@ -80,9 +80,10 @@ pub enum SlotRole {
     Other,
 }
 
-impl fmt::Display for SlotRole {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str(match self {
+impl SlotRole {
+    /// The role in words, as logs and refusals name it.
+    pub fn name(self) -> &'static str {
+        match self {
             Self::Result => "result",
             Self::Unit => "unit",
             Self::ReferenceRangeLow => "reference range low",
@@ -94,7 +95,13 @@ impl fmt::Display for SlotRole {
             Self::Code => "code",
             Self::Note => "note",
             Self::Other => "other",
-        })
+        }
+    }
+}
+
+impl fmt::Display for SlotRole {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.name())
     }
 }
 
@@ -113,6 +120,149 @@ impl SlotRole {
             | Self::Other => true,
             Self::Result | Self::Unit | Self::Code | Self::Status | Self::Date => false,
         }
+    }
+}
+
+/// A layout's refusal of one record, and where in the layout it arose. Its fields keep what the
+/// layout and record wrote for programmatic use; its `Display`, and that of every cause, names
+/// only the category, the role and positions, since logs carry no clinical content.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Refusal {
+    /// Where in the layout the fault is.
+    pub at: Position,
+    /// The role of the slot at fault, when the fault is in one slot.
+    pub role: Option<SlotRole>,
+    /// What the fault is.
+    pub cause: LayoutRefusal,
+}
+
+impl fmt::Display for Refusal {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "the layout is refused at {}", self.at)?;
+        if let Some(role) = self.role {
+            write!(f, " ({role} slot)")?;
+        }
+        Ok(())
+    }
+}
+
+impl std::error::Error for Refusal {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        Some(&self.cause)
+    }
+}
+
+/// A place in a layout, by zero-based positions only.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Position {
+    /// The part of the layout.
+    pub part: Part,
+    /// The slot's position within that part, when one slot is at fault.
+    pub slot: Option<usize>,
+    /// The element of a repeated section the slot was read from.
+    pub element: Option<usize>,
+}
+
+/// A part of a layout.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Part {
+    /// The layout as a whole, against the record as a whole.
+    Whole,
+    /// The record's statuses.
+    Statuses,
+    /// The section at this position.
+    Section(usize),
+}
+
+impl Part {
+    /// The kind of part, a fixed name that logs can carry beside [`Position::section`].
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Whole => "whole",
+            Self::Statuses => "statuses",
+            Self::Section(_) => "section",
+        }
+    }
+}
+
+impl Position {
+    fn of(part: Part) -> Self {
+        Self {
+            part,
+            slot: None,
+            element: None,
+        }
+    }
+
+    fn slot(part: Part, slot: usize) -> Self {
+        Self {
+            slot: Some(slot),
+            ..Self::of(part)
+        }
+    }
+
+    /// The section's position, when the fault is in a section.
+    pub fn section(&self) -> Option<usize> {
+        match self.part {
+            Part::Section(index) => Some(index),
+            Part::Whole | Part::Statuses => None,
+        }
+    }
+}
+
+impl fmt::Display for Position {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self.part {
+            Part::Whole => f.write_str("the whole layout")?,
+            Part::Statuses => f.write_str("statuses")?,
+            Part::Section(index) => write!(f, "section {index}")?,
+        }
+        if let Some(slot) = self.slot {
+            write!(f, ", slot {slot}")?;
+        }
+        if let Some(element) = self.element {
+            write!(f, ", element {element}")?;
+        }
+        Ok(())
+    }
+}
+
+/// An error and its causes, outermost first, as logs show them. Every cause's `Display` in this
+/// crate's layout path is free of record and model text; a JSON error, whose text can quote the
+/// record or the reply, reads as its kind and position only.
+pub struct Loggable<'e>(pub &'e (dyn std::error::Error + 'static));
+
+impl fmt::Display for Loggable<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        let mut cause = Some(self.0);
+        let mut first = true;
+        while let Some(error) = cause {
+            if !first {
+                f.write_str(": ")?;
+            }
+            first = false;
+            match error.downcast_ref::<serde_json::Error>() {
+                Some(json) => write!(f, "{}", JsonFault(json))?,
+                None => write!(f, "{error}")?,
+            }
+            cause = error.source();
+        }
+        Ok(())
+    }
+}
+
+/// A JSON error by its kind and position, never its text.
+pub struct JsonFault<'e>(pub &'e serde_json::Error);
+
+impl fmt::Display for JsonFault<'_> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{:?} error at line {}, column {}",
+            self.0.classify(),
+            self.0.line(),
+            self.0.column()
+        )
     }
 }
 
@@ -218,35 +368,44 @@ impl fmt::Display for RoleMismatchReason {
 
 impl std::error::Error for RoleMismatchReason {}
 
+impl LayoutRefusal {
+    /// The refusal's category, a fixed name that logs can carry.
+    pub fn category(&self) -> &'static str {
+        match self {
+            Self::NotStructured => "not_structured",
+            Self::WrongRecordType { .. } => "wrong_record_type",
+            Self::EmptyHeading { .. } => "empty_heading",
+            Self::EmptyLabel { .. } => "empty_label",
+            Self::MalformedPointer { .. } => "malformed_pointer",
+            Self::Unresolved { .. } => "unresolved",
+            Self::RepeatNotAnArray { .. } => "repeat_not_an_array",
+            Self::MissingInElement { .. } => "missing_in_element",
+            Self::NotALeaf { .. } => "not_a_leaf",
+            Self::DuplicateBinding { .. } => "duplicate_binding",
+            Self::RoleMismatch { .. } => "role_mismatch",
+        }
+    }
+}
+
+/// Names the fault without the pointers, record types or labels it carries: those are written by
+/// the model or the record, and can hold clinical text.
 impl fmt::Display for LayoutRefusal {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::NotStructured => write!(f, "the record is not a structured object"),
-            Self::WrongRecordType { expected, found } => {
-                write!(f, "the layout reads {expected} records, not {found:?}")
+        f.write_str(match self {
+            Self::NotStructured => "the record is not a structured object",
+            Self::WrongRecordType { .. } => "the record is not of the type the layout reads",
+            Self::EmptyHeading { .. } => "a section has no heading",
+            Self::EmptyLabel { .. } => "a slot has no label",
+            Self::MalformedPointer { .. } => "a pointer is not an RFC 6901 JSON pointer",
+            Self::Unresolved { .. } => "a pointer names nothing in this record",
+            Self::RepeatNotAnArray { .. } => "a section repeats over something other than an array",
+            Self::MissingInElement { .. } => {
+                "an element lacks a value its slot requires and does not record why"
             }
-            Self::EmptyHeading { index } => write!(f, "section {index} has no heading"),
-            Self::EmptyLabel { pointer } => write!(f, "the slot for {pointer} has no label"),
-            Self::MalformedPointer { pointer, .. } => write!(f, "{pointer} is not a JSON pointer"),
-            Self::Unresolved { pointer } => write!(f, "{pointer} does not resolve in this record"),
-            Self::RepeatNotAnArray { pointer } => {
-                write!(f, "{pointer} is not an array a section can repeat over")
-            }
-            Self::MissingInElement { pointer, index } => write!(
-                f,
-                "element {index} has no {pointer} and does not record why it is absent"
-            ),
-            Self::NotALeaf { pointer } => {
-                write!(
-                    f,
-                    "{pointer} points at an object or array, not a single recorded value"
-                )
-            }
-            Self::DuplicateBinding { pointer } => write!(f, "{pointer} is bound more than once"),
-            Self::RoleMismatch { pointer, role, .. } => {
-                write!(f, "{pointer} cannot be read as the {role}")
-            }
-        }
+            Self::NotALeaf { .. } => "a pointer names an object or array, not one recorded value",
+            Self::DuplicateBinding { .. } => "a recorded value is bound more than once",
+            Self::RoleMismatch { .. } => "a slot's role does not fit the value it binds",
+        })
     }
 }
 
@@ -311,44 +470,60 @@ impl Layout {
     }
 
     /// Checks every heading, label and pointer against `record`, refusing at the first fault.
-    pub fn validate<'r>(&self, record: &'r Value) -> Result<ValidatedLayout<'r>, LayoutRefusal> {
+    pub fn validate<'r>(&self, record: &'r Value) -> Result<ValidatedLayout<'r>, Refusal> {
+        let whole = |cause| Refusal {
+            at: Position::of(Part::Whole),
+            role: None,
+            cause,
+        };
         if !record.is_object() {
-            return Err(LayoutRefusal::NotStructured);
+            return Err(whole(LayoutRefusal::NotStructured));
         }
         let found = record["resourceType"].as_str();
         if found != Some(self.record_type.as_str()) {
-            return Err(LayoutRefusal::WrongRecordType {
+            return Err(whole(LayoutRefusal::WrongRecordType {
                 expected: self.record_type.clone(),
                 found: found.map(str::to_owned),
-            });
+            }));
         }
         let mut bound = BTreeSet::new();
         let mut statuses = Vec::with_capacity(self.statuses.len());
-        for slot in &self.statuses {
+        for (index, slot) in self.statuses.iter().enumerate() {
+            let at = in_slot(Position::slot(Part::Statuses, index), slot);
             if slot.role != SlotRole::Status {
-                return Err(LayoutRefusal::RoleMismatch {
+                return Err(at(LayoutRefusal::RoleMismatch {
                     pointer: slot.pointer.clone(),
                     role: slot.role,
                     reason: RoleMismatchReason::StatusesHoldOnlyStatuses,
-                });
+                }));
             }
-            statuses.push(bind(slot, record, &mut bound)?);
+            statuses.push(bind(slot, record, &mut bound).map_err(at)?);
         }
         let mut sections = Vec::with_capacity(self.sections.len());
         for (index, section) in self.sections.iter().enumerate() {
+            let part = Part::Section(index);
             if section.heading.trim().is_empty() {
-                return Err(LayoutRefusal::EmptyHeading { index });
+                return Err(Refusal {
+                    at: Position::of(part),
+                    role: None,
+                    cause: LayoutRefusal::EmptyHeading { index },
+                });
             }
             match &section.repeat {
-                Some(repeat) => sections.extend(repeated(section, repeat, record, &mut bound)?),
-                None => sections.push(BoundSection {
-                    heading: section.heading.clone(),
-                    bindings: section
-                        .slots
-                        .iter()
-                        .map(|slot| bind(slot, record, &mut bound))
-                        .collect::<Result<_, _>>()?,
-                }),
+                Some(repeat) => {
+                    sections.extend(repeated(section, part, repeat, record, &mut bound)?);
+                }
+                None => {
+                    let mut bindings = Vec::with_capacity(section.slots.len());
+                    for (at_slot, slot) in section.slots.iter().enumerate() {
+                        let at = in_slot(Position::slot(part, at_slot), slot);
+                        bindings.push(bind(slot, record, &mut bound).map_err(at)?);
+                    }
+                    sections.push(BoundSection {
+                        heading: section.heading.clone(),
+                        bindings,
+                    });
+                }
             }
         }
         Ok(ValidatedLayout {
@@ -356,6 +531,16 @@ impl Layout {
             statuses,
             sections,
         })
+    }
+}
+
+/// Places a fault in `slot`, which sits `at` in the layout.
+fn in_slot(at: Position, slot: &Slot) -> impl Fn(LayoutRefusal) -> Refusal {
+    let role = slot.role;
+    move |cause| Refusal {
+        at,
+        role: Some(role),
+        cause,
     }
 }
 
@@ -379,47 +564,66 @@ fn bind<'r>(
 /// the element records a `dataAbsentReason`.
 fn repeated<'r>(
     section: &Section,
+    part: Part,
     repeat: &str,
     record: &'r Value,
     bound: &mut BTreeSet<String>,
-) -> Result<Vec<BoundSection<'r>>, LayoutRefusal> {
-    let repeat_tokens = tokens(repeat).map_err(|reason| LayoutRefusal::MalformedPointer {
-        pointer: repeat.to_owned(),
-        reason,
+) -> Result<Vec<BoundSection<'r>>, Refusal> {
+    let at_repeat = |cause| Refusal {
+        at: Position::of(part),
+        role: None,
+        cause,
+    };
+    let repeat_tokens = tokens(repeat).map_err(|reason| {
+        at_repeat(LayoutRefusal::MalformedPointer {
+            pointer: repeat.to_owned(),
+            reason,
+        })
     })?;
     let array = follow(record, &repeat_tokens, String::new(), Vec::new()).ok_or_else(|| {
-        LayoutRefusal::Unresolved {
+        at_repeat(LayoutRefusal::Unresolved {
             pointer: repeat.to_owned(),
-        }
+        })
     })?;
     let Value::Array(elements) = array.value else {
-        return Err(LayoutRefusal::RepeatNotAnArray {
+        return Err(at_repeat(LayoutRefusal::RepeatNotAnArray {
             pointer: repeat.to_owned(),
-        });
+        }));
     };
     // Labels and pointers are checked even when the array is empty.
     let slots = section
         .slots
         .iter()
-        .map(|slot| Ok((slot, checked(slot)?)))
-        .collect::<Result<Vec<_>, LayoutRefusal>>()?;
+        .enumerate()
+        .map(|(at_slot, slot)| {
+            let tokens = checked(slot).map_err(in_slot(Position::slot(part, at_slot), slot))?;
+            Ok((at_slot, slot, tokens))
+        })
+        .collect::<Result<Vec<_>, Refusal>>()?;
     let mut sections = Vec::with_capacity(elements.len());
     for (index, element) in elements.iter().enumerate() {
         let path = format!("{}[{index}]", array.path);
         let recorded_absence = element.get("dataAbsentReason").is_some();
         let mut bindings = Vec::with_capacity(slots.len());
-        for (slot, tokens) in &slots {
+        for (at_slot, slot, tokens) in &slots {
+            let at = in_slot(
+                Position {
+                    element: Some(index),
+                    ..Position::slot(part, *at_slot)
+                },
+                slot,
+            );
             match follow(element, tokens, path.clone(), array.members.clone()) {
                 Some(found) => {
                     let absolute = format!("{repeat}/{index}{}", slot.pointer);
-                    bindings.push(place(slot, found, &absolute, bound)?);
+                    bindings.push(place(slot, found, &absolute, bound).map_err(at)?);
                 }
                 None if slot.role.absence_is_ordinary() || recorded_absence => {}
                 None => {
-                    return Err(LayoutRefusal::MissingInElement {
+                    return Err(at(LayoutRefusal::MissingInElement {
                         pointer: slot.pointer.clone(),
                         index,
-                    });
+                    }));
                 }
             }
         }
@@ -889,7 +1093,179 @@ mod tests {
     }
 
     fn refusal(layout: &Layout, record: &Value) -> LayoutRefusal {
-        layout.validate(record).unwrap_err()
+        layout.validate(record).unwrap_err().cause
+    }
+
+    /// Clinical text a model or a record could write into a pointer, a type or a label.
+    const CLINICAL: &str = "Potassium 5.9 mmol/L";
+
+    #[test]
+    fn a_refusal_names_its_place_and_logs_no_text_the_layout_or_record_wrote() {
+        let record = observation();
+        let in_pointer = format!("/{CLINICAL}");
+        let mut typed = observation_layout();
+        typed.record_type = CLINICAL.into();
+        let mut unlabelled = with_slot(" ", &in_pointer);
+        unlabelled.sections[0].slots[0].label = " ".into();
+        let mut status = observation_layout();
+        status.statuses[0].pointer = in_pointer.clone();
+        let mut keyed = record.clone();
+        keyed[CLINICAL] = json!("recorded");
+        let mut repeated = blood_pressure_layout();
+        repeated.sections[1].slots[0].pointer = in_pointer.clone();
+        let cases = [
+            (
+                typed,
+                record.clone(),
+                Position::of(Part::Whole),
+                None,
+                "wrong_record_type",
+            ),
+            (
+                with_slot("Result", &in_pointer),
+                record.clone(),
+                Position::slot(Part::Section(0), 0),
+                Some(SlotRole::Other),
+                "unresolved",
+            ),
+            (
+                with_slot("Result", CLINICAL),
+                record.clone(),
+                Position::slot(Part::Section(0), 0),
+                Some(SlotRole::Other),
+                "malformed_pointer",
+            ),
+            (
+                unlabelled,
+                record.clone(),
+                Position::slot(Part::Section(0), 0),
+                Some(SlotRole::Other),
+                "empty_label",
+            ),
+            (
+                status,
+                record.clone(),
+                Position::slot(Part::Statuses, 0),
+                Some(SlotRole::Status),
+                "unresolved",
+            ),
+            (
+                with_role(
+                    "Result",
+                    SlotRole::Date,
+                    &format!("/{}", CLINICAL.replace('/', "~1")),
+                ),
+                keyed,
+                Position::slot(Part::Section(0), 0),
+                Some(SlotRole::Date),
+                "role_mismatch",
+            ),
+            (
+                repeated,
+                blood_pressure(),
+                Position {
+                    element: Some(0),
+                    ..Position::slot(Part::Section(1), 0)
+                },
+                Some(SlotRole::Result),
+                "missing_in_element",
+            ),
+        ];
+        for (layout, record, at, role, category) in cases {
+            let refused = layout.validate(&record).unwrap_err();
+            assert_eq!(
+                (refused.at, refused.role, refused.cause.category()),
+                (at, role, category)
+            );
+            let logged = Loggable(&refused).to_string();
+            assert!(!logged.contains("Potassium"), "{logged}");
+            assert!(logged.contains(&at.to_string()), "{logged}");
+            // The typed cause keeps what the layout wrote, for programmatic use.
+            assert!(format!("{:?}", refused.cause).contains("Potassium"));
+        }
+    }
+
+    #[test]
+    fn a_layout_that_does_not_parse_logs_its_fault_without_quoting_it() {
+        let stored = format!(r#"{{"record_type":"Observation","{CLINICAL}":1,"sections":[]}}"#);
+        let error = Layout::parse(&stored).unwrap_err();
+        assert!(error.to_string().contains("Potassium"), "{error}");
+        let logged = Loggable(&error).to_string();
+        assert!(!logged.contains("Potassium"), "{logged}");
+        assert!(logged.contains("line 1"), "{logged}");
+    }
+
+    /// Every field of every event in this test process, as text, so a test can search what a log
+    /// line carries. It is the process's global subscriber: tracing caches each callsite's
+    /// interest process-wide, so a subscriber scoped to one test thread misses events whose
+    /// callsite another thread reached first.
+    fn captured_logs() -> &'static std::sync::Mutex<Vec<String>> {
+        static LINES: std::sync::Mutex<Vec<String>> = std::sync::Mutex::new(Vec::new());
+        static INSTALLED: std::sync::Once = std::sync::Once::new();
+        INSTALLED.call_once(|| {
+            use tracing_subscriber::layer::SubscriberExt;
+            let subscriber = tracing_subscriber::registry().with(Captured);
+            tracing::subscriber::set_global_default(subscriber)
+                .expect("no other lib test installs a global subscriber");
+        });
+        &LINES
+    }
+
+    struct Captured;
+
+    impl<S: tracing::Subscriber> tracing_subscriber::Layer<S> for Captured {
+        fn on_event(
+            &self,
+            event: &tracing::Event<'_>,
+            _: tracing_subscriber::layer::Context<'_, S>,
+        ) {
+            struct Fields<'a>(&'a mut String);
+            impl tracing::field::Visit for Fields<'_> {
+                fn record_debug(
+                    &mut self,
+                    field: &tracing::field::Field,
+                    value: &dyn std::fmt::Debug,
+                ) {
+                    self.0.push_str(&format!("{}={value:?} ", field.name()));
+                }
+            }
+            let mut line = String::new();
+            event.record(&mut Fields(&mut line));
+            captured_logs().lock().unwrap().push(line);
+        }
+    }
+
+    /// A stored layout that does not fit one record is logged with its category and place, not
+    /// dropped silently, and the log quotes nothing the layout or the record wrote.
+    #[test]
+    fn a_stored_layout_refused_for_one_record_is_logged_without_its_text() {
+        let logs = captured_logs();
+        let mut cited = retained_observation();
+        let source_id = format!("ehr-{}", uuid::Uuid::new_v4());
+        cited.source_id = Some(source_id.clone());
+        let planted = with_slot("Result", &format!("/{CLINICAL}"));
+        let view = inspection_with_layout(&cited, Some(&planted));
+        assert_eq!(view, inspection(&cited));
+        let lines: Vec<String> = logs
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|line| line.contains(&source_id))
+            .cloned()
+            .collect();
+        let [line] = lines.as_slice() else {
+            panic!("{lines:?}");
+        };
+        assert!(!line.contains("Potassium"), "{line}");
+        for field in [
+            "refusal=\"unresolved\"",
+            "role=\"other\"",
+            "part=\"section\"",
+            "section=0",
+            "slot=0",
+        ] {
+            assert!(line.contains(field), "{field} in {line}");
+        }
     }
 
     /// The Observation layout with one slot of its first section replaced.

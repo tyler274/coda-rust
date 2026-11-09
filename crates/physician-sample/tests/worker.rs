@@ -1228,12 +1228,22 @@ async fn a_refused_or_failed_layout_saves_nothing_and_the_answer_still_publishes
             "{label}"
         );
         let tail = running.worker.tail();
-        let cause = if label == "layout_refused" {
-            "refused by its checks: /referenceRange/0/low/value cannot be read as the result: it lies inside a reference range"
+        let causes: &[&str] = if label == "layout_refused" {
+            &[
+                "role_mismatch",
+                "a slot's role does not fit the value it binds: it lies inside a reference range",
+            ]
         } else {
-            "fixed layout model failed"
+            &["fixed layout model failed"]
         };
-        assert!(tail.contains(cause), "{label}\n{tail}");
+        for cause in causes {
+            assert!(tail.contains(cause), "{label}: {cause}\n{tail}");
+        }
+        // The refusal names its place by position; the pointer the layout wrote stays out.
+        assert!(
+            !tail.contains("/referenceRange/0/low/value"),
+            "{label}\n{tail}"
+        );
     }
 }
 
