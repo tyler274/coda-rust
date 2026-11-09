@@ -3,7 +3,8 @@
 //! `nix develop .#android` supplies the SDK, the NDK, a JDK and a Rust
 //! toolchain with the Android standard library. `dx build --android` asks
 //! Gradle for build-tools 34; the Nix SDK only has 37, so a build-tools failure is patched and `gradlew assembleDebug`
-//! continues. Patch steps take the generated tree so tests can run without
+//! continues. A Gradle download that outlasts the wrapper's 10 s timeout is
+//! recovered the same way. Patch steps take the generated tree so tests can run without
 //! `dx` or an emulator.
 
 use std::env;
@@ -14,6 +15,8 @@ use std::process::Command;
 use super::Failure;
 
 const BUILD_TOOLS: &str = "37.0.0";
+
+const WRAPPER_TIMEOUT: &str = "networkTimeout=120000";
 
 const HARDWARE_KEYS: &str = "\
     // duet-hardware-keys
@@ -90,6 +93,12 @@ pub fn patch_generated_android_project(workspace: &Path, generated: &Path) -> Re
     }
     for path in &gradle_files {
         rewrite(path, patch_build_tools)?;
+    }
+    for path in find(generated, |path| {
+        path.file_name()
+            .is_some_and(|name| name == "gradle-wrapper.properties")
+    }) {
+        rewrite(&path, patch_wrapper_timeout)?;
     }
 
     let manifests = find(generated, is_main_manifest);
@@ -204,7 +213,7 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
     let mut log = String::from_utf8_lossy(&output.stdout).into_owned();
     log.push_str(&String::from_utf8_lossy(&output.stderr));
     print!("{log}");
-    if !output.status.success() && !log.contains("build-tools") {
+    if !output.status.success() && !assembly_continues(&log) {
         let code = output.status.code().unwrap_or(1);
         return Err(Failure::new(
             u8::try_from(code).unwrap_or(1),
@@ -212,6 +221,15 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
         ));
     }
     Ok(())
+}
+
+/// dx has generated the Gradle project by the time it assembles, so two of its
+/// Gradle failures are recoverable: the missing build-tools 34 (patched to 37)
+/// and the wrapper's 10 s download timeout (patched to 120 s). `gradlew
+/// assembleDebug` then retries with the patched project.
+fn assembly_continues(log: &str) -> bool {
+    log.contains("build-tools")
+        || (log.contains("services.gradle.org/distributions/") && log.contains("timeout"))
 }
 
 fn dx_program() -> Result<PathBuf, Failure> {
@@ -250,6 +268,22 @@ fn assemble_debug(generated: &Path) -> Result<(), Failure> {
         println!("{}", apk.display());
     }
     Ok(())
+}
+
+/// The generated wrapper gives up on the Gradle download after 10 s, which a
+/// slow CI network exceeds before any test runs.
+fn patch_wrapper_timeout(text: &str) -> String {
+    text.lines()
+        .map(|line| {
+            if line.starts_with("networkTimeout=") {
+                WRAPPER_TIMEOUT
+            } else {
+                line
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+        + "\n"
 }
 
 fn patch_build_tools(text: &str) -> String {
@@ -533,6 +567,17 @@ mod tests {
     }
 
     #[test]
+    fn only_patched_gradle_failures_let_assembly_continue() {
+        assert!(assembly_continues(
+            "Failed to assemble apk: Exception in thread \"main\" java.io.IOException: Downloading from https://services.gradle.org/distributions/gradle-9.1.0-bin.zip failed: timeout (10000ms)"
+        ));
+        assert!(assembly_continues(
+            "build-tools;34.0.0 Android SDK Build-Tools 34"
+        ));
+        assert!(!assembly_continues("error[E0425]: cannot find value"));
+    }
+
+    #[test]
     fn gradle_and_manifest_patches_land_on_a_fixture_tree() {
         let temp = TempDir::new();
         let workspace = temp.0.join("workspace");
@@ -624,7 +669,20 @@ dependencies {
         )
         .unwrap();
 
+        let wrapper = generated.join("app/gradle/wrapper/gradle-wrapper.properties");
+        fs::create_dir_all(wrapper.parent().unwrap()).unwrap();
+        fs::write(
+            &wrapper,
+            "distributionUrl=https\\://services.gradle.org/distributions/gradle-9.1.0-bin.zip\nnetworkTimeout=10000\n",
+        )
+        .unwrap();
+
         patch_generated_android_project(&workspace, &generated).unwrap();
+
+        let wrapper = fs::read_to_string(wrapper).unwrap();
+        assert!(wrapper.contains("\nnetworkTimeout=120000\n"));
+        assert!(!wrapper.contains("networkTimeout=10000"));
+        assert!(wrapper.contains("gradle-9.1.0-bin.zip"));
 
         let library = fs::read_to_string(library).unwrap();
         let app = fs::read_to_string(app).unwrap();
