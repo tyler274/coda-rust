@@ -65,6 +65,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261023_000003_unique_physician_identity),
             Box::new(m20261024_000004_authority_notify),
             Box::new(m20261030_000005_practices),
+            Box::new(m20261106_000006_session_lifetime),
         ]
     }
 }
@@ -613,6 +614,57 @@ impl MigrationTrait for m20261030_000005_practices {
         manager
             .drop_table(Table::drop().table(Practices).to_owned())
             .await
+    }
+}
+
+/// Rows still on the old 30-day gap (`expires_at = created_at + 2592000`)
+/// move to a 12-hour idle deadline (`created_at + 43200`).
+pub const CLAMP_SESSION_LIFETIME: &str = "\
+UPDATE physician_sessions
+   SET expires_at = created_at + 43200
+ WHERE expires_at = created_at + 2592000";
+
+const REPLACE_SESSION_NOTIFY: &str = "\
+CREATE TRIGGER physician_sessions_authority_notify
+    AFTER DELETE OR TRUNCATE ON physician_sessions
+    FOR EACH STATEMENT
+    EXECUTE FUNCTION physician_authority_notify()";
+
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261106_000006_session_lifetime;
+impl MigrationName for m20261106_000006_session_lifetime {
+    fn name(&self) -> &str {
+        "physician_auth_20261106_000006_session_lifetime"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261106_000006_session_lifetime {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        let db = manager.get_connection();
+        db.execute_unprepared(CLAMP_SESSION_LIFETIME).await?;
+        db.execute_unprepared(
+            "DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions",
+        )
+        .await?;
+        db.execute_unprepared(REPLACE_SESSION_NOTIFY).await?;
+        Ok(())
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        let db = manager.get_connection();
+        db.execute_unprepared(
+            "DROP TRIGGER IF EXISTS physician_sessions_authority_notify ON physician_sessions",
+        )
+        .await?;
+        db.execute_unprepared(
+            "CREATE TRIGGER physician_sessions_authority_notify \
+             AFTER UPDATE OR DELETE OR TRUNCATE ON physician_sessions \
+             FOR EACH STATEMENT \
+             EXECUTE FUNCTION physician_authority_notify()",
+        )
+        .await?;
+        Ok(())
     }
 }
 

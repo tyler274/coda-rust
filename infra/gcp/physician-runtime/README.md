@@ -30,7 +30,8 @@ policy to `NEVER` when the window ends.
   and workspace-membership checks are configured; prove actual hosted access
   separately from local guard tests.
 - Sign-in tokens are single-use with a 24-hour TTL; sessions are bearer
-  tokens with a 30-day TTL and deactivation fencing. Delivery in this
+  tokens that end after 12 hours without a physician request, and always
+  7 days after sign-in, with deactivation fencing. Delivery in this
   deployment is `proof` (the token returns in the sign-in response); a real
   email delivery is a separate authorized step.
 - The site sends OTLP spans to the in-cluster collector that

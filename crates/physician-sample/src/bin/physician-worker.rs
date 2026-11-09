@@ -27,8 +27,11 @@ use local_product::physician_chat::{self, PhysicianSkills};
 use local_product::runtime::async_trait;
 use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
+#[path = "physician-worker/attempt.rs"]
+mod attempt;
 #[path = "physician-worker/revision.rs"]
 mod revision;
+use attempt::{Claimed, Failure, Outcome, Push, Tally};
 use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
@@ -77,6 +80,7 @@ fn router(worker: Arc<Worker>) -> Router {
         .route("/health", get(health))
         .route("/readyz", get(readyz))
         .route("/pubsub/chat-turn", post(chat_turn))
+        .layer(telemetry::http_layer())
         .with_state(worker)
 }
 
@@ -112,22 +116,42 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     let Ok(bytes) = axum::body::to_bytes(request.into_body(), BODY_LIMIT).await else {
         return StatusCode::BAD_REQUEST;
     };
-    let Ok((delivery, message_id)) = decode_push(&bytes) else {
+    let Ok(push) = decode_push(&bytes) else {
         return StatusCode::BAD_REQUEST;
     };
     // Decode and dispatch only after verifying the push identity. Revision
     // scopes name reply work, never a chat conversation.
-    if delivery.kind == DeliveryKind::ReplyRevision {
-        return revision::deliver(&worker, &delivery, &message_id).await;
+    if push.delivery.kind == DeliveryKind::ReplyRevision {
+        return revision::deliver(&worker, &push).await;
     }
-    let claim = match worker.store.claim_delivery(&delivery, LEASE_SECONDS).await {
+    let span = attempt::span(&push, CHAT_JOB);
+    chat_attempt(&worker, &push.delivery, &span)
+        .instrument(span.clone())
+        .await
+}
+
+const CHAT_JOB: &str = "physician_chat";
+
+/// One chat-turn delivery inside its `physician.worker.attempt` span.
+async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
+    let claim = match worker.store.claim_delivery(delivery, LEASE_SECONDS).await {
         Ok(Some(claim)) => claim,
-        Ok(None) => return absent_claim(&worker, &delivery).await,
+        Ok(None) => {
+            attempt::finish(span, CHAT_JOB, None, Outcome::Absent, None);
+            return absent_claim(worker, delivery).await;
+        }
         Err(_) => {
-            tracing::warn!("physician chat claim failed");
+            attempt::finish(
+                span,
+                CHAT_JOB,
+                None,
+                Outcome::ClaimError,
+                Some(Failure::Claim),
+            );
             return StatusCode::INTERNAL_SERVER_ERROR;
         }
     };
+    let run_id = claim.attempt.clone();
     let workspace_id = claim.scope.workspace.clone();
     let session_id = claim.scope.chat.clone();
     let conversation = worker.store.read(&claim.scope).await.ok().flatten();
@@ -138,11 +162,24 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
     let earlier_attempts = conversation
         .as_ref()
         .map_or(0, |state| earlier_attempts(state, &claim));
+    let claimed = conversation
+        .as_ref()
+        .and_then(|state| state.attempts.iter().find(|a| a.id == claim.attempt));
+    attempt::record_claim(
+        span,
+        &Claimed {
+            run_id: &run_id,
+            work_id: claimed.map(|a| a.work.as_str()),
+            predecessor_run_id: claimed.and_then(|a| a.predecessor.as_deref()),
+            input_revision: Some(claim.revision),
+            attempt_number: earlier_attempts.saturating_add(1),
+        },
+    );
     drop(conversation);
-    let span = genai::generation_span(
+    let generation = genai::generation_span(
         &RunContext {
-            run_id: format!("physician-worker-{message_id}"),
-            job: "physician_chat",
+            run_id: run_id.clone(),
+            job: CHAT_JOB,
             recipe_version: genai::recipe_version(),
             origin: genai::Origin::Real,
             scenario_id: None,
@@ -152,7 +189,7 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         &worker.model_name,
         worker.adapter,
     );
-    genai::record_input(&span, &input_text);
+    genai::record_input(&generation, &input_text);
     let provider = worker.model.provider(earlier_attempts, &input_text);
     drop(input_text);
     let mut host = PhysicianHost {
@@ -172,37 +209,72 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         Ok(provider) => provider,
         Err(_) => {
             watcher.abort();
-            tracing::error!("physician chat provider unavailable");
+            genai::record_error(&generation, "physician chat provider unavailable");
             // Counted like a model failure, so the fifth one ends the turn.
-            return failed_attempt(&worker, &host.claim, workspace_id).await;
+            let status = failed_attempt(worker, span, &host.claim, workspace_id).await;
+            attempt::finish(
+                span,
+                CHAT_JOB,
+                Some(&run_id),
+                Outcome::Retry,
+                Some(Failure::ProviderInit),
+            );
+            return status;
         }
     };
     let result = host
         .run(&mut provider, &worker.limits, &cancel)
-        .instrument(span.clone())
+        .instrument(generation.clone())
         .await;
     watcher.abort();
+    record_chat_usage(&worker.store, &host.claim, &generation).await;
     match result {
         Ok(()) => {
             let output = message_text(&worker.store, &host.claim.scope, "assistant").await;
-            genai::record_output(&span, &output);
+            genai::record_output(&generation, &output);
             drop(output);
             // The turn is committed. Redelivery sees it settled and acks.
-            announce(&worker, workspace_id).await;
+            announce(worker, workspace_id).await;
+            attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Committed, None);
             StatusCode::NO_CONTENT
         }
         Err(_) => {
-            genai::record_error(&span, "physician chat failed");
-            tracing::error!("physician chat failed");
+            genai::record_error(&generation, "physician chat failed");
             if turn_settled(&worker.store, &host.claim).await {
                 // Stop or a newer message already owns the turn. Ack so the
                 // broker does not count this delivery as a failure.
-                announce(&worker, workspace_id).await;
+                announce(worker, workspace_id).await;
+                attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Settled, None);
                 StatusCode::NO_CONTENT
             } else {
-                failed_attempt(&worker, &host.claim, workspace_id).await
+                let status = failed_attempt(worker, span, &host.claim, workspace_id).await;
+                attempt::finish(
+                    span,
+                    CHAT_JOB,
+                    Some(&run_id),
+                    Outcome::Retry,
+                    Some(Failure::ModelCall),
+                );
+                status
             }
         }
+    }
+}
+
+/// Records the provider-reported usage of this attempt's retained receipts.
+/// The fixed provider and a provider that reported no usage leave it unset.
+async fn record_chat_usage(store: &Store, claim: &Claim, generation: &tracing::Span) {
+    let Ok(Some(state)) = store.read(&claim.scope).await else {
+        return;
+    };
+    let usage = state
+        .attempts
+        .iter()
+        .find(|a| a.id == claim.attempt && a.revision == claim.revision)
+        .map(|a| Tally::from_events(&a.events))
+        .and_then(|tally| tally.known());
+    if let Some((input, output)) = usage {
+        genai::record_usage(generation, input, output);
     }
 }
 
@@ -239,9 +311,14 @@ async fn turn_settled(store: &Store, claim: &Claim) -> bool {
 /// model call failed. Records it (the fifth ends the turn as failed), tells
 /// open pages to refetch, and refuses the push so the broker redelivers or
 /// dead-letters it.
-async fn failed_attempt(worker: &Worker, claim: &Claim, workspace_id: String) -> StatusCode {
+async fn failed_attempt(
+    worker: &Worker,
+    span: &tracing::Span,
+    claim: &Claim,
+    workspace_id: String,
+) -> StatusCode {
     if worker.store.retry_delivery(claim).await.is_err() {
-        tracing::warn!("physician chat delivery was not returned to pending");
+        attempt::retry_not_persisted(span, CHAT_JOB, &claim.attempt);
     }
     announce(worker, workspace_id).await;
     StatusCode::INTERNAL_SERVER_ERROR
@@ -320,12 +397,14 @@ fn earlier_attempts(conversation: &Conversation, claim: &Claim) -> u32 {
     u32::try_from(count).unwrap_or(u32::MAX)
 }
 
-fn decode_push(bytes: &[u8]) -> Result<(Delivery, String), ()> {
+/// Decodes a Pub/Sub push body. Push delivers publisher attributes (where
+/// the trace context travels) in the JSON body, not as HTTP headers.
+fn decode_push(bytes: &[u8]) -> Result<Push, ()> {
     let envelope: Value = serde_json::from_slice(bytes).map_err(|_| ())?;
     let message = envelope.get("message").ok_or(())?;
     let data = message.get("data").and_then(Value::as_str).ok_or(())?;
-    // Pub/Sub sends both messageId and message_id. deliveryAttempt is ignored:
-    // a failed turn is never acked, including the fifth attempt.
+    // Pub/Sub sends both messageId and message_id. deliveryAttempt only
+    // shapes telemetry: a failed turn is never acked, including the fifth.
     let message_id = message
         .get("messageId")
         .and_then(Value::as_str)
@@ -337,7 +416,28 @@ fn decode_push(bytes: &[u8]) -> Result<(Delivery, String), ()> {
         .decode(data.trim())
         .map_err(|_| ())?;
     let delivery: Delivery = serde_json::from_slice(&raw).map_err(|_| ())?;
-    Ok((delivery, message_id))
+    // Non-string attribute values are not Pub/Sub attributes; skip them.
+    let attributes = message
+        .get("attributes")
+        .and_then(Value::as_object)
+        .map(|attributes| {
+            attributes
+                .iter()
+                .filter_map(|(key, value)| Some((key.clone(), value.as_str()?.to_owned())))
+                .collect()
+        })
+        .unwrap_or_default();
+    let delivery_attempt = envelope
+        .get("deliveryAttempt")
+        .or_else(|| envelope.get("delivery_attempt"))
+        .and_then(Value::as_u64)
+        .and_then(|attempt| u32::try_from(attempt).ok());
+    Ok(Push {
+        delivery,
+        message_id,
+        attributes,
+        delivery_attempt,
+    })
 }
 
 struct Worker {
@@ -1060,25 +1160,69 @@ mod tests {
             "message": {"data": data, "messageId": "m1", "message_id": "m1"},
             "deliveryAttempt": 2
         });
-        let (decoded, id) = decode_push(body.to_string().as_bytes()).unwrap();
-        assert_eq!(id, "m1");
-        assert_eq!(decoded.input_id, "k");
-        assert_eq!(decoded.scope.workspace, "w");
-        assert_eq!(decoded.kind, DeliveryKind::ChatTurn);
-        let mut revision = decoded;
+        let push = decode_push(body.to_string().as_bytes()).unwrap();
+        assert_eq!(push.message_id, "m1");
+        assert_eq!(push.delivery.input_id, "k");
+        assert_eq!(push.delivery.scope.workspace, "w");
+        assert_eq!(push.delivery.kind, DeliveryKind::ChatTurn);
+        assert_eq!(push.delivery_attempt, Some(2));
+        assert!(push.attributes.is_empty());
+        let mut revision = push.delivery;
         revision.kind = DeliveryKind::ReplyRevision;
         let data = base64::engine::general_purpose::STANDARD
             .encode(serde_json::to_vec(&revision).unwrap());
         let body = json!({"message": {"data": data, "message_id": "revision-message"}});
-        let (decoded, id) = decode_push(body.to_string().as_bytes()).unwrap();
-        assert_eq!(decoded.kind, DeliveryKind::ReplyRevision);
-        assert_eq!(decoded.input_id, "k");
-        assert_eq!(id, "revision-message");
+        let push = decode_push(body.to_string().as_bytes()).unwrap();
+        assert_eq!(push.delivery.kind, DeliveryKind::ReplyRevision);
+        assert_eq!(push.delivery.input_id, "k");
+        assert_eq!(push.message_id, "revision-message");
+        assert_eq!(push.delivery_attempt, None);
         assert!(decode_push(b"{}").is_err());
         assert!(decode_push(br#"{"message":{"data":"not base64","messageId":"m"}}"#).is_err());
         let bad = base64::engine::general_purpose::STANDARD.encode("{}");
         let bad_body = json!({"message": {"data": bad, "messageId": "m"}});
         assert!(decode_push(bad_body.to_string().as_bytes()).is_err());
+    }
+
+    #[test]
+    fn push_body_carries_trace_attributes_and_the_delivery_attempt() {
+        let delivery = r#"{"scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
+        let data = base64::engine::general_purpose::STANDARD.encode(delivery);
+        let traceparent = "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01";
+        let body = json!({
+            "message": {
+                "data": data,
+                "messageId": "m1",
+                "attributes": {"traceparent": traceparent, "tracestate": "dd=s:1", "ignored": 7}
+            },
+            "subscription": "projects/p/subscriptions/s",
+            "deliveryAttempt": 3
+        });
+        let push = decode_push(body.to_string().as_bytes()).unwrap();
+        assert_eq!(push.delivery_attempt, Some(3));
+        assert_eq!(
+            push.attributes.get("traceparent").map(String::as_str),
+            Some(traceparent)
+        );
+        assert_eq!(
+            push.attributes.get("tracestate").map(String::as_str),
+            Some("dd=s:1")
+        );
+        // Non-string values are not Pub/Sub attributes.
+        assert!(!push.attributes.contains_key("ignored"));
+        let remote = telemetry::propagation::remote_context(&push.attributes).unwrap();
+        // A third delivery links to the publisher instead of continuing it.
+        assert_eq!(
+            attempt::relation(true, push.delivery_attempt),
+            telemetry::propagation::Relation::Link
+        );
+        assert!(remote.is_remote());
+        // An absent attempt count does not establish first delivery, and
+        // attributes may be absent entirely.
+        let body = json!({"message": {"data": data, "messageId": "m2", "attributes": null}});
+        let push = decode_push(body.to_string().as_bytes()).unwrap();
+        assert!(push.attributes.is_empty());
+        assert_eq!(push.delivery_attempt, None);
     }
 
     #[test]

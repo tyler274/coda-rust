@@ -60,8 +60,6 @@ pub(crate) struct SaveAttempt {
     pub(crate) generation: u64,
     pub(crate) expected_revision: i64,
     pub(crate) text: String,
-    /// The view the attempt began under; only that view may show Saved.
-    view: u64,
 }
 
 /// How the server answered a save.
@@ -138,7 +136,6 @@ struct Held {
     failed: bool,
     /// Saves that failed in a row; the shell's slow retry backs off on it.
     failures: u32,
-    saved_mark: bool,
     pending_send: Option<PendingSend>,
     /// An accepted Send's text is not yet durably cleared.
     pending_clear: bool,
@@ -198,8 +195,6 @@ pub(crate) struct Composer {
     held: HashMap<DraftTarget, Held>,
     /// Another composer notice, such as dictation being unavailable.
     said: Option<&'static str>,
-    /// Advanced whenever the shown target changes.
-    view: u64,
     next_attempt: u64,
 }
 
@@ -207,25 +202,19 @@ pub(crate) struct Composer {
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Notice {
     None,
-    Saving,
-    Saved,
     NotSaved,
     Conflict,
     Said(&'static str),
 }
 
 impl Composer {
-    /// Shows `target`'s composer. Another target clears the marks; its own
+    /// Shows `target`'s composer. Another target clears the notice; its own
     /// text and revision come back as this page last held them.
     pub(crate) fn open(&mut self, target: Option<&DraftTarget>) {
         if self.shown.as_ref() == target {
             return;
         }
         self.said = None;
-        self.view += 1;
-        for held in self.held.values_mut() {
-            held.saved_mark = false;
-        }
         if let Some(target) = target {
             self.held.entry(target.clone()).or_default();
         }
@@ -283,7 +272,8 @@ impl Composer {
         self.held.get(target).map_or(0, |held| held.generation)
     }
 
-    /// The line beside the composer of the target shown now.
+    /// The line beside the composer of the target shown now. Routine saves
+    /// say nothing; only a conflict or a failure does.
     pub(crate) fn notice(&self, current: Option<&DraftTarget>) -> Notice {
         if self.shown.as_ref() != current {
             return Notice::None;
@@ -296,19 +286,14 @@ impl Composer {
         };
         if held.conflict.is_some() {
             Notice::Conflict
-        } else if held.in_flight.is_some() {
-            Notice::Saving
-        } else if held.failed {
+        } else if held.failed && held.in_flight.is_none() {
             Notice::NotSaved
-        } else if held.saved_mark {
-            Notice::Saved
         } else {
             Notice::None
         }
     }
 
-    /// The physician typed. "Saved" described the saved text; an edit makes
-    /// it untrue. A failed save becomes eligible again.
+    /// The physician typed. A failed save becomes eligible again.
     pub(crate) fn edit(&mut self, current: Option<&DraftTarget>, text: String) {
         self.open(current);
         let Some(target) = current else { return };
@@ -319,7 +304,6 @@ impl Composer {
             held.text = text;
             held.generation += 1;
             held.failed = false;
-            held.saved_mark = false;
             held.settle();
         }
     }
@@ -407,7 +391,6 @@ impl Composer {
             return None;
         }
         let id = self.next_attempt + 1;
-        let view = self.view;
         let shown = self.shown.as_ref() == Some(target);
         let held = self.held.get_mut(target)?;
         self.next_attempt = id;
@@ -419,7 +402,6 @@ impl Composer {
                 text: held.text.clone(),
             })
             .clone();
-        held.saved_mark = false;
         if shown {
             self.said = None;
         }
@@ -429,15 +411,12 @@ impl Composer {
             generation: held.generation,
             expected_revision: pending.revision,
             text: pending.text,
-            view,
         })
     }
 
     /// The server answered `attempt`. The baseline moves even when another
-    /// surface is shown; Saved shows only in the view the save began in and
-    /// only when nothing was typed since.
+    /// surface is shown.
     pub(crate) fn finish(&mut self, attempt: &SaveAttempt, outcome: SaveOutcome) {
-        let same_view = self.view == attempt.view && self.shown.as_ref() == Some(&attempt.target);
         let Some(held) = self.held.get_mut(&attempt.target) else {
             return;
         };
@@ -454,7 +433,6 @@ impl Composer {
                 }
                 held.failed = false;
                 held.failures = 0;
-                held.saved_mark = same_view && held.text == attempt.text;
             }
             SaveOutcome::Conflict(revision, text) => {
                 held.pending_save = None;
@@ -584,7 +562,6 @@ impl Composer {
         {
             held.text = rest;
             held.generation += 1;
-            held.saved_mark = false;
         }
         held.pending_clear = true;
         held.settle();
@@ -626,9 +603,9 @@ mod tests {
             (attempt.expected_revision, attempt.text.as_str()),
             (0, "first")
         );
-        assert_eq!(composer.notice(at), Notice::Saving);
+        assert_eq!(composer.notice(at), Notice::None);
         composer.finish(&attempt, SaveOutcome::Saved(1));
-        assert_eq!(composer.notice(at), Notice::Saved);
+        assert_eq!(composer.notice(at), Notice::None);
         composer.edit(at, "first, then more".into());
         assert_eq!(composer.notice(at), Notice::None);
         assert_eq!(composer.begin(&one).unwrap().expected_revision, 1);
@@ -676,7 +653,7 @@ mod tests {
         );
         assert!(trailing.generation > first.generation);
         composer.finish(&trailing, SaveOutcome::Saved(2));
-        assert_eq!(composer.notice(at), Notice::Saved);
+        assert_eq!(composer.notice(at), Notice::None);
         assert!(!composer.wants_save(&one));
         assert!(composer.recovery(&one).is_none());
     }
@@ -723,7 +700,7 @@ mod tests {
         let last = composer.begin(&one).unwrap();
         assert_eq!(last.expected_revision, 3);
         composer.finish(&last, SaveOutcome::Saved(4));
-        assert_eq!(composer.notice(at), Notice::Saved);
+        assert_eq!(composer.notice(at), Notice::None);
         assert_eq!(composer.text(at), "mine");
     }
 
@@ -838,13 +815,13 @@ mod tests {
         composer.edit(at, "ab".into());
         let second = composer.begin(&one).unwrap();
         composer.finish(&first, SaveOutcome::Failed);
-        assert_eq!(composer.notice(at), Notice::Saving);
+        assert_eq!(composer.notice(at), Notice::None);
         composer.finish(&second, SaveOutcome::Saved(2));
-        assert_eq!(composer.notice(at), Notice::Saved);
+        assert_eq!(composer.notice(at), Notice::None);
     }
 
     /// Navigating mid-save: the other chat never shows the first chat's
-    /// Saved, and the first chat keeps its text and the revision it saved.
+    /// notice, and the first chat keeps its text and the revision it saved.
     #[test]
     fn a_save_that_ends_after_navigation_marks_neither_surface() {
         let (one, two) = (chat("chat-1"), chat("chat-2"));

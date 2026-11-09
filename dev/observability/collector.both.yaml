@@ -1,0 +1,40 @@
+# Concurrent operations destinations. Each exporter owns an independent,
+# bounded, nonblocking queue and retry budget. Langfuse remains separate.
+exporters:
+  otlp/datadog:
+    endpoint: ${env:DATADOG_OTLP_ENDPOINT:-datadog-agent:4317}
+    tls:
+      insecure: true
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+  otlp/tempo:
+    endpoint: ${env:TEMPO_OTLP_ENDPOINT:-tempo:4317}
+    tls:
+      insecure: true
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+  otlphttp/loki:
+    endpoint: ${env:LOKI_OTLP_ENDPOINT:-http://loki:3100/otlp}
+    timeout: 5s
+    sending_queue:
+      enabled: true
+      queue_size: 1000
+      block_on_overflow: false
+    retry_on_failure:
+      max_elapsed_time: 30s
+service:
+  pipelines:
+    traces/ops:
+      exporters: [otlp/datadog, otlp/tempo]
+    logs/ops:
+      exporters: [otlp/datadog, otlphttp/loki]

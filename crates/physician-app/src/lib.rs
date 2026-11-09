@@ -74,8 +74,6 @@ const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
 const NOT_SAVED: &str = "Not saved";
-const SAVING: &str = "Saving…";
-const SAVED: &str = "Saved";
 const DRAFT_CONFLICT: &str = "A newer version of this draft was saved elsewhere.";
 const DRAFT_CONFLICT_HELP: &str =
     "Retry replaces the saved draft with your text. Use newer text discards your edit.";
@@ -92,9 +90,11 @@ const CONNECTIONS: &str = "Connections";
 const SIGN_IN_UNAVAILABLE: &str =
     "Coda couldn’t confirm the request. Check your inbox before trying again.";
 const SIGN_IN_INVALID: &str = "That sign-in link is no longer valid. Request a new one.";
+const SIGN_IN_UNCONFIRMED: &str =
+    "Coda couldn’t confirm sign-in. Open your email link again or request a new one.";
 const NO_ACCESS: &str = "This sign-in link no longer gives you access to this practice.";
 const ACCESS_REMOVED: &str = "The practice removed your access, so you've been signed out.";
-const SESSION_ENDED: &str = "Your session ended. Coda kept your place.";
+const SESSION_ENDED: &str = "Your session ended. Sign in to continue.";
 const SHOW_SESSION_PROMPT: &str = "document.getElementById('session-prompt')?.showModal()";
 /// The server's indistinguishable sign-in body. Proof mode uses it when the
 /// address has no account. Hosted mode uses it after mailing, and when the
@@ -508,8 +508,8 @@ struct SessionState {
     /// Presents this tab's bearer on every read.
     client: Signal<PhysicianClient>,
     signed_in: Signal<bool>,
-    /// The sign-in prompt covers the open page when the session expires.
-    /// Nothing underneath changes.
+    /// The sign-in prompt replaces the workspace when the session expires.
+    /// Patient content is cleared before the prompt is shown.
     expired: Signal<bool>,
     whoami_name: Signal<String>,
     whoami: Signal<Option<WhoamiResponse>>,
@@ -558,8 +558,19 @@ impl SessionState {
         self.no_session_here();
     }
 
-    /// Back to the sign-in page in this tab only.
+    /// Drops patient content this tab was showing: the held link, unsent drafts,
+    /// and stored panel choices. The shell starts at Today if it is shown again.
+    fn drop_patient_content(mut self) {
+        panels::forget_all();
+        local_draft::forget_everything();
+        self.forget_place();
+        *self.generation.write() += 1;
+    }
+
+    /// Back to the sign-in page in this tab only. A tab that never showed the
+    /// workspace keeps the patient link it was opened at.
     fn no_session_here(mut self) {
+        panels::forget_all();
         // No old account's unsent text outlives its session in this tab.
         local_draft::forget_everything();
         self.expired.set(false);
@@ -611,8 +622,10 @@ impl SessionState {
     /// tab no longer holds is about the past and changes nothing. An ended
     /// session covers a page this tab already showed with the sign-in prompt;
     /// a tab that showed nothing yet was opened without a session, so it shows
-    /// the sign-in page and keeps the patient link it was opened at. Removed
-    /// access signs out and says "No access to this practice".
+    /// the sign-in page and keeps the patient link it was opened at. Either
+    /// way the browser keeps storing the ended session: only a sign-out
+    /// forgets it, so a tab that later finds nothing stored knows one came.
+    /// Removed access signs out and says "No access to this practice".
     fn refused(mut self, refusal: Refusal, shown: bool, presented: Option<String>) {
         if self.bearer() != presented {
             return;
@@ -620,12 +633,15 @@ impl SessionState {
         let presented = presented.as_deref();
         match refusal {
             Refusal::SessionEnded if shown => {
-                if let Some(presented) = presented {
-                    forget_stored_session(presented);
-                }
+                self.drop_patient_content();
                 self.expired.set(true);
             }
-            Refusal::SessionEnded => self.no_session(presented),
+            Refusal::SessionEnded => {
+                if let Some(presented) = presented {
+                    self.client.peek().session().clear_if(presented);
+                }
+                self.no_session_here();
+            }
             Refusal::AccessRemoved => {
                 self.sign_out(presented);
                 self.removed.set(true);
@@ -687,7 +703,9 @@ impl SessionState {
                 .is_some_and(|mine| mine.eq_ignore_ascii_case(owner))
         });
         if yours && !missed_a_sign_out {
-            // Lifting the prompt re-reads the page; otherwise re-read in place.
+            // The session is yours again. Patient content was cleared when it
+            // ended, so the workspace opens at Today. A newer session of yours
+            // re-reads in place.
             if *self.expired.peek() {
                 self.expired.set(false);
             } else {
@@ -697,13 +715,11 @@ impl SessionState {
         }
         // Someone this tab can't name as you, or you after a sign-out: the tab
         // starts at Today and nothing from before carries over.
-        local_draft::forget_everything();
-        self.forget_place();
+        self.drop_patient_content();
         self.whoami_name.set(String::new());
         self.whoami.set(None);
         self.owner.set(owner);
         self.expired.set(false);
-        *self.generation.write() += 1;
     }
 }
 
@@ -789,6 +805,30 @@ pub fn PhysicianRoot(
                     whoami.set(who);
                     signed_in.set(true);
                 },
+            }
+        }
+    } else if expired() {
+        // The prompt replaces the workspace. PhysicianShell is not mounted, so
+        // no patient view stays in the page.
+        let mut expired = expired;
+        rsx! {
+            ui::Stylesheet { app: SHELL_STYLES }
+            dialog {
+                id: "session-prompt",
+                class: "session-prompt",
+                aria_label: "Sign in to continue",
+                "closedby": "none",
+                onmounted: move |_| {
+                    document::eval(SHOW_SESSION_PROMPT);
+                },
+                SignInScreen {
+                    client,
+                    session,
+                    link: None,
+                    resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
+                    on_signed_in: move |_| expired.set(false),
+                    on_sign_out: move |_| sign_out_everywhere(session),
+                }
             }
         }
     } else {
@@ -939,9 +979,9 @@ fn PhysicianShell(
             past_work_open.set(false);
         }
     });
-    // Signing in again under the prompt, or taking a newer session of yours
-    // from another tab, re-reads the page in place, and the stream restarts on
-    // the session now held. The prompt stops the stream.
+    // Taking a newer session of yours from another tab re-reads the page in
+    // place, and the stream restarts on the session now held. The prompt
+    // unmounts the shell, so signing in from it opens a fresh one at Today.
     let taken = session.taken;
     let mut was_expired = use_signal(|| false);
     let mut read_with = use_signal(|| *taken.peek());
@@ -1184,8 +1224,8 @@ fn PhysicianShell(
         };
         workspace.map(|workspace| DraftTarget::new(workspace, open_chat().as_deref()))
     };
-    // Another draft target clears the Saved mark of the one left behind, and
-    // the one left behind saves now instead of waiting for its debounce.
+    // The draft target left behind saves now instead of waiting for its
+    // debounce.
     let mut left_target = use_signal(|| None::<DraftTarget>);
     use_effect(move || {
         let target = draft_target();
@@ -1540,35 +1580,9 @@ fn PhysicianShell(
                 img { class: "coda-logo", src: "./assets/coda-health-logo-transparent.png", alt: "" }
             }
         }
-        if expired() {
-            // Covers and hides the page; nothing underneath changes. A modal opened last, it
-            // stands over any dialog left open, which stays as it was. Only signing in or out
-            // closes it.
-            dialog {
-                id: "session-prompt",
-                class: "session-prompt",
-                aria_label: "Sign in to continue",
-                "closedby": "none",
-                onmounted: move |_| {
-                    document::eval(SHOW_SESSION_PROMPT);
-                },
-                SignInScreen {
-                    client,
-                    session,
-                    link: None,
-                    resume_email: whoami.read().as_ref().map(|account| account.email.clone()),
-                    on_signed_in: move |_| {
-                        let mut expired = expired;
-                        expired.set(false);
-                    },
-                    on_sign_out: move |_| sign_out_everywhere(session),
-                }
-            }
-        }
         div {
             class: "{shell_class}",
-            aria_hidden: if app_collapsed() || expired() { "true" } else { "false" },
-            "inert": expired().then_some("true"),
+            aria_hidden: if app_collapsed() { "true" } else { "false" },
             // Tab stays on the drawer's own controls while it is open.
             tabindex: if drawer_open { "-1" } else { "0" },
             onkeydown: move |event| {
@@ -1955,6 +1969,7 @@ fn PhysicianShell(
                                 let target = draft_target();
                                 composer.write().retry(target.as_ref());
                                 if let Some(target) = target {
+                                    composer.write().retry_failed(&target);
                                     autosave(composer, client, target);
                                 }
                             },
@@ -2467,8 +2482,8 @@ mod command_answer_tests {
     }
 }
 
-/// The sign-in page, or with `resume_email` the prompt covering a page whose
-/// session ended: it mails the same address, and signing in picks up there.
+/// The sign-in page, or with `resume_email` the prompt in place of a workspace whose
+/// session ended: it mails the same address, and signing in opens Today.
 #[component]
 fn SignInScreen(
     client: Signal<PhysicianClient>,
@@ -2521,9 +2536,7 @@ fn SignInScreen(
                 Err(failure) => {
                     let message = match failure {
                         physician_client::HttpError::Status { status: 401, .. } => SIGN_IN_INVALID,
-                        _ => {
-                            "Coda couldn’t confirm sign-in. Open your email link again or request a new one."
-                        }
+                        _ => SIGN_IN_UNCONFIRMED,
                     };
                     stage.set(SignInStage::Recovery(message.to_owned()));
                 }
@@ -2532,22 +2545,20 @@ fn SignInScreen(
     };
     // This effect has no reactive reads: one page load redeems its mailed link
     // once. Ordinary rerenders and request failures never retry the token.
-    // While this browser holds another physician's session, the link signs
-    // the browser out before it is redeemed. Your own link changes nothing
-    // while your session stands, and signs you back in once it has ended;
-    // when Coda can't say which, your session stays and the link is not used.
-    // Either way the session must still be the one this browser stores when
-    // Coda answers; otherwise the link is redeemed.
+    // Coda says whether the session this browser stores is still signed in.
+    // Your own link changes nothing while your session stands, and signs you
+    // back in once it has ended; when Coda can't say which, your session
+    // stays and the link is not used. Another physician still signed in is
+    // signed out before the link is redeemed; an ended session needs no
+    // sign-out. When Coda can't say for another physician, nobody is signed
+    // out: the page says Coda couldn't confirm sign-in, and the link stays
+    // unused for another try. Either way the session must still be the one
+    // this browser stores when Coda answers; otherwise the link is redeemed.
     use_effect(move || {
         if let Some(link) = link.clone() {
             let held = client.peek().clone();
             let yours = read_stored_owner()
                 .is_some_and(|owner| owner.eq_ignore_ascii_case(link.email.trim()));
-            if held.session().is_some() && !yours {
-                session.end();
-                verify_link(link);
-                return;
-            }
             let checked = held.session().get();
             spawn(async move {
                 if let Some(checked) = checked {
@@ -2560,13 +2571,18 @@ fn SignInScreen(
                             return;
                         }
                         Ok(account) if account.email.eq_ignore_ascii_case(link.email.trim()) => {}
-                        Ok(_) => session.end(),
+                        Ok(_) if still_stored(&checked) => session.end(),
+                        Ok(_) => {}
                         Err(failure) if refusal(&failure).is_some() => {}
-                        Err(_) if still_stored(&checked) => {
+                        Err(_) if !still_stored(&checked) => {}
+                        Err(_) if yours => {
                             on_signed_in.call(None);
                             return;
                         }
-                        Err(_) => {}
+                        Err(_) => {
+                            stage.set(SignInStage::Recovery(SIGN_IN_UNCONFIRMED.to_owned()));
+                            return;
+                        }
                     }
                 }
                 verify_link(link);
@@ -2652,7 +2668,7 @@ fn SignInScreen(
                                         onclick: move |_| request_token(()),
                                         "Email me a sign-in link"
                                     }
-                                    p { class: "sign-in-sub", "Open it to pick up where you were." }
+                                    p { class: "sign-in-sub", "Open it to sign in again." }
                                 }
                             },
                             SignInStage::NoAccess => rsx! {
@@ -2707,7 +2723,7 @@ fn SignInScreen(
                                 p { class: "sign-in-sub sign-in-email", "{email}" }
                                 p { class: "sign-in-sub",
                                     if resuming {
-                                        "Choose Sign in in the email to pick up where you were."
+                                        "Choose Sign in in the email to sign in again."
                                     } else {
                                         "Choose Sign in in the email to open your workspace."
                                     }
@@ -3788,7 +3804,12 @@ fn PatientSurface(
                                         on_draft_blur.call(());
                                     }
                                 },
-                                status: (!notice.is_empty()).then(|| rsx! { span { role: "status", "{notice}" } }),
+                                status: (!notice.is_empty()).then(|| rsx! {
+                                    span { role: "status", "{notice}" }
+                                    if notice == NOT_SAVED || notice == CLEAR_NOT_SAVED {
+                                        Button { compact: true, onclick: move |_| on_conflict_retry.call(()), "{DRAFT_RETRY}" }
+                                    }
+                                }),
                                 notices: conflict.map(|newer| rsx! {
                                     DraftConflict {
                                         message: DRAFT_CONFLICT,
@@ -4446,11 +4467,29 @@ fn save_outcome(answer: Result<DraftSave, physician_client::HttpError>) -> SaveO
 fn notice_words(notice: Notice, clearing: bool) -> String {
     match notice {
         Notice::None | Notice::Conflict => String::new(),
-        Notice::Saving => SAVING.to_owned(),
-        Notice::Saved => SAVED.to_owned(),
         Notice::NotSaved if clearing => CLEAR_NOT_SAVED.to_owned(),
         Notice::NotSaved => NOT_SAVED.to_owned(),
         Notice::Said(words) => words.to_owned(),
+    }
+}
+
+#[cfg(test)]
+mod draft_notice_tests {
+    use super::*;
+
+    #[test]
+    fn routine_draft_saves_are_silent_but_failures_remain_visible() {
+        for clearing in [false, true] {
+            for notice in [Notice::None, Notice::Conflict] {
+                assert_eq!(notice_words(notice, clearing), "");
+            }
+        }
+        assert_eq!(notice_words(Notice::NotSaved, false), NOT_SAVED);
+        assert_eq!(notice_words(Notice::NotSaved, true), CLEAR_NOT_SAVED);
+        assert_eq!(
+            notice_words(Notice::Said(DICTATION_UNAVAILABLE), false),
+            DICTATION_UNAVAILABLE
+        );
     }
 }
 

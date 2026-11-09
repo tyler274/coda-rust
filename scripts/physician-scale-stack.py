@@ -42,7 +42,8 @@ FIXED_TEXT = "Noted."
 HOSTED = ("K_SERVICE", "K_REVISION", "CLOUD_RUN_JOB", "CODA_HOSTED", "GAE_ENV")
 # Deliberately do not inherit Doppler, Google ADC, model keys, database URLs,
 # telemetry exporters, PORT, product modes, or auth configuration.
-SAFE_ENV = ("PATH", "LD_LIBRARY_PATH", "LIBRARY_PATH", "SSL_CERT_FILE", "LANG", "TZ")
+SAFE_ENV = ("PATH", "LD_LIBRARY_PATH", "LIBRARY_PATH", "SSL_CERT_FILE", "LANG", "TZ",
+            "CARGO_HOME", "RUSTUP_HOME")
 # Pending pg_stat counters of other backends can wait up to PGSTAT_IDLE_INTERVAL
 # (10 s) before they are flushed to pg_stat_database.
 STATS_SETTLE_SECONDS = 11
@@ -52,6 +53,10 @@ def environment(source, home):
     if any(source.get(key) for key in HOSTED):
         raise ValueError("local scale stack is forbidden in a hosted environment")
     result = {key: source[key] for key in SAFE_ENV if key in source}
+    # The throwaway HOME must not hide the crate cache, or offline child cargo fails.
+    if source.get("HOME"):
+        result.setdefault("CARGO_HOME", str(Path(source["HOME"]) / ".cargo"))
+        result.setdefault("RUSTUP_HOME", str(Path(source["HOME"]) / ".rustup"))
     result.update(HOME=str(home), TMPDIR=str(home), CLOUDSDK_CONFIG=str(home / "gcloud"))
     return result
 

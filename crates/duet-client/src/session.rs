@@ -27,6 +27,7 @@ struct SessionState {
     owner: Option<String>,
     generation: u64,
     drafts: std::collections::HashMap<String, Vec<u8>>,
+    credential_revision: u64,
 }
 impl AccountSession {
     /// Select a verified internal owner. Switching always drops old account drafts and invalidates responses.
@@ -54,6 +55,54 @@ impl AccountSession {
     /// Refuse late responses after sign-out or account switch, including switching back to the same owner.
     pub fn is_current(&self, fence: &SessionFence) -> bool {
         self.fence().as_ref() == Some(fence)
+    }
+    /// Capture the current credential revision without retaining credential bytes.
+    pub fn credential_revision(&self) -> u64 {
+        self.inner
+            .lock()
+            .expect("account session")
+            .credential_revision
+    }
+    /// Mark successful credential rotation without changing draft ownership.
+    pub fn rotate_credential(&self, fence: &SessionFence) {
+        let mut state = self.inner.lock().expect("account session");
+        if state.owner.as_deref() == Some(&fence.owner) && state.generation == fence.generation {
+            state.credential_revision = state
+                .credential_revision
+                .checked_add(1)
+                .expect("credential revision exhausted");
+        }
+    }
+    /// Invalidate only a request dispatched under the still-current credential revision.
+    pub fn refuse_credential(&self, fence: &SessionFence, revision: u64) -> bool {
+        let mut state = self.inner.lock().expect("account session");
+        if state.owner.as_deref() != Some(&fence.owner)
+            || state.generation != fence.generation
+            || state.credential_revision != revision
+        {
+            return false;
+        }
+        state.generation = state
+            .generation
+            .checked_add(1)
+            .expect("session generation exhausted");
+        state.owner = None;
+        state.drafts.clear();
+        true
+    }
+    /// End only the session that dispatched the refused request. Durable storage is untouched.
+    pub fn invalidate(&self, fence: &SessionFence) -> bool {
+        let mut state = self.inner.lock().expect("account session");
+        if state.owner.as_deref() != Some(&fence.owner) || state.generation != fence.generation {
+            return false;
+        }
+        state.generation = state
+            .generation
+            .checked_add(1)
+            .expect("session generation exhausted");
+        state.owner = None;
+        state.drafts.clear();
+        true
     }
     /// Accept a response/draft atomically with checking ownership. Never stores bearer credentials.
     pub fn store_draft(&self, fence: &SessionFence, key: String, value: Vec<u8>) -> bool {

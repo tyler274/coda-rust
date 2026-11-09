@@ -24,9 +24,15 @@ const SEND_TEXT: &str = "How is my sleep this week?";
 #[path = "common/durable_doctor.rs"]
 mod durable_doctor;
 
+#[path = "common/session_refusal.rs"]
+mod session_refusal;
+
 // Durable-service D2 proof (no browser): isolated PostgreSQL + real owners + duet-client.
 #[path = "common/durable_d2.rs"]
 mod durable_d2;
+
+#[path = "common/account_switch.rs"]
+mod account_switch;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]

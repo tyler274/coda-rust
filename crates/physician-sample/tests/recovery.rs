@@ -108,6 +108,132 @@ fn session() -> Vec<u8> {
     vec![7; 32]
 }
 
+#[tokio::test]
+async fn recovery_failures_are_named_correlated_errors_without_content() {
+    use opentelemetry::trace::{Status, TracerProvider as _};
+    use opentelemetry_sdk::trace::{InMemorySpanExporter, SdkTracerProvider};
+    use tracing_subscriber::layer::SubscriberExt;
+    let _guard = lock().lock().await;
+    let Some(h) = harness("recovery_telemetry", 2).await else {
+        return;
+    };
+    let exporter = InMemorySpanExporter::default();
+    let provider = SdkTracerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let subscriber = tracing_subscriber::registry()
+        .with(tracing_opentelemetry::layer().with_tracer(provider.tracer("recovery-test")));
+    let guard = tracing::subscriber::set_default(subscriber);
+    let (scope, mut input, _) = turn();
+    input.text = "SECRET-CLINICAL-CONTENT".into();
+    let request = tracing::info_span!("accepted-request");
+    use tracing::Instrument as _;
+    assert_eq!(
+        h.chat
+            .accept(&scope, &input, session())
+            .instrument(request)
+            .await
+            .unwrap(),
+        Accepted::New
+    );
+    h.chat
+        .recover_page(None)
+        .await
+        .expect("partial failure remains recoverable");
+    h.chat
+        .recover_page(None)
+        .await
+        .expect("successful recovery");
+    h.chat.recover_page(None).await.expect("empty sweep");
+    h.chat
+        .recover_revision_page(None)
+        .await
+        .expect("empty revision sweep");
+
+    // Closing this pool deterministically fails real database reads without
+    // changing schemas or relying on an external server outage.
+    let connection = sea_orm::Database::connect(&h._database.url).await.unwrap();
+    let unavailable = DurableChat::new(Store::from_connection(connection.clone()), h.queue.clone());
+    connection.close().await.unwrap();
+    assert!(unavailable.recover_page(None).await.is_err());
+    assert!(unavailable.recover_revision_page(None).await.is_err());
+    drop(guard);
+    provider.force_flush().unwrap();
+    let spans = exporter.get_finished_spans().unwrap();
+    let accepted = spans.iter().find(|s| s.name == "accepted-request").unwrap();
+    assert!(
+        accepted.events.iter().any(|event| {
+            [
+                ("event", "physician.queue.publish_failed"),
+                ("error.type", "publish"),
+                ("level", "ERROR"),
+            ]
+            .iter()
+            .all(|(key, value)| {
+                event
+                    .attributes
+                    .iter()
+                    .any(|kv| kv.key.as_str() == *key && kv.value.to_string() == *value)
+            })
+        }),
+        "accepted work must still report publication failure"
+    );
+    let sweeps: Vec<_> = spans
+        .iter()
+        .filter(|s| s.name == "physician.recovery.sweep")
+        .collect();
+    assert_eq!(sweeps.len(), 6);
+    for (span, failure) in sweeps.iter().zip([
+        Some("publish"),
+        None,
+        None,
+        None,
+        Some("database"),
+        Some("database"),
+    ]) {
+        assert_eq!(span.parent_span_id, opentelemetry::SpanId::INVALID);
+        if let Some(class) = failure {
+            assert!(matches!(span.status, Status::Error { .. }), "{span:?}");
+            let event = span
+                .events
+                .iter()
+                .find(|event| {
+                    event.attributes.iter().any(|kv| {
+                        kv.key.as_str() == "event"
+                            && kv.value.to_string() == "physician.recovery.failed"
+                    })
+                })
+                .expect("named recovery failure");
+            for (key, value) in [("level", "ERROR"), ("error.type", class)] {
+                assert!(
+                    event
+                        .attributes
+                        .iter()
+                        .any(|kv| kv.key.as_str() == key && kv.value.to_string() == value),
+                    "{event:?}"
+                );
+            }
+        } else {
+            assert_eq!(span.status, Status::Unset);
+            assert!(
+                span.events.is_empty(),
+                "successful or empty recovery stays quiet"
+            );
+        }
+    }
+    let dump = format!("{spans:?}");
+    for secret in [
+        &scope.practice,
+        &scope.physician,
+        &scope.workspace,
+        &scope.chat,
+        &input.key,
+        &input.text,
+    ] {
+        assert!(!dump.contains(secret), "telemetry leaked {secret}");
+    }
+}
+
 async fn due(store: &Store) -> Vec<Delivery> {
     store
         .dispatch_due(100, None)

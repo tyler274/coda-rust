@@ -12,7 +12,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 **Duet**
 
 - **P4. You while AI isn't allowed.** Whether the person can add or edit notes and medications in You while AI isn't allowed.
-- **P5. An interrupted reply.** What the person sees while an interrupted reply recovers, and whether it continues in place or arrives as a new message.
+- **P5. An interrupted reply.** What the person sees while an interrupted reply recovers. The unfinished draft is replaced, as the [harness](harness.md#guarantees) promises.
 - **P6. Deleting an email or Google account.** How a person who signs in with email or Google reconfirms before deleting their account.
 - **P7. Newer Terms.** How the app shows newer Terms and takes acceptance.
 
@@ -61,7 +61,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 - **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from. The agents judge which visits to prepare and how far ahead.
 - **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
-- **E3. The patient roster.** How the active roster is kept, likely from the EHR's patient list.
+- **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
 - **E4. Freshness after a one-time pull.** How records from other systems stay fresh. Every source shows when it was last refreshed.
 - **E5. athena.** The patient-access route and what's still missing.
 - **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.
@@ -73,3 +73,8 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 - **E12. Run outcomes and events.** The run outcome vocabulary (finished, interrupted, failed, cancelled), and whether runs emit run-started and checkpoint-written events.
 - **E13. Physician run preconditions.** What the physician product checks before each run, stated in harness terms.
 - **E14. Duet export.** The export format and how it's delivered.
+- **E15. Loading tools and skills.** Which tools and skills the model gets up front and which it finds on request. Dogfooding informs it.
+- **E16. Earlier tool results after a fresh window.** Whether the model can list them, or must read the source again.
+- **E17. Recent messages in a fresh window.** Whether a fresh window also carries the last few messages word for word.
+- **E18. Pausing for the person.** Whether a run can stop to ask the person a question, or for approval of an exact action, and resume with the answer, as Codex, Hermes and OpenClaw can. Closing it means deciding how the model asks (a tool), how a waiting run is kept (held durably, taking no slot), how the answer returns (a saved input carried into the next request once, like a steer), what happens when no answer comes, and that an approval covers exactly the action shown. Physician write-back needs it first.
+- **E19. Steering a running worker.** Whether the lead can message or stop a worker while it runs, as Codex and OpenClaw allow.

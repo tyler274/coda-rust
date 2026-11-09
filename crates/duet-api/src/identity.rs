@@ -22,6 +22,62 @@ pub trait IdentityVerifier: Send + Sync {
     /// Verify the bearer using the provider authority.
     async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError>;
 }
+fn provider_failure(status: reqwest::StatusCode, body: &serde_json::Value) -> ApiError {
+    if matches!(status.as_u16(), 400 | 401)
+        && matches!(
+            body["error"]["message"].as_str(),
+            Some("INVALID_ID_TOKEN" | "TOKEN_EXPIRED" | "USER_DISABLED" | "USER_NOT_FOUND")
+        )
+    {
+        if body["error"]["message"].as_str() == Some("TOKEN_EXPIRED") {
+            ApiError::SessionExpired
+        } else {
+            ApiError::Unauthorized
+        }
+    } else {
+        ApiError::Unavailable("Identity provider could not verify this session")
+    }
+}
+
+#[cfg(test)]
+mod refusal_tests {
+    use super::*;
+    #[test]
+    fn provider_outage_and_configuration_errors_are_not_session_refusals() {
+        for (status, message) in [
+            (503, "TOKEN_EXPIRED"),
+            (401, "INVALID_API_KEY"),
+            (400, "QUOTA_EXCEEDED"),
+            (429, "TOO_MANY_ATTEMPTS_TRY_LATER"),
+        ] {
+            let body = serde_json::json!({"error":{"message":message}});
+            assert!(matches!(
+                provider_failure(reqwest::StatusCode::from_u16(status).unwrap(), &body),
+                ApiError::Unavailable(_)
+            ));
+        }
+        for message in [
+            "INVALID_ID_TOKEN",
+            "TOKEN_EXPIRED",
+            "USER_DISABLED",
+            "USER_NOT_FOUND",
+        ] {
+            let body = serde_json::json!({"error":{"message":message}});
+            let expected = if message == "TOKEN_EXPIRED" {
+                "expired"
+            } else {
+                "unverified"
+            };
+            let error = provider_failure(reqwest::StatusCode::BAD_REQUEST, &body);
+            assert_eq!(
+                matches!(error, ApiError::SessionExpired),
+                expected == "expired",
+                "{message}"
+            );
+        }
+    }
+}
+
 /// Identity Platform's accounts:lookup validates the supplied ID token online.
 /// This keeps provider revocation/disabled state authoritative, without accepting development tokens.
 pub struct IdentityPlatform {
@@ -56,11 +112,14 @@ impl IdentityVerifier for IdentityPlatform {
             .send()
             .await
             .map_err(|_| ApiError::Unavailable("Identity verification unavailable"))?;
-        if !response.status().is_success() {
-            return Err(ApiError::Unauthorized);
+        let status = response.status();
+        let lookup: serde_json::Value = response
+            .json()
+            .await
+            .map_err(|error| ApiError::IdentityResponse(error.without_url()))?;
+        if !status.is_success() {
+            return Err(provider_failure(status, &lookup));
         }
-        let lookup: serde_json::Value =
-            response.json().await.map_err(|_| ApiError::Unauthorized)?;
         // Parse claims only AFTER the provider has verified this exact bearer.
         let parts: Vec<_> = bearer.split('.').collect();
         if parts.len() != 3 {
@@ -100,6 +159,56 @@ impl IdentityVerifier for IdentityPlatform {
         Ok(VerifiedIdentity {
             subject: subject.to_owned(),
             authenticated_at: DateTime::from_timestamp(auth, 0).ok_or(ApiError::Unauthorized)?,
+        })
+    }
+}
+/// Issuer and audience of [`LocalIdentity`] tokens.
+pub const LOCAL_ISSUER: &str = "duet-local";
+
+/// Local-stack verifier for HS256 tokens signed with an operator-chosen secret.
+/// Hosted startup refuses it (`hosting::validate_startup`); it stands in for
+/// Identity Platform so the served binary runs without cloud identity.
+pub struct LocalIdentity {
+    key: jsonwebtoken::DecodingKey,
+}
+impl LocalIdentity {
+    /// The secret must carry at least 32 bytes.
+    pub fn new(secret: &str) -> Result<Self, ApiError> {
+        if secret.len() < 32 {
+            return Err(ApiError::Unavailable(
+                "local identity secret must be at least 32 bytes",
+            ));
+        }
+        Ok(Self {
+            key: jsonwebtoken::DecodingKey::from_secret(secret.as_bytes()),
+        })
+    }
+}
+#[derive(Deserialize)]
+struct LocalClaims {
+    sub: String,
+    auth_time: i64,
+}
+#[async_trait]
+impl IdentityVerifier for LocalIdentity {
+    async fn verify(&self, bearer: &str) -> Result<VerifiedIdentity, ApiError> {
+        let mut validation = jsonwebtoken::Validation::new(jsonwebtoken::Algorithm::HS256);
+        validation.set_issuer(&[LOCAL_ISSUER]);
+        validation.set_audience(&[LOCAL_ISSUER]);
+        validation.set_required_spec_claims(&["exp", "iss", "aud", "sub"]);
+        let claims = jsonwebtoken::decode::<LocalClaims>(bearer, &self.key, &validation)
+            .map_err(ApiError::InvalidToken)?
+            .claims;
+        if claims.sub.is_empty()
+            || claims.sub.len() > 128
+            || claims.auth_time > Utc::now().timestamp() + 30
+        {
+            return Err(ApiError::Unauthorized);
+        }
+        Ok(VerifiedIdentity {
+            subject: claims.sub,
+            authenticated_at: DateTime::from_timestamp(claims.auth_time, 0)
+                .ok_or(ApiError::Unauthorized)?,
         })
     }
 }
@@ -268,4 +377,69 @@ pub async fn check_current(
         return Err(ApiError::Forbidden);
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod local_tests {
+    use super::*;
+    use jsonwebtoken::{EncodingKey, Header, encode};
+
+    const SECRET: &str = "local-stack-secret-of-at-least-32-bytes";
+
+    fn token(secret: &str, claims: serde_json::Value) -> String {
+        encode(
+            &Header::default(),
+            &claims,
+            &EncodingKey::from_secret(secret.as_bytes()),
+        )
+        .unwrap()
+    }
+
+    fn claims(sub: &str) -> serde_json::Value {
+        let now = Utc::now().timestamp();
+        serde_json::json!({"iss":LOCAL_ISSUER,"aud":LOCAL_ISSUER,"sub":sub,"auth_time":now,"exp":now+300})
+    }
+
+    #[tokio::test]
+    async fn verifies_a_signed_local_token() {
+        let verified = LocalIdentity::new(SECRET)
+            .unwrap()
+            .verify(&token(SECRET, claims("patient-1")))
+            .await
+            .unwrap();
+        assert_eq!(verified.subject, "patient-1");
+    }
+
+    #[tokio::test]
+    async fn refuses_forged_expired_foreign_and_future_tokens() {
+        let local = LocalIdentity::new(SECRET).unwrap();
+        let now = Utc::now().timestamp();
+        let mut expired = claims("p");
+        expired["exp"] = (now - 600).into();
+        let mut foreign = claims("p");
+        foreign["aud"] = "coda-rust-stg".into();
+        let mut future = claims("p");
+        future["auth_time"] = (now + 600).into();
+        let mut no_exp = claims("p");
+        no_exp.as_object_mut().unwrap().remove("exp");
+        for bearer in [
+            token("another-secret-that-is-also-32-bytes-long", claims("p")),
+            token(SECRET, expired),
+            token(SECRET, foreign),
+            token(SECRET, future),
+            token(SECRET, no_exp),
+            token(SECRET, claims("")),
+            "not-a-token".into(),
+        ] {
+            assert!(matches!(
+                local.verify(&bearer).await,
+                Err(ApiError::Unauthorized | ApiError::InvalidToken(_))
+            ));
+        }
+    }
+
+    #[test]
+    fn a_short_secret_is_refused() {
+        assert!(LocalIdentity::new("short").is_err());
+    }
 }

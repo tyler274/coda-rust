@@ -10,8 +10,8 @@ use crate::migration::{
 };
 use crate::{
     Account, AuthStore, Cadence, INVITATION_TTL_SECONDS, Membership, PanelError, PatientLink,
-    PhysicianIdentity, PracticeClock, ReviewCadence, SESSION_TTL_SECONDS,
-    SIGN_IN_TOKEN_TTL_SECONDS, Session, SessionError, SignInError, StoreUnavailable,
+    PhysicianIdentity, PracticeClock, ReviewCadence, SIGN_IN_TOKEN_TTL_SECONDS, Session,
+    SessionActivity, SessionError, SessionLifetime, SessionRenewal, SignInError, StoreUnavailable,
     mint_patient_token, mint_token, token_hash,
 };
 use async_trait::async_trait;
@@ -329,7 +329,7 @@ impl AuthStore for PostgresAuthStore {
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
+            expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;
@@ -350,7 +350,9 @@ impl AuthStore for PostgresAuthStore {
             .await
             .map_err(invalid)?
             .ok_or(SessionError::Invalid)?;
-        if session.expires_at <= now as i64 {
+        let created_at = session.created_at as u64;
+        let lifetime = SessionLifetime::from_persisted(created_at, session.expires_at as u64);
+        if !lifetime.allows(now) {
             return Err(SessionError::Invalid);
         }
         let account = Accounts::find_by_id(session.account_id)
@@ -372,9 +374,49 @@ impl AuthStore for PostgresAuthStore {
                 physician_id: account.physician_id,
             },
             token_hash: hash,
-            expires_at: session.expires_at as u64,
-            created_at: session.created_at as u64,
+            lifetime,
+            created_at,
         })
+    }
+
+    async fn note_physician_activity(
+        &self,
+        token: &str,
+        now: u64,
+    ) -> Result<SessionActivity, StoreUnavailable> {
+        let hash = token_hash(token);
+        let row = Sessions::find()
+            .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
+            .one(&self.db)
+            .await
+            .map_err(|_| StoreUnavailable)?;
+        let Some(row) = row else {
+            return Ok(SessionActivity::Ended);
+        };
+        let lifetime =
+            SessionLifetime::from_persisted(row.created_at as u64, row.expires_at as u64);
+        match lifetime.renew(now) {
+            SessionRenewal::Ended => Ok(SessionActivity::Ended),
+            SessionRenewal::Covered => Ok(SessionActivity::Covered),
+            SessionRenewal::Extend { idle_deadline } => {
+                let updated = Sessions::update_many()
+                    .col_expr(
+                        crate::migration::session::Column::ExpiresAt,
+                        Expr::value(idle_deadline as i64),
+                    )
+                    .filter(crate::migration::session::Column::TokenHash.eq(hash.to_vec()))
+                    .filter(crate::migration::session::Column::ExpiresAt.gt(now as i64))
+                    .filter(crate::migration::session::Column::ExpiresAt.lt(idle_deadline as i64))
+                    .exec(&self.db)
+                    .await
+                    .map_err(|_| StoreUnavailable)?;
+                Ok(if updated.rows_affected == 0 {
+                    SessionActivity::Covered
+                } else {
+                    SessionActivity::Extended
+                })
+            }
+        }
     }
 
     async fn publish_authorized(
@@ -798,7 +840,7 @@ impl AuthStore for PostgresAuthStore {
             account_id: Set(account.id),
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
-            expires_at: Set((now + SESSION_TTL_SECONDS) as i64),
+            expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;

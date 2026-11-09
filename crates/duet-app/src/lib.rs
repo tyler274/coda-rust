@@ -155,14 +155,14 @@ fn TabHeading(name: String, loading: Signal<bool>) -> Element {
 }
 
 fn open_client(base_url: String, bearer: String) -> Result<DuetClient, String> {
-    let bearer = if let Some(session) = try_consume_context::<PatientSession>() {
+    if let Some(session) = try_consume_context::<PatientSession>() {
         if !session.retention.session().is_current(&session.fence) {
             return Err("Account session ended".into());
         }
-        session.access_token.peek().clone()
-    } else {
-        bearer
-    };
+        let client = DuetClient::new(base_url, session.access_token.peek().clone(), "0", "0.1.0")?;
+        let sender = consume_context::<account::RefusalSender>();
+        return Ok(client.bind_session(session.retention.session(), session.fence, sender.0));
+    }
     DuetClient::new(base_url, bearer, "0", "0.1.0")
 }
 
@@ -319,6 +319,12 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     let mut cache = use_signal(|| None);
     let mut draft = use_signal(String::new);
     let mut pending_id = use_signal(|| None::<(uuid::Uuid, String)>);
+    let uncertain = try_use_context::<account::UncertainMessage>();
+    use_effect(move || {
+        if let Some(mut slot) = uncertain {
+            slot.0.set(pending_id().map(|(id, _)| id));
+        }
+    });
     let mut sending = use_signal(|| false);
     let mut send_failed = use_signal(|| false);
     let mut accepted = use_signal(|| None::<ConversationMessage>);
@@ -527,9 +533,6 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         let owner = stream_owner.clone();
         let fence = stream_fence.clone();
         async move {
-            let Ok(api) = open_client(url, bearer) else {
-                return;
-            };
             loop {
                 if !owner.session().is_current(&fence) {
                     provisional.set(Default::default());
@@ -542,6 +545,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     .and_then(|run| run.as_ref())
                     .map(|run| run.id);
                 if let Some(command) = command {
+                    let Ok(api) = open_client(url.clone(), bearer.clone()) else {
+                        break;
+                    };
                     let mut next = provisional.peek().clone();
                     if next.command != Some(command) {
                         next = duet_client::streaming::Provisional::new(command);

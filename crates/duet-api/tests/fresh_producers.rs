@@ -6,7 +6,7 @@ use axum::{Router, body::Body, http::Request};
 use chrono::{Duration, Utc};
 use duet_api::{
     ApiError,
-    conversation_routes::ConversationState,
+    conversation_routes::{ConversationState, ModelProvider},
     database::{AccountDatabase, migrate},
     durable::DurableState,
     evidence::EvidenceStore,
@@ -193,7 +193,10 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
         durable: durable.clone(),
         store: store.clone(),
         model: "local".into(),
-        provider: Some((endpoint, "synthetic-local-only".into())),
+        provider: Some(ModelProvider::Responses {
+            endpoint,
+            key: "synthetic-local-only".into(),
+        }),
     };
     let producer = duet_api::health_context::HealthContextProducer::connect(&context_url)
         .await

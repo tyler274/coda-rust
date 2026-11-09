@@ -1,5 +1,10 @@
 //! Authenticated accepted commands and reconnectable durable server-sent events.
-use crate::{ApiError, conversation::ConversationStore, durable::DurableState};
+use crate::{
+    ApiError,
+    background::{self, api_error_class, failed},
+    conversation::ConversationStore,
+    durable::DurableState,
+};
 use axum::{
     Json, Router,
     extract::{Path, Query, State},
@@ -9,6 +14,7 @@ use axum::{
 };
 use serde::Deserialize;
 use serde_json::{Value, json};
+use tracing::{Instrument, instrument::WithSubscriber};
 use uuid::Uuid;
 
 /// Provider configuration is explicit; no paid calls occur unless enabled at startup.
@@ -20,8 +26,57 @@ pub struct ConversationState {
     pub store: ConversationStore,
     /// Server-controlled model, never supplied by a patient command.
     pub model: String,
-    /// Authorized transport URL and credential. None leaves commands unavailable rather than faking replies.
-    pub provider: Option<(String, String)>,
+    /// Configured model transport. None leaves commands unavailable rather than faking replies.
+    pub provider: Option<ModelProvider>,
+}
+/// Model transport selected at startup.
+#[derive(Clone)]
+pub enum ModelProvider {
+    /// An authorized OpenAI Responses endpoint and credential.
+    Responses {
+        /// Responses URL.
+        endpoint: String,
+        /// Provider credential.
+        key: String,
+    },
+    /// Local-stack stand-in answering every exchange with one fixed text after
+    /// a delay. Hosted startup refuses it (`hosting::LOCAL_ONLY`).
+    Fixed {
+        /// The reply text.
+        text: String,
+        /// Time the exchange stays open before completing.
+        delay: std::time::Duration,
+    },
+}
+enum Transport {
+    Responses(harness::provider::ResponsesProvider),
+    Fixed {
+        text: String,
+        delay: std::time::Duration,
+    },
+}
+impl harness::execution::Provider for Transport {
+    async fn exchange(
+        &mut self,
+        request: &harness::execution::Request,
+        cancel: &harness::execution::Cancellation,
+        emit: &mut (dyn FnMut(harness::execution::StreamEvent) -> Result<(), String> + Send),
+    ) -> Result<harness::execution::Response, String> {
+        match self {
+            Self::Responses(provider) => provider.exchange(request, cancel, emit).await,
+            Self::Fixed { text, delay } => {
+                cancel.check()?;
+                tokio::time::sleep(*delay).await;
+                cancel.check()?;
+                Ok(harness::execution::Response {
+                    text: text.clone(),
+                    calls: vec![],
+                    usage: Default::default(),
+                    provenance: json!({"adapter":"duet-local-fixed","mode":"fixed"}),
+                })
+            }
+        }
+    }
 }
 /// Conversation routes use the same owner for admission, execution and event readback.
 pub fn router(state: ConversationState) -> Router {
@@ -29,6 +84,10 @@ pub fn router(state: ConversationState) -> Router {
         .route(
             "/api/conversation/messages",
             get(phone_read).post(phone_send),
+        )
+        .route(
+            "/api/conversation/messages/{message_id}",
+            get(phone_message),
         )
         .route(
             "/api/conversation/messages/{message_id}/sources/{source_id}",
@@ -51,6 +110,14 @@ async fn phone_read(
 ) -> Result<Json<Value>, ApiError> {
     let c = s.durable.authenticate(&h).await?;
     Ok(Json(s.store.phone_page(&c, s.provider.is_some()).await?))
+}
+async fn phone_message(
+    State(s): State<ConversationState>,
+    h: HeaderMap,
+    Path(message_id): Path<Uuid>,
+) -> Result<Json<Value>, ApiError> {
+    let c = s.durable.authenticate(&h).await?;
+    Ok(Json(s.store.phone_message(&c, message_id).await?))
 }
 async fn phone_send(
     State(s): State<ConversationState>,
@@ -140,40 +207,75 @@ pub async fn recover_pending(s: ConversationState) {
         if s.provider.is_none() {
             continue;
         }
-        if let Ok(contexts) = s.store.due_follow_up_contexts().await {
+        sweep(&s)
+            .instrument(tracing::info_span!(
+                "duet.recovery.sweep",
+                otel.status_code = tracing::field::Empty
+            ))
+            .await;
+    }
+}
+const FOLLOW_UP_FAILED: &str = "duet.follow_up.failed";
+const RECOVERY_FAILED: &str = "duet.recovery.failed";
+/// One recovery tick: due follow-ups first, then pending commands. A failed
+/// item is reported and skipped; the next tick retries it.
+async fn sweep(s: &ConversationState) {
+    match s.store.due_follow_up_contexts().await {
+        Ok(contexts) => {
             for c in contexts {
-                if let Ok(Some(id)) = s
+                match s
                     .store
                     .accept_due_follow_up(&c, Uuid::new_v4(), &s.model)
                     .await
                 {
-                    let _ = launch(&s, &c, id).await;
+                    Ok(Some(id)) => {
+                        if let Err(e) = launch(s, &c, id).await {
+                            failed(FOLLOW_UP_FAILED, "launch", api_error_class(&e));
+                        }
+                    }
+                    Ok(None) => {}
+                    Err(e) => failed(FOLLOW_UP_FAILED, "accept", api_error_class(&e)),
                 }
             }
         }
-        if let Ok(pending) = s.durable.identity.database.pending_commands().await {
+        Err(e) => failed(FOLLOW_UP_FAILED, "contexts", api_error_class(&e)),
+    }
+    match s.durable.identity.database.pending_commands().await {
+        Ok(pending) => {
             for (account, id) in pending {
-                if let Ok(c) = s.store.recovery_context(account, id).await {
-                    let _ = launch(&s, &c, id).await;
+                match s.store.recovery_context(account, id).await {
+                    Ok(c) => {
+                        if let Err(e) = launch(s, &c, id).await {
+                            failed(RECOVERY_FAILED, "launch", api_error_class(&e));
+                        }
+                    }
+                    Err(e) => failed(RECOVERY_FAILED, "context", api_error_class(&e)),
                 }
             }
         }
+        Err(_) => failed(RECOVERY_FAILED, "pending", background::DATABASE),
     }
 }
 /// Immediate same-command reclaims after steers in one launch. Later steers
 /// still reach the command through the 30s recovery poll.
 const MAX_STEER_RECLAIMS: usize = 8;
+const CONVERSATION_FAILED: &str = "duet.conversation.failed";
 pub(crate) async fn launch(
     s: &ConversationState,
     c: &crate::identity::AccountContext,
     id: Uuid,
 ) -> Result<(), ApiError> {
-    let (endpoint, key) = s
+    let mut provider = match s
         .provider
         .clone()
-        .ok_or(ApiError::Unavailable("conversation provider not enabled"))?;
-    let mut provider = harness::provider::ResponsesProvider::new(endpoint, key)
-        .map_err(|_| ApiError::Unavailable("provider configuration invalid"))?;
+        .ok_or(ApiError::Unavailable("conversation provider not enabled"))?
+    {
+        ModelProvider::Responses { endpoint, key } => Transport::Responses(
+            harness::provider::ResponsesProvider::new(endpoint, key)
+                .map_err(|_| ApiError::Unavailable("provider configuration invalid"))?,
+        ),
+        ModelProvider::Fixed { text, delay } => Transport::Fixed { text, delay },
+    };
     let mut owner = match s.store.claim(c, id).await {
         Ok(o) => o,
         Err(ApiError::Conflict(_)) => return Ok(()),
@@ -183,36 +285,61 @@ pub(crate) async fn launch(
     let account = c.account_id;
     let store = s.store.clone();
     let context = c.clone();
-    tokio::spawn(async move {
-        // ENG-200: a steer fences out the attempt and returns the same command
-        // to `accepted`. Reclaim it right away, not after the 30s recovery
-        // poll, and stop after a bounded number of steered restarts.
-        let mut reclaims = 0;
-        loop {
-            let result = owner
-                .execute(
-                    &mut provider,
-                    harness::execution::Limits::default(),
-                    &harness::execution::Cancellation::default(),
-                )
-                .await;
-            if result.is_ok()
-                || reclaims >= MAX_STEER_RECLAIMS
-                || !owner.steered().await.unwrap_or(false)
-            {
-                break;
+    tokio::spawn(
+        async move {
+            // A steer fences the attempt. Reclaim immediately, but leave later
+            // steers to the recovery poll after a bounded number of restarts.
+            let mut reclaims = 0;
+            loop {
+                let result = owner
+                    .execute(
+                        &mut provider,
+                        harness::execution::Limits::default(),
+                        &harness::execution::Cancellation::default(),
+                    )
+                    .await;
+                if result.is_ok() {
+                    break;
+                }
+                match owner.steered().await {
+                    Ok(true) => {}
+                    Ok(false) => {
+                        // Execute's string error may contain provider or patient
+                        // content. Do not inspect it or export it as a field.
+                        failed(CONVERSATION_FAILED, "execute", "execution");
+                        break;
+                    }
+                    Err(e) => {
+                        failed(CONVERSATION_FAILED, "steered", api_error_class(&e));
+                        break;
+                    }
+                }
+                if reclaims >= MAX_STEER_RECLAIMS {
+                    break;
+                }
+                reclaims += 1;
+                match store.claim(&context, id).await {
+                    Ok(next) => owner = next,
+                    // Another launch already claimed or completed this command.
+                    Err(ApiError::Conflict(_)) => break,
+                    Err(e) => {
+                        failed(CONVERSATION_FAILED, "claim", api_error_class(&e));
+                        break;
+                    }
+                }
             }
-            reclaims += 1;
-            // A live claim (another launch got there first) is a no-op.
-            match store.claim(&context, id).await {
-                Ok(next) => owner = next,
-                Err(_) => break,
+            // Restrictions stay effective even when execution or confirmation
+            // fails; privacy recovery retries the durable journal receipt.
+            if let Err(e) = privacy.confirm_account(account).await {
+                failed(CONVERSATION_FAILED, "confirm", api_error_class(&e));
             }
         }
-        // Confirm restrictions even if later model work failed; effective
-        // cancellation is never rolled back by a journal or transport failure.
-        let _confirmed = privacy.confirm_account(account).await;
-    });
+        .instrument(tracing::info_span!(
+            "duet.conversation.execute",
+            otel.status_code = tracing::field::Empty
+        ))
+        .with_current_subscriber(),
+    );
     Ok(())
 }
 async fn resume(

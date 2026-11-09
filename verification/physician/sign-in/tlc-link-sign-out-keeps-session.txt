@@ -1,0 +1,9 @@
+Mutation: another physician's sign-in link signs you out in the browser and leaves your session live at Coda.
+Config checks only PROPERTY ServerRefusesSignedOut.
+
+Error: Action property ServerRefusesSignedOut is violated.
+State 5: <CodaChecksLink>
+event = [tab |-> "A", name |-> "Coda checks the link"]
+stores = "No session"
+session = ( "Session 1" :> "Yours, live" @@ ... )
+666 distinct states found. Depth 6.

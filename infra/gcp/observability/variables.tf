@@ -1,35 +1,255 @@
 variable "project_id" {
-  description = "Project hosting the physician runtime cluster this stack lands on."
+  description = "Project hosting the observability cluster, the Langfuse stores, and the GCP integration identity. For staging this is the Rust staging project, the same one as cluster_project."
   type        = string
-  default     = "coda-health-staging"
 }
 
 variable "region" {
-  description = "Region of the runtime cluster, the Langfuse database, and the blob bucket."
+  description = "Region of the Langfuse database and the blob bucket."
   type        = string
   default     = "us-east1"
 }
 
-variable "cluster_name" {
-  description = "Existing Autopilot cluster owned by infra/gcp/physician-runtime."
+variable "cluster_project" {
+  description = "Project of the observability Autopilot cluster, from infra/gcp/rust-environments' observability_cluster output."
   type        = string
-  default     = "coda-physician-runtime"
+}
+
+variable "cluster_location" {
+  description = "Location (region) of the observability Autopilot cluster, from infra/gcp/rust-environments' observability_cluster output."
+  type        = string
+}
+
+variable "cluster_name" {
+  description = "Name of the observability Autopilot cluster, from infra/gcp/rust-environments' observability_cluster output. This root never manages the cluster."
+  type        = string
 }
 
 variable "network_name" {
-  description = "Existing VPC (with Private Service Access) owned by infra/gcp/physician-runtime."
+  description = "Existing VPC the cluster and Cloud Run share (rust-private in staging), owned by infra/gcp/rust-environments. Read only: Langfuse's Cloud SQL attaches to its Private Service Access range."
   type        = string
-  default     = "coda-physician-runtime"
 }
 
 variable "environment" {
-  description = "Deployment environment. Selects the Doppler config and the Datadog env tag."
+  description = "Deployment environment. Selects the Doppler config and the Datadog env tag. Explicit: there is no default, and only staging is accepted until production observability is separately designed and authorized."
   type        = string
-  default     = "staging"
 
   validation {
-    condition     = contains(["staging", "production"], var.environment)
-    error_message = "environment must be staging or production."
+    condition     = var.environment == "staging"
+    error_message = "environment must be staging; production observability is not designed in this root."
+  }
+}
+
+variable "otel_gateway_ip" {
+  description = "Reserved INTERNAL address for the collector's internal passthrough load balancer, from infra/gcp/rust-environments' otel_gateway output. Sidecars send OTLP/HTTP to http://<ip>:4318."
+  type        = string
+
+  validation {
+    condition     = can(cidrhost("${var.otel_gateway_ip}/32", 0)) && can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", var.otel_gateway_ip))
+    error_message = "otel_gateway_ip must be one private RFC1918 IPv4 address."
+  }
+}
+
+variable "otel_gateway_source_ranges" {
+  description = "Only these CIDRs may reach the collector gateway: the Cloud Run Direct VPC egress subnet (rust-run) from infra/gcp/rust-environments."
+  type        = list(string)
+
+  validation {
+    condition = length(var.otel_gateway_source_ranges) > 0 && alltrue([
+      for cidr in var.otel_gateway_source_ranges : try(
+        can(cidrhost(cidr, 0)) && tonumber(split("/", cidr)[1]) >= 16 &&
+        can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", cidr)), false
+      )
+    ])
+    error_message = "otel_gateway_source_ranges must list private CIDRs no wider than /16, never 0.0.0.0/0."
+  }
+}
+
+variable "otel_gateway_audience" {
+  description = "Audience every sidecar's Google ID token carries and the gateway's oidc authenticator requires, from infra/gcp/rust-environments' otel_gateway output."
+  type        = string
+
+  validation {
+    condition     = trimspace(var.otel_gateway_audience) != ""
+    error_message = "otel_gateway_audience must be nonempty."
+  }
+}
+
+variable "otel_gateway_allowed_callers" {
+  description = "Cloud Run runtime service-account emails whose Google ID tokens the gateway accepts (physician, duet, physician-worker). Every other Google identity is refused even with the right audience."
+  type        = list(string)
+
+  validation {
+    condition = length(var.otel_gateway_allowed_callers) > 0 && alltrue([
+      for email in var.otel_gateway_allowed_callers : can(regex("^[a-z][a-z0-9-]{4,28}[a-z0-9]@[a-z][a-z0-9-]{4,28}[a-z0-9]\\.iam\\.gserviceaccount\\.com$", email))
+    ])
+    error_message = "otel_gateway_allowed_callers must list explicit service-account emails, never users, groups or wildcards."
+  }
+}
+
+variable "telemetry_backend" {
+  description = "Operations destinations behind the gateway: datadog (compatibility default), grafana, or both with independent exporter queues. Datadog remains the primary operational notifier; Grafana evaluates in shadow mode. Langfuse is independent."
+  type        = string
+  default     = "datadog"
+
+  validation {
+    condition     = contains(["datadog", "grafana", "both"], var.telemetry_backend)
+    error_message = "telemetry_backend must be datadog, grafana or both."
+  }
+}
+
+variable "grafana_test_notifications_enabled" {
+  description = "Explicitly enable only the labeled synthetic Grafana Slack route. Operational rules remain shadow-only; requires operator approval and the webhook in Doppler."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.grafana_test_notifications_enabled || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Grafana test notifications require grafana or both."
+  }
+}
+
+variable "grafana_compatibility_metrics_url" {
+  description = "Optional private Prometheus-compatible source for normalized readiness/dependency signals. Empty disables its datasource and rules. The signal producer must implement the documented compatibility contract; Tempo span metrics are not this source. No credentials in URLs."
+  type        = string
+  default     = ""
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || can(regex("^https?://[a-zA-Z0-9.-]+(:[0-9]+)?/?$", var.grafana_compatibility_metrics_url))
+    error_message = "Use a credential-free internal HTTP(S) origin, or empty to disable."
+  }
+  validation {
+    condition     = var.grafana_compatibility_metrics_url == "" || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "Compatibility metrics require grafana or both."
+  }
+}
+
+variable "grafana_traces_retention_days" {
+  description = "Days Tempo keeps traces (telemetry_backend = grafana)."
+  type        = number
+  default     = 14
+
+  validation {
+    condition     = var.grafana_traces_retention_days >= 1 && var.grafana_traces_retention_days <= 90 && floor(var.grafana_traces_retention_days) == var.grafana_traces_retention_days
+    error_message = "grafana_traces_retention_days must be a whole number of days between 1 and 90."
+  }
+}
+
+variable "grafana_logs_retention_days" {
+  description = "Days Loki keeps log records (telemetry_backend = grafana)."
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.grafana_logs_retention_days >= 1 && var.grafana_logs_retention_days <= 365 && floor(var.grafana_logs_retention_days) == var.grafana_logs_retention_days
+    error_message = "grafana_logs_retention_days must be a whole number of days between 1 and 365."
+  }
+}
+
+variable "grafana_metrics_retention_days" {
+  description = "Days Prometheus keeps the span metrics Tempo derives (telemetry_backend = grafana)."
+  type        = number
+  default     = 30
+
+  validation {
+    condition     = var.grafana_metrics_retention_days >= 1 && var.grafana_metrics_retention_days <= 365 && floor(var.grafana_metrics_retention_days) == var.grafana_metrics_retention_days
+    error_message = "grafana_metrics_retention_days must be a whole number of days between 1 and 365."
+  }
+}
+
+variable "grafana_cloud_monitoring_enabled" {
+  description = "Adds a Google Cloud Monitoring datasource to Grafana for Cloud Run and GKE platform metrics in cluster_project, read through Workload Identity by a service account holding only roles/monitoring.viewer. The Grafana counterpart of datadog_gcp_integration_enabled; off by default."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.grafana_cloud_monitoring_enabled || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "grafana_cloud_monitoring_enabled requires telemetry_backend = grafana."
+  }
+}
+
+variable "grafana_edge" {
+  description = "Optional browser edge for Grafana: an external Gateway on hostname with IAP (Google-managed OAuth, organization members only) on its backend, and Grafana signing people in from the signed IAP assertion. Null keeps Grafana ClusterIP-only (port-forward). Bootstrap with no members; after GKE creates the backend, the operator supplies its verified name and numeric id together with the members."
+  type = object({
+    hostname           = string
+    members            = optional(list(string), [])
+    backend_service    = optional(string)
+    backend_service_id = optional(string)
+  })
+  default = null
+
+  validation {
+    condition     = var.grafana_edge == null || contains(["grafana", "both"], var.telemetry_backend)
+    error_message = "The Grafana edge requires telemetry_backend grafana or both."
+  }
+
+  # GKE creates the backend, and resolves the address and certificate map,
+  # in the cluster's project; the edge resources and the IAP audience use
+  # project_id, so the two must be the same project.
+  validation {
+    condition     = var.grafana_edge == null || var.project_id == var.cluster_project
+    error_message = "The Grafana edge requires project_id to equal cluster_project."
+  }
+
+  validation {
+    condition     = var.grafana_edge == null || can(regex("^([a-z0-9]([a-z0-9-]*[a-z0-9])?\\.)+[a-z]{2,}$", var.grafana_edge.hostname))
+    error_message = "grafana_edge.hostname must be a bare lowercase DNS name, without scheme, port or path."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || alltrue([
+      for member in try(var.grafana_edge.members, []) : can(regex("^(user|group):[^@: ]+@[^@: ]+\\.[^@: ]+$", member))
+    ])
+    error_message = "grafana_edge.members must be user: or group: principals, never allUsers, allAuthenticatedUsers or domains."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || (
+      (try(var.grafana_edge.backend_service, null) == null) == (try(var.grafana_edge.backend_service_id, null) == null)
+    )
+    error_message = "Supply the verified backend service name and its numeric id together."
+  }
+
+  validation {
+    condition = var.grafana_edge == null || try(var.grafana_edge.backend_service, null) == null || (
+      try(trimspace(var.grafana_edge.backend_service) != "", false) && can(regex("^[0-9]+$", var.grafana_edge.backend_service_id))
+    )
+    error_message = "The backend service name must be nonempty and its id numeric."
+  }
+
+  validation {
+    condition     = var.grafana_edge == null || length(try(var.grafana_edge.members, [])) == 0 || try(var.grafana_edge.backend_service, null) != null
+    error_message = "Granting Grafana access requires the operator-verified backend service name and id. Bootstrap the edge with no members until GKE has created it."
+  }
+}
+
+variable "datadog_gcp_integration_enabled" {
+  description = "Creates the Datadog GCP integration for cluster_project only (Cloud Run and GKE metrics through service-account impersonation; no key). Billable and external: off until the operator and the Datadog account owner approve it."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.datadog_gcp_integration_enabled || contains(["datadog", "both"], var.telemetry_backend)
+    error_message = "The Datadog GCP integration requires telemetry_backend = datadog; grafana uses grafana_cloud_monitoring_enabled."
+  }
+}
+
+variable "datadog_gcp_cloud_run_services" {
+  description = "Cloud Run services whose revision metrics the GCP integration imports. Other services in the project (the mail relay, for one) stay out."
+  type        = set(string)
+  default     = ["physician", "duet", "physician-worker"]
+
+  validation {
+    condition     = length(var.datadog_gcp_cloud_run_services) > 0 && alltrue([for s in var.datadog_gcp_cloud_run_services : can(regex("^[a-z][a-z0-9-]{0,62}$", s))])
+    error_message = "datadog_gcp_cloud_run_services must list Cloud Run service names."
+  }
+}
+
+variable "datadog_gcp_disabled_metric_namespaces" {
+  description = "Datadog GCP metric namespace ids switched off. The integration has no allowlist, so the other services this project hosts are disabled by id; Cloud Run (run) and GKE stay on. Confirm the ids against the integration's namespace list before enabling."
+  type        = set(string)
+  default     = ["cloudsql", "pubsub", "redis", "storage", "prometheus"]
+
+  validation {
+    condition     = length(setintersection(var.datadog_gcp_disabled_metric_namespaces, toset(["run", "gke", "container", "kubernetes"]))) == 0
+    error_message = "Cloud Run and GKE namespaces are what the integration is for; do not disable them here."
   }
 }
 
@@ -67,14 +287,59 @@ variable "datadog_site" {
   default     = "datadoghq.com"
 }
 
-variable "alert_notify" {
-  description = "Datadog notification handle for every monitor, e.g. @slack-coda-alerts or @pagerduty-coda."
-  type        = string
-  default     = "@slack-coda-alerts"
+variable "datadog_monitors_enabled" {
+  description = "Separate operator gate after ingestion, queries and notification routing are verified. Does not enable any Datadog account products."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.datadog_monitors_enabled || var.alert_notify != ""
+    error_message = "Enabling monitors requires an explicitly confirmed notification handle."
+  }
+  validation {
+    condition     = !var.datadog_monitors_enabled || contains(["datadog", "both"], var.telemetry_backend)
+    error_message = "Datadog monitors require telemetry_backend = datadog; grafana provisions its own alert rules."
+  }
+}
+
+variable "datadog_qualification_monitor_enabled" {
+  description = "Separate gate for the synthetic readiness monitor on coda.qualification.synthetic_readiness. Off by default. Does not enable service monitors."
+  type        = bool
+  default     = false
 
   validation {
-    condition     = can(regex("^@[A-Za-z0-9._@-]+$", var.alert_notify))
-    error_message = "alert_notify must be one Datadog @-handle."
+    condition     = !var.datadog_qualification_monitor_enabled || (var.alert_notify != "" && contains(["datadog", "both"], var.telemetry_backend))
+    error_message = "The qualification monitor requires telemetry_backend datadog or both, and an explicitly confirmed alert handle."
+  }
+}
+
+variable "alert_notify" {
+  description = "Operator-confirmed Datadog notification handle. Empty until routing is approved; there is no guessed Slack channel."
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.alert_notify == "" || can(regex("^@[A-Za-z0-9._-]+$", var.alert_notify))
+    error_message = "alert_notify must be one Datadog @-handle, or empty while monitors are disabled."
+  }
+}
+
+variable "async_failure_threshold" {
+  description = "Safe asynchronous failure events per service in ten minutes before alerting."
+  type        = number
+  default     = 0
+  validation {
+    condition     = var.async_failure_threshold >= 0
+    error_message = "async_failure_threshold cannot be negative."
+  }
+}
+
+variable "container_memory_limit_ratio" {
+  description = "Share of its own memory limit an observability-namespace container may hold for 10 minutes before alerting."
+  type        = number
+  default     = 0.9
+  validation {
+    condition     = var.container_memory_limit_ratio > 0 && var.container_memory_limit_ratio < 1
+    error_message = "container_memory_limit_ratio must be between 0 and 1."
   }
 }
 
@@ -90,10 +355,24 @@ variable "chat_generation_error_threshold" {
   default     = 5
 }
 
-variable "site_p95_latency_threshold_seconds" {
-  description = "physician-site p95 server latency over 10 minutes that pages."
-  type        = number
-  default     = 2
+variable "service_p95_latency_threshold_seconds" {
+  description = "Per-service p95 HTTP latency thresholds. Worker pushes include model execution and must not inherit the interactive API's two-second budget. Calibrate against staging ingestion before enabling monitors."
+  type        = map(number)
+  default = {
+    physician-sample = 2
+    physician-worker = 120
+    duet-api         = 2
+  }
+  validation {
+    condition     = toset(keys(var.service_p95_latency_threshold_seconds)) == toset(["physician-sample", "physician-worker", "duet-api"]) && alltrue([for threshold in values(var.service_p95_latency_threshold_seconds) : threshold > 0])
+    error_message = "Supply a positive latency threshold for each of the three staging services."
+  }
+}
+
+variable "langfuse_enabled" {
+  description = "Deploys Langfuse and its stores. Off: the gateway still sends traces and logs to Datadog, and its generation pipeline goes to the nop exporter (collector.gke-no-langfuse.yaml). Turning it on needs the project IAM grants and the HMAC key in Doppler first."
+  type        = bool
+  default     = true
 }
 
 variable "langfuse_sql_tier" {
@@ -140,6 +419,11 @@ variable "langfuse_iap_enabled" {
       var.langfuse_hostname != null && var.langfuse_iap_client_id != null && var.langfuse_iap_certificate != null
     )
     error_message = "langfuse_iap_enabled requires langfuse_hostname, langfuse_iap_client_id, and langfuse_iap_certificate."
+  }
+
+  validation {
+    condition     = !var.langfuse_iap_enabled || var.langfuse_enabled
+    error_message = "The Langfuse IAP gateway requires langfuse_enabled."
   }
 }
 

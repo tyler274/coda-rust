@@ -14,6 +14,68 @@ use physician_auth::{AuthStore, Membership, PostgresAuthStore};
 #[path = "scale/mod.rs"]
 mod support;
 
+type ExportedSpan = opentelemetry_proto::tonic::trace::v1::Span;
+
+struct TraceCapture {
+    endpoint: String,
+    spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
+    task: tokio::task::JoinHandle<()>,
+}
+
+impl TraceCapture {
+    async fn start() -> Self {
+        use axum::{Router, body::Bytes, extract::State, routing::post};
+        use opentelemetry_proto::tonic::collector::trace::v1::ExportTraceServiceRequest;
+        use prost::Message as _;
+        let spans = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
+        async fn receive(
+            State(spans): State<std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>>,
+            body: Bytes,
+        ) -> axum::http::StatusCode {
+            let request = ExportTraceServiceRequest::decode(body).expect("OTLP protobuf");
+            spans.lock().unwrap().extend(
+                request
+                    .resource_spans
+                    .into_iter()
+                    .flat_map(|r| r.scope_spans)
+                    .flat_map(|s| s.spans),
+            );
+            axum::http::StatusCode::OK
+        }
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}", listener.local_addr().unwrap());
+        let app = Router::new()
+            .route("/v1/traces", post(receive))
+            .with_state(spans.clone());
+        let task = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
+        Self {
+            endpoint,
+            spans,
+            task,
+        }
+    }
+}
+
+impl Drop for TraceCapture {
+    fn drop(&mut self) {
+        self.task.abort();
+    }
+}
+
+fn trace_attribute(span: &ExportedSpan, key: &str) -> Option<String> {
+    use opentelemetry_proto::tonic::common::v1::any_value::Value;
+    span.attributes
+        .iter()
+        .find(|kv| kv.key == key)
+        .and_then(|kv| kv.value.as_ref())
+        .and_then(|value| match &value.value {
+            Some(Value::StringValue(text)) => Some(text.clone()),
+            _ => None,
+        })
+}
+
 fn lock() -> &'static tokio::sync::Mutex<()> {
     static LOCK: std::sync::OnceLock<tokio::sync::Mutex<()>> = std::sync::OnceLock::new();
     LOCK.get_or_init(|| tokio::sync::Mutex::new(()))
@@ -240,11 +302,37 @@ async fn duplicate_delivery_runs_the_fixed_provider_once() {
 #[tokio::test]
 async fn failed_delivery_is_redelivered_and_can_succeed() {
     let _guard = lock().lock().await;
-    let Some(running) = running("retry", Some(1), None).await else {
+    let collector = TraceCapture::start().await;
+    let Some(running) = running_with(
+        "retry",
+        Some(1),
+        None,
+        false,
+        &[
+            ("CODA_LOG_FORMAT", "json"),
+            ("OTEL_EXPORTER_OTLP_ENDPOINT", &collector.endpoint),
+            ("OTEL_BSP_SCHEDULE_DELAY", "50"),
+        ],
+    )
+    .await
+    else {
         return;
     };
     let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
-    running.emulator.publish(&delivery).await;
+    running
+        .emulator
+        .publish_with_attributes(
+            &delivery,
+            [
+                (
+                    "traceparent".into(),
+                    "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01".into(),
+                ),
+                ("tracestate".into(), "dd=s:1".into()),
+            ]
+            .into(),
+        )
+        .await;
     let state = wait_assistant(&running.store, &scope, &running.worker).await;
     assert_eq!(state.status, "completed");
     assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
@@ -266,6 +354,95 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
             .iter()
             .any(|attempt| attempt.status == "completed"),
         "redelivery should complete an attempt"
+    );
+    assert_eq!(state.attempts.len(), 2);
+    let first = &state.attempts[0];
+    let second = &state.attempts[1];
+    assert_ne!(
+        first.id, second.id,
+        "redelivery claims a new canonical attempt"
+    );
+    assert_eq!(first.work, second.work);
+    assert_eq!(second.predecessor.as_deref(), Some(first.id.as_str()));
+    let logs = running.worker.tail();
+    let failure: serde_json::Value = logs
+        .lines()
+        .filter_map(|line| serde_json::from_str::<serde_json::Value>(line).ok())
+        .find(|event| event["event"] == "physician.worker.attempt_failed")
+        .unwrap_or_else(|| panic!("missing asynchronous failure event: {logs}"));
+    assert_eq!(failure["coda.run_id"], first.id);
+    assert_eq!(failure["error.type"], "model_call");
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let spans = loop {
+        let spans = collector.spans.lock().unwrap().clone();
+        if spans
+            .iter()
+            .filter(|span| span.name == "gen_ai.generation")
+            .count()
+            == 2
+        {
+            break spans;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "worker traces not exported: {spans:?}\n{logs}"
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    for saved in [first, second] {
+        let find = |name| {
+            spans
+                .iter()
+                .find(|span| {
+                    span.name == name
+                        && trace_attribute(span, "coda.run_id").as_deref()
+                            == Some(saved.id.as_str())
+                })
+                .unwrap()
+        };
+        let attempt = find("physician.worker.attempt");
+        let generation = find("gen_ai.generation");
+        assert_eq!(generation.trace_id, attempt.trace_id);
+        assert_eq!(generation.parent_span_id, attempt.span_id);
+        let publisher_trace =
+            opentelemetry::trace::TraceId::from_hex("0af7651916cd43dd8448eb211c80319c")
+                .unwrap()
+                .to_bytes();
+        // The emulator omits deliveryAttempt. An unknown delivery count
+        // conservatively links, never assumes this is the first execution.
+        assert_ne!(attempt.trace_id, publisher_trace, "retry span: {attempt:?}");
+        assert_eq!(
+            trace_attribute(attempt, "coda.trace_relation").as_deref(),
+            Some("link")
+        );
+        assert_eq!(attempt.links.len(), 1);
+        assert_eq!(attempt.links[0].trace_id, publisher_trace);
+        assert_eq!(
+            trace_attribute(attempt, "coda.work_id").as_deref(),
+            Some(saved.work.as_str())
+        );
+        assert_ne!(
+            trace_attribute(attempt, "messaging.message.id").as_deref(),
+            Some(saved.id.as_str())
+        );
+    }
+    let failed = spans
+        .iter()
+        .find(|span| {
+            span.name == "physician.worker.attempt"
+                && trace_attribute(span, "coda.run_id").as_deref() == Some(first.id.as_str())
+        })
+        .unwrap();
+    assert_eq!(
+        failure["dd.trace_id"],
+        telemetry::dd_trace_id(opentelemetry::trace::TraceId::from_bytes(
+            failed.trace_id.as_slice().try_into().unwrap()
+        ))
+    );
+    assert!(
+        spans
+            .iter()
+            .any(|span| span.name == "POST /pubsub/chat-turn")
     );
 }
 

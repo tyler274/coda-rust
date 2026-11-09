@@ -1,0 +1,89 @@
+# Merged after collector.yaml only on the GKE gateway. File order:
+#   collector.yaml, collector.gke.yaml, [collector.gke-no-langfuse.yaml],
+#   collector.<backend>.yaml (datadog or grafana, always last)
+# The backend overlay sets only exporters, so the processor lists below
+# survive the merge. This file authenticates every OTLP request and admits
+# only the listed caller service accounts.
+#
+#   OTEL_GATEWAY_AUDIENCE         Audience the caller's Google ID token must
+#                                 carry; the Cloud Run sidecars request the
+#                                 same value (sidecar.yaml).
+#   OTEL_GATEWAY_ALLOWED_CALLERS  Comma-separated service-account emails
+#                                 allowed to send, without spaces, e.g.
+#                                 a@p.iam.gserviceaccount.com,b@p.iam.gserviceaccount.com
+#
+# Authentication: the oidc extension on both OTLP receivers verifies the
+# bearer token against Google's issuer and the audience, and rejects the
+# request otherwise. The token's `email` claim becomes the request's subject.
+#
+# Authorization: oidc proves who the caller is, not that it may send. So the
+# first processors after memory_limiter, in every pipeline:
+#   attributes/caller      deletes any client-supplied coda.ingest.caller,
+#                          then sets it from the authenticated subject.
+#   filter/caller          drops every span and log record whose caller is
+#                          missing or not in OTEL_GATEWAY_ALLOWED_CALLERS.
+#                          error_mode propagate: an evaluation error rejects
+#                          the request instead of letting the data through.
+#   attributes/drop_caller removes coda.ingest.caller before export.
+# They must run before batch, which drops the request's auth context.
+#
+# Limitations: a denied caller's request still succeeds at the receiver (the
+# data is dropped, not refused with 403), and list entries must match the
+# email claim exactly, so spaces around commas never match. Lists replace on
+# merge, so every processor list and service.extensions is restated in full;
+# keep them in step with collector.yaml.
+
+extensions:
+  oidc:
+    issuer_url: https://accounts.google.com
+    audience: ${env:OTEL_GATEWAY_AUDIENCE}
+    username_claim: email
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        include_metadata: true
+        auth:
+          authenticator: oidc
+      http:
+        include_metadata: true
+        auth:
+          authenticator: oidc
+
+processors:
+  attributes/caller:
+    actions:
+      - key: coda.ingest.caller
+        action: delete
+      - key: coda.ingest.caller
+        action: insert
+        from_context: auth.subject
+
+  filter/caller:
+    error_mode: propagate
+    traces:
+      span:
+        - >-
+          attributes["coda.ingest.caller"] == nil or
+          not ContainsValue(Split("${env:OTEL_GATEWAY_ALLOWED_CALLERS}", ","), attributes["coda.ingest.caller"])
+    logs:
+      log_record:
+        - >-
+          attributes["coda.ingest.caller"] == nil or
+          not ContainsValue(Split("${env:OTEL_GATEWAY_ALLOWED_CALLERS}", ","), attributes["coda.ingest.caller"])
+
+  attributes/drop_caller:
+    actions:
+      - key: coda.ingest.caller
+        action: delete
+
+service:
+  extensions: [health_check, basicauth/langfuse, oidc]
+  pipelines:
+    traces/ops:
+      processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, transform/strip_content, batch]
+    traces/langfuse:
+      processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, filter/langfuse_generations, batch]
+    logs/ops:
+      processors: [memory_limiter, attributes/caller, filter/caller, attributes/drop_caller, transform/strip_log_content, batch]

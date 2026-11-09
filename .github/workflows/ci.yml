@@ -1001,6 +1001,9 @@ jobs:
       # Placeholders only; validate checks the config, never connects.
       LANGFUSE_PUBLIC_KEY: pk-lf-ci
       LANGFUSE_SECRET_KEY: sk-lf-ci
+      OTEL_GATEWAY_ENDPOINT: http://10.0.0.1:4318
+      OTEL_GATEWAY_AUDIENCE: https://otel-gateway.ci.invalid
+      OTEL_GATEWAY_ALLOWED_CALLERS: a@ci.iam.gserviceaccount.com,b@ci.iam.gserviceaccount.com
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
@@ -1017,18 +1020,64 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
-      - name: Validate the collector config
+      - name: Validate the collector configs
         run: |
-          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml
-          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.debug.yaml
-          nix develop .#observability --command otelcol-contrib validate --config dev/observability/collector.yaml --config dev/observability/collector.datadog.yaml
+          d=dev/observability
+          validate() {
+            local args=()
+            for file in "$@"; do args+=(--config "$d/$file"); done
+            nix develop .#observability --command otelcol-contrib validate "${args[@]}"
+          }
+          # Base alone: the ops pipelines export to nop.
+          validate collector.yaml
+          # Local: one backend overlay after the base.
+          for backend in debug datadog grafana both; do
+            validate collector.yaml "collector.$backend.yaml"
+          done
+          # GKE: gateway overlay, optional no-Langfuse overlay, backend last.
+          for backend in datadog grafana both; do
+            validate collector.yaml collector.gke.yaml "collector.$backend.yaml"
+            validate collector.yaml collector.gke.yaml collector.gke-no-langfuse.yaml collector.self-metrics.yaml "collector.$backend.yaml"
+            # The gateway before Langfuse exists reads no Langfuse keys.
+            (unset LANGFUSE_PUBLIC_KEY LANGFUSE_SECRET_KEY
+              validate collector.yaml collector.gke.yaml collector.gke-no-langfuse.yaml "collector.$backend.yaml")
+          done
+          # Cloud Run passes the sidecar file inline, so validate that form.
+          OTEL_SIDECAR_CONFIG="$(cat dev/observability/sidecar.yaml)" \
+            nix develop .#observability --command otelcol-contrib validate --config=env:OTEL_SIDECAR_CONFIG
       - name: Check the local stack
         run: |
           docker compose -f dev/observability/compose.yaml config -q
+          docker compose -f dev/observability/compose.yaml --profile datadog config -q
+          docker compose -f dev/observability/compose.yaml --profile grafana config -q
           bash -n scripts/observability-up.sh
+      - name: Verify the Grafana stack configs
+        run: |
+          g="$PWD/dev/observability/grafana"
+          docker run --rm -v "$g/tempo.yaml:/etc/tempo.yaml:ro" docker.io/grafana/tempo:3.1.1 \
+            -config.file=/etc/tempo.yaml -config.expand-env=true -config.verify=true
+          docker run --rm -v "$g/loki.yaml:/etc/loki.yaml:ro" docker.io/grafana/loki:3.7.9 \
+            -config.file=/etc/loki.yaml -config.expand-env=true -verify-config
+          docker run --rm --entrypoint promtool -v "$g/prometheus.yaml:/etc/prometheus.yaml:ro" \
+            docker.io/prom/prometheus:v3.16.0 check config /etc/prometheus.yaml
+      # The foundations job runs the mocked release adapters; staging-release's
+      # container-shape checks run with the workspace-tools tests.
+      - name: Test offline routing and staging image contracts
+        run: |
+          nix develop .#agent --command python -m unittest discover -s scripts -p test_alert_qualification.py -v
+          nix develop .#agent --command python -m unittest discover -s scripts -p test_staging_images.py -v
+      - name: Exercise collector privacy and destination failure isolation
+        run: nix develop .#agent --command python scripts/test_collector_privacy.py
+      - name: Exercise Grafana evaluation and persistent shadow provisioning
+        run: |
+          # The harness is network-none and refuses implicit image pulls.
+          docker pull docker.io/grafana/grafana:13.3.0
+          docker pull docker.io/python:3.14.10-alpine3.24
+          docker pull docker.io/prom/prometheus:v3.16.0
+          nix develop .#agent --command python scripts/test_grafana_shadow.py
       - name: Validate and test the OpenTofu roots
         run: |
-          for root in infra/gcp/observability infra/gcp/physician-runtime; do
+          for root in infra/gcp/observability infra/gcp/physician-runtime infra/gcp/rust-environments; do
             nix develop .#observability --command tofu fmt -check -recursive "$root"
             nix develop .#observability --command tofu -chdir="$root" init -backend=false -input=false
             nix develop .#observability --command tofu -chdir="$root" validate

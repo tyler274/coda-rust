@@ -1,5 +1,6 @@
 //! Fenced reply-revision execution. The draft row owns all evidence and text;
 //! no chat row, effect tool, or projection is an authority for this work.
+use super::attempt::{self, Claimed, Failure, Outcome, Push, Tally};
 use super::{ModelSource, Worker, absent_claim, announce, marked_attempt_fails};
 use axum::http::StatusCode;
 use harness::execution::{
@@ -23,23 +24,48 @@ use tracing::Instrument;
 const DEADLINE: Duration = Duration::from_secs(480);
 const READ_TOOL: &str = "read_patient_sources";
 
-pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &str) -> StatusCode {
+const JOB: &str = "physician_reply_revision";
+
+/// Handles one revision delivery inside its own `physician.worker.attempt`.
+pub(super) async fn deliver(worker: &Worker, push: &Push) -> StatusCode {
+    let span = attempt::span(push, JOB);
+    handle(worker, &push.delivery, &span)
+        .instrument(span.clone())
+        .await
+}
+
+async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
     let claim = match worker
         .store
         .claim_revision(delivery, super::LEASE_SECONDS)
         .await
     {
         Ok(Some(claim)) => claim,
-        Ok(None) => return absent_claim(worker, delivery).await,
+        Ok(None) => {
+            attempt::finish(span, JOB, None, Outcome::Absent, None);
+            return absent_claim(worker, delivery).await;
+        }
         Err(_) => {
-            tracing::warn!("physician revision claim failed");
+            attempt::finish(span, JOB, None, Outcome::ClaimError, Some(Failure::Claim));
             return StatusCode::INTERNAL_SERVER_ERROR;
         }
     };
-    let span = genai::generation_span(
+    // The revision's scope chat names its reply work; it has no recorded
+    // predecessor attempt, so none is reported.
+    attempt::record_claim(
+        span,
+        &Claimed {
+            run_id: &claim.attempt,
+            work_id: Some(&claim.scope.chat),
+            predecessor_run_id: None,
+            input_revision: None,
+            attempt_number: claim.earlier_attempts.saturating_add(1),
+        },
+    );
+    let generation = genai::generation_span(
         &RunContext {
-            run_id: format!("physician-worker-{message_id}"),
-            job: "physician_reply_revision",
+            run_id: claim.attempt.clone(),
+            job: JOB,
             recipe_version: genai::recipe_version(),
             origin: genai::Origin::Real,
             scenario_id: None,
@@ -49,13 +75,14 @@ pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &s
         &worker.model_name,
         worker.adapter,
     );
-    genai::record_input(&span, &claim.input.instruction);
+    genai::record_input(&generation, &claim.input.instruction);
     let mut owner = RevisionOwner {
         store: worker.store.clone(),
         authority: RuntimeAuthority {
             store: worker.store.clone(),
         },
         claim,
+        usage: Tally::default(),
     };
     let cancel = Cancellation::default();
     let attempt = async {
@@ -64,11 +91,11 @@ pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &s
             .store
             .draft(&owner.claim.scope)
             .await
-            .map_err(|_| "revision draft unavailable")?
-            .ok_or("revision draft unavailable")?;
+            .map_err(|_| Failure::Revision)?
+            .ok_or(Failure::Revision)?;
         let mut progress = spent(&draft.attempts, &owner.claim);
         drop(draft);
-        let mut provider = model(&worker.model, &owner.claim)?;
+        let mut provider = model(&worker.model, &owner.claim).map_err(|_| Failure::ProviderInit)?;
         let request = request(&worker.model, &owner.claim);
         execution::run(
             &mut provider,
@@ -80,24 +107,32 @@ pub(super) async fn deliver(worker: &Worker, delivery: &Delivery, message_id: &s
             &mut |_| Ok(()),
         )
         .await
+        .map_err(|_| Failure::Revision)
     };
-    let result = tokio::time::timeout(DEADLINE, attempt.instrument(span.clone())).await;
+    let result = tokio::time::timeout(DEADLINE, attempt.instrument(generation.clone()))
+        .await
+        .unwrap_or(Err(Failure::Timeout));
+    if let Some((input, output)) = owner.usage.known() {
+        genai::record_usage(&generation, input, output);
+    }
+    let run_id = owner.claim.attempt.clone();
     let status = match result {
-        Ok(Ok(response)) => {
+        Ok(response) => {
             // Completion has already atomically compared its retained exchange
             // and committed under the real session's publication locks.
             if let Ok(text) = revised_text(&response) {
-                genai::record_output(&span, text);
+                genai::record_output(&generation, text);
             }
+            attempt::finish(span, JOB, Some(&run_id), Outcome::Committed, None);
             StatusCode::NO_CONTENT
         }
-        _ => {
+        Err(failure) => {
             cancel.cancel();
-            genai::record_error(&span, "physician reply revision failed");
-            tracing::warn!("physician reply revision failed");
+            genai::record_error(&generation, "physician reply revision failed");
             if worker.store.retry_revision(&owner.claim).await.is_err() {
-                tracing::warn!("physician revision was not returned to pending");
+                attempt::retry_not_persisted(span, JOB, &run_id);
             }
+            attempt::finish(span, JOB, Some(&run_id), Outcome::Retry, Some(failure));
             // Even the final failed attempt refuses acknowledgement: Pub/Sub
             // must continue counting this delivery toward its dead-letter topic.
             StatusCode::INTERNAL_SERVER_ERROR
@@ -178,6 +213,8 @@ struct RevisionOwner {
     store: Store,
     claim: RevisionClaim,
     authority: RuntimeAuthority,
+    /// Provider-reported usage of this attempt's retained exchanges.
+    usage: Tally,
 }
 
 impl Owner for RevisionOwner {
@@ -201,6 +238,7 @@ impl Owner for RevisionOwner {
     }
 
     async fn record(&mut self, record: Record) -> Result<(), String> {
+        self.usage.record(&record);
         self.store
             .record_revision(&self.claim, record)
             .await

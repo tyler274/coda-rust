@@ -7,7 +7,7 @@
   const said = document.body ? document.body.textContent : '';
   const has = (selector) => !!document.querySelector(selector);
   const heading = (document.querySelector('.sign-in-content h1') || {}).innerText || '';
-  const shows = has('.session-prompt') ? 'Sign-in prompt over your work'
+  const shows = has('.session-prompt') ? 'Sign-in prompt, with no patient content'
     : has('.glass-app') ? (said.includes('Loading Today…') || said.includes('Opening the patient…') ? 'Opening your workspace' : 'Your workspace')
     : heading.startsWith('Sign in to Coda') ? 'Enter your work email'
     : heading.startsWith('Check your email') ? 'Check your email'

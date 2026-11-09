@@ -105,10 +105,17 @@ impl<R: Runner> Gcloud<R> {
         if Instant::now() >= self.deadline {
             return Err(Error::Cloud(BUDGET_EXHAUSTED));
         }
+        // The GA CLI assigns every flag after `--container` to that container.
+        let split = args.iter().position(|arg| *arg == "--container");
+        let (head, tail) = match split {
+            Some(index) => (&args[..index], &args[index..]),
+            None => (args, &[][..]),
+        };
         let mut all: Vec<String> = ["--project", PROJECT, "run"]
             .into_iter()
-            .chain(args.iter().copied())
+            .chain(head.iter().copied())
             .chain(["--region", REGION, "--quiet", "--format=json"])
+            .chain(tail.iter().copied())
             .map(str::to_owned)
             .collect();
         // The SDK's formatted CLI error is not an absence contract. Capture the
@@ -285,7 +292,7 @@ mod tests {
             .update_job(Product::Physician, &receipt.images)
             .expect("job");
         cloud
-            .update_service(ReleaseService::PhysicianWorker, &receipt.images)
+            .update_service(ReleaseService::PhysicianWorker, None, &receipt.images)
             .expect("worker");
         assert_eq!(
             &cloud.runner.args[3][3..8],
@@ -316,6 +323,64 @@ mod tests {
         );
     }
     #[test]
+    fn two_container_service_reads_and_updates_the_named_product() {
+        let receipt = super::super::tests::receipt();
+        let image = receipt
+            .images
+            .get(ImageRole::PhysicianRuntime)
+            .expect("image");
+        // Cloud Run may list the sidecar first: index 0 is not the product.
+        let template = shape::tests::observed("physician", image.as_str());
+        let sidecar = template["spec"]["containers"][0].clone();
+        let service = serde_json::json!({"spec":{"template":template},"status":{"latestCreatedRevisionName":"rev", "latestReadyRevisionName":"rev", "traffic":[{"revisionName":"rev","percent":100,"latestRevision":true}]}});
+        let revision = serde_json::json!({"spec":{"containers":[sidecar, {"name":"physician","image":image.as_str()}]}});
+        let mut cloud = Gcloud::new(
+            Fake {
+                outputs: VecDeque::from([
+                    output(0, &service.to_string(), ""),
+                    output(0, &revision.to_string(), ""),
+                    output(0, &service.to_string(), ""),
+                    output(0, "{}", ""),
+                ]),
+                args: vec![],
+            },
+            Duration::from_secs(1),
+        );
+        assert!(serving(
+            &cloud.service(ReleaseService::Physician).expect("service"),
+            image
+        ));
+        let shape = cloud.shape(ReleaseService::Physician).expect("shape");
+        assert_eq!(shape.container(), Some("physician"));
+        cloud
+            .update_service(
+                ReleaseService::Physician,
+                shape.container(),
+                &receipt.images,
+            )
+            .expect("update");
+        let command = &cloud.runner.args[3];
+        let container = command
+            .iter()
+            .position(|arg| arg == "--container")
+            .expect("--container");
+        assert_eq!(
+            &command[container..],
+            [
+                "--container".to_owned(),
+                "physician".to_owned(),
+                "--image".to_owned(),
+                image.as_str().to_owned(),
+            ]
+        );
+        for flag in ["--async", "--region", "--quiet", "--format=json"] {
+            assert!(
+                command[..container].iter().any(|arg| arg == flag),
+                "{flag} follows --container"
+            );
+        }
+    }
+    #[test]
     fn mutations_reject_missing_target_images_before_invoking_runner() {
         let receipt = super::super::tests::receipt();
         for missing in ImageRole::ALL {
@@ -342,15 +407,15 @@ mod tests {
                     "missing migration digest",
                 ),
                 ImageRole::PhysicianRuntime => (
-                    cloud.update_service(ReleaseService::Physician, &images),
+                    cloud.update_service(ReleaseService::Physician, None, &images),
                     "missing runtime digest",
                 ),
                 ImageRole::DuetRuntime => (
-                    cloud.update_service(ReleaseService::Duet, &images),
+                    cloud.update_service(ReleaseService::Duet, None, &images),
                     "missing runtime digest",
                 ),
                 ImageRole::PhysicianWorker => (
-                    cloud.update_service(ReleaseService::PhysicianWorker, &images),
+                    cloud.update_service(ReleaseService::PhysicianWorker, None, &images),
                     "missing runtime digest",
                 ),
             };

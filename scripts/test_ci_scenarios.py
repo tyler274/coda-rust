@@ -60,7 +60,7 @@ class RunnerFailures(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, \
                 mock.patch.object(scenarios.subprocess, "run", return_value=completed):
             written = scenarios.Receipt(Path(directory) / "receipt.json")
-            scenarios.d1(written, {"postgres": {"url": "postgres://x"}}, Path(directory) / "d1")
+            scenarios.d1_suites(written, {"postgres": {"url": "postgres://x"}}, Path(directory) / "d1")
         self.assertEqual([s["step"] for s in written.steps if not s["passed"]], ["cargo test exit"])
 
     def test_readiness_file_mid_write_is_retried(self):

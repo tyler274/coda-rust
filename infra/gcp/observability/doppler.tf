@@ -11,12 +11,24 @@ locals {
   # Managed Secret name => Doppler keys it carries, renamed where the
   # consumer expects a different key.
   doppler_secrets = merge(
-    {
-      # DatadogAgent spec.global.credentials reads api-key and app-key.
+    # Only the selected backend's keys need to exist in Doppler.
+    local.datadog_backend ? {
+      # Runtime ingestion gets only the API key. Management credentials
+      # stay with the operator running the Datadog provider.
       "datadog-secret" = {
         "DD_API_KEY" = "api-key"
-        "DD_APP_KEY" = "app-key"
       }
+    } : {},
+    local.grafana_backend ? {
+      # Injected as environment (envFrom) into Grafana: the admin login and
+      # the Slack webhook its provisioned contact point reads.
+      "grafana-secrets" = merge(
+        { "GRAFANA_ADMIN_PASSWORD" = "GF_SECURITY_ADMIN_PASSWORD" },
+        var.grafana_test_notifications_enabled ? { "GRAFANA_SLACK_WEBHOOK_URL" = "GRAFANA_SLACK_WEBHOOK_URL" } : {},
+      )
+    } : {},
+    # Without Langfuse, none of its keys need to exist in Doppler.
+    var.langfuse_enabled ? {
       # Referenced by key from the Langfuse chart values (secretKeyRef and
       # existingSecret); names stay as Doppler holds them. The HMAC pair is
       # minted by the operator for the Langfuse service account and stored
@@ -43,7 +55,7 @@ locals {
         "LANGFUSE_INIT_PROJECT_PUBLIC_KEY" = "LANGFUSE_PUBLIC_KEY"
         "LANGFUSE_INIT_PROJECT_SECRET_KEY" = "LANGFUSE_SECRET_KEY"
       }
-    },
+    } : {},
     var.langfuse_iap_enabled ? {
       # GCPBackendPolicy reads the IAP OAuth client secret from key `key`.
       "langfuse-iap-oauth" = {
@@ -59,14 +71,16 @@ ephemeral "google_secret_manager_secret_version" "doppler_token" {
   version = var.doppler_token_secret_version
 }
 
+# The chart renders its own doppler-operator-system Namespace and hard-codes
+# it on every resource, so Helm must not create it too. The release record
+# lives in the observability namespace instead.
 resource "helm_release" "doppler_operator" {
-  name             = "doppler-kubernetes-operator"
-  repository       = "https://helm.doppler.com"
-  chart            = "doppler-kubernetes-operator"
-  version          = "1.7.3"
-  namespace        = local.doppler_namespace
-  create_namespace = true
-  atomic           = true
+  name       = "doppler-kubernetes-operator"
+  repository = "https://helm.doppler.com"
+  chart      = "doppler-kubernetes-operator"
+  version    = "1.7.3"
+  namespace  = kubernetes_namespace.observability.metadata[0].name
+  atomic     = true
 }
 
 resource "kubernetes_secret_v1" "doppler_token" {
