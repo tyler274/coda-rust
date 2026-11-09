@@ -2309,8 +2309,13 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
 const BANK_POTASSIUM: &str = r#"{"resourceType":"Observation","id":"obs-5c1d2e7a9b40","meta":{"versionId":"1","lastUpdated":"2026-08-20T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001776"},"effectiveDateTime":"2026-08-20T15:15:00+00:00","issued":"2026-08-21T17:02:00+00:00","valueQuantity":{"value":5.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"interpretation":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation","code":"H","display":"High"}]}],"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.1,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
 /// The patient bank's resolved problem-list Condition.
 const BANK_CONDITION: &str = r#"{"resourceType":"Condition","id":"cond-db76cb24b2c2","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-clinical","code":"resolved","display":"Resolved"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"confirmed","display":"Confirmed"}]},"category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-category","code":"problem-list-item","display":"Problem List Item"}],"text":"Problem List Item"}],"code":{"coding":[{"system":"http://hl7.org/fhir/sid/icd-10-cm","code":"J20.9","display":"Acute bronchitis, unspecified"}],"text":"Acute bronchitis"},"subject":{"reference":"Patient/MRN00001776"},"onsetDateTime":"2019-03-05","recordedDate":"2019-03-12T13:20:00+00:00","abatementDateTime":"2019-04-02T19:00:00+00:00"}"#;
+/// An inactive penicillin allergy in the shape `patient-bank`'s renderer writes once an allergy
+/// is no longer active. The bank keeps no rendered chart in the repository, so this line is
+/// built beside the other bank records rather than copied from one.
+const BANK_INACTIVE_ALLERGY: &str = r#"{"resourceType":"AllergyIntolerance","id":"allergy-7c3e91d04b2a","meta":{"versionId":"1","lastUpdated":"2016-06-03T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"inactive","display":"Inactive"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-verification","code":"confirmed","display":"Confirmed"}]},"type":"allergy","category":["medication"],"criticality":"high","code":{"coding":[{"system":"http://www.nlm.nih.gov/research/umls/rxnorm","code":"7980","display":"Penicillin G"}],"text":"Penicillin"},"patient":{"reference":"Patient/MRN00001776"},"recordedDate":"2016-06-03T09:40:00+00:00","reaction":[{"manifestation":[{"coding":[{"system":"http://snomed.info/sct","code":"247472004","display":"Hives"}],"text":"Hives"}],"severity":"moderate"}]}"#;
 const OBSERVATION_CHAT: &str = "chat-observation-citation";
 const CONDITION_CHAT: &str = "chat-condition-citation";
+const INACTIVE_ALLERGY_CHAT: &str = "chat-inactive-allergy-citation";
 
 /// One cited bank record: its chat, the record line, and the dates the synthetic chart
 /// adapter retains with it.
@@ -2324,7 +2329,7 @@ struct CitedRecord {
     dates: &'static [(&'static str, &'static str)],
 }
 
-const CITED_RECORDS: [CitedRecord; 2] = [
+const CITED_RECORDS: [CitedRecord; 3] = [
     CitedRecord {
         chat: OBSERVATION_CHAT,
         title: "Latest potassium",
@@ -2350,6 +2355,18 @@ const CITED_RECORDS: [CitedRecord; 2] = [
             ("onsetDateTime", "2019-03-05"),
             ("recordedDate", "2019-03-12T13:20:00+00:00"),
             ("meta.lastUpdated", "2019-03-12T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: INACTIVE_ALLERGY_CHAT,
+        title: "Penicillin allergy",
+        question: "Is the penicillin allergy still current?",
+        reference: "AllergyIntolerance/allergy-7c3e91d04b2a",
+        record_type: "AllergyIntolerance",
+        line: BANK_INACTIVE_ALLERGY,
+        dates: &[
+            ("recordedDate", "2016-06-03T09:40:00+00:00"),
+            ("meta.lastUpdated", "2016-06-03T00:00:00+00:00"),
         ],
     },
 ];
@@ -2413,12 +2430,14 @@ async fn with_record_citations(
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
 }
 
-/// What a cited record's reader must show: its heading, kind and statuses, then text that must
-/// be visible and the source path of each value that must carry one.
+/// What a cited record's reader must show: its heading, kind and statuses, the kind and date its
+/// hover preview reads, then text that must be visible and the source path of each value that
+/// must carry one. `hidden` text shows in neither the preview nor the reader.
 struct RecordReading {
     title: &'static str,
     kind: &'static str,
     statuses: &'static [&'static str],
+    preview: &'static str,
     visible: &'static [&'static str],
     paths: &'static [(&'static str, &'static str)],
     hidden: &'static [&'static str],
@@ -2459,6 +2478,17 @@ fn read_cited_record(
     };
     let preview_text = preview["text"].as_str().unwrap();
     assert!(preview_text.contains(expected.kind), "{preview}");
+    assert!(
+        preview_text.contains(expected.preview),
+        "preview lacks its kind and date {}: {preview}",
+        expected.preview
+    );
+    for text in expected.hidden {
+        assert!(
+            !preview_text.contains(text),
+            "{text} in the preview: {preview}"
+        );
+    }
     for status in expected.statuses {
         assert!(
             preview_text.contains(status),
@@ -2560,6 +2590,7 @@ async fn an_observation_citation_reads_its_value_range_and_status_as_recorded() 
             title: "Potassium",
             kind: "Observation record",
             statuses: &["Result status: final"],
+            preview: "Observation record · Effective August 20, 2026",
             visible: &[
                 "Effective August 20, 2026, 15:15:00+00:00 as recorded",
                 "Issued August 21, 2026, 17:02:00+00:00 as recorded",
@@ -2601,6 +2632,7 @@ async fn a_condition_citation_reads_its_statement_with_status_first() {
                 "Clinical status: Resolved",
                 "Verification status: Confirmed",
             ],
+            preview: "Condition record · Recorded March 12, 2019",
             visible: &[
                 "Onset recorded March 5, 2019",
                 "Recorded March 12, 2019, 13:20:00+00:00 as recorded",
@@ -2615,6 +2647,46 @@ async fn a_condition_citation_reads_its_statement_with_status_first() {
                 ("abatementDateTime", "April 2, 2019"),
             ],
             hidden: &["MRN00001776", "cond-db76cb24b2c2"],
+        },
+    );
+}
+
+/// A cited allergy that is no longer active leads with its inactive clinical status and its
+/// verification status beside its kind and date, ahead of the allergen, and never reads as
+/// current: neither the hover preview nor the reader says "Active".
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_inactive_allergy_citation_leads_with_its_status_and_never_reads_as_current() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        INACTIVE_ALLERGY_CHAT,
+        BANK_INACTIVE_ALLERGY,
+        &RecordReading {
+            title: "Penicillin",
+            kind: "Medication allergy record",
+            statuses: &[
+                "Clinical status: Inactive",
+                "Verification status: Confirmed",
+            ],
+            preview: "Medication allergy record · Recorded June 3, 2016",
+            visible: &[
+                "Recorded June 3, 2016, 09:40:00+00:00 as recorded",
+                "Penicillin G (7980",
+                "Hives",
+                "moderate",
+                "Criticality (not reaction severity)",
+            ],
+            paths: &[
+                ("clinicalStatus", "Inactive"),
+                ("verificationStatus", "Confirmed"),
+                ("code", "Penicillin"),
+                ("recordedDate", "June 3, 2016"),
+                ("reaction[0].severity", "moderate"),
+                ("criticality", "high"),
+            ],
+            hidden: &["Active", "MRN00001776", "allergy-7c3e91d04b2a"],
         },
     );
 }
