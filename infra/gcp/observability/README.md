@@ -29,11 +29,12 @@ the project's data-retention setting).
 backend and the Doppler operator. Nothing from `langfuse.tf` is planned, no
 Langfuse key is synced from Doppler, and the gateway merges
 [`collector.gke-no-langfuse.yaml`](/dev/observability/collector.gke-no-langfuse.yaml)
-before the backend overlay, sending generation spans to `nop`. Staging starts
-there because two Langfuse prerequisites need the project owner: the
-project-level Cloud SQL grants (`resourcemanager.projects.setIamPolicy`) and
-the HMAC key (`storage.hmacKeys.create`). Turning it on later adds Langfuse
-without changing the operations path.
+before the backend overlay, sending generation spans to `nop`. Staging sets
+`langfuse_enabled = true`. Its apply needs an identity with
+`resourcemanager.projects.setIamPolicy` for the project-level Cloud SQL grants,
+the `LANGFUSE_*` keys from [Secrets](#boundary) in Doppler, and an HMAC key
+(`storage.hmacKeys.create`) for `coda-langfuse-blobs`, which exists only after
+this root creates it. Enabling Langfuse does not change the operations path.
 
 ## Switching the backend
 
