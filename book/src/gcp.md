@@ -18,6 +18,16 @@ operator from reviewed saved plans:
 [Observability](observability.md) describes the per-signal paths and the
 content policy.
 
+Grafana and Langfuse show telemetry that can carry PHI, so people reach them
+only through Google IAP, and IAP admits only `group:gcp-engineering@codahealth.ai`
+plus the named service accounts a route needs to hop between services. Neither
+tool is granted to `allUsers`, `allAuthenticatedUsers`, a `domain:` or a single
+`user:`, and neither has a listener that skips IAP. Production keeps that rule:
+no production observability exists yet, and the roots refuse a production
+cluster, relay or observability environment until a production route is
+designed under it. The <a href="/infra/gcp/observability/README%2Emd#boundary">observability boundary</a>
+says how staging meets it.
+
 Run every command on this page inside `nix develop` from the repository root. The
 shell provides `gcloud`, `tofu`, `doppler`, `timeout` and `jq`; do not use host copies.
 Commands that read Doppler secrets need the default shell after `doppler login`,

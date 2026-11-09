@@ -404,6 +404,17 @@ path changes only together with its image.
 
 ## Boundary
 
+- **Only the engineering group, only through IAP, in every environment.**
+  Every way a person reaches Grafana or Langfuse passes Google IAP, and IAP
+  admits only `group:gcp-engineering@codahealth.ai` plus the named service
+  accounts the route needs (in staging, public-site's account on the relay).
+  No `allUsers`, `allAuthenticatedUsers`, `domain:` or single `user:` grant
+  reaches either tool, and an app that signs people in from the IAP assertion
+  checks it against its own entry point's audience. Production follows the
+  same rule. This root accepts only `environment = "staging"`, and
+  `rust-environments` and `public-site` refuse a production cluster or relay,
+  so production observability cannot be planned until its route is designed
+  with tests that refuse any other principal or a path around IAP.
 - **No public listener; people come through the staging proxy.** The
   Langfuse chart's Ingress is off and every Service is `ClusterIP`, including
   Tempo, Loki, Prometheus and Grafana. The only other listeners are the
