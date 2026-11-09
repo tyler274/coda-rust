@@ -57,7 +57,7 @@ observability_cluster_enabled = true
 
 # The observability relay (observability-relay.tf). Set to the first published
 # coda-observability-relay digest; later releases own the image field.
-# observability_relay_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-observability-relay@sha256:..."
+observability_relay_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-observability-relay@sha256:0f08de9f8a389e3c7533c20f57286d780d186eeacfd00030bad2471a5820037b"
 
 # The otel-collector sidecar on physician, duet and physician-worker, sending to
 # the gateway above. Needs the observability root applied and its gateway ready.

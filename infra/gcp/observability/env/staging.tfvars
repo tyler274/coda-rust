@@ -34,7 +34,11 @@ telemetry_content = "full"
 alert_notify = "@slack-Coda_Health-engineering-observability"
 
 # Grafana and Langfuse under https://staging.codahealth.ai/grafana/ and
-# /langfuse/ (README.md, "Staging proxy rollout"). staging_proxy and
-# langfuse_web_image are added together once the base-path Langfuse image is
-# built and its digest recorded; observability_web is rendered from
-# rust-environments' observability_relay output.
+# /langfuse/ (README.md, "Staging proxy rollout"). observability_web is
+# rendered from rust-environments' observability_relay output.
+staging_proxy = {
+  origin       = "https://staging.codahealth.ai"
+  iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+}
+# The NEXT_PUBLIC_BASE_PATH=/langfuse build of v3.225.11 (langfuse-web-image.yml).
+langfuse_web_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/langfuse-web@sha256:41e4b17935ccfff07d55b7ee87b908548736e1544d0f304ac785f2fddc95e884"

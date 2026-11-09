@@ -1082,7 +1082,7 @@ run "observability_active" {
       google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" &&
       google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].network_interfaces[0].subnetwork == "rust-relay" &&
       length(google_cloud_run_v2_service.observability_relay["relay"].template[0].containers) == 1 &&
-      google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == null &&
+      google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == "observability-relay" &&
       { for env in google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].env : env.name => env.value } == {
         RELAY_IAP_AUDIENCE = "/projects/123456789012/locations/us-east1/services/observability-relay"
         GRAFANA_UPSTREAM   = "http://10.82.0.20:3000"

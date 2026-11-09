@@ -3,13 +3,16 @@
 //! [`rust-environments`](/infra/gcp/rust-environments) owns every service
 //! field except the product container's image. With observability on, a
 //! service runs two containers: the product, named after the service, and the
-//! `otel-collector` sidecar. With it off, one unnamed product container. Any
-//! other shape is refused before anything is migrated or rolled out, and after
-//! the rollout nothing but the product image may have moved.
+//! `otel-collector` sidecar. With it off, one unnamed product container. The
+//! observability relay runs one container named after the service. Any other
+//! shape is refused before anything is migrated or rolled out, and after the
+//! rollout nothing but the product image may have moved.
 use super::{Error, LocalCode, Result};
 use serde_json::{Map, Value};
 
 const SIDECAR: &str = "otel-collector";
+/// Its single container is named, so the release targets it by name.
+const NAMED_SINGLE: &str = "observability-relay";
 /// Set on the product container by observability-cluster.tf (`DD_ENV` and
 /// `observability_product_env`), with the values each may take. An empty list
 /// accepts any nonempty value. `CODA_TELEMETRY_CONTENT` is either policy:
@@ -120,12 +123,15 @@ pub(super) fn read(template: &Value, service: &str) -> Result<Shape> {
         if !telemetry || !gateway || ingress {
             return Err(Error::Cloud(LocalCode::TelemetryContractIncomplete));
         }
-    } else if !matches!(found, [only] if name(only).is_none()) {
-        // The single container stays unnamed while observability is off.
-        return Err(Error::Cloud(LocalCode::UnexpectedContainerSet));
+    } else {
+        let wanted = (service == NAMED_SINGLE).then_some(service);
+        if !matches!(found, [only] if name(only) == wanted) {
+            return Err(Error::Cloud(LocalCode::UnexpectedContainerSet));
+        }
     }
+    let named = sidecar || service == NAMED_SINGLE;
     Ok(Shape {
-        container: sidecar.then(|| service.to_owned()),
+        container: named.then(|| service.to_owned()),
         sidecar,
         infrastructure: infrastructure_view(template, service)?,
     })
@@ -208,6 +214,12 @@ pub(super) mod tests {
                 "env": [{"name": "DD_ENV", "value": "staging"}]
             }]}
         })
+    }
+    /// The relay's shape: one container, named after its service.
+    pub fn named(service: &str, image: &str) -> Value {
+        let mut template = single(image);
+        template["spec"]["containers"][0]["name"] = service.into();
+        template
     }
     /// The shape rust-environments produces with observability on. Cloud Run
     /// may list the sidecar first; order must not matter.
@@ -300,6 +312,27 @@ pub(super) mod tests {
             product(&template["spec"], "physician").expect("product")["image"],
             OLD
         );
+    }
+    #[test]
+    fn single_named_container_is_targeted_by_name() {
+        let template = named("observability-relay", OLD);
+        assert_eq!(
+            read(&template, "observability-relay")
+                .expect("shape")
+                .container(),
+            Some("observability-relay")
+        );
+        let after = released(&template, "observability-relay", NEW);
+        read(&after, "observability-relay")
+            .expect("after")
+            .preserves(&read(&template, "observability-relay").expect("before"))
+            .expect("preserved");
+        for template in [single(OLD), named("other", OLD)] {
+            assert_eq!(
+                code(read(&template, "observability-relay")),
+                "unexpected-container-set"
+            );
+        }
     }
     #[test]
     fn sidecar_without_telemetry_env_is_refused() {

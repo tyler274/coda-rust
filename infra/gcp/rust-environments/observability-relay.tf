@@ -9,7 +9,7 @@
 # physician and Duet services, which share rust-run, off Grafana and Langfuse.
 #
 # It reads no secrets and has no database, Doppler token or sidecar: one
-# unnamed container, which staging-release updates like physician-worker
+# container named after the service, which staging-release updates by name
 # (crates/workspace-tools/src/staging_release).
 locals {
   observability_relay = var.observability_relay_image != null && local.observability_cluster ? toset(["relay"]) : toset([])
@@ -74,6 +74,9 @@ resource "google_cloud_run_v2_service" "observability_relay" {
       }
     }
     containers {
+      # Cloud Run would name an unnamed container per revision; the release
+      # finds this one by the service name.
+      name  = "observability-relay"
       image = var.observability_relay_image
       ports { container_port = 8080 }
       resources {
