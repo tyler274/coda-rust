@@ -436,7 +436,8 @@ struct QueuedPayload {
 
 /// Accepts `message.submit`, `conversation.archive`, `conversation.restore`,
 /// and, on the hosted path, `message.edit`, `message.withdraw`, `work.resume`,
-/// `work.stop`, and `reply.revise`. Every other command is rejected.
+/// `work.stop`, `discussion.open`, and `reply.revise`. Every other command is
+/// rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -456,6 +457,9 @@ pub(crate) async fn submit(
     }
     if matches!(body.kind.as_str(), "message.edit" | "message.withdraw") && live.durable.is_some() {
         return change_queued(live, auth_ctx, body).await;
+    }
+    if body.kind == "discussion.open" && live.durable.is_some() {
+        return discuss(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
     }
     if matches!(
         body.kind.as_str(),
@@ -769,10 +773,19 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
     };
+    // Each of Coda's responses names its place, which Discuss sends.
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
+        .enumerate()
+        .map(|(place, message)| {
+            let kind = turn_kind(&message.role);
+            if kind == "model" {
+                json!({ "kind": kind, "text": message.text, "response": place })
+            } else {
+                json!({ "kind": kind, "text": message.text })
+            }
+        })
         .collect();
     let mut runs = Vec::new();
     match conversation.status.as_str() {
@@ -1132,6 +1145,80 @@ async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -
                 Json(json!({
                     "outcome": "rejected",
                     "message": rejection_message(kind),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+/// `discussion.open` on one of Coda's responses: the chat it is in, its place
+/// there, and the new chat the page picked for the discussion.
+#[derive(Deserialize)]
+struct DiscussPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    response: usize,
+    discussion_chat_id: String,
+}
+
+/// `discussion.open` on the hosted path. The workspace is checked by the auth
+/// middleware; only this physician's chats are read and opened.
+async fn discuss(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    use local_product::runtime::Discussed;
+    const KIND: &str = "discussion.open";
+    let Some(chat) = live.durable.clone() else {
+        return rejected(KIND);
+    };
+    let Some(ctx) = ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<DiscussPayload>(value).ok())
+    else {
+        return rejected(KIND);
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected(KIND);
+    };
+    let source = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match chat
+        .store
+        .discuss_authorized(
+            &source,
+            &key,
+            session_hash,
+            payload.response,
+            &payload.discussion_chat_id,
+        )
+        .await
+    {
+        Ok(Discussed::Refused) => rejected(KIND),
+        Ok(outcome) => {
+            if outcome == Discussed::Opened {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.discussion_chat_id,
+            }))
+            .into_response()
+        }
+        Err(error) => {
+            tracing::warn!(command = KIND, %error, "physician discussion open failed");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message(KIND),
                 })),
             )
                 .into_response()

@@ -796,6 +796,10 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
+    #[serde(default)]
+    /// On one of Coda's responses: its place in the chat, which Discuss
+    /// names. Absent where the server doesn't offer Discuss.
+    pub response: Option<usize>,
 }
 
 impl ChatTurn {
