@@ -23,6 +23,7 @@ mod chat_draft;
 pub mod durable;
 mod gmail;
 pub mod hosting;
+pub mod layout_generation;
 mod live;
 #[cfg(test)]
 mod live_tests;

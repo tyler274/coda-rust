@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Layout",
+  "description": "Headings, labels, roles and JSON pointers into one record type. It holds no values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["record_type", "sections"],
+  "properties": {
+    "record_type": {
+      "description": "The record's resourceType.",
+      "type": "string"
+    },
+    "statuses": {
+      "description": "The record's own statuses, read beside its kind and date. Only status slots.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/slot" }
+    },
+    "sections": {
+      "description": "Headed groups of fields, in reading order.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/section" }
+    }
+  },
+  "$defs": {
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["heading", "slots"],
+      "properties": {
+        "heading": {
+          "description": "The group's heading. A repeated group reads under its element's own code when it has one.",
+          "type": "string",
+          "minLength": 1
+        },
+        "repeat": {
+          "description": "A JSON pointer to an array in the record. The section repeats once per element, and each slot's pointer is relative to that element.",
+          "type": "string"
+        },
+        "slots": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/slot" }
+        }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "role", "pointer"],
+      "properties": {
+        "label": {
+          "description": "What the value means. Never the value itself.",
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "description": "What part the value plays in the record.",
+          "enum": [
+            "result",
+            "unit",
+            "reference_range_low",
+            "reference_range_high",
+            "reference_range_text",
+            "interpretation",
+            "status",
+            "date",
+            "code",
+            "note",
+            "other"
+          ]
+        },
+        "pointer": {
+          "description": "An RFC 6901 JSON pointer to one string, number or boolean in the record.",
+          "type": "string"
+        }
+      }
+    }
+  }
+}

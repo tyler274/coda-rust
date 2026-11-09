@@ -716,7 +716,7 @@ type CitedLayouts = HashMap<(String, String), Layout>;
 
 /// Reads the layout of every source and record type the conversation cites, once each. A key
 /// with no usable layout is left out, and its records read through the general view.
-async fn cited_layouts(
+pub(crate) async fn cited_layouts(
     store: &local_product::runtime::Store,
     conversation: &local_product::runtime::Conversation,
 ) -> CitedLayouts {
@@ -826,7 +826,7 @@ fn citation_segments(
     parts
 }
 
-fn durable_snapshot_body(
+pub(crate) fn durable_snapshot_body(
     conversation: Option<&local_product::runtime::Conversation>,
     layouts: &CitedLayouts,
 ) -> Value {
