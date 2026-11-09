@@ -879,6 +879,8 @@ jobs:
         with:
           submodules: false
           persist-credentials: false
+          # The drift guard diffs against the live revision's RELEASE_SHA.
+          fetch-depth: 0
       - name: Install Nix
         uses: cachix/install-nix-action@v31
       - name: Read private Nix cache
@@ -947,10 +949,11 @@ jobs:
             echo "$unexpected"
             exit 1
           fi
-          # A release changes only RELEASE_SHA among the runtime settings. Any
-          # other difference means env/staging.tfvars on this commit disagrees
-          # with what is live (an applied change that never reached main), and
-          # applying would silently revert it.
+          # A release changes the runtime settings beyond RELEASE_SHA only when
+          # main changed them: env/staging.tfvars or main.tf differ between the
+          # live revision's RELEASE_SHA and this commit. Any other difference
+          # is a live change that never reached main, and applying would
+          # silently revert it.
           drift=$(jq -r '[.resource_changes[]
             | select(.address == "google_cloud_run_v2_service.site" and .change.actions == ["update"])
             | [.change.before, .change.after]
@@ -958,9 +961,20 @@ jobs:
             | select(.[0] != .[1])
             | "live: \(.[0] | map("\(.name)=\(.value)") | join(" "))\nplan: \(.[1] | map("\(.name)=\(.value)") | join(" "))"] | .[]' plan.json)
           if [ -n "$drift" ]; then
-            echo "::error::The release would change the site's runtime settings; reconcile env/staging.tfvars with what is live first:"
-            echo "$drift"
-            exit 1
+            live_sha=$(jq -r '[.resource_changes[]
+              | select(.address == "google_cloud_run_v2_service.site")
+              | .change.before.template[0].containers[0].env[]?
+              | select(.name == "RELEASE_SHA") | .value] | first // empty' plan.json)
+            if [[ "$live_sha" =~ ^[0-9a-f]{40}$ ]] \
+              && git merge-base --is-ancestor "$live_sha" "$GITHUB_SHA" 2>/dev/null \
+              && ! git diff --quiet "$live_sha" "$GITHUB_SHA" -- "$ROOT/env/staging.tfvars" "$ROOT/main.tf"; then
+              echo "::notice::The release applies runtime settings main changed since ${live_sha}:"
+              echo "$drift"
+            else
+              echo "::error::The release would change the site's runtime settings, and no change on main since the live RELEASE_SHA (${live_sha:-unknown}) explains it; reconcile env/staging.tfvars with what is live first:"
+              echo "$drift"
+              exit 1
+            fi
           fi
       - name: Apply the saved plan
         env:
