@@ -346,3 +346,8 @@ html, body { margin: 0; height: 100%; background: var(--surface); color: var(--i
 
 /* The expired-session prompt covers and hides the page beneath it. */
 .session-prompt { position: fixed; inset: 0; width: auto; height: auto; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; overflow: auto; background: transparent; color: inherit; }
+
+/* What closes an answer: Update, its one Sources control, then its basis, collapsed and reading as a quiet line. */
+.answer-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin-top: var(--space-2); }
+.answer-controls > .disclosure { flex-basis: 100%; }
+.answer-basis { margin: 0; color: var(--muted); font: var(--type-body-sm); }
