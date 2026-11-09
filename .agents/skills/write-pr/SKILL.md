@@ -39,6 +39,8 @@ gaps, and landing decisions visible outside those blocks.
 Explain the responsible owner, affected workflow, and material assumptions or
 tradeoffs. For a defect, connect the shared cause to the related paths repaired;
 for a refactor, explain the responsibility improved and behavior preserved.
+When the work has a type-model plan, summarize what the types now rule out and
+what stays unmodelled and why, so a reviewer can hold the code to it.
 
 Include affected consumers outside the diff, cross-repository dependencies,
 migrations, rollout, recovery, and landing order when they matter. Distinguish

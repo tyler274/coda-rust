@@ -714,6 +714,10 @@ pub enum NavCommand {
     Activate,
 }
 
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "modifier keys are independent; editing, modal and item focus are not yet one focus state"
+)]
 pub struct KeyInput {
     pub key: String,
     pub meta: bool,

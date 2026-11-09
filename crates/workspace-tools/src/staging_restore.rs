@@ -136,6 +136,10 @@ staging-restore --cleanup --receipt PATH --authorize-staging-delete\n\
 Cloud completion is NOT recovery qualification. Run the product-owned migration, schema, readback and permission checks on the isolated target; Duet additionally requires duet-privacy-replay with NO IDs against the complete independent journal inventory, and a synthetic post-backup deletion proof. Keep serving, workers, queues and messaging disconnected. Receipts always retain these validation gaps. Cleanup is explicit and identity-checked.";
 
 #[derive(Default)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "execute, cleanup and their authorizations are one mode not yet modelled as an enum"
+)]
 struct Options {
     product: Option<Product>,
     backup: Option<String>,

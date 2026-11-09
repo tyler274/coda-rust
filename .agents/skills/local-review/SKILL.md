@@ -24,6 +24,8 @@ Read the relevant conversation, governing guidance, and current owners. Supply:
 - Affected workflows and consumers, dependencies between pieces, prior findings
   and dispositions, and inspected verification with its limits: each acceptance
   criterion with its evidence artifacts and the revision they ran against.
+- The type-model plan, when the work has one: what the types should rule out,
+  what stays unmodelled and why, and the author's open questions.
 
 Give enough context for independent judgment without prescribing a verdict or
 limiting investigation to known concerns. Keep unrelated private material and

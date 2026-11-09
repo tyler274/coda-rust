@@ -44,9 +44,29 @@ criterion's evidence: the [verify skill](../../../verification/README.md#verify-
 code, a focused test, or the observation to capture. For a defect a test can
 show, write the test first and record its failure, for the reason the defect
 gives, before the fix.
+
+When the work adds or changes state, a boundary between processes or languages,
+or an error path, write a short type-model plan before implementing, following
+[model the problem using the type system](../../../AGENTS.md#writing-code). Read the states, rules and
+invariants the ticket and specs already name, and the typed owners that hold
+them now. Then write down:
+
+- **What the types should rule out:** each mistake or invalid state, how the
+  code allows it today, and the representation that makes it unrepresentable
+  or refused at one owner.
+- **What stays unmodelled, and why:** for example, a migration cost out of
+  scope, or a newtype that would spread through a wire crate for one caller.
+- **Questions for the reviewer:** where the model is least certain.
+
+Keep it brief, as a table or list in a file under `target/verification/`. When
+the change adds no state, boundary or error path, say so in one line
+instead. The plan informs implementation, travels to the reviewer with the
+criteria, and is corrected when the code teaches you something.
+
 Reconcile material contradictions; use
 [write-linear-ticket](../write-linear-ticket/SKILL.md) when scope needs shaping.
-Explain the plan, responsible owners, affected workflows, criteria, and evidence.
+Explain the plan, responsible owners, affected workflows, type-model plan,
+criteria, and evidence.
 
 ## Implement, verify, and review
 
@@ -63,8 +83,8 @@ later correction makes stale. A criterion without evidence stays listed as a gap
 
 When the shared [development workflow](../../../AGENTS.md#development-workflow)
 calls for independent review, use [local-review](../local-review/SKILL.md) with
-the original intent, exact change, criteria, and their evidence. Reconcile its
-findings, correct accepted defects, and verify the result through that skill's
+the original intent, exact change, type-model plan, criteria, and their
+evidence. Reconcile its findings, correct accepted defects, and verify the result through that skill's
 correction workflow. Work through that feedback locally before PR handoff,
 following the shared defaults for early collaboration. Missing proof remains
 visible rather than reducing the ticket's acceptance criteria.
@@ -72,8 +92,8 @@ visible rather than reducing the ticket's acceptance criteria.
 ## Prepare the handoff
 
 Use [write-pr](../write-pr/SKILL.md) to explain the final change, linking the
-ticket and relevant sources. Carry each criterion with its evidence and result,
-local review dispositions, open decisions, and remaining acceptance work into the
+ticket and relevant sources. Carry the type-model plan as it ended, each
+criterion with its evidence and result, local review dispositions, open decisions, and remaining acceptance work into the
 handoff. Refresh the
 explanation after material changes.
 

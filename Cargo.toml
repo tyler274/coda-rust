@@ -18,3 +18,9 @@ map_err_ignore = "warn"
 # Failure looks like failure: `result.ok();` hides a discarded error. Where the
 # failure truly matters to no one, `let _ = result;` discards it visibly.
 unused_result_ok = "warn"
+# Model the problem using the type system: several bools in one struct or one
+# signature usually encode a state or a mode that an enum would hold. Flags that
+# are truly independent, such as a test fake's injected faults or key modifiers,
+# say so with `#[expect(..., reason = "...")]` on the item.
+struct_excessive_bools = "warn"
+fn_params_excessive_bools = "warn"
