@@ -75,6 +75,10 @@ jobs:
           [ "$deployed" = 1 ] || { echo "::error::staging never deployed ${RELEASE_SHA} successfully"; exit 1; }
       - name: Install Nix
         uses: cachix/install-nix-action@v31
+      - name: Reuse OpenTofu providers
+        uses: ./.github/actions/tofu-providers
+        with:
+          scope: public-site
       - name: Authenticate as the public-site production deployer
         id: auth
         uses: google-github-actions/auth@v3

@@ -1,0 +1,25 @@
+name: OpenTofu provider cache
+description: >-
+  Reuse OpenTofu provider packages across runs. The registry serves them from
+  github.com release URLs that OpenTofu cannot authenticate, so a warm cache
+  keeps tofu init off those anonymous downloads. Each package is still checked
+  against the committed lock-file hashes.
+inputs:
+  scope:
+    description: Cache key scope; one per job, since each job installs a different provider set
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Point OpenTofu at the shared plugin cache
+      shell: bash
+      run: |
+        mkdir -p "$RUNNER_TEMP/tofu-plugin-cache"
+        echo "TF_PLUGIN_CACHE_DIR=$RUNNER_TEMP/tofu-plugin-cache" >> "$GITHUB_ENV"
+    - name: Restore and save OpenTofu providers
+      uses: actions/cache@v6
+      continue-on-error: true
+      with:
+        path: ${{ runner.temp }}/tofu-plugin-cache
+        key: tofu-providers-${{ runner.os }}-${{ inputs.scope }}-${{ hashFiles('infra/gcp/*/.terraform.lock.hcl') }}
+        restore-keys: tofu-providers-${{ runner.os }}-${{ inputs.scope }}-
