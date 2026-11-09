@@ -2527,9 +2527,26 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         ratings[1]["notice"] == "Couldn’t save" && ratings[1]["pressed"].is_null()
     });
     tab.save_pictures("feedback-not-saved", "[aria-label=\"Conversation\"]");
+    // A save that answers after the physician left the chat still settles it.
+    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    let retry = tab.held_request("PUT");
+    tab.click_named(".sidebar-nav-item", "Today");
+    let left = Instant::now();
+    while tab.dom().contains("Sodium was 139 on Monday.") {
+        assert!(
+            left.elapsed() < Duration::from_secs(5),
+            "Today left the chat on screen"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    tab.release(&retry);
     tab.call("Fetch.disable", serde_json::json!({}));
     tab.release_all();
-    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    tab.click(r#"button[aria-label="Find patient"]"#);
+    tab.browser.type_into(".search-field input", "Tanvir");
+    tab.wait_for_text("DOB", Duration::from_secs(5));
+    tab.click(".dialog-results button");
+    tab.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(10));
     ratings_when(&mut tab, "the retried save landed", |ratings| {
         ratings[1]["pressed"] == "Poor response"
             && ratings[1]["notice"].is_null()
@@ -2561,8 +2578,23 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     );
     tab.click_named("dialog.feedback-details .toggle-chip", "Missing context");
     tab.browser
-        .type_into("dialog.feedback-details textarea", "It left out the trend.");
-    std::thread::sleep(Duration::from_millis(100));
+        .type_into("dialog.feedback-details textarea", "It left out the trend");
+    // Keys pressed in the details are words, never the page's shortcuts.
+    tab.eval(
+        "(t => { t.focus(); t.setSelectionRange(t.value.length, t.value.length); return true; })(document.querySelector('dialog.feedback-details textarea'))",
+    );
+    tab.press_key(Key::typing("?", "Slash", 191));
+    std::thread::sleep(Duration::from_millis(150));
+    assert_eq!(
+        tab.eval("document.querySelector('dialog.feedback-details textarea').value"),
+        "It left out the trend?",
+        "a key typed into the details went missing"
+    );
+    assert_eq!(
+        tab.eval("[...document.querySelectorAll('dialog')].filter(d => d.innerText.includes('Keyboard shortcuts')).length"),
+        0,
+        "typing ? in the details opened the page's shortcuts"
+    );
     tab.save_pictures("feedback-details", "dialog.feedback-details");
     tab.click_named("dialog.feedback-details button", "Save details");
     ratings_when(&mut tab, "the details saved", |ratings| {
@@ -2589,7 +2621,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
                 {
                     "response": 1,
                     "rating": "up",
-                    "details": {"reasons": ["missing_context"], "text": "It left out the trend."},
+                    "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
                 },
                 {"response": 3, "rating": "down", "details": null},
             ]})

@@ -12,6 +12,7 @@
 //! controls.
 use std::collections::{BTreeMap, BTreeSet};
 
+use dioxus::core::{Runtime, current_scope_id};
 use dioxus::prelude::*;
 use physician_client::PhysicianClient;
 use physician_wire::{
@@ -313,11 +314,14 @@ impl Desk {
     }
 }
 
-/// The open chat's feedback and the client its saves go through.
+/// The open chat's feedback, the client its saves go through, and the scope
+/// that keeps them: a rating save outlives the controls that started it, so
+/// leaving the chat never strands it as saving.
 #[derive(Clone, Copy)]
 struct Feedback {
     desk: Signal<Desk>,
     client: Signal<PhysicianClient>,
+    owner: ScopeId,
 }
 
 /// Keeps the open chat's feedback for the [`ResponseRating`] controls
@@ -329,7 +333,11 @@ pub(crate) fn use_feedback(
     reread: Signal<u32>,
 ) {
     let mut desk = use_signal(Desk::default);
-    use_context_provider(|| Feedback { desk, client });
+    use_context_provider(|| Feedback {
+        desk,
+        client,
+        owner: current_scope_id(),
+    });
     use_effect(move || {
         let _reread = reread();
         let open = workspace()
@@ -354,7 +362,11 @@ pub(crate) fn use_feedback(
 /// The thumbs and details under one of Coda's responses, named by its place.
 #[component]
 pub(crate) fn ResponseRating(response: usize) -> Element {
-    let Feedback { mut desk, client } = use_context::<Feedback>();
+    let Feedback {
+        mut desk,
+        client,
+        owner,
+    } = use_context::<Feedback>();
     let mut open = use_signal(|| false);
     let entry = desk.read().entry(response);
     let rating = entry.rating;
@@ -367,12 +379,14 @@ pub(crate) fn ResponseRating(response: usize) -> Element {
             return;
         };
         let client = client.peek().clone();
-        spawn(async move {
-            let answer = client
-                .rate_response(&chat.workspace, &chat.chat, response, choice)
-                .await
-                .map_err(|_| ());
-            desk.write().rating_answered(&chat, response, answer);
+        Runtime::current().in_scope(owner, || {
+            spawn(async move {
+                let answer = client
+                    .rate_response(&chat.workspace, &chat.chat, response, choice)
+                    .await
+                    .map_err(|_| ());
+                desk.write().rating_answered(&chat, response, answer);
+            })
         });
     };
     let selected = rating.shown().map(|rating| match rating {
@@ -418,7 +432,9 @@ pub(crate) fn ResponseRating(response: usize) -> Element {
 /// Closing it without saving leaves the rating and any saved details.
 #[component]
 fn DetailsDialog(response: usize, saved: FeedbackDetails, on_close: EventHandler) -> Element {
-    let Feedback { mut desk, client } = use_context::<Feedback>();
+    let Feedback {
+        mut desk, client, ..
+    } = use_context::<Feedback>();
     let initial = saved.clone();
     let mut reasons = use_signal(|| initial.reasons.iter().copied().collect::<BTreeSet<_>>());
     let mut text = use_signal(|| initial.text.clone());
@@ -456,6 +472,14 @@ fn DetailsDialog(response: usize, saved: FeedbackDetails, on_close: EventHandler
             subtitle: DETAILS_SUBTITLE,
             close_label: CLOSE,
             on_close: move |_| on_close.call(()),
+            // What the physician types here is details, never the page's shortcuts or Send.
+            div {
+                class: "feedback-details-form",
+                onkeydown: move |event| {
+                    if event.key() != Key::Escape {
+                        event.stop_propagation();
+                    }
+                },
             div { class: "feedback-reasons",
                 for (reason, label) in REASONS {
                     ToggleChip {
@@ -490,6 +514,7 @@ fn DetailsDialog(response: usize, saved: FeedbackDetails, on_close: EventHandler
                     onclick: save,
                     "{SAVE_DETAILS}"
                 }
+            }
             }
         }
     }
