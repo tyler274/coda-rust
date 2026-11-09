@@ -469,7 +469,11 @@ impl Composer {
                 held.failures = 0;
                 // The server holds this page's text already (a lost answer):
                 // take its revision as the baseline instead of a conflict.
-                if text == held.text || text == attempt.text {
+                // Not while an accepted Send's clear waits: Stop may have
+                // written the same words, and the clear would erase them.
+                if held.pending_clear && !text.is_empty() {
+                    held.conflict = Some(ConflictDraft { revision, text });
+                } else if text == held.text || text == attempt.text {
                     if revision >= held.revision {
                         held.revision = revision;
                         held.saved = text;
@@ -931,6 +935,29 @@ mod tests {
         assert!(!composer.wants_save(&one));
     }
 
+    /// The same race with the Send accepted first: its clear waits behind
+    /// the autosave, and the autosave's equal conflict is kept as a
+    /// conflict, so the clear never lands over Stop's words.
+    #[test]
+    fn an_equal_save_conflict_holds_an_accepted_sends_clear() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let save = composer.begin(&one).unwrap();
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert!(composer.clearing(at));
+        composer.finish(&save, SaveOutcome::Conflict(1, "Q".into()));
+        assert!(
+            composer.begin(&one).is_none(),
+            "no empty save over Stop's text"
+        );
+        assert_eq!(composer.conflict(at).unwrap().text, "Q");
+    }
+
     #[test]
     fn a_newer_notice_outlives_the_save_it_replaced() {
         let one = chat("chat-1");
@@ -1308,14 +1335,16 @@ mod tests {
                 (replay.expected_revision, replay.text.as_str()),
                 (0, "submitted")
             );
-            page.finish(
-                &replay,
-                if committed {
-                    SaveOutcome::Conflict(1, "submitted".into())
-                } else {
-                    SaveOutcome::Saved(1)
-                },
-            );
+            if committed {
+                // The replay finds the same words already saved. This page
+                // can't tell its own lost answer from Stop returning them in
+                // another tab, so it asks rather than clear them.
+                page.finish(&replay, SaveOutcome::Conflict(1, "submitted".into()));
+                assert!(page.begin(&one).is_none());
+                assert_eq!(page.conflict(at).unwrap().text, "submitted");
+                continue;
+            }
+            page.finish(&replay, SaveOutcome::Saved(1));
             let clear = page.begin(&one).unwrap();
             assert_eq!((clear.expected_revision, clear.text.as_str()), (1, ""));
             page.finish(&clear, SaveOutcome::Saved(2));
