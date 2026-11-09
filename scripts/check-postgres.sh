@@ -29,7 +29,8 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments --test steering
   --test runtime_postgres --test runtime_publication --test runtime_recovery
-  --test redis --test fanout --test worker --test recovery --test try_again)
+  --test redis --test fanout --test worker --test recovery --test try_again
+  --test physician_layouts)
 shard_2_targets=(--test stop --test chat_draft --test reply_revision
   --test instance_loss --test emulator --test push_wake)
 
@@ -75,6 +76,10 @@ shard_1() {
   # shows "couldn't finish" and Try again (work.resume) gets the reply.
   pg_test --test recovery -- --test-threads=1
   pg_test --test try_again -- --test-threads=1
+  # Source layouts: byte-exact readback, first layout wins, a differing save is
+  # refused, and a failed read is an error, never "no layout". Each test keys
+  # its rows under its own source on the physician runtime database.
+  PHYSICIAN_TEST_DATABASE_URL="$PHYSICIAN_RUNTIME_TEST_DATABASE_URL" pg_test --test physician_layouts
 }
 
 shard_2() {

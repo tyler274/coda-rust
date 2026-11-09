@@ -29,6 +29,8 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/layout.rs"]
+mod layout;
 #[path = "physician-worker/revision.rs"]
 mod revision;
 use attempt::{Claimed, Failure, Outcome, Push, Tally};
@@ -236,6 +238,9 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             // The turn is committed. Redelivery sees it settled and acks.
             announce(worker, workspace_id).await;
             attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Committed, None);
+            // After the answer is published and announced, and before the ack, so the work
+            // keeps its CPU; it never changes the response.
+            layout::after_answer(worker, &host.claim.scope, &run_id).await;
             StatusCode::NO_CONTENT
         }
         Err(_) => {
@@ -454,6 +459,10 @@ struct Worker {
     skills: PhysicianSkills,
     /// Versioned hosted instructions followed by that catalog's metadata.
     instructions: Arc<str>,
+    /// Who makes a source's record layout the first time it is cited.
+    layouts: layout::LayoutSource,
+    /// Layout keys this instance is making right now.
+    layouts_in_flight: physician_sample::layout_generation::InFlight,
 }
 
 /// The packaged skill catalog. Hosted startup requires `PHYSICIAN_SKILLS_DIR`
@@ -545,6 +554,7 @@ impl Worker {
             Some(script) => tool_rounds(&script)?,
             None => Vec::new(),
         });
+        let fixed_layout = layout::fixed_from_env(&get, hosted, fixed.is_some())?;
         let execution = local_product::model_execution(
             configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
         )?;
@@ -554,7 +564,7 @@ impl Worker {
         // Before any connection: a worker without its catalog never serves.
         let skills = PhysicianSkills::load(&skills_dir(&get, hosted)?)?;
         let instructions: Arc<str> = skills.instructions(physician_chat::INSTRUCTIONS).into();
-        let (model, system, model_name, adapter) = if let Some(text) = fixed {
+        let (model, layouts, system, model_name, adapter) = if let Some(text) = fixed {
             if failure_count > 0 {
                 tracing::info!(
                     failure_count,
@@ -575,6 +585,7 @@ impl Worker {
                     marker,
                     rounds,
                 },
+                fixed_layout.map_or(layout::LayoutSource::Off, layout::LayoutSource::Fixed),
                 "fixed",
                 "fixed".to_owned(),
                 "fixed",
@@ -596,8 +607,13 @@ impl Worker {
             tracing::info!("physician worker model execution: api");
             (
                 ModelSource::Api {
-                    key,
+                    key: key.clone(),
                     binding: roles.chat,
+                },
+                // Layouts are background work: no physician waits on them.
+                layout::LayoutSource::Api {
+                    key,
+                    binding: roles.background,
                 },
                 "openai",
                 model_name,
@@ -631,6 +647,8 @@ impl Worker {
             adapter,
             skills,
             instructions,
+            layouts,
+            layouts_in_flight: Default::default(),
         })
     }
 }

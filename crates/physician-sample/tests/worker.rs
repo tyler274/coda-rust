@@ -1051,3 +1051,272 @@ async fn a_real_model_summarizes_the_record_it_cites() {
     assert!(!answer.text.contains("source_summaries"), "{evidence}");
     assert!(!answer.citations.is_empty(), "{evidence}");
 }
+
+/// One cited lab record for the layout proofs.
+const OBSERVATION: &str = r#"{"resourceType":"Observation","id":"k-1","status":"final","code":{"text":"Potassium"},"valueQuantity":{"value":4.1,"unit":"mmol/L"},"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L"},"high":{"value":5.1,"unit":"mmol/L"}}]}"#;
+
+/// A layout that reads [`OBSERVATION`].
+const OBSERVATION_LAYOUT: &str = r#"{"record_type":"Observation","statuses":[{"label":"Result status","role":"status","pointer":"/status"}],"sections":[{"heading":"Result","slots":[{"label":"Test","role":"code","pointer":"/code/text"},{"label":"Result","role":"result","pointer":"/valueQuantity/value"},{"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+
+const CITING_TEXT: &str = "Controlled source read {{patient_source}}";
+
+/// A worker whose fixed answer cites the chart's first record, and whose fixed layout model is
+/// configured by `layout`.
+async fn citing_worker(label: &str, layout: (&str, &str)) -> Option<Running> {
+    running_with(
+        label,
+        None,
+        None,
+        false,
+        &[("PHYSICIAN_WORKER_FIXED_TEXT", CITING_TEXT), layout],
+    )
+    .await
+}
+
+/// Records [`OBSERVATION`] from a new source in `scope`'s chart and returns that source's id.
+async fn record_observation(store: &Store, scope: &Scope) -> String {
+    let source_id = format!("ehr-{}", uuid::Uuid::new_v4().simple());
+    let source = local_product::physician_sources::SourceRevision {
+        workspace: scope.workspace.clone(),
+        source_id: source_id.clone(),
+        candidate_id: "Observation/k-1".into(),
+        revision: "1".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
+        content: OBSERVATION.into(),
+        sha256: local_product::sha256_hex(OBSERVATION.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record":"Observation/k-1"}),
+        native: None,
+    };
+    store.record_source(&source).await.unwrap();
+    source_id
+}
+
+fn observation_key(source_id: &str) -> local_product::physician_layouts::LayoutKey<'_> {
+    local_product::physician_layouts::LayoutKey {
+        source_id,
+        record_type: "Observation",
+    }
+}
+
+/// Waits until the worker log shows `line`, the end of its layout work for an answer.
+async fn wait_log(worker: &support::Process, line: &str) {
+    let deadline = Instant::now() + Duration::from_secs(30);
+    while !worker.tail().contains(line) {
+        assert!(
+            Instant::now() < deadline,
+            "worker never logged {line:?}\n{}",
+            worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(100)).await;
+    }
+}
+
+/// Answers one cited turn and returns the published answer's single citation.
+async fn answer_citing(running: &Running, scope: &Scope, delivery: &Delivery) -> Conversation {
+    running.emulator.publish(delivery).await;
+    let state = wait_assistant(&running.store, scope, &running.worker).await;
+    let answer = state.messages.last().unwrap();
+    assert!(
+        answer
+            .text
+            .starts_with("Controlled source read [[patient_source:")
+    );
+    assert_eq!(answer.citations.len(), 1);
+    state
+}
+
+/// The first answer citing a source's Observation makes that source's layout, which then reads
+/// the record; a second answer citing the same key asks no model and changes nothing.
+#[tokio::test]
+async fn a_first_cited_record_type_gets_a_layout_that_later_citations_read() {
+    let _guard = lock().lock().await;
+    let Some(running) = citing_worker(
+        "layout_stored",
+        ("PHYSICIAN_WORKER_FIXED_LAYOUT", OBSERVATION_LAYOUT),
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
+    let source_id = record_observation(&running.store, &scope).await;
+    let state = answer_citing(&running, &scope, &delivery).await;
+    wait_log(&running.worker, "source layout stored").await;
+    let stored = running
+        .store
+        .layout_for(observation_key(&source_id))
+        .await
+        .unwrap()
+        .expect("layout stored");
+    assert_eq!(stored.layout, OBSERVATION_LAYOUT);
+    let layout = physician_sample::source_layout::Layout::parse(&stored.layout).unwrap();
+    let cited = &state.messages.last().unwrap().citations[0];
+    let view = physician_sample::source_inspection::inspection_with_layout(cited, Some(&layout));
+    assert_eq!(view.layout_sections[0].heading, "Result");
+
+    // The same source and type cited by a second answer: the stored layout stays, unasked.
+    let (second_scope, second) = accept_turn(&running.database.url, &running.store).await;
+    let again = local_product::physician_sources::SourceRevision {
+        workspace: second_scope.workspace.clone(),
+        source_id: source_id.clone(),
+        candidate_id: "Observation/k-1".into(),
+        revision: "1".into(),
+        record_type: "Observation".into(),
+        dates: vec![],
+        content: OBSERVATION.into(),
+        sha256: local_product::sha256_hex(OBSERVATION.as_bytes()),
+        readable_parts: vec![],
+        provenance: serde_json::json!({"native_record":"Observation/k-1"}),
+        native: None,
+    };
+    running.store.record_source(&again).await.unwrap();
+    answer_citing(&running, &second_scope, &second).await;
+    assert_eq!(
+        running
+            .store
+            .layout_for(observation_key(&source_id))
+            .await
+            .unwrap(),
+        Some(stored)
+    );
+    assert_eq!(
+        running
+            .worker
+            .tail()
+            .matches("source layout stored")
+            .count(),
+        1,
+        "{}",
+        running.worker.tail()
+    );
+}
+
+/// A layout the checks refuse, and a layout model that fails, each save nothing; the answer is
+/// published either way and the record keeps the general view.
+#[tokio::test]
+async fn a_refused_or_failed_layout_saves_nothing_and_the_answer_still_publishes() {
+    let _guard = lock().lock().await;
+    // The planted presentation error: a valid pointer at the range's low limit read as the result.
+    let planted = OBSERVATION_LAYOUT.replace("/valueQuantity/value", "/referenceRange/0/low/value");
+    for (label, layout) in [
+        (
+            "layout_refused",
+            ("PHYSICIAN_WORKER_FIXED_LAYOUT", planted.as_str()),
+        ),
+        (
+            "layout_failed",
+            ("PHYSICIAN_WORKER_FIXED_LAYOUT_FAILS", "1"),
+        ),
+    ] {
+        let Some(running) = citing_worker(label, layout).await else {
+            return;
+        };
+        let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
+        let source_id = record_observation(&running.store, &scope).await;
+        let state = answer_citing(&running, &scope, &delivery).await;
+        assert_eq!(state.status, "completed", "{label}");
+        wait_log(&running.worker, "source layout not saved").await;
+        assert_eq!(
+            running
+                .store
+                .layout_for(observation_key(&source_id))
+                .await
+                .unwrap(),
+            None,
+            "{label}"
+        );
+        let tail = running.worker.tail();
+        let cause = if label == "layout_refused" {
+            "refused by its checks"
+        } else {
+            "fixed layout model failed"
+        };
+        assert!(tail.contains(cause), "{label}\n{tail}");
+    }
+}
+
+/// The layout contract against a real model: one potassium question over a cited lab record from
+/// a new source. The worker asks its background model for that source's Observation layout after
+/// the answer publishes. Run explicitly with an OpenAI key; it writes the record, the model's
+/// layout (or why none was saved) and the rendered fields to `PHYSICIAN_LAYOUT_EVIDENCE` when
+/// set, for the label-meaning comparison the mechanical checks cannot make.
+#[tokio::test]
+#[ignore = "calls OpenAI; run with CODA_ALLOW_MODEL_CALLS=1 and OPENAI_API_KEY"]
+async fn a_real_model_lays_out_the_record_it_cites() {
+    let _guard = lock().lock().await;
+    let (Ok(allow), Ok(key)) = (
+        std::env::var("CODA_ALLOW_MODEL_CALLS"),
+        std::env::var("OPENAI_API_KEY"),
+    ) else {
+        panic!("set CODA_ALLOW_MODEL_CALLS=1 and OPENAI_API_KEY");
+    };
+    let Some(running) = running_with(
+        "layout_live",
+        None,
+        None,
+        false,
+        &[
+            ("PHYSICIAN_WORKER_FIXED_TEXT", ""),
+            ("CODA_LOCAL_MODEL_EXECUTION", "api"),
+            ("CODA_ALLOW_MODEL_CALLS", allow.as_str()),
+            ("OPENAI_API_KEY", key.as_str()),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, delivery) = accept_text(
+        &running.database.url,
+        &running.store,
+        "What was this patient's most recent potassium?",
+    )
+    .await;
+    let source_id = record_observation(&running.store, &scope).await;
+    running.emulator.publish(&delivery).await;
+    let deadline = Instant::now() + Duration::from_secs(400);
+    let outcome = loop {
+        let tail = running.worker.tail();
+        if let Some(line) = ["source layout stored", "source layout not saved"]
+            .into_iter()
+            .find(|line| tail.contains(line))
+        {
+            break line;
+        }
+        assert!(Instant::now() < deadline, "no layout outcome\n{tail}");
+        tokio::time::sleep(Duration::from_millis(500)).await;
+    };
+    let state = running.store.read(&scope).await.unwrap().unwrap();
+    let answer = state.messages.iter().find(|m| m.role == "assistant");
+    let stored = running
+        .store
+        .layout_for(observation_key(&source_id))
+        .await
+        .unwrap();
+    let fields = stored.as_ref().and_then(|stored| {
+        let layout = physician_sample::source_layout::Layout::parse(&stored.layout).ok()?;
+        let cited = answer?.citations.first()?;
+        let view =
+            physician_sample::source_inspection::inspection_with_layout(cited, Some(&layout));
+        Some(serde_json::to_value(view).unwrap())
+    });
+    let evidence = serde_json::json!({
+        "record": serde_json::from_str::<serde_json::Value>(OBSERVATION).unwrap(),
+        "outcome": outcome,
+        "layout": stored.as_ref().map(|s| serde_json::from_str::<serde_json::Value>(&s.layout).unwrap()),
+        "layout_sha256": stored.as_ref().map(|s| s.sha256.clone()),
+        "rendered": fields,
+        "worker_log": running.worker.tail(),
+    });
+    println!("{}", serde_json::to_string_pretty(&evidence).unwrap());
+    if let Ok(path) = std::env::var("PHYSICIAN_LAYOUT_EVIDENCE") {
+        std::fs::write(path, serde_json::to_string_pretty(&evidence).unwrap()).unwrap();
+    }
+    assert!(
+        answer.is_some_and(|a| !a.citations.is_empty()),
+        "{evidence}"
+    );
+    assert_eq!(outcome, "source layout stored", "{evidence}");
+}
