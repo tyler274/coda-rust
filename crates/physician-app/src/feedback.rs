@@ -47,7 +47,7 @@ const REASONS: [(FeedbackReason, &str); 4] = [
 ];
 
 /// The chat feedback belongs to: one patient workspace and chat.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) struct ChatKey {
     pub(crate) workspace: String,
     pub(crate) chat: String,
@@ -171,21 +171,33 @@ pub(crate) struct Desk {
     clock: u64,
     /// The clock when this chat was opened; reads started before it are of an earlier visit.
     opened: u64,
+    /// Rating saves still on their way, in any chat: leaving a chat never
+    /// forgets them, and returning shows them saving again.
+    pending: BTreeMap<(ChatKey, usize), Entry>,
 }
 
 impl Desk {
     /// Opens `chat`. Another chat starts over; the same chat keeps what it
     /// knows while it is read again.
     pub(crate) fn open(&mut self, chat: Option<ChatKey>) {
-        if self.chat != chat {
-            let opened = self.tick();
-            *self = Self {
-                chat,
-                clock: opened,
-                opened,
-                ..Self::default()
-            };
+        if self.chat == chat {
+            return;
         }
+        let opened = self.tick();
+        let entries = self
+            .pending
+            .iter()
+            .filter(|((pending, _), _)| Some(pending) == chat.as_ref())
+            .map(|((_, response), entry)| (*response, entry.clone()))
+            .collect();
+        *self = Self {
+            chat,
+            read: None,
+            entries,
+            clock: opened,
+            opened,
+            pending: std::mem::take(&mut self.pending),
+        };
     }
 
     /// The open chat.
@@ -268,15 +280,14 @@ impl Desk {
         let current = self.entry(response);
         let saving = current.rating.choose(choice)?;
         let changed = self.tick();
-        self.entries.insert(
-            response,
-            Entry {
-                rating: saving,
-                details: current.details,
-                changed,
-                saving: changed,
-            },
-        );
+        let entry = Entry {
+            rating: saving,
+            details: current.details,
+            changed,
+            saving: changed,
+        };
+        self.pending.insert((chat.clone(), response), entry.clone());
+        self.entries.insert(response, entry);
         Some(RatingSave {
             chat,
             response,
@@ -284,14 +295,22 @@ impl Desk {
         })
     }
 
-    /// `save` answered with the saved feedback, or failed. A save the page
-    /// has since left behind, on another visit or under a newer save,
-    /// changes nothing.
+    /// `save` answered with the saved feedback, or failed. It settles its
+    /// response only as the latest save there; while its chat is closed it
+    /// leaves the store for the next read to show.
     pub(crate) fn rating_answered(
         &mut self,
         save: &RatingSave,
         answer: Result<ResponseFeedback, ()>,
     ) {
+        let key = (save.chat.clone(), save.response);
+        if self
+            .pending
+            .get(&key)
+            .is_some_and(|entry| entry.saving == save.started)
+        {
+            self.pending.remove(&key);
+        }
         if self.chat.as_ref() != Some(&save.chat) {
             return;
         }
@@ -596,24 +615,50 @@ mod tests {
     }
 
     #[test]
-    fn a_save_from_an_earlier_visit_never_settles_a_newer_one() {
+    fn a_save_outlives_leaving_its_chat() {
         let mut desk = Desk::default();
         desk.open(Some(chat("a")));
         read(&mut desk, vec![]);
-        let earlier = desk.choose(1, Up).unwrap();
+        let save = desk.choose(1, Up).unwrap();
         desk.open(Some(chat("b")));
         desk.open(Some(chat("a")));
         read(&mut desk, vec![]);
-        let newer = desk.choose(1, Down).unwrap();
-        desk.rating_answered(&earlier, Ok(saved(1, Up)));
+        assert!(
+            matches!(desk.entry(1).rating, RatingState::Saving { choice: Up, .. }),
+            "returning forgot the save on its way"
+        );
+        assert_eq!(desk.choose(1, Down), None, "one save at a time");
+        desk.rating_answered(&save, Ok(saved(1, Up)));
+        assert_eq!(desk.entry(1).rating, RatingState::Rated(Up));
+
+        // A save that answers while its chat is closed leaves the next read
+        // to show it, and is not restored as saving.
+        let save = desk.choose(1, Down).unwrap();
+        desk.open(Some(chat("b")));
+        desk.rating_answered(&save, Ok(saved(1, Down)));
+        desk.open(Some(chat("a")));
+        assert_eq!(desk.entry(1).rating, RatingState::Loading);
+        read(&mut desk, vec![saved(1, Down)]);
+        assert_eq!(desk.entry(1).rating, RatingState::Rated(Down));
+    }
+
+    #[test]
+    fn only_the_latest_save_settles_a_response() {
+        let mut desk = Desk::default();
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![]);
+        let failed = desk.choose(1, Up).unwrap();
+        desk.rating_answered(&failed, Err(()));
+        let retry = desk.choose(1, Down).unwrap();
+        desk.rating_answered(&failed, Ok(saved(1, Up)));
         assert!(
             matches!(
                 desk.entry(1).rating,
                 RatingState::Saving { choice: Down, .. }
             ),
-            "the earlier save settled the newer one"
+            "an answered save settled the newer one"
         );
-        desk.rating_answered(&newer, Ok(saved(1, Down)));
+        desk.rating_answered(&retry, Ok(saved(1, Down)));
         assert_eq!(desk.entry(1).rating, RatingState::Rated(Down));
     }
 
