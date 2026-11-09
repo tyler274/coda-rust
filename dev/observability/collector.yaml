@@ -1,7 +1,7 @@
 # Shared local and GKE gateway policy. collector.gke.yaml adds caller auth.
 # The operations pipelines (traces/ops, logs/ops) carry operational fields
-# only; Langfuse receives generation content when the producer explicitly
-# enabled it for synthetic traffic. Never forward Cloud Run stdout wholesale:
+# only; Langfuse receives generation content when the producer runs with
+# CODA_TELEMETRY_CONTENT=full. Never forward Cloud Run stdout wholesale:
 # only the explicit OTLP log path is covered here.
 #
 # The operations backend is chosen by one overlay merged LAST:

@@ -310,7 +310,7 @@ each service's template around its `gcloud run services update`:
   have one unnamed container, or exactly the product container (named after the
   service) and an `otel-collector` sidecar. With the sidecar, the product carries
   the telemetry environment (`DD_ENV`, `OTEL_EXPORTER_OTLP_ENDPOINT`,
-  `CODA_LOG_FORMAT=json`, `CODA_TELEMETRY_CONTENT=none`,
+  `CODA_LOG_FORMAT=json`, `CODA_TELEMETRY_CONTENT` of `none` or `full`,
   `CODA_TELEMETRY_BACKEND`), the sidecar carries its gateway configuration and
   takes no port. Any other shape stops the release. A two-container service is
   updated with `--container <service>`, so the image never lands on the sidecar,

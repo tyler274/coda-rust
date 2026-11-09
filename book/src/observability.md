@@ -50,7 +50,7 @@ The choice lives in three places that must agree:
   is in the root's README. `telemetry_content` works the same way: both roots
   set it, `rust-environments` puts it on the product containers as
   `CODA_TELEMETRY_CONTENT`, and `observability` refuses `full` without
-  Langfuse. Staging runs `full`.
+  Langfuse.
 
 ## Data flow
 

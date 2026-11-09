@@ -433,9 +433,9 @@ CODA_TELEMETRY_BACKEND      = datadog                 # or grafana: telemetry_ba
 ```
 
 `telemetry_content` is set in both roots and must match. `full` requires
-`langfuse_enabled`. Staging runs `full`, so the prompt and completion text of
-generation spans reaches the in-project Langfuse, and the ops pipelines strip
-it before Datadog and Grafana.
+`langfuse_enabled`. Under `full` the prompt and completion text of generation
+spans reaches the in-project Langfuse, and the ops pipelines strip it before
+Datadog and Grafana.
 
 `DD_VERSION` is baked into each image at build time and is never set here.
 `DD_ENV` names the environment under both backends. `output.telemetry_backend`
