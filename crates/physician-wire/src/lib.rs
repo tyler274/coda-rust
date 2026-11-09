@@ -727,6 +727,9 @@ pub struct SourceTechnicalDetails {
     /// Storage timestamps such as `meta.lastUpdated`, kept out of the record's dates.
     #[serde(default)]
     pub storage_dates: Vec<SourceField>,
+    /// Identity, reference and extension values, each labeled with its source path.
+    #[serde(default)]
+    pub fields: Vec<SourceField>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]

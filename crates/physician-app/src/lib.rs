@@ -4100,6 +4100,9 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                         for date in source.technical.storage_dates {
                             dt { "{date.label}" } dd { "{date.text}" }
                         }
+                        for technical in source.technical.fields {
+                            dt { "{technical.label}" } dd { "{technical.text}" }
+                        }
                     }
                     details {
                         summary { "Original source data (exact retained representation)" }
