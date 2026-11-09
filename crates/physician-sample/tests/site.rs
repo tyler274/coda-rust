@@ -3073,7 +3073,7 @@ async fn discuss_opens_a_new_chat_holds_running_work_and_a_reply_has_none() {
         ] }),
     );
     tab.reload();
-    let reasked = tab.held_request_keeping("POST", &workspace_read);
+    let reasked = tab.held_request_keeping("POST", Some(&workspace_read));
     assert_eq!(
         held_body(&reasked)["idempotency_key"],
         lost["idempotency_key"],
@@ -3498,28 +3498,7 @@ impl Tab {
     /// Lets every held draft read go on, and returns the first held request
     /// with `method`, waiting up to ten seconds for it.
     fn held_request(&mut self, method: &str) -> serde_json::Value {
-        let started = Instant::now();
-        loop {
-            self.held.extend(self.browser.take_paused_requests());
-            let mut found = None;
-            for request in std::mem::take(&mut self.held) {
-                if found.is_none() && request["request"]["method"] == method {
-                    found = Some(request);
-                } else if request["request"]["method"] == "GET" {
-                    self.release(&request);
-                } else {
-                    self.held.push(request);
-                }
-            }
-            if let Some(request) = found {
-                return request;
-            }
-            assert!(
-                started.elapsed() < Duration::from_secs(10),
-                "no {method} request was held"
-            );
-            std::thread::sleep(Duration::from_millis(30));
-        }
+        self.held_request_keeping(method, None)
     }
 
     /// Whether a read whose path ends with `path` is held now.
@@ -3529,14 +3508,14 @@ impl Tab {
     }
 
     /// Like `held_request`, but keeps held every read whose path ends with
-    /// `keep`, for `release_all` to let go later.
-    fn held_request_keeping(&mut self, method: &str, keep: &str) -> serde_json::Value {
+    /// `keep`, for a later release.
+    fn held_request_keeping(&mut self, method: &str, keep: Option<&str>) -> serde_json::Value {
         let started = Instant::now();
         loop {
             self.held.extend(self.browser.take_paused_requests());
             let mut found = None;
             for request in std::mem::take(&mut self.held) {
-                let kept = ends_at(&request, keep);
+                let kept = keep.is_some_and(|path| ends_at(&request, path));
                 if found.is_none() && request["request"]["method"] == method {
                     found = Some(request);
                 } else if request["request"]["method"] == "GET" && !kept {
