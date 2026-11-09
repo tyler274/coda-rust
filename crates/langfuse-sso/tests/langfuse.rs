@@ -12,6 +12,7 @@ use std::{
     process::{Command, Output},
     time::{Duration, Instant},
 };
+use url::Url;
 
 const AUDIENCE: &str = "/projects/123456789/locations/us-east1/services/public-site-staging";
 const CLIENT_ID: &str = "langfuse";
@@ -140,9 +141,15 @@ async fn current_session(browser: &reqwest::Client, langfuse: &str) -> Value {
         .unwrap()
 }
 
-/// Signs in through the custom provider as `email`, acting as the browser
-/// behind public-site, and returns the resulting session.
-async fn sign_in_with_sso(langfuse: &str, sub: &str, email: &str) -> Value {
+/// Runs the custom provider's sign-in as `email`, acting as the browser behind
+/// public-site, with `authorize` able to alter the authorize URL Langfuse
+/// built. Returns the browser and where NextAuth's callback sent it.
+async fn run_sso(
+    langfuse: &str,
+    sub: &str,
+    email: &str,
+    authorize: impl Fn(&str) -> String,
+) -> (reqwest::Client, String) {
     let browser = browser();
     let csrf = csrf(&browser, langfuse).await;
     let started: Value = browser
@@ -158,14 +165,24 @@ async fn sign_in_with_sso(langfuse: &str, sub: &str, email: &str) -> Value {
         .json()
         .await
         .unwrap();
-    let authorize = started["url"].as_str().unwrap();
+    let url = started["url"].as_str().unwrap();
     assert!(
-        authorize.starts_with("http://localhost:")
-            && authorize.contains("/langfuse-sso/authorize?"),
+        url.starts_with("http://localhost:") && url.contains("/langfuse-sso/authorize?"),
         "sign-in did not reach the issuer: {started}"
     );
+    let parameters: Vec<String> = Url::parse(url)
+        .unwrap()
+        .query_pairs()
+        .map(|(name, _)| name.into_owned())
+        .collect();
+    for required in ["state", "code_challenge", "nonce"] {
+        assert!(
+            parameters.iter().any(|name| name == required),
+            "Langfuse sent no {required}: {url}"
+        );
+    }
     let response = browser
-        .get(authorize)
+        .get(authorize(url))
         .header(
             "x-coda-iap-assertion",
             http::iap::fixture::identity_assertion(AUDIENCE, sub, email),
@@ -181,12 +198,32 @@ async fn sign_in_with_sso(langfuse: &str, sub: &str, email: &str) -> Value {
     );
     let response = browser.get(&callback).send().await.unwrap();
     let landed = location(&response);
+    (browser, landed)
+}
+
+/// Signs in through the custom provider as `email` and returns the session.
+async fn sign_in_with_sso(langfuse: &str, sub: &str, email: &str) -> Value {
+    let (browser, landed) = run_sso(langfuse, sub, email, str::to_owned).await;
     assert!(
         !landed.contains("error"),
-        "NextAuth refused the callback: {} -> {landed}",
-        response.status()
+        "NextAuth refused the callback: {landed}"
     );
     current_session(&browser, langfuse).await
+}
+
+/// The authorize URL with its `nonce` replaced, as if the code had been
+/// issued for another sign-in.
+fn other_nonce(url: &str) -> String {
+    let mut url = Url::parse(url).unwrap();
+    let pairs: Vec<(String, String)> = url
+        .query_pairs()
+        .map(|(name, value)| match name.as_ref() {
+            "nonce" => (name.into_owned(), "another-sign-in".to_owned()),
+            _ => (name.into_owned(), value.into_owned()),
+        })
+        .collect();
+    url.query_pairs_mut().clear().extend_pairs(pairs);
+    url.into()
 }
 
 #[tokio::test(flavor = "multi_thread")]
@@ -256,6 +293,17 @@ async fn langfuse_signs_engineers_in_through_the_issuer() {
     ))
     .await
     .unwrap();
+
+    // NextAuth binds the ID token to the nonce it sent: a token carrying
+    // another nonce does not sign anyone in.
+    let replayed = "replayed@codahealth.ai";
+    let (replay_browser, landed) =
+        run_sso(&langfuse, "accounts.google.com:2003", replayed, other_nonce).await;
+    println!("mismatched nonce: {landed}");
+    assert!(landed.contains("error"), "{landed}");
+    let session = current_session(&replay_browser, &langfuse).await;
+    assert!(session.get("user").is_none(), "{session}");
+    assert!(memberships(&database, replayed).await.is_empty());
 
     let engineer = "new-engineer@codahealth.ai";
     let session = sign_in_with_sso(&langfuse, "accounts.google.com:2001", engineer).await;

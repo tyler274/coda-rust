@@ -38,15 +38,15 @@ locals {
   # linking lets the admin's existing user sign in the same way. Passwords are
   # off: sign-up is on so SSO can create users, and a password route would let
   # anyone behind IAP register or claim another engineer's email. NextAuth
-  # checks PKCE and state and verifies the ES256 ID token against the issuer's
-  # JWKS.
+  # checks PKCE, state and nonce and verifies the ES256 ID token against the
+  # issuer's JWKS.
   langfuse_sso_web_env = [for env in [
     { name = "AUTH_CUSTOM_NAME", value = "Google (staging IAP)" },
     { name = "AUTH_CUSTOM_ISSUER", value = local.langfuse_sso_issuer },
     { name = "AUTH_CUSTOM_CLIENT_ID", value = local.langfuse_sso_client },
     { name = "AUTH_CUSTOM_CLIENT_SECRET", valueFrom = { secretKeyRef = { name = "langfuse-secrets", key = "LANGFUSE_SSO_CLIENT_SECRET" } } },
     { name = "AUTH_CUSTOM_SCOPE", value = "openid email profile" },
-    { name = "AUTH_CUSTOM_CHECKS", value = "pkce,state" },
+    { name = "AUTH_CUSTOM_CHECKS", value = "pkce,state,nonce" },
     { name = "AUTH_CUSTOM_CLIENT_AUTH_METHOD", value = "client_secret_basic" },
     { name = "AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG", value = "ES256" },
     { name = "AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING", value = "true" },

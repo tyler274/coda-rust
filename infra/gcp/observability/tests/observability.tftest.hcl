@@ -1135,7 +1135,7 @@ run "langfuse_signs_in_through_the_iap_issuer" {
         AUTH_CUSTOM_ISSUER                       = "http://langfuse-sso.observability.svc.cluster.local:3000/langfuse-sso"
         AUTH_CUSTOM_CLIENT_ID                    = "langfuse"
         AUTH_CUSTOM_SCOPE                        = "openid email profile"
-        AUTH_CUSTOM_CHECKS                       = "pkce,state"
+        AUTH_CUSTOM_CHECKS                       = "pkce,state,nonce"
         AUTH_CUSTOM_CLIENT_AUTH_METHOD           = "client_secret_basic"
         AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG = "ES256"
         AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING        = "true"
