@@ -682,7 +682,8 @@ pub struct SourcePresentation {
 /// One citation's evidence, read when the physician opens it.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceEvidence {
-    /// The exact revision the citation retained.
+    /// The exact revision the citation retained. Without `coda_preview`: the summary belongs to
+    /// the answer that cited it and arrives with that answer.
     pub inspection: SourceInspection,
 }
 

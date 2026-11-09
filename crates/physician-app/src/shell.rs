@@ -1378,11 +1378,18 @@ pub struct CitationInspection {
 }
 
 /// Builds the inspection surface from a chip and its evidence read. A source no read was asked for
-/// shows the presentation that came with the chip.
+/// shows the presentation that came with the chip. A read source carries no summary: the answer's
+/// own, which came with the chip, joins it.
 pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> CitationInspection {
-    let evidence = match (evidence, &chip.inspection) {
+    let carried = chip.inspection.as_ref();
+    let evidence = match (evidence, carried) {
         (EvidenceRead::NotRead, Some(carried)) => {
             EvidenceRead::Loaded(std::sync::Arc::new(carried.clone()))
+        }
+        (EvidenceRead::Loaded(read), Some(carried)) if carried.coda_preview.is_some() => {
+            let mut source = (**read).clone();
+            source.coda_preview = carried.coda_preview.clone();
+            EvidenceRead::Loaded(std::sync::Arc::new(source))
         }
         (read, _) => read.clone(),
     };
@@ -2076,6 +2083,44 @@ mod tests {
         assert_eq!(
             carried.evidence,
             EvidenceRead::Loaded(std::sync::Arc::new(retained("Carried with the answer")))
+        );
+    }
+
+    #[test]
+    fn a_read_source_shows_the_summary_of_the_answer_that_cited_it() {
+        let summarized = |text: &str| {
+            let mut source = retained("Allergy");
+            source.coda_preview = Some(physician_wire::SourcePreviewContent {
+                text: text.to_owned(),
+                as_of: "2018-09-11".to_owned(),
+                as_of_label: "Recorded".to_owned(),
+            });
+            source
+        };
+        let mut chip = source_chip(1, "resolved", Some("c-1"), Some("Allergy"), None, None);
+        chip.inspection = Some(summarized("This answer's summary"));
+        // Another answer citing the same revision summarized it differently; the read carries none.
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
+            inspection: retained("Allergy"),
+        }));
+        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+            panic!("the read loaded");
+        };
+        assert_eq!(
+            shown
+                .coda_preview
+                .as_ref()
+                .map(|preview| preview.text.as_str()),
+            Some("This answer's summary")
+        );
+
+        chip.inspection = Some(retained("Allergy"));
+        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+            panic!("the read loaded");
+        };
+        assert!(
+            shown.coda_preview.is_none(),
+            "an unsummarized answer gains none"
         );
     }
 

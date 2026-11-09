@@ -739,10 +739,13 @@ pub(crate) async fn citation(
         .as_ref()
         .and_then(|found| cited(found, &citation))
     {
-        Some(cited) => Json(physician_wire::SourceEvidence {
-            inspection: crate::source_inspection::inspection(cited),
-        })
-        .into_response(),
+        Some(cited) => {
+            let mut inspection = crate::source_inspection::inspection(cited);
+            // The id names the exact revision, which any answer may cite; each answer keeps its
+            // own summary of it, and that comes with the answer, not with the source.
+            inspection.coda_preview = None;
+            Json(physician_wire::SourceEvidence { inspection }).into_response()
+        }
         None => StatusCode::NOT_FOUND.into_response(),
     }
 }

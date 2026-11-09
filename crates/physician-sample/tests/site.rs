@@ -2101,10 +2101,10 @@ async fn allergy_evidence(chat: &str) -> axum::response::Response {
             return axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
         }
     }
-    axum::Json(physician_wire::SourceEvidence {
-        inspection: physician_sample::source_inspection::inspection(&allergy_citation(chat)),
-    })
-    .into_response()
+    let mut inspection = physician_sample::source_inspection::inspection(&allergy_citation(chat));
+    // As the live read answers: the summary is the answer's and comes with it.
+    inspection.coda_preview = None;
+    axum::Json(physician_wire::SourceEvidence { inspection }).into_response()
 }
 
 /// Lists chats for the review patient whose answer cites `BANK_ALLERGY`, presented by the same

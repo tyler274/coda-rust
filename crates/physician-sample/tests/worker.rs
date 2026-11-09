@@ -983,10 +983,11 @@ async fn read_citation_evidence(
     let (status, body) = support::get_json(&listen, &path(&citation.id), session).await;
     assert_eq!(status, 200, "{body}\n{}", site.tail());
     let read: physician_wire::SourceEvidence = serde_json::from_value(body).unwrap();
-    assert_eq!(
-        read.inspection,
-        physician_sample::source_inspection::inspection(citation)
-    );
+    let mut source = physician_sample::source_inspection::inspection(citation);
+    assert!(source.coda_preview.is_some(), "this answer summarized it");
+    // The summary is this answer's, and comes with it; the read is the source alone.
+    source.coda_preview = None;
+    assert_eq!(read.inspection, source);
     assert_eq!(read.inspection.technical.original, citation.content);
     assert_eq!(read.inspection.technical.revision, "r1");
 
