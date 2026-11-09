@@ -679,6 +679,13 @@ pub struct SourcePresentation {
     pub inspection: Option<SourceInspection>,
 }
 
+/// One citation's evidence, read when the physician opens it.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SourceEvidence {
+    /// The exact revision the citation retained.
+    pub inspection: SourceInspection,
+}
+
 /// A presentation of retained evidence, never a statement of current chart truth.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceInspection {

@@ -195,6 +195,10 @@ fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::Connected
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
         )
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/citations/{citation}",
+            get(live::citation),
+        )
         .route("/patient-workspaces/events", get(live::events))
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))

@@ -707,6 +707,59 @@ async fn durable_snapshot(
         .into_response()
 }
 
+/// One citation's evidence: the exact revision this physician's conversation retained, presented
+/// by [`crate::source_inspection`]. Only the durable runtime retains citations; without it, and for
+/// a citation the conversation never made, the answer is 404. The auth guard has already required
+/// panel membership for the path's workspace.
+pub(crate) async fn citation(
+    State(live): State<Arc<Live>>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    Path((workspace, chat, citation)): Path<(String, String, String)>,
+) -> Response {
+    let Some(durable) = live.durable.clone() else {
+        return StatusCode::NOT_FOUND.into_response();
+    };
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id,
+        physician: ctx.identity.physician_id,
+        workspace,
+        chat,
+    };
+    let conversation = match durable.store.read(&scope).await {
+        Ok(conversation) => conversation,
+        Err(error) => {
+            tracing::warn!(%error, "physician citation read failed");
+            return StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    };
+    match conversation
+        .as_ref()
+        .and_then(|found| cited(found, &citation))
+    {
+        Some(cited) => Json(physician_wire::SourceEvidence {
+            inspection: crate::source_inspection::inspection(cited),
+        })
+        .into_response(),
+        None => StatusCode::NOT_FOUND.into_response(),
+    }
+}
+
+/// The citation `id` one of Coda's answers in `conversation` made.
+fn cited<'a>(
+    conversation: &'a local_product::runtime::Conversation,
+    id: &str,
+) -> Option<&'a local_product::physician_chat::Citation> {
+    conversation
+        .messages
+        .iter()
+        .filter(|message| message.role == "assistant")
+        .flat_map(|message| &message.citations)
+        .find(|citation| citation.id == id)
+}
+
 /// Who wrote a turn, as the snapshot names it: Coda's turns are the model's, every other the physician's.
 fn turn_kind(role: &str) -> &'static str {
     if role == "assistant" {
