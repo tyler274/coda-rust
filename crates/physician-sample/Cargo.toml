@@ -47,6 +47,8 @@ gmail = { path = "../gmail", features = ["test-util"] }
 # The disposable emulator behind tests/scale.
 pubsub = { path = "../pubsub", features = ["test-util"] }
 public-site = { path = "../public-site" }
+# The loopback Spruce API behind the worker's intake wake-up test.
+spruce = { path = "../spruce", features = ["test-util"] }
 opentelemetry = { version = "0.33", default-features = false, features = ["trace"] }
 opentelemetry_sdk = { version = "0.33", default-features = false, features = ["trace", "testing"] }
 opentelemetry-proto = { version = "0.33", default-features = false, features = ["gen-tonic-messages", "trace"] }

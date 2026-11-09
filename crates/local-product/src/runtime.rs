@@ -26,6 +26,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// The practice's messaging channel: connection, intake and saved messages.
+pub mod channel;
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
@@ -311,6 +313,7 @@ impl Store {
         let mut source_pulls = schema.create_table_from_entity(entities::source_pull::Entity);
         source_pulls.if_not_exists();
         tx.execute(&source_pulls).await?;
+        channel::migrate(&schema, &tx).await?;
         // Receipts older than this column get the migration's time, so the
         // 90-day reduction counts from when it could first see them. `now()`
         // is stable, so Postgres stores it once instead of rewriting rows.

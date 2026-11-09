@@ -185,6 +185,136 @@ pub(super) mod source_pull {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// One practice's messaging channel: the connection, its sealed credential,
+/// the reader's cursor and lease, and how the last read went. Created from
+/// this entity by the store's migration.
+pub(super) mod channel_connection {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_channel_connections")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        /// The serialized `Connection`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub state: Json,
+        /// The bound Spruce organization while connected. Unique, so one
+        /// organization feeds one practice; null once disconnected.
+        #[sea_orm(column_type = "Text", nullable, unique)]
+        pub organization: Option<String>,
+        /// Nonce and AES-256-GCM ciphertext of the credential, bound to the practice.
+        pub credential: Option<Vec<u8>>,
+        /// `spruce::changes::Cursor::encode`, stored only with the page it follows.
+        #[sea_orm(column_type = "Text", nullable)]
+        pub cursor: Option<String>,
+        /// The reader that holds the lease. A commit from any other holder fails.
+        #[sea_orm(column_type = "Text", nullable)]
+        pub lease_holder: Option<String>,
+        /// Database-clock seconds the lease runs out.
+        pub lease_expires: i64,
+        /// Database-clock seconds of the last page that committed.
+        pub last_read_at: Option<i64>,
+        /// The serialized `ReadFailure` while the channel can't be read.
+        #[sea_orm(column_type = "JsonBinary", nullable)]
+        pub failure: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One channel conversation as intake knows it: who is on it, whether it is
+/// owed a full read, and the link marker that message matching writes.
+pub(super) mod channel_conversation {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_channel_conversations")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub conversation: String,
+        /// The serialized `ConversationDetails`, once read.
+        #[sea_orm(column_type = "JsonBinary", nullable)]
+        pub details: Option<Json>,
+        /// The serialized `Owed` while the conversation needs a full read.
+        #[sea_orm(column_type = "JsonBinary", nullable)]
+        pub owed: Option<Json>,
+        /// Set by message matching when the conversation is linked to a
+        /// patient. Intake only reads it: disconnect keeps linked evidence.
+        #[sea_orm(column_type = "Text", nullable)]
+        pub link: Option<String>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Append-only message versions. An edit or a Spruce deletion is a new row;
+/// a repeated delivery of the same version inserts nothing.
+pub(super) mod channel_message {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_channel_messages")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        /// Spruce item id.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub item: String,
+        /// `spruce::payload::Item::version`, or an unreadable item's marker.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub version: String,
+        #[sea_orm(column_type = "Text")]
+        pub conversation: String,
+        /// Version order within the item, from 1, assigned under the
+        /// connection row's lock.
+        pub ordinal: i64,
+        /// Database-clock seconds the version was saved.
+        pub recorded_at: i64,
+        /// The serialized `MessageVersion`.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub record: Json,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// File bytes Coda saved from a conversation, addressed by their SHA-256.
+pub(super) mod channel_file {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_channel_files")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub conversation: String,
+        /// Lower-case hex SHA-256 of `bytes`.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub sha256: String,
+        pub bytes: Vec<u8>,
+        /// Database-clock seconds the file was saved.
+        pub saved_at: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 /// Append-only history: one row per earlier revision of a reply draft, with
 /// its retained execution evidence. Written when the next revision is
 /// accepted, so the draft row holds only current work. Afterwards only late

@@ -69,6 +69,60 @@ async fn access() {
 }
 
 #[tokio::test]
+#[ignore = "reads contacts and files in the Spruce test organization"]
+async fn contacts_and_files() {
+    let Some(credential) = credential() else {
+        eprintln!("SPRUCE_API_KEY unset; skipping the live contact and file check");
+        return;
+    };
+    let client = Client::new(credential).expect("credential");
+    let reader = Reader::new(client.clone());
+    let page = client
+        .list_conversations(ListQuery::first(20))
+        .await
+        .expect("conversations");
+    let (mut contacts, mut files, mut outbound) = (0, 0, 0);
+    for entry in page.entries {
+        let ConversationEntry::Conversation(conversation) = entry else {
+            continue;
+        };
+        for id in &conversation.associated_contact_ids {
+            let contact = client.get_contact(id).await.expect("associated contact");
+            assert_eq!(&contact.id, id);
+            contacts += 1;
+        }
+        let ConversationRead::Messages { items, .. } = reader
+            .read_conversation(&conversation.id, None)
+            .await
+            .expect("items")
+        else {
+            continue;
+        };
+        for observed in items {
+            let Observed::Message(item) = observed else {
+                continue;
+            };
+            if item.envelope.direction.as_deref() == Some("outbound") {
+                outbound += 1;
+            }
+            for link in item
+                .attachments
+                .iter()
+                .filter_map(|file| file.link.as_ref())
+            {
+                let bytes = client
+                    .download(link, 25 * 1024 * 1024)
+                    .await
+                    .expect("attachment bytes");
+                assert!(!bytes.is_empty());
+                files += 1;
+            }
+        }
+    }
+    eprintln!("contacts read {contacts}, files downloaded {files}, outbound items {outbound}");
+}
+
+#[tokio::test]
 #[ignore = "snapshots the Spruce test organization"]
 async fn observe() {
     let Some(credential) = credential() else {
@@ -240,6 +294,7 @@ async fn stale_token(client: &Client) -> String {
         Err(Error::AuthorizationRejected) => "unknown token refused the credential".to_owned(),
         Err(Error::Unavailable) => "unknown token did not answer".to_owned(),
         Err(Error::InvalidRequest) => "unknown token was not sent".to_owned(),
+        Err(Error::FileTooLarge { .. }) => "unknown token answered past the cap".to_owned(),
     };
     let fresh = match client.list_conversations(ListQuery::first(1)).await {
         Ok(page) if page.has_more => {

@@ -29,6 +29,8 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/channel.rs"]
+mod channel;
 #[path = "physician-worker/revision.rs"]
 mod revision;
 use attempt::{Claimed, Failure, Outcome, Push, Tally};
@@ -80,6 +82,7 @@ fn router(worker: Arc<Worker>) -> Router {
         .route("/health", get(health))
         .route("/readyz", get(readyz))
         .route("/pubsub/chat-turn", post(chat_turn))
+        .route("/wake/spruce-intake", post(channel::wake))
         .layer(telemetry::http_layer())
         .with_state(worker)
 }
@@ -454,6 +457,8 @@ struct Worker {
     skills: PhysicianSkills,
     /// Versioned hosted instructions followed by that catalog's metadata.
     instructions: Arc<str>,
+    /// Spruce channel intake, present when `PHYSICIAN_CHANNEL_KEY` is set.
+    intake: Option<local_product::runtime::channel::intake::Intake>,
 }
 
 /// The packaged skill catalog. Hosted startup requires `PHYSICIAN_SKILLS_DIR`
@@ -610,6 +615,7 @@ impl Worker {
             );
         };
         let verifier = push_verifier(&get, hosted)?;
+        let intake = channel::from_env(&get, hosted)?;
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         let store = Store::connect(&database)
@@ -631,6 +637,7 @@ impl Worker {
             adapter,
             skills,
             instructions,
+            intake,
         })
     }
 }

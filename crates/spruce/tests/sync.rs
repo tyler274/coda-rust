@@ -470,3 +470,89 @@ async fn a_deleted_item_reads_as_not_found() {
     let error = fake.client().get_item("ti_one").await.expect_err("gone");
     assert_eq!(error, Error::NotFound);
 }
+
+#[tokio::test]
+async fn an_attachment_downloads_while_its_link_is_current() {
+    let fake = FakeSpruce::spawn().await;
+    fake.deliver(message("t_file", "ti_file", "see attached", 100, 100));
+    fake.attach("ti_file", "scan.pdf", b"%PDF-1.7 scan");
+    let reader = open(&fake, Duration::ZERO, 50);
+    let items = all_items(&reader, "t_file").await;
+    let link = items[0].attachments[0].link.clone().expect("file link");
+    assert!(!format!("{link:?}").contains("http"), "debug hides the url");
+    let client = fake.client();
+    assert_eq!(
+        client.download(&link, 1024).await.expect("bytes"),
+        b"%PDF-1.7 scan"
+    );
+    assert!(matches!(
+        client.download(&link, 4).await,
+        Err(Error::FileTooLarge { limit: 4 })
+    ));
+
+    let version = items[0].version();
+    fake.expire_links();
+    assert!(matches!(
+        client.download(&link, 1024).await,
+        Err(Error::Rejected { status: 403 })
+    ));
+    let again = all_items(&reader, "t_file").await;
+    assert_eq!(
+        again[0].version(),
+        version,
+        "a re-signed link is the same version"
+    );
+    let fresh = again[0].attachments[0].link.clone().expect("fresh link");
+    assert_eq!(
+        client.download(&fresh, 1024).await.expect("bytes"),
+        b"%PDF-1.7 scan"
+    );
+}
+
+#[tokio::test]
+async fn a_contact_reads_by_id_from_the_conversation() {
+    let fake = FakeSpruce::spawn().await;
+    fake.deliver(message("t_contact", "ti_contact", "hi", 100, 100));
+    fake.add_contact(
+        "t_contact",
+        spruce::testing::FakeContact {
+            id: "entity_patient".into(),
+            display_name: "Pat Synthetic".into(),
+            phone_numbers: vec!["+12065550100".into()],
+            date_of_birth: Some("1980-02-03".into()),
+        },
+    );
+    let client = fake.client();
+    let conversation = client
+        .get_conversation("t_contact")
+        .await
+        .expect("conversation");
+    assert_eq!(conversation.associated_contact_ids, ["entity_patient"]);
+    assert_eq!(
+        conversation.external_participants[0].contact.as_deref(),
+        Some("entity_patient")
+    );
+    let contact = client.get_contact("entity_patient").await.expect("contact");
+    assert_eq!(contact.display_name.as_deref(), Some("Pat Synthetic"));
+    assert_eq!(contact.phone_numbers, ["+12065550100"]);
+    assert_eq!(contact.date_of_birth.as_deref(), Some("1980-02-03"));
+    assert!(matches!(
+        client.get_contact("entity_missing").await,
+        Err(Error::NotFound)
+    ));
+}
+
+#[tokio::test]
+async fn an_outbound_reply_and_a_flagged_deletion_read_back() {
+    let fake = FakeSpruce::spawn().await;
+    fake.deliver(message("t_reply", "ti_reply", "practice reply", 100, 100));
+    fake.mark_outbound("ti_reply");
+    let reader = open(&fake, Duration::ZERO, 50);
+    let items = all_items(&reader, "t_reply").await;
+    assert_eq!(items[0].envelope.direction.as_deref(), Some("outbound"));
+    let before = items[0].version();
+    fake.flag_deleted("ti_reply", &at(200));
+    let items = all_items(&reader, "t_reply").await;
+    assert!(items[0].deleted);
+    assert_ne!(items[0].version(), before);
+}

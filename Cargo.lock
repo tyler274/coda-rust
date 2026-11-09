@@ -5219,13 +5219,18 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 name = "local-product"
 version = "0.1.0"
 dependencies = [
+ "aes-gcm",
  "async-trait",
+ "chrono",
  "harness",
  "physician-auth",
+ "rand 0.10.3",
  "sea-orm",
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "spruce",
+ "thiserror 2.0.21",
  "tokio",
  "tracing",
  "uuid",
@@ -6542,6 +6547,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "spruce",
  "telemetry",
  "tokio",
  "tower",

@@ -494,6 +494,11 @@ grant or setting, and the root's tests check this.
   answers. On each push it checks the token's audience and the
   `physician-pubsub-push` email, claims the leased turn in Postgres, runs the
   model, commits, and publishes `workspace_changed`.
+  `POST /wake/spruce-intake` takes the same identity check and runs one bounded
+  Spruce intake pass per connected practice. The route serves only when
+  `PHYSICIAN_CHANNEL_KEY` (64 hex digits, held in Doppler) is set; that key
+  seals each practice's Spruce credential in Postgres. A scheduled caller
+  invokes it with the push account's identity.
 - The physician site gets `PHYSICIAN_CHAT_TOPIC`, `cpu_idle = false` and one
   minimum instance. CPU stays allocated because
   its Postgres listener and Redis subscriber must keep running between requests.

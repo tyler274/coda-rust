@@ -14,7 +14,8 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::payload::{
-    self, Conversation, ConversationEntry, Endpoint, ItemEntry, Organization, Page, Transcription,
+    self, Contact, Conversation, ConversationEntry, Endpoint, FileLink, ItemEntry, Organization,
+    Page, Transcription,
 };
 
 /// Spruce's production API.
@@ -60,6 +61,12 @@ pub enum Error {
     /// The credential, base URL, id, page size, or query combination cannot be sent.
     #[error("spruce request was invalid")]
     InvalidRequest,
+    /// A file was larger than the caller's cap. Nothing past the cap was kept.
+    #[error("spruce file is larger than {limit} bytes")]
+    FileTooLarge {
+        /// The cap that was passed.
+        limit: usize,
+    },
 }
 
 /// Which page to read. `start_from` and `pagination_token` cannot both be set:
@@ -211,6 +218,39 @@ impl Client {
         payload::transcription(&body).ok_or(Error::Contract)
     }
 
+    /// `GET /contacts/{id}`.
+    pub async fn get_contact(&self, id: &str) -> Result<Contact, Error> {
+        let body = self
+            .get(&format!("contacts/{}", path_id(id)?), &NoQuery {})
+            .await?;
+        payload::contact(&body).ok_or(Error::Contract)
+    }
+
+    /// The bytes behind an attachment link, at most `max_bytes` of them.
+    ///
+    /// The link is signed, so the Spruce credential is not sent with it. An
+    /// expired link answers like any other refusal, usually 403 or 404. A file
+    /// past the cap is [`Error::FileTooLarge`]; reading stops at the cap.
+    pub async fn download(&self, link: &FileLink, max_bytes: usize) -> Result<Vec<u8>, Error> {
+        let url = Url::parse(link.url()).map_err(|_| Error::InvalidRequest)?;
+        if !base_ok(&url) {
+            return Err(Error::InvalidRequest);
+        }
+        let response = self
+            .http
+            .get(url)
+            .send()
+            .await
+            .map_err(|_| Error::Unavailable)?;
+        let status = response.status();
+        if !status.is_success() {
+            return Err(classify(status.as_u16()));
+        }
+        read_capped(response, max_bytes)
+            .await?
+            .ok_or(Error::FileTooLarge { limit: max_bytes })
+    }
+
     async fn get<Q: Serialize>(&self, path: &str, query: &Q) -> Result<Value, Error> {
         let url = self.base.join(path).map_err(|_| Error::InvalidRequest)?;
         let response = self
@@ -226,16 +266,26 @@ impl Client {
         if !status.is_success() {
             return Err(classify(status.as_u16()));
         }
-        let mut body = Vec::new();
-        let mut response = response;
-        while let Some(chunk) = response.chunk().await.map_err(|_| Error::Unavailable)? {
-            if body.len().saturating_add(chunk.len()) > self.max_bytes {
-                return Err(Error::Contract);
-            }
-            body.extend_from_slice(&chunk);
-        }
+        let body = read_capped(response, self.max_bytes)
+            .await?
+            .ok_or(Error::Contract)?;
         serde_json::from_slice(&body).map_err(|_| Error::Contract)
     }
+}
+
+/// The body, or `None` once it passes `max_bytes`.
+async fn read_capped(
+    mut response: reqwest::Response,
+    max_bytes: usize,
+) -> Result<Option<Vec<u8>>, Error> {
+    let mut body = Vec::new();
+    while let Some(chunk) = response.chunk().await.map_err(|_| Error::Unavailable)? {
+        if body.len().saturating_add(chunk.len()) > max_bytes {
+            return Ok(None);
+        }
+        body.extend_from_slice(&chunk);
+    }
+    Ok(Some(body))
 }
 
 fn classify(status: u16) -> Error {

@@ -1,3 +1,5 @@
+#[path = "tests/channel.rs"]
+mod channel_tests;
 #[path = "tests/reply.rs"]
 mod reply_tests;
 #[path = "tests/sources.rs"]

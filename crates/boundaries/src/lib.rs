@@ -140,6 +140,19 @@ mod tests {
         }
     }
 
+    /// The physician product reads its channel through the neutral Spruce
+    /// reader, and the loopback stand-in stays out of its shipped dependencies.
+    #[test]
+    fn the_physician_runtime_reads_spruce_without_its_test_stand_in() {
+        let manifest: toml::Table = toml::from_str(&manifest("local-product")).unwrap();
+        let spruce = &manifest["dependencies"]["spruce"];
+        assert!(
+            spruce.get("features").is_none(),
+            "local-product must not ship spruce/test-util"
+        );
+        assert!(local_closure("local-product").contains("spruce"));
+    }
+
     /// The disposable emulator is reachable from tests only: every crate that
     /// enables `pubsub/test-util` does it under `[dev-dependencies]`.
     #[test]

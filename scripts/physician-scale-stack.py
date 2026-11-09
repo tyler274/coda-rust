@@ -207,6 +207,24 @@ def http_json(port, method, path, body=None, bearer=None, timeout=10):
         return response.status, (json.loads(raw) if raw else None)
 
 
+def wake_spruce_intake(port, log, period):
+    """POST /wake/spruce-intake every `period` seconds and log each status."""
+    while True:
+        try:
+            request = urllib.request.Request(
+                f"http://127.0.0.1:{port}/wake/spruce-intake", method="POST", data=b"")
+            with urllib.request.urlopen(request, timeout=120) as response:
+                status = response.status
+        except urllib.error.HTTPError as error:
+            status = error.code
+        except OSError as error:
+            status = f"unreachable ({error.__class__.__name__})"
+        stamp = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        with log.open("a") as out:
+            out.write(f"{stamp} POST /wake/spruce-intake {status}\n")
+        time.sleep(period)
+
+
 def sign_in(port):
     _, issued = http_json(port, "POST", "/auth/sign-in", {"email": EMAIL})
     _, verified = http_json(port, "POST", "/auth/verify", {"email": EMAIL, "token": issued["token"]})
@@ -435,8 +453,18 @@ def run(args, root, evidence):
                 # Non-hosted proof only: a message containing [fail:K] fails
                 # its first K attempts; every other turn answers at once.
                 worker_env["PHYSICIAN_WORKER_FIXED_FAIL_MARKER"] = "1"
+            if args.spruce_api:
+                # Non-hosted proof only: a throwaway key seals channel
+                # credentials, and the worker reads the given Spruce stand-in.
+                worker_env["PHYSICIAN_CHANNEL_KEY"] = os.urandom(32).hex()
+                worker_env["PHYSICIAN_SPRUCE_API_BASE"] = args.spruce_api
             stack.start("worker", [str(binary / "physician-worker")], worker_env)
             stack.wait(lambda: healthy(worker), f"worker readiness on {worker}")
+            if args.spruce_api:
+                # Stands in for Cloud Scheduler: wake the intake on a fixed period.
+                threading.Thread(target=wake_spruce_intake, args=(worker, root / "spruce-wake.log",
+                                                                  args.spruce_wake_seconds),
+                                 daemon=True).start()
             site_env = dict(shared)
             if args.site_dir:
                 site_env["PHYSICIAN_SITE_DIR"] = str(args.site_dir.resolve())
@@ -521,6 +549,11 @@ def main():
                         help="PHYSICIAN_WORKER_FIXED_FAIL_MARKER: a message containing [fail:K] "
                              "fails its first K attempts, counted from its saved attempts; unmarked turns "
                              "answer, so one stack drives retry, Try again and the happy paths")
+    parser.add_argument("--spruce-api", default=None, metavar="URL",
+                        help="Spruce API base (ending /v1/) of a local stand-in; enables the "
+                             "worker's channel intake and a scheduled caller of /wake/spruce-intake")
+    parser.add_argument("--spruce-wake-seconds", type=float, default=5.0,
+                        help="period of the scheduled intake caller (default 5)")
     parser.add_argument("--load-numbers", action="store_true",
                         help="after readiness, record Postgres transactions (idle, two streams, one "
                              "turn) and stream-close time to <evidence>/load-numbers.json")
@@ -536,9 +569,11 @@ def main():
     if args.worker_failures < 0:
         parser.error("--worker-failures must be zero or more")
     if args.dependencies_only and (args.worker_failures or args.worker_fail_marker
-                                   or args.load_numbers):
-        parser.error("--worker-failures, --worker-fail-marker and --load-numbers need the "
-                     "application processes")
+                                   or args.load_numbers or args.spruce_api):
+        parser.error("--worker-failures, --worker-fail-marker, --load-numbers and --spruce-api "
+                     "need the application processes")
+    if args.spruce_api and not args.spruce_api.startswith("http://127.0.0.1:"):
+        parser.error("--spruce-api must be a loopback stand-in (http://127.0.0.1:PORT/v1/)")
     environment(os.environ, Path("/unused"))  # Refuse hosted before allocating anything.
 
     def stop(_signal, _frame):

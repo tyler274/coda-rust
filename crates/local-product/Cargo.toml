@@ -9,8 +9,12 @@ version.workspace = true
 workspace = true
 
 [dependencies]
+aes-gcm = "0.11"
 async-trait = "0.1"
 harness = { path = "../harness" }
+rand = "0.10"
+spruce = { path = "../spruce" }
+thiserror = "2"
 sea-orm = { version = "2", default-features = false, features = ["sqlx-postgres", "runtime-tokio-rustls", "with-json", "macros"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
 uuid = { version = "1", features = ["v4"] }
@@ -20,5 +24,7 @@ sha2 = "0.11"
 tracing = "0.1"
 
 [dev-dependencies]
+chrono = { version = "0.4", default-features = false, features = ["std"] }
 physician-auth = { path = "../physician-auth" }
+spruce = { path = "../spruce", features = ["test-util"] }
 tokio = { version = "1", features = ["macros", "rt"] }
