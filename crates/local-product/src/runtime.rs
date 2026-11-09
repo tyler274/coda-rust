@@ -1139,7 +1139,11 @@ impl Store {
         };
         let inserted = conversation::Entity::insert(conversation_model(
             &scope,
-            serde_json::to_value(&opened).map_err(|_| error("invalid conversation"))?,
+            serde_json::to_value(&opened).map_err(|cause| DbErr::TryIntoErr {
+                from: "Conversation",
+                into: "stored conversation state",
+                source: std::sync::Arc::new(cause),
+            })?,
         ))
         .on_conflict(OnConflict::new().do_nothing().to_owned())
         .exec_without_returning(&tx)

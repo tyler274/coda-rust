@@ -988,11 +988,13 @@ fn PhysicianShell(
     let restore_slot = use_command_slot("restore", command_scope);
     let discuss_slot = use_command_slot("discuss", command_scope);
     // An accepted Discuss, clicked or recovered after a reload, opens its
-    // chat, which the list then names.
+    // chat, which the list then names. It goes through the requested chat, so
+    // a workspace that has not loaded yet opens it once it does.
     let mut open_discussion = move |workspace: String, chat: String| {
         *workspace_attempt.write() += 1;
         if selected.peek().as_deref() == Some(workspace.as_str()) {
-            open_chat.set(Some(chat));
+            requested_chat.set(Some((workspace, chat)));
+            open_chat.set(None);
         }
     };
     // The Undo toast for the latest Archive, keyed by its count: its patient and chat.

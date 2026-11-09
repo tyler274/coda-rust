@@ -3062,20 +3062,31 @@ async fn discuss_opens_a_new_chat_holds_running_work_and_a_reply_has_none() {
         "Fetch.failRequest",
         serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
     );
+    // The reload's workspace read is held until the recovered Discuss has
+    // landed, so the chat it opens must wait for the workspace.
+    let workspace_read = format!("/patient-workspaces/{patient}");
     tab.call(
         "Fetch.enable",
-        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+        serde_json::json!({ "patterns": [
+            { "urlPattern": "*/commands" },
+            { "urlPattern": format!("*{workspace_read}*") },
+        ] }),
     );
     tab.reload();
-    let reasked = tab.held_request("POST");
+    let reasked = tab.held_request_keeping("POST", &workspace_read);
     assert_eq!(
         held_body(&reasked)["idempotency_key"],
         lost["idempotency_key"],
         "the reload issued a new command for a Discuss whose answer was lost"
     );
     tab.release(&reasked);
+    std::thread::sleep(Duration::from_millis(1500));
+    assert!(
+        tab.holding(&workspace_read),
+        "the workspace read was not held while the recovered Discuss landed"
+    );
+    tab.release_remaining();
     tab.call("Fetch.disable", serde_json::json!({}));
-    tab.release_all();
     let recovered = wait_discuss(
         &mut tab,
         "a recovered Discuss never opened its chat",
@@ -3511,6 +3522,55 @@ impl Tab {
         }
     }
 
+    /// Whether a read whose path ends with `path` is held now.
+    fn holding(&mut self, path: &str) -> bool {
+        self.held.extend(self.browser.take_paused_requests());
+        self.held.iter().any(|request| ends_at(request, path))
+    }
+
+    /// Like `held_request`, but keeps held every read whose path ends with
+    /// `keep`, for `release_all` to let go later.
+    fn held_request_keeping(&mut self, method: &str, keep: &str) -> serde_json::Value {
+        let started = Instant::now();
+        loop {
+            self.held.extend(self.browser.take_paused_requests());
+            let mut found = None;
+            for request in std::mem::take(&mut self.held) {
+                let kept = ends_at(&request, keep);
+                if found.is_none() && request["request"]["method"] == method {
+                    found = Some(request);
+                } else if request["request"]["method"] == "GET" && !kept {
+                    self.release(&request);
+                } else {
+                    self.held.push(request);
+                }
+            }
+            if let Some(request) = found {
+                return request;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "no {method} request was held"
+            );
+            std::thread::sleep(Duration::from_millis(30));
+        }
+    }
+
+    /// Lets every held request go on, passing over any the page abandoned,
+    /// such as a read the document a reload replaced had in flight.
+    fn release_remaining(&mut self) {
+        self.held.extend(self.browser.take_paused_requests());
+        for request in std::mem::take(&mut self.held) {
+            let released = self.browser.page().try_call_session(
+                "Fetch.continueRequest",
+                serde_json::json!({ "requestId": request["requestId"] }),
+            );
+            if let Err(error) = released {
+                assert_eq!(error["message"], "Invalid InterceptionId.", "{error}");
+            }
+        }
+    }
+
     /// Lets one held request go on to the server.
     fn release(&mut self, request: &serde_json::Value) {
         self.call(
@@ -3823,6 +3883,14 @@ impl Tab {
 }
 
 /// The JSON body of a held request.
+/// Whether `request`'s address, without its query, ends with `path`.
+fn ends_at(request: &serde_json::Value, path: &str) -> bool {
+    request["request"]["url"]
+        .as_str()
+        .and_then(|url| url.split('?').next())
+        .is_some_and(|url| url.ends_with(path))
+}
+
 fn held_body(request: &serde_json::Value) -> serde_json::Value {
     let text = match request["request"]["postData"].as_str() {
         Some(text) => text.to_owned(),
