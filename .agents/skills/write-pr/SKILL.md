@@ -29,10 +29,16 @@ private transcripts or exposing credentials.
 
 ## Explain the solution and proof
 
-Lead with the concrete problem and resulting behavior. Explain the responsible
-owner, affected workflow, and material assumptions or tradeoffs. For a defect,
-connect the shared cause to the related paths repaired; for a refactor, explain
-the responsibility improved and behavior preserved.
+Open with one short paragraph that explains the problem, what changes for whom,
+and why it matters. Show a screenshot up front when it explains the change faster.
+Summarize decisive proof near the top with the environment exercised, observed
+result, and evidence link. Use closed `<details>` blocks with descriptive
+`<summary>` labels for longer supporting material. Keep material failures, proof
+gaps, and landing decisions visible outside those blocks.
+
+Explain the responsible owner, affected workflow, and material assumptions or
+tradeoffs. For a defect, connect the shared cause to the related paths repaired;
+for a refactor, explain the responsibility improved and behavior preserved.
 
 Include affected consumers outside the diff, cross-repository dependencies,
 migrations, rollout, recovery, and landing order when they matter. Distinguish
