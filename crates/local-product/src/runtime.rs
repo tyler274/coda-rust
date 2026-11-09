@@ -207,6 +207,12 @@ impl Conversation {
         matches!(self.status.as_str(), "pending" | "active")
     }
 
+    /// Physician activity in the conversation (Send, Resume, Try again, and
+    /// Update on a finished answer) brings it back from the archive.
+    pub fn bring_back(&mut self) {
+        self.archived_at = None;
+    }
+
     /// When an answer ends, every queued message starts one new turn
     /// together, in the order queued, under the latest queuing session. The
     /// recovery sweep publishes its wakeup: the turn is pending with no
@@ -554,8 +560,7 @@ impl Store {
             .ok_or_else(|| error("missing conversation"))?;
         let mut state: Conversation =
             serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
-        // Sending to an archived conversation brings it back.
-        state.archived_at = None;
+        state.bring_back();
         if mode == SendMode::Next
             && state.running()
             && let Some(session_hash) = session_hash.clone()
@@ -828,7 +833,7 @@ impl Store {
         if state.status == "held" || state.status == "failed" {
             state.status = "pending".into();
             state.failures = 0;
-            state.archived_at = None;
+            state.bring_back();
         }
         Self::save(tx, scope, &state).await
     }
@@ -904,8 +909,7 @@ impl Store {
         state.failures = 0;
         state.dispatch_after = 0;
         state.session_hash = Some(session_hash);
-        // Resume and Try again bring an archived conversation back.
-        state.archived_at = None;
+        state.bring_back();
         Self::save(tx, scope, &state).await?;
         Ok(Resumed::Pending { input_id })
     }
@@ -1055,8 +1059,10 @@ impl Store {
                 return Ok(Archived::Refused);
             }
         }
-        // Every early return below drops the transaction, which rolls the
-        // receipt back: only a change keeps it.
+        // A refused or busy command drops the transaction, which rolls the
+        // receipt back so the key may be asked again. An accepted command
+        // keeps it, even one that found the conversation already where it
+        // asked, so a late retry of it can never undo a later command.
         let Some(row) = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()
             .one(&tx)
@@ -1065,14 +1071,24 @@ impl Store {
             return Ok(Archived::Refused);
         };
         let mut state: Conversation =
-            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+            serde_json::from_value(row.state).map_err(|cause| DbErr::TryIntoErr {
+                from: "stored conversation state",
+                into: "Conversation",
+                source: std::sync::Arc::new(cause),
+            })?;
+        let already = match direction {
+            Archive::Archive => state.archived_at.is_some(),
+            Archive::Restore => state.archived_at.is_none(),
+        };
+        if already {
+            tx.commit().await?;
+            return Ok(Archived::Duplicate);
+        }
         match direction {
-            Archive::Archive if state.archived_at.is_some() => return Ok(Archived::Duplicate),
             Archive::Archive if state.running() || !state.queued.is_empty() => {
                 return Ok(Archived::Busy);
             }
             Archive::Archive => state.archived_at = Some(now(&tx).await?),
-            Archive::Restore if state.archived_at.is_none() => return Ok(Archived::Duplicate),
             Archive::Restore => state.archived_at = None,
         }
         Self::save(tx, scope, &state).await?;

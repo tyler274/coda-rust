@@ -532,6 +532,25 @@ fn archive_and_undo_each_take_effect_once_and_wait_for_running_work() {
         Ok(Archived::Duplicate)
     );
     assert!(archived(&session));
+    // A second tab's Archive found it already archived and lost its answer;
+    // asked again after an Undo, it leaves the Undo standing.
+    assert_eq!(
+        session.archive("other-tab", scope(), Archive::Archive),
+        Ok(Archived::Duplicate)
+    );
+    assert_eq!(
+        session.archive("undo-2", scope(), Archive::Restore),
+        Ok(Archived::Done)
+    );
+    assert_eq!(
+        session.archive("other-tab", scope(), Archive::Archive),
+        Ok(Archived::Duplicate)
+    );
+    assert!(!archived(&session));
+    assert_eq!(
+        session.archive("archive-4", scope(), Archive::Archive),
+        Ok(Archived::Done)
+    );
     assert_eq!(
         session.archive("archive-2", scope(), Archive::Restore),
         Ok(Archived::Refused),

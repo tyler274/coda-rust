@@ -83,6 +83,17 @@ async fn archive_and_undo_each_take_effect_once_across_a_lost_receipt() {
     assert_eq!(archive("archive-2").await.unwrap(), Archived::Done);
     assert_eq!(restore("undo-1").await.unwrap(), Archived::Duplicate);
     assert!(listed(&store, &scope).await);
+    // A second tab's Archive finds it already archived and its answer is
+    // lost; after an Undo, that same Archive asked again leaves it restored.
+    assert_eq!(archive("other-tab").await.unwrap(), Archived::Duplicate);
+    assert_eq!(restore("undo-2").await.unwrap(), Archived::Done);
+    assert_eq!(archive("other-tab").await.unwrap(), Archived::Duplicate);
+    assert!(!listed(&store, &scope).await);
+    // The same, the other way: a no-op Undo re-asked after a new Archive.
+    assert_eq!(restore("other-undo").await.unwrap(), Archived::Duplicate);
+    assert_eq!(archive("archive-3").await.unwrap(), Archived::Done);
+    assert_eq!(restore("other-undo").await.unwrap(), Archived::Duplicate);
+    assert!(listed(&store, &scope).await);
     // One key never names both directions, and a key held by another kind of
     // command is refused.
     assert_eq!(restore("archive-2").await.unwrap(), Archived::Refused);

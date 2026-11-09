@@ -661,7 +661,10 @@ impl PhysicianSession {
                     Archived::Refused
                 });
             }
+            // An accepted command keeps its key, even one that found the chat
+            // already where it asked, so a late retry never undoes a later one.
             if target.archived == archive {
+                target.archive_keys.push((key.to_owned(), archive));
                 return Ok(Archived::Duplicate);
             }
             if archive && running {
