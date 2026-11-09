@@ -160,13 +160,28 @@ fn feedback(row: &response_feedback::Model) -> Result<Feedback, DbErr> {
             .clone()
             .map(serde_json::from_value)
             .transpose()
-            .map_err(|cause| error(&format!("corrupt feedback details: {cause}")))?,
+            .map_err(|cause| unconvertible("stored feedback details", "Details", cause))?,
         details_saved_at: row.details_saved_at,
     })
 }
 
+/// A value that would not convert between its stored and typed forms,
+/// keeping the conversion's own error as the source.
+fn unconvertible(
+    from: &'static str,
+    into: &'static str,
+    cause: impl std::error::Error + Send + Sync + 'static,
+) -> DbErr {
+    DbErr::TryIntoErr {
+        from,
+        into,
+        source: std::sync::Arc::new(cause),
+    }
+}
+
 fn place(row: &response_feedback::Model) -> Result<u32, DbErr> {
-    u32::try_from(row.response).map_err(|_| error("corrupt feedback response"))
+    u32::try_from(row.response)
+        .map_err(|cause| unconvertible("stored feedback response", "u32", cause))
 }
 
 fn response_key(scope: &Scope, response: u32) -> (String, String, String, String, i64) {
@@ -233,7 +248,7 @@ impl Store {
             .await?
             .map(|row| serde_json::from_value(row.state))
             .transpose()
-            .map_err(|cause| error(&format!("corrupt conversation: {cause}")))?;
+            .map_err(|cause| unconvertible("stored conversation", "Conversation", cause))?;
         if conversation
             .as_ref()
             .and_then(|c| assistant_text(c, response))
@@ -292,7 +307,7 @@ impl Store {
             return Err(error("invalid session reference"));
         }
         let stored = serde_json::to_value(details)
-            .map_err(|cause| error(&format!("unencodable details: {cause}")))?;
+            .map_err(|cause| unconvertible("Details", "stored feedback details", cause))?;
         let tx = self.db.begin().await?;
         if authority
             .lock_publication(&tx, scope, Some(session_hash))

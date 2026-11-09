@@ -54,6 +54,16 @@ impl Key {
         text: "t",
     };
 
+    /// A key that types `text` as it is pressed, such as `?`.
+    pub const fn typing(text: &'static str, code: &'static str, virtual_code: u32) -> Self {
+        Self {
+            key: text,
+            code,
+            virtual_code,
+            text,
+        }
+    }
+
     const fn named(key: &'static str, virtual_code: u32, text: &'static str) -> Self {
         Self {
             key,
