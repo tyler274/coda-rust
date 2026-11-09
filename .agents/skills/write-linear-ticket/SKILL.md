@@ -37,6 +37,11 @@ dependencies, or independently useful results justify it. Distinguish
 what blocks starting from what blocks acceptance. Leave implementation
 choices open unless already settled.
 
+Put a blocking link on the issue whose acceptance requires the unfinished
+deliverable. Name the deliverable and the acceptance criterion it blocks. If an
+agreed interface or stub allows independent work, document that handoff and tie
+any remaining dependency to the issue that owns the integration check.
+
 ## Write a usable handoff
 
 Explain the problem, intended result, material constraints, relevant
