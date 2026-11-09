@@ -2,7 +2,7 @@
 //!
 //! Postgres comes from `PHYSICIAN_DATABASE_URL` or
 //! `PHYSICIAN_RUNTIME_TEST_DATABASE_URL`. Each test creates its own database
-//! on that server. Valkey and the Pub/Sub emulator bind `127.0.0.1:0`.
+//! on that server. Valkey binds a loopback port from this process's ledger.
 #![allow(dead_code)]
 #![allow(
     clippy::map_err_ignore,
@@ -17,23 +17,17 @@ use std::path::{Path, PathBuf};
 use std::process::{Child, Command, Stdio};
 use std::time::{Duration, Instant};
 
-use base64::Engine;
-use local_product::runtime::delivery::Delivery;
 use sea_orm::ConnectionTrait;
 use serde_json::{Value, json};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
-pub const PROJECT: &str = "coda-local-physician";
 pub const FIXED_TEXT: &str = "Noted.";
 
-pub fn topic() -> String {
-    format!("projects/{PROJECT}/topics/physician-chat-turns")
-}
-
-pub fn dead_letter_topic() -> String {
-    format!("projects/{PROJECT}/topics/physician-chat-turns-dead-letter")
-}
+/// Site setting that accepts turns into Postgres for the worker to run.
+pub const DURABLE: (&str, &str) = ("PHYSICIAN_DURABLE_CHAT", "1");
+/// Worker setting that makes failed work due again at once.
+pub const RETRY_NOW: (&str, &str) = ("PHYSICIAN_WORKER_RETRY_SECONDS", "0");
 
 pub fn site_bin() -> &'static str {
     env!("CARGO_BIN_EXE_physician-sample")
@@ -104,6 +98,27 @@ impl Database {
             .await
             .expect("runtime migrations");
         Some(Self { admin, name, url })
+    }
+}
+
+impl Database {
+    /// Ends every session in this database that is subscribed to a
+    /// notification channel, as a dropped connection would, and returns how
+    /// many it ended.
+    pub fn terminate_listeners(&self) -> usize {
+        let sql = format!(
+            "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{}' AND pid <> pg_backend_pid() AND query ILIKE 'LISTEN %'",
+            self.name
+        );
+        let output = Command::new("psql")
+            .args([&self.admin, "-At", "-c", &sql])
+            .output()
+            .expect("psql");
+        assert!(output.status.success(), "psql: {output:?}");
+        String::from_utf8_lossy(&output.stdout)
+            .lines()
+            .filter(|line| line.trim() == "t")
+            .count()
     }
 }
 
@@ -263,6 +278,22 @@ impl Process {
         String::from_utf8_lossy(&bytes[start..]).into_owned()
     }
 
+    /// Sends SIGTERM and returns at once: the process stops on its own time.
+    pub fn terminate(&mut self) {
+        if let Some(child) = &self.child {
+            signal_group(child.id(), "-TERM");
+        }
+    }
+
+    /// Ends the process with SIGKILL, so it gets no chance to clean up.
+    pub fn kill_hard(&mut self) {
+        let Some(mut child) = self.child.take() else {
+            return;
+        };
+        signal_group(child.id(), "-KILL");
+        let _ = child.wait();
+    }
+
     pub fn kill_now(&mut self) {
         let Some(mut child) = self.child.take() else {
             return;
@@ -419,83 +450,6 @@ impl Drop for Valkey {
     fn drop(&mut self) {
         self.process.kill_now();
         let _ = std::fs::remove_dir_all(&self.directory);
-    }
-}
-
-/// The physician chat-turn topology on the shared `pubsub::testing` emulator.
-///
-/// Always a fresh emulator on a port from this process's ledger, never a
-/// reused `PUBSUB_EMULATOR_HOST`: these suites use fixed resource names.
-pub struct Emulator {
-    pub host: String,
-    inner: pubsub::testing::Emulator,
-}
-
-impl Emulator {
-    pub async fn start() -> Self {
-        let inner = pubsub::testing::Emulator::spawn(PROJECT, free_port()).await;
-        inner.create_topic("physician-chat-turns").await;
-        Self {
-            host: inner.host.clone(),
-            inner,
-        }
-    }
-
-    pub fn tail(&self) -> String {
-        self.inner.tail()
-    }
-
-    pub async fn provision(&self, worker_port: u16) {
-        use pubsub::testing::Subscription;
-        let dead_letter = "physician-chat-turns-dead-letter";
-        self.inner.create_topic(dead_letter).await;
-        self.inner
-            .create_subscription(dead_letter, &Subscription::pull(dead_letter))
-            .await;
-        self.inner
-            .create_subscription(
-                "physician-chat-turns",
-                &Subscription::push(
-                    "physician-chat-turns",
-                    format!("http://127.0.0.1:{worker_port}/pubsub/chat-turn"),
-                )
-                .ack_deadline(60)
-                .retry(1, 2)
-                .dead_letter(dead_letter, 5),
-            )
-            .await;
-    }
-
-    pub async fn publish(&self, delivery: &Delivery) {
-        self.publish_with_attributes(delivery, Default::default())
-            .await;
-    }
-
-    pub async fn publish_with_attributes(
-        &self,
-        delivery: &Delivery,
-        attributes: std::collections::BTreeMap<String, String>,
-    ) {
-        let data = serde_json::to_vec(delivery).expect("delivery");
-        let message = pubsub::testing::Outgoing {
-            attributes,
-            ..pubsub::testing::Outgoing::data(data)
-        };
-        self.inner.publish(&topic(), &[message]).await;
-    }
-
-    pub async fn pull_dead_letters(&self) -> Vec<Vec<u8>> {
-        self.inner
-            .pull(
-                &self
-                    .inner
-                    .subscription_path("physician-chat-turns-dead-letter"),
-                10,
-            )
-            .await
-            .into_iter()
-            .map(|received| received.message.data)
-            .collect()
     }
 }
 
@@ -683,16 +637,6 @@ pub async fn wait_ready(process: &mut Process, port: u16) {
     }
 }
 
-pub fn push_body(delivery: &Delivery, message_id: &str) -> Vec<u8> {
-    let data = base64::engine::general_purpose::STANDARD
-        .encode(serde_json::to_vec(delivery).expect("delivery"));
-    serde_json::to_vec(&json!({
-        "message": {"data": data, "messageId": message_id},
-        "subscription": format!("projects/{PROJECT}/subscriptions/physician-chat-turns")
-    }))
-    .expect("push body")
-}
-
 pub fn unix_now() -> u64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
@@ -845,4 +789,84 @@ pub fn page_dir() -> PathBuf {
         site.canonicalize().expect("page directory")
     })
     .clone()
+}
+
+pub type ExportedSpan = opentelemetry_proto::tonic::trace::v1::Span;
+
+/// A loopback OTLP/HTTP receiver: the decoded spans, and every request body
+/// as received (traces and logs), so a test can search all of it.
+pub struct TraceCapture {
+    pub endpoint: String,
+    pub port: u16,
+    pub spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
+    pub bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
+    task: tokio::task::JoinHandle<()>,
+}
+
+#[derive(Clone)]
+struct Captured {
+    spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
+    bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
+}
+
+impl TraceCapture {
+    pub async fn start() -> Self {
+        use axum::{Router, body::Bytes, extract::State, routing::post};
+        use opentelemetry_proto::tonic::collector::trace::v1::ExportTraceServiceRequest;
+        use prost::Message as _;
+        async fn traces(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
+            let request = ExportTraceServiceRequest::decode(body.clone()).expect("OTLP protobuf");
+            captured.bodies.lock().unwrap().push(body.to_vec());
+            captured.spans.lock().unwrap().extend(
+                request
+                    .resource_spans
+                    .into_iter()
+                    .flat_map(|r| r.scope_spans)
+                    .flat_map(|s| s.spans),
+            );
+            axum::http::StatusCode::OK
+        }
+        async fn logs(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
+            captured.bodies.lock().unwrap().push(body.to_vec());
+            axum::http::StatusCode::OK
+        }
+        let captured = Captured {
+            spans: Default::default(),
+            bodies: Default::default(),
+        };
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let app = Router::new()
+            .route("/v1/traces", post(traces))
+            .route("/v1/logs", post(logs))
+            .with_state(captured.clone());
+        let task = tokio::spawn(async move {
+            axum::serve(listener, app).await.unwrap();
+        });
+        Self {
+            endpoint: format!("http://127.0.0.1:{port}"),
+            port,
+            spans: captured.spans,
+            bodies: captured.bodies,
+            task,
+        }
+    }
+}
+
+impl Drop for TraceCapture {
+    fn drop(&mut self) {
+        self.task.abort();
+    }
+}
+
+pub fn trace_attribute(span: &ExportedSpan, key: &str) -> Option<String> {
+    use opentelemetry_proto::tonic::common::v1::any_value::Value;
+    span.attributes
+        .iter()
+        .find(|kv| kv.key == key)
+        .and_then(|kv| kv.value.as_ref())
+        .and_then(|value| match &value.value {
+            Some(Value::StringValue(text)) => Some(text.clone()),
+            _ => None,
+        })
 }

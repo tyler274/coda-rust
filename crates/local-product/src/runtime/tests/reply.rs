@@ -1,4 +1,5 @@
 //! Focused Postgres proof for the reply owner without HTTP or a worker.
+use super::delivery::Backoff;
 use super::*;
 use crate::runtime::reply::{FINISH_TOOL, RevisionAccepted, RevisionInput};
 use harness::execution::{Call, Record, Response, Usage};
@@ -69,7 +70,7 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     let first = input("first", 1);
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32])
+            .accept_revision(&scope, &first, vec![7; 32], None)
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -81,14 +82,14 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32])
+            .accept_revision(&scope, &first, vec![7; 32], None)
             .await
             .unwrap(),
         RevisionAccepted::New
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &first, vec![7; 32])
+            .accept_revision(&scope, &first, vec![7; 32], None)
             .await
             .unwrap(),
         RevisionAccepted::Duplicate
@@ -97,13 +98,13 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
     collision.instruction = "Different".into();
     assert!(
         store
-            .accept_revision(&scope, &collision, vec![7; 32])
+            .accept_revision(&scope, &collision, vec![7; 32], None)
             .await
             .is_err()
     );
     assert_eq!(
         store
-            .accept_revision(&scope, &input("busy", 1), vec![7; 32])
+            .accept_revision(&scope, &input("busy", 1), vec![7; 32], None)
             .await
             .unwrap(),
         RevisionAccepted::Refused
@@ -125,7 +126,10 @@ async fn reply_acceptance_is_scoped_idempotent_and_claimed_once() {
         store.delivery_state(&delivery).await.unwrap(),
         DeliveryState::Claimed
     );
-    store.retry_revision(&claim).await.unwrap();
+    store
+        .retry_revision(&claim, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let retry = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
     assert_ne!(retry.attempt, claim.attempt);
     assert_eq!(retry.earlier_attempts, 1);
@@ -139,7 +143,7 @@ async fn reply_publication_requires_evidence_authority_and_current_revision() {
     let (store, scope) = setup().await;
     store.open_draft(&scope, "Original").await.unwrap();
     store
-        .accept_revision(&scope, &input("first", 1), vec![7; 32])
+        .accept_revision(&scope, &input("first", 1), vec![7; 32], None)
         .await
         .unwrap();
     let claim = store
@@ -222,7 +226,7 @@ async fn reply_history_keeps_completed_attempts_append_only() {
     let mut completed = Vec::new();
     for (index, key) in ["first", "second", "third"].iter().enumerate() {
         store
-            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32])
+            .accept_revision(&scope, &input(key, index as u64 + 1), vec![7; 32], None)
             .await
             .unwrap();
         let claim = store
@@ -273,7 +277,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
     store.open_draft(&scope, "Original").await.unwrap();
     let first = input("first", 1);
     store
-        .accept_revision(&scope, &first, vec![7; 32])
+        .accept_revision(&scope, &first, vec![7; 32], None)
         .await
         .unwrap();
     let late = store
@@ -302,7 +306,7 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
         .await
         .unwrap();
     store
-        .accept_revision(&scope, &input("second", 2), vec![7; 32])
+        .accept_revision(&scope, &input("second", 2), vec![7; 32], None)
         .await
         .unwrap();
     let second = store
@@ -342,7 +346,10 @@ async fn late_evidence_for_an_archived_attempt_joins_its_history_and_never_publi
             .await
             .is_err()
     );
-    store.retry_revision(&late).await.unwrap();
+    store
+        .retry_revision(&late, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let history = store.earlier_revisions(&scope).await.unwrap();
     let [earlier] = history.as_slice() else {
         panic!("one earlier revision expected");
@@ -398,7 +405,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in keys.iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&scope, &input(key, revision), vec![7; 32])
+            .accept_revision(&scope, &input(key, revision), vec![7; 32], None)
             .await
             .unwrap();
         store
@@ -435,7 +442,7 @@ async fn earlier_revisions_read_in_archive_order_not_key_order() {
     for (index, key) in ["other-1", "other-2"].iter().enumerate() {
         let revision = index as u64 + 1;
         store
-            .accept_revision(&other, &input(key, revision), vec![7; 32])
+            .accept_revision(&other, &input(key, revision), vec![7; 32], None)
             .await
             .unwrap();
         store
@@ -525,7 +532,7 @@ async fn authorized_opening_is_idempotent_scoped_and_fenced_by_authority() {
     assert_eq!(saved, 2);
     assert_eq!(
         store
-            .accept_revision(&scope, &input("kept", 2), vec![7; 32])
+            .accept_revision(&scope, &input("kept", 2), vec![7; 32], None)
             .await
             .unwrap(),
         RevisionAccepted::New

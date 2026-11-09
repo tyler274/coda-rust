@@ -1,30 +1,31 @@
-//! One `physician.worker.attempt` consumer span per push delivery, correlated
-//! with the product's canonical saved attempt.
+//! One `physician.worker.attempt` consumer span per claimed attempt,
+//! correlated with the product's canonical saved attempt.
 //!
-//! The Pub/Sub message ID is only a messaging attribute. `coda.run_id` is the
-//! attempt this delivery claimed, `coda.work_id` the work it belongs to, and
-//! `coda.predecessor_run_id` the attempt it succeeds, all read from the
-//! product's own records; nothing here is a second run ledger. Failure
-//! signals carry fixed descriptions and a bounded `error.type`, never an
-//! error payload, prompt, instruction, or output.
+//! `coda.run_id` is the attempt this worker claimed, `coda.work_id` the work
+//! it belongs to, and `coda.predecessor_run_id` the attempt it succeeds, all
+//! read from the product's own records; nothing here is a second run ledger.
+//! Failure signals carry fixed descriptions and a bounded `error.type`, never
+//! an error payload, prompt, instruction, or output.
 use std::collections::HashMap;
+use std::time::Duration;
 
 use harness::engine::{Event, EventKind};
 use harness::execution::Record;
-use local_product::runtime::delivery::Delivery;
+use local_product::runtime::delivery::{DeliveryKind, Retry, TraceContext};
+use sea_orm::DbErr;
 use serde_json::Value;
 use telemetry::propagation::{self, Relation};
 use tracing::Span;
 use tracing::field::Empty;
 
-/// A decoded push delivery and the broker metadata it arrived with.
-pub(super) struct Push {
-    pub delivery: Delivery,
-    pub message_id: String,
-    /// Publisher attributes, where the W3C trace context travels.
-    pub attributes: HashMap<String, String>,
-    /// Present when the subscription dead-letters; 1 on the first delivery.
-    pub delivery_attempt: Option<u32>,
+/// What the pull loop does with a delivery once this worker is done with it.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(super) enum Next {
+    /// Nothing more from this worker: the work is settled, failed, released,
+    /// or left to the poll.
+    Done,
+    /// The attempt failed and the work is due again after this long.
+    RetryAfter(Duration),
 }
 
 /// The bounded `error.type` of an asynchronous worker failure.
@@ -69,17 +70,19 @@ impl Failure {
     }
 }
 
-/// How the delivery ended for the broker and the product.
+/// How the attempt ended for the product.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(super) enum Outcome {
     /// The attempt published its result.
     Committed,
     /// Stop, a newer input, or completion already owned the work.
     Settled,
-    /// The attempt failed and the delivery was refused for redelivery.
+    /// The attempt failed and the work is due again after its backoff.
     Retry,
-    /// Nothing was claimable for this delivery.
-    Absent,
+    /// The attempt failed and was the last one: the work ended as failed.
+    GaveUp,
+    /// The worker was stopping and handed its claim back.
+    Released,
     /// The claim itself failed.
     ClaimError,
 }
@@ -90,39 +93,27 @@ impl Outcome {
             Self::Committed => "committed",
             Self::Settled => "settled",
             Self::Retry => "retry",
-            Self::Absent => "absent",
+            Self::GaveUp => "gave_up",
+            Self::Released => "released",
             Self::ClaimError => "claim_error",
         }
     }
 }
 
-/// The span's relation to the publisher's context. Only a first delivery
-/// continues the publishing trace; a redelivery is a distinct attempt that
-/// links to it. A missing counter also links: subscriptions without a
-/// dead-letter policy (and some emulators) omit it even on redelivery.
-/// Without a valid context the span is a root with no relation.
-pub(super) fn relation(remote_valid: bool, delivery_attempt: Option<u32>) -> Relation {
-    match (remote_valid, delivery_attempt) {
-        (false, _) => Relation::Root,
-        (true, Some(1)) => Relation::Child,
-        (true, None | Some(_)) => Relation::Link,
-    }
-}
-
-/// Opens the consumer span for one delivery. It is always a new span with no
-/// ambient parent; [`relation`] decides whether it continues or links to the
-/// publisher's context.
-pub(super) fn span(push: &Push, job: &'static str) -> Span {
+/// Opens the consumer span for one attempt. It is always a new trace with no
+/// ambient parent. Accepting the work and running it are separate in time and
+/// one accepted input can have several attempts, so the span links to
+/// `origin`, the request that made the work runnable, and never continues it.
+/// Without a valid `origin` the span has no relation.
+pub(super) fn span(kind: DeliveryKind, job: &'static str, origin: Option<&TraceContext>) -> Span {
     let span = tracing::info_span!(
         parent: None,
         "physician.worker.attempt",
         otel.kind = "consumer",
-        messaging.system = "gcp_pubsub",
+        messaging.system = "postgresql",
         messaging.operation.type = "process",
-        messaging.message.id = %push.message_id,
-        messaging.gcp_pubsub.message.delivery_attempt = Empty,
         coda.job = job,
-        coda.delivery_kind = physician_sample::queue::delivery_kind(push.delivery.kind),
+        coda.delivery_kind = kind.as_str(),
         coda.trace_relation = Empty,
         coda.run_id = Empty,
         coda.work_id = Empty,
@@ -135,20 +126,42 @@ pub(super) fn span(push: &Push, job: &'static str) -> Span {
         error.type = Empty,
         error.message = Empty,
     );
-    if let Some(attempt) = push.delivery_attempt {
-        span.record("messaging.gcp_pubsub.message.delivery_attempt", attempt);
-    }
-    let remote = propagation::remote_context(&push.attributes);
-    let applied = propagation::relate(
-        &span,
-        remote.as_ref(),
-        relation(remote.is_some(), push.delivery_attempt),
-    );
+    let remote = origin.and_then(|origin| {
+        let mut carrier = HashMap::from([(
+            propagation::TRACEPARENT.to_owned(),
+            origin.traceparent.clone(),
+        )]);
+        if let Some(state) = &origin.tracestate {
+            carrier.insert(propagation::TRACESTATE.to_owned(), state.clone());
+        }
+        propagation::remote_context(&carrier)
+    });
+    let applied = propagation::relate(&span, remote.as_ref(), Relation::Link);
     span.record("coda.trace_relation", applied.as_str());
     span
 }
 
-/// The canonical attempt this delivery claimed.
+/// What a failed attempt's saved retry means for the span and the pull loop.
+/// A retry that could not be saved is logged; the attempt's lease then runs
+/// out and the next claim records it.
+pub(super) fn retried(
+    span: &Span,
+    job: &'static str,
+    run_id: &str,
+    saved: Result<Retry, DbErr>,
+) -> (Outcome, Next) {
+    match saved {
+        Ok(Retry::After(delay)) => (Outcome::Retry, Next::RetryAfter(delay)),
+        Ok(Retry::GaveUp) => (Outcome::GaveUp, Next::Done),
+        Ok(Retry::NotCurrent) => (Outcome::Settled, Next::Done),
+        Err(_) => {
+            retry_not_persisted(span, job, run_id);
+            (Outcome::Retry, Next::Done)
+        }
+    }
+}
+
+/// The canonical attempt this worker claimed.
 pub(super) struct Claimed<'a> {
     pub run_id: &'a str,
     pub work_id: Option<&'a str>,
@@ -172,7 +185,7 @@ pub(super) fn record_claim(span: &Span, claimed: &Claimed<'_>) {
     span.record("coda.attempt_number", claimed.attempt_number);
 }
 
-/// Records how the delivery ended. A failure also marks the span `ERROR`
+/// Records how the attempt ended. A failure also marks the span `ERROR`
 /// with fixed fields and logs `physician.worker.attempt_failed`; the log line
 /// carries the trace and span ids, and `coda.run_id` once an attempt was
 /// claimed. Nothing recorded here comes from an error payload.
@@ -274,212 +287,13 @@ mod tests {
     use harness::engine::Turn;
     use serde_json::json;
 
-    #[test]
-    fn attempt_spans_keep_canonical_ids_and_safe_failures_across_redelivery() {
-        use opentelemetry::trace::{SpanId, TracerProvider as _};
-        use opentelemetry_sdk::trace::{InMemorySpanExporter, SdkTracerProvider};
-        use tracing_subscriber::layer::SubscriberExt;
-        let exporter = InMemorySpanExporter::default();
-        let provider = SdkTracerProvider::builder()
-            .with_simple_exporter(exporter.clone())
-            .build();
-        let subscriber = tracing_subscriber::registry()
-            .with(tracing_opentelemetry::layer().with_tracer(provider.tracer("attempt-test")));
-        tracing::subscriber::with_default(subscriber, || {
-            let delivery = Delivery::chat_turn(
-                local_product::runtime::Scope {
-                    practice: "private-practice-marker".into(),
-                    physician: "private-physician-marker".into(),
-                    workspace: "private-workspace-marker".into(),
-                    chat: "private-chat-marker".into(),
-                },
-                "private-input-marker".into(),
-            );
-            for (number, run, previous, failure) in [
-                (1, "saved-attempt-one", None, Some(Failure::ProviderInit)),
-                (
-                    2,
-                    "saved-attempt-two",
-                    Some("saved-attempt-one"),
-                    Some(Failure::Revision),
-                ),
-                (3, "saved-attempt-three", Some("saved-attempt-two"), None),
-            ] {
-                let push = Push {
-                    delivery: delivery.clone(),
-                    message_id: "same-broker-message".into(),
-                    delivery_attempt: Some(number),
-                    attributes: [(
-                        "traceparent".into(),
-                        "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01".into(),
-                    )]
-                    .into(),
-                };
-                let span = span(&push, "physician_chat");
-                record_claim(
-                    &span,
-                    &Claimed {
-                        run_id: run,
-                        work_id: Some("saved-work"),
-                        predecessor_run_id: previous,
-                        input_revision: Some(1),
-                        attempt_number: number,
-                    },
-                );
-                finish(
-                    &span,
-                    "physician_chat",
-                    Some(run),
-                    if failure.is_some() {
-                        Outcome::Retry
-                    } else {
-                        Outcome::Committed
-                    },
-                    failure,
-                );
-            }
-            // Neither invalid nor missing attributes inherit an ambient HTTP span.
-            let ambient = tracing::info_span!("http.server");
-            ambient.in_scope(|| {
-                for attributes in [
-                    HashMap::new(),
-                    [("traceparent".into(), "invalid".into())].into(),
-                ] {
-                    drop(span(
-                        &Push {
-                            delivery: delivery.clone(),
-                            message_id: "unclaimed".into(),
-                            delivery_attempt: None,
-                            attributes,
-                        },
-                        "physician_chat",
-                    ));
-                }
-            });
-        });
-        provider.force_flush().unwrap();
-        let spans = exporter.get_finished_spans().unwrap();
-        let value = |span: &opentelemetry_sdk::trace::SpanData, key: &str| {
-            span.attributes
-                .iter()
-                .find(|kv| kv.key.as_str() == key)
-                .map(|kv| kv.value.to_string())
-        };
-        let attempts: Vec<_> = spans
-            .iter()
-            .filter(|span| span.name == "physician.worker.attempt")
-            .collect();
-        assert_eq!(attempts.len(), 5);
-        for (index, run) in [
-            "saved-attempt-one",
-            "saved-attempt-two",
-            "saved-attempt-three",
-        ]
-        .iter()
-        .enumerate()
-        {
-            let span = attempts[index];
-            assert_eq!(value(span, "coda.run_id").as_deref(), Some(*run));
-            assert_eq!(
-                value(span, "messaging.message.id").as_deref(),
-                Some("same-broker-message")
-            );
-            if index == 0 {
-                assert_eq!(
-                    span.parent_span_id,
-                    SpanId::from_hex("b7ad6b7169203331").unwrap()
-                );
-            } else {
-                assert_eq!(span.parent_span_id, SpanId::INVALID);
-                assert_eq!(span.links.len(), 1);
-                assert_ne!(
-                    span.span_context.trace_id(),
-                    attempts[index - 1].span_context.trace_id()
-                );
-            }
-        }
-        for span in &attempts[..2] {
-            assert!(matches!(
-                span.status,
-                opentelemetry::trace::Status::Error { .. }
-            ));
-            assert!(span.events.iter().any(|event| {
-                event.attributes.iter().any(|kv| {
-                    kv.key.as_str() == "event"
-                        && kv.value.to_string() == "physician.worker.attempt_failed"
-                })
-            }));
-        }
-        for span in &attempts[3..] {
-            assert_eq!(span.parent_span_id, SpanId::INVALID);
-            assert!(span.links.is_empty());
-            assert!(value(span, "coda.run_id").is_none());
-        }
-        assert!(!format!("{spans:?}").contains("private-"));
-    }
+    const TRACE: &str = "0af7651916cd43dd8448eb211c80319c";
+    const PARENT: &str = "b7ad6b7169203331";
 
-    #[test]
-    fn only_a_first_delivery_with_valid_context_continues_the_trace() {
-        assert_eq!(relation(true, None), Relation::Link);
-        assert_eq!(relation(true, Some(0)), Relation::Link);
-        assert_eq!(relation(true, Some(1)), Relation::Child);
-        assert_eq!(relation(true, Some(2)), Relation::Link);
-        assert_eq!(relation(true, Some(5)), Relation::Link);
-        assert_eq!(relation(false, None), Relation::Root);
-        assert_eq!(relation(false, Some(1)), Relation::Root);
-        assert_eq!(relation(false, Some(3)), Relation::Root);
-    }
-
-    #[test]
-    fn failure_types_and_outcomes_are_a_fixed_vocabulary() {
-        let failures = [
-            Failure::ProviderInit,
-            Failure::ModelCall,
-            Failure::Claim,
-            Failure::Timeout,
-            Failure::RetryPersist,
-            Failure::Revision,
-        ]
-        .map(Failure::as_str);
-        assert_eq!(
-            failures,
-            [
-                "provider_init",
-                "model_call",
-                "claim",
-                "timeout",
-                "retry_persist",
-                "revision"
-            ]
-        );
-        let outcomes = [
-            Outcome::Committed,
-            Outcome::Settled,
-            Outcome::Retry,
-            Outcome::Absent,
-            Outcome::ClaimError,
-        ]
-        .map(Outcome::as_str);
-        assert_eq!(
-            outcomes,
-            ["committed", "settled", "retry", "absent", "claim_error"]
-        );
-    }
-
-    fn push(attributes: &[(&str, &str)], delivery_attempt: Option<u32>) -> Push {
-        let delivery: Delivery = serde_json::from_value(json!({
-            "scope": {"practice": "p", "physician": "d", "workspace": "w", "chat": "c"},
-            "input_id": "k"
-        }))
-        .unwrap();
-        Push {
-            delivery,
-            message_id: "message-1".into(),
-            attributes: attributes
-                .iter()
-                .map(|(key, value)| ((*key).to_owned(), (*value).to_owned()))
-                .collect(),
-            delivery_attempt,
+    fn origin(traceparent: &str) -> TraceContext {
+        TraceContext {
+            traceparent: traceparent.into(),
+            tracestate: Some("dd=s:1".into()),
         }
     }
 
@@ -504,18 +318,113 @@ mod tests {
             .map(|kv| kv.value.to_string())
     }
 
-    const TRACE: &str = "0af7651916cd43dd8448eb211c80319c";
-    const PARENT: &str = "b7ad6b7169203331";
+    #[test]
+    fn every_attempt_links_to_the_accepting_request_in_its_own_trace() {
+        use opentelemetry::trace::{SpanId, TraceId};
+        let accepted = origin(&format!("00-{TRACE}-{PARENT}-01"));
+        let spans = capture(|| {
+            for (number, run, previous, failure) in [
+                (1, "saved-attempt-one", None, Some(Failure::ProviderInit)),
+                (
+                    2,
+                    "saved-attempt-two",
+                    Some("saved-attempt-one"),
+                    Some(Failure::Revision),
+                ),
+                (3, "saved-attempt-three", Some("saved-attempt-two"), None),
+            ] {
+                let span = span(DeliveryKind::ChatTurn, "physician_chat", Some(&accepted));
+                record_claim(
+                    &span,
+                    &Claimed {
+                        run_id: run,
+                        work_id: Some("saved-work"),
+                        predecessor_run_id: previous,
+                        input_revision: Some(1),
+                        attempt_number: number,
+                    },
+                );
+                finish(
+                    &span,
+                    "physician_chat",
+                    Some(run),
+                    if failure.is_some() {
+                        Outcome::Retry
+                    } else {
+                        Outcome::Committed
+                    },
+                    failure,
+                );
+            }
+            // Neither an invalid nor a missing origin inherits an ambient span.
+            let ambient = tracing::info_span!("http.server");
+            ambient.in_scope(|| {
+                drop(span(DeliveryKind::ChatTurn, "physician_chat", None));
+                drop(span(
+                    DeliveryKind::ReplyRevision,
+                    "physician_reply_revision",
+                    Some(&origin("invalid")),
+                ));
+            });
+        });
+        let attempts: Vec<_> = spans
+            .iter()
+            .filter(|span| span.name == "physician.worker.attempt")
+            .collect();
+        assert_eq!(attempts.len(), 5);
+        let mut traces = std::collections::HashSet::new();
+        for (span, run) in attempts.iter().zip([
+            "saved-attempt-one",
+            "saved-attempt-two",
+            "saved-attempt-three",
+        ]) {
+            assert_eq!(attribute(span, "coda.run_id").as_deref(), Some(run));
+            assert_eq!(span.span_kind, opentelemetry::trace::SpanKind::Consumer);
+            assert_eq!(span.parent_span_id, SpanId::INVALID);
+            assert_eq!(
+                attribute(span, "coda.trace_relation").as_deref(),
+                Some("link")
+            );
+            assert_eq!(span.links.len(), 1);
+            let link = &span.links[0].span_context;
+            assert_eq!(link.trace_id(), TraceId::from_hex(TRACE).unwrap());
+            assert_eq!(link.span_id(), SpanId::from_hex(PARENT).unwrap());
+            assert_eq!(link.trace_state().get("dd"), Some("s:1"));
+            assert_ne!(span.span_context.trace_id(), link.trace_id());
+            assert!(traces.insert(span.span_context.trace_id()));
+        }
+        for span in &attempts[..2] {
+            assert!(matches!(
+                span.status,
+                opentelemetry::trace::Status::Error { .. }
+            ));
+            assert!(span.events.iter().any(|event| {
+                event.attributes.iter().any(|kv| {
+                    kv.key.as_str() == "event"
+                        && kv.value.to_string() == "physician.worker.attempt_failed"
+                })
+            }));
+        }
+        for span in &attempts[3..] {
+            assert_eq!(span.parent_span_id, SpanId::INVALID);
+            assert!(span.links.is_empty());
+            assert_eq!(
+                attribute(span, "coda.trace_relation").as_deref(),
+                Some("root")
+            );
+            assert!(attribute(span, "coda.run_id").is_none());
+        }
+        assert_eq!(
+            attribute(attempts[4], "coda.delivery_kind").as_deref(),
+            Some("reply_revision")
+        );
+    }
 
     #[test]
-    fn a_first_delivery_continues_the_trace_and_a_failure_is_content_free() {
-        use opentelemetry::trace::{SpanId, Status, TraceId};
-        let traceparent = format!("00-{TRACE}-{PARENT}-01");
+    fn a_failed_attempt_is_recorded_without_content() {
+        use opentelemetry::trace::Status;
         let spans = capture(|| {
-            let span = span(
-                &push(&[("traceparent", &traceparent)], Some(1)),
-                "physician_chat",
-            );
+            let span = span(DeliveryKind::ChatTurn, "physician_chat", None);
             record_claim(
                 &span,
                 &Claimed {
@@ -536,19 +445,11 @@ mod tests {
         });
         let span = &spans[0];
         assert_eq!(span.name, "physician.worker.attempt");
-        assert_eq!(span.span_kind, opentelemetry::trace::SpanKind::Consumer);
-        assert_eq!(
-            span.span_context.trace_id(),
-            TraceId::from_hex(TRACE).unwrap()
-        );
-        assert_eq!(span.parent_span_id, SpanId::from_hex(PARENT).unwrap());
-        assert!(span.links.is_empty());
         for (key, value) in [
             ("coda.job", "physician_chat"),
             ("coda.delivery_kind", "chat_turn"),
-            ("messaging.message.id", "message-1"),
-            ("messaging.gcp_pubsub.message.delivery_attempt", "1"),
-            ("coda.trace_relation", "child"),
+            ("messaging.system", "postgresql"),
+            ("coda.trace_relation", "root"),
             ("coda.run_id", "attempt-2"),
             ("coda.work_id", "work-1"),
             ("coda.predecessor_run_id", "attempt-1"),
@@ -579,6 +480,70 @@ mod tests {
         );
         assert_eq!(event_attribute("error.type").as_deref(), Some("model_call"));
         assert_eq!(event_attribute("coda.outcome").as_deref(), Some("retry"));
+    }
+
+    #[test]
+    fn a_saved_retry_decides_the_outcome_and_what_the_loop_does_next() {
+        let span = Span::none();
+        let delay = Duration::from_secs(20);
+        for (saved, expected) in [
+            (
+                Ok(Retry::After(delay)),
+                (Outcome::Retry, Next::RetryAfter(delay)),
+            ),
+            (Ok(Retry::GaveUp), (Outcome::GaveUp, Next::Done)),
+            (Ok(Retry::NotCurrent), (Outcome::Settled, Next::Done)),
+            (
+                Err(DbErr::Custom("unavailable".into())),
+                (Outcome::Retry, Next::Done),
+            ),
+        ] {
+            assert_eq!(retried(&span, "physician_chat", "run", saved), expected);
+        }
+    }
+
+    #[test]
+    fn failure_types_and_outcomes_are_a_fixed_vocabulary() {
+        let failures = [
+            Failure::ProviderInit,
+            Failure::ModelCall,
+            Failure::Claim,
+            Failure::Timeout,
+            Failure::RetryPersist,
+            Failure::Revision,
+        ]
+        .map(Failure::as_str);
+        assert_eq!(
+            failures,
+            [
+                "provider_init",
+                "model_call",
+                "claim",
+                "timeout",
+                "retry_persist",
+                "revision"
+            ]
+        );
+        let outcomes = [
+            Outcome::Committed,
+            Outcome::Settled,
+            Outcome::Retry,
+            Outcome::GaveUp,
+            Outcome::Released,
+            Outcome::ClaimError,
+        ]
+        .map(Outcome::as_str);
+        assert_eq!(
+            outcomes,
+            [
+                "committed",
+                "settled",
+                "retry",
+                "gave_up",
+                "released",
+                "claim_error"
+            ]
+        );
     }
 
     fn returned(receipt: Value) -> Event {

@@ -1,6 +1,7 @@
 //! Postgres proof that a reply revision takes in sources arriving before it
 //! finishes: the versioned source store, per-attempt pins, refreshes recorded
 //! on the attempt, and ingestion serialized against publication.
+use super::delivery::Backoff;
 use super::*;
 use crate::physician_sources::{
     ReadablePart, RecordDate, SourcePatient, SourceRevision, exact_read,
@@ -136,7 +137,7 @@ async fn exchange(store: &Store, claim: &reply::RevisionClaim, sequence: u64, ou
 async fn accepted_claim(store: &Store, scope: &Scope, key: &str) -> reply::RevisionClaim {
     store.open_draft(scope, "Original").await.unwrap();
     store
-        .accept_revision(scope, &input(key, 1), vec![7; 32])
+        .accept_revision(scope, &input(key, 1), vec![7; 32], None)
         .await
         .unwrap();
     store
@@ -679,7 +680,7 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
     // A duplicate acceptance answers from the receipt and keeps the pin.
     assert_eq!(
         store
-            .accept_revision(&scope, &input("first", 1), vec![7; 32])
+            .accept_revision(&scope, &input("first", 1), vec![7; 32], None)
             .await
             .unwrap(),
         reply::RevisionAccepted::Duplicate
@@ -688,7 +689,10 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
         store.draft(&scope).await.unwrap().unwrap().sources_version,
         1
     );
-    store.retry_revision(&first).await.unwrap();
+    store
+        .retry_revision(&first, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let retry = store
         .claim_revision(&Delivery::reply_revision(scope.clone(), "first".into()), 60)
         .await

@@ -71,6 +71,7 @@ async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
                 scenario: None,
             },
             PostgresAuthStore::session_reference(&token).to_vec(),
+            None,
         )
         .await
         .unwrap();

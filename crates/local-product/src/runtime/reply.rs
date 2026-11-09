@@ -26,7 +26,9 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 
-use super::delivery::{Delivery, DeliveryKind, DeliveryState, DispatchPage};
+use super::delivery::{
+    self, Backoff, Delivery, DeliveryKind, DeliveryState, DispatchPage, Retry, TraceContext,
+};
 use super::entities::{reply_draft, reply_revision};
 use super::receipt::{self, Receipt};
 use super::{Authority, MAX_FAILED_ATTEMPTS, Scope, Store, database_clock, error, keys, now};
@@ -123,10 +125,14 @@ pub struct Draft {
     pub attempts: Vec<RevisionAttempt>,
     /// Accepted session reference, never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Database-clock time before which recovery need not republish a wakeup.
+    /// Database-clock time before which a pending revision is not due: the
+    /// retry delay after a failed attempt.
     pub dispatch_after: i64,
     /// Unsuccessful attempts on the accepted revision, including expired leases.
     pub failures: u32,
+    /// Trace context of the request that accepted the revision.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub origin: Option<TraceContext>,
 }
 
 impl Draft {
@@ -144,6 +150,7 @@ impl Draft {
             session_hash: None,
             dispatch_after: 0,
             failures: 0,
+            origin: None,
         }
     }
 
@@ -169,9 +176,9 @@ impl Draft {
 /// Outcome of accepting a revision command.
 #[derive(Debug, PartialEq, Eq)]
 pub enum RevisionAccepted {
-    /// Saved; publish a wakeup for it.
+    /// Saved, and workers were told.
     New,
-    /// The exact same command was already accepted; do not publish again.
+    /// The exact same command was already accepted; nothing changed.
     Duplicate,
     /// No saved draft, a stale revision, or a revision already running.
     Refused,
@@ -213,6 +220,8 @@ pub struct RevisionClaim {
     pub sources_version: u64,
     /// Attempts saved on this revision before this one.
     pub earlier_attempts: u32,
+    /// Trace context of the request that accepted the revision.
+    pub origin: Option<TraceContext>,
 }
 
 /// Instructions for a reply revision. Revisions never write memory, delegate,
@@ -482,12 +491,14 @@ impl Store {
     /// command answers `Duplicate` and keeps the original pin; the same key
     /// with a different command is an idempotency collision. A refused
     /// command leaves no receipt, so the physician may retry it once the
-    /// draft allows.
+    /// draft allows. Listening workers are told in the same transaction;
+    /// `origin` is the accepting request's trace context.
     pub async fn accept_revision(
         &self,
         scope: &Scope,
         input: &RevisionInput,
         session_hash: Vec<u8>,
+        origin: Option<TraceContext>,
     ) -> Result<RevisionAccepted, DbErr> {
         nonempty(scope)?;
         if session_hash.len() != 32 {
@@ -575,12 +586,19 @@ impl Store {
         state.session_hash = Some(session_hash);
         state.dispatch_after = 0;
         state.failures = 0;
+        state.origin = origin;
+        delivery::notify(
+            &tx,
+            &Delivery::reply_revision(scope.clone(), input.key.clone()),
+        )
+        .await?;
         Self::save_draft_row(tx, scope, &state).await?;
         Ok(RevisionAccepted::New)
     }
 
-    /// Claims only the revision named by the wakeup. A stale revision is
-    /// superseded; an expired lease counts as a failed attempt.
+    /// Claims only the revision named by the delivery, once it is due. A
+    /// stale revision is superseded; an expired lease counts as a failed
+    /// attempt.
     pub async fn claim_revision(
         &self,
         delivery: &Delivery,
@@ -620,7 +638,8 @@ impl Store {
                 return Ok(None);
             }
         }
-        if state.status != "pending" {
+        // A failed revision waits out its retry delay.
+        if state.status != "pending" || state.dispatch_after > now {
             tx.commit().await?;
             return Ok(None);
         }
@@ -649,6 +668,7 @@ impl Store {
             sources: state.sources.clone(),
             sources_version: state.sources_version,
             earlier_attempts,
+            origin: state.origin.clone(),
         };
         Self::save_draft_row(tx, &delivery.scope, &state).await?;
         Ok(Some(claim))
@@ -798,25 +818,72 @@ impl Store {
         Ok(RevisionCommit::Committed)
     }
 
-    /// Releases this attempt for broker retry. The [`MAX_FAILED_ATTEMPTS`]th
-    /// failure ends the revision as failed. Never reopens settled work.
-    pub async fn retry_revision(&self, claim: &RevisionClaim) -> Result<(), DbErr> {
-        let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
-        if state.input.as_ref() == Some(&claim.input)
-            && state.status == "active"
-            && let Some(attempt) = state.attempts.last_mut().filter(|a| a.id == claim.attempt)
-        {
-            if attempt.status == "active" {
-                attempt.status = "interrupted".into();
-            }
-            state.failures += 1;
-            state.status = if state.failures >= MAX_FAILED_ATTEMPTS {
-                "failed"
-            } else {
-                "pending"
-            }
-            .into();
+    /// Extends only a live revision claim using the database clock.
+    pub async fn heartbeat_revision(
+        &self,
+        claim: &RevisionClaim,
+        lease_seconds: i64,
+    ) -> Result<(), DbErr> {
+        if !(1..=600).contains(&lease_seconds) {
+            return Err(error("invalid lease duration"));
         }
+        let (tx, mut state, now) = self.locked_draft(&claim.scope).await?;
+        if !current(&state, claim, now) {
+            return Err(error("stale revision heartbeat"));
+        }
+        state.attempts.last_mut().unwrap().expires = now + lease_seconds;
+        Self::save_draft_row(tx, &claim.scope, &state).await
+    }
+
+    /// Records this claim's unsuccessful attempt and makes the revision due
+    /// again after `backoff`. The [`MAX_FAILED_ATTEMPTS`]th failure ends it
+    /// as failed. Never reopens settled work.
+    pub async fn retry_revision(
+        &self,
+        claim: &RevisionClaim,
+        backoff: Backoff,
+    ) -> Result<Retry, DbErr> {
+        let (tx, mut state, now) = self.locked_draft(&claim.scope).await?;
+        let owned = state.input.as_ref() == Some(&claim.input) && state.status == "active";
+        let Some(attempt) = state
+            .attempts
+            .last_mut()
+            .filter(|a| owned && a.id == claim.attempt)
+        else {
+            tx.commit().await?;
+            return Ok(Retry::NotCurrent);
+        };
+        if attempt.status == "active" {
+            attempt.status = "interrupted".into();
+        }
+        let (status, retry) =
+            delivery::failed_once(&mut state.failures, &mut state.dispatch_after, now, backoff);
+        state.status = status.into();
+        Self::save_draft_row(tx, &claim.scope, &state).await?;
+        Ok(retry)
+    }
+
+    /// Hands a live revision claim back when its worker is stopping, so
+    /// another worker runs it at once. Not counted as a failure. A claim that
+    /// no longer owns the revision changes nothing.
+    pub async fn release_revision(&self, claim: &RevisionClaim) -> Result<(), DbErr> {
+        let (tx, mut state, _) = self.locked_draft(&claim.scope).await?;
+        let owned = state.input.as_ref() == Some(&claim.input) && state.status == "active";
+        let Some(attempt) = state
+            .attempts
+            .last_mut()
+            .filter(|a| owned && a.id == claim.attempt && a.status == "active")
+        else {
+            return tx.commit().await;
+        };
+        attempt.status = "interrupted".into();
+        state.status = "pending".into();
+        state.dispatch_after = 0;
+        delivery::notify(
+            &tx,
+            &Delivery::reply_revision(claim.scope.clone(), claim.input.key.clone()),
+        )
+        .await?;
         Self::save_draft_row(tx, &claim.scope, &state).await
     }
 
@@ -839,20 +906,8 @@ impl Store {
         })
     }
 
-    pub(super) async fn revision_dispatched(
-        &self,
-        delivery: &Delivery,
-        retry_after: i64,
-    ) -> Result<(), DbErr> {
-        let (tx, mut state, now) = self.locked_draft(&delivery.scope).await?;
-        if state.input.as_ref().map(|i| i.key.as_str()) == Some(delivery.input_id.as_str()) {
-            state.dispatch_after = now + retry_after;
-        }
-        Self::save_draft_row(tx, &delivery.scope, &state).await
-    }
-
-    /// One keyset page of recoverable revision wakeups: accepted revisions
-    /// whose publish never landed and attempts whose lease ran out.
+    /// One keyset page of due revisions: pending ones whose
+    /// `dispatch_after` has passed, and attempts whose lease ran out.
     pub async fn revisions_due(
         &self,
         maximum: usize,
@@ -911,10 +966,9 @@ impl Store {
         let mut deliveries = Vec::new();
         for scope in scopes {
             let (tx, state, now) = self.locked_draft(&scope).await?;
-            if state.dispatch_after <= now
-                && state.session_hash.is_some()
+            if state.session_hash.is_some()
                 && !state.stale()
-                && (state.status == "pending"
+                && ((state.status == "pending" && state.dispatch_after <= now)
                     || (state.status == "active"
                         && state.attempts.last().is_some_and(|a| a.expires <= now)))
                 && let Some(input) = state.input

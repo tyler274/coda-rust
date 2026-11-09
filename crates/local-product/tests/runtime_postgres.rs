@@ -1,4 +1,5 @@
 //! Real Postgres proof. Run explicitly with PHYSICIAN_RUNTIME_TEST_DATABASE_URL.
+use local_product::runtime::delivery::Backoff;
 use local_product::runtime::{
     Accepted, Authority, Input, PhysicianHost, Scope, Store, async_trait, engine,
 };
@@ -695,7 +696,9 @@ async fn exhausted_bounds_end_the_attempt_without_publishing_narration() {
         .count();
     assert_eq!(executed, 3);
     // The worker's retry cannot reopen it; only Try again does.
-    s.retry_delivery(&host.claim).await.unwrap();
+    s.retry_delivery(&host.claim, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     assert_eq!(s.conversation(&scope).await.unwrap().status, "failed");
     assert!(s.claim(&scope, 60).await.unwrap().is_none());
 }

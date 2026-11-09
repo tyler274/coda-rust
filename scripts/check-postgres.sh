@@ -24,12 +24,12 @@ packages=(-p physician-sample -p physician-auth -p front-door -p duet-api
 pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 
 # Shard 1 builds most of the workspace, so shard 2 takes the larger share of
-# test time: four slow physician scale suites and the Pub/Sub emulator suites.
+# test time: four slow physician scale suites and the Gmail Pub/Sub emulator suites.
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments --test steering
   --test runtime_postgres --test runtime_publication --test runtime_recovery
-  --test redis --test fanout --test worker --test recovery --test try_again)
+  --test redis --test fanout --test worker --test try_again)
 shard_2_targets=(--test stop --test chat_draft --test reply_revision
   --test instance_loss --test emulator --test push_wake)
 
@@ -64,16 +64,16 @@ shard_1() {
   pg_test --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
   pg_test --test runtime_publication -- --ignored --test-threads=1
   pg_test --test runtime_recovery -- --ignored --test-threads=1
-  # Physician scale proofs. Valkey and the Pub/Sub emulator come from the nix
-  # dev shell; each test creates its own database on PHYSICIAN_DATABASE_URL.
+  # Physician scale proofs. Valkey comes from the nix dev shell; each test
+  # creates its own database on PHYSICIAN_DATABASE_URL.
   # The bus suite needs Valkey only. The workspace CI job has no Nix shell, so
   # it skips; this job fail-closes when valkey-server is missing.
   pg_test --test redis -- --test-threads=1
   pg_test --test fanout -- --test-threads=1
   pg_test --test worker -- --test-threads=1
-  # A failed publish is republished by the recovery sweep; a dead-lettered turn
-  # shows "couldn't finish" and Try again (work.resume) gets the reply.
-  pg_test --test recovery -- --test-threads=1
+  # The worker hears of accepted work from Postgres and polls for what it did
+  # not hear of; failures wait longer each time. A turn that ran out of
+  # attempts shows "couldn't finish" and Try again (work.resume) gets the reply.
   pg_test --test try_again -- --test-threads=1
 }
 
@@ -91,9 +91,9 @@ shard_2() {
   # their own history table, and a failed revision visible over HTTP.
   # Receipt compaction and the pre-accepted_at upgrade proof run with runtime::tests.
   pg_test --test reply_revision -- --test-threads=1
-  # A site instance that dies before its publish lands: another instance's sweep
-  # finishes the turn. Exhausted worker leases fail the turn, announce it and
-  # dead-letter its wakeup.
+  # A turn accepted with no worker running is finished by a later one. A worker
+  # told to stop hands its turn over at once; a killed worker's turn is taken
+  # when its lease runs out. Exhausted leases fail the turn and announce it.
   pg_test --test instance_loss -- --test-threads=1
   # Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
   # duplicates, redelivery, dead letters, ordering keys and cursor expiry.

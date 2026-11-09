@@ -141,7 +141,7 @@ pub(crate) async fn save(
     }
 }
 
-/// Hosted acceptance only records durable work and its recoverable queue hint.
+/// Hosted acceptance only records durable work; the store wakes the workers.
 /// It never runs a model in the site process.
 pub(crate) async fn accept_durable(
     live: &Arc<Live>,

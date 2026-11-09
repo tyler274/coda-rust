@@ -2306,8 +2306,6 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     let home =
         std::env::temp_dir().join(format!("physician-draft-browser-{}", uuid::Uuid::new_v4()));
     fs::create_dir_all(&home).unwrap();
-    let topic = scale::topic();
-    let publisher = format!("127.0.0.1:{}", scale::free_port());
     let mut sites = Vec::new();
     let mut hosts = Vec::new();
     for name in ["draft-a", "draft-b"] {
@@ -2319,9 +2317,7 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
             &[],
             &[
                 ("PHYSICIAN_DATABASE_URL", &database.url),
-                ("PUBSUB_EMULATOR_HOST", &publisher),
-                ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
-                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                scale::DURABLE,
                 ("PHYSICIAN_AUTH", "required"),
                 ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
                 ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),

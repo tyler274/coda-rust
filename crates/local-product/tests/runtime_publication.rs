@@ -115,6 +115,7 @@ async fn accepted(store: &Store, auth: &PostgresAuthStore) -> Scope {
                 scenario: None,
             },
             PostgresAuthStore::session_reference(&token),
+            None,
         )
         .await
         .unwrap();
@@ -318,6 +319,7 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
                     scenario: None,
                 },
                 PostgresAuthStore::session_reference(&token),
+                None,
             )
             .await
             .unwrap();

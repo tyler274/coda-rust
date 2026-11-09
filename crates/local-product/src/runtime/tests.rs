@@ -3,7 +3,7 @@ mod reply_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 
-use super::delivery::{Delivery, DeliveryState};
+use super::delivery::{Backoff, Delivery, DeliveryState, Retry};
 use super::*;
 
 #[tokio::test]
@@ -300,7 +300,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     let scope = delivery_scope(&practice, "chat");
     let unauthorized = delivery_scope(&practice, "local-only");
     store
-        .accept_authorized(&scope, &delivery_input("first"), vec![7; 32])
+        .accept_authorized(&scope, &delivery_input("first"), vec![7; 32], None)
         .await
         .unwrap();
     // Local (session-less) work never becomes a hosted queue wakeup.
@@ -318,10 +318,6 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     let first = Delivery::chat_turn(scope.clone(), "first".into());
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert_eq!(ours(&page), vec![first.clone()]);
-    // Successful publication suppresses republish until the retry hint passes.
-    store.dispatched(&first, 600).await.unwrap();
-    let page = store.dispatch_due(100, Some(&start)).await.unwrap();
-    assert!(ours(&page).is_empty());
     assert_eq!(
         store.delivery_state(&first).await.unwrap(),
         DeliveryState::Due
@@ -330,7 +326,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     // A newer accepted input supersedes the old wakeup: it can never claim,
     // and acknowledging it is safe because the newer input is recoverable.
     store
-        .accept_authorized(&scope, &delivery_input("second"), vec![7; 32])
+        .accept_authorized(&scope, &delivery_input("second"), vec![7; 32], None)
         .await
         .unwrap();
     assert!(store.claim_delivery(&first, 60).await.unwrap().is_none());
@@ -353,9 +349,12 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         DeliveryState::Claimed
     );
 
-    // A failed run is released for broker redelivery as a successor attempt,
+    // A failed run is due again as a successor attempt,
     // and its history says it failed: a lost lease is "interrupted" instead.
-    store.retry_delivery(&claim).await.unwrap();
+    store
+        .retry_delivery(&claim, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let state = store.conversation(&scope).await.unwrap();
     assert_eq!(state.status, "pending");
     assert_eq!(state.attempts.last().unwrap().status, "failed");
@@ -373,7 +372,10 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
 
     // Intentional Stop settles the delivery and cannot be reopened by retry.
     store.stop(&scope).await.unwrap();
-    store.retry_delivery(&retry).await.unwrap();
+    store
+        .retry_delivery(&retry, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     assert_eq!(store.conversation(&scope).await.unwrap().status, "held");
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
@@ -381,7 +383,6 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     );
     assert!(ours(&store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty());
     assert!(store.dispatch_due(0, None).await.is_err());
-    assert!(store.dispatched(&second, 0).await.is_err());
 }
 
 #[tokio::test]
@@ -405,30 +406,35 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     };
     let scope = delivery_scope(&practice, "chat");
     store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32], None)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     for failure in 1..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .retry_delivery(&claim, Backoff::IMMEDIATE)
+            .await
+            .unwrap();
         let state = store.conversation(&scope).await.unwrap();
         assert_eq!(state.status, "pending", "failure {failure} still retries");
         assert_eq!(state.failures, failure);
     }
     // The last allowed failure ends the work; recovery has given up.
     let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-    store.retry_delivery(&claim).await.unwrap();
+    store
+        .retry_delivery(&claim, Backoff::IMMEDIATE)
+        .await
+        .unwrap();
     let state = store.conversation(&scope).await.unwrap();
     assert_eq!(state.status, "failed");
     assert_eq!(state.failures, MAX_FAILED_ATTEMPTS);
     assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
     assert!(
         ours(store.dispatch_due(100, Some(&start)).await.unwrap()).is_empty(),
-        "the recovery sweep must not republish work that recovery gave up on"
+        "work that recovery gave up on is never due"
     );
-    // Failed is neither settled nor runnable: the worker refuses it so the
-    // broker dead-letters the message instead of acknowledging it.
+    // Failed is neither settled nor runnable: no worker starts it again.
     assert_eq!(
         store.delivery_state(&turn).await.unwrap(),
         DeliveryState::Failed
@@ -462,7 +468,7 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
 
     // New input starts its own budget.
     store
-        .accept_authorized(&scope, &delivery_input("next"), vec![5; 32])
+        .accept_authorized(&scope, &delivery_input("next"), vec![5; 32], None)
         .await
         .unwrap();
     let state = store.conversation(&scope).await.unwrap();
@@ -490,7 +496,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     };
     let scope = delivery_scope(&practice, "chat");
     store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32], None)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(scope.clone(), "turn".into());
@@ -498,14 +504,17 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     let pending = store.conversation(&scope).await.unwrap();
     assert_eq!(
         store
-            .resume_authorized(&scope, "early", vec![6; 32], &pending.work, "none")
+            .resume_authorized(&scope, "early", vec![6; 32], &pending.work, "none", None)
             .await
             .unwrap(),
         Resumed::Refused
     );
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .retry_delivery(&claim, Backoff::IMMEDIATE)
+            .await
+            .unwrap();
     }
     let failed = store.conversation(&scope).await.unwrap();
     assert_eq!(failed.status, "failed");
@@ -526,7 +535,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     ] {
         assert_eq!(
             store
-                .resume_authorized(target, key, vec![6; 32], work_id, run_id)
+                .resume_authorized(target, key, vec![6; 32], work_id, run_id, None)
                 .await
                 .unwrap(),
             Resumed::Refused,
@@ -540,7 +549,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     );
     assert!(
         store
-            .resume_authorized(&scope, "short", vec![6; 4], &work, &run)
+            .resume_authorized(&scope, "short", vec![6; 4], &work, &run, None)
             .await
             .is_err()
     );
@@ -551,7 +560,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     ] {
         assert_eq!(
             store
-                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id)
+                .resume_authorized(&scope, key, vec![6; 32], work_id, run_id, None)
                 .await
                 .unwrap(),
             Resumed::Refused,
@@ -563,7 +572,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     // The named failed run resumes with a fresh budget and the current session.
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Pending {
@@ -581,14 +590,14 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     // The same request is a duplicate; the same key for another target is not.
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &run)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Duplicate
     );
     assert_eq!(
         store
-            .resume_authorized(&scope, "again", vec![6; 32], &work, &earlier)
+            .resume_authorized(&scope, "again", vec![6; 32], &work, &earlier, None)
             .await
             .unwrap(),
         Resumed::Refused
@@ -602,7 +611,14 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     Store::save(tx, &scope, &state).await.unwrap();
     assert_eq!(
         store
-            .resume_authorized(&scope, "after-done", vec![6; 32], &work, &claim.attempt)
+            .resume_authorized(
+                &scope,
+                "after-done",
+                vec![6; 32],
+                &work,
+                &claim.attempt,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Refused
@@ -628,7 +644,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         chat: String::new(),
     };
     store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32], None)
         .await
         .unwrap();
     let claim = store
@@ -755,7 +771,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     let run = held.attempts.last().unwrap().id.clone();
     assert_eq!(
         store
-            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
+            .resume_authorized(&scope, "resume", vec![9; 32], &work, &run, None)
             .await
             .unwrap(),
         Resumed::Pending {
@@ -792,7 +808,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     // answered. Neither stopped run can publish over it, and its Resume is gone.
     assert_eq!(
         store
-            .accept_authorized(&scope, &delivery_input("steered"), vec![4; 32])
+            .accept_authorized(&scope, &delivery_input("steered"), vec![4; 32], None)
             .await
             .unwrap(),
         Accepted::New
@@ -830,7 +846,8 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 "resume-stopped",
                 vec![9; 32],
                 &work,
-                &successor.attempt
+                &successor.attempt,
+                None
             )
             .await
             .unwrap(),
@@ -841,7 +858,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
 
     let quiet = delivery_scope(&practice, "before-claim");
     store
-        .accept_authorized(&quiet, &delivery_input("early"), vec![5; 32])
+        .accept_authorized(&quiet, &delivery_input("early"), vec![5; 32], None)
         .await
         .unwrap();
     let early = store.conversation(&quiet).await.unwrap();
@@ -879,6 +896,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 vec![9; 32],
                 &stopped.work,
                 &first_run,
+                None,
             )
             .await
             .unwrap(),
@@ -911,6 +929,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
                 vec![9; 32],
                 &again.work,
                 &second_run,
+                None,
             )
             .await
             .unwrap(),
@@ -923,13 +942,16 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     // Couldn't finish stays Try again. Stop does not turn it into a hold.
     let failed_scope = delivery_scope(&practice, "failed");
     store
-        .accept_authorized(&failed_scope, &delivery_input("gave-up"), vec![5; 32])
+        .accept_authorized(&failed_scope, &delivery_input("gave-up"), vec![5; 32], None)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(failed_scope.clone(), "gave-up".into());
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .retry_delivery(&claim, Backoff::IMMEDIATE)
+            .await
+            .unwrap();
     }
     let failed = store.conversation(&failed_scope).await.unwrap();
     assert_eq!(failed.status, "failed");
@@ -945,7 +967,14 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     let run = still.attempts.last().unwrap().id.clone();
     assert_eq!(
         store
-            .resume_authorized(&failed_scope, "try-again", vec![9; 32], &still.work, &run,)
+            .resume_authorized(
+                &failed_scope,
+                "try-again",
+                vec![9; 32],
+                &still.work,
+                &run,
+                None,
+            )
             .await
             .unwrap(),
         Resumed::Pending {
@@ -1042,6 +1071,178 @@ fn engine_limits() -> engine::Limits {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
+async fn a_failed_attempt_waits_out_its_backoff_before_it_is_due_again() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let start = Scope {
+        practice: practice.clone(),
+        physician: String::new(),
+        workspace: String::new(),
+        chat: String::new(),
+    };
+    let scope = delivery_scope(&practice, "chat");
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32], None)
+        .await
+        .unwrap();
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
+    let due = |page: delivery::DispatchPage| page.deliveries.contains(&turn);
+
+    // Each failure waits twice as long as the one before it.
+    let mut waits = Vec::new();
+    for _ in 1..MAX_FAILED_ATTEMPTS {
+        let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+        let Retry::After(wait) = store.retry_delivery(&claim, Backoff::HOSTED).await.unwrap()
+        else {
+            panic!("a failure under the bound must retry");
+        };
+        waits.push(wait.as_secs());
+        // Until the delay passes the turn is neither listed nor claimable,
+        // so a wakeup or a poll cannot burn the next attempt early.
+        assert!(!due(store.dispatch_due(100, Some(&start)).await.unwrap()));
+        assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
+        assert!(store.claim(&scope, 60).await.unwrap().is_none());
+        assert_eq!(
+            store.delivery_state(&turn).await.unwrap(),
+            DeliveryState::Due
+        );
+        // Pass the delay at the storage owner instead of sleeping through it.
+        let (tx, mut state, now) = store.locked(&scope).await.unwrap();
+        assert_eq!(state.dispatch_after, now + wait.as_secs() as i64);
+        state.dispatch_after = now;
+        Store::save(tx, &scope, &state).await.unwrap();
+        assert!(due(store.dispatch_due(100, Some(&start)).await.unwrap()));
+    }
+    assert_eq!(waits, [10, 20, 40, 80]);
+    let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    assert_eq!(
+        store.retry_delivery(&claim, Backoff::HOSTED).await.unwrap(),
+        Retry::GaveUp
+    );
+    // A claim that no longer owns the work records nothing.
+    assert_eq!(
+        store.retry_delivery(&claim, Backoff::HOSTED).await.unwrap(),
+        Retry::NotCurrent
+    );
+
+    // Try again and a newer message are due at once, whatever delay the
+    // failures left behind.
+    store.resume(&scope).await.unwrap();
+    assert!(due(store.dispatch_due(100, Some(&start)).await.unwrap()));
+    let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    store.retry_delivery(&claim, Backoff::HOSTED).await.unwrap();
+    store
+        .accept_authorized(&scope, &delivery_input("newer"), vec![9; 32], None)
+        .await
+        .unwrap();
+    let newer = Delivery::chat_turn(scope.clone(), "newer".into());
+    assert!(store.claim_delivery(&newer, 60).await.unwrap().is_some());
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_released_claim_is_due_at_once_and_is_not_a_failure() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = delivery_scope(&practice, "chat");
+    let mut wakeups = store.wakeups().await.unwrap();
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32], None)
+        .await
+        .unwrap();
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
+    assert_eq!(next_for(&mut wakeups, &practice).await, turn);
+
+    let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    store.release(&claim).await.unwrap();
+    // Releasing announces the work, so another worker need not wait to poll.
+    assert_eq!(next_for(&mut wakeups, &practice).await, turn);
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!((state.status.as_str(), state.failures), ("pending", 0));
+    assert_eq!(state.attempts.last().unwrap().status, "interrupted");
+    let successor = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    assert_ne!(successor.attempt, claim.attempt);
+
+    // A release by the claim that lost the work changes nothing.
+    store.release(&claim).await.unwrap();
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.status, "active");
+    assert_eq!(state.attempts.last().unwrap().id, successor.attempt);
+    // Stop is not undone by a stopping worker.
+    store.stop(&scope).await.unwrap();
+    store.release(&successor).await.unwrap();
+    assert_eq!(store.conversation(&scope).await.unwrap().status, "held");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn work_is_announced_only_when_its_transaction_commits_and_keeps_its_origin() {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let practice = uuid::Uuid::new_v4().to_string();
+    let scope = delivery_scope(&practice, "chat");
+    let mut wakeups = store.wakeups().await.unwrap();
+    let origin = delivery::TraceContext {
+        traceparent: "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01".into(),
+        tracestate: Some("vendor=value".into()),
+    };
+    store
+        .accept_authorized(
+            &scope,
+            &delivery_input("turn"),
+            vec![9; 32],
+            Some(origin.clone()),
+        )
+        .await
+        .unwrap();
+    let turn = Delivery::chat_turn(scope.clone(), "turn".into());
+    assert_eq!(next_for(&mut wakeups, &practice).await, turn);
+    // A duplicate accept changes nothing and announces nothing; the next
+    // announcement this practice sees is the newer input's.
+    store
+        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32], None)
+        .await
+        .unwrap();
+    let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
+    assert_eq!(claim.origin, Some(origin));
+
+    // Session-less local work is not hosted work and wakes no worker.
+    let local = delivery_scope(&practice, "local-only");
+    store
+        .accept(&local, &delivery_input("local"))
+        .await
+        .unwrap();
+    store
+        .accept_authorized(&scope, &delivery_input("newer"), vec![9; 32], None)
+        .await
+        .unwrap();
+    let newer = Delivery::chat_turn(scope.clone(), "newer".into());
+    assert_eq!(next_for(&mut wakeups, &practice).await, newer);
+    let claim = store.claim_delivery(&newer, 60).await.unwrap().unwrap();
+    assert_eq!(claim.origin, None, "an origin belongs to its own input");
+}
+
+/// The next announcement for this test's practice; other tests share the channel.
+async fn next_for(wakeups: &mut delivery::Wakeups, practice: &str) -> Delivery {
+    tokio::time::timeout(std::time::Duration::from_secs(10), async {
+        loop {
+            let delivery = wakeups.next().await.unwrap().expect("listener closed");
+            if delivery.scope.practice == practice {
+                return delivery;
+            }
+        }
+    })
+    .await
+    .expect("no announcement arrived")
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
 async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
@@ -1055,17 +1256,15 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     };
     let scope = delivery_scope(&practice, "chat");
     store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32])
+        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32], None)
         .await
         .unwrap();
     let delivery = Delivery::chat_turn(scope.clone(), "turn".into());
     let claim = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
-    store.dispatched(&delivery, 60).await.unwrap();
-    // Expire lease and dispatch hint at the storage owner instead of sleeping
-    // across a floored database-clock second (flaky on busy runners).
+    // Expire the lease at the storage owner instead of sleeping across a
+    // floored database-clock second (flaky on busy runners).
     let (tx, mut state, _) = store.locked(&scope).await.unwrap();
     state.attempts.last_mut().unwrap().expires = 0;
-    state.dispatch_after = 0;
     Store::save(tx, &scope, &state).await.unwrap();
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert!(page.deliveries.contains(&delivery));
@@ -1523,7 +1722,12 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     let hash = vec![9_u8; 32];
     store
-        .accept_authorized(&resume_scope, &input("turn", "turn text"), hash.clone())
+        .accept_authorized(
+            &resume_scope,
+            &input("turn", "turn text"),
+            hash.clone(),
+            None,
+        )
         .await
         .unwrap();
     let claim = store.claim(&resume_scope, 60).await.unwrap().unwrap();
@@ -1533,7 +1737,14 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     let run = failed.attempts.last().unwrap().id.clone();
     assert!(matches!(
         store
-            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash.clone(),
+                &failed.work,
+                &run,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Pending { .. }
@@ -1557,14 +1768,28 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     }
     assert_eq!(
         store
-            .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash.clone(),
+                &failed.work,
+                &run,
+                None
+            )
             .await
             .unwrap(),
         Resumed::Duplicate
     );
     assert_eq!(
         store
-            .resume_authorized(&resume_scope, "resume", hash, &failed.work, "other-run")
+            .resume_authorized(
+                &resume_scope,
+                "resume",
+                hash,
+                &failed.work,
+                "other-run",
+                None
+            )
             .await
             .unwrap(),
         Resumed::Refused
@@ -1584,7 +1809,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32])
+            .accept_revision(&reply_scope, &revise, vec![9; 32], None)
             .await
             .unwrap(),
         reply::RevisionAccepted::New
@@ -1608,7 +1833,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     }
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32])
+            .accept_revision(&reply_scope, &revise, vec![9; 32], None)
             .await
             .unwrap(),
         reply::RevisionAccepted::Duplicate
@@ -1619,7 +1844,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert!(
         store
-            .accept_revision(&reply_scope, &collision, vec![9; 32])
+            .accept_revision(&reply_scope, &collision, vec![9; 32], None)
             .await
             .is_err()
     );

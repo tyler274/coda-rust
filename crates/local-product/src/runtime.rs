@@ -28,7 +28,7 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
-/// Queue delivery recovery uses the conversation owner, not a parallel ledger.
+/// Hosted work is found, leased and retried on the rows that own it.
 pub mod delivery;
 mod entities;
 /// Command receipts and their 90-day reduction to a salted digest.
@@ -44,7 +44,7 @@ mod tests;
 use entities::{command, conversation};
 
 /// Authenticated product scope, supplied by the server, never the command body.
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub struct Scope {
     /// Practice tenant.
     pub practice: String,
@@ -120,10 +120,13 @@ pub struct Conversation {
     /// Latest accepted command identity; saved atomically with authored input.
     #[serde(default)]
     pub input_id: Option<String>,
-    /// Database-clock time before which recovery need not republish a wakeup.
-    /// This is a delivery hint, never proof of execution or completion.
+    /// Database-clock time before which pending work is not due: the retry
+    /// delay after a failed attempt. Never proof of execution or completion.
     #[serde(default)]
     pub dispatch_after: i64,
+    /// Trace context of the request that last made this input runnable.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub origin: Option<delivery::TraceContext>,
     /// Unsuccessful attempts on the current input, including expired leases.
     /// New input and Resume reset it; at [`MAX_FAILED_ATTEMPTS`] the work fails.
     #[serde(default)]
@@ -158,7 +161,6 @@ pub const MAX_LISTED_CHATS: u64 = 200;
 
 /// Recovery gives up after this many unsuccessful attempts on one input, so a
 /// turn that always fails ends as failed instead of calling the model forever.
-/// It matches the chat-turn subscription's `max_delivery_attempts`.
 pub const MAX_FAILED_ATTEMPTS: u32 = 5;
 
 impl Default for Conversation {
@@ -172,6 +174,7 @@ impl Default for Conversation {
             session_hash: None,
             input_id: None,
             dispatch_after: 0,
+            origin: None,
             failures: 0,
             opened_at: 0,
             last_activity_at: 0,
@@ -189,6 +192,8 @@ pub struct Claim {
     pub attempt: String,
     /// Input generation.
     pub revision: u64,
+    /// Trace context of the request that made this input runnable.
+    pub origin: Option<delivery::TraceContext>,
 }
 
 /// Durable accepted command outcome.
@@ -203,12 +208,12 @@ pub enum Accepted {
 /// Outcome of a physician's Try again on failed or held work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Resumed {
-    /// The work is pending again; publish a wakeup for this input identity.
+    /// The work is pending again and workers were told.
     Pending {
-        /// Latest accepted input, the queue delivery's fence.
+        /// Latest accepted input, the delivery's fence.
         input_id: String,
     },
-    /// The exact same Try again was already taken; do not publish again.
+    /// The exact same Try again was already taken; nothing changed.
     Duplicate,
     /// The named work or run is not the current failed or held work, or a
     /// command field is blank.
@@ -218,8 +223,7 @@ pub enum Resumed {
 /// Outcome of a physician's Stop on the current chat work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Stopped {
-    /// The conversation is held until Resume or newer input. Do not publish a
-    /// wakeup.
+    /// The conversation is held until Resume or newer input.
     Held,
     /// The exact same Stop was already taken, or the named work is already
     /// held.
@@ -383,20 +387,24 @@ impl Store {
 
     /// Atomically saves the command receipt and input. Colliding payloads fail.
     pub async fn accept(&self, scope: &Scope, input: &Input) -> Result<Accepted, DbErr> {
-        self.accept_inner(scope, input, None).await
+        self.accept_inner(scope, input, None, None).await
     }
 
-    /// Accepts hosted input with its original session reference for restart authorization.
+    /// Accepts hosted input with its original session reference for restart
+    /// authorization, and tells listening workers in the same transaction.
+    /// `origin` is the accepting request's trace context.
     pub async fn accept_authorized(
         &self,
         scope: &Scope,
         input: &Input,
         session_hash: Vec<u8>,
+        origin: Option<delivery::TraceContext>,
     ) -> Result<Accepted, DbErr> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference"));
         }
-        self.accept_inner(scope, input, Some(session_hash)).await
+        self.accept_inner(scope, input, Some(session_hash), origin)
+            .await
     }
 
     async fn accept_inner(
@@ -404,6 +412,7 @@ impl Store {
         scope: &Scope,
         input: &Input,
         session_hash: Option<Vec<u8>>,
+        origin: Option<delivery::TraceContext>,
     ) -> Result<Accepted, DbErr> {
         if [
             &input.key,
@@ -450,10 +459,16 @@ impl Store {
             attempt.status = "interrupted".into();
         }
         state.revision += 1;
+        // Only hosted work is run by workers; local work is claimed in process.
+        if session_hash.is_some() {
+            let delivery = delivery::Delivery::chat_turn(scope.clone(), input.key.clone());
+            delivery::notify(&tx, &delivery).await?;
+        }
         state.session_hash = session_hash;
         state.input_id = Some(input.key.clone());
         state.scenario = input.scenario.clone();
         state.dispatch_after = 0;
+        state.origin = origin;
         state.failures = 0;
         let now = now(&tx).await?;
         if state.messages.is_empty() {
@@ -510,7 +525,8 @@ impl Store {
                 return Ok(None);
             }
         }
-        if state.status != "pending" {
+        // Failed work waits out its retry delay.
+        if state.status != "pending" || state.dispatch_after > now {
             tx.commit().await?;
             return Ok(None);
         }
@@ -533,6 +549,7 @@ impl Store {
             scope: scope.clone(),
             attempt: id,
             revision: state.revision,
+            origin: state.origin.clone(),
         };
         Self::save(tx, scope, &state).await?;
         Ok(Some(claim))
@@ -702,6 +719,7 @@ impl Store {
         if state.status == "held" || state.status == "failed" {
             state.status = "pending".into();
             state.failures = 0;
+            state.dispatch_after = 0;
         }
         Self::save(tx, scope, &state).await
     }
@@ -712,7 +730,9 @@ impl Store {
     /// is refused. The receipt is saved with the change: the same `key` and
     /// target answers `Duplicate`.
     /// The accepted session moves to the physician's current session, because
-    /// the original one may have ended while the work sat failed.
+    /// the original one may have ended while the work sat failed. Listening
+    /// workers are told in the same transaction, and `origin`, this request's
+    /// trace context, replaces the accepting request's.
     pub async fn resume_authorized(
         &self,
         scope: &Scope,
@@ -720,6 +740,7 @@ impl Store {
         session_hash: Vec<u8>,
         work_item_id: &str,
         expected_run_id: &str,
+        origin: Option<delivery::TraceContext>,
     ) -> Result<Resumed, DbErr> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference"));
@@ -776,7 +797,13 @@ impl Store {
         state.status = "pending".into();
         state.failures = 0;
         state.dispatch_after = 0;
+        state.origin = origin;
         state.session_hash = Some(session_hash);
+        delivery::notify(
+            &tx,
+            &delivery::Delivery::chat_turn(scope.clone(), input_id.clone()),
+        )
+        .await?;
         Self::save(tx, scope, &state).await?;
         Ok(Resumed::Pending { input_id })
     }
@@ -790,7 +817,7 @@ impl Store {
     /// already held. A different command under that key is refused.
     /// Completed work, a failed turn, a different work identity, a blank
     /// field, and a scope with no conversation are refused. Only a new hold
-    /// keeps its receipt. No wakeup is published.
+    /// keeps its receipt. Workers are not told: a held turn has nothing to run.
     pub async fn stop_authorized(
         &self,
         scope: &Scope,

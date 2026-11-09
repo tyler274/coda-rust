@@ -1,4 +1,4 @@
-//! Hosted reply revisions through two sites, a worker, and the Pub/Sub emulator.
+//! Hosted reply revisions through two sites and a worker on one Postgres.
 //! Only initial reply admission is seeded through the backend owner. Reads,
 //! physician saves and revision commands use the real authenticated HTTP paths.
 //! No model key, patient send, frontend draft creation, or staging is involved.
@@ -54,12 +54,10 @@ fn references(request: &Request) -> Value {
 struct Running {
     database: support::Database,
     store: Store,
-    emulator: support::Emulator,
     valkey: support::Valkey,
     worker: support::Process,
     sites: Vec<support::Process>,
     hosts: [String; 2],
-    worker_host: String,
     session: String,
     home: PathBuf,
 }
@@ -111,24 +109,21 @@ impl Running {
         let valkey = support::Valkey::start().await;
         let redis = valkey.url();
         let worker_port = support::free_port();
-        let emulator = support::Emulator::start().await;
-        emulator.provision(worker_port).await;
         let worker_host = format!("127.0.0.1:{worker_port}");
         let failures = failures.to_string();
         let delay = delay_ms.to_string();
         let mut env = vec![
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", &redis),
-            ("PUBSUB_EMULATOR_HOST", &emulator.host),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", &worker_host),
             ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
             ("PHYSICIAN_WORKER_FIXED_FAILURES", &failures),
             ("PHYSICIAN_WORKER_FIXED_DELAY_MS", &delay),
+            support::RETRY_NOW,
         ];
         env.extend_from_slice(worker_env);
         let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
         support::wait_ready(&mut worker, worker_port).await;
-        let topic = support::topic();
         let mut sites = Vec::new();
         let mut hosts = [String::new(), String::new()];
         for (index, host) in hosts.iter_mut().enumerate() {
@@ -148,9 +143,7 @@ impl Running {
                 ("PHYSICIAN_SYNTHETIC_REPLY", switch),
                 ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
                 ("PHYSICIAN_REDIS_URL", &redis),
-                ("PUBSUB_EMULATOR_HOST", &emulator.host),
-                ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                support::DURABLE,
                 ("CODA_PHYSICIAN_SOURCE_SNAPSHOT", snapshot.to_str().unwrap()),
                 ("PHYSICIAN_AUTH", "required"),
                 ("PHYSICIAN_LISTEN_ADDR", host),
@@ -171,12 +164,10 @@ impl Running {
         Some(Self {
             database,
             store,
-            emulator,
             valkey,
             worker,
             sites,
             hosts,
-            worker_host,
             session,
             home,
         })
@@ -184,11 +175,10 @@ impl Running {
 
     fn logs(&self) -> String {
         format!(
-            "{}\n{}\n{}\n{}",
+            "{}\n{}\n{}",
             self.sites[0].tail(),
             self.sites[1].tail(),
-            self.worker.tail(),
-            self.emulator.tail()
+            self.worker.tail()
         )
     }
 
@@ -212,6 +202,27 @@ impl Running {
             assert_eq!(status, 200, "{body}\n{}", self.logs());
             assert_eq!(body["outcome"], outcome, "{body}\n{}", self.logs());
         }
+    }
+
+    /// Tells the worker about `delivery` again and gives it time to act.
+    async fn announce_again(&self, delivery: &Delivery) {
+        use sea_orm::ConnectionTrait;
+        let connection = sea_orm::Database::connect(&self.database.url)
+            .await
+            .expect("connection");
+        connection
+            .execute_raw(sea_orm::Statement::from_sql_and_values(
+                sea_orm::DatabaseBackend::Postgres,
+                "SELECT pg_notify($1, $2)",
+                [
+                    local_product::runtime::delivery::WORK_CHANNEL.into(),
+                    serde_json::to_string(delivery).expect("delivery").into(),
+                ],
+            ))
+            .await
+            .expect("notify");
+        connection.close().await.expect("close");
+        tokio::time::sleep(Duration::from_secs(1)).await;
     }
 
     async fn wait_draft(&self, scope: &Scope, done: impl Fn(&Draft) -> bool) -> Draft {
@@ -372,7 +383,7 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     assert_eq!(complete.text, support::FIXED_TEXT);
     assert_eq!(complete.restore_text.as_deref(), Some(ORIGINAL));
     let requests = dispatches(&complete);
-    assert_eq!(requests.len(), 2, "one provider call on each delivery");
+    assert_eq!(requests.len(), 2, "one provider call on each attempt");
     let Item::Message { text, .. } = &requests[0].items[0] else {
         panic!("revision context must be a message")
     };
@@ -391,22 +402,12 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     assert_eq!(read["text"], support::FIXED_TEXT);
     assert_eq!(read["restore_text"], ORIGINAL);
 
-    // Completion does not invalidate the receipt; neither duplicate command
-    // nor duplicate Pub/Sub wakeup may create another attempt or draft revision.
+    // Completion does not invalidate the receipt; neither a duplicate
+    // command nor hearing of the settled revision again may create another
+    // attempt or draft revision.
     running.command(1, &command, "accepted").await;
     let delivery = Delivery::reply_revision(scope.clone(), key);
-    running.emulator.publish(&delivery).await;
-    let push = support::push_body(&delivery, "revision-duplicate");
-    let (status, body) = support::exchange(
-        &running.worker_host,
-        "POST",
-        "/pubsub/chat-turn",
-        &[("content-type", "application/json")],
-        Some(&push),
-    )
-    .await
-    .unwrap();
-    assert_eq!(status, 204, "{body}\n{}", running.logs());
+    running.announce_again(&delivery).await;
     let unchanged = running.store.draft(&scope).await.unwrap().unwrap();
     assert_eq!(unchanged.attempts.len(), 2);
     assert_eq!(unchanged.revision, 2);
@@ -605,17 +606,9 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
             .all(|attempt| attempt.status != "completed")
     );
     let delivery = Delivery::reply_revision(scope.clone(), "revision-before-save".into());
-    let push = support::push_body(&delivery, "superseded-revision");
-    let (status, body) = support::exchange(
-        &running.worker_host,
-        "POST",
-        "/pubsub/chat-turn",
-        &[("content-type", "application/json")],
-        Some(&push),
-    )
-    .await
-    .unwrap();
-    assert_eq!(status, 204, "{body}");
+    running.announce_again(&delivery).await;
+    let settled = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(settled.attempts.len(), late.attempts.len());
     for site in 0..2 {
         let (status, read) = running.read(site, &scope).await;
         assert_eq!(status, 200, "{read}");
@@ -1219,7 +1212,7 @@ fn open_workspace(browser: &mut devtools::Browser, host: &str) {
 }
 
 /// The real hosted browser journey for the synthetic reply: two site
-/// instances, the worker and the Pub/Sub emulator; nothing seeds the draft.
+/// instances and the worker; nothing seeds the draft.
 /// The page shows revision 1, asks from the displayed revision, shows pending
 /// and then the worker's wording on both sites; a stale revision is refused
 /// and the current draft shown; a failed revision says so and keeps the

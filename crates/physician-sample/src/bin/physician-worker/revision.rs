@@ -1,8 +1,7 @@
 //! Fenced reply-revision execution. The draft row owns all evidence and text;
 //! no chat row, effect tool, or projection is an authority for this work.
-use super::attempt::{self, Claimed, Failure, Outcome, Push, Tally};
-use super::{ModelSource, Worker, absent_claim, announce, marked_attempt_fails};
-use axum::http::StatusCode;
+use super::attempt::{self, Claimed, Failure, Next, Outcome, Tally};
+use super::{ModelSource, Pace, Worker, absent_claim, announce, marked_attempt_fails, pull};
 use harness::execution::{
     self, Call, Cancellation, Finish, Item, Limits, Owner, Progress, Provider, Record, Request,
     Response, StreamEvent, Usage,
@@ -10,7 +9,7 @@ use harness::execution::{
 use harness::provider::ResponsesProvider;
 use local_product::physician_sources::{self, SOURCES_CHANGED, SOURCES_UNREAD, SourceRevision};
 use local_product::runtime::Store;
-use local_product::runtime::delivery::Delivery;
+use local_product::runtime::delivery::{Delivery, DeliveryKind};
 use local_product::runtime::reply::{
     FINISH_TOOL, RevisionAttempt, RevisionClaim, RevisionCommit, revised_text,
 };
@@ -19,6 +18,7 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 use std::time::Duration;
 use telemetry::genai::{self, RunContext};
+use tokio::sync::watch;
 use tracing::Instrument;
 
 const DEADLINE: Duration = Duration::from_secs(480);
@@ -26,30 +26,64 @@ const READ_TOOL: &str = "read_patient_sources";
 
 const JOB: &str = "physician_reply_revision";
 
-/// Handles one revision delivery inside its own `physician.worker.attempt`.
-pub(super) async fn deliver(worker: &Worker, push: &Push) -> StatusCode {
-    let span = attempt::span(push, JOB);
-    handle(worker, &push.delivery, &span)
-        .instrument(span.clone())
-        .await
-}
-
-async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
+/// Claims and runs the revision `delivery` names, if it is this worker's
+/// to run, inside its own `physician.worker.attempt`.
+pub(super) async fn deliver(
+    worker: &Worker,
+    delivery: &Delivery,
+    stop: watch::Receiver<bool>,
+) -> Next {
     let claim = match worker
         .store
-        .claim_revision(delivery, super::LEASE_SECONDS)
+        .claim_revision(delivery, worker.pace.lease)
         .await
     {
         Ok(Some(claim)) => claim,
         Ok(None) => {
-            attempt::finish(span, JOB, None, Outcome::Absent, None);
-            return absent_claim(worker, delivery).await;
+            absent_claim(worker, delivery).await;
+            return Next::Done;
         }
         Err(_) => {
-            attempt::finish(span, JOB, None, Outcome::ClaimError, Some(Failure::Claim));
-            return StatusCode::INTERNAL_SERVER_ERROR;
+            let span = attempt::span(DeliveryKind::ReplyRevision, JOB, None);
+            attempt::finish(&span, JOB, None, Outcome::ClaimError, Some(Failure::Claim));
+            return Next::Done;
         }
     };
+    let span = attempt::span(DeliveryKind::ReplyRevision, JOB, claim.origin.as_ref());
+    handle(worker, claim, &span, stop)
+        .instrument(span.clone())
+        .await
+}
+
+/// Renews the revision claim's lease while its attempt runs. A refused
+/// renewal is tried again on the next beat; the owner's own currentness
+/// check stops an attempt whose claim was lost.
+fn keep_lease(store: Store, claim: RevisionClaim, pace: Pace) -> tokio::task::JoinHandle<()> {
+    tokio::spawn(async move {
+        let mut beats = tokio::time::interval(pace.heartbeat());
+        beats.tick().await;
+        loop {
+            beats.tick().await;
+            if store.heartbeat_revision(&claim, pace.lease).await.is_err() {
+                tracing::debug!("physician worker revision lease not renewed");
+            }
+        }
+    })
+}
+
+/// What ended a revision attempt before its model run did.
+enum Ended {
+    Failed(Failure),
+    /// The worker is stopping.
+    Stopping,
+}
+
+async fn handle(
+    worker: &Worker,
+    claim: RevisionClaim,
+    span: &tracing::Span,
+    stop: watch::Receiver<bool>,
+) -> Next {
     // The revision's scope chat names its reply work; it has no recorded
     // predecessor attempt, so none is reported.
     attempt::record_claim(
@@ -87,6 +121,7 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
         claim,
         usage: Tally::default(),
     };
+    let lease = keep_lease(worker.store.clone(), owner.claim.clone(), worker.pace);
     let cancel = Cancellation::default();
     let attempt = async {
         // Fail closed: an unreadable draft must not reset the call budget.
@@ -112,14 +147,18 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
         .await
         .map_err(|_| Failure::Revision)
     };
-    let result = tokio::time::timeout(DEADLINE, attempt.instrument(generation.clone()))
-        .await
-        .unwrap_or(Err(Failure::Timeout));
+    let result = tokio::select! {
+        result = tokio::time::timeout(DEADLINE, attempt.instrument(generation.clone())) => result
+            .unwrap_or(Err(Failure::Timeout))
+            .map_err(Ended::Failed),
+        () = pull::stopping(stop) => Err(Ended::Stopping),
+    };
+    lease.abort();
     if let Some((input, output)) = owner.usage.known() {
         genai::record_usage(&generation, input, output);
     }
     let run_id = owner.claim.attempt.clone();
-    let status = match result {
+    let next = match result {
         Ok(response) => {
             // Completion has already atomically compared its retained exchange
             // and committed under the real session's publication locks.
@@ -127,22 +166,32 @@ async fn handle(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> S
                 genai::record_output(&generation, text);
             }
             attempt::finish(span, JOB, Some(&run_id), Outcome::Committed, None);
-            StatusCode::NO_CONTENT
+            Next::Done
         }
-        Err(failure) => {
+        Err(Ended::Stopping) => {
+            // This worker is stopping: another one runs the revision at once.
+            cancel.cancel();
+            genai::record_error(&generation, "physician worker stopping");
+            if worker.store.release_revision(&owner.claim).await.is_err() {
+                tracing::warn!("physician worker claim not handed back; its lease will run out");
+            }
+            attempt::finish(span, JOB, Some(&run_id), Outcome::Released, None);
+            return Next::Done;
+        }
+        Err(Ended::Failed(failure)) => {
             cancel.cancel();
             genai::record_error(&generation, "physician reply revision failed");
-            if worker.store.retry_revision(&owner.claim).await.is_err() {
-                attempt::retry_not_persisted(span, JOB, &run_id);
-            }
-            attempt::finish(span, JOB, Some(&run_id), Outcome::Retry, Some(failure));
-            // Even the final failed attempt refuses acknowledgement: Pub/Sub
-            // must continue counting this delivery toward its dead-letter topic.
-            StatusCode::INTERNAL_SERVER_ERROR
+            let saved = worker
+                .store
+                .retry_revision(&owner.claim, worker.pace.backoff)
+                .await;
+            let (outcome, next) = attempt::retried(span, JOB, &run_id, saved);
+            attempt::finish(span, JOB, Some(&run_id), outcome, Some(failure));
+            next
         }
     };
     announce(worker, owner.claim.scope.workspace.clone()).await;
-    status
+    next
 }
 
 /// Usage the accepted revision's earlier attempts already spent, so
@@ -428,6 +477,7 @@ mod tests {
             sources: vec![],
             sources_version: 0,
             earlier_attempts: 0,
+            origin: None,
         }
     }
 
@@ -477,7 +527,6 @@ mod tests {
                 .unwrap()
                 .contains("never-in-request")
         );
-        assert!(DEADLINE.as_secs() < super::super::LEASE_SECONDS as u64);
     }
 
     #[test]

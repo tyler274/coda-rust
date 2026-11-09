@@ -56,11 +56,8 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     let worker_port = support::free_port();
     let site_a_port = support::free_port();
     let site_b_port = support::free_port();
-    let emulator = support::Emulator::start().await;
-    emulator.provision(worker_port).await;
 
     let redis = valkey.url();
-    let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_a_listen = format!("127.0.0.1:{site_a_port}");
     let site_b_listen = format!("127.0.0.1:{site_b_port}");
@@ -71,7 +68,6 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
         &[
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
-            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
             ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
         ],
@@ -82,9 +78,7 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     let site_env = [
         ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
         ("PHYSICIAN_REDIS_URL", redis.as_str()),
-        ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
-        ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
-        ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+        support::DURABLE,
         ("PHYSICIAN_AUTH", "required"),
     ];
     let mut site_a = support::Process::spawn(
@@ -96,8 +90,6 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
             site_env[1],
             site_env[2],
             site_env[3],
-            site_env[4],
-            site_env[5],
             ("PHYSICIAN_LISTEN_ADDR", site_a_listen.as_str()),
         ],
         &home.0,
@@ -112,8 +104,6 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
             site_env[1],
             site_env[2],
             site_env[3],
-            site_env[4],
-            site_env[5],
             ("PHYSICIAN_LISTEN_ADDR", site_b_listen.as_str()),
         ],
         &home.0,
