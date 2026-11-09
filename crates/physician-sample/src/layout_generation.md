@@ -42,7 +42,8 @@ Rules:
      high"): a reference range's `low` and `high` values.
    - `reference_range_text` ("Reference range"): a reference range as its source wrote it.
    - `interpretation` ("Interpretation"): the record's own interpretation of its result.
-   - `status`: the record's `status` or one of its `…Status` elements.
+   - `status`: the record's `status` or one of its `…Status` elements; in a repeated section,
+     the element's own, such as a result's `result_status`.
    - `date`: a FHIR date or dateTime.
    - `code`: a code or its coded display.
    - `note`: a note attached to the record.

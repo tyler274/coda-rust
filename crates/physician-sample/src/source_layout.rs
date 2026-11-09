@@ -887,6 +887,9 @@ struct Found<'r> {
     path: SourcePath,
     /// The member names along that path, without array indexes.
     members: Vec<String>,
+    /// How many of `members` lead to the slot's scope: none for a slot read from the record
+    /// root, and the repeated array's for a slot read from one of its elements.
+    scope: usize,
     /// The object or array holding it.
     parent: &'r Value,
     value: &'r Value,
@@ -900,6 +903,7 @@ fn follow<'r>(
     mut path: SourcePath,
     mut members: Vec<String>,
 ) -> Option<Found<'r>> {
+    let scope = members.len();
     let mut value = start;
     let mut parent = start;
     for token in tokens {
@@ -923,6 +927,7 @@ fn follow<'r>(
     Some(Found {
         path,
         members,
+        scope,
         parent,
         value,
     })
@@ -944,12 +949,10 @@ fn place<'r>(
     if matches!(found.members.as_slice(), [first, _, ..] if first == "text") {
         return Err(LayoutRefusal::IntoNarrative { pointer: pointer() });
     }
-    fits(slot.role, &found.members, found.parent, found.value).map_err(|reason| {
-        LayoutRefusal::RoleMismatch {
-            pointer: pointer(),
-            role: slot.role,
-            reason,
-        }
+    fits(slot.role, &found).map_err(|reason| LayoutRefusal::RoleMismatch {
+        pointer: pointer(),
+        role: slot.role,
+        reason,
     })?;
     // Two spellings of one pointer bind the same value, so duplicates compare by path.
     if !bound.insert(found.path.clone()) {
@@ -962,14 +965,18 @@ fn place<'r>(
     })
 }
 
-/// Whether a value can play `role`, given the member names along its path (`members`, without
-/// array indexes), the object or array holding it, and the value itself.
-fn fits(
-    role: SlotRole,
-    members: &[String],
-    parent: &Value,
-    value: &Value,
-) -> Result<(), RoleMismatchReason> {
+/// Whether the value `found` names can play `role`. Every role is judged by the value's whole
+/// path from the record root, so a repeated section over a reference range still cannot bind a
+/// limit as a result, except a status: it is the first member below the slot's scope, so it is
+/// the record's own status or one repeated element's own.
+fn fits(role: SlotRole, found: &Found) -> Result<(), RoleMismatchReason> {
+    let Found {
+        members,
+        scope,
+        parent,
+        value,
+        ..
+    } = found;
     let has = |name: &str| members.iter().any(|member| member == name);
     // The member right after `referenceRange`: `low`, `high` or `text`.
     let range_part = members
@@ -1012,7 +1019,7 @@ fn fits(
         }
         SlotRole::Status => holds(
             members
-                .first()
+                .get(*scope)
                 .is_some_and(|first| first.ends_with("status") || first.ends_with("Status")),
             RoleMismatchReason::NotAStatus,
         ),
@@ -2319,6 +2326,77 @@ mod tests {
             "sections":[{"heading":"result","repeat":"/results","slots":[
                 {"role":"code","pointer":"/test_name"},
                 {"role":"result","pointer":"/value"}]}]}))
+    }
+
+    /// Each result in a repeated section reads with its own status, so a preliminary result in a
+    /// final report reads as preliminary where it stands. The header keeps only the record's own.
+    #[test]
+    fn each_repeated_result_reads_with_its_own_status() {
+        let cited = vendor_lab();
+        let record: Value = serde_json::from_str(&cited.content).unwrap();
+        let mut per_result = vendor_lab_layout("LabResult");
+        per_result.sections[0].slots.push(Slot {
+            role: SlotRole::Status,
+            pointer: "/result_status".into(),
+        });
+        let view = inspection_with_layout(&cited, Some(&per_result));
+        let statuses: Vec<_> = view
+            .layout_sections
+            .iter()
+            .map(|section| section.fields.last().unwrap())
+            .collect();
+        assert_eq!(
+            statuses,
+            [
+                &located(
+                    "Results 1 result status",
+                    "final",
+                    "results[0].result_status"
+                ),
+                &located(
+                    "Results 2 result status",
+                    "final",
+                    "results[1].result_status"
+                ),
+                &located(
+                    "Results 3 result status",
+                    "preliminary",
+                    "results[2].result_status"
+                ),
+            ]
+        );
+        assert_eq!(view.statuses, inspection(&cited).statuses);
+        assert_view_shows_every_leaf(&cited, &view);
+
+        // An element's status is not the record's: the header still refuses it, and so does an
+        // ordinary section, whose scope is the record.
+        let mut in_header = vendor_lab_layout("LabResult");
+        in_header.statuses.push(Slot {
+            role: SlotRole::Status,
+            pointer: "/results/2/result_status".into(),
+        });
+        let mut in_section = vendor_lab_layout("LabResult");
+        in_section.sections.push(Section {
+            heading: Heading::Fixed(FixedHeading::Result),
+            repeat: None,
+            slots: vec![Slot {
+                role: SlotRole::Status,
+                pointer: "/results/2/result_status".into(),
+            }],
+        });
+        for refused in [in_header, in_section] {
+            assert!(matches!(
+                refused
+                    .validate("LabResult", &record)
+                    .map(|_| ())
+                    .unwrap_err()
+                    .cause,
+                LayoutRefusal::RoleMismatch {
+                    reason: RoleMismatchReason::NotAStatus,
+                    ..
+                }
+            ));
+        }
     }
 
     /// A record that is not FHIR is checked against the record type its source adapter gave it,
