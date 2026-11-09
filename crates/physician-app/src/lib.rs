@@ -2100,7 +2100,7 @@ fn PhysicianShell(
                                     },
                                 );
                             },
-                            work_busy: work_slot.sending() || resume_slot.sending(),
+                            work_busy: work_slot.unanswered() || resume_slot.unanswered(),
                             work_notice: work_slot.notice(client),
                             resume_notice: resume_slot.notice(client),
                             on_resume: {
@@ -2133,7 +2133,7 @@ fn PhysicianShell(
                             },
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
-                            conversation_resume_busy: chat_resume_slot.sending(),
+                            conversation_resume_busy: chat_resume_slot.unanswered(),
                             conversation_resume_notice: chat_resume_slot.notice(client),
                             on_conversation_resume: move |target: WorkResumeTarget| {
                                 if let Some(command) =
@@ -2144,7 +2144,7 @@ fn PhysicianShell(
                                     });
                                 }
                             },
-                            conversation_stop_busy: chat_stop_slot.sending(),
+                            conversation_stop_busy: chat_stop_slot.unanswered(),
                             conversation_stop_notice: chat_stop_slot.notice(client),
                             on_conversation_stop: move |target: WorkStopTarget| {
                                 if let Some(command) =
@@ -2197,7 +2197,7 @@ fn PhysicianShell(
                             conversation_open: open_chat.read().is_some(),
                             past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
                             reply_notice: reply_notice(),
-                            reply_busy: reply_slot.sending(),
+                            reply_busy: reply_slot.unanswered(),
                             reply_command_notice: reply_slot.notice(client),
                             send_notice: send_slot.notice(client),
                             on_open_past_work: move |_| past_work_open.set(true),
@@ -2303,6 +2303,8 @@ const COMMAND_SENDING: &str = "Sending…";
 const COMMAND_CONFIRMING: &str = "Confirming with Coda…";
 const COMMAND_UNCONFIRMED: &str = "Coda couldn’t confirm that.";
 const CHECK_AGAIN: &str = "Check again";
+const COMMAND_UNKEPT: &str =
+    "This tab can’t keep a reload copy of that. Keep the page open until Coda confirms it.";
 const MESSAGE_REFUSED: &str = "Coda couldn’t accept that message.";
 
 fn command_rejection(value: &serde_json::Value) -> Option<String> {
@@ -2411,6 +2413,9 @@ struct CommandSlot {
     /// slot's name and the signed-in physician's scope. `None` for a slot
     /// whose command another owner keeps (Send's lives with its draft).
     kept: Option<(&'static str, Memo<Option<local_draft::Scope>>)>,
+    /// The unanswered command could not be kept for a reload, so a reload
+    /// would lose it; the notice says so until it is answered.
+    unkept: Signal<bool>,
 }
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
@@ -2437,6 +2442,7 @@ fn use_command_slot(name: &'static str, scope: Memo<Option<local_draft::Scope>>)
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
         kept: Some((name, scope)),
+        unkept: use_signal(|| false),
     }
 }
 
@@ -2446,6 +2452,7 @@ fn use_unkept_command_slot() -> CommandSlot {
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
         kept: None,
+        unkept: use_signal(|| false),
     }
 }
 
@@ -2468,25 +2475,30 @@ impl CommandSlot {
     }
 
     /// Keeps `command` for a reload of this tab, or forgets it when `None`.
-    /// Without storage or a known physician nothing is kept, and the command
-    /// is still confirmed while the page stays open.
-    fn keep(&self, command: Option<&Command>) {
+    /// Without storage or a known physician nothing is kept: the command is
+    /// still confirmed while the page stays open, and the notice says a reload
+    /// would lose it.
+    fn keep(mut self, command: Option<&Command>) {
         #[cfg(target_arch = "wasm32")]
-        if let Some((name, scope)) = self.kept
-            && let Some(scope) = scope.peek().as_ref()
-            && let Some(storage) = local_draft::SessionStorage::open()
-        {
-            // A failed write only loses reload recovery; the page still
-            // confirms the command while it stays open.
-            let _ = local_draft::write_command(
-                &storage,
-                scope,
-                name,
-                command.map(|command| &command.0),
-            );
+        if let Some((name, scope)) = self.kept {
+            let kept = scope.peek().as_ref().is_some_and(|scope| {
+                local_draft::SessionStorage::open().is_some_and(|storage| {
+                    local_draft::write_command(
+                        &storage,
+                        scope,
+                        name,
+                        command.map(|command| &command.0),
+                    )
+                    .is_ok()
+                })
+            });
+            let unkept = command.is_some() && !kept;
+            if *self.unkept.peek() != unkept {
+                self.unkept.set(unkept);
+            }
         }
         #[cfg(not(target_arch = "wasm32"))]
-        let _ = command;
+        let _ = (command, &mut self.unkept);
     }
 
     /// Asks again, under its own key, the command a reload interrupted.
@@ -2537,6 +2549,18 @@ impl CommandSlot {
         ) {
             return;
         }
+        // A slot that keeps its command holds the unconfirmed one until it is
+        // answered: a new command would take its place and its reload copy, so
+        // it could never be confirmed. Send keeps each target's own.
+        let replaces_unconfirmed = *self.stage.peek() == CommandStage::Unconfirmed
+            && self
+                .last
+                .peek()
+                .as_ref()
+                .is_some_and(|(last, ..)| last.key() != command.key());
+        if self.kept.is_some() && replaces_unconfirmed {
+            return;
+        }
         self.last.set(Some((command.clone(), then, refused)));
         self.keep(Some(&command));
         self.stage.set(CommandStage::Sending);
@@ -2577,7 +2601,7 @@ impl CommandSlot {
     ) {
         match command {
             Ok(command) => self.run(client, command, then),
-            Err(reason) if !self.sending() => self.stage.set(CommandStage::Refused(reason)),
+            Err(reason) if !self.unanswered() => self.stage.set(CommandStage::Refused(reason)),
             Err(_) => {}
         }
     }
@@ -2601,6 +2625,9 @@ impl CommandSlot {
                 unconfirmed: COMMAND_UNCONFIRMED,
                 check_again: CHECK_AGAIN,
                 on_check_again: move |_| self.check_again(client.peek().clone()),
+            }
+            if self.unanswered() && *self.unkept.read() {
+                p { class: "quiet-line", role: "status", "{COMMAND_UNKEPT}" }
             }
         }
     }
