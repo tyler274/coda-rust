@@ -112,6 +112,7 @@ async fn accepted(store: &Store, auth: &PostgresAuthStore) -> Scope {
                 key: "k".into(),
                 text: "input".into(),
                 timezone: "UTC".into(),
+                scenario: None,
             },
             PostgresAuthStore::session_reference(&token),
         )
@@ -314,6 +315,7 @@ async fn publication_wins_revocation_or_expires_while_holding_authority() {
                     key: "k".into(),
                     text: "input".into(),
                     timezone: "UTC".into(),
+                    scenario: None,
                 },
                 PostgresAuthStore::session_reference(&token),
             )

@@ -46,6 +46,9 @@ pub struct RevisionInput {
     pub instruction: String,
     /// Physician's timezone.
     pub timezone: String,
+    /// The rehearsal scenario, as on [`super::Input::scenario`].
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
 }
 
 /// One attempt at the accepted revision, with its retained execution records.

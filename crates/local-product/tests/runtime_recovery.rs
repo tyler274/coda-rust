@@ -68,6 +68,7 @@ async fn setup() -> (Store, PostgresAuthStore, Scope, String, String) {
                 key: "input".into(),
                 text: "accepted".into(),
                 timezone: "UTC".into(),
+                scenario: None,
             },
             PostgresAuthStore::session_reference(&token).to_vec(),
         )
