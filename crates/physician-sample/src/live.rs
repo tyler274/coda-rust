@@ -1025,6 +1025,33 @@ struct ArchivePayload {
     chat_id: String,
 }
 
+/// Why an archive command could not be answered, with the owner's own cause.
+#[derive(Debug)]
+enum ArchiveFailed {
+    /// The hosted conversation store failed.
+    Store(sea_orm::DbErr),
+    /// The one-process session could not save.
+    Session(String),
+}
+
+impl std::fmt::Display for ArchiveFailed {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Store(cause) => write!(f, "conversation store: {cause}"),
+            Self::Session(cause) => write!(f, "chat session: {cause}"),
+        }
+    }
+}
+
+impl std::error::Error for ArchiveFailed {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Store(cause) => Some(cause),
+            Self::Session(_) => None,
+        }
+    }
+}
+
 /// Why Archive waits, shown beside the control.
 const ARCHIVE_BUSY: &str = "Coda can archive this conversation once nothing is running or queued.";
 
@@ -1061,19 +1088,23 @@ async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -
             chat.store
                 .archive_authorized(&scope, &key, session_hash, direction)
                 .await
-                .map_err(|error| error.to_string())
+                .map_err(ArchiveFailed::Store)
         }
         (None, _) => {
             let owner = chat_owner(ctx.as_ref());
-            live.session.lock().expect("chat session").archive(
-                &key,
-                ChatScope {
-                    owner: owner.as_ref(),
-                    workspace: &payload.patient_workspace_id,
-                    chat: &payload.chat_id,
-                },
-                direction,
-            )
+            live.session
+                .lock()
+                .expect("chat session")
+                .archive(
+                    &key,
+                    ChatScope {
+                        owner: owner.as_ref(),
+                        workspace: &payload.patient_workspace_id,
+                        chat: &payload.chat_id,
+                    },
+                    direction,
+                )
+                .map_err(ArchiveFailed::Session)
         }
     };
     match outcome {
@@ -1094,8 +1125,8 @@ async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -
             }))
             .into_response()
         }
-        Err(_) => {
-            tracing::warn!(command = kind, "physician conversation archive failed");
+        Err(error) => {
+            tracing::warn!(command = kind, %error, "physician conversation archive failed");
             (
                 StatusCode::SERVICE_UNAVAILABLE,
                 Json(json!({
