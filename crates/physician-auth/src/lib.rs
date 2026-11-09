@@ -94,7 +94,7 @@ pub struct PatientLink {
     pub consent_version: Option<String>,
     /// The Unix second consent was granted.
     pub consented_at: Option<u64>,
-    /// The Unix second consent was revoked via one-step stop-sharing, if revoked.
+    /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
     /// The per-patient review cadence exposed to Agents (`Weekly` | `DailyWhenChanged`).
     pub cadence: Cadence,

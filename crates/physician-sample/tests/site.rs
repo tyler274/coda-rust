@@ -78,58 +78,6 @@ async fn the_practice_and_its_patients_are_visible() {
             && !workspace.contains("Write a message"),
         "the workspace did not show the patient:\n{workspace}"
     );
-    // Exercise the legacy preview ingress through the running server, then
-    // verify what the physician sees in the compiled client. Submitted source
-    // and approval claims must not become patient-origin attribution.
-    let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
-    let http = reqwest::Client::new();
-    let practice = "roger-synthetic-practice";
-    let store = MemoryAuthStore::new();
-    store.seed_patient(practice, patient);
-    let store: Arc<dyn AuthStore> = Arc::new(store);
-    let account = "synthetic-preview-account";
-    let token = store.invite_patient(practice, patient, 0).await.unwrap();
-    store
-        .accept_patient_invitation(&token, account, 1)
-        .await
-        .unwrap();
-    store
-        .grant_patient_consent(practice, patient, account, "v1", 2)
-        .await
-        .unwrap();
-    let preview_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let preview_address = preview_listener.local_addr().unwrap();
-    let preview_app = physician_sample::router().layer(axum::Extension(store));
-    tokio::spawn(async move { axum::serve(preview_listener, preview_app).await.unwrap() });
-    let workspace_url = format!("http://{preview_address}/patient-workspaces/{patient}");
-    http.post(format!("{workspace_url}/duet-sync"))
-        .json(&serde_json::json!({"items": [{
-            "record_id": "synthetic-preview", "revision_cursor": "revision-1",
-            "content_hash": "synthetic-content", "source_identity": "synthetic-source",
-            "origin_label": "via the patient's Duet", "patient_approved_note": true,
-            "category": "clinical_note", "title": "Preview source attribution",
-            "summary": "Synthetic content entered through the physician preview.",
-            "recorded_at": "2026-10-25"
-        }]}))
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap();
-    let preview = dump_dom(
-        &chrome,
-        &format!("http://{preview_address}/?patient={patient}"),
-    )
-    .await;
-    assert!(
-        preview.contains("Preview records") && preview.contains("Physician-entered preview"),
-        "{preview}"
-    );
-    assert!(
-        !preview.contains("Patient-shared records") && !preview.contains("via the patient's Duet"),
-        "{preview}"
-    );
-
     // `?chat=` opens a conversation the workspace does not list.
     let chat = dump_dom(
         &chrome,
@@ -1573,7 +1521,37 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     browser.sign_in_again();
     browser.wait_for_text("Dr. Clinic Admin", Duration::from_secs(10));
 
-    // 7. Deactivating the physician account terminates SSE through the proxy, signs the browser out and says why.
+    // 7. A non-admin physician sees no panel controls, on a patient on their
+    // panel or on a same-clinic patient outside it. Their name on the page means
+    // the account has loaded, so absent controls aren't just a page still loading.
+    let mut colleague = Tab::open(&format!("http://{address}/physician/"));
+    colleague.wait_for_text("Sign in to Coda", Duration::from_secs(15));
+    colleague.request_sign_in("colleague@clinic-a.test");
+    colleague.wait_for_text("Dr. Colleague", Duration::from_secs(10));
+    colleague.navigate(&format!("http://{address}/physician/?patient={mary}"));
+    let on_panel_dom = colleague.wait_for_text("Records as of", Duration::from_secs(10));
+    assert!(
+        on_panel_dom.contains("Dr. Colleague")
+            && !on_panel_dom.contains("Assign to panel")
+            && !on_panel_dom.contains("Remove from panel"),
+        "a non-admin must see no panel controls on their own patient:\n{on_panel_dom}"
+    );
+    store
+        .assign_panel(&admin_identity, "phys-colleague", mary, Membership::Denied)
+        .await
+        .unwrap();
+    colleague.navigate(&format!("http://{address}/physician/?patient={mary}"));
+    let outside_panel_dom =
+        colleague.wait_for_text("Clinic record · Not on your panel", Duration::from_secs(10));
+    assert!(
+        outside_panel_dom.contains("Dr. Colleague")
+            && !outside_panel_dom.contains("Assign to panel")
+            && !outside_panel_dom.contains("Remove from panel"),
+        "a non-admin must see no panel controls outside their panel:\n{outside_panel_dom}"
+    );
+    drop(colleague);
+
+    // 8. Deactivating the physician account terminates SSE through the proxy, signs the browser out and says why.
     assert!(store.deactivate("admin@clinic-a.test").await);
     let revoked_dom = browser.wait_for_text("No access to this practice", Duration::from_secs(10));
     assert!(

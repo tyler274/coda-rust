@@ -1,6 +1,6 @@
-//! Physician-side Connected Care preview routes. The practice invites a roster
-//! patient, reads link status, and can stop sharing. Consented preview records
-//! retain physician-entered attribution. The patient product owns acceptance and consent.
+//! Physician-side Connected Care state: the patient link a patient page shows
+//! and the doctor's plan routes. The patient product owns invitation
+//! acceptance and consent.
 
 use std::sync::{Arc, Mutex};
 use std::time::{Duration, UNIX_EPOCH};
@@ -14,17 +14,14 @@ use serde::Deserialize;
 use serde_json::{Value, json};
 
 use local_product::codex::format_rfc3339;
-use local_product::{
-    ApprovedDoctorPlan, ConsentedDuetItem, DoctorPlanDraft, DoctorPlanStore, DuetSourceStore,
-    IngestedDuetRecord, PlanItemInput,
-};
+use local_product::{ApprovedDoctorPlan, DoctorPlanDraft, DoctorPlanStore, PlanItemInput};
 use physician_auth::{
-    AuthStore, Cadence, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity, ReviewCadence,
-    SignInError, StoreUnavailable,
+    AuthStore, Cadence, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity,
+    StoreUnavailable,
 };
 use physician_wire::{
-    ApprovedDoctorPlanWire, DoctorPlanDraftWire, DoctorPlanItemWire, DuetIngestedRecordWire,
-    DuetSyncResponse, PatientInvitationResponse, PatientLinkWire, PlanDiffEntryWire, PlanItemWire,
+    ApprovedDoctorPlanWire, DoctorPlanDraftWire, DoctorPlanItemWire, PatientLinkWire,
+    PlanDiffEntryWire, PlanItemWire,
 };
 
 use crate::auth::{AuthContext, STAGING_PRACTICE_ID, SYNTHETIC_PRACTICE_CLOCK, now};
@@ -35,7 +32,6 @@ use crate::patients::{self, MemoryPatients, Patient, PatientDirectory};
 pub(crate) struct ConnectedCare {
     fallback_auth: Arc<dyn AuthStore>,
     fallback_patients: Arc<dyn PatientDirectory>,
-    pub(crate) duet_sources: Arc<Mutex<DuetSourceStore>>,
     pub(crate) doctor_plans: Arc<Mutex<DoctorPlanStore>>,
 }
 
@@ -79,7 +75,6 @@ impl ConnectedCare {
         Self {
             fallback_auth,
             fallback_patients,
-            duet_sources: Arc::new(Mutex::new(DuetSourceStore::new())),
             doctor_plans: Arc::new(Mutex::new(DoctorPlanStore::new())),
         }
     }
@@ -160,23 +155,6 @@ impl ConnectedCare {
         }
     }
 
-    pub(crate) fn duet_records_wire(
-        &self,
-        workspace_id: &str,
-        sharing_consented: bool,
-    ) -> Vec<DuetIngestedRecordWire> {
-        if !sharing_consented {
-            return Vec::new();
-        }
-        self.duet_sources
-            .lock()
-            .expect("duet sources lock")
-            .records(workspace_id)
-            .into_iter()
-            .map(to_ingested_wire)
-            .collect()
-    }
-
     pub(crate) fn plan_draft_wire(&self, workspace_id: &str) -> Option<DoctorPlanDraftWire> {
         self.doctor_plans
             .lock()
@@ -197,176 +175,6 @@ pub(crate) async fn on_roster(extensions: &axum::http::Extensions, id: &str) -> 
         store.patient_practice(id).await,
         Ok(Some(owner)) if owner == identity.practice_id
     )
-}
-
-/// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet (`ENG-48`).
-pub(crate) async fn invite_patient(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    match store
-        .invite_patient(&identity.practice_id, &id, now())
-        .await
-    {
-        Ok(token) => Json(PatientInvitationResponse {
-            practice_id: identity.practice_id,
-            patient_workspace_id: id,
-            token,
-        })
-        .into_response(),
-        Err(SignInError::Invalid | SignInError::Inactive) => {
-            StatusCode::BAD_REQUEST.into_response()
-        }
-    }
-}
-
-/// Reads the front-door link, versioned consent state, and review cadence (`ENG-48`).
-pub(crate) async fn get_patient_link(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    let wire = care.link_wire(&*store, &identity.practice_id, &id).await;
-    Json(wire).into_response()
-}
-
-/// Revokes `"share with my physician"` consent in one step (`stop sharing`, `ENG-47`).
-pub(crate) async fn post_stop_sharing(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    match store
-        .revoke_patient_consent(&identity.practice_id, &id, now())
-        .await
-    {
-        Ok(link) => Json(to_link_wire(link)).into_response(),
-        Err(SignInError::Invalid | SignInError::Inactive) => {
-            StatusCode::BAD_REQUEST.into_response()
-        }
-    }
-}
-
-#[derive(Deserialize)]
-struct CadenceBody {
-    #[serde(default)]
-    premium: Option<bool>,
-    #[serde(default)]
-    cadence: Option<String>,
-}
-
-/// Updates the per-patient review cadence (`Weekly` | `DailyWhenChanged`, `ENG-48`).
-pub(crate) async fn put_patient_cadence(
-    Path(id): Path<String>,
-    request: Request<Body>,
-) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 64 * 1024).await else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let Ok(body) = serde_json::from_slice::<CadenceBody>(&bytes) else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    if let Some(premium) = body.premium {
-        store
-            .set_patient_premium(&identity.practice_id, &id, premium)
-            .await;
-    } else if let Some(cadence_str) = body.cadence {
-        let Some(cadence) = Cadence::parse(&cadence_str) else {
-            return StatusCode::BAD_REQUEST.into_response();
-        };
-        let review_cadence = match cadence {
-            Cadence::Weekly => ReviewCadence::Weekly,
-            Cadence::DailyWhenChanged => ReviewCadence::WeeklyAndDailyWhenChanged,
-        };
-        store.set_patient_cadence(&id, review_cadence).await;
-    } else {
-        return StatusCode::BAD_REQUEST.into_response();
-    }
-    let wire = care.link_wire(&*store, &identity.practice_id, &id).await;
-    Json(wire).into_response()
-}
-
-#[derive(Deserialize)]
-struct PracticeSourceRef {
-    content_hash: String,
-    source_identity: String,
-}
-
-#[derive(Deserialize)]
-struct DuetSyncBody {
-    #[serde(default)]
-    items: Vec<ConsentedDuetItem>,
-    #[serde(default)]
-    practice_sources: Vec<PracticeSourceRef>,
-}
-
-/// Accepts physician-entered preview records with cross-source deduplication.
-/// This legacy route is not an authenticated patient-origin feed.
-/// Refuses with 403 when the preview consent gate is not active.
-pub(crate) async fn post_duet_sync(Path(id): Path<String>, request: Request<Body>) -> Response {
-    if !on_roster(request.extensions(), &id).await {
-        return StatusCode::NOT_FOUND.into_response();
-    }
-    let Some(care) = request.extensions().get::<ConnectedCare>().cloned() else {
-        return StatusCode::INTERNAL_SERVER_ERROR.into_response();
-    };
-    let store = care.auth_store(request.extensions());
-    let identity = ConnectedCare::identity(request.extensions());
-    let link = care.link_wire(&*store, &identity.practice_id, &id).await;
-    if !link.linked || !link.sharing_consented {
-        return (
-            StatusCode::FORBIDDEN,
-            Json(json!({ "detail": "Patient sharing consent is not active." })),
-        )
-            .into_response();
-    }
-    let Ok(bytes) = axum::body::to_bytes(request.into_body(), 1_000_000).await else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let Ok(body) = serde_json::from_slice::<DuetSyncBody>(&bytes) else {
-        return StatusCode::BAD_REQUEST.into_response();
-    };
-    let mut duet_sources = care.duet_sources.lock().expect("duet sources lock");
-    for source in &body.practice_sources {
-        duet_sources.register_practice_source(&id, &source.content_hash, &source.source_identity);
-    }
-    let Ok(ingested_count) = duet_sources.ingest_preview_items(&id, true, &body.items) else {
-        return StatusCode::FORBIDDEN.into_response();
-    };
-    let last_cursor = duet_sources.last_cursor(&id);
-    let records = duet_sources
-        .records(&id)
-        .into_iter()
-        .map(to_ingested_wire)
-        .collect();
-    Json(DuetSyncResponse {
-        patient_workspace_id: id,
-        ingested_count,
-        last_cursor,
-        records,
-    })
-    .into_response()
 }
 
 /// Reads the current doctor's plan draft and approval state (`ENG-53`).
@@ -483,7 +291,7 @@ pub(crate) async fn post_approve_plan(Path(id): Path<String>, request: Request<B
     }
 }
 
-/// Adds `patient_link`, `duet_records`, and `doctor_plan` to a patient page.
+/// Adds `patient_link` and `doctor_plan` to a patient page.
 pub(crate) async fn enrich_workspace(
     mut value: Value,
     workspace_id: &str,
@@ -495,16 +303,11 @@ pub(crate) async fn enrich_workspace(
         let link = care
             .link_wire(&*store, &identity.practice_id, workspace_id)
             .await;
-        let duet_records = care.duet_records_wire(workspace_id, link.sharing_consented);
         let doctor_plan = care.plan_draft_wire(workspace_id);
         if let Some(obj) = value.as_object_mut() {
             obj.insert(
                 "patient_link".to_owned(),
                 serde_json::to_value(&link).unwrap_or(Value::Null),
-            );
-            obj.insert(
-                "duet_records".to_owned(),
-                serde_json::to_value(&duet_records).unwrap_or_else(|_| json!([])),
             );
             obj.insert(
                 "doctor_plan".to_owned(),
@@ -526,21 +329,6 @@ fn to_link_wire(link: PatientLink) -> PatientLinkWire {
         consented_at: link.consented_at,
         revoked_at: link.revoked_at,
         cadence: link.cadence.as_str().to_owned(),
-    }
-}
-
-fn to_ingested_wire(record: IngestedDuetRecord) -> DuetIngestedRecordWire {
-    DuetIngestedRecordWire {
-        record_id: record.record_id,
-        revision_cursor: record.revision_cursor,
-        content_hash: record.content_hash,
-        source_identity: record.source_identity,
-        provenance: record.provenance,
-        category: record.category,
-        title: record.title,
-        summary: record.summary,
-        recorded_at: record.recorded_at,
-        patient_approved_note: record.patient_approved_note,
     }
 }
 

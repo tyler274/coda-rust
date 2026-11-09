@@ -527,9 +527,6 @@ pub struct PatientWorkspaceResponse {
     /// The patient front-door link, versioned consent state, and review cadence (`ENG-44`).
     pub patient_link: Option<PatientLinkWire>,
     #[serde(default)]
-    /// Consented patient-contributed records ingested from Duet with provenance (`ENG-51`).
-    pub duet_records: Vec<DuetIngestedRecordWire>,
-    #[serde(default)]
     /// The physician-authored patient plan draft and exact-text approval state (`ENG-53`).
     pub doctor_plan: Option<DoctorPlanDraftWire>,
 }
@@ -863,18 +860,6 @@ pub struct WhoamiResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// The panel route's answer: the patient workspaces on one physician's panel.
-pub struct PanelResponse {
-    /// The `practice_id` value.
-    pub practice_id: String,
-    /// The `physician_id` value.
-    pub physician_id: String,
-    #[serde(default)]
-    /// The patient workspace IDs assigned to this physician's panel.
-    pub patient_workspace_ids: Vec<String>,
-}
-
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The panel assignment route's answer after updating one panel membership.
 pub struct PanelAssignmentResponse {
     /// The `practice_id` value.
@@ -910,63 +895,11 @@ pub struct PatientLinkWire {
     /// The Unix second consent was granted.
     pub consented_at: Option<u64>,
     #[serde(default)]
-    /// The Unix second consent was revoked via one-step stop-sharing.
+    /// The Unix second consent was revoked, if revoked.
     pub revoked_at: Option<u64>,
     #[serde(default)]
     /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
     pub cadence: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// The patient invitation route's answer when a practice invites a roster patient (`ENG-48`).
-pub struct PatientInvitationResponse {
-    /// The practice that issued the invitation.
-    pub practice_id: String,
-    /// The explicitly invited roster patient workspace id.
-    pub patient_workspace_id: String,
-    /// The single-use invitation token to redeem in Duet.
-    pub token: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// One physician-entered preview record, retaining the legacy Duet wire shape.
-pub struct DuetIngestedRecordWire {
-    /// Stable record identifier in Duet.
-    pub record_id: String,
-    /// Deterministic `sha256` revision cursor.
-    pub revision_cursor: String,
-    /// Deterministic `sha256` content hash.
-    pub content_hash: String,
-    /// Canonical source identity used for cross-source deduplication.
-    pub source_identity: String,
-    /// Ingestion-owner attribution shown to the physician: `"Physician-entered preview"`.
-    pub provenance: String,
-    /// Record category.
-    pub category: String,
-    /// Short display title.
-    pub title: String,
-    /// Summary text.
-    pub summary: String,
-    /// Recorded timestamp or date string.
-    pub recorded_at: String,
-    #[serde(default)]
-    /// False for physician-entered preview records; input cannot establish patient approval.
-    pub patient_approved_note: bool,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// The legacy Duet sync route's answer after ingesting physician preview records.
-pub struct DuetSyncResponse {
-    /// The patient workspace id.
-    pub patient_workspace_id: String,
-    /// Number of newly added or updated records in this sync pass.
-    pub ingested_count: usize,
-    #[serde(default)]
-    /// Latest `sha256` revision cursor processed.
-    pub last_cursor: Option<String>,
-    #[serde(default)]
-    /// Current deduplicated Duet records on the workspace.
-    pub records: Vec<DuetIngestedRecordWire>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

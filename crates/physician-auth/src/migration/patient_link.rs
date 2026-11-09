@@ -27,7 +27,7 @@ pub struct Model {
     pub consent_version: Option<String>,
     /// The Unix second consent was granted.
     pub consented_at: Option<i64>,
-    /// The Unix second consent was revoked via one-step stop-sharing.
+    /// The Unix second consent was revoked.
     pub revoked_at: Option<i64>,
     /// The review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
     pub cadence: String,

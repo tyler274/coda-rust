@@ -216,23 +216,6 @@ where
         )
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
-        .route(
-            "/patient-workspaces/{id}/invite",
-            post(care::invite_patient),
-        )
-        .route("/patient-workspaces/{id}/link", get(care::get_patient_link))
-        .route(
-            "/patient-workspaces/{id}/stop-sharing",
-            post(care::post_stop_sharing),
-        )
-        .route(
-            "/patient-workspaces/{id}/cadence",
-            axum::routing::put(care::put_patient_cadence),
-        )
-        .route(
-            "/patient-workspaces/{id}/duet-sync",
-            post(care::post_duet_sync),
-        )
         .route("/patient-workspaces/{id}/plan", get(care::get_plan))
         .route(
             "/patient-workspaces/{id}/plan/draft",
@@ -1403,8 +1386,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn connected_care_end_to_end_invite_consent_provenance_dedup_revocation_and_exact_text_plan()
-     {
+    async fn connected_care_patient_link_and_exact_text_plan() {
         use physician_auth::{AuthStore, MemoryAuthStore};
         let patient_id = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let store = MemoryAuthStore::new();
@@ -1412,56 +1394,32 @@ mod tests {
         let store: std::sync::Arc<dyn AuthStore> = std::sync::Arc::new(store);
         let app = router().layer(axum::Extension(store.clone()));
 
-        // 1. Practice explicitly invites roster patient.
-        let (status, invite_body) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/invite"),
-            Body::empty(),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{invite_body}");
-        let invite_json: Value = serde_json::from_str(&invite_body).unwrap();
-        assert_eq!(invite_json["practice_id"], "roger-synthetic-practice");
-        assert_eq!(invite_json["patient_workspace_id"], patient_id);
-        let token = invite_json["token"].as_str().unwrap();
-        assert!(!token.is_empty());
+        // 1. The practice site hosts neither patient acceptance nor consent.
+        for (method, path, body) in [
+            (
+                "POST",
+                "/patient-invitations/accept".to_owned(),
+                r#"{"token":"t","duet_account_id":"duet-acct-elena"}"#,
+            ),
+            (
+                "PUT",
+                format!("/patient-workspaces/{patient_id}/consent"),
+                r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#,
+            ),
+        ] {
+            let (status, body) = request(app.clone(), method, &path, Body::from(body)).await;
+            assert_eq!(status, StatusCode::NOT_FOUND, "{path}: {body}");
+        }
 
-        // 2. Patient accepts invitation and links Duet account, then grants versioned consent.
-        let (status, accept_body) = request(
-            app.clone(),
-            "POST",
-            "/patient-invitations/accept",
-            Body::from(format!(
-                r#"{{"token":"{token}","duet_account_id":"duet-acct-elena"}}"#
-            )),
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{accept_body}");
-        // Only fixture setup represents the patient side of this preview.
-        store
-            .accept_patient_invitation(token, "duet-acct-elena", 0)
+        // 2. Fixture setup stands in for the patient's invitation and consent.
+        let token = store
+            .invite_patient("roger-synthetic-practice", patient_id, 0)
             .await
             .unwrap();
-
-        // Before consent, syncing Duet records is forbidden.
-        let (status, _) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/duet-sync"),
-            Body::from(r#"{"items":[],"revision_cursor":null}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::FORBIDDEN);
-
-        let (status, consent_body) = request(
-            app.clone(),
-            "PUT",
-            &format!("/patient-workspaces/{patient_id}/consent"),
-            Body::from(r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{consent_body}");
+        store
+            .accept_patient_invitation(&token, "duet-acct-elena", 0)
+            .await
+            .unwrap();
         store
             .grant_patient_consent(
                 "roger-synthetic-practice",
@@ -1473,82 +1431,7 @@ mod tests {
             .await
             .unwrap();
 
-        // 3. Cadence is the only scheduling signal exposed (`weekly` | `daily_when_changed`).
-        let (status, cadence_body) = request(
-            app.clone(),
-            "PUT",
-            &format!("/patient-workspaces/{patient_id}/cadence"),
-            Body::from(r#"{"cadence":"daily_when_changed"}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{cadence_body}");
-        let cadence_json: Value = serde_json::from_str(&cadence_body).unwrap();
-        assert_eq!(cadence_json["cadence"], "daily_when_changed");
-        assert!(cadence_json.get("premium").is_none());
-
-        // 4. Preview input cannot claim patient origin; deduplication remains intact.
-        let sync_payload = serde_json::json!({
-            "items": [
-                {
-                    "record_id": "rec-quest-ldl",
-                    "revision_cursor": "cursor-sha256-1",
-                    "content_hash": "hash-quest-ldl",
-                    "category": "lab",
-                    "title": "LDL Cholesterol",
-                    "summary": "98 mg/dL",
-                    "recorded_at": "2026-10-13T08:00:00Z",
-                    "origin_label": "from Quest",
-                    "source_identity": "quest:ldl:2026-10-13",
-                    "patient_approved_note": false
-                },
-                {
-                    "record_id": "rec-quest-ldl-duplicate",
-                    "revision_cursor": "cursor-sha256-2",
-                    "content_hash": "hash-quest-ldl",
-                    "category": "lab",
-                    "title": "LDL Cholesterol (duplicate)",
-                    "summary": "98 mg/dL",
-                    "recorded_at": "2026-10-13T08:00:00Z",
-                    "origin_label": "from Quest",
-                    "source_identity": "quest:ldl:2026-10-13",
-                    "patient_approved_note": false
-                },
-                {
-                    "record_id": "luna-note-1",
-                    "revision_cursor": "cursor-sha256-3",
-                    "content_hash": "hash-luna-note-1",
-                    "category": "patient_approved_luna_note",
-                    "title": "2026-10-13 · Walking tolerance",
-                    "summary": "Walked 30 minutes daily without chest tightness.",
-                    "recorded_at": "2026-10-13T09:00:00Z",
-                    "origin_label": "",
-                    "source_identity": "duet:luna-approved-note:1",
-                    "patient_approved_note": true
-                }
-            ]
-        });
-        let (status, sync_body) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/duet-sync"),
-            Body::from(serde_json::to_vec(&sync_payload).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{sync_body}");
-        let sync_json: Value = serde_json::from_str(&sync_body).unwrap();
-        assert_eq!(sync_json["ingested_count"], 2);
-        let records = sync_json["records"].as_array().unwrap();
-        assert_eq!(records.len(), 2);
-        assert_eq!(records[0]["provenance"], "Physician-entered preview");
-        assert_eq!(records[1]["provenance"], "Physician-entered preview");
-        assert!(
-            records
-                .iter()
-                .all(|record| record["patient_approved_note"] == false),
-            "{records:?}"
-        );
-
-        // Workspace endpoint surfaces the patient link and consented Duet records with provenance.
+        // 3. The patient page carries the link's consent state.
         let (status, ws_body) = request(
             app.clone(),
             "GET",
@@ -1558,20 +1441,11 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::OK);
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
+        assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
-        assert_eq!(ws_json["duet_records"].as_array().unwrap().len(), 2);
-        assert!(
-            ws_json["duet_records"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .all(|record| {
-                    record["provenance"] == "Physician-entered preview"
-                        && record["patient_approved_note"] == false
-                })
-        );
+        assert!(ws_json.get("duet_records").is_none());
 
-        // 5. Physician drafts a plan, approves exact text (v1), edits (invalidating approval),
+        // 4. Physician drafts a plan, approves exact text (v1), edits (invalidating approval),
         //    and approves batched item diffs (v2).
         let draft_v1 = serde_json::json!({
             "items": [
@@ -1684,49 +1558,6 @@ mod tests {
         assert_eq!(approved_v2_json["version"], 2);
         assert_eq!(approved_v2_json["last_diff"].as_array().unwrap().len(), 1);
         assert_eq!(approved_v2_json["last_diff"][0]["item_id"], "plan-1");
-
-        // 6. One-step stop-sharing revocation immediately blocks Duet sync and hides Duet records.
-        let (status, stop_body) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/stop-sharing"),
-            Body::empty(),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{stop_body}");
-        let stop_json: Value = serde_json::from_str(&stop_body).unwrap();
-        assert_eq!(stop_json["sharing_consented"], false);
-        assert!(stop_json["revoked_at"].is_u64());
-
-        let (status, restore_body) = request(
-            app.clone(),
-            "PUT",
-            &format!("/patient-workspaces/{patient_id}/consent"),
-            Body::from(r#"{"duet_account_id":"duet-acct-elena","consent_version":"v1"}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{restore_body}");
-
-        let (status, _) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/duet-sync"),
-            Body::from(serde_json::to_vec(&sync_payload).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::FORBIDDEN);
-
-        let (status, ws_after_stop) = request(
-            app,
-            "GET",
-            &format!("/patient-workspaces/{patient_id}"),
-            Body::empty(),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        let ws_after_json: Value = serde_json::from_str(&ws_after_stop).unwrap();
-        assert_eq!(ws_after_json["patient_link"]["sharing_consented"], false);
-        assert_eq!(ws_after_json["duet_records"].as_array().unwrap().len(), 0);
     }
 
     #[tokio::test]
