@@ -11,13 +11,16 @@ use serde_json::{Map, Value};
 
 const SIDECAR: &str = "otel-collector";
 /// Set on the product container by observability-cluster.tf (`DD_ENV` and
-/// `observability_product_env`). `None` accepts any nonempty value.
-const PRODUCT_ENV: [(&str, Option<&str>); 5] = [
-    ("DD_ENV", None),
-    ("OTEL_EXPORTER_OTLP_ENDPOINT", Some("http://localhost:4318")),
-    ("CODA_LOG_FORMAT", Some("json")),
-    ("CODA_TELEMETRY_CONTENT", Some("none")),
-    ("CODA_TELEMETRY_BACKEND", None),
+/// `observability_product_env`), with the values each may take. An empty list
+/// accepts any nonempty value. `CODA_TELEMETRY_CONTENT` is either policy:
+/// rust-environments' `telemetry_content` chooses it, and the gateway strips
+/// content from every pipeline but Langfuse's.
+const PRODUCT_ENV: [(&str, &[&str]); 5] = [
+    ("DD_ENV", &[]),
+    ("OTEL_EXPORTER_OTLP_ENDPOINT", &["http://localhost:4318"]),
+    ("CODA_LOG_FORMAT", &["json"]),
+    ("CODA_TELEMETRY_CONTENT", &["none", "full"]),
+    ("CODA_TELEMETRY_BACKEND", &[]),
 ];
 const SIDECAR_ENV: [&str; 3] = [
     "OTEL_SIDECAR_CONFIG",
@@ -103,7 +106,7 @@ pub(super) fn read(template: &Value, service: &str) -> Result<Shape> {
         }
         let product = product(spec, service)?;
         let telemetry = PRODUCT_ENV.iter().all(|(key, wanted)| {
-            env(product, key).is_some_and(|value| wanted.is_none_or(|wanted| value == wanted))
+            env(product, key).is_some_and(|value| wanted.is_empty() || wanted.contains(&value))
         });
         let collector = found
             .iter()
@@ -319,18 +322,24 @@ pub(super) mod tests {
         }
     }
     #[test]
-    fn content_must_stay_off() {
-        let mut template = observed("physician", OLD);
-        for variable in product_of(&mut template, "physician")["env"]
-            .as_array_mut()
-            .expect("env")
-        {
-            if name(variable) == Some("CODA_TELEMETRY_CONTENT") {
-                variable["value"] = "full".into();
+    fn content_is_a_known_policy() {
+        let with_content = |policy: &str| {
+            let mut template = observed("physician", OLD);
+            for variable in product_of(&mut template, "physician")["env"]
+                .as_array_mut()
+                .expect("env")
+            {
+                if name(variable) == Some("CODA_TELEMETRY_CONTENT") {
+                    variable["value"] = policy.into();
+                }
             }
+            template
+        };
+        for policy in ["none", "full"] {
+            assert!(read(&with_content(policy), "physician").is_ok(), "{policy}");
         }
         assert_eq!(
-            code(read(&template, "physician")),
+            code(read(&with_content("prompts"), "physician")),
             "telemetry-contract-incomplete"
         );
     }

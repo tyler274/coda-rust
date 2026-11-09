@@ -224,6 +224,16 @@ variable "telemetry_backend" {
   }
 }
 
+variable "telemetry_content" {
+  type        = string
+  default     = "none"
+  description = "CODA_TELEMETRY_CONTENT set on the product containers while observability_enabled is on: none records no prompt or completion text; full attaches it to generation spans, which the gateway sends only to the in-project Langfuse. Must match infra/gcp/observability's telemetry_content, which refuses full without Langfuse."
+  validation {
+    condition     = contains(["none", "full"], var.telemetry_content)
+    error_message = "telemetry_content must be none or full."
+  }
+}
+
 variable "otel_sidecar_image" {
   type        = string
   default     = "otel/opentelemetry-collector-contrib:0.155.0"

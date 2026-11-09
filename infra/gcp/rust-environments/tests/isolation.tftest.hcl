@@ -774,6 +774,12 @@ run "reject_unknown_telemetry_backend" {
   expect_failures = [var.telemetry_backend]
 }
 
+run "reject_unknown_telemetry_content" {
+  command = plan
+  variables { telemetry_content = "prompts" }
+  expect_failures = [var.telemetry_content]
+}
+
 run "reject_production_observability_cluster" {
   command = plan
   variables {
@@ -831,6 +837,7 @@ run "observability_active" {
   }
   variables {
     telemetry_backend                      = "both"
+    telemetry_content                      = "full"
     availability_probe_image               = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/availability-probe@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     availability_watchdog_enabled          = true
     availability_watchdog_channels         = ["projects/test-rust-stg-only/notificationChannels/synthetic"]
@@ -1012,12 +1019,12 @@ run "observability_active" {
       [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
       ) : (
       length(setsubtract(
-        ["DD_ENV=staging", "OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318", "CODA_LOG_FORMAT=json", "CODA_TELEMETRY_CONTENT=none", "CODA_TELEMETRY_BACKEND=both"],
+        ["DD_ENV=staging", "OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318", "CODA_LOG_FORMAT=json", "CODA_TELEMETRY_CONTENT=full", "CODA_TELEMETRY_BACKEND=both"],
         [for env in containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"],
       )) == 0 &&
       !contains([for env in containers[0].env : env.name], "DD_VERSION")
     )])
-    error_message = "Every product container exports to its sidecar on localhost with DD_ENV=staging, JSON logs, no content and concurrent backends; DD_VERSION stays baked into the image."
+    error_message = "Every product container exports to its sidecar on localhost with DD_ENV=staging, JSON logs, the configured content policy and concurrent backends; DD_VERSION stays baked into the image."
   }
   assert {
     condition     = google_cloud_run_v2_service.app["physician"].template[0].containers[0].image == var.images["physician"].runtime && google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].image == var.images["physician"].worker
@@ -1073,8 +1080,9 @@ run "observability_grafana_backend" {
       [for worker in google_cloud_run_v2_service.physician_worker : worker.template[0].containers],
       ) : (
       [for env in containers[0].env : env.value if env.name == "CODA_TELEMETRY_BACKEND"] == ["grafana"] &&
+      [for env in containers[0].env : env.value if env.name == "CODA_TELEMETRY_CONTENT"] == ["none"] &&
       contains([for env in containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "DD_ENV=staging")
     )]) && length(google_cloud_run_v2_service.physician_worker) == 1
-    error_message = "With the grafana backend every product container gets CODA_TELEMETRY_BACKEND=grafana once, and still names its environment."
+    error_message = "With the grafana backend every product container gets CODA_TELEMETRY_BACKEND=grafana once, defaults to no content, and still names its environment."
   }
 }

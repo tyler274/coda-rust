@@ -24,6 +24,11 @@ grafana_cloud_monitoring_enabled = true
 # coda-langfuse-blobs, which this root creates.
 langfuse_enabled = true
 
+# Services attach prompt and completion text to generation spans. Only the
+# Langfuse pipeline keeps it; the ops pipelines strip it. Must match
+# infra/gcp/rust-environments' telemetry_content.
+telemetry_content = "full"
+
 # Slack #engineering-observability through Datadog's Coda_Health Slack account.
 # Monitor creation has a separate datadog_monitors_enabled authorization gate.
 alert_notify = "@slack-Coda_Health-engineering-observability"

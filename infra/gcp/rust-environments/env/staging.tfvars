@@ -56,6 +56,10 @@ observability_cluster_enabled = true
 observability_enabled = true
 # Both destinations behind the gateway; must match infra/gcp/observability.
 telemetry_backend = "both"
+# Prompt and completion text on generation spans. The gateway strips it from
+# the Datadog and Grafana pipelines and sends it only to the in-project
+# Langfuse; must match infra/gcp/observability, which requires Langfuse on.
+telemetry_content = "full"
 
 # The authenticated availability probe Cloud Run Job (availability.tf), from
 # the published image, runs every minute. The direct Cloud Monitoring

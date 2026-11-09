@@ -602,6 +602,30 @@ run "reject_an_unknown_content_policy" {
   expect_failures = [var.telemetry_content]
 }
 
+run "reject_content_without_langfuse" {
+  command = plan
+
+  variables {
+    telemetry_content = "full"
+    langfuse_enabled  = false
+  }
+
+  expect_failures = [var.telemetry_content]
+}
+
+run "content_with_langfuse_reaches_services" {
+  command = plan
+
+  variables {
+    telemetry_content = "full"
+  }
+
+  assert {
+    condition     = local.service_telemetry_env.CODA_TELEMETRY_CONTENT == "full"
+    error_message = "With Langfuse on, services get the full content policy."
+  }
+}
+
 run "secrets_come_only_from_doppler" {
   command = plan
 
