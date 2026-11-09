@@ -1,11 +1,13 @@
 //! How a physician reads a cited record: the source's own statement and dates first, the exact
 //! retained bytes and storage details under Technical details. Nothing here infers clinical truth.
 use crate::source_layout::{self, Layout, Loggable, SlotRole};
+use crate::source_path::SourcePath;
 use local_product::physician_chat::Citation;
 use physician_wire::{SourceField, SourceInspection, SourcePreviewContent, SourceTechnicalDetails};
 use serde_json::Value;
 use serde_json::value::RawValue;
 use std::collections::BTreeMap;
+use std::fmt;
 
 /// Presents a retained citation exactly as it was read, never a newer revision.
 pub fn inspection(citation: &Citation) -> SourceInspection {
@@ -130,12 +132,12 @@ fn field(label: &str, value: &str) -> SourceField {
     }
 }
 
-/// A value copied from the record at `path`.
-pub(crate) fn located(label: &str, value: &str, path: &str) -> SourceField {
+/// A value copied from the record at `path`, carried in its readable form (see [`SourcePath`]).
+pub(crate) fn located(label: &str, value: &str, path: impl fmt::Display) -> SourceField {
     SourceField {
         label: label.into(),
         text: value.into(),
-        path: Some(path.into()),
+        path: Some(path.to_string()),
     }
 }
 
@@ -247,8 +249,11 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
         ("asserter", "Asserted by"),
     ] {
         if let Some(value) = text(&resource[name]["display"]) {
-            view.attribution
-                .push(located(label, value, &format!("{name}.display")));
+            view.attribution.push(located(
+                label,
+                value,
+                SourcePath::root().member(name).member("display"),
+            ));
         }
     }
     for (name, label) in [
@@ -304,7 +309,7 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
         view.sections.push(located(
             &format!("Reaction {}", index + 1),
             &values.join("\n"),
-            &format!("reaction[{index}]"),
+            SourcePath::root().member("reaction").index(index),
         ));
     }
     for (index, note) in resource["note"]
@@ -317,7 +322,10 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
             view.sections.push(located(
                 "Source note",
                 value,
-                &format!("note[{index}].text"),
+                SourcePath::root()
+                    .member("note")
+                    .index(index)
+                    .member("text"),
             ));
         }
     }
@@ -410,45 +418,40 @@ impl Placement {
 
 /// Each number in a record as its source wrote it, by path: `7.20` stays `7.20`, not `7.2`.
 #[derive(Default)]
-pub(crate) struct NumberLiterals(BTreeMap<String, String>);
+pub(crate) struct NumberLiterals(BTreeMap<SourcePath, String>);
 
 impl NumberLiterals {
     pub(crate) fn read(content: &str) -> Self {
         let mut literals = Self::default();
         if let Ok(raw) = serde_json::from_str::<&RawValue>(content) {
-            literals.collect(raw, "");
+            literals.collect(raw, &SourcePath::root());
         }
         literals
     }
 
-    fn collect(&mut self, raw: &RawValue, path: &str) {
+    fn collect(&mut self, raw: &RawValue, path: &SourcePath) {
         let text = raw.get().trim();
         if text.starts_with('{') {
             let Ok(members) = serde_json::from_str::<BTreeMap<String, &RawValue>>(text) else {
                 return;
             };
             for (key, member) in members {
-                let path = if path.is_empty() {
-                    key
-                } else {
-                    format!("{path}.{key}")
-                };
-                self.collect(member, &path);
+                self.collect(member, &path.member(&key));
             }
         } else if text.starts_with('[') {
             let Ok(items) = serde_json::from_str::<Vec<&RawValue>>(text) else {
                 return;
             };
             for (index, item) in items.into_iter().enumerate() {
-                self.collect(item, &format!("{path}[{index}]"));
+                self.collect(item, &path.index(index));
             }
         } else if text.starts_with(|first: char| first == '-' || first.is_ascii_digit()) {
-            self.0.insert(path.to_owned(), text.to_owned());
+            self.0.insert(path.clone(), text.to_owned());
         }
     }
 
     /// A scalar exactly as the record wrote it.
-    pub(crate) fn recorded(&self, value: &Value, path: &str) -> String {
+    pub(crate) fn recorded(&self, value: &Value, path: &SourcePath) -> String {
         match value {
             Value::String(text) => text.clone(),
             Value::Number(number) => self
@@ -471,7 +474,7 @@ struct Flattened<'a> {
 impl Flattened<'_> {
     /// Visits every leaf under `value`: composite FHIR values read as one field, technical
     /// leaves keep their source path as their label, and nothing is skipped.
-    fn walk(&mut self, value: &Value, path: &str, label: &str, technical: bool) {
+    fn walk(&mut self, value: &Value, path: &SourcePath, label: &str, technical: bool) {
         if technical {
             self.technical_leaves(value, path);
             return;
@@ -484,7 +487,7 @@ impl Flattened<'_> {
                     } else {
                         label.to_owned()
                     };
-                    self.walk(item, &format!("{path}[{index}]"), &label, false);
+                    self.walk(item, &path.index(index), &label, false);
                 }
             }
             Value::Object(object) => {
@@ -494,19 +497,19 @@ impl Flattened<'_> {
                     self.technical_leaves(value, path);
                     return;
                 }
-                let amount = |value: &Value| self.numbers.recorded(value, &format!("{path}.value"));
+                let amount = |value: &Value| self.numbers.recorded(value, &path.member("value"));
                 if let Some(text) = coded(object).or_else(|| quantity(object, amount)) {
                     // A concept that is only text points at that text, not its container.
                     let path = match object.len() {
-                        1 if object.contains_key("text") => format!("{path}.text"),
-                        _ => path.to_owned(),
+                        1 if object.contains_key("text") => path.member("text"),
+                        _ => path.clone(),
                     };
                     self.readable.push(located(label, &text, &path));
                     return;
                 }
                 if is_reference(object) {
                     for (key, value) in object {
-                        let path = format!("{path}.{key}");
+                        let path = path.member(key);
                         match key.as_str() {
                             "display" => self.walk(value, &path, label, false),
                             _ => self.technical_leaves(value, &path),
@@ -524,7 +527,7 @@ impl Flattened<'_> {
                 keys.sort_by_key(|key| reading_rank(key));
                 for key in keys {
                     let value = &object[key.as_str()];
-                    let path = format!("{path}.{key}");
+                    let path = path.member(key);
                     // An attachment's encoded `data` reads through its readable part, if any.
                     let technical = matches!(
                         key.as_str(),
@@ -552,7 +555,7 @@ impl Flattened<'_> {
 
     /// A FHIR `dataAbsentReason`: the value it stands for reads as not supplied, with the
     /// recorded reason, never as a normal or negative finding.
-    fn absent(&mut self, reason: &Value, path: &str, label: &str) {
+    fn absent(&mut self, reason: &Value, path: &SourcePath, label: &str) {
         let Some(recorded) = status_text(reason).or_else(|| text(reason).map(str::to_owned)) else {
             self.walk(reason, path, &format!("{label} data absent reason"), false);
             return;
@@ -565,22 +568,23 @@ impl Flattened<'_> {
         }
     }
 
-    fn technical_leaves(&mut self, value: &Value, path: &str) {
+    fn technical_leaves(&mut self, value: &Value, path: &SourcePath) {
         match value {
             Value::Array(items) => {
                 for (index, item) in items.iter().enumerate() {
-                    self.technical_leaves(item, &format!("{path}[{index}]"));
+                    self.technical_leaves(item, &path.index(index));
                 }
             }
             Value::Object(object) => {
                 for (key, value) in object {
-                    self.technical_leaves(value, &format!("{path}.{key}"));
+                    self.technical_leaves(value, &path.member(key));
                 }
             }
-            scalar => {
-                self.technical
-                    .push(located(path, &self.numbers.recorded(scalar, path), path))
-            }
+            scalar => self.technical.push(located(
+                &path.to_string(),
+                &self.numbers.recorded(scalar, path),
+                path,
+            )),
         }
     }
 }
@@ -614,6 +618,7 @@ fn general(
     keys.sort_by_key(|key| reading_rank(element_name(key)));
     for key in keys {
         let value = &resource[key.as_str()];
+        let path = SourcePath::root().member(key);
         // FHIR carries a primitive's extensions under `_name`; one marking the value absent
         // reads where the value would, and any other stays technical.
         let element = element_name(key);
@@ -633,16 +638,16 @@ fn general(
             _ => top_label(element, placement),
         };
         if key == "dataAbsentReason" {
-            flattened.absent(value, key, "Value");
+            flattened.absent(value, &path, "Value");
         } else if placement == Placement::Status
             && value.is_object()
             && let Some(status) = status_text(value)
         {
             // The status reads by name beside the record kind; its codes stay technical.
-            flattened.readable.push(located(&label, &status, key));
-            flattened.technical_leaves(value, key);
+            flattened.readable.push(located(&label, &status, &path));
+            flattened.technical_leaves(value, &path);
         } else {
-            flattened.walk(value, key, &label, placement == Placement::Technical);
+            flattened.walk(value, &path, &label, placement == Placement::Technical);
         }
         for technical in flattened.technical {
             if !view.technical.storage_dates.contains(&technical) {
@@ -1061,30 +1066,12 @@ pub(crate) mod tests {
     }
 
     /// Every scalar leaf of `record`, with its source path and recorded text.
-    fn leaves(
-        value: &Value,
-        numbers: &NumberLiterals,
-        path: String,
-        out: &mut Vec<(String, String)>,
-    ) {
-        match value {
-            Value::Array(items) => {
-                for (index, item) in items.iter().enumerate() {
-                    leaves(item, numbers, format!("{path}[{index}]"), out);
-                }
-            }
-            Value::Object(object) => {
-                for (key, value) in object {
-                    let path = if path.is_empty() {
-                        key.clone()
-                    } else {
-                        format!("{path}.{key}")
-                    };
-                    leaves(value, numbers, path, out);
-                }
-            }
-            scalar => out.push((path.clone(), numbers.recorded(scalar, &path))),
-        }
+    fn leaves(record: &Value, numbers: &NumberLiterals) -> Vec<(String, String)> {
+        crate::source_path::nodes(record)
+            .into_iter()
+            .filter(|(_, value)| !value.is_object() && !value.is_array())
+            .map(|(path, value)| (path.to_string(), numbers.recorded(value, &path)))
+            .collect()
     }
 
     /// Fails naming the first leaf of `record` that its general view does not show.
@@ -1105,9 +1092,7 @@ pub(crate) mod tests {
             .chain(&view.technical.fields)
             .chain(&view.technical.storage_dates)
             .collect();
-        let mut all = Vec::new();
-        leaves(&record, &numbers, String::new(), &mut all);
-        for (path, value) in all {
+        for (path, value) in leaves(&record, &numbers) {
             let technical = shown
                 .iter()
                 .any(|field| field.label == path && field.text == value);
@@ -1571,18 +1556,12 @@ pub(crate) mod tests {
             .collect()
     }
 
-    /// The value at a dotted, indexed path such as `results[1].units`, if the record has one.
-    pub(crate) fn at<'a>(record: &'a Value, path: &str) -> Option<&'a Value> {
-        path.split('.').try_fold(record, |value, step| {
-            let (name, indexes) = step.split_once('[').unwrap_or((step, ""));
-            let value = value.get(name)?;
-            indexes
-                .split('[')
-                .filter(|index| !index.is_empty())
-                .try_fold(value, |value, index| {
-                    value.get(index.trim_end_matches(']').parse::<usize>().ok()?)
-                })
-        })
+    /// The value at a field's path such as `results[1].units`, in the readable form the field
+    /// carries, if the record has one.
+    pub(crate) fn at<'a>(record: &'a Value, path: &str) -> Option<(SourcePath, &'a Value)> {
+        crate::source_path::nodes(record)
+            .into_iter()
+            .find(|(at, _)| at.to_string() == path)
     }
 
     /// A non-FHIR source: a lab export in its own field names, read as recorded.
@@ -1665,12 +1644,12 @@ pub(crate) mod tests {
                 let path = shown.path.as_deref().unwrap_or_else(|| {
                     panic!("{} {shown:?} has no source path", cited.record_type)
                 });
-                let value = at(&record, path)
+                let (path, value) = at(&record, path)
                     .unwrap_or_else(|| panic!("{} has no {path}", cited.record_type));
                 if !value.is_object() && !value.is_array() {
                     assert_eq!(
                         shown.text,
-                        numbers.recorded(value, path),
+                        numbers.recorded(value, &path),
                         "{} {path}",
                         cited.record_type
                     );

@@ -3,10 +3,11 @@
 //! from the record. A layout is checked against each record before it renders; a refused layout
 //! never shows in part, and the record reads through the general view instead.
 use crate::source_inspection::{NumberLiterals, humanize, located};
+use crate::source_path::{self, SourcePath, Step};
 use physician_wire::{SourceField, SourceInspection, SourceLayoutSection};
 use serde::Deserialize;
 use serde_json::Value;
-use std::collections::BTreeSet;
+use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
 
 /// An unchecked layout, in the shape a model or a hand-written fixture supplies. Unknown members
@@ -454,11 +455,11 @@ struct BoundSection<'r> {
     bindings: Vec<Binding<'r>>,
 }
 
-/// A label bound to the recorded value at `path`, in the inspection's path notation.
+/// A label bound to the recorded value at `path`.
 #[derive(Debug)]
 struct Binding<'r> {
     label: String,
-    path: String,
+    path: SourcePath,
     value: &'r Value,
 }
 
@@ -548,10 +549,10 @@ fn in_slot(at: Position, slot: &Slot) -> impl Fn(LayoutRefusal) -> Refusal {
 fn bind<'r>(
     slot: &Slot,
     record: &'r Value,
-    bound: &mut BTreeSet<String>,
+    bound: &mut BTreeSet<SourcePath>,
 ) -> Result<Binding<'r>, LayoutRefusal> {
     let tokens = checked(slot)?;
-    let found = follow(record, &tokens, String::new(), Vec::new()).ok_or_else(|| {
+    let found = follow(record, &tokens, SourcePath::root(), Vec::new()).ok_or_else(|| {
         LayoutRefusal::Unresolved {
             pointer: slot.pointer.clone(),
         }
@@ -567,7 +568,7 @@ fn repeated<'r>(
     part: Part,
     repeat: &str,
     record: &'r Value,
-    bound: &mut BTreeSet<String>,
+    bound: &mut BTreeSet<SourcePath>,
 ) -> Result<Vec<BoundSection<'r>>, Refusal> {
     let at_repeat = |cause| Refusal {
         at: Position::of(part),
@@ -580,11 +581,12 @@ fn repeated<'r>(
             reason,
         })
     })?;
-    let array = follow(record, &repeat_tokens, String::new(), Vec::new()).ok_or_else(|| {
-        at_repeat(LayoutRefusal::Unresolved {
-            pointer: repeat.to_owned(),
-        })
-    })?;
+    let array =
+        follow(record, &repeat_tokens, SourcePath::root(), Vec::new()).ok_or_else(|| {
+            at_repeat(LayoutRefusal::Unresolved {
+                pointer: repeat.to_owned(),
+            })
+        })?;
     let Value::Array(elements) = array.value else {
         return Err(at_repeat(LayoutRefusal::RepeatNotAnArray {
             pointer: repeat.to_owned(),
@@ -602,7 +604,7 @@ fn repeated<'r>(
         .collect::<Result<Vec<_>, Refusal>>()?;
     let mut sections = Vec::with_capacity(elements.len());
     for (index, element) in elements.iter().enumerate() {
-        let path = format!("{}[{index}]", array.path);
+        let path = array.path.index(index);
         let recorded_absence = element.get("dataAbsentReason").is_some();
         let mut bindings = Vec::with_capacity(slots.len());
         for (at_slot, slot, tokens) in &slots {
@@ -662,8 +664,8 @@ fn checked(slot: &Slot) -> Result<Vec<String>, LayoutRefusal> {
 /// A value a pointer names, with what its role is checked against.
 #[derive(Debug)]
 struct Found<'r> {
-    /// Its path from the record root, in the inspection's path notation.
-    path: String,
+    /// Its path from the record root.
+    path: SourcePath,
     /// The member names along that path, without array indexes.
     members: Vec<String>,
     /// The object or array holding it.
@@ -676,7 +678,7 @@ struct Found<'r> {
 fn follow<'r>(
     start: &'r Value,
     tokens: &[String],
-    mut path: String,
+    mut path: SourcePath,
     mut members: Vec<String>,
 ) -> Option<Found<'r>> {
     let mut value = start;
@@ -686,17 +688,14 @@ fn follow<'r>(
         value = match value {
             Value::Object(object) => {
                 let member = object.get(token)?;
-                if !path.is_empty() {
-                    path.push('.');
-                }
-                path.push_str(token);
+                path.push_member(token);
                 members.push(token.clone());
                 member
             }
             Value::Array(items) => {
                 let index = index(token)?;
                 let item = items.get(index)?;
-                path.push_str(&format!("[{index}]"));
+                path.push_index(index);
                 item
             }
             _ => return None,
@@ -716,7 +715,7 @@ fn place<'r>(
     slot: &Slot,
     found: Found<'r>,
     pointer: &str,
-    bound: &mut BTreeSet<String>,
+    bound: &mut BTreeSet<SourcePath>,
 ) -> Result<Binding<'r>, LayoutRefusal> {
     let pointer = || pointer.to_owned();
     if found.value.is_object() || found.value.is_array() {
@@ -935,37 +934,48 @@ pub(crate) fn render(
             &binding.path,
         )
     };
-    let bound: BTreeSet<&str> = layout
+    let bound: BTreeSet<&SourcePath> = layout
         .statuses
         .iter()
         .chain(layout.sections.iter().flat_map(|section| &section.bindings))
-        .map(|binding| binding.path.as_str())
+        .map(|binding| &binding.path)
         .collect();
-    let technical: BTreeSet<String> = view
+    let technical: BTreeSet<&str> = view
         .technical
         .fields
         .iter()
-        .filter_map(|field| field.path.clone())
+        .filter_map(|field| field.path.as_deref())
         .collect();
-    let mut leaves = Vec::new();
-    leaf_values(layout.record, String::new(), &mut leaves);
+    let nodes = source_path::nodes(layout.record);
+    // A field carries its path in the readable form, which no two paths share.
+    let path_of: BTreeMap<String, &SourcePath> = nodes
+        .iter()
+        .map(|(path, _)| (path.to_string(), path))
+        .collect();
+    let leaves: Vec<(&SourcePath, &Value)> = nodes
+        .iter()
+        .filter(|(_, value)| !value.is_object() && !value.is_array())
+        .map(|(path, value)| (path, *value))
+        .collect();
     // What remains of a general field once the layout has placed its bound leaves.
     let remaining = |field: SourceField| -> Vec<SourceField> {
-        let Some(path) = field.path.as_deref() else {
+        let Some(&path) = field.path.as_deref().and_then(|path| path_of.get(path)) else {
             return vec![field];
         };
-        let under: Vec<&(String, &Value)> = leaves
+        let under: Vec<_> = leaves
             .iter()
-            .filter(|(leaf, _)| is_under(leaf, path))
+            .filter(|(leaf, _)| leaf.is_under(path))
             .collect();
-        if !under.iter().any(|(leaf, _)| bound.contains(leaf.as_str())) {
+        if !under.iter().any(|(leaf, _)| bound.contains(leaf)) {
             return vec![field];
         }
         under
             .into_iter()
-            .filter(|(leaf, _)| !bound.contains(leaf.as_str()) && !technical.contains(leaf))
+            .filter(|(leaf, _)| {
+                !bound.contains(leaf) && !technical.contains(leaf.to_string().as_str())
+            })
             .map(|(leaf, value)| {
-                let label = match leaf_words(&leaf[path.len()..]) {
+                let label = match leaf_words(leaf.below(path)) {
                     words if words.is_empty() => field.label.clone(),
                     words => format!("{} {words}", field.label),
                 };
@@ -996,46 +1006,16 @@ pub(crate) fn render(
         .collect();
 }
 
-/// Whether the leaf at `leaf` lies at or under `path` in the inspection's path notation.
-fn is_under(leaf: &str, path: &str) -> bool {
-    leaf.strip_prefix(path)
-        .is_some_and(|rest| rest.is_empty() || rest.starts_with(['.', '[']))
-}
-
-/// A relative path such as `.coding[0].system` in words: "coding 1 system".
-fn leaf_words(rest: &str) -> String {
-    rest.split(['.', '['])
-        .filter(|step| !step.is_empty())
-        .map(
-            |step| match step.strip_suffix(']').map(str::parse::<usize>) {
-                Some(Ok(index)) => (index + 1).to_string(),
-                _ => humanize(step).to_lowercase(),
-            },
-        )
+/// The steps below a general field, such as `coding[0].system`, in words: "coding 1 system".
+fn leaf_words(steps: &[Step]) -> String {
+    steps
+        .iter()
+        .map(|step| match step {
+            Step::Index(index) => (index + 1).to_string(),
+            Step::Member(name) => humanize(name).to_lowercase(),
+        })
         .collect::<Vec<_>>()
         .join(" ")
-}
-
-/// Every scalar leaf under `value`, with its path.
-fn leaf_values<'r>(value: &'r Value, path: String, out: &mut Vec<(String, &'r Value)>) {
-    match value {
-        Value::Array(items) => {
-            for (index, item) in items.iter().enumerate() {
-                leaf_values(item, format!("{path}[{index}]"), out);
-            }
-        }
-        Value::Object(object) => {
-            for (key, member) in object {
-                let path = if path.is_empty() {
-                    key.clone()
-                } else {
-                    format!("{path}.{key}")
-                };
-                leaf_values(member, path, out);
-            }
-        }
-        _ => out.push((path, value)),
-    }
 }
 
 #[cfg(test)]
@@ -1553,8 +1533,66 @@ mod tests {
             "slots":[{"label":"Field","role":"other","pointer":"/a~1b/c~0d"}]}]}),
         );
         let validated = escaped.validate(&record).unwrap();
-        assert_eq!(validated.sections[0].bindings[0].path, "a/b.c~d");
+        assert_eq!(
+            validated.sections[0].bindings[0].path.to_string(),
+            "a/b.c~d"
+        );
         assert_eq!(validated.sections[0].bindings[0].value, "recorded");
+    }
+
+    #[test]
+    fn a_member_named_like_a_path_keeps_its_own_value() {
+        let cited = general_citation(&json!({"resourceType":"Observation"}));
+        let cited = Citation {
+            content: r#"{"resourceType":"Observation","status":"final","valueQuantity":{"value":7.20,"unit":"%"},"valueQuantity.value":999}"#.into(),
+            ..cited
+        };
+        let nested = "valueQuantity.value";
+        let dotted = r#"["valueQuantity.value"]"#;
+        let path_of = |fields: &[&SourceField], text: &str| {
+            fields
+                .iter()
+                .filter(|field| field.text == text)
+                .filter_map(|field| field.path.clone())
+                .collect::<Vec<_>>()
+        };
+
+        let general = inspection(&cited);
+        let shown = readable(&general);
+        assert_eq!(path_of(&shown, "7.20 %"), ["valueQuantity"]);
+        assert_eq!(path_of(&shown, "999"), [dotted]);
+        assert_view_shows_every_leaf(&cited, &general);
+
+        let result = layout(
+            json!({"record_type":"Observation","sections":[{"heading":"Result",
+            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value"}]}]}),
+        );
+        let view = inspection_with_layout(&cited, Some(&result));
+        assert_eq!(
+            view.layout_sections[0].fields,
+            [located("Result", "7.20", nested)]
+        );
+        let shown = readable(&view);
+        assert_eq!(path_of(&shown, "999"), [dotted]);
+        assert!(path_of(&shown, "%").contains(&"valueQuantity.unit".to_owned()));
+        assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+
+        // The two are two values, so a layout may bind both.
+        let both = layout(
+            json!({"record_type":"Observation","sections":[{"heading":"Result",
+            "slots":[{"label":"Result","role":"result","pointer":"/valueQuantity/value"},
+                     {"label":"Other value","role":"other","pointer":"/valueQuantity.value"}]}]}),
+        );
+        let view = inspection_with_layout(&cited, Some(&both));
+        assert_eq!(
+            view.layout_sections[0].fields,
+            [
+                located("Result", "7.20", nested),
+                located("Other value", "999", dotted)
+            ]
+        );
+        assert_shown_values_are_recorded(&cited, &view);
     }
 
     #[test]
@@ -1974,9 +2012,9 @@ mod tests {
             .chain(&view.statuses);
         for shown in placed {
             let path = shown.path.as_deref().expect("a placed field has a path");
-            let value = at(&record, path).unwrap_or_else(|| panic!("no {path}"));
+            let (path, value) = at(&record, path).unwrap_or_else(|| panic!("no {path}"));
             if !value.is_object() && !value.is_array() {
-                assert_eq!(shown.text, numbers.recorded(value, path), "{path}");
+                assert_eq!(shown.text, numbers.recorded(value, &path), "{path}");
             }
         }
     }

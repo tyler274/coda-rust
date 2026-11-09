@@ -36,6 +36,7 @@ mod reply;
 mod simulation;
 pub mod source_inspection;
 pub mod source_layout;
+mod source_path;
 pub mod synthetic_chart;
 mod synthetic_reply;
 

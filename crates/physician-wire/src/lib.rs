@@ -731,6 +731,8 @@ pub struct SourceField {
     /// Text as supplied by the source.
     pub text: String,
     /// The exact source JSON path the value was copied from, such as `component[1].valueQuantity`.
+    /// A member whose name holds `.`, `[`, `]`, `"` or `\`, or is empty, reads as a quoted JSON
+    /// string in brackets, such as `["valueQuantity.value"]`, so two fields never share a path.
     /// Absent when the text has no known field mapping, such as an attachment's readable text.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
