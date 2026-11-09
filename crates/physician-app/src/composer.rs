@@ -158,12 +158,17 @@ impl Held {
         }
         // Even saved text belongs to an unresolved Send. Do not replace it
         // with another writer's text under the submitted edit generation.
+        // A newer revision with this page's words, while a Send of them is
+        // unanswered, may be another writer's: Stop returns a queued message
+        // to the draft. Taking it as this page's baseline would let the Send's
+        // clear erase it, so the physician decides.
+        let newer_beside_send = self.pending_send.is_some() && revision > self.revision;
         if !self.unsaved() && self.pending_send.is_none() && !self.pending_clear {
             self.text = text.to_owned();
             self.saved = text.to_owned();
             self.revision = revision;
             self.conflict = None;
-        } else if self.text == text {
+        } else if self.text == text && !newer_beside_send {
             self.saved = text.to_owned();
             self.revision = revision;
             self.conflict = None;
@@ -845,6 +850,29 @@ mod tests {
         assert_eq!(composer.conflict(at).unwrap().revision, 2);
         composer.sent(&one, &send.key, SendAnswer::Accepted);
         assert!(composer.begin(&one).is_none(), "no clear over the conflict");
+    }
+
+    /// Sent before autosave, its receipt lost; Stop elsewhere returns the
+    /// same words as the first draft revision. The Send's clear must not
+    /// take that revision as its own and erase it.
+    #[test]
+    fn stop_returned_words_matching_an_unsaved_send_are_never_cleared() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 1, "Q");
+        assert_eq!(composer.conflict(at).unwrap().revision, 1);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "");
+        assert!(
+            composer.begin(&one).is_none(),
+            "no empty save over Stop's text"
+        );
+        assert_eq!(composer.conflict(at).unwrap().text, "Q");
     }
 
     #[test]
