@@ -5,7 +5,8 @@
 //! - an `EnvFilter` from `RUST_LOG` (default `info`);
 //! - an OpenTelemetry layer exporting OTLP/HTTP protobuf spans, only when
 //!   `OTEL_EXPORTER_OTLP_ENDPOINT` is set (tests and the sample server need no
-//!   infrastructure);
+//!   infrastructure). Every span is recorded, whatever sampled flag an
+//!   inbound `traceparent` carries;
 //! - a bounded OTLP log layer when an endpoint is set: fixed body and validated
 //!   operational fields only, correlated to the event's tracing parent;
 //! - a local log layer: human-readable by default, JSON lines when
@@ -162,10 +163,22 @@ fn tracer_provider(service: &'static str) -> Result<SdkTracerProvider, String> {
         .with_protocol(Protocol::HttpBinary)
         .build()
         .map_err(|error| error.to_string())?;
-    Ok(SdkTracerProvider::builder()
-        .with_resource(resource(service))
+    Ok(provider_builder(service)
         .with_batch_exporter(exporter)
         .build())
+}
+
+/// The tracer provider settings every exporter shares.
+///
+/// The sampler records every span. The SDK default follows the inbound
+/// `traceparent`'s sampled flag, and Google's front end hands Cloud Run
+/// services an unsampled one on most requests, which would silently drop the
+/// request span and every span under it, model calls included. The trace id
+/// still continues the inbound context; only the drop decision is ours.
+fn provider_builder(service: &'static str) -> opentelemetry_sdk::trace::TracerProviderBuilder {
+    SdkTracerProvider::builder()
+        .with_resource(resource(service))
+        .with_sampler(opentelemetry_sdk::trace::Sampler::AlwaysOn)
 }
 
 /// The OpenTelemetry resource for `service`, from the environment.
@@ -752,5 +765,43 @@ mod tests {
             span.status,
             opentelemetry::trace::Status::Error { .. }
         ));
+    }
+
+    /// Google's front end marks most inbound `traceparent`s unsampled; the
+    /// request span and the spans under it are still exported, in the
+    /// inbound trace.
+    #[test]
+    fn an_unsampled_inbound_traceparent_still_exports_the_request_and_its_children() {
+        use opentelemetry_sdk::trace::InMemorySpanExporter;
+        use tracing_subscriber::layer::SubscriberExt;
+
+        global::set_text_map_propagator(TraceContextPropagator::new());
+        let exporter = InMemorySpanExporter::default();
+        let provider = provider_builder("physician-sample")
+            .with_simple_exporter(exporter.clone())
+            .build();
+        let subscriber = tracing_subscriber::registry()
+            .with(tracing_opentelemetry::layer().with_tracer(provider.tracer("test")));
+        tracing::subscriber::with_default(subscriber, || {
+            let request = Request::builder()
+                .method("POST")
+                .uri("/commands")
+                .header("traceparent", format!("00-{TRACE}-b7ad6b7169203331-00"))
+                .body(())
+                .unwrap();
+            let span = HttpSpan.make_span(&request);
+            span.in_scope(|| tracing::info_span!("gen_ai.generation").in_scope(|| {}));
+        });
+        provider.force_flush().unwrap();
+        let spans = exporter.get_finished_spans().unwrap();
+        let names: Vec<_> = spans.iter().map(|span| span.name.as_ref()).collect();
+        assert_eq!(names, ["gen_ai.generation", "POST"], "{names:?}");
+        for span in &spans {
+            assert_eq!(
+                span.span_context.trace_id(),
+                TraceId::from_hex(TRACE).unwrap()
+            );
+            assert!(span.span_context.is_sampled());
+        }
     }
 }
