@@ -792,7 +792,10 @@ fn request_workspace(path: &str, query: Option<&str>) -> Option<String> {
         let id = rest.split('/').next()?;
         return (!id.is_empty()).then(|| id.to_owned());
     }
-    if let Some(rest) = path.strip_prefix("/physician-state/drafts/") {
+    if let Some(rest) = path
+        .strip_prefix("/physician-state/drafts/")
+        .or_else(|| path.strip_prefix("/physician-state/feedback/"))
+    {
         let id = rest.split('/').next()?;
         return (!id.is_empty()).then(|| id.to_owned());
     }
@@ -1809,6 +1812,7 @@ mod tests {
             &format!("/patient-workspaces/{absent}"),
             &format!("/patient-workspaces/{other_clinic_patient}/chats/none/snapshot"),
             &format!("/physician-state/drafts/{other_clinic_patient}/none"),
+            &format!("/physician-state/feedback/{other_clinic_patient}/none"),
             &format!("/today?patient_workspace_id={other_clinic_patient}"),
         ] {
             let (status, body) = send(&app, Method::GET.as_str(), path, Some(&session), None).await;

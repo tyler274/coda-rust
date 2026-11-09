@@ -30,7 +30,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test database_foundation --test pg_moments --test steering
   --test runtime_postgres --test runtime_publication --test runtime_recovery
   --test redis --test fanout --test worker --test recovery --test try_again)
-shard_2_targets=(--test stop --test chat_draft --test reply_revision
+shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
   --test instance_loss --test emulator --test push_wake)
 
 shard_1() {
@@ -84,6 +84,9 @@ shard_2() {
   # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
   # ownership, without a worker. The runtime draft-fence proof runs in shard 1.
   pg_test --test chat_draft -- --test-threads=1
+  # Response feedback: ratings on Coda's responses by place, details, and
+  # author-only reads through two sites. The store proof runs in shard 1.
+  pg_test --test feedback -- --test-threads=1
   # Hosted reply revisions: duplicate acceptance, retries re-pinning the newest
   # sources, a source arriving mid-revision read before publishing, a chart that
   # keeps changing exhausting the call bound, cross-site reads, physician-save
