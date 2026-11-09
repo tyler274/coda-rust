@@ -1,7 +1,8 @@
-//! Staging-only hop from public-site to the private Grafana and Langfuse load
-//! balancers. Cloud Run IAP admits only public-site's service account and the
-//! engineering group; this service checks that IAP assertion again, forwards
-//! two fixed path families unchanged and knows nothing about either app.
+//! Staging-only hop from public-site to the private Grafana, Langfuse and
+//! `langfuse-sso` load balancers. Cloud Run IAP admits only public-site's
+//! service account and the engineering group; this service checks that IAP
+//! assertion again, forwards three fixed path families unchanged and knows
+//! nothing about the apps.
 //! Book: `book/src/gcp.md`.
 use axum::{
     Router,
@@ -27,6 +28,24 @@ pub struct Config {
     pub grafana: Url,
     /// Internal Langfuse web origin, which serves under `/langfuse/`.
     pub langfuse: Url,
+    /// Internal `langfuse-sso` issuer origin, which serves under `/langfuse-sso/`.
+    /// Unset until the issuer is deployed; `/langfuse-sso` is then a 404, so a
+    /// relay released before its infrastructure still starts.
+    pub langfuse_sso: Option<Url>,
+}
+
+impl Config {
+    /// The upstream that owns `path`, if any. The path families are fixed.
+    fn upstream_for(&self, path: &str) -> Option<&Url> {
+        [
+            ("/grafana", Some(&self.grafana)),
+            ("/langfuse", Some(&self.langfuse)),
+            ("/langfuse-sso", self.langfuse_sso.as_ref()),
+        ]
+        .into_iter()
+        .find(|(prefix, _)| owns(path, prefix))
+        .and_then(|(_, origin)| origin)
+    }
 }
 
 /// Why the relay refused its startup configuration. `setting` names the
@@ -51,18 +70,19 @@ pub enum ConfigError {
 }
 
 impl Config {
-    /// Reads `RELAY_IAP_AUDIENCE`, `GRAFANA_UPSTREAM` and `LANGFUSE_UPSTREAM`.
+    /// Reads `RELAY_IAP_AUDIENCE`, `GRAFANA_UPSTREAM`, `LANGFUSE_UPSTREAM` and
+    /// the optional `LANGFUSE_SSO_UPSTREAM`.
     pub fn from_env() -> Result<Self, ConfigError> {
         Self::from_lookup(|name| std::env::var(name).ok())
     }
 
-    /// Every value is required; a missing one stops startup.
+    /// Every value but `LANGFUSE_SSO_UPSTREAM` is required; a missing one stops
+    /// startup. A set but invalid `LANGFUSE_SSO_UPSTREAM` also stops it.
     pub fn from_lookup(lookup: impl Fn(&str) -> Option<String>) -> Result<Self, ConfigError> {
-        let required = |setting: &'static str| {
-            lookup(setting)
-                .filter(|value| !value.trim().is_empty())
-                .ok_or(ConfigError::Missing { setting })
-        };
+        let present =
+            |setting: &'static str| lookup(setting).filter(|value| !value.trim().is_empty());
+        let required =
+            |setting: &'static str| present(setting).ok_or(ConfigError::Missing { setting });
         let setting = "RELAY_IAP_AUDIENCE";
         let audience = required(setting)?;
         validate_cloud_run_audience(&audience)
@@ -71,6 +91,9 @@ impl Config {
             audience,
             grafana: upstream("GRAFANA_UPSTREAM", &required("GRAFANA_UPSTREAM")?)?,
             langfuse: upstream("LANGFUSE_UPSTREAM", &required("LANGFUSE_UPSTREAM")?)?,
+            langfuse_sso: present("LANGFUSE_SSO_UPSTREAM")
+                .map(|value| upstream("LANGFUSE_SSO_UPSTREAM", &value))
+                .transpose()?,
         })
     }
 }
@@ -143,12 +166,7 @@ async fn relay_request(State(relay): State<Relay>, request: Request) -> Response
     if request.method() == Method::CONNECT || request.method() == Method::TRACE {
         return failure(StatusCode::METHOD_NOT_ALLOWED);
     }
-    let path = request.uri().path();
-    let origin = if owns(path, "/grafana") {
-        &relay.config.grafana
-    } else if owns(path, "/langfuse") {
-        &relay.config.langfuse
-    } else {
+    let Some(origin) = relay.config.upstream_for(request.uri().path()) else {
         return failure(StatusCode::NOT_FOUND);
     };
     let Some(path_and_query) = request.uri().path_and_query() else {

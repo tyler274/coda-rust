@@ -381,17 +381,21 @@ variable "staging_proxy" {
 }
 
 variable "observability_web" {
-  description = "Internal passthrough load balancers for grafana:3000 and langfuse-web:3000, from infra/gcp/rust-environments' observability_relay output: the two reserved INTERNAL addresses and the only source range they admit (the relay's rust-relay subnet). Null keeps both ClusterIP-only."
+  description = "Internal passthrough load balancers for grafana:3000, langfuse-web:3000 and langfuse-sso:3000, from infra/gcp/rust-environments' observability_relay output: the reserved INTERNAL addresses and the only source range they admit (the relay's rust-relay subnet). langfuse_sso_ip is needed only with langfuse_sso_image. Null keeps them all ClusterIP-only."
   type = object({
-    grafana_ip    = string
-    langfuse_ip   = string
-    source_ranges = list(string)
+    grafana_ip      = string
+    langfuse_ip     = string
+    langfuse_sso_ip = optional(string)
+    source_ranges   = list(string)
   })
   default = null
 
   validation {
     condition = var.observability_web == null || alltrue([
-      for ip in [try(var.observability_web.grafana_ip, ""), try(var.observability_web.langfuse_ip, "")] :
+      for ip in concat(
+        [try(var.observability_web.grafana_ip, ""), try(var.observability_web.langfuse_ip, "")],
+        try(var.observability_web.langfuse_sso_ip, null) == null ? [] : [var.observability_web.langfuse_sso_ip],
+      ) :
       can(cidrhost("${ip}/32", 0)) && can(regex("^(10\\.|172\\.(1[6-9]|2[0-9]|3[01])\\.|192\\.168\\.)", ip))
     ])
     error_message = "observability_web addresses must be private RFC1918 IPv4 addresses."
@@ -426,5 +430,21 @@ variable "langfuse_web_image" {
   validation {
     condition     = var.staging_proxy == null || !var.langfuse_enabled || var.langfuse_web_image != null
     error_message = "staging_proxy with langfuse_enabled requires langfuse_web_image, the /langfuse base-path build."
+  }
+}
+
+variable "langfuse_sso_image" {
+  description = "Digest-pinned coda-langfuse-sso image (crates/langfuse-sso), published by the staging release. Set, people who passed staging's IAP sign in to Langfuse as their Google account (langfuse-sso.tf). Null leaves Langfuse on its password form."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.langfuse_sso_image == null || can(regex("^[a-z0-9.-]+-docker\\.pkg\\.dev/[a-z0-9-]+/[a-z0-9-]+/coda-langfuse-sso@sha256:[0-9a-f]{64}$", var.langfuse_sso_image))
+    error_message = "langfuse_sso_image must be an Artifact Registry coda-langfuse-sso image pinned by sha256 digest."
+  }
+
+  validation {
+    condition     = var.langfuse_sso_image == null || (var.langfuse_enabled && var.staging_proxy != null && try(var.observability_web.langfuse_sso_ip, null) != null)
+    error_message = "langfuse_sso_image requires langfuse_enabled, staging_proxy and observability_web.langfuse_sso_ip: browsers reach its authorize step only through public-site and the relay."
   }
 }

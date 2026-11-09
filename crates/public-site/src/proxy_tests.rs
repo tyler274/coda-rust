@@ -172,6 +172,7 @@ async fn jwt_claims_cache_serialization_and_refresh_failure_are_closed() {
         config: ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false).unwrap(),
         client: Client::new(),
         credentials: Some(credentials.clone()),
+        langfuse_sign_in: LangfuseSignIn::default(),
     };
     let response = proxy
         .serve(
@@ -202,6 +203,7 @@ async fn jwt_claims_cache_serialization_and_refresh_failure_are_closed() {
         .unwrap(),
         client: Client::new(),
         credentials: Some(credentials),
+        langfuse_sign_in: LangfuseSignIn::default(),
     };
     let response = proxy
         .serve(
@@ -251,7 +253,8 @@ fn mounts_own_only_their_path_family() {
     for (mount, inside, outside) in [
         (Mount::Physician, "/physician/x", "/physicians"),
         (Mount::Grafana, "/grafana/d/abc", "/grafanax"),
-        (Mount::Langfuse, "/langfuse/api/auth", "/langfuse-old/"),
+        (Mount::Langfuse, "/langfuse/api/auth", "/langfuse-sso/"),
+        (Mount::LangfuseSso, "/langfuse-sso/authorize", "/langfuse/"),
     ] {
         assert!(mount.owns(mount.prefix()));
         assert!(mount.owns(&format!("{}/", mount.prefix())));
@@ -283,7 +286,7 @@ fn mounted_location_stays_inside_its_prefix_on_known_origins() {
         ("/langfuse", "/langfuse"),
     ] {
         assert_eq!(
-            mounted_location(&value.parse().unwrap(), &target, &config, "/langfuse").unwrap(),
+            mounted_location(&value.parse().unwrap(), &target, &config, Mount::Langfuse).unwrap(),
             expected,
             "{value}"
         );
@@ -300,8 +303,145 @@ fn mounted_location_stays_inside_its_prefix_on_known_origins() {
         "javascript:alert(1)",
     ] {
         assert!(
-            mounted_location(&value.parse().unwrap(), &target, &config, "/langfuse").is_none(),
+            mounted_location(&value.parse().unwrap(), &target, &config, Mount::Langfuse).is_none(),
             "{value}"
+        );
+    }
+    // The issuer may leave its prefix for Langfuse's callback, and only that.
+    let target = Url::parse("https://relay.test/langfuse-sso/authorize").unwrap();
+    let callback = "https://staging.codahealth.ai/langfuse/api/auth/callback/custom?code=c&state=s";
+    assert_eq!(
+        mounted_location(
+            &callback.parse().unwrap(),
+            &target,
+            &config,
+            Mount::LangfuseSso
+        )
+        .unwrap(),
+        "/langfuse/api/auth/callback/custom?code=c&state=s"
+    );
+    for value in [
+        "/langfuse/",
+        "/langfuse/api/auth/callback/google?code=c",
+        "https://evil.test/langfuse/api/auth/callback/custom",
+    ] {
+        assert!(
+            mounted_location(
+                &value.parse().unwrap(),
+                &target,
+                &config,
+                Mount::LangfuseSso
+            )
+            .is_none(),
+            "{value}"
+        );
+    }
+    assert!(
+        mounted_location(
+            &callback.parse().unwrap(),
+            &target,
+            &config,
+            Mount::Langfuse
+        )
+        .is_some()
+    );
+}
+
+#[test]
+fn langfuse_navigations_without_a_session_start_sso_and_return_to_their_page() {
+    let navigate = |uri: &str, cookie: Option<&str>, mode: &str| {
+        let mut headers = HeaderMap::new();
+        headers.insert("sec-fetch-mode", mode.parse().unwrap());
+        if let Some(cookie) = cookie {
+            headers.insert(header::COOKIE, cookie.parse().unwrap());
+        }
+        langfuse_navigation(&headers, &Method::GET, &uri.parse().unwrap())
+    };
+    const SESSION: &str = "__Secure-next-auth.session-token=s";
+    for (uri, expected) in [
+        (
+            "/langfuse/project/p/traces?x=1",
+            "/langfuse/auth/sso-initiate?provider=custom&target=%2Flangfuse%2Fproject%2Fp%2Ftraces%3Fx%3D1",
+        ),
+        (
+            "/langfuse",
+            "/langfuse/auth/sso-initiate?provider=custom&target=%2Flangfuse",
+        ),
+        (
+            "/langfuse/auth/sign-in?callbackUrl=https%3A%2F%2Fevil.test%2F",
+            "/langfuse/auth/sso-initiate?provider=custom&target=%2Flangfuse%2F",
+        ),
+        (
+            "/langfuse/auth/sign-in?callbackUrl=%2Flangfuse%2Fsetup",
+            "/langfuse/auth/sso-initiate?provider=custom&target=%2Flangfuse%2Fsetup",
+        ),
+    ] {
+        assert_eq!(
+            navigate(uri, None, "navigate").as_deref(),
+            Some(expected),
+            "{uri}"
+        );
+    }
+    // The sign-in page redirects even with a stale session cookie.
+    assert!(navigate("/langfuse/auth/sign-in", Some(SESSION), "navigate").is_some());
+    for (uri, cookie, mode) in [
+        ("/langfuse/project/p", Some(SESSION), "navigate"),
+        ("/langfuse/project/p", None, "cors"),
+        ("/langfuse/api/auth/session", None, "navigate"),
+        ("/langfuse/auth/error?error=OAuthCallback", None, "navigate"),
+        (
+            "/langfuse/auth/sign-in?error=OAuthCallback",
+            None,
+            "navigate",
+        ),
+        (
+            "/langfuse/auth/sso-initiate?provider=custom",
+            None,
+            "navigate",
+        ),
+        // Other cookies are not a session.
+        (
+            "/langfuse/project/p",
+            Some("IAP=x; __Host-next-auth.csrf-token=c"),
+            "no-cors",
+        ),
+    ] {
+        assert!(
+            navigate(uri, cookie, mode).is_none(),
+            "{uri} {cookie:?} {mode}"
+        );
+    }
+    assert!(
+        langfuse_navigation(
+            &HeaderMap::from_iter([(
+                "sec-fetch-mode".parse().unwrap(),
+                "navigate".parse().unwrap()
+            )]),
+            &Method::POST,
+            &"/langfuse/project/p".parse().unwrap(),
+        )
+        .is_none()
+    );
+    // Once signed in, sso-initiate returns to the requested page, never off the mount.
+    for (target, expected) in [
+        (
+            "%2Flangfuse%2Fproject%2Fp%3Fx%3D1",
+            "/langfuse/project/p?x=1",
+        ),
+        ("https%3A%2F%2Fevil.test%2Flangfuse%2F", "/langfuse/"),
+        ("%2F%2Fevil.test%2Flangfuse", "/langfuse/"),
+        ("%2Flangfuse%2F..%2Fphysician%2F", "/langfuse/"),
+        ("%2Fgrafana%2F", "/langfuse/"),
+    ] {
+        assert_eq!(
+            navigate(
+                &format!("/langfuse/auth/sso-initiate?provider=custom&target={target}"),
+                Some(SESSION),
+                "navigate"
+            )
+            .as_deref(),
+            Some(expected),
+            "{target}"
         );
     }
 }
@@ -435,6 +575,43 @@ async fn observability_mounts_keep_prefix_drop_spoofed_assertion_and_refuse_off_
     assert_eq!(
         send(Mount::Grafana, "/langfuse/").await.status(),
         StatusCode::NOT_FOUND
+    );
+    // Browsers reach only the issuer's authorize step.
+    let response = send(Mount::LangfuseSso, "/langfuse-sso/authorize?state=s").await;
+    assert_eq!(response.status(), StatusCode::OK);
+    assert!(!response.headers().contains_key(header::SET_COOKIE));
+    for path in [
+        "/langfuse-sso/token",
+        "/langfuse-sso/.well-known/openid-configuration",
+        "/langfuse-sso/.well-known/jwks.json",
+        "/langfuse-sso",
+    ] {
+        assert_eq!(
+            send(Mount::LangfuseSso, path).await.status(),
+            StatusCode::NOT_FOUND,
+            "{path}"
+        );
+    }
+    // Under SSO, a page navigation with no session starts SSO without
+    // reaching Langfuse; with Langfuse's own login it reaches Langfuse.
+    let navigation = || {
+        Request::builder()
+            .uri("/langfuse/project/p")
+            .header("sec-fetch-mode", "navigate")
+            .body(Body::empty())
+            .unwrap()
+    };
+    let response = relay.mount(Mount::Langfuse).serve(navigation()).await;
+    assert_eq!(response.status(), StatusCode::OK);
+    let response = relay
+        .mount(Mount::Langfuse)
+        .langfuse_sign_in(LangfuseSignIn::Sso)
+        .serve(navigation())
+        .await;
+    assert_eq!(response.status(), StatusCode::SEE_OTHER);
+    assert_eq!(
+        response.headers()[header::LOCATION],
+        "/langfuse/auth/sso-initiate?provider=custom&target=%2Flangfuse%2Fproject%2Fp"
     );
     server.abort();
 }

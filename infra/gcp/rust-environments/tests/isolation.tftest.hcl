@@ -1084,14 +1084,17 @@ run "observability_active" {
       length(google_cloud_run_v2_service.observability_relay["relay"].template[0].containers) == 1 &&
       google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == "observability-relay" &&
       { for env in google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].env : env.name => env.value } == {
-        RELAY_IAP_AUDIENCE = "/projects/123456789012/locations/us-east1/services/observability-relay"
-        GRAFANA_UPSTREAM   = "http://10.82.0.20:3000"
-        LANGFUSE_UPSTREAM  = "http://10.82.0.20:3000"
+        RELAY_IAP_AUDIENCE    = "/projects/123456789012/locations/us-east1/services/observability-relay"
+        GRAFANA_UPSTREAM      = "http://10.82.0.20:3000"
+        LANGFUSE_UPSTREAM     = "http://10.82.0.20:3000"
+        LANGFUSE_SSO_UPSTREAM = "http://10.82.0.20:3000"
       } &&
       jsonencode(output.observability_relay.source_ranges) == jsonencode(["10.80.1.0/26"]) &&
-      keys(google_compute_address.observability_web) == ["grafana", "langfuse"]
+      output.observability_relay.langfuse_sso_ip == "10.82.0.20" &&
+      keys(google_compute_address.observability_web) == ["grafana", "langfuse", "langfuse-sso"] &&
+      google_compute_address.observability_web["langfuse-sso"].name == "langfuse-sso-internal"
     )
-    error_message = "The relay leaves through rust-relay to the two reserved addresses, with one unnamed container, its own audience and no secrets."
+    error_message = "The relay leaves through rust-relay to the three reserved addresses, with one unnamed container, its own audience and no secrets."
   }
 
   assert {
