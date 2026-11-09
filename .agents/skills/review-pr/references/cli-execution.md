@@ -103,9 +103,12 @@ follow-ups. Do not put credential values in run artifacts or model prompts.
 
 `--dry-run` reads the PRs and prepares the request without starting a model.
 Python 3.10+, authenticated `gh`, and the selected CLI must be on PATH.
-`--output-dir` accepts a new scratch directory; otherwise results go under
-`work/pr-review-*` in the workspace.
-Existing run files are never overwritten.
+When the PR's branch has a local worktree, pass
+`--output-dir <worktree>/target/verification/review/<branch>/<round>`, the same
+round folders [local review](../../local-review/references/codex-reviewer.md)
+uses, with a new `<round>` name that sorts after earlier rounds. The developer's
+timeline reads review state from there. Without `--output-dir`, results go under
+`work/pr-review-*` in the workspace. Existing run files are never overwritten.
 
 ## Execute and receive
 

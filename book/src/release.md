@@ -20,8 +20,35 @@ This page links the owners of each release path. Each owner keeps its own proced
 - CI installs `wasm-bindgen`, mdBook, and lychee from pinned, checksum-verified release archives, not with `cargo install`. The comments next to each install step give the reason for its pin.
 - CI makes no anonymous GitHub downloads that it can authenticate, because GitHub throttles anonymous traffic first. Release archives and the Doppler CLI come through the GitHub API with the job token; `github.com` download URLs ignore the token. OpenTofu fetches providers from those URLs and cannot send a token, so [`tofu-providers`](/.github/actions/tofu-providers/action.yml) caches them per job, keyed on the committed lock files.
 - CI runs on Blacksmith runners, which boot GitHub's Ubuntu 24.04 image and serve `actions/cache` from Blacksmith's own cache. The `ci` job uses `blacksmith-4vcpu-ubuntu-2404` and `cargo-deny` uses `blacksmith-2vcpu-ubuntu-2404`. `images` uses `blacksmith-8vcpu-ubuntu-2404` when `ci_scope.py` reports a change to `Cargo.lock`, a `Cargo.toml`, the flake or `nix/`, since those rebuild the Rust dependency derivations; other runs use 2 vCPU. [`.actrc`](/.actrc) maps these labels to the `act` image, and [`.github/actionlint.yaml`](/.github/actionlint.yaml) declares them. To roll back, set `runs-on` to `ubuntu-latest`.
-- Run the workflow locally with `act` from `nix develop`; it needs the host's Docker daemon, which the shell does not provide. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`.
+- Run the workflow locally with `act` from `nix develop`; it needs the host's Docker daemon, which the shell does not provide. [`.actrc`](/.actrc) selects the runner image and the `ci` job. Check the workflow with `actionlint .github/workflows/ci.yml`. From a linked worktree, use `cargo run -p harness-timeline -- run-act --worktree <path>`: it runs `act` in a standalone clone of the worktree's head, so CI selection can compare against `origin/main`, and records the run where the [harness timeline](#harness-timeline) reads it.
 - [`.githooks/pre-commit`](/.githooks/pre-commit) runs the same rustfmt and clippy steps before a commit.
+
+## Harness timeline
+
+[`harness-timeline`](/crates/harness-timeline/src/lib.rs) is a developer tool that gathers where each ticket's work stands into one stream of JSON lines: Linear tickets with their sub-tickets, worktrees, capture-proof entries, scenario receipts, independent review rounds, local `act` runs and GitHub pull requests. Each line is everything one source currently knows ([`event.rs`](/crates/harness-timeline/src/event.rs)), so a reader can start at any time. A source it cannot read arrives as a `source_error`, never as an empty lane. No product crate depends on it, and `boundaries` checks that.
+
+```sh
+nix develop
+cargo run -p harness-timeline -- watch --team ENG            # keeps watching
+cargo run -p harness-timeline -- watch --team ENG --once     # one line per source
+cargo run -p harness-timeline -- watch --team ENG --ticket ENG-159
+```
+
+It reads Linear through `LINEAR_API_KEY`, which Doppler's `dev` config supplies in the dev shell, and pull requests through `gh`. Linear tickets come from `--ticket` and from the ticket keys in worktree branch names, with each ticket's parent and sub-tickets. A pull request belongs to the ticket whose Linear attachment links it, or else to the ticket its branch names. Without `LINEAR_API_KEY` or `gh`, those sources report an error and the local ones keep working.
+
+The local sources live in each worktree's `target/verification/`: the proof manifest that <a href="/.agents/skills/capture-proof/SKILL%2Emd">capture-proof</a> writes under `proof/<branch>/`, scenario receipts under `runs/`, review rounds under `review/<branch>/<round>/` as the <a href="/.agents/skills/local-review/references/codex-reviewer%2Emd">Codex reviewer</a> and <a href="/.agents/skills/review-pr/references/cli-execution%2Emd"><code>review-pr</code></a> lay them out, and `run-act` runs under `act/<branch>/<run>/`. Proof, review and CI each say whether they ran against the worktree's current head.
+
+A Zed fork draws the stream as a panel, kept on the personal `harness-timeline` branch of a Zed checkout. Its settings name the collector:
+
+```json
+"harness_timeline": {
+  "command": "/path/to/coda-rust/target/debug/harness-timeline",
+  "args": ["watch", "--team", "ENG"],
+  "cwd": "/path/to/coda-rust"
+}
+```
+
+The panel runs the collector with the environment a terminal in `cwd` would have, so direnv's dev shell and Doppler's `LINEAR_API_KEY` reach it. Each row is a ticket with its sub-tickets as lanes, and each lane shows its plan, implementation, verification, review, local CI and pull request as marks. A lane's marks open the artifact, review report, `act` log, pull request, ticket or worktree behind them, and its menu runs local CI through `run-act`.
 
 ## Private Nix binary cache
 

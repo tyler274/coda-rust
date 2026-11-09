@@ -140,6 +140,36 @@ mod tests {
         }
     }
 
+    /// The timeline collector is a developer tool that reads the repository
+    /// from outside. No crate reaches it, and it reaches no crate.
+    #[test]
+    fn the_timeline_collector_stays_outside_the_products() {
+        let crates = std::fs::read_dir(root().join("crates")).unwrap();
+        let mut checked = 0;
+        for entry in crates {
+            let entry = entry.unwrap();
+            if !entry.path().join("Cargo.toml").exists() {
+                continue;
+            }
+            let name = entry.file_name().into_string().unwrap();
+            if name == "harness-timeline" {
+                continue;
+            }
+            checked += 1;
+            assert!(
+                !local_closure(&name).contains("harness-timeline"),
+                "{name} reached the timeline collector"
+            );
+        }
+        assert!(checked > 0, "the check found no crates");
+        let own = local_closure("harness-timeline");
+        assert_eq!(
+            own.into_iter().collect::<Vec<_>>(),
+            ["harness-timeline"],
+            "the collector imported a workspace crate"
+        );
+    }
+
     /// The disposable emulator is reachable from tests only: every crate that
     /// enables `pubsub/test-util` does it under `[dev-dependencies]`.
     #[test]
