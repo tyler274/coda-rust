@@ -376,8 +376,10 @@ Each apply is from a reviewed saved plan with the operator's authorization.
    `genpkey -outform DER` alone writes SEC1, which the issuer refuses at
    startup.
 2. Apply `rust-environments`. Its `observability_relay` output gains
-   `langfuse_sso_ip`, and the relay gets `LANGFUSE_SSO_UPSTREAM`. Release
-   the relay with its `/langfuse-sso` family.
+   `langfuse_sso_ip`, and the relay gets `LANGFUSE_SSO_UPSTREAM`. The
+   relay treats that setting as optional and answers `/langfuse-sso` with 404
+   until it is set, so a staging release can land before or after this
+   apply.
 3. Set `langfuse_sso_image` in `env/staging.tfvars` to the `coda-langfuse-sso`
    digest the staging release published, render `observability_web` with
    `langfuse_sso_ip`, then plan and apply this root.

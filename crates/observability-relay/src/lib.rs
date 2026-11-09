@@ -29,20 +29,22 @@ pub struct Config {
     /// Internal Langfuse web origin, which serves under `/langfuse/`.
     pub langfuse: Url,
     /// Internal `langfuse-sso` issuer origin, which serves under `/langfuse-sso/`.
-    pub langfuse_sso: Url,
+    /// Unset until the issuer is deployed; `/langfuse-sso` is then a 404, so a
+    /// relay released before its infrastructure still starts.
+    pub langfuse_sso: Option<Url>,
 }
 
 impl Config {
     /// The upstream that owns `path`, if any. The path families are fixed.
     fn upstream_for(&self, path: &str) -> Option<&Url> {
         [
-            ("/grafana", &self.grafana),
-            ("/langfuse", &self.langfuse),
-            ("/langfuse-sso", &self.langfuse_sso),
+            ("/grafana", Some(&self.grafana)),
+            ("/langfuse", Some(&self.langfuse)),
+            ("/langfuse-sso", self.langfuse_sso.as_ref()),
         ]
         .into_iter()
         .find(|(prefix, _)| owns(path, prefix))
-        .map(|(_, origin)| origin)
+        .and_then(|(_, origin)| origin)
     }
 }
 
@@ -69,18 +71,18 @@ pub enum ConfigError {
 
 impl Config {
     /// Reads `RELAY_IAP_AUDIENCE`, `GRAFANA_UPSTREAM`, `LANGFUSE_UPSTREAM` and
-    /// `LANGFUSE_SSO_UPSTREAM`.
+    /// the optional `LANGFUSE_SSO_UPSTREAM`.
     pub fn from_env() -> Result<Self, ConfigError> {
         Self::from_lookup(|name| std::env::var(name).ok())
     }
 
-    /// Every value is required; a missing one stops startup.
+    /// Every value but `LANGFUSE_SSO_UPSTREAM` is required; a missing one stops
+    /// startup. A set but invalid `LANGFUSE_SSO_UPSTREAM` also stops it.
     pub fn from_lookup(lookup: impl Fn(&str) -> Option<String>) -> Result<Self, ConfigError> {
-        let required = |setting: &'static str| {
-            lookup(setting)
-                .filter(|value| !value.trim().is_empty())
-                .ok_or(ConfigError::Missing { setting })
-        };
+        let present =
+            |setting: &'static str| lookup(setting).filter(|value| !value.trim().is_empty());
+        let required =
+            |setting: &'static str| present(setting).ok_or(ConfigError::Missing { setting });
         let setting = "RELAY_IAP_AUDIENCE";
         let audience = required(setting)?;
         validate_cloud_run_audience(&audience)
@@ -89,7 +91,9 @@ impl Config {
             audience,
             grafana: upstream("GRAFANA_UPSTREAM", &required("GRAFANA_UPSTREAM")?)?,
             langfuse: upstream("LANGFUSE_UPSTREAM", &required("LANGFUSE_UPSTREAM")?)?,
-            langfuse_sso: upstream("LANGFUSE_SSO_UPSTREAM", &required("LANGFUSE_SSO_UPSTREAM")?)?,
+            langfuse_sso: present("LANGFUSE_SSO_UPSTREAM")
+                .map(|value| upstream("LANGFUSE_SSO_UPSTREAM", &value))
+                .transpose()?,
         })
     }
 }

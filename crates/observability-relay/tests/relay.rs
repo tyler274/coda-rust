@@ -159,9 +159,20 @@ fn configuration_is_required_and_origin_only() {
         "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
         _ => None,
     });
+    assert!(
+        without_sso.unwrap().langfuse_sso.is_none(),
+        "a relay released before the issuer exists still starts"
+    );
+    let bad_sso = Config::from_lookup(|name| match name {
+        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
+        "GRAFANA_UPSTREAM" => Some("http://10.80.0.10:3000".into()),
+        "LANGFUSE_UPSTREAM" => Some("http://10.80.0.11:3000".into()),
+        "LANGFUSE_SSO_UPSTREAM" => Some("http://10.80.0.12:3000/path".into()),
+        _ => None,
+    });
     assert!(matches!(
-        without_sso,
-        Err(ConfigError::Missing {
+        bad_sso,
+        Err(ConfigError::NotOrigin {
             setting: "LANGFUSE_SSO_UPSTREAM"
         })
     ));
@@ -210,4 +221,36 @@ fn configuration_is_required_and_origin_only() {
         }
     ));
     assert!(std::error::Error::source(&error).is_some());
+}
+
+#[tokio::test]
+async fn without_the_issuer_langfuse_sso_is_not_found_and_the_rest_still_relays() {
+    let langfuse_calls = Arc::new(AtomicUsize::new(0));
+    let (langfuse, l) = upstream("langfuse", langfuse_calls.clone()).await;
+    let config = Config::from_lookup(|name| match name {
+        "RELAY_IAP_AUDIENCE" => Some(AUDIENCE.into()),
+        "GRAFANA_UPSTREAM" => Some("http://127.0.0.1:9".into()),
+        "LANGFUSE_UPSTREAM" => Some(langfuse.clone()),
+        _ => None,
+    })
+    .unwrap();
+    let app = router_with_verifier(config, http::iap::fixture::verifier(AUDIENCE));
+    let send = |path: &str| {
+        app.clone().oneshot(
+            Request::builder()
+                .uri(path)
+                .header(
+                    "x-goog-iap-jwt-assertion",
+                    http::iap::fixture::assertion(AUDIENCE),
+                )
+                .body(Body::empty())
+                .unwrap(),
+        )
+    };
+    let refused = send("/langfuse-sso/authorize?state=s").await.unwrap();
+    assert_eq!(refused.status(), StatusCode::NOT_FOUND);
+    let relayed = send("/langfuse/api/public/health").await.unwrap();
+    assert_eq!(relayed.status(), StatusCode::OK);
+    assert_eq!(langfuse_calls.load(Ordering::SeqCst), 1);
+    l.abort();
 }
