@@ -83,8 +83,8 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 The account steps apply to the MVP. After sign-up, the MVP leads to records and Shared, with no conversation. The steps below about conversation, replies and chat notifications describe the later experience. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
 
-1. The person installs Duet from TestFlight on iPhone or from a Google Play testing link on Android. A public store listing is the goal.
-2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. Practice invitations use email too. Duet has no web surface; an invitation link opens the app.
+1. The person installs Duet from the App Store on iPhone or the Play Store on Android.
+2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. A practice invitation arrives by text, with email as a backup, as [Connected care](connected-care.md) describes. Duet has no web surface; an invitation link opens the app.
 3. They see the standing notice.
 4. They accept the Terms with one explicit "I agree and continue", with no prechecked box. Accepting them also confirms the person is 18 or over and in the U.S. A quiet Sign out sits under this step for a wrong account or declined Terms.
 5. They make one choice about AI: Allow AI or Not now. Not now keeps every non-AI part of the app working.
@@ -146,7 +146,7 @@ Plans, Reminders and Check-ins:
 11. When it's due, it posts as a message in the thread, after any reply Duet is in the middle of. It alerts wherever alerts are allowed, and the lock-screen text stays generic. Opening the notification goes straight to the message, after Duet checks it's the right account.
 12. A Reminder posts the person's words, and Duet may add to them. A Check-in does its work with current context and may adjust its questions, timing, pausing and completion within the limits the person accepted, and meaningful changes are shown.
 13. The person can edit, pause, resume or cancel any of them. A Plan deleted while open stays on screen and says it was removed.
-14. **A Check-in can't finish.** Duet posts a fixed line in the thread with Try again, and the Check-in on Today shows it couldn't finish. If it keeps failing, Duet tells the person and judges whether to keep trying, pause it or ask them; a pause Duet chose stays distinct from one the person chose. A failed Check-in whose next time arrives while AI isn't allowed is retired.
+14. **A Check-in can't finish.** Duet posts a fixed line in the thread with Try again, and the Check-in on Today shows it couldn't finish. If it keeps failing, automatic recovery stops, Duet tells the person, and the Check-in stays resumable through Try again. A failed Check-in whose next time arrives while AI isn't allowed is retired.
 15. **Interruption or restart.** An accepted Reminder or Check-in still runs exactly once.
 16. **Newer Terms or AI not allowed.** AI work waits without being used up. Reminder and Check-in times that pass are skipped, and the next one delivers once AI is allowed again.
 17. **Outage or backlog.** Duet acknowledges what it missed, offers whatever catch-up it judges useful, and never reports missed work as done.
@@ -235,7 +235,7 @@ Access and identity:
 - There's no guest, anonymous or local-only mode.
 - Duet is for adults 18 and over in the U.S.
 - Patient-facing sources and connections stay separate from provider-facing ones.
-- Duet has no doctor accounts; physicians sign in only through Coda Agents.
+- Duet has no doctor accounts; physicians sign in only through Chords.
 
 What leaves Duet:
 
@@ -245,7 +245,7 @@ What leaves Duet:
 - The app covers its screen whenever it's inactive, so the app switcher never shows health content, and a background launch on a locked iPhone never erases data.
 - Duet never writes back to the person's sources.
 - Continuous sensor data stays on the phone, but each reading the person takes, such as a blood-pressure reading, reaches the server as its own measurement. Every calculation that doesn't need raw samples runs on the server.
-- Duet uses the same clinical library as Coda Agents, including outside clinical AI under a BAA, and the person's records. It uses no web search.
+- Duet uses the same clinical library as Chords, including outside clinical AI under a BAA, and the person's records. It uses no web search.
 - Duet has no advertising, no cross-app tracking, no data broker and no App Tracking Transparency prompt, and it keeps the standard disclosures.
 - Any use of data beyond the service is separately consented and de-identified.
 

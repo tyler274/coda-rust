@@ -6,7 +6,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 **Physician**
 
-- **P2. Practice roles.** Who manages messaging and who may send, once practices have real roles. Until then the messaging manager is the person who set up the practice’s Spruce connection.
+- **P2. Practice roles.** Who manages messaging and who may send, once practices have real roles.
 - **P3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
 
 **Duet**
@@ -59,10 +59,10 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 ## Engineering decisions
 
-- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from. The agents judge which visits to prepare and how far ahead.
+- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from.
 - **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
 - **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
-- **E4. Freshness after a one-time pull.** How records from other systems stay fresh. Every source shows when it was last refreshed.
+- **E4. Freshness after a one-time pull.** How records from other systems stay fresh.
 - **E5. athena.** The patient-access route and what's still missing.
 - **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.
 - **E7. Chart search.** Outline first or plain search, settled by evals.
