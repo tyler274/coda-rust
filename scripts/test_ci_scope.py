@@ -14,6 +14,8 @@ import yaml
 
 SCRIPT = Path(__file__).with_name("ci_scope.py")
 WORKFLOW = SCRIPT.parents[1] / ".github/workflows/ci.yml"
+sys.path.insert(0, str(SCRIPT.parent))
+import ci_scope  # noqa: E402
 
 
 class ScopeTests(unittest.TestCase):
@@ -66,8 +68,9 @@ class ScopeTests(unittest.TestCase):
                                 env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         lines = output.read_text().splitlines()
-        self.assertEqual([line.split("=")[0] for line in lines], ["full", "deps"])
+        self.assertEqual([line.split("=")[0] for line in lines], ["full", "deps", "mobile"])
         self.last_deps = lines[1]
+        self.last_mobile = lines[2]
         return lines[0]
 
     def test_scope_matches_approved_categories_not_file_size(self):
@@ -112,6 +115,62 @@ class ScopeTests(unittest.TestCase):
         # An uncertain comparison runs everything but does not guess cold.
         self.scope("workflow_dispatch", event={})
         self.assertEqual(self.last_deps, "deps=false")
+
+    def test_android_build_changes_select_the_emulator(self):
+        cases = {
+            "crates/ui/src/lib.rs": True, "crates/mobile/src/main.rs": True,
+            "crates/android/src/main.rs": True, "crates/duet-client/src/lib.rs": True,
+            "platform/android/ModeShellTest.kt": True, "scripts/wire-duet-android.py": True,
+            "nix/android-shell.nix": True, "flake.lock": True, "Cargo.lock": True,
+            ".github/workflows/ci.yml": True, ".cargo/config.toml": True, "Dioxus.toml": True,
+            "platform/ios/build_bridge.rs": True,
+            "crates/duet-api/src/lib.rs": False, "crates/physician-sample/src/main.rs": False,
+            "crates/uix/src/lib.rs": False, "platform/ios/Info.plist": False,
+            "nix/packages.nix": False, "skills/clinical/SKILL.md": False,
+            "book/src/release.md": False,
+        }
+        for path, mobile in cases.items():
+            with self.subTest(path=path):
+                self.assertEqual(ci_scope.mobile_path(path), mobile)
+
+    def test_emulator_is_manual_only_while_change_selection_is_off(self):
+        self.assertFalse(ci_scope.MOBILE_ON_CHANGE)
+        self.write("crates/mobile/src/main.rs", "changed\n")
+        self.commit()
+        for event in ("pull_request", "push"):
+            with self.subTest(event=event):
+                self.assertEqual(self.scope(event), "full=true")
+                self.assertEqual(self.last_mobile, "mobile=false")
+        for event, mobile in [("workflow_dispatch", True), ("schedule", False), ("unknown", False)]:
+            with self.subTest(event=event):
+                self.scope(event, event={})
+                self.assertEqual(self.last_mobile, f"mobile={str(mobile).lower()}")
+
+    def test_change_selection_runs_the_emulator_only_for_the_apk_build(self):
+        self.write("crates/mobile/src/main.rs", "changed\n")
+        head = self.commit()
+        event = {"pull_request": {"base": {"sha": self.base}, "head": {"sha": head}}}
+        cwd = os.getcwd()
+        os.chdir(self.repo)
+        try:
+            self.assertTrue(ci_scope.classify("pull_request", event)[2])
+            self.write("crates/duet-api/src/lib.rs", "changed\n")
+            other = self.commit()
+            event["pull_request"] = {"base": {"sha": head}, "head": {"sha": other}}
+            self.assertFalse(ci_scope.classify("pull_request", event)[2])
+        finally:
+            os.chdir(cwd)
+
+    def test_mobile_crate_list_check_reads_cargo_tree(self):
+        root = SCRIPT.resolve().parents[1]
+        def check(tree):
+            return subprocess.run([sys.executable, str(SCRIPT), "check-mobile-crates"],
+                                  input=tree, capture_output=True, text=True)
+        listed = f"ui v0.1.0 ({root}/crates/ui)\nmobile v0.1.0 ({root}/crates/mobile) (*)\nserde v1.0.0\n"
+        self.assertEqual(check(listed).returncode, 0)
+        unlisted = check(listed + f"duet-new v0.1.0 ({root}/crates/duet-new)\n")
+        self.assertNotEqual(unlisted.returncode, 0)
+        self.assertIn("duet-new", unlisted.stderr)
 
     def test_complete_pr_and_push_include_earlier_code_change(self):
         self.write("crates/app/src/lib.rs", "pub fn changed() {}\n")
@@ -180,9 +239,12 @@ class ResultTests(unittest.TestCase):
         self.jobs = yaml.safe_load(WORKFLOW.read_text())["jobs"]
         self.dependencies = self.jobs["result"]["needs"]
 
-    def needs(self, full):
+    def needs(self, full, mobile=None):
+        mobile = full if mobile is None else mobile
         result = {job: {"result": "success" if full else "skipped"} for job in self.dependencies}
-        result["scope"] = {"result": "success", "outputs": {"full": str(full).lower()}}
+        result["android-emulator"] = {"result": "success" if mobile else "skipped"}
+        result["scope"] = {"result": "success",
+                           "outputs": {"full": str(full).lower(), "mobile": str(mobile).lower()}}
         result["lightweight"] = {"result": "success"}
         return result
 
@@ -206,10 +268,22 @@ class ResultTests(unittest.TestCase):
                 missing = copy.deepcopy(needs)
                 del missing[job]
                 self.check(missing, False)
-        for flag in (None, "", "unknown"):
-            needs = self.needs(False)
-            needs["scope"]["outputs"]["full"] = flag
-            self.check(needs, False)
+        for output in ("full", "mobile"):
+            for flag in (None, "", "unknown"):
+                needs = self.needs(False)
+                needs["scope"]["outputs"][output] = flag
+                self.check(needs, False)
+
+    def test_emulator_result_follows_mobile_not_full(self):
+        self.check(self.needs(True, mobile=False), True)
+        ran = self.needs(True, mobile=False)
+        ran["android-emulator"]["result"] = "failure"
+        self.check(ran, False)
+        for state in ("failure", "cancelled", "skipped"):
+            with self.subTest(state=state):
+                needs = self.needs(True, mobile=True)
+                needs["android-emulator"]["result"] = state
+                self.check(needs, False)
 
     def test_gate_covers_every_validation_job_and_deployment_consumes_gate(self):
         # This is a workflow topology contract, not a copy of the job inventory.

@@ -178,16 +178,7 @@ object HealthConnectBridge {
                 json.put("device", it)
             }
         }
-        when (record) {
-            is androidx.health.connect.client.records.InstantaneousRecord -> {
-                val at = offsetTime(record.time, record.zoneOffset)
-                json.put("start", at).put("end", at)
-            }
-            is androidx.health.connect.client.records.IntervalRecord -> {
-                json.put("start", offsetTime(record.startTime, record.startZoneOffset))
-                json.put("end", offsetTime(record.endTime, record.endZoneOffset))
-            }
-        }
+        span(record)?.let { (start, end) -> json.put("start", start).put("end", end) }
         json.put(
             "metadata",
             JSONObject()
@@ -196,6 +187,36 @@ object HealthConnectBridge {
                 .put("client_record_version", record.metadata.clientRecordVersion),
         )
         return json
+    }
+
+    // Health Connect keeps InstantaneousRecord and IntervalRecord internal, so
+    // each record type this bridge reads names its own time fields.
+    private fun span(record: androidx.health.connect.client.records.Record): Pair<String, String>? {
+        fun at(time: Instant, offset: java.time.ZoneOffset?) =
+            offsetTime(time, offset).let { it to it }
+        fun between(start: Instant, startOffset: java.time.ZoneOffset?, end: Instant, endOffset: java.time.ZoneOffset?) =
+            offsetTime(start, startOffset) to offsetTime(end, endOffset)
+        return when (record) {
+            is BasalBodyTemperatureRecord -> at(record.time, record.zoneOffset)
+            is BloodGlucoseRecord -> at(record.time, record.zoneOffset)
+            is BloodPressureRecord -> at(record.time, record.zoneOffset)
+            is BodyFatRecord -> at(record.time, record.zoneOffset)
+            is BodyTemperatureRecord -> at(record.time, record.zoneOffset)
+            is HeightRecord -> at(record.time, record.zoneOffset)
+            is LeanBodyMassRecord -> at(record.time, record.zoneOffset)
+            is OxygenSaturationRecord -> at(record.time, record.zoneOffset)
+            is RestingHeartRateRecord -> at(record.time, record.zoneOffset)
+            is Vo2MaxRecord -> at(record.time, record.zoneOffset)
+            is WeightRecord -> at(record.time, record.zoneOffset)
+            is ActiveCaloriesBurnedRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is DistanceRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is ExerciseSessionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is HydrationRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is NutritionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is SleepSessionRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            is StepsRecord -> between(record.startTime, record.startZoneOffset, record.endTime, record.endZoneOffset)
+            else -> null
+        }
     }
 
     private fun offsetTime(instant: Instant, offset: java.time.ZoneOffset?): String =

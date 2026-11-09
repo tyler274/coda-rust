@@ -61,7 +61,7 @@ class WorkflowTests(unittest.TestCase):
                 cleanup = [s for s in job['steps'] if s.get('run') == 'python3 scripts/nix-cache/nix_cache.py cleanup']
                 self.assertEqual(len(cleanup), 1)
                 self.assertIn('always()', cleanup[0]['if'])
-        self.assertEqual(readers, 7)
+        self.assertEqual(readers, 8)
 
     def test_image_proof_remains_mandatory(self):
         proof = next(s for s in self.jobs['images']['steps'] if 'bash scripts/check-images.sh' in s.get('run', ''))

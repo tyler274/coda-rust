@@ -80,6 +80,17 @@
             desktop = false;
             loadCredentials = false;
           };
+        } // pkgs.lib.optionalAttrs (system == "x86_64-linux") {
+          # The x86_64 emulator image needs KVM on an x86_64 host. Accepting
+          # the SDK licence stays inside this shell's package set.
+          android = import ./nix/android-shell.nix {
+            inherit rustToolchain;
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [ rust-overlay.overlays.default ];
+              config = { allowUnfree = true; android_sdk.accept_license = true; };
+            };
+          };
         };
     in
     {
