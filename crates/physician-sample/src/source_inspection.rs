@@ -97,6 +97,12 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
         (None, _) if view.sections.is_empty() => view.sections.push(field("Source text", &citation.content)),
         _ => {}
     }
+    // The record's own narrative reads first. It is plain text derived from the XHTML, not a
+    // copied value, so it claims no path and no layout can bind or move it; the XHTML itself
+    // stays under Technical details.
+    if let Some(narrative) = resource.as_ref().and_then(crate::narrative::narrative) {
+        view.sections.insert(0, field(NARRATIVE_LABEL, &narrative));
+    }
     view.coda_preview = citation.summary.as_ref().map(|summary| {
         let (label, as_of) = summary_date(&view.dates);
         SourcePreviewContent {
@@ -107,6 +113,9 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
     });
     view
 }
+
+/// The label of the record's own narrative, so it never reads as Coda's text.
+const NARRATIVE_LABEL: &str = "The record's own narrative";
 
 /// A date that dates the record, preferred over an onset, abatement, or period bound.
 /// The label is empty when no date was retained.
@@ -397,7 +406,7 @@ impl Placement {
     fn of(key: &str) -> Self {
         let element = |names: &[&str]| names.iter().any(|name| is_element(key, name));
         match key {
-            // `text` is the XHTML narrative; a readable rendering of it arrives as a readable part.
+            // `text` is the XHTML narrative; its plain-text reading leads the readable sections.
             "resourceType" | "id" | "meta" | "identifier" | "extension" | "modifierExtension"
             | "implicitRules" | "language" | "text" => Self::Technical,
             "code" | "vaccineCode" | "component" | "interpretation" | "referenceRange"
@@ -1056,6 +1065,33 @@ pub(crate) mod tests {
             array.sections[0]
                 .text
                 .contains("retained source is available")
+        );
+    }
+
+    #[test]
+    fn a_narrative_reads_before_decoded_attachments_and_on_allergies() {
+        let mut record = observation();
+        record["text"] = json!({"status":"generated","div":"<div>Narrative</div>"});
+        let mut cited = general_citation(&record);
+        cited
+            .readable_parts
+            .push(local_product::physician_sources::ReadablePart {
+                label: "Report attachment".into(),
+                text: "A1c 7.2%".into(),
+            });
+        let view = inspection(&cited);
+        assert_eq!(
+            view.sections[..2],
+            [
+                field(NARRATIVE_LABEL, "Narrative"),
+                field("Report attachment", "A1c 7.2%")
+            ]
+        );
+        let allergy = json!({"resourceType":"AllergyIntolerance","code":{"text":"Peanut"},
+            "text":{"status":"generated","div":"<div>Peanut allergy</div>"}});
+        assert_eq!(
+            inspection(&general_citation(&allergy)).sections[0],
+            field(NARRATIVE_LABEL, "Peanut allergy")
         );
     }
 

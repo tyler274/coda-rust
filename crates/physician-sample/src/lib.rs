@@ -27,6 +27,7 @@ pub mod layout_generation;
 mod live;
 #[cfg(test)]
 mod live_tests;
+mod narrative;
 pub mod patients;
 mod publication;
 #[cfg(test)]

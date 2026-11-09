@@ -462,6 +462,12 @@ pub enum LayoutRefusal {
         /// The slot's pointer as the layout wrote it.
         pointer: String,
     },
+    /// A slot binds part of the record's own narrative (`text`), which reads first as plain
+    /// text and never as markup inside a layout.
+    IntoNarrative {
+        /// The slot's pointer as the layout wrote it.
+        pointer: String,
+    },
     /// A slot's role does not fit the value it binds.
     RoleMismatch {
         /// The slot's pointer as the layout wrote it.
@@ -520,6 +526,7 @@ impl LayoutRefusal {
             Self::MissingInElement { .. } => "missing_in_element",
             Self::NotALeaf { .. } => "not_a_leaf",
             Self::DuplicateBinding { .. } => "duplicate_binding",
+            Self::IntoNarrative { .. } => "into_narrative",
             Self::RoleMismatch { .. } => "role_mismatch",
         }
     }
@@ -543,6 +550,7 @@ impl fmt::Display for LayoutRefusal {
             }
             Self::NotALeaf { .. } => "a pointer names an object or array, not one recorded value",
             Self::DuplicateBinding { .. } => "a recorded value is bound more than once",
+            Self::IntoNarrative { .. } => "a slot binds part of the record's own narrative",
             Self::RoleMismatch { .. } => "a slot's role does not fit the value it binds",
         })
     }
@@ -931,6 +939,10 @@ fn place<'r>(
     let pointer = || pointer.to_owned();
     if found.value.is_object() || found.value.is_array() {
         return Err(LayoutRefusal::NotALeaf { pointer: pointer() });
+    }
+    // The narrative is the root `text` object; a record's plain top-level `text` string is not.
+    if matches!(found.members.as_slice(), [first, _, ..] if first == "text") {
+        return Err(LayoutRefusal::IntoNarrative { pointer: pointer() });
     }
     fits(slot.role, &found.members, found.parent, found.value).map_err(|reason| {
         LayoutRefusal::RoleMismatch {
@@ -2117,6 +2129,48 @@ mod tests {
         let general = inspection(&observation);
         assert!(general.layout_sections.is_empty());
         assert!(general.other_fields.is_empty());
+    }
+
+    #[test]
+    fn a_layout_leaves_the_records_narrative_first_and_unbound() {
+        let mut record = observation();
+        record["text"] = json!({"status":"generated",
+            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>A1c 7.2 %</p></div>"});
+        let cited = general_citation(&record);
+        let view = inspection_with_layout(&cited, Some(&observation_layout()));
+        assert_eq!(
+            view.sections[0],
+            SourceField {
+                label: "The record's own narrative".into(),
+                text: "A1c 7.2 %".into(),
+                path: None,
+            }
+        );
+        assert!(!view.layout_sections.is_empty());
+        assert!(
+            view.layout_sections
+                .iter()
+                .flat_map(|section| &section.fields)
+                .chain(&view.other_fields)
+                .all(|field| field.text != "A1c 7.2 %")
+        );
+        // A slot pointing into the narrative is refused, so its markup never reads in a layout.
+        for pointer in ["/text/div", "/text/status"] {
+            let mut into_narrative = observation_layout();
+            into_narrative.sections[0]
+                .slots
+                .push(serde_json::from_value(json!({"role":"other","pointer":pointer})).unwrap());
+            assert_eq!(
+                into_narrative
+                    .validate("Observation", &record)
+                    .map(|_| ())
+                    .unwrap_err()
+                    .cause,
+                LayoutRefusal::IntoNarrative {
+                    pointer: pointer.into()
+                }
+            );
+        }
     }
 
     #[test]

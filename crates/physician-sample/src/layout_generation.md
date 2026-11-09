@@ -25,7 +25,8 @@ Rules:
    date, a label or a heading, and do not combine, calculate, convert, summarize or interpret
    values.
 3. Each slot's pointer names exactly one recorded value: a string, number or boolean, never an
-   object or array. Bind each recorded value at most once.
+   object or array. Bind each recorded value at most once. Never point into the record's
+   narrative (`text`); it reads first on its own.
 4. Point only at fields this record has. Do not guess at fields that other records of this type
    might have. A later record of this type that lacks a `unit`, `reference_range_low`,
    `reference_range_high`, `reference_range_text`, `interpretation`, `note` or `other` value
