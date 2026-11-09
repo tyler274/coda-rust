@@ -2926,6 +2926,196 @@ async fn archive_offers_undo_and_sending_try_again_and_resume_bring_it_back() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Discuss on the hosted site. Each of Coda's responses offers Discuss and a
+/// reply never does. Pressing it while Coda is writing opens a new chat on
+/// that response and holds the running answer until Resume. A Discuss whose
+/// answer is lost is asked again by the reload under its own key, and still
+/// opens its chat.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn discuss_opens_a_new_chat_holds_running_work_and_a_reply_has_none() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("discuss_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let home = std::env::temp_dir().join(format!("physician-discuss-{}", uuid::Uuid::new_v4()));
+    fs::create_dir_all(&home).unwrap();
+    let valkey = scale::Valkey::start().await;
+    let redis = valkey.url();
+    let worker_port = scale::free_port();
+    let site_port = scale::free_port();
+    let emulator = scale::Emulator::start().await;
+    emulator.provision(worker_port).await;
+    let topic = scale::topic();
+    let worker_listen = format!("127.0.0.1:{worker_port}");
+    let host = format!("127.0.0.1:{site_port}");
+    let mut worker = scale::Process::spawn(
+        "discuss-worker",
+        scale::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
+            ("PHYSICIAN_WORKER_FIXED_TEXT", scale::FIXED_TEXT),
+            // Long enough to press Discuss while Coda writes.
+            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "3000"),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut worker, worker_port).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let mut process = scale::Process::spawn(
+        "discuss-site",
+        scale::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+            ("PHYSICIAN_SYNTHETIC_REPLY", patient),
+            ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+            ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut process, site_port).await;
+    let source = format!("chat-discuss-{}", uuid::Uuid::new_v4().simple());
+    let url = format!("http://{host}/?patient={patient}&chat={source}");
+    let mut tab = Tab::open(&url);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_composer("", Duration::from_secs(20));
+    let title = "Review the potassium";
+
+    // Coda's answer offers Discuss; the reply beside it does not.
+    tab.type_composer(title);
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    wait_reply_count(&mut tab, 1);
+    let offered = wait_discuss(&mut tab, "the answer never offered Discuss", |state| {
+        state["replies"] == 1 && state["responses"][0]["discuss"] == true
+    });
+    assert_eq!(
+        offered["replyDiscuss"], 0,
+        "a reply offers Discuss: {offered}"
+    );
+    tab.save_pictures("discuss-offered", "[aria-label=\"Conversation\"]");
+    tab.save_pictures("discuss-reply-has-none", "article.reply-review");
+
+    // Discuss while Coda writes the next answer opens a new chat on the first.
+    tab.type_composer("And the sodium?");
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    wait_send_next(&mut tab);
+    tab.step("clickDiscuss", serde_json::json!([0]));
+    let opened = wait_discuss(&mut tab, "Discuss never opened its chat", |state| {
+        state["chat"] != source.as_str()
+            && state["responses"][0]["text"] == scale::FIXED_TEXT
+            && state["titles"]
+                .as_array()
+                .is_some_and(|titles| titles.iter().any(|t| t == scale::FIXED_TEXT))
+    });
+    let discussion = opened["chat"].as_str().unwrap().to_owned();
+    assert_eq!(opened["responses"].as_array().unwrap().len(), 1, "{opened}");
+    assert_eq!(tab.step("sendWords", serde_json::json!([])), "Send");
+    tab.save_pictures("discuss-opened", "[aria-label=\"Conversation\"]");
+    tab.save_pictures("discuss-opened-listed", ".sidebar-content");
+
+    // The source chat's running answer was held, and Resume finishes it.
+    tab.click_named(".sidebar-conversation-link", title);
+    wait_mechanical(
+        &mut tab,
+        "Resume",
+        Duration::from_secs(30),
+        &process,
+        &worker,
+    );
+    tab.save_pictures("discuss-held", "[aria-label=\"Conversation\"]");
+    tab.click_named(".conversation-mechanical button", "Resume");
+    wait_reply_count(&mut tab, 2);
+
+    // A Discuss whose answer is lost is asked again by the reload under its
+    // own key, and still opens the chat it named.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{
+            "urlPattern": "*/commands",
+            "requestStage": "Response"
+        }] }),
+    );
+    tab.step("clickDiscuss", serde_json::json!([1]));
+    let answered = tab.held_request("POST");
+    let lost = held_body(&answered);
+    assert_eq!(lost["type"], "discussion.open");
+    let named = lost["payload"]["discussion_chat_id"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    assert_ne!(named, discussion, "a later Discuss reused the earlier chat");
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    );
+    tab.reload();
+    let reasked = tab.held_request("POST");
+    assert_eq!(
+        held_body(&reasked)["idempotency_key"],
+        lost["idempotency_key"],
+        "the reload issued a new command for a Discuss whose answer was lost"
+    );
+    tab.release(&reasked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    let recovered = wait_discuss(
+        &mut tab,
+        "a recovered Discuss never opened its chat",
+        |state| {
+            state["chat"] == named.as_str() && state["responses"][0]["text"] == scale::FIXED_TEXT
+        },
+    );
+    assert_eq!(
+        recovered["responses"].as_array().unwrap().len(),
+        1,
+        "{recovered}"
+    );
+    tab.save_pictures("discuss-recovered", "[aria-label=\"Conversation\"]");
+
+    drop(tab);
+    drop(process);
+    drop(worker);
+    fs::remove_dir_all(home).unwrap();
+}
+
+/// Waits until the page's Discuss state satisfies `done`, and returns it.
+fn wait_discuss(
+    tab: &mut Tab,
+    why: &str,
+    done: impl Fn(&serde_json::Value) -> bool,
+) -> serde_json::Value {
+    let started = Instant::now();
+    loop {
+        let state = tab.step("discussState", serde_json::json!([]));
+        if done(&state) {
+            return state;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "{why}: {state}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+}
+
 /// Presses Archive once it can be pressed.
 fn archive_now(tab: &mut Tab) {
     wait_archive(tab, "Archive never became available", |state| {
