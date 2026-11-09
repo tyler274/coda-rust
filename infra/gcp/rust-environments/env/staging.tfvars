@@ -82,6 +82,9 @@ availability_watchdog_channels      = ["projects/coda-rust-staging/notificationC
 # their generations are labelled simulation in Langfuse. Real staging accounts
 # stay in roger-synthetic-practice and stay real.
 physician_simulation_practices = ["coda-rehearsal-practice"]
+# The rehearsal service account (rehearsal.tf) signs into that practice through
+# physician's IAP with POST /auth/rehearsal; it reaches only the rehearsal panel.
+physician_rehearsal_enabled = true
 
 images = {
   # Initial digests only; later releases own the image field.

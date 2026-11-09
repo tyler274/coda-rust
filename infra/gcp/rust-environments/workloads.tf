@@ -108,6 +108,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value
         }
       }
+      dynamic "env" {
+        for_each = each.key == "physician" ? local.physician_rehearsal_env : {}
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       env {
         name  = "DD_ENV"
         value = local.dd_env
@@ -218,6 +225,9 @@ resource "google_iap_web_cloud_run_service_iam_binding" "team" {
     toset(["group:${var.iap_group}"]),
     each.key == "physician" ? var.physician_proxy_invokers : toset([]),
     toset([for identity in google_service_account.availability : "serviceAccount:${identity.email}"]),
+    # Physician only (rehearsal.tf); the site still accepts it for nothing
+    # but POST /auth/rehearsal, which mints only a rehearsal session.
+    each.key == "physician" ? toset([for identity in google_service_account.physician_rehearsal : "serviceAccount:${identity.email}"]) : toset([]),
   )
 }
 

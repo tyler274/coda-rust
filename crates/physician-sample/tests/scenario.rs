@@ -1,5 +1,6 @@
 //! Scenario tags on hosted chat: only a rehearsal practice's session may send
-//! one. One authenticated site publishes onto the Pub/Sub emulator over a
+//! one. The same configured site serves the rehearsal sign-in, whose
+//! assertion checks the crate's unit tests cover with fixture-signed tokens. One authenticated site publishes onto the Pub/Sub emulator over a
 //! disposable Postgres; no worker runs, since acceptance is what is judged.
 
 use std::path::PathBuf;
@@ -71,10 +72,24 @@ async fn only_a_rehearsal_session_may_tag_a_message_with_a_scenario() {
             ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
             ("CODA_HOSTED_PROFILE", "staging-preview"),
             ("PHYSICIAN_SIMULATION_PRACTICES", REHEARSAL_PRACTICE_ID),
+            (
+                "PHYSICIAN_IAP_AUDIENCE",
+                "/projects/123/locations/us-east1/services/physician",
+            ),
+            (
+                "PHYSICIAN_REHEARSAL_PRINCIPAL",
+                "physician-rehearsal@coda-rust-staging.iam.gserviceaccount.com",
+            ),
         ],
         &home.0,
     );
     support::wait_ready(&mut site, port).await;
+
+    // The configured site serves the rehearsal sign-in, and a caller without
+    // IAP's assertion gets no session from it.
+    let (status, body) = support::post(&host, "/auth/rehearsal", None, &json!({})).await;
+    assert_eq!(status, 401, "{body}");
+    assert!(body.get("session").is_none(), "{body}");
 
     // A real practice's session: any scenario is refused and nothing is saved.
     let staging = support::sign_in(&host).await;

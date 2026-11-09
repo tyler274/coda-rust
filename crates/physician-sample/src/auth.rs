@@ -1375,6 +1375,7 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         Arc::new(physician_bus::LocalBus::new(64)),
         MemoryPatients::fixture(),
         None,
+        None,
     )
     .await
 }
@@ -1386,11 +1387,15 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
 /// memory otherwise. Any other value serves `base` with the auth routes still
 /// present. Neither store is migrated. Without a database the practice holds
 /// `memory_patients`. Sign-in mail comes from the environment.
+///
+/// `rehearsal` adds `POST /auth/rehearsal` ([`crate::rehearsal::sign_in_routes`]),
+/// and only behind required sign-in: with open auth there is no session to mint.
 pub(crate) async fn authed_router_with_bus(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
     memory_patients: Arc<MemoryPatients>,
     postgres: Option<(&str, local_product::runtime::Store)>,
+    rehearsal: Option<crate::hosting::RehearsalSignIn>,
 ) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
     let auth = match (auth_mode(), postgres) {
@@ -1406,7 +1411,15 @@ pub(crate) async fn authed_router_with_bus(
         _ => Auth::memory_with(memory_patients, bus, mail).await,
     };
     match auth_mode() {
-        AuthMode::Required => required_router(base, auth),
+        AuthMode::Required => {
+            let base = match rehearsal {
+                Some(config) => {
+                    base.merge(crate::rehearsal::sign_in_routes(Arc::clone(&auth), config))
+                }
+                None => base,
+            };
+            required_router(base, auth)
+        }
         AuthMode::Open => {
             base.merge(auth_routes(Arc::clone(&auth)))
                 .layer(axum::middleware::from_fn_with_state(
