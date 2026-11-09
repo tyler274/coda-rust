@@ -2066,32 +2066,70 @@ const CONTROLS_CHAT: &str = "chat-allergy-controls";
 const ALLERGY_BASIS: &str =
     "Rests on one allergy record from 2018. No reaction history was recorded.";
 
-/// Lists one chat for the review patient whose answer cites `BANK_ALLERGY`, presented by the
-/// same `source_inspection` the live projection uses.
+/// The same answer whose evidence read is slow, fails once, then loads.
+const EVIDENCE_CHAT: &str = "chat-allergy-evidence";
+/// Evidence reads `EVIDENCE_CHAT` has answered.
+static EVIDENCE_READS: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+/// The answer's one citation in `chat`: `BANK_ALLERGY` at its exact revision, with the model's
+/// summary in `SUMMARY_CHAT`.
+fn allergy_citation(chat: &str) -> local_product::physician_chat::Citation {
+    let mut citation: local_product::physician_chat::Citation =
+        serde_json::from_value(serde_json::json!({
+            "id": "allergy-citation", "reference": "AllergyIntolerance/allergy-0493010f2a16",
+            "revision": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
+            "record_type": "AllergyIntolerance", "content": BANK_ALLERGY,
+            "dates": [{"name": "recordedDate", "value": "2018-09-11T12:20:00+00:00"},
+                      {"name": "meta.lastUpdated", "value": "2018-09-11T00:00:00+00:00"}],
+            "sha256": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
+            "provenance": {"native_record": "AllergyIntolerance/allergy-0493010f2a16"},
+        }))
+        .unwrap();
+    if chat == SUMMARY_CHAT {
+        citation.summary = Some(ALLERGY_SUMMARY.into());
+    }
+    citation
+}
+
+/// The citation's evidence read, as the live endpoint answers it. In `EVIDENCE_CHAT` each read
+/// takes long enough to be seen loading, and the first one fails.
+async fn allergy_evidence(chat: &str) -> axum::response::Response {
+    if chat == EVIDENCE_CHAT {
+        tokio::time::sleep(Duration::from_millis(1500)).await;
+        let read = EVIDENCE_READS.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+        if read == 0 {
+            return axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response();
+        }
+    }
+    axum::Json(physician_wire::SourceEvidence {
+        inspection: physician_sample::source_inspection::inspection(&allergy_citation(chat)),
+    })
+    .into_response()
+}
+
+/// Lists chats for the review patient whose answer cites `BANK_ALLERGY`, presented by the same
+/// `source_inspection` the live projection uses, and answers that citation's evidence read.
 async fn with_allergy_citation(
     request: axum::extract::Request,
     next: axum::middleware::Next,
 ) -> axum::response::Response {
     let path = request.uri().path().to_owned();
-    let chat = [ALLERGY_CHAT, SUMMARY_CHAT, CONTROLS_CHAT]
+    let chats = [ALLERGY_CHAT, SUMMARY_CHAT, CONTROLS_CHAT, EVIDENCE_CHAT];
+    let read = chats.into_iter().find(|chat| {
+        path == format!(
+            "/patient-workspaces/{REVIEW_PATIENT}/chats/{chat}/citations/allergy-citation"
+        )
+    });
+    if let Some(chat) = read {
+        return allergy_evidence(chat).await;
+    }
+    let chat = chats
         .into_iter()
         .find(|chat| path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{chat}/snapshot"));
     if let Some(chat) = chat {
-        let funnel = chat == SUMMARY_CHAT;
-        let mut citation: local_product::physician_chat::Citation =
-            serde_json::from_value(serde_json::json!({
-                "id": "allergy-citation", "reference": "AllergyIntolerance/allergy-0493010f2a16",
-                "revision": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
-                "record_type": "AllergyIntolerance", "content": BANK_ALLERGY,
-                "dates": [{"name": "recordedDate", "value": "2018-09-11T12:20:00+00:00"},
-                          {"name": "meta.lastUpdated", "value": "2018-09-11T00:00:00+00:00"}],
-                "sha256": local_product::sha256_hex(BANK_ALLERGY.as_bytes()),
-                "provenance": {"native_record": "AllergyIntolerance/allergy-0493010f2a16"},
-            }))
-            .unwrap();
+        let citation = allergy_citation(chat);
         let mut destination = serde_json::Value::Null;
-        if funnel {
-            citation.summary = Some(ALLERGY_SUMMARY.into());
+        if chat == SUMMARY_CHAT {
             destination = serde_json::json!({"kind": "source_native", "source_label": "Demo EHR",
                 "uri": "https://ehr.example/allergy/0493010f2a16"});
         }
@@ -2135,9 +2173,82 @@ async fn with_allergy_citation(
         {"chat_id": ALLERGY_CHAT, "title": "Drug allergies", "created_at": "2026-08-27T12:05:00Z"},
         {"chat_id": SUMMARY_CHAT, "title": "Drug allergies, summarized", "created_at": "2026-08-27T12:06:00Z"},
         {"chat_id": CONTROLS_CHAT, "title": "Drug allergies, with basis", "created_at": "2026-08-27T12:07:00Z"},
+        {"chat_id": EVIDENCE_CHAT, "title": "Drug allergies, read slowly", "created_at": "2026-08-27T12:08:00Z"},
     ]);
     parts.headers.remove(axum::http::header::CONTENT_LENGTH);
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
+}
+
+/// Opening an answer's citation reads its evidence: the reader says it is opening, says it couldn't
+/// load with a way to try again, then shows the exact retained record, unhighlighted and saying so,
+/// since the citation names no passage.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_opened_citation_reads_its_evidence_and_offers_retry() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    EVIDENCE_READS.store(0, std::sync::atomic::Ordering::SeqCst);
+    let app = physician_sample::simulation_router()
+        .layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let mut tab = Tab::open(&format!(
+        "http://{address}/?patient={REVIEW_PATIENT}&chat={EVIDENCE_CHAT}"
+    ));
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("The chart records none", Duration::from_secs(20));
+    let evidence = |tab: &mut Tab, until: &dyn Fn(&serde_json::Value) -> bool, what: &str| {
+        let started = Instant::now();
+        loop {
+            let read = tab.step("citationEvidence", serde_json::json!([]));
+            if until(&read) {
+                return read;
+            }
+            assert!(
+                started.elapsed() < Duration::from_secs(10),
+                "never {what}: {read}"
+            );
+            std::thread::sleep(Duration::from_millis(20));
+        }
+    };
+
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    let loading = evidence(&mut tab, &|read| read["loading"] == true, "loading");
+    assert_eq!(loading["loadingWords"], "Opening the source…", "{loading}");
+    assert_eq!(loading["source"], serde_json::Value::Null, "{loading}");
+    assert_eq!(loading["title"], "No known drug allergies", "{loading}");
+    tab.save_picture("evidence-loading");
+
+    let failed = evidence(&mut tab, &|read| !read["failed"].is_null(), "failed");
+    assert_eq!(
+        failed["failed"], "Coda couldn’t load this source.",
+        "{failed}"
+    );
+    assert_eq!(failed["retry"], "Try again", "{failed}");
+    assert_eq!(failed["loading"], false, "{failed}");
+    assert_eq!(failed["source"], serde_json::Value::Null, "{failed}");
+    tab.save_picture("evidence-failed-retry");
+
+    tab.step("citationRetry", serde_json::json!([]));
+    evidence(&mut tab, &|read| read["loading"] == true, "loading again");
+    let loaded = evidence(&mut tab, &|read| !read["source"].is_null(), "loaded");
+    assert_eq!(loaded["source"], "Medication allergy record", "{loaded}");
+    assert_eq!(loaded["failed"], serde_json::Value::Null, "{loaded}");
+    assert_eq!(loaded["passage"], serde_json::Value::Null, "{loaded}");
+    assert_eq!(loaded["notice"], true, "{loaded}");
+    assert_eq!(EVIDENCE_READS.load(std::sync::atomic::Ordering::SeqCst), 2);
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(shown["original"].as_str().unwrap(), BANK_ALLERGY);
+    tab.save_picture("evidence-loaded");
+    tab.step("showPassageNotice", serde_json::json!([]));
+    tab.save_picture("evidence-unhighlighted-notice");
 }
 
 /// The reported case: an allergy citation reads as the record's statement and date, with codes,
