@@ -23,12 +23,18 @@ pub struct Layout {
     pub sections: Vec<Section>,
 }
 
-/// A headed group of fields.
+/// A headed group of fields, or one such group for each element of a recorded array.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Section {
-    /// The group's heading, written by the layout and never read as source text.
+    /// The group's heading, written by the layout and never read as source text. A repeated
+    /// group reads under its element's own code instead, and under this heading numbered from 1
+    /// when the element has none.
     pub heading: String,
+    /// A pointer to an array in the record, such as `/component`. When set, the section repeats
+    /// once per element and each slot's pointer is relative to that element.
+    #[serde(default)]
+    pub repeat: Option<String>,
     /// The group's fields, in reading order.
     pub slots: Vec<Slot>,
 }
@@ -92,6 +98,24 @@ impl fmt::Display for SlotRole {
     }
 }
 
+impl SlotRole {
+    /// Whether an element of a repeated section may simply lack this role's value. A result,
+    /// unit, code, status or date is what an element is read for, so its absence must be
+    /// recorded in the element's `dataAbsentReason`; notes, interpretations, reference ranges
+    /// and other values are often left out.
+    fn absence_is_ordinary(self) -> bool {
+        match self {
+            Self::Note
+            | Self::Interpretation
+            | Self::ReferenceRangeLow
+            | Self::ReferenceRangeHigh
+            | Self::ReferenceRangeText
+            | Self::Other => true,
+            Self::Result | Self::Unit | Self::Code | Self::Status | Self::Date => false,
+        }
+    }
+}
+
 /// Why a layout cannot read a record. A refused layout is never shown, not even in part.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum LayoutRefusal {
@@ -121,10 +145,23 @@ pub enum LayoutRefusal {
         /// How it departs from RFC 6901.
         reason: PointerError,
     },
-    /// A slot's pointer names nothing in this record.
+    /// A slot's or a section repeat's pointer names nothing in this record.
     Unresolved {
-        /// The slot's pointer as the layout wrote it.
+        /// The pointer as the layout wrote it.
         pointer: String,
+    },
+    /// A section repeats over something other than an array.
+    RepeatNotAnArray {
+        /// The section's repeat pointer as the layout wrote it.
+        pointer: String,
+    },
+    /// An element of a repeated section lacks a value its slot's role requires, and does not
+    /// record why in a `dataAbsentReason`.
+    MissingInElement {
+        /// The slot's pointer as the layout wrote it, relative to the element.
+        pointer: String,
+        /// The element's index in the repeated array.
+        index: usize,
     },
     /// A slot shows one recorded value; an object or array would need the layout to compose it.
     NotALeaf {
@@ -192,6 +229,13 @@ impl fmt::Display for LayoutRefusal {
             Self::EmptyLabel { pointer } => write!(f, "the slot for {pointer} has no label"),
             Self::MalformedPointer { pointer, .. } => write!(f, "{pointer} is not a JSON pointer"),
             Self::Unresolved { pointer } => write!(f, "{pointer} does not resolve in this record"),
+            Self::RepeatNotAnArray { pointer } => {
+                write!(f, "{pointer} is not an array a section can repeat over")
+            }
+            Self::MissingInElement { pointer, index } => write!(
+                f,
+                "element {index} has no {pointer} and does not record why it is absent"
+            ),
             Self::NotALeaf { pointer } => {
                 write!(
                     f,
@@ -273,7 +317,6 @@ impl Layout {
             });
         }
         let mut bound = BTreeSet::new();
-        let mut bind = |slot: &Slot| bind(slot, record, &mut bound);
         let mut statuses = Vec::with_capacity(self.statuses.len());
         for slot in &self.statuses {
             if slot.role != SlotRole::Status {
@@ -283,21 +326,24 @@ impl Layout {
                     reason: RoleMismatchReason::StatusesHoldOnlyStatuses,
                 });
             }
-            statuses.push(bind(slot)?);
+            statuses.push(bind(slot, record, &mut bound)?);
         }
         let mut sections = Vec::with_capacity(self.sections.len());
         for (index, section) in self.sections.iter().enumerate() {
             if section.heading.trim().is_empty() {
                 return Err(LayoutRefusal::EmptyHeading { index });
             }
-            sections.push(BoundSection {
-                heading: section.heading.clone(),
-                bindings: section
-                    .slots
-                    .iter()
-                    .map(&mut bind)
-                    .collect::<Result<_, _>>()?,
-            });
+            match &section.repeat {
+                Some(repeat) => sections.extend(repeated(section, repeat, record, &mut bound)?),
+                None => sections.push(BoundSection {
+                    heading: section.heading.clone(),
+                    bindings: section
+                        .slots
+                        .iter()
+                        .map(|slot| bind(slot, record, &mut bound))
+                        .collect::<Result<_, _>>()?,
+                }),
+            }
         }
         Ok(ValidatedLayout {
             record,
@@ -307,65 +353,180 @@ impl Layout {
     }
 }
 
+/// Binds a slot of a section that does not repeat, or of the record's statuses.
 fn bind<'r>(
     slot: &Slot,
     record: &'r Value,
     bound: &mut BTreeSet<String>,
 ) -> Result<Binding<'r>, LayoutRefusal> {
-    let pointer = || slot.pointer.clone();
-    if slot.label.trim().is_empty() {
-        return Err(LayoutRefusal::EmptyLabel { pointer: pointer() });
-    }
-    let tokens = tokens(&slot.pointer).map_err(|reason| LayoutRefusal::MalformedPointer {
-        pointer: pointer(),
+    let tokens = checked(slot)?;
+    let found = follow(record, &tokens, String::new(), Vec::new()).ok_or_else(|| {
+        LayoutRefusal::Unresolved {
+            pointer: slot.pointer.clone(),
+        }
+    })?;
+    place(slot, found, &slot.pointer, bound)
+}
+
+/// Binds a repeated section once per element of the array at `repeat`, each slot's pointer read
+/// from that element. An element may lack a slot's value only when the slot's role allows it or
+/// the element records a `dataAbsentReason`.
+fn repeated<'r>(
+    section: &Section,
+    repeat: &str,
+    record: &'r Value,
+    bound: &mut BTreeSet<String>,
+) -> Result<Vec<BoundSection<'r>>, LayoutRefusal> {
+    let repeat_tokens = tokens(repeat).map_err(|reason| LayoutRefusal::MalformedPointer {
+        pointer: repeat.to_owned(),
         reason,
     })?;
-    let mut value = record;
-    let mut parent = record;
-    let mut path = String::new();
-    // The member names along the pointer, without array indexes.
-    let mut members = Vec::new();
+    let array = follow(record, &repeat_tokens, String::new(), Vec::new()).ok_or_else(|| {
+        LayoutRefusal::Unresolved {
+            pointer: repeat.to_owned(),
+        }
+    })?;
+    let Value::Array(elements) = array.value else {
+        return Err(LayoutRefusal::RepeatNotAnArray {
+            pointer: repeat.to_owned(),
+        });
+    };
+    // Labels and pointers are checked even when the array is empty.
+    let slots = section
+        .slots
+        .iter()
+        .map(|slot| Ok((slot, checked(slot)?)))
+        .collect::<Result<Vec<_>, LayoutRefusal>>()?;
+    let mut sections = Vec::with_capacity(elements.len());
+    for (index, element) in elements.iter().enumerate() {
+        let path = format!("{}[{index}]", array.path);
+        let recorded_absence = element.get("dataAbsentReason").is_some();
+        let mut bindings = Vec::with_capacity(slots.len());
+        for (slot, tokens) in &slots {
+            match follow(element, tokens, path.clone(), array.members.clone()) {
+                Some(found) => {
+                    let absolute = format!("{repeat}/{index}{}", slot.pointer);
+                    bindings.push(place(slot, found, &absolute, bound)?);
+                }
+                None if slot.role.absence_is_ordinary() || recorded_absence => {}
+                None => {
+                    return Err(LayoutRefusal::MissingInElement {
+                        pointer: slot.pointer.clone(),
+                        index,
+                    });
+                }
+            }
+        }
+        sections.push(BoundSection {
+            heading: element_heading(element, &section.heading, index),
+            bindings,
+        });
+    }
+    Ok(sections)
+}
+
+/// A repeated section's heading for one element: the element's own coded display or code text,
+/// or else the layout's heading numbered from 1.
+fn element_heading(element: &Value, heading: &str, index: usize) -> String {
+    let code = &element["code"];
+    [&code["coding"][0]["display"], &code["text"]]
+        .into_iter()
+        .filter_map(Value::as_str)
+        .find(|text| !text.trim().is_empty())
+        .map_or_else(|| format!("{heading} {}", index + 1), str::to_owned)
+}
+
+/// The slot's pointer tokens, once its label and pointer are well formed.
+fn checked(slot: &Slot) -> Result<Vec<String>, LayoutRefusal> {
+    if slot.label.trim().is_empty() {
+        return Err(LayoutRefusal::EmptyLabel {
+            pointer: slot.pointer.clone(),
+        });
+    }
+    tokens(&slot.pointer).map_err(|reason| LayoutRefusal::MalformedPointer {
+        pointer: slot.pointer.clone(),
+        reason,
+    })
+}
+
+/// A value a pointer names, with what its role is checked against.
+#[derive(Debug)]
+struct Found<'r> {
+    /// Its path from the record root, in the inspection's path notation.
+    path: String,
+    /// The member names along that path, without array indexes.
+    members: Vec<String>,
+    /// The object or array holding it.
+    parent: &'r Value,
+    value: &'r Value,
+}
+
+/// Follows `tokens` from `start`, which sits at `path` under `members`; `None` when they name
+/// nothing.
+fn follow<'r>(
+    start: &'r Value,
+    tokens: &[String],
+    mut path: String,
+    mut members: Vec<String>,
+) -> Option<Found<'r>> {
+    let mut value = start;
+    let mut parent = start;
     for token in tokens {
         parent = value;
         value = match value {
             Value::Object(object) => {
-                let member = object
-                    .get(&token)
-                    .ok_or_else(|| LayoutRefusal::Unresolved { pointer: pointer() })?;
+                let member = object.get(token)?;
                 if !path.is_empty() {
                     path.push('.');
                 }
-                path.push_str(&token);
-                members.push(token);
+                path.push_str(token);
+                members.push(token.clone());
                 member
             }
             Value::Array(items) => {
-                let item = index(&token)
-                    .and_then(|index| items.get(index).map(|item| (index, item)))
-                    .ok_or_else(|| LayoutRefusal::Unresolved { pointer: pointer() });
-                let (index, item) = item?;
+                let index = index(token)?;
+                let item = items.get(index)?;
                 path.push_str(&format!("[{index}]"));
                 item
             }
-            _ => return Err(LayoutRefusal::Unresolved { pointer: pointer() }),
+            _ => return None,
         };
     }
-    if value.is_object() || value.is_array() {
+    Some(Found {
+        path,
+        members,
+        parent,
+        value,
+    })
+}
+
+/// Binds `slot` to the value it found, refusing a composite value, a role that does not fit it,
+/// or a value already bound. Refusals name the value by `pointer`.
+fn place<'r>(
+    slot: &Slot,
+    found: Found<'r>,
+    pointer: &str,
+    bound: &mut BTreeSet<String>,
+) -> Result<Binding<'r>, LayoutRefusal> {
+    let pointer = || pointer.to_owned();
+    if found.value.is_object() || found.value.is_array() {
         return Err(LayoutRefusal::NotALeaf { pointer: pointer() });
     }
-    fits(slot.role, &members, parent, value).map_err(|reason| LayoutRefusal::RoleMismatch {
-        pointer: pointer(),
-        role: slot.role,
-        reason,
+    fits(slot.role, &found.members, found.parent, found.value).map_err(|reason| {
+        LayoutRefusal::RoleMismatch {
+            pointer: pointer(),
+            role: slot.role,
+            reason,
+        }
     })?;
     // Two spellings of one pointer bind the same value, so duplicates compare by path.
-    if !bound.insert(path.clone()) {
+    if !bound.insert(found.path.clone()) {
         return Err(LayoutRefusal::DuplicateBinding { pointer: pointer() });
     }
     Ok(Binding {
         label: slot.label.clone(),
-        path,
-        value,
+        path: found.path,
+        value: found.value,
     })
 }
 
@@ -863,6 +1024,7 @@ mod tests {
                 statuses: Vec::new(),
                 sections: vec![Section {
                     heading: "Fields".into(),
+                    repeat: None,
                     slots: vec![Slot {
                         label: "Field".into(),
                         role,
@@ -1196,6 +1358,226 @@ mod tests {
             "futureElement.kind"
         )));
         assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    /// A blood-pressure Observation: a systolic component named by its coding and interpreted,
+    /// and a diastolic component named by its text and not interpreted.
+    fn blood_pressure() -> Value {
+        json!({"resourceType":"Observation","status":"final",
+            "code":{"coding":[{"system":"http://loinc.org","code":"85354-9",
+                "display":"Blood pressure panel"}],"text":"Blood pressure"},
+            "effectiveDateTime":"2019-03-12T13:30:00Z",
+            "component":[
+                {"code":{"coding":[{"system":"http://loinc.org","code":"8480-6",
+                    "display":"Systolic blood pressure"}]},
+                 "valueQuantity":{"value":142,"unit":"mmHg",
+                    "system":"http://unitsofmeasure.org","code":"mm[Hg]"},
+                 "interpretation":[{"coding":[{"code":"H","display":"High"}]}],
+                 "referenceRange":[{"high":{"value":130,"unit":"mmHg"}}]},
+                {"code":{"text":"Diastolic blood pressure"},
+                 "valueQuantity":{"value":81.5,"unit":"mm Hg",
+                    "system":"http://unitsofmeasure.org","code":"mm[Hg]"}}]})
+    }
+
+    /// The panel's name, then one section per component.
+    fn blood_pressure_layout() -> Layout {
+        layout(json!({"record_type":"Observation",
+            "statuses":[{"label":"Result status","role":"status","pointer":"/status"}],
+            "sections":[
+                {"heading":"Panel","slots":[
+                    {"label":"Test","role":"code","pointer":"/code/text"}]},
+                {"heading":"Component","repeat":"/component","slots":[
+                    {"label":"Result","role":"result","pointer":"/valueQuantity/value"},
+                    {"label":"Unit","role":"unit","pointer":"/valueQuantity/unit"},
+                    {"label":"Unit code","role":"unit","pointer":"/valueQuantity/code"},
+                    {"label":"Interpretation","role":"interpretation",
+                     "pointer":"/interpretation/0/coding/0/display"}]}]}))
+    }
+
+    #[test]
+    fn a_repeated_section_reads_each_component_with_its_own_unit() {
+        let mut cited = general_citation(&blood_pressure());
+        let written = cited.content.replace("81.5", "81.50");
+        assert_ne!(written, cited.content);
+        cited.content = written;
+        let view = inspection_with_layout(&cited, Some(&blood_pressure_layout()));
+        assert_eq!(
+            view.layout_sections,
+            vec![
+                SourceLayoutSection {
+                    heading: "Panel".into(),
+                    fields: vec![located("Test", "Blood pressure", "code.text")],
+                },
+                SourceLayoutSection {
+                    heading: "Systolic blood pressure".into(),
+                    fields: vec![
+                        located("Result", "142", "component[0].valueQuantity.value"),
+                        located("Unit", "mmHg", "component[0].valueQuantity.unit"),
+                        located("Unit code", "mm[Hg]", "component[0].valueQuantity.code"),
+                        located(
+                            "Interpretation",
+                            "High",
+                            "component[0].interpretation[0].coding[0].display"
+                        ),
+                    ],
+                },
+                SourceLayoutSection {
+                    heading: "Diastolic blood pressure".into(),
+                    fields: vec![
+                        located("Result", "81.50", "component[1].valueQuantity.value"),
+                        located("Unit", "mm Hg", "component[1].valueQuantity.unit"),
+                        located("Unit code", "mm[Hg]", "component[1].valueQuantity.code"),
+                    ],
+                },
+            ]
+        );
+        assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    #[test]
+    fn a_repeated_element_without_a_code_reads_under_the_numbered_heading() {
+        let mut record = blood_pressure();
+        for component in record["component"].as_array_mut().unwrap() {
+            component.as_object_mut().unwrap().remove("code");
+        }
+        let validated = blood_pressure_layout().validate(&record).unwrap();
+        let headings: Vec<&str> = validated
+            .sections
+            .iter()
+            .map(|section| section.heading.as_str())
+            .collect();
+        assert_eq!(headings, ["Panel", "Component 1", "Component 2"]);
+    }
+
+    #[test]
+    fn an_empty_repeated_array_reads_no_sections() {
+        let mut record = blood_pressure();
+        record["component"] = json!([]);
+        let cited = general_citation(&record);
+        let view = inspection_with_layout(&cited, Some(&blood_pressure_layout()));
+        assert_eq!(
+            view.layout_sections,
+            vec![SourceLayoutSection {
+                heading: "Panel".into(),
+                fields: vec![located("Test", "Blood pressure", "code.text")],
+            }]
+        );
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    #[test]
+    fn an_element_may_lack_a_value_whose_absence_is_ordinary() {
+        let record = blood_pressure();
+        assert!(record["component"][1].get("interpretation").is_none());
+        let validated = blood_pressure_layout().validate(&record).unwrap();
+        let labels: Vec<&str> = validated.sections[2]
+            .bindings
+            .iter()
+            .map(|binding| binding.label.as_str())
+            .collect();
+        assert_eq!(labels, ["Result", "Unit", "Unit code"]);
+    }
+
+    #[test]
+    fn an_element_lacking_a_required_value_refuses_unless_it_records_why() {
+        let mut record = blood_pressure();
+        record["component"][1]
+            .as_object_mut()
+            .unwrap()
+            .remove("valueQuantity");
+        assert_eq!(
+            refusal(&blood_pressure_layout(), &record),
+            LayoutRefusal::MissingInElement {
+                pointer: "/valueQuantity/value".into(),
+                index: 1,
+            }
+        );
+        let mut coded = blood_pressure_layout();
+        coded.sections[1].slots = vec![Slot {
+            label: "Code".into(),
+            role: SlotRole::Code,
+            pointer: "/code/coding/0/code".into(),
+        }];
+        assert_eq!(
+            refusal(&coded, &record),
+            LayoutRefusal::MissingInElement {
+                pointer: "/code/coding/0/code".into(),
+                index: 1,
+            }
+        );
+        record["component"][1]["dataAbsentReason"] = json!({"coding":[{"code":"not-performed"}]});
+        let cited = general_citation(&record);
+        let view = inspection_with_layout(&cited, Some(&blood_pressure_layout()));
+        assert_eq!(view.layout_sections[2].heading, "Diastolic blood pressure");
+        assert!(view.layout_sections[2].fields.is_empty());
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    #[test]
+    fn each_repeat_fault_refuses_the_layout() {
+        let record = blood_pressure();
+        let repeating = |repeat: &str| {
+            let mut changed = blood_pressure_layout();
+            changed.sections[1].repeat = Some(repeat.into());
+            changed
+        };
+        for not_an_array in ["/code", "/status", ""] {
+            assert_eq!(
+                refusal(&repeating(not_an_array), &record),
+                LayoutRefusal::RepeatNotAnArray {
+                    pointer: not_an_array.into()
+                }
+            );
+        }
+        assert_eq!(
+            refusal(&repeating("/components"), &record),
+            LayoutRefusal::Unresolved {
+                pointer: "/components".into()
+            }
+        );
+        assert_eq!(
+            refusal(&repeating("component"), &record),
+            LayoutRefusal::MalformedPointer {
+                pointer: "component".into(),
+                reason: PointerError::MissingLeadingSlash,
+            }
+        );
+        // A role is checked against the value's place in the whole record.
+        let mut ranged = blood_pressure_layout();
+        ranged.sections[1].slots[0].pointer = "/referenceRange/0/high/value".into();
+        assert_eq!(
+            refusal(&ranged, &record),
+            mismatch(
+                SlotRole::Result,
+                "/component/0/referenceRange/0/high/value",
+                RoleMismatchReason::UnderReferenceRange
+            )
+        );
+        // A plain section and a repeated one cannot both bind one value.
+        let mut twice = blood_pressure_layout();
+        twice.sections[0].slots.push(Slot {
+            label: "Systolic".into(),
+            role: SlotRole::Result,
+            pointer: "/component/0/valueQuantity/value".into(),
+        });
+        assert_eq!(
+            refusal(&twice, &record),
+            LayoutRefusal::DuplicateBinding {
+                pointer: "/component/0/valueQuantity/value".into()
+            }
+        );
+        // An empty array still checks the slots' labels and pointers.
+        let mut empty = record.clone();
+        empty["component"] = json!([]);
+        let mut unlabelled = blood_pressure_layout();
+        unlabelled.sections[1].slots[0].label = " ".into();
+        assert_eq!(
+            refusal(&unlabelled, &empty),
+            LayoutRefusal::EmptyLabel {
+                pointer: "/valueQuantity/value".into()
+            }
+        );
     }
 
     /// Every layout and Other field reads exactly the record's value at its path.
