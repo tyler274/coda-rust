@@ -852,7 +852,10 @@ jobs:
   deploy-public-site-staging:
     name: Deploy public site to staging
     needs: [scope, result]
-    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'
+    # `result` already judges every upstream job, including the Android job a
+    # routine run skips; the implicit success() would treat that skip as a
+    # failure, so the gate names `result` itself.
+    if: "!cancelled() && needs.result.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'"
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 45
     concurrency:
@@ -994,7 +997,8 @@ jobs:
     # Off unless the repository variable RUST_STAGING_DEPLOY is `enabled`; the
     # GitHub `staging` environment holds the coda-rust-staging WIF provider,
     # deployer service account, project and region (book/src/gcp.md).
-    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
+    # Gated on `result` and `images` explicitly, as in deploy-public-site-staging.
+    if: "!cancelled() && needs.result.result == 'success' && needs.images.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'"
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 120
     concurrency:
