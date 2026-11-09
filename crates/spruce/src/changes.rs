@@ -487,7 +487,7 @@ impl Reader {
         if self.refused(&error, org).await? {
             return Ok(Outcome::ReconnectRequired);
         }
-        if matches!(error, Error::Temporary { .. } | Error::Unavailable) {
+        if matches!(error, Error::Temporary { .. } | Error::Unavailable(_)) {
             return Ok(Outcome::Unavailable);
         }
         Err(error)
@@ -504,7 +504,7 @@ impl Reader {
         Ok(match error {
             Error::NotFound => ConversationRead::Missing,
             Error::Contract => ConversationRead::Undecodable,
-            Error::Temporary { .. } | Error::Unavailable | Error::Rejected { .. } => {
+            Error::Temporary { .. } | Error::Unavailable(_) | Error::Rejected { .. } => {
                 ConversationRead::Unavailable
             }
             other => return Err(other),
@@ -569,7 +569,7 @@ impl Reader {
             Err(
                 Error::Contract
                 | Error::Temporary { .. }
-                | Error::Unavailable
+                | Error::Unavailable(_)
                 | Error::Rejected { .. },
             ) => Ok(TranscriptionState::Unavailable { id: id.to_owned() }),
             Err(error) => Err(error),
@@ -591,7 +591,7 @@ impl Reader {
                 Err(Error::AuthorizationRejected | Error::Rejected { status: 403 }) => {
                     OrgCheck::Refused
                 }
-                Err(Error::Temporary { .. } | Error::Unavailable) => OrgCheck::Unreachable,
+                Err(Error::Temporary { .. } | Error::Unavailable(_)) => OrgCheck::Unreachable,
                 Err(error) => return Err(error),
                 Ok(_) => OrgCheck::Accepted,
             };

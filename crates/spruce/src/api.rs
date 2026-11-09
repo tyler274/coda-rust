@@ -31,8 +31,10 @@ const MAX_RESPONSE_BYTES: usize = 16 * 1024 * 1024;
 
 /// Why a Spruce read failed.
 ///
-/// The status is the whole decision. The body of an error response is discarded.
-#[derive(Debug, thiserror::Error, PartialEq, Eq)]
+/// A response's status is the whole decision; the body of an error response
+/// is discarded. A transport failure keeps its cause with the URL removed, so
+/// no signed link reaches a log.
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     /// Spruce answered 401.
     #[error("spruce refused the credential")]
@@ -54,7 +56,7 @@ pub enum Error {
     },
     /// The connection failed, timed out, or was redirected.
     #[error("spruce did not answer")]
-    Unavailable,
+    Unavailable(#[source] reqwest::Error),
     /// The body was empty, not JSON, larger than the cap, or the wrong shape.
     #[error("spruce returned an unreadable body")]
     Contract,
@@ -236,12 +238,7 @@ impl Client {
         if !base_ok(&url) {
             return Err(Error::InvalidRequest);
         }
-        let response = self
-            .http
-            .get(url)
-            .send()
-            .await
-            .map_err(|_| Error::Unavailable)?;
+        let response = self.http.get(url).send().await.map_err(transport)?;
         let status = response.status();
         if !status.is_success() {
             return Err(classify(status.as_u16()));
@@ -261,7 +258,7 @@ impl Client {
             .query(query)
             .send()
             .await
-            .map_err(|_| Error::Unavailable)?;
+            .map_err(transport)?;
         let status = response.status();
         if !status.is_success() {
             return Err(classify(status.as_u16()));
@@ -279,13 +276,18 @@ async fn read_capped(
     max_bytes: usize,
 ) -> Result<Option<Vec<u8>>, Error> {
     let mut body = Vec::new();
-    while let Some(chunk) = response.chunk().await.map_err(|_| Error::Unavailable)? {
+    while let Some(chunk) = response.chunk().await.map_err(transport)? {
         if body.len().saturating_add(chunk.len()) > max_bytes {
             return Ok(None);
         }
         body.extend_from_slice(&chunk);
     }
     Ok(Some(body))
+}
+
+/// A transport failure, without the URL it was sending to.
+fn transport(error: reqwest::Error) -> Error {
+    Error::Unavailable(error.without_url())
 }
 
 fn classify(status: u16) -> Error {
@@ -432,6 +434,6 @@ mod tests {
             pagination_token: Some("next"),
         };
         let error = client.list_conversations(query).await.unwrap_err();
-        assert_eq!(error, Error::InvalidRequest);
+        assert!(matches!(error, Error::InvalidRequest));
     }
 }

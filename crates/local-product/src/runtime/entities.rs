@@ -256,11 +256,8 @@ pub(super) mod channel_conversation {
         /// the conversations tried longest ago.
         pub owed_attempt: Option<i64>,
         /// Database-clock seconds the conversation was first saved or last
-        /// reread. A routine reread is due once it is old.
+        /// reread. Routine rereads go to the oldest first.
         pub checked_at: i64,
-        /// Database-clock seconds a new message version was last saved in it.
-        /// Only recently active conversations get routine rereads.
-        pub saved_at: i64,
         /// Set by message matching when the conversation is linked to a
         /// patient. Intake only reads it: disconnect keeps linked evidence.
         #[sea_orm(column_type = "Text", nullable)]

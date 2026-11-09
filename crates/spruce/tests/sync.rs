@@ -455,7 +455,7 @@ async fn an_oversized_body_is_not_a_value() {
         .organization()
         .await
         .expect_err("cap");
-    assert_eq!(error, Error::Contract);
+    assert!(matches!(error, Error::Contract));
 }
 
 #[tokio::test]
@@ -468,7 +468,7 @@ async fn a_deleted_item_reads_as_not_found() {
     assert_eq!(item.id(), "ti_one");
     fake.delete("ti_one");
     let error = fake.client().get_item("ti_one").await.expect_err("gone");
-    assert_eq!(error, Error::NotFound);
+    assert!(matches!(error, Error::NotFound));
 }
 
 #[tokio::test]

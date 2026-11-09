@@ -292,7 +292,7 @@ async fn stale_token(client: &Client) -> String {
         Err(Error::NotFound) => "unknown token not found".to_owned(),
         Err(Error::Contract) => "unknown token unreadable".to_owned(),
         Err(Error::AuthorizationRejected) => "unknown token refused the credential".to_owned(),
-        Err(Error::Unavailable) => "unknown token did not answer".to_owned(),
+        Err(Error::Unavailable(_)) => "unknown token did not answer".to_owned(),
         Err(Error::InvalidRequest) => "unknown token was not sent".to_owned(),
         Err(Error::FileTooLarge { .. }) => "unknown token answered past the cap".to_owned(),
     };

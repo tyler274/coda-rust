@@ -60,12 +60,9 @@ pub struct Intake {
     pub owed_reads: u64,
     /// Item pages read per owed conversation per pass.
     pub owed_pages: usize,
-    /// Seconds between routine rereads of an active conversation, which
-    /// find edits and deletion flags.
+    /// Seconds before a conversation is due a routine reread, which finds
+    /// edits and deletion flags.
     pub recheck_every: i64,
-    /// A conversation stays active for rereads this many seconds after it
-    /// last saved a new message version.
-    pub recheck_active_for: i64,
     /// Routine rereads queued per pass.
     pub rechecks: u64,
 }
@@ -82,7 +79,6 @@ impl Intake {
             owed_reads: 20,
             owed_pages: 10,
             recheck_every: 15 * 60,
-            recheck_active_for: 14 * 24 * 60 * 60,
             rechecks: 10,
         }
     }
@@ -156,7 +152,7 @@ pub async fn connect(
         Err(error @ (SpruceError::AuthorizationRejected | SpruceError::Rejected { .. })) => {
             return Err(ConnectError::Refused(error));
         }
-        Err(error @ (SpruceError::Temporary { .. } | SpruceError::Unavailable)) => {
+        Err(error @ (SpruceError::Temporary { .. } | SpruceError::Unavailable(_))) => {
             return Err(ConnectError::Unavailable(error));
         }
         Err(error) => return Err(ConnectError::Check(error)),
@@ -239,12 +235,7 @@ async fn run(store: &Store, intake: &Intake, lease: &Lease) -> Result<PassOutcom
     // messages, so owed reads and the backlog wait.
     if let Some(cursor) = cursor.as_ref().filter(|cursor| cursor.is_established()) {
         store
-            .queue_rechecks(
-                lease,
-                intake.recheck_every,
-                intake.recheck_active_for,
-                intake.rechecks,
-            )
+            .queue_rechecks(lease, intake.recheck_every, intake.rechecks)
             .await?;
         match work.owed(intake, cursor).await {
             Ok(saved) => kept += saved,
@@ -548,7 +539,7 @@ impl Work<'_> {
         let page = match self.client.list_conversations(query).await {
             Ok(page) => page,
             Err(SpruceError::AuthorizationRejected) => return Err(Stop::Refused),
-            Err(SpruceError::Temporary { .. } | SpruceError::Unavailable) => return Ok(()),
+            Err(SpruceError::Temporary { .. } | SpruceError::Unavailable(_)) => return Ok(()),
             Err(error) => return Err(Stop::Failed(error.into())),
         };
         let mut write = PageWrite::default();

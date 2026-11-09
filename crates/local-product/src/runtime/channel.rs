@@ -930,7 +930,6 @@ impl Store {
         }
         let mut rows = Vec::new();
         let mut conversations: HashSet<String> = HashSet::new();
-        let mut saved: HashSet<String> = HashSet::new();
         for version in &page.versions {
             conversations.insert(version.conversation.clone());
             if !existing.insert((version.item.clone(), version.version.clone())) {
@@ -938,7 +937,6 @@ impl Store {
             }
             let ordinal = ordinals.entry(version.item.clone()).or_insert(0);
             *ordinal += 1;
-            saved.insert(version.conversation.clone());
             rows.push(channel_message::ActiveModel {
                 practice: Set(practice.to_owned()),
                 item: Set(version.item.clone()),
@@ -989,9 +987,6 @@ impl Store {
         let mut touched: HashMap<String, ConversationChange> = HashMap::new();
         for conversation in conversations {
             touched.entry(conversation).or_default();
-        }
-        for conversation in saved {
-            touched.entry(conversation).or_default().saved = true;
         }
         for conversation in &page.settled {
             touched.entry(conversation.clone()).or_default().settle = true;
@@ -1057,7 +1052,6 @@ impl Store {
             owed: Set(None),
             owed_attempt: Set(None),
             checked_at: Set(now),
-            saved_at: Set(now),
             link: Set(None),
         })
         .on_conflict(
@@ -1084,9 +1078,6 @@ impl Store {
             .map(|value| from_json(value, "owed read"))
             .transpose()?;
         let mut active: channel_conversation::ActiveModel = row.into();
-        if change.saved {
-            active.saved_at = Set(now);
-        }
         if change.settle {
             owed = None;
             active.owed_attempt = Set(None);
@@ -1263,23 +1254,21 @@ impl Store {
         Ok(reads)
     }
 
-    /// Queues a routine reread of up to `limit` conversations that saved a
-    /// message within the last `active_for` seconds and were last checked
-    /// over `every` seconds ago. The change reader only sees new items, and
-    /// Spruce does not say whether an edit or a deletion flag moves a
-    /// conversation's activity, so this reread is how those arrive.
+    /// Queues a routine reread of up to `limit` conversations last checked
+    /// over `every` seconds ago, least recently checked first, so every
+    /// conversation of any age comes round. The change reader only sees new
+    /// items, and Spruce does not say whether an edit or a deletion flag moves
+    /// a conversation's activity, so this reread is how those arrive.
     pub async fn queue_rechecks(
         &self,
         lease: &Lease,
         every: i64,
-        active_for: i64,
         limit: u64,
     ) -> Result<usize, ChannelError> {
         let (tx, row, now) = self.fenced(lease).await?;
         let due = channel_conversation::Entity::find()
             .filter(channel_conversation::Column::Practice.eq(&lease.practice))
             .filter(channel_conversation::Column::Owed.is_null())
-            .filter(channel_conversation::Column::SavedAt.gt(now - active_for))
             .filter(channel_conversation::Column::CheckedAt.lte(now - every))
             .order_by_asc(channel_conversation::Column::CheckedAt)
             .limit(limit)
@@ -1474,7 +1463,6 @@ impl Store {
 
 #[derive(Default)]
 struct ConversationChange {
-    saved: bool,
     settle: bool,
     /// Where the next attempt starts, and this attempt's turn.
     attempt: Option<(Attempt, i64)>,

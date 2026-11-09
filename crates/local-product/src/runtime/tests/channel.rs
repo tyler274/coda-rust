@@ -307,13 +307,21 @@ async fn files_read_back_after_links_expire_and_edits_and_deletions_are_versions
         Some("Ada Patient")
     );
 
-    // An edit and a deletion are new versions; the earlier ones stay. The
-    // change reader can't see either, so they arrive through the routine
-    // reread that ordinary passes queue for active conversations.
+    // An edit and a deletion are new versions; the earlier ones stay. Later
+    // activity elsewhere moves the change reader's boundary well past c1's
+    // overlap, so only the routine reread can find them.
     s.fake.deliver(message("c1", "e1", "draft", 20));
+    s.pass().await;
+    s.fake.deliver(message("elsewhere", "x1", "later", 10_000));
     s.pass().await;
     s.fake.edit("e1", "final", &at(25));
     s.fake.flag_deleted("f1", &at(26));
+    s.pass().await;
+    assert_eq!(
+        s.rows("e1").await,
+        1,
+        "the change reader cannot see the edit"
+    );
     let status = s.store.channel_status(&s.practice).await.unwrap();
     assert!(status.unread.is_empty(), "a routine reread is not unread");
     s.recheck_now().await;
@@ -482,7 +490,11 @@ async fn conversations_that_keep_failing_do_not_hold_back_the_rest() {
             .len(),
         3
     );
-    // Only "z" recovers. Two passes with room for two reads each must reach it.
+    // Later activity moves the change boundary past all three, so only owed
+    // reads can reach them. Then only "z" recovers: two passes with room for
+    // two reads each must reach it.
+    s.fake.deliver(message("elsewhere", "x1", "later", 10_000));
+    s.pass().await;
     let failing = ["a", "b"];
     s.fake.recover();
     for name in failing {
