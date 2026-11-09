@@ -2118,7 +2118,7 @@ fn PhysicianShell(
                                 }
                             },
                             queued_editing: queued_editing(),
-                            queued_busy: queued_slot.sending(),
+                            queued_busy: queued_slot.unanswered(),
                             queued_notice: queued_slot.notice(client),
                             on_queued_edit: move |(id, text): (String, String)| queued_editing.set(Some((id, text))),
                             on_queued_edit_cancel: move |_| queued_editing.set(None),
@@ -2128,7 +2128,10 @@ fn PhysicianShell(
                                     queued_edit_command(selected(), open_chat(), &id, &text)
                                 {
                                     queued_slot.run(client.read().clone(), command, move || {
-                                        queued_editing.set(None);
+                                        // Words typed after Save stay open to save.
+                                        if queued_editing.peek().as_ref() == Some(&(id.clone(), text.clone())) {
+                                            queued_editing.set(None);
+                                        }
                                         *snapshot_attempt.write() += 1;
                                     });
                                 }
@@ -2369,6 +2372,15 @@ fn use_command_slot() -> CommandSlot {
 impl CommandSlot {
     fn sending(&self) -> bool {
         *self.stage.read() == CommandStage::Sending
+    }
+
+    /// Sent, and not yet known to be taken or refused. Another command must
+    /// wait, so Check again can only resend this one.
+    fn unanswered(&self) -> bool {
+        matches!(
+            *self.stage.read(),
+            CommandStage::Sending | CommandStage::Unconfirmed
+        )
     }
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.

@@ -2418,9 +2418,9 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     fs::remove_dir_all(home).unwrap();
 }
 
-/// Send next on the hosted site, against a slow fixed worker. Two messages
-/// queued behind a running answer show in a second browser, take an edit and
-/// a removal there, and get one reply after the answer ends. Two more queued
+/// Send next on the hosted site, against a slow fixed worker. Three messages
+/// queued behind a running answer show in a second browser, take a removal
+/// and an edit there, and the two left get one reply after the answer ends. Two more queued
 /// behind the next answer return to the composer on Stop and are never sent.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
@@ -2491,27 +2491,26 @@ async fn send_next_queues_on_the_server_and_stop_returns_it_to_the_composer() {
     a.type_composer("Hello");
     a.step("sendWithKeyboard", serde_json::json!([]));
     wait_send_next(&mut a);
-    for text in ["And the potassium?", "Also the creatinine"] {
+    for text in ["And the potassium?", "Also the creatinine", "Never mind"] {
         a.type_composer(text);
         a.step("sendWithKeyboard", serde_json::json!([]));
         a.wait_composer("", Duration::from_secs(10));
     }
-    let shown = wait_queued(&mut a, 2);
+    let shown = wait_queued(&mut a, 3);
+    let waiting = |text: &str| serde_json::json!({"text": text, "status": "Waiting for next response", "actions": ["Edit", "Remove"]});
     assert_eq!(
         shown,
         serde_json::json!([
-            {"text": "And the potassium?", "status": "Waiting for next response", "actions": ["Edit", "Remove"]},
-            {"text": "Also the creatinine", "status": "Waiting for next response", "actions": ["Edit", "Remove"]},
+            waiting("And the potassium?"),
+            waiting("Also the creatinine"),
+            waiting("Never mind"),
         ])
     );
     a.save_pictures("send-next-queued", "[aria-label=\"Conversation\"]");
     // The other browser reads the same queue from Coda, not from this tab.
-    assert_eq!(wait_queued(&mut b, 2), shown);
-    b.step(
-        "clickQueued",
-        serde_json::json!(["Also the creatinine", "Remove"]),
-    );
-    wait_queued(&mut a, 1);
+    assert_eq!(wait_queued(&mut b, 3), shown);
+    b.step("clickQueued", serde_json::json!(["Never mind", "Remove"]));
+    wait_queued(&mut a, 2);
     b.step(
         "clickQueued",
         serde_json::json!(["And the potassium?", "Edit"]),
@@ -2521,9 +2520,12 @@ async fn send_next_queues_on_the_server_and_stop_returns_it_to_the_composer() {
     std::thread::sleep(Duration::from_millis(100));
     b.click_named(".queued-edit button", "Save");
     let edited = wait_queued_text(&mut a, "And the sodium?");
-    assert_eq!(edited.as_array().map(Vec::len), Some(1), "{edited}");
+    assert_eq!(
+        edited,
+        serde_json::json!([waiting("And the sodium?"), waiting("Also the creatinine")])
+    );
 
-    // The answer ends; the queue is answered in one reply.
+    // The answer ends; the two queued messages are answered in one reply.
     let started = Instant::now();
     loop {
         let lines = a.step("conversationLines", serde_json::json!([]));
@@ -2538,13 +2540,21 @@ async fn send_next_queues_on_the_server_and_stop_returns_it_to_the_composer() {
             .filter(|text| text.contains(scale::FIXED_TEXT))
             .count();
         if replies == 2 && queued_now(&mut a).as_array().is_some_and(Vec::is_empty) {
+            // Both queued messages sit between the first reply and the
+            // second, so one reply answers them together.
+            let at = |needle: &str| texts.iter().position(|text| text.contains(needle));
+            let first_reply = at(scale::FIXED_TEXT).unwrap();
+            let last_reply = texts
+                .iter()
+                .rposition(|text| text.contains(scale::FIXED_TEXT))
+                .unwrap();
+            for queued in ["And the sodium?", "Also the creatinine"] {
+                let index = at(queued).unwrap_or_else(|| panic!("{queued} not sent: {lines}"));
+                assert!(first_reply < index && index < last_reply, "{lines}");
+            }
             assert!(
-                texts.iter().any(|text| text.contains("And the sodium?")),
-                "{lines}"
-            );
-            assert!(
-                !texts.iter().any(|text| text.contains("creatinine")),
-                "{lines}"
+                !texts.iter().any(|text| text.contains("Never mind")),
+                "a removed message was sent: {lines}"
             );
             break;
         }

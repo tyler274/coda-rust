@@ -139,6 +139,10 @@ struct Held {
     pending_send: Option<PendingSend>,
     /// An accepted Send's text is not yet durably cleared.
     pending_clear: bool,
+    /// The newest server read that arrived while a save ran. The save's
+    /// answer settles first, then this is reconciled, so a newer draft
+    /// written meanwhile (such as Stop returning queued text) still shows.
+    unread: Option<(i64, String)>,
 }
 
 impl Held {
@@ -319,7 +323,15 @@ impl Composer {
     pub(crate) fn loaded(&mut self, target: &DraftTarget, revision: i64, text: &str) {
         let held = self.held.entry(target.clone()).or_default();
         if held.in_flight.is_some() {
-            // The running save's answer settles the baseline.
+            // The running save's answer settles the baseline; this read is
+            // reconciled after it.
+            if held
+                .unread
+                .as_ref()
+                .is_none_or(|(seen, _)| revision >= *seen)
+            {
+                held.unread = Some((revision, text.to_owned()));
+            }
             return;
         }
         held.reconcile(revision, text);
@@ -452,6 +464,9 @@ impl Composer {
                 held.failed = true;
                 held.failures = held.failures.saturating_add(1);
             }
+        }
+        if let Some((revision, text)) = held.unread.take() {
+            held.reconcile(revision, &text);
         }
         held.settle();
     }
@@ -787,6 +802,23 @@ mod tests {
         assert_eq!(composer.text(at), "mine");
         composer.edit(at, "mine, more".into());
         assert_eq!(composer.begin(&one).unwrap().expected_revision, 1);
+    }
+
+    /// Stop in another tab returns queued text to the draft while this
+    /// page's save is running; the read that brings it is kept for after.
+    #[test]
+    fn a_newer_read_during_a_save_shows_once_the_save_answers() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 1, "hello");
+        composer.edit(at, "".into());
+        let attempt = composer.begin(&one).unwrap();
+        composer.loaded(&one, 3, "returned");
+        assert_eq!(composer.text(at), "");
+        composer.finish(&attempt, SaveOutcome::Saved(2));
+        assert_eq!(composer.text(at), "returned");
+        assert_eq!(composer.conflict(at), None);
+        assert!(!composer.wants_save(&one));
     }
 
     #[test]

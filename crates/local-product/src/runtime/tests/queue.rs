@@ -247,6 +247,16 @@ async fn edit_and_withdraw_take_effect_once_and_never_reach_a_started_message() 
             .unwrap(),
         QueueChanged::Duplicate
     );
+    drop(store);
+    let store = Store::connect(&url).await.unwrap();
+    assert_eq!(
+        store
+            .withdraw_queued(&scope, "withdraw-3", "q3")
+            .await
+            .unwrap(),
+        QueueChanged::Duplicate,
+        "a withdrawal retried after a restart"
+    );
     // A second withdrawal under a new key finds nothing queued.
     assert_eq!(
         store
@@ -440,4 +450,35 @@ async fn stop_returns_queued_text_to_the_composer_and_never_sends_it() {
     );
     let draft = store.chat_draft(&fresh).await.unwrap();
     assert_eq!((draft.revision, draft.text.as_str()), (1, "queued"));
+
+    // The draft still holds a queued message whose clear has not landed
+    // (or whose receipt was lost): Stop returns it once, not twice.
+    let pending = delivery_scope(&practice, "pending-clear");
+    store
+        .accept_authorized(&pending, &typed("p1", "p1"), vec![1; 32])
+        .await
+        .unwrap();
+    assert!(matches!(
+        store
+            .save_chat_draft(&pending, 0, "the sodium?", &[1; 32], &mut OpenAuthority)
+            .await
+            .unwrap(),
+        ChatDraftSaved::Saved(_)
+    ));
+    store
+        .send_authorized(
+            &pending,
+            &typed("p2", "the sodium?"),
+            vec![1; 32],
+            SendMode::Next,
+        )
+        .await
+        .unwrap();
+    let pending_work = store.conversation(&pending).await.unwrap().work;
+    store
+        .stop_authorized(&pending, "stop-pending", vec![1; 32], &pending_work)
+        .await
+        .unwrap();
+    let draft = store.chat_draft(&pending).await.unwrap();
+    assert_eq!((draft.revision, draft.text.as_str()), (2, "the sodium?"));
 }
