@@ -42,7 +42,9 @@ Rules:
    - `code`: a code or its coded display.
    - `note`: a note attached to the record.
    - `other`: any other recorded value.
-6. `statuses` holds only `status` slots, read beside the record's kind and date.
+6. `statuses` holds only `status` slots, read beside the record's kind and date. The record's
+   recognized statuses always read there whatever you place, so `statuses` matters for a status
+   the record names in its own way.
 7. Give each section a `heading` from the schema's fixed headings, such as `"result"` or
    `"reference_range"`.
 8. When the record holds several results in an array, such as `/component`, write one section with

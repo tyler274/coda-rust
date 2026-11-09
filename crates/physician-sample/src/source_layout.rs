@@ -19,7 +19,8 @@ use std::fmt;
 pub struct Layout {
     /// The record type it reads, compared with the record's `resourceType`.
     pub record_type: String,
-    /// The record's own statuses, read beside its kind and date.
+    /// Status slots read beside the record's kind and date. The general view's statuses always
+    /// read there too, so these add only a status no general status holds.
     #[serde(default)]
     pub statuses: Vec<Slot>,
     /// Headed groups of fields, in reading order.
@@ -1043,8 +1044,9 @@ fn index(token: &str) -> Option<usize> {
 }
 
 /// Rearranges the record's general view under the layout. Bound values read under labels derived
-/// from their roles or the record's own field names (see [`label`]), with their source paths, and
-/// bound statuses lead the statuses. A general field the layout binds part of gives way to its
+/// from their roles or the record's own field names (see [`label`]), with their source paths. The
+/// general statuses always stay, and a bound status joins them only when none of them holds it.
+/// A general field outside the statuses that the layout binds part of gives way to its
 /// unbound leaves, each under the general label extended by its own path; leaves already under
 /// Technical details stay only there. Every other general field reads under Other fields. Dates,
 /// attribution, readable source text and Technical details keep their general reading, so
@@ -1132,10 +1134,25 @@ pub(crate) fn render(
             })
             .collect()
     };
-    let general_statuses = std::mem::take(&mut view.statuses);
-    view.statuses = placed_statuses;
-    view.statuses
-        .extend(general_statuses.into_iter().flat_map(&remaining));
+    // The general statuses are the record's status metadata, which the pane header and hover
+    // preview read: they stay whole whatever the layout places. A layout's status slot adds
+    // only a status no general status already holds, such as one a vendor record names.
+    let general_status_paths: Vec<&SourcePath> = view
+        .statuses
+        .iter()
+        .filter_map(|field| path_of.get(field.path.as_deref()?).copied())
+        .collect();
+    let added_statuses = layout
+        .statuses
+        .iter()
+        .zip(placed_statuses)
+        .filter(|(binding, _)| {
+            !general_status_paths
+                .iter()
+                .any(|path| binding.path.is_under(path))
+        })
+        .map(|(_, field)| field);
+    view.statuses.extend(added_statuses);
     let (readable_text, fields): (Vec<_>, Vec<_>) = std::mem::take(&mut view.sections)
         .into_iter()
         .partition(|field| field.path.is_none());
@@ -2080,19 +2097,14 @@ mod tests {
     fn a_condition_reads_under_its_layout_with_statuses_first() {
         let cited = general_citation(&condition());
         let view = inspection_with_layout(&cited, Some(&condition_layout()));
+        // The layout's status slots read values the general statuses already hold, so the
+        // statuses stay exactly the general ones.
+        assert_eq!(view.statuses, inspection(&cited).statuses);
         assert_eq!(
             view.statuses,
             vec![
-                located(
-                    "Clinical status",
-                    "Resolved",
-                    "clinicalStatus.coding[0].display"
-                ),
-                located(
-                    "Verification status",
-                    "Confirmed",
-                    "verificationStatus.coding[0].display"
-                ),
+                located("Clinical status", "Resolved", "clinicalStatus"),
+                located("Verification status", "Confirmed", "verificationStatus"),
             ]
         );
         assert_eq!(
@@ -2136,6 +2148,40 @@ mod tests {
         );
         assert_eq!(view.dates, inspection(&cited).dates);
         assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    /// The statuses are the record's status metadata, read by the pane header and the hover
+    /// preview: a layout that shows the status only in a section still leaves it there.
+    #[test]
+    fn a_status_placed_in_a_section_stays_among_the_statuses() {
+        let cited = retained_observation();
+        let general = inspection(&cited);
+        assert_eq!(
+            general.statuses,
+            [located("Result status", "final", "status")]
+        );
+        let mut in_section = observation_layout();
+        in_section.statuses.clear();
+        in_section.sections[0].slots.push(Slot {
+            role: SlotRole::Status,
+            pointer: "/status".into(),
+        });
+        let view = inspection_with_layout(&cited, Some(&in_section));
+        assert_eq!(
+            view.layout_sections[0].fields.last(),
+            Some(&located("Result status", "final", "status"))
+        );
+        assert_eq!(view.statuses, general.statuses);
+        // Bound among the statuses as well, it still reads once there.
+        let view = inspection_with_layout(&cited, Some(&observation_layout()));
+        assert_eq!(view.statuses, general.statuses);
+        // Neither placement repeats it under Other fields.
+        assert!(
+            view.other_fields
+                .iter()
+                .all(|field| field.path.as_deref() != Some("status"))
+        );
         assert_view_shows_every_leaf(&cited, &view);
     }
 

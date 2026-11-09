@@ -1518,6 +1518,45 @@ mod cited_layout_tests {
         }
     }
 
+    /// A layout that shows the status only in a section still leaves it in the statuses the
+    /// citation carries, which the hover preview and the pane header read.
+    #[test]
+    fn a_status_placed_in_a_section_still_reaches_the_hover_preview() {
+        let in_section = crate::source_layout::Layout::parse(
+            r#"{"record_type":"Observation","statuses":[],
+            "sections":[{"heading":"result","slots":[
+                {"role":"result","pointer":"/valueQuantity/value"},
+                {"role":"status","pointer":"/status"}]}]}"#,
+        )
+        .unwrap();
+        let cited = cited("in-section", Some("ehr"));
+        let layouts = [(("ehr".to_owned(), "Observation".to_owned()), in_section)]
+            .into_iter()
+            .collect();
+        let body = durable_snapshot_body(Some(&conversation(vec![cited])), &layouts);
+        let segments: Vec<physician_wire::ClinicalSegment> =
+            serde_json::from_value(body["conversation"][0]["segments"].clone()).unwrap();
+        let inspection = segments
+            .into_iter()
+            .find_map(|segment| match segment {
+                physician_wire::ClinicalSegment::Citation {
+                    source_presentation,
+                    ..
+                } => source_presentation?.inspection,
+                physician_wire::ClinicalSegment::Text { .. } => None,
+            })
+            .expect("the citation carries its inspection");
+        assert_eq!(inspection.layout_sections[0].fields[1].text, "final");
+        assert_eq!(
+            inspection
+                .statuses
+                .iter()
+                .map(|status| (status.label.as_str(), status.text.as_str()))
+                .collect::<Vec<_>>(),
+            [("Result status", "final")]
+        );
+    }
+
     #[tokio::test]
     async fn an_unreachable_layout_store_reads_through_the_general_view() {
         let url = std::env::var("PHYSICIAN_TEST_DATABASE_URL")
