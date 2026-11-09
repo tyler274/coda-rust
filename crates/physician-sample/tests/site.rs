@@ -2396,6 +2396,208 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Reads each response's feedback controls until `settled` holds.
+fn ratings_when(
+    tab: &mut Tab,
+    what: &str,
+    settled: impl Fn(&[serde_json::Value]) -> bool,
+) -> Vec<serde_json::Value> {
+    let deadline = Instant::now() + Duration::from_secs(10);
+    loop {
+        let ratings = tab.step("ratings", serde_json::json!([]));
+        let ratings = ratings.as_array().cloned().unwrap_or_default();
+        if settled(&ratings) {
+            return ratings;
+        }
+        assert!(Instant::now() < deadline, "{what}: {ratings:?}");
+        std::thread::sleep(Duration::from_millis(60));
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn feedback_stays_on_its_response_across_site_restart() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("feedback_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let chat = "chat-feedback-browser";
+    let store = local_product::runtime::Store::connect(&database.url)
+        .await
+        .expect("runtime store");
+    scale::answered_chat(
+        &store,
+        patient,
+        chat,
+        &[
+            ("Latest potassium?", "Potassium was 4.1 on Monday."),
+            ("And sodium?", "Sodium was 139 on Monday."),
+        ],
+    )
+    .await;
+    let home = std::env::temp_dir().join(format!(
+        "physician-feedback-browser-{}",
+        uuid::Uuid::new_v4()
+    ));
+    fs::create_dir_all(&home).unwrap();
+    let topic = scale::topic();
+    let publisher = format!("127.0.0.1:{}", scale::free_port());
+    let mut sites = Vec::new();
+    let mut hosts = Vec::new();
+    for name in ["feedback-a", "feedback-b"] {
+        let port = scale::free_port();
+        let host = format!("127.0.0.1:{port}");
+        let mut process = scale::Process::spawn(
+            name,
+            scale::site_bin(),
+            &[],
+            &[
+                ("PHYSICIAN_DATABASE_URL", &database.url),
+                ("PUBSUB_EMULATOR_HOST", &publisher),
+                ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+                ("PHYSICIAN_CHAT_TOPIC", &topic),
+                ("PHYSICIAN_AUTH", "required"),
+                ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+                ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+                ("PHYSICIAN_LISTEN_ADDR", &host),
+            ],
+            &home,
+        );
+        scale::wait_ready(&mut process, port).await;
+        sites.push(process);
+        hosts.push(host);
+    }
+    let urls: Vec<_> = hosts
+        .iter()
+        .map(|host| format!("http://{host}/?patient={patient}&chat={chat}"))
+        .collect();
+    let mut tab = Tab::open(&urls[0]);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(&mut tab, "both responses offer unrated thumbs", |ratings| {
+        ratings.len() == 2
+            && ratings
+                .iter()
+                .all(|rating| rating["enabled"] == true && rating["pressed"].is_null())
+    });
+    tab.save_pictures("feedback-unrated", "[aria-label=\"Conversation\"]");
+
+    tab.step("clickInRating", serde_json::json!([0, "Good response"]));
+    ratings_when(&mut tab, "the first response saved as good", |ratings| {
+        ratings[0]["pressed"] == "Good response" && ratings[0]["details"] == "Add details"
+    });
+
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/feedback/*" }] }),
+    );
+    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    let save = tab.held_request("PUT");
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": save["requestId"], "errorReason": "Failed" }),
+    );
+    ratings_when(&mut tab, "the failed save says so", |ratings| {
+        ratings[1]["notice"] == "Couldn’t save" && ratings[1]["pressed"].is_null()
+    });
+    tab.save_pictures("feedback-not-saved", "[aria-label=\"Conversation\"]");
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    tab.step("clickInRating", serde_json::json!([1, "Poor response"]));
+    ratings_when(&mut tab, "the retried save landed", |ratings| {
+        ratings[1]["pressed"] == "Poor response"
+            && ratings[1]["notice"].is_null()
+            && ratings[1]["details"] == "Add details"
+    });
+
+    tab.step("clickInRating", serde_json::json!([1, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !tab.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the dialog open"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    ratings_when(&mut tab, "closing the dialog kept the rating", |ratings| {
+        ratings[1]["pressed"] == "Poor response" && ratings[1]["details"] == "Add details"
+    });
+
+    tab.step("clickInRating", serde_json::json!([0, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click_named("dialog.feedback-details .toggle-chip", "Missing context");
+    tab.browser
+        .type_into("dialog.feedback-details textarea", "It left out the trend.");
+    std::thread::sleep(Duration::from_millis(100));
+    tab.save_pictures("feedback-details", "dialog.feedback-details");
+    tab.click_named("dialog.feedback-details button", "Save details");
+    ratings_when(&mut tab, "the details saved", |ratings| {
+        ratings[0]["pressed"] == "Good response" && ratings[0]["details"] == "Edit details"
+    });
+    drop(tab);
+
+    for (process, host) in sites.iter_mut().zip(&hosts) {
+        process.restart();
+        scale::wait_ready(process, host.rsplit_once(':').unwrap().1.parse().unwrap()).await;
+    }
+    let session = scale::sign_in(&hosts[0]).await;
+    let readback = scale::get_json(
+        &hosts[1],
+        &format!("/physician-state/feedback/{patient}/{chat}"),
+        &session,
+    )
+    .await;
+    assert_eq!(
+        readback,
+        (
+            200,
+            serde_json::json!({"feedback": [
+                {
+                    "response": 1,
+                    "rating": "up",
+                    "details": {"reasons": ["missing_context"], "text": "It left out the trend."},
+                },
+                {"response": 3, "rating": "down", "details": null},
+            ]})
+        )
+    );
+    println!(
+        "Both site processes restarted; feedback readback: {}",
+        readback.1
+    );
+    let mut fresh = Tab::open(&urls[1]);
+    fresh.wait_for_text("Work email", Duration::from_secs(20));
+    fresh.request_sign_in("physician@codahealth.test");
+    fresh.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(
+        &mut fresh,
+        "each rating stayed on its response",
+        |ratings| {
+            ratings.len() == 2
+                && ratings[0]["pressed"] == "Good response"
+                && ratings[0]["details"] == "Edit details"
+                && ratings[1]["pressed"] == "Poor response"
+                && ratings[1]["details"] == "Add details"
+        },
+    );
+    fresh.save_pictures("feedback-after-restart", "[aria-label=\"Conversation\"]");
+    drop(fresh);
+    drop(sites);
+    fs::remove_dir_all(home).unwrap();
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")

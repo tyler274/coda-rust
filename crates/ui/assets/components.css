@@ -212,6 +212,7 @@
 .text-field-input { display: block; width: 100%; min-width: 0; margin: 0; color: var(--ink); font: var(--type-body-lg); }
 :where(input, textarea).text-field-input { padding: var(--space-3); }
 textarea.text-field-input { min-height: 3lh; field-sizing: content; resize: none; }
+.text-field-input:disabled { opacity: .46; }
 /* A field set among controls: a pill at a compact control's height. Positioned so its hidden label stays with it and can't reach past a scrolling host. */
 .compact-field { position: relative; min-width: 0; }
 .compact-field-input { display: block; width: 100%; min-width: 0; min-height: var(--control-compact-height); margin: 0; padding: 0 var(--space-3); border-radius: var(--radius-pill); color: var(--ink); font: var(--type-body-md); }
