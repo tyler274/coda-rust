@@ -897,7 +897,17 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     source.content = "{\"potassium\":6.8}".into();
     source.sha256 = local_product::sha256_hex(source.content.as_bytes());
     running.store.record_source(&source).await.unwrap();
-    running.emulator.publish(&delivery).await;
+    let body = support::push_body(&delivery, "duplicate-citation-delivery");
+    let (status, text) = support::exchange(
+        &running.worker_host,
+        "POST",
+        "/pubsub/chat-turn",
+        &[("content-type", "application/json")],
+        Some(&body),
+    )
+    .await
+    .unwrap_or_else(|error| panic!("{error}\n{}", running.worker.tail()));
+    assert_eq!(status, 204, "duplicate push should ack: {text}");
     let fresh = Store::connect(&running.database.url).await.unwrap();
     let saved = fresh.read(&scope).await.unwrap().unwrap();
     assert_eq!(serde_json::to_value(saved.messages).unwrap(), original);

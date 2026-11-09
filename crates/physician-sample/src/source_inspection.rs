@@ -88,7 +88,7 @@ fn text(value: &Value) -> Option<&str> {
     value.as_str().filter(|text| !text.trim().is_empty())
 }
 
-fn concept(value: &Value) -> Option<String> {
+fn readable_label(value: &Value) -> Option<String> {
     if let Some(text) = text(&value["text"]) {
         return Some(text.into());
     }
@@ -99,6 +99,28 @@ fn concept(value: &Value) -> Option<String> {
         .filter_map(|coding| text(&coding["display"]))
         .collect();
     (!displays.is_empty()).then(|| displays.join("; "))
+}
+
+/// A coded concept's readable label, or its supplied code when the record gives no label.
+fn concept(value: &Value) -> Option<String> {
+    if let Some(label) = readable_label(value) {
+        return Some(label);
+    }
+    let codings = value["coding"]
+        .as_array()
+        .map(Vec::as_slice)
+        .unwrap_or_default();
+    let codes: Vec<_> = codings
+        .iter()
+        .filter_map(|coding| {
+            let code = text(&coding["code"])?;
+            Some(match text(&coding["system"]) {
+                Some(system) => format!("Code {code} ({system})"),
+                None => format!("Code {code}"),
+            })
+        })
+        .collect();
+    (!codes.is_empty()).then(|| codes.join("; "))
 }
 
 fn date_label(name: &str) -> &str {
@@ -171,7 +193,7 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
         ("clinicalStatus", "Source status recorded"),
         ("verificationStatus", "Verification status recorded"),
     ] {
-        if let Some(value) = concept(&resource[name]).or_else(|| {
+        if let Some(value) = readable_label(&resource[name]).or_else(|| {
             resource[name]["coding"]
                 .as_array()
                 .and_then(|coding| coding.first())
@@ -360,6 +382,26 @@ mod tests {
                 .sections
                 .iter()
                 .any(|section| section.text.contains("No known"))
+        );
+    }
+
+    #[test]
+    fn a_code_without_a_label_is_shown_not_reported_missing() {
+        let view = inspection(&citation(
+            r#"{"resourceType":"AllergyIntolerance","code":{"coding":[{"system":"http://snomed.info/sct","code":"91936005"}]},
+            "reaction":[{"manifestation":[{"coding":[{"code":"247472004"}]}]}]}"#,
+        ));
+        assert_eq!(view.title, "Code 91936005 (http://snomed.info/sct)");
+        assert!(
+            view.sections
+                .iter()
+                .any(|section| section.text == "Manifestation: Code 247472004")
+        );
+        assert!(
+            !view
+                .sections
+                .iter()
+                .any(|section| section.text.contains("not supplied"))
         );
     }
 

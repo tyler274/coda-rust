@@ -652,8 +652,9 @@ impl Store {
             return Err(error("candidate lacks durable evidence"));
         }
         let answer = terminal_answer(&attempt.events)?;
-        let (answer, citations) =
-            crate::physician_chat::published(&answer, &attempt.events).map_err(|e| error(&e))?;
+        // DbErr holds only text; the publication error's message already names its cause.
+        let (answer, citations) = crate::physician_chat::published(&answer, &attempt.events)
+            .map_err(|e| error(&e.to_string()))?;
         attempt.status = "completed".into();
         state.status = "completed".into();
         state.last_activity_at = now;

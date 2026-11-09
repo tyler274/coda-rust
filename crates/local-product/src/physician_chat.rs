@@ -123,7 +123,7 @@ const SUMMARY_MAX_CHARS: usize = 400;
 pub fn published(
     text: &str,
     events: &[harness::engine::Event],
-) -> Result<(String, Vec<Citation>), String> {
+) -> Result<(String, Vec<Citation>), PublicationError> {
     let (visible, block) = split_summaries(text);
     let mut cited = citations(&visible, events)?;
     for line in block.lines() {
@@ -169,9 +169,32 @@ fn split_summaries(text: &str) -> (String, &str) {
     (visible, block)
 }
 
+/// Why an answer's citations could not be published.
+#[derive(Debug, thiserror::Error)]
+pub enum PublicationError {
+    /// A recorded exact read did not decode as the source reader's output.
+    #[error("recorded exact read is unreadable: {0}")]
+    Read(#[source] serde_json::Error),
+    /// A recorded exact read omitted a field every available result carries.
+    #[error("recorded exact read lacks citation {0}")]
+    MissingField(&'static str),
+    /// Retained bytes no longer match the digest recorded with them.
+    #[error("corrupt exact citation")]
+    Corrupt,
+    /// A citation marker has no closing `]]`.
+    #[error("unterminated citation")]
+    Unterminated,
+    /// The answer cites an identity no exact read in this attempt returned.
+    #[error("citation was not read in this attempt")]
+    NotRead,
+}
+
 /// Resolve only citations returned by an executed exact read in this attempt.
 /// Unsupported markers fail publication rather than becoming fabricated evidence.
-fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citation>, String> {
+fn citations(
+    text: &str,
+    events: &[harness::engine::Event],
+) -> Result<Vec<Citation>, PublicationError> {
     use harness::engine::EventKind;
     let mut reads = std::collections::HashSet::new();
     let mut available = std::collections::HashMap::new();
@@ -185,16 +208,16 @@ fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citati
                 output,
                 executed: true,
             } if reads.contains(call_id) => {
-                let result: Value = serde_json::from_str(output).map_err(|e| e.to_string())?;
+                let result: Value = serde_json::from_str(output).map_err(PublicationError::Read)?;
                 for value in result["results"].as_array().into_iter().flatten() {
                     if value["outcome"] != "available" {
                         continue;
                     }
-                    let string = |key: &str| {
+                    let string = |key: &'static str| {
                         value[key]
                             .as_str()
                             .map(str::to_owned)
-                            .ok_or_else(|| format!("missing citation {key}"))
+                            .ok_or(PublicationError::MissingField(key))
                     };
                     let citation = Citation {
                         id: string("citation_id")?,
@@ -204,17 +227,17 @@ fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citati
                         dates: serde_json::from_value(
                             value.get("dates").cloned().unwrap_or_else(|| json!([])),
                         )
-                        .map_err(|e| e.to_string())?,
+                        .map_err(PublicationError::Read)?,
                         content: string("content")?,
                         readable_parts: serde_json::from_value(value["readable_parts"].clone())
-                            .map_err(|e| e.to_string())?,
+                            .map_err(PublicationError::Read)?,
                         sha256: string("sha256")?,
                         provenance: value["provenance"].clone(),
                         summary: None,
                         native: serde_json::from_value(value["native"].clone()).ok(),
                     };
                     if crate::sha256_hex(citation.content.as_bytes()) != citation.sha256 {
-                        return Err("corrupt exact citation".into());
+                        return Err(PublicationError::Corrupt);
                     }
                     available.insert(citation.id.clone(), citation);
                 }
@@ -225,10 +248,10 @@ fn citations(text: &str, events: &[harness::engine::Event]) -> Result<Vec<Citati
     let mut result = Vec::new();
     let mut remaining = text;
     while let Some((_, suffix)) = remaining.split_once("[[patient_source:") {
-        let (id, rest) = suffix.split_once("]]").ok_or("unterminated citation")?;
-        let citation = available
-            .get(id)
-            .ok_or("citation was not read in this attempt")?;
+        let (id, rest) = suffix
+            .split_once("]]")
+            .ok_or(PublicationError::Unterminated)?;
+        let citation = available.get(id).ok_or(PublicationError::NotRead)?;
         if !result.iter().any(|c: &Citation| c.id == id) {
             result.push(citation.clone());
         }
@@ -508,8 +531,14 @@ mod tests {
 
     #[test]
     fn invented_citations_cannot_publish() {
-        assert!(published("Claim [[patient_source:invented]]", &[]).is_err());
-        assert!(published("Claim [[patient_source:unterminated", &[]).is_err());
+        assert!(matches!(
+            published("Claim [[patient_source:invented]]", &[]),
+            Err(PublicationError::NotRead)
+        ));
+        assert!(matches!(
+            published("Claim [[patient_source:unterminated", &[]),
+            Err(PublicationError::Unterminated)
+        ));
         let invented = "Claim.\n[[source_summaries]]\ninvented: A record.\n[[/source_summaries]]";
         let (text, cited) = published(invented, &[]).unwrap();
         assert_eq!(text, "Claim.");

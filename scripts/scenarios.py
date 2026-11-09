@@ -131,11 +131,15 @@ def http(port, method, path, body=None, bearer=None):
         return error.code, (json.loads(raw) if raw.startswith(b"{") else raw.decode(errors="replace"))
 
 
+def relative(path):
+    return str(path.relative_to(REPO)) if path.is_relative_to(REPO) else str(path)
+
+
 def save(directory, name, value):
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / f"{name}.json"
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n")
-    return str(path.relative_to(REPO)) if path.is_relative_to(REPO) else str(path)
+    return relative(path)
 
 
 def conversation(port, session, chat):
@@ -298,7 +302,7 @@ def p1(receipt, state, out):
         receipt.step("P1", "reopen exact citation after recovery and page reload", actor,
                      result.returncode == 0,
                      "Chromium checks patient and exact source identity, opens the saved citation, corrects the source, reloads and reopens the retained original text and revision/digest",
-                     command_id=key, artifact=str(log.relative_to(REPO)))
+                     command_id=key, artifact=relative(log))
         if result.returncode == 0:
             restart_applications(state, 3)
             after_correction, _ = conversation(b, session, chat)
@@ -316,7 +320,7 @@ def p1(receipt, state, out):
             log.write_text(f"$ {' '.join(argv)}\nexit {result.returncode}\n{result.stdout}{result.stderr}")
             receipt.step("P1", "reopen published attachment after correction and service restart", actor,
                          result.returncode == 0, "Chromium reopens original readable attachment and native bytes on desktop and phone",
-                         command_id=key, artifact=str(log.relative_to(REPO)))
+                         command_id=key, artifact=relative(log))
     else:
         receipt.step("P1", "reopen exact citation after recovery and page reload", actor, False,
                      "No saved citation available to open", command_id=key)
@@ -613,7 +617,7 @@ def d1_suites(receipt, state, out):
     log.write_text(f"$ DUET_TEST_DATABASE_URL={state['postgres']['url']} {' '.join(argv)}\n"
                    f"exit {result.returncode}\n{result.stdout}{result.stderr}")
     seen = dict(re.findall(r"^test (\S+) \.\.\. (\w+)", result.stdout, re.M))
-    artifact = str(log.relative_to(REPO)) if log.is_relative_to(REPO) else str(log)
+    artifact = relative(log)
     receipt.step("D1", "cargo test exit", "runner", result.returncode == 0,
                  f"{' '.join(argv)} exited {result.returncode}", artifact=artifact)
     for name, holds in D1_TESTS.items():
