@@ -31,6 +31,8 @@ pub mod chat_draft;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+/// Physician feedback on Coda's responses.
+pub mod feedback;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
 /// Explicit bounded restart activation, separate from construction.
@@ -291,6 +293,9 @@ impl Store {
         let mut chat_drafts = schema.create_table_from_entity(entities::chat_draft::Entity);
         chat_drafts.if_not_exists();
         tx.execute(&chat_drafts).await?;
+        let mut feedback = schema.create_table_from_entity(entities::response_feedback::Entity);
+        feedback.if_not_exists();
+        tx.execute(&feedback).await?;
         let mut drafts = schema.create_table_from_entity(entities::reply_draft::Entity);
         drafts.if_not_exists();
         tx.execute(&drafts).await?;

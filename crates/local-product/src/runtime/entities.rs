@@ -33,6 +33,43 @@ pub(super) mod chat_draft {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
+/// One physician's feedback on one of Coda's responses in a chat. The table
+/// is created from this entity by the store's migration, not by `runtime.sql`.
+pub(super) mod response_feedback {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_response_feedback")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub chat: String,
+        /// The response's place among its chat's messages, from 0.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub response: i64,
+        /// `up` or `down`.
+        #[sea_orm(column_type = "Text")]
+        pub rating: String,
+        /// Database-clock seconds of the latest rating.
+        pub rated_at: i64,
+        /// The serialized `Details`; null until details are saved.
+        #[sea_orm(column_type = "JsonBinary")]
+        pub details: Option<Json>,
+        /// Database-clock seconds of the latest details save.
+        pub details_saved_at: Option<i64>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
 pub(super) mod conversation {
     use sea_orm::entity::prelude::*;
 
