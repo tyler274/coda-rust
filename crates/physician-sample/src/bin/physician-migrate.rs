@@ -12,6 +12,10 @@
 //! whose panels start with every patient. It tries every patient and exits
 //! failed if any did not load. Loading again changes only what the charts
 //! changed and leaves panel choices alone.
+//!
+//! `physician-migrate feedback` prints every physician's feedback on Coda's
+//! responses, one JSON line per rated response, for evaluation by Coda staff.
+//! It only reads, and it refuses to run as a Cloud Run job.
 
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::load_synthetic_practice;
@@ -43,6 +47,13 @@ async fn main() {
         Some("load-charts") => {
             if let Err(error) = load_charts(&url).await {
                 eprintln!("synthetic charts not loaded: {error}");
+                std::process::exit(1);
+            }
+            return;
+        }
+        Some("feedback") => {
+            if let Err(error) = print_feedback(&url).await {
+                eprintln!("feedback not read: {error}");
                 std::process::exit(1);
             }
             return;
@@ -107,6 +118,43 @@ async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
                 "already present"
             }
         );
+    }
+    Ok(())
+}
+
+/// Prints every feedback row as one JSON line, with the rated response's
+/// text. The output is clinical text, so it is read on an operator's own
+/// terminal: inside a Cloud Run job, where stdout reaches Cloud Logging, it
+/// refuses and reads nothing.
+async fn print_feedback(url: &str) -> Result<(), String> {
+    use std::io::Write;
+    if std::env::var_os("CLOUD_RUN_JOB").is_some() {
+        return Err("it prints clinical text and never runs as a Cloud Run job".into());
+    }
+    let db = migration_connection(url)
+        .await
+        .map_err(|error| format!("physician database connection: {error}"))?;
+    let rows = local_product::runtime::Store::from_connection(db)
+        .feedback_for_evaluation()
+        .await
+        .map_err(|error| format!("feedback read: {error}"))?;
+    let mut out = std::io::stdout().lock();
+    for row in rows {
+        let details = row.feedback.details.as_ref();
+        let line = serde_json::json!({
+            "practice": row.scope.practice,
+            "physician": row.scope.physician,
+            "workspace": row.scope.workspace,
+            "chat": row.scope.chat,
+            "response": row.response,
+            "rating": row.feedback.rating,
+            "rated_at": row.feedback.rated_at,
+            "reasons": details.map(|details| details.reasons()),
+            "details": details.map(|details| details.text()),
+            "details_saved_at": row.feedback.details_saved_at,
+            "response_text": row.response_text,
+        });
+        writeln!(out, "{line}").map_err(|error| format!("stdout: {error}"))?;
     }
     Ok(())
 }
