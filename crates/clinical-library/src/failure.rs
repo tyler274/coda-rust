@@ -30,6 +30,13 @@ impl FailureCode {
         }
     }
 
+    /// One of this crate's own codes, written as a literal. A test checks
+    /// every one is a valid code.
+    pub(crate) fn known(code: &'static str) -> Self {
+        debug_assert!(Self::new(code).is_ok(), "{code:?} is not a failure code");
+        Self(code.to_owned())
+    }
+
     /// The code a taken-over night is recorded with.
     pub fn ended_without_outcome() -> Self {
         Self(Self::ENDED_WITHOUT_OUTCOME.to_owned())

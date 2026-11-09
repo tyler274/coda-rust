@@ -5,6 +5,7 @@ use sea_orm::{ConnectionTrait, DatabaseConnection, DbErr, TransactionTrait};
 use sea_orm_migration::prelude::*;
 
 mod m20261109_init;
+mod m20261110_pubmed_status;
 
 /// The table this chain records applied migrations in. The library may share
 /// a database with other chains, and each chain owns its own ledger.
@@ -20,7 +21,10 @@ impl MigratorTrait for Migrator {
     }
 
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20261109_init::Migration)]
+        vec![
+            Box::new(m20261109_init::Migration),
+            Box::new(m20261110_pubmed_status::Migration),
+        ]
     }
 }
 
@@ -168,6 +172,67 @@ pub(crate) mod version {
         pub active: bool,
         /// The run that activated it.
         pub activated_by_run: Option<Uuid>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[allow(missing_docs)]
+pub(crate) mod pubmed_status {
+    use sea_orm::entity::prelude::*;
+
+    /// NLM's status for one article.
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "clinical_library_pubmed_status")]
+    pub struct Model {
+        /// The article's PMID.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub pmid: i64,
+        /// NLM's publication types, in NLM's order.
+        pub publication_types: Vec<String>,
+        /// When NLM last revised the record.
+        pub revised: Option<Date>,
+        /// The hash of the record the status came from.
+        pub record_sha256: Vec<u8>,
+        /// The record exactly as NLM sent it.
+        pub record_xml: String,
+        /// When the library first held this record.
+        pub observed_at: DateTimeWithTimeZone,
+        /// When NLM last sent it unchanged.
+        pub confirmed_at: DateTimeWithTimeZone,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[allow(missing_docs)]
+pub(crate) mod pubmed_relation {
+    use sea_orm::entity::prelude::*;
+
+    /// One comments-and-corrections link NLM records on an article.
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "clinical_library_pubmed_relations")]
+    pub struct Model {
+        /// The article's PMID.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub pmid: i64,
+        /// The link's place in NLM's order.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub position: i16,
+        /// NLM's RefType.
+        pub ref_type: String,
+        /// The linked article's PMID.
+        pub target_pmid: Option<i64>,
+        /// NLM's citation of the linked item.
+        pub source_reference: Option<String>,
+        /// NLM's note.
+        pub note: Option<String>,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

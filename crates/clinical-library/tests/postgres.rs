@@ -6,70 +6,25 @@
 
 use clinical_library::{
     Acquired, ArticleEvent, ArticleState, Candidate, DeferralReason, FailureCode, HistoryEntry,
-    HolderState, Next, NightOutcome, RETRY_LIMIT, RunId, SlotName, Source, StopReason, Store,
-    StoreError, VersionId, WaitReason,
+    HolderState, ItemKey, Next, NightOutcome, OtherSource, RETRY_LIMIT, RunId, SlotName,
+    StopReason, Store, StoreError, VersionId, WaitReason, pubmed::Pmid,
 };
-use sea_orm::{
-    ConnectOptions, ConnectionTrait, Database, DatabaseConnection, DbBackend, Statement, Value,
-};
+use sea_orm::{ConnectionTrait, DbBackend, Statement};
 
-struct Scratch {
-    db: DatabaseConnection,
-    schema: String,
-}
+mod common;
 
-impl Scratch {
-    async fn new() -> Self {
-        let url = std::env::var("CLINICAL_LIBRARY_TEST_DATABASE_URL")
-            .expect("CLINICAL_LIBRARY_TEST_DATABASE_URL must name a local Postgres");
-        assert!(url.contains("localhost") || url.contains("127.0.0.1"));
-        // Postgres can't bind an identifier as a parameter, so the schema's
-        // name is spliced in; it is generated here from hex digits only.
-        let schema = format!("clinical_proof_{}", uuid::Uuid::new_v4().simple());
-        let admin = Database::connect(&url).await.unwrap();
-        admin
-            .execute_unprepared(&format!("create schema {schema}"))
-            .await
-            .unwrap();
-        // One connection, so the schema's search_path holds for every query.
-        let mut options = ConnectOptions::new(url);
-        options.max_connections(1).min_connections(1);
-        let db = Database::connect(options).await.unwrap();
-        db.execute_unprepared(&format!("set search_path to {schema}"))
-            .await
-            .unwrap();
-        Self { db, schema }
-    }
-
-    async fn store(&self) -> Store {
-        let store = Store::from_connection(self.db.clone());
-        store.migrate().await.unwrap();
-        store
-    }
-
-    async fn refused(&self, sql: &str) -> String {
-        self.refused_with(sql, []).await
-    }
-
-    /// Runs `sql` with its values bound, expecting the database to refuse it.
-    async fn refused_with(&self, sql: &str, values: impl IntoIterator<Item = Value>) -> String {
-        let statement = Statement::from_sql_and_values(DbBackend::Postgres, sql, values);
-        match self.db.execute_raw(statement).await {
-            Ok(_) => panic!("the database accepted: {sql}"),
-            Err(error) => error.to_string(),
-        }
-    }
-
-    async fn drop(self) {
-        self.db
-            .execute_unprepared(&format!("drop schema {} cascade", self.schema))
-            .await
-            .unwrap();
-    }
-}
+use common::Scratch;
 
 fn slot() -> SlotName {
     SlotName::new("nightly").unwrap()
+}
+
+fn pmc(key: &str) -> ItemKey {
+    ItemKey::other(OtherSource::Pmc, key).unwrap()
+}
+
+fn article() -> ItemKey {
+    ItemKey::pubmed(Pmid::new(12345).unwrap())
 }
 
 fn code(value: &str) -> FailureCode {
@@ -101,7 +56,8 @@ async fn migrations_apply_to_a_fresh_database() {
         .unwrap()
         .try_get::<i64>("", "n")
         .unwrap();
-    assert_eq!(ledger, 1);
+    // The initial schema and the PubMed status schema.
+    assert_eq!(ledger, 2);
     assert_eq!(store.active_version().await.unwrap(), None);
     scratch.drop().await;
 }
@@ -206,7 +162,7 @@ async fn a_run_that_lost_its_slot_cannot_write() {
     };
     lost(
         store
-            .apply(&old_lease, Source::PubMed, "12345", &ArticleEvent::Admitted)
+            .apply(&old_lease, &article(), &ArticleEvent::Admitted)
             .await
             .map(drop),
     );
@@ -214,13 +170,15 @@ async fn a_run_that_lost_its_slot_cannot_write() {
         .check(|_| Ok::<(), String>(()))
         .unwrap();
     lost(store.activate(&old_lease, checked).await.map(drop));
+    lost(store.qualify(&old_lease, &article()).await.map(drop));
     lost(store.finish(old_lease, &NightOutcome::nothing_due()).await);
     assert_eq!(store.active_version().await.unwrap(), None);
-    assert_eq!(store.item(Source::PubMed, "12345").await.unwrap(), None);
+    assert_eq!(store.item(&article()).await.unwrap(), None);
 
     // The new holder writes normally.
+    store.qualify(&new_lease, &article()).await.unwrap();
     store
-        .apply(&new_lease, Source::PubMed, "12345", &ArticleEvent::Admitted)
+        .apply(&new_lease, &article(), &ArticleEvent::Admitted)
         .await
         .unwrap();
     store
@@ -250,44 +208,43 @@ async fn item_states_keep_their_rules_in_storage() {
     let lease = hold(&store, RunId::new()).await;
     let failure = ArticleEvent::OutsideFailure(code("ncbi_timeout"));
 
-    let state = store
-        .apply(&lease, Source::Pmc, "PMC1", &failure)
-        .await
-        .unwrap();
-    assert_eq!(store.item(Source::Pmc, "PMC1").await.unwrap(), Some(state));
+    // An item no source qualified takes no moves.
+    let unqualified = store.apply(&lease, &pmc("PMC1"), &failure).await;
+    assert!(matches!(unqualified, Err(StoreError::Unqualified(key)) if key == pmc("PMC1")));
+    assert_eq!(store.item(&pmc("PMC1")).await.unwrap(), None);
+
+    // Qualifying starts it due, and qualifying again changes nothing.
+    assert_eq!(
+        store.qualify(&lease, &pmc("PMC1")).await.unwrap(),
+        ArticleState::new_article()
+    );
+    let state = store.apply(&lease, &pmc("PMC1"), &failure).await.unwrap();
+    assert_eq!(store.qualify(&lease, &pmc("PMC1")).await.unwrap(), state);
+    assert_eq!(store.item(&pmc("PMC1")).await.unwrap(), Some(state));
     for _ in 1..RETRY_LIMIT {
-        store
-            .apply(&lease, Source::Pmc, "PMC1", &failure)
-            .await
-            .unwrap();
+        store.apply(&lease, &pmc("PMC1"), &failure).await.unwrap();
     }
     let needs_person = ArticleState::NeedsPerson {
         last_failure: code("ncbi_timeout"),
     };
     assert_eq!(
-        store.item(Source::Pmc, "PMC1").await.unwrap(),
+        store.item(&pmc("PMC1")).await.unwrap(),
         Some(needs_person.clone())
     );
-    let refused = store.apply(&lease, Source::Pmc, "PMC1", &failure).await;
+    let refused = store.apply(&lease, &pmc("PMC1"), &failure).await;
     assert!(matches!(refused, Err(StoreError::InvalidMove(_))));
-    assert_eq!(
-        store.item(Source::Pmc, "PMC1").await.unwrap(),
-        Some(needs_person)
-    );
+    assert_eq!(store.item(&pmc("PMC1")).await.unwrap(), Some(needs_person));
 
+    store.qualify(&lease, &pmc("PMC2")).await.unwrap();
     let waiting = store
         .apply(
             &lease,
-            Source::Pmc,
-            "PMC2",
+            &pmc("PMC2"),
             &ArticleEvent::Refused(WaitReason::NoReadableText),
         )
         .await
         .unwrap();
-    assert_eq!(
-        store.item(Source::Pmc, "PMC2").await.unwrap(),
-        Some(waiting)
-    );
+    assert_eq!(store.item(&pmc("PMC2")).await.unwrap(), Some(waiting));
 
     // The database's retry bound is the Rust one.
     let limit = i16::from(RETRY_LIMIT);

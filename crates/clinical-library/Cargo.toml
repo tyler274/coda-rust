@@ -10,20 +10,34 @@ workspace = true
 
 [dependencies]
 async-trait = "0.1"
+chrono = { version = "0.4", default-features = false, features = ["std"] }
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"] }
+roxmltree = "0.21"
 sea-orm = { version = "2", default-features = false, features = [
     "macros",
     "sqlx-postgres",
     "runtime-tokio-rustls",
     "with-uuid",
+    "with-chrono",
+    "postgres-array",
 ] }
 sea-orm-migration = { version = "2", default-features = false, features = [
     "runtime-tokio-rustls",
     "sqlx-postgres",
 ] }
+sha2 = "0.11"
 thiserror = "2"
-tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "sync", "time"] }
+url = "2"
 uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+axum = "0.8"
 
 [[bin]]
 name = "clinical-library-migrate"
 path = "src/bin/clinical-library-migrate.rs"
+
+[[bin]]
+name = "clinical-library-pubmed-status"
+path = "src/bin/clinical-library-pubmed-status.rs"

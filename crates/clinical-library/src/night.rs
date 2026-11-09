@@ -56,6 +56,22 @@ impl NightOutcome {
         }
     }
 
+    /// A night whose due work needs no new version, such as status that
+    /// search reads as it is recorded: `done` items finished and `set_aside`
+    /// didn't. It succeeds only if it set nothing aside; one that set
+    /// everything aside moved nothing.
+    pub fn recorded(done: usize, set_aside: usize) -> Self {
+        match (done, set_aside) {
+            (_, 0) => Self::Succeeded(Succeeded { activated: None }),
+            (0, _) => Self::Deferred(Deferred {
+                reason: DeferralReason::MovedNothing,
+            }),
+            _ => Self::Deferred(Deferred {
+                reason: DeferralReason::PublishedWithSetAside,
+            }),
+        }
+    }
+
     /// A night that didn't finish what was due, and why.
     pub fn deferred(reason: DeferralReason) -> Self {
         Self::Deferred(Deferred { reason })
@@ -86,7 +102,9 @@ impl NightOutcome {
             Self::Failed(_) => true,
             Self::Deferred(deferred) => match deferred.reason {
                 DeferralReason::SlotHeldByLiveRun | DeferralReason::PublishedWithSetAside => false,
-                DeferralReason::OwnerUnreadable | DeferralReason::WaitingForCapacity => true,
+                DeferralReason::OwnerUnreadable
+                | DeferralReason::WaitingForCapacity
+                | DeferralReason::MovedNothing => true,
             },
         }
     }
@@ -101,15 +119,15 @@ impl NightOutcome {
     }
 }
 
-/// A night that succeeded. Only [`NightOutcome::nothing_due`] and
-/// [`NightOutcome::published`] make one.
+/// A night that succeeded. Only [`NightOutcome::nothing_due`],
+/// [`NightOutcome::published`] and [`NightOutcome::recorded`] make one.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Succeeded {
     activated: Option<VersionId>,
 }
 
 impl Succeeded {
-    /// The version the night activated, or `None` if nothing was due.
+    /// The version the night activated, or `None` if it needed none.
     pub fn activated(&self) -> Option<&VersionId> {
         self.activated.as_ref()
     }
@@ -153,6 +171,8 @@ pub enum DeferralReason {
     WaitingForCapacity,
     /// It published, but set some items aside.
     PublishedWithSetAside,
+    /// It had work due and set all of it aside, so it moved nothing.
+    MovedNothing,
 }
 
 impl DeferralReason {
@@ -163,6 +183,7 @@ impl DeferralReason {
             Self::OwnerUnreadable => "owner_unreadable",
             Self::WaitingForCapacity => "waiting_for_capacity",
             Self::PublishedWithSetAside => "published_with_set_aside",
+            Self::MovedNothing => "moved_nothing",
         }
     }
 
@@ -173,6 +194,7 @@ impl DeferralReason {
             Self::OwnerUnreadable,
             Self::WaitingForCapacity,
             Self::PublishedWithSetAside,
+            Self::MovedNothing,
         ]
         .into_iter()
         .find(|reason| reason.as_str() == value)
@@ -249,10 +271,20 @@ mod tests {
             DeferralReason::OwnerUnreadable,
             DeferralReason::WaitingForCapacity,
             DeferralReason::PublishedWithSetAside,
+            DeferralReason::MovedNothing,
         ] {
             assert!(NightOutcome::deferred(reason).success().is_none());
             assert_eq!(DeferralReason::parse(reason.as_str()), Some(reason));
         }
+        assert!(NightOutcome::recorded(4, 0).success().is_some());
+        assert!(NightOutcome::recorded(0, 0).success().is_some());
+        let partial = NightOutcome::recorded(3, 1);
+        assert!(partial.success().is_none());
+        assert!(!partial.counts_as_failed_night());
+        let nothing = NightOutcome::recorded(0, 2);
+        assert!(nothing.success().is_none());
+        assert!(nothing.counts_as_failed_night());
+
         let failed = NightOutcome::failed(FailureCode::new("build_failed").unwrap());
         assert!(failed.success().is_none());
     }

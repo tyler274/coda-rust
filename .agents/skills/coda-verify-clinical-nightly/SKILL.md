@@ -17,7 +17,8 @@ Run it when a change touches any of these:
 
 - `crates/clinical-library/src/` (article states, night outcomes, the stop rule, the slot, versions
   and the store) and `crates/clinical-library/src/migration/` (the schema).
-- `crates/clinical-library/tests/postgres.rs`.
+- `crates/clinical-library/tests/postgres.rs`, `crates/clinical-library/tests/pubmed.rs` and
+  `crates/clinical-library/tests/fixtures/`.
 - The nightly README.
 
 ## Run
@@ -46,6 +47,37 @@ tests. The Postgres suite fails, rather than skipping, when the variable isn't s
 | 7. An unreadable holder alerts on the second night | `slot::owner_unreadable_needs_alert`; `an_unreadable_owner_alerts_on_the_second_night` |
 | 8. A night that lost the slot changes nothing | `Store`'s writes take a `Lease`, checked in the same transaction; `a_run_that_lost_its_slot_cannot_write` |
 | 9. One active version, and only a checked one | `Candidate`'s states (`compile_fail` doc test in `candidate.rs`); the versions table's checks and partial unique index (`one_checked_version_is_active`) |
+
+PubMed's status, in `tests/pubmed.rs` against NCBI's recorded responses and a local stand-in for
+NCBI:
+
+| Behaviour | Held by |
+| --- | --- |
+| Stored status matches NLM, an unchanged record re-confirms without replacing, and the record is kept exactly as sent, with a hash the database checks | `stored_status_matches_nlm` |
+| A changed record replaces the stored status and its links | `a_changed_record_replaces_the_stored_status` |
+| A record without publication types is unreadable, not an empty status | `a_record_without_publication_types_is_unreadable` |
+| Book records answer their PMIDs, and deleted citations answer nothing | `book_records_answer_their_pmids` (NCBI's recorded response), `deleted_citations_answer_nothing` |
+| Every NLM link type from an article to a notice about it is read; the notice's own links aren't | `notices_follow_nlms_link_types` |
+| An unreadable record is set aside, tells a person and keeps the last good status | `one_failing_article_is_set_aside_and_the_rest_finish`; `refresh::plan`'s unit tests |
+| An outage sets articles aside and a night that moved nothing counts toward rule 5 | `an_outage_sets_articles_aside_without_losing_status` |
+| A run that lost its slot records no status | `a_run_that_lost_its_slot_records_no_status` |
+| Requests keep within NCBI's rate; throttling and server errors back off; a refusal is never retried and never carries the key | `requests_keep_within_ncbis_rate`, `throttling_and_server_errors_back_off` |
+| A refused request fails the night | `a_refused_request_fails_the_night` |
+
+These tests never call NCBI. Against NCBI itself, with the key from Doppler and a local database
+the migrate binary has set up:
+
+```sh
+export CLINICAL_LIBRARY_DATABASE_URL=postgresql://postgres@127.0.0.1:5544/<database>
+cargo run -p clinical-library --bin clinical-library-migrate
+doppler run -- cargo run -p clinical-library --bin clinical-library-pubmed-status <pmids-file>
+```
+
+It exits 0 when the night succeeded, 2 when it deferred and 1 when it failed.
+
+Only a qualified item takes moves, and a PubMed item's key is a PMID: `Store::qualify` and
+`Store::apply`, held by `item_states_keep_their_rules_in_storage`, and `ItemKey`'s `compile_fail` doc
+test in `source.rs`.
 
 A fresh start (a success or a recorded resolution) is held by
 `a_resolution_or_a_success_starts_the_count_over`. The schema's own rules, one outcome per night,

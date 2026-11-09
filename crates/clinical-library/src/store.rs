@@ -6,20 +6,24 @@
 
 use std::time::Duration;
 
-use sea_orm::sea_query::OnConflict;
+use sea_orm::sea_query::{Expr, Func, OnConflict, SimpleExpr};
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection,
-    DatabaseTransaction, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
-    TransactionTrait,
+    AccessMode, ActiveModelTrait, ColumnTrait, ConnectOptions, Database, DatabaseConnection,
+    DatabaseTransaction, DbErr, EntityTrait, IsolationLevel, QueryFilter, QueryOrder, QuerySelect,
+    Set, TransactionTrait,
 };
 
 use crate::article::{ArticleEvent, ArticleState, InvalidMove, Retry, StateKind, WaitReason};
 use crate::candidate::{Activation, Candidate, Checked, InvalidVersionId, VersionId};
 use crate::failure::{FailureCode, InvalidFailureCode};
-use crate::migration::{self, item, night, resolution, slot, version};
+use crate::migration::{
+    self, item, night, pubmed_relation, pubmed_status, resolution, slot, version,
+};
 use crate::night::{DeferralReason, NightOutcome};
+use crate::pubmed::refresh::{self, CheckResult, StatusCheck, StatusWrite};
+use crate::pubmed::{Pmid, Relation, StatusRecord, StoredStatus};
 use crate::slot::{HolderState, Lease, RunId, SlotName, Takeover, takeover};
-use crate::source::Source;
+use crate::source::ItemKey;
 use crate::stop_rule::{self, HistoryEntry, Next};
 
 /// The library's Postgres records.
@@ -67,6 +71,18 @@ pub enum StoreError {
         /// The run that lost it.
         run: RunId,
     },
+    /// NLM's record has more links than the store keeps.
+    #[error("PMID {pmid} has more than {} links", i16::MAX)]
+    TooManyLinks {
+        /// The article.
+        pmid: Pmid,
+        /// The position that didn't fit.
+        #[source]
+        cause: std::num::TryFromIntError,
+    },
+    /// No source has qualified the item, so it takes no moves.
+    #[error("{0} isn't qualified for the library")]
+    Unqualified(ItemKey),
     /// The article's rules refused the move.
     #[error("the article's state refused the move")]
     InvalidMove(#[from] InvalidMove),
@@ -104,6 +120,12 @@ pub enum Corruption {
     /// The row's columns describe no state a move could produce.
     #[error("the row's columns disagree: {0}")]
     Inconsistent(&'static str),
+    /// A stored PMID isn't one.
+    #[error("stored PMID")]
+    Pmid(#[from] crate::pubmed::InvalidPmid),
+    /// A stored hash isn't 32 bytes.
+    #[error("stored record hash of {0} bytes")]
+    Hash(usize),
     /// A row vanished while the store held its lock.
     #[error("the locked row vanished")]
     Vanished,
@@ -223,47 +245,167 @@ impl Store {
         Ok(())
     }
 
-    /// One item's state, or `None` if the source hasn't qualified it.
-    pub async fn item(
-        &self,
-        source: Source,
-        key: &str,
-    ) -> Result<Option<ArticleState>, StoreError> {
-        let row = item::Entity::find_by_id((source.as_str().to_owned(), key.to_owned()))
-            .one(&self.db)
-            .await?;
+    /// One item's state, or `None` if no source has qualified it.
+    pub async fn item(&self, key: &ItemKey) -> Result<Option<ArticleState>, StoreError> {
+        let row = item::Entity::find_by_id(item_id(key)).one(&self.db).await?;
         row.map(state_from_row).transpose()
     }
 
-    /// Applies `event` to one item, starting a newly qualified item as due.
+    /// Qualifies an item for the library under `lease`: a new item starts
+    /// waiting to retry, so the next night tries it. Returns the item's
+    /// state, which for one already qualified is unchanged.
+    ///
+    /// Only a qualified item takes moves; [`Store::apply`] refuses any
+    /// other, so which items are in the library is always a source's
+    /// deliberate choice.
+    pub async fn qualify(&self, lease: &Lease, key: &ItemKey) -> Result<ArticleState, StoreError> {
+        let tx = self.db.begin().await?;
+        locked_slot(&tx, lease).await?;
+        item::Entity::insert(row_from_state(key, &ArticleState::new_article()))
+            .on_conflict_do_nothing_on([item::Column::Source, item::Column::ItemKey])
+            .exec(&tx)
+            .await?;
+        let row = item::Entity::find_by_id(item_id(key))
+            .one(&tx)
+            .await?
+            .ok_or(StoreError::Corrupt {
+                table: "clinical_library_items",
+                cause: Corruption::Vanished,
+            })?;
+        let state = state_from_row(row)?;
+        tx.commit().await?;
+        Ok(state)
+    }
+
+    /// Applies `event` to one qualified item.
     pub async fn apply(
         &self,
         lease: &Lease,
-        source: Source,
-        key: &str,
+        key: &ItemKey,
         event: &ArticleEvent,
     ) -> Result<ArticleState, StoreError> {
         let tx = self.db.begin().await?;
         locked_slot(&tx, lease).await?;
-        let id = (source.as_str().to_owned(), key.to_owned());
-        let current = item::Entity::find_by_id(id)
+        let from = qualified(&tx, key).await?;
+        let next = from.apply(event)?;
+        row_from_state(key, &next).update(&tx).await?;
+        tx.commit().await?;
+        Ok(next)
+    }
+
+    /// Records one night's status check for one qualified PubMed article,
+    /// under `lease`, and says how it ended. `None` when the article isn't
+    /// one tonight checks, such as one a person is handling.
+    ///
+    /// The article's moves, its stored status and the slot check happen in
+    /// one transaction, so a run that lost its slot changes nothing.
+    pub async fn record_status_check(
+        &self,
+        lease: &Lease,
+        check: &StatusCheck,
+    ) -> Result<Option<CheckResult>, StoreError> {
+        let pmid = check.pmid();
+        let key = ItemKey::pubmed(pmid);
+        let tx = self.db.begin().await?;
+        locked_slot(&tx, lease).await?;
+        let state = qualified(&tx, &key).await?;
+        let stored = pubmed_status::Entity::find_by_id(pmid.as_stored())
             .lock_exclusive()
             .one(&tx)
             .await?;
-        let exists = current.is_some();
-        let from = current
-            .map(state_from_row)
-            .transpose()?
-            .unwrap_or_else(ArticleState::new_article);
-        let next = from.apply(event)?;
-        let row = row_from_state(source, key, &next);
-        if exists {
-            row.update(&tx).await?;
-        } else {
-            row.insert(&tx).await?;
+        let stored_hash = stored
+            .as_ref()
+            .map(|row| stored_hash(&row.record_sha256))
+            .transpose()?;
+        let Some(plan) = refresh::plan(&state, stored_hash, check) else {
+            tx.commit().await?;
+            return Ok(None);
+        };
+
+        let next = plan
+            .events
+            .iter()
+            .try_fold(state.clone(), |state, event| state.apply(event))?;
+        if next != state {
+            row_from_state(&key, &next).update(&tx).await?;
+        }
+        match (plan.status, check) {
+            (StatusWrite::Replace, StatusCheck::Found(record)) => {
+                replace_status(&tx, record, stored.is_some()).await?;
+            }
+            (StatusWrite::Confirm, _) => {
+                pubmed_status::Entity::update_many()
+                    .col_expr(pubmed_status::Column::ConfirmedAt, now())
+                    .filter(pubmed_status::Column::Pmid.eq(pmid.as_stored()))
+                    .exec(&tx)
+                    .await?;
+            }
+            (StatusWrite::Replace | StatusWrite::Keep, _) => {}
         }
         tx.commit().await?;
-        Ok(next)
+        Ok(Some(plan.checked))
+    }
+
+    /// The status NLM last sent for `pmid`, or `None` if the library holds
+    /// none. No status is not a statement that the article wasn't retracted.
+    ///
+    /// The status and its links are read in one repeatable-read
+    /// transaction, so a replacement committing meanwhile can't mix two
+    /// records.
+    pub async fn pubmed_status(&self, pmid: Pmid) -> Result<Option<StoredStatus>, StoreError> {
+        let tx = self
+            .db
+            .begin_with_config(
+                Some(IsolationLevel::RepeatableRead),
+                Some(AccessMode::ReadOnly),
+            )
+            .await?;
+        let Some(row) = pubmed_status::Entity::find_by_id(pmid.as_stored())
+            .one(&tx)
+            .await?
+        else {
+            tx.commit().await?;
+            return Ok(None);
+        };
+        let links = pubmed_relation::Entity::find()
+            .filter(pubmed_relation::Column::Pmid.eq(pmid.as_stored()))
+            .order_by_asc(pubmed_relation::Column::Position)
+            .all(&tx)
+            .await?;
+        tx.commit().await?;
+        let relations = links
+            .into_iter()
+            .map(|link| {
+                let target = link
+                    .target_pmid
+                    .map(|value| {
+                        u64::try_from(value)
+                            .map_err(Corruption::from)
+                            .and_then(|value| Pmid::new(value).map_err(Corruption::from))
+                    })
+                    .transpose()
+                    .map_err(|cause| fault("clinical_library_pubmed_relations", cause))?;
+                Ok(Relation {
+                    ref_type: link.ref_type,
+                    target,
+                    source_reference: link.source_reference,
+                    note: link.note,
+                })
+            })
+            .collect::<Result<_, StoreError>>()?;
+        let record_sha256 = stored_hash(&row.record_sha256)?;
+        Ok(Some(StoredStatus {
+            record: StatusRecord {
+                pmid,
+                publication_types: row.publication_types,
+                relations,
+                revised: row.revised,
+                record_sha256,
+                record_xml: row.record_xml,
+            },
+            observed_at: row.observed_at.to_utc(),
+            confirmed_at: row.confirmed_at.to_utc(),
+        }))
     }
 
     /// Makes `candidate` the one active version, in one switch.
@@ -386,6 +528,99 @@ async fn locked_slot(tx: &DatabaseTransaction, lease: &Lease) -> Result<slot::Mo
             run: lease.run,
         }),
     }
+}
+
+/// The store's key for an item's row.
+fn item_id(key: &ItemKey) -> (String, String) {
+    (key.source().as_str().to_owned(), key.as_str().to_owned())
+}
+
+/// Locks a qualified item's row and reads its state, or refuses an item no
+/// source qualified.
+async fn qualified(tx: &DatabaseTransaction, key: &ItemKey) -> Result<ArticleState, StoreError> {
+    let row = item::Entity::find_by_id(item_id(key))
+        .lock_exclusive()
+        .one(tx)
+        .await?
+        .ok_or_else(|| StoreError::Unqualified(key.clone()))?;
+    state_from_row(row)
+}
+
+/// The database's clock now, as Postgres's `clock_timestamp()`.
+fn now() -> SimpleExpr {
+    Func::cust("clock_timestamp").into()
+}
+
+/// Replaces an article's stored status with `record`, observed and
+/// confirmed now.
+async fn replace_status(
+    tx: &DatabaseTransaction,
+    record: &StatusRecord,
+    exists: bool,
+) -> Result<(), StoreError> {
+    let pmid = record.pmid.as_stored();
+    if exists {
+        pubmed_relation::Entity::delete_many()
+            .filter(pubmed_relation::Column::Pmid.eq(pmid))
+            .exec(tx)
+            .await?;
+        pubmed_status::Entity::update_many()
+            .col_expr(
+                pubmed_status::Column::PublicationTypes,
+                Expr::value(record.publication_types.clone()),
+            )
+            .col_expr(pubmed_status::Column::Revised, Expr::value(record.revised))
+            .col_expr(
+                pubmed_status::Column::RecordSha256,
+                Expr::value(record.record_sha256.to_vec()),
+            )
+            .col_expr(
+                pubmed_status::Column::RecordXml,
+                Expr::value(record.record_xml.clone()),
+            )
+            .col_expr(pubmed_status::Column::ObservedAt, now())
+            .col_expr(pubmed_status::Column::ConfirmedAt, now())
+            .filter(pubmed_status::Column::Pmid.eq(pmid))
+            .exec(tx)
+            .await?;
+    } else {
+        pubmed_status::ActiveModel {
+            pmid: Set(pmid),
+            publication_types: Set(record.publication_types.clone()),
+            revised: Set(record.revised),
+            record_sha256: Set(record.record_sha256.to_vec()),
+            record_xml: Set(record.record_xml.clone()),
+            ..Default::default()
+        }
+        .insert(tx)
+        .await?;
+    }
+    for (position, link) in record.relations.iter().enumerate() {
+        let position = i16::try_from(position).map_err(|cause| StoreError::TooManyLinks {
+            pmid: record.pmid,
+            cause,
+        })?;
+        pubmed_relation::ActiveModel {
+            pmid: Set(pmid),
+            position: Set(position),
+            ref_type: Set(link.ref_type.clone()),
+            target_pmid: Set(link.target.map(Pmid::as_stored)),
+            source_reference: Set(link.source_reference.clone()),
+            note: Set(link.note.clone()),
+        }
+        .insert(tx)
+        .await?;
+    }
+    Ok(())
+}
+
+fn stored_hash(bytes: &[u8]) -> Result<[u8; 32], StoreError> {
+    <[u8; 32]>::try_from(bytes).map_err(|_wrong_length| {
+        fault(
+            "clinical_library_pubmed_status",
+            Corruption::Hash(bytes.len()),
+        )
+    })
 }
 
 /// Records an ended holder's night as failed if it never recorded one.
@@ -517,7 +752,7 @@ fn state_from_row(row: item::Model) -> Result<ArticleState, StoreError> {
     Ok(state)
 }
 
-fn row_from_state(source: Source, key: &str, state: &ArticleState) -> item::ActiveModel {
+fn row_from_state(key: &ItemKey, state: &ArticleState) -> item::ActiveModel {
     let (failures, wait_reason, last_failure) = match state {
         ArticleState::Admitted => (0, None, None),
         ArticleState::WaitingToRetry(retry) => (
@@ -530,8 +765,8 @@ fn row_from_state(source: Source, key: &str, state: &ArticleState) -> item::Acti
     };
     let kind: StateKind = state.kind();
     item::ActiveModel {
-        source: Set(source.as_str().to_owned()),
-        item_key: Set(key.to_owned()),
+        source: Set(key.source().as_str().to_owned()),
+        item_key: Set(key.as_str().to_owned()),
         state: Set(kind.as_str().to_owned()),
         failures: Set(failures),
         wait_reason: Set(wait_reason.map(str::to_owned)),

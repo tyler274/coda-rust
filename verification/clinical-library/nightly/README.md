@@ -22,6 +22,7 @@ How the clinical library refreshes from its sources every night, and what happen
 An article's states:
 
 - Every article is in exactly one of four states: admitted, waiting to retry, waiting for a change, or needs a person.
+- A source qualifies an article deliberately, and only a qualified article takes moves.
 - A new article is waiting to retry, so the next night tries it.
 - An admitted article stays admitted until its source publishes new content, which makes it due again.
 - An outside failure leaves the article waiting to retry, and the third in a row means it needs a person.
@@ -38,7 +39,7 @@ A night:
 - Only an integrity failure of the whole library holds back what every source publishes.
 - A night ends in exactly one outcome: succeeded, deferred or failed.
 - It succeeds when nothing was due, or when it published everything due with nothing set aside.
-- It's deferred when it didn't finish what was due for a reason other than a fault in its own work: another night held the slot, the slot's holder was unreadable, no build capacity was free all night, or it published while setting articles aside.
+- It's deferred when it didn't finish what was due for a reason other than a fault in its own work: another night held the slot, the slot's holder was unreadable, no build capacity was free all night, it published while setting articles aside, or it set aside everything due and so moved nothing.
 - It fails when its own work failed, and records the failure code.
 - A failed night's work resumes the next night from its saved progress.
 - The history of nights and resolutions is kept as it happened and never rewritten.
@@ -49,6 +50,19 @@ The slot:
 - A night that ended without recording an outcome is recorded as failed with the code `ended_without_outcome`.
 - While the holder is alive, or unreadable, the next night waits and records why.
 - Each new holder of the slot gets a higher token, and every write a night makes checks its token is still current.
+
+PubMed's status:
+
+- An article's status is NLM's words: its publication types and its comments-and-corrections links, kept as NLM sent them, with the record they came from exactly as NLM sent it.
+- A book record, such as a chapter, is read the same way; NLM's format gives books publication types but no comments-and-corrections links.
+- An article is qualified by being on the night's list, and its key is a PMID.
+- A night checks every article on its list that is new, waiting to retry, or admitted; an admitted article's check re-confirms its status.
+- A record NLM sent unchanged re-confirms the stored status, and a changed one is new content that replaces it.
+- A record the reader can't read, including one without the publication types NLM's format requires, is our own defect, and the article keeps its last good status.
+- No record from NLM is an outside failure, never a sign the article wasn't retracted.
+- An admitted article whose check fails keeps its status and state; it goes unconfirmed until a later night, which the freshness report shows.
+- A request NCBI refuses outright, such as for an invalid key, fails the night, and the key never appears in what it reports.
+- Requests stay within NCBI's rate, and back off when NCBI throttles or fails on its side.
 
 Publishing:
 
