@@ -307,14 +307,16 @@ async fn files_read_back_after_links_expire_and_edits_and_deletions_are_versions
         Some("Ada Patient")
     );
 
-    // An edit and a deletion are new versions; the earlier ones stay. They
-    // arrive through a full read of the conversation, as reconcile reports.
+    // An edit and a deletion are new versions; the earlier ones stay. The
+    // change reader can't see either, so they arrive through the routine
+    // reread that ordinary passes queue for active conversations.
     s.fake.deliver(message("c1", "e1", "draft", 20));
     s.pass().await;
     s.fake.edit("e1", "final", &at(25));
     s.fake.flag_deleted("f1", &at(26));
-    owe(&s, "c1").await;
-    s.pass().await;
+    let status = s.store.channel_status(&s.practice).await.unwrap();
+    assert!(status.unread.is_empty(), "a routine reread is not unread");
+    s.recheck_now().await;
     let e1 = s.store.channel_message(&s.practice, "e1").await.unwrap();
     assert_eq!(e1.len(), 2);
     let f1 = s.store.channel_message(&s.practice, "f1").await.unwrap();
@@ -323,29 +325,216 @@ async fn files_read_back_after_links_expire_and_edits_and_deletions_are_versions
 
     // An item missing from a later read is not deleted.
     s.fake.delete("e1");
-    owe(&s, "c1").await;
-    s.pass().await;
+    s.recheck_now().await;
     assert_eq!(s.rows("e1").await, 2);
 }
 
-async fn owe(s: &Setup, conversation: &str) {
-    let lease = s
+impl Setup {
+    /// A pass with routine rereads due at once, as after `recheck_every`.
+    async fn recheck_now(&self) {
+        let mut intake = self.intake.clone();
+        intake.recheck_every = 0;
+        intake::pass(&self.store, &intake, &self.practice)
+            .await
+            .unwrap();
+        let status = self.store.channel_status(&self.practice).await.unwrap();
+        assert!(status.unread.is_empty());
+    }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_stale_claim_and_an_old_credential_cannot_commit() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    // Same holder, two claims: the first expired, the second is live.
+    let first = s
         .store
-        .claim_channel(&s.practice, "owe", 60)
+        .claim_channel(&s.practice, "reader-a", 1)
         .await
         .unwrap()
         .unwrap();
-    s.store
-        .apply_channel_page(
-            &lease,
-            PageWrite {
-                owed: vec![(conversation.into(), OwedCause::TemporarilyUnavailable)],
-                ..Default::default()
-            },
-        )
+    tokio::time::sleep(std::time::Duration::from_millis(1_100)).await;
+    let second = s
+        .store
+        .claim_channel(&s.practice, "reader-a", 60)
         .await
+        .unwrap()
         .unwrap();
-    s.store.release_channel(&lease).await.unwrap();
+    let error = s
+        .store
+        .apply_channel_page(&first, PageWrite::default())
+        .await
+        .unwrap_err();
+    assert!(matches!(error, ChannelError::LeaseLost));
+    s.store.release_channel(&first).await.unwrap();
+    s.store
+        .apply_channel_page(&second, PageWrite::default())
+        .await
+        .expect("the live claim still holds the lease");
+
+    // A reconnect replaces the credential under a running reader: the reader
+    // can't then mark the connection lost.
+    intake::connect(
+        &s.store,
+        &key(),
+        &s.intake.api,
+        &s.practice,
+        "member-2",
+        CREDENTIAL,
+    )
+    .await
+    .unwrap();
+    let error = s
+        .store
+        .channel_access_lost(&second, AccessLoss::Revoked)
+        .await
+        .unwrap_err();
+    assert!(matches!(error, ChannelError::LeaseLost));
+    assert!(matches!(
+        s.store.channel_connection(&s.practice).await.unwrap(),
+        Connection::Reading { .. }
+    ));
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_long_backlog_conversation_is_read_to_its_end_across_passes() {
+    let mut s = setup().await;
+    release_organization(&s.store).await;
+    for index in 0..7 {
+        s.fake
+            .deliver(message("long", &format!("h{index}"), "old", index));
+    }
+    s.connected().await;
+    s.fake.set_page_size(2);
+    s.intake.owed_pages = 1;
+    s.store.accept_channel_backlog(&s.practice).await.unwrap();
+    // One pass lists the backlog; each later pass reads one more item page.
+    for _ in 0..6 {
+        s.pass().await;
+    }
+    for index in 0..7 {
+        assert_eq!(s.rows(&format!("h{index}")).await, 1, "h{index}");
+    }
+    let status = s.store.channel_status(&s.practice).await.unwrap();
+    assert!(status.unread.is_empty(), "{:?}", status.unread);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_pending_transcript_stays_owed_until_it_arrives() {
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    let mut voicemail = message("c1", "vm", "", 10);
+    voicemail.transcription_id = Some("tr1".into());
+    voicemail.transcription_text = Some(String::new());
+    voicemail.transcription_status = Some("pending".into());
+    s.fake.deliver(voicemail.clone());
+    s.pass().await;
+    // The owed read sees the same pending version already saved; it must not
+    // settle the conversation.
+    s.pass().await;
+    let status = s.store.channel_status(&s.practice).await.unwrap();
+    assert_eq!(status.unread.len(), 1, "still owed while pending");
+
+    voicemail.transcription_text = Some("call me back".into());
+    voicemail.transcription_status = Some("completed".into());
+    s.fake.deliver(voicemail);
+    s.pass().await;
+    let versions = s.store.channel_message(&s.practice, "vm").await.unwrap();
+    assert!(matches!(
+        &versions.last().unwrap().body,
+        Body::Voicemail { transcript: Some(text), .. } if text == "call me back"
+    ));
+    assert!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .is_empty()
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn conversations_that_keep_failing_do_not_hold_back_the_rest() {
+    let mut s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    s.intake.owed_reads = 2;
+    for name in ["a", "b"] {
+        s.fake.deliver(message(name, &format!("{name}1"), "x", 10));
+        s.fake.fail(name);
+    }
+    s.fake.deliver(message("z", "z1", "later", 11));
+    s.fake.fail("z");
+    s.pass().await;
+    assert_eq!(
+        s.store
+            .channel_status(&s.practice)
+            .await
+            .unwrap()
+            .unread
+            .len(),
+        3
+    );
+    // Only "z" recovers. Two passes with room for two reads each must reach it.
+    let failing = ["a", "b"];
+    s.fake.recover();
+    for name in failing {
+        s.fake.fail(name);
+    }
+    s.pass().await;
+    s.pass().await;
+    assert_eq!(s.texts("z").await, ["later"]);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn an_older_release_leaves_a_newer_releases_connection_alone() {
+    use crate::runtime::entities::channel_connection;
+    use sea_orm::{ActiveModelTrait, Set};
+    let s = setup().await;
+    release_organization(&s.store).await;
+    s.connected().await;
+    let row = channel_connection::Entity::find_by_id(s.practice.clone())
+        .one(&s.store.db)
+        .await
+        .unwrap()
+        .unwrap();
+    let mut active: channel_connection::ActiveModel = row.into();
+    active.generation = Set(crate::runtime::channel::GENERATION + 1);
+    active.update(&s.store.db).await.unwrap();
+
+    let outcomes = intake::wake(&s.store, &s.intake).await.unwrap();
+    let (_, outcome) = outcomes
+        .iter()
+        .find(|(practice, _)| practice == &s.practice)
+        .expect("the wake-up reports the practice");
+    assert!(matches!(
+        outcome,
+        Err(intake::IntakeError::Store(
+            ChannelError::NewerRelease { .. }
+        ))
+    ));
+    assert!(matches!(
+        s.store.channel_status(&s.practice).await,
+        Err(ChannelError::NewerRelease { .. })
+    ));
+    let mut active: channel_connection::ActiveModel =
+        channel_connection::Entity::find_by_id(s.practice.clone())
+            .one(&s.store.db)
+            .await
+            .unwrap()
+            .unwrap()
+            .into();
+    active.generation = Set(crate::runtime::channel::GENERATION);
+    active.update(&s.store.db).await.unwrap();
+    s.store.disconnect_channel(&s.practice).await.unwrap();
 }
 
 #[tokio::test]

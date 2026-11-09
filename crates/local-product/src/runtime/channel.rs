@@ -15,6 +15,10 @@
 //!
 //! The credential is sealed with AES-256-GCM under `PHYSICIAN_CHANNEL_KEY` and
 //! bound to the practice and organization it was set up for.
+//!
+//! Each row records the [`GENERATION`] of the release that last wrote it. An
+//! older release refuses a row a newer one touched, so after a rollback that
+//! practice stops filing and its status reports why until an operator acts.
 
 use std::collections::{HashMap, HashSet};
 
@@ -24,9 +28,9 @@ use aes_gcm::{
 };
 use rand::{TryRng, rngs::SysRng};
 use sea_orm::{
-    ActiveModelTrait, ColumnTrait, DatabaseTransaction, DbErr, EntityTrait, QueryFilter,
+    ActiveModelTrait, ColumnTrait, DatabaseTransaction, DbErr, EntityTrait, Order, QueryFilter,
     QueryOrder, QuerySelect, Set, TransactionTrait,
-    sea_query::{OnConflict, Query},
+    sea_query::{NullOrdering, OnConflict, Query},
 };
 use serde::{Deserialize, Serialize};
 
@@ -38,6 +42,10 @@ pub mod intake;
 
 /// Largest attachment Coda saves. A larger file is recorded as too large.
 pub const MAX_FILE_BYTES: usize = 25 * 1024 * 1024;
+
+/// The channel schema generation this release writes. Raise it when a change
+/// would let an older release misread rows this one writes.
+pub const GENERATION: i64 = 1;
 
 /// One practice's channel connection.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -150,6 +158,9 @@ pub enum OwedCause {
     TemporarilyUnavailable,
     /// The accepted backlog queued it.
     Backlog,
+    /// A routine full reread, which finds edits and deletion flags the change
+    /// reader can't see. Not a failure, so Today does not list it as unread.
+    Recheck,
 }
 
 /// An owed full read.
@@ -159,6 +170,47 @@ pub struct Owed {
     pub cause: OwedCause,
     /// Database-clock seconds it was first owed.
     pub since: i64,
+}
+
+/// An owed read as stored: where a read spread over several passes resumes,
+/// and whether a page already read in this sweep left something unsaved.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+struct StoredOwed {
+    cause: OwedCause,
+    since: i64,
+    #[serde(default)]
+    resume: Option<String>,
+    #[serde(default)]
+    dirty: bool,
+}
+
+/// An owed conversation for the reader: why, and where its read resumes.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct OwedRead {
+    /// Spruce conversation id.
+    pub conversation: String,
+    /// Why it is owed.
+    pub cause: OwedCause,
+    /// Spruce item page token to continue from; `None` starts from the newest.
+    pub resume: Option<String>,
+    /// A page read earlier in this sweep left something unsaved, so reaching
+    /// the end starts the sweep over instead of settling.
+    pub dirty: bool,
+}
+
+/// Where an attempted owed read stopped.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Attempt {
+    /// More pages remain; continue from this token. `dirty` is whether any
+    /// page of the sweep so far left something unsaved.
+    Continue {
+        /// Spruce item page token.
+        from: String,
+        /// Something in this sweep is still unsaved.
+        dirty: bool,
+    },
+    /// Start the next attempt from the newest page.
+    Restart,
 }
 
 /// Who a conversation is with, as Spruce lists it.
@@ -333,6 +385,10 @@ pub struct PageWrite {
     pub owed: Vec<(String, OwedCause)>,
     /// Conversations whose owed read finished.
     pub settled: Vec<String>,
+    /// Conversations whose owed read was attempted and did not settle, and
+    /// where the next attempt starts. Each pass begins with the
+    /// conversations attempted longest ago.
+    pub attempted: Vec<(String, Attempt)>,
     /// Conversation details read with this page.
     pub details: Vec<(String, ConversationDetails)>,
     /// The cursor to store. Present only for a change page, which also
@@ -347,7 +403,7 @@ pub struct PageWrite {
 pub struct Lease {
     /// Practice.
     pub practice: String,
-    holder: String,
+    token: String,
     seconds: i64,
     /// The connection when the lease was claimed.
     pub connection: Connection,
@@ -374,12 +430,52 @@ pub enum ChannelError {
     /// The operation needs a connection in another state.
     #[error("the channel is not in a state that allows this")]
     WrongState,
-    /// A stored value could not be read back.
-    #[error("stored channel {0} is unreadable")]
-    Corrupt(&'static str),
+    /// A newer release wrote this practice's channel. This release leaves it
+    /// alone until an operator acts.
+    #[error("channel generation {found} was written by a newer release than {GENERATION}")]
+    NewerRelease {
+        /// The generation on the row.
+        found: i64,
+    },
+    /// A row the operation had just written was not there.
+    #[error("stored channel {0} is missing")]
+    Missing(&'static str),
+    /// A stored value could not be read back, or a value could not be stored.
+    #[error("stored channel {what} is unreadable")]
+    Corrupt {
+        /// Which value.
+        what: &'static str,
+        /// The JSON error.
+        #[source]
+        source: serde_json::Error,
+    },
     /// The credential could not be sealed or opened.
-    #[error("channel credential could not be {0}")]
-    Seal(&'static str),
+    #[error("channel credential could not be {action}")]
+    Seal {
+        /// `sealed` or `opened`.
+        action: &'static str,
+        /// Why.
+        #[source]
+        source: SealError,
+    },
+}
+
+/// Why a credential could not be sealed or opened.
+#[derive(Debug, thiserror::Error)]
+pub enum SealError {
+    /// The system random source failed.
+    #[error("no system randomness")]
+    Random(#[source] rand::rngs::SysError),
+    /// Encryption failed, or the ciphertext, practice or organization does
+    /// not match the key.
+    #[error("authenticated encryption failed")]
+    Cipher(#[source] aes_gcm::Error),
+    /// The stored value is too short to hold a nonce and tag.
+    #[error("sealed credential is truncated")]
+    Truncated,
+    /// The opened credential is not text.
+    #[error("opened credential is not UTF-8")]
+    Text(#[source] std::string::FromUtf8Error),
 }
 
 /// The key that seals channel credentials at rest.
@@ -421,13 +517,16 @@ impl ChannelKey {
         organization: &str,
         credential: &str,
     ) -> Result<Vec<u8>, ChannelError> {
+        let sealing = |source| ChannelError::Seal {
+            action: "sealed",
+            source,
+        };
         let mut nonce = [0; 12];
         SysRng
             .try_fill_bytes(&mut nonce)
-            .map_err(|_| ChannelError::Seal("sealed"))?;
+            .map_err(|error| sealing(SealError::Random(error)))?;
         let aad = Self::aad(practice, organization);
-        let sealed = Aes256Gcm::new_from_slice(&self.0)
-            .map_err(|_| ChannelError::Seal("sealed"))?
+        let sealed = Aes256Gcm::new(&self.0.into())
             .encrypt(
                 (&nonce).into(),
                 Payload {
@@ -435,7 +534,7 @@ impl ChannelKey {
                     aad: &aad,
                 },
             )
-            .map_err(|_| ChannelError::Seal("sealed"))?;
+            .map_err(|error| sealing(SealError::Cipher(error)))?;
         Ok([nonce.to_vec(), sealed].concat())
     }
 
@@ -445,24 +544,27 @@ impl ChannelKey {
         organization: &str,
         sealed: &[u8],
     ) -> Result<String, ChannelError> {
-        if sealed.len() < 28 {
-            return Err(ChannelError::Seal("opened"));
+        let opening = |source| ChannelError::Seal {
+            action: "opened",
+            source,
+        };
+        let Some((nonce, ciphertext)) = sealed.split_first_chunk::<12>() else {
+            return Err(opening(SealError::Truncated));
+        };
+        if ciphertext.len() < 16 {
+            return Err(opening(SealError::Truncated));
         }
-        let nonce: [u8; 12] = sealed[..12]
-            .try_into()
-            .map_err(|_| ChannelError::Seal("opened"))?;
         let aad = Self::aad(practice, organization);
-        let plain = Aes256Gcm::new_from_slice(&self.0)
-            .map_err(|_| ChannelError::Seal("opened"))?
+        let plain = Aes256Gcm::new(&self.0.into())
             .decrypt(
-                (&nonce).into(),
+                nonce.into(),
                 Payload {
-                    msg: &sealed[12..],
+                    msg: ciphertext,
                     aad: &aad,
                 },
             )
-            .map_err(|_| ChannelError::Seal("opened"))?;
-        String::from_utf8(plain).map_err(|_| ChannelError::Seal("opened"))
+            .map_err(|error| opening(SealError::Cipher(error)))?;
+        String::from_utf8(plain).map_err(|error| opening(SealError::Text(error)))
     }
 }
 
@@ -487,14 +589,24 @@ pub(super) async fn migrate(
 }
 
 fn to_json<T: Serialize>(value: &T, what: &'static str) -> Result<serde_json::Value, ChannelError> {
-    serde_json::to_value(value).map_err(|_| ChannelError::Corrupt(what))
+    serde_json::to_value(value).map_err(|source| ChannelError::Corrupt { what, source })
 }
 
 fn from_json<T: for<'de> Deserialize<'de>>(
     value: serde_json::Value,
     what: &'static str,
 ) -> Result<T, ChannelError> {
-    serde_json::from_value(value).map_err(|_| ChannelError::Corrupt(what))
+    serde_json::from_value(value).map_err(|source| ChannelError::Corrupt { what, source })
+}
+
+/// Refuses a row a newer release wrote.
+fn compatible(row: &channel_connection::Model) -> Result<(), ChannelError> {
+    if row.generation > GENERATION {
+        return Err(ChannelError::NewerRelease {
+            found: row.generation,
+        });
+    }
+    Ok(())
 }
 
 fn connection_of(row: &channel_connection::Model) -> Result<Connection, ChannelError> {
@@ -527,7 +639,9 @@ impl Store {
             credential: Set(None),
             cursor: Set(None),
             lease_holder: Set(None),
+            lease_token: Set(None),
             lease_expires: Set(0),
+            generation: Set(GENERATION),
             last_read_at: Set(None),
             failure: Set(None),
         })
@@ -542,18 +656,21 @@ impl Store {
             .lock_exclusive()
             .one(&tx)
             .await?
-            .ok_or(ChannelError::Corrupt("connection"))?;
+            .ok_or(ChannelError::Missing("connection"))?;
+        compatible(&row)?;
         let now = now(&tx).await?;
         Ok((tx, row, now))
     }
 
-    /// Locks the row and checks `lease` still holds it.
+    /// Locks the row and checks `lease` still holds it. Every claim and
+    /// every credential change writes a fresh token, so only the latest claim
+    /// on the current credential passes.
     async fn fenced(
         &self,
         lease: &Lease,
     ) -> Result<(DatabaseTransaction, channel_connection::Model, i64), ChannelError> {
         let (tx, row, now) = self.locked_channel(&lease.practice).await?;
-        if row.lease_holder.as_deref() != Some(lease.holder.as_str()) || row.lease_expires <= now {
+        if row.lease_token.as_deref() != Some(lease.token.as_str()) || row.lease_expires <= now {
             return Err(ChannelError::LeaseLost);
         }
         Ok((tx, row, now))
@@ -634,6 +751,12 @@ impl Store {
         active.organization = Set(Some(organization.to_owned()));
         active.credential = Set(Some(sealed));
         active.failure = Set(None);
+        // A reader still holding the old credential must not commit after
+        // the new one is in place, or it could undo this reconnect.
+        active.lease_holder = Set(None);
+        active.lease_token = Set(None);
+        active.lease_expires = Set(0);
+        active.generation = Set(GENERATION);
         active.update(&tx).await?;
         tx.commit().await?;
         Ok(next)
@@ -659,6 +782,7 @@ impl Store {
             },
             "connection",
         )?);
+        active.generation = Set(GENERATION);
         active.update(&tx).await?;
         tx.commit().await?;
         Ok(())
@@ -699,8 +823,10 @@ impl Store {
         active.credential = Set(None);
         active.cursor = Set(None);
         active.lease_holder = Set(None);
+        active.lease_token = Set(None);
         active.lease_expires = Set(0);
         active.failure = Set(None);
+        active.generation = Set(GENERATION);
         active.update(&tx).await?;
         tx.commit().await?;
         Ok(())
@@ -718,13 +844,14 @@ impl Store {
             return Err(ChannelError::WrongState);
         }
         let (tx, row, now) = self.locked_channel(practice).await?;
-        if row.lease_holder.is_some() && row.lease_expires > now {
+        if row.lease_token.is_some() && row.lease_expires > now {
             tx.commit().await?;
             return Ok(None);
         }
+        let token = uuid::Uuid::new_v4().to_string();
         let lease = Lease {
             practice: practice.to_owned(),
-            holder: holder.to_owned(),
+            token: token.clone(),
             seconds,
             connection: connection_of(&row)?,
             cursor: row.cursor.clone(),
@@ -732,7 +859,9 @@ impl Store {
         };
         let mut active: channel_connection::ActiveModel = row.into();
         active.lease_holder = Set(Some(holder.to_owned()));
+        active.lease_token = Set(Some(token));
         active.lease_expires = Set(now + seconds);
+        active.generation = Set(GENERATION);
         active.update(&tx).await?;
         tx.commit().await?;
         Ok(Some(lease))
@@ -747,6 +876,7 @@ impl Store {
         };
         let mut active: channel_connection::ActiveModel = row.into();
         active.lease_holder = Set(None);
+        active.lease_token = Set(None);
         active.lease_expires = Set(0);
         active.update(&tx).await?;
         tx.commit().await?;
@@ -765,7 +895,7 @@ impl Store {
         let sealed = lease
             .credential
             .as_deref()
-            .ok_or(ChannelError::Corrupt("credential"))?;
+            .ok_or(ChannelError::Missing("credential"))?;
         key.open(&lease.practice, organization, sealed)
     }
 
@@ -800,13 +930,15 @@ impl Store {
         }
         let mut rows = Vec::new();
         let mut conversations: HashSet<String> = HashSet::new();
+        let mut saved: HashSet<String> = HashSet::new();
         for version in &page.versions {
+            conversations.insert(version.conversation.clone());
             if !existing.insert((version.item.clone(), version.version.clone())) {
                 continue;
             }
             let ordinal = ordinals.entry(version.item.clone()).or_insert(0);
             *ordinal += 1;
-            conversations.insert(version.conversation.clone());
+            saved.insert(version.conversation.clone());
             rows.push(channel_message::ActiveModel {
                 practice: Set(practice.to_owned()),
                 item: Set(version.item.clone()),
@@ -858,8 +990,25 @@ impl Store {
         for conversation in conversations {
             touched.entry(conversation).or_default();
         }
+        for conversation in saved {
+            touched.entry(conversation).or_default().saved = true;
+        }
         for conversation in &page.settled {
             touched.entry(conversation.clone()).or_default().settle = true;
+        }
+        if !page.attempted.is_empty() {
+            let last: Option<channel_conversation::Model> = channel_conversation::Entity::find()
+                .filter(channel_conversation::Column::Practice.eq(practice))
+                .filter(channel_conversation::Column::OwedAttempt.is_not_null())
+                .order_by_desc(channel_conversation::Column::OwedAttempt)
+                .one(&tx)
+                .await?;
+            let mut turn = last.and_then(|row| row.owed_attempt).unwrap_or(0);
+            for (conversation, attempt) in &page.attempted {
+                turn += 1;
+                touched.entry(conversation.clone()).or_default().attempt =
+                    Some((attempt.clone(), turn));
+            }
         }
         for (conversation, cause) in &page.owed {
             touched.entry(conversation.clone()).or_default().owe = Some(*cause);
@@ -887,6 +1036,7 @@ impl Store {
             active.failure = Set(None);
         }
         active.lease_expires = Set(now + lease.seconds);
+        active.generation = Set(GENERATION);
         active.update(&tx).await?;
         tx.commit().await?;
         Ok(kept)
@@ -905,6 +1055,9 @@ impl Store {
             conversation: Set(conversation.to_owned()),
             details: Set(None),
             owed: Set(None),
+            owed_attempt: Set(None),
+            checked_at: Set(now),
+            saved_at: Set(now),
             link: Set(None),
         })
         .on_conflict(
@@ -924,20 +1077,53 @@ impl Store {
         .lock_exclusive()
         .one(tx)
         .await?
-        .ok_or(ChannelError::Corrupt("conversation"))?;
-        let current: Option<Owed> = row
+        .ok_or(ChannelError::Missing("conversation"))?;
+        let mut owed: Option<StoredOwed> = row
             .owed
             .clone()
             .map(|value| from_json(value, "owed read"))
             .transpose()?;
         let mut active: channel_conversation::ActiveModel = row.into();
+        if change.saved {
+            active.saved_at = Set(now);
+        }
         if change.settle {
-            active.owed = Set(None);
+            owed = None;
+            active.owed_attempt = Set(None);
+            active.checked_at = Set(now);
+        }
+        if let Some((attempt, turn)) = change.attempt {
+            active.owed_attempt = Set(Some(turn));
+            if let Some(current) = owed.as_mut() {
+                (current.resume, current.dirty) = match attempt {
+                    Attempt::Continue { from, dirty } => (Some(from), dirty),
+                    Attempt::Restart => (None, false),
+                };
+            }
         }
         if let Some(cause) = change.owe {
-            let since = current.map_or(now, |owed| owed.since);
-            active.owed = Set(Some(to_json(&Owed { cause, since }, "owed read")?));
+            owed = Some(match owed {
+                // A failure outranks a routine recheck, and the earliest time stays.
+                Some(current) => StoredOwed {
+                    cause: if cause == OwedCause::Recheck {
+                        current.cause
+                    } else {
+                        cause
+                    },
+                    // Only a sweep under way has earlier pages to spoil.
+                    dirty: current.dirty
+                        || (cause != OwedCause::Recheck && current.resume.is_some()),
+                    ..current
+                },
+                None => StoredOwed {
+                    cause,
+                    since: now,
+                    resume: None,
+                    dirty: false,
+                },
+            });
         }
+        active.owed = Set(owed.map(|owed| to_json(&owed, "owed read")).transpose()?);
         if let Some(details) = change.details {
             active.details = Set(Some(to_json(&details, "conversation")?));
         }
@@ -1006,7 +1192,20 @@ impl Store {
         let row = channel_connection::Entity::find_by_id(practice.to_owned())
             .one(&self.db)
             .await?;
-        let unread = self.owed_conversations(practice, 1_000).await?;
+        let mut unread: Vec<UnreadConversation> = self
+            .owed_reads(practice, 1_000)
+            .await?
+            .into_iter()
+            .filter(|(read, _)| read.cause != OwedCause::Recheck)
+            .map(|(read, since)| UnreadConversation {
+                conversation: read.conversation,
+                owed: Owed {
+                    cause: read.cause,
+                    since,
+                },
+            })
+            .collect();
+        unread.sort_by_key(|entry| entry.owed.since);
         let Some(row) = row else {
             return Ok(ReadStatus {
                 connection: Connection::Disconnected,
@@ -1015,6 +1214,7 @@ impl Store {
                 unread,
             });
         };
+        compatible(&row)?;
         Ok(ReadStatus {
             connection: connection_of(&row)?,
             last_read_at: row.last_read_at,
@@ -1026,29 +1226,84 @@ impl Store {
         })
     }
 
-    /// Conversations owed a full read, oldest first.
-    pub async fn owed_conversations(
+    /// Up to `limit` owed reads, never-attempted first and then the ones
+    /// attempted longest ago, so a conversation that keeps failing does not
+    /// hold back the rest. Each comes with when it was first owed.
+    pub async fn owed_reads(
         &self,
         practice: &str,
         limit: u64,
-    ) -> Result<Vec<UnreadConversation>, ChannelError> {
+    ) -> Result<Vec<(OwedRead, i64)>, ChannelError> {
         let rows = channel_conversation::Entity::find()
             .filter(channel_conversation::Column::Practice.eq(practice))
             .filter(channel_conversation::Column::Owed.is_not_null())
+            .order_by_with_nulls(
+                channel_conversation::Column::OwedAttempt,
+                Order::Asc,
+                NullOrdering::First,
+            )
             .order_by_asc(channel_conversation::Column::Conversation)
             .limit(limit)
             .all(&self.db)
             .await?;
-        let mut unread = Vec::new();
+        let mut reads = Vec::new();
         for row in rows {
             let Some(owed) = row.owed else { continue };
-            unread.push(UnreadConversation {
-                conversation: row.conversation,
-                owed: from_json(owed, "owed read")?,
-            });
+            let owed: StoredOwed = from_json(owed, "owed read")?;
+            reads.push((
+                OwedRead {
+                    conversation: row.conversation,
+                    cause: owed.cause,
+                    resume: owed.resume,
+                    dirty: owed.dirty,
+                },
+                owed.since,
+            ));
         }
-        unread.sort_by_key(|entry| entry.owed.since);
-        Ok(unread)
+        Ok(reads)
+    }
+
+    /// Queues a routine reread of up to `limit` conversations that saved a
+    /// message within the last `active_for` seconds and were last checked
+    /// over `every` seconds ago. The change reader only sees new items, and
+    /// Spruce does not say whether an edit or a deletion flag moves a
+    /// conversation's activity, so this reread is how those arrive.
+    pub async fn queue_rechecks(
+        &self,
+        lease: &Lease,
+        every: i64,
+        active_for: i64,
+        limit: u64,
+    ) -> Result<usize, ChannelError> {
+        let (tx, row, now) = self.fenced(lease).await?;
+        let due = channel_conversation::Entity::find()
+            .filter(channel_conversation::Column::Practice.eq(&lease.practice))
+            .filter(channel_conversation::Column::Owed.is_null())
+            .filter(channel_conversation::Column::SavedAt.gt(now - active_for))
+            .filter(channel_conversation::Column::CheckedAt.lte(now - every))
+            .order_by_asc(channel_conversation::Column::CheckedAt)
+            .limit(limit)
+            .all(&tx)
+            .await?;
+        let queued = due.len();
+        for conversation in due {
+            self.change_conversation(
+                &tx,
+                &lease.practice,
+                &conversation.conversation,
+                ConversationChange {
+                    owe: Some(OwedCause::Recheck),
+                    ..ConversationChange::default()
+                },
+                now,
+            )
+            .await?;
+        }
+        let mut active: channel_connection::ActiveModel = row.into();
+        active.lease_expires = Set(now + lease.seconds);
+        active.update(&tx).await?;
+        tx.commit().await?;
+        Ok(queued)
     }
 
     /// Every saved version of one item, oldest first. Readable by id whether
@@ -1165,7 +1420,9 @@ impl Store {
             .collect())
     }
 
-    /// Practices whose channel is reading, for the wake-up to visit.
+    /// Connected practices, for the wake-up to visit. A pass on one that is
+    /// not reading returns at once; one this release can't read fails its
+    /// pass, so the wake-up reports it instead of skipping it.
     pub async fn reading_channels(&self) -> Result<Vec<String>, ChannelError> {
         Ok(channel_connection::Entity::find()
             .filter(channel_connection::Column::Organization.is_not_null())
@@ -1173,7 +1430,13 @@ impl Store {
             .all(&self.db)
             .await?
             .into_iter()
-            .filter(|row| matches!(connection_of(row), Ok(Connection::Reading { .. })))
+            .filter(|row| {
+                row.generation > GENERATION
+                    || !matches!(
+                        connection_of(row),
+                        Ok(Connection::ReconnectRequired { .. } | Connection::Disconnected)
+                    )
+            })
             .map(|row| row.practice)
             .collect())
     }
@@ -1211,7 +1474,10 @@ impl Store {
 
 #[derive(Default)]
 struct ConversationChange {
+    saved: bool,
     settle: bool,
+    /// Where the next attempt starts, and this attempt's turn.
+    attempt: Option<(Attempt, i64)>,
     owe: Option<OwedCause>,
     details: Option<ConversationDetails>,
 }

@@ -19,7 +19,7 @@ use spruce::payload::{
 };
 
 use super::{
-    AccessLoss, AttachmentRecord, Backlog, Body, ChannelError, ChannelKey, Connection,
+    AccessLoss, AttachmentRecord, Attempt, Backlog, Body, ChannelError, ChannelKey, Connection,
     ContactRecord, ConversationDetails, Direction, Lease, MAX_FILE_BYTES, MessageVersion,
     OwedCause, PageWrite, Participant, SavedFile, sha256_hex,
 };
@@ -60,6 +60,14 @@ pub struct Intake {
     pub owed_reads: u64,
     /// Item pages read per owed conversation per pass.
     pub owed_pages: usize,
+    /// Seconds between routine rereads of an active conversation, which
+    /// find edits and deletion flags.
+    pub recheck_every: i64,
+    /// A conversation stays active for rereads this many seconds after it
+    /// last saved a new message version.
+    pub recheck_active_for: i64,
+    /// Routine rereads queued per pass.
+    pub rechecks: u64,
 }
 
 impl Intake {
@@ -73,6 +81,9 @@ impl Intake {
             pages: 20,
             owed_reads: 20,
             owed_pages: 10,
+            recheck_every: 15 * 60,
+            recheck_active_for: 14 * 24 * 60 * 60,
+            rechecks: 10,
         }
     }
 }
@@ -227,6 +238,14 @@ async fn run(store: &Store, intake: &Intake, lease: &Lease) -> Result<PassOutcom
     // Until the first pass sets the floor, nothing can tell history from new
     // messages, so owed reads and the backlog wait.
     if let Some(cursor) = cursor.as_ref().filter(|cursor| cursor.is_established()) {
+        store
+            .queue_rechecks(
+                lease,
+                intake.recheck_every,
+                intake.recheck_active_for,
+                intake.rechecks,
+            )
+            .await?;
         match work.owed(intake, cursor).await {
             Ok(saved) => kept += saved,
             Err(Stop::Refused) => return work.access_lost().await,
@@ -285,14 +304,16 @@ impl Work<'_> {
                         continue;
                     };
                     conversations.insert(conversation.clone());
-                    let version = item.version();
-                    if saved.contains(&(item.id().to_owned(), version.clone())) {
-                        continue;
-                    }
+                    // A transcript still on its way keeps the conversation
+                    // owed whether or not this version is already saved.
                     if transcript_pending(&item) {
                         write
                             .owed
                             .push((conversation.clone(), OwedCause::TemporarilyUnavailable));
+                    }
+                    let version = item.version();
+                    if saved.contains(&(item.id().to_owned(), version.clone())) {
+                        continue;
                     }
                     match self.files(&item, &conversation, write).await? {
                         Some(attachments) => {
@@ -412,20 +433,26 @@ impl Work<'_> {
         }))
     }
 
-    /// Full reads of owed conversations. Before the backlog is accepted, a
-    /// full read keeps only items after the connection.
+    /// Full reads of owed conversations, `owed_pages` item pages each per
+    /// pass. A read that runs out of pages resumes from the stored page token
+    /// on the next pass, so a long conversation is read to its end across
+    /// passes. It settles only when a sweep reached the end with nothing left
+    /// unsaved; otherwise the next sweep starts again from the newest page.
+    /// Before the backlog is accepted, a full read keeps only items after the
+    /// connection.
     async fn owed(&self, intake: &Intake, cursor: &Cursor) -> Result<usize, Stop> {
         let owed = self
             .store
-            .owed_conversations(&self.lease.practice, intake.owed_reads)
+            .owed_reads(&self.lease.practice, intake.owed_reads)
             .await?;
         let mut kept = 0;
-        for entry in owed {
+        for (entry, _) in owed {
             let conversation = entry.conversation;
             let mut write = PageWrite::default();
-            let mut token: Option<String> = None;
-            let mut complete = false;
-            let mut clean = true;
+            let mut token = entry.resume;
+            let mut dirty = entry.dirty;
+            let mut reached_end = false;
+            let mut stopped = false;
             for _ in 0..intake.owed_pages {
                 let read = self
                     .reader
@@ -439,7 +466,7 @@ impl Work<'_> {
                         undecodable,
                     } => (items, next_page, undecodable),
                     ConversationRead::Missing => {
-                        complete = true;
+                        reached_end = true;
                         break;
                     }
                     ConversationRead::ReconnectRequired => return Err(Stop::Refused),
@@ -447,11 +474,14 @@ impl Work<'_> {
                         write
                             .owed
                             .push((conversation.clone(), OwedCause::Undecodable));
-                        clean = false;
+                        stopped = true;
                         break;
                     }
                     ConversationRead::Unavailable => {
-                        clean = false;
+                        write
+                            .owed
+                            .push((conversation.clone(), OwedCause::TemporarilyUnavailable));
+                        stopped = true;
                         break;
                     }
                 };
@@ -459,7 +489,7 @@ impl Work<'_> {
                     write
                         .owed
                         .push((conversation.clone(), OwedCause::Undecodable));
-                    clean = false;
+                    dirty = true;
                 }
                 let items: Vec<Observed> = items
                     .into_iter()
@@ -467,18 +497,29 @@ impl Work<'_> {
                     .collect();
                 let before = write.owed.len();
                 self.observed(items, &mut write).await?;
-                clean &= write.owed.len() == before;
+                dirty |= write.owed.len() != before;
                 token = next;
                 if token.is_none() {
-                    complete = true;
+                    reached_end = true;
                     break;
                 }
             }
-            if complete && clean {
-                write.settled.push(conversation.clone());
-                if let Some(details) = self.details(&conversation).await? {
-                    write.details.push((conversation.clone(), details));
+            match (reached_end, stopped, dirty, token) {
+                (true, _, false, _) => {
+                    write.settled.push(conversation.clone());
+                    if let Some(details) = self.details(&conversation).await? {
+                        write.details.push((conversation.clone(), details));
+                    }
                 }
+                // Out of pages for this pass: continue where it stopped.
+                (false, false, dirty, Some(from)) => write
+                    .attempted
+                    .push((conversation.clone(), Attempt::Continue { from, dirty })),
+                // Reached the end with something unsaved, or the read
+                // failed: the next attempt sweeps again from the newest page.
+                _ => write
+                    .attempted
+                    .push((conversation.clone(), Attempt::Restart)),
             }
             kept += self.store.apply_channel_page(self.lease, write).await?;
         }

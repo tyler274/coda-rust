@@ -208,11 +208,18 @@ pub(super) mod channel_connection {
         /// `spruce::changes::Cursor::encode`, stored only with the page it follows.
         #[sea_orm(column_type = "Text", nullable)]
         pub cursor: Option<String>,
-        /// The reader that holds the lease. A commit from any other holder fails.
+        /// The reader that holds the lease, for operators.
         #[sea_orm(column_type = "Text", nullable)]
         pub lease_holder: Option<String>,
+        /// Fresh for every claim. A commit carrying any other token fails,
+        /// including an earlier claim by the same holder.
+        #[sea_orm(column_type = "Text", nullable)]
+        pub lease_token: Option<String>,
         /// Database-clock seconds the lease runs out.
         pub lease_expires: i64,
+        /// The channel schema generation of the release that last wrote the
+        /// row. An older release refuses a row a newer one has touched.
+        pub generation: i64,
         /// Database-clock seconds of the last page that committed.
         pub last_read_at: Option<i64>,
         /// The serialized `ReadFailure` while the channel can't be read.
@@ -244,6 +251,16 @@ pub(super) mod channel_conversation {
         /// The serialized `Owed` while the conversation needs a full read.
         #[sea_orm(column_type = "JsonBinary", nullable)]
         pub owed: Option<Json>,
+        /// When the owed read was last attempted, as a per-practice sequence
+        /// assigned under the connection row's lock, so each pass starts with
+        /// the conversations tried longest ago.
+        pub owed_attempt: Option<i64>,
+        /// Database-clock seconds the conversation was first saved or last
+        /// reread. A routine reread is due once it is old.
+        pub checked_at: i64,
+        /// Database-clock seconds a new message version was last saved in it.
+        /// Only recently active conversations get routine rereads.
+        pub saved_at: i64,
         /// Set by message matching when the conversation is linked to a
         /// patient. Intake only reads it: disconnect keeps linked evidence.
         #[sea_orm(column_type = "Text", nullable)]
