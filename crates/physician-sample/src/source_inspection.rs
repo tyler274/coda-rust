@@ -1243,6 +1243,27 @@ pub(crate) mod tests {
         );
     }
 
+    #[test]
+    fn a_narratives_superscripts_subscripts_and_struck_out_text_keep_their_meaning() {
+        let mut record = observation();
+        record["text"] = json!({"status":"generated","div":concat!(
+            r#"<div xmlns="http://www.w3.org/1999/xhtml">"#,
+            "<p>Platelets 150 × 10<sup>9</sup>/L</p>",
+            "<p>pCO<sub>2</sub> 41 mmHg</p>",
+            "<p>Potassium <del>5.9</del> <ins>4.1</ins> mmol/L</p></div>"
+        )});
+        let cited = general_citation(&record);
+        let view = inspection(&cited);
+        assert_eq!(
+            view.sections[0],
+            field(
+                NARRATIVE_LABEL,
+                "Platelets 150 × 10^9/L\npCO_2 41 mmHg\nPotassium [struck out: 5.9] 4.1 mmol/L"
+            )
+        );
+        assert_content_shown(&cited);
+    }
+
     pub(crate) fn general_citation(record: &Value) -> Citation {
         let mut cited = citation(&record.to_string());
         cited.record_type = record["resourceType"].as_str().unwrap_or("Record").into();

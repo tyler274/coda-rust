@@ -1,6 +1,23 @@
 //! A FHIR resource's own narrative (`text.div`, XHTML) as plain text. No markup reaches the
 //! browser: tags are dropped, block elements become line breaks, entities are decoded, and the
 //! content of `script` and `style` elements is never read.
+//!
+//! Inline elements whose meaning plain concatenation would lose read as marked text, so the
+//! copy says what the record says:
+//!
+//! - A superscript reads as `^` and its text, and a subscript as `_` and its text:
+//!   `10<sup>9</sup>/L` reads `10^9/L`, `CO<sub>2</sub>` reads `CO_2`. Text that is not one run
+//!   of letters and digits, or that runs into a following letter or digit, is parenthesised:
+//!   `10<sup>-3</sup>` reads `10^(-3)` and `H<sub>2</sub>O` reads `H_(2)O`.
+//! - Struck-out text (`del`, `s`, `strike`) reads as `[struck out: …]`. It is marked rather
+//!   than dropped: the record still holds it, and a reader comparing the copy with the record
+//!   should find every word, but never one the record withdrew reading as current.
+//!
+//! - An inline quotation (`q`) reads inside the quotation marks a browser would show, so words
+//!   the record attributes to someone else do not read as its own.
+//!
+//! Other inline elements keep their meaning as text: inserted text (`ins`) is current text, and
+//! emphasis, links and code only style it. A line break (`br`) already starts a new line.
 use serde_json::Value;
 
 /// The record's narrative as plain text, when it carries one with readable content. A
@@ -44,10 +61,65 @@ const BLOCKS: [&str; 22] = [
     "hr",
 ];
 
+/// An inline element whose meaning its text alone would lose.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Marked {
+    Superscript,
+    Subscript,
+    StruckOut,
+    Quotation,
+}
+
+impl Marked {
+    fn of(name: &str) -> Option<Self> {
+        match name {
+            "sup" => Some(Self::Superscript),
+            "sub" => Some(Self::Subscript),
+            "del" | "s" | "strike" => Some(Self::StruckOut),
+            "q" => Some(Self::Quotation),
+            _ => None,
+        }
+    }
+
+    /// The element's `content` as it reads in place, followed by `next`.
+    fn read(self, content: &str, next: Option<char>) -> String {
+        let content = content.split_whitespace().collect::<Vec<_>>().join(" ");
+        if content.is_empty() {
+            return String::new();
+        }
+        let mark = match self {
+            Self::StruckOut => return format!("[struck out: {content}]"),
+            Self::Quotation => return format!("\u{201c}{content}\u{201d}"),
+            Self::Superscript => '^',
+            Self::Subscript => '_',
+        };
+        let one_run = content.chars().all(|c| c.is_ascii_alphanumeric());
+        if one_run && !next.is_some_and(char::is_alphanumeric) {
+            format!("{mark}{content}")
+        } else {
+            format!("{mark}({content})")
+        }
+    }
+}
+
+/// Closes the marked elements opened at `open[from..]`, innermost first, rewriting the text
+/// each one holds as it reads.
+fn close(text: &mut String, open: &mut Vec<(Marked, usize)>, from: usize, next: Option<char>) {
+    while open.len() > from {
+        let Some((marked, start)) = open.pop() else {
+            return;
+        };
+        let content = text.split_off(start);
+        text.push_str(&marked.read(&content, next));
+    }
+}
+
 /// XHTML as plain text: one line per block, whitespace within a line collapsed, blank lines
-/// dropped.
+/// dropped, and marked inline elements read as the module describes.
 pub(crate) fn plain_text(xhtml: &str) -> String {
     let mut text = String::new();
+    // Marked elements still open, each with where its text starts.
+    let mut open: Vec<(Marked, usize)> = Vec::new();
     let mut rest = xhtml;
     while let Some(at) = rest.find(['<', '&']) {
         text.push_str(&rest[..at]);
@@ -71,16 +143,19 @@ pub(crate) fn plain_text(xhtml: &str) -> String {
         let tag = &rest[1..end];
         rest = &rest[end + 1..];
         let closing = tag.starts_with('/');
-        let name = tag
-            .trim_start_matches('/')
-            .split(|c: char| c.is_whitespace() || c == '/')
-            .next()
-            .unwrap_or_default()
-            .to_ascii_lowercase();
-        // A namespace prefix such as `xhtml:p` names the same element.
-        let local = name.rsplit(':').next().unwrap_or_default();
+        let name = local_name(tag);
+        let local = name.as_str();
         if !closing && !tag.ends_with('/') && HIDDEN.contains(&local) {
             rest = skip_hidden(rest, local);
+            continue;
+        }
+        if let Some(marked) = Marked::of(local) {
+            if !closing && !tag.ends_with('/') {
+                open.push((marked, text.len()));
+            } else if closing && let Some(at) = open.iter().rposition(|(kind, _)| *kind == marked) {
+                // Closing it also closes any marked element left open inside it.
+                close(&mut text, &mut open, at, next_text(rest));
+            }
             continue;
         }
         if BLOCKS.contains(&local) {
@@ -90,11 +165,46 @@ pub(crate) fn plain_text(xhtml: &str) -> String {
         }
     }
     text.push_str(rest);
+    // An element never closed runs to the end, and still reads as marked.
+    close(&mut text, &mut open, 0, None);
     text.lines()
         .map(|line| line.split_whitespace().collect::<Vec<_>>().join(" "))
         .filter(|line| !line.is_empty())
         .collect::<Vec<_>>()
         .join("\n")
+}
+
+/// The first character of text that `markup` reads as on the same line: past inline tags, with
+/// an entity decoded. `None` at a line break or the end, where nothing runs on.
+fn next_text(mut markup: &str) -> Option<char> {
+    loop {
+        if let Some(entity) = markup.strip_prefix('&') {
+            return decode_entity(entity).0.chars().next();
+        }
+        if !markup.starts_with('<') {
+            return markup.chars().next();
+        }
+        let end = tag_end(markup)?;
+        let local = local_name(&markup[1..end]);
+        if BLOCKS.contains(&local.as_str()) || local == "td" || local == "th" {
+            return None;
+        }
+        markup = &markup[end + 1..];
+    }
+}
+
+/// The element a tag's text (between `<` and `>`) names, lowercased. A namespace prefix such
+/// as `xhtml:p` names the same element.
+fn local_name(tag: &str) -> String {
+    let name = tag
+        .trim_start_matches('/')
+        .split(|c: char| c.is_whitespace() || c == '/')
+        .next()
+        .unwrap_or_default();
+    name.rsplit(':')
+        .next()
+        .unwrap_or_default()
+        .to_ascii_lowercase()
 }
 
 /// The index of the `>` closing the tag that `markup` opens, skipping quoted attribute values.
@@ -218,6 +328,59 @@ mod tests {
         let empty = json!({"text":{"status":"empty","div":"<div>No narrative</div>"}});
         assert_eq!(narrative(&empty), None);
         assert_eq!(narrative(&json!({"text":"plain"})), None);
+    }
+
+    #[test]
+    fn superscripts_and_subscripts_read_marked() {
+        for (div, read) in [
+            (
+                "<p>Platelets 150 × 10<sup>9</sup>/L</p>",
+                "Platelets 150 × 10^9/L",
+            ),
+            ("<p>10<sup>-3</sup> mol</p>", "10^(-3) mol"),
+            ("<p>10<sup> 12 </sup></p>", "10^12"),
+            ("<p>pCO<sub>2</sub> 41 mmHg</p>", "pCO_2 41 mmHg"),
+            ("<p>H<sub>2</sub>O</p>", "H_(2)O"),
+            ("<p>H<sub>2</sub><b>O</b></p>", "H_(2)O"),
+            ("<p>x<sup>2</sup>&amp;y</p>", "x^2&y"),
+            ("<p>m<sup>2</sup></p><p>B</p>", "m^2\nB"),
+            ("<p>e<sup>i<sub>k</sub></sup></p>", "e^(i_k)"),
+            ("<p>10<sup>9</p>", "10^9"),
+            ("<p>A<sup></sup>B</p>", "AB"),
+        ] {
+            assert_eq!(plain_text(div), read, "{div}");
+        }
+    }
+
+    #[test]
+    fn struck_out_text_never_reads_as_current() {
+        for (div, read) in [
+            (
+                "<p>Dose <del>20 mg</del> <ins>10 mg</ins> daily</p>",
+                "Dose [struck out: 20 mg] 10 mg daily",
+            ),
+            (
+                "<p><s>Penicillin</s> <STRIKE>Sulfa</STRIKE></p>",
+                "[struck out: Penicillin] [struck out: Sulfa]",
+            ),
+            (
+                "<p><del>Old <b>value</b>\n 7</del></p>",
+                "[struck out: Old value 7]",
+            ),
+            ("<p><xhtml:del>5</xhtml:del></p>", "[struck out: 5]"),
+            ("<p><del>  </del>kept</p>", "kept"),
+            ("<p>no <del>close", "no [struck out: close]"),
+        ] {
+            assert_eq!(plain_text(div), read, "{div}");
+        }
+    }
+
+    #[test]
+    fn a_quotation_reads_in_quotation_marks() {
+        assert_eq!(
+            plain_text("<p>Patient reports <q>no pain today</q>.</p>"),
+            "Patient reports \u{201c}no pain today\u{201d}."
+        );
     }
 
     #[test]
