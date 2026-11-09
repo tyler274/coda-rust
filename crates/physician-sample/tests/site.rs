@@ -2119,9 +2119,9 @@ async fn with_allergy_citation(
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
 }
 
-/// The reported case: an allergy citation reads as the record's statement and date, with codes,
-/// storage time and bytes kept under Technical details; it leaves by Escape or its visible way
-/// back, and going elsewhere closes it.
+/// The reported case: an allergy citation reads as the record's statement and date, its coding
+/// beside the statement, with storage time, references and bytes kept under Technical details;
+/// it leaves by Escape or its visible way back, and going elsewhere closes it.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
@@ -2162,15 +2162,12 @@ async fn an_allergy_citation_reads_as_its_recorded_statement_and_date() {
             "Clinical status",
             "Active",
             "Criticality (not reaction severity)",
+            // The coding reads in the statement, as every record's codes do.
+            "No known drug allergy (409137002 · http://snomed.info/sct)",
         ] {
             assert!(visible.contains(expected), "missing {expected}: {visible}");
         }
-        for hidden in [
-            "lastUpdated",
-            "409137002",
-            "\"resourceType\"",
-            "MRN00001776",
-        ] {
+        for hidden in ["lastUpdated", "\"resourceType\"", "MRN00001776"] {
             assert!(
                 !visible.contains(hidden),
                 "{hidden} leads the view: {visible}"
