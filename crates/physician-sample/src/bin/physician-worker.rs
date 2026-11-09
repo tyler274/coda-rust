@@ -14,7 +14,7 @@
 use std::path::PathBuf;
 use std::sync::Arc;
 use std::sync::atomic::Ordering;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use axum::Json;
 use axum::Router;
@@ -107,6 +107,8 @@ async fn readyz(State(worker): State<Arc<Worker>>) -> StatusCode {
 }
 
 async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> StatusCode {
+    // The push deadline runs from here; the layout phase is cut short to stay inside it.
+    let received = Instant::now();
     let header = request
         .headers()
         .get(axum::http::header::AUTHORIZATION)
@@ -127,15 +129,21 @@ async fn chat_turn(State(worker): State<Arc<Worker>>, request: Request) -> Statu
         return revision::deliver(&worker, &push).await;
     }
     let span = attempt::span(&push, CHAT_JOB);
-    chat_attempt(&worker, &push.delivery, &span)
+    chat_attempt(&worker, &push.delivery, &span, received)
         .instrument(span.clone())
         .await
 }
 
 const CHAT_JOB: &str = "physician_chat";
 
-/// One chat-turn delivery inside its `physician.worker.attempt` span.
-async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span) -> StatusCode {
+/// One chat-turn delivery inside its `physician.worker.attempt` span. `received` is when its
+/// push arrived.
+async fn chat_attempt(
+    worker: &Worker,
+    delivery: &Delivery,
+    span: &tracing::Span,
+    received: Instant,
+) -> StatusCode {
     let claim = match worker.store.claim_delivery(delivery, LEASE_SECONDS).await {
         Ok(Some(claim)) => claim,
         Ok(None) => {
@@ -240,7 +248,7 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Committed, None);
             // After the answer is published and announced, and before the ack, so the work
             // keeps its CPU; it never changes the response.
-            layout::after_answer(worker, &host.claim.scope, &run_id).await;
+            layout::after_answer(worker, &host.claim.scope, &run_id, received).await;
             StatusCode::NO_CONTENT
         }
         Err(_) => {

@@ -8,7 +8,7 @@
 //! acknowledged, since the turn is committed. A key another task on this instance is already
 //! making is skipped, and writers on other instances settle through the store, where the first
 //! layout stored wins.
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use harness::engine::{Item, Provider, Request, Turn};
 use local_product::ModelBinding;
@@ -19,9 +19,24 @@ use serde_json::json;
 
 use super::{Worker, configured};
 
-/// The whole layout phase for one answer. With the chat attempt's 480 s bound it stays inside
-/// the 600 s push deadline.
+/// The longest the layout phase for one answer may run: the conversation read, every layout's
+/// store reads and writes, and its model calls.
 const DEADLINE: Duration = Duration::from_secs(100);
+
+/// The push subscription's ack deadline: a push not acknowledged within it is redelivered.
+const PUSH_DEADLINE: Duration = Duration::from_secs(600);
+
+/// Time kept back from the push deadline for the response to reach Pub/Sub after the phase.
+const ACK_RESERVE: Duration = Duration::from_secs(10);
+
+/// How long the layout phase may run when the push arrived `elapsed` ago: [`DEADLINE`], cut
+/// short so the phase ends [`ACK_RESERVE`] before the push deadline, and zero once that is past.
+fn phase_budget(elapsed: Duration) -> Duration {
+    PUSH_DEADLINE
+        .saturating_sub(ACK_RESERVE)
+        .saturating_sub(elapsed)
+        .min(DEADLINE)
+}
 
 /// Who makes layouts on this worker.
 pub(super) enum LayoutSource {
@@ -124,11 +139,26 @@ impl Provider for LayoutModel {
 }
 
 /// Makes a layout for each `(source, record type)` the published answer in `scope` cites that
-/// has none yet. `run_id` is the attempt that published it.
-pub(super) async fn after_answer(worker: &Worker, scope: &Scope, run_id: &str) {
+/// has none yet. `run_id` is the attempt that published it, and `received` is when its push
+/// arrived; the whole phase ends within [`phase_budget`] of now.
+pub(super) async fn after_answer(worker: &Worker, scope: &Scope, run_id: &str, received: Instant) {
     if matches!(worker.layouts, LayoutSource::Off) {
         return;
     }
+    let budget = phase_budget(received.elapsed());
+    if tokio::time::timeout(budget, phase(worker, scope, run_id))
+        .await
+        .is_err()
+    {
+        tracing::warn!(
+            budget_seconds = budget.as_secs(),
+            "source layouts ran past their deadline; the rest are made on a later citation"
+        );
+    }
+}
+
+/// The layout phase itself: the published answer's read, then each new key in citation order.
+async fn phase(worker: &Worker, scope: &Scope, run_id: &str) {
     let conversation = match worker.store.read(scope).await {
         Ok(Some(conversation)) => conversation,
         Ok(None) => {
@@ -151,15 +181,8 @@ pub(super) async fn after_answer(worker: &Worker, scope: &Scope, run_id: &str) {
     else {
         return;
     };
-    let work = async {
-        for (key, cited) in first_of_each_key(&answer.citations) {
-            one(worker, key, cited, run_id).await;
-        }
-    };
-    if tokio::time::timeout(DEADLINE, work).await.is_err() {
-        tracing::warn!(
-            "source layouts ran past their deadline; the rest are made on a later citation"
-        );
+    for (key, cited) in first_of_each_key(&answer.citations) {
+        one(worker, key, cited, run_id).await;
     }
 }
 
@@ -255,6 +278,25 @@ fn causes(error: &Unsaved) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// The phase gets its full bound early in a push, is cut short so it ends before the push
+    /// deadline with time left to acknowledge, and gets nothing once that time is gone.
+    #[test]
+    fn the_layout_phase_ends_before_the_push_deadline() {
+        let secs = Duration::from_secs;
+        assert_eq!(phase_budget(Duration::ZERO), DEADLINE);
+        assert_eq!(phase_budget(secs(480)), DEADLINE);
+        assert_eq!(phase_budget(secs(530)), secs(60));
+        assert_eq!(phase_budget(secs(590)), Duration::ZERO);
+        assert_eq!(phase_budget(secs(900)), Duration::ZERO);
+        for elapsed in (0..=700).map(secs) {
+            let ends = elapsed + phase_budget(elapsed);
+            assert!(
+                ends <= (PUSH_DEADLINE - ACK_RESERVE).max(elapsed),
+                "{elapsed:?}"
+            );
+        }
+    }
 
     #[test]
     fn the_fixed_layout_knobs_are_proof_only_and_need_the_fixed_reply() {
