@@ -546,6 +546,55 @@ mod tests {
         assert_eq!(snapshot_view(&store, &cited).await, general(&cited));
     }
 
+    /// A repeated slot may find nothing in some components, but one that no component of the
+    /// sample resolves is refused before saving.
+    #[tokio::test]
+    async fn a_repeated_pointer_absent_from_every_sample_element_is_refused_and_not_stored() {
+        const REPEATED: &str = r#"{"record_type":"Observation",
+            "statuses":[{"role":"status","pointer":"/status"}],
+            "sections":[{"heading":{"from_code":"component"},"repeat":"/component","slots":[
+                {"role":"result","pointer":"/valueQuantity/value"},
+                {"role":"unit","pointer":"/valueQuantity/unit"}]}]}"#;
+        let store = store().await;
+        let mut cited = cited();
+        cited.content = json!({"resourceType":"Observation","status":"final",
+            "code":{"text":"Blood pressure"},
+            "component":[
+                {"code":{"text":"Systolic blood pressure"},
+                 "valueQuantity":{"value":142,"unit":"mmHg"}},
+                {"code":{"text":"Diastolic blood pressure"},
+                 "valueQuantity":{"value":81}}]})
+        .to_string();
+        let nowhere = REPEATED.replace("/valueQuantity/unit", "/valueQuantity/doesNotExist");
+        let mut model = Scripted::replying(&nowhere);
+        let error = ensure_layout(&store, &mut model, key(&cited), &cited, "a1")
+            .await
+            .unwrap_err();
+        let Unsaved::Refused(Refusal {
+            at,
+            role,
+            cause: LayoutRefusal::Unresolved { pointer },
+        }) = error
+        else {
+            panic!("{error:?}");
+        };
+        assert_eq!(
+            (at.section(), at.slot, at.element),
+            (Some(0), Some(1), None)
+        );
+        assert_eq!(role, Some(SlotRole::Unit));
+        assert_eq!(pointer, "/valueQuantity/doesNotExist");
+        assert_eq!(store.layout_for(key(&cited)).await.unwrap(), None);
+        assert_eq!(snapshot_view(&store, &cited).await, general(&cited));
+
+        // The unit the diastolic component lacks is in the systolic one: stored.
+        let mut model = Scripted::replying(REPEATED);
+        let outcome = ensure_layout(&store, &mut model, key(&cited), &cited, "a2")
+            .await
+            .unwrap();
+        assert!(matches!(outcome, Outcome::Stored { .. }), "{outcome:?}");
+    }
+
     #[tokio::test]
     async fn a_failed_model_call_stores_nothing() {
         let store = store().await;
