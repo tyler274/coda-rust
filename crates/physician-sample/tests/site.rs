@@ -2267,6 +2267,10 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
         text.contains("Coda wrote this from the record dated September 11, 2018"),
         "the preview showed Coda's summary without its record date: {preview}"
     );
+    assert!(
+        text.contains("Medication allergy record · Recorded September 11, 2018"),
+        "the preview with a summary dropped the record kind and date: {preview}"
+    );
     assert_eq!(
         preview["original"], "https://ehr.example/allergy/0493010f2a16",
         "{preview}"

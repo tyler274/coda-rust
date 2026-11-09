@@ -714,6 +714,22 @@ pub struct SourceInspection {
     pub technical: SourceTechnicalDetails,
 }
 
+impl SourceInspection {
+    /// Labels of the dates that date the record itself, in preference order.
+    const RECORD_DATES: [&str; 5] = ["Recorded", "Authored", "Effective", "Issued", "Dated"];
+
+    /// The date that dates the record: a recorded, authored, effective, issued or document date,
+    /// else the first retained date, such as an onset, under its own label. `None` when the
+    /// citation retained no date. The dates come from the general view, so a layout never
+    /// changes this.
+    pub fn record_date(&self) -> Option<&SourceField> {
+        Self::RECORD_DATES
+            .iter()
+            .find_map(|label| self.dates.iter().find(|date| date.label == *label))
+            .or_else(|| self.dates.first())
+    }
+}
+
 /// A headed group of a layout's fields.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct SourceLayoutSection {
@@ -1227,5 +1243,34 @@ mod tests {
             })
         );
         assert_eq!(page.snapshot.conversation[0].resume_target, None);
+    }
+
+    fn inspection_with_dates(dates: serde_json::Value) -> SourceInspection {
+        serde_json::from_value(serde_json::json!({
+            "title": "Peanut", "record_kind": "Medication allergy record", "dates": dates,
+            "sections": [], "cited_passage": null, "coda_preview": null, "attribution": [],
+            "record_details": [],
+            "technical": {"original": "{}", "reference": "r", "revision": "1", "sha256": "s",
+                "provenance": "{}"}
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn the_record_date_prefers_a_date_that_dates_the_record() {
+        let onset = serde_json::json!({"label": "Onset recorded", "text": "2010-01-02"});
+        let recorded = serde_json::json!({"label": "Recorded", "text": "2018-09-11"});
+        let both = inspection_with_dates(serde_json::json!([onset, recorded]));
+        let date = both.record_date().unwrap();
+        assert_eq!(
+            (date.label.as_str(), date.text.as_str()),
+            ("Recorded", "2018-09-11")
+        );
+        let onset_only = inspection_with_dates(serde_json::json!([onset]));
+        assert_eq!(onset_only.record_date().unwrap().label, "Onset recorded");
+        assert_eq!(
+            inspection_with_dates(serde_json::json!([])).record_date(),
+            None
+        );
     }
 }

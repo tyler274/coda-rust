@@ -4019,21 +4019,21 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
                 original: chip.open_uri.clone(),
                 original_label: chip.open_label.clone(),
                 new_tab_hint: "Opens in a new tab",
-                if let Some(summary) = chip.inspection.as_ref().and_then(|source| source.coda_preview.as_ref()) {
-                    span { class: "citation-summary-label", "Coda's summary" }
-                    ui::SourceText { text: summary.text.clone() }
-                    span { class: "reader-provenance citation-summary-date",
-                        "{shell::summary_provenance(&summary.as_of_label, &summary.as_of)}"
+                if let Some(source) = &chip.inspection {
+                    if let Some(summary) = &source.coda_preview {
+                        span { class: "citation-summary-label", "Coda's summary" }
+                        ui::SourceText { text: summary.text.clone() }
+                        span { class: "reader-provenance citation-summary-date",
+                            "{shell::summary_provenance(&summary.as_of_label, &summary.as_of)}"
+                        }
                     }
-                    for status in chip.inspection.iter().flat_map(|source| source.statuses.iter()) {
-                        span { class: "citation-source-status", "{status.label}: {status.text}" }
-                    }
-                } else if let Some(source) = &chip.inspection {
-                    span { "{source.record_kind}" }
+                    span { class: "citation-source-record", "{shell::preview_record_line(source)}" }
                     for status in source.statuses.iter() {
                         span { class: "citation-source-status", "{status.label}: {status.text}" }
                     }
-                    span { "Statement in the retained record. Open to read source details." }
+                    if source.coda_preview.is_none() {
+                        span { "Statement in the retained record. Open to read source details." }
+                    }
                 } else {
                     ui::SourceText { text: chip.preview.clone() }
                 }

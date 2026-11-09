@@ -104,11 +104,11 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
         view.sections.insert(0, field(NARRATIVE_LABEL, &narrative));
     }
     view.coda_preview = citation.summary.as_ref().map(|summary| {
-        let (label, as_of) = summary_date(&view.dates);
+        let date = view.record_date();
         SourcePreviewContent {
             text: summary.clone(),
-            as_of: as_of.to_owned(),
-            as_of_label: label.to_owned(),
+            as_of: date.map(|date| date.text.clone()).unwrap_or_default(),
+            as_of_label: date.map(|date| date.label.clone()).unwrap_or_default(),
         }
     });
     view
@@ -116,21 +116,6 @@ pub fn inspection_with_layout(citation: &Citation, layout: Option<&Layout>) -> S
 
 /// The label of the record's own narrative, so it never reads as Coda's text.
 const NARRATIVE_LABEL: &str = "The record's own narrative";
-
-/// A date that dates the record, preferred over an onset, abatement, or period bound.
-/// The label is empty when no date was retained.
-fn summary_date(dates: &[SourceField]) -> (&str, &str) {
-    const RECORD_DATES: [&str; 5] = ["Recorded", "Authored", "Effective", "Issued", "Dated"];
-    for label in RECORD_DATES {
-        if let Some(date) = dates.iter().find(|date| date.label == label) {
-            return (date.label.as_str(), date.text.as_str());
-        }
-    }
-    dates
-        .first()
-        .map(|date| (date.label.as_str(), date.text.as_str()))
-        .unwrap_or(("", ""))
-}
 
 /// Text Coda supplies about the record, such as a part it does not contain; no source path.
 fn field(label: &str, value: &str) -> SourceField {

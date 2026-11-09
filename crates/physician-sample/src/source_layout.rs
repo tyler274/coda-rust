@@ -2260,6 +2260,37 @@ mod tests {
         assert_view_shows_every_leaf(&cited, &view);
     }
 
+    /// The hover preview reads the record's kind and date from the wire's general view, so a
+    /// layout or a missing summary never takes either away.
+    #[test]
+    fn the_preview_has_the_record_kind_and_date_with_or_without_a_layout_or_summary() {
+        let mut cited = retained_observation();
+        for summary in [None, Some("A1c above range.".to_owned())] {
+            cited.summary = summary;
+            let general = inspection(&cited);
+            let laid_out = inspection_with_layout(&cited, Some(&observation_layout()));
+            assert!(!laid_out.layout_sections.is_empty());
+            for view in [&general, &laid_out] {
+                assert_eq!(view.record_kind, "Observation record");
+                assert_eq!(
+                    view.record_date(),
+                    Some(&located(
+                        "Effective",
+                        "2019-03-12T13:30:00+00:00",
+                        "effectiveDateTime"
+                    ))
+                );
+            }
+            let date = general.record_date().unwrap();
+            if let Some(preview) = &laid_out.coda_preview {
+                assert_eq!(
+                    (&preview.as_of_label, &preview.as_of),
+                    (&date.label, &date.text)
+                );
+            }
+        }
+    }
+
     #[test]
     fn a_condition_reads_under_its_layout_with_statuses_first() {
         let cited = general_citation(&condition());
