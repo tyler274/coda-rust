@@ -947,6 +947,21 @@ jobs:
             echo "$unexpected"
             exit 1
           fi
+          # A release changes only RELEASE_SHA among the runtime settings. Any
+          # other difference means env/staging.tfvars on this commit disagrees
+          # with what is live (an applied change that never reached main), and
+          # applying would silently revert it.
+          drift=$(jq -r '[.resource_changes[]
+            | select(.address == "google_cloud_run_v2_service.site" and .change.actions == ["update"])
+            | [.change.before, .change.after]
+            | map([.template[0].containers[0].env[]? | select(.name != "RELEASE_SHA") | {name, value}] | sort_by(.name))
+            | select(.[0] != .[1])
+            | "live: \(.[0] | map("\(.name)=\(.value)") | join(" "))\nplan: \(.[1] | map("\(.name)=\(.value)") | join(" "))"] | .[]' plan.json)
+          if [ -n "$drift" ]; then
+            echo "::error::The release would change the site's runtime settings; reconcile env/staging.tfvars with what is live first:"
+            echo "$drift"
+            exit 1
+          fi
       - name: Apply the saved plan
         env:
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}

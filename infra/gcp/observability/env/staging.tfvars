@@ -42,3 +42,5 @@ staging_proxy = {
 }
 # The NEXT_PUBLIC_BASE_PATH=/langfuse build of v3.225.11 (langfuse-web-image.yml).
 langfuse_web_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/langfuse-web@sha256:41e4b17935ccfff07d55b7ee87b908548736e1544d0f304ac785f2fddc95e884"
+# The coda-langfuse-sso build of 9fd184d (main), published by the staging release.
+langfuse_sso_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-langfuse-sso@sha256:fb26c1817eef061b1f463905ff6f0f6021e226a6904285dc7512cd6710ec63fe"
