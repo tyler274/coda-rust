@@ -14,7 +14,7 @@ use harness::engine::{Item, Provider, Request, Turn};
 use local_product::ModelBinding;
 use local_product::physician_layouts::LayoutKey;
 use local_product::runtime::{Scope, async_trait};
-use physician_sample::layout_generation::{Outcome, ensure_layout, first_of_each_key};
+use physician_sample::layout_generation::{Outcome, Unsaved, ensure_layout, first_of_each_key};
 use serde_json::json;
 
 use super::{Worker, configured};
@@ -219,16 +219,37 @@ async fn one(
                 "another writer stored this source layout first; it stays"
             );
         }
-        // Display only: it names the cause without the record's or the reply's content.
         Err(error) => {
             tracing::warn!(
                 source_id,
                 record_type,
-                error = %error,
+                error = causes(&error),
                 "source layout not saved; its records read through the general view"
             );
         }
     }
+}
+
+/// `error` and its causes, outermost first: a refused pointer and role, or a store failure. A
+/// JSON error names only its kind and position, since its text can quote the record or the reply,
+/// and worker logs carry no clinical content.
+fn causes(error: &Unsaved) -> String {
+    if let Unsaved::RecordNotJson(json) | Unsaved::NotALayout(json) = error {
+        return format!(
+            "{error}: {:?} error at line {}, column {}",
+            json.classify(),
+            json.line(),
+            json.column()
+        );
+    }
+    let mut text = error.to_string();
+    let mut source = std::error::Error::source(error);
+    while let Some(cause) = source {
+        text.push_str(": ");
+        text.push_str(&cause.to_string());
+        source = cause.source();
+    }
+    text
 }
 
 #[cfg(test)]

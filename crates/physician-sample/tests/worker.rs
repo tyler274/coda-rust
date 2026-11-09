@@ -1229,7 +1229,7 @@ async fn a_refused_or_failed_layout_saves_nothing_and_the_answer_still_publishes
         );
         let tail = running.worker.tail();
         let cause = if label == "layout_refused" {
-            "refused by its checks"
+            "refused by its checks: /referenceRange/0/low/value cannot be read as the result: it lies inside a reference range"
         } else {
             "fixed layout model failed"
         };
