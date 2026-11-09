@@ -29,11 +29,11 @@ locals {
   observability_owned_env = ["DD_ENV", "DD_VERSION", "OTEL_EXPORTER_OTLP_ENDPOINT", "CODA_LOG_FORMAT", "CODA_TELEMETRY_CONTENT", "CODA_TELEMETRY_BACKEND"]
   # Added to the product container only while the sidecar runs. The same
   # values as infra/gcp/observability's service_telemetry_env output;
-  # telemetry_backend must match that root's choice.
+  # telemetry_backend and telemetry_content must match that root's choices.
   observability_product_env = local.observability ? {
     OTEL_EXPORTER_OTLP_ENDPOINT = "http://localhost:4318"
     CODA_LOG_FORMAT             = "json"
-    CODA_TELEMETRY_CONTENT      = "none"
+    CODA_TELEMETRY_CONTENT      = var.telemetry_content
     CODA_TELEMETRY_BACKEND      = var.telemetry_backend
   } : {}
   # Index 1 of every observed service. Never a dependency of the product

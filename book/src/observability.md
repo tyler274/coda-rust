@@ -47,7 +47,10 @@ The choice lives in three places that must agree:
   Datadog Agent and monitors or the Grafana stack and picks the collector
   overlay; the second sets `CODA_TELEMETRY_BACKEND` on the product containers.
   The <a href="/infra/gcp/observability/README%2Emd#switching-the-backend">switch procedure</a>
-  is in the root's README.
+  is in the root's README. `telemetry_content` works the same way: both roots
+  set it, `rust-environments` puts it on the product containers as
+  `CODA_TELEMETRY_CONTENT`, and `observability` refuses `full` without
+  Langfuse.
 
 ## Data flow
 

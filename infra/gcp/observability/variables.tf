@@ -279,6 +279,13 @@ variable "telemetry_content" {
     condition     = contains(["none", "full"], var.telemetry_content)
     error_message = "telemetry_content must be none or full."
   }
+
+  # Without Langfuse the generation pipeline goes to nop, so full would only
+  # add content nobody may receive.
+  validation {
+    condition     = var.telemetry_content == "none" || var.langfuse_enabled
+    error_message = "telemetry_content = full requires langfuse_enabled; content goes only to the in-project Langfuse."
+  }
 }
 
 variable "datadog_site" {

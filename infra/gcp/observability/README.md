@@ -428,9 +428,14 @@ container sets when `rust-environments` has `observability_enabled`:
 OTEL_EXPORTER_OTLP_ENDPOINT = http://localhost:4318   # its own sidecar
 DD_ENV                      = staging
 CODA_LOG_FORMAT             = json
-CODA_TELEMETRY_CONTENT      = none
+CODA_TELEMETRY_CONTENT      = none                    # or full: telemetry_content
 CODA_TELEMETRY_BACKEND      = datadog                 # or grafana: telemetry_backend
 ```
+
+`telemetry_content` is set in both roots and must match. `full` requires
+`langfuse_enabled`. Under `full` the prompt and completion text of generation
+spans reaches the in-project Langfuse, and the ops pipelines strip it before
+Datadog and Grafana.
 
 `DD_VERSION` is baked into each image at build time and is never set here.
 `DD_ENV` names the environment under both backends. `output.telemetry_backend`
