@@ -335,7 +335,9 @@ mod tests {
         tracing::subscriber::with_default(subscriber, || {
             for (layout, _) in &cases {
                 let layout: Layout = serde_json::from_value(layout.clone()).unwrap();
-                let refusal = layout.validate(key.record_type, &record).unwrap_err();
+                let refusal = layout
+                    .validate_sample(key.record_type, &record)
+                    .unwrap_err();
                 log_unsaved(key, &Unsaved::Refused(refusal));
             }
         });

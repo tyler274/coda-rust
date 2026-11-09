@@ -27,7 +27,10 @@ Rules:
 3. Each slot's pointer names exactly one recorded value: a string, number or boolean, never an
    object or array. Bind each recorded value at most once.
 4. Point only at fields this record has. Do not guess at fields that other records of this type
-   might have.
+   might have. A later record of this type that lacks a `unit`, `reference_range_low`,
+   `reference_range_high`, `reference_range_text`, `interpretation`, `note` or `other` value
+   reads with that slot left out; one that lacks a `result`, `code`, `status` or `date` value
+   does not read under the layout at all.
 5. Give each slot the role of the part its value plays. The role also names the value: the first
    six read under their fixed label shown here, and the rest under the record's own name for the
    field.

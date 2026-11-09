@@ -211,7 +211,7 @@ pub async fn ensure_layout<P: Provider + ?Sized>(
     let reply = request_layout(provider, key.record_type, &record, attempt_id).await?;
     let layout = Layout::parse(&reply).map_err(Unsaved::NotALayout)?;
     layout
-        .validate(key.record_type, &record)
+        .validate_sample(key.record_type, &record)
         .map_err(Unsaved::Refused)?;
     match store.save_layout(key, &reply).await {
         Ok(Saved::Stored(stored)) => Ok(Outcome::Stored {

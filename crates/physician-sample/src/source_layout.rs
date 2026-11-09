@@ -241,20 +241,31 @@ impl fmt::Display for SlotRole {
     }
 }
 
+/// Whether a record read under a layout must hold a slot's value.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Presence {
+    /// The record is read for this value: a record without it does not fit the layout, unless
+    /// the repeated element it belongs to records why in a `dataAbsentReason`.
+    Required,
+    /// Records often leave this value out; a record without it reads under the layout with the
+    /// slot omitted, and nothing stands in its place.
+    Optional,
+}
+
 impl SlotRole {
-    /// Whether an element of a repeated section may simply lack this role's value. A result,
-    /// unit, code, status or date is what an element is read for, so its absence must be
-    /// recorded in the element's `dataAbsentReason`; notes, interpretations, reference ranges
-    /// and other values are often left out.
-    fn absence_is_ordinary(self) -> bool {
+    /// Whether a record must hold this role's value. A result, code, status or date is what a
+    /// record or element is read for; a unit, a reference range, an interpretation, a note and
+    /// any other value are often left out.
+    pub fn presence(self) -> Presence {
         match self {
-            Self::Note
-            | Self::Interpretation
+            Self::Unit
             | Self::ReferenceRangeLow
             | Self::ReferenceRangeHigh
             | Self::ReferenceRangeText
-            | Self::Other => true,
-            Self::Result | Self::Unit | Self::Code | Self::Status | Self::Date => false,
+            | Self::Interpretation
+            | Self::Note
+            | Self::Other => Presence::Optional,
+            Self::Result | Self::Code | Self::Status | Self::Date => Presence::Required,
         }
     }
 }
@@ -574,6 +585,8 @@ pub struct ValidatedLayout<'r> {
     record: &'r Value,
     statuses: Vec<Binding<'r>>,
     sections: Vec<BoundSection<'r>>,
+    /// Optional slots outside repeated sections that found nothing in this record.
+    omitted: Vec<Omission>,
 }
 
 #[derive(Debug)]
@@ -621,9 +634,11 @@ impl Layout {
             }));
         }
         let mut bound = BTreeSet::new();
+        let mut omitted = Vec::new();
         let mut statuses = Vec::with_capacity(self.statuses.len());
         for (index, slot) in self.statuses.iter().enumerate() {
-            let at = in_slot(Position::slot(Part::Statuses, index), slot);
+            let position = Position::slot(Part::Statuses, index);
+            let at = in_slot(position, slot);
             if slot.role != SlotRole::Status {
                 return Err(at(LayoutRefusal::RoleMismatch {
                     pointer: slot.pointer.clone(),
@@ -631,7 +646,10 @@ impl Layout {
                     reason: RoleMismatchReason::StatusesHoldOnlyStatuses,
                 }));
             }
-            statuses.push(bind(slot, record, &mut bound).map_err(at)?);
+            match bind(slot, record, &mut bound).map_err(at)? {
+                Some(binding) => statuses.push(binding),
+                None => omitted.push(Omission::of(position, slot)),
+            }
         }
         let mut sections = Vec::with_capacity(self.sections.len());
         for (index, section) in self.sections.iter().enumerate() {
@@ -650,8 +668,15 @@ impl Layout {
                 (None, Heading::Fixed(heading)) => {
                     let mut bindings = Vec::with_capacity(section.slots.len());
                     for (at_slot, slot) in section.slots.iter().enumerate() {
-                        let at = in_slot(Position::slot(part, at_slot), slot);
-                        bindings.push(bind(slot, record, &mut bound).map_err(at)?);
+                        let position = Position::slot(part, at_slot);
+                        match bind(slot, record, &mut bound).map_err(in_slot(position, slot))? {
+                            Some(binding) => bindings.push(binding),
+                            None => omitted.push(Omission::of(position, slot)),
+                        }
+                    }
+                    // A heading over nothing would read as if the record had something there.
+                    if bindings.is_empty() && !section.slots.is_empty() {
+                        continue;
                     }
                     sections.push(BoundSection {
                         heading: heading.text().to_owned(),
@@ -664,7 +689,56 @@ impl Layout {
             record,
             statuses,
             sections,
+            omitted,
         })
+    }
+
+    /// Checks a newly written layout against the sample record it was written from. On top of
+    /// [`Layout::validate`], every pointer outside a repeated section must name a value in the
+    /// sample: an optional slot may find nothing in a later record of the type, but a layout
+    /// written from this record has no reason to point at what it lacks.
+    pub fn validate_sample<'r>(
+        &self,
+        record_type: &str,
+        record: &'r Value,
+    ) -> Result<ValidatedLayout<'r>, Refusal> {
+        let validated = self.validate(record_type, record)?;
+        match validated.omitted.first() {
+            Some(omission) => Err(omission.clone().into()),
+            None => Ok(validated),
+        }
+    }
+}
+
+/// An optional slot outside a repeated section whose pointer names nothing in the record, so
+/// the layout reads the record without it.
+#[derive(Debug, Clone)]
+struct Omission {
+    at: Position,
+    role: SlotRole,
+    pointer: String,
+}
+
+impl Omission {
+    fn of(at: Position, slot: &Slot) -> Self {
+        Self {
+            at,
+            role: slot.role,
+            pointer: slot.pointer.clone(),
+        }
+    }
+}
+
+/// Where a sample record is concerned, an omission is a pointer that names nothing.
+impl From<Omission> for Refusal {
+    fn from(omission: Omission) -> Self {
+        Self {
+            at: omission.at,
+            role: Some(omission.role),
+            cause: LayoutRefusal::Unresolved {
+                pointer: omission.pointer,
+            },
+        }
     }
 }
 
@@ -678,19 +752,23 @@ fn in_slot(at: Position, slot: &Slot) -> impl Fn(LayoutRefusal) -> Refusal {
     }
 }
 
-/// Binds a slot of a section that does not repeat, or of the record's statuses.
+/// Binds a slot of a section that does not repeat, or of the record's statuses. `None` when the
+/// record lacks a value the slot's role leaves optional; the slot is then omitted.
 fn bind<'r>(
     slot: &Slot,
     record: &'r Value,
     bound: &mut BTreeSet<SourcePath>,
-) -> Result<Binding<'r>, LayoutRefusal> {
+) -> Result<Option<Binding<'r>>, LayoutRefusal> {
     let tokens = checked(slot)?;
-    let found = follow(record, &tokens, SourcePath::root(), Vec::new()).ok_or_else(|| {
-        LayoutRefusal::Unresolved {
-            pointer: slot.pointer.clone(),
-        }
-    })?;
-    place(slot, found, &slot.pointer, bound)
+    let Some(found) = follow(record, &tokens, SourcePath::root(), Vec::new()) else {
+        return match slot.role.presence() {
+            Presence::Optional => Ok(None),
+            Presence::Required => Err(LayoutRefusal::Unresolved {
+                pointer: slot.pointer.clone(),
+            }),
+        };
+    };
+    place(slot, found, &slot.pointer, bound).map(Some)
 }
 
 /// Binds a repeated section once per element of the array at `repeat`, each slot's pointer read
@@ -753,7 +831,7 @@ fn repeated<'r>(
                     let absolute = format!("{repeat}/{index}{}", slot.pointer);
                     bindings.push(place(slot, found, &absolute, bound).map_err(at)?);
                 }
-                None if slot.role.absence_is_ordinary() || recorded_absence => {}
+                None if slot.role.presence() == Presence::Optional || recorded_absence => {}
                 None => {
                     return Err(at(LayoutRefusal::MissingInElement {
                         pointer: slot.pointer.clone(),
@@ -1331,14 +1409,14 @@ mod tests {
                 with_slot(&in_pointer),
                 record.clone(),
                 Position::slot(Part::Section(0), 0),
-                Some(SlotRole::Other),
+                Some(SlotRole::Code),
                 "unresolved",
             ),
             (
                 with_slot(CLINICAL),
                 record.clone(),
                 Position::slot(Part::Section(0), 0),
-                Some(SlotRole::Other),
+                Some(SlotRole::Code),
                 "malformed_pointer",
             ),
             (
@@ -1464,7 +1542,7 @@ mod tests {
         assert!(!line.contains("Potassium"), "{line}");
         for field in [
             "refusal=\"unresolved\"",
-            "role=\"other\"",
+            "role=\"code\"",
             "part=\"section\"",
             "section=0",
             "slot=0",
@@ -1475,7 +1553,7 @@ mod tests {
 
     /// The Observation layout with one slot of its first section replaced.
     fn with_slot(pointer: &str) -> Layout {
-        with_role(SlotRole::Other, pointer)
+        with_role(SlotRole::Code, pointer)
     }
 
     /// The Observation layout with one slot of its first section replaced by one with `role`.
@@ -2454,6 +2532,130 @@ mod tests {
         let view = inspection_with_layout(&cited, Some(&blood_pressure_layout()));
         assert_eq!(view.layout_sections[2].heading, "Diastolic blood pressure");
         assert!(view.layout_sections[2].fields.is_empty());
+        assert_view_shows_every_leaf(&cited, &view);
+    }
+
+    #[test]
+    fn whether_a_record_must_hold_a_value_is_its_roles() {
+        let required: Vec<SlotRole> = SlotRole::ALL
+            .into_iter()
+            .filter(|role| role.presence() == Presence::Required)
+            .collect();
+        assert_eq!(
+            required,
+            [
+                SlotRole::Result,
+                SlotRole::Status,
+                SlotRole::Date,
+                SlotRole::Code
+            ]
+        );
+    }
+
+    #[test]
+    fn a_record_without_a_unit_or_range_reads_under_the_layout_with_nothing_invented() {
+        let mut record = observation();
+        record["valueQuantity"]
+            .as_object_mut()
+            .unwrap()
+            .remove("unit");
+        record.as_object_mut().unwrap().remove("referenceRange");
+        let cited = general_citation(&record);
+        let view = inspection_with_layout(&cited, Some(&observation_layout()));
+        // The unit slot is omitted, and the reference range section has nothing to head.
+        assert_eq!(
+            view.layout_sections,
+            vec![SourceLayoutSection {
+                heading: "Result".into(),
+                fields: vec![
+                    located("Statement in this record", "Hemoglobin A1c", "code.text"),
+                    located("Result", "7.2", "valueQuantity.value"),
+                    located(
+                        "Interpretation",
+                        "High",
+                        "interpretation[0].coding[0].display"
+                    ),
+                ],
+            }]
+        );
+        assert_eq!(
+            view.statuses,
+            vec![located("Result status", "final", "status")]
+        );
+        assert_shown_values_are_recorded(&cited, &view);
+        assert_view_shows_every_leaf(&cited, &view);
+        // A layout written from this record could not have pointed at what it lacks.
+        let refused = observation_layout()
+            .validate_sample(fhir_type(&record), &record)
+            .unwrap_err();
+        assert_eq!(
+            (refused.at, refused.role, refused.cause),
+            (
+                Position::slot(Part::Section(0), 2),
+                Some(SlotRole::Unit),
+                LayoutRefusal::Unresolved {
+                    pointer: "/valueQuantity/unit".into()
+                }
+            )
+        );
+    }
+
+    #[test]
+    fn a_record_without_its_result_or_status_still_refuses_the_layout() {
+        let mut record = observation();
+        record.as_object_mut().unwrap().remove("valueQuantity");
+        assert_eq!(
+            refusal(&observation_layout(), &record),
+            LayoutRefusal::Unresolved {
+                pointer: "/valueQuantity/value".into()
+            }
+        );
+        let mut record = observation();
+        record.as_object_mut().unwrap().remove("status");
+        assert_eq!(
+            refusal(&observation_layout(), &record),
+            LayoutRefusal::Unresolved {
+                pointer: "/status".into()
+            }
+        );
+        // An optional value of the wrong kind is still refused.
+        assert_eq!(
+            refusal(&with_role(SlotRole::Unit, "/code/text"), &observation()),
+            mismatch(
+                SlotRole::Unit,
+                "/code/text",
+                RoleMismatchReason::NotAQuantityUnit
+            )
+        );
+    }
+
+    #[test]
+    fn a_component_without_its_unit_reads_under_the_layout_with_the_unit_omitted() {
+        let mut record = blood_pressure();
+        record["component"][1]["valueQuantity"]
+            .as_object_mut()
+            .unwrap()
+            .remove("unit");
+        let cited = general_citation(&record);
+        let view = inspection_with_layout(&cited, Some(&blood_pressure_layout()));
+        let fields = |index: usize| -> Vec<(&str, &str)> {
+            view.layout_sections[index]
+                .fields
+                .iter()
+                .map(|field| (field.label.as_str(), field.text.as_str()))
+                .collect()
+        };
+        assert_eq!(
+            fields(1),
+            [
+                ("Result", "142"),
+                ("Unit", "mmHg"),
+                ("Unit code", "mm[Hg]"),
+                ("Interpretation", "High")
+            ]
+        );
+        assert_eq!(fields(2), [("Result", "81.5"), ("Unit code", "mm[Hg]")]);
+        assert_shown_values_are_recorded(&cited, &view);
         assert_view_shows_every_leaf(&cited, &view);
     }
 

@@ -1479,10 +1479,10 @@ mod cited_layout_tests {
             &OBSERVATION_LAYOUT.replacen("\"sections\"", "\"value\":\"7.2\",\"sections\"", 1),
         )
         .await;
-        // A layout that parses but binds a pointer the record does not have.
+        // A layout that parses but reads its result from a pointer the record does not have.
         save(
             &refused,
-            &OBSERVATION_LAYOUT.replace("/valueQuantity/unit", "/valueQuantity/missing"),
+            &OBSERVATION_LAYOUT.replace("/valueQuantity/value", "/valueQuantity/missing"),
         )
         .await;
         let citations = vec![
