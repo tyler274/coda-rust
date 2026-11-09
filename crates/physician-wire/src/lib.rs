@@ -696,7 +696,11 @@ pub struct SourceInspection {
     pub coda_preview: Option<SourcePreviewContent>,
     /// Supplied source system, author and patient display labels.
     pub attribution: Vec<SourceField>,
-    /// Recorded statuses and other source facts, not clinical conclusions.
+    /// The record's own clinical, verification and result statuses, read beside its kind and
+    /// date before its statement.
+    #[serde(default)]
+    pub statuses: Vec<SourceField>,
+    /// Other recorded source facts, not clinical conclusions.
     pub record_details: Vec<SourceField>,
     /// Exact retained representation and provenance.
     pub technical: SourceTechnicalDetails,
@@ -709,6 +713,10 @@ pub struct SourceField {
     pub label: String,
     /// Text as supplied by the source.
     pub text: String,
+    /// The exact source JSON path the value was copied from, such as `component[1].valueQuantity`.
+    /// Absent when the text has no known field mapping, such as an attachment's readable text.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
 }
 
 /// Storage details kept separate from clinical dates and readable content.

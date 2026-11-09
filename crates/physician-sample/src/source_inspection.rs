@@ -16,8 +16,9 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
             .dates
             .iter()
             .filter(|date| !date.name.starts_with("meta."))
-            .map(|date| field(date_label(&date.name), &date.value))
+            .map(|date| located(date_label(&date.name), &date.value, &date.name))
             .collect(),
+        // Readable text decoded from an attachment has no field mapping and claims no path.
         sections: citation
             .readable_parts
             .iter()
@@ -26,6 +27,7 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
         cited_passage: None,
         coda_preview: None,
         attribution: Vec::new(),
+        statuses: Vec::new(),
         record_details: Vec::new(),
         technical: SourceTechnicalDetails {
             original: citation.content.clone(),
@@ -37,7 +39,7 @@ pub fn inspection(citation: &Citation) -> SourceInspection {
                 .dates
                 .iter()
                 .filter(|date| date.name.starts_with("meta."))
-                .map(|date| field(&date.name, &date.value))
+                .map(|date| located(&date.name, &date.value, &date.name))
                 .collect(),
             fields: Vec::new(),
         },
@@ -85,11 +87,42 @@ fn summary_date(dates: &[SourceField]) -> (&str, &str) {
         .unwrap_or(("", ""))
 }
 
+/// Text Coda supplies about the record, such as a part it does not contain; no source path.
 fn field(label: &str, value: &str) -> SourceField {
     SourceField {
         label: label.into(),
         text: value.into(),
+        path: None,
     }
+}
+
+/// A value copied from the record at `path`.
+fn located(label: &str, value: &str, path: &str) -> SourceField {
+    SourceField {
+        label: label.into(),
+        text: value.into(),
+        path: Some(path.into()),
+    }
+}
+
+/// How a part the record marks absent reads: never as a normal or negative finding.
+fn not_supplied(reason: &str) -> String {
+    format!("Not supplied. Reason recorded: {reason}")
+}
+
+/// FHIR's extension marking a primitive or complex value absent, with its reason code.
+const DATA_ABSENT_REASON: &str = "http://hl7.org/fhir/StructureDefinition/data-absent-reason";
+
+/// A status as the record names it: its text or coding display, else its first code. The
+/// coding's code and system stay under Technical details.
+fn status_text(value: &Value) -> Option<String> {
+    concept(value).or_else(|| {
+        value["coding"]
+            .as_array()
+            .and_then(|coding| coding.first())
+            .and_then(|coding| text(&coding["code"]))
+            .map(str::to_owned)
+    })
 }
 
 fn text(value: &Value) -> Option<&str> {
@@ -148,14 +181,22 @@ fn allergy_kind(resource: &Value) -> String {
 }
 
 fn allergy(resource: &Value, view: &mut SourceInspection) {
-    view.title = concept(&resource["code"])
+    let statement = concept(&resource["code"]);
+    view.title = statement
+        .clone()
         .unwrap_or_else(|| "Allergy or intolerance statement not supplied".into());
     view.record_kind = allergy_kind(resource);
     if let Some(value) = text(&resource["type"]) {
-        view.record_details.push(field("Type recorded", value));
+        view.record_details
+            .push(located("Type recorded", value, "type"));
     }
-    view.sections
-        .insert(0, field("Statement in this record", &view.title));
+    view.sections.insert(
+        0,
+        match &statement {
+            Some(statement) => located("Statement in this record", statement, "code"),
+            None => field("Statement in this record", &view.title),
+        },
+    );
     for name in ["recordedDate", "onsetDateTime", "lastOccurrence"] {
         if let Some(value) = text(&resource[name])
             && !view
@@ -163,7 +204,7 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
                 .iter()
                 .any(|date| date.label == date_label(name) && date.text == value)
         {
-            view.dates.push(field(date_label(name), value));
+            view.dates.push(located(date_label(name), value, name));
         }
     }
     for (name, label) in [
@@ -172,26 +213,24 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
         ("asserter", "Asserted by"),
     ] {
         if let Some(value) = text(&resource[name]["display"]) {
-            view.attribution.push(field(label, value));
+            view.attribution
+                .push(located(label, value, &format!("{name}.display")));
         }
     }
     for (name, label) in [
         ("clinicalStatus", "Source status recorded"),
         ("verificationStatus", "Verification status recorded"),
     ] {
-        if let Some(value) = concept(&resource[name]).or_else(|| {
-            resource[name]["coding"]
-                .as_array()
-                .and_then(|coding| coding.first())
-                .and_then(|coding| text(&coding["code"]))
-                .map(str::to_owned)
-        }) {
-            view.record_details.push(field(label, &value));
+        if let Some(value) = status_text(&resource[name]) {
+            view.statuses.push(located(label, &value, name));
         }
     }
     if let Some(value) = text(&resource["criticality"]) {
-        view.record_details
-            .push(field("Criticality recorded (not reaction severity)", value));
+        view.record_details.push(located(
+            "Criticality recorded (not reaction severity)",
+            value,
+            "criticality",
+        ));
     }
     let reactions = resource["reaction"]
         .as_array()
@@ -228,14 +267,24 @@ fn allergy(resource: &Value, view: &mut SourceInspection) {
         if let Some(value) = text(&reaction["onset"]) {
             values.push(format!("Reaction onset recorded: {value}"));
         }
-        view.sections.push(field(
+        view.sections.push(located(
             &format!("Reaction {}", index + 1),
             &values.join("\n"),
+            &format!("reaction[{index}]"),
         ));
     }
-    for note in resource["note"].as_array().into_iter().flatten() {
+    for (index, note) in resource["note"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .enumerate()
+    {
         if let Some(value) = text(&note["text"]) {
-            view.sections.push(field("Source note", value));
+            view.sections.push(located(
+                "Source note",
+                value,
+                &format!("note[{index}].text"),
+            ));
         }
     }
 }
@@ -249,7 +298,7 @@ enum Placement {
     Date,
     /// Who the record names as performing, recording, requesting or asserting it.
     Attribution,
-    /// The record's own statuses, read before its other details.
+    /// The record's own clinical, verification or result status, read beside its kind and date.
     Status,
     /// Every other recorded element.
     Detail,
@@ -319,7 +368,7 @@ impl Placement {
             }
             "performer" | "recorder" | "requester" | "asserter" | "author" | "patient"
             | "subject" => Self::Attribution,
-            "status" | "clinicalStatus" | "verificationStatus" | "intent" => Self::Status,
+            "status" | "clinicalStatus" | "verificationStatus" => Self::Status,
             _ => Self::Detail,
         }
     }
@@ -405,9 +454,20 @@ impl Flattened<'_> {
                 }
             }
             Value::Object(object) => {
+                if let Some(reason) = absent_extension(object) {
+                    self.readable
+                        .push(located(label, &not_supplied(reason), path));
+                    self.technical_leaves(value, path);
+                    return;
+                }
                 let amount = |value: &Value| self.numbers.recorded(value, &format!("{path}.value"));
                 if let Some(text) = coded(object).or_else(|| quantity(object, amount)) {
-                    self.readable.push(field(label, &text));
+                    // A concept that is only text points at that text, not its container.
+                    let path = match object.len() {
+                        1 if object.contains_key("text") => format!("{path}.text"),
+                        _ => path.to_owned(),
+                    };
+                    self.readable.push(located(label, &text, &path));
                     return;
                 }
                 if is_reference(object) {
@@ -423,29 +483,51 @@ impl Flattened<'_> {
                 // A coded result such as a blood pressure component reads under its own name.
                 let name = object
                     .keys()
-                    .any(|key| is_element(key, "value"))
+                    .any(|key| is_element(key, "value") || key == "dataAbsentReason")
                     .then(|| object.get("code").and_then(concept))
                     .flatten();
                 let mut keys: Vec<_> = object.keys().collect();
                 keys.sort_by_key(|key| reading_rank(key));
                 for key in keys {
                     let value = &object[key.as_str()];
+                    let path = format!("{path}.{key}");
                     // An attachment's encoded `data` reads through its readable part, if any.
                     let technical = matches!(
                         key.as_str(),
                         "extension" | "modifierExtension" | "identifier" | "data"
                     );
+                    // A result the record marks absent reads under the result's own name.
+                    if key == "dataAbsentReason" {
+                        self.absent(value, &path, name.as_deref().unwrap_or(label));
+                        continue;
+                    }
                     let label = match &name {
                         Some(name) if is_element(key, "value") => name.clone(),
                         Some(name) => format!("{name} {}", humanize(key).to_lowercase()),
                         None => format!("{label} {}", humanize(key).to_lowercase()),
                     };
-                    self.walk(value, &format!("{path}.{key}"), &label, technical);
+                    self.walk(value, &path, &label, technical);
                 }
             }
-            scalar => self
-                .readable
-                .push(field(label, &self.numbers.recorded(scalar, path))),
+            scalar => {
+                self.readable
+                    .push(located(label, &self.numbers.recorded(scalar, path), path))
+            }
+        }
+    }
+
+    /// A FHIR `dataAbsentReason`: the value it stands for reads as not supplied, with the
+    /// recorded reason, never as a normal or negative finding.
+    fn absent(&mut self, reason: &Value, path: &str, label: &str) {
+        let Some(recorded) = status_text(reason).or_else(|| text(reason).map(str::to_owned)) else {
+            self.walk(reason, path, &format!("{label} data absent reason"), false);
+            return;
+        };
+        self.readable
+            .push(located(label, &not_supplied(&recorded), path));
+        // The reason's codes stay inspectable without crowding the reading.
+        if reason.is_object() {
+            self.technical_leaves(reason, path);
         }
     }
 
@@ -461,9 +543,10 @@ impl Flattened<'_> {
                     self.technical_leaves(value, &format!("{path}.{key}"));
                 }
             }
-            scalar => self
-                .technical
-                .push(field(path, &self.numbers.recorded(scalar, path))),
+            scalar => {
+                self.technical
+                    .push(located(path, &self.numbers.recorded(scalar, path), path))
+            }
         }
     }
 }
@@ -489,24 +572,44 @@ fn general(
             text(&reference["display"]).map(str::to_owned)
         })
         .unwrap_or_else(|| view.record_kind.clone());
-    let mut statuses = Vec::new();
-    let mut details = Vec::new();
+    let result = matches!(
+        resource.get("resourceType").and_then(Value::as_str),
+        Some("Observation" | "DiagnosticReport")
+    );
     let mut keys: Vec<_> = resource.keys().collect();
-    keys.sort_by_key(|key| reading_rank(key));
+    keys.sort_by_key(|key| reading_rank(element_name(key)));
     for key in keys {
         let value = &resource[key.as_str()];
-        let placement = Placement::of(key);
+        // FHIR carries a primitive's extensions under `_name`; one marking the value absent
+        // reads where the value would, and any other stays technical.
+        let element = element_name(key);
+        let marks_absent = value.as_object().and_then(absent_extension).is_some();
+        let placement = if element == key || marks_absent {
+            Placement::of(element)
+        } else {
+            Placement::Technical
+        };
         let mut flattened = Flattened {
             numbers,
             readable: Vec::new(),
             technical: Vec::new(),
         };
-        flattened.walk(
-            value,
-            key,
-            &top_label(key, placement),
-            placement == Placement::Technical,
-        );
+        let label = match element {
+            "status" if result => "Result status".to_owned(),
+            _ => top_label(element, placement),
+        };
+        if key == "dataAbsentReason" {
+            flattened.absent(value, key, "Value");
+        } else if placement == Placement::Status
+            && value.is_object()
+            && let Some(status) = status_text(value)
+        {
+            // The status reads by name beside the record kind; its codes stay technical.
+            flattened.readable.push(located(&label, &status, key));
+            flattened.technical_leaves(value, key);
+        } else {
+            flattened.walk(value, key, &label, placement == Placement::Technical);
+        }
         for technical in flattened.technical {
             if !view.technical.storage_dates.contains(&technical) {
                 view.technical.fields.push(technical);
@@ -523,12 +626,28 @@ fn general(
                 }
             }
             Placement::Attribution => view.attribution.extend(readable),
-            Placement::Status => statuses.extend(readable),
-            Placement::Detail | Placement::Technical => details.extend(readable),
+            Placement::Status => view.statuses.extend(readable),
+            Placement::Detail | Placement::Technical => view.record_details.extend(readable),
         }
     }
-    view.record_details.extend(statuses);
-    view.record_details.extend(details);
+}
+
+/// The element a top-level key carries: `_status` holds the extensions of `status`.
+fn element_name(key: &str) -> &str {
+    key.strip_prefix('_').unwrap_or(key)
+}
+
+/// The recorded reason when an element holds only FHIR's data-absent-reason extension.
+fn absent_extension(object: &serde_json::Map<String, Value>) -> Option<&str> {
+    if object.keys().any(|key| key != "extension" && key != "id") {
+        return None;
+    }
+    object
+        .get("extension")?
+        .as_array()?
+        .iter()
+        .find(|extension| extension["url"] == DATA_ABSENT_REASON)
+        .and_then(|extension| text(&extension["valueCode"]))
 }
 
 /// The label for a top-level element: the record's own date meaning where one is known,
@@ -594,6 +713,8 @@ fn words(name: &str) -> String {
     for (index, character) in name.chars().enumerate() {
         if index == 0 {
             words.extend(character.to_uppercase());
+        } else if character == '_' || character == '-' {
+            words.push(' ');
         } else if character.is_uppercase() {
             words.push(' ');
             words.extend(character.to_lowercase());
@@ -734,19 +855,31 @@ mod tests {
         let view = inspection(&citation(original));
         assert_eq!(view.title, "No known drug allergies");
         assert_eq!(view.record_kind, "Medication allergy or intolerance record");
-        assert_eq!(view.dates, vec![field("Recorded", "2020-09-14")]);
+        assert_eq!(
+            view.dates,
+            vec![located("Recorded", "2020-09-14", "recordedDate")]
+        );
         assert_eq!(
             view.sections[0],
-            field("Statement in this record", "No known drug allergies")
+            located(
+                "Statement in this record",
+                "No known drug allergies",
+                "code"
+            )
         );
         assert!(view.coda_preview.is_none());
         assert!(view.cited_passage.is_none());
         assert!(view.attribution.is_empty());
         assert_eq!(view.technical.original.as_bytes(), original.as_bytes());
         assert_eq!(
-            view.record_details,
-            vec![field("Source status recorded", "active")]
+            view.statuses,
+            vec![located(
+                "Source status recorded",
+                "active",
+                "clinicalStatus"
+            )]
         );
+        assert!(view.record_details.is_empty());
     }
 
     #[test]
@@ -798,7 +931,11 @@ mod tests {
         );
         assert_eq!(
             view.sections[0],
-            field("Statement in this record", "No known drug allergies")
+            located(
+                "Statement in this record",
+                "No known drug allergies",
+                "code"
+            )
         );
     }
 
@@ -814,13 +951,18 @@ mod tests {
         assert!(view.sections.iter().any(
             |section| section.text == "Manifestation: Hives\nReaction severity recorded: mild"
         ));
-        assert!(view.record_details.contains(&field(
+        assert!(view.record_details.contains(&located(
             "Criticality recorded (not reaction severity)",
-            "high"
+            "high",
+            "criticality"
         )));
-        assert!(
-            view.record_details
-                .contains(&field("Verification status recorded", "Confirmed"))
+        assert_eq!(
+            view.statuses,
+            vec![located(
+                "Verification status recorded",
+                "Confirmed",
+                "verificationStatus"
+            )]
         );
         assert_eq!(view.technical.original, original);
     }
@@ -854,7 +996,7 @@ mod tests {
         assert_eq!(before.technical.original, original);
         let mut unknown = citation(r#"{ "resourceType":"Unknown", "value":42 }"#);
         let general = inspection(&unknown);
-        assert_eq!(general.sections, vec![field("Value", "42")]);
+        assert_eq!(general.sections, vec![located("Value", "42", "value")]);
         assert_eq!(general.record_kind, "Unknown record");
         assert_eq!(general.technical.original, unknown.content);
         unknown
@@ -867,7 +1009,7 @@ mod tests {
             inspection(&unknown).sections,
             vec![
                 field("Document", "Readable attachment"),
-                field("Value", "42")
+                located("Value", "42", "value")
             ]
         );
         let array = inspection(&citation(r#"[{"value":42}]"#));
@@ -925,6 +1067,7 @@ mod tests {
             .iter()
             .chain(&view.dates)
             .chain(&view.attribution)
+            .chain(&view.statuses)
             .chain(&view.record_details)
             .chain(&view.technical.fields)
             .chain(&view.technical.storage_dates)
@@ -938,6 +1081,11 @@ mod tests {
             let readable = shown.iter().any(|field| field.text.contains(&value));
             assert!(technical || readable, "{path} = {value} is not shown");
         }
+    }
+
+    /// Whether Technical details carries `value` under its source path.
+    fn technical(view: &SourceInspection, path: &str, value: &str) -> bool {
+        view.technical.fields.contains(&located(path, value, path))
     }
 
     fn observation() -> Value {
@@ -969,45 +1117,61 @@ mod tests {
         assert_eq!(
             view.sections,
             vec![
-                field(
+                located(
                     "Statement in this record",
-                    "Hemoglobin A1c\nHemoglobin A1c/Hemoglobin.total in Blood (4548-4 · http://loinc.org)"
+                    "Hemoglobin A1c\nHemoglobin A1c/Hemoglobin.total in Blood (4548-4 · http://loinc.org)",
+                    "code"
                 ),
-                field("Value", "7.2 % (http://unitsofmeasure.org)"),
-                field(
+                located(
+                    "Value",
+                    "7.2 % (http://unitsofmeasure.org)",
+                    "valueQuantity"
+                ),
+                located(
                     "Interpretation",
-                    "High (H · http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation)"
+                    "High (H · http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation)",
+                    "interpretation[0]"
                 ),
-                field("Reference range low", "4.0 %"),
-                field("Reference range high", "5.6 %"),
-                field("Reference range text", "4.0-5.6 %"),
+                located("Reference range low", "4.0 %", "referenceRange[0].low"),
+                located("Reference range high", "5.6 %", "referenceRange[0].high"),
+                located(
+                    "Reference range text",
+                    "4.0-5.6 %",
+                    "referenceRange[0].text"
+                ),
             ]
         );
         assert_eq!(
             view.dates,
             vec![
-                field("Effective", "2019-03-12T13:30:00+00:00"),
-                field("Issued", "2019-03-13T09:00:00+00:00"),
+                located(
+                    "Effective",
+                    "2019-03-12T13:30:00+00:00",
+                    "effectiveDateTime"
+                ),
+                located("Issued", "2019-03-13T09:00:00+00:00", "issued"),
             ]
         );
-        assert_eq!(view.attribution, vec![field("Performed by", "Dr. Lab")]);
-        assert_eq!(view.record_details[0], field("Status", "final"));
-        assert!(view.technical.fields.contains(&field("id", "obs-1")));
-        assert!(
-            view.technical
-                .fields
-                .contains(&field("performer[0].reference", "Practitioner/p-1"))
+        assert_eq!(
+            view.attribution,
+            vec![located("Performed by", "Dr. Lab", "performer[0].display")]
         );
-        assert!(
-            view.technical
-                .fields
-                .contains(&field("extension[0].valueString", "kept"))
+        assert_eq!(
+            view.statuses,
+            vec![located("Result status", "final", "status")]
         );
-        assert!(
-            view.technical
-                .fields
-                .contains(&field("meta.lastUpdated", "2019-03-12T00:00:00+00:00"))
-        );
+        assert!(technical(&view, "id", "obs-1"));
+        assert!(technical(
+            &view,
+            "performer[0].reference",
+            "Practitioner/p-1"
+        ));
+        assert!(technical(&view, "extension[0].valueString", "kept"));
+        assert!(technical(
+            &view,
+            "meta.lastUpdated",
+            "2019-03-12T00:00:00+00:00"
+        ));
         assert!(view.sections.iter().all(|field| !field.text.contains('{')));
         assert_nothing_dropped(&observation());
     }
@@ -1029,27 +1193,34 @@ mod tests {
     fn each_blood_pressure_component_reads_under_its_own_name() {
         let view = inspection(&general_citation(&blood_pressure()));
         assert_eq!(view.title, "Blood Pressure");
-        assert!(view.sections.contains(&field(
+        assert!(view.sections.contains(&located(
             "Systolic Blood Pressure",
-            "159 mmHg (mm[Hg] · http://unitsofmeasure.org)"
+            "159 mmHg (mm[Hg] · http://unitsofmeasure.org)",
+            "component[0].valueQuantity"
         )));
-        assert!(view.sections.contains(&field(
+        assert!(view.sections.contains(&located(
             "Diastolic Blood Pressure",
-            "99 mmHg (mm[Hg] · http://unitsofmeasure.org)"
+            "99 mmHg (mm[Hg] · http://unitsofmeasure.org)",
+            "component[1].valueQuantity"
         )));
-        assert!(view.sections.contains(&field(
+        assert!(view.sections.contains(&located(
             "Systolic Blood Pressure code",
-            "Systolic Blood Pressure\nSystolic blood pressure (8480-6 · http://loinc.org)"
+            "Systolic Blood Pressure\nSystolic blood pressure (8480-6 · http://loinc.org)",
+            "component[0].code"
         )));
         assert_eq!(
             view.dates,
-            vec![field("Effective", "2019-03-12T13:30:00+00:00")]
+            vec![located(
+                "Effective",
+                "2019-03-12T13:30:00+00:00",
+                "effectiveDateTime"
+            )]
         );
-        assert!(
-            view.technical
-                .fields
-                .contains(&field("encounter.reference", "Encounter/enc-26183a468076"))
-        );
+        assert!(technical(
+            &view,
+            "encounter.reference",
+            "Encounter/enc-26183a468076"
+        ));
         assert_nothing_dropped(&blood_pressure());
     }
 
@@ -1072,34 +1243,43 @@ mod tests {
         assert_eq!(
             view.sections,
             vec![
-                field(
+                located(
                     "Statement in this record",
-                    "Type 2 diabetes mellitus without complications (E11.9 · http://hl7.org/fhir/sid/icd-10-cm)"
+                    "Type 2 diabetes mellitus without complications (E11.9 · http://hl7.org/fhir/sid/icd-10-cm)",
+                    "code"
                 ),
-                field("Note", "about 14 years per patient and prior records"),
+                located(
+                    "Note",
+                    "about 14 years per patient and prior records",
+                    "note[0].text"
+                ),
             ]
         );
         assert_eq!(
             view.dates,
             vec![
-                field("Onset recorded", "2005-06-01"),
-                field("Recorded", "2019-03-12T13:20:00+00:00"),
-                field("Abatement recorded", "2019-06-19T19:00:00+00:00"),
+                located("Onset recorded", "2005-06-01", "onsetDateTime"),
+                located("Recorded", "2019-03-12T13:20:00+00:00", "recordedDate"),
+                located(
+                    "Abatement recorded",
+                    "2019-06-19T19:00:00+00:00",
+                    "abatementDateTime"
+                ),
             ]
         );
+        // Statuses read by name beside the kind; their codes stay under Technical details.
         assert_eq!(
-            view.record_details[..2],
-            [
-                field(
-                    "Clinical status",
-                    "Resolved (resolved · http://terminology.hl7.org/CodeSystem/condition-clinical)"
-                ),
-                field(
-                    "Verification status",
-                    "Confirmed (confirmed · http://terminology.hl7.org/CodeSystem/condition-ver-status)"
-                ),
+            view.statuses,
+            vec![
+                located("Clinical status", "Resolved", "clinicalStatus"),
+                located("Verification status", "Confirmed", "verificationStatus"),
             ]
         );
+        assert!(technical(
+            &view,
+            "clinicalStatus.coding[0].code",
+            "resolved"
+        ));
         assert_nothing_dropped(&condition());
     }
 
@@ -1121,33 +1301,53 @@ mod tests {
         assert_eq!(view.record_kind, "Medication request record");
         assert_eq!(
             view.sections[0],
-            field(
+            located(
                 "Medication",
-                "metformin hydrochloride 1000 mg oral tablet\nmetformin hydrochloride 1000 MG Oral Tablet (861004 · http://www.nlm.nih.gov/research/umls/rxnorm)"
+                "metformin hydrochloride 1000 mg oral tablet\nmetformin hydrochloride 1000 MG Oral Tablet (861004 · http://www.nlm.nih.gov/research/umls/rxnorm)",
+                "medicationCodeableConcept"
             )
         );
         assert_eq!(
             view.dates,
-            vec![field("Authored", "2019-03-12T13:20:00+00:00")]
+            vec![located(
+                "Authored",
+                "2019-03-12T13:20:00+00:00",
+                "authoredOn"
+            )]
         );
         assert_eq!(
             view.attribution,
-            vec![field("Requested by", "Dr. Prescriber")]
+            vec![located(
+                "Requested by",
+                "Dr. Prescriber",
+                "requester.display"
+            )]
         );
-        assert_eq!(
-            view.record_details[..2],
-            [field("Status", "active"), field("Intent", "order")]
-        );
+        assert_eq!(view.statuses, vec![located("Status", "active", "status")]);
+        assert_eq!(view.record_details[0], located("Intent", "order", "intent"));
         for detail in [
-            field(
+            located(
                 "Dosage instruction text",
                 "Take 1 tablet by mouth twice daily with meals",
+                "dosageInstruction[0].text",
             ),
-            field("Dosage instruction timing code", "BID"),
-            field("Dosage instruction dose and rate dose", "1000 mg"),
-            field("Dosage instruction route", "Oral"),
-            field("Reported", "true"),
-            field("Reason code", "Type 2 diabetes"),
+            located(
+                "Dosage instruction timing code",
+                "BID",
+                "dosageInstruction[0].timing.code.text",
+            ),
+            located(
+                "Dosage instruction dose and rate dose",
+                "1000 mg",
+                "dosageInstruction[0].doseAndRate[0].doseQuantity",
+            ),
+            located(
+                "Dosage instruction route",
+                "Oral",
+                "dosageInstruction[0].route.text",
+            ),
+            located("Reported", "true", "reportedBoolean"),
+            located("Reason code", "Type 2 diabetes", "reasonCode[0].text"),
         ] {
             assert!(view.record_details.contains(&detail), "{detail:?}");
         }
@@ -1170,24 +1370,29 @@ mod tests {
         assert_eq!(view.title, "Tdap");
         assert_eq!(
             view.sections,
-            vec![field(
+            vec![located(
                 "Statement in this record",
-                "Tdap (115 · http://hl7.org/fhir/sid/cvx)"
+                "Tdap (115 · http://hl7.org/fhir/sid/cvx)",
+                "vaccineCode"
             )]
         );
         assert_eq!(
             view.dates,
-            vec![field("Occurred", "2019-03-12T14:15:00+00:00")]
+            vec![located(
+                "Occurred",
+                "2019-03-12T14:15:00+00:00",
+                "occurrenceDateTime"
+            )]
+        );
+        assert_eq!(
+            view.statuses,
+            vec![located("Status", "completed", "status")]
         );
         assert!(
             view.record_details
-                .contains(&field("Primary source", "true"))
+                .contains(&located("Primary source", "true", "primarySource"))
         );
-        assert!(
-            view.technical
-                .fields
-                .contains(&field("identifier[0].value", "imm-1"))
-        );
+        assert!(technical(&view, "identifier[0].value", "imm-1"));
         assert_nothing_dropped(&immunization());
     }
 
@@ -1199,17 +1404,28 @@ mod tests {
             "component":[{"code":{"text":"Count"},"valueInteger":1e3}],"extra":-0.50}"#;
         let cited = citation(original);
         let view = inspection(&cited);
-        assert!(view.sections.contains(&field("Value", "7.20 %")));
         assert!(
             view.sections
-                .contains(&field("Reference range low", "4.0 %"))
+                .contains(&located("Value", "7.20 %", "valueQuantity"))
         );
+        assert!(view.sections.contains(&located(
+            "Reference range low",
+            "4.0 %",
+            "referenceRange[0].low"
+        )));
+        assert!(view.sections.contains(&located(
+            "Reference range high",
+            "5.60 %",
+            "referenceRange[0].high"
+        )));
         assert!(
             view.sections
-                .contains(&field("Reference range high", "5.60 %"))
+                .contains(&located("Count", "1e3", "component[0].valueInteger"))
         );
-        assert!(view.sections.contains(&field("Count", "1e3")));
-        assert!(view.record_details.contains(&field("Extra", "-0.50")));
+        assert!(
+            view.record_details
+                .contains(&located("Extra", "-0.50", "extra"))
+        );
         assert_content_shown(&cited);
     }
 
@@ -1219,17 +1435,19 @@ mod tests {
             "result":{"value":5.9,"units":"mmol/L"},"collected":"2024-02-01","n":[1,2.50]});
         let view = inspection(&general_citation(&record));
         assert_eq!(view.record_kind, "Record record");
+        assert!(view.record_details.contains(&located(
+            "Analyte name",
+            "Potassium",
+            "analyte.name"
+        )));
+        assert!(view.record_details.contains(&located(
+            "Analyte flags 2",
+            "null",
+            "analyte.flags[1]"
+        )));
         assert!(
             view.record_details
-                .contains(&field("Analyte name", "Potassium"))
-        );
-        assert!(
-            view.record_details
-                .contains(&field("Analyte flags 2", "null"))
-        );
-        assert!(
-            view.record_details
-                .contains(&field("Result units", "mmol/L"))
+                .contains(&located("Result units", "mmol/L", "result.units"))
         );
         assert_nothing_dropped(&record);
     }
@@ -1242,7 +1460,7 @@ mod tests {
         assert_eq!(view.record_kind, "Medication intolerance record");
         assert!(
             view.record_details
-                .contains(&field("Type recorded", "intolerance"))
+                .contains(&located("Type recorded", "intolerance", "type"))
         );
         let food = inspection(&citation(
             r#"{"resourceType":"AllergyIntolerance","type":"allergy","category":["food"],"code":{"text":"Peanut"}}"#,
@@ -1270,20 +1488,300 @@ mod tests {
         assert_eq!(view.record_kind, "Medication allergy record");
         assert_eq!(
             view.dates,
-            vec![field("Recorded", "2018-09-11T12:20:00+00:00")]
+            vec![located(
+                "Recorded",
+                "2018-09-11T12:20:00+00:00",
+                "recordedDate"
+            )]
         );
         assert_eq!(
             view.technical.storage_dates,
-            vec![field("meta.lastUpdated", "2018-09-11T00:00:00+00:00")]
+            vec![located(
+                "meta.lastUpdated",
+                "2018-09-11T00:00:00+00:00",
+                "meta.lastUpdated"
+            )]
         );
-        assert!(
-            view.record_details
-                .contains(&field("Source status recorded", "Active"))
+        assert_eq!(
+            view.statuses,
+            vec![
+                located("Source status recorded", "Active", "clinicalStatus"),
+                located(
+                    "Verification status recorded",
+                    "Confirmed",
+                    "verificationStatus"
+                ),
+            ]
         );
-        assert!(view.record_details.contains(&field(
+        assert!(view.record_details.contains(&located(
             "Criticality recorded (not reaction severity)",
-            "low"
+            "low",
+            "criticality"
         )));
         assert_eq!(view.technical.original, line);
+    }
+
+    /// Every readable field of `view`, wherever it reads.
+    fn readable(view: &SourceInspection) -> Vec<&SourceField> {
+        view.sections
+            .iter()
+            .chain(&view.dates)
+            .chain(&view.attribution)
+            .chain(&view.statuses)
+            .chain(&view.record_details)
+            .collect()
+    }
+
+    /// The value at a dotted, indexed path such as `results[1].units`, if the record has one.
+    fn at<'a>(record: &'a Value, path: &str) -> Option<&'a Value> {
+        path.split('.').try_fold(record, |value, step| {
+            let (name, indexes) = step.split_once('[').unwrap_or((step, ""));
+            let value = value.get(name)?;
+            indexes
+                .split('[')
+                .filter(|index| !index.is_empty())
+                .try_fold(value, |value, index| {
+                    value.get(index.trim_end_matches(']').parse::<usize>().ok()?)
+                })
+        })
+    }
+
+    /// A non-FHIR source: a lab export in its own field names, read as recorded.
+    fn vendor_lab() -> Citation {
+        let content = include_str!("../fixtures/records/vendor-lab-result.json");
+        let mut cited = citation(content);
+        cited.record_type = "LabResult".into();
+        cited.reference = "lab-result/88213".into();
+        cited
+    }
+
+    #[test]
+    fn a_record_from_a_source_that_is_not_fhir_reads_as_labeled_fields() {
+        let cited = vendor_lab();
+        let view = inspection(&cited);
+        assert_eq!(view.record_kind, "Lab result record");
+        assert_eq!(view.title, "Lab result record");
+        assert_eq!(view.statuses, vec![located("Status", "final", "status")]);
+        for expected in [
+            located("Results 1 test name", "Potassium", "results[0].test_name"),
+            located("Results 1 value", "5.9", "results[0].value"),
+            located("Results 1 units", "mmol/L", "results[0].units"),
+            located(
+                "Results 1 reference range",
+                "3.5-5.1",
+                "results[0].reference_range",
+            ),
+            located("Results 1 abnormal flag", "H", "results[0].abnormal_flag"),
+            located(
+                "Results 3 result status",
+                "preliminary",
+                "results[2].result_status",
+            ),
+            located(
+                "Performing lab",
+                "Synthetic Reference Lab",
+                "performing_lab",
+            ),
+            located("Lab result id", "88213", "lab_result_id"),
+        ] {
+            assert!(
+                view.record_details.contains(&expected),
+                "{expected:?} in {:#?}",
+                view.record_details
+            );
+        }
+        assert!(view.attribution.contains(&located(
+            "Patient in source display name",
+            "Synthetic Patient",
+            "patient.display_name"
+        )));
+        // The result without a unit or range shows none, and is not given another's.
+        assert!(
+            !readable(&view)
+                .iter()
+                .any(|field| field.path.as_deref() == Some("results[2].units"))
+        );
+        assert!(
+            readable(&view)
+                .iter()
+                .all(|field| !field.text.starts_with('{') && !field.text.starts_with('['))
+        );
+        assert_content_shown(&cited);
+    }
+
+    #[test]
+    fn every_readable_field_keeps_the_exact_path_its_value_was_copied_from() {
+        for cited in [
+            vendor_lab(),
+            general_citation(&observation()),
+            general_citation(&blood_pressure()),
+            general_citation(&condition()),
+            general_citation(&medication_request()),
+            general_citation(&immunization()),
+        ] {
+            let record: Value = serde_json::from_str(&cited.content).unwrap();
+            let numbers = NumberLiterals::read(&cited.content);
+            let view = inspection(&cited);
+            for shown in readable(&view).into_iter().chain(&view.technical.fields) {
+                let path = shown.path.as_deref().unwrap_or_else(|| {
+                    panic!("{} {shown:?} has no source path", cited.record_type)
+                });
+                let value = at(&record, path)
+                    .unwrap_or_else(|| panic!("{} has no {path}", cited.record_type));
+                if !value.is_object() && !value.is_array() {
+                    assert_eq!(
+                        shown.text,
+                        numbers.recorded(value, path),
+                        "{} {path}",
+                        cited.record_type
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn values_with_identical_text_stay_distinguishable_by_path() {
+        let view = inspection(&vendor_lab());
+        let paths = |text: &str| -> Vec<String> {
+            readable(&view)
+                .into_iter()
+                .filter(|field| field.text == text)
+                .filter_map(|field| field.path.clone())
+                .collect()
+        };
+        assert_eq!(
+            paths("final"),
+            [
+                "status",
+                "results[0].result_status",
+                "results[1].result_status"
+            ]
+        );
+        assert_eq!(paths("mmol/L"), ["results[0].units", "results[1].units"]);
+    }
+
+    #[test]
+    fn readable_text_without_a_field_mapping_claims_no_path() {
+        let mut cited = general_citation(&observation());
+        cited
+            .readable_parts
+            .push(local_product::physician_sources::ReadablePart {
+                label: "Report attachment".into(),
+                text: "A1c 7.2%".into(),
+            });
+        let view = inspection(&cited);
+        assert_eq!(view.sections[0], field("Report attachment", "A1c 7.2%"));
+        assert_eq!(view.sections[0].path, None);
+        let attachment = inspection(&citation("Plain text note"));
+        assert_eq!(attachment.sections[0].path, None);
+    }
+
+    #[test]
+    fn status_reads_beside_kind_and_date_not_among_record_details() {
+        // The bank's inactive "no known drug allergies" record.
+        let inactive = inspection(&citation(
+            r#"{"resourceType":"AllergyIntolerance","clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical","code":"inactive","display":"Inactive"}]},"verificationStatus":{"coding":[{"code":"confirmed","display":"Confirmed"}]},"category":["medication"],"code":{"text":"No known drug allergies"},"recordedDate":"2018-09-11T12:20:00+00:00"}"#,
+        ));
+        assert_eq!(
+            inactive.statuses[0],
+            located("Source status recorded", "Inactive", "clinicalStatus")
+        );
+        assert!(
+            inactive
+                .record_details
+                .iter()
+                .all(|detail| !detail.label.contains("status"))
+        );
+        let mut preliminary = observation();
+        preliminary["status"] = json!("preliminary");
+        let preliminary = inspection(&general_citation(&preliminary));
+        assert_eq!(
+            preliminary.statuses,
+            vec![located("Result status", "preliminary", "status")]
+        );
+        let refuted = inspection(&general_citation(&json!({"resourceType":"Condition",
+            "verificationStatus":{"coding":[{"code":"refuted"}]},"code":{"text":"Asthma"}})));
+        assert_eq!(
+            refuted.statuses,
+            vec![located(
+                "Verification status",
+                "refuted",
+                "verificationStatus"
+            )]
+        );
+        let mut errored = medication_request();
+        errored["status"] = json!("entered-in-error");
+        let errored = inspection(&general_citation(&errored));
+        assert_eq!(
+            errored.statuses,
+            vec![located("Status", "entered-in-error", "status")]
+        );
+        assert!(
+            errored
+                .record_details
+                .contains(&located("Intent", "order", "intent"))
+        );
+    }
+
+    #[test]
+    fn a_value_the_record_marks_absent_reads_as_not_supplied_with_its_reason() {
+        let record = json!({"resourceType":"Observation","status":"final",
+            "code":{"text":"Hemoglobin A1c"},
+            "dataAbsentReason":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/data-absent-reason","code":"not-performed","display":"Not Performed"}]},
+            "component":[
+                {"code":{"text":"Systolic"},"dataAbsentReason":{"text":"Patient refused"}},
+                {"code":{"text":"Diastolic"},"valueQuantity":{"value":80,"unit":"mmHg"}}],
+            "effectiveDateTime":"2019-03-12",
+            "_issued":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},
+            "futureElement":{"kind":"unrecognized"}});
+        let view = inspection(&general_citation(&record));
+        assert!(view.sections.contains(&located(
+            "Value",
+            "Not supplied. Reason recorded: Not Performed",
+            "dataAbsentReason"
+        )));
+        assert!(view.sections.contains(&located(
+            "Systolic",
+            "Not supplied. Reason recorded: Patient refused",
+            "component[0].dataAbsentReason"
+        )));
+        assert!(view.dates.contains(&located(
+            "Issued",
+            "Not supplied. Reason recorded: unknown",
+            "_issued"
+        )));
+        assert!(technical(
+            &view,
+            "dataAbsentReason.coding[0].code",
+            "not-performed"
+        ));
+        // An unfamiliar element stays visible under its source label and is not called absent.
+        assert!(view.record_details.contains(&located(
+            "Future element kind",
+            "unrecognized",
+            "futureElement.kind"
+        )));
+        assert_eq!(
+            readable(&view)
+                .iter()
+                .filter(|field| field.text.starts_with("Not supplied"))
+                .count(),
+            3
+        );
+        assert_nothing_dropped(&record);
+    }
+
+    #[test]
+    fn a_missing_field_is_not_reported_absent() {
+        let view = inspection(&general_citation(
+            &json!({"resourceType":"Observation","status":"final","code":{"text":"Sodium"}}),
+        ));
+        assert!(
+            readable(&view)
+                .iter()
+                .all(|field| !field.text.contains("Not supplied"))
+        );
+        assert!(!view.sections.iter().any(|field| field.label == "Value"));
     }
 }

@@ -92,6 +92,14 @@ function (step, ...args) {
         link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
         linkTitle: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("title") ?? null,
         summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
+        statuses: [...pane.querySelectorAll(".source-record-status")].map((node) => node.innerText),
+        // The reader's blocks in reading order, by their first class.
+        blocks: [...pane.querySelector(".clinical-source-reader").children]
+          .map((node) => node.classList[0] ?? node.tagName.toLowerCase()),
+        // Each readable field's source path with the text shown for it, outside Technical details.
+        fields: [...pane.querySelectorAll("[data-source-path]")]
+          .filter((node) => !node.closest(".source-technical-details"))
+          .map((node) => ({ path: node.dataset.sourcePath, title: node.title, text: node.innerText })),
       };
     },
     // Presses the pane's way out a person can see: Close beside a wide reader, Back over a narrow

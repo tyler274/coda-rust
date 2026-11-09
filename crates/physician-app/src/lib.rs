@@ -4025,8 +4025,14 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
                     span { class: "reader-provenance citation-summary-date",
                         "{shell::summary_provenance(&summary.as_of_label, &summary.as_of)}"
                     }
+                    for status in chip.inspection.iter().flat_map(|source| source.statuses.iter()) {
+                        span { class: "citation-source-status", "{status.label}: {status.text}" }
+                    }
                 } else if let Some(source) = &chip.inspection {
                     span { "{source.record_kind}" }
+                    for status in source.statuses.iter() {
+                        span { class: "citation-source-status", "{status.label}: {status.text}" }
+                    }
                     span { "Statement in the retained record. Open to read source details." }
                 } else {
                     ui::SourceText { text: chip.preview.clone() }
@@ -4056,14 +4062,23 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                     }
                 }
                 p { class: "source-record-kind", "{source.record_kind}" }
+                for status in source.statuses {
+                    p { class: "source-record-status", title: status.path.clone(), "data-source-path": status.path,
+                        "{status.label}: {status.text}"
+                    }
+                }
                 if source.dates.is_empty() {
                     p { class: "reader-provenance", "No record date was retained with this citation." }
                 }
                 for date in source.dates {
-                    p { class: "source-record-date", "{date.label} {shell::source_date(&date.text)}" }
+                    p { class: "source-record-date", title: date.path.clone(), "data-source-path": date.path,
+                        "{date.label} {shell::source_date(&date.text)}"
+                    }
                 }
                 for attribution in source.attribution {
-                    p { class: "reader-provenance", "{attribution.label}: {attribution.text}" }
+                    p { class: "reader-provenance", title: attribution.path.clone(), "data-source-path": attribution.path,
+                        "{attribution.label}: {attribution.text}"
+                    }
                 }
                 p { class: "source-record-notice", "This is the retained source record, not a current chart-wide conclusion." }
                 if let Some(passage) = source.cited_passage {
@@ -4075,7 +4090,7 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                     p { class: "reader-provenance", "The specific supporting passage is not identified in this citation." }
                 }
                 for section in source.sections {
-                    section { class: "source-record-section",
+                    section { class: "source-record-section", title: section.path.clone(), "data-source-path": section.path,
                         h3 { "{section.label}" }
                         ui::SourceText { text: section.text }
                     }
@@ -4085,8 +4100,8 @@ fn SourceReaderContent(reading: OpenReading) -> Element {
                         h3 { "Record details" }
                         dl {
                             for detail in source.record_details {
-                                dt { "{detail.label}" }
-                                dd { "{detail.text}" }
+                                dt { title: detail.path.clone(), "{detail.label}" }
+                                dd { title: detail.path.clone(), "data-source-path": detail.path, "{detail.text}" }
                             }
                         }
                     }

@@ -2303,6 +2303,321 @@ async fn a_summarized_citation_reads_link_then_summary_then_record() {
     tab.save_picture("funnel-reader");
 }
 
+/// The patient bank's lab Observation as `labs::render` writes it: a released potassium above
+/// its catalog range, flagged high.
+const BANK_POTASSIUM: &str = r#"{"resourceType":"Observation","id":"obs-5c1d2e7a9b40","meta":{"versionId":"1","lastUpdated":"2026-08-20T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001776"},"effectiveDateTime":"2026-08-20T15:15:00+00:00","issued":"2026-08-21T17:02:00+00:00","valueQuantity":{"value":5.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"interpretation":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation","code":"H","display":"High"}]}],"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.1,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
+/// The patient bank's resolved problem-list Condition.
+const BANK_CONDITION: &str = r#"{"resourceType":"Condition","id":"cond-db76cb24b2c2","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"clinicalStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-clinical","code":"resolved","display":"Resolved"}]},"verificationStatus":{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-ver-status","code":"confirmed","display":"Confirmed"}]},"category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/condition-category","code":"problem-list-item","display":"Problem List Item"}],"text":"Problem List Item"}],"code":{"coding":[{"system":"http://hl7.org/fhir/sid/icd-10-cm","code":"J20.9","display":"Acute bronchitis, unspecified"}],"text":"Acute bronchitis"},"subject":{"reference":"Patient/MRN00001776"},"onsetDateTime":"2019-03-05","recordedDate":"2019-03-12T13:20:00+00:00","abatementDateTime":"2019-04-02T19:00:00+00:00"}"#;
+const OBSERVATION_CHAT: &str = "chat-observation-citation";
+const CONDITION_CHAT: &str = "chat-condition-citation";
+
+/// One cited bank record: its chat, the record line, and the dates the synthetic chart
+/// adapter retains with it.
+struct CitedRecord {
+    chat: &'static str,
+    title: &'static str,
+    question: &'static str,
+    reference: &'static str,
+    record_type: &'static str,
+    line: &'static str,
+    dates: &'static [(&'static str, &'static str)],
+}
+
+const CITED_RECORDS: [CitedRecord; 2] = [
+    CitedRecord {
+        chat: OBSERVATION_CHAT,
+        title: "Latest potassium",
+        question: "What was the last potassium?",
+        reference: "Observation/obs-5c1d2e7a9b40",
+        record_type: "Observation",
+        line: BANK_POTASSIUM,
+        dates: &[
+            ("effectiveDateTime", "2026-08-20T15:15:00+00:00"),
+            ("issued", "2026-08-21T17:02:00+00:00"),
+            ("meta.lastUpdated", "2026-08-20T00:00:00+00:00"),
+        ],
+    },
+    CitedRecord {
+        chat: CONDITION_CHAT,
+        title: "Bronchitis",
+        question: "Is the bronchitis still active?",
+        reference: "Condition/cond-db76cb24b2c2",
+        record_type: "Condition",
+        line: BANK_CONDITION,
+        dates: &[
+            ("abatementDateTime", "2019-04-02T19:00:00+00:00"),
+            ("onsetDateTime", "2019-03-05"),
+            ("recordedDate", "2019-03-12T13:20:00+00:00"),
+            ("meta.lastUpdated", "2019-03-12T00:00:00+00:00"),
+        ],
+    },
+];
+
+/// Lists one chat per `CITED_RECORDS` entry for the review patient, each answer citing its bank
+/// record through the same `source_inspection` the live projection uses.
+async fn with_record_citations(
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    let path = request.uri().path().to_owned();
+    let cited = CITED_RECORDS.iter().find(|record| {
+        path == format!(
+            "/patient-workspaces/{REVIEW_PATIENT}/chats/{}/snapshot",
+            record.chat
+        )
+    });
+    if let Some(record) = cited {
+        let dates: Vec<_> = record
+            .dates
+            .iter()
+            .map(|(name, value)| serde_json::json!({"name": name, "value": value}))
+            .collect();
+        let citation: local_product::physician_chat::Citation =
+            serde_json::from_value(serde_json::json!({
+                "id": "record-citation", "reference": record.reference,
+                "revision": local_product::sha256_hex(record.line.as_bytes()),
+                "record_type": record.record_type, "content": record.line, "dates": dates,
+                "sha256": local_product::sha256_hex(record.line.as_bytes()),
+                "provenance": {"native_record": record.reference},
+            }))
+            .unwrap();
+        let inspection = physician_sample::source_inspection::inspection(&citation);
+        return axum::Json(serde_json::json!({"snapshot": {"conversation": [
+            {"kind": "physician", "text": record.question},
+            {"kind": "model", "text": "The chart records it [[patient_source:record-citation]]",
+             "segments": [
+                {"kind": "text", "text": "The chart records it "},
+                {"kind": "citation", "state": "resolved", "source": "patient",
+                 "source_id": "record-citation", "handle": citation.reference,
+                 "display_label": inspection.title,
+                 "source_presentation": {"inspection": inspection},
+                 "destination": serde_json::Value::Null}]}]}}))
+        .into_response();
+    }
+    let response = next.run(request).await;
+    if path != format!("/patient-workspaces/{REVIEW_PATIENT}") {
+        return response;
+    }
+    let (mut parts, body) = response.into_parts();
+    let bytes = axum::body::to_bytes(body, usize::MAX).await.unwrap();
+    let mut workspace: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+    workspace["chats"] = CITED_RECORDS
+        .iter()
+        .map(|record| {
+            serde_json::json!({"chat_id": record.chat, "title": record.title,
+                "created_at": "2026-08-27T12:05:00Z"})
+        })
+        .collect();
+    parts.headers.remove(axum::http::header::CONTENT_LENGTH);
+    axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
+}
+
+/// What a cited record's reader must show: its heading, kind and statuses, then text that must
+/// be visible and the source path of each value that must carry one.
+struct RecordReading {
+    title: &'static str,
+    kind: &'static str,
+    statuses: &'static [&'static str],
+    visible: &'static [&'static str],
+    paths: &'static [(&'static str, &'static str)],
+    hidden: &'static [&'static str],
+}
+
+/// Hovers, then opens the citation in `chat`, and checks the record reads as recorded: status
+/// in the preview and beside the kind and date ahead of the statement, every value with its
+/// source path, and no raw JSON outside Technical details.
+fn read_cited_record(
+    address: std::net::SocketAddr,
+    chat: &str,
+    line: &str,
+    expected: &RecordReading,
+) {
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={chat}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("The chart records it", Duration::from_secs(20));
+    let center = tab.step("citationCenter", serde_json::json!([]));
+    for step in [8.0, 0.0] {
+        tab.call(
+            "Input.dispatchMouseEvent",
+            serde_json::json!({"type": "mouseMoved",
+                "x": center[0].as_f64().unwrap() - step, "y": center[1].as_f64().unwrap()}),
+        );
+    }
+    let started = Instant::now();
+    let preview = loop {
+        let preview = tab.step("citationPreview", serde_json::json!([]));
+        if !preview.is_null() {
+            break preview;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(5),
+            "hovering the citation opened no preview"
+        );
+        std::thread::sleep(Duration::from_millis(20));
+    };
+    let preview_text = preview["text"].as_str().unwrap();
+    assert!(preview_text.contains(expected.kind), "{preview}");
+    for status in expected.statuses {
+        assert!(
+            preview_text.contains(status),
+            "preview lacks {status}: {preview}"
+        );
+    }
+
+    tab.click("section[aria-label='Conversation'] .citation-chip");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let shown = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(shown["title"], expected.title, "{shown}");
+    assert_eq!(shown["kind"], expected.kind, "{shown}");
+    assert_eq!(shown["technicalOpen"], false, "{shown}");
+    assert_eq!(shown["original"].as_str().unwrap(), line);
+    assert_eq!(
+        shown["statuses"],
+        serde_json::json!(expected.statuses),
+        "{shown}"
+    );
+    // Kind, then status, then the record's dates, all ahead of the statement.
+    let blocks: Vec<&str> = shown["blocks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|block| block.as_str().unwrap())
+        .collect();
+    let first = |class: &str| blocks.iter().position(|block| *block == class);
+    let kind = first("source-record-kind").expect("kind");
+    let status = first("source-record-status").expect("status");
+    let date = first("source-record-date").expect("date");
+    let statement = first("source-record-section").expect("statement");
+    assert!(
+        kind < status && status < date && date < statement,
+        "{blocks:?}"
+    );
+    let visible = shown["visible"].as_str().unwrap();
+    for text in expected.visible {
+        assert!(visible.contains(text), "missing {text}: {visible}");
+    }
+    for text in expected
+        .hidden
+        .iter()
+        .chain(&["\"resourceType\"", "{\"", "lastUpdated"])
+    {
+        assert!(!visible.contains(text), "{text} leads the view: {visible}");
+    }
+    let fields = shown["fields"].as_array().unwrap();
+    for field in fields {
+        assert_eq!(field["title"], field["path"], "{field}");
+    }
+    for (path, text) in expected.paths {
+        assert!(
+            fields
+                .iter()
+                .any(|field| field["path"] == *path
+                    && field["text"].as_str().unwrap().contains(text)),
+            "no {text} at {path}: {fields:?}"
+        );
+    }
+    assert!(
+        shown["technical"]
+            .as_str()
+            .unwrap()
+            .contains("meta.lastUpdated")
+    );
+    let layout = tab.step("citationLayout", serde_json::json!([]));
+    assert_eq!(layout["fits"], true, "{layout}");
+    tab.save_picture(chat);
+}
+
+async fn serve_record_citations() -> std::net::SocketAddr {
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app = physician_sample::simulation_router()
+        .layer(axum::middleware::from_fn(with_record_citations));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+    address
+}
+
+/// A cited lab result reads as its value, unit, range and interpretation, with its result
+/// status beside its kind and date.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_observation_citation_reads_its_value_range_and_status_as_recorded() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        OBSERVATION_CHAT,
+        BANK_POTASSIUM,
+        &RecordReading {
+            title: "Potassium",
+            kind: "Observation record",
+            statuses: &["Result status: final"],
+            visible: &[
+                "Effective August 20, 2026, 15:15:00+00:00 as recorded",
+                "Issued August 21, 2026, 17:02:00+00:00 as recorded",
+                "5.9 mmol/L",
+                "High (H",
+                "Reference range low",
+                "3.5 mmol/L",
+                "5.1 mmol/L",
+            ],
+            paths: &[
+                ("status", "final"),
+                ("code", "Potassium"),
+                ("valueQuantity", "5.9 mmol/L"),
+                ("interpretation[0]", "High"),
+                ("referenceRange[0].low", "3.5 mmol/L"),
+                ("referenceRange[0].high", "5.1 mmol/L"),
+                ("effectiveDateTime", "August 20, 2026"),
+            ],
+            hidden: &["MRN00001776", "obs-5c1d2e7a9b40"],
+        },
+    );
+}
+
+/// A cited problem reads as its statement, with its clinical and verification status beside
+/// its kind and date, before the statement.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn a_condition_citation_reads_its_statement_with_status_first() {
+    let _guard = test_lock().lock().await;
+    let address = serve_record_citations().await;
+    read_cited_record(
+        address,
+        CONDITION_CHAT,
+        BANK_CONDITION,
+        &RecordReading {
+            title: "Acute bronchitis",
+            kind: "Condition record",
+            statuses: &[
+                "Clinical status: Resolved",
+                "Verification status: Confirmed",
+            ],
+            visible: &[
+                "Onset recorded March 5, 2019",
+                "Recorded March 12, 2019, 13:20:00+00:00 as recorded",
+                "Abatement recorded April 2, 2019, 19:00:00+00:00 as recorded",
+                "Acute bronchitis, unspecified (J20.9",
+                "Problem List Item",
+            ],
+            paths: &[
+                ("clinicalStatus", "Resolved"),
+                ("verificationStatus", "Confirmed"),
+                ("code", "Acute bronchitis"),
+                ("abatementDateTime", "April 2, 2019"),
+            ],
+            hidden: &["MRN00001776", "cond-db76cb24b2c2"],
+        },
+    );
+}
+
 const CONVERSATION_PERSON: &str = "[aria-label=\"Conversation\"] .message-person";
 const CONVERSATION_REPLY: &str = "[aria-label=\"Conversation\"] .message-assistant";
 const REVIEW_FIELD: &str = ".reply-review-ask input";
