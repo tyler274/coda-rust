@@ -487,8 +487,9 @@ jobs:
       # deploy-staging job below; hosted runtime qualification is separate.
 
   # Builds the mobile mode-shell APK and runs ModeShellTest on a headless
-  # x86_64 emulator. Blacksmith runners expose nested KVM; ci_scope.py selects
-  # this job only when a crate or file in the APK's build changes.
+  # x86_64 emulator. Blacksmith runners expose nested KVM. For now it runs only
+  # on a manual dispatch (Actions > CI > Run workflow); ci_scope.py
+  # MOBILE_ON_CHANGE turns on running it when the APK's build changes.
   android-emulator:
     needs: [scope, lightweight]
     if: needs.scope.outputs.mobile == 'true'

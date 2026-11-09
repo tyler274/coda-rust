@@ -12,6 +12,10 @@ import sys
 
 FULL_JOBS = ("ci", "foundations", "images", "postgres", "observability", "cargo-deny")
 MOBILE_JOBS = ("android-emulator",)
+# Pull requests and main pushes do not run the Android emulator yet; only a
+# manual dispatch does. Set True to run it whenever a change touches the APK's
+# build (mobile_path).
+MOBILE_ON_CHANGE = False
 # Workspace crates in the Android APK's build graph. The android-emulator job
 # runs `check-mobile-crates` against `cargo tree`, so a new dependency fails
 # that job until it is listed here.
@@ -70,6 +74,13 @@ def git(*args):
 
 def select(event_name, event):
     """Return (full, deps, mobile, reason). deps means a dependency build is likely cold."""
+    full, deps, mobile, reason = classify(event_name, event)
+    if mobile and event_name != "workflow_dispatch" and not MOBILE_ON_CHANGE:
+        return full, deps, False, reason + "; Android emulator is manual-only, dispatch CI to run it"
+    return full, deps, mobile, reason
+
+
+def classify(event_name, event):
     if event_name == "workflow_dispatch":
         return True, False, True, "manual qualification"
     if event_name == "schedule":

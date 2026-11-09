@@ -14,6 +14,8 @@ import yaml
 
 SCRIPT = Path(__file__).with_name("ci_scope.py")
 WORKFLOW = SCRIPT.parents[1] / ".github/workflows/ci.yml"
+sys.path.insert(0, str(SCRIPT.parent))
+import ci_scope  # noqa: E402
 
 
 class ScopeTests(unittest.TestCase):
@@ -129,15 +131,35 @@ class ScopeTests(unittest.TestCase):
         }
         for path, mobile in cases.items():
             with self.subTest(path=path):
-                self.git("reset", "--hard", self.base)
-                self.write(path, "changed\n")
-                self.commit()
-                self.scope()
-                self.assertEqual(self.last_mobile, f"mobile={str(mobile).lower()}")
-        for event, mobile in [("workflow_dispatch", True), ("schedule", False), ("unknown", True)]:
+                self.assertEqual(ci_scope.mobile_path(path), mobile)
+
+    def test_emulator_is_manual_only_while_change_selection_is_off(self):
+        self.assertFalse(ci_scope.MOBILE_ON_CHANGE)
+        self.write("crates/mobile/src/main.rs", "changed\n")
+        self.commit()
+        for event in ("pull_request", "push"):
+            with self.subTest(event=event):
+                self.assertEqual(self.scope(event), "full=true")
+                self.assertEqual(self.last_mobile, "mobile=false")
+        for event, mobile in [("workflow_dispatch", True), ("schedule", False), ("unknown", False)]:
             with self.subTest(event=event):
                 self.scope(event, event={})
                 self.assertEqual(self.last_mobile, f"mobile={str(mobile).lower()}")
+
+    def test_change_selection_runs_the_emulator_only_for_the_apk_build(self):
+        self.write("crates/mobile/src/main.rs", "changed\n")
+        head = self.commit()
+        event = {"pull_request": {"base": {"sha": self.base}, "head": {"sha": head}}}
+        cwd = os.getcwd()
+        os.chdir(self.repo)
+        try:
+            self.assertTrue(ci_scope.classify("pull_request", event)[2])
+            self.write("crates/duet-api/src/lib.rs", "changed\n")
+            other = self.commit()
+            event["pull_request"] = {"base": {"sha": head}, "head": {"sha": other}}
+            self.assertFalse(ci_scope.classify("pull_request", event)[2])
+        finally:
+            os.chdir(cwd)
 
     def test_mobile_crate_list_check_reads_cargo_tree(self):
         root = SCRIPT.resolve().parents[1]
