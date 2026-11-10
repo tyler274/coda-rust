@@ -278,6 +278,56 @@ async fn the_worker_serves_no_work_route() {
     }
 }
 
+/// AC7. A hosted worker starts and is ready with the staging profile and no
+/// push identity: neither `PHYSICIAN_WORKER_AUDIENCE` nor
+/// `PHYSICIAN_PUSH_SERVICE_ACCOUNT` is set. It runs no turn, so the API key
+/// is never used.
+#[tokio::test]
+async fn a_hosted_worker_starts_without_push_identity_settings() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("hosted_start").await else {
+        return;
+    };
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-hosted-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let skills = concat!(env!("CARGO_MANIFEST_DIR"), "/../../skills");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("K_SERVICE", "physician-worker"),
+            ("CODA_ENVIRONMENT", "stg"),
+            (
+                "CODA_HOSTED_PROFILE",
+                physician_sample::hosting::STAGING_PROFILE,
+            ),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_SKILLS_DIR", skills),
+            ("CODA_LOCAL_MODEL_EXECUTION", "api"),
+            ("CODA_ALLOW_MODEL_CALLS", "1"),
+            ("OPENAI_API_KEY", "unused-no-turn-runs"),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    let host = format!("127.0.0.1:{port}");
+    let (status, _) = support::exchange(&host, "POST", "/pubsub/chat-turn", &[], Some(b"{}"))
+        .await
+        .unwrap_or_else(|error| panic!("{error}\n{}", worker.tail()));
+    assert_eq!(status, 404);
+    println!("hosted worker ready without push settings; POST /pubsub/chat-turn -> {status}");
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
 /// AC2. The worker's listening connection is ended, as a dropped connection
 /// or a database failover would end it, and a turn is accepted at once. The
 /// worker still claims it within its poll interval, here the hosted 10 s.
@@ -376,6 +426,60 @@ async fn work_that_becomes_due_unannounced_is_found_by_the_poll() {
     assert!(
         waited < lease + Duration::from_secs(1) + poll * 2,
         "the poll took {waited:?} to find work due after {lease:?}"
+    );
+    worker.kill_now();
+    let _ = std::fs::remove_dir_all(&home);
+}
+
+/// AC4 without the poll. A dead worker's lease is live at every read before
+/// it runs out, and the poll is far slower than the lease, so only the
+/// worker's wake at the soonest lease end can take the turn in time.
+#[tokio::test]
+async fn a_lease_that_runs_out_unannounced_is_taken_at_its_end_not_at_the_next_poll() {
+    let _guard = lock().lock().await;
+    let Some(database) = support::Database::create("lease_end").await else {
+        return;
+    };
+    let store = Store::connect(&database.url).await.expect("runtime store");
+    let (scope, delivery) = accept_turn(&database.url, &store).await;
+    let lease = Duration::from_secs(4);
+    store
+        .claim_delivery(&delivery, lease.as_secs() as i64)
+        .await
+        .expect("claim")
+        .expect("the accepted turn is claimable");
+    let claimed = Instant::now();
+    let home = std::env::temp_dir().join(format!(
+        "physician-worker-lease-end-{}",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::create_dir_all(&home).expect("home");
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let mut worker = support::Process::spawn(
+        "worker",
+        support::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", listen.as_str()),
+            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_WORKER_POLL_MS", "60000"),
+        ],
+        &home,
+    );
+    support::wait_ready(&mut worker, port).await;
+    assert!(claimed.elapsed() < lease, "the worker started too late");
+    let state = wait_assistant(&store, &scope, &worker).await;
+    let waited = claimed.elapsed();
+    println!(
+        "unannounced lease end answered {waited:?} after its {lease:?} lease began (poll 60s)"
+    );
+    assert_eq!(attempt_statuses(&state), ["interrupted", "completed"]);
+    // The database clock counts whole seconds, so allow one beyond the lease.
+    assert!(
+        waited < lease + Duration::from_secs(2),
+        "the turn waited {waited:?} for a {lease:?} lease"
     );
     worker.kill_now();
     let _ = std::fs::remove_dir_all(&home);

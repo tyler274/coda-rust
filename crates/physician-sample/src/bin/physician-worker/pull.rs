@@ -5,8 +5,8 @@
 //! listener here starts that work at once. Notifications sent while the
 //! listener is disconnected are lost, so the loop also reads the due work
 //! every poll interval, and again whenever the listener resubscribes. A
-//! worker that dies announces nothing, so after each read the loop also
-//! reads again when the soonest live lease runs out: its turn is taken
+//! worker that dies announces nothing, so each read also notes when the
+//! soonest live lease runs out and reads again then: its turn is taken
 //! within the lease, not a poll after it. A
 //! delivery only names work: the claim decides whether this worker runs it,
 //! so hearing of the same work twice, or on two workers, runs it once.
@@ -150,6 +150,20 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
             }
         };
         if sweep {
+            // Read the soonest lease end before the due work: a lease that
+            // ends between the two reads is due for the second, and every
+            // lease still live at the first ends at or after the timer. A
+            // failed read keeps a timer that has not fired; the poll covers
+            // the rest.
+            match worker.store.soonest_lease_end().await {
+                Ok(Some(left)) => {
+                    let at = tokio::time::Instant::now() + left + LEASE_END_MARGIN;
+                    lease_end.as_mut().reset(at);
+                    watching_lease = true;
+                }
+                Ok(None) => watching_lease = false,
+                Err(_) => watching_lease &= !lease_end.is_elapsed(),
+            }
             backlog = match start_due(&worker, &mut running, &stop).await {
                 Ok(left) => left,
                 Err(_) => {
@@ -160,16 +174,6 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
                     );
                     backlog
                 }
-            };
-            watching_lease = match worker.store.soonest_lease_end().await {
-                Ok(Some(left)) => {
-                    let at = tokio::time::Instant::now() + left + LEASE_END_MARGIN;
-                    lease_end.as_mut().reset(at);
-                    true
-                }
-                Ok(None) => false,
-                // The poll still finds the turn, one interval later at most.
-                Err(_) => false,
             };
         }
     }
