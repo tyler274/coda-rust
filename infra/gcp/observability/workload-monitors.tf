@@ -39,8 +39,14 @@ variable "observability_workload_monitors_enabled" {
 
 locals {
   workload_scope = "env:${local.dd_env},kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace}"
+  # Operator-qualified targets under their own gate, plus the Langfuse
+  # workloads under langfuse_monitors_enabled (langfuse-monitors.tf).
+  monitored_workloads = merge(
+    var.observability_workload_monitors_enabled ? var.observability_workload_targets : {},
+    local.langfuse_workload_targets,
+  )
   workload_signals = {
-    for name, target in var.observability_workload_targets : name => {
+    for name, target in local.monitored_workloads : name => {
       metric  = target.kind == "deployment" ? "kubernetes_state.deployment.replicas_available" : "kubernetes_state.statefulset.replicas_ready"
       scope   = "${local.workload_scope},${target.kind == "deployment" ? "kube_deployment" : "kube_stateful_set"}:${name}"
       minimum = target.minimum_ready
@@ -48,7 +54,7 @@ locals {
   }
   workload_rules = { for rule in flatten([for name, target in local.workload_signals : [
     for absence in [false, true] : { key = "${name}/${absence ? "absence" : "availability"}", name = name, target = target, absence = absence }
-  ]]) : rule.key => rule if var.observability_workload_monitors_enabled }
+  ]]) : rule.key => rule }
   pvc_rules = { for rule in flatten([for name, scope in var.observability_pvc_scopes : [
     for mode in ["pressure", "used_absence", "capacity_absence"] : { key = "${name}/${mode}", name = name, scope = "${local.workload_scope},${scope}", mode = mode }
   ]]) : rule.key => rule if var.observability_workload_monitors_enabled }

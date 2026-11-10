@@ -29,6 +29,12 @@ langfuse_enabled = true
 # langfuse_ee_ placeholder, which ee/LICENSE allows for testing only.
 langfuse_ee_trial = true
 
+# The Datadog Agent scrapes the gateway's own exporter metrics, and the
+# Langfuse exporter and workload monitors page #engineering-observability.
+# Their gate is separate from datadog_monitors_enabled.
+collector_self_metrics_enabled = true
+langfuse_monitors_enabled      = true
+
 # Services attach prompt and completion text to generation spans. Only the
 # Langfuse pipeline keeps it; the ops pipelines strip it. Must match
 # infra/gcp/rust-environments' telemetry_content.
