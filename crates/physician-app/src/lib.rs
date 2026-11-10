@@ -85,6 +85,7 @@ const DRAFT_USE_NEWER: &str = "Use newer text";
 const RECOVERY_UNAVAILABLE: &str =
     "This tab can’t keep a reload copy of your draft. Keep the page open until it saves.";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
+const CONVERSATION_STALE: &str = "Coda couldn’t refresh this conversation. Showing the last one.";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
@@ -1532,10 +1533,19 @@ fn PhysicianShell(
             (asked, answer)
         }
     });
-    // One conversation's lines never stand in for another's.
+    // A failed reread keeps this conversation's last lines, shown as stale, so
+    // its turns and any open details dialog stay; one conversation's lines
+    // never stand in for another's.
+    let mut last_conversation = use_signal(|| None);
+    use_effect(move || {
+        if let Some((asked, Ok(lines))) = snapshot.read().as_ref() {
+            last_conversation.set(Some((asked.clone(), lines.clone())));
+        }
+    });
+    let asking = (selected(), open_chat());
     let conversation = read_view(
-        None,
-        answer_to(&(selected(), open_chat()), snapshot.read().as_ref()).cloned(),
+        answer_to(&asking, last_conversation.read().as_ref()).cloned(),
+        answer_to(&asking, snapshot.read().as_ref()).cloned(),
     );
     // New conversation: a fresh id the server keeps once a message is sent.
     // The address names it, so a reload before the reply still reopens it.
@@ -3705,7 +3715,7 @@ fn PatientSurface(
                             ReadNotice {
                                 stage: conversation.stage(),
                                 loading: CONVERSATION_LOADING,
-                                stale: "",
+                                stale: CONVERSATION_STALE,
                                 unavailable: CONVERSATION_UNAVAILABLE,
                                 retry: TRY_AGAIN,
                                 on_retry: on_conversation_retry,

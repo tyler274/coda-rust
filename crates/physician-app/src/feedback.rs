@@ -158,6 +158,11 @@ pub(crate) struct Desk {
 impl Desk {
     /// One response's feedback as shown, given `read`, the feedback its
     /// snapshot turn carries; `None` when it is not rated.
+    ///
+    /// Merging with the latest read alone is enough to show the highest
+    /// revision seen: each snapshot is a fresh server read, server revisions
+    /// only rise, and a superseded snapshot fetch never lands, so the latest
+    /// read is at least every earlier one.
     pub(crate) fn state(&self, key: &Key, read: Option<&ResponseFeedback>) -> Option<State> {
         match self.states.get(key) {
             Some(state) => Some(state.with(read)),

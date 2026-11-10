@@ -2634,6 +2634,45 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         0,
         "a key pressed in the details dialog opened the page's shortcuts"
     );
+    // A conversation reread that fails keeps the conversation, marked stale,
+    // and the open dialog with its unsaved words.
+    sites[0].kill_now();
+    tab.wait_for_text(
+        "Coda couldn’t refresh this conversation.",
+        Duration::from_secs(20),
+    );
+    ratings_when(
+        &mut tab,
+        "the stale conversation keeps its ratings",
+        |ratings| ratings.len() == 2 && ratings[0]["pressed"] == "Good response",
+    );
+    assert_eq!(
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
+        "It left out the trend?",
+        "a failed conversation reread lost the dialog's words"
+    );
+    sites[0].restart();
+    scale::wait_ready(
+        &mut sites[0],
+        hosts[0].rsplit_once(':').unwrap().1.parse().unwrap(),
+    )
+    .await;
+    let back = Instant::now();
+    while tab
+        .dom()
+        .contains("Coda couldn’t refresh this conversation.")
+    {
+        assert!(
+            back.elapsed() < Duration::from_secs(30),
+            "the conversation stayed stale after the site came back"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+    assert_eq!(
+        tab.step("valueSoon", serde_json::json!([DETAILS])),
+        "It left out the trend?",
+        "the reread after recovery lost the dialog's words"
+    );
     tab.save_pictures("feedback-details", "dialog.feedback-details");
     tab.click_named("dialog.feedback-details button", "Save details");
     ratings_when(&mut tab, "the details saved", |ratings| {
