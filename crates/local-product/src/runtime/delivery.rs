@@ -6,13 +6,13 @@
 //! themselves are not exactly-once.
 use std::time::Duration;
 
-use sea_orm::sea_query::{Alias, Func, Query};
+use sea_orm::sea_query::{Alias, Expr, Func, IntoColumnRef, IntoTableRef, Query, SelectStatement};
 use sea_orm::sqlx::postgres::PgListener;
 use sea_orm::{ConnectionTrait, DatabaseTransaction, DbErr, EntityTrait, RuntimeErr};
 use serde::{Deserialize, Serialize};
 
-use super::entities::conversation;
-use super::{Claim, Conversation, MAX_FAILED_ATTEMPTS, Scope, Store, error, keys};
+use super::entities::{conversation, reply_draft};
+use super::{Claim, Conversation, MAX_FAILED_ATTEMPTS, Scope, Store, database_clock, error, keys};
 
 /// The Postgres notification channel that wakes hosted workers.
 pub const WORK_CHANNEL: &str = "physician_work";
@@ -143,6 +143,30 @@ impl Wakeups {
     }
 }
 
+/// Seconds until the soonest live lease in `table` runs out, by the database
+/// clock; null when no lease is live.
+fn soonest_lease_end(table: impl IntoTableRef, state: impl IntoColumnRef) -> SelectStatement {
+    // Scoped here: the blanket `ExprTrait::min` would shadow `Ord::min`.
+    use sea_orm::sea_query::ExprTrait;
+    use sea_orm::sea_query::extension::postgres::PgExpr;
+    let state = Expr::col(state);
+    let expires = state
+        .clone()
+        .get_json_field("attempts")
+        .get_json_field(-1_i32)
+        .cast_json_field("expires")
+        .cast_as(Alias::new("bigint"));
+    Query::select()
+        .expr_as(
+            Expr::from(Func::min(expires.clone())).sub(database_clock()),
+            Alias::new("left"),
+        )
+        .from(table)
+        .and_where(state.cast_json_field("status").eq("active"))
+        .and_where(expires.gt(database_clock()))
+        .to_owned()
+}
+
 fn connection(source: sea_orm::sqlx::Error) -> DbErr {
     DbErr::Conn(RuntimeErr::SqlxError(source.into()))
 }
@@ -258,6 +282,26 @@ impl Store {
             tx.commit().await?;
         }
         Ok(DispatchPage { deliveries, next })
+    }
+
+    /// How long until the soonest live claim on a chat turn or reply
+    /// revision runs out, when one is held. A worker that died leaves no
+    /// notification, so its turn becomes due only then. Leases already run
+    /// out are left to the poll.
+    pub async fn soonest_lease_end(&self) -> Result<Option<Duration>, DbErr> {
+        let tables = [
+            soonest_lease_end(conversation::Entity, conversation::Column::State),
+            soonest_lease_end(reply_draft::Entity, reply_draft::Column::State),
+        ];
+        let mut soonest: Option<i64> = None;
+        for query in tables {
+            let left: Option<i64> = match self.db.query_one(&query).await? {
+                Some(row) => row.try_get("", "left")?,
+                None => None,
+            };
+            soonest = soonest.into_iter().chain(left).min();
+        }
+        Ok(soonest.map(|seconds| Duration::from_secs(seconds.unsigned_abs())))
     }
 
     /// Atomically claims only the input named by the delivery, never a newer

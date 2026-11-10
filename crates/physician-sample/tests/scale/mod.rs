@@ -105,20 +105,47 @@ impl Database {
     /// Ends every session in this database that is subscribed to a
     /// notification channel, as a dropped connection would, and returns how
     /// many it ended.
-    pub fn terminate_listeners(&self) -> usize {
-        let sql = format!(
-            "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{}' AND pid <> pg_backend_pid() AND query ILIKE 'LISTEN %'",
-            self.name
-        );
-        let output = Command::new("psql")
-            .args([&self.admin, "-At", "-c", &sql])
-            .output()
-            .expect("psql");
-        assert!(output.status.success(), "psql: {output:?}");
-        String::from_utf8_lossy(&output.stdout)
-            .lines()
-            .filter(|line| line.trim() == "t")
+    pub async fn terminate_listeners(&self) -> usize {
+        use sea_orm::sea_query::extension::postgres::PgExpr;
+        use sea_orm::sea_query::{Alias, Expr, ExprTrait, Func, Query};
+        let pid = || Expr::col(Alias::new("pid"));
+        let query = Query::select()
+            .expr_as(
+                Func::cust(Alias::new("pg_terminate_backend")).arg(pid()),
+                Alias::new("ended"),
+            )
+            .from(Alias::new("pg_stat_activity"))
+            .and_where(Expr::col(Alias::new("datname")).eq(self.name.as_str()))
+            .and_where(pid().ne(Func::cust(Alias::new("pg_backend_pid"))))
+            .and_where(Expr::col(Alias::new("query")).ilike("LISTEN %"))
+            .to_owned();
+        let connection = sea_orm::Database::connect(&self.admin)
+            .await
+            .expect("admin connection");
+        let rows = connection.query_all(&query).await.expect("end listeners");
+        connection.close().await.expect("close admin connection");
+        rows.iter()
+            .filter(|row| row.try_get::<bool>("", "ended").expect("ended"))
             .count()
+    }
+
+    /// Tells listening workers about `delivery` again, as a second
+    /// announcement of the same work would.
+    pub async fn announce(&self, delivery: &local_product::runtime::delivery::Delivery) {
+        use sea_orm::sea_query::{Alias, Func, Query};
+        let payload = serde_json::to_string(delivery).expect("delivery");
+        let query = Query::select()
+            .expr(
+                Func::cust(Alias::new("pg_notify"))
+                    .arg(local_product::runtime::delivery::WORK_CHANNEL)
+                    .arg(payload),
+            )
+            .to_owned();
+        let connection = sea_orm::Database::connect(&self.url)
+            .await
+            .expect("connection");
+        connection.execute(&query).await.expect("notify");
+        connection.close().await.expect("close");
     }
 }
 

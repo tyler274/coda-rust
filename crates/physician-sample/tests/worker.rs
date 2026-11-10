@@ -219,26 +219,6 @@ fn assistant_texts(state: &Conversation) -> Vec<&str> {
         .collect()
 }
 
-/// Tells listening workers about `delivery` again, as a second announcement
-/// of the same work would.
-async fn announce_again(url: &str, delivery: &Delivery) {
-    use sea_orm::ConnectionTrait;
-    let connection = sea_orm::Database::connect(url).await.expect("connection");
-    let payload = serde_json::to_string(delivery).expect("delivery");
-    connection
-        .execute_raw(sea_orm::Statement::from_sql_and_values(
-            sea_orm::DatabaseBackend::Postgres,
-            "SELECT pg_notify($1, $2)",
-            [
-                local_product::runtime::delivery::WORK_CHANNEL.into(),
-                payload.into(),
-            ],
-        ))
-        .await
-        .expect("notify");
-    connection.close().await.expect("close");
-}
-
 #[tokio::test]
 async fn hearing_of_settled_work_again_runs_the_fixed_provider_once() {
     let _guard = lock().lock().await;
@@ -251,7 +231,7 @@ async fn hearing_of_settled_work_again_runs_the_fixed_provider_once() {
     assert_eq!(attempt_statuses(&first), ["completed"]);
 
     for _ in 0..3 {
-        announce_again(&running.database.url, &delivery).await;
+        running.database.announce(&delivery).await;
     }
     tokio::time::sleep(Duration::from_secs(1)).await;
     let again = running
@@ -311,7 +291,7 @@ async fn a_worker_whose_listener_is_gone_claims_accepted_work_within_the_poll_in
     // a listening session exists before it is ended.
     let deadline = Instant::now() + Duration::from_secs(10);
     let ended = loop {
-        let ended = running.database.terminate_listeners();
+        let ended = running.database.terminate_listeners().await;
         if ended > 0 {
             break ended;
         }
@@ -965,7 +945,7 @@ async fn the_fifth_failure_ends_the_turn_and_nothing_starts_it_again() {
         !due.deliveries.contains(&delivery),
         "a turn that gave up is still due"
     );
-    announce_again(&running.database.url, &delivery).await;
+    running.database.announce(&delivery).await;
     tokio::time::sleep(Duration::from_secs(1)).await;
     let later = running
         .store

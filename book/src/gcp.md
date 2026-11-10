@@ -352,7 +352,7 @@ not change how CPU is allocated:
 | --- | --- | --- | --- |
 | `physician` | `false` | 1 with scaling on, else 0 | Its Postgres authority listener and Redis subscriber run between requests |
 | `duet` | `true` | 0 | All work happens inside a request |
-| `physician-worker` | `true` | 0 | Every turn runs inside the Pub/Sub push request it answers |
+| `physician-worker` | `false` | 1 | Its Postgres listener, 10 s poll and lease renewals run outside any request |
 
 Telemetry is best effort, as the sidecar's own configuration states. Under
 request-based CPU, a batch queued after the last response waits until the next
@@ -368,10 +368,12 @@ GiB-second, instance-based) for an instance kept warm for a month:
 
 - `physician` with the sidecar: 2 vCPU and 1.25 GiB, about $101 a month instead
   of about $53 without it. Only scaling's minimum instance keeps it warm all month.
-- `duet` and `physician-worker` stay on request-based billing and scale to zero,
-  so idle time costs nothing. Instance-based CPU on both would have billed each
-  warm instance for up to 15 idle minutes after every request, up to about
-  $101 a month per service at continuous low traffic.
+- `physician-worker` has the same shape and its own minimum instance, so it
+  costs the same again: about $101 a month with the sidecar, about $53 without.
+- `duet` stays on request-based billing and scales to zero, so idle time costs
+  nothing. Instance-based CPU would have billed each warm instance for up to 15
+  idle minutes after every request, up to about $101 a month at continuous low
+  traffic.
 ### Disposable database recovery rehearsal
 
 [`workspace-tools staging-restore`](/crates/workspace-tools/src/staging_restore.rs)
@@ -495,9 +497,9 @@ grant or setting, and the root's tests check this.
   a second token on the same config would add a rotation step without narrowing
   anything. It is told its OIDC audience (the deterministic
   `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
-  as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It keeps
-  request-based CPU, because every turn runs inside the push request it
-  answers. The worker reads neither setting. It listens on Postgres
+  as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It has
+  `cpu_idle = false` and one minimum instance, because no request carries its
+  work. The worker reads neither setting. It listens on Postgres
   for accepted turns, reads the due work every 10 s, claims the leased turn,
   runs the model, commits, and publishes `workspace_changed`. A request to
   `/pubsub/chat-turn` gets 404.

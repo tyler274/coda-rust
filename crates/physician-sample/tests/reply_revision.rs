@@ -206,22 +206,7 @@ impl Running {
 
     /// Tells the worker about `delivery` again and gives it time to act.
     async fn announce_again(&self, delivery: &Delivery) {
-        use sea_orm::ConnectionTrait;
-        let connection = sea_orm::Database::connect(&self.database.url)
-            .await
-            .expect("connection");
-        connection
-            .execute_raw(sea_orm::Statement::from_sql_and_values(
-                sea_orm::DatabaseBackend::Postgres,
-                "SELECT pg_notify($1, $2)",
-                [
-                    local_product::runtime::delivery::WORK_CHANNEL.into(),
-                    serde_json::to_string(delivery).expect("delivery").into(),
-                ],
-            ))
-            .await
-            .expect("notify");
-        connection.close().await.expect("close");
+        self.database.announce(delivery).await;
         tokio::time::sleep(Duration::from_secs(1)).await;
     }
 

@@ -439,7 +439,8 @@ async fn a_turn_whose_worker_is_killed_is_taken_by_another_worker_when_its_lease
 }
 
 /// AC4 at hosted pacing: a killed worker's turn is taken within the 60 s
-/// lease plus one 10 s poll. Slow, so it runs when asked for.
+/// lease, though the 10 s poll would find it later. Slow, so it runs when
+/// asked for.
 #[tokio::test]
 #[ignore = "takes about a minute: waits out the hosted 60 s lease"]
 async fn a_turn_whose_worker_is_killed_is_taken_within_the_hosted_lease() {
@@ -452,9 +453,11 @@ async fn a_turn_whose_worker_is_killed_is_taken_within_the_hosted_lease() {
         recovered > Duration::from_secs(39),
         "the turn was taken after {recovered:?}, while its lease was live"
     );
+    // The database clock counts whole seconds, so allow one beyond the lease,
+    // and one more for the read and the claim.
     assert!(
-        recovered < Duration::from_secs(60 + 1 + 10 + 1),
-        "the turn waited {recovered:?}, longer than the lease and one poll"
+        recovered < Duration::from_secs(60 + 1 + 1),
+        "the turn waited {recovered:?}, longer than the lease"
     );
 }
 

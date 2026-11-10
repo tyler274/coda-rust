@@ -5,6 +5,9 @@
 //! listener here starts that work at once. Notifications sent while the
 //! listener is disconnected are lost, so the loop also reads the due work
 //! every poll interval, and again whenever the listener resubscribes. A
+//! worker that dies announces nothing, so after each read the loop also
+//! reads again when the soonest live lease runs out: its turn is taken
+//! within the lease, not a poll after it. A
 //! delivery only names work: the claim decides whether this worker runs it,
 //! so hearing of the same work twice, or on two workers, runs it once.
 use std::collections::{HashMap, HashSet};
@@ -24,6 +27,8 @@ use super::attempt::Next;
 const PAGE: usize = 100;
 /// The wait before a dropped listener resubscribes.
 const RESUBSCRIBE_DELAY: Duration = Duration::from_secs(1);
+/// Read past a lease's end, so the database's whole-second clock has passed it.
+const LEASE_END_MARGIN: Duration = Duration::from_millis(200);
 /// How long stopping waits for running attempts to hand their claims back.
 /// Cloud Run ends the instance ten seconds after SIGTERM.
 const DRAIN: Duration = Duration::from_secs(8);
@@ -115,10 +120,16 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
     };
     // Whether due work was left unstarted because the worker was full.
     let mut backlog = false;
+    // When the soonest live lease runs out. A worker that dies sends nothing,
+    // so its turn is found then rather than up to a poll later.
+    let lease_end = tokio::time::sleep(Duration::ZERO);
+    tokio::pin!(lease_end);
+    let mut watching_lease = false;
     loop {
         let sweep = tokio::select! {
             () = stopping(stop.clone()) => break,
             _ = poll.tick() => true,
+            () = &mut lease_end, if watching_lease => true,
             Some(wake) = woken.recv() => match wake {
                 Wake::Work(delivery) => {
                     backlog |= !running.start(&worker, delivery, &stop);
@@ -149,6 +160,16 @@ pub(super) async fn run(worker: Arc<Worker>, stop: watch::Receiver<bool>) {
                     );
                     backlog
                 }
+            };
+            watching_lease = match worker.store.soonest_lease_end().await {
+                Ok(Some(left)) => {
+                    let at = tokio::time::Instant::now() + left + LEASE_END_MARGIN;
+                    lease_end.as_mut().reset(at);
+                    true
+                }
+                Ok(None) => false,
+                // The poll still finds the turn, one interval later at most.
+                Err(_) => false,
             };
         }
     }

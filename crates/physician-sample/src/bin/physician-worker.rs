@@ -458,40 +458,89 @@ impl Pace {
 
     /// [`Self::HOSTED`], or the non-hosted proof values a test names to see
     /// recovery and retries without waiting out hosted time.
-    fn from_env(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<Self, String> {
+    fn from_env(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<Self, PaceError> {
         let mut pace = Self::HOSTED;
         let proof = |key: &'static str| match configured(get, key) {
-            Some(_) if hosted => Err(format!("{key} is refused in hosted execution")),
+            Some(_) if hosted => Err(PaceError::Hosted { key }),
             Some(value) => value
                 .parse::<u32>()
                 .map(Some)
-                .map_err(|_| format!("{key} must be a whole number")),
+                .map_err(|source| PaceError::NotWhole { key, source }),
             None => Ok(None),
         };
+        let outside = |key, low, high| PaceError::OutOfRange { key, low, high };
         if let Some(millis) = proof("PHYSICIAN_WORKER_POLL_MS")? {
             if millis == 0 {
-                return Err("PHYSICIAN_WORKER_POLL_MS must be at least 1".into());
+                return Err(PaceError::Zero {
+                    key: "PHYSICIAN_WORKER_POLL_MS",
+                });
             }
             pace.poll = Duration::from_millis(millis.into());
         }
         if let Some(seconds) = proof("PHYSICIAN_WORKER_LEASE_SECONDS")? {
             if !(1..=600).contains(&seconds) {
-                return Err("PHYSICIAN_WORKER_LEASE_SECONDS must be 1 to 600".into());
+                return Err(outside("PHYSICIAN_WORKER_LEASE_SECONDS", 1, 600));
             }
             pace.lease = seconds.into();
         }
         if let Some(first) = proof("PHYSICIAN_WORKER_RETRY_SECONDS")? {
-            pace.backoff = Backoff::new(first.into(), 600)
-                .ok_or("PHYSICIAN_WORKER_RETRY_SECONDS must be 0 to 600")?;
+            pace.backoff = Backoff::new(first.into(), 600).ok_or(outside(
+                "PHYSICIAN_WORKER_RETRY_SECONDS",
+                0,
+                600,
+            ))?;
         }
         if let Some(value) = configured(get, "PHYSICIAN_WORKER_CONCURRENCY") {
-            pace.concurrency = value
+            let key = "PHYSICIAN_WORKER_CONCURRENCY";
+            let count = value
                 .parse::<usize>()
-                .ok()
-                .filter(|count| (1..=64).contains(count))
-                .ok_or("PHYSICIAN_WORKER_CONCURRENCY must be 1 to 64")?;
+                .map_err(|source| PaceError::NotWhole { key, source })?;
+            if !(1..=64).contains(&count) {
+                return Err(outside(key, 1, 64));
+            }
+            pace.concurrency = count;
         }
         Ok(pace)
+    }
+}
+
+/// Why a pacing setting was refused.
+#[derive(Debug, PartialEq, Eq)]
+enum PaceError {
+    /// A proof-only setting given to a hosted worker.
+    Hosted { key: &'static str },
+    /// A setting that is not a whole number.
+    NotWhole {
+        key: &'static str,
+        source: std::num::ParseIntError,
+    },
+    /// Zero for a setting that must be at least 1.
+    Zero { key: &'static str },
+    /// A whole number outside the setting's range.
+    OutOfRange {
+        key: &'static str,
+        low: usize,
+        high: usize,
+    },
+}
+
+impl std::fmt::Display for PaceError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Hosted { key } => write!(f, "{key} is refused in hosted execution"),
+            Self::NotWhole { key, .. } => write!(f, "{key} must be a whole number"),
+            Self::Zero { key } => write!(f, "{key} must be at least 1"),
+            Self::OutOfRange { key, low, high } => write!(f, "{key} must be {low} to {high}"),
+        }
+    }
+}
+
+impl std::error::Error for PaceError {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::NotWhole { source, .. } => Some(source),
+            Self::Hosted { .. } | Self::Zero { .. } | Self::OutOfRange { .. } => None,
+        }
     }
 }
 
@@ -667,7 +716,7 @@ impl Worker {
                     .into(),
             );
         };
-        let pace = Pace::from_env(&get, hosted)?;
+        let pace = Pace::from_env(&get, hosted).map_err(|error| error.to_string())?;
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         let store = Store::connect(&database)
@@ -989,10 +1038,7 @@ mod tests {
             "PHYSICIAN_WORKER_RETRY_SECONDS",
         ] {
             let set = |name: &str| (name == key).then(|| "1".to_owned());
-            assert_eq!(
-                Pace::from_env(&set, true),
-                Err(format!("{key} is refused in hosted execution"))
-            );
+            assert_eq!(Pace::from_env(&set, true), Err(PaceError::Hosted { key }));
             let invalid = |name: &str| (name == key).then(|| "soon".to_owned());
             assert!(Pace::from_env(&invalid, false).is_err(), "{key}");
         }
