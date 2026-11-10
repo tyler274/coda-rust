@@ -30,13 +30,10 @@ pkgs.mkShell {
     # these. Each developer signs in once: `codex login`, `claude auth login`.
     codex
     claude-code
-    # The Pub/Sub emulator backs the physician chat-turn queue tests
-    # (crates/physician-sample/tests/worker.rs). It is a Java server.
     # kubectl reaches the GKE observability cluster through
     # gke-gcloud-auth-plugin, which `gcloud container clusters
     # get-credentials` writes into the kubeconfig.
     ((google-cloud-sdk.withExtraComponents (with google-cloud-sdk.components; [
-      pubsub-emulator
       kubectl
       gke-gcloud-auth-plugin
     ])).overrideAttrs (old: {
@@ -47,7 +44,6 @@ pkgs.mkShell {
         ${old.buildCommand}
       '';
     }))
-    jre_headless
     # Redis-compatible server for the physician event bus tests
     # (crates/physician-bus/tests, physician-sample/tests/fanout.rs).
     valkey

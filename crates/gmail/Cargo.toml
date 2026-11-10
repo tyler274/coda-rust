@@ -11,8 +11,6 @@ workspace = true
 [dependencies]
 axum = "0.8"
 base64 = "0.23"
-# Push wakes arrive as Pub/Sub envelopes; decoding stays product-neutral.
-pubsub = { path = "../pubsub" }
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 lettre = { version = "0.11.23", default-features = false, features = ["builder", "smtp-transport", "tokio1-rustls", "aws-lc-rs", "webpki-roots"] }
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
@@ -24,12 +22,3 @@ tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal
 [features]
 # Local stand-in of the Gmail HTTP API, for another crate's tests.
 test-util = []
-
-[dev-dependencies]
-axum = "0.8"
-# tests/push_wake.rs drives this crate's push and history against the emulator.
-gmail = { path = ".", features = ["test-util"] }
-# Ordered publishing goes through the official client, not REST.
-google-cloud-pubsub = "1"
-pubsub = { path = "../pubsub", features = ["test-util"] }
-tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "sync", "time"] }

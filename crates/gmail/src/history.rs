@@ -16,11 +16,16 @@
 //! See <https://developers.google.com/gmail/api/reference/rest/v1/users.history/list>.
 use serde::{Deserialize, Serialize};
 
-use crate::{Credentials, Endpoints, Error, Tokens, http_client, push::history_id_shape};
+use crate::{Credentials, Endpoints, Error, Tokens, http_client};
 
 /// Least privilege for reading history. Used by service-account assertions;
 /// a refresh token carries the scopes it was granted.
 const GMAIL_READONLY_SCOPE: &str = "https://www.googleapis.com/auth/gmail.readonly";
+
+/// `^\d{1,40}$`, the shape Gmail history ids take.
+fn history_id_shape(value: &str) -> bool {
+    (1..=40).contains(&value.len()) && value.bytes().all(|byte| byte.is_ascii_digit())
+}
 
 /// Where a mailbox's changes are read from next. Opaque outside this module;
 /// a product stores [`encode`](Self::encode) and restores with
@@ -248,12 +253,18 @@ mod tests {
             page: Some("p".into()),
         };
         assert_eq!(Cursor::decode(&cursor.encode()).unwrap(), cursor);
+        let longest = format!(r#"{{"start":"{}","page":null}}"#, "9".repeat(40));
+        assert!(Cursor::decode(&longest).is_ok());
+        let too_long = format!(r#"{{"start":"{}","page":null}}"#, "9".repeat(41));
         for stored in [
             "",
             "{}",
             r#"{"start":"x","page":null}"#,
+            r#"{"start":"-1","page":null}"#,
+            r#"{"start":"","page":null}"#,
             r#"{"start":"1","page":""}"#,
             r#"{"start":1,"page":null}"#,
+            &too_long,
         ] {
             assert!(
                 matches!(Cursor::decode(stored), Err(ListError::InvalidCursor)),

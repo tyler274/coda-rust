@@ -26,17 +26,10 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
     if get("CODA_LOCAL_MODEL_EXECUTION").as_deref() == Some("subscription") {
         return Err("Developer ChatGPT plans are available only in local execution".into());
     }
-    // Emulator credentials are intentionally absent. Presence alone is enough
-    // to refuse: an empty value or "false" must not turn hosted authentication
-    // into a local-development exception.
-    if ["PUBSUB_EMULATOR_HOST", "PHYSICIAN_LOCAL_STACK"]
-        .iter()
-        .any(|name| get(name).is_some())
-    {
-        return Err(
-            "Physician hosted execution forbids local stack and Pub/Sub emulator configuration"
-                .to_owned(),
-        );
+    // Presence alone is enough to refuse: an empty value or "false" must not
+    // turn hosted authentication into a local-development exception.
+    if get("PHYSICIAN_LOCAL_STACK").is_some() {
+        return Err("Physician hosted execution forbids local stack configuration".to_owned());
     }
     let environment = get("CODA_ENVIRONMENT").unwrap_or_default();
     let profile = get("CODA_HOSTED_PROFILE").unwrap_or_default();
@@ -655,24 +648,22 @@ mod tests {
     }
 
     #[test]
-    fn hosted_emulator_exceptions_refuse_even_with_complete_profile() {
+    fn hosted_local_stack_refuses_even_with_complete_profile() {
         for marker in ["K_SERVICE", "CODA_HOSTED"] {
-            for exception in ["PUBSUB_EMULATOR_HOST", "PHYSICIAN_LOCAL_STACK"] {
-                for value in ["", "false", "127.0.0.1:8085"] {
-                    assert!(
-                        validate_startup(|name| match name {
-                            "CODA_ENVIRONMENT" => Some("stg".into()),
-                            "CODA_HOSTED_PROFILE" => Some(STAGING_PROFILE.into()),
-                            "PHYSICIAN_AUTH" => Some("required".into()),
-                            "PHYSICIAN_DATABASE_URL" => Some("postgres://db/physician".into()),
-                            key if key == marker => Some("".into()),
-                            key if key == exception => Some(value.into()),
-                            _ => None,
-                        })
-                        .is_err(),
-                        "{marker}/{exception}={value} must refuse"
-                    );
-                }
+            for value in ["", "false", "1"] {
+                assert!(
+                    validate_startup(|name| match name {
+                        "CODA_ENVIRONMENT" => Some("stg".into()),
+                        "CODA_HOSTED_PROFILE" => Some(STAGING_PROFILE.into()),
+                        "PHYSICIAN_AUTH" => Some("required".into()),
+                        "PHYSICIAN_DATABASE_URL" => Some("postgres://db/physician".into()),
+                        key if key == marker => Some("".into()),
+                        "PHYSICIAN_LOCAL_STACK" => Some(value.into()),
+                        _ => None,
+                    })
+                    .is_err(),
+                    "{marker}/PHYSICIAN_LOCAL_STACK={value} must refuse"
+                );
             }
         }
     }

@@ -20,11 +20,11 @@ export CODA_REQUIRE_POSTGRES_TESTS=1
 # packages that have it (`--test postgres` runs physician-auth's and
 # front-door's suites, as two separate calls did).
 packages=(-p physician-sample -p physician-auth -p front-door -p duet-api
-  -p local-product -p physician-bus -p pubsub -p gmail)
+  -p local-product -p physician-bus)
 pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 
 # Shard 1 builds most of the workspace, so shard 2 takes the larger share of
-# test time: four slow physician scale suites and the Gmail Pub/Sub emulator suites.
+# test time: the four slow physician scale suites.
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments
@@ -32,7 +32,7 @@ shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test redis --test fanout --test worker --test try_again
   --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test feedback --test reply_revision
-  --test instance_loss --test emulator --test push_wake)
+  --test instance_loss)
 
 shard_1() {
   # This ignored test fails closed if its URL is missing. It tests each of the
@@ -96,9 +96,6 @@ shard_2() {
   # told to stop hands its turn over at once; a killed worker's turn is taken
   # when its lease runs out. Exhausted leases fail the turn and announce it.
   pg_test --test instance_loss -- --test-threads=1
-  # Gmail push wake on the Pub/Sub emulator: the shared harness, then wake-only,
-  # duplicates, redelivery, dead letters, ordering keys and cursor expiry.
-  pg_test --test emulator --test push_wake -- --test-threads=1
 }
 
 # Build only the targets this shard runs; the packages' other test binaries

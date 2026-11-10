@@ -15,11 +15,10 @@
 //! and the Gmail API token exchange. A service-account assertion has no `sub` claim,
 //! so this process does not use domain-wide delegation.
 //!
-//! It also owns the product-neutral intake primitives: [`push`] decodes a Gmail
-//! push wake and routes it to a connected mailbox, and [`history`] reads
+//! It also owns the product-neutral intake primitive [`history`], which reads
 //! `users.history.list` from an opaque cursor that moves only on the last page.
-//! A push is a wake only; it never carries a position. The durable cursor,
-//! seen-message ledger and effects belong to the product's intake.
+//! The durable cursor, seen-message ledger, effects and polling schedule belong
+//! to the product's intake.
 //! Book: `book/src/gcp.md`.
 #![deny(missing_docs)]
 #![allow(
@@ -33,7 +32,6 @@ use base64::Engine;
 use serde::{Deserialize, Serialize};
 
 pub mod history;
-pub mod push;
 mod relay;
 pub use relay::SmtpRelay;
 pub mod service;
