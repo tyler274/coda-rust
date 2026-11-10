@@ -346,9 +346,8 @@ Each adapter files every record it reads into one bucket. The bucket comes from 
 | Problems | Diagnoses and health concerns on the problem list. |
 | Medications | Medications prescribed, dispensed or reported, including stopped ones. |
 | Allergies | Allergies and intolerances, including a record that none are known. |
-| Labs | Laboratory results. |
+| Results | Results of tests: laboratory results, and imaging, pathology and other diagnostic reports. |
 | Vitals | Vital signs and body measurements. |
-| Reports | Imaging, pathology and other diagnostic reports that are not lab results. |
 | Notes | Notes written into the record: visit notes, phone notes, other chart notes and notes a patient saved. |
 | Documents | Files kept in the chart: scans, faxes, letters and outside records. |
 | Visits | Appointments and encounters. |
@@ -356,10 +355,9 @@ Each adapter files every record it reads into one bucket. The bucket comes from 
 | Immunizations | Vaccines given or reported. |
 | Orders | Orders and referrals. |
 | History | Family, social, past medical and past surgical history. |
-| Care plans | Plans and goals. |
 | Forms | Forms and questionnaires that were filled in. |
 | Messages | Messages between the patient and the practice. |
-| Other | Any kind of record the adapter does not know. |
+| Other | Any kind of record that has no bucket here. |
 
 A record is filed by what its source calls it, never by what it contains. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
 
