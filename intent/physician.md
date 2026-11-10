@@ -359,7 +359,7 @@ Each adapter files every record it reads into one bucket. The bucket comes from 
 | Messages | Messages between the patient and the practice. |
 | Other | Any kind of record that has no bucket here. |
 
-A record is filed by what its source calls it, never by what it contains. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
+A record is filed by what its source calls it, never by what it contains. Where a source labels a record with a category, the category is part of the source's name for it. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
