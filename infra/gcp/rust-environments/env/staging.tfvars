@@ -85,6 +85,8 @@ physician_simulation_practices = ["coda-rehearsal-practice"]
 # The rehearsal service account (rehearsal.tf) signs into that practice through
 # physician's IAP with POST /auth/rehearsal; it reaches only the rehearsal panel.
 physician_rehearsal_enabled = true
+# Operators who run those drills, each named on their own.
+physician_rehearsal_signers = ["user:tyler@codahealth.ai"]
 
 images = {
   # Initial digests only; later releases own the image field.

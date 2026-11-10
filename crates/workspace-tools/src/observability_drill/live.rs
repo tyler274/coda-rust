@@ -25,7 +25,7 @@ impl Secret {
         Self(value.into())
     }
 
-    fn expose(&self) -> &str {
+    pub(super) fn expose(&self) -> &str {
         &self.0
     }
 }
@@ -58,6 +58,9 @@ impl Signal for Live {
             DrillRoute::Datadog => post_metric(QUALIFICATION_CRITICAL),
             DrillRoute::Grafana => push_loki("fail"),
             DrillRoute::Watchdog => reconcile_scheduler(SchedulerState::Paused, &mut ProcessShell),
+            DrillRoute::Langfuse => Err(SignalError::new(
+                "the Langfuse route runs through observability-drill langfuse",
+            )),
         }
     }
 
@@ -66,6 +69,9 @@ impl Signal for Live {
             DrillRoute::Datadog => post_metric(QUALIFICATION_BELOW_RECOVERY),
             DrillRoute::Grafana => push_loki("ok"),
             DrillRoute::Watchdog => reconcile_scheduler(SchedulerState::Enabled, &mut ProcessShell),
+            DrillRoute::Langfuse => Err(SignalError::new(
+                "the Langfuse route runs through observability-drill langfuse",
+            )),
         }
     }
 }
@@ -167,11 +173,11 @@ pub(super) fn mutate_args(verb: &str) -> Vec<String> {
     ]
 }
 
-pub(super) fn doppler_args() -> Vec<String> {
+pub(super) fn doppler_args(name: &str) -> Vec<String> {
     vec![
         "secrets".to_string(),
         "get".to_string(),
-        DATADOG_API_KEY.to_string(),
+        name.to_string(),
         "--plain".to_string(),
         "--project".to_string(),
         DOPPLER_PROJECT.to_string(),
@@ -204,6 +210,7 @@ pub(super) fn loki_body(line: &str, at: DateTime<Utc>) -> String {
 }
 
 pub(super) fn secret_from_capture(
+    name: &str,
     success: bool,
     code: Option<i32>,
     stdout: &[u8],
@@ -212,29 +219,35 @@ pub(super) fn secret_from_capture(
         return Err(SignalError::new(format!("Doppler exited {code:?}")));
     }
     let text = std::str::from_utf8(stdout)
-        .map_err(|_error| SignalError::new("DD_API_KEY was not UTF-8"))?;
+        .map_err(|_error| SignalError::new(format!("{name} was not UTF-8")))?;
     let value = text.trim_end_matches(['\r', '\n']);
     if value.is_empty() {
-        return Err(SignalError::new("DD_API_KEY is empty"));
+        return Err(SignalError::new(format!("{name} is empty")));
     }
     if value.contains(['\n', '\r']) {
-        return Err(SignalError::new("DD_API_KEY is not a single line"));
+        return Err(SignalError::new(format!("{name} is not a single line")));
     }
     Ok(Secret::new(value))
 }
 
-fn fetch_api_key() -> Result<Secret, SignalError> {
+/// Reads one secret from Doppler `coda-rust/stg` without printing it.
+pub(super) fn fetch_secret(name: &str) -> Result<Secret, SignalError> {
     let output = Command::new("doppler")
-        .args(doppler_args())
+        .args(doppler_args(name))
         .output()
         .map_err(|error| {
             SignalError::new(format!("Doppler could not be started ({:?})", error.kind()))
         })?;
     secret_from_capture(
+        name,
         output.status.success(),
         output.status.code(),
         &output.stdout,
     )
+}
+
+fn fetch_api_key() -> Result<Secret, SignalError> {
+    fetch_secret(DATADOG_API_KEY)
 }
 
 fn client() -> Result<reqwest::blocking::Client, SignalError> {

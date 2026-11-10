@@ -16,10 +16,20 @@ mod support;
 
 type ExportedSpan = opentelemetry_proto::tonic::trace::v1::Span;
 
+/// A loopback OTLP/HTTP receiver: the decoded spans, and every request body
+/// as received (traces and logs), so a test can search all of it.
 struct TraceCapture {
     endpoint: String,
+    port: u16,
     spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
+    bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
     task: tokio::task::JoinHandle<()>,
+}
+
+#[derive(Clone)]
+struct Captured {
+    spans: std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>,
+    bodies: std::sync::Arc<std::sync::Mutex<Vec<Vec<u8>>>>,
 }
 
 impl TraceCapture {
@@ -27,13 +37,10 @@ impl TraceCapture {
         use axum::{Router, body::Bytes, extract::State, routing::post};
         use opentelemetry_proto::tonic::collector::trace::v1::ExportTraceServiceRequest;
         use prost::Message as _;
-        let spans = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
-        async fn receive(
-            State(spans): State<std::sync::Arc<std::sync::Mutex<Vec<ExportedSpan>>>>,
-            body: Bytes,
-        ) -> axum::http::StatusCode {
-            let request = ExportTraceServiceRequest::decode(body).expect("OTLP protobuf");
-            spans.lock().unwrap().extend(
+        async fn traces(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
+            let request = ExportTraceServiceRequest::decode(body.clone()).expect("OTLP protobuf");
+            captured.bodies.lock().unwrap().push(body.to_vec());
+            captured.spans.lock().unwrap().extend(
                 request
                     .resource_spans
                     .into_iter()
@@ -42,17 +49,28 @@ impl TraceCapture {
             );
             axum::http::StatusCode::OK
         }
+        async fn logs(State(captured): State<Captured>, body: Bytes) -> axum::http::StatusCode {
+            captured.bodies.lock().unwrap().push(body.to_vec());
+            axum::http::StatusCode::OK
+        }
+        let captured = Captured {
+            spans: Default::default(),
+            bodies: Default::default(),
+        };
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let endpoint = format!("http://{}", listener.local_addr().unwrap());
+        let port = listener.local_addr().unwrap().port();
         let app = Router::new()
-            .route("/v1/traces", post(receive))
-            .with_state(spans.clone());
+            .route("/v1/traces", post(traces))
+            .route("/v1/logs", post(logs))
+            .with_state(captured.clone());
         let task = tokio::spawn(async move {
             axum::serve(listener, app).await.unwrap();
         });
         Self {
-            endpoint,
-            spans,
+            endpoint: format!("http://127.0.0.1:{port}"),
+            port,
+            spans: captured.spans,
+            bodies: captured.bodies,
             task,
         }
     }
@@ -562,6 +580,177 @@ async fn origin_follows_the_practice_of_the_claimed_turn() {
     );
     assert_eq!(trace_attribute(&real_span, "coda.scenario_id"), None);
     assert_eq!(tags(&real_span), ["physician_chat", "real"]);
+}
+
+/// The full export path with content on: the worker's generation goes
+/// through the real collector config to a real Langfuse, which holds the
+/// prompt and reply under the rehearsal's environment, session and run; the
+/// operations pipelines deliver the same generation, with its model, to the
+/// test's sink and carry neither text anywhere. Needs Docker with the images
+/// in `dev/observability/test/langfuse.yaml` pulled, plus the Postgres gate.
+#[tokio::test(flavor = "multi_thread")]
+#[ignore = "starts Langfuse and the collector in Docker"]
+async fn content_reaches_langfuse_and_never_the_operations_backend() {
+    use telemetry::testing::{Langfuse, PUBLIC_KEY, SECRET_KEY, Shape};
+    let _guard = lock().lock().await;
+    if support::gate_url().is_none() {
+        return;
+    }
+    let unique = uuid::Uuid::new_v4().simple().to_string();
+    let prompt_canary = format!("full-path-prompt-{unique}");
+    let reply_canary = format!("full-path-reply-{unique}");
+    let reply = format!("Noted, {reply_canary}.");
+    let ops = TraceCapture::start().await;
+    let langfuse = tokio::task::spawn_blocking({
+        let port = ops.port;
+        move || {
+            Langfuse::start(
+                "physician-full-path",
+                Shape::Ingest {
+                    ops_sink_port: port,
+                },
+            )
+        }
+    })
+    .await
+    .expect("compose");
+    let otlp = langfuse.otlp_http.clone().expect("collector receiver");
+    let rehearsal = format!("rehearsal-{unique}");
+    let Some(running) = running_with(
+        "full_path",
+        None,
+        None,
+        false,
+        &[
+            ("CODA_HOSTED_PROFILE", "staging-preview"),
+            ("PHYSICIAN_SIMULATION_PRACTICES", rehearsal.as_str()),
+            ("PHYSICIAN_WORKER_FIXED_TEXT", reply.as_str()),
+            ("CODA_TELEMETRY_CONTENT", "full"),
+            ("OTEL_EXPORTER_OTLP_ENDPOINT", otlp.as_str()),
+            ("OTEL_BSP_SCHEDULE_DELAY", "50"),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let (scope, delivery) = accept_in(
+        &running.database.url,
+        &running.store,
+        &format!("Rehearse {prompt_canary}"),
+        Some(&rehearsal),
+        Some("drill.full-path"),
+    )
+    .await;
+    running.emulator.publish(&delivery).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(assistant_texts(&state), [reply.as_str()]);
+    let run = state.attempts.last().expect("an attempt").id.clone();
+
+    // The operations sink: the generation, its run and model, no content.
+    let deadline = Instant::now() + Duration::from_secs(60);
+    let generation = loop {
+        let found = ops
+            .spans
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|span| {
+                span.name == "gen_ai.generation"
+                    && trace_attribute(span, "coda.run_id").as_deref() == Some(run.as_str())
+            })
+            .cloned();
+        if let Some(span) = found {
+            break span;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "no generation reached the operations sink\n{}\n{}",
+            running.worker.tail(),
+            langfuse.logs()
+        );
+        tokio::time::sleep(Duration::from_millis(200)).await;
+    };
+    assert!(trace_attribute(&generation, "gen_ai.request.model").is_some());
+    assert_eq!(
+        trace_attribute(&generation, "coda.scenario_id").as_deref(),
+        Some("drill.full-path")
+    );
+    for key in [
+        "langfuse.observation.input",
+        "langfuse.observation.output",
+        "langfuse.session.id",
+        "langfuse.trace.tags",
+    ] {
+        assert_eq!(trace_attribute(&generation, key), None, "{key} reached ops");
+    }
+    let trace_id: String = generation
+        .trace_id
+        .iter()
+        .map(|byte| format!("{byte:02x}"))
+        .collect();
+
+    // Langfuse: the same trace, with the rehearsal's labels and the content.
+    let client = reqwest::Client::new();
+    let deadline = Instant::now() + Duration::from_secs(180);
+    let trace: serde_json::Value = loop {
+        let response = client
+            .get(format!("{}/api/public/traces/{trace_id}", langfuse.url))
+            .basic_auth(PUBLIC_KEY, Some(SECRET_KEY))
+            .send()
+            .await;
+        if let Ok(response) = response
+            && response.status().is_success()
+        {
+            let body: serde_json::Value = response.json().await.expect("trace JSON");
+            let generated = body["observations"]
+                .as_array()
+                .is_some_and(|all| all.iter().any(|o| o["name"] == "gen_ai.generation"));
+            if generated {
+                break body;
+            }
+        }
+        assert!(
+            Instant::now() < deadline,
+            "Langfuse never held trace {trace_id}\n{}",
+            langfuse.logs()
+        );
+        tokio::time::sleep(Duration::from_secs(2)).await;
+    };
+    let observation = trace["observations"]
+        .as_array()
+        .and_then(|all| all.iter().find(|o| o["name"] == "gen_ai.generation"))
+        .expect("generation observation");
+    assert_eq!(trace["sessionId"], scope.chat.as_str(), "{trace}");
+    assert_eq!(observation["environment"], "simulation", "{observation}");
+    assert_eq!(observation["type"], "GENERATION", "{observation}");
+    let metadata = observation["metadata"].to_string();
+    assert!(metadata.contains(&run), "run id not in {metadata}");
+    assert!(
+        observation["input"].to_string().contains(&prompt_canary),
+        "prompt missing from {observation}"
+    );
+    assert!(
+        observation["output"].to_string().contains(&reply_canary),
+        "reply missing from {observation}"
+    );
+
+    // Everything the operations pipelines delivered, traces and logs, raw.
+    tokio::time::sleep(Duration::from_secs(2)).await;
+    let bodies = ops.bodies.lock().unwrap().clone();
+    assert!(!bodies.is_empty());
+    for body in &bodies {
+        for canary in [&prompt_canary, &reply_canary] {
+            assert!(
+                !body
+                    .windows(canary.len())
+                    .any(|window| window == canary.as_bytes()),
+                "{canary} reached the operations sink"
+            );
+        }
+    }
+    drop(running);
+    drop(langfuse);
 }
 
 fn attempt_statuses(state: &Conversation) -> Vec<&str> {

@@ -32,5 +32,6 @@ url = "2"
 [dev-dependencies]
 http = { path = "../http", package = "coda-http", features = ["test-util"] }
 reqwest = { version = "0.12", default-features = false, features = ["cookies", "json"] }
+telemetry = { path = "../telemetry", features = ["testing"] }
 sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "postgres"] }
 tower = { version = "0.5", features = ["util"] }

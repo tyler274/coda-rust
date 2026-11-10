@@ -14,6 +14,8 @@ pub(super) enum DrillRoute {
     Datadog,
     Grafana,
     Watchdog,
+    /// Langfuse export: `observability-drill langfuse fail|recover`.
+    Langfuse,
 }
 
 impl DrillRoute {
@@ -31,6 +33,7 @@ impl DrillRoute {
             Self::Datadog => "datadog",
             Self::Grafana => "grafana",
             Self::Watchdog => "watchdog",
+            Self::Langfuse => "langfuse",
         }
     }
 
@@ -39,6 +42,7 @@ impl DrillRoute {
             Self::Datadog => ObservationRoute::Datadog,
             Self::Grafana => ObservationRoute::GrafanaTest,
             Self::Watchdog => ObservationRoute::CloudMonitoring,
+            Self::Langfuse => ObservationRoute::Langfuse,
         }
     }
 
@@ -47,6 +51,7 @@ impl DrillRoute {
             Self::Datadog => "staging/synthetic-qualification/datadog",
             Self::Grafana => "staging/synthetic-qualification/grafana",
             Self::Watchdog => "staging/synthetic-qualification/watchdog",
+            Self::Langfuse => "staging/synthetic-qualification/langfuse",
         }
     }
 }
@@ -80,6 +85,7 @@ pub(super) enum ObservationRoute {
     Datadog,
     GrafanaTest,
     CloudMonitoring,
+    Langfuse,
 }
 
 impl ObservationRoute {
@@ -88,6 +94,7 @@ impl ObservationRoute {
             Self::Datadog => "datadog",
             Self::GrafanaTest => "grafana-test",
             Self::CloudMonitoring => "cloud-monitoring",
+            Self::Langfuse => "langfuse",
         }
     }
 
@@ -96,6 +103,7 @@ impl ObservationRoute {
             "datadog" => Some(Self::Datadog),
             "grafana-test" => Some(Self::GrafanaTest),
             "cloud-monitoring" => Some(Self::CloudMonitoring),
+            "langfuse" => Some(Self::Langfuse),
             _ => None,
         }
     }
@@ -225,7 +233,6 @@ impl Observation {
         }
     }
 
-    #[cfg(test)]
     pub(super) fn evaluator(
         route: ObservationRoute,
         kind: EvalKind,
@@ -389,6 +396,18 @@ impl Exercise {
         ));
     }
 
+    /// Records an evaluator transition read back from the evaluator's own
+    /// history, never inferred from the signal the drill sent.
+    pub(super) fn record_evaluator(&mut self, kind: EvalKind, at: DateTime<Utc>, evidence: &str) {
+        self.observations.push(Observation::evaluator(
+            self.route.observation_route(),
+            kind,
+            at,
+            self.group.clone(),
+            evidence,
+        ));
+    }
+
     #[cfg(test)]
     pub(super) fn record_reminder(
         &mut self,
@@ -416,7 +435,7 @@ impl Exercise {
         observations_to_json(&self.observations)
     }
 
-    fn open_since(&self) -> Option<DateTime<Utc>> {
+    pub(super) fn open_since(&self) -> Option<DateTime<Utc>> {
         let mut opened = None;
         for observation in &self.observations {
             if observation.is_failure() {

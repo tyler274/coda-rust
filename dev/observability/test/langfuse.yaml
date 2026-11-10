@@ -1,0 +1,143 @@
+# Disposable Langfuse 3.225.11 for the ignored Docker tests, driven through
+# `telemetry::testing::Compose`. Every value here is a throwaway constant.
+#
+#   base                Langfuse web and its stores
+#   profile `ingest`    langfuse-worker and the real collector (collector.yaml
+#                       plus test/collector.yaml), so OTLP spans reach
+#                       Langfuse the way they do in a deployment
+#   langfuse-sso.yaml   overlay: sign-in through the langfuse-sso issuer
+#
+# Everything binds loopback ports the test chooses, so parallel projects and a
+# running dev stack (dev/observability/compose.yaml) do not collide.
+# langfuse-web, langfuse-worker and the collector share the host network so
+# they reach the stores and whatever the test serves on 127.0.0.1. Compose
+# interpolates inactive profiles too, so profile-only ports are optional.
+x-langfuse-env: &langfuse-env
+  HOSTNAME: 127.0.0.1
+  NEXTAUTH_URL: http://127.0.0.1:${LANGFUSE_PORT:?}
+  SALT: test-salt-not-for-real-use
+  ENCRYPTION_KEY: "0000000000000000000000000000000000000000000000000000000000000000"
+  TELEMETRY_ENABLED: "false"
+  DATABASE_URL: postgresql://langfuse:langfuse@127.0.0.1:${POSTGRES_PORT:?}/langfuse
+  CLICKHOUSE_URL: http://127.0.0.1:${CLICKHOUSE_HTTP_PORT:?}
+  CLICKHOUSE_MIGRATION_URL: clickhouse://127.0.0.1:${CLICKHOUSE_NATIVE_PORT:?}
+  CLICKHOUSE_USER: clickhouse
+  CLICKHOUSE_PASSWORD: clickhouse
+  CLICKHOUSE_CLUSTER_ENABLED: "false"
+  REDIS_HOST: 127.0.0.1
+  REDIS_PORT: ${VALKEY_PORT:?}
+  REDIS_AUTH: langfuse
+  LANGFUSE_S3_EVENT_UPLOAD_BUCKET: langfuse
+  LANGFUSE_S3_EVENT_UPLOAD_REGION: us-east-1
+  LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID: minio
+  LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY: minio-test-secret
+  LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT: http://127.0.0.1:${MINIO_PORT:?}
+  LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE: "true"
+  LANGFUSE_S3_EVENT_UPLOAD_PREFIX: events/
+
+services:
+  postgres:
+    image: postgres:17.6-alpine
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: langfuse
+    ports: ["127.0.0.1:${POSTGRES_PORT:?}:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse -d langfuse"]
+      interval: 1s
+      retries: 120
+
+  valkey:
+    image: valkey/valkey:8.1.10-alpine
+    command: ["valkey-server", "--requirepass", "langfuse", "--maxmemory-policy", "noeviction"]
+    ports: ["127.0.0.1:${VALKEY_PORT:?}:6379"]
+    healthcheck:
+      test: ["CMD", "valkey-cli", "-a", "langfuse", "ping"]
+      interval: 1s
+      retries: 120
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:25.8.33
+    environment:
+      CLICKHOUSE_USER: clickhouse
+      CLICKHOUSE_PASSWORD: clickhouse
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: "1"
+    ports:
+      - "127.0.0.1:${CLICKHOUSE_HTTP_PORT:?}:8123"
+      - "127.0.0.1:${CLICKHOUSE_NATIVE_PORT:?}:9000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O- http://127.0.0.1:8123/ping"]
+      interval: 1s
+      retries: 120
+
+  # Langfuse writes each ingested event batch here before langfuse-worker
+  # moves it into ClickHouse. Same pinned image as the dev stack.
+  minio:
+    image: cgr.dev/chainguard/minio@sha256:32c504bea4574d8f29d719b37bc0dad920ecf3e22b81dc5cea0bb105af2ce10f
+    entrypoint: sh
+    command: -c 'mkdir -p /data/langfuse && minio server --address ":9000" /data'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio-test-secret
+    ports: ["127.0.0.1:${MINIO_PORT:?}:9000"]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 1s
+      retries: 120
+
+  langfuse-web:
+    image: langfuse/langfuse:3.225.11
+    network_mode: host
+    depends_on: &langfuse-stores
+      postgres: { condition: service_healthy }
+      valkey: { condition: service_healthy }
+      clickhouse: { condition: service_healthy }
+      minio: { condition: service_healthy }
+    environment:
+      <<: *langfuse-env
+      PORT: ${LANGFUSE_PORT:?}
+      NEXTAUTH_SECRET: test-nextauth-secret-not-for-real-use
+      LANGFUSE_INIT_ORG_ID: coda
+      LANGFUSE_INIT_ORG_NAME: Coda
+      LANGFUSE_INIT_PROJECT_ID: coda-agents-test
+      LANGFUSE_INIT_PROJECT_NAME: coda-agents
+      # The project keys the collector authenticates with; test constants.
+      LANGFUSE_INIT_PROJECT_PUBLIC_KEY: pk-lf-coda-test
+      LANGFUSE_INIT_PROJECT_SECRET_KEY: sk-lf-coda-test
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:${LANGFUSE_PORT}/api/public/ready"]
+      interval: 2s
+      retries: 300
+
+  langfuse-worker:
+    profiles: [ingest]
+    image: langfuse/langfuse-worker:3.225.11
+    network_mode: host
+    depends_on:
+      <<: *langfuse-stores
+      langfuse-web: { condition: service_healthy }
+    environment:
+      <<: *langfuse-env
+      PORT: ${LANGFUSE_WORKER_PORT:-0}
+
+  otel-collector:
+    profiles: [ingest]
+    image: otel/opentelemetry-collector-contrib:0.155.0
+    network_mode: host
+    command:
+      - --config=/etc/otelcol/collector.yaml
+      - --config=/etc/otelcol/collector.test.yaml
+    volumes:
+      - ../collector.yaml:/etc/otelcol/collector.yaml:ro
+      - ./collector.yaml:/etc/otelcol/collector.test.yaml:ro
+    environment:
+      LANGFUSE_OTLP_ENDPOINT: http://127.0.0.1:${LANGFUSE_PORT}/api/public/otel
+      LANGFUSE_PUBLIC_KEY: pk-lf-coda-test
+      LANGFUSE_SECRET_KEY: sk-lf-coda-test
+      COLLECTOR_GRPC_PORT: ${COLLECTOR_GRPC_PORT:-0}
+      COLLECTOR_HTTP_PORT: ${COLLECTOR_HTTP_PORT:-0}
+      COLLECTOR_HEALTH_PORT: ${COLLECTOR_HEALTH_PORT:-0}
+      OPS_SINK_PORT: ${OPS_SINK_PORT:-0}
+    depends_on:
+      langfuse-web: { condition: service_healthy }

@@ -59,6 +59,8 @@ use tracing_subscriber::util::SubscriberInitExt;
 pub mod genai;
 mod logs;
 pub mod propagation;
+#[cfg(feature = "testing")]
+pub mod testing;
 
 const DEFAULT_FILTER: &str = "info";
 

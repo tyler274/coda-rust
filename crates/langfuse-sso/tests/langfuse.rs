@@ -1,17 +1,13 @@
 //! Premise gate: real Langfuse 3.225.11, configured as staging is with the
 //! issuer on, signs an engineer in through this issuer with no role, links the
 //! admin, and refuses every password sign-in and sign-up. Needs Docker with
-//! the images in `tests/langfuse/compose.yaml` already pulled.
+//! the images in `dev/observability/test/langfuse.yaml` already pulled.
 use langfuse_sso::{Config, router_with_verifier};
 use reqwest::{StatusCode, header};
 use serde_json::Value;
 use sqlx::PgPool;
-use std::{
-    net::TcpListener,
-    path::PathBuf,
-    process::{Command, Output},
-    time::{Duration, Instant},
-};
+use std::time::Duration;
+use telemetry::testing::{Langfuse, Shape};
 use url::Url;
 
 const AUDIENCE: &str = "/projects/123456789/locations/us-east1/services/public-site-staging";
@@ -19,61 +15,6 @@ const CLIENT_ID: &str = "langfuse";
 const CLIENT_SECRET: &str = "langfuse-sso-test-client-secret-0123456789";
 const ADMIN: &str = "admin@codahealth.ai";
 const ADMIN_PASSWORD: &str = "correct-horse-battery-staple-1";
-
-fn free_port() -> u16 {
-    TcpListener::bind("127.0.0.1:0")
-        .unwrap()
-        .local_addr()
-        .unwrap()
-        .port()
-}
-
-/// One compose project, always torn down with its volumes. A failing test
-/// prints langfuse-web's logs first.
-struct Compose {
-    project: String,
-    env: Vec<(&'static str, String)>,
-}
-
-impl Compose {
-    fn command(&self, args: &[&str]) -> Command {
-        let file = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/langfuse/compose.yaml");
-        let mut command = Command::new("docker");
-        command
-            .args(["compose", "-p", &self.project, "-f"])
-            .arg(file)
-            .args(args)
-            .envs(self.env.iter().map(|(name, value)| (name, value)));
-        command
-    }
-
-    fn run(&self, args: &[&str]) -> Output {
-        let output = self.command(args).output().expect("docker compose runs");
-        assert!(
-            output.status.success(),
-            "docker compose {args:?}: {}",
-            String::from_utf8_lossy(&output.stderr)
-        );
-        output
-    }
-}
-
-impl Drop for Compose {
-    fn drop(&mut self) {
-        if std::thread::panicking()
-            && let Ok(logs) = self
-                .command(&["logs", "--tail", "200", "langfuse-web"])
-                .output()
-        {
-            eprintln!(
-                "langfuse-web logs:\n{}{}",
-                String::from_utf8_lossy(&logs.stdout),
-                String::from_utf8_lossy(&logs.stderr)
-            );
-        }
-        let _ = self.command(&["down", "-v", "--remove-orphans"]).output();
-    }
-}
 
 fn browser() -> reqwest::Client {
     reqwest::Client::builder()
@@ -231,9 +172,20 @@ fn other_nonce(url: &str) -> String {
 async fn langfuse_signs_engineers_in_through_the_issuer() {
     let issuer_listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let issuer_port = issuer_listener.local_addr().unwrap().port();
-    let langfuse_port = free_port();
-    let langfuse = format!("http://127.0.0.1:{langfuse_port}");
     let issuer = format!("http://127.0.0.1:{issuer_port}/langfuse-sso");
+    let compose = Langfuse::start(
+        "langfuse-sso-test",
+        Shape::Overlay {
+            file: "langfuse-sso.yaml",
+            env: vec![
+                ("ISSUER_PORT", issuer_port.to_string()),
+                ("CLIENT_ID", CLIENT_ID.into()),
+                ("CLIENT_SECRET", CLIENT_SECRET.into()),
+                ("ADMIN_PASSWORD", ADMIN_PASSWORD.into()),
+            ],
+        },
+    );
+    let langfuse = compose.url.clone();
     let key = http::iap::fixture::key_file()["private_pkcs8_base64"]
         .as_str()
         .unwrap()
@@ -257,39 +209,9 @@ async fn langfuse_signs_engineers_in_through_the_issuer() {
     let app = router_with_verifier(config, http::iap::fixture::verifier(AUDIENCE));
     let server = tokio::spawn(async move { axum::serve(issuer_listener, app).await });
 
-    let postgres_port = free_port();
-    let compose = Compose {
-        project: format!("langfuse-sso-test-{}", std::process::id()),
-        env: vec![
-            ("POSTGRES_PORT", postgres_port.to_string()),
-            ("VALKEY_PORT", free_port().to_string()),
-            ("CLICKHOUSE_HTTP_PORT", free_port().to_string()),
-            ("CLICKHOUSE_NATIVE_PORT", free_port().to_string()),
-            ("LANGFUSE_PORT", langfuse_port.to_string()),
-            ("ISSUER_PORT", issuer_port.to_string()),
-            ("CLIENT_ID", CLIENT_ID.into()),
-            ("CLIENT_SECRET", CLIENT_SECRET.into()),
-            ("ADMIN_PASSWORD", ADMIN_PASSWORD.into()),
-        ],
-    };
-    compose.run(&["up", "-d"]);
-    let probe = browser();
-    let deadline = Instant::now() + Duration::from_secs(600);
-    loop {
-        let ready = probe
-            .get(format!("{langfuse}/api/public/ready"))
-            .send()
-            .await
-            .is_ok_and(|response| response.status().is_success());
-        if ready {
-            break;
-        }
-        assert!(Instant::now() < deadline, "Langfuse never became ready");
-        tokio::time::sleep(Duration::from_secs(2)).await;
-    }
-
     let database = PgPool::connect(&format!(
-        "postgres://langfuse:langfuse@127.0.0.1:{postgres_port}/langfuse"
+        "postgres://langfuse:langfuse@127.0.0.1:{}/langfuse",
+        compose.postgres_port
     ))
     .await
     .unwrap();

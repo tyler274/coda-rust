@@ -1732,3 +1732,73 @@ run "reject_grafana_latency_thresholds_that_differ_from_the_rules" {
   }
   expect_failures = [kubernetes_config_map_v1.grafana_stack]
 }
+
+run "langfuse_monitors_watch_only_the_langfuse_exporter_and_workloads" {
+  command = plan
+  variables {
+    telemetry_backend              = "both"
+    langfuse_enabled               = true
+    collector_self_metrics_enabled = true
+    langfuse_monitors_enabled      = true
+    alert_notify                   = "@slack-confirmed-test"
+  }
+  assert {
+    condition = toset(keys(datadog_monitor.langfuse_export_failures)) == toset(["send_failed_spans", "enqueue_failed_spans"]) && alltrue([
+      for monitor in concat(values(datadog_monitor.langfuse_export_failures), datadog_monitor.langfuse_export_queue) :
+      strcontains(monitor.query, "exporter:otlphttp/langfuse") && strcontains(monitor.query, "env:staging") &&
+      strcontains(monitor.message, "@slack-confirmed-test") && !monitor.notify_no_data && monitor.timeout_h == 1 &&
+      contains(monitor.tags, "destination:langfuse")
+    ])
+    error_message = "Langfuse exporter monitors filter to otlphttp/langfuse in staging, notify the confirmed handle and expire retired groups."
+  }
+  assert {
+    condition     = datadog_monitor.langfuse_export_queue[0].monitor_thresholds[0].critical == "0.8" && strcontains(datadog_monitor.langfuse_export_queue[0].query, "by {collector_replica,exporter,data_type}")
+    error_message = "Queue pressure pairs each replica's size with its capacity at 80%."
+  }
+  assert {
+    condition = toset(keys(datadog_monitor.workload_health)) == toset([
+      "langfuse-web/availability", "langfuse-web/absence",
+      "langfuse-worker/availability", "langfuse-worker/absence",
+      "langfuse-clickhouse-shard0/availability", "langfuse-clickhouse-shard0/absence",
+    ]) && strcontains(datadog_monitor.workload_health["langfuse-clickhouse-shard0/availability"].query, "kube_stateful_set:langfuse-clickhouse-shard0") && strcontains(datadog_monitor.workload_health["langfuse-web/availability"].query, "kube_deployment:langfuse-web") && datadog_monitor.workload_health["langfuse-web/absence"].notify_no_data
+    error_message = "Langfuse web, worker and ClickHouse each get readiness and absence monitors under the chart's names."
+  }
+  assert {
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.async_failures) + length(datadog_monitor.collector_export_failures) == 0
+    error_message = "The Langfuse gate must not enable the per-service or all-exporter monitors."
+  }
+}
+
+run "langfuse_monitors_default_off" {
+  command = plan
+  variables {
+    telemetry_backend              = "both"
+    langfuse_enabled               = true
+    collector_self_metrics_enabled = true
+  }
+  assert {
+    condition     = length(datadog_monitor.langfuse_export_failures) + length(datadog_monitor.langfuse_export_queue) + length(datadog_monitor.workload_health) == 0
+    error_message = "Self-metric collection alone creates no Langfuse monitor."
+  }
+}
+
+run "reject_langfuse_monitors_without_the_scrape" {
+  command = plan
+  variables {
+    langfuse_enabled          = true
+    langfuse_monitors_enabled = true
+    alert_notify              = "@slack-confirmed-test"
+  }
+  expect_failures = [var.langfuse_monitors_enabled]
+}
+
+run "reject_langfuse_monitors_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend         = "grafana"
+    langfuse_enabled          = true
+    langfuse_monitors_enabled = true
+    alert_notify              = "@slack-confirmed-test"
+  }
+  expect_failures = [var.langfuse_monitors_enabled]
+}

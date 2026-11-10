@@ -526,13 +526,19 @@ fn command_arguments_reject_unknown_pairs() {
 #[test]
 fn doppler_errors_and_debug_omit_the_secret_value() {
     let planted = "planted-value";
-    let error = secret_from_capture(false, Some(1), planted.as_bytes()).unwrap_err();
+    let error = secret_from_capture("DD_API_KEY", false, Some(1), planted.as_bytes()).unwrap_err();
     assert!(!error.to_string().contains(planted));
     assert!(error.to_string().contains("Doppler exited"));
-    let secret = secret_from_capture(true, Some(0), format!("{planted}\n").as_bytes()).unwrap();
+    let secret = secret_from_capture(
+        "DD_API_KEY",
+        true,
+        Some(0),
+        format!("{planted}\n").as_bytes(),
+    )
+    .unwrap();
     assert!(!format!("{secret:?}").contains(planted));
     assert!(!secret.to_string().contains(planted));
-    let args = doppler_args();
+    let args = doppler_args("DD_API_KEY");
     assert_eq!(
         args,
         [

@@ -225,7 +225,10 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
     });
     assert_eq!(texts(&answered), ["Hello", support::FIXED_TEXT]);
     assert!(mechanical(&answered).is_none(), "{answered}");
-    assert_eq!(answered["runs"], json!([]), "{answered}");
+    let runs = answered["runs"].as_array().expect("runs");
+    assert_eq!(runs.len(), 1, "{answered}");
+    assert_eq!(runs[0]["state"], "completed", "{answered}");
+    assert_ne!(runs[0]["run_id"], run, "the answer is a successor attempt");
 
     // A reload without `?chat=` still finds this chat: the workspace lists it,
     // titled by its first message, ahead of the recording's empty list.
