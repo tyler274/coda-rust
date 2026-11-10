@@ -110,6 +110,176 @@ pub fn staging_accounts(
         .collect()
 }
 
+/// Practices whose chat is rehearsal traffic, from
+/// `PHYSICIAN_SIMULATION_PRACTICES` (comma-separated practice ids).
+///
+/// A turn in one of these practices is `simulation` in telemetry and may carry
+/// a scenario id; every other practice is `real` and may not. Only the
+/// staging-preview profile accepts the list, so a production process can never
+/// relabel real traffic. An unset or blank list is empty.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct SimulationPractices(std::collections::BTreeSet<String>);
+
+impl SimulationPractices {
+    /// Reads `PHYSICIAN_SIMULATION_PRACTICES`, refusing it outside the
+    /// staging-preview profile.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
+        let list = get("PHYSICIAN_SIMULATION_PRACTICES").unwrap_or_default();
+        if list.trim().is_empty() {
+            return Ok(Self::default());
+        }
+        if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
+            return Err(format!(
+                "PHYSICIAN_SIMULATION_PRACTICES is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+            ));
+        }
+        Ok(Self(
+            list.split(',')
+                .map(str::trim)
+                .filter(|practice| !practice.is_empty())
+                .map(str::to_owned)
+                .collect(),
+        ))
+    }
+
+    /// The given practices, for tests and in-process composition.
+    pub fn of<'a>(practices: impl IntoIterator<Item = &'a str>) -> Self {
+        Self(practices.into_iter().map(str::to_owned).collect())
+    }
+
+    /// Whether `practice` is a rehearsal practice.
+    pub fn contains(&self, practice: &str) -> bool {
+        self.0.contains(practice)
+    }
+
+    /// Whether the attempt after `earlier_attempts` on a turn in `practice`
+    /// fails on purpose: only a rehearsal practice honours a `[fail:K]`
+    /// marker in its message (see [`marked_attempt_fails`]). A real practice
+    /// never does, and a production process has no rehearsal practices.
+    pub fn rehearsed_failure(&self, practice: &str, input: &str, earlier_attempts: u32) -> bool {
+        self.contains(practice) && marked_attempt_fails(earlier_attempts, input)
+    }
+
+    /// Admits a scenario id sent by a session in `practice`: only a rehearsal
+    /// practice may send one, and only a short slug (`[a-z0-9._-]`, at most 64
+    /// characters), since it becomes a Langfuse tag.
+    pub fn admit_scenario(&self, practice: &str, scenario: &str) -> Result<(), ScenarioRefused> {
+        if !self.contains(practice) {
+            return Err(ScenarioRefused::RealPractice);
+        }
+        let slug = !scenario.is_empty()
+            && scenario.len() <= 64
+            && scenario
+                .bytes()
+                .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b"._-".contains(&b));
+        if slug {
+            Ok(())
+        } else {
+            Err(ScenarioRefused::Malformed)
+        }
+    }
+
+    /// The telemetry origin and scenario for a turn in `practice` that was
+    /// accepted with `scenario`. A real practice never reports a scenario,
+    /// even one saved before its practice left the list.
+    pub fn origin(
+        &self,
+        practice: &str,
+        scenario: Option<&str>,
+    ) -> (telemetry::genai::Origin, Option<String>) {
+        if self.contains(practice) {
+            (
+                telemetry::genai::Origin::Simulation,
+                scenario.map(str::to_owned),
+            )
+        } else {
+            (telemetry::genai::Origin::Real, None)
+        }
+    }
+}
+
+/// Whether the attempt after `earlier_attempts` fails for a message marked
+/// `[fail:K]`: the first K attempts fail. The count is the conversation's
+/// saved attempts on this input, so it survives a worker restart and every
+/// worker instance agrees. Try again keeps the input, so `[fail:5]`
+/// dead-letters on its fifth failure and its Try again then succeeds.
+pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
+    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
+}
+
+/// K from the first `[fail:K]` in `input`, if K is a whole number.
+fn marked_failures(input: &str) -> Option<u32> {
+    let (_, rest) = input.split_once("[fail:")?;
+    let (count, _) = rest.split_once(']')?;
+    count.parse().ok()
+}
+
+/// Why a submitted scenario id was refused.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ScenarioRefused {
+    /// The session's practice is not a rehearsal practice.
+    RealPractice,
+    /// The id is empty, too long, or not a lower-case slug.
+    Malformed,
+}
+
+/// The rehearsal sign-in's settings: physician's own direct Cloud Run IAP
+/// audience (`PHYSICIAN_IAP_AUDIENCE`) and the one service account IAP must
+/// have admitted (`PHYSICIAN_REHEARSAL_PRINCIPAL`).
+///
+/// Both or neither: with neither, `POST /auth/rehearsal` does not exist. Only
+/// the staging-preview profile accepts them, so a production process never
+/// serves the route, and the principal must be a service account, never a
+/// person.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RehearsalSignIn {
+    /// `/projects/NUMBER/locations/REGION/services/physician`.
+    pub audience: String,
+    /// The lower-cased service-account email.
+    pub principal: String,
+}
+
+impl RehearsalSignIn {
+    /// Reads both settings, refusing a partial pair, a malformed audience, a
+    /// principal that is not a service account, or any value outside the
+    /// staging-preview profile.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Option<Self>, String> {
+        let read = |name| get(name).map(|value| value.trim().to_owned());
+        let audience = read("PHYSICIAN_IAP_AUDIENCE").filter(|value| !value.is_empty());
+        let principal = read("PHYSICIAN_REHEARSAL_PRINCIPAL").filter(|value| !value.is_empty());
+        if audience.is_none() && principal.is_none() {
+            return Ok(None);
+        }
+        if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
+            return Err(format!(
+                "the rehearsal sign-in is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+            ));
+        }
+        let (Some(audience), Some(principal)) = (audience, principal) else {
+            return Err(
+                "the rehearsal sign-in needs both PHYSICIAN_IAP_AUDIENCE and PHYSICIAN_REHEARSAL_PRINCIPAL"
+                    .to_owned(),
+            );
+        };
+        http::iap::validate_cloud_run_audience(&audience)
+            .map_err(|reason| format!("PHYSICIAN_IAP_AUDIENCE: {reason}"))?;
+        let principal = principal.to_lowercase();
+        let service_account = principal.split_once('@').is_some_and(|(name, domain)| {
+            !name.is_empty() && domain.ends_with(".iam.gserviceaccount.com")
+        });
+        if !service_account {
+            return Err(
+                "PHYSICIAN_REHEARSAL_PRINCIPAL must be a service-account email (NAME@PROJECT.iam.gserviceaccount.com)"
+                    .to_owned(),
+            );
+        }
+        Ok(Some(Self {
+            audience,
+            principal,
+        }))
+    }
+}
+
 /// The folder of built synthetic charts `load-charts` reads. Any profile but
 /// staging-preview refuses the load: synthetic patients never enter another
 /// profile's database.
@@ -290,6 +460,168 @@ mod tests {
                 ])
                 .is_err(),
                 "{bad} must refuse"
+            );
+        }
+    }
+
+    #[test]
+    fn simulation_practices_parse_only_under_the_preview_profile() {
+        let read = |pairs: &[(&str, &str)]| {
+            SimulationPractices::from_env(|name| {
+                pairs
+                    .iter()
+                    .find(|(key, _)| *key == name)
+                    .map(|(_, value)| (*value).to_owned())
+            })
+        };
+        let parsed = read(&[
+            ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+            (
+                "PHYSICIAN_SIMULATION_PRACTICES",
+                " coda-rehearsal-practice , ,other",
+            ),
+        ])
+        .unwrap();
+        assert!(parsed.contains("coda-rehearsal-practice"));
+        assert!(parsed.contains("other"));
+        assert!(!parsed.contains("roger-synthetic-practice"));
+        assert_eq!(read(&[]), Ok(SimulationPractices::default()));
+        for profile in [None, Some("production"), Some("")] {
+            let mut pairs = vec![("PHYSICIAN_SIMULATION_PRACTICES", "coda-rehearsal-practice")];
+            if let Some(profile) = profile {
+                pairs.push(("CODA_HOSTED_PROFILE", profile));
+            }
+            assert!(read(&pairs).is_err(), "{profile:?} must refuse");
+        }
+    }
+
+    #[test]
+    fn origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice() {
+        use telemetry::genai::Origin;
+        let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
+        assert_eq!(
+            practices.origin("coda-rehearsal-practice", Some("canary")),
+            (Origin::Simulation, Some("canary".to_owned()))
+        );
+        assert_eq!(
+            practices.origin("roger-synthetic-practice", Some("canary")),
+            (Origin::Real, None)
+        );
+        assert_eq!(
+            practices.admit_scenario("coda-rehearsal-practice", "drill.rehearse-1"),
+            Ok(())
+        );
+        assert_eq!(
+            practices.admit_scenario("roger-synthetic-practice", "canary"),
+            Err(ScenarioRefused::RealPractice)
+        );
+        for bad in ["", "Upper", "has space", &"x".repeat(65)] {
+            assert_eq!(
+                practices.admit_scenario("coda-rehearsal-practice", bad),
+                Err(ScenarioRefused::Malformed),
+                "{bad}"
+            );
+        }
+    }
+
+    #[test]
+    fn fail_marker_parses_whole_counts_only() {
+        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
+        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
+        assert_eq!(marked_failures("Plain turn"), None);
+        assert_eq!(marked_failures("[fail:]"), None);
+        assert_eq!(marked_failures("[fail:-1]"), None);
+        assert_eq!(marked_failures("[fail:2"), None);
+        assert_eq!(marked_failures("[fail:x]"), None);
+    }
+
+    #[test]
+    fn fail_marker_fails_the_first_k_saved_attempts() {
+        // `[fail:2]` fails its first two attempts, then succeeds for good.
+        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
+        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
+        // An unmarked turn never fails, whatever its history.
+        assert!(!marked_attempt_fails(0, "Plain turn"));
+        assert!(!marked_attempt_fails(4, "Plain turn"));
+        assert!(!marked_attempt_fails(0, "[fail:0]"));
+    }
+
+    #[test]
+    fn only_a_rehearsal_practice_fails_a_marked_turn() {
+        let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
+        assert!(practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
+        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 1));
+        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Plain turn", 0));
+        // A real practice never fails, whatever its message says.
+        assert!(!practices.rehearsed_failure("roger-synthetic-practice", "Drill [fail:1]", 0));
+        // Outside the preview profile there are no rehearsal practices, so
+        // nothing fails on purpose.
+        let production = SimulationPractices::from_env(|name| {
+            (name == "CODA_HOSTED_PROFILE").then(|| "production".to_owned())
+        })
+        .unwrap();
+        assert!(!production.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
+    }
+
+    #[test]
+    fn the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile() {
+        const AUDIENCE: &str = "/projects/123/locations/us-east1/services/physician";
+        const PRINCIPAL: &str = "physician-rehearsal@coda-rust-staging.iam.gserviceaccount.com";
+        let read = |pairs: &[(&str, &str)]| {
+            RehearsalSignIn::from_env(|name| {
+                pairs
+                    .iter()
+                    .find(|(key, _)| *key == name)
+                    .map(|(_, value)| (*value).to_owned())
+            })
+        };
+        assert_eq!(read(&[]), Ok(None));
+        assert_eq!(
+            read(&[("CODA_HOSTED_PROFILE", STAGING_PROFILE)]),
+            Ok(None),
+            "the profile alone serves no route"
+        );
+        assert_eq!(
+            read(&[
+                ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+                ("PHYSICIAN_IAP_AUDIENCE", AUDIENCE),
+                (
+                    "PHYSICIAN_REHEARSAL_PRINCIPAL",
+                    " Physician-Rehearsal@coda-rust-staging.iam.gserviceaccount.com "
+                ),
+            ]),
+            Ok(Some(RehearsalSignIn {
+                audience: AUDIENCE.into(),
+                principal: PRINCIPAL.into(),
+            }))
+        );
+        for profile in [None, Some("production"), Some("")] {
+            let mut pairs = vec![
+                ("PHYSICIAN_IAP_AUDIENCE", AUDIENCE),
+                ("PHYSICIAN_REHEARSAL_PRINCIPAL", PRINCIPAL),
+            ];
+            if let Some(profile) = profile {
+                pairs.push(("CODA_HOSTED_PROFILE", profile));
+            }
+            assert!(read(&pairs).is_err(), "{profile:?} must refuse");
+        }
+        for (audience, principal) in [
+            (AUDIENCE, ""),
+            ("", PRINCIPAL),
+            ("https://physician.example", PRINCIPAL),
+            (AUDIENCE, "engineer@codahealth.ai"),
+            (AUDIENCE, "@coda-rust-staging.iam.gserviceaccount.com"),
+        ] {
+            assert!(
+                read(&[
+                    ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+                    ("PHYSICIAN_IAP_AUDIENCE", audience),
+                    ("PHYSICIAN_REHEARSAL_PRINCIPAL", principal),
+                ])
+                .is_err(),
+                "{audience:?} / {principal:?} must refuse"
             );
         }
     }

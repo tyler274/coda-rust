@@ -1,12 +1,10 @@
-# Coda Agents
+# Chords
 
-Chords is the external name of Coda Health’s physician product described in this specification.
+This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
-This is what we're building for physicians: what Coda Agents is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
+## What Chords is
 
-## What Coda Agents is
-
-Coda Agents is a team of health agents that works for a physician. It isn't a copilot that waits to be asked. It behaves like a great resident team: it keeps each patient's story current, carries the work that happens between visits, and brings the physician in only where their judgment, an exam, a procedure or the relationship actually needs them.
+Chords is a team of health agents that works for a physician. It isn't a copilot that waits to be asked. It behaves like a great resident team: it keeps each patient's story current, carries the work that happens between visits, and brings the physician in only where their judgment, an exam, a procedure or the relationship actually needs them.
 
 Our customer is the physician-owned membership practice, concierge or direct primary care. These physicians know their patients well and want to stay close to them, but the work between visits (new results, patient messages, follow-through on care plans, getting ready for the next visit) eats their time. The wedge is tracking patients between visits and carrying follow-through to completion, with visit preparation as a core promise. Follow-through and help with the patient inbox are sold as one product.
 
@@ -67,7 +65,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Initial understanding.** The first time Coda sees a patient, it does the work to understand them and builds the operating index, including finding the patient's other health systems. Later sources update that understanding instead of restarting it, and a new EHR source never creates a second patient relationship. When a patient's only source is their Duet, Coda builds a deliberately limited first understanding from it.
 
-**Patient review.** Coda's look at a patient. A review starts when a scheduled pull finds something new, patient mail arrives, a follow-up comes due, a visit approaches, the periodic review comes around or the physician asks. One event starts one review, and a message and a result found together share a review. If records change before it finishes, it looks again. It may end quietly. A connected patient's Duet data is evidence like any other, labeled with where it came from ("from Epic, via the patient's Duet"), and plan Check-in answers from Duet feed reviews without ever becoming alerts.
+**Patient review.** Coda's look at a patient. A review starts when a scheduled pull finds something new, patient mail arrives, a follow-up comes due, a visit approaches, the periodic review comes around or the physician asks. One event starts one review, and a message and a result found together share a review. If records change before it finishes, it looks again. It may end quietly. A connected patient's Duet data is evidence like any other, labeled with where it came from ("from Epic, via the patient's Duet"), and when plan Check-ins arrive, their answers from Duet feed reviews without ever becoming alerts.
 
 **Follow-up.** A responsibility Coda carries for a patient when some time should pass before checking in. It has a due time and lives on the patient page; Today only gets what needs the physician. The physician creates, changes, stops, resumes, reviews now, completes and cancels follow-ups directly or in conversation, and Coda's own work may create, revise or complete them too.
 
@@ -79,7 +77,7 @@ The day's schedule sits in a collapsible pane beside the list. Below the rows, o
 
 **Run steps.** While Coda works, the physician sees steps built from the [harness's tool-call events](harness.md#events), worded for a physician and never as tool names or internal vocabulary. They replay later from the patient's history and never become Today items or notifications. Physicians see steps, not the model's reasoning. Pulsing dots show running work.
 
-**Citations.** A citation opens the exact source Coda read, with a short dated preview Coda wrote, the passage for that claim highlighted, and a live link into the EHR when one exists. One source can back several claims, and each citation opens its own passage. Citations can point to records, literature, wearables, patient messages and other sources. Every record Coda read gets its preview; "unavailable" only applies to a source Coda couldn't read at all.
+**Citations.** A citation opens the exact source Coda read, with a short dated preview Coda wrote, the passage for that claim highlighted, and a live link into the EHR when one exists. One source can back several claims, and each citation opens its own passage. Citations can point to records, literature, wearables, patient messages and other sources. Every record Coda read gets its preview; "unavailable" only applies to a source Coda couldn't read at all. The panel shows the source as a readable record, never as raw data. Where the source has its own readable text, the panel shows that text. Otherwise Coda may arrange the record so it reads well, but every value shown is copied from the record and nothing in the record is dropped. A part reads as not supplied only when the source says it is absent. The raw record stays available under Technical details.
 
 **Basis and limitations.** Every response carries a basis-and-limitations section, collapsed by default and written separately from the response, beside Sources. It's there on every response for regulatory reasons. Important uncertainty still belongs in the response itself.
 
@@ -184,7 +182,7 @@ Along the way:
 
 ### L1. Patients who do nothing
 
-This is how we prove principle 4.
+This is how we prove principle 4, Design for the patient who does nothing.
 
 1. A multi-week world of synthetic patients and a practice runs on the real coda-rust services. Time advances, the app closes and services restart.
 2. Coda checks each patient on its schedule, reviews when something changed, and runs follow-ups on their own schedules. Locally the simulation drives this on its own clock.
@@ -198,11 +196,11 @@ This is how we prove principle 4.
 
 ### A1. Sign-in and access
 
-Physicians sign in only through Coda Agents, with an emailed link and no password or code. Accounts are invite-only. The session is shared across the browser's tabs, signing out signs out every tab, and another physician's link signs the current physician out first. The full sign-in behavior, with its model, lives in [sign-in](../verification/physician/sign-in/README.md).
+Physicians sign in only through Chords, with an emailed link and no password or code. Accounts are invite-only. The session is shared across the browser's tabs, signing out signs out every tab, and another physician's link signs the current physician out first. The full sign-in behavior, with its model, lives in [sign-in](../verification/physician/sign-in/README.md).
 
 Inside the workspace:
 
-1. Which patients a physician may access, and whether a practice has roles, are open ([P2](DECISIONS.md)). Everything here follows what it decides.
+1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](DECISIONS.md)). Everything here follows what it decides.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
@@ -242,7 +240,7 @@ Authority and sending:
 
 - The physician decides diagnosis, treatment and medication.
 - In the MVP Coda never sends patient mail or anything into a patient's Duet. It never orders and never writes back to the EHR.
-- Coda never sends anything to a patient without the physician, even in an emergency.
+- Coda never sends anything to a patient without the physician, even in an emergency. The one exception is a Connected care invitation, which a practice member starts.
 - A retrieved record that tells Coda to do something is evidence, never an instruction.
 - A follow-up grants no access and no authority to message, order, schedule or write back.
 - Silence, elapsed time or a finished run never proves physician approval or clinical resolution.
@@ -289,13 +287,38 @@ Work integrity:
 
 Everything Coda reads in the MVP is read only.
 
-- **The practice's EHR.** No EHR is chosen in advance. Use relevant available sandboxes to learn what different sources expose and inform the shared adapter contract. Choose sources based on the first practice's needs, available access, and what the adapters can read.
+- **The practice's EHR.** No EHR is chosen in advance. Choose sources based on the first practice's needs, available access, and what the adapters can read.
 - **For practices using Hint**, the planned adapter uses Coda's Chrome extension in the practice's own Chrome. The physician signs into Hint as usual, and the extension reads the chart's structured data in the background under that sign-in. It downloads nothing, never sees the physician's password or MFA codes, and keeps Hint's session only inside Chrome. Coda's access lasts as long as the physician's Hint sign-in. When Hint signs out, Coda keeps what it read and catches up the next time the physician signs in. Pulls run during the practice's business hours, and Coda asks the physician to reconnect only when fresh Hint data is needed and access is missing.
 - **The schedule**, from the practice's EHR.
 - **Patient mail** from the practice’s Spruce connection.
 - **Attachments**, including scans and faxes read through OCR.
 - **A connected patient's Duet data**, which lives in Coda's record for that patient and never in the EHR. Connected care owns what crosses.
 - **The clinical library**, Coda's own, searched semantically and served from the cloud, always on before launch. Coda searches it as often as a question needs, reads as many sources as it judges useful, and keeps going until it has enough to answer.
+
+Every EHR names and shapes its records in its own way. If each part of Coda had to learn each EHR, every new practice would mean changes everywhere. So Coda files every patient record into one fixed set of buckets, and search, reviews, visit preparation and citations find records through the buckets. A new source then needs only its own adapter. The adapter says where each record goes and never changes what the record says, so nothing clinical is lost or guessed on the way in.
+
+Each adapter files every record it reads into one bucket. The bucket comes from the source's own name for that kind of record. A record whose kind the adapter doesn't know goes to Other and is never dropped. One record has one bucket, and Coda never splits a record to file its parts. The bucket only says where to find a record. Its status, dates, codes and values stay exactly as the source sent them, and what they mean is the model's judgment. The buckets are a filing index, not a schema. They limit nothing the model may read or conclude.
+
+| Bucket | What belongs in it |
+|---|---|
+| Patient | Who the patient is: name, birth date, sex, identifiers and contact details. |
+| Problems | Diagnoses and health concerns on the problem list. |
+| Medications | Medications prescribed, dispensed or reported, including stopped ones. |
+| Allergies | Allergies and intolerances, including a record that none are known. |
+| Results | Results of tests: laboratory results, and imaging, pathology and other diagnostic reports. |
+| Vitals | Vital signs and body measurements. |
+| Notes | Notes written into the record: visit notes, phone notes, other chart notes and notes a patient saved. |
+| Documents | Files kept in the chart: scans, faxes, letters and outside records. |
+| Visits | Appointments and encounters. |
+| Procedures | Procedures and surgeries that were done. |
+| Immunizations | Vaccines given or reported. |
+| Orders | Orders and referrals. |
+| History | Family, social, past medical and past surgical history. |
+| Forms | Forms and questionnaires that were filled in. |
+| Messages | Messages between the patient and the practice. |
+| Other | Any kind of record that has no bucket here. |
+
+A record is filed by what its source calls it, never by what it contains. Where a source labels a record with a category, the category is part of the source's name for it. A lab result that arrives as a scanned file is a document. A new bucket is added here first, and adapters follow. A connected patient's Duet data comes through its own adapter. Each item is filed by what Duet calls it and keeps its origin.
 
 Every source shows when its records were last refreshed, and one source's failure never blocks the others.
 
@@ -305,7 +328,7 @@ Coda's Chrome extension acts only as the signed-in physician, never takes the ph
 
 In the MVP:
 
-- One practice using Coda Agents on the web, with patients on Duet, the two connected through Connected care.
+- One practice using Chords on the web, with patients on Duet, the two connected through Connected care.
 - Journeys P1 to P5 and L1, with P1 first.
 - The first practice's EHR, read only.
 - Coda assists the first practice with setup and physician onboarding.
@@ -333,7 +356,6 @@ Later:
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
 - EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
 - Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
-- Outside clinical AI under a BAA, such as UpToDate's Expert AI.
 - The Chrome extension also as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
 - Coda reaching out to patients from its own findings.
 - Learned physician preferences, from the physician's own words and edits only, with Undo.
@@ -350,13 +372,13 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
 
-**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Coda Agents is separate from patient automations in Duet.
+**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Chords is separate from patient automations in Duet.
 
 **Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
 
-**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces.
+**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces. The nightly's rules are in [Clinical library nightly](../verification/clinical-library/nightly/README.md).
 
-**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Coda Agents:
+**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Chords:
 
 - A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
 - Recovery never alerts the physician.
@@ -375,6 +397,6 @@ These are how we build the product above. They matter to its behavior but are en
 
 **Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. The literature service is an optional gateway, and chart answers work without it.
 
-**Sources.** Each source has its own adapter that translates its format into Coda's common evidence and one shared source view, and new sources come as new adapters. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence, and new sources come as new adapters. An adapter is a declared table plus the code that signs in and fetches. For each kind of record the source has, the table names its bucket, the role of each date field, and where its status, codes and title are. An adapter copies. It never rewrites a value and never makes a clinical call. Every record carries the same envelope: its bucket, the source's own name for its kind, its source, ID and version, its dates with their role and the source's field name, its status in the source's words, its codes, a title, and the exact record with its hash, readable text and link into the source. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the exact record. Sources that share a format share a table. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
 
 **Storage.** Per-practice database topology is decided when it's needed.

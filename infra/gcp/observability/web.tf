@@ -1,9 +1,9 @@
-# People reach Grafana and Langfuse only through public-site's /grafana/ and
-# /langfuse/ mounts (staging_proxy). public-site calls the IAP-protected
-# observability relay in infra/gcp/rust-environments, and the relay's Direct
-# VPC egress reaches these two internal passthrough load balancers. They
-# admit only the relay's own subnet, so neither the Cloud Run products on
-# rust-run nor anything outside the VPC can reach either app directly.
+# People reach Grafana and Langfuse only through public-site's /grafana/,
+# /langfuse/ and /langfuse-sso/ mounts (staging_proxy). public-site calls the
+# IAP-protected observability relay in infra/gcp/rust-environments, and the
+# relay's Direct VPC egress reaches these internal passthrough load
+# balancers. They admit only the relay's own subnet, so neither the Cloud Run
+# products on rust-run nor anything outside the VPC can reach an app directly.
 locals {
   observability_web = var.observability_web == null ? {} : merge(
     local.grafana_backend ? {
@@ -22,6 +22,14 @@ locals {
           "app.kubernetes.io/instance" = local.langfuse_release
           app                          = "web"
         }
+      }
+    } : {},
+    # Only the issuer's authorize step is meant for browsers; public-site
+    # passes nothing else under /langfuse-sso (langfuse-sso.tf).
+    local.langfuse_sso ? {
+      langfuse-sso = {
+        ip       = var.observability_web.langfuse_sso_ip
+        selector = local.langfuse_sso_labels
       }
     } : {},
   )
@@ -53,5 +61,5 @@ resource "kubernetes_service_v1" "observability_web" {
     }
   }
 
-  depends_on = [helm_release.langfuse]
+  depends_on = [helm_release.langfuse, kubernetes_deployment_v1.langfuse_sso]
 }

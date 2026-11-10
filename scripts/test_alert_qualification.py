@@ -56,11 +56,12 @@ class QualificationTests(unittest.TestCase):
                 self.assertEqual(qualification.main([]), 0)
             result = json.loads(output.getvalue())
         self.assertFalse(result["live_qualified"])
-        self.assertEqual(len(result["configuration_gaps"]), 27)
+        self.assertEqual(len(result["configuration_gaps"]), 36)
         self.assertEqual(result["policy_to_review"]["maximum_reminders"], 2)
         self.assertIn("three consecutive", " ".join(result["steps"]["datadog"]))
         self.assertIn("outside-cluster", " ".join(result["steps"]["cloud-monitoring"]))
         self.assertIn("shadow", " ".join(result["steps"]["grafana-test"]))
+        self.assertIn("langfuse-web", " ".join(result["steps"]["langfuse"]))
 
     def test_live_refused_before_reading_files_or_using_network(self):
         with patch.object(Path, "read_text", side_effect=AssertionError("must gate first")), patch("socket.socket", side_effect=AssertionError("network forbidden")):
@@ -85,7 +86,7 @@ class QualificationTests(unittest.TestCase):
         self.assertEqual(route["reported_latencies"]["failure_to_slack_seconds"], "182.000000001")
         self.assertFalse(result["live_qualified"])
         self.assertNotIn("cloud-monitoring", result["routes"])
-        self.assertEqual(result["unassessed_routes"], ["cloud-monitoring", "grafana-test"])
+        self.assertEqual(result["unassessed_routes"], ["cloud-monitoring", "grafana-test", "langfuse"])
 
     def test_single_route_cli_consistency_passes(self):
         real_read = Path.read_text
@@ -97,6 +98,12 @@ class QualificationTests(unittest.TestCase):
 
         with patch.object(Path, "read_text", read), contextlib.redirect_stdout(io.StringIO()):
             self.assertEqual(qualification.main(["--observations", "test-observations.json"]), 0)
+
+    def test_langfuse_route_is_assessed_like_the_others(self):
+        events = observations("langfuse")
+        self.assertEqual(gaps(events, "langfuse"), [])
+        events[2]["source"] = "synthetic-fixture"
+        self.assertIn("firing: requires actual evaluator history, not inferred sample state", gaps(events, "langfuse"))
 
     def test_pending_must_belong_to_failure_firing_sequence(self):
         for at in ("2025-12-31T23:59:00Z", "2026-01-01T00:07:00Z"):

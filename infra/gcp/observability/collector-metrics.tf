@@ -3,7 +3,7 @@ variable "collector_self_metrics_enabled" {
   type        = bool
   default     = false
   validation {
-    condition     = !var.collector_self_metrics_enabled || (var.environment == "staging" && var.telemetry_backend == "datadog")
+    condition     = !var.collector_self_metrics_enabled || (var.environment == "staging" && contains(["datadog", "both"], var.telemetry_backend))
     error_message = "Collector self metrics are a staging Datadog collection path."
   }
 }

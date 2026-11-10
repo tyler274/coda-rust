@@ -140,6 +140,18 @@ mod tests {
         }
     }
 
+    /// The clinical library serves both products, so it reaches no other
+    /// local crate, not even through a test dependency.
+    #[test]
+    fn the_clinical_library_is_product_neutral() {
+        for dependency in local_closure("clinical-library") {
+            assert_eq!(
+                dependency, "clinical-library",
+                "clinical-library reached local crate {dependency}"
+            );
+        }
+    }
+
     /// The disposable emulator is reachable from tests only: every crate that
     /// enables `pubsub/test-util` does it under `[dev-dependencies]`.
     #[test]

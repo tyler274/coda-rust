@@ -35,7 +35,7 @@ let
 
   # One locked release build compiles the shared dependency graph once for
   # every server, migration and job binary.
-  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" "observability-relay" ];
+  serverPackages = [ "physician-sample" "duet-api" "local-product" "physician-auth" "front-door" "availability-probe" "observability-relay" "langfuse-sso" ];
   serverArgs = common // {
     pname = "coda-servers";
     cargoExtraArgs = "--frozen --bins " + lib.concatMapStringsSep " " (p: "-p ${p}") serverPackages;
@@ -297,6 +297,16 @@ in
     role = "runtime";
     binary = native "observability-relay";
     executable = "observability-relay";
+    secrets = false;
+  };
+  # In-cluster OIDC issuer for Langfuse sign-in, run in the staging GKE
+  # observability namespace. Its secrets come from a Kubernetes Secret, so
+  # the image has no Doppler entrypoint.
+  langfuse-sso-image = image {
+    name = "coda-langfuse-sso";
+    role = "runtime";
+    binary = native "langfuse-sso";
+    executable = "langfuse-sso";
     secrets = false;
   };
   # Bounded Luna privacy receipt delivery job. Not a migration; no scheduler.

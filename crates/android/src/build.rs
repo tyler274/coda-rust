@@ -1,9 +1,10 @@
 //! Build the mode-shell debug APK.
 //!
-//! Rustc must be rustup's stable: the Nix rustc has no Android standard
-//! library. `dx build --android` asks Gradle for build-tools 34; the Nix SDK
-//! only has 37, so a build-tools failure is patched and `gradlew assembleDebug`
-//! continues. Patch steps take the generated tree so tests can run without
+//! `nix develop .#android` supplies the SDK, the NDK, a JDK and a Rust
+//! toolchain with the Android standard library. `dx build --android` asks
+//! Gradle for build-tools 34; the Nix SDK only has 37, so a build-tools failure is patched and `gradlew assembleDebug`
+//! continues. A Gradle download that outlasts the wrapper's 10 s timeout is
+//! recovered the same way. Patch steps take the generated tree so tests can run without
 //! `dx` or an emulator.
 
 use std::env;
@@ -14,6 +15,8 @@ use std::process::Command;
 use super::Failure;
 
 const BUILD_TOOLS: &str = "37.0.0";
+
+const WRAPPER_TIMEOUT: &str = "networkTimeout=120000";
 
 const HARDWARE_KEYS: &str = "\
     // duet-hardware-keys
@@ -90,6 +93,12 @@ pub fn patch_generated_android_project(workspace: &Path, generated: &Path) -> Re
     }
     for path in &gradle_files {
         rewrite(path, patch_build_tools)?;
+    }
+    for path in find(generated, |path| {
+        path.file_name()
+            .is_some_and(|name| name == "gradle-wrapper.properties")
+    }) {
+        rewrite(&path, patch_wrapper_timeout)?;
     }
 
     let manifests = find(generated, is_main_manifest);
@@ -179,7 +188,7 @@ fn wire_android_manifest(workspace: &Path, manifest: &Path) -> Result<(), Failur
         .arg(&script)
         .arg(manifest)
         .status()
-        .map_err(|error| Failure::new(1, format!("could not run python: {error}")))?;
+        .map_err(Failure::io("could not run python"))?;
     if status.success() {
         Ok(())
     } else {
@@ -198,14 +207,13 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
         "--features",
         "mobile",
     ]);
-    configure(&mut command)?;
     let output = command
         .output()
-        .map_err(|error| Failure::new(1, format!("could not run {}: {error}", dx.display())))?;
+        .map_err(Failure::io(format!("could not run {}", dx.display())))?;
     let mut log = String::from_utf8_lossy(&output.stdout).into_owned();
     log.push_str(&String::from_utf8_lossy(&output.stderr));
     print!("{log}");
-    if !output.status.success() && !log.contains("build-tools") {
+    if !output.status.success() && !assembly_continues(&log) {
         let code = output.status.code().unwrap_or(1);
         return Err(Failure::new(
             u8::try_from(code).unwrap_or(1),
@@ -213,6 +221,15 @@ fn run_dx(workspace: &Path) -> Result<(), Failure> {
         ));
     }
     Ok(())
+}
+
+/// dx has generated the Gradle project by the time it assembles, so two of its
+/// Gradle failures are recoverable: the missing build-tools 34 (patched to 37)
+/// and the wrapper's 10 s download timeout (patched to 120 s). `gradlew
+/// assembleDebug` then retries with the patched project.
+fn assembly_continues(log: &str) -> bool {
+    log.contains("build-tools")
+        || (log.contains("services.gradle.org/distributions/") && log.contains("timeout"))
 }
 
 fn dx_program() -> Result<PathBuf, Failure> {
@@ -232,10 +249,9 @@ fn assemble_debug(generated: &Path) -> Result<(), Failure> {
     command
         .current_dir(gradle.parent().unwrap_or(Path::new(".")))
         .arg("assembleDebug");
-    configure(&mut command)?;
     let status = command
         .status()
-        .map_err(|error| Failure::new(1, format!("could not run gradlew: {error}")))?;
+        .map_err(Failure::io("could not run gradlew"))?;
     if !status.success() {
         let code = status.code().unwrap_or(1);
         return Err(Failure::new(
@@ -254,59 +270,20 @@ fn assemble_debug(generated: &Path) -> Result<(), Failure> {
     Ok(())
 }
 
-fn configure(command: &mut Command) -> Result<(), Failure> {
-    let toolchain = env::var("RUSTUP_TOOLCHAIN").unwrap_or_else(|_| "stable".to_owned());
-    command.env("RUSTUP_TOOLCHAIN", toolchain);
-    let java = java_env()?;
-    let path = child_path(java.as_deref());
-    if !path.is_empty() {
-        command.env("PATH", path);
-    }
-    if let Some(home) = java {
-        command.env("JAVA_HOME", home);
-    }
-    Ok(())
-}
-
-fn java_env() -> Result<Option<PathBuf>, Failure> {
-    if let Some(home) = super::java_home() {
-        return Ok(Some(home));
-    }
-    if super::tool("java").is_ok() {
-        Ok(None)
-    } else {
-        Err(Failure::new(
-            1,
-            "java is not on PATH and the Android Studio JBR was not found",
-        ))
-    }
-}
-
-fn child_path(java: Option<&Path>) -> std::ffi::OsString {
-    let mut prefix = Vec::new();
-    if let Some(java) = java {
-        prefix.push(java.join("bin"));
-    }
-    if let Ok(user) = env::var("USER") {
-        let dir = PathBuf::from(format!("/etc/profiles/per-user/{user}/bin"));
-        if dir.is_dir() {
-            prefix.push(dir);
-        }
-    }
-    let mut path = std::ffi::OsString::new();
-    for (index, dir) in prefix.iter().enumerate() {
-        if index > 0 {
-            path.push(":");
-        }
-        path.push(dir);
-    }
-    if let Some(existing) = env::var_os("PATH") {
-        if !path.is_empty() {
-            path.push(":");
-        }
-        path.push(existing);
-    }
-    path
+/// The generated wrapper gives up on the Gradle download after 10 s, which a
+/// slow CI network exceeds before any test runs.
+fn patch_wrapper_timeout(text: &str) -> String {
+    text.lines()
+        .map(|line| {
+            if line.starts_with("networkTimeout=") {
+                WRAPPER_TIMEOUT
+            } else {
+                line
+            }
+        })
+        .collect::<Vec<_>>()
+        .join("\n")
+        + "\n"
 }
 
 fn patch_build_tools(text: &str) -> String {
@@ -497,27 +474,23 @@ fn append_after_lines(text: &str, needle: &str, insertion: &str) -> String {
 
 fn rewrite(path: &Path, patch: impl Fn(&str) -> String) -> Result<(), Failure> {
     let text = fs::read_to_string(path)
-        .map_err(|error| Failure::new(1, format!("could not read {}: {error}", path.display())))?;
+        .map_err(Failure::io(format!("could not read {}", path.display())))?;
     fs::write(path, patch(&text))
-        .map_err(|error| Failure::new(1, format!("could not write {}: {error}", path.display())))
+        .map_err(Failure::io(format!("could not write {}", path.display())))
 }
 
 fn copy_file(from: &Path, to: &Path) -> Result<(), Failure> {
     if let Some(parent) = to.parent() {
-        fs::create_dir_all(parent).map_err(|error| {
-            Failure::new(1, format!("could not create {}: {error}", parent.display()))
-        })?;
+        fs::create_dir_all(parent).map_err(Failure::io(format!(
+            "could not create {}",
+            parent.display()
+        )))?;
     }
-    fs::copy(from, to).map_err(|error| {
-        Failure::new(
-            1,
-            format!(
-                "could not copy {} to {}: {error}",
-                from.display(),
-                to.display()
-            ),
-        )
-    })?;
+    fs::copy(from, to).map_err(Failure::io(format!(
+        "could not copy {} to {}",
+        from.display(),
+        to.display()
+    )))?;
     Ok(())
 }
 
@@ -591,6 +564,17 @@ mod tests {
         fn drop(&mut self) {
             let _ = fs::remove_dir_all(&self.0);
         }
+    }
+
+    #[test]
+    fn only_patched_gradle_failures_let_assembly_continue() {
+        assert!(assembly_continues(
+            "Failed to assemble apk: Exception in thread \"main\" java.io.IOException: Downloading from https://services.gradle.org/distributions/gradle-9.1.0-bin.zip failed: timeout (10000ms)"
+        ));
+        assert!(assembly_continues(
+            "build-tools;34.0.0 Android SDK Build-Tools 34"
+        ));
+        assert!(!assembly_continues("error[E0425]: cannot find value"));
     }
 
     #[test]
@@ -685,7 +669,20 @@ dependencies {
         )
         .unwrap();
 
+        let wrapper = generated.join("app/gradle/wrapper/gradle-wrapper.properties");
+        fs::create_dir_all(wrapper.parent().unwrap()).unwrap();
+        fs::write(
+            &wrapper,
+            "distributionUrl=https\\://services.gradle.org/distributions/gradle-9.1.0-bin.zip\nnetworkTimeout=10000\n",
+        )
+        .unwrap();
+
         patch_generated_android_project(&workspace, &generated).unwrap();
+
+        let wrapper = fs::read_to_string(wrapper).unwrap();
+        assert!(wrapper.contains("\nnetworkTimeout=120000\n"));
+        assert!(!wrapper.contains("networkTimeout=10000"));
+        assert!(wrapper.contains("gradle-9.1.0-bin.zip"));
 
         let library = fs::read_to_string(library).unwrap();
         let app = fs::read_to_string(app).unwrap();

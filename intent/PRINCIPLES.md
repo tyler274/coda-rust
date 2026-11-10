@@ -18,7 +18,7 @@ These govern everything below them: physician.md, duet.md, connected-care.md, ha
 
 **7. Real data is messy.** Nothing assumes clean input.
 
-**8. Learn from the best open agents.** Codex, Hermes, OpenClaw, Muse, Instinct and Grok are the references for the harness and the experience. The harness keeps evolving with them, which is why it stays out of the feature models.
+**8. Learn from the best open agents.** The harness and the experience follow the best open agents. [The harness spec](harness.md) names the references. The harness keeps evolving with them, which is why it stays out of the feature models.
 
 **9. Few controls, nothing internal on screen.** People steer by talking to the agent and with a few direct controls. There are no extra buttons, modals, toggles or exposed machinery, and every extra click takes something away from the physician's own intuition.
 
@@ -40,7 +40,7 @@ These apply to the physician app and Duet alike, on the web, iOS and Android.
 
 **U5. One shared component set.** The physician app and Duet are built from one set of shared Dioxus components, so every page, modal and element is consistent. The shared `ui` crate owns reusable presentation, and type, spacing, color and motion map to its roles, with no third palette or separate animation system.
 
-**U6. Keep what already works.** The React physician app and the Coda Agents work are the base. Porting keeps their successful design and interactions, and any intentional difference is agreed before it's built.
+**U6. Keep what already works.** The React physician app and the coda-agents work are the base. Porting keeps their successful design and interactions, and any intentional difference is agreed before it's built.
 
 **U7. Liquid motion and real state.** Clean states, clean transitions and clean boundaries. Motion, such as pulsing or loading indicators, shows progress instead of words. New information fades in gracefully, refreshed from the server, without blocking whatever the person is doing. Motion follows the actual run state and respects reduced motion.
 
@@ -50,7 +50,7 @@ These apply to the physician app and Duet alike, on the web, iOS and Android.
 
 ## What each product is
 
-- **Coda Agents (physician).** An ambient Codex for physicians: an AI care team that does the work between visits, under the physician's clinical authority.
+- **Chords (physician).** An ambient Codex for physicians: an AI care team that does the work between visits, under the physician's clinical authority.
 - **Duet (patient).** A managed personal agent for health, like Instinct, Muse, Grok, Hermes or OpenClaw, run and maintained for you. Today and the other screens are views of what it keeps, written by its tool calls.
 - **Connected care.** The patient's agent and the practice's AI care team working together, inside the hard limits of principle 5.
 

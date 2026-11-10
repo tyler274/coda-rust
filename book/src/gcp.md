@@ -12,11 +12,21 @@ operator from reviewed saved plans:
 
 | Root | Owns | State |
 | --- | --- | --- |
-| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_relay_image`: the IAP-protected `observability-relay` Cloud Run service, its `rust-relay` Direct VPC egress subnet and the reserved addresses of the Grafana and Langfuse internal load balancers. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
+| [`rust-environments`](/infra/gcp/rust-environments) | Behind `observability_cluster_enabled`: the private observability Autopilot cluster on `rust-private`, its subnet and secondary ranges, and the reserved internal gateway address. Behind `observability_relay_image`: the IAP-protected `observability-relay` Cloud Run service, its `rust-relay` Direct VPC egress subnet and the reserved addresses of the Grafana, Langfuse and langfuse-sso internal load balancers. Behind `observability_enabled`: the collector sidecars on the Cloud Run services and their telemetry environment, including `CODA_TELEMETRY_BACKEND` from its `telemetry_backend`, which must match the `observability` root's. | `rust-environments/stg` |
 | <a href="/infra/gcp/observability/README%2Emd"><code>observability</code></a> | Inside that cluster: the OpenTelemetry gateway collector and its internal load balancer, one operations backend chosen by `telemetry_backend` (the Datadog Agent and monitors with, off by default, the project-scoped Datadog GCP integration; or self-hosted Tempo, Loki, Prometheus and Grafana with, off by default, a Cloud Monitoring datasource), self-hosted Langfuse with its Cloud SQL and bucket, the internal load balancers that admit only the relay subnet, so people reach Grafana and Langfuse only at `staging.codahealth.ai/grafana/` and `/langfuse/` through public-site, and the Doppler operator. It reads the cluster and network through variables fed from `rust-environments` outputs and manages neither. Staging only. | `observability/stg` in the same state bucket |
 
 [Observability](observability.md) describes the per-signal paths and the
 content policy.
+
+Grafana and Langfuse show telemetry that can carry PHI, so people reach them
+only through Google IAP, and IAP admits only `group:gcp-engineering@codahealth.ai`
+plus the named service accounts a route needs to hop between services. Neither
+tool is granted to `allUsers`, `allAuthenticatedUsers`, a `domain:` or a single
+`user:`, and neither has a listener that skips IAP. Production keeps that rule:
+no production observability exists yet, and the roots refuse a production
+cluster, relay or observability environment until a production route is
+designed under it. The <a href="/infra/gcp/observability/README%2Emd#boundary">observability boundary</a>
+says how staging meets it.
 
 Run every command on this page inside `nix develop` from the repository root. The
 shell provides `gcloud`, `tofu`, `doppler`, `timeout` and `jq`; do not use host copies.
@@ -46,7 +56,8 @@ configuration, checks, and the
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
-| `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/` and `/langfuse/` requests to the internal load balancers. It reads no secrets and starts without Doppler |
+| `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/`, `/langfuse/` and `/langfuse-sso/` requests to the internal load balancers. It reads no secrets and starts without Doppler |
+| `langfuse-sso-image` | `coda-langfuse-sso` | runtime | `langfuse-sso`, the in-cluster OIDC issuer for Langfuse sign-in. It runs in GKE, not Cloud Run, and reads its secrets from a Doppler-synced Kubernetes Secret, so it starts without Doppler. The release publishes its digest; `infra/gcp/observability` pins it as `langfuse_sso_image` |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
 | `physician-migration-image` | `coda-physician-migrate` | migration | `physician-migrate`: physician-auth, front-door, then runtime chains; packaged synthetic charts for explicit `load-charts` |
 | `duet-migration-image` | `coda-duet-migrate` | migration | `duet-migrate`: Duet-owned chain and runtime grants, then optional front-door chain |
@@ -308,8 +319,9 @@ The release changes one field per service: the product container's image.
 each service's template around its `gcloud run services update`:
 
 - **Before.** Before any migration runs, each existing service's template must
-  have one unnamed container, or exactly the product container (named after the
-  service) and an `otel-collector` sidecar. With the sidecar, the product carries
+  have one unnamed container (`observability-relay`: one container named after
+  the service), or exactly the product container (named after the service) and
+  an `otel-collector` sidecar. With the sidecar, the product carries
   the telemetry environment (`DD_ENV`, `OTEL_EXPORTER_OTLP_ENDPOINT`,
   `CODA_LOG_FORMAT=json`, `CODA_TELEMETRY_CONTENT` of `none` or `full`,
   `CODA_TELEMETRY_BACKEND`), the sidecar carries its gateway configuration and

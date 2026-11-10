@@ -401,6 +401,10 @@ struct SubmitPayload {
     chat_id: String,
     text: String,
     physician_time_zone: String,
+    /// The rehearsal scenario. Only a simulation practice's session on the
+    /// hosted path may send one; see [`crate::hosting::SimulationPractices`].
+    #[serde(default)]
+    scenario: Option<String>,
 }
 
 /// Accepts `message.submit`, and, on the hosted path, `work.resume`,
@@ -446,6 +450,10 @@ pub(crate) async fn submit(
     };
     if live.durable.is_some() {
         return accept_durable(live, auth_ctx, payload, idempotency_key).await;
+    }
+    // Inline chat has no rehearsal practices; its simulation is the local one.
+    if payload.scenario.is_some() {
+        return rejected_scenario();
     }
     let request = {
         let mut session = live.session.lock().expect("chat session");
@@ -647,10 +655,14 @@ async fn accept_durable(
         workspace: payload.patient_workspace_id.clone(),
         chat: payload.chat_id.clone(),
     };
+    let Ok(scenario) = chat.admit_scenario(&scope.practice, payload.scenario) else {
+        return rejected_scenario();
+    };
     let input = local_product::runtime::Input {
         key: idempotency_key,
         text: payload.text,
         timezone: payload.physician_time_zone,
+        scenario,
     };
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     match chat.accept(&scope, &input, session_hash).await {
@@ -715,7 +727,9 @@ fn turn_kind(role: &str) -> &'static str {
 /// The reference `SnapshotResponse` subset this site owns. A failed turn adds
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes. A running turn offers Stop. A
-/// held turn offers Resume. The physician's text stays saved.
+/// held turn offers Resume. An answered turn names the attempt that answered
+/// it, so an operator can match the reply to its telemetry by attempt id. The
+/// physician's text stays saved.
 fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -745,6 +759,11 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
                 "text": WRITING,
                 "stop_target": { "work_item_id": conversation.work },
             }));
+        }
+        "completed" => {
+            if let Some(attempt) = conversation.attempts.last() {
+                runs.push(json!({ "run_id": attempt.id, "state": "completed" }));
+            }
         }
         _ => {}
     }
@@ -929,6 +948,19 @@ pub(crate) async fn events(State(live): State<Arc<Live>>) -> Response {
             HeaderValue::from_static("text/event-stream"),
         )],
         Body::from_stream(stream),
+    )
+        .into_response()
+}
+
+/// A scenario tag from a session that may not send one, or a malformed tag.
+/// Nothing is saved.
+pub(crate) fn rejected_scenario() -> Response {
+    (
+        StatusCode::FORBIDDEN,
+        Json(json!({
+            "outcome": "rejected",
+            "message": "Only a rehearsal practice can tag a message with a scenario.",
+        })),
     )
         .into_response()
 }
@@ -1223,7 +1255,10 @@ mod durable_snapshot_tests {
         assert_eq!(held["runs"][0]["state"], "held");
         let done = durable_snapshot_body(Some(&conversation("completed")));
         assert_eq!(done["conversation"].as_array().unwrap().len(), 1);
-        assert!(done["runs"].as_array().unwrap().is_empty());
+        assert_eq!(
+            done["runs"],
+            serde_json::json!([{ "run_id": "run-1", "state": "completed" }])
+        );
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
     }

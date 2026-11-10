@@ -16,6 +16,9 @@ pub struct Model {
     pub created_at: i64,
     /// The Unix second the session stops being valid.
     pub expires_at: i64,
+    /// The hard end of a fixed session, which activity never moves past.
+    /// `None` for an ordinary sign-in, which slides within its seven days.
+    pub ends_at: Option<i64>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

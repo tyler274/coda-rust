@@ -4,6 +4,7 @@
 
 #[cfg(feature = "iap")]
 pub mod iap;
+pub mod signjwt;
 
 use serde::Serialize;
 use serde::de::DeserializeOwned;

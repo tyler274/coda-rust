@@ -5,10 +5,10 @@
 pub use http::HttpError;
 use physician_wire::{
     ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
-    PanelAssignmentResponse, PanelResponse, PatientInvitationResponse, PatientLinkWire,
-    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PlanItemWire, PracticeDayResponse, RecentConversationsResponse, ReplyDraftWire, SignInResponse,
-    TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
+    PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    PatientWorkspacesResponse, PhysicianDraft, PlanItemWire, PracticeDayResponse,
+    RecentConversationsResponse, ReplyDraftWire, SignInResponse, TodayListResponse,
+    UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -210,12 +210,6 @@ impl PhysicianClient {
         self.get("/auth/whoami").await
     }
 
-    /// Reads the patient workspaces on `physician_id`'s panel.
-    pub async fn panel(&self, physician_id: &str) -> Result<PanelResponse, http::HttpError> {
-        self.get(&format!("/auth/panels/{}", query_escape(physician_id)))
-            .await
-    }
-
     /// Assigns or removes `patient_workspace_id` on `physician_id`'s panel.
     /// Requires the signed-in account to hold clinic admin / panel-assignment
     /// permission (`admin: true`).
@@ -397,27 +391,6 @@ impl PhysicianClient {
     /// Reads one patient workspace.
     pub async fn workspace(&self, id: &str) -> Result<PatientWorkspaceResponse, http::HttpError> {
         self.get(&format!("/patient-workspaces/{id}")).await
-    }
-
-    /// Explicitly invites a roster patient `(practice_id, patient_workspace_id)` to link Duet (`ENG-48`).
-    pub async fn invite_patient(
-        &self,
-        workspace_id: &str,
-    ) -> Result<PatientInvitationResponse, http::HttpError> {
-        self.post(
-            &format!("/patient-workspaces/{workspace_id}/invite"),
-            &serde_json::json!({}),
-        )
-        .await
-    }
-
-    /// Reads the front-door link, consent state, and cadence for one patient workspace (`ENG-48`).
-    pub async fn patient_link(
-        &self,
-        workspace_id: &str,
-    ) -> Result<PatientLinkWire, http::HttpError> {
-        self.get(&format!("/patient-workspaces/{workspace_id}/link"))
-            .await
     }
 
     /// Reads the current doctor's plan draft and approval state for one patient workspace (`ENG-53`).

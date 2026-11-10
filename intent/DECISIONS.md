@@ -1,31 +1,31 @@
 # Open decisions
 
-Everything here is undecided. The specs hold only what's decided, so when one of these is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID, for example "P3: they see a short notice".
+Everything here is undecided. The specs hold only what's decided, so when one of these is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID, for example "Q5: they see a short notice".
 
 ## Product decisions
 
 **Physician**
 
-- **P2. Practice access and roles.** Which patients each physician may access, and whether a practice has roles. Patient messaging waits on it for who sees a message before it's matched, who sees a patient's phone and email while matching, and who may send.
-- **P3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
+- **Q2. Practice access and roles.** Which patients each physician may access, and whether a practice has roles. Patient messaging waits on it for who sees a message before it's matched, who sees a patient's phone and email while matching, and who may send.
+- **Q3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
 
 **Duet**
 
-- **P4. You while AI isn't allowed.** Whether the person can add or edit notes and medications in You while AI isn't allowed.
-- **P5. An interrupted reply.** What the person sees while an interrupted reply recovers. The unfinished draft is replaced, as the [harness](harness.md#guarantees) promises.
-- **P6. Deleting an email or Google account.** How a person who signs in with email or Google reconfirms before deleting their account.
-- **P7. Newer Terms.** How the app shows newer Terms and takes acceptance.
+- **Q4. You while AI isn't allowed.** Whether the person can add or edit notes and medications in You while AI isn't allowed.
+- **Q5. An interrupted reply.** What the person sees while an interrupted reply recovers. The unfinished draft is replaced, as the [harness](harness.md#guarantees) promises.
+- **Q6. Deleting an email or Google account.** How a person who signs in with email or Google reconfirms before deleting their account.
+- **Q7. Newer Terms.** How the app shows newer Terms and takes acceptance.
 
 **Connected care**
 
-- **P8. An expired or cancelled invite.** What the patient sees when they open one.
-- **P9. An invite opened but not shared.** What happens to the invite, and what the practice sees, when a patient opens it and doesn't tap Share.
-- **P10. Leaving a practice.** Whether Duet confirms before the patient leaves, and what it says.
-- **P11. Work in progress when a connection ends.** What happens to work the practice's agents are doing on that patient's Duet data.
-- **P12. The discharge notice.** What it says, such as the reason and who to contact.
-- **P13. After a rejoin.** Whether the practice sees the disconnected period marked.
-- **P14. Declining invites.** Whether a patient can decline future invites from a practice.
-- **P15. Account deletion copy.** The confirmation wording when a connected patient deletes their account.
+- **Q8. An expired or cancelled invite.** What the patient sees when they open one.
+- **Q9. An invite opened but not shared.** What happens to the invite, and what the practice sees, when a patient opens it and doesn't tap Share.
+- **Q10. Leaving a practice.** Whether Duet confirms before the patient leaves, and what it says.
+- **Q11. Work in progress when a connection ends.** What happens to work the practice's agents are doing on that patient's Duet data.
+- **Q12. The discharge notice.** What it says, such as the reason and who to contact.
+- **Q13. After a rejoin.** Whether the practice sees the disconnected period marked.
+- **Q14. Declining invites.** Whether a patient can decline future invites from a practice.
+- **Q15. Account deletion copy.** The confirmation wording when a connected patient deletes their account.
 
 **UI** (judged against PRINCIPLES.md U1–U9)
 
@@ -39,14 +39,14 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 **After the MVP**
 
-- **A1. Coda's own clinical record.** Whether Coda keeps its own record or builds into EHRs. In the MVP the EHR is the source of truth, read only, and Duet data a practice receives lives in Coda.
-- **A2. The patient as co-owner of the record.**
-- **A3. Calendar and email connections in Duet.**
-- **A4. NPI registry ingestion** as its own groundwork.
-- **A5. Pricing.** Duet stays free until pricing is chosen. Whatever premium becomes, it only includes what exists because the patient has a doctor on Coda.
-- **A6. A Hint route** that doesn't depend on the practice's open Chrome.
-- **A7. Background-run limits.** There's no limit in the MVP. A later limit might cap runs per patient by what the practice pays.
-- **A8. Reference ranges on For my doctor,** once their sourcing is better.
+- **F1. Coda's own clinical record.** Whether Coda keeps its own record or builds into EHRs. In the MVP the EHR is the source of truth, read only, and Duet data a practice receives lives in Coda.
+- **F2. The patient as co-owner of the record.**
+- **F3. Calendar and email connections in Duet.**
+- **F4. NPI registry ingestion** as its own groundwork.
+- **F5. Pricing.** Duet stays free until pricing is chosen. Whatever premium becomes, it only includes what exists because the patient has a doctor on Coda.
+- **F6. A Hint route** that doesn't depend on the practice's open Chrome.
+- **F7. Background-run limits.** There's no limit in the MVP. A later limit might cap runs per patient by what the practice pays.
+- **F8. Reference ranges on For my doctor,** once their sourcing is better.
 
 **Studies**
 
@@ -59,10 +59,10 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 ## Engineering decisions
 
-- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from. The agents judge which visits to prepare and how far ahead.
+- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from.
 - **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
 - **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
-- **E4. Freshness after a one-time pull.** How records from other systems stay fresh. Every source shows when it was last refreshed.
+- **E4. Freshness after a one-time pull.** How records from other systems stay fresh.
 - **E5. athena.** The patient-access route and what's still missing.
 - **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.
 - **E7. Chart search.** Outline first or plain search, settled by evals.

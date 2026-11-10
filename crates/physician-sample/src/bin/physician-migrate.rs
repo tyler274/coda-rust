@@ -6,6 +6,10 @@
 //! email gets its own stable physician id. Existing accounts are left as they
 //! are; every other profile refuses the list.
 //!
+//! When `PHYSICIAN_SIMULATION_PRACTICES` names the rehearsal practice (again
+//! staging-preview only), the job also seeds that practice, its rehearsal
+//! physician and its fixture panel ([`physician_sample::rehearsal`]).
+//!
 //! `physician-migrate load-charts` loads the built synthetic charts in
 //! `PHYSICIAN_SYNTHETIC_CHARTS` into that practice and does nothing else. A
 //! deploy never runs it. It needs the schema and takes the accounts already there,
@@ -16,8 +20,9 @@
 use physician_sample::STAGING_PRACTICE_ID;
 use physician_sample::chart_load::load_synthetic_practice;
 use physician_sample::hosting::{
-    StagingAccount, staging_accounts, staging_physician_id, synthetic_charts,
+    SimulationPractices, StagingAccount, staging_accounts, staging_physician_id, synthetic_charts,
 };
+use physician_sample::rehearsal::{REHEARSAL_PRACTICE_ID, seed_rehearsal_practice};
 use sea_orm::{ConnectOptions, Database, DatabaseConnection, DbErr};
 
 async fn migration_connection(url: &str) -> Result<DatabaseConnection, DbErr> {
@@ -59,13 +64,20 @@ async fn main() {
             std::process::exit(1);
         }
     };
-    if let Err(error) = migrate(&url, &accounts).await {
+    let rehearsal = match SimulationPractices::from_env(|key| std::env::var(key).ok()) {
+        Ok(practices) => practices.contains(REHEARSAL_PRACTICE_ID),
+        Err(error) => {
+            eprintln!("physician migrations refused: {error}");
+            std::process::exit(1);
+        }
+    };
+    if let Err(error) = migrate(&url, &accounts, rehearsal).await {
         eprintln!("physician migrations failed: {error}");
         std::process::exit(1);
     }
 }
 
-async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
+async fn migrate(url: &str, accounts: &[StagingAccount], rehearsal: bool) -> Result<(), String> {
     let db = migration_connection(url)
         .await
         .map_err(|error| format!("physician database connection: {error}"))?;
@@ -107,6 +119,10 @@ async fn migrate(url: &str, accounts: &[StagingAccount]) -> Result<(), String> {
                 "already present"
             }
         );
+    }
+    if rehearsal {
+        seed_rehearsal_practice(&auth, &runtime, now).await?;
+        println!("rehearsal practice {REHEARSAL_PRACTICE_ID} seeded");
     }
     Ok(())
 }

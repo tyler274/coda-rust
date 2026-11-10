@@ -13,7 +13,14 @@ submodule or a generated wire schema is not a specification, and is not restored
   can check in types, ownership and interfaces, so pieces cannot be plugged in
   upside down. Use static analysis generously to enforce those rules. Prefer
   guarantees over conventions callers must remember, and choose the simplest
-  representation that prevents meaningful mistakes.
+  representation that prevents meaningful mistakes. Common misses: bools or
+  `Option`s that together encode one state, where an enum holds each state's
+  data in its variant; strings for codes, ids and states, which parse once at
+  the boundary into enums or newtypes; one string-named entry point where each
+  kind of call deserves its own typed function; error variants no path
+  produces; and wildcard arms or `#[serde(other)]` that give up exhaustiveness.
+  Precedents: the typed calls in `crates/ui/src/script.rs`, the `Readiness`
+  and `Standing` model in `crates/extension-popup/src/face.rs`.
 - **Use the typed owner, not a string.** Another language or a structured meaning
   never travels as text inside Rust. Queries go through the product's typed
   database API, browser behaviour lives in its own script files and takes
@@ -37,6 +44,9 @@ submodule or a generated wire schema is not a specification, and is not restored
   check whether their decisions belong together.
 
 Move code toward these as you touch it; don't mass-convert just to comply.
+State, fields and variants a change adds meet them from the start. When moving
+existing state costs more than the change can carry, such as a persisted
+format's migration, say so and why in the PR.
 Clippy's rules in `[workspace.lints]` hold what a rule can tell right from wrong;
 review holds the rest.
 

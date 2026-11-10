@@ -59,11 +59,14 @@ Run it when a change touches the message-matching README, `MessageMatching.tla`,
    than the chart budget, so use TLC directly, or `/statechart`, which then draws no chart.
 2. When the README or the model changed, run each break in the table below on a scratch copy:
    against its rule alone, which must fail, and against all the other rules, which must hold. A new
-   rule gets a new break.
+   rule gets a new break. Preserve each exact scratch model and configuration, the command, its
+   exit status and the complete TLC output, including the counterexample for the intended failure.
+   Summary tables alone do not establish these checks.
 3. Check that each step in the README's tables is an action in the model, and each action a step.
 4. When the README or the model changed, run the model one size larger on each constant in turn:
    three patients, three physicians, three messages, three moves. Each run must find nothing. Three
-   messages is the largest: 2.2 million states in about 6 minutes.
+   messages is the largest: 2.2 million states in about 6 minutes. Preserve each enlarged
+   configuration and its command, exit status and complete TLC output.
 5. Draw each chart with `/statechart` on `Charts.tla`, with its `.cfg` and its `.mjs` as the view.
    Render it as the skill says, and read it. All rules must hold in each chart.
 

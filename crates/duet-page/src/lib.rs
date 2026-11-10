@@ -1,7 +1,7 @@
 //! Faithful, measured US Letter doctor pages. Approval/currentness belongs to the
 //! caller; this crate only renders the supplied snapshot, without clinical inference.
 //!
-//! Use [`layout_approved`] for new callers. It retains the complete text and an
+//! [`layout_approved`] lays out a page. It retains the complete text and an
 //! extended preview even on overflow, while [`PageLayout::pdf`] refuses export.
 //! The cover note is deliberately absent from [`ApprovedPage`]. Noto Sans Regular
 //! and Bold are embedded by `oxifont-bundled` under SIL OFL 1.1. Additional
@@ -610,64 +610,4 @@ pub fn layout_approved(page: &ApprovedPage) -> PageLayout {
         }
     }
     unreachable!("size sequence is nonempty")
-}
-
-/// Legacy, questions-only input. New integrations should use [`ApprovedPage`].
-#[derive(Debug, Clone, PartialEq)]
-pub struct DoctorPage {
-    /// Patient name.
-    pub name: String,
-    /// Patient's calendar date of birth.
-    pub date_of_birth: String,
-    /// Ordered questions.
-    pub questions: Vec<String>,
-    /// Accompanies the document separately and is never included in PDF/preview.
-    pub cover_note: Option<String>,
-}
-/// Legacy preview line; `y` retains the old bottom-left PDF coordinate convention.
-#[derive(Debug, Clone, PartialEq)]
-pub struct PlacedLine {
-    /// Logical text.
-    pub text: String,
-    /// Font size in points.
-    pub size: f32,
-    /// Baseline measured from the bottom.
-    pub y: f32,
-}
-/// Legacy result. Use [`PageLayout`] for detailed blockers and overflow preview.
-#[derive(Debug, Clone, PartialEq)]
-pub enum LaidOut {
-    /// Complete, exportable page.
-    Page {
-        /// Preview text lines; for exact shaped preview use [`PageLayout::preview_svg`].
-        lines: Vec<PlacedLine>,
-        /// Complete PDF bytes.
-        pdf: Vec<u8>,
-    },
-    /// Export is blocked (overflow, unsupported glyphs, or invalid question count).
-    Overflow,
-}
-/// Compatibility adapter. Excludes the cover note, including for legacy callers.
-pub fn lay_out(page: &DoctorPage) -> LaidOut {
-    let layout = layout_approved(&ApprovedPage {
-        name: Some(page.name.clone()),
-        date_of_birth: Some(page.date_of_birth.clone()),
-        questions: page.questions.clone(),
-        ..Default::default()
-    });
-    match layout.pdf() {
-        Ok(pdf) => LaidOut::Page {
-            lines: layout
-                .lines
-                .iter()
-                .map(|line| PlacedLine {
-                    text: line.text.clone(),
-                    size: line.size,
-                    y: PAGE_HEIGHT - line.y,
-                })
-                .collect(),
-            pdf,
-        },
-        Err(_) => LaidOut::Overflow,
-    }
 }

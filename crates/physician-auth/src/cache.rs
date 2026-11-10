@@ -281,6 +281,15 @@ impl AuthStore for CachedAuthStore {
         result
     }
 
+    async fn mint_fixed_session(
+        &self,
+        identity: &PhysicianIdentity,
+        now: u64,
+        ends_at: u64,
+    ) -> Result<String, SignInError> {
+        self.inner.mint_fixed_session(identity, now, ends_at).await
+    }
+
     async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         self.read_session(token, now).await
     }
@@ -661,6 +670,14 @@ mod tests {
             c: u64,
         ) -> Result<(PhysicianIdentity, String), SignInError> {
             self.inner.complete_sign_in(a, b, c).await
+        }
+        async fn mint_fixed_session(
+            &self,
+            a: &PhysicianIdentity,
+            b: u64,
+            c: u64,
+        ) -> Result<String, SignInError> {
+            self.inner.mint_fixed_session(a, b, c).await
         }
         async fn end_session(&self, a: &str) -> Result<(), StoreUnavailable> {
             self.inner.end_session(a).await

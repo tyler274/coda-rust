@@ -19,6 +19,8 @@ base64 = "0.23"
 front-door = { path = "../front-door" }
 futures-util = { version = "0.3", default-features = false, features = ["std"] }
 gmail = { path = "../gmail" }
+# The rehearsal sign-in verifies physician's own IAP assertion.
+http = { path = "../http", package = "coda-http", features = ["iap"] }
 local-product = { path = "../local-product" }
 harness = { path = "../harness" }
 patient-work = { path = "../patient-work" }
@@ -44,8 +46,12 @@ base64 = "0.23"
 jsonwebtoken = { version = "11", default-features = false, features = ["aws_lc_rs", "use_pem"] }
 mailparse = "0.18"
 gmail = { path = "../gmail", features = ["test-util"] }
+# Fixture-signed IAP assertions for the rehearsal sign-in tests.
+http = { path = "../http", package = "coda-http", features = ["test-util"] }
 # The disposable emulator behind tests/scale.
 pubsub = { path = "../pubsub", features = ["test-util"] }
+# The disposable Docker Langfuse and collector behind the full-path test.
+telemetry = { path = "../telemetry", features = ["testing"] }
 public-site = { path = "../public-site" }
 opentelemetry = { version = "0.33", default-features = false, features = ["trace"] }
 opentelemetry_sdk = { version = "0.33", default-features = false, features = ["trace", "testing"] }

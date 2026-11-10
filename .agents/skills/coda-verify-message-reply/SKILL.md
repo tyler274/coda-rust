@@ -18,7 +18,7 @@ The card is not stored: `Card(d)` says what it shows from that state.
 | # | Rule | The harm when it breaks |
 | --- | --- | --- |
 | 1 | OnlyWithAccess | A physician sees or acts on a reply of a patient they may not access. |
-| 2 | OnlyTheReviewAnswers | A reply closes as answered when the practice didn't answer, an automatic reply counts as an answer, or the practice's answer never closes the reply. |
+| 2 | OnlyTheReviewAnswers | A reply closes as answered when the practice didn't answer, an automatic reply counts as an answer, or a message the practice answered never ends handled. |
 | 3 | ConcernStays | Closing a reply hides Coda's concern, or a move to not a patient leaves it. |
 | 4 | YourDraft | Coda or another physician changes your draft, your draft shows on a reply you didn't write it for, or you see an old reply of Coda's. |
 | 5 | CopiesWhatYouSee | "Copy reply" copies a text the card doesn't show, or copying changes the reply. |
@@ -57,16 +57,24 @@ Run it when a change touches the message-reply README, `MessageReply.tla`, `Mess
 ## Run
 
 1. Check the model with TLC: `MessageReply.tla` with `MessageReply.cfg`. It passes when all twelve
-   rules hold. TLC reaches 3,025,654 distinct states in about 3 minutes. That is more than the chart
-   budget, so use TLC directly, or `/statechart`, which then draws no chart.
+   rules hold. The full state space exceeds the chart budget, so use TLC directly, or `/statechart`,
+   which then draws no chart.
 2. When the README or the model changed, run each break in the table below on a scratch copy:
    against its rule alone, which must fail, and against all the other rules, which must hold. A new
-   rule gets a new break.
-3. Check that each step in the README's tables is an action in the model, and each action a step.
-4. When the README or the model changed, run the model one size larger on each constant in turn:
+   rule gets a new break. Preserve each exact scratch model and configuration, the command, its
+   exit status and the complete TLC output, including the counterexample for the intended failure.
+   Summary tables alone do not establish these checks.
+3. Exercise partial answers on a scratch scenario: two patient messages arrive before one practice
+   message, then the review reads it and finishes with a reply. Check both singleton answer sets
+   (`{1}` and `{2}`): only that message ends answered, and the ready reply covers the other one.
+   Preserve a reachable trace for each outcome; passing invariants alone do not establish that
+   either path exists.
+4. Check that each step in the README's tables is an action in the model, and each action a step.
+5. When the README or the model changed, run the model one size larger on each constant in turn:
    three patients, three physicians, three patient messages, two moves. Each run must find nothing.
-   Each takes 15 minutes to 2 hours: three physicians is the largest, at 30.7 million states.
-5. Draw each chart with `/statechart` on `Charts.tla`, with its `.cfg` and its `.mjs` as the view.
+   Preserve each enlarged configuration and its command, exit status and complete TLC output.
+   These runs can take hours; an incomplete run is not a pass.
+6. Draw each chart with `/statechart` on `Charts.tla`, with its `.cfg` and its `.mjs` as the view.
    Render it as the skill says, and read it. All rules must hold in each chart.
 
 | Chart | Starts | Shows |
@@ -95,8 +103,10 @@ Each `.mjs` says what its chart leaves out.
   at any version so far, a physician's own text, its own words, or an automatic reply.
 - The model keeps each physician's draft of the reply in front of them. Drafts of earlier replies
   stay as records, outside the model.
-- Whether a reply would help, whether a review flags a concern, and whether the practice's message
-  answers the patient are judgment: TLC tries each choice.
+- Whether a reply would help, whether a review flags a concern, and which patient messages the
+  practice's message answers are judgment: TLC tries each choice. `sent.answers` is that judged
+  subset of messages already written, including the empty set. An automatic reply has the empty
+  set. Only the review changes a message to answered; unanswered messages remain eligible for its reply.
 - TLC covers every state of the finite model. It does not reach the code.
 
 ## Each rule fails on its own

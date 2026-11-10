@@ -53,9 +53,16 @@ deny = []
 
 [advisories]
 version = 2
-# Vulnerabilities still fail. These four are transitive unmaintained crates
-# with no safe upgrade; each is tracked for replacement.
+# Advisories fail unless explicitly excepted below with a scoped rationale.
 ignore = [
+    # Temporary risk acceptance: patient-bank imports third-party SQLite files.
+    # Read-only access and synthetic data do not prevent crafted database/WAL
+    # pairs from exposing process memory (CVE-2026-119375). Do not import
+    # untrusted database/WAL pairs while this exception remains.
+    # Patched rusqlite 0.41 needs libsqlite3-sys ^0.39, but SQLx 0.9 requires
+    # <0.38. Remove this exception after a compatible patched upgrade passes
+    # patient-bank tests and cargo-deny. Manual review due 2026-11-16.
+    { id = "RUSTSEC-2026-0459", reason = "Temporary SQLite database/WAL memory-disclosure risk acceptance for patient-bank; patched rusqlite blocked by SQLx native-library dependency bounds; review by 2026-11-16" },
     { id = "RUSTSEC-2024-0370", reason = "unsafe-libyaml via serde_yaml 0.9 in agent-skills; replace serde_yaml or move to saphyr" },
     { id = "RUSTSEC-2024-0449", reason = "proc-macro-error is unmaintained; transitive via darling/syn struct generators" },
     { id = "RUSTSEC-2025-0057", reason = "fxhash is unmaintained; transitive via rustc-hash users" },

@@ -161,6 +161,47 @@ run "langfuse_has_no_public_ingress" {
     condition     = google_service_account_iam_member.langfuse_workload_identity[0].member == "serviceAccount:test-rust-stg-only.svc.id.goog[observability/langfuse]"
     error_message = "Langfuse must bind through the observability cluster project's Workload Identity pool."
   }
+
+  assert {
+    condition = (
+      local.langfuse_values.langfuse.licenseKey.secretKeyRef == { name = "", key = "" } &&
+      !contains(keys(local.doppler_secrets["langfuse-secrets"]), "LANGFUSE_EE_LICENSE_KEY")
+    )
+    error_message = "Without langfuse_ee_trial Langfuse gets no license key and Doppler needs none."
+  }
+}
+
+# With a license key Langfuse's usage report ignores TELEMETRY_ENABLED; it
+# stays silent only because no PostHog key or host reaches either container.
+run "langfuse_ee_trial_unlocks_enterprise_without_telemetry" {
+  command = plan
+  variables { langfuse_ee_trial = true }
+
+  assert {
+    condition = (
+      local.langfuse_values.langfuse.licenseKey.secretKeyRef == { name = "langfuse-secrets", key = "LANGFUSE_EE_LICENSE_KEY" } &&
+      local.doppler_secrets["langfuse-secrets"]["LANGFUSE_EE_LICENSE_KEY"] == "LANGFUSE_EE_LICENSE_KEY" &&
+      contains(yamldecode(helm_release.doppler_secrets.values[0]).manifests[index([for m in yamldecode(helm_release.doppler_secrets.values[0]).manifests : m.metadata.name], "langfuse-secrets")].spec.secrets, "LANGFUSE_EE_LICENSE_KEY")
+    )
+    error_message = "The trial must read the license key from the Doppler-synced langfuse-secrets."
+  }
+
+  assert {
+    condition = (
+      !local.langfuse_values.langfuse.features.telemetryEnabled &&
+      !strcontains(upper(yamlencode(local.langfuse_values)), "POSTHOG")
+    )
+    error_message = "With a license key, telemetry must stay off and no PostHog key or host may reach Langfuse, or its usage report would leave the cluster."
+  }
+}
+
+run "reject_the_ee_trial_without_langfuse" {
+  command = plan
+  variables {
+    langfuse_enabled  = false
+    langfuse_ee_trial = true
+  }
+  expect_failures = [var.langfuse_ee_trial]
 }
 
 # Phase one of the staging rollout: the gateway and the Datadog Agent run
@@ -698,6 +739,44 @@ run "reject_qualification_monitor_under_grafana" {
   expect_failures = [var.datadog_qualification_monitor_enabled]
 }
 
+run "chat_failure_monitor_has_its_own_gate" {
+  command = plan
+  variables {
+    chat_failure_monitor_enabled = true
+    alert_notify                 = "@slack-confirmed-test"
+  }
+  assert {
+    condition = (
+      length(datadog_monitor.chat_generation_errors) == 1 &&
+      strcontains(datadog_monitor.chat_generation_errors[0].query, "service:physician-worker env:staging status:error") &&
+      endswith(datadog_monitor.chat_generation_errors[0].query, ".last(\"10m\") > 5") &&
+      datadog_monitor.chat_generation_errors[0].monitor_thresholds[0].critical == "5" &&
+      strcontains(datadog_monitor.chat_generation_errors[0].message, "@slack-confirmed-test")
+    )
+    error_message = "The chat failure gate must create the chat generation monitor at its threshold, notifying the confirmed handle."
+  }
+  assert {
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) + length(datadog_monitor.qualification) == 0
+    error_message = "The chat failure gate must not enable any other Datadog monitor."
+  }
+}
+
+run "reject_chat_failure_monitor_without_alert_handle" {
+  command = plan
+  variables { chat_failure_monitor_enabled = true }
+  expect_failures = [var.chat_failure_monitor_enabled]
+}
+
+run "reject_chat_failure_monitor_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend            = "grafana"
+    chat_failure_monitor_enabled = true
+    alert_notify                 = "@slack-confirmed-test"
+  }
+  expect_failures = [var.chat_failure_monitor_enabled]
+}
+
 run "reject_unconfirmed_alert_route" {
   command = plan
   variables { datadog_monitors_enabled = true }
@@ -1072,6 +1151,157 @@ run "staging_proxy_under_datadog_exposes_only_langfuse" {
     condition     = keys(kubernetes_service_v1.observability_web) == ["langfuse"] && output.staging_proxy.grafana_url == null
     error_message = "Without the Grafana backend no Grafana load balancer exists."
   }
+}
+
+run "langfuse_signs_in_through_the_iap_issuer" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip      = "10.82.0.11"
+      langfuse_ip     = "10.82.0.12"
+      langfuse_sso_ip = "10.82.0.13"
+      source_ranges   = ["10.80.1.0/26"]
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+
+  assert {
+    condition = (
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].replicas == "1" &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].strategy[0].type == "Recreate" &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].security_context[0].run_as_non_root &&
+      !kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].automount_service_account_token &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].image == "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111" &&
+      { for e in kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].env : e.name => e.value } == {
+        PORT                       = "3000"
+        LANGFUSE_SSO_ISSUER        = "http://langfuse-sso.observability.svc.cluster.local:3000/langfuse-sso"
+        LANGFUSE_SSO_AUTHORIZE_URL = "https://staging.example.test/langfuse-sso/authorize"
+        LANGFUSE_SSO_CLIENT_ID     = "langfuse"
+        LANGFUSE_SSO_REDIRECT_URI  = "https://staging.example.test/langfuse/api/auth/callback/custom"
+        LANGFUSE_SSO_IAP_AUDIENCE  = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+      } &&
+      kubernetes_deployment_v1.langfuse_sso["langfuse-sso"].spec[0].template[0].spec[0].container[0].env_from[0].secret_ref[0].name == "langfuse-sso" &&
+      kubernetes_service_v1.langfuse_sso["langfuse-sso"].spec[0].type == "ClusterIP"
+    )
+    error_message = "One non-root issuer replica must read public-site's audience and the exact callback from plain settings and its secrets only from the Doppler-synced Secret, behind a ClusterIP Service."
+  }
+
+  assert {
+    condition = (
+      keys(kubernetes_service_v1.observability_web) == ["langfuse", "langfuse-sso"] &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].load_balancer_ip == "10.82.0.13" &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].load_balancer_source_ranges == toset(["10.80.1.0/26"]) &&
+      kubernetes_service_v1.observability_web["langfuse-sso"].spec[0].selector == tomap({ application = "observability", component = "langfuse-sso" }) &&
+      output.staging_proxy.internal["langfuse-sso"] == "http://10.82.0.13:3000/langfuse-sso/"
+    )
+    error_message = "The issuer gets its own internal load balancer on its reserved address, open only to the relay subnet."
+  }
+
+  assert {
+    condition = (
+      { for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.name => e.value if can(e.value) } == {
+        LANGFUSE_INIT_ORG_ID                     = "coda"
+        LANGFUSE_INIT_ORG_NAME                   = "Coda"
+        LANGFUSE_INIT_PROJECT_ID                 = "coda-agents-staging"
+        LANGFUSE_INIT_PROJECT_NAME               = "coda-agents"
+        LANGFUSE_INIT_USER_NAME                  = "Coda Admin"
+        AUTH_CUSTOM_NAME                         = "Google (staging IAP)"
+        AUTH_CUSTOM_ISSUER                       = "http://langfuse-sso.observability.svc.cluster.local:3000/langfuse-sso"
+        AUTH_CUSTOM_CLIENT_ID                    = "langfuse"
+        AUTH_CUSTOM_SCOPE                        = "openid email profile"
+        AUTH_CUSTOM_CHECKS                       = "pkce,state,nonce"
+        AUTH_CUSTOM_CLIENT_AUTH_METHOD           = "client_secret_basic"
+        AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG = "ES256"
+        AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING        = "true"
+        LANGFUSE_DEFAULT_ORG_ID                  = "coda"
+        LANGFUSE_DEFAULT_ORG_ROLE                = "NONE"
+        AUTH_DISABLE_USERNAME_PASSWORD           = "true"
+      } &&
+      one([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.valueFrom.secretKeyRef if e.name == "LANGFUSE_ALLOWED_ORGANIZATION_CREATORS"]) == { name = "langfuse-init", key = "LANGFUSE_INIT_USER_EMAIL" } &&
+      one([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.valueFrom.secretKeyRef if e.name == "AUTH_CUSTOM_CLIENT_SECRET"]) == { name = "langfuse-secrets", key = "LANGFUSE_SSO_CLIENT_SECRET" } &&
+      !contains([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e.name], "LANGFUSE_DEFAULT_PROJECT_ID") &&
+      local.langfuse_values.langfuse.features.signUpDisabled == false
+    )
+    error_message = "Langfuse must sign people in through the issuer into the coda org with no role and no project, refuse every password sign-in and sign-up, name the admin as the organization creator, and read the client secret from the synced Secret."
+  }
+
+  assert {
+    condition = (
+      local.doppler_secrets["langfuse-sso"] == { LANGFUSE_SSO_CLIENT_SECRET = "LANGFUSE_SSO_CLIENT_SECRET", LANGFUSE_SSO_SIGNING_KEY = "LANGFUSE_SSO_SIGNING_KEY" } &&
+      local.doppler_secrets["langfuse-secrets"]["LANGFUSE_SSO_CLIENT_SECRET"] == "LANGFUSE_SSO_CLIENT_SECRET"
+    )
+    error_message = "The issuer's client secret and signing key, and Langfuse's copy of the client secret, come only from Doppler."
+  }
+}
+
+run "langfuse_keeps_password_sign_in_without_the_issuer" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  }
+  assert {
+    condition = (
+      length(kubernetes_deployment_v1.langfuse_sso) == 0 &&
+      !contains(keys(local.doppler_secrets), "langfuse-sso") &&
+      !contains(keys(local.doppler_secrets["langfuse-secrets"]), "LANGFUSE_SSO_CLIENT_SECRET") &&
+      length([for e in local.langfuse_values.langfuse.web.pod.additionalEnv : e if startswith(e.name, "AUTH_") || startswith(e.name, "LANGFUSE_DEFAULT_")]) == 0 &&
+      local.langfuse_values.langfuse.features.signUpDisabled
+    )
+    error_message = "Without langfuse_sso_image there is no issuer and no extra Doppler key, the password login stays, and sign-up stays off."
+  }
+}
+
+run "reject_the_issuer_without_its_load_balancer_address" {
+  command = plan
+  variables {
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip    = "10.82.0.11"
+      langfuse_ip   = "10.82.0.12"
+      source_ranges = ["10.80.1.0/26"]
+    }
+    langfuse_web_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/langfuse-web@sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso@sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  }
+  expect_failures = [var.langfuse_sso_image]
+}
+
+run "reject_an_unpinned_issuer_image" {
+  command = plan
+  variables {
+    langfuse_sso_image = "us-east1-docker.pkg.dev/test-rust-stg-only/apps/coda-langfuse-sso:latest"
+  }
+  expect_failures = [var.langfuse_sso_image]
+}
+
+run "reject_a_public_issuer_load_balancer_address" {
+  command = plan
+  variables {
+    langfuse_enabled = false
+    staging_proxy = {
+      origin       = "https://staging.example.test"
+      iap_audience = "/projects/134570912572/locations/us-east1/services/public-site-staging"
+    }
+    observability_web = {
+      grafana_ip      = "10.82.0.11"
+      langfuse_ip     = "10.82.0.12"
+      langfuse_sso_ip = "34.1.2.4"
+      source_ranges   = ["10.80.1.0/26"]
+    }
+  }
+  expect_failures = [var.observability_web]
 }
 
 run "reject_staging_proxy_langfuse_without_base_path_image" {
@@ -1539,4 +1769,74 @@ run "reject_grafana_latency_thresholds_that_differ_from_the_rules" {
     }
   }
   expect_failures = [kubernetes_config_map_v1.grafana_stack]
+}
+
+run "langfuse_monitors_watch_only_the_langfuse_exporter_and_workloads" {
+  command = plan
+  variables {
+    telemetry_backend              = "both"
+    langfuse_enabled               = true
+    collector_self_metrics_enabled = true
+    langfuse_monitors_enabled      = true
+    alert_notify                   = "@slack-confirmed-test"
+  }
+  assert {
+    condition = toset(keys(datadog_monitor.langfuse_export_failures)) == toset(["send_failed_spans", "enqueue_failed_spans"]) && alltrue([
+      for monitor in concat(values(datadog_monitor.langfuse_export_failures), datadog_monitor.langfuse_export_queue) :
+      strcontains(monitor.query, "exporter:otlphttp/langfuse") && strcontains(monitor.query, "env:staging") &&
+      strcontains(monitor.message, "@slack-confirmed-test") && !monitor.notify_no_data && monitor.timeout_h == 1 &&
+      contains(monitor.tags, "destination:langfuse")
+    ])
+    error_message = "Langfuse exporter monitors filter to otlphttp/langfuse in staging, notify the confirmed handle and expire retired groups."
+  }
+  assert {
+    condition     = datadog_monitor.langfuse_export_queue[0].monitor_thresholds[0].critical == "0.8" && strcontains(datadog_monitor.langfuse_export_queue[0].query, "by {collector_replica,exporter,data_type}")
+    error_message = "Queue pressure pairs each replica's size with its capacity at 80%."
+  }
+  assert {
+    condition = toset(keys(datadog_monitor.workload_health)) == toset([
+      "langfuse-web/availability", "langfuse-web/absence",
+      "langfuse-worker/availability", "langfuse-worker/absence",
+      "langfuse-clickhouse-shard0/availability", "langfuse-clickhouse-shard0/absence",
+    ]) && strcontains(datadog_monitor.workload_health["langfuse-clickhouse-shard0/availability"].query, "kube_stateful_set:langfuse-clickhouse-shard0") && strcontains(datadog_monitor.workload_health["langfuse-web/availability"].query, "kube_deployment:langfuse-web") && datadog_monitor.workload_health["langfuse-web/absence"].notify_no_data
+    error_message = "Langfuse web, worker and ClickHouse each get readiness and absence monitors under the chart's names."
+  }
+  assert {
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.chat_generation_errors) + length(datadog_monitor.async_failures) + length(datadog_monitor.collector_export_failures) == 0
+    error_message = "The Langfuse gate must not enable the per-service or all-exporter monitors."
+  }
+}
+
+run "langfuse_monitors_default_off" {
+  command = plan
+  variables {
+    telemetry_backend              = "both"
+    langfuse_enabled               = true
+    collector_self_metrics_enabled = true
+  }
+  assert {
+    condition     = length(datadog_monitor.langfuse_export_failures) + length(datadog_monitor.langfuse_export_queue) + length(datadog_monitor.workload_health) == 0
+    error_message = "Self-metric collection alone creates no Langfuse monitor."
+  }
+}
+
+run "reject_langfuse_monitors_without_the_scrape" {
+  command = plan
+  variables {
+    langfuse_enabled          = true
+    langfuse_monitors_enabled = true
+    alert_notify              = "@slack-confirmed-test"
+  }
+  expect_failures = [var.langfuse_monitors_enabled]
+}
+
+run "reject_langfuse_monitors_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend         = "grafana"
+    langfuse_enabled          = true
+    langfuse_monitors_enabled = true
+    alert_notify              = "@slack-confirmed-test"
+  }
+  expect_failures = [var.langfuse_monitors_enabled]
 }

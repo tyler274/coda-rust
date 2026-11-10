@@ -1,14 +1,14 @@
-//! The practice invitation and front-door read against Postgres.
+//! The practice invitation against Postgres.
 //!
 //! Gated on `PHYSICIAN_DATABASE_URL`, the same gate the auth routes use in
 //! a deployment: when it is set, the practice server builds both stores on
-//! that database and this suite proves the invite → redeem → link →
-//! premium journey through them. Without the gate the memory-store unit
-//! tests carry the contract and these stay quiet.
+//! that database and this suite proves the invite → redeem → link journey
+//! through them. Without the gate the memory-store unit tests carry the
+//! contract and these stay quiet.
 
 use axum::body::Body;
 use axum::http::{Request, StatusCode};
-use front_door::{CADENCE_WEEKLY, CADENCE_WEEKLY_DAILY_CHECK, FrontDoorStore, RosterPatient};
+use front_door::{FrontDoorStore, RosterPatient};
 use physician_sample::{STAGING_PRACTICE_ID, WORKSPACE_IDS};
 use sea_orm::ConnectionTrait;
 use serde_json::Value;
@@ -148,7 +148,7 @@ async fn send(
 }
 
 #[tokio::test]
-async fn the_practice_invite_redeems_once_and_reads_premium_on_postgres() {
+async fn the_practice_invite_redeems_once_on_postgres() {
     let Some((app, auth, front_door)) = router("invite").await else {
         return;
     };
@@ -213,45 +213,6 @@ async fn the_practice_invite_redeems_once_and_reads_premium_on_postgres() {
         front_door.link(account_id).await.unwrap().patient_id,
         workspace
     );
-
-    // The practice reads the linked account and its premium status, which
-    // starts free and follows the setting without storing billing.
-    let (status, body) = send(
-        &app,
-        "GET",
-        &format!("/auth/front-door/{workspace}"),
-        Some(&session),
-        None,
-    )
-    .await;
-    assert_eq!(status, StatusCode::OK, "{body}");
-    let read: Value = serde_json::from_str(&body).expect("front-door read");
-    assert_eq!(read["account_id"], account_id.to_string());
-    assert_eq!(read["email"], email);
-    assert_eq!(read["premium"], false);
-    assert_eq!(read["cadence"], CADENCE_WEEKLY);
-    front_door
-        .set_premium(
-            &RosterPatient {
-                practice_id: STAGING_PRACTICE_ID.to_owned(),
-                patient_id: workspace.to_owned(),
-            },
-            true,
-            NOW,
-        )
-        .await
-        .unwrap();
-    let (_, body) = send(
-        &app,
-        "GET",
-        &format!("/auth/front-door/{workspace}"),
-        Some(&session),
-        None,
-    )
-    .await;
-    let read: Value = serde_json::from_str(&body).expect("front-door read");
-    assert_eq!(read["premium"], true);
-    assert_eq!(read["cadence"], CADENCE_WEEKLY_DAILY_CHECK);
 }
 
 #[tokio::test]

@@ -65,6 +65,10 @@ fn abandoned_claim_is_missing_not_reobserved_and_stale_work_rejected() {
     assert!(ledger.claim(1200, 1000, "future").is_err());
 }
 #[derive(Default)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "each bool injects one independent fault into the fake"
+)]
 struct Fake {
     ledger: Option<Ledger>,
     generation: u64,

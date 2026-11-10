@@ -57,7 +57,7 @@ observability_cluster_enabled = true
 
 # The observability relay (observability-relay.tf). Set to the first published
 # coda-observability-relay digest; later releases own the image field.
-# observability_relay_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-observability-relay@sha256:..."
+observability_relay_image = "us-east1-docker.pkg.dev/coda-rust-staging/apps/coda-observability-relay@sha256:0f08de9f8a389e3c7533c20f57286d780d186eeacfd00030bad2471a5820037b"
 
 # The otel-collector sidecar on physician, duet and physician-worker, sending to
 # the gateway above. Needs the observability root applied and its gateway ready.
@@ -77,6 +77,16 @@ availability_probe_image            = "us-east1-docker.pkg.dev/coda-rust-staging
 availability_probe_schedule_enabled = true
 availability_watchdog_enabled       = true
 availability_watchdog_channels      = ["projects/coda-rust-staging/notificationChannels/12022100174098334389"]
+
+# Rehearsal chats (observability-drill langfuse) run in this synthetic practice;
+# their generations are labelled simulation in Langfuse. Real staging accounts
+# stay in roger-synthetic-practice and stay real.
+physician_simulation_practices = ["coda-rehearsal-practice"]
+# The rehearsal service account (rehearsal.tf) signs into that practice through
+# physician's IAP with POST /auth/rehearsal; it reaches only the rehearsal panel.
+physician_rehearsal_enabled = true
+# Operators who run those drills, each named on their own.
+physician_rehearsal_signers = ["user:tyler@codahealth.ai"]
 
 images = {
   # Initial digests only; later releases own the image field.

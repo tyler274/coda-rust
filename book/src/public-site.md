@@ -104,6 +104,11 @@ Runtime configuration:
   the observability relay. When set, the site mounts `/grafana/` and `/langfuse/`
   (see [Observability mounts](#observability-mounts)); when unset, both are 404.
   It has the same validation as `PHYSICIAN_APP_URL`.
+- `LANGFUSE_SIGN_IN`: `password` (default) or `sso`, and `sso` only with
+  `OBSERVABILITY_RELAY_URL`. `sso` mounts `/langfuse-sso/` and starts Langfuse's
+  SSO for page navigations without a session; it must match whether the
+  `observability` root deploys `langfuse-sso` (the public-site root's
+  `langfuse_sso`). `password` passes Langfuse's own login through.
 - `PHYSICIAN_PROXY_SERVICE_ACCOUNT`: service identity used for keyless upstream
   IAP authentication. Required in staging whenever `PHYSICIAN_APP_URL` or
   `OBSERVABILITY_RELAY_URL` is set.
@@ -176,7 +181,7 @@ reconnect rather than relying on a longer request timeout.
 
 ## Observability mounts
 
-In staging, `/grafana/` and `/langfuse/` are proxied to one upstream: the
+In staging, `/grafana/`, `/langfuse/` and, with `LANGFUSE_SIGN_IN=sso`, `/langfuse-sso/` are proxied to one upstream: the
 IAP-protected `observability-relay` Cloud Run service
 ([`crates/observability-relay`](/crates/observability-relay)). The relay
 forwards each prefix to its internal load balancer
@@ -188,11 +193,12 @@ differs from `/physician/` as follows:
 | --- | --- | --- | --- |
 | `/physician/` | prefix stripped; `Location` rewritten back under it | none | none |
 | `/grafana/` | prefix kept; `Location` must stay under `/grafana` on the public origin, otherwise 502 | none, because Grafana signs in from the assertion on every request | the caller's verified IAP assertion as `X-Coda-IAP-Assertion` |
-| `/langfuse/` | prefix kept; same `Location` rule under `/langfuse` | only the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`), in both directions, without `Domain` | the same assertion |
+| `/langfuse/` | prefix kept; same `Location` rule under `/langfuse`. With `LANGFUSE_SIGN_IN=sso`, a top-level page navigation without a NextAuth session, and the sign-in page unless it shows an error, get a 303 to `sso-initiate?provider=custom` carrying the requested page as `target`; once signed in, `sso-initiate` sends the browser to that `target` | only the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`), in both directions, without `Domain` | the same assertion |
+| `/langfuse-sso/` | mounted only with `LANGFUSE_SIGN_IN=sso`, and then only `/langfuse-sso/authorize`; anything else is 404. `Location` may leave the prefix only for `/langfuse/api/auth/callback/custom` | none | the same assertion, which [`langfuse-sso`](/crates/langfuse-sso) turns into Langfuse's sign-in |
 
 The site drops any `X-Coda-IAP-Assertion` that the client sent before it forwards
 the verified one. It also drops every `x-goog-*` header and the hop-by-hop
-headers. Like `/physician/`, both mounts authenticate to the relay with a JWT
+headers. Like `/physician/`, the observability mounts authenticate to the relay with a JWT
 signed for the site's own service account, sent as `Proxy-Authorization`. The
 responses are `no-store` with `Vary: *`. The relay's own IAP admits only the
 engineering group and the accounts in `rust-environments`'

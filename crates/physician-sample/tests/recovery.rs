@@ -98,6 +98,7 @@ fn turn() -> (Scope, Input, Delivery) {
         key: format!("input-{unique}"),
         text: "Hello".into(),
         timezone: "America/New_York".into(),
+        scenario: None,
     };
     let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
     (scope, input, delivery)

@@ -14,7 +14,7 @@ ReplySteps ==
                          "you choose Coda's update", "you copy the reply", "Coda restarts", "you close the concern",
                          "the channel is disconnected", "Coda acts on a move to another patient",
                          "Coda acts on a move to not a patient"}
-  /\ sent'.text = Nothing \/ (sent'.text = OwnWords /\ sent'.answers)
+  /\ sent'.text = Nothing \/ (sent'.text = OwnWords /\ sent'.answers # {})
   /\ ~concern'
 
 \* The conversation is linked to patient A, Coda's reply to its one message is ready, and each physician has

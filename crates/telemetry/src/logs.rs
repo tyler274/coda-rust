@@ -165,6 +165,7 @@ impl Visit for SafeFields<'_> {
                     | "timeout"
                     | "retry_persist"
                     | "revision"
+                    | "rehearsed"
                     | "publish"
                     | "database"
             ),

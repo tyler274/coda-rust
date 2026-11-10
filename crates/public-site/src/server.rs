@@ -141,8 +141,9 @@ fn router_with_gate(
     }
     // Likewise /grafana/ and /langfuse/ exist only with the staging relay.
     if let Some(config) = state.runtime.observability_proxy.clone() {
-        let relay = crate::proxy::Proxy::new(config);
-        for observability in crate::proxy::Mount::OBSERVABILITY {
+        let sign_in = state.runtime.langfuse_sign_in;
+        let relay = crate::proxy::Proxy::new(config).langfuse_sign_in(sign_in);
+        for &observability in crate::proxy::Mount::observability(sign_in) {
             app = app.merge(mount(relay.mount(observability)));
         }
     }
@@ -183,7 +184,7 @@ async fn boundary(State(state): State<Arc<SiteState>>, request: Request, next: N
     let proxied = (state.runtime.physician_proxy.is_some()
         && crate::proxy::Mount::Physician.owns(path))
         || (state.runtime.observability_proxy.is_some()
-            && crate::proxy::Mount::OBSERVABILITY
+            && crate::proxy::Mount::observability(state.runtime.langfuse_sign_in)
                 .iter()
                 .any(|mount| mount.owns(path)));
     // This is the single deadline for response headers. Proxied requests can
@@ -643,6 +644,30 @@ mod tests {
             crate::proxy::ProxyConfig::new(&origin, "http://127.0.0.1:8791", None, false, false)
                 .unwrap(),
         );
+        // Password sign-in passes Langfuse's pages through and mounts no issuer.
+        let password = router_with_options(pages(), runtime.clone(), [], Readiness::ready());
+        let mut navigation = request("/langfuse/project/p", false);
+        navigation.headers_mut().insert(
+            "x-goog-iap-jwt-assertion",
+            crate::access::tests::assertion().parse().unwrap(),
+        );
+        navigation
+            .headers_mut()
+            .insert("sec-fetch-mode", "navigate".parse().unwrap());
+        assert_eq!(
+            password.clone().oneshot(navigation).await.unwrap().status(),
+            StatusCode::OK
+        );
+        let mut authorize = request("/langfuse-sso/authorize?state=s", false);
+        authorize.headers_mut().insert(
+            "x-goog-iap-jwt-assertion",
+            crate::access::tests::assertion().parse().unwrap(),
+        );
+        assert_eq!(
+            password.oneshot(authorize).await.unwrap().status(),
+            StatusCode::NOT_FOUND
+        );
+        runtime.langfuse_sign_in = crate::proxy::LangfuseSignIn::Sso;
         let app = router_with_options(pages(), runtime, [], Readiness::ready());
         for path in ["/grafana/", "/langfuse/api/auth/session"] {
             assert_eq!(
@@ -671,6 +696,7 @@ mod tests {
                 "/langfuse/api/auth/session",
                 Some("__Secure-next-auth.session-token=s; __Host-next-auth.csrf-token=c"),
             ),
+            ("/langfuse-sso/authorize?state=s", None),
         ] {
             let verified = crate::access::tests::assertion();
             let mut req = request(path, false);

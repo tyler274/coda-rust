@@ -19,8 +19,8 @@
 (* One step is one thing a person, the practice, the channel or Coda      *)
 (* does. A text is Coda's reply at a version, your text, Coda's revision  *)
 (* of your text, the practice's own words, or an automatic reply. Whether *)
-(* a reply would help, whether a review flags a concern, and whether the  *)
-(* practice's message answers the patient are judgment: here each is a    *)
+(* a reply would help, whether a review flags a concern, and which       *)
+(* messages the practice answers are judgment: here each is a             *)
 (* choice. An automatic reply never answers. Message matching owns        *)
 (* linking, moves and their Undo; here "Coda acts on a move" is one step  *)
 (* from outside, after that Undo went away. The model keeps your draft of *)
@@ -95,7 +95,7 @@ PracticeMessage == <<"the practice's message", 0>>
 Move == <<"the move", 0>>
 
 NoReview == [for |-> Nobody, current |-> FALSE, sawSent |-> FALSE]
-NoSent == [text |-> Nothing, answers |-> FALSE, asked |-> 0]
+NoSent == [text |-> Nothing, answers |-> {}]
 NoDraftHere == [kind |-> NoDraft, on |-> 0]
 
 VARIABLES
@@ -104,7 +104,7 @@ VARIABLES
   moves,   \* how many moves Coda has acted on
   written, \* how many messages the patient has written
   msg,     \* where each patient message is
-  sent,    \* the practice's message: its text, whether it answers, and how many patient messages came before it
+  sent,    \* the practice's message: its text and the set of patient messages it answers
   history, \* the practice's words the patient's history records
   review,  \* the running review: its patient, whether it has read what is new, and whether it read the practice's message
   woke,    \* the events waiting for a review
@@ -214,7 +214,7 @@ CodaRestarts ==
 (* no reply. A closed reply's "Undo" goes away. It can flag a concern.    *)
 ReviewFinishes(helps, flag) ==
   /\ review.for = link /\ woke = {} /\ review.current
-  /\ LET A == IF review.sawSent /\ sent.answers THEN {i \in OpenMsgs : i <= sent.asked} ELSE {}
+  /\ LET A == IF review.sawSent THEN OpenMsgs \cap sent.answers ELSE {}
          R == OpenMsgs \ A
      IN /\ helps \in (IF R = {} THEN {FALSE} ELSE BOOLEAN)
         /\ flag \in (IF R = {} THEN {FALSE} ELSE BOOLEAN)
@@ -235,12 +235,13 @@ Sendable == {CodaText(k) : k \in 1..reply.v} \cup {<<d, k>> : d \in {e \in Physi
 
 \* The practice sends a message in the channel: a text a physician copied, its own words, or an automatic
 \* reply. A copied text is Coda's reply at any version so far, or a physician's own text. It wakes the
-\* review.
+\* review. The answered set is the judgment the review will make from that text, not a send receipt.
+\* It may cover any subset of the messages already written, and is empty for an automatic reply.
 PracticeSends(t, answers) ==
   /\ channel = Connected /\ link \in Patients /\ written >= 1 /\ sent.text = Nothing
   /\ t \in Sendable
-  /\ answers \in (IF t = Automatic THEN {FALSE} ELSE BOOLEAN)
-  /\ sent' = [text |-> t, answers |-> answers, asked |-> written]
+  /\ answers \in (IF t = Automatic THEN {{}} ELSE SUBSET (1..written))
+  /\ sent' = [text |-> t, answers |-> answers]
   /\ woke' = woke \cup {PracticeMessage}
   /\ reply' = EndUndo
   /\ UNCHANGED <<access, link, moves, written, msg, history, review, concern, draft, offers, channel>>
@@ -363,7 +364,7 @@ YouMarkDone(d) ==
 -----------------------------------------------------------------------------
 
 Finishes == \E helps, flag \in BOOLEAN : ReviewFinishes(helps, flag)
-Sends == \E t \in Sendable, answers \in BOOLEAN : PracticeSends(t, answers)
+Sends == \E t \in Sendable, answers \in SUBSET (1..written) : PracticeSends(t, answers)
 
 Busy ==
   \/ PatientWrites \/ ReviewStarts \/ ReviewReadsAgain \/ CodaRestarts \/ Finishes
@@ -402,8 +403,8 @@ FinishSteps == {"the review writes a reply", "the review finishes with no reply"
 OnlyTheReviewAnswers ==
   /\ [][\A i \in Messages : msg[i] # Answered /\ msg'[i] = Answered =>
           /\ event'.name \in FinishSteps /\ review.sawSent
-          /\ sent.text # Automatic /\ sent.answers /\ i <= sent.asked]_vars
-  /\ sent.answers ~> \A i \in Messages : i <= sent.asked => msg[i] # Open
+          /\ sent.text # Automatic /\ i \in sent.answers]_vars
+  /\ \A i \in Messages : i \in sent.answers ~> msg[i] # Open
 
 \* 3. Closing a reply never closes a concern about the same messages, and a move to not a patient closes
 \* both.

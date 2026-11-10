@@ -22,11 +22,13 @@ async fn concurrent_commands_and_claims_serialize_on_the_composite_conversation_
         key: "first".into(),
         text: "first".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     let second = Input {
         key: "second".into(),
         text: "second".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     let (a, b) = tokio::join!(store.accept(&scope, &first), store.accept(&scope, &second));
     assert_eq!(a.unwrap(), Accepted::New);
@@ -149,6 +151,7 @@ async fn corrupt_conversation_rolls_back_receipt_and_conflicts_never_overwrite_i
         key: "receipt".into(),
         text: "original".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     conversation::Entity::insert(conversation_model(&scope, serde_json::json!({})))
         .exec(&store.db)
@@ -204,6 +207,7 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
         key: "command".into(),
         text: "accepted work".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     s.accept(&scope, &input).await.unwrap();
     let first = s.claim(&scope, 60).await.unwrap().unwrap();
@@ -276,6 +280,7 @@ fn delivery_input(key: &str) -> Input {
         key: key.into(),
         text: key.into(),
         timezone: "UTC".into(),
+        scenario: None,
     }
 }
 
@@ -1086,6 +1091,7 @@ async fn chats_list_one_physicians_workspace_by_latest_activity() {
         key: key.into(),
         text: text.into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     for (key, s, text) in [
         ("a1", scope("me", "ws", "chat-a"), "About labs"),
@@ -1158,6 +1164,7 @@ async fn chat_list_orders_by_activity_before_its_limit() {
         key,
         text: "Hello".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     // More chats than the list holds. Chat-id order alone would list
     // chat-005..chat-204 and leave chat-000 out.
@@ -1405,6 +1412,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         key: key.into(),
         text: text.into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     let stored = |key: &str| {
         let store = store.clone();
@@ -1572,6 +1580,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         expected_revision: 1,
         instruction: "Shorter.".into(),
         timezone: "UTC".into(),
+        scenario: None,
     };
     assert_eq!(
         store
@@ -1792,4 +1801,36 @@ fn a_blank_or_tool_calling_or_missing_terminal_turn_never_publishes() {
         ])
         .is_err()
     );
+}
+
+#[test]
+fn an_input_without_a_scenario_serializes_as_before() {
+    let plain = Input {
+        key: "k".into(),
+        text: "t".into(),
+        timezone: "UTC".into(),
+        scenario: None,
+    };
+    // Receipts saved before the field existed must still compare equal.
+    assert_eq!(
+        serde_json::to_value(&plain).unwrap(),
+        serde_json::json!({"key": "k", "text": "t", "timezone": "UTC"})
+    );
+    let old: Input =
+        serde_json::from_value(serde_json::json!({"key": "k", "text": "t", "timezone": "UTC"}))
+            .unwrap();
+    assert_eq!(old, plain);
+    let rehearsal = Input {
+        scenario: Some("canary".into()),
+        ..plain
+    };
+    assert_eq!(
+        serde_json::to_value(&rehearsal).unwrap()["scenario"],
+        "canary"
+    );
+    let state: Conversation = serde_json::from_value(serde_json::json!({
+        "messages": [], "revision": 0, "status": "completed", "work": "", "attempts": []
+    }))
+    .unwrap();
+    assert_eq!(state.scenario, None);
 }

@@ -26,7 +26,16 @@ jobs:
       - name: Compare the five vendored skills
         env:
           GIT_LFS_SKIP_SMUDGE: '1'
+          GH_TOKEN: ${{ github.token }}
+        # Git sends a credential helper's token only after a 401, which a
+        # public repository never returns. The header goes on every request,
+        # including the blobs the partial clone fetches lazily during the sync.
         run: |
+          auth=$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)
+          echo "::add-mask::$auth"
+          export GIT_CONFIG_COUNT=1
+          export GIT_CONFIG_KEY_0=http.https://github.com/.extraheader
+          export GIT_CONFIG_VALUE_0="AUTHORIZATION: basic $auth"
           git clone --branch main --single-branch --filter=blob:none --no-checkout https://github.com/cursor/plugins.git "$RUNNER_TEMP/cursor-plugins"
           scripts/sync-pstack.sh "$RUNNER_TEMP/cursor-plugins"
 

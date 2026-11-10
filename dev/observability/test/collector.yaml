@@ -1,0 +1,30 @@
+# Test backend overlay, merged LAST over ../collector.yaml by langfuse.yaml's
+# `ingest` profile. Like collector.debug.yaml it keeps every processor and
+# swaps only what the test needs: loopback ports the test chooses, and an
+# operations exporter that delivers to the test's own OTLP sink, so the test
+# reads exactly what Datadog or Grafana would receive.
+extensions:
+  health_check:
+    endpoint: 127.0.0.1:${env:COLLECTOR_HEALTH_PORT}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 127.0.0.1:${env:COLLECTOR_GRPC_PORT}
+      http:
+        endpoint: 127.0.0.1:${env:COLLECTOR_HTTP_PORT}
+
+exporters:
+  otlphttp/ops:
+    endpoint: http://127.0.0.1:${env:OPS_SINK_PORT}
+    compression: none
+    retry_on_failure:
+      enabled: false
+
+service:
+  pipelines:
+    traces/ops:
+      exporters: [otlphttp/ops]
+    logs/ops:
+      exporters: [otlphttp/ops]

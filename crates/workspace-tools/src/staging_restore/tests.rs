@@ -34,6 +34,10 @@ fn operation(target: &RestoreTarget, kind: OperationKind) -> Operation {
         error: None,
     }
 }
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "each bool injects one independent fault into the fake"
+)]
 struct FakeCloud {
     instances: Vec<Instance>,
     backup: Backup,

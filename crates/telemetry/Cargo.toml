@@ -8,6 +8,10 @@ version.workspace = true
 [lints]
 workspace = true
 
+[features]
+# The disposable Docker Langfuse for ignored tests (dev/observability/test).
+testing = []
+
 [dependencies]
 axum = { version = "0.8", default-features = false, features = ["matched-path"] }
 http = "1"

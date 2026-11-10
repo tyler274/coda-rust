@@ -15,8 +15,6 @@ pub const TODAY_QUIET_DETAIL: &str = "Coda will bring anything new here as it ar
 pub const WORKSPACE_CLOSED: &str = "Open a workspace to see its chats.";
 pub const WORKSPACE_EMPTY: &str = "This workspace has no chats.";
 pub const WORKSPACE_UNAVAILABLE: &str = "Coda couldn’t load what needs you for this patient.";
-#[allow(dead_code)]
-pub const READER_EMPTY: &str = "Nothing is open to read.";
 pub const TRY_AGAIN: &str = "Try again";
 /// Stops the chat turn Coda is still writing.
 pub const STOP: &str = "Stop";
@@ -714,6 +712,10 @@ pub enum NavCommand {
     Activate,
 }
 
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "modifier keys are independent; editing, modal and item focus are not yet one focus state"
+)]
 pub struct KeyInput {
     pub key: String,
     pub meta: bool,
@@ -1244,24 +1246,6 @@ pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-#[allow(dead_code)]
-pub enum ReaderView {
-    Closed,
-    Open { patient: String, reason: String },
-}
-
-#[allow(dead_code)]
-pub fn reader_view(line: Option<&TodayLine>) -> ReaderView {
-    match line {
-        None => ReaderView::Closed,
-        Some(line) => ReaderView::Open {
-            patient: line.patient.clone(),
-            reason: line.reason.clone(),
-        },
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1404,26 +1388,6 @@ mod tests {
         );
         assert!(opens_reader("concern"));
         assert!(!opens_reader("failed_review"));
-        assert_eq!(reader_view(None), ReaderView::Closed);
-        let line = TodayLine {
-            item_id: "i1".to_owned(),
-            workspace_id: "p1".to_owned(),
-            patient: "Ada".to_owned(),
-            kind: "concern".to_owned(),
-            reason: "New note".to_owned(),
-            did: "New note".to_owned(),
-            waiting_since: "2026-10-09T12:00:00Z".to_owned(),
-            now: false,
-            resume_work_item_id: None,
-            resume_run_id: None,
-        };
-        assert_eq!(
-            reader_view(Some(&line)),
-            ReaderView::Open {
-                patient: "Ada".to_owned(),
-                reason: "New note".to_owned()
-            }
-        );
         assert_eq!(
             keyboard_command(&KeyInput {
                 key: "/".to_owned(),

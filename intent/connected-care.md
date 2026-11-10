@@ -4,7 +4,7 @@ This is how a Duet patient and a Coda practice connect: what crosses between the
 
 ## What Connected care is
 
-Connected care joins two separate products. Duet is the patient's own health app, and Coda Agents is the practice's team of agents. A practice invites a patient, the patient joins and consents once, and from then on what the patient connected in Duet reaches the practice live. In the other direction, the practice's documented care decisions and appointment details come back to the patient's Duet.
+Connected care joins two separate products. Duet is the patient's own health app, and Chords is the practice's team of agents. A practice invites a patient, the patient joins and consents once, and from then on what the patient connected in Duet reaches the practice live. In the other direction, the practice's documented care decisions and appointment details come back to the patient's Duet.
 
 The MVP includes practice invitations, consented records and readings, and what the patient sends from Shared. Patients can connect personal sources such as Apple Health on their own. In the MVP, nothing comes back from the practice into Duet. The doctor's plan, practice messages, Check-ins and appointment preparation come later. The concepts below describe how they will work, but the MVP does not need them.
 
@@ -14,7 +14,7 @@ The point is that the data a patient can connect actually gets to their physicia
 
 Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side shows of the connection follows the shared UI principles (U1–U9). These are the ones specific to Connected care.
 
-1. **Two products, two owners.** Each product keeps its own data and identity, and neither reads the other's storage. The patient account belongs to Duet; Connected care attaches connections to it and owns no accounts. Physicians sign in only through Coda Agents.
+1. **Two products, two owners.** Each product keeps its own data and identity, and neither reads the other's storage. The patient account belongs to Duet; Connected care attaches connections to it and owns no accounts. Physicians sign in only through Chords.
 2. **Duet is the patient's; the chart is the practice's.** What a practice receives becomes part of its record, held in Coda's record for that patient and never written to the EHR. Duet stays the patient's after any ending.
 3. **A connection is permission for data to flow, and nothing more.** The patient's shared data goes to that practice, and the practice's documented care decisions and appointment details come back.
 4. **Connected means sharing, and sharing is live.** While connected, what the patient connected in Duet reaches the practice continuously. There's no paused state; the patient stops sharing by leaving. Joining, the first time or again, shares what the patient already has.
@@ -123,7 +123,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 8. The patient sees no receipt that the care team looked, and Duet never claims a physician reviewed it.
 9. If the patient later edits their For my doctor, the sent copy keeps its version and is marked when a newer one exists.
 
-### E1. Patient leaves
+### X1. Patient leaves
 
 1. The patient leaves the practice in Duet.
 2. The connection ends everywhere at once, and new data stops.
@@ -132,7 +132,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 5. The practice keeps the dated copies it already received, and the roster shows Ended, with no notification.
 6. In the MVP, leaving is the only way to stop sharing, short of deleting the account.
 
-### E2. Practice discharges the patient
+### X2. Practice discharges the patient
 
 1. A practice member discharges the patient from the patient's roster row and confirms.
 2. The connection and the data flow end at once.
@@ -141,14 +141,14 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 5. The patient keeps their account and history and the last doctor's plan, marked as no longer updated. The practice's appointment goes away, and practice news already in the thread stays.
 6. The practice keeps the dated copies it already received, and the roster and Duet both show Ended.
 
-### E3. Account deletion
+### X3. Account deletion
 
 1. The patient deletes their Duet account.
 2. Every connection ends and sharing stops at once.
 3. Each practice keeps what it already received, dated.
 4. The practice roster shows Ended.
 
-### E4. Physician leaves the practice
+### X4. Physician leaves the practice
 
 1. The physician's panel is reassigned, and the connection continues.
 2. Telling the patient who their doctor is now comes later.
@@ -201,7 +201,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 20. There's no "your care team looked" receipt on anything the patient shares.
 21. Each request sees only its own person's data.
 22. Adults 18 and over only.
-23. Every MVP feature is free. Coda Agents never knows who pays and doesn't handle billing.
+23. Every MVP feature is free. Chords never knows who pays and doesn't handle billing.
 
 ## Scope
 
@@ -213,7 +213,7 @@ In the MVP:
 - Sends from Shared, with the patient's words and the records they select.
 - The practice's agents review each send like any shared record, marked as emphasized by the patient.
 - Ending a connection with the account and history kept, and re-inviting after an ending.
-- The physician on Coda Agents on the web; patients on Duet on iPhone and Android, with no Duet web surface.
+- The physician on Chords on the web; patients on Duet on iPhone and Android, with no Duet web surface.
 - Free for every connected patient.
 - General phone-health data and daily portal refresh, ahead of continuous glucose monitors, which don't gate sharing.
 
@@ -236,7 +236,7 @@ Later, as the ideal product:
 - Notes from conversation and practice news in Duet's one thread, over the same connection.
 - A shared space for each patient and physician, maintained together, with two-way replies and co-editing. The practice invites, as it does now, and it starts with just the two of them.
 - In that space each side's agent drafts and its person confirms, and the patient's confirmation of a plan is a signal, never a gate.
-- It needs the physician on Coda Agents. Specialists who aren't on Coda get a read-only view that grows out of For my doctor.
+- It needs the physician on Chords. Specialists who aren't on Coda get a read-only view that grows out of For my doctor.
 - Urgent symptoms send the patient straight to call the practice or 911 and never wait in the space.
 - Every message from the practice to the patient still needs the physician's approval, and Coda never answers the patient from standing rules.
 

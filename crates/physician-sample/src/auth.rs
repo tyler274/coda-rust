@@ -8,14 +8,13 @@
 //! requires the patient to be on the physician's panel (`Membership::Allowed`).
 //! Clinic admins, secretaries, and physicians holding panel-assignment (`admin`)
 //! permission may assign or remove patients on a physician's panel within their
-//! clinic, invite a roster patient to Duet through the patient front door
-//! ([`front_door`]), and read one linked patient's account and premium/cadence
-//! status there. The auth routes themselves stay open (or resolve their own bearer
-//! token), and `/health` stays open because a load balancer needs it
+//! clinic and invite a roster patient to Duet through the patient front door
+//! ([`front_door`]). The auth routes themselves stay open (or resolve their own
+//! bearer token), and `/health` stays open because a load balancer needs it
 //! unauthenticated. The store is Postgres (SeaORM) when `PHYSICIAN_DATABASE_URL`
 //! is set — schemas must already be migrated — and process memory otherwise. The
 //! front door rides the same database when it is set, so a practice's
-//! invitations and premium reads survive a restart.
+//! invitations survive a restart.
 //!
 //! Identity on the front door is email-based for now: whether Duet accounts
 //! keep a shared email magic-link provider or move to Sign in with Apple is
@@ -29,7 +28,7 @@ use std::time::{Duration, SystemTime, UNIX_EPOCH};
 use axum::Json;
 use axum::body::{Body, Bytes};
 use axum::extract::{Path, Request, State};
-use axum::http::{Method, StatusCode};
+use axum::http::StatusCode;
 use axum::middleware::Next;
 use axum::response::{IntoResponse, Response};
 use axum::routing::{get, post, put};
@@ -363,29 +362,6 @@ pub(crate) async fn guard(
         identity: identity.clone(),
     });
 
-    // Per-patient cadence read/write guard (`ENG-14`): Agents reads per-patient
-    // cadence without payment status, and physicians cannot override it.
-    if let Some(workspace) = cadence_workspace(&path) {
-        if parts.method != Method::GET {
-            return (
-                StatusCode::FORBIDDEN,
-                Json(json!({
-                    "detail": "Physicians cannot override patient review cadence."
-                })),
-            )
-                .into_response();
-        }
-        if !allows_workspace(&auth, &identity, workspace).await {
-            return not_found();
-        }
-        let cadence = auth.store.patient_cadence(workspace).await;
-        return Json(json!({
-            "patient_workspace_id": workspace,
-            "cadence": cadence.as_str(),
-        }))
-        .into_response();
-    }
-
     // A command names its patient workspace in the body, not the path. The
     // body is read only for `/commands`, bounded, so no physician command
     // dispatches into a workspace the session's membership denies or overrides
@@ -470,17 +446,10 @@ pub(crate) async fn guard(
 const COMMAND_BODY_LIMIT: usize = 1_000_000;
 
 /// The top-level `/patient-workspaces/{id}` path, excluding sub-routes like
-/// `/chats/...`, `/cadence`, and the practice-wide `/patient-workspaces/events` stream.
+/// `/chats/...` and the practice-wide `/patient-workspaces/events` stream.
 fn direct_workspace(path: &str) -> Option<&str> {
     let rest = path.strip_prefix("/patient-workspaces/")?;
     (!rest.is_empty() && rest != "events" && !rest.contains('/')).then_some(rest)
-}
-
-/// The `/patient-workspaces/{id}/cadence` path when present.
-fn cadence_workspace(path: &str) -> Option<&str> {
-    let rest = path.strip_prefix("/patient-workspaces/")?;
-    let workspace = rest.strip_suffix("/cadence")?;
-    (!workspace.is_empty() && !workspace.contains('/')).then_some(workspace)
 }
 
 fn query_param(query: Option<&str>, key: &str) -> Option<String> {
@@ -1232,72 +1201,6 @@ async fn deliver_invite(
     }
 }
 
-/// Reads one linked roster patient's Duet account and premium status.
-///
-/// Held by the same admins as the invite: the front door owns who the
-/// patient is and whether they pay, and the practice reads it per patient.
-/// Identity is email-based for now — whether Duet accounts stay a shared
-/// email magic-link provider or move to Sign in with Apple is an open
-/// "Discuss with Dev" item, not decided here.
-/// Nothing here stores billing: the practice reads only the premium flag
-/// and the cadence Agents runs (`weekly`, or `weekly-daily-check` when the
-/// patient pays). An unlinked or unknown patient answers 404.
-async fn patient_front_door(
-    State(auth): State<Arc<Auth>>,
-    Path(patient_workspace_id): Path<String>,
-    request: Request<Body>,
-) -> Response {
-    let token = bearer(&request);
-    let Ok(caller) = resolve(&auth, token).await else {
-        return StatusCode::UNAUTHORIZED.into_response();
-    };
-    let caller_admin = auth
-        .store
-        .account_by_identity(&caller)
-        .await
-        .is_some_and(|account| account.active && account.admin);
-    if !caller_admin {
-        return StatusCode::FORBIDDEN.into_response();
-    }
-    let Ok(owner) = auth.store.patient_practice(&patient_workspace_id).await else {
-        return StatusCode::SERVICE_UNAVAILABLE.into_response();
-    };
-    if owner.as_deref() != Some(caller.practice_id.as_str()) {
-        return not_found();
-    }
-    let patient = RosterPatient {
-        practice_id: caller.practice_id.clone(),
-        patient_id: patient_workspace_id.clone(),
-    };
-    // The practice reads only its own roster: unknown or cross-practice
-    // patients are indistinguishable from unlinked ones here.
-    let linked = auth
-        .front_door
-        .linked_accounts(&caller.practice_id)
-        .await
-        .into_iter()
-        .find(|(_, linked)| *linked == patient);
-    let Some((account, patient)) = linked else {
-        return not_found();
-    };
-    let premium = auth.front_door.premium(&patient).await;
-    (
-        StatusCode::OK,
-        Json(json!({
-            "practice_id": caller.practice_id,
-            "patient_workspace_id": patient_workspace_id,
-            "account_id": account.id,
-            "email": account.email,
-            "display_name": account.display_name,
-            "active": account.active,
-            "premium": premium.premium,
-            // The cadence Agents runs; the practice never sees billing.
-            "cadence": premium.cadence,
-        })),
-    )
-        .into_response()
-}
-
 /// The workspace membership check a handler uses: a denied or
 /// missing membership answers 404 so clinical projections stay panel-scoped.
 pub(crate) async fn allows_workspace(
@@ -1328,10 +1231,6 @@ pub(crate) fn auth_routes(auth: Arc<Auth>) -> axum::Router {
             put(put_panel).delete(delete_panel),
         )
         .route("/auth/invitations", post(invite))
-        .route(
-            "/auth/front-door/{patient_workspace_id}",
-            get(patient_front_door),
-        )
         .with_state(auth)
 }
 
@@ -1375,6 +1274,7 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
         Arc::new(physician_bus::LocalBus::new(64)),
         MemoryPatients::fixture(),
         None,
+        None,
     )
     .await
 }
@@ -1386,11 +1286,15 @@ pub async fn authed_router(base: axum::Router) -> axum::Router {
 /// memory otherwise. Any other value serves `base` with the auth routes still
 /// present. Neither store is migrated. Without a database the practice holds
 /// `memory_patients`. Sign-in mail comes from the environment.
+///
+/// `rehearsal` adds `POST /auth/rehearsal` ([`crate::rehearsal::sign_in_routes`]),
+/// and only behind required sign-in: with open auth there is no session to mint.
 pub(crate) async fn authed_router_with_bus(
     base: axum::Router,
     bus: Arc<dyn physician_bus::Bus>,
     memory_patients: Arc<MemoryPatients>,
     postgres: Option<(&str, local_product::runtime::Store)>,
+    rehearsal: Option<crate::hosting::RehearsalSignIn>,
 ) -> axum::Router {
     let mail = crate::gmail::Delivery::from_env(|key| std::env::var(key).ok());
     let auth = match (auth_mode(), postgres) {
@@ -1406,7 +1310,15 @@ pub(crate) async fn authed_router_with_bus(
         _ => Auth::memory_with(memory_patients, bus, mail).await,
     };
     match auth_mode() {
-        AuthMode::Required => required_router(base, auth),
+        AuthMode::Required => {
+            let base = match rehearsal {
+                Some(config) => {
+                    base.merge(crate::rehearsal::sign_in_routes(Arc::clone(&auth), config))
+                }
+                None => base,
+            };
+            required_router(base, auth)
+        }
         AuthMode::Open => {
             base.merge(auth_routes(Arc::clone(&auth)))
                 .layer(axum::middleware::from_fn_with_state(
@@ -1419,8 +1331,7 @@ pub(crate) async fn authed_router_with_bus(
 
 /// Builds the required router on one explicit pair of stores, both already
 /// migrated, over the fixture patients. The Postgres integration tests use it
-/// to prove the invite → redeem → link → premium journey the deployment wiring
-/// builds.
+/// to prove the invite → redeem → link journey the deployment wiring builds.
 pub async fn authed_router_on(
     base: axum::Router,
     store: Arc<dyn AuthStore>,
@@ -2060,20 +1971,20 @@ mod tests {
             .register_patient("northside-clinic", "pw-elsewhere")
             .await
             .unwrap();
-        let link = async |workspace: &str| {
-            let path = format!("/patient-workspaces/{workspace}/link");
+        let plan = async |workspace: &str| {
+            let path = format!("/patient-workspaces/{workspace}/plan");
             send(&app, Method::GET.as_str(), &path, Some(&session), None)
                 .await
                 .0
         };
 
-        assert_eq!(link("pw-chart").await, StatusCode::NOT_FOUND);
-        assert_eq!(link("pw-elsewhere").await, StatusCode::NOT_FOUND);
+        assert_eq!(plan("pw-chart").await, StatusCode::NOT_FOUND);
+        assert_eq!(plan("pw-elsewhere").await, StatusCode::NOT_FOUND);
         store
             .register_patient(STAGING_PRACTICE_ID, "pw-chart")
             .await
             .unwrap();
-        assert_eq!(link("pw-chart").await, StatusCode::OK);
+        assert_eq!(plan("pw-chart").await, StatusCode::OK);
     }
 
     #[tokio::test]
@@ -2394,28 +2305,12 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn agents_reads_per_patient_review_cadence_without_payment_status_or_physician_override()
-    {
+    async fn a_physician_cannot_change_review_cadence() {
         let (app, store, _) = authed_practice().await;
         let session = session_for(&app, STAGING_EMAIL).await;
         let workspace = crate::WORKSPACE_IDS[0];
 
-        // Default cadence is `weekly` and contains no payment/billing fields.
-        let (status, cadence_body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/patient-workspaces/{workspace}/cadence"),
-            Some(&session),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{cadence_body}");
-        let cadence_json: Value = serde_json::from_str(&cadence_body).unwrap();
-        assert_eq!(cadence_json["cadence"], "weekly");
-        assert!(cadence_json.get("payment_status").is_none());
-        assert!(cadence_json.get("subscription").is_none());
-
-        // Front door / practice bridge updates cadence to `weekly_and_daily_when_changed`.
+        // An operator-side change shows on the patient page.
         store
             .set_patient_cadence(workspace, ReviewCadence::WeeklyAndDailyWhenChanged)
             .await;
@@ -2430,17 +2325,20 @@ mod tests {
         assert_eq!(status, StatusCode::OK);
         let ws_json: Value = serde_json::from_str(&ws_body).unwrap();
         assert_eq!(ws_json["review_cadence"], "weekly_and_daily_when_changed");
+        assert!(ws_json.get("payment_status").is_none());
 
-        // Physician cannot override cadence via PUT /patient-workspaces/{id}/cadence or /commands.
-        let (status, _) = send(
-            &app,
-            Method::PUT.as_str(),
-            &format!("/patient-workspaces/{workspace}/cadence"),
-            Some(&session),
-            Some(json!({ "cadence": "weekly" }).to_string()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::FORBIDDEN);
+        // The site has no cadence route, and a physician command cannot set it.
+        for method in [Method::GET, Method::PUT] {
+            let (status, _) = send(
+                &app,
+                method.as_str(),
+                &format!("/patient-workspaces/{workspace}/cadence"),
+                Some(&session),
+                Some(json!({ "cadence": "weekly" }).to_string()),
+            )
+            .await;
+            assert_eq!(status, StatusCode::NOT_FOUND, "{method}");
+        }
 
         let (status, cmd_body) = send(
             &app,
@@ -2723,144 +2621,6 @@ mod tests {
         .await;
         assert_eq!(status, StatusCode::CONFLICT, "{body}");
         assert!(body.contains("already invited"), "{body}");
-    }
-
-    /// Seeds one front-door account linked to the staging practice's
-    /// `workspace`, or finds one the fixture already seeded.
-    async fn linked_account(
-        front_door: &MemoryFrontDoorStore,
-        email: &str,
-        workspace: &str,
-    ) -> front_door::Account {
-        if let Some(account) = front_door.account_by_email(email).await {
-            return account;
-        }
-        let id = front_door.seed_linked_account(
-            &RosterPatient {
-                practice_id: STAGING_PRACTICE_ID.to_owned(),
-                patient_id: workspace.to_owned(),
-            },
-            email,
-            "Linked Patient",
-        );
-        front_door.account(id).await.expect("seeded account")
-    }
-
-    #[tokio::test]
-    async fn the_practice_reads_one_linked_patient_account_and_premium() {
-        let (app, _, front_door) = authed_practice().await;
-        let session = session_for(&app, STAGING_EMAIL).await;
-        let workspace = crate::WORKSPACE_IDS[2];
-        let account = linked_account(&front_door, "reader@example.test", workspace).await;
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{workspace}"),
-            Some(&session),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{body}");
-        let json: Value = serde_json::from_str(&body).expect("front-door read");
-        assert_eq!(json["account_id"], account.id.to_string());
-        assert_eq!(json["email"], "reader@example.test");
-        assert_eq!(json["active"], true);
-        // Nothing here stores billing: the practice reads only the premium
-        // flag and the cadence Agents runs, which starts free.
-        assert_eq!(json["premium"], false);
-        assert_eq!(json["cadence"], front_door::CADENCE_WEEKLY);
-
-        // Paying flips the cadence Agents runs, still without billing.
-        let patient = RosterPatient {
-            practice_id: STAGING_PRACTICE_ID.to_owned(),
-            patient_id: workspace.to_owned(),
-        };
-        front_door
-            .set_premium(&patient, true, 1_760_000_000)
-            .await
-            .unwrap();
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{workspace}"),
-            Some(&session),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{body}");
-        let json: Value = serde_json::from_str(&body).expect("front-door read");
-        assert_eq!(json["premium"], true);
-        assert_eq!(json["cadence"], front_door::CADENCE_WEEKLY_DAILY_CHECK);
-    }
-
-    #[tokio::test]
-    async fn an_unlinked_or_cross_practice_front_door_read_answers_404() {
-        let (app, store, front_door) = authed_practice().await;
-        let session = session_for(&app, STAGING_EMAIL).await;
-        // A roster patient nobody invited yet answers 404, like the
-        // workspace route's unknown patient.
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[3]),
-            Some(&session),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
-        // An account linked to another practice is invisible here, even
-        // when the caller asks under a staging workspace id.
-        front_door.seed_linked_account(
-            &RosterPatient {
-                practice_id: "other-practice".to_owned(),
-                patient_id: crate::WORKSPACE_IDS[3].to_owned(),
-            },
-            "elsewhere@example.test",
-            "Elsewhere Patient",
-        );
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[3]),
-            Some(&session),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
-        // A cross-practice admin reads only their own roster's patients.
-        store.seed_account(
-            "other-practice",
-            "outsider-admin",
-            "outsider-admin@other.test",
-            "Outsider Admin",
-            true,
-        );
-        let outsider = session_for(&app, "outsider-admin@other.test").await;
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[2]),
-            Some(&outsider),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::NOT_FOUND, "{body}");
-    }
-
-    #[tokio::test]
-    async fn a_non_admin_cannot_read_the_front_door_panel() {
-        let (app, _, front_door) = authed_practice().await;
-        linked_account(&front_door, "reader@example.test", crate::WORKSPACE_IDS[0]).await;
-        let colleague = session_for(&app, COLLEAGUE_EMAIL).await;
-        let (status, body) = send(
-            &app,
-            Method::GET.as_str(),
-            &format!("/auth/front-door/{}", crate::WORKSPACE_IDS[0]),
-            Some(&colleague),
-            None,
-        )
-        .await;
-        assert_eq!(status, StatusCode::FORBIDDEN, "{body}");
     }
 
     fn decode_gmail_raw(sent: &Value) -> String {

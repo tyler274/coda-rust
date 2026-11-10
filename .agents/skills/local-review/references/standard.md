@@ -39,6 +39,14 @@ consumers, and visible results or side effects. Ask:
 - Does each fact and responsibility have one authoritative owner? Could an owner
   correction, deletion, or removal of an unsupported promise replace added
   branches, caches, fallbacks, or adapters?
+- Do the types the change adds or touches make the domain's invalid states
+  unrepresentable? Look for bools or `Option`s that together encode one state,
+  strings carrying codes, ids or states across a boundary, state held beside
+  the state it depends on rather than inside its variant, error variants no
+  path produces, and wildcard arms or `#[serde(other)]` that discard
+  exhaustiveness. Where the change carries a type-model plan, check the code
+  against each promise it makes. When several findings land in one module,
+  ask whether one representation causes them before listing them separately.
 - Is the complexity justified by an observed failure, explicit requirement, or
   necessary guarantee?
 - Do code, tests, documentation, and the change's narrative share an assumption

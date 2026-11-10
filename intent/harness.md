@@ -1,6 +1,6 @@
 # The harness
 
-The harness is the agent loop that Coda Agents and Duet both run on. It isn't a product surface, and it stays light for the model.
+The harness is the agent loop that Chords and Duet both run on. It isn't a product surface, and it stays light for the model.
 
 The models are smart. The harness gives them the right tools, the right context at the right time and skills they can find, then gets out of the way.
 
@@ -11,7 +11,7 @@ The models are smart. The harness gives them the right tools, the right context 
 
 Each term has one meaning in this spec.
 
-- **Product:** Coda Agents or Duet.
+- **Product:** Chords or Duet.
 - **Job:** a kind of work a product runs, such as chat, a revision, a Check-in or Today.
 - **Run:** one piece of accepted work, such as the answer to one message, one revision or one Check-in.
 - **Attempt:** one try at a run. After a crash or restart, a new attempt continues the same run.
@@ -241,7 +241,7 @@ The products depend on these promises.
   - New input, whether a steer now or a queued message later, is a saved item with its own ID. The harness puts it into a request exactly once, as Codex's input queue does.
   - A steer cancels the model request in progress, and the harness redoes that step with the new input. Finished tool work is kept and reused, never repeated.
   - One answer covers all the messages that steered it, and late output never replaces newer direction.
-  - The loop supports both products: in Coda Agents, Stop holds the work until Resume; in Duet, a new message steers the reply in progress.
+  - The loop supports both products: in Chords, Stop holds the work until Resume; in Duet, a new message steers the reply in progress.
 - **Honest endings.** A run ends exactly once. The product records the outcome when it accepts a finish or ends the attempt. A run that reaches a limit is never recorded as a failure.
 - **Isolation.** One account's or practice's work never reaches another's context, tools or results.
 - **Rate limits.**

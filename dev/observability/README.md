@@ -93,6 +93,14 @@ OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CO
   on first boot; the Grafana admin login is likewise a local constant.
   `DD_API_KEY` is the only real secret and is read from the environment
   (Doppler) at start.
+- `test/` is the disposable Langfuse for ignored Docker tests, started through
+  `telemetry::testing`. `langfuse.yaml` runs Langfuse web and its stores on
+  loopback ports the test picks; its `ingest` profile adds langfuse-worker and
+  the collector on `collector.yaml` plus `test/collector.yaml`, which sends the
+  ops pipelines to the test's own OTLP sink. `langfuse-sso.yaml` is the
+  overlay for the issuer's sign-in test. The physician full-path test is
+  described in the book's
+  [content policy](../../book/src/observability.md#content-policy).
 
 ## Offline downtime-notification rehearsal
 
@@ -110,12 +118,18 @@ nix develop .#agent --command python scripts/test_alert_qualification.py -v
 
 `workspace-tools observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR`
 writes `observations-<route>-<UTC stamp>.json` for `--observations`. The
-checker routes are `datadog`, `grafana-test`, and `cloud-monitoring`. Datadog
+checker routes are `datadog`, `grafana-test`, `cloud-monitoring` and
+`langfuse`. Datadog
 reads `DD_API_KEY` from Doppler project `coda-rust` config `stg` and does not
 print it. Grafana pushes a `fail` or `ok` line through a local Loki
 port-forward. Watchdog pauses or resumes the availability-probe scheduler. The
 command restores the signal when the exercise passes 40 minutes, already has
 more than two reminders, or the provider call fails.
+`workspace-tools observability-drill langfuse fail|recover --confirm --output-dir DIR`
+writes the `langfuse` route's ledger; `recover` restores the replica count
+`fail` recorded in the same directory. The book's
+[Langfuse drills](../../book/src/observability.md#langfuse-drills) cover it
+and the read-only actions.
 `workspace-tools observability-drill probe --output-dir DIR` runs one
 availability-probe slot through IAP as the probe identity and writes
 `probe-<slot>.json`. Run it before each drill. It fails on any non-success

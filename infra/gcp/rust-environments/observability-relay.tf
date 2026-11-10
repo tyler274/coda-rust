@@ -1,15 +1,16 @@
 # --- Observability relay (observability_relay_image) ------------------------
 #
-# public-site serves Grafana under /grafana/ and Langfuse under /langfuse/ by
+# public-site serves Grafana under /grafana/, Langfuse under /langfuse/ and
+# the Langfuse sign-in issuer's authorize step under /langfuse-sso/ by
 # proxying to this service (crates/observability-relay). Cloud Run IAP admits
 # the engineering group and observability_proxy_invokers, the public-site
 # service account. The relay leaves through Direct VPC egress on its own
-# subnet, and the two internal passthrough load balancers that
+# subnet, and the internal passthrough load balancers that
 # infra/gcp/observability creates admit only that subnet. That keeps the
 # physician and Duet services, which share rust-run, off Grafana and Langfuse.
 #
 # It reads no secrets and has no database, Doppler token or sidecar: one
-# unnamed container, which staging-release updates like physician-worker
+# container named after the service, which staging-release updates by name
 # (crates/workspace-tools/src/staging_release).
 locals {
   observability_relay = var.observability_relay_image != null && local.observability_cluster ? toset(["relay"]) : toset([])
@@ -26,10 +27,11 @@ resource "google_compute_subnetwork" "relay" {
   private_ip_google_access = true
 }
 
-# The two load balancers take these addresses (loadBalancerIP), in the node
-# subnet next to the otel gateway's.
+# The load balancers take these addresses (loadBalancerIP), in the node
+# subnet next to the otel gateway's. langfuse_sso fronts the issuer that
+# signs people into Langfuse (infra/gcp/observability/langfuse-sso.tf).
 resource "google_compute_address" "observability_web" {
-  for_each     = { for app in ["grafana", "langfuse"] : app => app if length(local.observability_relay) > 0 }
+  for_each     = { for app in ["grafana", "langfuse", "langfuse-sso"] : app => app if length(local.observability_relay) > 0 }
   project      = google_project.environment.project_id
   name         = "${each.key}-internal"
   region       = var.region
@@ -74,6 +76,9 @@ resource "google_cloud_run_v2_service" "observability_relay" {
       }
     }
     containers {
+      # Cloud Run would name an unnamed container per revision; the release
+      # finds this one by the service name.
+      name  = "observability-relay"
       image = var.observability_relay_image
       ports { container_port = 8080 }
       resources {
@@ -92,6 +97,10 @@ resource "google_cloud_run_v2_service" "observability_relay" {
       env {
         name  = "LANGFUSE_UPSTREAM"
         value = "http://${google_compute_address.observability_web["langfuse"].address}:3000"
+      }
+      env {
+        name  = "LANGFUSE_SSO_UPSTREAM"
+        value = "http://${google_compute_address.observability_web["langfuse-sso"].address}:3000"
       }
       # The relay has no health route; a TCP probe proves it is listening.
       startup_probe {
@@ -161,11 +170,12 @@ resource "google_artifact_registry_repository_iam_member" "observability_nodes" 
 # Inputs for infra/gcp/observability (observability_web) and public-site
 # (observability_relay_url).
 output "observability_relay" {
-  description = "The relay's URL for public-site, the reserved internal addresses of the Grafana and Langfuse load balancers, and the only source range they admit. Null while the relay is off."
+  description = "The relay's URL for public-site, the reserved internal addresses of the Grafana, Langfuse and langfuse-sso load balancers, and the only source range they admit. Null while the relay is off."
   value = length(local.observability_relay) > 0 ? {
-    url           = google_cloud_run_v2_service.observability_relay["relay"].uri
-    grafana_ip    = google_compute_address.observability_web["grafana"].address
-    langfuse_ip   = google_compute_address.observability_web["langfuse"].address
-    source_ranges = [google_compute_subnetwork.relay["relay"].ip_cidr_range]
+    url             = google_cloud_run_v2_service.observability_relay["relay"].uri
+    grafana_ip      = google_compute_address.observability_web["grafana"].address
+    langfuse_ip     = google_compute_address.observability_web["langfuse"].address
+    langfuse_sso_ip = google_compute_address.observability_web["langfuse-sso"].address
+    source_ranges   = [google_compute_subnetwork.relay["relay"].ip_cidr_range]
   } : null
 }

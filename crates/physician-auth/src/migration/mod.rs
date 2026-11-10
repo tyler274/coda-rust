@@ -66,6 +66,7 @@ impl MigratorTrait for Migrator {
             Box::new(m20261024_000004_authority_notify),
             Box::new(m20261030_000005_practices),
             Box::new(m20261106_000006_session_lifetime),
+            Box::new(m20261109_000007_fixed_sessions),
         ]
     }
 }
@@ -665,6 +666,42 @@ impl MigrationTrait for m20261106_000006_session_lifetime {
         )
         .await?;
         Ok(())
+    }
+}
+
+/// `physician_sessions.ends_at`: the hard end of a fixed session (the
+/// rehearsal sign-in's), which activity never extends. Null for every
+/// ordinary sign-in, so existing rows keep their sliding lifetime.
+#[allow(non_camel_case_types, missing_docs)]
+pub struct m20261109_000007_fixed_sessions;
+impl MigrationName for m20261109_000007_fixed_sessions {
+    fn name(&self) -> &str {
+        "physician_auth_20261109_000007_fixed_sessions"
+    }
+}
+
+#[async_trait::async_trait]
+impl MigrationTrait for m20261109_000007_fixed_sessions {
+    async fn up(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Sessions)
+                    .add_column(ColumnDef::new(session::Column::EndsAt).big_integer().null())
+                    .to_owned(),
+            )
+            .await
+    }
+
+    async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
+        manager
+            .alter_table(
+                Table::alter()
+                    .table(Sessions)
+                    .drop_column(session::Column::EndsAt)
+                    .to_owned(),
+            )
+            .await
     }
 }
 

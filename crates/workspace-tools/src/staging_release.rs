@@ -445,7 +445,7 @@ fn deploy(receipt: &mut Receipt, store: &mut impl Store, cloud: &mut impl Cloud)
         ));
     }
     if !receipt.images.complete() {
-        return Err(Error::Input("all six published images required"));
+        return Err(Error::Input("every published image required"));
     }
     receipt.outcome = Outcome::InProgress;
     checkpoint(receipt, store, Phase::BeforeSnapshot)?;
@@ -1100,6 +1100,10 @@ mod tests {
             Ok(())
         }
     }
+    #[expect(
+        clippy::struct_excessive_bools,
+        reason = "each bool injects one independent fault into the fake"
+    )]
     struct FakeCloud {
         services: BTreeMap<String, Observation>,
         writes: Vec<String>,
@@ -1161,12 +1165,12 @@ mod tests {
                 denied_update: false,
                 late_update: false,
                 reads_before_failure: None,
-                // The relay runs without the otel-collector sidecar.
+                // The relay runs one named container, without the sidecar.
                 templates: SERVICES
                     .iter()
                     .map(|name| {
                         let template = if name == &ReleaseService::ObservabilityRelay {
-                            shape::tests::single("old-image")
+                            shape::tests::named(name.name(), "old-image")
                         } else {
                             shape::tests::observed(name.name(), "old-image")
                         };
@@ -1401,7 +1405,7 @@ mod tests {
                 Some("physician".to_owned()),
                 None,
                 Some("physician-worker".to_owned()),
-                None
+                Some("observability-relay".to_owned())
             ]
         );
         for name in SERVICES {
@@ -2029,6 +2033,7 @@ mod tests {
             [
                 "duet-migration",
                 "duet-runtime",
+                "langfuse-sso",
                 "observability-relay",
                 "physician-migration",
                 "physician-runtime",

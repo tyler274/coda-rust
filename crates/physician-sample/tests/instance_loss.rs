@@ -452,6 +452,7 @@ async fn accepted(url: &str, store: &Store) -> Delivery {
                 key: key.clone(),
                 text: "Hello".into(),
                 timezone: "America/New_York".into(),
+                scenario: None,
             },
             physician_auth::PostgresAuthStore::session_reference(&session),
         )

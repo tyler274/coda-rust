@@ -45,6 +45,7 @@ fn input(key: &str, revision: u64) -> RevisionInput {
         expected_revision: revision,
         instruction: "Shorten the reply".into(),
         timezone: "UTC".into(),
+        scenario: None,
     }
 }
 

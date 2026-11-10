@@ -15,7 +15,8 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `encoder` | [`src/lib.rs`](/crates/encoder/src/lib.rs), [`src/main.rs`](/crates/encoder/src/main.rs) | Offline BGE encoder binary that speaks both the Duet and the physician encoder protocols; [`tests/compare.rs`](/crates/encoder/tests/compare.rs) checks it against the existing Python workers. No crate depends on it | [Physician site](physician-site.md) |
 | `harness` | [`src/lib.rs`](/crates/harness/src/lib.rs) | One product-neutral bounded provider/tool loop in `engine`; `execution` forwards through compatibility adapters and preserves its saved request, response and record formats. Also reads `skills/` and admits `skill_view`. Hosted physician chat in `physician-worker` loads the catalog through `local-product`; nothing else does. Products keep authority, effects, persistence, and recovery. | <a href="/intent/harness%2Emd">Harness spec</a> |
 | `agent-skills` | [`src/lib.rs`](/crates/agent-skills/src/lib.rs) | The skill catalog reader for [`skills/`](/skills), used by `harness` | [Physician site](physician-site.md) |
-| `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services | [Observability](observability.md) |
+| `clinical-library` | [`src/lib.rs`](/crates/clinical-library/src/lib.rs), [`src/bin/clinical-library-migrate.rs`](/crates/clinical-library/src/bin/clinical-library-migrate.rs), [`src/bin/clinical-library-pubmed-status.rs`](/crates/clinical-library/src/bin/clinical-library-pubmed-status.rs) | The clinical library's records and the nightly's failure rules: article states, night outcomes counted from each night's ledger, the stop rule, the slot lease and activation, with their Postgres schema; the night runner every source goes through, and the alerts the records raise; and its sources, starting with PubMed's retraction and correction status read from NCBI's E-utilities. Depends on no other local crate | <a href="/verification/clinical-library/nightly/README%2Emd">Clinical library nightly</a> |
+| `telemetry` | [`src/lib.rs`](/crates/telemetry/src/lib.rs) | Shared tracing, logging, and OpenTelemetry setup for the Rust services; the `testing` feature starts the disposable Docker Langfuse and collector for ignored tests | [Observability](observability.md) |
 
 ## Duet (patient app)
 
@@ -28,7 +29,6 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs), [`src/acquisition.rs`](/crates/duet-health/src/acquisition.rs), [`src/outbox.rs`](/crates/duet-health/src/outbox.rs) | On-device health samples from HealthKit and Health Connect; durable acquisition records, the native source adapter contract and the transactional upload outbox (account fencing and the batch transport live in `duet-client::health_upload`) | [Duet backend](backend-architecture.md) |
 | `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Duet backend](backend-architecture.md) |
 | `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [UI and design](ui-surface-map.md) |
-| `duet-widget` | [`src/lib.rs`](/crates/duet-widget/src/lib.rs) | The snapshot that the native home-screen widgets read | [UI and design](ui-surface-map.md) |
 | `duet-stub` | [`src/lib.rs`](/crates/duet-stub/src/lib.rs), [`src/main.rs`](/crates/duet-stub/src/main.rs) | Local Duet stand-in for the emulator and tests (`cargo run -p duet-stub`) | [Release](release.md#android-and-google-play) |
 
 ## Physician product
@@ -56,6 +56,8 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
 | `public-site` | [`src/lib.rs`](/crates/public-site/src/lib.rs) | The startup-rendered public marketing site, isolated from the physician runtime | [Public site](public-site.md) |
+| `observability-relay` | [`src/lib.rs`](/crates/observability-relay/src/lib.rs) | The staging hop from public-site's `/grafana/`, `/langfuse/` and `/langfuse-sso/` mounts to the private observability load balancers | [Public site](public-site.md#observability-mounts) |
+| `langfuse-sso` | [`src/lib.rs`](/crates/langfuse-sso/src/lib.rs) | The OIDC issuer that signs engineers into staging Langfuse as the Google account IAP verified: discovery, JWKS, single-use PKCE codes and ES256 ID tokens | [Observability](observability.md) |
 
 ## Tooling and guards
 
@@ -64,8 +66,8 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `patient-bank` | [`src/lib.rs`](/crates/patient-bank/src/lib.rs), [`src/main.rs`](/crates/patient-bank/src/main.rs) | The synthetic patient bank: chart authoring checks, the verified code catalog, the FHIR build and its validation | [Synthetic patients](patient-bank.md) |
 | `ui-gallery` | [`src/main.rs`](/crates/ui-gallery/src/main.rs), [`scripts/ui-gallery.sh`](/scripts/ui-gallery.sh) | Every `ui` family rendered with its states, each at its own address, the command that builds and serves it, and the browser test that opens every family. Nothing depends on it | — |
 | `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart, retain the reference shipping clients, and hold both apps' raw controls, hand-built cards and library overrides to a [checked-in table](/crates/boundaries/src/shared_ui.rs) | This page |
-| `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, and `apply-migrations`; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
-| `android` | [`src/main.rs`](/crates/android/src/main.rs) | Opens the Android emulator window and runs one UI Automator class (`cargo run -p android -- test coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
+| `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, `apply-migrations` and the `observability-drill` routes, among them the staging Langfuse drills; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
+| `android` | [`src/main.rs`](/crates/android/src/main.rs) | Builds the APK, opens the Android emulator (a window, or headless in CI) and runs one UI Automator class (`cargo run -p android -- test [--headless] coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
 
 ## Platform bindings
 
@@ -75,10 +77,8 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- |
 | [`ios/HealthKitBridge.swift`](/platform/ios/HealthKitBridge.swift) | `duet-health` |
 | [`ios/NotificationBridge.swift`](/platform/ios/NotificationBridge.swift) | `duet-notify` |
-| [`ios/StatWidget.swift`](/platform/ios/StatWidget.swift) | `duet-widget` snapshot |
 | [`android/HealthConnectBridge.kt`](/platform/android/HealthConnectBridge.kt) | `duet-health` |
 | [`android/NotificationBridge.kt`](/platform/android/NotificationBridge.kt) | `duet-notify` |
-| [`android/StatWidget.kt`](/platform/android/StatWidget.kt) | `duet-widget` snapshot |
 | [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
 

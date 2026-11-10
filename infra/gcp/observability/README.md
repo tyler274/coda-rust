@@ -12,11 +12,12 @@ data flow, content policy, and runbook are in
 | Part | What it is |
 | --- | --- |
 | `collector.tf` | Two-replica OpenTelemetry Collector (`otel/opentelemetry-collector-contrib:0.155.0`) running [`dev/observability/collector.yaml`](/dev/observability/collector.yaml) merged with the gateway overlay [`collector.gke.yaml`](/dev/observability/collector.gke.yaml) and, last, the backend overlay `collector.<telemetry_backend>.yaml`, all unchanged from one ConfigMap. Only the selected backend's endpoints are set (`DATADOG_OTLP_ENDPOINT`, or `TEMPO_OTLP_ENDPOINT` and `LOKI_OTLP_ENDPOINT`). A ClusterIP Service serves in-cluster callers; the `otel-gateway` internal load balancer serves Cloud Run |
-| `datadog.tf` | With `telemetry_backend = "datadog"` or `"both"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`) |
+| `datadog.tf` | With `telemetry_backend = "datadog"` or `"both"`: Datadog Operator Helm chart `2.30.0`, one `DatadogAgent` (`gke-autopilot` provider, APM, OTLP on 4317/4318 with OTLP logs on, `env:<environment>`), and the `datadog_monitor`s behind `datadog_monitors_enabled`: 5xx rate and p95 latency per service, physician chat generation errors, and asynchronous failures for physician-worker and duet-api, plus memory near the limit and OOM kills for this namespace's containers, all notifying `var.alert_notify` (staging: Slack `#engineering-observability`). `chat_failure_monitor_enabled` creates the chat generation errors monitor on its own, without the others |
 | `datadog_gcp.tf` | Off by default (`datadog_gcp_integration_enabled`, `datadog` only): the Datadog GCP integration for `cluster_project` only, through service-account impersonation |
 | `grafana.tf` | With `telemetry_backend = "grafana"` or `"both"`: one-replica StatefulSets with persistent disks for Tempo `3.1.1`, Loki `3.7.9`, Prometheus `v3.16.0` and Grafana `13.3.0`, each behind a ClusterIP Service, reading the shared files under [`dev/observability/grafana`](/dev/observability/grafana) from ConfigMaps: Tempo's metrics-generator, Loki's OTLP ingestion, the datasources (`tempo`, `loki`, `prometheus`) and the four operational alert rules in shadow mode. Retention: `grafana_traces_retention_days` (14), `grafana_logs_retention_days` (30), `grafana_metrics_retention_days` (30). Off by default (`grafana_cloud_monitoring_enabled`): a Cloud Monitoring datasource read through Workload Identity by a `roles/monitoring.viewer` service account |
 | `langfuse.tf` | `langfuse/langfuse` Helm chart `1.5.41` (Langfuse `3.225.11`), Cloud SQL Postgres 16 with IAM login through a Cloud SQL Proxy sidecar, a GCS blob bucket through S3 interop, in-cluster ClickHouse and Valkey on PVCs, ClusterIP only. Under `staging_proxy` web runs the digest-pinned `/langfuse` base-path build (`langfuse_web_image`) |
-| `web.tf` | Off by default (`observability_web`): internal passthrough load balancers for `grafana:3000` and `langfuse-web:3000` on the reserved addresses, admitting only the relay subnet. People reach them only through public-site's `/grafana/` and `/langfuse/` mounts (see [Staging proxy](#staging-proxy)) |
+| `langfuse-sso.tf` | Off by default (`langfuse_sso_image`): one replica of the [`langfuse-sso`](/crates/langfuse-sso) OIDC issuer and its ClusterIP Service, which sign people into Langfuse as their IAP-verified Google account (see [Staging proxy](#staging-proxy)) |
+| `web.tf` | Off by default (`observability_web`): internal passthrough load balancers for `grafana:3000`, `langfuse-web:3000` and, with the issuer, `langfuse-sso:3000` on the reserved addresses, admitting only the relay subnet. People reach them only through public-site's `/grafana/`, `/langfuse/` and `/langfuse-sso/` mounts (see [Staging proxy](#staging-proxy)) |
 | `doppler.tf` | Doppler Kubernetes Operator `1.7.3` and one `DopplerSecret` per consuming Kubernetes Secret |
 | `charts/manifests` | A local chart that renders custom resources (DatadogAgent, DopplerSecret) so they apply after their operators' CRDs exist |
 
@@ -175,7 +176,7 @@ holds the stable names, and the operator renders the rest from the outputs:
 | `otel_gateway_audience` | `otel_gateway.audience` |
 | `otel_gateway_source_ranges` | `otel_gateway.source_ranges` (the Cloud Run Direct VPC egress subnet `rust-run`) |
 | `otel_gateway_allowed_callers` | `otel_gateway.allowed_callers` (the physician, duet and physician-worker runtime service accounts) |
-| `observability_web` | `observability_relay.{grafana_ip,langfuse_ip,source_ranges}` (the two reserved addresses and the relay subnet `rust-relay`) |
+| `observability_web` | `observability_relay.{grafana_ip,langfuse_ip,langfuse_sso_ip,source_ranges}` (the three reserved addresses and the relay subnet `rust-relay`) |
 
 ```sh
 root=infra/gcp/observability
@@ -184,7 +185,7 @@ tofu -chdir=infra/gcp/rust-environments output -json otel_gateway \
          otel_gateway_source_ranges: .source_ranges,
          otel_gateway_allowed_callers: .allowed_callers}' > /tmp/otel-gateway.tfvars.json
 tofu -chdir=infra/gcp/rust-environments output -json observability_relay \
-  | jq '{observability_web: {grafana_ip, langfuse_ip, source_ranges}}' > /tmp/observability-web.tfvars.json
+  | jq '{observability_web: {grafana_ip, langfuse_ip, langfuse_sso_ip, source_ranges}}' > /tmp/observability-web.tfvars.json
 tofu -chdir=$root init -backend-config=backend/staging.gcs.tfbackend
 doppler run --project coda-rust --config stg -- \
   tofu -chdir=$root plan -var-file=env/staging.tfvars \
@@ -237,16 +238,17 @@ own on the internet:
 
 ```text
 browser -> Cloud Run IAP (public-site-staging, gcp-engineering)
-        -> public-site /grafana/ and /langfuse/ mounts
+        -> public-site /grafana/, /langfuse/ and /langfuse-sso/ mounts
         -> Cloud Run IAP (observability-relay: the group and public-site's account)
         -> observability-relay, Direct VPC egress on rust-relay
-        -> internal LB grafana:3000 or langfuse-web:3000 (this root, web.tf)
+        -> internal LB grafana:3000, langfuse-web:3000 or langfuse-sso:3000
+           (this root, web.tf)
 ```
 
 - **Path.** public-site ([book/src/public-site.md](/book/src/public-site.md))
   sends a JWT signed for its own service account to the relay as
   `Proxy-Authorization`, as it does for `/physician/`.
-  `infra/gcp/rust-environments` owns the relay, its subnet and the two
+  `infra/gcp/rust-environments` owns the relay, its subnet and the
   reserved addresses. The load balancers here admit only
   `observability_web.source_ranges`, the relay's `/26`, so the physician and
   Duet services on `rust-run` cannot reach either app. The variable refuses
@@ -264,13 +266,66 @@ browser -> Cloud Run IAP (public-site-staging, gcp-engineering)
   assertion for another IAP application is refused. The Doppler `admin` login
   remains as break-glass. Live is off (`GF_LIVE_MAX_CONNECTIONS = 0`) because
   the proxy carries no WebSockets.
-- **Langfuse sign-in.** Langfuse keeps its own login. Sign-up is off and the
-  admin adds people; IAP still gates the whole path. public-site passes
-  through only the NextAuth cookies (`__Secure-next-auth.*`,
-  `__Host-next-auth.csrf-token`). `nextauth.url` is
-  `<origin>/langfuse/api/auth`, and the liveness and readiness probes and the
-  collector's in-cluster OTLP endpoint carry the `/langfuse` prefix. Google
-  sign-in inside Langfuse would need an OAuth client, so it is not set up.
+- **Langfuse sign-in.** With `langfuse_sso_image`, opening `/langfuse/` signs
+  the person in as the Google account IAP verified, with no form and no
+  click. Langfuse cannot read IAP, so `langfuse-sso.tf` runs
+  [`crates/langfuse-sso`](/crates/langfuse-sso), a small OIDC issuer, as
+  Langfuse's generic OIDC provider (`AUTH_CUSTOM_*`, provider `custom`):
+
+  ```text
+  browser GET /langfuse/ without a session
+    -> public-site 303 /langfuse/auth/sso-initiate?provider=custom&target=...
+    -> Langfuse 302 <origin>/langfuse-sso/authorize (PKCE, state, nonce)
+    -> public-site forwards X-Coda-IAP-Assertion -> relay -> langfuse-sso LB
+    -> langfuse-sso 302 /langfuse/api/auth/callback/custom?code&state
+    -> Langfuse exchanges the code and reads the JWKS in-cluster
+       (svc/langfuse-sso), verifies the ES256 ID token, sets its session
+  ```
+
+  The issuer takes the identity only from `X-Coda-IAP-Assertion` for
+  `staging_proxy.iap_audience`, so a request that skips public-site carries
+  nothing it accepts. Its discovery document names the in-cluster Service as
+  issuer, token and JWKS endpoint, and `<origin>/langfuse-sso/authorize` as
+  the only browser endpoint; public-site serves nothing else under
+  `/langfuse-sso` and lets its redirects reach only the Langfuse callback.
+  Codes are single-use, expire after a minute and live in the one replica's
+  memory. With `langfuse_sso` set in the public-site root
+  (`LANGFUSE_SIGN_IN=sso`), public-site mounts the authorize step and sends
+  page navigations without a session, and the sign-in page itself, into
+  `sso-initiate`. That setting must match `langfuse_sso_image` here: without
+  the issuer, Langfuse offers no `custom` provider to send people to.
+
+  A first sign-in creates the user in the `coda` organization with the
+  `NONE` role and no project (`LANGFUSE_DEFAULT_ORG_ROLE`), so a new
+  engineer sees no traces until an admin grants a role.
+  `LANGFUSE_ALLOWED_ORGANIZATION_CREATORS` names the init admin
+  (`LANGFUSE_INIT_USER_EMAIL`). Langfuse enforces it only with an EE license
+  ([Enterprise trial](#enterprise-trial)); without one an engineer can still
+  create an empty organization of their own, which holds none of `coda`'s
+  traces. Sign-up is on only
+  with the issuer, because each first sign-in creates a user. Account
+  linking (`AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING`) lets the init admin's user
+  sign in the same way and keep its role. Passwords are off with the issuer
+  (`AUTH_DISABLE_USERNAME_PASSWORD`), on every route including port-forward:
+  with sign-up on, a password route would let anyone behind IAP register,
+  or claim an engineer's email before their first SSO sign-in and keep
+  access after linking. When a session expires while a page is open,
+  Langfuse moves to its sign-in page in the browser, without a request
+  public-site sees, so its SSO button shows once; a reload signs the person
+  in again.
+
+  Without `langfuse_sso_image` Langfuse keeps only its own login, sign-up is
+  off and the admin adds people. Stopping the issuer does not turn passwords
+  back on, so the break-glass when it fails is an apply: set
+  `langfuse_sso_image` to null here and `langfuse_sso` to false in
+  public-site, apply both from reviewed plans, and the init admin signs in by
+  password. `observability-drill langfuse signin-breakglass` tries the init
+  admin's password sign-in with the issuer stopped, which shows that stopping
+  the issuer alone does not restore it. Either way, public-site passes through only
+  the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`).
+  `nextauth.url` is `<origin>/langfuse/api/auth`, and the liveness and
+  readiness probes and the collector's in-cluster OTLP endpoint carry the
+  `/langfuse` prefix.
 - **Langfuse image.** Next.js fixes the base path when it builds, so the stock
   web image cannot serve `/langfuse`.
   [`.github/workflows/langfuse-web-image.yml`](/.github/workflows/langfuse-web-image.yml)
@@ -300,10 +355,89 @@ Each apply is from a reviewed saved plan with the operator's authorization.
    public-site.
 6. Proof:
    - `/grafana/` signs you in as your Google account.
-   - `/langfuse/` shows the Langfuse login, and the admin can sign in.
+   - `/langfuse/` shows the Langfuse login, and the admin can sign in
+     (until [Langfuse sign-in rollout](#langfuse-sign-in-rollout)).
    - A request that skips public-site's IAP is refused.
    - The relay URL, called directly without public-site's service account, is refused.
    - `/physician/` still works.
+
+### Langfuse sign-in rollout
+
+Each apply is from a reviewed saved plan with the operator's authorization.
+
+1. Seed Doppler `coda-rust/stg` with `LANGFUSE_SSO_CLIENT_SECRET` (at least
+   32 random bytes) and `LANGFUSE_SSO_SIGNING_KEY` (a P-256 key as standard
+   base64 of its PKCS#8 DER):
+
+   ```sh
+   openssl rand -base64 48 | tr -d '\n' \
+     | doppler secrets set LANGFUSE_SSO_CLIENT_SECRET --project coda-rust --config stg
+   openssl genpkey -algorithm EC -pkeyopt ec_paramgen_curve:P-256 \
+     | openssl pkcs8 -topk8 -nocrypt -outform DER \
+     | base64 -w0 \
+     | doppler secrets set LANGFUSE_SSO_SIGNING_KEY --project coda-rust --config stg
+   ```
+
+   `genpkey -outform DER` alone writes SEC1, which the issuer refuses at
+   startup.
+2. Apply `rust-environments`. Its `observability_relay` output gains
+   `langfuse_sso_ip`, and the relay gets `LANGFUSE_SSO_UPSTREAM`. The
+   relay treats that setting as optional and answers `/langfuse-sso` with 404
+   until it is set, so a staging release can land before or after this
+   apply.
+3. Set `langfuse_sso_image` in `env/staging.tfvars` to the `coda-langfuse-sso`
+   digest the staging release published, render `observability_web` with
+   `langfuse_sso_ip`, then plan and apply this root.
+4. Set `langfuse_sso = true` in the public-site root's
+   `env/staging.tfvars`, then plan and apply it.
+5. Proof: an engineer opens `/langfuse/` and lands signed in, and their
+   membership in `coda` has role `NONE`; the admin signs in the same way and
+   keeps its role; a password sign-in or sign-up is refused;
+   `/langfuse-sso/authorize` without public-site's assertion is refused.
+
+Rotating the client secret or signing key is a new Doppler value; the
+operator resyncs both Secrets within five minutes, then
+`kubectl -n observability rollout restart deploy/langfuse-sso
+deploy/langfuse-web` picks them up. Existing sessions stay valid. Null
+`langfuse_sso_image` removes the issuer and its load balancer, turns sign-up
+off and passwords back on; set public-site's `langfuse_sso` to false first so
+it stops sending people to the issuer.
+
+### Enterprise trial
+
+`langfuse_ee_trial` sets `LANGFUSE_EE_LICENSE_KEY` on Langfuse web and worker
+from Doppler's `LANGFUSE_EE_LICENSE_KEY`. Langfuse 3.225.11 grants the
+self-hosted Enterprise plan to any key that starts with `langfuse_ee_`:
+project roles, audit logs, data retention, protected prompt labels,
+organization creators, UI customization, the admin API and ingestion masking.
+
+Before purchase, Doppler holds a `langfuse_ee_` placeholder. `ee/LICENSE`
+permits that for development and testing only, so a placeholder serves a
+pre-purchase test of the deployment and is replaced by a key Langfuse issues
+before the deployment serves real work. The toggle and the key are the same in
+every environment this root accepts. Changing the key is a Doppler edit and a
+restart of `deploy/langfuse-web` and `deploy/langfuse-worker`.
+
+1. Seed the placeholder:
+
+   ```sh
+   doppler secrets set LANGFUSE_EE_LICENSE_KEY=langfuse_ee_coda_staging_trial \
+     --project coda-rust --config stg
+   ```
+
+2. Plan and apply this root. The plan changes only the `langfuse-secrets`
+   DopplerSecret and the Langfuse release values.
+3. Set the project's data retention to `CODA_LANGFUSE_RETENTION_DAYS`, so it
+   matches the bucket lifecycle.
+
+With a key, Langfuse's usage report ignores `TELEMETRY_ENABLED`. It still
+sends nothing, because its PostHog client exists only with
+`NEXT_PUBLIC_POSTHOG_KEY` or telemetry on, and the tests keep both absent.
+Re-check that on every Langfuse image bump.
+
+To end the trial, first set retention to indefinite and clear project roles
+and protected labels (existing settings keep acting without their controls),
+then set `langfuse_ee_trial = false` and apply.
 
 Removing `staging_proxy` and `observability_web` deletes both load balancers
 and returns both apps to their root paths for port-forward. The Langfuse base
@@ -311,9 +445,20 @@ path changes only together with its image.
 
 ## Boundary
 
+- **Only the engineering group, only through IAP, in every environment.**
+  Every way a person reaches Grafana or Langfuse passes Google IAP, and IAP
+  admits only `group:gcp-engineering@codahealth.ai` plus the named service
+  accounts the route needs (in staging, public-site's account on the relay).
+  No `allUsers`, `allAuthenticatedUsers`, `domain:` or single `user:` grant
+  reaches either tool, and an app that signs people in from the IAP assertion
+  checks it against its own entry point's audience. Production follows the
+  same rule. This root accepts only `environment = "staging"`, and
+  `rust-environments` and `public-site` refuse a production cluster or relay,
+  so production observability cannot be planned until its route is designed
+  with tests that refuse any other principal or a path around IAP.
 - **No public listener; people come through the staging proxy.** The
   Langfuse chart's Ingress is off and every Service is `ClusterIP`, including
-  Tempo, Loki, Prometheus and Grafana. The only other listeners are the two
+  Tempo, Loki, Prometheus and Grafana. The only other listeners are the
   internal load balancers in `web.tf`. They admit only the relay subnet, so
   the way in from outside is public-site's IAP, then the relay's IAP
   ([Staging proxy](#staging-proxy)). Without `observability_web`, people reach
@@ -417,6 +562,8 @@ path changes only together with its image.
   | `LANGFUSE_SALT`, `LANGFUSE_NEXTAUTH_SECRET`, `LANGFUSE_ENCRYPTION_KEY`, `LANGFUSE_CLICKHOUSE_PASSWORD`, `LANGFUSE_REDIS_PASSWORD`, `LANGFUSE_S3_ACCESS_KEY_ID`, `LANGFUSE_S3_SECRET_ACCESS_KEY` | `langfuse-secrets` |
   | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY`, `LANGFUSE_INIT_PROJECT_SECRET_KEY`, `LANGFUSE_INIT_USER_EMAIL`, `LANGFUSE_INIT_USER_PASSWORD` | `langfuse-init` (Langfuse web env) |
   | the same project key pair | `otel-collector-langfuse` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`) |
+  | `LANGFUSE_EE_LICENSE_KEY` (`langfuse_ee_trial` only) | `langfuse-secrets` (Langfuse web and worker env) |
+  | `LANGFUSE_SSO_CLIENT_SECRET`, `LANGFUSE_SSO_SIGNING_KEY` (`langfuse_sso_image` only) | `langfuse-sso` (issuer env); the client secret also goes to `langfuse-secrets` for Langfuse's `AUTH_CUSTOM_CLIENT_SECRET` |
   The S3-interop HMAC key belongs to `coda-langfuse-blobs` (output
   `langfuse_hmac_service_account`). The operator mints it with
   `gcloud storage hmac create` and stores both halves in Doppler.

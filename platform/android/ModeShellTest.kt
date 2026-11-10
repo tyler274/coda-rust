@@ -8,24 +8,41 @@ import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
 import java.io.ByteArrayOutputStream
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestWatcher
+import org.junit.runner.Description
 import org.junit.runner.RunWith
 
 /**
  * Proves the installed mode shell through UI Automator.
  *
- * Client mode must show Duet, Today, You, and Shared, with Duet selected.
- * Physician mode must show Today and Find patient, and must not keep the
- * client tabs. A missing control fails. A loading or error body on a tab does
- * not.
+ * Client mode must show the Duet account sign-in gate, not the physician
+ * shell: without an account the Duet tabs stay gated, as in the browser mode
+ * test. Physician mode must show Today and, in its navigation drawer, Find
+ * patient, and must not keep
+ * the client screen. A missing control fails. A loading or error body on a
+ * tab does not.
  */
 @RunWith(AndroidJUnit4::class)
 class ModeShellTest {
     private lateinit var device: UiDevice
+
+    /**
+     * Saves the failing screen before the runner closes the app. The shell
+     * user writes it, so `cargo run -p android -- test` can pull it.
+     */
+    @get:Rule
+    val failureScreen = object : TestWatcher() {
+        override fun failed(e: Throwable, description: Description) {
+            if (::device.isInitialized) {
+                device.executeShellCommand("screencap -p $FAILURE_SCREEN")
+            }
+        }
+    }
 
     @Before
     fun launchChooser() {
@@ -48,25 +65,17 @@ class ModeShellTest {
         )
         click("Client")
 
-        val sections = device.wait(Until.findObject(By.text("Sections")), WAIT)
-            ?: error("client mode did not show the tab bar:\n${hierarchy()}")
-        val tabs = sections.findObjects(By.clickable(true)).map { it.text }
-        assertEquals(
-            "client mode did not show Duet, Today, You, Shared in that order:\n${hierarchy()}",
-            listOf("Duet", "Today", "You", "Shared"),
-            tabs,
+        assertTrue(
+            "client mode did not show the Duet sign-in gate:\n${hierarchy()}",
+            device.wait(
+                Until.hasObject(By.textStartsWith("Sign in to your Duet account")),
+                WAIT,
+            ) == true,
         )
-        // WebView does not publish aria-current as selected. The open tab is
-        // the page heading above the tab bar.
-        val heading = device.findObjects(
-            By.pkg("com.example.Mobile").clazz("android.widget.TextView"),
-        )
-            .filter { it.visibleBounds.top < sections.visibleBounds.top }
-            .minByOrNull { it.visibleBounds.top }
-        assertEquals(
-            "Duet was not the open tab:\n${hierarchy()}",
-            "Duet",
-            heading?.text,
+        control("Sign in with Apple")
+        assertNull(
+            "client mode showed the Duet tabs without an account:\n${hierarchy()}",
+            device.findObject(By.text("Sections")),
         )
         assertNull(
             "client mode showed the physician shell:\n${hierarchy()}",
@@ -79,10 +88,12 @@ class ModeShellTest {
             "physician mode did not show Today:\n${hierarchy()}",
             device.wait(Until.hasObject(By.text("Today")), WAIT) == true,
         )
+        // On a phone the sidebar is a drawer; Find patient is inside it.
+        click("Open navigation")
         control("Find patient")
         assertNull(
             "physician mode kept the client screen:\n${hierarchy()}",
-            device.findObject(By.text("Shared")),
+            device.findObject(By.text("Sign in with Apple")),
         )
         assertNull(
             "physician mode kept the client tabs:\n${hierarchy()}",
@@ -108,5 +119,8 @@ class ModeShellTest {
 
     companion object {
         private const val WAIT = 30_000L
+
+        /** Read by `crates/android` after a failed run. */
+        const val FAILURE_SCREEN = "/data/local/tmp/duet-failure.png"
     }
 }

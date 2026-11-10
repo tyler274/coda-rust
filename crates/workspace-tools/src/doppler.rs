@@ -32,19 +32,91 @@ pub fn install(output: &Path) -> Result<(), Failure> {
     install_verified(&bytes, output)
 }
 
+/// The pinned release asset, addressed the way GitHub's REST API names it.
+#[derive(Debug, PartialEq, Eq)]
+struct ReleaseAsset<'a> {
+    owner: &'a str,
+    repo: &'a str,
+    tag: &'a str,
+    name: &'a str,
+}
+
+impl<'a> ReleaseAsset<'a> {
+    fn from_download_url(url: &'a str) -> Option<Self> {
+        let path = url.strip_prefix("https://github.com/")?;
+        let parts: Vec<&str> = path.split('/').collect();
+        let [owner, repo, "releases", "download", tag, name] = parts[..] else {
+            return None;
+        };
+        Some(Self {
+            owner,
+            repo,
+            tag,
+            name,
+        })
+    }
+}
+
+#[derive(serde::Deserialize)]
+struct Release {
+    assets: Vec<ApiAsset>,
+}
+
+#[derive(serde::Deserialize)]
+struct ApiAsset {
+    name: String,
+    url: String,
+}
+
+/// Downloads through api.github.com, which honours `GITHUB_TOKEN`; the
+/// github.com download URL ignores it and is throttled with anonymous traffic.
 fn download() -> Result<Vec<u8>, Failure> {
+    let pinned = ReleaseAsset::from_download_url(URL)
+        .ok_or_else(|| Failure::new(1, "the Doppler URL pin is not a GitHub release asset"))?;
     let client = reqwest::blocking::Client::builder()
+        .user_agent("coda-workspace-tools")
         .build()
-        .map_err(|error| Failure::new(1, format!("could not build the HTTP client: {error}")))?;
-    let bytes = client
-        .get(URL)
-        .send()
-        .map_err(|error| Failure::new(1, format!("could not download Doppler: {error}")))?
-        .error_for_status()
-        .map_err(|error| Failure::new(1, format!("could not download Doppler: {error}")))?
-        .bytes()
-        .map_err(|error| Failure::new(1, format!("could not download Doppler: {error}")))?;
-    Ok(bytes.to_vec())
+        .map_err(|error| Failure::with_source(1, "could not build the HTTP client", error))?;
+    let token = std::env::var("GITHUB_TOKEN")
+        .ok()
+        .filter(|token| !token.is_empty());
+    let get = |url: &str, accept: &str| {
+        let request = client.get(url).header(reqwest::header::ACCEPT, accept);
+        let request = match &token {
+            Some(token) => request.bearer_auth(token),
+            None => request,
+        };
+        request
+            .send()
+            .and_then(reqwest::blocking::Response::error_for_status)
+            .and_then(reqwest::blocking::Response::bytes)
+            .map_err(|error| {
+                Failure::with_source(1, format!("could not download Doppler: {error}"), error)
+            })
+    };
+
+    let release_url = format!(
+        "https://api.github.com/repos/{}/{}/releases/tags/{}",
+        pinned.owner, pinned.repo, pinned.tag
+    );
+    let release: Release =
+        serde_json::from_slice(&get(&release_url, "application/vnd.github+json")?).map_err(
+            |error| Failure::with_source(1, "could not read the Doppler release", error),
+        )?;
+    let asset = release
+        .assets
+        .into_iter()
+        .find(|asset| asset.name == pinned.name)
+        .ok_or_else(|| {
+            Failure::new(
+                1,
+                format!(
+                    "Doppler release {} has no asset {}",
+                    pinned.tag, pinned.name
+                ),
+            )
+        })?;
+    Ok(get(&asset.url, "application/octet-stream")?.to_vec())
 }
 
 pub fn install_verified(bytes: &[u8], output: &Path) -> Result<(), Failure> {
@@ -169,9 +241,30 @@ mod tests {
                 "https://github.com/DopplerHQ/cli/releases/download/{version}/doppler_{version}_linux_amd64.tar.gz"
             )
         );
+        assert_eq!(
+            ReleaseAsset::from_download_url(URL),
+            Some(ReleaseAsset {
+                owner: "DopplerHQ",
+                repo: "cli",
+                tag: version,
+                name: &format!("doppler_{version}_linux_amd64.tar.gz"),
+            })
+        );
         let nix = include_str!("../../../nix/packages.nix");
         assert!(nix.contains("url = pin \"URL\""));
         assert!(nix.contains("inherit (dopplerPin) url sha256"));
+    }
+
+    #[test]
+    fn only_release_download_urls_name_an_asset() {
+        for url in [
+            "https://example.com/DopplerHQ/cli/releases/download/1/a.tar.gz",
+            "https://github.com/DopplerHQ/cli/archive/1/a.tar.gz",
+            "https://github.com/DopplerHQ/cli/releases/download/1",
+            "https://github.com/DopplerHQ/cli/releases/download/1/a/b",
+        ] {
+            assert_eq!(ReleaseAsset::from_download_url(url), None, "{url}");
+        }
     }
 
     #[test]

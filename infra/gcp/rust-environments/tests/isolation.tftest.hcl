@@ -564,6 +564,62 @@ run "physician_scale_active" {
       physician = { TEST_CONTRACT_ONLY = "true" }
       duet      = { TEST_CONTRACT_ONLY = "true" }
     }
+    physician_simulation_practices = ["coda-rehearsal-practice"]
+    physician_rehearsal_enabled    = true
+  }
+
+  override_resource {
+    target = google_service_account.physician_rehearsal
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+
+  # The rehearsal account passes physician's IAP only, signs only JWTs, and
+  # the site learns its own audience and that one principal.
+  assert {
+    condition = (
+      contains(google_iap_web_cloud_run_service_iam_binding.team["physician"].members, "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com") &&
+      !contains(google_iap_web_cloud_run_service_iam_binding.team["duet"].members, "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com")
+    )
+    error_message = "Only physician's IAP admits the rehearsal service account."
+  }
+  assert {
+    condition = (
+      google_project_iam_custom_role.physician_rehearsal_signer["physician"].permissions == toset(["iam.serviceAccounts.signJwt"]) &&
+      google_service_account_iam_binding.physician_rehearsal_signer["physician"].members == toset([
+        "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com",
+      ])
+    )
+    error_message = "By default only the rehearsal account itself may sign JWTs as it, and nothing more; no group is ever granted it."
+  }
+  assert {
+    condition = alltrue([
+      contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_IAP_AUDIENCE=/projects/123456789012/locations/us-east1/services/physician"),
+      contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_REHEARSAL_PRINCIPAL=physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"),
+      !contains([for env in google_cloud_run_v2_service.app["duet"].template[0].containers[0].env : env.name], "PHYSICIAN_REHEARSAL_PRINCIPAL"),
+      !contains([for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_REHEARSAL_PRINCIPAL"),
+    ])
+    error_message = "Only the physician site learns its IAP audience and the rehearsal principal."
+  }
+
+  # Rehearsal practices reach the physician site, worker and migration job
+  # (which seeds the practice), and nothing of Duet's.
+  assert {
+    condition = alltrue([for envs in [
+      google_cloud_run_v2_service.app["physician"].template[0].containers[0].env,
+      google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env,
+      google_cloud_run_v2_job.migration["physician"].template[0].template[0].containers[0].env,
+    ] : contains([for env in envs : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_SIMULATION_PRACTICES=coda-rehearsal-practice")])
+    error_message = "The physician site, worker and migration job all learn the rehearsal practice."
+  }
+  assert {
+    condition = alltrue([for envs in [
+      google_cloud_run_v2_service.app["duet"].template[0].containers[0].env,
+      google_cloud_run_v2_job.migration["duet"].template[0].template[0].containers[0].env,
+    ] : !contains([for env in envs : env.name], "PHYSICIAN_SIMULATION_PRACTICES")])
+    error_message = "Duet never learns physician rehearsal practices."
   }
 
   # Memorystore: private, authenticated, TLS, on the existing peering.
@@ -805,6 +861,66 @@ run "reject_unknown_telemetry_content" {
   command = plan
   variables { telemetry_content = "prompts" }
   expect_failures = [var.telemetry_content]
+}
+
+run "reject_production_simulation_practices" {
+  command = plan
+  variables {
+    environment                    = "prd"
+    physician_simulation_practices = ["coda-rehearsal-practice"]
+  }
+  expect_failures = [var.physician_simulation_practices]
+}
+
+run "reject_malformed_simulation_practice" {
+  command = plan
+  variables { physician_simulation_practices = ["Coda Rehearsal"] }
+  expect_failures = [var.physician_simulation_practices]
+}
+
+run "reject_production_rehearsal_sign_in" {
+  command = plan
+  variables {
+    environment                 = "prd"
+    physician_rehearsal_enabled = true
+  }
+  expect_failures = [var.physician_rehearsal_enabled]
+}
+
+run "reject_rehearsal_sign_in_without_a_rehearsal_practice" {
+  command = plan
+  variables { physician_rehearsal_enabled = true }
+  expect_failures = [var.physician_rehearsal_enabled]
+}
+
+run "reject_a_group_as_rehearsal_signer" {
+  command = plan
+  variables { physician_rehearsal_signers = ["group:test-team@example.invalid"] }
+  expect_failures = [var.physician_rehearsal_signers]
+}
+
+run "rehearsal_is_off_by_default" {
+  command = plan
+  assert {
+    condition     = length(google_service_account.physician_rehearsal) == 0 && length(local.physician_rehearsal_env) == 0
+    error_message = "Without physician_rehearsal_enabled there is no rehearsal account or setting."
+  }
+}
+
+run "reject_runtime_override_of_rehearsal_principal" {
+  command = plan
+  variables {
+    runtime_environment = { physician = { PHYSICIAN_REHEARSAL_PRINCIPAL = "someone@test-rust-stg-only.iam.gserviceaccount.com" } }
+  }
+  expect_failures = [google_project.environment]
+}
+
+run "reject_runtime_override_of_simulation_practices" {
+  command = plan
+  variables {
+    runtime_environment = { physician = { PHYSICIAN_SIMULATION_PRACTICES = "roger-synthetic-practice" } }
+  }
+  expect_failures = [google_project.environment]
 }
 
 run "reject_production_observability_cluster" {
@@ -1082,16 +1198,19 @@ run "observability_active" {
       google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].egress == "PRIVATE_RANGES_ONLY" &&
       google_cloud_run_v2_service.observability_relay["relay"].template[0].vpc_access[0].network_interfaces[0].subnetwork == "rust-relay" &&
       length(google_cloud_run_v2_service.observability_relay["relay"].template[0].containers) == 1 &&
-      google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == null &&
+      google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].name == "observability-relay" &&
       { for env in google_cloud_run_v2_service.observability_relay["relay"].template[0].containers[0].env : env.name => env.value } == {
-        RELAY_IAP_AUDIENCE = "/projects/123456789012/locations/us-east1/services/observability-relay"
-        GRAFANA_UPSTREAM   = "http://10.82.0.20:3000"
-        LANGFUSE_UPSTREAM  = "http://10.82.0.20:3000"
+        RELAY_IAP_AUDIENCE    = "/projects/123456789012/locations/us-east1/services/observability-relay"
+        GRAFANA_UPSTREAM      = "http://10.82.0.20:3000"
+        LANGFUSE_UPSTREAM     = "http://10.82.0.20:3000"
+        LANGFUSE_SSO_UPSTREAM = "http://10.82.0.20:3000"
       } &&
       jsonencode(output.observability_relay.source_ranges) == jsonencode(["10.80.1.0/26"]) &&
-      keys(google_compute_address.observability_web) == ["grafana", "langfuse"]
+      output.observability_relay.langfuse_sso_ip == "10.82.0.20" &&
+      keys(google_compute_address.observability_web) == ["grafana", "langfuse", "langfuse-sso"] &&
+      google_compute_address.observability_web["langfuse-sso"].name == "langfuse-sso-internal"
     )
-    error_message = "The relay leaves through rust-relay to the two reserved addresses, with one unnamed container, its own audience and no secrets."
+    error_message = "The relay leaves through rust-relay to the three reserved addresses, with one unnamed container, its own audience and no secrets."
   }
 
   assert {

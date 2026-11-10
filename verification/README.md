@@ -2,7 +2,9 @@
 
 The [intent specs](../intent/README.md) say what Coda does. This folder checks it, one feature at a
 time: each feature gets a precise spec, a TLA+ model of that spec, and a way to hold the code to
-the model. Features not modeled yet follow the intent specs alone.
+the model. A feature's README can come before its model; until the model exists, its verify skill
+names the tests that hold each rule, as [clinical-library/nightly](clinical-library/nightly/README.md)'s
+does. Features without a folder follow the intent specs alone.
 
 ## A feature's folder
 

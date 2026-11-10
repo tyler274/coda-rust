@@ -31,6 +31,7 @@ jobs:
     outputs:
       full: ${{ steps.select.outputs.full }}
       deps: ${{ steps.select.outputs.deps }}
+      mobile: ${{ steps.select.outputs.mobile }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -64,12 +65,16 @@ jobs:
         run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
       - name: Test proof capture against a scratch repository
         run: python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
+      # Release archives come through the authenticated API: github.com
+      # download URLs ignore the token and fail first when GitHub throttles
+      # anonymous traffic.
       - name: Install mdBook
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           version=0.4.52
           archive="mdbook-v${version}-x86_64-unknown-linux-gnu.tar.gz"
-          url="https://github.com/rust-lang/mdBook/releases/download/v${version}/${archive}"
-          curl -fsSL "$url" -o "/tmp/${archive}"
+          gh release download "v${version}" --repo rust-lang/mdBook --pattern "$archive" --dir /tmp
           echo "c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768  /tmp/${archive}" | sha256sum -c -
           tar -xzf "/tmp/${archive}" -C /tmp
           install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
@@ -77,11 +82,12 @@ jobs:
       # lychee 0.24.2 matches flake `lychee`. Static musl build, so it does
       # not depend on the runner's glibc.
       - name: Install lychee
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           version=0.24.2
           archive="lychee-x86_64-unknown-linux-musl.tar.gz"
-          url="https://github.com/lycheeverse/lychee/releases/download/lychee-v${version}/${archive}"
-          curl -fsSL "$url" -o "/tmp/${archive}"
+          gh release download "lychee-v${version}" --repo lycheeverse/lychee --pattern "$archive" --dir /tmp
           echo "73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5  /tmp/${archive}" | sha256sum -c -
           tar -xzf "/tmp/${archive}" -C /tmp
           install -m 755 /tmp/lychee-x86_64-unknown-linux-musl/lychee "${CARGO_HOME:-$HOME/.cargo}/bin/lychee"
@@ -94,7 +100,7 @@ jobs:
   result:
     name: CI result
     if: always()
-    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny]
+    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator]
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
       contents: read
@@ -165,6 +171,7 @@ jobs:
             echo "DUET_TEST_DATABASE_URL=${url}"
             echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
             echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
+            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
           } >> "$GITHUB_ENV"
       - name: Check out repository
         uses: actions/checkout@v7
@@ -210,11 +217,12 @@ jobs:
         run: rustup toolchain install
       # Release binary, not `cargo install`; matches the flake pin.
       - name: Install wasm-bindgen
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           version=0.2.129
           archive="wasm-bindgen-${version}-x86_64-unknown-linux-musl.tar.gz"
-          url="https://github.com/wasm-bindgen/wasm-bindgen/releases/download/${version}/${archive}"
-          curl -fsSL "$url" -o "/tmp/${archive}"
+          gh release download "$version" --repo wasm-bindgen/wasm-bindgen --pattern "$archive" --dir /tmp
           echo "82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e  /tmp/${archive}" | sha256sum -c -
           tar -xzf "/tmp/${archive}" -C /tmp
           install -m 755 "/tmp/wasm-bindgen-${version}-x86_64-unknown-linux-musl/wasm-bindgen" "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
@@ -241,6 +249,8 @@ jobs:
       # This command builds workspace-tools; restore its dependencies first.
       # The release is still downloaded and verified on every run.
       - name: Verify pinned Doppler download and installed version
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           cargo run --locked -p workspace-tools -- install-doppler "$RUNNER_TEMP/doppler"
           expected=$(python3 -c 'from pathlib import Path; print(Path("crates/workspace-tools/src/doppler.rs").read_text().split("pub const VERSION: &str = ")[1].split(chr(34))[1])')
@@ -450,6 +460,10 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Reuse OpenTofu providers
+        uses: ./.github/actions/tofu-providers
+        with:
+          scope: foundations
       - name: Check infrastructure source and SQL authority contracts
         run: |
           nix develop .#release --command python infra/gcp/rust-environments/tests/check_contract.py
@@ -484,6 +498,82 @@ jobs:
         run: python3 scripts/nix-cache/nix_cache.py cleanup
       # Adapter tests do not authorize deployment. The staging rollout is the
       # deploy-staging job below; hosted runtime qualification is separate.
+
+  # Builds the mobile mode-shell APK and runs ModeShellTest on a headless
+  # x86_64 emulator. Blacksmith runners expose nested KVM. For now it runs only
+  # on a manual dispatch (Actions > CI > Run workflow); ci_scope.py
+  # MOBILE_ON_CHANGE turns on running it when the APK's build changes.
+  android-emulator:
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.mobile == 'true'
+    name: Android emulator
+    runs-on: blacksmith-4vcpu-ubuntu-2404
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: false
+          persist-credentials: false
+      - name: Allow the runner user to open /dev/kvm
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' \
+            | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+          ls -l /dev/kvm
+      - uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Restore Rust and Gradle caches
+        uses: actions/cache@v5
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+            target/x86_64-linux-android
+            target/android-dev
+          key: android-${{ runner.os }}-${{ hashFiles('Cargo.lock', 'flake.lock') }}
+          restore-keys: android-${{ runner.os }}-
+      - name: Check the scope list covers the APK's workspace crates
+        # An explicit bash shell adds pipefail, so a failed cargo tree fails the step.
+        shell: bash
+        run: >-
+          nix develop .#android --command cargo tree --locked -p mobile --features mobile
+          --target x86_64-linux-android -e normal --prefix none
+          | python3 scripts/ci_scope.py check-mobile-crates
+      - name: Test the Android tooling
+        run: nix develop .#android --command cargo test --locked -p android
+      - name: Create the duet AVD
+        run: nix develop .#android --command cargo run --locked -p android -- avd
+      - name: Build the APK and run ModeShellTest headless
+        run: nix develop .#android --command cargo run --locked -p android -- test --headless coda.duet.ModeShellTest
+      # /tmp/duet-android-emulator holds the emulator log and, after a failed
+      # test, failure/logcat.txt and failure/screen.png (the failing screen,
+      # saved by ModeShellTest before the runner closes the app).
+      - name: Retain test reports, logcat, screenshot and emulator log
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: android-emulator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            target/dx/mobile/debug/android/app/app/build/reports/androidTests/
+            target/dx/mobile/debug/android/app/app/build/outputs/androidTest-results/
+            /tmp/duet-android-emulator/
+          if-no-files-found: ignore
+          retention-days: 14
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
 
   # Builds every runtime, migration and job image with Nix on PRs and main and
   # runs them locally; this job pushes nothing. deploy-staging publishes them to
@@ -763,7 +853,10 @@ jobs:
   deploy-public-site-staging:
     name: Deploy public site to staging
     needs: [scope, result]
-    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'
+    # `result` already judges every upstream job, including the Android job a
+    # routine run skips; the implicit success() would treat that skip as a
+    # failure, so the gate names `result` itself.
+    if: "!cancelled() && needs.result.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.PUBLIC_SITE_STAGING_DEPLOY == 'enabled'"
     runs-on: blacksmith-4vcpu-ubuntu-2404
     timeout-minutes: 45
     concurrency:
@@ -787,6 +880,8 @@ jobs:
         with:
           submodules: false
           persist-credentials: false
+          # The drift guard diffs against the live revision's RELEASE_SHA.
+          fetch-depth: 0
       - name: Install Nix
         uses: cachix/install-nix-action@v31
       - name: Read private Nix cache
@@ -797,6 +892,10 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Reuse OpenTofu providers
+        uses: ./.github/actions/tofu-providers
+        with:
+          scope: public-site
       - name: Authenticate as the public-site CI deployer
         id: auth
         uses: google-github-actions/auth@v3
@@ -851,6 +950,33 @@ jobs:
             echo "$unexpected"
             exit 1
           fi
+          # A release changes the runtime settings beyond RELEASE_SHA only when
+          # main changed them: env/staging.tfvars or main.tf differ between the
+          # live revision's RELEASE_SHA and this commit. Any other difference
+          # is a live change that never reached main, and applying would
+          # silently revert it.
+          drift=$(jq -r '[.resource_changes[]
+            | select(.address == "google_cloud_run_v2_service.site" and .change.actions == ["update"])
+            | [.change.before, .change.after]
+            | map([.template[0].containers[0].env[]? | select(.name != "RELEASE_SHA") | {name, value}] | sort_by(.name))
+            | select(.[0] != .[1])
+            | "live: \(.[0] | map("\(.name)=\(.value)") | join(" "))\nplan: \(.[1] | map("\(.name)=\(.value)") | join(" "))"] | .[]' plan.json)
+          if [ -n "$drift" ]; then
+            live_sha=$(jq -r '[.resource_changes[]
+              | select(.address == "google_cloud_run_v2_service.site")
+              | .change.before.template[0].containers[0].env[]?
+              | select(.name == "RELEASE_SHA") | .value] | first // empty' plan.json)
+            if [[ "$live_sha" =~ ^[0-9a-f]{40}$ ]] \
+              && git merge-base --is-ancestor "$live_sha" "$GITHUB_SHA" 2>/dev/null \
+              && ! git diff --quiet "$live_sha" "$GITHUB_SHA" -- "$ROOT/env/staging.tfvars" "$ROOT/main.tf"; then
+              echo "::notice::The release applies runtime settings main changed since ${live_sha}:"
+              echo "$drift"
+            else
+              echo "::error::The release would change the site's runtime settings, and no change on main since the live RELEASE_SHA (${live_sha:-unknown}) explains it; reconcile env/staging.tfvars with what is live first:"
+              echo "$drift"
+              exit 1
+            fi
+          fi
       - name: Apply the saved plan
         env:
           GOOGLE_OAUTH_ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
@@ -887,7 +1013,8 @@ jobs:
   # moves to the new runtime digest and must report a Ready revision serving
   # it. physician-worker and observability-relay are updated once their Cloud
   # Run services exist; until then a push only publishes the digest so the
-  # plan that creates the service can pin it.
+  # plan that creates the service can pin it. langfuse-sso is only published:
+  # OpenTofu pins its digest in the observability root.
   # The Rust command checkpoints a sanitized receipt before each mutation and
   # reconciles observed revisions/traffic on failure; it never rolls back.
   # Only a push to main, after every check job is green.
@@ -901,7 +1028,8 @@ jobs:
     # Off unless the repository variable RUST_STAGING_DEPLOY is `enabled`; the
     # GitHub `staging` environment holds the coda-rust-staging WIF provider,
     # deployer service account, project and region (book/src/gcp.md).
-    if: needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'
+    # Gated on `result` and `images` explicitly, as in deploy-public-site-staging.
+    if: "!cancelled() && needs.result.result == 'success' && needs.images.result == 'success' && needs.scope.outputs.full == 'true' && github.ref == 'refs/heads/main' && github.event_name == 'push' && vars.RUST_STAGING_DEPLOY == 'enabled'"
     runs-on: blacksmith-2vcpu-ubuntu-2404
     timeout-minutes: 120
     concurrency:
@@ -1021,6 +1149,10 @@ jobs:
           public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Reuse OpenTofu providers
+        uses: ./.github/actions/tofu-providers
+        with:
+          scope: observability
       - name: Validate the collector configs
         run: |
           d=dev/observability

@@ -62,6 +62,7 @@ fn input(key: &str, revision: u64) -> RevisionInput {
         expected_revision: revision,
         instruction: "Mention the new results".into(),
         timezone: "UTC".into(),
+        scenario: None,
     }
 }
 

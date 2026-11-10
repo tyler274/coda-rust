@@ -6,7 +6,7 @@ These specs say what we're building and why. They are the source of truth for wh
 
 1. `PRINCIPLES.md`: the principles that govern every spec and model, including the shared UI principles (U1–U9).
 2. The specs, one per product:
-   - `physician.md`: the physician web app, externally named Chords.
+   - `physician.md`: Chords, the physician web app.
    - `duet.md`: Duet, the patient app.
    - `connected-care.md`: how a Duet patient and a Coda practice connect.
    - `harness.md`: the shared agent loop. It stays outside product behavior and meets the products only through tools and events.

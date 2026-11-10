@@ -3287,10 +3287,6 @@ fn PatientSurface(
         .as_ref()
         .map(|open| open.undecided_recommendations.clone())
         .unwrap_or_default();
-    let shared_records = workspace
-        .as_ref()
-        .map(|open| open.duet_records.clone())
-        .unwrap_or_default();
     let doctor_plan = workspace.as_ref().and_then(|open| open.doctor_plan.clone());
     let dob = demographic
         .as_ref()
@@ -3642,18 +3638,6 @@ fn PatientSurface(
                     h2 { "Follow-ups" }
                     for follow_up in follow_ups {
                         p { "{follow_up.description.clone().unwrap_or_default()}" }
-                    }
-                }
-            }
-            if !shared_records.is_empty() {
-                section { class: "patient-section", aria_label: "Preview records",
-                    h2 { "Preview records" }
-                    for record in shared_records {
-                        article { class: "today-row",
-                            strong { "{record.title}" }
-                            p { "{record.summary}" }
-                            span { class: "today-row-reason", "{record.provenance}" }
-                        }
                     }
                 }
             }

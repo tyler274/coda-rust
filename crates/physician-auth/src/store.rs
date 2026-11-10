@@ -330,6 +330,7 @@ impl AuthStore for PostgresAuthStore {
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
             expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
+            ends_at: Set(None),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;
@@ -342,6 +343,39 @@ impl AuthStore for PostgresAuthStore {
         ))
     }
 
+    async fn mint_fixed_session(
+        &self,
+        identity: &PhysicianIdentity,
+        now: u64,
+        ends_at: u64,
+    ) -> Result<String, SignInError> {
+        let txn = self.db.begin().await.map_err(stale)?;
+        let account = Accounts::find()
+            .filter(crate::migration::account::Column::PracticeId.eq(&identity.practice_id))
+            .filter(crate::migration::account::Column::PhysicianId.eq(&identity.physician_id))
+            .lock(LockType::Share)
+            .one(&txn)
+            .await
+            .map_err(stale)?
+            .ok_or(SignInError::Invalid)?;
+        if !account.active {
+            return Err(SignInError::Inactive);
+        }
+        let lifetime = SessionLifetime::fixed(now, ends_at);
+        let session_token = mint_token();
+        let session = crate::migration::SessionActiveModel {
+            id: Default::default(),
+            account_id: Set(account.id),
+            token_hash: Set(token_hash(&session_token).to_vec()),
+            created_at: Set(now as i64),
+            expires_at: Set(lifetime.expires_at() as i64),
+            ends_at: Set(Some(lifetime.expires_at() as i64)),
+        };
+        session.insert(&txn).await.map_err(stale)?;
+        txn.commit().await.map_err(stale)?;
+        Ok(session_token)
+    }
+
     async fn verified_session(&self, token: &str, now: u64) -> Result<Session, SessionError> {
         let hash = token_hash(token);
         let session = Sessions::find()
@@ -351,7 +385,11 @@ impl AuthStore for PostgresAuthStore {
             .map_err(invalid)?
             .ok_or(SessionError::Invalid)?;
         let created_at = session.created_at as u64;
-        let lifetime = SessionLifetime::from_persisted(created_at, session.expires_at as u64);
+        let lifetime = SessionLifetime::from_persisted(
+            created_at,
+            session.expires_at as u64,
+            session.ends_at.map(|end| end as u64),
+        );
         if !lifetime.allows(now) {
             return Err(SessionError::Invalid);
         }
@@ -393,8 +431,11 @@ impl AuthStore for PostgresAuthStore {
         let Some(row) = row else {
             return Ok(SessionActivity::Ended);
         };
-        let lifetime =
-            SessionLifetime::from_persisted(row.created_at as u64, row.expires_at as u64);
+        let lifetime = SessionLifetime::from_persisted(
+            row.created_at as u64,
+            row.expires_at as u64,
+            row.ends_at.map(|end| end as u64),
+        );
         match lifetime.renew(now) {
             SessionRenewal::Ended => Ok(SessionActivity::Ended),
             SessionRenewal::Covered => Ok(SessionActivity::Covered),
@@ -841,6 +882,7 @@ impl AuthStore for PostgresAuthStore {
             token_hash: Set(token_hash(&session_token).to_vec()),
             created_at: Set(now as i64),
             expires_at: Set(SessionLifetime::mint(now).expires_at() as i64),
+            ends_at: Set(None),
         };
         session.insert(&txn).await.map_err(stale)?;
         txn.commit().await.map_err(stale)?;
