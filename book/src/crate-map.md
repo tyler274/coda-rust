@@ -29,7 +29,6 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `duet-health` | [`src/lib.rs`](/crates/duet-health/src/lib.rs), [`src/acquisition.rs`](/crates/duet-health/src/acquisition.rs), [`src/outbox.rs`](/crates/duet-health/src/outbox.rs) | On-device health samples from HealthKit and Health Connect; durable acquisition records, the native source adapter contract and the transactional upload outbox (account fencing and the batch transport live in `duet-client::health_upload`) | [Duet backend](backend-architecture.md) |
 | `duet-notify` | [`src/lib.rs`](/crates/duet-notify/src/lib.rs) | Alert permission and one local insight alert | [Duet backend](backend-architecture.md) |
 | `duet-page` | [`src/lib.rs`](/crates/duet-page/src/lib.rs) | The US Letter doctor-page layout, where overflow blocks sharing | [UI and design](ui-surface-map.md) |
-| `duet-widget` | [`src/lib.rs`](/crates/duet-widget/src/lib.rs) | The snapshot that the native home-screen widgets read | [UI and design](ui-surface-map.md) |
 | `duet-stub` | [`src/lib.rs`](/crates/duet-stub/src/lib.rs), [`src/main.rs`](/crates/duet-stub/src/main.rs) | Local Duet stand-in for the emulator and tests (`cargo run -p duet-stub`) | [Release](release.md#android-and-google-play) |
 
 ## Physician product
@@ -78,10 +77,8 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | --- | --- |
 | [`ios/HealthKitBridge.swift`](/platform/ios/HealthKitBridge.swift) | `duet-health` |
 | [`ios/NotificationBridge.swift`](/platform/ios/NotificationBridge.swift) | `duet-notify` |
-| [`ios/StatWidget.swift`](/platform/ios/StatWidget.swift) | `duet-widget` snapshot |
 | [`android/HealthConnectBridge.kt`](/platform/android/HealthConnectBridge.kt) | `duet-health` |
 | [`android/NotificationBridge.kt`](/platform/android/NotificationBridge.kt) | `duet-notify` |
-| [`android/StatWidget.kt`](/platform/android/StatWidget.kt) | `duet-widget` snapshot |
 | [`android/HardwareKeyDispatch.kt`](/platform/android/HardwareKeyDispatch.kt) | `mobile` WebView key input, copied in by `cargo run -p android -- build` ([`build.rs`](/crates/android/src/build.rs)) |
 | [`android/ModeShellTest.kt`](/platform/android/ModeShellTest.kt) | The UI Automator class that `android` runs |
 

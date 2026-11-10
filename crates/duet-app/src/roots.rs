@@ -778,51 +778,6 @@ fn library_record(entry: &duet_wire::models::EvidenceLibraryEntry) -> LibraryRec
     }
 }
 
-#[cfg(test)]
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum DoctorPreview {
-    Fits(Vec<String>),
-    Overflow,
-}
-
-/// Places the saved For my doctor page with the letter layout.
-/// A collection that has no page content yet returns nothing.
-#[cfg(test)]
-pub fn doctor_preview(collection: &DoctorCollection) -> Option<DoctorPreview> {
-    let content = collection.page.as_ref()?;
-    let page = content.as_ref();
-    let name = supplied(&page.name).unwrap_or_default();
-    let date_of_birth = page
-        .date_of_birth
-        .flatten()
-        .map(|day| day.format("%Y-%m-%d").to_string())
-        .unwrap_or_default();
-    let questions = page
-        .questions
-        .iter()
-        .flatten()
-        .map(|question| question.trim().to_owned())
-        .filter(|question| !question.is_empty())
-        .collect::<Vec<_>>();
-    let cover_note = supplied(&page.cover_note);
-    if name.is_empty() && date_of_birth.is_empty() && questions.is_empty() && cover_note.is_none() {
-        return None;
-    }
-    Some(
-        match duet_page::lay_out(&duet_page::DoctorPage {
-            name,
-            date_of_birth,
-            questions,
-            cover_note,
-        }) {
-            duet_page::LaidOut::Page { lines, .. } => {
-                DoctorPreview::Fits(lines.into_iter().map(|line| line.text).collect())
-            }
-            duet_page::LaidOut::Overflow => DoctorPreview::Overflow,
-        },
-    )
-}
-
 fn supplied(value: &Option<Option<String>>) -> Option<String> {
     value
         .as_ref()
@@ -1107,21 +1062,12 @@ mod tests {
         let collection = json::<DoctorCollection>(
             r#"{"items":[],"note_generation":1,"page":{"name":"Ada Lovelace","date_of_birth":"1815-12-10","questions":["What changed?"],"cover_note":"Please review."}}"#,
         );
-        match doctor_preview(&collection) {
-            Some(DoctorPreview::Fits(lines)) => {
-                assert!(lines.iter().any(|line| line.contains("Ada Lovelace")));
-                assert!(lines.iter().any(|line| line.contains("1. What changed?")));
-                assert!(!lines.iter().any(|line| line.contains("Please review.")));
-            }
-            other => panic!("expected a fitted page, got {other:?}"),
-        }
         // The opened saved-page summary is rendered outside DoctorLetter's printable preview.
         let DoctorPage::Lines(entries) = doctor_page(&collection) else {
             panic!("expected the saved-page summary");
         };
         assert!(entries.iter().any(|entry| entry.title == "Please review."
             && entry.detail.as_deref() == Some("Cover note (not included in PDF)")));
-        // Exercise the actual current preview path too, not just the legacy layout adapter.
         let preview = crate::saved_preview(&collection).unwrap();
         assert!(preview.layout.text().contains("Ada Lovelace"));
         assert!(preview.layout.text().contains("What changed?"));
@@ -1131,12 +1077,6 @@ mod tests {
         let plain = crate::saved_preview(&without_cover).unwrap();
         assert_eq!(preview.layout.preview_svg(), plain.layout.preview_svg());
         assert_eq!(preview.layout.pdf().unwrap(), plain.layout.pdf().unwrap());
-        let overflow = json::<DoctorCollection>(
-            r#"{"items":[],"note_generation":1,"page":{"name":"Ada","date_of_birth":"1815-12-10","questions":["One","Two","Three","Four","Five","Six"]}}"#,
-        );
-        assert_eq!(doctor_preview(&overflow), Some(DoctorPreview::Overflow));
-        let empty = json::<DoctorCollection>(r#"{"note_generation":0}"#);
-        assert_eq!(doctor_preview(&empty), None);
     }
 
     #[test]

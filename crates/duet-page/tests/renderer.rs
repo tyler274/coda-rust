@@ -219,25 +219,6 @@ fn control_characters_are_not_silently_discarded() {
     assert!(layout.pdf().is_err());
 }
 
-#[test]
-fn legacy_adapter_excludes_cover_note() {
-    let page = duet_page::DoctorPage {
-        name: "Ada".into(),
-        date_of_birth: "1815-12-10".into(),
-        questions: vec!["What changed?".into()],
-        cover_note: Some("PRIVATE COVER NOTE".into()),
-    };
-    let duet_page::LaidOut::Page { lines, pdf } = duet_page::lay_out(&page) else {
-        panic!("must fit")
-    };
-    assert!(
-        !lines
-            .iter()
-            .any(|line| line.text.contains("PRIVATE COVER NOTE"))
-    );
-    assert!(pdf.starts_with(b"%PDF-"));
-}
-
 // Independent parser and rasterizer proof is deliberately mandatory, not skipped
 // when Poppler is unavailable. Run inside the repository's Nix development shell.
 #[test]
