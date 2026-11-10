@@ -199,6 +199,63 @@ pub enum ScenarioRefused {
     Malformed,
 }
 
+/// The rehearsal sign-in's settings: physician's own direct Cloud Run IAP
+/// audience (`PHYSICIAN_IAP_AUDIENCE`) and the one service account IAP must
+/// have admitted (`PHYSICIAN_REHEARSAL_PRINCIPAL`).
+///
+/// Both or neither: with neither, `POST /auth/rehearsal` does not exist. Only
+/// the staging-preview profile accepts them, so a production process never
+/// serves the route, and the principal must be a service account, never a
+/// person.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RehearsalSignIn {
+    /// `/projects/NUMBER/locations/REGION/services/physician`.
+    pub audience: String,
+    /// The lower-cased service-account email.
+    pub principal: String,
+}
+
+impl RehearsalSignIn {
+    /// Reads both settings, refusing a partial pair, a malformed audience, a
+    /// principal that is not a service account, or any value outside the
+    /// staging-preview profile.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Option<Self>, String> {
+        let read = |name| get(name).map(|value| value.trim().to_owned());
+        let audience = read("PHYSICIAN_IAP_AUDIENCE").filter(|value| !value.is_empty());
+        let principal = read("PHYSICIAN_REHEARSAL_PRINCIPAL").filter(|value| !value.is_empty());
+        if audience.is_none() && principal.is_none() {
+            return Ok(None);
+        }
+        if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
+            return Err(format!(
+                "the rehearsal sign-in is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+            ));
+        }
+        let (Some(audience), Some(principal)) = (audience, principal) else {
+            return Err(
+                "the rehearsal sign-in needs both PHYSICIAN_IAP_AUDIENCE and PHYSICIAN_REHEARSAL_PRINCIPAL"
+                    .to_owned(),
+            );
+        };
+        http::iap::validate_cloud_run_audience(&audience)
+            .map_err(|reason| format!("PHYSICIAN_IAP_AUDIENCE: {reason}"))?;
+        let principal = principal.to_lowercase();
+        let service_account = principal.split_once('@').is_some_and(|(name, domain)| {
+            !name.is_empty() && domain.ends_with(".iam.gserviceaccount.com")
+        });
+        if !service_account {
+            return Err(
+                "PHYSICIAN_REHEARSAL_PRINCIPAL must be a service-account email (NAME@PROJECT.iam.gserviceaccount.com)"
+                    .to_owned(),
+            );
+        }
+        Ok(Some(Self {
+            audience,
+            principal,
+        }))
+    }
+}
+
 /// The folder of built synthetic charts `load-charts` reads. Any profile but
 /// staging-preview refuses the load: synthetic patients never enter another
 /// profile's database.
@@ -439,6 +496,67 @@ mod tests {
                 practices.admit_scenario("coda-rehearsal-practice", bad),
                 Err(ScenarioRefused::Malformed),
                 "{bad}"
+            );
+        }
+    }
+
+    #[test]
+    fn the_rehearsal_sign_in_needs_both_settings_and_the_preview_profile() {
+        const AUDIENCE: &str = "/projects/123/locations/us-east1/services/physician";
+        const PRINCIPAL: &str = "physician-rehearsal@coda-rust-staging.iam.gserviceaccount.com";
+        let read = |pairs: &[(&str, &str)]| {
+            RehearsalSignIn::from_env(|name| {
+                pairs
+                    .iter()
+                    .find(|(key, _)| *key == name)
+                    .map(|(_, value)| (*value).to_owned())
+            })
+        };
+        assert_eq!(read(&[]), Ok(None));
+        assert_eq!(
+            read(&[("CODA_HOSTED_PROFILE", STAGING_PROFILE)]),
+            Ok(None),
+            "the profile alone serves no route"
+        );
+        assert_eq!(
+            read(&[
+                ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+                ("PHYSICIAN_IAP_AUDIENCE", AUDIENCE),
+                (
+                    "PHYSICIAN_REHEARSAL_PRINCIPAL",
+                    " Physician-Rehearsal@coda-rust-staging.iam.gserviceaccount.com "
+                ),
+            ]),
+            Ok(Some(RehearsalSignIn {
+                audience: AUDIENCE.into(),
+                principal: PRINCIPAL.into(),
+            }))
+        );
+        for profile in [None, Some("production"), Some("")] {
+            let mut pairs = vec![
+                ("PHYSICIAN_IAP_AUDIENCE", AUDIENCE),
+                ("PHYSICIAN_REHEARSAL_PRINCIPAL", PRINCIPAL),
+            ];
+            if let Some(profile) = profile {
+                pairs.push(("CODA_HOSTED_PROFILE", profile));
+            }
+            assert!(read(&pairs).is_err(), "{profile:?} must refuse");
+        }
+        for (audience, principal) in [
+            (AUDIENCE, ""),
+            ("", PRINCIPAL),
+            ("https://physician.example", PRINCIPAL),
+            (AUDIENCE, "engineer@codahealth.ai"),
+            (AUDIENCE, "@coda-rust-staging.iam.gserviceaccount.com"),
+        ] {
+            assert!(
+                read(&[
+                    ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+                    ("PHYSICIAN_IAP_AUDIENCE", audience),
+                    ("PHYSICIAN_REHEARSAL_PRINCIPAL", principal),
+                ])
+                .is_err(),
+                "{audience:?} / {principal:?} must refuse"
             );
         }
     }

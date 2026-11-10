@@ -565,6 +565,43 @@ run "physician_scale_active" {
       duet      = { TEST_CONTRACT_ONLY = "true" }
     }
     physician_simulation_practices = ["coda-rehearsal-practice"]
+    physician_rehearsal_enabled    = true
+  }
+
+  override_resource {
+    target = google_service_account.physician_rehearsal
+    values = {
+      name  = "projects/test-rust-stg-only/serviceAccounts/physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"
+      email = "physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"
+    }
+  }
+
+  # The rehearsal account passes physician's IAP only, signs only JWTs, and
+  # the site learns its own audience and that one principal.
+  assert {
+    condition = (
+      contains(google_iap_web_cloud_run_service_iam_binding.team["physician"].members, "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com") &&
+      !contains(google_iap_web_cloud_run_service_iam_binding.team["duet"].members, "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com")
+    )
+    error_message = "Only physician's IAP admits the rehearsal service account."
+  }
+  assert {
+    condition = (
+      google_project_iam_custom_role.physician_rehearsal_signer["physician"].permissions == toset(["iam.serviceAccounts.signJwt"]) &&
+      google_service_account_iam_binding.physician_rehearsal_signer["physician"].members == toset([
+        "serviceAccount:physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com",
+      ])
+    )
+    error_message = "By default only the rehearsal account itself may sign JWTs as it, and nothing more; no group is ever granted it."
+  }
+  assert {
+    condition = alltrue([
+      contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_IAP_AUDIENCE=/projects/123456789012/locations/us-east1/services/physician"),
+      contains([for env in google_cloud_run_v2_service.app["physician"].template[0].containers[0].env : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_REHEARSAL_PRINCIPAL=physician-rehearsal@test-rust-stg-only.iam.gserviceaccount.com"),
+      !contains([for env in google_cloud_run_v2_service.app["duet"].template[0].containers[0].env : env.name], "PHYSICIAN_REHEARSAL_PRINCIPAL"),
+      !contains([for env in google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env : env.name], "PHYSICIAN_REHEARSAL_PRINCIPAL"),
+    ])
+    error_message = "Only the physician site learns its IAP audience and the rehearsal principal."
   }
 
   # Rehearsal practices reach the physician site, worker and migration job
@@ -839,6 +876,43 @@ run "reject_malformed_simulation_practice" {
   command = plan
   variables { physician_simulation_practices = ["Coda Rehearsal"] }
   expect_failures = [var.physician_simulation_practices]
+}
+
+run "reject_production_rehearsal_sign_in" {
+  command = plan
+  variables {
+    environment                 = "prd"
+    physician_rehearsal_enabled = true
+  }
+  expect_failures = [var.physician_rehearsal_enabled]
+}
+
+run "reject_rehearsal_sign_in_without_a_rehearsal_practice" {
+  command = plan
+  variables { physician_rehearsal_enabled = true }
+  expect_failures = [var.physician_rehearsal_enabled]
+}
+
+run "reject_a_group_as_rehearsal_signer" {
+  command = plan
+  variables { physician_rehearsal_signers = ["group:test-team@example.invalid"] }
+  expect_failures = [var.physician_rehearsal_signers]
+}
+
+run "rehearsal_is_off_by_default" {
+  command = plan
+  assert {
+    condition     = length(google_service_account.physician_rehearsal) == 0 && length(local.physician_rehearsal_env) == 0
+    error_message = "Without physician_rehearsal_enabled there is no rehearsal account or setting."
+  }
+}
+
+run "reject_runtime_override_of_rehearsal_principal" {
+  command = plan
+  variables {
+    runtime_environment = { physician = { PHYSICIAN_REHEARSAL_PRINCIPAL = "someone@test-rust-stg-only.iam.gserviceaccount.com" } }
+  }
+  expect_failures = [google_project.environment]
 }
 
 run "reject_runtime_override_of_simulation_practices" {

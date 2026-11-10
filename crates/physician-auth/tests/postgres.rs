@@ -441,6 +441,54 @@ async fn a_sign_in_token_verifies_once_and_mints_one_session() {
 }
 
 #[tokio::test]
+async fn a_fixed_session_needs_the_exact_identity_and_ends_however_much_it_is_used() {
+    let Some(store) = store("fixed_session").await else {
+        return;
+    };
+    let (email, _session) = invited_account(&store, "pg-proof").await;
+    let who = store
+        .account_by_email(&email)
+        .await
+        .expect("account")
+        .identity;
+    assert_eq!(
+        store
+            .mint_fixed_session(&identity("pg-proof", "someone-else"), NOW, NOW + 900)
+            .await
+            .unwrap_err(),
+        SignInError::Invalid,
+        "no session for an identity without an account"
+    );
+    assert_eq!(
+        store
+            .mint_fixed_session(
+                &identity("other-practice", &who.physician_id),
+                NOW,
+                NOW + 900
+            )
+            .await
+            .unwrap_err(),
+        SignInError::Invalid,
+        "the physician id alone is not enough"
+    );
+    let session = store
+        .mint_fixed_session(&who, NOW, NOW + 900)
+        .await
+        .expect("fixed session");
+    for minute in 0..15 {
+        store
+            .note_physician_activity(&session, NOW + minute * 60)
+            .await
+            .expect("activity noted");
+    }
+    assert_eq!(store.identity(&session, NOW + 899).await.unwrap(), who);
+    assert!(
+        store.identity(&session, NOW + 900).await.is_err(),
+        "activity never carries a fixed session past its end"
+    );
+}
+
+#[tokio::test]
 async fn repeated_identity_calls_do_not_move_expires_at() {
     let Some(store) = store("identity_read").await else {
         return;

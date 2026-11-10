@@ -527,6 +527,10 @@ async fn site_from_env(
             return Err("the local simulation cannot run with required sign-in".into());
         }
     }
+    let rehearsal = hosting::RehearsalSignIn::from_env(&get)?;
+    if rehearsal.is_some() && !required {
+        return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
+    }
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat and the patient directory share it.
     let runtime = match &database {
@@ -562,7 +566,8 @@ async fn site_from_env(
         (router_from_env(std::sync::Arc::clone(&bus))?, None)
     };
     let postgres = database.as_deref().zip(runtime);
-    let router = auth::authed_router_with_bus(base, bus, memory_patients, postgres).await;
+    let router =
+        auth::authed_router_with_bus(base, bus, memory_patients, postgres, rehearsal).await;
     let recovery = chat.map(|chat| chat.start_recovery());
     Ok((router, recovery))
 }
