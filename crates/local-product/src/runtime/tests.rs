@@ -1110,7 +1110,14 @@ async fn a_failed_attempt_waits_out_its_backoff_before_it_is_due_again() {
         );
         // Pass the delay at the storage owner instead of sleeping through it.
         let (tx, mut state, now) = store.locked(&scope).await.unwrap();
-        assert_eq!(state.dispatch_after, now + wait.as_secs() as i64);
+        // The retry read the database clock in its own transaction, so the
+        // whole-second clock may have ticked once since.
+        let retried_at = state.dispatch_after - wait.as_secs() as i64;
+        assert!(
+            (now - 1..=now).contains(&retried_at),
+            "due at {} is not {wait:?} after a retry at or just before {now}",
+            state.dispatch_after
+        );
         state.dispatch_after = now;
         Store::save(tx, &scope, &state).await.unwrap();
         assert!(due(store.dispatch_due(100, Some(&start)).await.unwrap()));
