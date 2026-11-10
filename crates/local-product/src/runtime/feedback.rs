@@ -2,16 +2,17 @@
 //!
 //! A response is one of Coda's saved replies in a chat, named by the run that
 //! published it ([`RunId`]), as [`Conversation::responses`] reads it. One row
-//! per rated response holds the rating and, once saved, the details. Details
-//! never exist without a rating: a details save updates an existing row only.
-//! A save holds the auth owner's locks for the physician's session in its own
+//! per rated response holds the rating and any details, and one save replaces
+//! both, so details never exist without a rating. Every save increments the
+//! row's revision, so a reader keeping the highest revision it has seen never
+//! shows an older answer over a newer one. A save holds the auth owner's locks for the physician's session in its own
 //! transaction, so a revoked session or a patient taken off the panel writes
 //! nothing. Feedback is clinical working text and is never deleted
 //! automatically.
 use std::collections::{BTreeMap, BTreeSet};
 
 use sea_orm::{
-    ColumnTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, Set, TransactionTrait,
+    ColumnTrait, DbErr, EntityTrait, ExprTrait, QueryFilter, QueryOrder, Set, TransactionTrait,
     sea_query::{Expr, OnConflict},
 };
 use serde::{Deserialize, Serialize};
@@ -93,39 +94,21 @@ impl Details {
 pub struct Feedback {
     /// The latest rating.
     pub rating: Rating,
-    /// Database-clock seconds of the latest rating.
-    pub rated_at: i64,
-    /// The latest saved details, if any were saved.
-    pub details: Option<SavedDetails>,
-}
-
-/// Details as saved, with when.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub struct SavedDetails {
-    /// The details.
-    pub details: Details,
-    /// Database-clock seconds of the save.
+    /// The latest details, if the latest save had any.
+    pub details: Option<Details>,
+    /// Database-clock seconds of the latest save.
     pub saved_at: i64,
+    /// 1 on the first save, one more on each later save.
+    pub revision: u64,
 }
 
-/// Outcome of a rating save.
+/// Outcome of a feedback save.
 #[derive(Debug, PartialEq, Eq)]
-pub enum RatingSaved {
+pub enum FeedbackSaved {
     /// Saved; the feedback as it now stands.
     Saved(Feedback),
     /// That run published no response in this chat; nothing was written.
     NotAResponse,
-    /// The auth owner refused the session or panel; nothing was written.
-    Refused,
-}
-
-/// Outcome of a details save.
-#[derive(Debug, PartialEq, Eq)]
-pub enum DetailsSaved {
-    /// Saved; the feedback as it now stands.
-    Saved(Feedback),
-    /// The response has no rating to add details to; nothing was written.
-    NotRated,
     /// The auth owner refused the session or panel; nothing was written.
     Refused,
 }
@@ -159,19 +142,20 @@ fn nonempty(scope: &Scope) -> Result<(), DbErr> {
 }
 
 fn feedback(row: &response_feedback::Model) -> Result<Feedback, DbErr> {
-    let details = match (&row.details, row.details_saved_at) {
-        (None, None) => None,
-        (Some(stored), Some(saved_at)) => Some(SavedDetails {
-            details: serde_json::from_value(stored.clone())
-                .map_err(|cause| unconvertible("stored feedback details", "Details", cause))?,
-            saved_at,
-        }),
-        _ => return Err(error("feedback details without their save time")),
-    };
+    let details = row
+        .details
+        .clone()
+        .map(serde_json::from_value)
+        .transpose()
+        .map_err(|cause| unconvertible("stored feedback details", "Details", cause))?;
     Ok(Feedback {
         rating: Rating::parse(&row.rating)?,
-        rated_at: row.rated_at,
         details,
+        saved_at: row.saved_at,
+        revision: u64::try_from(row.revision)
+            .ok()
+            .filter(|revision| *revision > 0)
+            .ok_or_else(|| error("corrupt feedback revision"))?,
     })
 }
 
@@ -217,24 +201,30 @@ impl Store {
             .collect()
     }
 
-    /// Rates the response `run` published in this physician's chat. A repeat
-    /// converges; the other rating replaces it; details stay. Answers
-    /// [`RatingSaved::NotAResponse`] unless `run` published one of the chat's
-    /// saved responses. The auth owner's locks for `session_hash` are held in
-    /// the same transaction.
-    pub async fn rate_response(
+    /// Saves the physician's feedback on the response `run` published in
+    /// their chat: the rating and the details, replacing both, so a save
+    /// without details clears them. Each save increments the revision.
+    /// Answers [`FeedbackSaved::NotAResponse`] unless `run` published one of
+    /// the chat's saved responses. The auth owner's locks for `session_hash`
+    /// are held in the same transaction.
+    pub async fn save_feedback(
         &self,
         scope: &Scope,
         run: &RunId,
         rating: Rating,
+        details: Option<&Details>,
         session_hash: &[u8],
         authority: &mut dyn Authority,
-    ) -> Result<RatingSaved, DbErr> {
+    ) -> Result<FeedbackSaved, DbErr> {
         use response_feedback::Column as C;
         nonempty(scope)?;
         if session_hash.len() != 32 {
             return Err(error("invalid session reference"));
         }
+        let stored = details
+            .map(serde_json::to_value)
+            .transpose()
+            .map_err(|cause| unconvertible("Details", "stored feedback details", cause))?;
         let tx = self.db.begin().await?;
         if authority
             .lock_publication(&tx, scope, Some(session_hash))
@@ -242,7 +232,7 @@ impl Store {
             .is_err()
         {
             tx.rollback().await?;
-            return Ok(RatingSaved::Refused);
+            return Ok(FeedbackSaved::Refused);
         }
         // A saved response and the run that published it never change, so
         // this unlocked read cannot see the answer withdrawn before the commit.
@@ -257,7 +247,7 @@ impl Store {
             .and_then(|c| c.response(run))
             .is_none()
         {
-            return Ok(RatingSaved::NotAResponse);
+            return Ok(FeedbackSaved::NotAResponse);
         }
         let now = now(&tx).await?;
         response_feedback::Entity::insert(response_feedback::ActiveModel {
@@ -267,13 +257,19 @@ impl Store {
             chat: Set(scope.chat.clone()),
             run: Set(run.as_str().to_owned()),
             rating: Set(rating.column().into()),
-            rated_at: Set(now),
-            details: Set(None),
-            details_saved_at: Set(None),
+            details: Set(stored),
+            saved_at: Set(now),
+            revision: Set(1),
         })
         .on_conflict(
+            // The row lock taken by the conflicting update orders concurrent
+            // saves, so each one reads the revision the previous one left.
             OnConflict::columns([C::Practice, C::Physician, C::Workspace, C::Chat, C::Run])
-                .update_columns([C::Rating, C::RatedAt])
+                .update_columns([C::Rating, C::Details, C::SavedAt])
+                .value(
+                    C::Revision,
+                    Expr::col((response_feedback::Entity, C::Revision)).add(1),
+                )
                 .to_owned(),
         )
         .exec_without_returning(&tx)
@@ -284,58 +280,7 @@ impl Store {
             .ok_or_else(|| error("missing feedback"))?;
         let saved = feedback(&row)?;
         tx.commit().await?;
-        Ok(RatingSaved::Saved(saved))
-    }
-
-    /// Replaces the details on the response `run` published. Answers
-    /// [`DetailsSaved::NotRated`] when that response has no rating. The auth
-    /// owner's locks for `session_hash` are held in the same transaction.
-    pub async fn save_feedback_details(
-        &self,
-        scope: &Scope,
-        run: &RunId,
-        details: &Details,
-        session_hash: &[u8],
-        authority: &mut dyn Authority,
-    ) -> Result<DetailsSaved, DbErr> {
-        use response_feedback::Column as C;
-        nonempty(scope)?;
-        if session_hash.len() != 32 {
-            return Err(error("invalid session reference"));
-        }
-        let stored = serde_json::to_value(details)
-            .map_err(|cause| unconvertible("Details", "stored feedback details", cause))?;
-        let tx = self.db.begin().await?;
-        if authority
-            .lock_publication(&tx, scope, Some(session_hash))
-            .await
-            .is_err()
-        {
-            tx.rollback().await?;
-            return Ok(DetailsSaved::Refused);
-        }
-        let now = now(&tx).await?;
-        let written = response_feedback::Entity::update_many()
-            .col_expr(C::Details, Expr::val(stored))
-            .col_expr(C::DetailsSavedAt, Expr::val(now))
-            .filter(C::Practice.eq(scope.practice.as_str()))
-            .filter(C::Physician.eq(scope.physician.as_str()))
-            .filter(C::Workspace.eq(scope.workspace.as_str()))
-            .filter(C::Chat.eq(scope.chat.as_str()))
-            .filter(C::Run.eq(run.as_str()))
-            .exec(&tx)
-            .await?
-            .rows_affected;
-        if written == 0 {
-            return Ok(DetailsSaved::NotRated);
-        }
-        let row = response_feedback::Entity::find_by_id(response_key(scope, run))
-            .one(&tx)
-            .await?
-            .ok_or_else(|| error("missing feedback"))?;
-        let saved = feedback(&row)?;
-        tx.commit().await?;
-        Ok(DetailsSaved::Saved(saved))
+        Ok(FeedbackSaved::Saved(saved))
     }
 
     /// Every feedback row, each with its response's text, for evaluation by

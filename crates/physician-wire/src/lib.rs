@@ -796,6 +796,10 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
+    #[serde(default)]
+    /// On one of Coda's replies the signed-in physician rated: their saved
+    /// feedback on it.
+    pub feedback: Option<ResponseFeedback>,
 }
 
 /// A physician's rating of one of Coda's responses.
@@ -822,7 +826,7 @@ pub enum FeedbackReason {
     NotUseful,
 }
 
-/// The optional details on a rating; also the details save's body.
+/// The optional details on a rating.
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct FeedbackDetails {
     /// The reasons picked.
@@ -831,32 +835,28 @@ pub struct FeedbackDetails {
     pub text: String,
 }
 
-/// The rating save's body.
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RateResponse {
+/// A feedback save's body: the rating and the details together, replacing
+/// both, so details never travel without a rating.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct SaveFeedback {
     /// The rating chosen.
     pub rating: FeedbackRating,
+    #[serde(default)]
+    /// The details, or `None` to save the rating alone.
+    pub details: Option<FeedbackDetails>,
 }
 
 /// The physician's saved feedback on one response.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ResponseFeedback {
-    /// The run that published the response, as its [`ChatTurn::run_id`]
-    /// names it.
-    pub run: RunId,
+    /// 1 on the first save, one more on each later save: the highest
+    /// revision seen is the newest feedback.
+    pub revision: u64,
     /// The saved rating.
     pub rating: FeedbackRating,
     #[serde(default)]
     /// The saved details, if any.
     pub details: Option<FeedbackDetails>,
-}
-
-/// The physician's saved feedback on one chat's responses.
-#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
-pub struct ChatFeedback {
-    /// One entry per rated response, in no particular order: each names its
-    /// response by run.
-    pub feedback: Vec<ResponseFeedback>,
 }
 
 impl ChatTurn {

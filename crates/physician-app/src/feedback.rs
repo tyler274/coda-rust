@@ -1,22 +1,23 @@
-//! The physician's feedback on Coda's responses in the open chat: a thumb
-//! under each response and, once it is rated, optional details in a dialog.
+//! The physician's feedback on Coda's responses: a thumb under each response
+//! and, once it is rated, optional details in a dialog.
 //!
-//! The shell keeps one [`Desk`] for the open chat. It reads the chat's saved
-//! feedback once per chat and again whenever the conversation is reread, and
-//! holds one [`RatingState`] per response. A save carries its chat, so an
-//! answer for a chat no longer open changes nothing. The thumbs show the
-//! saved rating, or the choice while it saves; a failed save says so and
-//! shows the saved rating again. A failed read never shows a response as
-//! unrated: its thumbs stay disabled and say the rating couldn't be loaded.
-//! Only hosted chats name the run behind each response, which feedback keys
-//! on, so other sites show no controls.
+//! The chat snapshot carries each response's saved feedback, so a failed
+//! read shows the whole conversation as not current rather than a response
+//! as unrated. The page keeps one [`Desk`] for every chat: one [`State`] per
+//! response it saved or is saving, kept across chat switches. Every saved
+//! feedback carries the server's revision, and what shows is the highest
+//! revision seen, from the snapshot or a save's answer, so an older answer
+//! never replaces a newer one. One save replaces the rating and details
+//! together, one at a time per response. Only hosted chats name the run
+//! behind each response, which feedback keys on, so other sites show no
+//! controls.
 use std::collections::{BTreeMap, BTreeSet};
 
 use dioxus::core::{Runtime, current_scope_id};
 use dioxus::prelude::*;
 use physician_client::PhysicianClient;
 use physician_wire::{
-    ChatFeedback, FeedbackDetails, FeedbackRating, FeedbackReason, ResponseFeedback, RunId,
+    FeedbackDetails, FeedbackRating, FeedbackReason, ResponseFeedback, RunId, SaveFeedback,
 };
 use ui::{ActionRow, Button, ButtonVariant, Dialog, TextField, TextKind, ToggleChip};
 
@@ -33,7 +34,6 @@ const SAVE_DETAILS: &str = "Save details";
 const SAVING_DETAILS: &str = "Saving details";
 const CLOSE: &str = "Close";
 pub(crate) const NOT_SAVED: &str = "Couldn’t save";
-pub(crate) const NOT_LOADED: &str = "Couldn’t load your rating";
 
 /// The reasons a physician can pick, in the order the dialog shows them.
 const REASONS: [(FeedbackReason, &str); 4] = [
@@ -53,444 +53,216 @@ pub(crate) struct ChatKey {
     pub(crate) chat: String,
 }
 
-/// One response's rating as the page knows it.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum RatingState {
-    /// The chat's feedback is being read.
-    Loading,
-    /// The read failed: the saved rating is not known.
-    Unknown,
-    /// Read, and not rated.
-    Unrated,
-    /// A save of `choice` is on its way over the `saved` rating.
+/// One response: its chat and the run that published it.
+type Key = (ChatKey, RunId);
+
+/// What one save sends: the rating and the details together.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct Draft {
+    pub(crate) rating: FeedbackRating,
+    pub(crate) details: Option<FeedbackDetails>,
+}
+
+/// One response's feedback as the page shows it. `over` is the newest saved
+/// feedback known while a save is on its way or after it failed.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum State {
+    Saved(ResponseFeedback),
     Saving {
-        choice: FeedbackRating,
-        saved: Option<FeedbackRating>,
+        draft: Draft,
+        over: Option<ResponseFeedback>,
     },
-    /// Saved.
-    Rated(FeedbackRating),
-    /// The save of `choice` failed; `saved` still stands.
     Failed {
-        choice: FeedbackRating,
-        saved: Option<FeedbackRating>,
+        draft: Draft,
+        over: Option<ResponseFeedback>,
     },
 }
 
-impl RatingState {
-    /// The rating the saved state holds, when it is known.
-    fn saved(self) -> Option<FeedbackRating> {
+/// The higher revision of two saved feedbacks.
+fn newest(a: Option<&ResponseFeedback>, b: Option<&ResponseFeedback>) -> Option<ResponseFeedback> {
+    match (a, b) {
+        (Some(a), Some(b)) if b.revision > a.revision => Some(b.clone()),
+        (Some(a), _) => Some(a.clone()),
+        (None, b) => b.cloned(),
+    }
+}
+
+impl State {
+    /// The newest saved feedback this state knows.
+    pub(crate) fn saved(&self) -> Option<&ResponseFeedback> {
         match self {
-            Self::Rated(rating) => Some(rating),
-            Self::Saving { saved, .. } | Self::Failed { saved, .. } => saved,
-            Self::Loading | Self::Unknown | Self::Unrated => None,
+            Self::Saved(saved) => Some(saved),
+            Self::Saving { over, .. } | Self::Failed { over, .. } => over.as_ref(),
         }
     }
 
-    /// The saving state for pressing `choice`, or `None` when the press
-    /// starts no save: the rating isn't known, a save is on its way, or the
-    /// choice is already saved.
-    pub(crate) fn choose(self, choice: FeedbackRating) -> Option<Self> {
+    /// This state with `read`, the snapshot's feedback, merged in by revision.
+    fn with(&self, read: Option<&ResponseFeedback>) -> Self {
+        let over = newest(self.saved(), read);
         match self {
-            Self::Loading | Self::Unknown | Self::Saving { .. } => None,
-            Self::Rated(rating) if rating == choice => None,
-            Self::Unrated | Self::Rated(_) | Self::Failed { .. } => Some(Self::Saving {
-                choice,
-                saved: self.saved(),
-            }),
-        }
-    }
-
-    /// The state after the save answered: the saved rating, or failed.
-    pub(crate) fn answered(self, saved: Option<FeedbackRating>) -> Self {
-        let Self::Saving {
-            choice,
-            saved: before,
-        } = self
-        else {
-            return self;
-        };
-        match saved {
-            Some(rating) => Self::Rated(rating),
-            None => Self::Failed {
-                choice,
-                saved: before,
+            Self::Saved(saved) => Self::Saved(over.unwrap_or_else(|| saved.clone())),
+            Self::Saving { draft, .. } => Self::Saving {
+                draft: draft.clone(),
+                over,
+            },
+            Self::Failed { draft, .. } => Self::Failed {
+                draft: draft.clone(),
+                over,
             },
         }
     }
 
-    /// The thumb shown pressed: the choice while it saves, else the saved one.
-    pub(crate) fn shown(self) -> Option<FeedbackRating> {
-        match self {
-            Self::Saving { choice, .. } => Some(choice),
-            _ => self.saved(),
-        }
-    }
-
-    /// What the controls say beside the thumbs, if anything.
-    pub(crate) fn notice(self) -> Option<&'static str> {
-        match self {
-            Self::Failed { .. } => Some(NOT_SAVED),
-            Self::Unknown => Some(NOT_LOADED),
-            _ => None,
-        }
-    }
-}
-
-/// Where the physician's latest details save on a response stands.
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
-pub(crate) enum DetailsSaving {
-    /// No details save is on its way, and the last one, if any, landed.
-    #[default]
-    Idle,
-    /// These details are on their way.
-    Saving(FeedbackDetails),
-    /// These details failed to save; the saved details still stand.
-    Failed(FeedbackDetails),
-}
-
-/// One response's feedback on the page. One save at a time, of either kind,
-/// so an older answer never replaces what a newer save changed.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct Entry {
-    pub(crate) rating: RatingState,
-    pub(crate) details: Option<FeedbackDetails>,
-    pub(crate) details_saving: DetailsSaving,
-    /// The desk's clock when the page last changed this entry itself.
-    changed: u64,
-    /// The desk's clock when its latest save, of either kind, started.
-    saving: u64,
-}
-
-impl Entry {
-    fn new(rating: RatingState) -> Self {
-        Self {
-            rating,
-            details: None,
-            details_saving: DetailsSaving::Idle,
-            changed: 0,
-            saving: 0,
-        }
-    }
-
-    /// A save of either kind is on its way.
     pub(crate) fn busy(&self) -> bool {
-        matches!(self.rating, RatingState::Saving { .. })
-            || matches!(self.details_saving, DetailsSaving::Saving(_))
+        matches!(self, Self::Saving { .. })
+    }
+
+    /// The thumb shown pressed: the rating on its way, else the saved one.
+    pub(crate) fn shown(&self) -> Option<FeedbackRating> {
+        match self {
+            Self::Saving { draft, .. } => Some(draft.rating),
+            _ => self.saved().map(|saved| saved.rating),
+        }
     }
 
     /// What the controls say beside the thumbs, if anything.
     pub(crate) fn notice(&self) -> Option<&'static str> {
-        match self.details_saving {
-            DetailsSaving::Failed(_) => Some(NOT_SAVED),
-            _ => self.rating.notice(),
-        }
+        matches!(self, Self::Failed { .. }).then_some(NOT_SAVED)
     }
 
     /// The details the dialog opens with: those on their way or that failed
     /// to save, else the saved ones.
-    pub(crate) fn draft(&self) -> FeedbackDetails {
-        match &self.details_saving {
-            DetailsSaving::Saving(draft) | DetailsSaving::Failed(draft) => draft.clone(),
-            DetailsSaving::Idle => self.details.clone().unwrap_or_default(),
+    pub(crate) fn draft_details(&self) -> FeedbackDetails {
+        match self {
+            Self::Saving { draft, .. } | Self::Failed { draft, .. } => draft.details.clone(),
+            Self::Saved(saved) => saved.details.clone(),
         }
+        .unwrap_or_default()
     }
 }
 
-/// A rating save the page started, from [`Desk::choose`]. Only the latest
-/// save on a response settles it.
+/// A save the page started, from [`Desk::choose`] or [`Desk::save_details`].
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct RatingSave {
-    pub(crate) chat: ChatKey,
-    run: RunId,
-    started: u64,
+pub(crate) struct Save {
+    pub(crate) key: Key,
+    pub(crate) draft: Draft,
 }
 
-/// A details save the page started, from [`Desk::save_details`]. Only the
-/// latest save on a response settles it.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct DetailsSave {
-    pub(crate) chat: ChatKey,
-    run: RunId,
-    details: FeedbackDetails,
-    started: u64,
-}
-
-/// When a read of the chat's feedback started, from [`Desk::read_started`].
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) struct ReadStart(u64);
-
-/// The open chat's feedback.
+/// Every response's feedback the page saved or is saving, in any chat.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub(crate) struct Desk {
-    chat: Option<ChatKey>,
-    /// `None` until the first read answers; `Some(false)` when it failed.
-    read: Option<bool>,
-    entries: BTreeMap<RunId, Entry>,
-    /// Counts the page's own changes, so a read older than one never undoes it.
-    clock: u64,
-    /// The clock when this chat was opened; reads started before it are of an earlier visit.
-    opened: u64,
-    /// Saves still on their way, in any chat: leaving a chat never forgets
-    /// them, and returning shows them saving again.
-    pending: BTreeMap<(ChatKey, RunId), Entry>,
-    /// Details whose save failed, in any chat, kept until a later details
-    /// save on that response starts, so the words and the failure survive
-    /// leaving the chat.
-    failed: BTreeMap<(ChatKey, RunId), FeedbackDetails>,
-    /// The response whose details dialog is open in this chat.
-    dialog: Option<RunId>,
+    states: BTreeMap<Key, State>,
+    /// The response whose details dialog is open.
+    dialog: Option<Key>,
 }
 
 impl Desk {
-    /// Opens `chat`. Another chat starts over; the same chat keeps what it
-    /// knows while it is read again.
-    pub(crate) fn open(&mut self, chat: Option<ChatKey>) {
-        if self.chat == chat {
-            return;
+    /// One response's feedback as shown, given `read`, the feedback its
+    /// snapshot turn carries; `None` when it is not rated.
+    pub(crate) fn state(&self, key: &Key, read: Option<&ResponseFeedback>) -> Option<State> {
+        match self.states.get(key) {
+            Some(state) => Some(state.with(read)),
+            None => read.cloned().map(State::Saved),
         }
-        let opened = self.tick();
-        let entries = self
-            .pending
-            .iter()
-            .filter(|((pending, _), _)| Some(pending) == chat.as_ref())
-            .map(|((_, run), entry)| (run.clone(), entry.clone()))
-            .collect();
-        *self = Self {
-            chat,
-            read: None,
-            entries,
-            clock: opened,
-            opened,
-            pending: std::mem::take(&mut self.pending),
-            failed: std::mem::take(&mut self.failed),
-            dialog: None,
-        };
     }
 
-    /// The open chat.
-    #[cfg(test)]
-    fn chat(&self) -> Option<&ChatKey> {
-        self.chat.as_ref()
+    /// Starts saving `draft` over what `key` shows.
+    fn begin(&mut self, key: &Key, shown: Option<&State>, draft: Draft) -> Save {
+        let over = shown.and_then(State::saved).cloned();
+        self.states.insert(
+            key.clone(),
+            State::Saving {
+                draft: draft.clone(),
+                over,
+            },
+        );
+        Save {
+            key: key.clone(),
+            draft,
+        }
     }
 
-    /// Marks a read of the chat's feedback as starting now.
-    pub(crate) fn read_started(&self) -> ReadStart {
-        ReadStart(self.clock)
-    }
-
-    fn tick(&mut self) -> u64 {
-        self.clock += 1;
-        self.clock
-    }
-
-    /// A read of `chat`, started at `started`, answered. A failed reread
-    /// keeps what was read before. A save on its way, and anything the page
-    /// changed after the read started, are not overwritten.
-    pub(crate) fn read_answered(
+    /// Presses `choice` on a response; answers the save to make, or `None`
+    /// while a save is on its way or the choice is already saved. The save
+    /// keeps the details: a failed save's, else the saved ones.
+    pub(crate) fn choose(
         &mut self,
-        chat: &ChatKey,
-        started: ReadStart,
-        answer: Result<ChatFeedback, ()>,
-    ) {
-        if self.chat.as_ref() != Some(chat) || started.0 < self.opened {
-            return;
-        }
-        let Ok(read) = answer else {
-            self.read.get_or_insert(false);
+        key: &Key,
+        read: Option<&ResponseFeedback>,
+        choice: FeedbackRating,
+    ) -> Option<Save> {
+        let shown = self.state(key, read);
+        let details = match &shown {
+            None => None,
+            Some(State::Saving { .. }) => return None,
+            Some(State::Failed { draft, .. }) => draft.details.clone(),
+            Some(State::Saved(saved)) if saved.rating == choice => return None,
+            Some(State::Saved(saved)) => saved.details.clone(),
+        };
+        let draft = Draft {
+            rating: choice,
+            details,
+        };
+        Some(self.begin(key, shown.as_ref(), draft))
+    }
+
+    /// Saves `details` with the shown rating; answers the save to make, or
+    /// `None` while the response has no saved rating or a save is on its way.
+    pub(crate) fn save_details(
+        &mut self,
+        key: &Key,
+        read: Option<&ResponseFeedback>,
+        details: FeedbackDetails,
+    ) -> Option<Save> {
+        let shown = self.state(key, read).filter(|state| !state.busy())?;
+        let rating = shown.saved()?.rating;
+        let draft = Draft {
+            rating,
+            details: Some(details),
+        };
+        Some(self.begin(key, Some(&shown), draft))
+    }
+
+    /// `save` answered with the saved feedback, or failed. A landed save
+    /// shows the higher of its revision and any newer one read meanwhile,
+    /// and closes its dialog; a failed one keeps its draft to retry.
+    pub(crate) fn answered(&mut self, save: &Save, answer: Result<ResponseFeedback, ()>) {
+        let Some(State::Saving { draft, over }) = self.states.remove(&save.key) else {
             return;
         };
-        self.read = Some(true);
-        let saved: BTreeMap<_, _> = read
-            .feedback
-            .into_iter()
-            .map(|feedback| (feedback.run.clone(), feedback))
-            .collect();
-        let kept = |entry: &Entry| entry.changed > started.0 || entry.busy();
-        self.entries
-            .retain(|run, entry| saved.contains_key(run) || kept(entry));
-        for (run, feedback) in saved {
-            let entry = self
-                .entries
-                .entry(run)
-                .or_insert(Entry::new(RatingState::Unrated));
-            if !kept(entry) {
-                entry.rating = RatingState::Rated(feedback.rating);
-                entry.details = feedback.details;
+        let state = match answer {
+            Ok(saved) => {
+                if self.dialog.as_ref() == Some(&save.key) {
+                    self.dialog = None;
+                }
+                State::Saved(newest(Some(&saved), over.as_ref()).unwrap_or(saved))
             }
-        }
+            Err(()) => State::Failed { draft, over },
+        };
+        self.states.insert(save.key.clone(), state);
     }
 
-    /// One response's feedback as the page shows it.
-    pub(crate) fn entry(&self, run: &RunId) -> Entry {
-        let mut entry = self.entries.get(run).cloned().unwrap_or_else(|| {
-            Entry::new(match self.read {
-                None => RatingState::Loading,
-                Some(false) => RatingState::Unknown,
-                Some(true) => RatingState::Unrated,
-            })
-        });
-        let failed = self
-            .chat
-            .clone()
-            .and_then(|chat| self.failed.get(&(chat, run.clone())));
-        if let (DetailsSaving::Idle, Some(details)) = (&entry.details_saving, failed) {
-            entry.details_saving = DetailsSaving::Failed(details.clone());
-        }
-        entry
-    }
-
-    /// Records `entry` as changed by a save starting now, kept while it is
-    /// on its way; answers the save's start.
-    fn start_save(&mut self, chat: &ChatKey, run: &RunId, mut entry: Entry) -> u64 {
-        let started = self.tick();
-        entry.changed = started;
-        entry.saving = started;
-        self.pending
-            .insert((chat.clone(), run.clone()), entry.clone());
-        self.entries.insert(run.clone(), entry);
-        started
-    }
-
-    /// Forgets the pending save that started at `started`, if it is the
-    /// latest on its response, and answers the open entry it settles: none
-    /// when its chat is closed or a newer save started since.
-    fn settle(&mut self, chat: &ChatKey, run: &RunId, started: u64) -> Option<&mut Entry> {
-        let key = (chat.clone(), run.clone());
+    /// Opens the details dialog on a rated response no save is on its way to.
+    pub(crate) fn open_details(&mut self, key: &Key, read: Option<&ResponseFeedback>) {
         if self
-            .pending
-            .get(&key)
-            .is_some_and(|entry| entry.saving == started)
+            .state(key, read)
+            .is_some_and(|state| !state.busy() && state.saved().is_some())
         {
-            self.pending.remove(&key);
-        }
-        if self.chat.as_ref() != Some(chat) {
-            return None;
-        }
-        let changed = self.tick();
-        let entry = self
-            .entries
-            .get_mut(run)
-            .filter(|entry| entry.saving == started)?;
-        entry.changed = changed;
-        Some(entry)
-    }
-
-    /// Presses `choice` on a response; answers the save to make when the
-    /// press starts one.
-    pub(crate) fn choose(&mut self, run: &RunId, choice: FeedbackRating) -> Option<RatingSave> {
-        let chat = self.chat.clone()?;
-        let current = self.entry(run);
-        if current.busy() {
-            return None;
-        }
-        let rating = current.rating.choose(choice)?;
-        let started = self.start_save(&chat, run, Entry { rating, ..current });
-        Some(RatingSave {
-            chat,
-            run: run.clone(),
-            started,
-        })
-    }
-
-    /// Opens the details dialog on a rated response whose rating isn't saving.
-    pub(crate) fn open_details(&mut self, run: &RunId) {
-        let rating = self.entry(run).rating;
-        if rating.saved().is_some() && !matches!(rating, RatingState::Saving { .. }) {
-            self.dialog = Some(run.clone());
+            self.dialog = Some(key.clone());
         }
     }
 
-    /// Closes the details dialog. A details save on its way keeps going.
+    /// Closes the details dialog. A save on its way keeps going.
     pub(crate) fn close_details(&mut self) {
         self.dialog = None;
     }
 
-    /// Whether the details dialog is open on `run`.
-    pub(crate) fn details_open(&self, run: &RunId) -> bool {
-        self.dialog.as_ref() == Some(run)
-    }
-
-    /// Saves `details` on a rated response; answers the save to make, or
-    /// `None` while the rating isn't saved or another save is on its way.
-    pub(crate) fn save_details(
-        &mut self,
-        run: &RunId,
-        details: FeedbackDetails,
-    ) -> Option<DetailsSave> {
-        let chat = self.chat.clone()?;
-        let current = self.entry(run);
-        if current.busy() || current.rating.saved().is_none() {
-            return None;
-        }
-        self.failed.remove(&(chat.clone(), run.clone()));
-        let entry = Entry {
-            details_saving: DetailsSaving::Saving(details.clone()),
-            ..current
-        };
-        let started = self.start_save(&chat, run, entry);
-        Some(DetailsSave {
-            chat,
-            run: run.clone(),
-            details,
-            started,
-        })
-    }
-
-    /// `save` answered with the saved feedback, or failed. It settles its
-    /// response only as the latest save there; while its chat is closed it
-    /// leaves the store for the next read to show.
-    pub(crate) fn rating_answered(
-        &mut self,
-        save: &RatingSave,
-        answer: Result<ResponseFeedback, ()>,
-    ) {
-        let Some(entry) = self.settle(&save.chat, &save.run, save.started) else {
-            return;
-        };
-        match answer {
-            Ok(saved) => {
-                entry.rating = entry.rating.answered(Some(saved.rating));
-                entry.details = saved.details;
-            }
-            Err(()) => entry.rating = entry.rating.answered(None),
-        }
-    }
-
-    /// `save` answered with the saved feedback, or failed. A landed save
-    /// closes its dialog; a failed one keeps its details for the dialog to
-    /// show again, open or reopened, even after leaving the chat. Like a
-    /// rating save, it settles its response only as the latest save there.
-    pub(crate) fn details_answered(
-        &mut self,
-        save: &DetailsSave,
-        answer: Result<ResponseFeedback, ()>,
-    ) {
-        let key = (save.chat.clone(), save.run.clone());
-        let latest = self
-            .pending
-            .get(&key)
-            .is_some_and(|entry| entry.saving == save.started);
-        if latest && answer.is_err() {
-            self.failed.insert(key, save.details.clone());
-        }
-        let Some(entry) = self.settle(&save.chat, &save.run, save.started) else {
-            return;
-        };
-        entry.details_saving = DetailsSaving::Idle;
-        let Ok(saved) = answer else {
-            return;
-        };
-        entry.rating = RatingState::Rated(saved.rating);
-        entry.details = saved.details;
-        if self.dialog.as_ref() == Some(&save.run) {
-            self.dialog = None;
-        }
+    pub(crate) fn details_open(&self, key: &Key) -> bool {
+        self.dialog.as_ref() == Some(key)
     }
 }
 
-/// The open chat's feedback, the client its saves go through, and the scope
-/// that keeps them: a rating save outlives the controls that started it, so
-/// leaving the chat never strands it as saving.
+/// Every chat's feedback, the client its saves go through, and the scope
+/// that keeps them: a save outlives the controls that started it.
 #[derive(Clone, Copy)]
 struct Feedback {
     desk: Signal<Desk>,
@@ -498,13 +270,12 @@ struct Feedback {
     owner: ScopeId,
 }
 
-/// Keeps the open chat's feedback for the [`ResponseRating`] controls
-/// below it, read again whenever `reread` moves.
+/// Keeps the feedback for the [`ResponseRating`] controls below it, and
+/// closes the details dialog when the open chat changes.
 pub(crate) fn use_feedback(
     client: Signal<PhysicianClient>,
     workspace: Signal<Option<String>>,
     chat: Signal<Option<String>>,
-    reread: Signal<u32>,
 ) {
     let mut desk = use_signal(Desk::default);
     use_context_provider(|| Feedback {
@@ -513,143 +284,124 @@ pub(crate) fn use_feedback(
         owner: current_scope_id(),
     });
     use_effect(move || {
-        let _reread = reread();
-        let open = workspace()
-            .zip(chat())
-            .map(|(workspace, chat)| ChatKey { workspace, chat });
-        desk.write().open(open.clone());
-        let Some(open) = open else {
-            return;
-        };
-        let client = client.peek().clone();
-        let started = desk.peek().read_started();
-        spawn(async move {
-            let answer = client
-                .chat_feedback(&open.workspace, &open.chat)
-                .await
-                .map_err(|_| ());
-            desk.write().read_answered(&open, started, answer);
-        });
+        let _open = (workspace(), chat());
+        desk.write().close_details();
     });
 }
 
-/// The thumbs and details under one of Coda's responses, named by the run
-/// that published it.
-#[component]
-pub(crate) fn ResponseRating(run: RunId) -> Element {
+/// Sends `save` and records its answer, in the scope that outlives the
+/// controls.
+fn send(feedback: Feedback, save: Save) {
     let Feedback {
         mut desk,
         client,
         owner,
-    } = use_context::<Feedback>();
-    let (entry, open) = {
+    } = feedback;
+    let client = client.peek().clone();
+    Runtime::current().in_scope(owner, || {
+        spawn(async move {
+            let ((chat, run), draft) = (&save.key, &save.draft);
+            let body = SaveFeedback {
+                rating: draft.rating,
+                details: draft.details.clone(),
+            };
+            let answer = client
+                .save_feedback(&chat.workspace, &chat.chat, run, &body)
+                .await
+                .map_err(|_| ());
+            desk.write().answered(&save, answer);
+        })
+    });
+}
+
+/// The thumbs and details under one of Coda's responses in `chat`, named by
+/// the run that published it; `read` is the feedback its snapshot turn
+/// carries.
+#[component]
+pub(crate) fn ResponseRating(chat: ChatKey, run: RunId, read: Option<ResponseFeedback>) -> Element {
+    let feedback = use_context::<Feedback>();
+    let mut desk = feedback.desk;
+    let key = (chat, run);
+    let (state, open) = {
         let desk = desk.read();
-        (desk.entry(&run), desk.details_open(&run))
+        (desk.state(&key, read.as_ref()), desk.details_open(&key))
     };
-    let rating = entry.rating;
-    let notice = entry.notice();
-    let rated = run.clone();
+    let saved = state.as_ref().and_then(State::saved).cloned();
+    let notice = state.as_ref().and_then(State::notice);
+    let busy = state.as_ref().is_some_and(State::busy);
+    let (rated, rated_read) = (key.clone(), read.clone());
     let rate = move |choice: ui::Rating| {
         let choice = match choice {
             ui::Rating::Up => FeedbackRating::Up,
             ui::Rating::Down => FeedbackRating::Down,
         };
-        let Some(save) = desk.write().choose(&rated, choice) else {
-            return;
-        };
-        let client = client.peek().clone();
-        Runtime::current().in_scope(owner, || {
-            spawn(async move {
-                let answer = client
-                    .rate_response(&save.chat.workspace, &save.chat.chat, &save.run, choice)
-                    .await
-                    .map_err(|_| ());
-                desk.write().rating_answered(&save, answer);
-            })
-        });
+        if let Some(save) = desk.write().choose(&rated, rated_read.as_ref(), choice) {
+            send(feedback, save);
+        }
     };
-    let selected = rating.shown().map(|rating| match rating {
-        FeedbackRating::Up => ui::Rating::Up,
-        FeedbackRating::Down => ui::Rating::Down,
-    });
-    let busy = matches!(rating, RatingState::Saving { .. });
-    let opened = run.clone();
+    let selected = state
+        .as_ref()
+        .and_then(State::shown)
+        .map(|rating| match rating {
+            FeedbackRating::Up => ui::Rating::Up,
+            FeedbackRating::Down => ui::Rating::Down,
+        });
+    let (opened, opened_read) = (key.clone(), read.clone());
     rsx! {
-        ui::MessageActions { label: ACTIONS, shown: rating.saved().is_some() || notice.is_some() || entry.busy(),
+        ui::MessageActions { label: ACTIONS, shown: saved.is_some() || notice.is_some() || busy,
             ui::FeedbackRating {
                 selected,
                 label: RATE,
                 up_label: GOOD,
                 down_label: POOR,
                 busy,
-                disabled: matches!(rating, RatingState::Loading | RatingState::Unknown)
-                    || (entry.busy() && !busy),
                 on_rate: rate,
             }
-            if rating.saved().is_some() {
+            if let Some(saved) = &saved {
                 Button {
                     variant: ButtonVariant::Quiet,
                     compact: true,
                     class: "feedback-details-open",
                     disabled: busy,
-                    onclick: move |_| desk.write().open_details(&opened),
-                    if entry.details.is_some() { "{EDIT_DETAILS}" } else { "{ADD_DETAILS}" }
+                    onclick: move |_| desk.write().open_details(&opened, opened_read.as_ref()),
+                    if saved.details.is_some() { "{EDIT_DETAILS}" } else { "{ADD_DETAILS}" }
                 }
             }
             if let Some(notice) = notice {
                 span { class: "quiet-line feedback-notice", role: "status", "{notice}" }
             }
         }
-        if open {
+        if let (true, Some(state)) = (open, state) {
             // Keys pressed anywhere in the dialog are its own, never the page's
             // shortcuts or Send; the dialog answers Escape itself.
             div {
                 class: "feedback-details-host",
                 onkeydown: move |event| event.stop_propagation(),
-                DetailsDialog { run, entry }
+                DetailsDialog { response: key, read, state }
             }
         }
     }
 }
 
-/// The details dialog: reasons, the physician's words and its own Save.
-/// Closing it without saving leaves the rating and any saved details; a
-/// save on its way keeps going, and reopening shows it.
+/// The details dialog: reasons, the physician's words and its own Save,
+/// which sends them with the shown rating. Closing it without saving leaves
+/// the saved feedback; a save on its way keeps going, and reopening shows it.
 #[component]
-fn DetailsDialog(run: RunId, entry: Entry) -> Element {
-    let Feedback {
-        mut desk,
-        client,
-        owner,
-    } = use_context::<Feedback>();
-    let draft = entry.draft();
+fn DetailsDialog(response: Key, read: Option<ResponseFeedback>, state: State) -> Element {
+    let feedback = use_context::<Feedback>();
+    let mut desk = feedback.desk;
+    let draft = state.draft_details();
     let mut reasons = use_signal(|| draft.reasons.iter().copied().collect::<BTreeSet<_>>());
     let mut text = use_signal(|| draft.text.clone());
-    let saving = matches!(entry.details_saving, DetailsSaving::Saving(_));
-    let failed = matches!(entry.details_saving, DetailsSaving::Failed(_));
+    let saving = state.busy();
     let save = move |_| {
         let details = FeedbackDetails {
             reasons: reasons.peek().iter().copied().collect(),
             text: text.peek().clone(),
         };
-        let Some(save) = desk.write().save_details(&run, details) else {
-            return;
-        };
-        let client = client.peek().clone();
-        Runtime::current().in_scope(owner, || {
-            spawn(async move {
-                let answer = client
-                    .save_feedback_details(
-                        &save.chat.workspace,
-                        &save.chat.chat,
-                        &save.run,
-                        &save.details,
-                    )
-                    .await
-                    .map_err(|_| ());
-                desk.write().details_answered(&save, answer);
-            })
-        });
+        if let Some(save) = desk.write().save_details(&response, read.as_ref(), details) {
+            send(feedback, save);
+        }
     };
     rsx! {
         Dialog {
@@ -682,13 +434,12 @@ fn DetailsDialog(run: RunId, entry: Entry) -> Element {
                 disabled: saving,
             }
             ActionRow {
-                if failed {
-                    span { class: "quiet-line feedback-notice", role: "status", "{NOT_SAVED}" }
+                if let Some(notice) = state.notice() {
+                    span { class: "quiet-line feedback-notice", role: "status", "{notice}" }
                 }
                 Button {
                     variant: ButtonVariant::Primary,
                     busy: saving,
-                    disabled: entry.busy() && !saving,
                     pending_label: SAVING_DETAILS,
                     onclick: save,
                     "{SAVE_DETAILS}"
@@ -703,254 +454,22 @@ mod tests {
     use super::*;
     use FeedbackRating::{Down, Up};
 
-    fn chat(name: &str) -> ChatKey {
-        ChatKey {
-            workspace: "ws".into(),
-            chat: name.into(),
-        }
+    fn key(chat: &str, n: usize) -> Key {
+        (
+            ChatKey {
+                workspace: "ws".into(),
+                chat: chat.into(),
+            },
+            RunId(format!("run-{n}")),
+        )
     }
 
-    fn run(n: usize) -> RunId {
-        RunId(format!("run-{n}"))
-    }
-
-    fn saved(n: usize, rating: FeedbackRating) -> ResponseFeedback {
+    fn saved(revision: u64, rating: FeedbackRating) -> ResponseFeedback {
         ResponseFeedback {
-            run: run(n),
+            revision,
             rating,
             details: None,
         }
-    }
-
-    fn read(desk: &mut Desk, feedback: Vec<ResponseFeedback>) {
-        let started = desk.read_started();
-        desk.read_answered(&chat("a"), started, Ok(ChatFeedback { feedback }));
-    }
-
-    fn read_fails(desk: &mut Desk) {
-        let started = desk.read_started();
-        desk.read_answered(&chat("a"), started, Err(()));
-    }
-
-    #[test]
-    fn a_read_started_before_a_save_never_undoes_it() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        let stale = desk.read_started();
-        let save = desk.choose(&run(1), Down).unwrap();
-        desk.rating_answered(&save, Ok(saved(1, Down)));
-        let save = desk.choose(&run(2), Up).unwrap();
-        desk.rating_answered(&save, Ok(saved(2, Up)));
-        desk.read_answered(
-            &chat("a"),
-            stale,
-            Ok(ChatFeedback {
-                feedback: vec![saved(1, Up)],
-            }),
-        );
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-        assert_eq!(desk.entry(&run(2)).rating, RatingState::Rated(Up));
-        // A read started after the saves shows what the store holds.
-        read(&mut desk, vec![saved(1, Up)]);
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Up));
-        assert_eq!(desk.entry(&run(2)).rating, RatingState::Unrated);
-    }
-
-    #[test]
-    fn a_save_outlives_leaving_its_chat() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![]);
-        let save = desk.choose(&run(1), Up).unwrap();
-        desk.open(Some(chat("b")));
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![]);
-        assert!(
-            matches!(
-                desk.entry(&run(1)).rating,
-                RatingState::Saving { choice: Up, .. }
-            ),
-            "returning forgot the save on its way"
-        );
-        assert_eq!(desk.choose(&run(1), Down), None, "one save at a time");
-        desk.rating_answered(&save, Ok(saved(1, Up)));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Up));
-
-        // A save that answers while its chat is closed leaves the next read
-        // to show it, and is not restored as saving.
-        let save = desk.choose(&run(1), Down).unwrap();
-        desk.open(Some(chat("b")));
-        desk.rating_answered(&save, Ok(saved(1, Down)));
-        desk.open(Some(chat("a")));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Loading);
-        read(&mut desk, vec![saved(1, Down)]);
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-    }
-
-    #[test]
-    fn only_the_latest_save_settles_a_response() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![]);
-        let failed = desk.choose(&run(1), Up).unwrap();
-        desk.rating_answered(&failed, Err(()));
-        let retry = desk.choose(&run(1), Down).unwrap();
-        desk.rating_answered(&failed, Ok(saved(1, Up)));
-        assert!(
-            matches!(
-                desk.entry(&run(1)).rating,
-                RatingState::Saving { choice: Down, .. }
-            ),
-            "an answered save settled the newer one"
-        );
-        desk.rating_answered(&retry, Ok(saved(1, Down)));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-    }
-
-    #[test]
-    fn a_rating_saves_shows_the_choice_and_lands_saved() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Loading);
-        assert_eq!(
-            desk.choose(&run(1), Up),
-            None,
-            "nothing to save over before the read"
-        );
-        read(&mut desk, vec![]);
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Unrated);
-        let save = desk.choose(&run(1), Up).unwrap();
-        assert_eq!(save.chat, chat("a"));
-        let saving = desk.entry(&run(1)).rating;
-        assert_eq!((saving.shown(), saving.notice()), (Some(Up), None));
-        assert_eq!(desk.choose(&run(1), Down), None, "one save at a time");
-        desk.rating_answered(&save, Ok(saved(1, Up)));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Up));
-        assert_eq!(desk.choose(&run(1), Up), None, "already saved");
-        assert_eq!(desk.entry(&run(3)).rating, RatingState::Unrated);
-    }
-
-    #[test]
-    fn a_failed_save_says_so_and_shows_the_saved_rating_again() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        let save = desk.choose(&run(1), Down).unwrap();
-        desk.rating_answered(&save, Err(()));
-        let failed = desk.entry(&run(1)).rating;
-        assert_eq!(
-            failed,
-            RatingState::Failed {
-                choice: Down,
-                saved: Some(Up)
-            }
-        );
-        assert_eq!(
-            (failed.shown(), failed.notice()),
-            (Some(Up), Some(NOT_SAVED))
-        );
-        // Pressing again retries over the same saved rating.
-        let save = desk.choose(&run(1), Down).unwrap();
-        desk.rating_answered(&save, Ok(saved(1, Down)));
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-
-        let unrated = RatingState::Unrated.choose(Up).unwrap().answered(None);
-        assert_eq!((unrated.shown(), unrated.notice()), (None, Some(NOT_SAVED)));
-    }
-
-    #[test]
-    fn a_failed_read_is_unknown_never_unrated() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read_fails(&mut desk);
-        let unknown = desk.entry(&run(1)).rating;
-        assert_eq!(unknown, RatingState::Unknown);
-        assert_eq!(
-            (unknown.shown(), unknown.notice()),
-            (None, Some(NOT_LOADED))
-        );
-        assert_eq!(desk.choose(&run(1), Up), None);
-        // A later read that works shows the saved rating.
-        read(&mut desk, vec![saved(1, Down)]);
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-        // A failed reread keeps what was read.
-        read_fails(&mut desk);
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
-        assert_eq!(desk.entry(&run(3)).rating, RatingState::Unrated);
-    }
-
-    #[test]
-    fn answers_for_another_chat_change_nothing() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![]);
-        let save = desk.choose(&run(1), Up).unwrap();
-        let earlier = desk.read_started();
-        desk.open(Some(chat("b")));
-        desk.rating_answered(&save, Ok(saved(1, Up)));
-        let started = desk.read_started();
-        desk.read_answered(
-            &chat("a"),
-            started,
-            Ok(ChatFeedback {
-                feedback: vec![saved(1, Up)],
-            }),
-        );
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Loading);
-        assert_eq!(desk.chat(), Some(&chat("b")));
-
-        // Back on chat a, a read from the earlier visit is out of date.
-        desk.open(Some(chat("a")));
-        desk.read_answered(
-            &chat("a"),
-            earlier,
-            Ok(ChatFeedback {
-                feedback: vec![saved(1, Up)],
-            }),
-        );
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Loading);
-    }
-
-    #[test]
-    fn a_reread_keeps_a_save_on_its_way_and_details_follow_the_rating() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        let save = desk.choose(&run(1), Down).unwrap();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        assert!(matches!(
-            desk.entry(&run(1)).rating,
-            RatingState::Saving { choice: Down, .. }
-        ));
-        let details = FeedbackDetails {
-            reasons: vec![FeedbackReason::MissingContext],
-            text: "Sodium was rechecked.".into(),
-        };
-        desk.rating_answered(
-            &save,
-            Ok(ResponseFeedback {
-                details: Some(details.clone()),
-                ..saved(1, Down)
-            }),
-        );
-        assert_eq!(desk.entry(&run(1)).details, Some(details.clone()));
-        let cleared = desk
-            .save_details(&run(1), FeedbackDetails::default())
-            .unwrap();
-        desk.details_answered(
-            &cleared,
-            Ok(ResponseFeedback {
-                details: Some(FeedbackDetails::default()),
-                ..saved(1, Down)
-            }),
-        );
-        assert_eq!(
-            desk.entry(&run(1)).details,
-            Some(FeedbackDetails::default())
-        );
-        assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
     }
 
     fn words(text: &str) -> FeedbackDetails {
@@ -960,126 +479,202 @@ mod tests {
         }
     }
 
-    #[test]
-    fn a_details_save_outlives_closing_its_dialog() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        desk.open_details(&run(1));
-        let save = desk.save_details(&run(1), words("Trend missing.")).unwrap();
-        desk.close_details();
-        assert!(!desk.details_open(&run(1)));
-        // Reopened while on its way, the dialog shows the save, not the old details.
-        desk.open_details(&run(1));
-        let entry = desk.entry(&run(1));
-        assert_eq!(
-            entry.details_saving,
-            DetailsSaving::Saving(words("Trend missing."))
-        );
-        assert_eq!(entry.draft(), words("Trend missing."));
-        desk.close_details();
-        desk.details_answered(
-            &save,
-            Ok(ResponseFeedback {
-                details: Some(words("Trend missing.")),
-                ..saved(1, Up)
-            }),
-        );
-        let entry = desk.entry(&run(1));
-        assert_eq!(entry.details, Some(words("Trend missing.")));
-        assert_eq!(entry.details_saving, DetailsSaving::Idle);
-
-        // A failure after the dialog closed says so and keeps the words to retry.
-        let save = desk.save_details(&run(1), words("Second try.")).unwrap();
-        desk.details_answered(&save, Err(()));
-        let entry = desk.entry(&run(1));
-        assert_eq!(entry.notice(), Some(NOT_SAVED));
-        assert_eq!(entry.details, Some(words("Trend missing.")));
-        assert_eq!(entry.draft(), words("Second try."));
+    fn with_words(revision: u64, rating: FeedbackRating, text: &str) -> ResponseFeedback {
+        ResponseFeedback {
+            details: Some(words(text)),
+            ..saved(revision, rating)
+        }
     }
 
     #[test]
-    fn a_details_save_outlives_leaving_its_chat() {
-        let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        desk.open_details(&run(1));
-        let save = desk.save_details(&run(1), words("Trend missing.")).unwrap();
-        desk.open(Some(chat("b")));
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        assert!(!desk.details_open(&run(1)), "a new visit opens no dialog");
-        assert!(desk.entry(&run(1)).busy(), "returning forgot the save");
-        desk.details_answered(
-            &save,
-            Ok(ResponseFeedback {
-                details: Some(words("Trend missing.")),
-                ..saved(1, Up)
-            }),
+    fn the_snapshot_shows_until_the_page_saves() {
+        let desk = Desk::default();
+        let a1 = key("a", 1);
+        assert_eq!(desk.state(&a1, None), None, "unrated");
+        assert_eq!(
+            desk.state(&a1, Some(&saved(2, Up))),
+            Some(State::Saved(saved(2, Up)))
         );
-        assert_eq!(desk.entry(&run(1)).details, Some(words("Trend missing.")));
+    }
 
-        // A details save that fails while its chat is closed keeps the words
-        // and says so on return, until a later details save starts.
-        desk.open_details(&run(1));
+    #[test]
+    fn an_older_revision_never_replaces_a_newer_one() {
+        let mut desk = Desk::default();
+        let a1 = key("a", 1);
+        let save = desk.choose(&a1, Some(&saved(1, Up)), Down).unwrap();
+        desk.answered(&save, Ok(saved(2, Down)));
+        // A snapshot read before the save landed is older.
+        assert_eq!(
+            desk.state(&a1, Some(&saved(1, Up))),
+            Some(State::Saved(saved(2, Down)))
+        );
+        // A newer one, saved elsewhere, shows.
+        assert_eq!(
+            desk.state(&a1, Some(&saved(3, Up))),
+            Some(State::Saved(saved(3, Up)))
+        );
+
+        // A save's answer older than a snapshot read meanwhile loses to it.
+        let save = desk.choose(&a1, Some(&saved(3, Up)), Down).unwrap();
+        let newer = saved(5, Up);
+        let saving = desk.state(&a1, Some(&newer)).unwrap();
+        assert_eq!(
+            saving.shown(),
+            Some(Down),
+            "the save on its way shows its choice"
+        );
+        assert_eq!(saving.saved(), Some(&newer), "over is raised");
+        desk.answered(&save, Ok(saved(4, Down)));
+        assert_eq!(desk.state(&a1, Some(&newer)), Some(State::Saved(newer)));
+        // A save's answer never falls below what it was saved over.
+        let save = desk.choose(&a1, Some(&saved(7, Down)), Up).unwrap();
+        desk.answered(&save, Ok(saved(6, Up)));
+        assert_eq!(desk.state(&a1, None), Some(State::Saved(saved(7, Down))));
+    }
+
+    #[test]
+    fn one_save_at_a_time_and_the_choice_shows_while_it_saves() {
+        let mut desk = Desk::default();
+        let a1 = key("a", 1);
+        let save = desk.choose(&a1, None, Up).unwrap();
+        assert_eq!(
+            save.draft,
+            Draft {
+                rating: Up,
+                details: None
+            }
+        );
+        let saving = desk.state(&a1, None).unwrap();
+        assert_eq!((saving.shown(), saving.notice()), (Some(Up), None));
+        assert!(saving.busy());
+        assert_eq!(desk.choose(&a1, None, Down), None, "one save at a time");
+        assert_eq!(desk.save_details(&a1, None, words("x")), None);
+        desk.answered(&save, Ok(saved(1, Up)));
+        assert_eq!(desk.state(&a1, None), Some(State::Saved(saved(1, Up))));
+        assert_eq!(desk.choose(&a1, None, Up), None, "already saved");
+        assert_eq!(desk.state(&key("a", 3), None), None);
+    }
+
+    #[test]
+    fn a_failed_save_says_so_shows_the_saved_rating_and_retries() {
+        let mut desk = Desk::default();
+        let a1 = key("a", 1);
+        let read = saved(1, Up);
+        let save = desk.choose(&a1, Some(&read), Down).unwrap();
+        desk.answered(&save, Err(()));
+        let failed = desk.state(&a1, Some(&read)).unwrap();
+        assert_eq!(
+            (failed.shown(), failed.notice()),
+            (Some(Up), Some(NOT_SAVED))
+        );
+        // Pressing again retries.
+        let save = desk.choose(&a1, Some(&read), Down).unwrap();
+        desk.answered(&save, Ok(saved(2, Down)));
+        assert_eq!(
+            desk.state(&a1, Some(&read)),
+            Some(State::Saved(saved(2, Down)))
+        );
+
+        let a2 = key("a", 2);
+        let save = desk.choose(&a2, None, Up).unwrap();
+        desk.answered(&save, Err(()));
+        let unrated = desk.state(&a2, None).unwrap();
+        assert_eq!((unrated.shown(), unrated.notice()), (None, Some(NOT_SAVED)));
+    }
+
+    #[test]
+    fn a_rating_change_keeps_the_saved_details() {
+        let mut desk = Desk::default();
+        let a1 = key("a", 1);
+        let read = with_words(2, Up, "Trend missing.");
+        let save = desk.choose(&a1, Some(&read), Down).unwrap();
+        assert_eq!(save.draft.details, Some(words("Trend missing.")));
+        desk.answered(&save, Err(()));
+        // A retry after a failed details save keeps the failed words.
+        let a2 = key("a", 2);
         let save = desk
-            .save_details(&run(1), words("Recheck sodium."))
+            .save_details(&a2, Some(&saved(1, Up)), words("Recheck."))
             .unwrap();
-        desk.close_details();
-        desk.open(Some(chat("b")));
-        desk.details_answered(&save, Err(()));
-        assert_eq!(desk.entry(&run(1)).notice(), None, "chat b has no failure");
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        let entry = desk.entry(&run(1));
-        assert_eq!(entry.notice(), Some(NOT_SAVED));
-        assert_eq!(entry.draft(), words("Recheck sodium."));
-        let retry = desk
-            .save_details(&run(1), words("Recheck sodium."))
-            .unwrap();
-        assert!(desk.entry(&run(1)).busy());
-        desk.details_answered(
-            &retry,
-            Ok(ResponseFeedback {
-                details: Some(words("Recheck sodium.")),
-                ..saved(1, Up)
-            }),
+        desk.answered(&save, Err(()));
+        let save = desk.choose(&a2, Some(&saved(1, Up)), Down).unwrap();
+        assert_eq!(
+            save.draft,
+            Draft {
+                rating: Down,
+                details: Some(words("Recheck."))
+            }
         );
-        let entry = desk.entry(&run(1));
-        assert_eq!(entry.notice(), None);
-        assert_eq!(entry.details, Some(words("Recheck sodium.")));
     }
 
     #[test]
-    fn one_save_at_a_time_so_an_older_answer_never_undoes_newer_details() {
+    fn details_save_with_the_shown_rating_and_a_landed_save_closes_its_dialog() {
         let mut desk = Desk::default();
-        desk.open(Some(chat("a")));
-        read(&mut desk, vec![saved(1, Up)]);
-        let rating = desk.choose(&run(1), Down).unwrap();
+        let a1 = key("a", 1);
+        let read = saved(1, Down);
+        desk.open_details(&key("a", 2), None);
+        assert!(!desk.details_open(&key("a", 2)), "no rating, no details");
+        desk.open_details(&a1, Some(&read));
+        assert!(desk.details_open(&a1));
+        let save = desk
+            .save_details(&a1, Some(&read), words("Trend missing."))
+            .unwrap();
         assert_eq!(
-            desk.save_details(&run(1), words("Trend missing.")),
-            None,
-            "details wait for the rating save"
+            save.draft,
+            Draft {
+                rating: Down,
+                details: Some(words("Trend missing."))
+            }
         );
-        desk.open_details(&run(1));
-        assert!(!desk.details_open(&run(1)), "the dialog waits too");
-        desk.rating_answered(&rating, Ok(saved(1, Down)));
+        // Reopened while on its way, the dialog shows the save's words.
+        desk.close_details();
+        desk.open_details(&a1, Some(&read));
+        assert!(!desk.details_open(&a1), "the dialog waits for the save");
+        assert_eq!(
+            desk.state(&a1, Some(&read)).unwrap().draft_details(),
+            words("Trend missing.")
+        );
+        desk.dialog = Some(a1.clone());
+        desk.answered(&save, Ok(with_words(2, Down, "Trend missing.")));
+        assert!(!desk.details_open(&a1), "a landed save closes its dialog");
 
-        let details = desk.save_details(&run(1), words("Trend missing.")).unwrap();
+        // A failure keeps the words to retry, and says so.
+        let shown = desk.state(&a1, Some(&read)).unwrap();
+        assert_eq!(shown.draft_details(), words("Trend missing."));
+        desk.open_details(&a1, Some(&read));
+        let save = desk
+            .save_details(&a1, Some(&read), words("Second try."))
+            .unwrap();
+        desk.answered(&save, Err(()));
+        assert!(
+            desk.details_open(&a1),
+            "a failed save leaves its dialog open"
+        );
+        let failed = desk.state(&a1, Some(&read)).unwrap();
+        assert_eq!(failed.notice(), Some(NOT_SAVED));
+        assert_eq!(failed.draft_details(), words("Second try."));
+        assert_eq!(failed.saved(), Some(&with_words(2, Down, "Trend missing.")));
+    }
+
+    #[test]
+    fn a_save_outlives_a_chat_switch_and_a_failure_keeps_its_draft() {
+        let mut desk = Desk::default();
+        let (a1, b1) = (key("a", 1), key("b", 1));
+        let save = desk.choose(&a1, None, Up).unwrap();
+        // The same run name in another chat is another response.
+        assert_eq!(desk.state(&b1, None), None);
+        let other = desk.choose(&b1, None, Down).unwrap();
+        desk.answered(&save, Ok(saved(1, Up)));
+        desk.answered(&other, Err(()));
+        assert_eq!(desk.state(&a1, None), Some(State::Saved(saved(1, Up))));
         assert_eq!(
-            desk.choose(&run(1), Up),
-            None,
-            "the rating waits for details"
+            desk.state(&b1, None),
+            Some(State::Failed {
+                draft: Draft {
+                    rating: Down,
+                    details: None
+                },
+                over: None
+            })
         );
-        desk.details_answered(
-            &details,
-            Ok(ResponseFeedback {
-                details: Some(words("Trend missing.")),
-                ..saved(1, Down)
-            }),
-        );
-        // A late answer of the earlier rating save changes nothing.
-        desk.rating_answered(&rating, Ok(saved(1, Down)));
-        assert_eq!(desk.entry(&run(1)).details, Some(words("Trend missing.")));
     }
 }

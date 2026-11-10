@@ -21,9 +21,9 @@ use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAn
 use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
-    ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation, RunId,
-    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
-    WorkspaceReply,
+    ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
+    ResponseFeedback, RunId, SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget,
+    WorkStopTarget, WorkspaceReply,
 };
 
 use panels::Panel;
@@ -939,7 +939,7 @@ fn PhysicianShell(
     let mut today_attempt = use_signal(|| 0u32);
     let mut workspace_attempt = use_signal(|| 0u32);
     let mut snapshot_attempt = use_signal(|| 0u32);
-    feedback::use_feedback(client, selected, open_chat, snapshot_attempt);
+    feedback::use_feedback(client, selected, open_chat);
     let mut search_attempt = use_signal(|| 0u32);
     let mut today_cache = use_signal(|| None::<Vec<TodayLine>>);
     let mut workspace_cache = use_signal(|| None::<PatientWorkspaceResponse>);
@@ -2116,6 +2116,9 @@ fn PhysicianShell(
                             },
                             on_editing: move |value: bool| editing.set(value),
                             conversation_open: open_chat.read().is_some(),
+                            feedback_chat: selected().zip(open_chat()).map(|(workspace, chat)| {
+                                feedback::ChatKey { workspace, chat }
+                            }),
                             past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
                             reply_notice: reply_notice(),
                             reply_busy: reply_slot.sending(),
@@ -3243,6 +3246,8 @@ fn PatientSurface(
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
     conversation_open: bool,
+    /// The open chat, which its responses' feedback belongs to.
+    feedback_chat: Option<feedback::ChatKey>,
     past_work: bool,
     reply_notice: String,
     reply_busy: bool,
@@ -3736,8 +3741,8 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
-                                    actions: line.run.map(|run| rsx! {
-                                        feedback::ResponseRating { run }
+                                    actions: feedback_chat.clone().zip(line.run).map(|(chat, run)| rsx! {
+                                        feedback::ResponseRating { chat, run, read: line.feedback }
                                     }),
                                     MessageWords { text: line.text }
                                 }
@@ -4535,6 +4540,9 @@ struct ConversationLine {
     /// On one of Coda's saved responses: the run that published it, which
     /// feedback names.
     run: Option<RunId>,
+    /// On a response the physician rated: their feedback as the snapshot
+    /// read it.
+    feedback: Option<ResponseFeedback>,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4562,16 +4570,16 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 Some("model") => Some(Author::Assistant),
                 _ => None,
             };
+            let response = author == Some(Author::Assistant);
+            let run = turn.run_id.clone().filter(|_| response);
             Some(ConversationLine {
                 text,
                 author,
                 resume,
                 stop,
                 held,
-                run: turn
-                    .run_id
-                    .clone()
-                    .filter(|_| author == Some(Author::Assistant)),
+                feedback: turn.feedback.clone().filter(|_| run.is_some()),
+                run,
             })
         })
         .collect()
@@ -4740,6 +4748,7 @@ mod conversation_line_tests {
                     stop: None,
                     held: false,
                     run: None,
+                    feedback: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -4748,6 +4757,7 @@ mod conversation_line_tests {
                     stop: None,
                     held: false,
                     run: None,
+                    feedback: None,
                 },
             ]
         );
@@ -4778,17 +4788,33 @@ mod conversation_line_tests {
         let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
             "snapshot": { "conversation": [
                 { "kind": "physician", "text": "Start metoprolol?", "run_id": "run-0" },
-                { "kind": "model", "text": "Her heart rate allows it.", "run_id": "run-1" },
-                { "kind": "model", "text": "From an older server." },
+                { "kind": "model", "text": "Her heart rate allows it.", "run_id": "run-1",
+                  "feedback": { "revision": 2, "rating": "up" } },
+                { "kind": "model", "text": "From an older server.",
+                  "feedback": { "revision": 1, "rating": "down" } },
                 { "text": "Recorded in local simulation.", "run_id": "run-3" },
             ] }
         }))
         .unwrap();
         let runs: Vec<_> = conversation_lines(&page.snapshot)
             .into_iter()
-            .map(|line| line.run.map(|run| run.0))
+            .map(|line| {
+                (
+                    line.run.map(|run| run.0),
+                    line.feedback.map(|feedback| feedback.revision),
+                )
+            })
             .collect();
-        assert_eq!(runs, vec![None, Some("run-1".to_owned()), None, None]);
+        // Feedback rides only on a response that names its run.
+        assert_eq!(
+            runs,
+            vec![
+                (None, None),
+                (Some("run-1".to_owned()), Some(2)),
+                (None, None),
+                (None, None)
+            ]
+        );
     }
 
     #[test]

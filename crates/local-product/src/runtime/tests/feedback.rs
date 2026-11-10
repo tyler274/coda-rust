@@ -1,12 +1,13 @@
 //! Postgres proof that feedback stays on the exact response it rates, named
-//! by the run that published it, across a fresh store, and that only an
-//! authorized save on one of the chat's responses writes anything.
+//! by the run that published it, across a fresh store; that every save
+//! replaces the rating and details and increments the revision; and that only
+//! an authorized save on one of the chat's responses writes anything.
 use std::collections::BTreeSet;
 
 use super::run_tests::answer;
 use super::*;
 use crate::runtime::feedback::{
-    Details, DetailsSaved, Feedback, MAX_DETAILS_CHARS, Rating, RatingSaved, Reason,
+    Details, Feedback, FeedbackSaved, MAX_DETAILS_CHARS, Rating, Reason,
 };
 
 /// A chat in which each question was answered by its own run; answers the
@@ -29,11 +30,18 @@ fn scope(practice: &str, physician: &str, chat: &str) -> Scope {
     }
 }
 
-fn saved(outcome: RatingSaved) -> Feedback {
+fn saved(outcome: FeedbackSaved) -> Feedback {
     match outcome {
-        RatingSaved::Saved(feedback) => feedback,
-        other => panic!("rating not saved: {other:?}"),
+        FeedbackSaved::Saved(feedback) => feedback,
+        other => panic!("feedback not saved: {other:?}"),
     }
+}
+
+async fn rate(store: &Store, scope: &Scope, run: &RunId, rating: Rating) -> FeedbackSaved {
+    store
+        .save_feedback(scope, run, rating, None, &[7_u8; 32], &mut Gate(true))
+        .await
+        .unwrap()
 }
 
 #[tokio::test]
@@ -45,21 +53,13 @@ async fn each_rating_stays_on_its_own_response_across_a_fresh_store() {
     let practice = uuid::Uuid::new_v4().to_string();
     let chat = scope(&practice, "physician", "chat");
     let runs = answered_chat(&store, &chat, 2).await;
-    let hash = [7_u8; 32];
-    let first = saved(
-        store
-            .rate_response(&chat, &runs[0], Rating::Up, &hash, &mut Gate(true))
-            .await
-            .unwrap(),
+    let first = saved(rate(&store, &chat, &runs[0], Rating::Up).await);
+    assert_eq!(
+        (first.rating, first.details.clone(), first.revision),
+        (Rating::Up, None, 1)
     );
-    assert_eq!((first.rating, first.details.clone()), (Rating::Up, None));
-    assert!(first.rated_at > 0);
-    saved(
-        store
-            .rate_response(&chat, &runs[1], Rating::Down, &hash, &mut Gate(true))
-            .await
-            .unwrap(),
-    );
+    assert!(first.saved_at > 0);
+    saved(rate(&store, &chat, &runs[1], Rating::Down).await);
 
     drop(store);
     let store = Store::connect(&url).await.unwrap();
@@ -68,22 +68,19 @@ async fn each_rating_stays_on_its_own_response_across_a_fresh_store() {
     assert_eq!(read[&runs[1]].rating, Rating::Down);
     assert_eq!(read.len(), 2);
 
-    // A repeat converges and the other thumb replaces the rating.
-    for rating in [Rating::Down, Rating::Down] {
-        let again = saved(
-            store
-                .rate_response(&chat, &runs[0], rating, &hash, &mut Gate(true))
-                .await
-                .unwrap(),
-        );
-        assert_eq!(again.rating, Rating::Down);
+    // A repeat converges and the other thumb replaces the rating; every save
+    // is a new revision.
+    for (rating, revision) in [(Rating::Down, 2), (Rating::Down, 3)] {
+        let again = saved(rate(&store, &chat, &runs[0], rating).await);
+        assert_eq!((again.rating, again.revision), (Rating::Down, revision));
     }
-    assert_eq!(store.chat_feedback(&chat).await.unwrap().len(), 2);
+    let read = store.chat_feedback(&chat).await.unwrap();
+    assert_eq!((read.len(), read[&runs[0]].revision), (2, 3));
 }
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
-async fn only_an_authorized_rating_on_a_response_of_the_chat_writes() {
+async fn only_an_authorized_save_on_a_response_of_the_chat_writes() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
@@ -110,34 +107,28 @@ async fn only_an_authorized_rating_on_a_response_of_the_chat_writes() {
         (runs[0].clone(), &scope(&practice, "physician", "none")),
     ] {
         assert_eq!(
-            store
-                .rate_response(target, &run, Rating::Up, &hash, &mut Gate(true))
-                .await
-                .unwrap(),
-            RatingSaved::NotAResponse,
+            rate(&store, target, &run, Rating::Up).await,
+            FeedbackSaved::NotAResponse,
             "{run}"
         );
     }
     // Another physician's chat by the same name is not theirs to rate.
     let colleague = scope(&practice, "colleague", "chat");
     assert_eq!(
-        store
-            .rate_response(&colleague, &runs[0], Rating::Up, &hash, &mut Gate(true))
-            .await
-            .unwrap(),
-        RatingSaved::NotAResponse
+        rate(&store, &colleague, &runs[0], Rating::Up).await,
+        FeedbackSaved::NotAResponse
     );
     // A refused authority and a malformed session write nothing.
     assert_eq!(
         store
-            .rate_response(&chat, &runs[0], Rating::Up, &hash, &mut Gate(false))
+            .save_feedback(&chat, &runs[0], Rating::Up, None, &hash, &mut Gate(false))
             .await
             .unwrap(),
-        RatingSaved::Refused
+        FeedbackSaved::Refused
     );
     assert!(
         store
-            .rate_response(&chat, &runs[0], Rating::Up, &[1; 4], &mut Gate(true))
+            .save_feedback(&chat, &runs[0], Rating::Up, None, &[1; 4], &mut Gate(true))
             .await
             .is_err()
     );
@@ -152,7 +143,7 @@ async fn only_an_authorized_rating_on_a_response_of_the_chat_writes() {
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
-async fn details_need_a_rating_and_survive_a_new_rating() {
+async fn each_save_replaces_the_rating_and_the_details() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
@@ -166,49 +157,58 @@ async fn details_need_a_rating_and_survive_a_new_rating() {
     )
     .unwrap();
 
-    assert_eq!(
+    // The first save can carry details with its rating.
+    let with_details = saved(
         store
-            .save_feedback_details(&chat, run, &details, &hash, &mut Gate(true))
+            .save_feedback(
+                &chat,
+                run,
+                Rating::Down,
+                Some(&details),
+                &hash,
+                &mut Gate(true),
+            )
             .await
             .unwrap(),
-        DetailsSaved::NotRated
     );
-    saved(
-        store
-            .rate_response(&chat, run, Rating::Down, &hash, &mut Gate(true))
-            .await
-            .unwrap(),
+    assert_eq!(
+        (
+            with_details.rating,
+            with_details.details.as_ref(),
+            with_details.revision
+        ),
+        (Rating::Down, Some(&details), 1)
     );
     assert_eq!(
         store
-            .save_feedback_details(&chat, run, &details, &hash, &mut Gate(false))
+            .save_feedback(&chat, run, Rating::Up, None, &hash, &mut Gate(false))
             .await
             .unwrap(),
-        DetailsSaved::Refused
+        FeedbackSaved::Refused
     );
-    assert_eq!(store.chat_feedback(&chat).await.unwrap()[run].details, None);
-    let DetailsSaved::Saved(with_details) = store
-        .save_feedback_details(&chat, run, &details, &hash, &mut Gate(true))
-        .await
-        .unwrap()
-    else {
-        panic!("details not saved");
-    };
-    assert_eq!(
-        with_details.details.as_ref().map(|saved| &saved.details),
-        Some(&details)
-    );
+    assert_eq!(store.chat_feedback(&chat).await.unwrap()[run], with_details);
 
+    // A new rating sent with the same details keeps them; one sent without
+    // clears them.
     let rerated = saved(
         store
-            .rate_response(&chat, run, Rating::Up, &hash, &mut Gate(true))
+            .save_feedback(
+                &chat,
+                run,
+                Rating::Up,
+                Some(&details),
+                &hash,
+                &mut Gate(true),
+            )
             .await
             .unwrap(),
     );
     assert_eq!(
-        (rerated.rating, rerated.details),
-        (Rating::Up, with_details.details)
+        (rerated.rating, rerated.details.as_ref(), rerated.revision),
+        (Rating::Up, Some(&details), 2)
     );
+    let cleared = saved(rate(&store, &chat, run, Rating::Up).await);
+    assert_eq!((cleared.details, cleared.revision), (None, 3));
     assert!(
         store
             .chat_feedback(&scope(&practice, "colleague", "chat"))
@@ -230,18 +230,12 @@ async fn evaluation_reads_every_row_with_its_run_and_response_text() {
     let theirs = scope(&practice, "colleague", "chat");
     let my_runs = answered_chat(&store, &mine, 2).await;
     let their_runs = answered_chat(&store, &theirs, 1).await;
-    let hash = [7_u8; 32];
     for (scope, run, rating) in [
         (&mine, &my_runs[1], Rating::Up),
         (&mine, &my_runs[0], Rating::Down),
         (&theirs, &their_runs[0], Rating::Up),
     ] {
-        saved(
-            store
-                .rate_response(scope, run, rating, &hash, &mut Gate(true))
-                .await
-                .unwrap(),
-        );
+        saved(rate(&store, scope, run, rating).await);
     }
     let rows: Vec<_> = store
         .feedback_for_evaluation()

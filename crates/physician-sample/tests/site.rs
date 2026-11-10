@@ -2396,6 +2396,29 @@ async fn drafts_survive_site_restart_in_independent_browser_sessions() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Each of Coda's responses in the chat snapshot as `(run_id, feedback)`.
+async fn snapshot_feedback(
+    host: &str,
+    session: &str,
+    patient: &str,
+    chat: &str,
+) -> Vec<(serde_json::Value, serde_json::Value)> {
+    let (status, snapshot) = scale::get_json(
+        host,
+        &format!("/patient-workspaces/{patient}/chats/{chat}/snapshot"),
+        session,
+    )
+    .await;
+    assert_eq!(status, 200, "{snapshot}");
+    snapshot["snapshot"]["conversation"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|turn| turn["kind"] == "model")
+        .map(|turn| (turn["run_id"].clone(), turn["feedback"].clone()))
+        .collect()
+}
+
 /// Reads each response's feedback controls until `settled` holds.
 fn ratings_when(
     tab: &mut Tab,
@@ -2623,37 +2646,31 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         scale::wait_ready(process, host.rsplit_once(':').unwrap().1.parse().unwrap()).await;
     }
     let session = scale::sign_in(&hosts[0]).await;
-    let readback = scale::get_json(
-        &hosts[1],
-        &format!("/physician-state/feedback/{patient}/{chat}"),
-        &session,
-    )
-    .await;
-    assert_eq!(readback.0, 200, "{}", readback.1);
-    let mut saved = readback.1["feedback"]
-        .as_array()
-        .cloned()
-        .unwrap_or_default();
-    saved.sort_by_key(|row| row["run"] != serde_json::json!(first));
+    let saved = snapshot_feedback(&hosts[1], &session, patient, chat).await;
+    // The first response: rated, then details. The second: a failed save,
+    // the retry, then details.
     assert_eq!(
         saved,
         [
-            serde_json::json!({
-                "run": first,
-                "rating": "up",
-                "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
-            }),
-            serde_json::json!({
-                "run": second,
-                "rating": "down",
-                "details": {"reasons": ["not_useful"], "text": ""},
-            }),
+            (
+                serde_json::json!(first),
+                serde_json::json!({
+                    "revision": 2,
+                    "rating": "up",
+                    "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
+                })
+            ),
+            (
+                serde_json::json!(second),
+                serde_json::json!({
+                    "revision": 2,
+                    "rating": "down",
+                    "details": {"reasons": ["not_useful"], "text": ""},
+                })
+            ),
         ]
     );
-    println!(
-        "Both site processes restarted; feedback readback: {}",
-        readback.1
-    );
+    println!("Both site processes restarted; snapshot feedback: {saved:?}");
     let mut fresh = Tab::open(&urls[1]);
     fresh.wait_for_text("Work email", Duration::from_secs(20));
     fresh.request_sign_in("physician@codahealth.test");
@@ -2730,18 +2747,13 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         );
         std::thread::sleep(Duration::from_millis(60));
     }
-    let (status, phone) = scale::get_json(
-        &hosts[0],
-        &format!("/physician-state/feedback/{patient}/{chat}"),
-        &session,
-    )
-    .await;
-    assert_eq!(status, 200);
-    let rerated = phone["feedback"]
-        .as_array()
-        .and_then(|rows| rows.iter().find(|row| row["run"] == first))
-        .unwrap_or_else(|| panic!("the first response lost its feedback: {phone}"));
-    assert_eq!(rerated["rating"], "down");
+    let phone = snapshot_feedback(&hosts[0], &session, patient, chat).await;
+    let rerated = &phone[0].1;
+    assert_eq!(phone[0].0, first, "{phone:?}");
+    assert_eq!(
+        (&rerated["rating"], &rerated["revision"]),
+        (&serde_json::json!("down"), &serde_json::json!(3))
+    );
     assert_eq!(
         rerated["details"]["text"], "It left out the trend?",
         "a new rating on a phone kept the saved details"

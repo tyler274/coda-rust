@@ -5,6 +5,7 @@
 //! `record`, and `replay` do not use an API key. A scripted model stands in
 //! for the CLI in tests.
 
+use std::collections::BTreeMap;
 use std::convert::Infallible;
 use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex};
@@ -21,6 +22,7 @@ use harness::execution::{
 use local_product::ModelBinding;
 use local_product::codex::CodexTransport;
 use local_product::execution::{ChatOwner, ChatScope, PhysicianSession, Status, Work};
+use local_product::runtime::feedback::Feedback;
 use physician_bus::{Bus, Event, LocalBus};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -712,7 +714,14 @@ async fn durable_snapshot(
         Ok(conversation) => conversation,
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
+    // A failed feedback read fails the snapshot, so the page keeps its last
+    // one as stale rather than showing rated responses as unrated.
+    let feedback = match chat.store.chat_feedback(&scope).await {
+        Ok(feedback) => feedback,
+        Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
+    };
+    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref(), &feedback) }))
+        .into_response()
 }
 
 /// Who wrote a turn, as the snapshot names it: Coda's turns are the model's, every other the physician's.
@@ -730,8 +739,12 @@ fn turn_kind(role: &str) -> &'static str {
 /// held turn offers Resume. An answered turn names the attempt that answered
 /// it, so an operator can match the reply to its telemetry by attempt id. Each
 /// of Coda's replies carries `run_id`, the run that published it, which stays
-/// its name across restarts. The physician's text stays saved.
-fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
+/// its name across restarts, and the physician's saved `feedback` on it, if
+/// they rated it. The physician's text stays saved.
+fn durable_snapshot_body(
+    conversation: Option<&local_product::runtime::Conversation>,
+    feedback: &BTreeMap<local_product::runtime::RunId, Feedback>,
+) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
     };
@@ -742,6 +755,9 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
         .collect();
     for response in conversation.responses() {
         items[response.place]["run_id"] = json!(response.run);
+        if let Some(saved) = feedback.get(&response.run) {
+            items[response.place]["feedback"] = json!(crate::feedback::wire(saved.clone()));
+        }
     }
     let mut runs = Vec::new();
     match conversation.status.as_str() {
@@ -1198,8 +1214,17 @@ async fn complete(
 
 #[cfg(test)]
 mod durable_snapshot_tests {
+    use std::collections::{BTreeMap, BTreeSet};
+
     use super::{COULDNT_FINISH, STOPPED, WRITING, durable_snapshot_body};
-    use local_product::runtime::{Attempt, Conversation, Message};
+    use local_product::runtime::feedback::{Details, Feedback, Rating, Reason};
+    use local_product::runtime::{Attempt, Conversation, Message, RunId};
+    use serde_json::Value;
+
+    /// The snapshot of a chat with no feedback.
+    fn snapshot(conversation: Option<&Conversation>) -> Value {
+        durable_snapshot_body(conversation, &BTreeMap::new())
+    }
 
     fn conversation(status: &str) -> Conversation {
         Conversation {
@@ -1225,7 +1250,7 @@ mod durable_snapshot_tests {
 
     #[test]
     fn a_failed_turn_keeps_the_message_and_names_the_run_to_resume() {
-        let body = durable_snapshot_body(Some(&conversation("failed")));
+        let body = snapshot(Some(&conversation("failed")));
         let items = body["conversation"].as_array().unwrap();
         assert_eq!(items[0]["kind"], "physician");
         assert_eq!(items[0]["text"], "Hello");
@@ -1240,7 +1265,7 @@ mod durable_snapshot_tests {
     #[test]
     fn a_running_turn_offers_stop_and_a_held_turn_offers_resume() {
         for status in ["pending", "active"] {
-            let body = durable_snapshot_body(Some(&conversation(status)));
+            let body = snapshot(Some(&conversation(status)));
             let items = body["conversation"].as_array().unwrap();
             assert_eq!(items.len(), 2, "{status}");
             assert_eq!(items[1]["text"], WRITING, "{status}");
@@ -1251,20 +1276,20 @@ mod durable_snapshot_tests {
             assert!(items[1].get("resume_target").is_none(), "{status}");
             assert!(body["runs"].as_array().unwrap().is_empty(), "{status}");
         }
-        let held = durable_snapshot_body(Some(&conversation("held")));
+        let held = snapshot(Some(&conversation("held")));
         let items = held["conversation"].as_array().unwrap();
         assert_eq!(items[1]["text"], STOPPED);
         assert_eq!(items[1]["resume_target"]["work_item_id"], "work-1");
         assert_eq!(items[1]["resume_target"]["expected_run_id"], "run-1");
         assert!(items[1].get("stop_target").is_none());
         assert_eq!(held["runs"][0]["state"], "held");
-        let done = durable_snapshot_body(Some(&conversation("completed")));
+        let done = snapshot(Some(&conversation("completed")));
         assert_eq!(done["conversation"].as_array().unwrap().len(), 1);
         assert_eq!(
             done["runs"],
             serde_json::json!([{ "run_id": "run-1", "state": "completed" }])
         );
-        let empty = durable_snapshot_body(None);
+        let empty = snapshot(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
     }
 
@@ -1278,10 +1303,56 @@ mod durable_snapshot_tests {
             text: "Sodium is stable.".into(),
             run: None,
         });
-        let body = durable_snapshot_body(Some(&answered));
+        let body = snapshot(Some(&answered));
         let items = body["conversation"].as_array().unwrap();
         assert!(items[0].get("run_id").is_none(), "physician turn: {body}");
         assert_eq!(items[1]["kind"], "model");
         assert_eq!(items[1]["run_id"], "run-1");
+        assert!(items[1].get("feedback").is_none(), "unrated: {body}");
+    }
+
+    #[test]
+    fn a_rated_reply_carries_its_saved_feedback() {
+        let mut answered = conversation("completed");
+        answered.attempts[0].status = "completed".into();
+        answered.messages.push(Message {
+            role: "assistant".into(),
+            text: "Sodium is stable.".into(),
+            run: Some(RunId::from("run-1".to_owned())),
+        });
+        let details = Details::new(BTreeSet::from([Reason::MissingContext]), "Trend?".into());
+        let feedback = BTreeMap::from([
+            (
+                RunId::from("run-1".to_owned()),
+                Feedback {
+                    rating: Rating::Down,
+                    details,
+                    saved_at: 10,
+                    revision: 3,
+                },
+            ),
+            // Feedback on a run that published no reply here lands nowhere.
+            (
+                RunId::from("run-9".to_owned()),
+                Feedback {
+                    rating: Rating::Up,
+                    details: None,
+                    saved_at: 10,
+                    revision: 1,
+                },
+            ),
+        ]);
+        let body = durable_snapshot_body(Some(&answered), &feedback);
+        let items = body["conversation"].as_array().unwrap();
+        assert!(items[0].get("feedback").is_none(), "physician turn: {body}");
+        assert_eq!(
+            items[1]["feedback"],
+            serde_json::json!({
+                "revision": 3,
+                "rating": "down",
+                "details": { "reasons": ["missing_context"], "text": "Trend?" },
+            })
+        );
+        assert_eq!(items.len(), 2, "{body}");
     }
 }

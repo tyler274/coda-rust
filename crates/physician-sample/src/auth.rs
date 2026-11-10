@@ -1812,7 +1812,6 @@ mod tests {
             &format!("/patient-workspaces/{absent}"),
             &format!("/patient-workspaces/{other_clinic_patient}/chats/none/snapshot"),
             &format!("/physician-state/drafts/{other_clinic_patient}/none"),
-            &format!("/physician-state/feedback/{other_clinic_patient}/none"),
             &format!("/today?patient_workspace_id={other_clinic_patient}"),
         ] {
             let (status, body) = send(&app, Method::GET.as_str(), path, Some(&session), None).await;

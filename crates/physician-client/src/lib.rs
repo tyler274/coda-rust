@@ -4,12 +4,11 @@
 
 pub use http::HttpError;
 use physician_wire::{
-    ApprovedDoctorPlanWire, ChatFeedback, ChatSnapshotResponse, DoctorPlanDraftWire,
-    FeedbackDetails, FeedbackRating, HealthResponse, PanelAssignmentResponse,
-    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
-    PlanItemWire, PracticeDayResponse, RateResponse, RecentConversationsResponse, ReplyDraftWire,
-    ResponseFeedback, RunId, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
-    WhoamiResponse,
+    ApprovedDoctorPlanWire, ChatSnapshotResponse, DoctorPlanDraftWire, HealthResponse,
+    PanelAssignmentResponse, PatientSearchResponse, PatientWorkspaceResponse,
+    PatientWorkspacesResponse, PhysicianDraft, PlanItemWire, PracticeDayResponse,
+    RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, RunId, SaveFeedback,
+    SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -345,51 +344,22 @@ impl PhysicianClient {
         }
     }
 
-    /// Reads the signed-in physician's feedback on one chat's responses.
-    pub async fn chat_feedback(
-        &self,
-        workspace_id: &str,
-        chat_id: &str,
-    ) -> Result<ChatFeedback, http::HttpError> {
-        self.get(&format!(
-            "/physician-state/feedback/{workspace_id}/{chat_id}"
-        ))
-        .await
-    }
-
-    /// Rates the response `run` published in a chat; answers the saved feedback.
-    pub async fn rate_response(
+    /// Saves feedback on the response `run` published in a chat, replacing
+    /// its rating and details; answers the saved feedback with its revision.
+    /// The chat snapshot carries saved feedback on each response.
+    pub async fn save_feedback(
         &self,
         workspace_id: &str,
         chat_id: &str,
         run: &RunId,
-        rating: FeedbackRating,
+        feedback: &SaveFeedback,
     ) -> Result<ResponseFeedback, http::HttpError> {
         self.put(
             &format!(
-                "/physician-state/feedback/{workspace_id}/{chat_id}/{}/rating",
+                "/physician-state/feedback/{workspace_id}/{chat_id}/{}",
                 run.as_str()
             ),
-            &RateResponse { rating },
-        )
-        .await
-    }
-
-    /// Replaces the details on the rated response `run` published; answers the
-    /// saved feedback.
-    pub async fn save_feedback_details(
-        &self,
-        workspace_id: &str,
-        chat_id: &str,
-        run: &RunId,
-        details: &FeedbackDetails,
-    ) -> Result<ResponseFeedback, http::HttpError> {
-        self.put(
-            &format!(
-                "/physician-state/feedback/{workspace_id}/{chat_id}/{}/details",
-                run.as_str()
-            ),
-            details,
+            feedback,
         )
         .await
     }

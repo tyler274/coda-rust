@@ -55,13 +55,14 @@ pub(super) mod response_feedback {
         /// `up` or `down`.
         #[sea_orm(column_type = "Text")]
         pub rating: String,
-        /// Database-clock seconds of the latest rating.
-        pub rated_at: i64,
-        /// The serialized `Details`; null until details are saved.
+        /// The serialized `Details`; null when the latest save had none.
         #[sea_orm(column_type = "JsonBinary")]
         pub details: Option<Json>,
-        /// Database-clock seconds of the latest details save.
-        pub details_saved_at: Option<i64>,
+        /// Database-clock seconds of the latest save.
+        pub saved_at: i64,
+        /// 1 on the first save; every later save increments it, so the
+        /// highest revision a reader has seen is the newest feedback.
+        pub revision: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

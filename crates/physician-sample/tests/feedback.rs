@@ -149,8 +149,28 @@ async fn put(host: &str, bearer: Option<&str>, path: &str, body: &Value) -> (u16
     )
 }
 
-/// A rating lands on the response it names, reads back through the other
-/// instance, keeps its details across a new rating, and belongs to its author.
+/// The model turns of `chat`'s snapshot as `(run_id, feedback)`, read by
+/// `bearer` through `host`.
+async fn rated_turns(host: &str, bearer: &str, workspace: &str, chat: &str) -> Vec<(Value, Value)> {
+    let (status, snapshot) = support::get_json(
+        host,
+        &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
+        bearer,
+    )
+    .await;
+    assert_eq!(status, 200, "{snapshot}");
+    snapshot["snapshot"]["conversation"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|turn| turn["kind"] == "model")
+        .map(|turn| (turn["run_id"].clone(), turn["feedback"].clone()))
+        .collect()
+}
+
+/// A save lands on the response it names, replaces its rating and details
+/// with a new revision, reads back on the snapshot through the other
+/// instance, and belongs to its author.
 #[tokio::test]
 async fn feedback_stays_on_its_response_and_with_its_author() {
     let chat = "chat-feedback";
@@ -164,7 +184,8 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     let [first, second] = [running.runs[0].as_str(), running.runs[1].as_str()];
     assert_ne!(first, second, "each answer names its own run");
 
-    // The snapshot names each of Coda's responses by the run that published it.
+    // The snapshot names each of Coda's responses by the run that published
+    // it, and carries no feedback before any is saved.
     let (status, snapshot) = support::get_json(
         b,
         &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
@@ -188,23 +209,18 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
         ]
     );
     assert!(
-        snapshot.get("response").is_none()
-            && snapshot["snapshot"]["conversation"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .all(|turn| turn.get("response").is_none()),
-        "no turn is named by its place: {snapshot}"
+        snapshot["snapshot"]["conversation"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|turn| turn.get("response").is_none() && turn.get("feedback").is_none()),
+        "no turn is named by its place, and none is rated yet: {snapshot}"
     );
 
-    assert_eq!(
-        support::get_json(b, &base, session).await,
-        (200, json!({"feedback": []}))
-    );
     let rated = put(
         a,
         Some(session),
-        &format!("{base}/{second}/rating"),
+        &format!("{base}/{second}"),
         &json!({"rating": "down"}),
     )
     .await;
@@ -212,63 +228,70 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
         rated,
         (
             200,
-            json!({"run": second, "rating": "down", "details": null})
+            json!({"revision": 1, "rating": "down", "details": null})
         ),
         "{}",
         running.logs()
     );
+    // The details travel with the rating; the dialog sends both.
     let details = json!({"reasons": ["missing_context", "incorrect_information"], "text": "Sodium was rechecked Tuesday."});
     let saved = put(
         b,
         Some(session),
-        &format!("{base}/{second}/details"),
-        &details,
+        &format!("{base}/{second}"),
+        &json!({"rating": "down", "details": details}),
     )
     .await;
     assert_eq!(saved.0, 200, "{}", saved.1);
+    assert_eq!(saved.1["revision"], 2);
     assert_eq!(
         saved.1["details"]["reasons"],
         json!(["incorrect_information", "missing_context"])
     );
+    // A new thumb sent with the saved details keeps them.
     let rated = put(
         b,
         Some(session),
-        &format!("{base}/{second}/rating"),
-        &json!({"rating": "up"}),
+        &format!("{base}/{second}"),
+        &json!({"rating": "up", "details": saved.1["details"]}),
     )
     .await;
-    assert_eq!(rated.1["rating"], "up");
-    assert_eq!(rated.1["details"]["text"], "Sodium was rechecked Tuesday.");
+    assert_eq!(
+        (
+            &rated.1["revision"],
+            &rated.1["rating"],
+            &rated.1["details"]["text"]
+        ),
+        (
+            &json!(3),
+            &json!("up"),
+            &json!("Sodium was rechecked Tuesday.")
+        )
+    );
     let up = put(
         a,
         Some(session),
-        &format!("{base}/{first}/rating"),
+        &format!("{base}/{first}"),
         &json!({"rating": "up"}),
     )
     .await;
     assert_eq!(up.0, 200, "{}", up.1);
-    let (status, read) = support::get_json(b, &base, session).await;
-    assert_eq!(status, 200);
-    let mut ratings: Vec<_> = read["feedback"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .map(|f| (f["run"].clone(), f["rating"].clone()))
-        .collect();
-    ratings.sort_by_key(|(run, _)| *run != json!(first));
+    // Each response's snapshot turn carries its own saved feedback.
     assert_eq!(
-        ratings,
-        [(json!(first), json!("up")), (json!(second), json!("up"))]
+        rated_turns(b, session, workspace, chat).await,
+        [
+            (json!(first), up.1.clone()),
+            (json!(second), rated.1.clone()),
+        ]
     );
 
-    // Only a run that answered this chat takes a rating; details need one
-    // first.
+    // Only a run that answered this chat takes feedback.
     let elsewhere = running.elsewhere.as_str();
     for run in [elsewhere, "no-such-run", "1"] {
         let refused = put(
             a,
             Some(session),
-            &format!("{base}/{run}/rating"),
+            &format!("{base}/{run}"),
             &json!({"rating": "up"}),
         )
         .await;
@@ -278,8 +301,8 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     let refused = put(
         a,
         Some(session),
-        &format!("{other_chat}/{first}/details"),
-        &details,
+        &format!("{other_chat}/{first}"),
+        &json!({"rating": "up", "details": details}),
     )
     .await;
     assert_eq!(refused.0, 404);
@@ -287,51 +310,78 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     let refused = put(
         a,
         Some(session),
-        &format!("{base}/{first}/details"),
-        &too_long,
+        &format!("{base}/{first}"),
+        &json!({"rating": "up", "details": too_long}),
     )
     .await;
     assert_eq!(refused.0, 422);
+    // Details without a rating can't be expressed.
+    let refused = put(a, Some(session), &format!("{base}/{first}"), &details).await;
+    assert_eq!(refused.0, 422, "{}", refused.1);
+    // The split routes are gone.
+    let (status, _) = support::get_json(a, &base, session).await;
+    assert!(
+        matches!(status, 404 | 405),
+        "the chat read route answered {status}"
+    );
+    let refused = put(
+        a,
+        Some(session),
+        &format!("{base}/{first}/rating"),
+        &json!({"rating": "down"}),
+    )
+    .await;
+    assert_eq!(refused.0, 404, "{}", refused.1);
 
     // Without a session: 401. Off the panel: 404 and nothing written.
-    let (status, _) = support::exchange(a, "GET", &base, &[], None).await.unwrap();
-    assert_eq!(status, 401);
     let refused = put(
         a,
         None,
-        &format!("{base}/{first}/rating"),
+        &format!("{base}/{first}"),
         &json!({"rating": "down"}),
     )
     .await;
     assert_eq!(refused.0, 401);
     let outsider = running.colleague(Membership::Denied).await;
-    assert_eq!(support::get_json(a, &base, &outsider).await.0, 404);
     let refused = put(
         a,
         Some(&outsider),
-        &format!("{base}/{first}/rating"),
+        &format!("{base}/{first}"),
         &json!({"rating": "down"}),
     )
     .await;
     assert_eq!(refused.0, 404);
 
-    // A colleague with the patient on their panel reads none of the author's
+    // A colleague with the patient on their panel sees none of the author's
     // feedback, and cannot rate a chat that is not theirs.
     let colleague = running.colleague(Membership::Allowed).await;
-    assert_eq!(
-        support::get_json(b, &base, &colleague).await,
-        (200, json!({"feedback": []}))
-    );
     let refused = put(
         b,
         Some(&colleague),
-        &format!("{base}/{first}/rating"),
+        &format!("{base}/{first}"),
         &json!({"rating": "down"}),
     )
     .await;
     assert_eq!(refused.0, 404);
-    let (_, read) = support::get_json(a, &base, session).await;
-    assert_eq!(read["feedback"][0]["rating"], "up");
+    let (status, theirs) = support::get_json(
+        b,
+        &format!("/patient-workspaces/{workspace}/chats/{chat}/snapshot"),
+        &colleague,
+    )
+    .await;
+    assert_eq!(status, 200, "{theirs}");
+    assert!(
+        theirs["snapshot"]["conversation"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|turn| turn.get("feedback").is_none()),
+        "a colleague read the author's feedback: {theirs}"
+    );
+    assert_eq!(
+        rated_turns(a, session, workspace, chat).await[0],
+        (json!(first), up.1)
+    );
 }
 
 /// Runs `physician-migrate feedback` against `url` with `extra` environment,
@@ -354,7 +404,7 @@ fn staff_read(url: &str, extra: &[(&str, &str)]) -> (bool, String, String) {
 }
 
 /// Coda staff read every physician's feedback from the operator's terminal,
-/// each row naming its response, author and times beside the response text.
+/// each row naming its response, author, revision and save time beside the response text.
 /// Inside a Cloud Run job, where stdout reaches logs, it reads nothing; a
 /// database it cannot reach says so with the cause.
 #[tokio::test]
@@ -375,7 +425,7 @@ async fn staff_read_feedback_with_its_response_and_author() {
     let rated = put(
         a,
         Some(session),
-        &format!("{base}/{second}/rating"),
+        &format!("{base}/{second}"),
         &json!({"rating": "down"}),
     )
     .await;
@@ -384,15 +434,15 @@ async fn staff_read_feedback_with_its_response_and_author() {
     let saved = put(
         a,
         Some(session),
-        &format!("{base}/{second}/details"),
-        &details,
+        &format!("{base}/{second}"),
+        &json!({"rating": "down", "details": details}),
     )
     .await;
     assert_eq!(saved.0, 200, "{}", saved.1);
     let up = put(
         a,
         Some(session),
-        &format!("{base}/{first}/rating"),
+        &format!("{base}/{first}"),
         &json!({"rating": "up"}),
     )
     .await;
@@ -411,25 +461,20 @@ async fn staff_read_feedback_with_its_response_and_author() {
         assert_eq!(row["physician"], "staging-physician", "the author: {row}");
         assert_eq!(row["workspace"], workspace);
         assert_eq!(row["chat"], chat);
-        assert!(row["rated_at"].as_i64().is_some_and(|at| at > 0), "{row}");
+        assert!(row["saved_at"].as_i64().is_some_and(|at| at > 0), "{row}");
     }
     // In the chat's order, each naming the run that published it.
     assert_eq!(rows[0]["run"], json!(first));
     assert_eq!(rows[0]["rating"], "up");
+    assert_eq!(rows[0]["revision"], 1);
     assert_eq!(rows[0]["response_text"], "Potassium was 4.1 on Monday.");
-    assert!(rows[0]["details"].is_null() && rows[0]["details_saved_at"].is_null());
+    assert!(rows[0]["details"].is_null() && rows[0]["reasons"].is_null());
     assert_eq!(rows[1]["run"], json!(second));
     assert_eq!(rows[1]["rating"], "down");
+    assert_eq!(rows[1]["revision"], 2, "rated, then details: {}", rows[1]);
     assert_eq!(rows[1]["response_text"], "Sodium was 139 on Monday.");
     assert_eq!(rows[1]["reasons"], json!(["missing_context"]));
     assert_eq!(rows[1]["details"], "Sodium was rechecked Tuesday.");
-    assert!(
-        rows[1]["details_saved_at"]
-            .as_i64()
-            .is_some_and(|at| at >= rows[1]["rated_at"].as_i64().unwrap()),
-        "{}",
-        rows[1]
-    );
 
     let (ok, out, err) = staff_read(
         &running.database.url,

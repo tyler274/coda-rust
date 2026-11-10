@@ -169,10 +169,10 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
             "chat": row.scope.chat,
             "run": row.run,
             "rating": row.feedback.rating,
-            "rated_at": row.feedback.rated_at,
-            "reasons": details.map(|saved| saved.details.reasons()),
-            "details": details.map(|saved| saved.details.text()),
-            "details_saved_at": details.map(|saved| saved.saved_at),
+            "reasons": details.map(|details| details.reasons()),
+            "details": details.map(|details| details.text()),
+            "saved_at": row.feedback.saved_at,
+            "revision": row.feedback.revision,
             "response_text": row.response_text,
         });
         writeln!(out, "{line}").map_err(FeedbackReadError::Print)?;
