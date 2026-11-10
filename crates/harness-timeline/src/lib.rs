@@ -318,8 +318,14 @@ pub fn remote_updates(config: &Config, worktrees: &[Worktree]) -> (TicketIndex, 
 }
 
 /// Prints each source's line when its items change, until writing fails (the
-/// reader has gone) or, with `once`, after the first round.
+/// reader has gone), the process that started it exits, or, with `once`,
+/// after the first round.
+///
+/// Lines are written only on change, so a reader that dies without closing the
+/// pipe would go unnoticed for as long as nothing changes; checking the parent
+/// ends the collector with the editor that ran it.
 pub fn watch(config: &Config, out: &mut impl Write, once: bool) -> std::io::Result<()> {
+    let parent = std::os::unix::process::parent_id();
     let mut last: BTreeMap<SourceKind, Vec<TimelineEvent>> = BTreeMap::new();
     let mut index = TicketIndex::new(&config.teams, &[]);
     let mut remote: Vec<SourceUpdate> = Vec::new();
@@ -359,5 +365,8 @@ pub fn watch(config: &Config, out: &mut impl Write, once: bool) -> std::io::Resu
             return Ok(());
         }
         std::thread::sleep(config.local_every);
+        if std::os::unix::process::parent_id() != parent {
+            return Ok(());
+        }
     }
 }
