@@ -334,10 +334,20 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
    IAP admits, and fails unless every target's readiness sample and the
    heartbeat read back as successful. A workstation identity token carries
    gcloud's own audience, so IAP answers it with 401 by design.
-2. For backlog, compare oldest-unacked age, positive queued work and the
-   [worker processing/retry contract](physician-site.md). Zero idle instances
-   and sparse empty queries are not outages. Investigate SQL, Redis and Pub/Sub
-   using the configured exact resource scope and the cloud console.
+2. For physician work, read the worker's queue gauges. Each `physician-worker`
+   instance writes them every minute from the Postgres rows that own the work,
+   on the `global` resource and labelled only with its instance id:
+   `custom.googleapis.com/coda/physician/queue/oldest_due_seconds` (how long
+   the longest-waiting due turn or reply revision has been runnable),
+   `.../due` (how many are runnable now) and `.../failed` (how many ended
+   failed and wait for the physician's Try again). `worker_oldest_due` alerts
+   when due work has waited past 300 seconds throughout five minutes, and its
+   absence means no worker is reporting; `worker_due` alerts when due work
+   persists for 30 minutes; `worker_failed` alerts on any failed work. Compare
+   them with the [worker processing/retry contract](physician-site.md) and the
+   attempts saved on the rows before acting; do not retry work automatically.
+   Investigate SQL and Redis using the configured exact resource scope and the
+   cloud console.
 3. For missing telemetry, inspect Cloud Scheduler/job execution and the direct
    Monitoring series separately from collector availability, exporter failures,
    queues and Datadog ingestion. Keep heartbeat absence distinct from a failing

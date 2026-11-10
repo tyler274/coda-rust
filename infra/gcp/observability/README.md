@@ -361,7 +361,7 @@ returns Grafana to its root path for port-forward.
   Confirm those ids against the integration's namespace list in Datadog before
   enabling. The Datadog provider's app key must belong to a user allowed to
   manage integrations. `datadog_gcp_dependency_collection` is a separate,
-  empty-by-default opt-in for SQL, Redis and Pub/Sub namespaces. Each entry
+  empty-by-default opt-in for SQL and Redis namespaces. Each entry
   supplies verified exact resource filters to the resource configuration.
   Namespace metric-name filters stay empty, importing all metrics in each
   opted-in namespace for matching resources; resource tags are not metric-name

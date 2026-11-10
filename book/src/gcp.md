@@ -165,13 +165,13 @@ Do not patch Cloud Run flags by hand. Use [the saved-plan
 procedure](#review-and-apply-a-staging-plan) for approved corrections; its
 `verify` compares live physician settings with the reviewed plan, which follows
 `env/staging.tfvars` and the [physician
-scaling](#physician-scaling-redis-fan-out-and-pubsub-chat-turns) and [SMTP
+scaling](#physician-scaling-redis-fan-out-and-the-chat-turn-worker) and [SMTP
 relay](#staging-sign-in-accounts) contracts. Repeat `verify` after the next
 separately approved release. If settings regress, fix the release owner rather
 than reapplying in a loop.
 
 A Ready revision is not database or journey qualification; use the existing
-[rollout](#direct-staging-rollout), [scaling verification](#physician-scaling-redis-fan-out-and-pubsub-chat-turns)
+[rollout](#direct-staging-rollout), [scaling verification](#physician-scaling-redis-fan-out-and-the-chat-turn-worker)
 and [isolated recovery](#disposable-database-recovery-rehearsal) procedures.
 Correct and rerun failed browser qualification; an infra apply does not waive it.
 
@@ -446,7 +446,7 @@ SQL disk growth is capped and backups/PITR are retained for seven days. Redis,
 SQL, minimum instances and networking can incur charges while no requests run.
 
 Before a rehearsal, compare the deployed Cloud Run services/jobs, SQL settings
-and Pub/Sub retry policy with the reviewed root inputs. Record identifiers and
+and worker settings with the reviewed root inputs. Record identifiers and
 nonsecret limits, not full service descriptions containing environment values.
 Have the billing administrator verify the project budget's thresholds and
 notification recipients, and the model-provider owner verify account limits.
@@ -465,12 +465,15 @@ attempt is recorded there with its time, and a turn that failed five times stays
 failed until the physician chooses Try again. A deployment
 check and a ready process do not establish that a clinical journey succeeded.
 
-### Physician scaling (Redis fan-out and Pub/Sub chat turns)
+### Physician scaling (Redis fan-out and the chat-turn worker)
 
 `enable_physician_scale` lets the physician site run on more than one instance. It takes effect only
-together with `enable_workloads`. Applying it writes project and Pub/Sub IAM bindings
-that engineering can't write alone. Everything it creates belongs to physician; Duet gets no cache, topic, worker,
-grant or setting, and the root's tests check this.
+together with `enable_workloads`. Applying it writes project IAM bindings
+that engineering can't write alone. Everything it creates belongs to physician; Duet gets no cache, worker,
+grant or setting, and the root's tests check this. No Pub/Sub topic, subscription
+or push identity exists, and the root does not enable the Pub/Sub API: turns are
+announced and claimed in Postgres, as
+[the physician site chapter](physician-site.md#scaling-across-instances) describes.
 
 - [`cache.tf`](/infra/gcp/rust-environments/cache.tf) creates the Memorystore
   instance `rust-physician-cache`: Basic tier, 1 GB, Redis 7.2, AUTH and TLS
@@ -480,40 +483,28 @@ grant or setting, and the root's tests check this.
   (`PHYSICIAN_REDIS_URL`, `PHYSICIAN_REDIS_CA_PEM`). Lag or a reconnect is a
   `resync`, and the page refetches. Sign-in and panel notices stay on the
   Postgres `physician_authority` triggers.
-- [`queue.tf`](/infra/gcp/rust-environments/queue.tf) creates the topics
-  `physician-chat-turns` and `physician-chat-turns-dead-letter` and their
-  subscriptions. The site and the worker built from this workspace do not use
-  them: turns are announced and claimed in Postgres, as
-  [the physician site chapter](physician-site.md#scaling-across-instances) describes. The push
-  subscription carries an OIDC token for the `physician-pubsub-push` service account. The ack
-  deadline is 600 s and retries back off from 10 s to 600 s. After 5 failed
-  deliveries a message goes to the
-  dead-letter topic, which has a pull subscription of the same name for
-  inspection. Only the physician runtime identity may publish turns. The
-  Pub/Sub service agent may dead-letter, and it may mint tokens for the push
-  account and no other.
 - [`workloads.tf`](/infra/gcp/rust-environments/workloads.tf) adds the
   `physician-worker` Cloud Run service. It has internal ingress and no IAP, IAM
-  invoker checks stay on, and `physician-pubsub-push` is its only invoker.
-  Pub/Sub counts as internal traffic when it calls the default `run.app` URL from
-  the same project
-  ([Cloud Run ingress](https://cloud.google.com/run/docs/securing/ingress)).
+  invoker checks stay on, and only the availability probe may invoke it:
+  nothing pushes work to it, and its only HTTP surface is the readiness probe.
   The worker runs as `physician-worker-runtime`, which may reach only the
   physician SQL instance. It reads the `physician-runtime-doppler-token` slot
   and runs on `stg_physician_runtime`, because it needs exactly those secrets;
   a second token on the same config would add a rotation step without narrowing
-  anything. It is told its OIDC audience (the deterministic
-  `https://physician-worker-PROJECT_NUMBER.REGION.run.app`) and the push account
-  as `PHYSICIAN_WORKER_AUDIENCE` and `PHYSICIAN_PUSH_SERVICE_ACCOUNT`. It has
+  anything. It has
   `cpu_idle = false` and one minimum instance, because no request carries its
-  work. The worker reads neither setting. It listens on Postgres
+  work. It listens on Postgres
   for accepted turns, reads the due work every 10 s, claims the leased turn,
-  runs the model, commits, and publishes `workspace_changed`. A request to
-  `/pubsub/chat-turn` gets 404.
-- The physician site gets `PHYSICIAN_DURABLE_CHAT=1`, `PHYSICIAN_CHAT_TOPIC`,
-  `cpu_idle = false` and one minimum instance. `PHYSICIAN_DURABLE_CHAT=1` is
-  what hands turns to the worker; the site does not read the topic. CPU stays allocated because
-  its Postgres listener and Redis subscriber must keep running between requests.
+  runs the model, commits, and publishes `workspace_changed`. A turn whose
+  worker died is taken again when its lease runs out, so recovery belongs to the
+  worker. Every minute each worker instance also writes the queue gauges the
+  [worker monitors](observability.md) read, which is why its identity holds
+  `roles/monitoring.metricWriter`.
+- The physician site gets `PHYSICIAN_DURABLE_CHAT=1` and `cpu_idle = false`,
+  and scales to zero like Duet. `PHYSICIAN_DURABLE_CHAT=1` is what hands turns
+  to the worker. CPU stays allocated because its Postgres listener and Redis
+  subscriber must keep running between requests. Its hourly receipt compaction
+  sweeps once when each instance starts and needs no warm instance.
   Duet keeps `cpu_idle = true`. `runtime_environment` may not set any of the
   scaling keys, and Duet may not set any `PHYSICIAN_*` key.
 
@@ -527,12 +518,11 @@ To turn scaling on:
    that job, so overall CI success is not deployment evidence. The plan refuses to
    run without a digest in `images.physician.worker`.
 2. **Decide who applies.** The plan creates bindings `group:gcp-engineering@codahealth.ai`
-   cannot write: the worker's project-level Cloud SQL roles and the IAM on the topics
-   and subscriptions. Apply as the project Owner, or grant engineering Pub/Sub Admin
-   plus Project IAM Admin conditioned on
-   `api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', []).hasOnly(['roles/cloudsql.client', 'roles/cloudsql.instanceUser'])`,
-   and remove both afterwards. Do not apply part of the plan: the physician service
-   would get `PHYSICIAN_CHAT_TOPIC` without permission to publish.
+   cannot write: the worker's project-level Cloud SQL and Monitoring metric-writer
+   roles. Apply as the project Owner, or grant engineering Project IAM Admin
+   conditioned on
+   `api.getAttribute('iam.googleapis.com/modifiedGrantsByRole', []).hasOnly(['roles/cloudsql.client', 'roles/cloudsql.instanceUser', 'roles/monitoring.metricWriter'])`,
+   and remove it afterwards. Do not apply part of the plan.
 3. **Plan, review, apply.** Use [the saved-plan procedure](#review-and-apply-a-staging-plan)
    right before applying, because a saved plan goes stale once `deploy-staging` or
    another apply touches state. A scaling-only plan must not change Duet or destroy
@@ -567,8 +557,8 @@ done
 ```
 
 To turn scaling off, set `enable_physician_scale = false` and apply a reviewed
-saved plan. The plan removes the cache, topics, subscriptions, and worker.
-The physician site goes back to a minimum of zero instances. It keeps
+saved plan. The plan removes the cache and the worker. The physician site
+keeps
 `cpu_idle = false`, because its Postgres authority
 listener still runs between requests. Then delete the two Doppler keys and
 redeploy.
