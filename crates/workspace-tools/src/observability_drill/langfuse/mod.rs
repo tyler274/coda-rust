@@ -1201,6 +1201,12 @@ fn fail(
     )
 }
 
+/// A time `fail` or `recover` wrote into the handoff.
+fn stamp(handoff: &Value, key: &str) -> Option<DateTime<Utc>> {
+    let at = DateTime::parse_from_rfc3339(handoff[key].as_str()?).ok()?;
+    Some(at.with_timezone(&Utc))
+}
+
 /// Removes the handoff once langfuse-web is back; a missing one is fine.
 fn remove_handoff(handoff: &Path) -> Result<(), DrillError> {
     match std::fs::remove_file(handoff) {
@@ -1275,18 +1281,24 @@ fn recover(
         .and_then(|count| u32::try_from(count).ok())
         .filter(|count| *count > 0)
         .ok_or_else(|| handoff_error("no positive replicas count".into()))?;
-    let mut exercise = ledger(&request.output)?;
-    if let Some(opened) = exercise.open_since() {
+    // A retried recover verifies against the first restore, which the
+    // handoff keeps until verification passes, and continues the exercise
+    // that restore closed in the ledger.
+    let earlier = stamp(&recorded, "restored_at");
+    let mut exercise = match earlier {
+        Some(_) => {
+            super::load_latest(&request.output, DrillRoute::Langfuse).map_err(DrillError::Ledger)?
+        }
+        None => ledger(&request.output)?,
+    };
+    if let Some(opened) = exercise
+        .open_since()
+        .or_else(|| stamp(&recorded, "failed_at"))
+    {
         watch.opened_at(opened);
     }
     kubectl.scale(Workload::LangfuseWeb, replicas)?;
     report.put("langfuse_web_replicas_restored", replicas);
-    // A retried recover verifies against the first restore, which the
-    // handoff keeps until verification passes.
-    let earlier = recorded["restored_at"]
-        .as_str()
-        .and_then(|at| DateTime::parse_from_rfc3339(at).ok())
-        .map(|at| at.with_timezone(&Utc));
     let restored_at = match earlier {
         Some(at) => at,
         None => {

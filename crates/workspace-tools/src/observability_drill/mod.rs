@@ -250,16 +250,21 @@ fn abort(
 }
 
 fn load_open(dir: &Path, route: DrillRoute) -> Result<Exercise, String> {
-    let Some(path) = latest_observation(dir, route).map_err(|error| error.to_string())? else {
-        return Ok(Exercise::idle(route));
-    };
-    let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
-    let exercise = parse_exercise(route, &text)?;
+    let exercise = load_latest(dir, route)?;
     if exercise.is_open() {
         Ok(exercise)
     } else {
         Ok(Exercise::idle(route))
     }
+}
+
+/// The route's latest exercise, open or closed.
+fn load_latest(dir: &Path, route: DrillRoute) -> Result<Exercise, String> {
+    let Some(path) = latest_observation(dir, route).map_err(|error| error.to_string())? else {
+        return Ok(Exercise::idle(route));
+    };
+    let text = std::fs::read_to_string(&path).map_err(|error| error.to_string())?;
+    parse_exercise(route, &text)
 }
 
 fn latest_observation(dir: &Path, route: DrillRoute) -> Result<Option<PathBuf>, std::io::Error> {
