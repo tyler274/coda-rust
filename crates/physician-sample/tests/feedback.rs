@@ -400,6 +400,7 @@ async fn staff_read_feedback_with_its_response_and_author() {
 
     let (ok, out, err) = staff_read(&running.database.url, &[]);
     assert!(ok, "{err}");
+    println!("physician-migrate feedback:\n{out}");
     let rows: Vec<Value> = out
         .lines()
         .map(|line| serde_json::from_str(line).expect("one JSON object per line"))
