@@ -11,8 +11,8 @@
 //!
 //! - `one_limiter_paces_every_request_in_flight`: 40 requests at once on one
 //!   client start 100 ms apart and finish in about 4 s, not 52 s.
-//! - `the_refresh_overlaps_its_requests`: a night over 40 batches overlaps
-//!   its requests within the same pacing.
+//! - `the_refresh_overlaps_its_requests`: a night over 40 batches has many
+//!   requests in flight at once, within the same pacing.
 //! - `a_full_night_finishes_within_an_hour` is ignored by default: it runs a
 //!   whole night of about 1.25 million PMIDs (6,250 requests) and takes
 //!   about a quarter of an hour.
@@ -37,19 +37,68 @@ use common::{Scratch, complete, hold_slot};
 /// What NCBI showed live for one 200-PMID EFetch request.
 const LATENCY: Duration = Duration::from_millis(1300);
 
+/// NCBI's pacing with a key: one request start every 100 ms.
+const PACE: Duration = Duration::from_millis(100);
+
+/// How far a run of arrivals may come in ahead of the pace: less than one
+/// slot, for one arrival noted late. Two requests started together, or a
+/// client 10% faster than the pace over 40 requests (390 ms), fail.
+const AHEAD_ALLOWED: Duration = Duration::from_millis(75);
+
 /// A stand-in for NCBI that answers every request after `latency`.
 struct StandIn {
     latency: Duration,
     refuse: bool,
     arrivals: Mutex<Vec<Instant>>,
+    in_flight: Mutex<InFlight>,
+}
+
+/// How many requests the stand-in is answering now, and the most at once.
+#[derive(Default)]
+struct InFlight {
+    now: usize,
+    peak: usize,
 }
 
 impl StandIn {
-    /// The gaps between consecutive arrivals, in order.
-    fn gaps(&self) -> Vec<Duration> {
+    /// The most requests the stand-in was answering at once.
+    fn peak_in_flight(&self) -> usize {
+        self.in_flight.lock().unwrap().peak
+    }
+
+    /// From the first request's arrival to the last one's.
+    fn span(&self) -> Duration {
+        let arrivals = self.arrivals();
+        match (arrivals.first(), arrivals.last()) {
+            (Some(first), Some(last)) => *last - *first,
+            _ => Duration::ZERO,
+        }
+    }
+
+    /// The most any run of arrivals came in faster than one start per
+    /// `PACE`: over every earlier arrival and later one, how much less than
+    /// `PACE` per start lies between them. The stand-in notes an arrival only
+    /// once the request has reached it, so one arrival noted late brings the
+    /// next one close by that lateness alone; a client faster than the pace
+    /// falls further ahead with every request, and a burst after a pause is
+    /// measured from the burst's own start, not the time the pause left
+    /// over.
+    fn ahead_of_pace(&self) -> Duration {
+        let arrivals = self.arrivals();
+        let mut ahead = Duration::ZERO;
+        for (earlier, from) in arrivals.iter().enumerate() {
+            for (starts, to) in (1u32..).zip(&arrivals[earlier + 1..]) {
+                ahead = ahead.max((PACE * starts).saturating_sub(*to - *from));
+            }
+        }
+        ahead
+    }
+
+    /// Every arrival, in order.
+    fn arrivals(&self) -> Vec<Instant> {
         let mut arrivals = self.arrivals.lock().unwrap().clone();
         arrivals.sort();
-        arrivals.windows(2).map(|pair| pair[1] - pair[0]).collect()
+        arrivals
     }
 
     fn requests(&self) -> usize {
@@ -71,7 +120,13 @@ async fn answer(State(stand_in): State<Arc<StandIn>>, body: String) -> Response 
     if stand_in.refuse {
         return (StatusCode::BAD_REQUEST, "{\"error\":\"API key invalid\"}").into_response();
     }
+    {
+        let mut in_flight = stand_in.in_flight.lock().unwrap();
+        in_flight.now += 1;
+        in_flight.peak = in_flight.peak.max(in_flight.now);
+    }
     tokio::time::sleep(stand_in.latency).await;
+    stand_in.in_flight.lock().unwrap().now -= 1;
     let ids = body
         .split('&')
         .find_map(|pair| pair.strip_prefix("id="))
@@ -90,6 +145,7 @@ async fn stand_in(latency: Duration, refuse: bool) -> (Eutils, Arc<StandIn>) {
         latency,
         refuse,
         arrivals: Mutex::default(),
+        in_flight: Mutex::default(),
     });
     let app = Router::new()
         .route("/entrez/eutils/efetch.fcgi", post(answer))
@@ -127,7 +183,9 @@ fn slot() -> SlotName {
 struct Timed {
     requests: usize,
     elapsed: Duration,
-    closest: Duration,
+    ahead: Duration,
+    span: Duration,
+    peak_in_flight: usize,
     done: usize,
 }
 
@@ -145,28 +203,26 @@ async fn timed_night(requests: usize) -> Timed {
         .unwrap();
     let elapsed = started.elapsed();
     assert!(complete(&store, lease).await.success().is_some());
-    let closest = stand_in.gaps().into_iter().min().unwrap_or(Duration::MAX);
     let timed = Timed {
         requests: stand_in.requests(),
         elapsed,
-        closest,
+        ahead: stand_in.ahead_of_pace(),
+        span: stand_in.span(),
+        peak_in_flight: stand_in.peak_in_flight(),
         done: report.done.len(),
     };
     println!(
-        "{} requests for {} PMIDs in {:.1} s; closest request starts {:?} apart",
+        "{} requests for {} PMIDs in {:.1} s; starts span {:.2} s, at most {:?} ahead of pace; at most {} in flight",
         timed.requests,
         timed.done,
         timed.elapsed.as_secs_f64(),
-        timed.closest
+        timed.span.as_secs_f64(),
+        timed.ahead,
+        timed.peak_in_flight
     );
     scratch.drop().await;
     timed
 }
-
-/// The limit, less 2 ms for jitter in the stand-in noticing an arrival. The
-/// limiter counts each interval from a request's actual start, so arrivals
-/// come no closer than the limit.
-const CLOSEST_ALLOWED: Duration = Duration::from_millis(98);
 
 /// AC12: 40 requests in flight at once on one client share its limiter: they
 /// start 100 ms apart and all finish in about 40 × 100 ms plus one request's
@@ -186,17 +242,18 @@ async fn one_limiter_paces_every_request_in_flight() {
         assert!(answered.unwrap().unwrap() > 0);
     }
     let elapsed = started.elapsed();
-    let gaps = stand_in.gaps();
-    let closest = gaps.iter().min().copied().unwrap();
-    let span: Duration = gaps.iter().sum();
+    let ahead = stand_in.ahead_of_pace();
     println!(
-        "40 requests at once: all answered in {:.2} s; starts span {:.2} s, closest {closest:?} apart",
+        "40 requests at once: all answered in {:.2} s; starts span {:.2} s, at most {ahead:?} ahead of pace",
         elapsed.as_secs_f64(),
-        span.as_secs_f64()
+        stand_in.span().as_secs_f64()
     );
     assert_eq!(stand_in.requests(), 40);
-    assert!(closest >= CLOSEST_ALLOWED, "requests {closest:?} apart");
-    let paced = Duration::from_millis(100) * 40 + LATENCY;
+    assert!(
+        ahead <= AHEAD_ALLOWED,
+        "requests ran {ahead:?} ahead of pace"
+    );
+    let paced = PACE * 40 + LATENCY;
     assert!(
         elapsed < paced + Duration::from_secs(1),
         "took {elapsed:?}: paced is {paced:?}, one at a time {:?}",
@@ -205,23 +262,27 @@ async fn one_limiter_paces_every_request_in_flight() {
 }
 
 /// AC12: a night over 40 batches overlaps its requests within the same
-/// pacing, so it takes a fraction of the 52 s that one request at a time
-/// would. The rest of its time is the night's writes.
+/// pacing: the stand-in answers many at once, never ahead of the pace.
+/// The night's wall time also holds its Postgres writes, which a loaded
+/// machine slows, so the overlap is read from the stand-in rather than the
+/// clock. `one_limiter_paces_every_request_in_flight` times the requests
+/// alone.
 #[tokio::test]
 async fn the_refresh_overlaps_its_requests() {
     let timed = timed_night(40).await;
     assert_eq!(timed.requests, 40);
     assert_eq!(timed.done, 40 * BATCH);
     assert!(
-        timed.closest >= CLOSEST_ALLOWED,
-        "requests {:?} apart",
-        timed.closest
+        timed.ahead <= AHEAD_ALLOWED,
+        "requests ran {:?} ahead of pace",
+        timed.ahead
     );
-    let serial = LATENCY * 40;
+    // At 100 ms a start and 1.3 s a request, about 13 are in flight at once;
+    // one at a time would show 1.
     assert!(
-        timed.elapsed < serial / 3,
-        "took {:?}: one at a time would be {serial:?}",
-        timed.elapsed
+        timed.peak_in_flight >= 8,
+        "at most {} requests in flight",
+        timed.peak_in_flight
     );
 }
 
@@ -254,7 +315,7 @@ async fn a_refusal_stops_the_requests_in_flight() {
 async fn a_full_night_finishes_within_an_hour() {
     let timed = timed_night(6250).await;
     assert_eq!(timed.done, 6250 * BATCH);
-    assert!(timed.closest >= CLOSEST_ALLOWED);
+    assert!(timed.ahead <= AHEAD_ALLOWED, "{:?} ahead", timed.ahead);
     assert!(
         timed.elapsed < Duration::from_secs(3600),
         "{:?}",
