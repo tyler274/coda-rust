@@ -46,6 +46,8 @@ locals {
         # Langfuse authenticates to langfuse-sso with the client secret the
         # issuer checks (langfuse-sso.tf).
         local.langfuse_sso ? { "LANGFUSE_SSO_CLIENT_SECRET" = "LANGFUSE_SSO_CLIENT_SECRET" } : {},
+        # The Enterprise license key web and worker read (langfuse.tf).
+        var.langfuse_ee_trial ? { "LANGFUSE_EE_LICENSE_KEY" = "LANGFUSE_EE_LICENSE_KEY" } : {},
       )
       # Injected as environment (envFrom) into Langfuse web: headless init of
       # the org, the agents project, its ingestion keys, and the first admin.

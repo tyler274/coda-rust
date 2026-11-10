@@ -299,9 +299,10 @@ browser -> Cloud Run IAP (public-site-staging, gcp-engineering)
   `NONE` role and no project (`LANGFUSE_DEFAULT_ORG_ROLE`), so a new
   engineer sees no traces until an admin grants a role.
   `LANGFUSE_ALLOWED_ORGANIZATION_CREATORS` names the init admin
-  (`LANGFUSE_INIT_USER_EMAIL`), but Langfuse enforces it only with an EE
-  license; without one an engineer can still create an empty organization of
-  their own, which holds none of `coda`'s traces. Sign-up is on only
+  (`LANGFUSE_INIT_USER_EMAIL`). Langfuse enforces it only with an EE license
+  ([Enterprise trial](#enterprise-trial)); without one an engineer can still
+  create an empty organization of their own, which holds none of `coda`'s
+  traces. Sign-up is on only
   with the issuer, because each first sign-in creates a user. Account
   linking (`AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING`) lets the init admin's user
   sign in the same way and keep its role. Passwords are off with the issuer
@@ -397,6 +398,42 @@ deploy/langfuse-web` picks them up. Existing sessions stay valid. Null
 `langfuse_sso_image` removes the issuer and its load balancer, turns sign-up
 off and passwords back on; set public-site's `langfuse_sso` to false first so
 it stops sending people to the issuer.
+
+### Enterprise trial
+
+`langfuse_ee_trial` sets `LANGFUSE_EE_LICENSE_KEY` on Langfuse web and worker
+from Doppler's `LANGFUSE_EE_LICENSE_KEY`. Langfuse 3.225.11 grants the
+self-hosted Enterprise plan to any key that starts with `langfuse_ee_`:
+project roles, audit logs, data retention, protected prompt labels,
+organization creators, UI customization, the admin API and ingestion masking.
+
+Before purchase, Doppler holds a `langfuse_ee_` placeholder. `ee/LICENSE`
+permits that for development and testing only, so a placeholder serves a
+pre-purchase test of the deployment and is replaced by a key Langfuse issues
+before the deployment serves real work. The toggle and the key are the same in
+every environment this root accepts. Changing the key is a Doppler edit and a
+restart of `deploy/langfuse-web` and `deploy/langfuse-worker`.
+
+1. Seed the placeholder:
+
+   ```sh
+   doppler secrets set LANGFUSE_EE_LICENSE_KEY=langfuse_ee_coda_staging_trial \
+     --project coda-rust --config stg
+   ```
+
+2. Plan and apply this root. The plan changes only the `langfuse-secrets`
+   DopplerSecret and the Langfuse release values.
+3. Set the project's data retention to `CODA_LANGFUSE_RETENTION_DAYS`, so it
+   matches the bucket lifecycle.
+
+With a key, Langfuse's usage report ignores `TELEMETRY_ENABLED`. It still
+sends nothing, because its PostHog client exists only with
+`NEXT_PUBLIC_POSTHOG_KEY` or telemetry on, and the tests keep both absent.
+Re-check that on every Langfuse image bump.
+
+To end the trial, first set retention to indefinite and clear project roles
+and protected labels (existing settings keep acting without their controls),
+then set `langfuse_ee_trial = false` and apply.
 
 Removing `staging_proxy` and `observability_web` deletes both load balancers
 and returns both apps to their root paths for port-forward. The Langfuse base
@@ -521,6 +558,7 @@ path changes only together with its image.
   | `LANGFUSE_SALT`, `LANGFUSE_NEXTAUTH_SECRET`, `LANGFUSE_ENCRYPTION_KEY`, `LANGFUSE_CLICKHOUSE_PASSWORD`, `LANGFUSE_REDIS_PASSWORD`, `LANGFUSE_S3_ACCESS_KEY_ID`, `LANGFUSE_S3_SECRET_ACCESS_KEY` | `langfuse-secrets` |
   | `LANGFUSE_INIT_PROJECT_PUBLIC_KEY`, `LANGFUSE_INIT_PROJECT_SECRET_KEY`, `LANGFUSE_INIT_USER_EMAIL`, `LANGFUSE_INIT_USER_PASSWORD` | `langfuse-init` (Langfuse web env) |
   | the same project key pair | `otel-collector-langfuse` (`LANGFUSE_PUBLIC_KEY`, `LANGFUSE_SECRET_KEY`) |
+  | `LANGFUSE_EE_LICENSE_KEY` (`langfuse_ee_trial` only) | `langfuse-secrets` (Langfuse web and worker env) |
   | `LANGFUSE_SSO_CLIENT_SECRET`, `LANGFUSE_SSO_SIGNING_KEY` (`langfuse_sso_image` only) | `langfuse-sso` (issuer env); the client secret also goes to `langfuse-secrets` for Langfuse's `AUTH_CUSTOM_CLIENT_SECRET` |
   The S3-interop HMAC key belongs to `coda-langfuse-blobs` (output
   `langfuse_hmac_service_account`). The operator mints it with
