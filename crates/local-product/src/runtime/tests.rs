@@ -2513,3 +2513,114 @@ fn attempt_status_keeps_its_saved_text() {
         expected.map(|(status, text)| (status, text.to_owned()))
     );
 }
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn queue_signals_count_due_and_failed_work_and_age_the_oldest() {
+    use std::time::Duration;
+    // The signals cover every row, so they are read on a database of their own.
+    let store = Store::connect(&migration_tests::database("runtime_signals").await)
+        .await
+        .unwrap();
+    store.migrate().await.unwrap();
+    let practice = "signals";
+    assert_eq!(
+        store.queue_signals().await.unwrap(),
+        delivery::QueueSignals::default()
+    );
+
+    // Accepted hosted turns are due from acceptance.
+    let waiting = delivery_scope(practice, "waiting");
+    let running = delivery_scope(practice, "running");
+    let failing = delivery_scope(practice, "failing");
+    for scope in [&waiting, &running, &failing] {
+        accept(&store, scope, &delivery_input(&scope.chat), 3)
+            .await
+            .unwrap();
+    }
+    let signals = store.queue_signals().await.unwrap();
+    assert_eq!((due_count(&store).await, signals.failed), (3, 0));
+    assert!(signals.due.unwrap().oldest < Duration::from_secs(5));
+
+    // A live lease is not due; a retry delay that has not passed is not due.
+    let turn = |scope: &Scope| Delivery::chat_turn(scope.clone(), scope.chat.clone());
+    store
+        .claim_delivery(&turn(&running), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    let claim = store
+        .claim_delivery(&turn(&failing), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    store
+        .settle_chat_attempt(&claim, engine::AttemptFailure::Failed, Backoff::HOSTED)
+        .await
+        .unwrap();
+    assert_eq!(due_count(&store).await, 1);
+
+    // The oldest due work is aged from when it became runnable: acceptance
+    // for pending work, the lease's end for a lost attempt.
+    let (tx, mut state, now) = store.locked(&waiting).await.unwrap();
+    state.dispatch_after = now - 300;
+    Store::save(tx, &waiting, &state).await.unwrap();
+    let (tx, mut state, now) = store.locked(&running).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = now - 120;
+    Store::save(tx, &running, &state).await.unwrap();
+    let due = store.queue_signals().await.unwrap().due.unwrap();
+    assert_eq!(due.count.get(), 2);
+    let oldest = due.oldest.as_secs();
+    assert!((300..305).contains(&oldest), "oldest due {oldest}s");
+    let (tx, mut state, now) = store.locked(&waiting).await.unwrap();
+    state.dispatch_after = now;
+    Store::save(tx, &waiting, &state).await.unwrap();
+    let oldest = store.queue_signals().await.unwrap().due.unwrap().oldest;
+    assert!(
+        (120..125).contains(&oldest.as_secs()),
+        "a lost attempt waits from its lease's end, not acceptance: {oldest:?}"
+    );
+
+    // Work recovery gave up on counts as failed, not due.
+    let (tx, mut state, _) = store.locked(&failing).await.unwrap();
+    state.dispatch_after = 0;
+    Store::save(tx, &failing, &state).await.unwrap();
+    for _ in 1..MAX_FAILED_ATTEMPTS {
+        let claim = store
+            .claim_delivery(&turn(&failing), 60)
+            .await
+            .unwrap()
+            .unwrap();
+        store
+            .settle_chat_attempt(&claim, engine::AttemptFailure::Failed, Backoff::IMMEDIATE)
+            .await
+            .unwrap();
+    }
+    let signals = store.queue_signals().await.unwrap();
+    assert_eq!((due_count(&store).await, signals.failed), (2, 1));
+
+    // Reply revisions count with chat turns, and only while current.
+    let reply = delivery_scope(practice, "reply");
+    open_draft(&store, &reply, "Original").await;
+    let revision = reply::RevisionInput {
+        key: "revise".into(),
+        expected_revision: 1,
+        instruction: "Shorten the reply".into(),
+        timezone: "UTC".into(),
+        scenario: None,
+    };
+    accept_revision_input(&store, &reply, &revision)
+        .await
+        .unwrap();
+    assert_eq!(due_count(&store).await, 3);
+    let (tx, mut draft, _) = store.locked_draft(&reply).await.unwrap();
+    draft.revision += 1;
+    Store::save_draft_row(tx, &reply, &draft).await.unwrap();
+    assert_eq!(due_count(&store).await, 2);
+}
+
+/// How much hosted work is due, 0 when none is.
+async fn due_count(store: &Store) -> u64 {
+    let signals = store.queue_signals().await.unwrap();
+    signals.due.map_or(0, |due| due.count.get())
+}

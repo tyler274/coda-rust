@@ -3,7 +3,7 @@ use super::*;
 
 /// Creates the per-test database and returns its URL. The database is left in
 /// place after the test; the next run's `DROP DATABASE IF EXISTS` clears it.
-async fn database(name: &str) -> String {
+pub(super) async fn database(name: &str) -> String {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let (base, db) = url.trim().rsplit_once('/').expect("database URL");
     let test_db = format!("{db}_t_{name}");
