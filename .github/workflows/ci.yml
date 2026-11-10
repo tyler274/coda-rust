@@ -141,11 +141,13 @@ jobs:
   ci:
     needs: [scope, lightweight]
     if: needs.scope.outputs.full == 'true'
-    # Blacksmith runner (ENG-76): same image as GitHub's ubuntu-24.04, and
-    # actions/cache talks to Blacksmith's colocated cache with no change.
-    # 4 vCPU because this job compiles the workspace; cargo-deny below stays
-    # on 2 vCPU. Roll back by setting runs-on to ubuntu-latest again.
-    runs-on: blacksmith-4vcpu-ubuntu-2404
+    # Blacksmith runner (ENG-76) by default: same image as GitHub's
+    # ubuntu-24.04, and actions/cache talks to Blacksmith's colocated cache
+    # with no change. 4 vCPU because this job compiles the workspace;
+    # cargo-deny below stays on 2 vCPU. The repository variable CI_JOB_RUNNER
+    # overrides the label, for example `cyrene-coda` for the disposable
+    # Firecracker runner on Cyrene; deleting the variable returns here.
+    runs-on: ${{ vars.CI_JOB_RUNNER || 'blacksmith-4vcpu-ubuntu-2404' }}
     # The Duet, physician and front-door PostgreSQL proofs fail closed without
     # a disposable loopback server; they never skip (ENG-46). Each test creates
     # and drops its own database and role on this throwaway container.

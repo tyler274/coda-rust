@@ -149,7 +149,8 @@ and credentials live in the [NixOS configuration](https://github.com/tyler274/ni
 
 The container cannot reach the host, the LAN or Tailscale, has no Docker, and
 the agent is not trusted by the Nix daemon. A bad edit can be recovered from the
-dataset's snapshots in `/agents/coda/src/.zfs/snapshot/`.
+dataset's snapshots in `/agents/coda/src/.zfs/snapshot/`. To run a CI job
+there, see [Local CI checks](#local-ci-checks).
 
 ### Local CI checks
 
@@ -171,6 +172,17 @@ mixed changes keep the full suite; missing Git comparison data also selects it.
 PRs use their complete diff from the merge base, and main pushes use the full
 before/after range. Manual dispatch retains full browser qualification. New PR
 revisions cancel superseded CI runs, without cancelling main deployment runs.
+
+To run a whole workflow job, use `act` on a host with Docker; [`.actrc`](.actrc)
+selects the image and the `ci` job. In the Cyrene agent sandbox, which has no
+Docker, run the job of the committed `HEAD` in Cyrene's disposable Firecracker
+CI instead; it runs `act` offline with no secrets and exits with the job's
+status:
+
+```sh
+dev/ci-local.sh          # the ci job
+dev/ci-local.sh foundations
+```
 
 ### Dev container
 
