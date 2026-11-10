@@ -39,6 +39,9 @@ STEPS = {
         "Read back the Datadog collector export-failure and Langfuse readiness monitors, their exporter:otlphttp/langfuse group and the #engineering-observability route.",
         "After explicit approval, run `observability-drill langfuse fail --confirm`: it scales only langfuse-web to zero, drives one rehearsal chat and requires the reply, the operations trace and an exporter failure or queue before reading the monitor's own firing time.",
         "Confirm the Slack alert by a person. Then run `observability-drill langfuse recover --confirm`: langfuse-web returns, a new rehearsal turn lands in Langfuse, and the monitor's own recovery time is recorded; confirm Slack recovery. The 40-minute cap restores langfuse-web on abort.",
+        "Read back the `[staging] physician chat generation errors` monitor, OK, with its threshold and the #engineering-observability route.",
+        "After explicit approval, run `observability-drill langfuse chat-failure --confirm`: it sends threshold + 1 rehearsal turns marked `[fail:1]`, requires each to answer through redelivery, reads the monitor's own firing time, and follows one failure to the failed attempt, its successor and its ERROR generation in Langfuse with no canary in Datadog.",
+        "Confirm the Slack alert by a person while the drill reads back. The drill then waits out the 10-minute window for the monitor's own recovery; confirm Slack recovery.",
     ],
 }
 

@@ -1,7 +1,7 @@
 //! Fenced reply-revision execution. The draft row owns all evidence and text;
 //! no chat row, effect tool, or projection is an authority for this work.
 use super::attempt::{self, Claimed, Failure, Outcome, Push, Tally};
-use super::{ModelSource, Worker, absent_claim, announce, marked_attempt_fails};
+use super::{ModelSource, Worker, absent_claim, announce};
 use axum::http::StatusCode;
 use harness::execution::{
     self, Call, Cancellation, Finish, Item, Limits, Owner, Progress, Provider, Record, Request,
@@ -15,6 +15,7 @@ use local_product::runtime::reply::{
     FINISH_TOOL, RevisionAttempt, RevisionClaim, RevisionCommit, revised_text,
 };
 use physician_sample::durable::RuntimeAuthority;
+use physician_sample::hosting::marked_attempt_fails;
 use serde::Deserialize;
 use serde_json::{Value, json};
 use std::time::Duration;

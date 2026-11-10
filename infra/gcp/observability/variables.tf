@@ -264,6 +264,17 @@ variable "datadog_qualification_monitor_enabled" {
   }
 }
 
+variable "chat_failure_monitor_enabled" {
+  description = "Separate gate for the physician chat generation failure monitor alone. datadog_monitors_enabled also creates it; this gate does not enable the 5xx, latency, async-failure or memory monitors."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = !var.chat_failure_monitor_enabled || (var.alert_notify != "" && contains(["datadog", "both"], var.telemetry_backend))
+    error_message = "The chat failure monitor requires telemetry_backend datadog or both, and an explicitly confirmed alert handle."
+  }
+}
+
 variable "alert_notify" {
   description = "Operator-confirmed Datadog notification handle. Empty until routing is approved; there is no guessed Slack channel."
   type        = string

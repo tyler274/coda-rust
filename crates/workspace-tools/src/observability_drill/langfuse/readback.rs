@@ -51,6 +51,8 @@ pub(super) struct LangfuseTurn {
     pub(super) run_id: Option<String>,
     pub(super) scenario_id: Option<String>,
     pub(super) model: Option<String>,
+    /// Langfuse's observation level: `ERROR` for a failed generation.
+    pub(super) level: Option<String>,
     /// Whether the generation's input or output carries the canary.
     pub(super) canary_in_content: bool,
 }
@@ -84,8 +86,148 @@ pub(super) fn langfuse_turn(trace: &Value, canary: &str) -> Option<LangfuseTurn>
             .or_else(|| {
                 attribute(&generation["metadata"], "gen_ai.request.model").map(str::to_owned)
             }),
+        level: text(&generation["level"]),
         canary_in_content: content_has("input") || content_has("output"),
     })
+}
+
+/// The trace ids in a `GET /api/public/traces?sessionId=` answer, newest
+/// first.
+pub(super) fn session_traces(body: &Value) -> Vec<String> {
+    let mut traces: Vec<&Value> = body["data"].as_array().into_iter().flatten().collect();
+    traces.sort_by_key(|trace| {
+        std::cmp::Reverse(trace["timestamp"].as_str().unwrap_or_default().to_owned())
+    });
+    traces
+        .iter()
+        .filter_map(|trace| trace["id"].as_str().map(str::to_owned))
+        .collect()
+}
+
+/// What `chat-failure` requires of the failed attempt's Langfuse generation:
+/// a simulation generation of that attempt, at level `ERROR`, holding the
+/// canary it was asked.
+pub(super) fn failed_generation_gaps(turn: &LangfuseTurn, run_id: &str) -> Vec<String> {
+    let mut gaps = Vec::new();
+    if turn.run_id.as_deref() != Some(run_id) {
+        gaps.push(format!(
+            "Langfuse coda.run_id is {:?}, not the failed attempt {run_id}",
+            turn.run_id
+        ));
+    }
+    if turn.level.as_deref() != Some("ERROR") {
+        gaps.push(format!("Langfuse level is {:?}, not \"ERROR\"", turn.level));
+    }
+    if turn.environment.as_deref() != Some("simulation") {
+        gaps.push(format!(
+            "Langfuse environment is {:?}, not \"simulation\"",
+            turn.environment
+        ));
+    }
+    if !turn.canary_in_content {
+        gaps.push("the failed generation's content does not carry the canary".to_owned());
+    }
+    gaps
+}
+
+/// One `physician.worker.attempt` span as Datadog holds it.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub(super) struct AttemptSpan {
+    pub(super) run_id: String,
+    pub(super) work_id: Option<String>,
+    pub(super) predecessor_run_id: Option<String>,
+    pub(super) error_type: Option<String>,
+}
+
+/// The attempt span for `run_id` in a Datadog span search answer.
+pub(super) fn attempt_span(body: &Value, run_id: &str) -> Option<AttemptSpan> {
+    let span = body["data"].as_array()?.iter().find(|span| {
+        let attributes = &span["attributes"];
+        attributes["resource_name"] == "physician.worker.attempt"
+            && attribute(attributes, "coda.run_id") == Some(run_id)
+    })?;
+    let attributes = &span["attributes"];
+    let text = |key: &str| attribute(attributes, key).map(str::to_owned);
+    Some(AttemptSpan {
+        run_id: run_id.to_owned(),
+        work_id: text("coda.work_id"),
+        predecessor_run_id: text("coda.predecessor_run_id"),
+        error_type: text("error.type"),
+    })
+}
+
+/// What `chat-failure` requires of a marked turn's two attempts: the first
+/// failed on purpose, and the one that answered succeeds it in the same work.
+pub(super) fn redelivery_gaps(failed: &AttemptSpan, successor: &AttemptSpan) -> Vec<String> {
+    let mut gaps = Vec::new();
+    if failed.error_type.as_deref() != Some("rehearsed") {
+        gaps.push(format!(
+            "attempt {} has error.type {:?}, not \"rehearsed\"",
+            failed.run_id, failed.error_type
+        ));
+    }
+    if let Some(error) = &successor.error_type {
+        gaps.push(format!(
+            "the answering attempt {} failed with {error}",
+            successor.run_id
+        ));
+    }
+    if successor.predecessor_run_id.as_deref() != Some(failed.run_id.as_str()) {
+        gaps.push(format!(
+            "the answering attempt's predecessor is {:?}, not {}",
+            successor.predecessor_run_id, failed.run_id
+        ));
+    }
+    if failed.work_id.is_none() || failed.work_id != successor.work_id {
+        gaps.push(format!(
+            "work {:?} of the failed attempt is not work {:?} of its successor",
+            failed.work_id, successor.work_id
+        ));
+    }
+    gaps
+}
+
+/// A named Datadog monitor: its alerting threshold and its states, one per
+/// group, or the overall state when it is not grouped.
+#[derive(Clone, Debug, PartialEq, Serialize)]
+pub(super) struct NamedMonitor {
+    pub(super) threshold: Option<f64>,
+    pub(super) groups: Vec<MonitorGroup>,
+}
+
+/// Reads the monitor called `name` from `GET /api/v1/monitor?group_states=all`.
+/// An ungrouped monitor's transition time is its `overall_state_modified`.
+pub(super) fn named_monitor(monitors: &Value, name: &str) -> Option<NamedMonitor> {
+    let monitor = monitors
+        .as_array()?
+        .iter()
+        .find(|monitor| monitor["name"] == name)?;
+    let threshold = monitor["options"]["thresholds"]["critical"].as_f64();
+    let mut groups: Vec<MonitorGroup> = monitor["state"]["groups"]
+        .as_object()
+        .into_iter()
+        .flatten()
+        .map(|(_, state)| MonitorGroup {
+            monitor: name.to_owned(),
+            status: state["status"].as_str().unwrap_or_default().to_owned(),
+            last_triggered_ts: state["last_triggered_ts"].as_i64(),
+            last_resolved_ts: state["last_resolved_ts"].as_i64(),
+        })
+        .collect();
+    if groups.is_empty() {
+        let status = monitor["overall_state"].as_str().unwrap_or_default();
+        let modified = monitor["overall_state_modified"]
+            .as_str()
+            .and_then(|at| chrono::DateTime::parse_from_rfc3339(at).ok())
+            .map(|at| at.timestamp());
+        groups.push(MonitorGroup {
+            monitor: name.to_owned(),
+            status: status.to_owned(),
+            last_triggered_ts: modified.filter(|_| status == "Alert"),
+            last_resolved_ts: modified.filter(|_| status == "OK"),
+        });
+    }
+    Some(NamedMonitor { threshold, groups })
 }
 
 /// What `rehearse` requires of the Langfuse generation.
@@ -522,6 +664,108 @@ mod tests {
         assert_eq!(loki_lines(&empty), Some(0));
         assert_eq!(loki_lines(&json!({})), None);
         assert_eq!(loki_lines(&json!({ "status": "error" })), None);
+    }
+
+    #[test]
+    fn a_failed_generation_is_an_error_of_that_attempt_with_the_canary() {
+        let mut trace = langfuse_trace();
+        trace["observations"][1]["level"] = json!("ERROR");
+        trace["observations"][1]["output"] = Value::Null;
+        let turn = langfuse_turn(&trace, "canary-123").unwrap();
+        assert!(
+            failed_generation_gaps(&turn, "run-1").is_empty(),
+            "{turn:?}"
+        );
+        let gaps = failed_generation_gaps(&turn, "run-2");
+        assert_eq!(gaps.len(), 1, "{gaps:?}");
+        trace["observations"][1]["level"] = json!("DEFAULT");
+        trace["observations"][1]["input"] = json!("hello");
+        let turn = langfuse_turn(&trace, "canary-123").unwrap();
+        assert_eq!(failed_generation_gaps(&turn, "run-1").len(), 2);
+    }
+
+    #[test]
+    fn session_traces_come_newest_first() {
+        let body = json!({ "data": [
+            { "id": "first", "timestamp": "2026-11-09T10:00:00.000Z" },
+            { "id": "redelivered", "timestamp": "2026-11-09T10:00:12.000Z" }
+        ]});
+        assert_eq!(session_traces(&body), ["redelivered", "first"]);
+        assert!(session_traces(&json!({})).is_empty());
+    }
+
+    fn attempt_body(run: &str, extra: Value) -> Value {
+        let mut attributes = json!({
+            "resource_name": "physician.worker.attempt",
+            "custom": { "coda": { "run_id": run, "work_id": "work-1" } }
+        });
+        if let (Some(map), Value::Object(more)) = (attributes["custom"].as_object_mut(), extra) {
+            map.extend(more);
+        }
+        json!({ "data": [{ "attributes": attributes }] })
+    }
+
+    #[test]
+    fn a_rehearsed_failure_and_its_successor_share_the_work() {
+        let failed = attempt_span(
+            &attempt_body("run-1", json!({ "error": { "type": "rehearsed" } })),
+            "run-1",
+        )
+        .unwrap();
+        let mut body = attempt_body("run-2", json!({}));
+        body["data"][0]["attributes"]["custom"]["coda"]["predecessor_run_id"] = json!("run-1");
+        let successor = attempt_span(&body, "run-2").unwrap();
+        assert_eq!(failed.error_type.as_deref(), Some("rehearsed"));
+        assert!(redelivery_gaps(&failed, &successor).is_empty());
+        assert_eq!(attempt_span(&body, "run-9"), None);
+    }
+
+    #[test]
+    fn a_wrong_failure_or_a_broken_chain_is_a_gap() {
+        let failed = AttemptSpan {
+            run_id: "run-1".into(),
+            work_id: Some("work-1".into()),
+            predecessor_run_id: None,
+            error_type: Some("model".into()),
+        };
+        let successor = AttemptSpan {
+            run_id: "run-2".into(),
+            work_id: Some("work-2".into()),
+            predecessor_run_id: None,
+            error_type: Some("model".into()),
+        };
+        assert_eq!(redelivery_gaps(&failed, &successor).len(), 4);
+    }
+
+    #[test]
+    fn the_chat_failure_monitor_is_read_by_name_grouped_or_not() {
+        let monitors = json!([
+            { "name": "other", "options": { "thresholds": { "critical": 1.0 } } },
+            {
+                "name": "[staging] physician chat generation errors",
+                "options": { "thresholds": { "critical": 5.0 } },
+                "overall_state": "Alert",
+                "overall_state_modified": "2026-11-10T17:00:00+00:00",
+                "state": { "groups": {} }
+            }
+        ]);
+        let monitor =
+            named_monitor(&monitors, "[staging] physician chat generation errors").unwrap();
+        assert_eq!(monitor.threshold, Some(5.0));
+        assert_eq!(monitor.groups.len(), 1);
+        assert_eq!(monitor.groups[0].status, "Alert");
+        assert_eq!(monitor.groups[0].last_triggered_ts, Some(1_794_330_000));
+        assert_eq!(monitor.groups[0].last_resolved_ts, None);
+        assert!(named_monitor(&monitors, "missing").is_none());
+
+        let grouped = json!([{
+            "name": "m",
+            "options": { "thresholds": { "critical": 5.0 } },
+            "overall_state": "OK",
+            "state": { "groups": { "*": { "status": "OK", "last_resolved_ts": 7 } } }
+        }]);
+        let monitor = named_monitor(&grouped, "m").unwrap();
+        assert_eq!(monitor.groups[0].last_resolved_ts, Some(7));
     }
 
     #[test]

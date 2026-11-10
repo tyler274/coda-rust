@@ -19,7 +19,7 @@ use model::{
 const USAGE: &str = "\
 observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR
 observability-drill probe --output-dir DIR
-observability-drill langfuse rehearse|alert-to-run|isolation|fail|recover|signin-breakglass --output-dir DIR
+observability-drill langfuse rehearse|alert-to-run|isolation|chat-failure|fail|recover|signin-breakglass --output-dir DIR
 
 Probe runs one availability-probe slot as the probe identity, which IAP admits,
 reads each target's readiness outcome and the heartbeat back from Cloud

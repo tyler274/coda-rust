@@ -3,8 +3,9 @@
 //! operations backends.
 //!
 //! Every check writes `langfuse-<action>-<stamp>.json` with the deployed
-//! revisions it ran against. `fail` and `recover` also write the alert ledger
-//! `observations-langfuse-<stamp>.json` for `qualify-alerts.py`. Every wait
+//! revisions it ran against. `fail`, `recover` and `chat-failure` also write
+//! the alert ledger `observations-langfuse-<stamp>.json` for
+//! `qualify-alerts.py`. Every wait
 //! runs under the exercise's 40-minute cap and the operator's interrupt, and
 //! a scaled-down workload is restored on every exit but a passed `fail`.
 mod chat;
@@ -26,7 +27,7 @@ use super::model::{DrillRoute, EvalKind, Exercise, SignalError, SignalKind};
 use crate::failure::Failure;
 use chat::{Physician, Turn};
 use cluster::{Forward, Kubectl, Workload};
-use readback::{LangfuseTurn, MonitorGroup, OpsSpan, PasswordSignIn};
+use readback::{AttemptSpan, LangfuseTurn, MonitorGroup, NamedMonitor, OpsSpan, PasswordSignIn};
 use watch::Watch;
 
 const USAGE: &str = "\
@@ -40,6 +41,13 @@ ACTION
                      coda.run_id and the trace id
   isolation          Langfuse holds the canary; the operations spans and logs of
                      the same trace exist and hold no canary
+  chat-failure       send threshold + 1 canary turns marked [fail:1] (needs
+                     --confirm, it pages): each answers on redelivery, the
+                     physician chat failure monitor fires, one failure is
+                     followed from the monitor's query to the failed attempt,
+                     its successor in the same work and its ERROR generation
+                     in Langfuse, Datadog holds no canary, and the monitor
+                     recovers
   fail               scale langfuse-web to 0 (needs --confirm); the chat still
                      answers, the ops trace arrives, the Langfuse exporter fails
                      and its monitor fires; langfuse-web stays down for recover
@@ -70,6 +78,18 @@ const POLL: Duration = Duration::from_secs(10);
 /// How often `recover` sends a turn while it waits for the monitor, so the
 /// exporter keeps reporting healthy delivery through the 5-minute window.
 const RECOVERY_TRAFFIC: u32 = 6;
+/// `chat_generation_errors` in `infra/gcp/observability/datadog.tf`.
+const CHAT_FAILURE_MONITOR: &str = "[staging] physician chat generation errors";
+/// The ledger group of a `chat-failure` exercise, apart from the exporter's.
+const CHAT_FAILURE_GROUP: &str = "staging/physician-chat-failure";
+/// What `chat-failure` appends to each turn: the worker fails the first
+/// attempt of a rehearsal turn so marked, and the redelivery answers.
+const FAIL_ONCE: &str = " [fail:1]";
+/// The most marked turns `chat-failure` sends, whatever the threshold says.
+const MAX_FAILING_TURNS: u32 = 20;
+/// The chat failure monitor counts errors over 10 minutes, so its recovery
+/// comes at least that long after the last failed attempt.
+const CHAT_RECOVERY_POLLS: u32 = 120;
 
 #[derive(Debug, thiserror::Error)]
 pub(super) enum DrillError {
@@ -126,8 +146,11 @@ pub(super) enum DrillError {
         #[source]
         source: SignalError,
     },
-    #[error("{0} needs --confirm: it scales a staging workload to zero")]
-    Unconfirmed(&'static str),
+    #[error("{action} needs --confirm: {why}")]
+    Unconfirmed {
+        action: &'static str,
+        why: &'static str,
+    },
     #[error("{what}: {}", gaps.join("; "))]
     Gaps {
         what: &'static str,
@@ -177,6 +200,7 @@ enum Action {
     Rehearse,
     AlertToRun,
     Isolation,
+    ChatFailure,
     Fail,
     Recover,
     SigninBreakglass,
@@ -188,6 +212,7 @@ impl Action {
             "rehearse" => Self::Rehearse,
             "alert-to-run" => Self::AlertToRun,
             "isolation" => Self::Isolation,
+            "chat-failure" => Self::ChatFailure,
             "fail" => Self::Fail,
             "recover" => Self::Recover,
             "signin-breakglass" => Self::SigninBreakglass,
@@ -200,14 +225,22 @@ impl Action {
             Self::Rehearse => "rehearse",
             Self::AlertToRun => "alert-to-run",
             Self::Isolation => "isolation",
+            Self::ChatFailure => "chat-failure",
             Self::Fail => "fail",
             Self::Recover => "recover",
             Self::SigninBreakglass => "signin-breakglass",
         }
     }
 
-    fn scales(self) -> bool {
-        matches!(self, Self::Fail | Self::Recover | Self::SigninBreakglass)
+    /// Why the action needs `--confirm`, when it changes staging or pages.
+    fn needs_confirmation(self) -> Option<&'static str> {
+        match self {
+            Self::Fail | Self::Recover | Self::SigninBreakglass => {
+                Some("it scales a staging workload to zero")
+            }
+            Self::ChatFailure => Some("it pages #engineering-observability"),
+            Self::Rehearse | Self::AlertToRun | Self::Isolation => None,
+        }
     }
 }
 
@@ -310,8 +343,13 @@ fn is_scenario(value: &str) -> bool {
 
 pub(super) fn from_args(args: &[String]) -> Result<(), Failure> {
     let request = parse_args(args).map_err(|message| Failure::new(2, message))?;
-    if request.action.scales() && !request.confirmed {
-        return Err(failure(DrillError::Unconfirmed(request.action.slug())));
+    if let Some(why) = request.action.needs_confirmation()
+        && !request.confirmed
+    {
+        return Err(failure(DrillError::Unconfirmed {
+            action: request.action.slug(),
+            why,
+        }));
     }
     let started = Utc::now();
     let mut report = Report::new(request.action, started);
@@ -415,6 +453,7 @@ fn run(request: &Request, report: &mut Report, watch: &mut Watch) -> Result<(), 
         Action::Rehearse => rehearse(request, report, watch),
         Action::AlertToRun => alert_to_run(request, report, watch),
         Action::Isolation => isolation(request, report, watch),
+        Action::ChatFailure => chat_failure(request, report, watch),
         Action::Fail => fail(request, report, &mut kubectl, watch),
         Action::Recover => recover(request, report, &mut kubectl, watch),
         Action::SigninBreakglass => signin_breakglass(report, &mut kubectl, watch),
@@ -457,48 +496,80 @@ struct Sent {
     reply_chars: usize,
 }
 
+/// The rehearsal physician, signed in, and the patient its turns go to.
+struct Rehearsal {
+    physician: Physician,
+    origin: String,
+    workspace: String,
+}
+
+impl Rehearsal {
+    fn sign_in() -> Result<Self, DrillError> {
+        let client = client()?;
+        let origin = cluster::physician_origin()?;
+        let token = cluster::access_token()?;
+        let now = u64::try_from(Utc::now().timestamp()).unwrap_or_default();
+        let physician = Physician::sign_in(client, &origin, &token, now)?;
+        let workspace = physician.first_workspace()?;
+        Ok(Self {
+            physician,
+            origin,
+            workspace,
+        })
+    }
+
+    /// Submits one canary turn on a new chat, under a scenario unique to the
+    /// turn unless one was named. `marker` is appended to the text as is.
+    fn submit(&self, request: &Request, marker: &str) -> Result<(Turn, String), DrillError> {
+        let run = nonce();
+        let canary = format!("coda-canary-{run}");
+        let turn = Turn {
+            workspace: self.workspace.clone(),
+            chat: format!("langfuse-drill-{run}"),
+            text: format!("Langfuse drill {canary}. Please answer in one short sentence.{marker}"),
+            scenario: request
+                .scenario
+                .clone()
+                .unwrap_or_else(|| format!("langfuse-drill-{run}")),
+            key: format!("langfuse-drill-{run}"),
+        };
+        self.physician.submit(&turn)?;
+        Ok((turn, canary))
+    }
+
+    fn answer(&self, turn: Turn, canary: String, watch: &Watch) -> Result<Sent, DrillError> {
+        let answer =
+            self.physician
+                .await_reply(&turn, REPLY_POLLS, Duration::from_secs(5), watch)?;
+        Ok(Sent {
+            reply_chars: answer.text.chars().count(),
+            turn,
+            canary,
+            attempt: answer.attempt,
+        })
+    }
+
+    fn evidence(&self, sent: &Sent) -> Value {
+        json!({
+            "origin": self.origin,
+            "patient_workspace_id": sent.turn.workspace,
+            "chat_id": sent.turn.chat,
+            "scenario": sent.turn.scenario,
+            "canary": sent.canary,
+            "attempt_id": sent.attempt,
+            "reply_chars": sent.reply_chars,
+        })
+    }
+}
+
 /// Signs in as the rehearsal physician and sends one canary turn on a new
 /// chat, under a scenario unique to the run unless one was named.
 fn send_turn(request: &Request, report: &mut Report, watch: &Watch) -> Result<Sent, DrillError> {
-    let client = client()?;
-    let origin = cluster::physician_origin()?;
-    let token = cluster::access_token()?;
-    let now = u64::try_from(Utc::now().timestamp()).unwrap_or_default();
-    let physician = Physician::sign_in(client, &origin, &token, now)?;
-    let workspace = physician.first_workspace()?;
-    let run = nonce();
-    let canary = format!("coda-canary-{run}");
-    let turn = Turn {
-        workspace,
-        chat: format!("langfuse-drill-{run}"),
-        text: format!("Langfuse drill {canary}. Please answer in one short sentence."),
-        scenario: request
-            .scenario
-            .clone()
-            .unwrap_or_else(|| format!("langfuse-drill-{run}")),
-        key: format!("langfuse-drill-{run}"),
-    };
-    physician.submit(&turn)?;
-    let answer = physician.await_reply(&turn, REPLY_POLLS, Duration::from_secs(5), watch)?;
-    let reply_chars = answer.text.chars().count();
-    report.put(
-        "turn",
-        json!({
-            "origin": origin,
-            "patient_workspace_id": turn.workspace,
-            "chat_id": turn.chat,
-            "scenario": turn.scenario,
-            "canary": canary,
-            "attempt_id": answer.attempt,
-            "reply_chars": reply_chars,
-        }),
-    );
-    Ok(Sent {
-        turn,
-        canary,
-        attempt: answer.attempt,
-        reply_chars,
-    })
+    let rehearsal = Rehearsal::sign_in()?;
+    let (turn, canary) = rehearsal.submit(request, "")?;
+    let sent = rehearsal.answer(turn, canary, watch)?;
+    report.put("turn", rehearsal.evidence(&sent));
+    Ok(sent)
 }
 
 /// Langfuse over a drill-owned port-forward.
@@ -671,6 +742,36 @@ impl LangfuseApi<'_> {
             seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
         })
     }
+
+    /// Waits for the generation of attempt `run_id` among the chat's traces:
+    /// a redelivered attempt starts a trace of its own.
+    fn attempt_generation(
+        &self,
+        sent: &Sent,
+        run_id: &str,
+        watch: &Watch,
+    ) -> Result<LangfuseTurn, DrillError> {
+        for _poll in 0..READBACK_POLLS {
+            let traces = self.get(
+                "/api/public/traces",
+                &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
+                "Langfuse traces",
+            )?;
+            for id in readback::session_traces(&traces) {
+                let trace = self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
+                let turn = readback::langfuse_turn(&trace, &sent.canary)
+                    .filter(|turn| turn.run_id.as_deref() == Some(run_id));
+                if let Some(turn) = turn {
+                    return Ok(turn);
+                }
+            }
+            watch.pause(POLL)?;
+        }
+        Err(DrillError::Timeout {
+            what: "the failed attempt's Langfuse generation",
+            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
+        })
+    }
 }
 
 /// Datadog's read APIs with the operator keys.
@@ -784,6 +885,78 @@ impl Datadog {
             "Datadog monitors",
         )?;
         Ok(readback::exporter_groups(&monitors, LANGFUSE_EXPORTER))
+    }
+
+    /// The physician chat failure monitor (`chat_generation_errors` in
+    /// `infra/gcp/observability/datadog.tf`), which must exist.
+    fn chat_failure_monitor(&self) -> Result<NamedMonitor, DrillError> {
+        let what = "Datadog chat failure monitor";
+        let monitors = chat::send_json(
+            self.authorized(
+                self.client
+                    .get(format!("{DATADOG_API}/api/v1/monitor"))
+                    .query(&[("name", CHAT_FAILURE_MONITOR), ("group_states", "all")]),
+            ),
+            what,
+        )?;
+        readback::named_monitor(&monitors, CHAT_FAILURE_MONITOR).ok_or(DrillError::Shape {
+            what,
+            field: "a monitor named [staging] physician chat generation errors",
+        })
+    }
+
+    /// Waits for attempt `run_id`'s `physician.worker.attempt` span, then
+    /// reads its whole trace.
+    fn attempt(
+        &self,
+        run_id: &str,
+        watch: &Watch,
+    ) -> Result<(AttemptSpan, DatadogTrace), DrillError> {
+        let query = format!(
+            "env:{DATADOG_ENV} service:physician-worker resource_name:physician.worker.attempt @coda.run_id:{run_id}"
+        );
+        for _poll in 0..READBACK_POLLS {
+            let found = self.spans(&query)?;
+            let span = readback::attempt_span(&found, run_id);
+            let trace_id = found["data"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned));
+            if let (Some(span), Some(trace_id)) = (span, trace_id) {
+                let body = self.spans(&format!("trace_id:{trace_id}"))?;
+                return Ok((span, DatadogTrace { trace_id, body }));
+            }
+            watch.pause(POLL)?;
+        }
+        Err(DrillError::Timeout {
+            what: "the Datadog attempt span",
+            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
+        })
+    }
+
+    /// The trace id of attempt `run_id`'s failed generation, found by the
+    /// chat failure monitor's own query narrowed to that attempt.
+    fn failed_generation(&self, run_id: &str, watch: &Watch) -> Result<String, DrillError> {
+        let query = format!(
+            "service:physician-worker env:{DATADOG_ENV} status:error @coda.job:physician_* @gen_ai.system:* @coda.run_id:{run_id}"
+        );
+        for _poll in 0..READBACK_POLLS {
+            let found = self.spans(&query)?;
+            let trace_id = found["data"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned));
+            if let Some(trace_id) = trace_id {
+                return Ok(trace_id);
+            }
+            watch.pause(POLL)?;
+        }
+        Err(DrillError::Timeout {
+            what: "the Datadog error generation the monitor counts",
+            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
+        })
     }
 }
 
@@ -1258,6 +1431,259 @@ fn fail_checks(
     })
 }
 
+/// How many marked turns cross a monitor alerting above `threshold`.
+fn failing_turns(threshold: Option<f64>) -> Result<u32, DrillError> {
+    let what = "Datadog chat failure monitor";
+    let threshold = threshold.filter(|value| value.is_finite() && *value >= 0.0);
+    let Some(threshold) = threshold else {
+        return Err(DrillError::Shape {
+            what,
+            field: "options.thresholds.critical",
+        });
+    };
+    // The monitor alerts on `> threshold`: the fewest failures above it.
+    (1..=MAX_FAILING_TURNS)
+        .find(|turns| f64::from(*turns) > threshold)
+        .ok_or_else(|| DrillError::Gaps {
+            what,
+            gaps: vec![format!(
+                "its threshold {threshold} needs more than {MAX_FAILING_TURNS} failing turns"
+            )],
+        })
+}
+
+/// Waits for the chat failure monitor to fire (`alerting`) or recover after
+/// `since`.
+fn await_chat_monitor(
+    datadog: &Datadog,
+    alerting: bool,
+    since: DateTime<Utc>,
+    polls: u32,
+    watch: &Watch,
+) -> Result<(MonitorGroup, DateTime<Utc>), DrillError> {
+    for _poll in 0..polls {
+        let monitor = datadog.chat_failure_monitor()?;
+        if let Some(reached) = monitor_reached(&monitor.groups, alerting, since) {
+            return Ok(reached);
+        }
+        watch.pause(POLL)?;
+    }
+    Err(DrillError::Timeout {
+        what: if alerting {
+            "the chat failure monitor alert"
+        } else {
+            "the chat failure monitor recovery"
+        },
+        seconds: u64::from(polls) * POLL.as_secs(),
+    })
+}
+
+/// Sends threshold + 1 rehearsal turns whose first attempt fails on purpose,
+/// so the physician chat failure monitor pages, then follows one failure from
+/// the monitor's own query to the failed attempt, its answering successor and
+/// its Langfuse generation, and waits for the monitor to recover.
+fn chat_failure(
+    request: &Request,
+    report: &mut Report,
+    watch: &mut Watch,
+) -> Result<(), DrillError> {
+    let datadog = Datadog::open()?;
+    let langfuse = Langfuse::open()?;
+    let api = langfuse.api()?;
+    if ledger(&request.output)?.is_open() {
+        return Err(DrillError::Ledger(
+            "a Langfuse export exercise is open; run recover first".to_owned(),
+        ));
+    }
+    let monitor = datadog.chat_failure_monitor()?;
+    report.put("monitor_before", &monitor);
+    if monitor.groups.iter().any(|group| group.status != "OK") {
+        return Err(DrillError::Gaps {
+            what: "the chat failure monitor",
+            gaps: vec!["it is not OK before the drill, so a firing would prove nothing".to_owned()],
+        });
+    }
+    let count = failing_turns(monitor.threshold)?;
+    let rehearsal = Rehearsal::sign_in()?;
+    let mut exercise = Exercise::idle_in(DrillRoute::Langfuse, CHAT_FAILURE_GROUP);
+    let failed_at = Utc::now();
+    watch.opened_at(failed_at);
+    let file = super::observation_file_name(DrillRoute::Langfuse, failed_at);
+    exercise.record_signal(SignalKind::Failure, failed_at, &file);
+    let outcome = chat_failure_checks(
+        request,
+        report,
+        &ChatFailureReaders {
+            datadog: &datadog,
+            api: &api,
+            rehearsal: &rehearsal,
+        },
+        count,
+        failed_at,
+        &mut exercise,
+        watch,
+    );
+    // Nothing stays failing once the drill stops sending marked turns, so an
+    // aborted run closes its exercise rather than block the next drill.
+    if exercise.is_open() {
+        exercise.record_signal(SignalKind::Restored, Utc::now(), &file);
+    }
+    with_ledger(outcome, save_ledger(&request.output, &exercise, failed_at))
+}
+
+/// What `chat-failure` reads and writes through.
+struct ChatFailureReaders<'a> {
+    datadog: &'a Datadog,
+    api: &'a LangfuseApi<'a>,
+    rehearsal: &'a Rehearsal,
+}
+
+fn chat_failure_checks(
+    request: &Request,
+    report: &mut Report,
+    readers: &ChatFailureReaders<'_>,
+    count: u32,
+    failed_at: DateTime<Utc>,
+    exercise: &mut Exercise,
+    watch: &Watch,
+) -> Result<(), DrillError> {
+    let ChatFailureReaders {
+        datadog,
+        api,
+        rehearsal,
+    } = readers;
+    // Every turn is submitted before any is awaited, so the failures land
+    // well inside the monitor's 10-minute window.
+    let mut submitted = Vec::new();
+    for _turn in 0..count {
+        submitted.push(rehearsal.submit(request, FAIL_ONCE)?);
+    }
+    let mut answered = Vec::new();
+    for (turn, canary) in submitted {
+        answered.push(rehearsal.answer(turn, canary, watch)?);
+    }
+    report.put(
+        "turns",
+        answered
+            .iter()
+            .map(|sent| rehearsal.evidence(sent))
+            .collect::<Vec<_>>(),
+    );
+    let (group, fired) = await_chat_monitor(datadog, true, failed_at, MONITOR_POLLS, watch)?;
+    report.put("monitor_firing", &group);
+    exercise.record_evaluator(
+        EvalKind::Firing,
+        fired,
+        &format!("Datadog monitor {CHAT_FAILURE_MONITOR:?}"),
+    );
+    // Every marked turn answered before the firing, so the failures have
+    // stopped by now and the monitor's 10-minute window drains from here,
+    // whatever the readback below takes.
+    let restored = Utc::now();
+    exercise.record_signal(
+        SignalKind::Restored,
+        restored,
+        &super::observation_file_name(DrillRoute::Langfuse, failed_at),
+    );
+    let followed = answered.first().ok_or(DrillError::Shape {
+        what: "chat-failure",
+        field: "an answered turn",
+    })?;
+    let mut found = follow_failure(report, datadog, api, followed, watch)?;
+    for sent in &answered[1..] {
+        let (successor, _) = datadog.attempt(&sent.attempt, watch)?;
+        if successor.predecessor_run_id.is_none() {
+            found.push(format!(
+                "turn {} answered on its first attempt; the marker did not fail it",
+                sent.turn.chat
+            ));
+        }
+    }
+    gaps("chat failure to run", found)?;
+
+    let (group, recovered) = await_chat_monitor(datadog, false, fired, CHAT_RECOVERY_POLLS, watch)?;
+    report.put("monitor_recovered", &group);
+    if recovered < restored {
+        return Err(DrillError::Gaps {
+            what: "the chat failure monitor",
+            gaps: vec![format!(
+                "it recovered at {recovered}, before the failures were seen to stop at {restored}"
+            )],
+        });
+    }
+    exercise.record_evaluator(
+        EvalKind::Recovered,
+        recovered,
+        &format!("Datadog monitor {CHAT_FAILURE_MONITOR:?}"),
+    );
+    Ok(())
+}
+
+/// Follows one marked turn from the monitor's query to the failed attempt,
+/// its successor and the failed generation in Langfuse. Returns the gaps.
+fn follow_failure(
+    report: &mut Report,
+    datadog: &Datadog,
+    api: &LangfuseApi<'_>,
+    sent: &Sent,
+    watch: &Watch,
+) -> Result<Vec<String>, DrillError> {
+    let (successor, successor_trace) = datadog.attempt(&sent.attempt, watch)?;
+    let Some(failed_run) = successor.predecessor_run_id.clone() else {
+        return Ok(vec![format!(
+            "the answering attempt {} names no predecessor; the turn never failed",
+            sent.attempt
+        )]);
+    };
+    let (failed, failed_trace) = datadog.attempt(&failed_run, watch)?;
+    let alerted_trace = datadog.failed_generation(&failed_run, watch)?;
+    let langfuse = api.attempt_generation(sent, &failed_run, watch)?;
+    let failed_generation = readback::datadog_span(&failed_trace.body, &sent.canary);
+    let successor_generation = readback::datadog_span(&successor_trace.body, &sent.canary);
+    report.put(
+        "followed",
+        json!({
+            "chat_id": sent.turn.chat,
+            "monitor_query_trace_id": alerted_trace,
+            "failed_attempt": failed,
+            "failed_trace_id": failed_trace.trace_id,
+            "failed_generation": failed_generation,
+            "successor_attempt": successor,
+            "successor_trace_id": successor_trace.trace_id,
+            "successor_generation": successor_generation,
+            "langfuse": langfuse,
+        }),
+    );
+    let mut found = readback::redelivery_gaps(&failed, &successor);
+    found.extend(readback::failed_generation_gaps(&langfuse, &failed_run));
+    if alerted_trace != failed_trace.trace_id {
+        found.push(format!(
+            "the monitor's error generation is in trace {alerted_trace}, not the failed attempt's {}",
+            failed_trace.trace_id
+        ));
+    }
+    if !readback::same_trace(&failed_trace.trace_id, &langfuse.trace_id) {
+        found.push(format!(
+            "Datadog trace {} of the failed attempt is not Langfuse trace {}",
+            failed_trace.trace_id, langfuse.trace_id
+        ));
+    }
+    if !failed_generation.found {
+        found.push(
+            "Datadog has no generation span in the failed attempt's trace; an empty search is not proof"
+                .to_owned(),
+        );
+    }
+    if failed_generation.canary {
+        found.push("Datadog carries the canary in the failed attempt's trace".to_owned());
+    }
+    found.extend(readback::isolation_gaps(
+        &successor_generation,
+        Some(&sent.attempt),
+    ));
+    Ok(found)
+}
+
 /// Restores langfuse-web to the count `fail` recorded, first of all, then
 /// requires new turns in Langfuse and the monitor's recovery while rehearsal
 /// traffic keeps the exporter reporting.
@@ -1441,10 +1867,24 @@ mod tests {
     }
 
     #[test]
-    fn scaling_actions_need_confirmation() {
-        let refused = from_args(&args(&["fail", "--output-dir", "/nonexistent/x"])).unwrap_err();
-        assert!(refused.message.contains("--confirm"), "{}", refused.message);
-        assert!(Action::SigninBreakglass.scales() && !Action::Isolation.scales());
+    fn scaling_and_paging_actions_need_confirmation() {
+        for action in ["fail", "chat-failure"] {
+            let refused =
+                from_args(&args(&[action, "--output-dir", "/nonexistent/x"])).unwrap_err();
+            assert!(refused.message.contains("--confirm"), "{}", refused.message);
+        }
+        assert!(Action::SigninBreakglass.needs_confirmation().is_some());
+        assert!(Action::Isolation.needs_confirmation().is_none());
+    }
+
+    #[test]
+    fn chat_failure_sends_one_more_turn_than_the_threshold() {
+        assert_eq!(failing_turns(Some(5.0)).unwrap(), 6);
+        assert_eq!(failing_turns(Some(0.0)).unwrap(), 1);
+        assert_eq!(failing_turns(Some(2.5)).unwrap(), 3);
+        assert!(failing_turns(None).is_err());
+        assert!(failing_turns(Some(-1.0)).is_err());
+        assert!(failing_turns(Some(f64::from(MAX_FAILING_TURNS))).is_err());
     }
 
     fn group(status: &str, triggered: Option<i64>, resolved: Option<i64>) -> MonitorGroup {

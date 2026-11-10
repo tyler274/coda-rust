@@ -42,6 +42,8 @@ pub(super) enum Failure {
     RetryPersist,
     /// The reply revision's execution failed.
     Revision,
+    /// A rehearsal turn's `[fail:K]` marker failed this attempt on purpose.
+    Rehearsed,
 }
 
 impl Failure {
@@ -53,11 +55,13 @@ impl Failure {
             Self::Timeout => "timeout",
             Self::RetryPersist => "retry_persist",
             Self::Revision => "revision",
+            Self::Rehearsed => "rehearsed",
         }
     }
 
-    /// The fixed, content-free span status description.
-    fn description(self) -> &'static str {
+    /// The fixed, content-free span status description, also the failed
+    /// generation's error message.
+    pub(super) fn description(self) -> &'static str {
         match self {
             Self::ProviderInit => "model provider unavailable",
             Self::ModelCall => "model execution failed",
@@ -65,6 +69,7 @@ impl Failure {
             Self::Timeout => "attempt deadline exceeded",
             Self::RetryPersist => "failed attempt not returned to pending",
             Self::Revision => "reply revision failed",
+            Self::Rehearsed => "rehearsed attempt failure",
         }
     }
 }
@@ -439,6 +444,7 @@ mod tests {
             Failure::Timeout,
             Failure::RetryPersist,
             Failure::Revision,
+            Failure::Rehearsed,
         ]
         .map(Failure::as_str);
         assert_eq!(
@@ -449,7 +455,8 @@ mod tests {
                 "claim",
                 "timeout",
                 "retry_persist",
-                "revision"
+                "revision",
+                "rehearsed"
             ]
         );
         let outcomes = [

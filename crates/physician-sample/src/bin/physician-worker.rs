@@ -36,7 +36,7 @@ use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
-use physician_sample::hosting::{self, SimulationPractices, is_hosted};
+use physician_sample::hosting::{self, SimulationPractices, is_hosted, marked_attempt_fails};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
 use tracing::Instrument;
@@ -196,7 +196,20 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
         worker.adapter,
     );
     genai::record_input(&generation, &input_text);
-    let provider = worker.model.provider(earlier_attempts, &input_text);
+    // A rehearsal turn marked `[fail:K]` fails its first K attempts before
+    // any model call, so a drill exercises the real failure path at no cost.
+    let provider = if worker.simulation_practices.rehearsed_failure(
+        &claim.scope.practice,
+        &input_text,
+        earlier_attempts,
+    ) {
+        Err(Failure::Rehearsed)
+    } else {
+        worker
+            .model
+            .provider(earlier_attempts, &input_text)
+            .map_err(|_| Failure::ProviderInit)
+    };
     drop(input_text);
     let mut host = PhysicianHost {
         store: worker.store.clone(),
@@ -213,18 +226,12 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
     // side instead of queueing behind one another's model call.
     let mut provider = match provider {
         Ok(provider) => provider,
-        Err(_) => {
+        Err(failure) => {
             watcher.abort();
-            genai::record_error(&generation, "physician chat provider unavailable");
+            genai::record_error(&generation, failure.description());
             // Counted like a model failure, so the fifth one ends the turn.
             let status = failed_attempt(worker, span, &host.claim, workspace_id).await;
-            attempt::finish(
-                span,
-                CHAT_JOB,
-                Some(&run_id),
-                Outcome::Retry,
-                Some(Failure::ProviderInit),
-            );
+            attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Retry, Some(failure));
             return status;
         }
     };
@@ -852,15 +859,6 @@ impl ModelSource {
     }
 }
 
-/// Whether the attempt after `earlier_attempts` fails for a message marked
-/// `[fail:K]`: the first K attempts fail. The count is the conversation's
-/// saved attempts on this input, so it survives a worker restart and every
-/// worker instance agrees. Try again keeps the input, so `[fail:5]`
-/// dead-letters on its fifth failure and its Try again then succeeds.
-fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
-    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
-}
-
 /// Takes one from `count` unless it is zero; true when it took one. An
 /// explicit compare-exchange loop: `fetch_update` is deprecated on newer
 /// stable (renamed `try_update`), which the dev shell's toolchain predates.
@@ -873,13 +871,6 @@ fn take_one(count: &std::sync::atomic::AtomicU32) -> bool {
         }
     }
     false
-}
-
-/// K from the first `[fail:K]` in `input`, if K is a whole number.
-fn marked_failures(input: &str) -> Option<u32> {
-    let (_, rest) = input.split_once("[fail:")?;
-    let (count, _) = rest.split_once(']')?;
-    count.parse().ok()
 }
 
 enum Model {
@@ -1312,30 +1303,6 @@ mod tests {
         assert!(!take_one(&count));
         assert!(!take_one(&count));
         assert_eq!(count.load(Ordering::SeqCst), 0);
-    }
-
-    #[test]
-    fn fail_marker_parses_whole_counts_only() {
-        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
-        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
-        assert_eq!(marked_failures("Plain turn"), None);
-        assert_eq!(marked_failures("[fail:]"), None);
-        assert_eq!(marked_failures("[fail:-1]"), None);
-        assert_eq!(marked_failures("[fail:2"), None);
-        assert_eq!(marked_failures("[fail:x]"), None);
-    }
-
-    #[test]
-    fn fail_marker_fails_the_first_k_saved_attempts() {
-        // `[fail:2]` fails its first two attempts, then succeeds for good.
-        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
-        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
-        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
-        // An unmarked turn never fails, whatever its history.
-        assert!(!marked_attempt_fails(0, "Plain turn"));
-        assert!(!marked_attempt_fails(4, "Plain turn"));
-        assert!(!marked_attempt_fails(0, "[fail:0]"));
     }
 
     fn attempt(id: &str, revision: u64) -> local_product::runtime::Attempt {

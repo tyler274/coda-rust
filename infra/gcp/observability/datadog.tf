@@ -123,8 +123,10 @@ resource "datadog_monitor" "site_5xx_rate" {
 # Select generation attributes emitted by the worker and retained by the gateway,
 # not Datadog's derived operation name. Validate ingestion and trace retention
 # before enabling; the query includes chat and reply-revision generations.
+# chat_failure_monitor_enabled creates this monitor without the others, and
+# `observability-drill langfuse chat-failure` qualifies it end to end.
 resource "datadog_monitor" "chat_generation_errors" {
-  count   = local.datadog_backend && var.datadog_monitors_enabled ? 1 : 0
+  count   = local.datadog_backend && (var.datadog_monitors_enabled || var.chat_failure_monitor_enabled) ? 1 : 0
   name    = "[${local.dd_env}] physician chat generation errors"
   type    = "trace-analytics alert"
   query   = "trace-analytics(\"service:physician-worker env:${local.dd_env} status:error @coda.job:physician_* @gen_ai.system:*\").rollup(\"count\").last(\"10m\") > ${var.chat_generation_error_threshold}"

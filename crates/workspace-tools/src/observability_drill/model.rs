@@ -14,7 +14,8 @@ pub(super) enum DrillRoute {
     Datadog,
     Grafana,
     Watchdog,
-    /// Langfuse export: `observability-drill langfuse fail|recover`.
+    /// Langfuse export (`observability-drill langfuse fail|recover`) and the
+    /// physician chat failure it follows to Langfuse (`langfuse chat-failure`).
     Langfuse,
 }
 
@@ -364,6 +365,16 @@ impl Exercise {
         Self {
             route,
             group: route.default_group().to_string(),
+            observations: Vec::new(),
+        }
+    }
+
+    /// An idle exercise on `route` whose observations name `group` instead
+    /// of the route's default, for a second symptom the route's drill owns.
+    pub(super) fn idle_in(route: DrillRoute, group: &str) -> Self {
+        Self {
+            route,
+            group: group.to_owned(),
             observations: Vec::new(),
         }
     }

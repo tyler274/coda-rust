@@ -152,6 +152,14 @@ impl SimulationPractices {
         self.0.contains(practice)
     }
 
+    /// Whether the attempt after `earlier_attempts` on a turn in `practice`
+    /// fails on purpose: only a rehearsal practice honours a `[fail:K]`
+    /// marker in its message (see [`marked_attempt_fails`]). A real practice
+    /// never does, and a production process has no rehearsal practices.
+    pub fn rehearsed_failure(&self, practice: &str, input: &str, earlier_attempts: u32) -> bool {
+        self.contains(practice) && marked_attempt_fails(earlier_attempts, input)
+    }
+
     /// Admits a scenario id sent by a session in `practice`: only a rehearsal
     /// practice may send one, and only a short slug (`[a-z0-9._-]`, at most 64
     /// characters), since it becomes a Langfuse tag.
@@ -188,6 +196,22 @@ impl SimulationPractices {
             (telemetry::genai::Origin::Real, None)
         }
     }
+}
+
+/// Whether the attempt after `earlier_attempts` fails for a message marked
+/// `[fail:K]`: the first K attempts fail. The count is the conversation's
+/// saved attempts on this input, so it survives a worker restart and every
+/// worker instance agrees. Try again keeps the input, so `[fail:5]`
+/// dead-letters on its fifth failure and its Try again then succeeds.
+pub fn marked_attempt_fails(earlier_attempts: u32, input: &str) -> bool {
+    marked_failures(input).is_some_and(|failures| earlier_attempts < failures)
+}
+
+/// K from the first `[fail:K]` in `input`, if K is a whole number.
+fn marked_failures(input: &str) -> Option<u32> {
+    let (_, rest) = input.split_once("[fail:")?;
+    let (count, _) = rest.split_once(']')?;
+    count.parse().ok()
 }
 
 /// Why a submitted scenario id was refused.
@@ -498,6 +522,47 @@ mod tests {
                 "{bad}"
             );
         }
+    }
+
+    #[test]
+    fn fail_marker_parses_whole_counts_only() {
+        assert_eq!(marked_failures("Retry [fail:1]"), Some(1));
+        assert_eq!(marked_failures("[fail:5] then text"), Some(5));
+        assert_eq!(marked_failures("Plain turn"), None);
+        assert_eq!(marked_failures("[fail:]"), None);
+        assert_eq!(marked_failures("[fail:-1]"), None);
+        assert_eq!(marked_failures("[fail:2"), None);
+        assert_eq!(marked_failures("[fail:x]"), None);
+    }
+
+    #[test]
+    fn fail_marker_fails_the_first_k_saved_attempts() {
+        // `[fail:2]` fails its first two attempts, then succeeds for good.
+        assert!(marked_attempt_fails(0, "Retry [fail:2]"));
+        assert!(marked_attempt_fails(1, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(2, "Retry [fail:2]"));
+        assert!(!marked_attempt_fails(3, "Retry [fail:2]"));
+        // An unmarked turn never fails, whatever its history.
+        assert!(!marked_attempt_fails(0, "Plain turn"));
+        assert!(!marked_attempt_fails(4, "Plain turn"));
+        assert!(!marked_attempt_fails(0, "[fail:0]"));
+    }
+
+    #[test]
+    fn only_a_rehearsal_practice_fails_a_marked_turn() {
+        let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
+        assert!(practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
+        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 1));
+        assert!(!practices.rehearsed_failure("coda-rehearsal-practice", "Plain turn", 0));
+        // A real practice never fails, whatever its message says.
+        assert!(!practices.rehearsed_failure("roger-synthetic-practice", "Drill [fail:1]", 0));
+        // Outside the preview profile there are no rehearsal practices, so
+        // nothing fails on purpose.
+        let production = SimulationPractices::from_env(|name| {
+            (name == "CODA_HOSTED_PROFILE").then(|| "production".to_owned())
+        })
+        .unwrap();
+        assert!(!production.rehearsed_failure("coda-rehearsal-practice", "Drill [fail:1]", 0));
     }
 
     #[test]

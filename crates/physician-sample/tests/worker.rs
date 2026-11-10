@@ -793,6 +793,90 @@ async fn fail_marker_fails_only_the_marked_message() {
     );
 }
 
+/// Without the proof-only fixed marker, a rehearsal practice's `[fail:1]`
+/// still fails its first attempt on purpose: the attempt span says
+/// `rehearsed`, and the redelivery completes the same work. A real practice's
+/// `[fail:1]` answers on its first attempt.
+#[tokio::test]
+async fn a_rehearsal_turn_marked_to_fail_fails_once_and_its_successor_answers() {
+    let _guard = lock().lock().await;
+    let collector = TraceCapture::start().await;
+    let rehearsal = format!("rehearsal-{}", uuid::Uuid::new_v4().simple());
+    let Some(running) = running_with(
+        "rehearsed_failure",
+        None,
+        None,
+        false,
+        &[
+            ("CODA_HOSTED_PROFILE", "staging-preview"),
+            ("PHYSICIAN_SIMULATION_PRACTICES", rehearsal.as_str()),
+            ("OTEL_EXPORTER_OTLP_ENDPOINT", &collector.endpoint),
+            ("OTEL_BSP_SCHEDULE_DELAY", "50"),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let url = &running.database.url;
+    let (scope, marked) = accept_in(
+        url,
+        &running.store,
+        "Drill [fail:1]",
+        Some(&rehearsal),
+        Some("drill.chat-failure"),
+    )
+    .await;
+    running.emulator.publish(&marked).await;
+    let state = wait_assistant(&running.store, &scope, &running.worker).await;
+    assert_eq!(state.status, "completed");
+    assert_eq!(assistant_texts(&state), [support::FIXED_TEXT]);
+    assert_eq!(attempt_statuses(&state), ["failed", "completed"]);
+    let (failed, successor) = (&state.attempts[0], &state.attempts[1]);
+    assert_eq!(failed.work, successor.work, "one work across both attempts");
+    assert_eq!(successor.predecessor.as_deref(), Some(failed.id.as_str()));
+
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let failed_span = loop {
+        let found = collector
+            .spans
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|span| {
+                span.name == "physician.worker.attempt"
+                    && trace_attribute(span, "coda.run_id").as_deref() == Some(failed.id.as_str())
+            })
+            .cloned();
+        if let Some(span) = found {
+            break span;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "failed attempt span not exported\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    assert_eq!(
+        trace_attribute(&failed_span, "error.type").as_deref(),
+        Some("rehearsed")
+    );
+    assert_eq!(
+        trace_attribute(&failed_span, "coda.work_id").as_deref(),
+        Some(failed.work.as_str())
+    );
+
+    let (real_scope, real) = accept_in(url, &running.store, "Real [fail:1]", None, None).await;
+    running.emulator.publish(&real).await;
+    let state = wait_assistant(&running.store, &real_scope, &running.worker).await;
+    assert_eq!(
+        attempt_statuses(&state),
+        ["completed"],
+        "a real practice never honours the marker"
+    );
+}
+
 /// `[fail:K]` counts the conversation's saved attempts, not worker memory: a
 /// worker restarted after the first failure fails the second attempt only,
 /// and the third answers.

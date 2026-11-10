@@ -35,6 +35,13 @@ langfuse_ee_trial = true
 collector_self_metrics_enabled = true
 langfuse_monitors_enabled      = true
 
+# The physician chat generation failure monitor pages
+# #engineering-observability on its own gate, without the other service
+# monitors. Its threshold stays the shared default (Grafana's rules.yaml
+# holds the same number), and `observability-drill langfuse chat-failure`
+# sends one more marked rehearsal turn than it.
+chat_failure_monitor_enabled = true
+
 # Services attach prompt and completion text to generation spans. Only the
 # Langfuse pipeline keeps it; the ops pipelines strip it. Must match
 # infra/gcp/rust-environments' telemetry_content.

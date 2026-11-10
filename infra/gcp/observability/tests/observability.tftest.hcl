@@ -739,6 +739,44 @@ run "reject_qualification_monitor_under_grafana" {
   expect_failures = [var.datadog_qualification_monitor_enabled]
 }
 
+run "chat_failure_monitor_has_its_own_gate" {
+  command = plan
+  variables {
+    chat_failure_monitor_enabled = true
+    alert_notify                 = "@slack-confirmed-test"
+  }
+  assert {
+    condition = (
+      length(datadog_monitor.chat_generation_errors) == 1 &&
+      strcontains(datadog_monitor.chat_generation_errors[0].query, "service:physician-worker env:staging status:error") &&
+      endswith(datadog_monitor.chat_generation_errors[0].query, ".last(\"10m\") > 5") &&
+      datadog_monitor.chat_generation_errors[0].monitor_thresholds[0].critical == "5" &&
+      strcontains(datadog_monitor.chat_generation_errors[0].message, "@slack-confirmed-test")
+    )
+    error_message = "The chat failure gate must create the chat generation monitor at its threshold, notifying the confirmed handle."
+  }
+  assert {
+    condition     = length(datadog_monitor.site_5xx_rate) + length(datadog_monitor.site_p95_latency) + length(datadog_monitor.async_failures) + length(datadog_monitor.observability_container_memory) + length(datadog_monitor.observability_container_oom) + length(datadog_monitor.qualification) == 0
+    error_message = "The chat failure gate must not enable any other Datadog monitor."
+  }
+}
+
+run "reject_chat_failure_monitor_without_alert_handle" {
+  command = plan
+  variables { chat_failure_monitor_enabled = true }
+  expect_failures = [var.chat_failure_monitor_enabled]
+}
+
+run "reject_chat_failure_monitor_under_grafana" {
+  command = plan
+  variables {
+    telemetry_backend            = "grafana"
+    chat_failure_monitor_enabled = true
+    alert_notify                 = "@slack-confirmed-test"
+  }
+  expect_failures = [var.chat_failure_monitor_enabled]
+}
+
 run "reject_unconfirmed_alert_route" {
   command = plan
   variables { datadog_monitors_enabled = true }
