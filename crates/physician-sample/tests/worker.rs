@@ -155,6 +155,18 @@ async fn accept_turn(url: &str, store: &Store) -> (Scope, Delivery) {
 }
 
 async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) {
+    accept_in(url, store, text, None, None).await
+}
+
+/// Accepts `text` from a new physician in `practice` (a new one when `None`),
+/// tagged with `scenario`.
+async fn accept_in(
+    url: &str,
+    store: &Store,
+    text: &str,
+    practice: Option<&str>,
+    scenario: Option<&str>,
+) -> (Scope, Delivery) {
     let auth = PostgresAuthStore::connect_without_migrations(url)
         .await
         .expect("auth store");
@@ -164,7 +176,7 @@ async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) 
         .unwrap_or_default();
     let unique = uuid::Uuid::new_v4().simple().to_string();
     let email = format!("worker-{unique}@example.test");
-    let practice = format!("practice-{unique}");
+    let practice = practice.map_or_else(|| format!("practice-{unique}"), str::to_owned);
     let physician = format!("physician-{unique}");
     let workspace = format!("workspace-{unique}");
     let chat = format!("chat-{unique}");
@@ -208,6 +220,7 @@ async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) 
                 key: key.clone(),
                 text: text.into(),
                 timezone: "America/New_York".into(),
+                scenario: scenario.map(str::to_owned),
             },
             PostgresAuthStore::session_reference(&session),
         )
@@ -444,6 +457,111 @@ async fn failed_delivery_is_redelivered_and_can_succeed() {
             .iter()
             .any(|span| span.name == "POST /pubsub/chat-turn")
     );
+}
+
+/// A turn in a rehearsal practice is `simulation` with its scenario on the
+/// generation; a turn in any other practice stays `real`, even if its input
+/// somehow carries a scenario.
+#[tokio::test]
+async fn origin_follows_the_practice_of_the_claimed_turn() {
+    let _guard = lock().lock().await;
+    let collector = TraceCapture::start().await;
+    let rehearsal = format!("rehearsal-{}", uuid::Uuid::new_v4().simple());
+    let Some(running) = running_with(
+        "origin",
+        None,
+        None,
+        false,
+        &[
+            ("CODA_HOSTED_PROFILE", "staging-preview"),
+            ("PHYSICIAN_SIMULATION_PRACTICES", rehearsal.as_str()),
+            ("OTEL_EXPORTER_OTLP_ENDPOINT", &collector.endpoint),
+            ("OTEL_BSP_SCHEDULE_DELAY", "50"),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let url = &running.database.url;
+    let (simulated_scope, simulated_delivery) = accept_in(
+        url,
+        &running.store,
+        "Rehearse",
+        Some(&rehearsal),
+        Some("drill.rehearse"),
+    )
+    .await;
+    let (real_scope, real_delivery) =
+        accept_in(url, &running.store, "Hello", None, Some("drill.rehearse")).await;
+    running.emulator.publish(&simulated_delivery).await;
+    running.emulator.publish(&real_delivery).await;
+    let simulated = wait_assistant(&running.store, &simulated_scope, &running.worker).await;
+    let real = wait_assistant(&running.store, &real_scope, &running.worker).await;
+    let deadline = Instant::now() + Duration::from_secs(10);
+    let generation = |spans: &[ExportedSpan], state: &Conversation| {
+        let run = state.attempts.last().map(|attempt| attempt.id.clone());
+        spans
+            .iter()
+            .find(|span| {
+                span.name == "gen_ai.generation" && trace_attribute(span, "coda.run_id") == run
+            })
+            .cloned()
+    };
+    let (simulated_span, real_span) = loop {
+        let spans = collector.spans.lock().unwrap().clone();
+        if let (Some(a), Some(b)) = (generation(&spans, &simulated), generation(&spans, &real)) {
+            break (a, b);
+        }
+        assert!(
+            Instant::now() < deadline,
+            "generations not exported\n{}",
+            running.worker.tail()
+        );
+        tokio::time::sleep(Duration::from_millis(50)).await;
+    };
+    let tags = |span: &ExportedSpan| -> Vec<String> {
+        use opentelemetry_proto::tonic::common::v1::any_value::Value;
+        let Some(Value::ArrayValue(array)) = span
+            .attributes
+            .iter()
+            .find(|kv| kv.key == "langfuse.trace.tags")
+            .and_then(|kv| kv.value.as_ref())
+            .and_then(|value| value.value.clone())
+        else {
+            return Vec::new();
+        };
+        array
+            .values
+            .into_iter()
+            .filter_map(|value| match value.value {
+                Some(Value::StringValue(text)) => Some(text),
+                _ => None,
+            })
+            .collect()
+    };
+    assert_eq!(
+        trace_attribute(&simulated_span, "langfuse.environment").as_deref(),
+        Some("simulation")
+    );
+    assert_eq!(
+        trace_attribute(&simulated_span, "coda.scenario_id").as_deref(),
+        Some("drill.rehearse")
+    );
+    assert_eq!(
+        trace_attribute(&simulated_span, "langfuse.session.id").as_deref(),
+        Some(simulated_scope.chat.as_str())
+    );
+    assert_eq!(
+        tags(&simulated_span),
+        ["physician_chat", "simulation", "drill.rehearse"]
+    );
+    assert_eq!(
+        trace_attribute(&real_span, "langfuse.environment").as_deref(),
+        Some("real")
+    );
+    assert_eq!(trace_attribute(&real_span, "coda.scenario_id"), None);
+    assert_eq!(tags(&real_span), ["physician_chat", "real"]);
 }
 
 fn attempt_statuses(state: &Conversation) -> Vec<&str> {

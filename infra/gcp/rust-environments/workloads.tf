@@ -101,6 +101,13 @@ resource "google_cloud_run_v2_service" "app" {
           value = env.value.id
         }
       }
+      dynamic "env" {
+        for_each = each.key == "physician" ? local.physician_simulation_env : {}
+        content {
+          name  = env.key
+          value = env.value
+        }
+      }
       env {
         name  = "DD_ENV"
         value = local.dd_env
@@ -261,6 +268,13 @@ resource "google_cloud_run_v2_job" "migration" {
             value = env.value
           }
         }
+        dynamic "env" {
+          for_each = each.key == "physician" ? local.physician_simulation_env : {}
+          content {
+            name  = env.key
+            value = env.value
+          }
+        }
       }
     }
   }
@@ -388,6 +402,13 @@ resource "google_cloud_run_v2_service" "physician_worker" {
       env {
         name  = "PHYSICIAN_PUSH_SERVICE_ACCOUNT"
         value = google_service_account.physician_pubsub_push[each.key].email
+      }
+      dynamic "env" {
+        for_each = local.physician_simulation_env
+        content {
+          name  = env.key
+          value = env.value
+        }
       }
       env {
         name  = "DD_ENV"

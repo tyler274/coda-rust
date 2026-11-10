@@ -564,6 +564,25 @@ run "physician_scale_active" {
       physician = { TEST_CONTRACT_ONLY = "true" }
       duet      = { TEST_CONTRACT_ONLY = "true" }
     }
+    physician_simulation_practices = ["coda-rehearsal-practice"]
+  }
+
+  # Rehearsal practices reach the physician site, worker and migration job
+  # (which seeds the practice), and nothing of Duet's.
+  assert {
+    condition = alltrue([for envs in [
+      google_cloud_run_v2_service.app["physician"].template[0].containers[0].env,
+      google_cloud_run_v2_service.physician_worker["physician"].template[0].containers[0].env,
+      google_cloud_run_v2_job.migration["physician"].template[0].template[0].containers[0].env,
+    ] : contains([for env in envs : "${env.name}=${coalesce(env.value, "<secret>")}"], "PHYSICIAN_SIMULATION_PRACTICES=coda-rehearsal-practice")])
+    error_message = "The physician site, worker and migration job all learn the rehearsal practice."
+  }
+  assert {
+    condition = alltrue([for envs in [
+      google_cloud_run_v2_service.app["duet"].template[0].containers[0].env,
+      google_cloud_run_v2_job.migration["duet"].template[0].template[0].containers[0].env,
+    ] : !contains([for env in envs : env.name], "PHYSICIAN_SIMULATION_PRACTICES")])
+    error_message = "Duet never learns physician rehearsal practices."
   }
 
   # Memorystore: private, authenticated, TLS, on the existing peering.
@@ -805,6 +824,29 @@ run "reject_unknown_telemetry_content" {
   command = plan
   variables { telemetry_content = "prompts" }
   expect_failures = [var.telemetry_content]
+}
+
+run "reject_production_simulation_practices" {
+  command = plan
+  variables {
+    environment                    = "prd"
+    physician_simulation_practices = ["coda-rehearsal-practice"]
+  }
+  expect_failures = [var.physician_simulation_practices]
+}
+
+run "reject_malformed_simulation_practice" {
+  command = plan
+  variables { physician_simulation_practices = ["Coda Rehearsal"] }
+  expect_failures = [var.physician_simulation_practices]
+}
+
+run "reject_runtime_override_of_simulation_practices" {
+  command = plan
+  variables {
+    runtime_environment = { physician = { PHYSICIAN_SIMULATION_PRACTICES = "roger-synthetic-practice" } }
+  }
+  expect_failures = [google_project.environment]
 }
 
 run "reject_production_observability_cluster" {

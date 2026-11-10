@@ -110,6 +110,95 @@ pub fn staging_accounts(
         .collect()
 }
 
+/// Practices whose chat is rehearsal traffic, from
+/// `PHYSICIAN_SIMULATION_PRACTICES` (comma-separated practice ids).
+///
+/// A turn in one of these practices is `simulation` in telemetry and may carry
+/// a scenario id; every other practice is `real` and may not. Only the
+/// staging-preview profile accepts the list, so a production process can never
+/// relabel real traffic. An unset or blank list is empty.
+#[derive(Clone, Debug, Default, PartialEq, Eq)]
+pub struct SimulationPractices(std::collections::BTreeSet<String>);
+
+impl SimulationPractices {
+    /// Reads `PHYSICIAN_SIMULATION_PRACTICES`, refusing it outside the
+    /// staging-preview profile.
+    pub fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
+        let list = get("PHYSICIAN_SIMULATION_PRACTICES").unwrap_or_default();
+        if list.trim().is_empty() {
+            return Ok(Self::default());
+        }
+        if get("CODA_HOSTED_PROFILE").as_deref() != Some(STAGING_PROFILE) {
+            return Err(format!(
+                "PHYSICIAN_SIMULATION_PRACTICES is only honoured under CODA_HOSTED_PROFILE={STAGING_PROFILE}"
+            ));
+        }
+        Ok(Self(
+            list.split(',')
+                .map(str::trim)
+                .filter(|practice| !practice.is_empty())
+                .map(str::to_owned)
+                .collect(),
+        ))
+    }
+
+    /// The given practices, for tests and in-process composition.
+    pub fn of<'a>(practices: impl IntoIterator<Item = &'a str>) -> Self {
+        Self(practices.into_iter().map(str::to_owned).collect())
+    }
+
+    /// Whether `practice` is a rehearsal practice.
+    pub fn contains(&self, practice: &str) -> bool {
+        self.0.contains(practice)
+    }
+
+    /// Admits a scenario id sent by a session in `practice`: only a rehearsal
+    /// practice may send one, and only a short slug (`[a-z0-9._-]`, at most 64
+    /// characters), since it becomes a Langfuse tag.
+    pub fn admit_scenario(&self, practice: &str, scenario: &str) -> Result<(), ScenarioRefused> {
+        if !self.contains(practice) {
+            return Err(ScenarioRefused::RealPractice);
+        }
+        let slug = !scenario.is_empty()
+            && scenario.len() <= 64
+            && scenario
+                .bytes()
+                .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b"._-".contains(&b));
+        if slug {
+            Ok(())
+        } else {
+            Err(ScenarioRefused::Malformed)
+        }
+    }
+
+    /// The telemetry origin and scenario for a turn in `practice` that was
+    /// accepted with `scenario`. A real practice never reports a scenario,
+    /// even one saved before its practice left the list.
+    pub fn origin(
+        &self,
+        practice: &str,
+        scenario: Option<&str>,
+    ) -> (telemetry::genai::Origin, Option<String>) {
+        if self.contains(practice) {
+            (
+                telemetry::genai::Origin::Simulation,
+                scenario.map(str::to_owned),
+            )
+        } else {
+            (telemetry::genai::Origin::Real, None)
+        }
+    }
+}
+
+/// Why a submitted scenario id was refused.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ScenarioRefused {
+    /// The session's practice is not a rehearsal practice.
+    RealPractice,
+    /// The id is empty, too long, or not a lower-case slug.
+    Malformed,
+}
+
 /// The folder of built synthetic charts `load-charts` reads. Any profile but
 /// staging-preview refuses the load: synthetic patients never enter another
 /// profile's database.
@@ -290,6 +379,66 @@ mod tests {
                 ])
                 .is_err(),
                 "{bad} must refuse"
+            );
+        }
+    }
+
+    #[test]
+    fn simulation_practices_parse_only_under_the_preview_profile() {
+        let read = |pairs: &[(&str, &str)]| {
+            SimulationPractices::from_env(|name| {
+                pairs
+                    .iter()
+                    .find(|(key, _)| *key == name)
+                    .map(|(_, value)| (*value).to_owned())
+            })
+        };
+        let parsed = read(&[
+            ("CODA_HOSTED_PROFILE", STAGING_PROFILE),
+            (
+                "PHYSICIAN_SIMULATION_PRACTICES",
+                " coda-rehearsal-practice , ,other",
+            ),
+        ])
+        .unwrap();
+        assert!(parsed.contains("coda-rehearsal-practice"));
+        assert!(parsed.contains("other"));
+        assert!(!parsed.contains("roger-synthetic-practice"));
+        assert_eq!(read(&[]), Ok(SimulationPractices::default()));
+        for profile in [None, Some("production"), Some("")] {
+            let mut pairs = vec![("PHYSICIAN_SIMULATION_PRACTICES", "coda-rehearsal-practice")];
+            if let Some(profile) = profile {
+                pairs.push(("CODA_HOSTED_PROFILE", profile));
+            }
+            assert!(read(&pairs).is_err(), "{profile:?} must refuse");
+        }
+    }
+
+    #[test]
+    fn origin_follows_the_practice_and_scenarios_need_a_rehearsal_practice() {
+        use telemetry::genai::Origin;
+        let practices = SimulationPractices::of(["coda-rehearsal-practice"]);
+        assert_eq!(
+            practices.origin("coda-rehearsal-practice", Some("canary")),
+            (Origin::Simulation, Some("canary".to_owned()))
+        );
+        assert_eq!(
+            practices.origin("roger-synthetic-practice", Some("canary")),
+            (Origin::Real, None)
+        );
+        assert_eq!(
+            practices.admit_scenario("coda-rehearsal-practice", "drill.rehearse-1"),
+            Ok(())
+        );
+        assert_eq!(
+            practices.admit_scenario("roger-synthetic-practice", "canary"),
+            Err(ScenarioRefused::RealPractice)
+        );
+        for bad in ["", "Upper", "has space", &"x".repeat(65)] {
+            assert_eq!(
+                practices.admit_scenario("coda-rehearsal-practice", bad),
+                Err(ScenarioRefused::Malformed),
+                "{bad}"
             );
         }
     }

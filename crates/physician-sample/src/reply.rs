@@ -34,6 +34,9 @@ pub(crate) struct Revision {
     pub expected_draft_revision: u64,
     pub instruction: String,
     pub physician_time_zone: String,
+    /// The rehearsal scenario, admitted as on `message.submit`.
+    #[serde(default)]
+    pub scenario: Option<String>,
 }
 #[derive(Deserialize)]
 pub(crate) struct Save {
@@ -172,11 +175,15 @@ pub(crate) async fn accept_durable(
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
     let scope = scope(ctx, &input.patient_workspace_id, &input.reply_work_id);
+    let Ok(scenario) = durable.admit_scenario(&scope.practice, input.scenario) else {
+        return crate::live::rejected_scenario();
+    };
     let revision = RevisionInput {
         key: id.into(),
         expected_revision: input.expected_draft_revision,
         instruction: input.instruction,
         timezone: input.physician_time_zone,
+        scenario,
     };
     let hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
     match durable.accept_revision(&scope, &revision, hash).await {
@@ -200,6 +207,9 @@ pub(crate) async fn admit(
 ) -> Result<local_product::execution::Work, String> {
     let input: Revision =
         serde_json::from_value(payload).map_err(|_| "invalid revision command")?;
+    if input.scenario.is_some() {
+        return Err("inline revisions take no scenario".into());
+    }
     if id.trim().is_empty()
         || input.instruction.trim().is_empty()
         || input.physician_time_zone.trim().is_empty()

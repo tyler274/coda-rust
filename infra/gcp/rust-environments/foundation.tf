@@ -10,9 +10,12 @@ locals {
   # no scaling key and therefore no Redis, Pub/Sub or worker resources.
   physician_scale      = var.enable_workloads && var.enable_physician_scale
   physician_scale_apps = local.physician_scale ? toset(["physician"]) : toset([])
-  # Infrastructure-owned (or Doppler-owned) physician scaling settings that the
+  # Infrastructure-owned (or Doppler-owned) physician settings that the
   # nonsecret runtime_environment map may not set or override.
-  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM"]
+  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES"]
+  # Rehearsal practices (physician_simulation_practices): the same list on the
+  # site, the worker and the migration job, which seeds the rehearsal practice.
+  physician_simulation_env = length(var.physician_simulation_practices) > 0 ? { PHYSICIAN_SIMULATION_PRACTICES = join(",", sort(tolist(var.physician_simulation_practices))) } : {}
   services = setunion(toset([
     "artifactregistry.googleapis.com", "cloudresourcemanager.googleapis.com",
     "compute.googleapis.com", "iam.googleapis.com", "iamcredentials.googleapis.com",
@@ -73,7 +76,7 @@ resource "google_project" "environment" {
       condition = alltrue(flatten([for app, config in var.runtime_environment : [
         for key in keys(config) : !contains(local.scale_owned_env, key) && (app == "physician" || !startswith(key, "PHYSICIAN_"))
       ]]))
-      error_message = "Physician scaling settings are owned by infrastructure (topic, worker audience, push identity) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
+      error_message = "Physician scaling and rehearsal settings are owned by infrastructure (topic, worker audience, push identity, simulation practices) or Doppler (Redis URL and CA); runtime_environment may not set them, and Duet gets no PHYSICIAN_* settings."
     }
     precondition {
       condition     = !var.observability_enabled || var.observability_cluster_enabled
