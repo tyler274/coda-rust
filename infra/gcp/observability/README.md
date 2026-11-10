@@ -368,6 +368,10 @@ returns Grafana to its root path for port-forward.
   filters. Other exclusions, global-location collection and IAM stay unchanged.
   Inspect resource-filter effectiveness and the projected series volume of all
   namespace metrics before authorizing collection.
+  `datadog_gcp_global_location_enabled`, off by default, imports metrics with
+  no GCP location: the custom gauges on the `global` resource, which are the
+  physician worker's queue gauges and the availability probe's series. The
+  worker queue monitors' scopes are refused without it.
 - **Dependency and storage monitors.** `dependency-monitors.tf` owns scoped
   SQL, Redis and queue rules; `workload-monitors.tf` owns stable deployment,
   StatefulSet and PVC targets. Their gates and qualified scope maps default

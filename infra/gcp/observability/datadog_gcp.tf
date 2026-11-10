@@ -27,6 +27,16 @@ variable "datadog_gcp_dependency_collection" {
   }
 }
 
+variable "datadog_gcp_global_location_enabled" {
+  description = "Default-off import of metrics with no GCP location, which is where custom gauges on the global resource land: the physician worker's queue gauges and the availability probe's. Every such metric in the project is imported, so review series cost before activation."
+  type        = bool
+  default     = false
+  validation {
+    condition     = !var.datadog_gcp_global_location_enabled || (var.environment == "staging" && var.datadog_gcp_integration_enabled)
+    error_message = "Global-location collection requires the staging GCP integration gate."
+  }
+}
+
 locals {
   dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance" }
   # The variable's validation already refuses it under grafana; the backend
@@ -91,7 +101,7 @@ resource "datadog_integration_gcp_sts" "staging" {
   is_resource_change_collection_enabled     = false
   is_cspm_enabled                           = false
   is_security_command_center_enabled        = false
-  is_global_location_enabled                = false
+  is_global_location_enabled                = var.datadog_gcp_global_location_enabled
 
   # Only the selected Cloud Run services' revisions and this cluster's nodes
   # are imported; other Cloud Run services and VMs in the project are not.

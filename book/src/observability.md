@@ -343,7 +343,9 @@ labels. Correlate a run only in the authorized trace/log investigation surface.
    failed and wait for the physician's Try again). `worker_oldest_due` alerts
    when due work has waited past 300 seconds throughout five minutes, and its
    absence means no worker is reporting; `worker_due` alerts when due work
-   persists for 30 minutes; `worker_failed` alerts on any failed work. Compare
+   persists for 30 minutes; `worker_failed` alerts on any failed work. Datadog
+   imports these gauges only with `datadog_gcp_global_location_enabled`;
+   Grafana Cloud reads them from Cloud Monitoring directly. Compare
    them with the [worker processing/retry contract](physician-site.md) and the
    attempts saved on the rows before acting; do not retry work automatically.
    Investigate SQL and Redis using the configured exact resource scope and the

@@ -189,10 +189,12 @@ async fn metadata(client: &Client, path: &str) -> Result<String, SignalError> {
 
 /// The `timeSeries.create` body for one round of signals.
 fn time_series(project: &str, instance: &str, signals: QueueSignals, end: &str) -> Value {
-    let oldest = signals.oldest_due.map_or(0, |age| age.as_secs());
+    let (due, oldest) = signals
+        .due
+        .map_or((0, 0), |due| (due.count.get(), due.oldest.as_secs()));
     let series = [
         (OLDEST_DUE_METRIC, oldest),
-        (DUE_METRIC, signals.due),
+        (DUE_METRIC, due),
         (FAILED_METRIC, signals.failed),
     ]
     .map(|(metric, value)| {
@@ -212,6 +214,10 @@ fn time_series(project: &str, instance: &str, signals: QueueSignals, end: &str) 
 
 #[cfg(test)]
 mod tests {
+    use std::num::NonZeroU64;
+
+    use local_product::runtime::delivery::DueWork;
+
     use super::*;
 
     fn point(body: &Value, metric: &str) -> Value {
@@ -225,8 +231,10 @@ mod tests {
     #[test]
     fn gauges_carry_the_signals_on_the_global_resource_per_instance() {
         let signals = QueueSignals {
-            due: 3,
-            oldest_due: Some(Duration::from_millis(1_250_900)),
+            due: Some(DueWork {
+                count: NonZeroU64::new(3).unwrap(),
+                oldest: Duration::from_millis(1_250_900),
+            }),
             failed: 2,
         };
         let body = time_series("stg-project", "instance-7", signals, "2026-11-10T04:00:00Z");

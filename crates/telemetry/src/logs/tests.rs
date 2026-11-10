@@ -226,6 +226,40 @@ fn worker_failures_keep_named_safe_classes_and_trace_identity() {
 }
 
 #[test]
+fn queue_signal_failures_keep_their_event_and_class() {
+    let exporter = InMemoryLogExporter::default();
+    let provider = SdkLoggerProvider::builder()
+        .with_simple_exporter(exporter.clone())
+        .build();
+    let subscriber =
+        tracing_subscriber::registry().with(SafeLogs::new(&provider, "physician-worker"));
+    let classes = ["database", "request", "status", "token"];
+    tracing::subscriber::with_default(subscriber, || {
+        for class in classes {
+            tracing::warn!(event = "physician.queue.signals_failed", error.type = class,
+                error = "SECRET-MONITORING-ERROR", "SECRET-CLINICAL-CONTENT");
+        }
+    });
+    let logs = exporter.get_emitted_logs().unwrap();
+    assert_eq!(logs.len(), classes.len());
+    for (log, class) in logs.iter().zip(classes) {
+        for (key, value) in [
+            ("event", "physician.queue.signals_failed"),
+            ("error.type", class),
+        ] {
+            assert!(
+                log.record
+                    .attributes_iter()
+                    .any(|(k, v)| k.as_str() == key && *v == AnyValue::from(value)),
+                "missing {key}={value}"
+            );
+        }
+    }
+    assert!(!format!("{logs:?}").contains("SECRET"));
+    provider.shutdown().unwrap();
+}
+
+#[test]
 fn privacy_recovery_failures_keep_safe_steps_and_trace_identity() {
     let exporter = InMemoryLogExporter::default();
     let provider = SdkLoggerProvider::builder()

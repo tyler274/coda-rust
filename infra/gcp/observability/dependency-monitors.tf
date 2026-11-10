@@ -15,6 +15,13 @@ variable "dependency_metric_scopes" {
     ])
     error_message = "Scopes require a known signal key, env:staging and verified project/resource tags; wildcards, expressions and clinical identifiers are forbidden."
   }
+  # The worker gauges are custom metrics on the global resource, which the
+  # GCP integration imports only with global-location collection on; a scope
+  # is supplied once their series has been observed in Datadog.
+  validation {
+    condition     = var.datadog_gcp_global_location_enabled || length([for key in keys(var.dependency_metric_scopes) : key if startswith(key, "worker_")]) == 0
+    error_message = "Worker queue scopes require datadog_gcp_global_location_enabled, which imports the worker's global custom gauges."
+  }
 }
 
 variable "dependency_monitors_enabled" {

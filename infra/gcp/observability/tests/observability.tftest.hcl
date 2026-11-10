@@ -86,6 +86,13 @@ run "native_cloud_rules_use_real_source_and_scoped_inventory" {
     )
     error_message = "Native rules must select the probe's global resource, preserve readiness on silence, distinguish missing observations, and never page for idle sparse queues."
   }
+  assert {
+    condition = (
+      toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]) == toset(["gcp-dependency-worker_age", "gcp-absence-worker_age", "gcp-dependency-worker_backlog", "gcp-dependency-worker_dead_letters"]) &&
+      length(setintersection(toset([for rule in yamldecode(local.grafana_cloud_rules).deleteRules : rule.uid]), toset(local.grafana_cloud_rule_uids))) == 0
+    )
+    error_message = "The retired Pub/Sub subscription rules must be deleted from Grafana state without deleting a live rule."
+  }
 }
 
 run "native_cloud_rules_are_removed_when_disabled" {
@@ -96,7 +103,7 @@ run "native_cloud_rules_are_removed_when_disabled" {
   assert {
     condition = (
       length(yamldecode(local.grafana_cloud_rules).groups) == 0 &&
-      length(yamldecode(local.grafana_cloud_rules).deleteRules) == length(local.grafana_cloud_conditions)
+      length(yamldecode(local.grafana_cloud_rules).deleteRules) == length(local.grafana_cloud_conditions) + length(local.grafana_cloud_retired_rule_uids)
     )
     error_message = "Disabling the native source must delete its rules from persisted Grafana state."
   }
@@ -1275,6 +1282,21 @@ run "dependency_rules_are_opt_in_even_with_existing_monitors" {
   }
 }
 
+run "worker_queue_scopes_require_global_location_import" {
+  command = plan
+  variables {
+    telemetry_backend               = "both"
+    datadog_gcp_integration_enabled = true
+    datadog_monitors_enabled        = true
+    dependency_monitors_enabled     = true
+    alert_notify                    = "@slack-confirmed-test"
+    dependency_metric_scopes = {
+      worker_oldest_due = "env:staging,project_id:test-rust-stg-only,resource_type:global"
+    }
+  }
+  expect_failures = [var.dependency_metric_scopes]
+}
+
 run "dependency_missing_data_and_idle_contract" {
   command = plan
   variables {
@@ -1282,6 +1304,7 @@ run "dependency_missing_data_and_idle_contract" {
     availability_monitors_enabled          = true
     availability_firing_metric             = "synthetic.availability.firing"
     datadog_gcp_integration_enabled        = true
+    datadog_gcp_global_location_enabled    = true
     datadog_monitors_enabled               = true
     dependency_monitors_enabled            = true
     collector_availability_monitor_enabled = true
@@ -1301,6 +1324,10 @@ run "dependency_missing_data_and_idle_contract" {
   assert {
     condition     = datadog_monitor.dependency_symptom["worker_oldest_due"].query == "min(last_5m):max:gcp.custom.coda.physician.queue.oldest_due_seconds{env:staging,project_id:test-rust-stg-only,resource_type:global}.fill(null) > 300" && datadog_monitor.dependency_symptom["worker_due"].monitor_thresholds[0].critical == "0" && datadog_monitor.dependency_symptom["worker_failed"].query == "min(last_5m):max:gcp.custom.coda.physician.queue.failed{env:staging,project_id:test-rust-stg-only,resource_type:global}.fill(null) > 0"
     error_message = "Worker signals read the Postgres-derived gauges: age past five minutes of polls, positive due work, any failed work."
+  }
+  assert {
+    condition     = datadog_integration_gcp_sts.staging["integration"].is_global_location_enabled
+    error_message = "Worker queue monitors need the global-location import that carries their custom gauges."
   }
   assert {
     condition     = alltrue([for monitor in datadog_monitor.dependency_absence : monitor.notify_no_data && monitor.no_data_timeframe == 20 && !monitor.require_full_window && monitor.renotify_occurrences == 2])
