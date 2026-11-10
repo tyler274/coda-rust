@@ -50,7 +50,7 @@ Preconditions:
 
 - `[fail:K]` counts the attempts saved on the conversation's current message. Try again keeps that message, so its sixth attempt answers even if the worker restarted after the turn gave up.
 - `--worker-failures 5` still exists. It fails the process's first five provider calls, whatever the message, so do not combine it with the marker on a stack that serves other features.
-- `--wait-failed` keys on the `mechanical` item. Before Stream A's snapshot change, a failed turn shows only `[{text: Hello}]`, so a stale `physician-sample` binary times out here even though Postgres says `failed`. Rebuild first.
+- `--wait-failed` keys on the `mechanical` item that carries a `resume_target`. While retries are still running the snapshot shows `Coda is writing this response.` with a `stop_target` instead, which does not count. Before Stream A's snapshot change, a failed turn shows only `[{text: Hello}]`, so a stale `physician-sample` binary times out here even though Postgres says `failed`. Rebuild first.
 - The snapshot can briefly show neither a reply nor the line while retries wait out their delay. That is the expected in-between state, not a failure.
 - A `rejected` resume answers HTTP 200. Check `.body.outcome`, not the status.
 - The waits are whole seconds on the database clock and a poll can add to one, so read them as "at least", not as exact doubles.
