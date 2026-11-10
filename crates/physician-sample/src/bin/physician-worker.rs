@@ -35,6 +35,8 @@ mod attempt;
 mod pull;
 #[path = "physician-worker/revision.rs"]
 mod revision;
+#[path = "physician-worker/signals.rs"]
+mod signals;
 use attempt::{Claimed, Failure, Next, Outcome, Tally};
 use local_product::runtime::{Claim, Conversation, PhysicianHost, RuntimeError, Scope, Store};
 use physician_auth::PostgresAuthStore;
@@ -76,6 +78,10 @@ async fn run() -> Result<(), String> {
             .map_err(|_| "physician worker address unavailable".to_owned())?
     );
     let (stop, stopped) = watch::channel(false);
+    // Cloud Run is where the gauges have a project to go to.
+    if std::env::var("K_SERVICE").is_ok() {
+        tokio::spawn(signals::run(worker.store.clone(), stopped.clone()));
+    }
     let work = tokio::spawn(pull::run(Arc::clone(&worker), stopped));
     let served = axum::serve(listener, router(worker))
         .with_graceful_shutdown(async move {

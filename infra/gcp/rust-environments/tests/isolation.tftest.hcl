@@ -408,7 +408,7 @@ run "physician_scale_gate_off" {
     error_message = "Without enable_physician_scale there is no Redis."
   }
   assert {
-    condition     = length(google_cloud_run_v2_service.physician_worker) == 0 && length(google_service_account.physician_worker) == 0 && length(google_project_iam_member.physician_worker_sql) == 0
+    condition     = length(google_cloud_run_v2_service.physician_worker) == 0 && length(google_service_account.physician_worker) == 0 && length(google_project_iam_member.physician_worker_sql) == 0 && length(google_project_iam_member.physician_worker_metrics) == 0
     error_message = "Without enable_physician_scale there is no worker or worker grant."
   }
   assert {
@@ -650,6 +650,10 @@ run "physician_scale_active" {
   assert {
     condition     = google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].role == "roles/run.invoker" && length(google_cloud_run_v2_service_iam_binding.physician_worker_invoker["physician"].members) == 0
     error_message = "Without the availability probe nothing may invoke the worker: nothing pushes work to it."
+  }
+  assert {
+    condition     = keys(google_project_iam_member.physician_worker_metrics) == ["physician"] && google_project_iam_member.physician_worker_metrics["physician"].role == "roles/monitoring.metricWriter" && google_project_iam_member.physician_worker_metrics["physician"].member == "serviceAccount:${google_service_account.physician_worker["physician"].email}"
+    error_message = "The worker writes its queue gauges as itself and only with metricWriter."
   }
   assert {
     condition = (

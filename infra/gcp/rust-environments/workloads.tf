@@ -326,6 +326,15 @@ resource "google_project_iam_member" "physician_worker_sql" {
   }
 }
 
+# The worker writes the queue gauges (oldest due age, due and failed counts)
+# the observability monitors read; see physician-worker/signals.rs.
+resource "google_project_iam_member" "physician_worker_metrics" {
+  for_each = local.physician_scale_apps
+  project  = google_project.environment.project_id
+  role     = "roles/monitoring.metricWriter"
+  member   = "serviceAccount:${google_service_account.physician_worker[each.key].email}"
+}
+
 resource "google_cloud_run_v2_service" "physician_worker" {
   for_each             = local.physician_scale_apps
   project              = google_project.environment.project_id

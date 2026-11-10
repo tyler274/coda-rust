@@ -11,12 +11,12 @@
 # starts, instance counts, container CPU and memory, 5xx answered before the
 # product container).
 variable "datadog_gcp_dependency_collection" {
-  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL, Redis and Pub/Sub subscriptions may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
+  description = "Default-off per-namespace collection opt-ins. Every entry requires exact resource filters verified against Datadog's integration before apply. Only SQL and Redis may be opted in; no IAM roles or global-location collection are added. Imports all metrics in the selected namespace for matching resources, so review series cost before activation."
   type        = map(object({ verified_resource_filters = set(string) }))
   default     = {}
   validation {
     condition = alltrue([for namespace, config in var.datadog_gcp_dependency_collection :
-      contains(["cloudsql", "redis", "pubsub"], namespace) && length(config.verified_resource_filters) > 0 &&
+      contains(["cloudsql", "redis"], namespace) && length(config.verified_resource_filters) > 0 &&
       alltrue([for filter in config.verified_resource_filters : can(regex("^[a-z_]+:[A-Za-z0-9_:/.-]+$", filter)) && !can(regex("patient|run_id|chat_id|^(env|environment|project|project_id|region|zone|location|app|service|purpose):", filter))])
     ])
     error_message = "Dependency collection requires known namespace keys and nonempty exact verified resource identity filters; broad environment/project/location/service tags, wildcards and boolean scopes are forbidden."
@@ -28,7 +28,7 @@ variable "datadog_gcp_dependency_collection" {
 }
 
 locals {
-  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance", pubsub = "pubsub_subscription" }
+  dependency_resource_types = { cloudsql = "cloudsql_database", redis = "redis_instance" }
   # The variable's validation already refuses it under grafana; the backend
   # gate here keeps the resources tied to Datadog regardless.
   datadog_gcp_enabled = local.datadog_backend && var.datadog_gcp_integration_enabled
