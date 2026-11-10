@@ -233,6 +233,10 @@ pub(crate) struct Desk {
     /// Saves still on their way, in any chat: leaving a chat never forgets
     /// them, and returning shows them saving again.
     pending: BTreeMap<(ChatKey, RunId), Entry>,
+    /// Details whose save failed, in any chat, kept until a later details
+    /// save on that response starts, so the words and the failure survive
+    /// leaving the chat.
+    failed: BTreeMap<(ChatKey, RunId), FeedbackDetails>,
     /// The response whose details dialog is open in this chat.
     dialog: Option<RunId>,
 }
@@ -258,6 +262,7 @@ impl Desk {
             clock: opened,
             opened,
             pending: std::mem::take(&mut self.pending),
+            failed: std::mem::take(&mut self.failed),
             dialog: None,
         };
     }
@@ -317,14 +322,21 @@ impl Desk {
 
     /// One response's feedback as the page shows it.
     pub(crate) fn entry(&self, run: &RunId) -> Entry {
-        if let Some(entry) = self.entries.get(run) {
-            return entry.clone();
+        let mut entry = self.entries.get(run).cloned().unwrap_or_else(|| {
+            Entry::new(match self.read {
+                None => RatingState::Loading,
+                Some(false) => RatingState::Unknown,
+                Some(true) => RatingState::Unrated,
+            })
+        });
+        let failed = self
+            .chat
+            .clone()
+            .and_then(|chat| self.failed.get(&(chat, run.clone())));
+        if let (DetailsSaving::Idle, Some(details)) = (&entry.details_saving, failed) {
+            entry.details_saving = DetailsSaving::Failed(details.clone());
         }
-        Entry::new(match self.read {
-            None => RatingState::Loading,
-            Some(false) => RatingState::Unknown,
-            Some(true) => RatingState::Unrated,
-        })
+        entry
     }
 
     /// Records `entry` as changed by a save starting now, kept while it is
@@ -410,6 +422,7 @@ impl Desk {
         if current.busy() || current.rating.saved().is_none() {
             return None;
         }
+        self.failed.remove(&(chat.clone(), run.clone()));
         let entry = Entry {
             details_saving: DetailsSaving::Saving(details.clone()),
             ..current
@@ -445,26 +458,32 @@ impl Desk {
 
     /// `save` answered with the saved feedback, or failed. A landed save
     /// closes its dialog; a failed one keeps its details for the dialog to
-    /// show again, open or reopened. Like a rating save, it settles its
-    /// response only as the latest save there.
+    /// show again, open or reopened, even after leaving the chat. Like a
+    /// rating save, it settles its response only as the latest save there.
     pub(crate) fn details_answered(
         &mut self,
         save: &DetailsSave,
         answer: Result<ResponseFeedback, ()>,
     ) {
+        let key = (save.chat.clone(), save.run.clone());
+        let latest = self
+            .pending
+            .get(&key)
+            .is_some_and(|entry| entry.saving == save.started);
+        if latest && answer.is_err() {
+            self.failed.insert(key, save.details.clone());
+        }
         let Some(entry) = self.settle(&save.chat, &save.run, save.started) else {
             return;
         };
-        match answer {
-            Ok(saved) => {
-                entry.rating = RatingState::Rated(saved.rating);
-                entry.details = saved.details;
-                entry.details_saving = DetailsSaving::Idle;
-                if self.dialog.as_ref() == Some(&save.run) {
-                    self.dialog = None;
-                }
-            }
-            Err(()) => entry.details_saving = DetailsSaving::Failed(save.details.clone()),
+        entry.details_saving = DetailsSaving::Idle;
+        let Ok(saved) = answer else {
+            return;
+        };
+        entry.rating = RatingState::Rated(saved.rating);
+        entry.details = saved.details;
+        if self.dialog.as_ref() == Some(&save.run) {
+            self.dialog = None;
         }
     }
 }
@@ -999,6 +1018,36 @@ mod tests {
             }),
         );
         assert_eq!(desk.entry(&run(1)).details, Some(words("Trend missing.")));
+
+        // A details save that fails while its chat is closed keeps the words
+        // and says so on return, until a later details save starts.
+        desk.open_details(&run(1));
+        let save = desk
+            .save_details(&run(1), words("Recheck sodium."))
+            .unwrap();
+        desk.close_details();
+        desk.open(Some(chat("b")));
+        desk.details_answered(&save, Err(()));
+        assert_eq!(desk.entry(&run(1)).notice(), None, "chat b has no failure");
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![saved(1, Up)]);
+        let entry = desk.entry(&run(1));
+        assert_eq!(entry.notice(), Some(NOT_SAVED));
+        assert_eq!(entry.draft(), words("Recheck sodium."));
+        let retry = desk
+            .save_details(&run(1), words("Recheck sodium."))
+            .unwrap();
+        assert!(desk.entry(&run(1)).busy());
+        desk.details_answered(
+            &retry,
+            Ok(ResponseFeedback {
+                details: Some(words("Recheck sodium.")),
+                ..saved(1, Up)
+            }),
+        );
+        let entry = desk.entry(&run(1));
+        assert_eq!(entry.notice(), None);
+        assert_eq!(entry.details, Some(words("Recheck sodium.")));
     }
 
     #[test]
