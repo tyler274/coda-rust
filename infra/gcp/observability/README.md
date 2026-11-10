@@ -319,8 +319,9 @@ browser -> Cloud Run IAP (public-site-staging, gcp-engineering)
   back on, so the break-glass when it fails is an apply: set
   `langfuse_sso_image` to null here and `langfuse_sso` to false in
   public-site, apply both from reviewed plans, and the init admin signs in by
-  password. `observability-drill langfuse signin-breakglass` checks that
-  stopping the issuer alone offers no password sign-in. Either way, public-site passes through only
+  password. `observability-drill langfuse signin-breakglass` tries the init
+  admin's password sign-in with the issuer stopped, which shows that stopping
+  the issuer alone does not restore it. Either way, public-site passes through only
   the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`).
   `nextauth.url` is `<origin>/langfuse/api/auth`, and the liveness and
   readiness probes and the collector's in-cluster OTLP endpoint carry the

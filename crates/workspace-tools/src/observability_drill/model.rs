@@ -435,7 +435,7 @@ impl Exercise {
         observations_to_json(&self.observations)
     }
 
-    fn open_since(&self) -> Option<DateTime<Utc>> {
+    pub(super) fn open_since(&self) -> Option<DateTime<Utc>> {
         let mut opened = None;
         for observation in &self.observations {
             if observation.is_failure() {

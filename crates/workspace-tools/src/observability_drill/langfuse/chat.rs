@@ -7,6 +7,7 @@ use reqwest::header::PROXY_AUTHORIZATION;
 use serde_json::{Value, json};
 
 use super::DrillError;
+use super::watch::Watch;
 
 /// The rehearsal service account (`infra/gcp/rust-environments/rehearsal.tf`).
 pub(super) const REHEARSAL_ACCOUNT: &str =
@@ -39,32 +40,48 @@ impl Turn {
     }
 }
 
+/// An answered turn: the reply and the scoped attempt that wrote it.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub(super) struct Answer {
+    pub(super) text: String,
+    pub(super) attempt: String,
+}
+
 /// Where a turn stands in the chat snapshot.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub(super) enum TurnState {
     Writing,
-    Answered(String),
+    Answered(Answer),
     Failed(String),
 }
 
-/// Reads a `GET .../snapshot` answer. A failed run wins over any earlier
-/// reply, because the snapshot only names a run once the latest turn failed.
+/// Reads a `GET .../snapshot` answer. The snapshot names the latest attempt
+/// once the turn failed, was held or was answered; a turn counts as answered
+/// only when its reply and its `completed` attempt are both there.
 pub(super) fn turn_state(body: &Value) -> TurnState {
     let snapshot = &body["snapshot"];
-    let failed = snapshot["runs"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .find(|run| run["state"] == "failed");
-    if let Some(run) = failed {
-        return TurnState::Failed(run["run_id"].as_str().unwrap_or("unnamed").to_owned());
+    let latest = |state: &str| {
+        snapshot["runs"]
+            .as_array()
+            .into_iter()
+            .flatten()
+            .find(|run| run["state"] == state)
+            .and_then(|run| run["run_id"].as_str())
+            .map(str::to_owned)
+    };
+    if let Some(run) = latest("failed") {
+        return TurnState::Failed(run);
     }
     let items = snapshot["conversation"].as_array();
-    let last = items.and_then(|items| items.last());
-    match last {
-        Some(item) if item["kind"] == "model" => {
-            TurnState::Answered(item["text"].as_str().unwrap_or_default().to_owned())
-        }
+    let reply = items
+        .and_then(|items| items.last())
+        .filter(|item| item["kind"] == "model")
+        .and_then(|item| item["text"].as_str());
+    match (reply, latest("completed")) {
+        (Some(text), Some(attempt)) => TurnState::Answered(Answer {
+            text: text.to_owned(),
+            attempt,
+        }),
         _ => TurnState::Writing,
     }
 }
@@ -177,7 +194,8 @@ impl Physician {
         turn: &Turn,
         attempts: u32,
         pause: Duration,
-    ) -> Result<String, DrillError> {
+        watch: &Watch,
+    ) -> Result<Answer, DrillError> {
         let path = format!(
             "{}/patient-workspaces/{}/chats/{}/snapshot",
             self.origin, turn.workspace, turn.chat
@@ -185,9 +203,9 @@ impl Physician {
         for _attempt in 0..attempts {
             let body = send_json(self.authorized(self.client.get(&path)), "chat snapshot")?;
             match turn_state(&body) {
-                TurnState::Answered(text) => return Ok(text),
+                TurnState::Answered(answer) => return Ok(answer),
                 TurnState::Failed(run) => return Err(DrillError::TurnFailed { run }),
-                TurnState::Writing => std::thread::sleep(pause),
+                TurnState::Writing => watch.pause(pause)?,
             }
         }
         Err(DrillError::Timeout {
@@ -213,4 +231,47 @@ pub(super) fn send_json(request: RequestBuilder, what: &'static str) -> Result<V
     response
         .json()
         .map_err(|source| DrillError::Request { what, source })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn snapshot(conversation: Value, runs: Value) -> Value {
+        json!({ "snapshot": { "conversation": conversation, "runs": runs } })
+    }
+
+    #[test]
+    fn an_answer_needs_the_reply_and_its_completed_attempt() {
+        let asked = json!([{ "kind": "physician", "text": "Hi" }]);
+        let answered = json!([
+            { "kind": "physician", "text": "Hi" },
+            { "kind": "model", "text": "Hello" }
+        ]);
+        assert_eq!(
+            turn_state(&snapshot(
+                answered.clone(),
+                json!([{ "run_id": "a-1", "state": "completed" }])
+            )),
+            TurnState::Answered(Answer {
+                text: "Hello".into(),
+                attempt: "a-1".into()
+            })
+        );
+        assert_eq!(
+            turn_state(&snapshot(answered, json!([]))),
+            TurnState::Writing
+        );
+        assert_eq!(
+            turn_state(&snapshot(asked.clone(), json!([]))),
+            TurnState::Writing
+        );
+        assert_eq!(
+            turn_state(&snapshot(
+                asked,
+                json!([{ "run_id": "a-2", "state": "failed" }])
+            )),
+            TurnState::Failed("a-2".into())
+        );
+    }
 }

@@ -126,7 +126,8 @@ port-forward. Watchdog pauses or resumes the availability-probe scheduler. The
 command restores the signal when the exercise passes 40 minutes, already has
 more than two reminders, or the provider call fails.
 `workspace-tools observability-drill langfuse fail|recover --confirm --output-dir DIR`
-writes the `langfuse` route's ledger; the book's
+writes the `langfuse` route's ledger; `recover` restores the replica count
+`fail` recorded in the same directory. The book's
 [Langfuse drills](../../book/src/observability.md#langfuse-drills) cover it
 and the read-only actions.
 `workspace-tools observability-drill probe --output-dir DIR` runs one

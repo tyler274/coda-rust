@@ -404,10 +404,12 @@ readiness until those observations exist. Production is outside this procedure.
    vendor search is not evidence of delivery or privacy.
 
 `workspace-tools observability-drill langfuse alert-to-run` walks steps 2 and 4
-on a rehearsal turn it sends itself: it finds the attempt and generation spans
-in Datadog, then the Langfuse trace, and fails unless the trace id (Datadog's
-64-bit id is the low half of the 128-bit one) and `coda.run_id` agree across
-all three.
+on a rehearsal turn it sends itself. The chat snapshot names the attempt that
+answered (`runs` holds the latest attempt once a turn is answered, held or
+failed); the drill finds that attempt's span in Datadog by `coda.run_id`, reads
+its trace's generation span, then the Langfuse trace, and fails unless the
+attempt id and the trace id (Datadog's 64-bit id is the low half of the
+128-bit one) agree across all four.
 
 ## Langfuse drills
 
@@ -420,11 +422,11 @@ against:
 | Action | What must hold |
 | --- | --- |
 | `rehearse` | A canary turn sent as the rehearsal physician answers, and Langfuse holds its generation in environment `simulation`, with the scenario, the chat as session, `coda.run_id`, a 128-bit trace id and the canary in its input or output. |
-| `alert-to-run` | The same turn found from Datadog: trace id and run id agree across the attempt span, the generation span and Langfuse. |
-| `isolation` | Langfuse holds the canary (the positive control); the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Loki has no line with it. |
-| `fail` | With `langfuse-web` at 0 replicas, a turn still answers and its operations trace arrives, the collector reports `otlphttp/langfuse` send failures or queue pressure, and a Langfuse export monitor fires. |
-| `recover` | With `langfuse-web` back, a new turn lands in Langfuse and the monitor returns to OK. |
-| `signin-breakglass` | With `langfuse-sso` at 0 replicas, whether Langfuse still offers password sign-in. Under the issuer it does not, so the drill fails and the break-glass is the apply in the [Langfuse row above](#content-policy). |
+| `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id. |
+| `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Loki holds the physician logs of the same trace (its positive control) and no line with the canary. |
+| `fail` | With `langfuse-web` at 0 replicas, a turn still answers and its operations trace arrives, the collector reports `otlphttp/langfuse` send failures or queue pressure, and a Langfuse export monitor fires. `langfuse-web` stays down for `recover`. |
+| `recover` | `langfuse-web` returns to the replica count `fail` recorded, a new turn lands in Langfuse, and every exporter monitor group resolves after the restore while the drill keeps sending a turn every minute. |
+| `signin-breakglass` | With `langfuse-sso` at 0 replicas, the init admin's password sign-in through a port-forward: CSRF token, credentials callback, then the session. Under the issuer it is refused, so the drill fails and the break-glass is the apply in the [Langfuse row above](#content-policy). |
 
 The rehearsal physician is the `physician-rehearsal` service account. Its turns
 belong to a practice in `physician_simulation_practices`
@@ -433,13 +435,20 @@ worker labels them `simulation`; a turn in any other practice stays `real`
 whatever it sends. The operator signs in with gcloud as one of
 `physician_rehearsal_signers`, which may mint the account's IAP token through
 IAM `signJwt`; `POST /auth/rehearsal` then admits exactly that principal.
-`kubectl` points at the observability cluster; the drill opens its own
-port-forwards to Langfuse, Tempo and Loki and reads Langfuse and Datadog keys
-from Doppler `coda-rust/stg` without printing them.
+Every `kubectl` call names the staging context
+`gke_coda-rust-staging_us-east1_rust-observability`, so an ambient context is
+never used; the drill opens its own port-forwards to Langfuse, Tempo and Loki
+and reads the Langfuse, init admin and Datadog keys from Doppler
+`coda-rust/stg` without printing them.
 
 `fail`, `recover` and `signin-breakglass` scale a workload and need
-`--confirm`. They restore it when they finish, fail, or pass 40 minutes.
-`fail` and `recover` also write `observations-langfuse-<stamp>.json`, the
+`--confirm`. Every wait runs under the exercise's 40-minute cap and the
+operator's Ctrl-C; either ends the run, and a workload the run scaled down is
+restored to its recorded count before it exits. Only a passed `fail` leaves
+`langfuse-web` down, with its count in `langfuse-web-down.json` for `recover`.
+A failed restore is reported with the original error and the `kubectl scale`
+command that finishes it. `fail` and `recover` also write
+`observations-langfuse-<stamp>.json`, the
 `langfuse` route of `qualify-alerts.py`. Run each drill only with the
 operator's approval for that window; the monitors are
 [`langfuse-monitors.tf`](/infra/gcp/observability/langfuse-monitors.tf) behind

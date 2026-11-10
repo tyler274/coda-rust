@@ -250,14 +250,18 @@ pub(super) fn isolation_gaps(span: &OpsSpan, run_id: Option<&str>) -> Vec<String
     gaps
 }
 
-/// Number of log lines in a Loki `query_range` answer.
-pub(super) fn loki_lines(body: &Value) -> usize {
-    body["data"]["result"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .map(|stream| stream["values"].as_array().map_or(0, Vec::len))
-        .sum()
+/// Number of log lines in a Loki `query_range` answer, or `None` when the
+/// answer is not a successful streams result: a malformed answer is never
+/// read as zero lines.
+pub(super) fn loki_lines(body: &Value) -> Option<usize> {
+    if body["status"] != "success" || body["data"]["resultType"] != "streams" {
+        return None;
+    }
+    let mut lines = 0;
+    for stream in body["data"]["result"].as_array()? {
+        lines += stream["values"].as_array()?.len();
+    }
+    Some(lines)
 }
 
 /// A Datadog monitor group's state for the Langfuse exporter, from
@@ -304,11 +308,34 @@ pub(super) fn series_total(body: &Value) -> f64 {
         .sum()
 }
 
-/// Whether NextAuth's `GET /api/auth/providers` offers password sign-in.
-pub(super) fn offers_password(providers: &Value) -> bool {
-    providers
-        .as_object()
-        .is_some_and(|providers| providers.contains_key("credentials"))
+/// What a NextAuth `POST /api/auth/callback/credentials` with `json=true`
+/// did. Langfuse lists the credentials provider even with passwords off
+/// (`AUTH_DISABLE_USERNAME_PASSWORD`), and refuses inside its callback, so
+/// only an attempted sign-in and the session it leaves say whether passwords
+/// work.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "snake_case")]
+pub(super) enum PasswordSignIn {
+    /// The callback answered without an error and the session holds a user.
+    SignedIn,
+    /// The callback answered with an error, or left no user in the session.
+    Refused,
+}
+
+/// Judges the credentials callback's redirect `url` and the session read
+/// right after it.
+pub(super) fn password_sign_in(callback: &Value, session: &Value) -> PasswordSignIn {
+    let refused = callback["url"]
+        .as_str()
+        .is_none_or(|url| url.contains("error="));
+    let user = session["user"]["email"]
+        .as_str()
+        .is_some_and(|email| !email.is_empty());
+    if !refused && user {
+        PasswordSignIn::SignedIn
+    } else {
+        PasswordSignIn::Refused
+    }
 }
 
 #[cfg(test)]
@@ -470,9 +497,27 @@ mod tests {
     fn series_and_loki_and_providers_are_counted() {
         let series = json!({ "series": [{ "pointlist": [[1, 2.0], [2, null], [3, 1.5]] }] });
         assert!((series_total(&series) - 3.5).abs() < f64::EPSILON);
-        let loki = json!({ "data": { "result": [{ "values": [["1", "a"], ["2", "b"]] }] } });
-        assert_eq!(loki_lines(&loki), 2);
-        assert!(offers_password(&json!({ "credentials": {}, "custom": {} })));
-        assert!(!offers_password(&json!({ "custom": {} })));
+        let loki = json!({ "status": "success", "data": {
+            "resultType": "streams",
+            "result": [{ "values": [["1", "a"], ["2", "b"]] }]
+        }});
+        assert_eq!(loki_lines(&loki), Some(2));
+        let empty =
+            json!({ "status": "success", "data": { "resultType": "streams", "result": [] } });
+        assert_eq!(loki_lines(&empty), Some(0));
+        assert_eq!(loki_lines(&json!({})), None);
+        assert_eq!(loki_lines(&json!({ "status": "error" })), None);
+    }
+
+    #[test]
+    fn only_a_session_with_a_user_counts_as_password_sign_in() {
+        let ok = json!({ "url": "http://127.0.0.1/langfuse/" });
+        let user = json!({ "user": { "email": "admin@codahealth.ai" } });
+        assert_eq!(password_sign_in(&ok, &user), PasswordSignIn::SignedIn);
+        let refused =
+            json!({ "url": "http://127.0.0.1/langfuse/auth/sign-in?error=CredentialsSignin" });
+        assert_eq!(password_sign_in(&refused, &user), PasswordSignIn::Refused);
+        assert_eq!(password_sign_in(&ok, &json!({})), PasswordSignIn::Refused);
+        assert_eq!(password_sign_in(&json!({}), &user), PasswordSignIn::Refused);
     }
 }
