@@ -2652,6 +2652,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         shell["pageWidth"], 390,
         "the page is wider than a phone: {shell}"
     );
+    fresh.save_picture("feedback-phone-controls");
     fresh.step("clickInRating", serde_json::json!([0, "Poor response"]));
     ratings_when(&mut fresh, "the phone rating saved", |ratings| {
         ratings[0]["pressed"] == "Poor response" && ratings[0]["details"] == "Edit details"
@@ -2679,6 +2680,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         serde_json::json!([]),
         "the dialog's words and Save sit off a phone's screen"
     );
+    fresh.save_picture("feedback-phone-details");
     fresh.click("dialog.feedback-details button[aria-label=\"Close\"]");
     let closed = Instant::now();
     while !fresh.dialog_text().is_empty() {
