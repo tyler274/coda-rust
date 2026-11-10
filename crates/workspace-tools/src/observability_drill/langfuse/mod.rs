@@ -156,6 +156,20 @@ pub(super) enum DrillError {
         workload: &'static str,
         restore: Box<DrillError>,
     },
+    #[error("{primary}; recording it in the alert ledger also failed: {ledger}")]
+    Unrecorded {
+        #[source]
+        primary: Box<DrillError>,
+        ledger: Box<DrillError>,
+    },
+    #[error(
+        "the Langfuse exporter monitor resolved at {resolved} before langfuse-web was restored \
+         at {restored}, so its recovery cannot be read back; run recover promptly after fail"
+    )]
+    ResolvedEarly {
+        resolved: DateTime<Utc>,
+        restored: DateTime<Utc>,
+    },
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -553,9 +567,12 @@ impl Langfuse {
                 source,
             })?;
         jar.take(&response);
-        // NextAuth answers a refused sign-in with 401 and an error URL; keep
-        // reading so the session decides.
-        let callback: Value = response.json().unwrap_or(Value::Null);
+        // NextAuth answers a refused sign-in with 401 and an error URL, so the
+        // status alone decides nothing; the URL and the session do.
+        let callback: Value = response.json().map_err(|source| DrillError::Request {
+            what: "Langfuse credentials sign-in",
+            source,
+        })?;
         let session = chat::send_json(
             self.client
                 .get(format!("{}/api/auth/session", self.base))
@@ -1058,6 +1075,20 @@ fn monitor_reached(
         .max_by_key(|(_, at)| *at)
 }
 
+/// When every group is already OK but none resolved after `since`, the
+/// monitor resolved while langfuse-web was still down (on no data, say) and no
+/// later transition will come; returns that resolution.
+fn resolved_before(groups: &[MonitorGroup], since: DateTime<Utc>) -> Option<DateTime<Utc>> {
+    if groups.is_empty() || groups.iter().any(|group| group.status != "OK") {
+        return None;
+    }
+    let latest = groups
+        .iter()
+        .filter_map(|group| DateTime::<Utc>::from_timestamp(group.last_resolved_ts?, 0))
+        .max()?;
+    (latest < since).then_some(latest)
+}
+
 /// Waits for the monitor. `between` runs before each poll, so recovery can
 /// keep traffic flowing while it waits.
 fn await_monitor(
@@ -1072,6 +1103,12 @@ fn await_monitor(
         let groups = datadog.exporter_groups()?;
         if let Some(reached) = monitor_reached(&groups, alerting, since) {
             return Ok(Some(reached));
+        }
+        if let Some(resolved) = resolved_before(&groups, since).filter(|_| !alerting) {
+            return Err(DrillError::ResolvedEarly {
+                resolved,
+                restored: since,
+            });
         }
         watch.pause(POLL)?;
     }
@@ -1097,9 +1134,9 @@ fn with_ledger(
     match (outcome, saved) {
         (outcome, Ok(())) => outcome,
         (Ok(()), Err(saved)) => Err(saved),
-        (Err(primary), Err(saved)) => Err(DrillError::Gaps {
-            what: "the drill and its ledger",
-            gaps: vec![primary.to_string(), saved.to_string()],
+        (Err(primary), Err(saved)) => Err(DrillError::Unrecorded {
+            primary: Box::new(primary),
+            ledger: Box::new(saved),
         }),
     }
 }
@@ -1133,30 +1170,46 @@ fn fail(
         &json!({ "replicas": down.replicas(), "failed_at": failed_at.to_rfc3339() }),
     )
     .and_then(|()| fail_checks(request, report, &datadog, failed_at, watch));
-    let outcome = match checked {
-        Ok((group, at)) => {
-            exercise.record_evaluator(
-                EvalKind::Firing,
-                at,
-                &format!(
-                    "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
-                    group.monitor
-                ),
-            );
-            down.leave_down();
-            Ok(())
-        }
-        Err(error) => {
-            let (error, back) = down.restore_after(error, kubectl);
-            if back {
-                exercise.record_signal(SignalKind::Restored, Utc::now(), &file);
-                let _ = std::fs::remove_file(&handoff);
-            }
-            report.put("langfuse_web_restored", back);
-            Err(error)
-        }
+    // langfuse-web stays down only once the ledger holds the open exercise;
+    // `recover` needs both it and the handoff.
+    let checked = checked.and_then(|(group, at)| {
+        exercise.record_evaluator(
+            EvalKind::Firing,
+            at,
+            &format!(
+                "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
+                group.monitor
+            ),
+        );
+        save_ledger(&request.output, &exercise, failed_at)
+    });
+    let Err(error) = checked else {
+        down.leave_down();
+        return Ok(());
     };
-    with_ledger(outcome, save_ledger(&request.output, &exercise, failed_at))
+    let (error, back) = down.restore_after(error, kubectl);
+    if back {
+        exercise.record_signal(SignalKind::Restored, Utc::now(), &file);
+        if let Err(stale) = remove_handoff(&handoff) {
+            report.put("stale_handoff", stale.to_string());
+        }
+    }
+    report.put("langfuse_web_restored", back);
+    with_ledger(
+        Err(error),
+        save_ledger(&request.output, &exercise, failed_at),
+    )
+}
+
+/// Removes the handoff once langfuse-web is back; a missing one is fine.
+fn remove_handoff(handoff: &Path) -> Result<(), DrillError> {
+    match std::fs::remove_file(handoff) {
+        Err(source) if source.kind() != std::io::ErrorKind::NotFound => Err(DrillError::Write {
+            path: handoff.to_owned(),
+            source,
+        }),
+        _ => Ok(()),
+    }
 }
 
 fn fail_checks(
@@ -1223,27 +1276,42 @@ fn recover(
         .filter(|count| *count > 0)
         .ok_or_else(|| handoff_error("no positive replicas count".into()))?;
     let mut exercise = ledger(&request.output)?;
-    kubectl.scale(Workload::LangfuseWeb, replicas)?;
-    let _ = std::fs::remove_file(&handoff);
-    let restored_at = Utc::now();
-    report.put("langfuse_web_replicas_restored", replicas);
-    let file = super::observation_file_name(DrillRoute::Langfuse, restored_at);
     if let Some(opened) = exercise.open_since() {
         watch.opened_at(opened);
-        exercise.record_signal(SignalKind::Restored, restored_at, &file);
     }
-    let landed = recover_checks(request, report, &datadog, restored_at, watch);
-    let landed = landed.map(|(group, at)| {
-        exercise.record_evaluator(
-            EvalKind::Recovered,
-            at,
-            &format!(
-                "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
-                group.monitor
-            ),
-        );
-    });
-    with_ledger(landed, save_ledger(&request.output, &exercise, restored_at))
+    kubectl.scale(Workload::LangfuseWeb, replicas)?;
+    report.put("langfuse_web_replicas_restored", replicas);
+    // A retried recover verifies against the first restore, which the
+    // handoff keeps until verification passes.
+    let earlier = recorded["restored_at"]
+        .as_str()
+        .and_then(|at| DateTime::parse_from_rfc3339(at).ok())
+        .map(|at| at.with_timezone(&Utc));
+    let restored_at = match earlier {
+        Some(at) => at,
+        None => {
+            let now = Utc::now();
+            let mut updated = recorded.clone();
+            updated["restored_at"] = json!(now.to_rfc3339());
+            write_json(&handoff, &updated)?;
+            let file = super::observation_file_name(DrillRoute::Langfuse, now);
+            exercise.record_signal(SignalKind::Restored, now, &file);
+            save_ledger(&request.output, &exercise, now)?;
+            now
+        }
+    };
+    report.put("langfuse_web_restored_at", restored_at.to_rfc3339());
+    let (group, at) = recover_checks(request, report, &datadog, restored_at, watch)?;
+    exercise.record_evaluator(
+        EvalKind::Recovered,
+        at,
+        &format!(
+            "Datadog monitor {:?} group exporter:{LANGFUSE_EXPORTER}",
+            group.monitor
+        ),
+    );
+    save_ledger(&request.output, &exercise, Utc::now())?;
+    remove_handoff(&handoff)
 }
 
 fn recover_checks(
@@ -1399,6 +1467,16 @@ mod tests {
         let both = [group("OK", None, Some(150)), group("OK", None, Some(170))];
         let (_, at) = monitor_reached(&both, false, since).unwrap();
         assert_eq!(at.timestamp(), 170);
+    }
+
+    #[test]
+    fn a_resolution_before_the_restore_is_reported_not_awaited() {
+        let since = DateTime::<Utc>::from_timestamp(100, 0).unwrap();
+        let early = resolved_before(&[group("OK", Some(40), Some(90))], since);
+        assert_eq!(early.map(|at| at.timestamp()), Some(90));
+        assert!(resolved_before(&[group("OK", None, Some(150))], since).is_none());
+        assert!(resolved_before(&[group("Alert", Some(40), Some(90))], since).is_none());
+        assert!(resolved_before(&[], since).is_none());
     }
 
     #[test]

@@ -446,7 +446,10 @@ and reads the Langfuse, init admin and Datadog keys from Doppler
 operator's Ctrl-C; either ends the run, and a workload the run scaled down is
 restored to its recorded count before it exits. Only a passed `fail` leaves
 `langfuse-web` down, with its count in `langfuse-web-down.json` for `recover`.
-A failed restore is reported with the original error and the `kubectl scale`
+`recover` keeps that file, with its first restore time, until its checks
+pass, so a failed `recover` can be rerun against the same restore; it
+fails at once when the monitor had already resolved before the restore,
+since no later transition will come. A failed restore is reported with the original error and the `kubectl scale`
 command that finishes it. `fail` and `recover` also write
 `observations-langfuse-<stamp>.json`, the
 `langfuse` route of `qualify-alerts.py`. Run each drill only with the
