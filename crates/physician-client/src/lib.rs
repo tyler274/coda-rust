@@ -5,9 +5,9 @@
 pub use http::HttpError;
 use physician_wire::{
     ApprovedDoctorPlanWire, ChatFeedback, ChatSnapshotResponse, DoctorPlanDraftWire,
-    FeedbackDetails, FeedbackRating, HealthResponse, PanelAssignmentResponse, PatientSearchResponse,
-    PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft, PlanItemWire,
-    PracticeDayResponse, RateResponse, RecentConversationsResponse, ReplyDraftWire,
+    FeedbackDetails, FeedbackRating, HealthResponse, PanelAssignmentResponse,
+    PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
+    PlanItemWire, PracticeDayResponse, RateResponse, RecentConversationsResponse, ReplyDraftWire,
     ResponseFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
     WhoamiResponse,
 };
