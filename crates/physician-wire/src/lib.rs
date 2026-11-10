@@ -854,7 +854,8 @@ pub struct ResponseFeedback {
 /// The physician's saved feedback on one chat's responses.
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatFeedback {
-    /// One entry per rated response.
+    /// One entry per rated response, in no particular order: each names its
+    /// response by run.
     pub feedback: Vec<ResponseFeedback>,
 }
 

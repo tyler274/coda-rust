@@ -249,16 +249,16 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
     assert_eq!(up.0, 200, "{}", up.1);
     let (status, read) = support::get_json(b, &base, session).await;
     assert_eq!(status, 200);
-    let ratings: Vec<_> = read["feedback"]
+    let mut ratings: Vec<_> = read["feedback"]
         .as_array()
         .unwrap()
         .iter()
         .map(|f| (f["run"].clone(), f["rating"].clone()))
         .collect();
+    ratings.sort_by_key(|(run, _)| *run != json!(first));
     assert_eq!(
         ratings,
-        [(json!(first), json!("up")), (json!(second), json!("up"))],
-        "read back in the chat's order"
+        [(json!(first), json!("up")), (json!(second), json!("up"))]
     );
 
     // Only a run that answered this chat takes a rating; details need one

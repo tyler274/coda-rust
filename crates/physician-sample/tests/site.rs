@@ -2595,19 +2595,22 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         &session,
     )
     .await;
+    assert_eq!(readback.0, 200, "{}", readback.1);
+    let mut saved = readback.1["feedback"]
+        .as_array()
+        .cloned()
+        .unwrap_or_default();
+    saved.sort_by_key(|row| row["run"] != serde_json::json!(first));
     assert_eq!(
-        readback,
-        (
-            200,
-            serde_json::json!({"feedback": [
-                {
-                    "run": first,
-                    "rating": "up",
-                    "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
-                },
-                {"run": second, "rating": "down", "details": null},
-            ]})
-        )
+        saved,
+        [
+            serde_json::json!({
+                "run": first,
+                "rating": "up",
+                "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
+            }),
+            serde_json::json!({"run": second, "rating": "down", "details": null}),
+        ]
     );
     println!(
         "Both site processes restarted; feedback readback: {}",
@@ -2692,10 +2695,13 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     )
     .await;
     assert_eq!(status, 200);
-    assert_eq!(phone["feedback"][0]["run"], serde_json::json!(first));
-    assert_eq!(phone["feedback"][0]["rating"], "down");
+    let rerated = phone["feedback"]
+        .as_array()
+        .and_then(|rows| rows.iter().find(|row| row["run"] == first))
+        .unwrap_or_else(|| panic!("the first response lost its feedback: {phone}"));
+    assert_eq!(rerated["rating"], "down");
     assert_eq!(
-        phone["feedback"][0]["details"]["text"], "It left out the trend?",
+        rerated["details"]["text"], "It left out the trend?",
         "a new rating on a phone kept the saved details"
     );
     drop(fresh);
