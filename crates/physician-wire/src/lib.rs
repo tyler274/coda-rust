@@ -761,9 +761,26 @@ pub struct ChatSnapshot {
     pub runs: Vec<ChatRun>,
 }
 
+/// The run that published one of Coda's replies: its durable name, which
+/// stays the same across restarts and reloads.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct RunId(pub String);
+
+impl RunId {
+    /// The run id as the server sent it.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
 /// The `ChatTurn` value exchanged by this crate.
 pub struct ChatTurn {
+    #[serde(default)]
+    /// On one of Coda's replies: the run that published it. Physician and
+    /// mechanical lines, and older servers, omit it.
+    pub run_id: Option<RunId>,
     #[serde(default)]
     /// The `text` value.
     pub text: Option<String>,
@@ -1054,6 +1071,21 @@ mod tests {
         assert_eq!(older.snapshot.conversation[0].kind, None);
         assert_eq!(older.snapshot.conversation[0].resume_target, None);
         assert_eq!(older.snapshot.conversation[0].stop_target, None);
+        assert_eq!(older.snapshot.conversation[0].run_id, None);
+    }
+
+    #[test]
+    fn reads_the_run_that_published_a_reply() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {"conversation": [
+                {"text": "Hello", "kind": "physician"},
+                {"text": "Sodium is stable.", "kind": "model", "run_id": "r1"}
+            ]}}"#,
+        )
+        .unwrap();
+        let turns = &page.snapshot.conversation;
+        assert_eq!(turns[0].run_id, None);
+        assert_eq!(turns[1].run_id, Some(RunId("r1".into())));
     }
 
     #[test]

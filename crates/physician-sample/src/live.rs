@@ -728,8 +728,9 @@ fn turn_kind(role: &str) -> &'static str {
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes. A running turn offers Stop. A
 /// held turn offers Resume. An answered turn names the attempt that answered
-/// it, so an operator can match the reply to its telemetry by attempt id. The
-/// physician's text stays saved.
+/// it, so an operator can match the reply to its telemetry by attempt id. Each
+/// of Coda's replies carries `run_id`, the run that published it, which stays
+/// its name across restarts. The physician's text stays saved.
 fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -739,6 +740,9 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
         .iter()
         .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
         .collect();
+    for response in conversation.responses() {
+        items[response.place]["run_id"] = json!(response.run);
+    }
     let mut runs = Vec::new();
     match conversation.status.as_str() {
         "failed" => {
@@ -1202,6 +1206,7 @@ mod durable_snapshot_tests {
             messages: vec![Message {
                 role: "user".into(),
                 text: "Hello".into(),
+                run: None,
             }],
             status: status.into(),
             work: "work-1".into(),
@@ -1261,5 +1266,22 @@ mod durable_snapshot_tests {
         );
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
+    }
+
+    #[test]
+    fn each_reply_carries_the_run_that_published_it() {
+        let mut answered = conversation("completed");
+        answered.attempts[0].status = "completed".into();
+        // Saved before runs were recorded: the reply reads its completed attempt.
+        answered.messages.push(Message {
+            role: "assistant".into(),
+            text: "Sodium is stable.".into(),
+            run: None,
+        });
+        let body = durable_snapshot_body(Some(&answered));
+        let items = body["conversation"].as_array().unwrap();
+        assert!(items[0].get("run_id").is_none(), "physician turn: {body}");
+        assert_eq!(items[1]["kind"], "model");
+        assert_eq!(items[1]["run_id"], "run-1");
     }
 }

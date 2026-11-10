@@ -1,5 +1,7 @@
 #[path = "tests/reply.rs"]
 mod reply_tests;
+#[path = "tests/runs.rs"]
+mod run_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 

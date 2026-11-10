@@ -73,6 +73,31 @@ pub struct Input {
     pub scenario: Option<String>,
 }
 
+/// The attempt that ran a turn: an [`Attempt::id`] as a durable name for what
+/// it produced. A saved reply keeps the run that answered it across restarts.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[serde(transparent)]
+pub struct RunId(String);
+
+impl RunId {
+    /// The attempt id, as stored and shown on the wire.
+    pub fn as_str(&self) -> &str {
+        &self.0
+    }
+}
+
+impl From<&Attempt> for RunId {
+    fn from(attempt: &Attempt) -> Self {
+        Self(attempt.id.clone())
+    }
+}
+
+impl std::fmt::Display for RunId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
 /// A saved authored message, not execution telemetry.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Message {
@@ -80,6 +105,22 @@ pub struct Message {
     pub role: String,
     /// Exact authored text.
     pub text: String,
+    /// The run that published this reply. Physician messages have none, and
+    /// replies saved before runs were recorded read theirs through
+    /// [`Conversation::responses`].
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub run: Option<RunId>,
+}
+
+/// One of Coda's saved replies, named by the run that published it.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Response<'a> {
+    /// Its place among the conversation's messages.
+    pub place: usize,
+    /// The run that answered.
+    pub run: RunId,
+    /// The reply as saved.
+    pub text: &'a str,
 }
 
 /// Product attempt with its immutable predecessor and durable evidence.
@@ -160,6 +201,41 @@ pub const MAX_LISTED_CHATS: u64 = 200;
 /// turn that always fails ends as failed instead of calling the model forever.
 /// It matches the chat-turn subscription's `max_delivery_attempts`.
 pub const MAX_FAILED_ATTEMPTS: u32 = 5;
+
+impl Conversation {
+    /// Coda's replies in order, each with the run that published it. Only a
+    /// commit completes an attempt and appends a reply, both in one
+    /// transaction, and attempts are never removed, so a reply saved before
+    /// runs were recorded is the n-th completed attempt's. A reply with no
+    /// matching run is left out rather than given a guessed one.
+    pub fn responses(&self) -> Vec<Response<'_>> {
+        let mut completed = self
+            .attempts
+            .iter()
+            .filter(|attempt| attempt.status == "completed");
+        self.messages
+            .iter()
+            .enumerate()
+            .filter(|(_, message)| message.role == "assistant")
+            .filter_map(|(place, message)| {
+                let paired = completed.next().map(RunId::from);
+                let run = message.run.clone().or(paired)?;
+                Some(Response {
+                    place,
+                    run,
+                    text: &message.text,
+                })
+            })
+            .collect()
+    }
+
+    /// The reply `run` published, if this conversation holds one.
+    pub fn response(&self, run: &RunId) -> Option<Response<'_>> {
+        self.responses()
+            .into_iter()
+            .find(|response| &response.run == run)
+    }
+}
 
 impl Default for Conversation {
     fn default() -> Self {
@@ -463,6 +539,7 @@ impl Store {
         state.messages.push(Message {
             role: "user".into(),
             text: input.text.clone(),
+            run: None,
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -660,11 +737,13 @@ impl Store {
         }
         let answer = terminal_answer(&attempt.events)?;
         attempt.status = "completed".into();
+        let run = RunId::from(&*attempt);
         state.status = "completed".into();
         state.last_activity_at = now;
         state.messages.push(Message {
             role: "assistant".into(),
             text: answer,
+            run: Some(run),
         });
         Self::save(tx, &claim.scope, &state).await
     }
