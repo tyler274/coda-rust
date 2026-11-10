@@ -197,11 +197,11 @@ fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::Connected
             get(feedback::read),
         )
         .route(
-            "/physician-state/feedback/{workspace}/{chat}/{response}/rating",
+            "/physician-state/feedback/{workspace}/{chat}/{run}/rating",
             axum::routing::put(feedback::rate),
         )
         .route(
-            "/physician-state/feedback/{workspace}/{chat}/{response}/details",
+            "/physician-state/feedback/{workspace}/{chat}/{run}/details",
             axum::routing::put(feedback::save_details),
         )
         .route(

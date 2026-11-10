@@ -49,9 +49,9 @@ pub(super) mod response_feedback {
         pub workspace: String,
         #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
         pub chat: String,
-        /// The response's place among its chat's messages, from 0.
-        #[sea_orm(primary_key, auto_increment = false)]
-        pub response: i64,
+        /// The run that published the response: its `RunId`.
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub run: String,
         /// `up` or `down`.
         #[sea_orm(column_type = "Text")]
         pub rating: String,

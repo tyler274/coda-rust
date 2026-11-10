@@ -127,6 +127,19 @@ function (step, ...args) {
         }),
       );
     },
+    // Each element `selector` names that does not sit wholly inside the viewport once scrolled to,
+    // with where it lies; empty when every one fits and at least one exists.
+    outsideViewport(selector) {
+      const found = [...document.querySelectorAll(selector)];
+      if (found.length === 0) return [{ missing: selector }];
+      return found.flatMap((element) => {
+        element.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "instant" });
+        const r = element.getBoundingClientRect();
+        const inside = r.width > 0 && r.height > 0 && r.left >= 0 && r.top >= 0
+          && r.right <= innerWidth && r.bottom <= innerHeight;
+        return inside ? [] : [{ left: r.left, top: r.top, right: r.right, bottom: r.bottom, innerWidth, innerHeight }];
+      });
+    },
     // Clicks the control named `label` in the `index`th response's feedback controls.
     clickInRating(index, label) {
       const row = document.querySelectorAll('.message-actions[aria-label="Response actions"]')[index];

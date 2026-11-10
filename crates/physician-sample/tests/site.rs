@@ -2428,7 +2428,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     let store = local_product::runtime::Store::connect(&database.url)
         .await
         .expect("runtime store");
-    scale::answered_chat(
+    let runs = scale::answered_chat(
         &store,
         patient,
         chat,
@@ -2438,6 +2438,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         ],
     )
     .await;
+    let [first, second] = [runs[0].as_str(), runs[1].as_str()];
     let home = std::env::temp_dir().join(format!(
         "physician-feedback-browser-{}",
         uuid::Uuid::new_v4()
@@ -2600,11 +2601,11 @@ async fn feedback_stays_on_its_response_across_site_restart() {
             200,
             serde_json::json!({"feedback": [
                 {
-                    "response": 1,
+                    "run": first,
                     "rating": "up",
                     "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
                 },
-                {"response": 3, "rating": "down", "details": null},
+                {"run": second, "rating": "down", "details": null},
             ]})
         )
     );
@@ -2628,6 +2629,75 @@ async fn feedback_stays_on_its_response_across_site_restart() {
         },
     );
     fresh.save_pictures("feedback-after-restart", "[aria-label=\"Conversation\"]");
+
+    // On a phone the controls and the details dialog fit the screen and work.
+    // A phone opens with the sidebar closed, so load the chat afresh at its size.
+    fresh.set_viewport(390, 844, true);
+    fresh.reload();
+    fresh.wait_for_text("Sodium was 139 on Monday.", Duration::from_secs(20));
+    ratings_when(&mut fresh, "the phone shows the saved ratings", |ratings| {
+        ratings.len() == 2 && ratings[0]["pressed"] == "Good response"
+    });
+    const CONTROLS: &str = ".message-actions[aria-label=\"Response actions\"]";
+    assert_eq!(
+        fresh.step("outsideViewport", serde_json::json!([CONTROLS])),
+        serde_json::json!([]),
+        "a response's feedback controls run off a phone's screen"
+    );
+    let shell = fresh.step("readShell", serde_json::json!([]));
+    assert_eq!(
+        shell["pageWidth"], 390,
+        "the page is wider than a phone: {shell}"
+    );
+    fresh.step("clickInRating", serde_json::json!([0, "Poor response"]));
+    ratings_when(&mut fresh, "the phone rating saved", |ratings| {
+        ratings[0]["pressed"] == "Poor response" && ratings[0]["details"] == "Edit details"
+    });
+    fresh.step("clickInRating", serde_json::json!([0, "Edit details"]));
+    fresh.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    assert_eq!(
+        fresh.step(
+            "outsideViewport",
+            serde_json::json!(["dialog.feedback-details"])
+        ),
+        serde_json::json!([]),
+        "the details dialog runs off a phone's screen"
+    );
+    assert_eq!(
+        fresh.step(
+            "outsideViewport",
+            serde_json::json!([
+                "dialog.feedback-details button.control-primary, dialog.feedback-details textarea"
+            ]),
+        ),
+        serde_json::json!([]),
+        "the dialog's words and Save sit off a phone's screen"
+    );
+    fresh.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !fresh.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the phone dialog open"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    let (status, phone) = scale::get_json(
+        &hosts[0],
+        &format!("/physician-state/feedback/{patient}/{chat}"),
+        &session,
+    )
+    .await;
+    assert_eq!(status, 200);
+    assert_eq!(phone["feedback"][0]["run"], serde_json::json!(first));
+    assert_eq!(phone["feedback"][0]["rating"], "down");
+    assert_eq!(
+        phone["feedback"][0]["details"]["text"], "It left out the trend?",
+        "a new rating on a phone kept the saved details"
+    );
     drop(fresh);
     drop(sites);
     fs::remove_dir_all(home).unwrap();

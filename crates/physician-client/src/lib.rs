@@ -8,7 +8,7 @@ use physician_wire::{
     FeedbackDetails, FeedbackRating, HealthResponse, PanelAssignmentResponse,
     PatientSearchResponse, PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft,
     PlanItemWire, PracticeDayResponse, RateResponse, RecentConversationsResponse, ReplyDraftWire,
-    ResponseFeedback, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
+    ResponseFeedback, RunId, SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse,
     WhoamiResponse,
 };
 use std::sync::Arc;
@@ -357,31 +357,38 @@ impl PhysicianClient {
         .await
     }
 
-    /// Rates the response at `response` in a chat; answers the saved feedback.
+    /// Rates the response `run` published in a chat; answers the saved feedback.
     pub async fn rate_response(
         &self,
         workspace_id: &str,
         chat_id: &str,
-        response: usize,
+        run: &RunId,
         rating: FeedbackRating,
     ) -> Result<ResponseFeedback, http::HttpError> {
         self.put(
-            &format!("/physician-state/feedback/{workspace_id}/{chat_id}/{response}/rating"),
+            &format!(
+                "/physician-state/feedback/{workspace_id}/{chat_id}/{}/rating",
+                run.as_str()
+            ),
             &RateResponse { rating },
         )
         .await
     }
 
-    /// Replaces the details on a rated response; answers the saved feedback.
+    /// Replaces the details on the rated response `run` published; answers the
+    /// saved feedback.
     pub async fn save_feedback_details(
         &self,
         workspace_id: &str,
         chat_id: &str,
-        response: usize,
+        run: &RunId,
         details: &FeedbackDetails,
     ) -> Result<ResponseFeedback, http::HttpError> {
         self.put(
-            &format!("/physician-state/feedback/{workspace_id}/{chat_id}/{response}/details"),
+            &format!(
+                "/physician-state/feedback/{workspace_id}/{chat_id}/{}/details",
+                run.as_str()
+            ),
             details,
         )
         .await

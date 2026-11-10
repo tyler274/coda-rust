@@ -778,14 +778,15 @@ pub async fn get_json(host: &str, path: &str, bearer: &str) -> (u16, Value) {
 
 /// Seeds a chat in which the staging physician asked each question and Coda
 /// answered it, through the store's own accept, claim and commit, with no
-/// worker or model. Coda's answers sit at places 1, 3, 5 and so on.
+/// worker or model. Returns the run that published each answer, in order.
 pub async fn answered_chat(
     store: &local_product::runtime::Store,
     workspace: &str,
     chat: &str,
     turns: &[(&str, &str)],
-) {
-    use local_product::runtime::{Input, Scope, engine};
+) -> Vec<local_product::runtime::RunId> {
+    use local_product::runtime::{Input, RunId, Scope, engine};
+    let mut runs = Vec::new();
     let scope = Scope {
         practice: physician_sample::STAGING_PRACTICE_ID.into(),
         physician: "staging-physician".into(),
@@ -797,6 +798,7 @@ pub async fn answered_chat(
             key: format!("{chat}-{index}"),
             text: (*question).into(),
             timezone: "UTC".into(),
+            scenario: None,
         };
         store.accept(&scope, &input).await.expect("accept question");
         let claim = store
@@ -841,7 +843,9 @@ pub async fn answered_chat(
             .commit(&claim, &candidate)
             .await
             .expect("commit answer");
+        runs.push(RunId::from(claim.attempt.clone()));
     }
+    runs
 }
 
 /// A `message.submit` command body for one new chat line.

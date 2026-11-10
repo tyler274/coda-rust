@@ -1,13 +1,13 @@
 //! Physician feedback on Coda's responses in hosted chats.
 //!
-//! A response is one of Coda's messages in a chat, named by its place among
-//! that chat's messages. Messages are only ever appended, so the place is a
-//! durable identity. One row per rated response holds the rating and, once
-//! saved, the details. Details never exist without a rating: a details save
-//! updates an existing row only. A save holds the auth owner's locks for the
-//! physician's session in its own transaction, so a revoked session or a
-//! patient taken off the panel writes nothing. Feedback is clinical working
-//! text and is never deleted automatically.
+//! A response is one of Coda's saved replies in a chat, named by the run that
+//! published it ([`RunId`]), as [`Conversation::responses`] reads it. One row
+//! per rated response holds the rating and, once saved, the details. Details
+//! never exist without a rating: a details save updates an existing row only.
+//! A save holds the auth owner's locks for the physician's session in its own
+//! transaction, so a revoked session or a patient taken off the panel writes
+//! nothing. Feedback is clinical working text and is never deleted
+//! automatically.
 use std::collections::{BTreeMap, BTreeSet};
 
 use sea_orm::{
@@ -17,7 +17,7 @@ use sea_orm::{
 use serde::{Deserialize, Serialize};
 
 use super::entities::{conversation, response_feedback};
-use super::{Authority, Conversation, Scope, Store, error, keys, now};
+use super::{Authority, Conversation, RunId, Scope, Store, error, keys, now};
 
 /// The longest details text a save accepts, in characters.
 pub const MAX_DETAILS_CHARS: usize = 4000;
@@ -106,7 +106,7 @@ pub struct Feedback {
 pub enum RatingSaved {
     /// Saved; the feedback as it now stands.
     Saved(Feedback),
-    /// That place in the chat holds no response of Coda's; nothing was written.
+    /// That run published no response in this chat; nothing was written.
     NotAResponse,
     /// The auth owner refused the session or panel; nothing was written.
     Refused,
@@ -128,8 +128,8 @@ pub enum DetailsSaved {
 pub struct Evaluated {
     /// The chat, and the physician who wrote the feedback.
     pub scope: Scope,
-    /// The response's place among its chat's messages.
-    pub response: u32,
+    /// The run that published the rated response.
+    pub run: RunId,
     /// The feedback.
     pub feedback: Feedback,
     /// The rated response's text; `None` if the chat no longer holds it.
@@ -179,27 +179,20 @@ fn unconvertible(
     }
 }
 
-fn place(row: &response_feedback::Model) -> Result<u32, DbErr> {
-    u32::try_from(row.response)
-        .map_err(|cause| unconvertible("stored feedback response", "u32", cause))
-}
-
-fn response_key(scope: &Scope, response: u32) -> (String, String, String, String, i64) {
+fn response_key(scope: &Scope, run: &RunId) -> (String, String, String, String, String) {
     let (practice, physician, workspace, chat) = keys(scope);
-    (practice, physician, workspace, chat, i64::from(response))
-}
-
-fn assistant_text(conversation: &Conversation, response: u32) -> Option<&str> {
-    conversation
-        .messages
-        .get(usize::try_from(response).ok()?)
-        .filter(|message| message.role == "assistant")
-        .map(|message| message.text.as_str())
+    (
+        practice,
+        physician,
+        workspace,
+        chat,
+        run.as_str().to_owned(),
+    )
 }
 
 impl Store {
-    /// This physician's feedback on one chat's responses, by place.
-    pub async fn chat_feedback(&self, scope: &Scope) -> Result<BTreeMap<u32, Feedback>, DbErr> {
+    /// This physician's feedback on one chat's responses, by run.
+    pub async fn chat_feedback(&self, scope: &Scope) -> Result<BTreeMap<RunId, Feedback>, DbErr> {
         use response_feedback::Column as C;
         nonempty(scope)?;
         response_feedback::Entity::find()
@@ -210,19 +203,19 @@ impl Store {
             .all(&self.db)
             .await?
             .iter()
-            .map(|row| Ok((place(row)?, feedback(row)?)))
+            .map(|row| Ok((RunId::from(row.run.clone()), feedback(row)?)))
             .collect()
     }
 
-    /// Rates the response at `response` in this physician's chat. A repeat
+    /// Rates the response `run` published in this physician's chat. A repeat
     /// converges; the other rating replaces it; details stay. Answers
-    /// [`RatingSaved::NotAResponse`] unless that place holds one of Coda's
-    /// messages. The auth owner's locks for `session_hash` are held in the
-    /// same transaction.
+    /// [`RatingSaved::NotAResponse`] unless `run` published one of the chat's
+    /// saved responses. The auth owner's locks for `session_hash` are held in
+    /// the same transaction.
     pub async fn rate_response(
         &self,
         scope: &Scope,
-        response: u32,
+        run: &RunId,
         rating: Rating,
         session_hash: &[u8],
         authority: &mut dyn Authority,
@@ -241,8 +234,8 @@ impl Store {
             tx.rollback().await?;
             return Ok(RatingSaved::Refused);
         }
-        // Messages are only appended, so this unlocked read cannot see a
-        // place change hands before the commit.
+        // A saved response and the run that published it never change, so
+        // this unlocked read cannot see the answer withdrawn before the commit.
         let conversation: Option<Conversation> = conversation::Entity::find_by_id(keys(scope))
             .one(&tx)
             .await?
@@ -251,7 +244,7 @@ impl Store {
             .map_err(|cause| unconvertible("stored conversation", "Conversation", cause))?;
         if conversation
             .as_ref()
-            .and_then(|c| assistant_text(c, response))
+            .and_then(|c| c.response(run))
             .is_none()
         {
             return Ok(RatingSaved::NotAResponse);
@@ -262,26 +255,20 @@ impl Store {
             physician: Set(scope.physician.clone()),
             workspace: Set(scope.workspace.clone()),
             chat: Set(scope.chat.clone()),
-            response: Set(i64::from(response)),
+            run: Set(run.as_str().to_owned()),
             rating: Set(rating.column().into()),
             rated_at: Set(now),
             details: Set(None),
             details_saved_at: Set(None),
         })
         .on_conflict(
-            OnConflict::columns([
-                C::Practice,
-                C::Physician,
-                C::Workspace,
-                C::Chat,
-                C::Response,
-            ])
-            .update_columns([C::Rating, C::RatedAt])
-            .to_owned(),
+            OnConflict::columns([C::Practice, C::Physician, C::Workspace, C::Chat, C::Run])
+                .update_columns([C::Rating, C::RatedAt])
+                .to_owned(),
         )
         .exec_without_returning(&tx)
         .await?;
-        let row = response_feedback::Entity::find_by_id(response_key(scope, response))
+        let row = response_feedback::Entity::find_by_id(response_key(scope, run))
             .one(&tx)
             .await?
             .ok_or_else(|| error("missing feedback"))?;
@@ -290,13 +277,13 @@ impl Store {
         Ok(RatingSaved::Saved(saved))
     }
 
-    /// Replaces the details on a rated response. Answers
-    /// [`DetailsSaved::NotRated`] when the response has no rating. The auth
+    /// Replaces the details on the response `run` published. Answers
+    /// [`DetailsSaved::NotRated`] when that response has no rating. The auth
     /// owner's locks for `session_hash` are held in the same transaction.
     pub async fn save_feedback_details(
         &self,
         scope: &Scope,
-        response: u32,
+        run: &RunId,
         details: &Details,
         session_hash: &[u8],
         authority: &mut dyn Authority,
@@ -325,14 +312,14 @@ impl Store {
             .filter(C::Physician.eq(scope.physician.as_str()))
             .filter(C::Workspace.eq(scope.workspace.as_str()))
             .filter(C::Chat.eq(scope.chat.as_str()))
-            .filter(C::Response.eq(i64::from(response)))
+            .filter(C::Run.eq(run.as_str()))
             .exec(&tx)
             .await?
             .rows_affected;
         if written == 0 {
             return Ok(DetailsSaved::NotRated);
         }
-        let row = response_feedback::Entity::find_by_id(response_key(scope, response))
+        let row = response_feedback::Entity::find_by_id(response_key(scope, run))
             .one(&tx)
             .await?
             .ok_or_else(|| error("missing feedback"))?;
@@ -342,7 +329,9 @@ impl Store {
     }
 
     /// Every feedback row, each with its response's text, for evaluation by
-    /// Coda staff. Ordered by practice, physician, workspace, chat and place.
+    /// Coda staff. Ordered by practice, physician, workspace and chat, then by
+    /// each response's place in its chat; a row whose chat no longer holds its
+    /// response comes last in that chat.
     pub async fn feedback_for_evaluation(&self) -> Result<Vec<Evaluated>, DbErr> {
         use response_feedback::Column as C;
         let rows = response_feedback::Entity::find()
@@ -350,7 +339,7 @@ impl Store {
             .order_by_asc(C::Physician)
             .order_by_asc(C::Workspace)
             .order_by_asc(C::Chat)
-            .order_by_asc(C::Response)
+            .order_by_asc(C::Run)
             .all(&self.db)
             .await?;
         // Rows arrive grouped by chat, so each conversation is read once.
@@ -366,19 +355,27 @@ impl Store {
             if chat.as_ref().is_none_or(|(read, _)| *read != scope) {
                 chat = Some((scope.clone(), self.read(&scope).await?));
             }
-            let response = place(&row)?;
-            let response_text = chat
+            let run = RunId::from(row.run.clone());
+            let response = chat
                 .as_ref()
                 .and_then(|(_, conversation)| conversation.as_ref())
-                .and_then(|c| assistant_text(c, response))
-                .map(str::to_owned);
-            evaluated.push(Evaluated {
-                scope,
-                response,
-                feedback: feedback(&row)?,
-                response_text,
-            });
+                .and_then(|c| c.response(&run));
+            let place = response.as_ref().map_or(usize::MAX, |r| r.place);
+            let response_text = response.map(|r| r.text.to_owned());
+            evaluated.push((
+                place,
+                Evaluated {
+                    scope,
+                    run,
+                    feedback: feedback(&row)?,
+                    response_text,
+                },
+            ));
         }
-        Ok(evaluated)
+        // Chats keep the database's order; within each, responses sort by place.
+        for one_chat in evaluated.chunk_by_mut(|(_, a), (_, b)| a.scope == b.scope) {
+            one_chat.sort_by_key(|(place, _)| *place);
+        }
+        Ok(evaluated.into_iter().map(|(_, row)| row).collect())
     }
 }

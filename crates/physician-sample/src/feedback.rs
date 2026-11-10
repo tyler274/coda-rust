@@ -1,11 +1,11 @@
 //! Feedback on Coda's responses in a hosted chat:
 //! `GET /physician-state/feedback/{workspace}/{chat}` and `PUT
-//! /physician-state/feedback/{workspace}/{chat}/{response}/rating` and
+//! /physician-state/feedback/{workspace}/{chat}/{run}/rating` and
 //! `.../details`.
 //!
 //! Feedback belongs to one signed-in physician, one patient workspace and one
-//! chat, and names a response by its place among the chat's messages, as the
-//! snapshot's `response` does. Only its author reads it over HTTP; Coda staff
+//! chat, and names a response by the run that published it, as the snapshot's
+//! `run_id` does. Only its author reads it over HTTP; Coda staff
 //! read it with `physician-migrate feedback`. Hosted sites only: an inline
 //! site mounts none of these routes.
 use crate::{
@@ -20,7 +20,7 @@ use axum::{
     response::{IntoResponse, Response},
 };
 use local_product::runtime::{
-    Scope,
+    RunId, Scope,
     feedback::{Details, DetailsSaved, Feedback, Rating, RatingSaved, Reason},
 };
 use physician_wire::{
@@ -37,9 +37,9 @@ fn scope(ctx: &AuthContext, workspace: String, chat: String) -> Scope {
     }
 }
 
-fn wire(response: u32, feedback: Feedback) -> ResponseFeedback {
+fn wire(run: &RunId, feedback: Feedback) -> ResponseFeedback {
     ResponseFeedback {
-        response: response as usize,
+        run: physician_wire::RunId(run.as_str().to_owned()),
         rating: match feedback.rating {
             Rating::Up => FeedbackRating::Up,
             Rating::Down => FeedbackRating::Down,
@@ -111,7 +111,7 @@ pub(crate) async fn read(
         Ok(saved) => Json(ChatFeedback {
             feedback: saved
                 .into_iter()
-                .map(|(response, feedback)| wire(response, feedback))
+                .map(|(run, feedback)| wire(&run, feedback))
                 .collect(),
         })
         .into_response(),
@@ -121,7 +121,7 @@ pub(crate) async fn read(
 
 pub(crate) async fn rate(
     State(live): State<Arc<Live>>,
-    Path((workspace, chat, response)): Path<(String, String, u32)>,
+    Path((workspace, chat, run)): Path<(String, String, String)>,
     ctx: Option<Extension<AuthContext>>,
     Json(body): Json<RateResponse>,
 ) -> Response {
@@ -129,6 +129,7 @@ pub(crate) async fn rate(
         Ok(found) => found,
         Err(status) => return status.into_response(),
     };
+    let run = RunId::from(run);
     let rating = match body.rating {
         FeedbackRating::Up => Rating::Up,
         FeedbackRating::Down => Rating::Down,
@@ -141,14 +142,14 @@ pub(crate) async fn rate(
         .store
         .rate_response(
             &scope(&ctx, workspace, chat),
-            response,
+            &run,
             rating,
             &hash,
             &mut authority,
         )
         .await
     {
-        Ok(RatingSaved::Saved(feedback)) => Json(wire(response, feedback)).into_response(),
+        Ok(RatingSaved::Saved(feedback)) => Json(wire(&run, feedback)).into_response(),
         Ok(RatingSaved::NotAResponse) => StatusCode::NOT_FOUND.into_response(),
         Ok(RatingSaved::Refused) => StatusCode::CONFLICT.into_response(),
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
@@ -157,7 +158,7 @@ pub(crate) async fn rate(
 
 pub(crate) async fn save_details(
     State(live): State<Arc<Live>>,
-    Path((workspace, chat, response)): Path<(String, String, u32)>,
+    Path((workspace, chat, run)): Path<(String, String, String)>,
     ctx: Option<Extension<AuthContext>>,
     Json(body): Json<FeedbackDetails>,
 ) -> Response {
@@ -165,6 +166,7 @@ pub(crate) async fn save_details(
         Ok(found) => found,
         Err(status) => return status.into_response(),
     };
+    let run = RunId::from(run);
     let Some(details) = details(body) else {
         return StatusCode::UNPROCESSABLE_ENTITY.into_response();
     };
@@ -176,14 +178,14 @@ pub(crate) async fn save_details(
         .store
         .save_feedback_details(
             &scope(&ctx, workspace, chat),
-            response,
+            &run,
             &details,
             &hash,
             &mut authority,
         )
         .await
     {
-        Ok(DetailsSaved::Saved(feedback)) => Json(wire(response, feedback)).into_response(),
+        Ok(DetailsSaved::Saved(feedback)) => Json(wire(&run, feedback)).into_response(),
         Ok(DetailsSaved::NotRated) => StatusCode::NOT_FOUND.into_response(),
         Ok(DetailsSaved::Refused) => StatusCode::CONFLICT.into_response(),
         Err(_) => StatusCode::SERVICE_UNAVAILABLE.into_response(),

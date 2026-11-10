@@ -738,14 +738,7 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .enumerate()
-        .map(|(place, message)| {
-            let mut turn = json!({ "kind": turn_kind(&message.role), "text": message.text });
-            if message.role == "assistant" {
-                turn["response"] = json!(place);
-            }
-            turn
-        })
+        .map(|message| json!({ "kind": turn_kind(&message.role), "text": message.text }))
         .collect();
     for response in conversation.responses() {
         items[response.place]["run_id"] = json!(response.run);

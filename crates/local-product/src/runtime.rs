@@ -94,6 +94,14 @@ impl From<&Attempt> for RunId {
     }
 }
 
+impl From<String> for RunId {
+    /// A run named from outside, such as a route. Only
+    /// [`Conversation::response`] says whether it answered a chat.
+    fn from(id: String) -> Self {
+        Self(id)
+    }
+}
+
 impl std::fmt::Display for RunId {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(&self.0)

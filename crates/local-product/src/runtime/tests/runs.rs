@@ -1,8 +1,8 @@
 use super::super::*;
 use super::{delivery_input, delivery_scope};
 
-/// Accepts `key`, then runs one attempt to a published reply of the same text.
-async fn answer(store: &Store, scope: &Scope, key: &str) -> Claim {
+/// Accepts `key`, then runs one attempt to a published reply, "reply to {key}".
+pub(super) async fn answer(store: &Store, scope: &Scope, key: &str) -> Claim {
     store.accept(scope, &delivery_input(key)).await.unwrap();
     let claim = store.claim(scope, 60).await.unwrap().unwrap();
     let reply = format!("reply to {key}");

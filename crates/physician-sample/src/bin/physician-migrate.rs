@@ -167,7 +167,7 @@ async fn print_feedback(url: &str) -> Result<(), FeedbackReadError> {
             "physician": row.scope.physician,
             "workspace": row.scope.workspace,
             "chat": row.scope.chat,
-            "response": row.response,
+            "run": row.run,
             "rating": row.feedback.rating,
             "rated_at": row.feedback.rated_at,
             "reasons": details.map(|details| details.reasons()),

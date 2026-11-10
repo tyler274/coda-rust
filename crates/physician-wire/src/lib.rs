@@ -796,10 +796,6 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
-    #[serde(default)]
-    /// On one of Coda's saved responses: its place among the chat's
-    /// messages, which feedback names. Absent on every other turn.
-    pub response: Option<usize>,
 }
 
 /// A physician's rating of one of Coda's responses.
@@ -845,8 +841,9 @@ pub struct RateResponse {
 /// The physician's saved feedback on one response.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ResponseFeedback {
-    /// The response's place, as its [`ChatTurn::response`] names it.
-    pub response: usize,
+    /// The run that published the response, as its [`ChatTurn::run_id`]
+    /// names it.
+    pub run: RunId,
     /// The saved rating.
     pub rating: FeedbackRating,
     #[serde(default)]
@@ -857,7 +854,7 @@ pub struct ResponseFeedback {
 /// The physician's saved feedback on one chat's responses.
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct ChatFeedback {
-    /// One entry per rated response, by place.
+    /// One entry per rated response.
     pub feedback: Vec<ResponseFeedback>,
 }
 
