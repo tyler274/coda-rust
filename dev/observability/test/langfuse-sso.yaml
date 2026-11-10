@@ -1,0 +1,20 @@
+# Overlay on langfuse.yaml for crates/langfuse-sso/tests/langfuse.rs:
+# Langfuse configured as staging is with the issuer on.
+services:
+  langfuse-web:
+    environment:
+      AUTH_DISABLE_SIGNUP: "false"
+      AUTH_DISABLE_USERNAME_PASSWORD: "true"
+      LANGFUSE_INIT_USER_EMAIL: admin@codahealth.ai
+      LANGFUSE_INIT_USER_NAME: Admin
+      LANGFUSE_INIT_USER_PASSWORD: ${ADMIN_PASSWORD:?}
+      LANGFUSE_DEFAULT_ORG_ID: coda
+      LANGFUSE_DEFAULT_ORG_ROLE: NONE
+      LANGFUSE_ALLOWED_ORGANIZATION_CREATORS: admin@codahealth.ai
+      AUTH_CUSTOM_CLIENT_ID: ${CLIENT_ID:?}
+      AUTH_CUSTOM_CLIENT_SECRET: ${CLIENT_SECRET:?}
+      AUTH_CUSTOM_ISSUER: http://127.0.0.1:${ISSUER_PORT:?}/langfuse-sso
+      AUTH_CUSTOM_NAME: Google
+      AUTH_CUSTOM_CHECKS: pkce,state,nonce
+      AUTH_CUSTOM_ID_TOKEN_SIGNED_RESPONSE_ALG: ES256
+      AUTH_CUSTOM_ALLOW_ACCOUNT_LINKING: "true"
