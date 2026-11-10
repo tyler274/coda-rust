@@ -27,7 +27,7 @@ pub(super) struct Turn {
 impl Turn {
     pub(super) fn command(&self) -> Value {
         json!({
-            "kind": "message.submit",
+            "type": "message.submit",
             "idempotency_key": self.key,
             "payload": {
                 "patient_workspace_id": self.workspace,
@@ -123,9 +123,7 @@ impl Physician {
             })?
             .to_owned();
         let answer = send_json(
-            client
-                .post(format!("{origin}/auth/rehearsal"))
-                .header(PROXY_AUTHORIZATION, format!("Bearer {iap}")),
+            rehearsal_sign_in(&client, &origin, &iap),
             "physician rehearsal sign-in",
         )?;
         let session = answer["session"]
@@ -215,6 +213,16 @@ impl Physician {
     }
 }
 
+/// `POST /auth/rehearsal` through IAP. Google's front end answers a POST
+/// without `Content-Length` with 411, so the request carries an empty JSON
+/// body the route ignores.
+fn rehearsal_sign_in(client: &Client, origin: &str, iap: &str) -> RequestBuilder {
+    client
+        .post(format!("{origin}/auth/rehearsal"))
+        .header(PROXY_AUTHORIZATION, format!("Bearer {iap}"))
+        .json(&json!({}))
+}
+
 /// Sends a request and reads a JSON answer. Bodies stay out of errors: an
 /// answer can carry a session or chat text.
 pub(super) fn send_json(request: RequestBuilder, what: &'static str) -> Result<Value, DrillError> {
@@ -239,6 +247,35 @@ mod tests {
 
     fn snapshot(conversation: Value, runs: Value) -> Value {
         json!({ "snapshot": { "conversation": conversation, "runs": runs } })
+    }
+
+    #[test]
+    fn the_turn_is_a_message_submit_command_on_the_wire() {
+        let turn = Turn {
+            workspace: "w".into(),
+            chat: "c".into(),
+            text: "t".into(),
+            scenario: "s".into(),
+            key: "k".into(),
+        };
+        let command = turn.command();
+        assert_eq!(command["type"], "message.submit");
+        assert_eq!(command["idempotency_key"], "k");
+        assert_eq!(command["payload"]["scenario"], "s");
+    }
+
+    #[test]
+    fn the_rehearsal_sign_in_has_a_length_for_google_front_end() {
+        let request = rehearsal_sign_in(&Client::new(), "https://physician.example", "jwt")
+            .build()
+            .unwrap();
+        assert_eq!(request.url().path(), "/auth/rehearsal");
+        assert_eq!(request.headers()[PROXY_AUTHORIZATION], "Bearer jwt");
+        let length = request
+            .body()
+            .and_then(|body| body.as_bytes())
+            .map(<[u8]>::len);
+        assert_eq!(length, Some(2));
     }
 
     #[test]
