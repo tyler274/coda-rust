@@ -13,8 +13,20 @@
 //!     let _ = store.activate(lease, built);
 //! }
 //! ```
+//!
+//! An [`Activation`] belongs to the run whose lease made it, and is used
+//! once: it can't be copied, and [`Store::finish`](crate::Store::finish)
+//! takes it by value.
+//!
+//! ```compile_fail
+//! fn reuse(activation: clinical_library::Activation) {
+//!     let _ = activation.clone();
+//! }
+//! ```
 
 use std::fmt;
+
+use crate::slot::RunId;
 use std::marker::PhantomData;
 
 /// The name of one built version of the index, such as its content digest.
@@ -110,17 +122,25 @@ pub struct CheckFailed<E> {
     pub source: E,
 }
 
-/// Proof that a version became the active one. Only
-/// [`Store::activate`](crate::Store::activate) returns it.
-#[derive(Clone, Debug, PartialEq, Eq)]
+/// Proof that a version became the active one under one run's lease. Only
+/// [`Store::activate`](crate::Store::activate) returns it, and only the night
+/// that made it can finish with it.
+#[derive(Debug, PartialEq, Eq)]
 pub struct Activation {
     pub(crate) version: VersionId,
+    pub(crate) run: RunId,
+    pub(crate) token: i64,
 }
 
 impl Activation {
     /// The version that is now active.
     pub fn version(&self) -> &VersionId {
         &self.version
+    }
+
+    /// The run that activated it.
+    pub const fn run(&self) -> RunId {
+        self.run
     }
 }
 

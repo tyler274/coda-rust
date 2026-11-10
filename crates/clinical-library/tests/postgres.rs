@@ -5,15 +5,16 @@
 //! skips silently: without the variable it fails.
 
 use clinical_library::{
-    Acquired, ArticleEvent, ArticleState, Candidate, DeferralReason, FailureCode, HistoryEntry,
-    HolderState, ItemKey, Next, NightOutcome, OtherSource, RETRY_LIMIT, RunId, SlotName,
-    StopReason, Store, StoreError, VersionId, WaitReason, pubmed::Pmid,
+    Acquired, ArticleEvent, ArticleState, Candidate, DeferralReason, Ending, FailureCode,
+    FailureDetail, HistoryEntry, HolderState, ItemKey, Next, NightOutcome, OtherSource,
+    RETRY_LIMIT, RunId, SlotName, SlotWait, Source, StopReason, Store, StoreError, VersionId,
+    WaitReason, pubmed::Pmid,
 };
 use sea_orm::{ConnectionTrait, DbBackend, Statement};
 
 mod common;
 
-use common::Scratch;
+use common::{Says, Scratch, complete, hold_slot};
 
 fn slot() -> SlotName {
     SlotName::new("nightly").unwrap()
@@ -32,9 +33,13 @@ fn code(value: &str) -> FailureCode {
 }
 
 async fn hold(store: &Store, run: RunId) -> clinical_library::Lease {
-    match store.acquire(&slot(), run, None).await.unwrap() {
-        Acquired::Holds(lease) => lease,
-        Acquired::Waits(waiting) => panic!("expected the slot, waited: {waiting:?}"),
+    hold_slot(store, &slot(), run).await
+}
+
+fn failed(code: FailureCode) -> Ending {
+    Ending::Failed {
+        code,
+        detail: FailureDetail::new("the build image couldn't start"),
     }
 }
 
@@ -56,8 +61,8 @@ async fn migrations_apply_to_a_fresh_database() {
         .unwrap()
         .try_get::<i64>("", "n")
         .unwrap();
-    // The initial schema and the PubMed status schema.
-    assert_eq!(ledger, 2);
+    // The initial schema, the PubMed status schema and the night runner's.
+    assert_eq!(ledger, 3);
     assert_eq!(store.active_version().await.unwrap(), None);
     scratch.drop().await;
 }
@@ -117,39 +122,28 @@ async fn a_run_that_lost_its_slot_cannot_write() {
     let old_lease = hold(&store, old).await;
     assert_eq!(store.holder(&slot()).await.unwrap(), Some(old));
 
-    for (state, reason) in [
-        (HolderState::Alive, DeferralReason::SlotHeldByLiveRun),
-        (HolderState::Unknown, DeferralReason::OwnerUnreadable),
+    for (state, wait) in [
+        (HolderState::Alive, SlotWait::HolderAlive),
+        (HolderState::Unknown, SlotWait::HolderUnreadable),
     ] {
-        let waiting = match store
-            .acquire(&slot(), RunId::new(), Some((old, state)))
+        match store
+            .acquire(&slot(), &Source::ALL, RunId::new(), &Says(state))
             .await
             .unwrap()
         {
-            Acquired::Waits(waiting) => waiting,
-            Acquired::Holds(_) => panic!("took a slot whose holder is {state:?}"),
-        };
-        assert_eq!(waiting.reason(), reason);
-        store.record_wait(waiting).await.unwrap();
+            Acquired::Waited(waited) => assert_eq!(waited, wait),
+            other => panic!("a slot whose holder is {state:?} gave {other:?}"),
+        }
     }
-    // A holder the caller didn't ask about is treated as alive.
-    let other = RunId::new();
-    assert!(matches!(
-        store
-            .acquire(&slot(), RunId::new(), Some((other, HolderState::Ended)))
-            .await
-            .unwrap(),
-        Acquired::Waits(_)
-    ));
 
     let new = RunId::new();
     let new_lease = match store
-        .acquire(&slot(), new, Some((old, HolderState::Ended)))
+        .acquire(&slot(), &Source::ALL, new, &Says(HolderState::Ended))
         .await
         .unwrap()
     {
         Acquired::Holds(lease) => lease,
-        Acquired::Waits(waiting) => panic!("didn't take an ended holder's slot: {waiting:?}"),
+        other => panic!("didn't take an ended holder's slot: {other:?}"),
     };
     assert!(new_lease.token() > old_lease.token());
 
@@ -171,7 +165,12 @@ async fn a_run_that_lost_its_slot_cannot_write() {
         .unwrap();
     lost(store.activate(&old_lease, checked).await.map(drop));
     lost(store.qualify(&old_lease, &article()).await.map(drop));
-    lost(store.finish(old_lease, &NightOutcome::nothing_due()).await);
+    lost(
+        store
+            .finish(old_lease, Ending::Completed { activation: None })
+            .await
+            .map(drop),
+    );
     assert_eq!(store.active_version().await.unwrap(), None);
     assert_eq!(store.item(&article()).await.unwrap(), None);
 
@@ -181,21 +180,20 @@ async fn a_run_that_lost_its_slot_cannot_write() {
         .apply(&new_lease, &article(), &ArticleEvent::Admitted)
         .await
         .unwrap();
-    store
-        .finish(new_lease, &NightOutcome::nothing_due())
-        .await
-        .unwrap();
+    assert!(complete(&store, new_lease).await.success().is_some());
 
     // The two waits, the taken-over night as a failure, then the success.
+    let history = store.history(&slot()).await.unwrap();
     assert_eq!(
-        store.history(&slot()).await.unwrap(),
-        vec![
+        history[..3],
+        [
             HistoryEntry::Night(NightOutcome::deferred(DeferralReason::SlotHeldByLiveRun)),
             HistoryEntry::Night(NightOutcome::deferred(DeferralReason::OwnerUnreadable)),
             HistoryEntry::Night(NightOutcome::failed(FailureCode::ended_without_outcome())),
-            HistoryEntry::Night(NightOutcome::nothing_due()),
         ]
     );
+    assert!(matches!(&history[3], HistoryEntry::Night(night) if night.success().is_some()));
+    assert_eq!(history.len(), 4);
     scratch.drop().await;
 }
 
@@ -284,8 +282,11 @@ async fn each_night_records_one_outcome() {
     let store = scratch.store().await;
     let run = RunId::new();
     let lease = hold(&store, run).await;
-    let outcome = NightOutcome::failed(code("build_failed"));
-    store.finish(lease, &outcome).await.unwrap();
+    let outcome = store
+        .finish(lease, failed(code("build_failed")))
+        .await
+        .unwrap();
+    assert_eq!(outcome, NightOutcome::failed(code("build_failed")));
     assert_eq!(
         store.history(&slot()).await.unwrap(),
         vec![HistoryEntry::Night(outcome)]
@@ -323,7 +324,7 @@ async fn the_stop_rule_reads_the_stored_history() {
     for _ in 0..2 {
         let lease = hold(&store, RunId::new()).await;
         store
-            .finish(lease, &NightOutcome::failed(code("build_failed")))
+            .finish(lease, failed(code("build_failed")))
             .await
             .unwrap();
     }

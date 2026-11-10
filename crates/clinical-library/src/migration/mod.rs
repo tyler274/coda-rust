@@ -6,6 +6,7 @@ use sea_orm_migration::prelude::*;
 
 mod m20261109_init;
 mod m20261110_pubmed_status;
+mod m20261111_night_runner;
 
 /// The table this chain records applied migrations in. The library may share
 /// a database with other chains, and each chain owns its own ledger.
@@ -24,6 +25,7 @@ impl MigratorTrait for Migrator {
         vec![
             Box::new(m20261109_init::Migration),
             Box::new(m20261110_pubmed_status::Migration),
+            Box::new(m20261111_night_runner::Migration),
         ]
     }
 }
@@ -120,8 +122,62 @@ pub(crate) mod night {
         pub activated_version: Option<String>,
         /// Why a deferred night deferred.
         pub deferral_reason: Option<String>,
-        /// What a failed night's failure was.
+        /// What a failed night's failure was, or the failure that stopped
+        /// the nightly on the same failure twice.
         pub failure_code: Option<String>,
+        /// The stop rule that kept a stopped night from running.
+        pub stop_reason: Option<String>,
+        /// The head of a failed night's failure, in words a person reads.
+        pub failure_detail: Option<String>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[allow(missing_docs)]
+pub(crate) mod night_item {
+    use sea_orm::entity::prelude::*;
+
+    /// One item a run was due to do, and what it did with it.
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "clinical_library_night_items")]
+    pub struct Model {
+        /// The run.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub run_id: Uuid,
+        /// The item's source.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub source: String,
+        /// The item's key.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub item_key: String,
+        /// `due`, `done` or `set_aside`.
+        pub result: String,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+#[allow(missing_docs)]
+pub(crate) mod unpublished {
+    use sea_orm::entity::prelude::*;
+
+    /// Admitted content no version has published yet.
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "clinical_library_unpublished")]
+    pub struct Model {
+        /// The item's source.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub source: String,
+        /// The item's key.
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub item_key: String,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

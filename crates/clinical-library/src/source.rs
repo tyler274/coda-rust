@@ -5,7 +5,7 @@ use std::fmt;
 use crate::pubmed::Pmid;
 
 /// One source the library collects from.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Source {
     /// PubMed's retraction and correction status.
     PubMed,
@@ -28,6 +28,22 @@ impl Source {
         Self::Mmwr,
         Self::Uspstf,
     ];
+
+    /// Whether search reads this source's admitted items only through a new
+    /// version of the index. PubMed's status is read as it is recorded.
+    pub const fn publishes_through_versions(self) -> bool {
+        match self {
+            Self::PubMed => false,
+            Self::Pmc | Self::DailyMed | Self::Mmwr | Self::Uspstf => true,
+        }
+    }
+
+    /// Reads a stored name.
+    pub fn parse(value: &str) -> Option<Self> {
+        Self::ALL
+            .into_iter()
+            .find(|source| source.as_str() == value)
+    }
 
     /// The stored name.
     pub const fn as_str(self) -> &'static str {
@@ -88,6 +104,19 @@ impl ItemKey {
             source: source.into(),
             key: key.to_owned(),
         })
+    }
+
+    /// Reads a stored key of `source`: a PMID for PubMed, text for the
+    /// others.
+    pub(crate) fn from_stored(source: Source, key: &str) -> Result<Self, crate::store::Corruption> {
+        let other = match source {
+            Source::PubMed => return Ok(Self::pubmed(Pmid::parse(key)?)),
+            Source::Pmc => OtherSource::Pmc,
+            Source::DailyMed => OtherSource::DailyMed,
+            Source::Mmwr => OtherSource::Mmwr,
+            Source::Uspstf => OtherSource::Uspstf,
+        };
+        Ok(Self::other(other, key)?)
     }
 
     /// The item's source.

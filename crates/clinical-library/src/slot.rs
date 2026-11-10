@@ -6,13 +6,18 @@
 //! lost its slot, and later wakes up, can't overwrite the run that took it.
 //!
 //! The next night takes the slot over only when the holder has ended. A
-//! holder whose state can't be read is waited on, never presumed ended.
+//! holder whose state can't be read is waited on, never presumed ended. The
+//! store asks the [`Platform`] that runs the nightly for the holder's state;
+//! a caller can't supply one.
 
+use std::collections::BTreeSet;
 use std::fmt;
 
+use async_trait::async_trait;
 use uuid::Uuid;
 
 use crate::night::{DeferralReason, NightOutcome};
+use crate::source::Source;
 use crate::stop_rule::HistoryEntry;
 
 /// How many nights in a row the slot's holder can be unreadable before a
@@ -91,13 +96,40 @@ pub enum HolderState {
     Unknown,
 }
 
+/// The platform that runs the nightly, such as Cloud Run jobs or a laptop.
+/// The store asks it about the run holding a slot before taking the slot.
+#[async_trait]
+pub trait Platform: Send + Sync {
+    /// What the platform says about `run`. A platform that can't tell
+    /// answers [`HolderState::Unknown`]: never `Ended` on a guess.
+    async fn holder_state(&self, run: RunId) -> HolderState;
+}
+
 /// What a night does about a slot someone else holds.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Takeover {
     /// The holder ended, so tonight takes the slot.
     TakeOver,
     /// Tonight waits, and records why.
-    Wait(DeferralReason),
+    Wait(SlotWait),
+}
+
+/// Why a night waited for a slot another run holds.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SlotWait {
+    /// The holder is alive.
+    HolderAlive,
+    /// The holder couldn't be confirmed alive or ended.
+    HolderUnreadable,
+}
+
+impl From<SlotWait> for DeferralReason {
+    fn from(wait: SlotWait) -> Self {
+        match wait {
+            SlotWait::HolderAlive => Self::SlotHeldByLiveRun,
+            SlotWait::HolderUnreadable => Self::OwnerUnreadable,
+        }
+    }
 }
 
 /// Decides whether tonight may take a held slot. `Unknown` waits: an owner
@@ -105,8 +137,8 @@ pub enum Takeover {
 pub const fn takeover(holder: HolderState) -> Takeover {
     match holder {
         HolderState::Ended => Takeover::TakeOver,
-        HolderState::Alive => Takeover::Wait(DeferralReason::SlotHeldByLiveRun),
-        HolderState::Unknown => Takeover::Wait(DeferralReason::OwnerUnreadable),
+        HolderState::Alive => Takeover::Wait(SlotWait::HolderAlive),
+        HolderState::Unknown => Takeover::Wait(SlotWait::HolderUnreadable),
     }
 }
 
@@ -122,7 +154,7 @@ pub fn owner_unreadable_needs_alert(history: &[HistoryEntry]) -> bool {
         })
         .take_while(|night| {
             matches!(night, NightOutcome::Deferred(deferred)
-                if deferred.reason() == DeferralReason::OwnerUnreadable)
+                if *deferred.reason() == DeferralReason::OwnerUnreadable)
         })
         .count();
     unreadable_in_a_row >= OWNER_UNREADABLE_ALERT_AFTER
@@ -135,6 +167,7 @@ pub struct Lease {
     pub(crate) slot: SlotName,
     pub(crate) run: RunId,
     pub(crate) token: i64,
+    pub(crate) sources: BTreeSet<Source>,
 }
 
 impl Lease {
@@ -152,6 +185,11 @@ impl Lease {
     pub const fn token(&self) -> i64 {
         self.token
     }
+
+    /// The sources whose due items this night answers for.
+    pub fn sources(&self) -> &BTreeSet<Source> {
+        &self.sources
+    }
 }
 
 #[cfg(test)]
@@ -165,11 +203,11 @@ mod tests {
         assert_eq!(takeover(HolderState::Ended), Takeover::TakeOver);
         assert_eq!(
             takeover(HolderState::Alive),
-            Takeover::Wait(DeferralReason::SlotHeldByLiveRun)
+            Takeover::Wait(SlotWait::HolderAlive)
         );
         assert_eq!(
             takeover(HolderState::Unknown),
-            Takeover::Wait(DeferralReason::OwnerUnreadable)
+            Takeover::Wait(SlotWait::HolderUnreadable)
         );
     }
 
@@ -183,7 +221,7 @@ mod tests {
         assert!(owner_unreadable_needs_alert(&[unreadable(), unreadable()]));
         assert!(!owner_unreadable_needs_alert(&[
             unreadable(),
-            HistoryEntry::Night(NightOutcome::nothing_due()),
+            HistoryEntry::Night(crate::night::test_success()),
             unreadable(),
         ]));
     }

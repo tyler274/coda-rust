@@ -11,16 +11,38 @@
 //! the night's one outcome, and exits 0 when the night succeeded, 2 when it
 //! deferred and 1 when it failed or couldn't run.
 //!
-//! If an earlier run on this machine was killed while holding the slot,
-//! `--previous-run-ended` says so, and this run takes the slot over and
-//! records that run as failed. Never pass it while another run may be alive.
+//! It runs through the shared night runner, which asks the platform about a
+//! run holding the slot. This machine can't see other runs, so it answers
+//! that their state is unknown, and the night waits. If an earlier run on
+//! this machine was killed while holding the slot, `--previous-run-ended`
+//! says so, and this run takes the slot over and records that run as
+//! failed. Never pass it while another run may be alive.
 
 use std::process::ExitCode;
 
-use clinical_library::pubmed::{self, Eutils, Pacing, Pmid};
-use clinical_library::{Acquired, HolderState, NightOutcome, OutcomeKind, RunId, SlotName, Store};
+use async_trait::async_trait;
+use clinical_library::pubmed::{self, Eutils, Pacing, Pmid, PubmedStatus};
+use clinical_library::{
+    FailureDetail, HolderState, Night, OutcomeKind, Platform, RunId, SlotName, Store, run_night,
+};
 
 const SLOT: &str = "pubmed-status";
+
+/// What this machine can say about a run holding the slot.
+struct ThisMachine {
+    previous_run_ended: bool,
+}
+
+#[async_trait]
+impl Platform for ThisMachine {
+    async fn holder_state(&self, _: RunId) -> HolderState {
+        if self.previous_run_ended {
+            HolderState::Ended
+        } else {
+            HolderState::Unknown
+        }
+    }
+}
 
 #[tokio::main]
 async fn main() -> ExitCode {
@@ -71,62 +93,56 @@ async fn run() -> Result<OutcomeKind, String> {
         .await
         .map_err(|error| format!("couldn't reach the clinical library database: {error}"))?;
     let slot = SlotName::new(SLOT).map_err(|error| error.to_string())?;
-    let run = RunId::new();
-    let holder_state = if previous_run_ended {
-        store
-            .holder(&slot)
-            .await
-            .map_err(|error| format!("couldn't read the slot: {error}"))?
-            .map(|holder| (holder, HolderState::Ended))
-    } else {
-        None
-    };
-    let lease = match store
-        .acquire(&slot, run, holder_state)
+    let job = PubmedStatus::new(ncbi, pmids);
+    let platform = ThisMachine { previous_run_ended };
+    let night = run_night(&store, &platform, &slot, RunId::new(), &job)
         .await
-        .map_err(|error| format!("couldn't take the slot: {error}"))?
-    {
-        Acquired::Holds(lease) => lease,
-        Acquired::Waits(waiting) => {
-            let reason = waiting.reason();
-            store
-                .record_wait(waiting)
-                .await
-                .map_err(|error| format!("couldn't record the wait: {error}"))?;
-            eprintln!(
-                "another run holds the {SLOT} slot ({}); this night deferred",
-                reason.as_str()
-            );
+        .map_err(|error| {
+            format!(
+                "the night couldn't run: {}",
+                FailureDetail::of(&error).as_str()
+            )
+        })?;
+
+    let outcome = match night {
+        Night::Finished(outcome) => outcome,
+        Night::Waited(wait) => {
+            eprintln!("another run holds the {SLOT} slot ({wait:?}); this night deferred");
             return Ok(OutcomeKind::Deferred);
         }
-    };
-
-    let outcome = match pubmed::refresh(&store, &lease, &ncbi, &pmids).await {
-        Ok(report) => {
-            println!(
-                "{} done, {} set aside, {} not due",
-                report.done.len(),
-                report.set_aside.len(),
-                report.not_due.len()
-            );
-            for (pmid, why) in &report.set_aside {
-                println!("set aside {pmid}: {}", chain(why));
-            }
-            report.outcome()
+        Night::Stopped(why) => {
+            eprintln!("automatic attempts have stopped: {why}. Record a resolution to resume.");
+            return Ok(OutcomeKind::Deferred);
         }
-        Err(error) => {
-            eprintln!("the refresh stopped: {}", chain(&error));
-            match error.code() {
-                Some(code) => NightOutcome::failed(code),
-                // The slot is another run's now; its night isn't ours to record.
-                None => return Ok(OutcomeKind::Failed),
-            }
+        Night::LostSlot => {
+            eprintln!("another run took the {SLOT} slot; this run recorded nothing");
+            return Ok(OutcomeKind::Failed);
         }
     };
-    store
-        .finish(lease, &outcome)
-        .await
-        .map_err(|error| format!("couldn't record the night: {error}"))?;
+    if let Some(report) = job.report() {
+        println!(
+            "{} done, {} set aside, {} not due",
+            report.done.len(),
+            report.set_aside.len(),
+            report.not_due.len()
+        );
+        for (pmid, why) in &report.set_aside {
+            println!("set aside {pmid}: {}", FailureDetail::of(why).as_str());
+        }
+    }
+    if outcome.kind() == OutcomeKind::Failed {
+        match store.failure_details(&slot).await {
+            Ok(details) => {
+                if let Some((code, detail)) = details.into_iter().next() {
+                    eprintln!("the night failed ({code}): {detail}");
+                }
+            }
+            Err(error) => eprintln!(
+                "the night failed, and its words couldn't be read: {}",
+                FailureDetail::of(&error).as_str()
+            ),
+        }
+    }
     println!("night {}", outcome.kind().as_str());
     Ok(outcome.kind())
 }
@@ -146,16 +162,4 @@ fn read_pmids(path: &str) -> Result<Vec<Pmid>, String> {
         .filter(|line| !line.is_empty() && !line.starts_with('#'))
         .map(|line| Pmid::parse(line).map_err(|error| format!("{path}: {error}")))
         .collect()
-}
-
-/// An error and each of its causes, for a person reading the terminal.
-fn chain(error: &dyn std::error::Error) -> String {
-    let mut words = error.to_string();
-    let mut cause = error.source();
-    while let Some(next) = cause {
-        words.push_str(": ");
-        words.push_str(&next.to_string());
-        cause = next.source();
-    }
-    words
 }

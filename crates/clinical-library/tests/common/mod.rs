@@ -7,7 +7,13 @@
 // Each test file uses its own part of this module.
 #![allow(dead_code)]
 
-use clinical_library::Store;
+use std::collections::HashMap;
+use std::sync::Mutex;
+
+use async_trait::async_trait;
+use clinical_library::{
+    Acquired, Ending, HolderState, Lease, NightOutcome, Platform, RunId, SlotName, Source, Store,
+};
 use sea_orm::{
     ConnectOptions, ConnectionTrait, Database, DatabaseConnection, DbBackend, Statement, Value,
 };
@@ -65,4 +71,61 @@ impl Scratch {
             .await
             .unwrap();
     }
+}
+
+/// A platform that answers the same state for every run.
+pub struct Says(pub HolderState);
+
+#[async_trait]
+impl Platform for Says {
+    async fn holder_state(&self, _: RunId) -> HolderState {
+        self.0
+    }
+}
+
+/// A platform whose answer for each run a test sets, `Unknown` until then.
+/// It records which runs it was asked about.
+#[derive(Default)]
+pub struct Platforms {
+    states: Mutex<HashMap<RunId, HolderState>>,
+    pub asked: Mutex<Vec<RunId>>,
+}
+
+impl Platforms {
+    pub fn set(&self, run: RunId, state: HolderState) {
+        self.states.lock().unwrap().insert(run, state);
+    }
+}
+
+#[async_trait]
+impl Platform for Platforms {
+    async fn holder_state(&self, run: RunId) -> HolderState {
+        self.asked.lock().unwrap().push(run);
+        self.states
+            .lock()
+            .unwrap()
+            .get(&run)
+            .copied()
+            .unwrap_or(HolderState::Unknown)
+    }
+}
+
+/// Takes a free `slot` for a night that answers for every source.
+pub async fn hold_slot(store: &Store, slot: &SlotName, run: RunId) -> Lease {
+    match store
+        .acquire(slot, &Source::ALL, run, &Says(HolderState::Alive))
+        .await
+        .unwrap()
+    {
+        Acquired::Holds(lease) => lease,
+        other => panic!("expected the free slot, got {other:?}"),
+    }
+}
+
+/// Finishes a night whose job completed without activating a version.
+pub async fn complete(store: &Store, lease: Lease) -> NightOutcome {
+    store
+        .finish(lease, Ending::Completed { activation: None })
+        .await
+        .unwrap()
 }

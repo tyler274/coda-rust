@@ -21,19 +21,28 @@
 //!
 //! Each of these sets aside only the article it touches. A request NCBI
 //! refuses outright, such as for an invalid API key, fails the night.
+//!
+//! The night checks every article on its list, and every PubMed article
+//! still due in the night's ledger: one a person resolved, or one an earlier
+//! night set aside, stays due though tonight's list no longer names it.
+//! [`PubmedStatus`] runs it as a [`Job`] through the shared runner.
 
 use std::collections::BTreeSet;
-use std::sync::Arc;
+use std::sync::{Arc, Mutex, PoisonError};
+
+use async_trait::async_trait;
+use futures_util::{StreamExt, stream};
+use tokio::sync::mpsc;
 
 use super::client::{BATCH, FetchError, StatusSource};
 use super::efetch::{self, Answer, RecordError, ResponseError};
 use super::record::{Pmid, StatusRecord};
 use crate::article::{ArticleEvent, ArticleState, WaitReason};
 use crate::failure::FailureCode;
-use crate::night::NightOutcome;
+use crate::runner::{Completion, Failure, Job, JobError};
 use crate::slot::Lease;
-use crate::source::ItemKey;
-use crate::store::{Store, StoreError};
+use crate::source::{ItemKey, Source};
+use crate::store::{Corruption, Store, StoreError};
 
 /// What one night's check found for one article.
 #[derive(Clone, Debug)]
@@ -215,13 +224,6 @@ pub struct Report {
     pub not_due: Vec<Pmid>,
 }
 
-impl Report {
-    /// The night's one outcome.
-    pub fn outcome(&self) -> NightOutcome {
-        NightOutcome::recorded(self.done.len(), self.set_aside.len())
-    }
-}
-
 /// A refresh that stopped before finishing the list.
 #[derive(Debug, thiserror::Error)]
 pub enum RefreshError {
@@ -234,15 +236,13 @@ pub enum RefreshError {
     Store(#[from] StoreError),
 }
 
-impl RefreshError {
-    /// The failure code the night records, if the night can still record
-    /// one. A run that lost its slot records nothing: the night is the new
-    /// holder's.
-    pub fn code(&self) -> Option<FailureCode> {
+impl JobError for RefreshError {
+    /// A refusal fails the night with NCBI's code. A run that lost its slot
+    /// records nothing: the night is the new holder's.
+    fn failure(&self) -> Failure {
         match self {
-            Self::Refused(error) => Some(error.code()),
-            Self::Store(StoreError::LeaseLost { .. }) => None,
-            Self::Store(_) => Some(FailureCode::known("clinical_library_store_failed")),
+            Self::Refused(error) => Failure::Code(error.code()),
+            Self::Store(error) => error.failure(),
         }
     }
 }
@@ -259,45 +259,144 @@ pub async fn refresh(
     pmids: &[Pmid],
 ) -> Result<Report, RefreshError> {
     let mut report = Report::default();
-    let mut due = Vec::new();
-    let unique: BTreeSet<Pmid> = pmids.iter().copied().collect();
-    for pmid in unique {
+    // Tonight checks its ledger's due articles and re-confirms the admitted
+    // articles on its list. An article a person made due after the night
+    // took the slot is the next night's, so it isn't tried.
+    let mut checked = BTreeSet::new();
+    let listed: BTreeSet<Pmid> = pmids.iter().copied().collect();
+    for &pmid in &listed {
         let state = store.qualify(lease, &ItemKey::pubmed(pmid)).await?;
-        if is_checked(&state) {
-            due.push(pmid);
-        } else {
-            report.not_due.push(pmid);
+        if state == ArticleState::Admitted {
+            checked.insert(pmid);
+        }
+    }
+    for key in store.due_tonight(lease, Source::PubMed).await? {
+        let pmid = Pmid::parse(key.as_str()).map_err(|cause| StoreError::Corrupt {
+            table: "clinical_library_night_items",
+            cause: Corruption::from(cause),
+        })?;
+        checked.insert(pmid);
+    }
+    report.not_due = listed.difference(&checked).copied().collect();
+    let due: Vec<Pmid> = checked.into_iter().collect();
+
+    // Requests overlap up to the source's limit, while the answers are
+    // recorded one at a time, in order, as they arrive. The fetches and the
+    // writes run side by side in this task, so a slow write never leaves the
+    // rate limit idle, and a night that must stop stops its fetches too.
+    let batches: Vec<Vec<Pmid>> = due.chunks(BATCH).map(<[Pmid]>::to_vec).collect();
+    let (answers, mut arrived) =
+        mpsc::channel::<(Vec<Pmid>, Result<Vec<u8>, FetchError>)>(ncbi.in_flight());
+    let fetching = async move {
+        let mut fetches = stream::iter(batches.into_iter().map(|batch| async move {
+            let fetched = ncbi.efetch(&batch).await;
+            (batch, fetched)
+        }))
+        .buffered(ncbi.in_flight());
+        loop {
+            tokio::select! {
+                next = fetches.next() => match next {
+                    Some(answer) => {
+                        if answers.send(answer).await.is_err() {
+                            break;
+                        }
+                    }
+                    None => break,
+                },
+                // The writes stopped, so nothing will read another answer.
+                () = answers.closed() => break,
+            }
+        }
+    };
+    let done = &mut report;
+    // It owns the receiver, so ending early, on a refusal or a lost slot,
+    // drops it and ends the fetches.
+    let recording = async move {
+        while let Some((batch, fetched)) = arrived.recv().await {
+            for check in checks_for(&batch, fetched)? {
+                let pmid = check.pmid();
+                match store.record_status_check(lease, &check).await? {
+                    Some(CheckResult::Done) => done.done.push(pmid),
+                    Some(CheckResult::SetAside(why)) => done.set_aside.push((pmid, why)),
+                    // Its state changed since the night read it, such as a
+                    // person acting on it; it isn't tonight's to try.
+                    None => done.not_due.push(pmid),
+                }
+            }
+        }
+        Ok::<(), RefreshError>(())
+    };
+    let ((), recorded) = tokio::join!(fetching, recording);
+    recorded?;
+    Ok(report)
+}
+
+/// What one batch's answer says about each of its articles, or the refusal
+/// that fails the night.
+fn checks_for(
+    batch: &[Pmid],
+    fetched: Result<Vec<u8>, FetchError>,
+) -> Result<Vec<StatusCheck>, RefreshError> {
+    let checks = match fetched {
+        Ok(body) => match efetch::read(&body, batch) {
+            Ok(answers) => answers.into_iter().map(check_from).collect(),
+            Err(error) => outside(
+                batch,
+                &FailureCode::known(StatusCheck::UNREADABLE_RESPONSE),
+                &Cause::Response(Arc::new(error)),
+            ),
+        },
+        Err(error) if error.is_outside() => {
+            let code = error.code();
+            outside(batch, &code, &Cause::Fetch(Arc::new(error)))
+        }
+        Err(error) => return Err(RefreshError::Refused(error)),
+    };
+    Ok(checks)
+}
+
+/// PubMed's status refresh as a night's job: the list it checks, and the
+/// report of its last run.
+pub struct PubmedStatus<S> {
+    ncbi: S,
+    pmids: Vec<Pmid>,
+    report: Mutex<Option<Report>>,
+}
+
+impl<S: StatusSource> PubmedStatus<S> {
+    /// A job that checks `pmids`, and every PubMed article still due, against
+    /// `ncbi`.
+    pub fn new(ncbi: S, pmids: Vec<Pmid>) -> Self {
+        Self {
+            ncbi,
+            pmids,
+            report: Mutex::new(None),
         }
     }
 
-    for batch in due.chunks(BATCH) {
-        let checks: Vec<StatusCheck> = match ncbi.efetch(batch).await {
-            Ok(body) => match efetch::read(&body, batch) {
-                Ok(answers) => answers.into_iter().map(check_from).collect(),
-                Err(error) => outside(
-                    batch,
-                    &FailureCode::known(StatusCheck::UNREADABLE_RESPONSE),
-                    &Cause::Response(Arc::new(error)),
-                ),
-            },
-            Err(error) if error.is_outside() => {
-                let code = error.code();
-                outside(batch, &code, &Cause::Fetch(Arc::new(error)))
-            }
-            Err(error) => return Err(RefreshError::Refused(error)),
-        };
-        for check in checks {
-            let pmid = check.pmid();
-            match store.record_status_check(lease, &check).await? {
-                Some(CheckResult::Done) => report.done.push(pmid),
-                Some(CheckResult::SetAside(why)) => report.set_aside.push((pmid, why)),
-                // Its state changed since the night read it, such as a
-                // person acting on it; it isn't tonight's to try.
-                None => report.not_due.push(pmid),
-            }
-        }
+    /// What the last run did, if it finished its list.
+    pub fn report(&self) -> Option<Report> {
+        self.report
+            .lock()
+            .unwrap_or_else(PoisonError::into_inner)
+            .clone()
     }
-    Ok(report)
+}
+
+#[async_trait]
+impl<S: StatusSource> Job for PubmedStatus<S> {
+    type Error = RefreshError;
+
+    fn sources(&self) -> Vec<Source> {
+        vec![Source::PubMed]
+    }
+
+    async fn run(&self, store: &Store, lease: &Lease) -> Result<Completion, RefreshError> {
+        let report = refresh(store, lease, &self.ncbi, &self.pmids).await?;
+        *self.report.lock().unwrap_or_else(PoisonError::into_inner) = Some(report);
+        // Status is read as it is recorded, so no version is built.
+        Ok(Completion::Done { activation: None })
+    }
 }
 
 fn check_from((pmid, answer): (Pmid, Answer)) -> StatusCheck {
@@ -334,6 +433,7 @@ fn outside(batch: &[Pmid], code: &FailureCode, cause: &Cause) -> Vec<StatusCheck
 mod tests {
     use super::*;
     use crate::article::RETRY_LIMIT;
+    use crate::runner::STORE_FAILED;
 
     fn record(sha: u8) -> StatusCheck {
         StatusCheck::Found(StatusRecord {
@@ -359,7 +459,7 @@ mod tests {
         let codes = [
             StatusCheck::MISSING,
             StatusCheck::UNREADABLE_RESPONSE,
-            "clinical_library_store_failed",
+            STORE_FAILED,
             "ncbi_throttled",
             "ncbi_server_error",
             "ncbi_unreachable",

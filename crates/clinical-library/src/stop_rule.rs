@@ -6,7 +6,7 @@
 //! Earlier nights stay in the history but no longer count.
 
 use crate::failure::FailureCode;
-use crate::night::{DeferralReason, NightOutcome};
+use crate::night::{NightOutcome, Streak};
 
 /// How many failed nights in a row stop automatic attempts.
 pub const FAILED_NIGHTS_LIMIT: usize = 3;
@@ -30,12 +30,41 @@ pub enum Next {
 }
 
 /// Why automatic attempts stopped.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, thiserror::Error)]
 pub enum StopReason {
     /// The same failure happened on two nights.
+    #[error("the same failure, {0}, happened on two nights since the last fresh start")]
     SameFailureTwice(FailureCode),
     /// Three nights in a row failed or moved nothing.
+    #[error("three nights in a row failed or moved nothing since the last fresh start")]
     FailedNightsInARow,
+}
+
+impl StopReason {
+    /// The stored name.
+    pub const fn as_str(&self) -> &'static str {
+        match self {
+            Self::SameFailureTwice(_) => "same_failure_twice",
+            Self::FailedNightsInARow => "failed_nights_in_a_row",
+        }
+    }
+
+    /// The repeated failure's code, for a stop on the same failure twice.
+    pub const fn code(&self) -> Option<&FailureCode> {
+        match self {
+            Self::SameFailureTwice(code) => Some(code),
+            Self::FailedNightsInARow => None,
+        }
+    }
+
+    /// Reads a stored name and its code.
+    pub(crate) fn from_stored(value: &str, code: Option<FailureCode>) -> Option<Self> {
+        match (value, code) {
+            ("same_failure_twice", Some(code)) => Some(Self::SameFailureTwice(code)),
+            ("failed_nights_in_a_row", None) => Some(Self::FailedNightsInARow),
+            _ => None,
+        }
+    }
 }
 
 /// Decides from the history, oldest first, whether the next night may run.
@@ -58,15 +87,10 @@ pub fn decide(history: &[HistoryEntry]) -> Next {
             }
             seen.push(failed.code());
         }
-        if night.counts_as_failed_night() {
-            in_a_row += 1;
-        } else if let NightOutcome::Deferred(deferred) = night
-            && deferred.reason() == DeferralReason::SlotHeldByLiveRun
-        {
-            // That night belonged to the run that held the slot; it neither
-            // counts nor breaks the streak.
-        } else {
-            in_a_row = 0;
+        match night.streak() {
+            Streak::Counts => in_a_row += 1,
+            Streak::Breaks => in_a_row = 0,
+            Streak::Leaves => {}
         }
         if in_a_row >= FAILED_NIGHTS_LIMIT {
             return Next::Stop(StopReason::FailedNightsInARow);
@@ -78,7 +102,7 @@ pub fn decide(history: &[HistoryEntry]) -> Next {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::candidate::{Activation, VersionId};
+    use crate::night::DeferralReason;
 
     fn failed(code: &str) -> HistoryEntry {
         HistoryEntry::Night(NightOutcome::failed(FailureCode::new(code).unwrap()))
@@ -89,14 +113,11 @@ mod tests {
     }
 
     fn succeeded() -> HistoryEntry {
-        HistoryEntry::Night(NightOutcome::nothing_due())
+        HistoryEntry::Night(crate::night::test_success())
     }
 
     fn partial() -> HistoryEntry {
-        let activation = Activation {
-            version: VersionId::new("v1").unwrap(),
-        };
-        HistoryEntry::Night(NightOutcome::published(activation, 2))
+        deferred(DeferralReason::PublishedWithSetAside)
     }
 
     fn code(value: &str) -> FailureCode {
@@ -161,6 +182,36 @@ mod tests {
         assert_eq!(decide(&history), Next::Stop(StopReason::FailedNightsInARow));
         let history = [failed("a"), failed("b"), partial(), failed("c")];
         assert_eq!(decide(&history), Next::Continue);
+    }
+
+    /// Decision table: a night the stop rule kept from running neither
+    /// counts nor breaks the streak, so a stop holds until a fresh start.
+    #[test]
+    fn stopped_nights_leave_the_streak() {
+        let stopped = deferred(DeferralReason::Stopped(StopReason::FailedNightsInARow));
+        let history = [
+            failed("a"),
+            stopped.clone(),
+            failed("b"),
+            stopped,
+            failed("c"),
+        ];
+        assert_eq!(decide(&history), Next::Stop(StopReason::FailedNightsInARow));
+    }
+
+    #[test]
+    fn stop_reasons_read_back_and_say_why() {
+        for why in [
+            StopReason::SameFailureTwice(code("build_failed")),
+            StopReason::FailedNightsInARow,
+        ] {
+            assert_eq!(
+                StopReason::from_stored(why.as_str(), why.code().cloned()),
+                Some(why.clone())
+            );
+            assert!(why.to_string().contains("since the last fresh start"));
+        }
+        assert_eq!(StopReason::from_stored("same_failure_twice", None), None);
     }
 
     /// Decision table: a taken-over night counts like any failed night, with

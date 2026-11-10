@@ -2,15 +2,27 @@
 //!
 //! Every night records exactly one outcome: it succeeded, it was deferred, or
 //! it failed. Only [`Succeeded`] is a success, and nothing outside this crate
-//! can make one: a night succeeds only when there was nothing due, or when it
-//! published a version with nothing set aside. A deferred night therefore has
-//! no way to report success.
+//! can make one. [`Store::finish`](crate::Store::finish) derives a finished
+//! night's outcome from its own [`Tally`] of what was due and done under the
+//! night's lease, so a runner can't report a success on its own word.
 //!
 //! ```compile_fail
 //! use clinical_library::Succeeded;
 //! // Succeeded's fields are private, so code that merely deferred can't
 //! // build one to log a success.
 //! let _ = Succeeded { activated: None };
+//! ```
+//!
+//! ```compile_fail
+//! use clinical_library::NightOutcome;
+//! // No public constructor makes a success: only the store's tally does.
+//! let _ = NightOutcome::nothing_due();
+//! ```
+//!
+//! ```compile_fail
+//! use clinical_library::Tally;
+//! // Nor can a runner write its own tally.
+//! let _ = Tally { due_left: 0, done: 4, set_aside: 0, needs_version: false };
 //! ```
 //!
 //! ```
@@ -20,8 +32,9 @@
 //! assert!(night.success().is_none());
 //! ```
 
-use crate::candidate::{Activation, VersionId};
+use crate::candidate::VersionId;
 use crate::failure::FailureCode;
+use crate::stop_rule::StopReason;
 
 /// How one night ended.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -36,43 +49,29 @@ pub enum NightOutcome {
 }
 
 impl NightOutcome {
-    /// A night that found nothing due. This is a success.
-    pub fn nothing_due() -> Self {
-        Self::Succeeded(Succeeded { activated: None })
-    }
-
-    /// A night that published `activation`. It succeeds only if it set
-    /// nothing aside; otherwise it published part of what was due, which is
-    /// progress but not success.
-    pub fn published(activation: Activation, set_aside: usize) -> Self {
-        if set_aside == 0 {
-            Self::Succeeded(Succeeded {
-                activated: Some(activation.version),
-            })
-        } else {
-            Self::Deferred(Deferred {
-                reason: DeferralReason::PublishedWithSetAside,
-            })
+    /// The outcome a finished night's tally earns. `activated` is the
+    /// version the night activated, already checked to be its own.
+    ///
+    /// - Due work left undone, or content still awaiting a version when the
+    ///   night finishes, is a fault in the night's own work: it fails. An
+    ///   activation earlier in the night doesn't publish content admitted
+    ///   after it.
+    /// - Nothing set aside is a success.
+    /// - Everything due set aside moved nothing.
+    /// - Otherwise it published part of what was due.
+    pub(crate) fn from_tally(tally: &Tally, activated: Option<VersionId>) -> Self {
+        if tally.due_left > 0 || tally.needs_version {
+            return Self::failed(FailureCode::known(FailureCode::DUE_WORK_LEFT_UNDONE));
+        }
+        match (tally.done, tally.set_aside) {
+            (_, 0) => Self::Succeeded(Succeeded { activated }),
+            (0, _) => Self::deferred(DeferralReason::MovedNothing),
+            _ => Self::deferred(DeferralReason::PublishedWithSetAside),
         }
     }
 
-    /// A night whose due work needs no new version, such as status that
-    /// search reads as it is recorded: `done` items finished and `set_aside`
-    /// didn't. It succeeds only if it set nothing aside; one that set
-    /// everything aside moved nothing.
-    pub fn recorded(done: usize, set_aside: usize) -> Self {
-        match (done, set_aside) {
-            (_, 0) => Self::Succeeded(Succeeded { activated: None }),
-            (0, _) => Self::Deferred(Deferred {
-                reason: DeferralReason::MovedNothing,
-            }),
-            _ => Self::Deferred(Deferred {
-                reason: DeferralReason::PublishedWithSetAside,
-            }),
-        }
-    }
-
-    /// A night that didn't finish what was due, and why.
+    /// A night that didn't finish what was due, and why. It is never a
+    /// success.
     pub fn deferred(reason: DeferralReason) -> Self {
         Self::Deferred(Deferred { reason })
     }
@@ -90,21 +89,20 @@ impl NightOutcome {
         }
     }
 
-    /// Whether this night counts toward "three failed nights in a row".
-    ///
-    /// A failed night counts. A deferred night counts when it moved nothing,
-    /// unless it moved nothing only because a live run held the slot: that
-    /// night belongs to the run that held it. A night that published part of
-    /// what was due moved something, so it doesn't count.
-    pub fn counts_as_failed_night(&self) -> bool {
+    /// How this night bears on "three failed nights in a row".
+    pub fn streak(&self) -> Streak {
         match self {
-            Self::Succeeded(_) => false,
-            Self::Failed(_) => true,
+            Self::Succeeded(_) => Streak::Breaks,
+            Self::Failed(_) => Streak::Counts,
             Self::Deferred(deferred) => match deferred.reason {
-                DeferralReason::SlotHeldByLiveRun | DeferralReason::PublishedWithSetAside => false,
+                // That night belonged to the run that held the slot, or the
+                // nightly had already stopped.
+                DeferralReason::SlotHeldByLiveRun | DeferralReason::Stopped(_) => Streak::Leaves,
+                // It moved something.
+                DeferralReason::PublishedWithSetAside => Streak::Breaks,
                 DeferralReason::OwnerUnreadable
                 | DeferralReason::WaitingForCapacity
-                | DeferralReason::MovedNothing => true,
+                | DeferralReason::MovedNothing => Streak::Counts,
             },
         }
     }
@@ -119,8 +117,52 @@ impl NightOutcome {
     }
 }
 
-/// A night that succeeded. Only [`NightOutcome::nothing_due`],
-/// [`NightOutcome::published`] and [`NightOutcome::recorded`] make one.
+/// How one night bears on "three failed nights in a row".
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Streak {
+    /// It failed or moved nothing, so it counts.
+    Counts,
+    /// It succeeded or moved something, so the streak starts over.
+    Breaks,
+    /// It neither counts nor breaks the streak: a live run held the slot, or
+    /// the nightly had already stopped.
+    Leaves,
+}
+
+/// What a night was due to do and what it did, as the store counted it from
+/// the moves made under the night's lease. Only the store makes one.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct Tally {
+    pub(crate) due_left: u64,
+    pub(crate) done: u64,
+    pub(crate) set_aside: u64,
+    pub(crate) needs_version: bool,
+}
+
+impl Tally {
+    /// Items due tonight that the night neither admitted nor set aside.
+    pub const fn due_left(&self) -> u64 {
+        self.due_left
+    }
+
+    /// Items the night admitted.
+    pub const fn done(&self) -> u64 {
+        self.done
+    }
+
+    /// Items the night set aside.
+    pub const fn set_aside(&self) -> u64 {
+        self.set_aside
+    }
+
+    /// Whether content of the night's sources still awaits a version: one
+    /// the night must activate after admitting it.
+    pub const fn needs_version(&self) -> bool {
+        self.needs_version
+    }
+}
+
+/// A night that succeeded. Only the store's tally makes one.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Succeeded {
     activated: Option<VersionId>,
@@ -141,8 +183,8 @@ pub struct Deferred {
 
 impl Deferred {
     /// Why it deferred.
-    pub const fn reason(&self) -> DeferralReason {
-        self.reason
+    pub const fn reason(&self) -> &DeferralReason {
+        &self.reason
     }
 }
 
@@ -160,7 +202,7 @@ impl Failed {
 }
 
 /// Why a night deferred.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum DeferralReason {
     /// Another run that is still alive held the slot.
     SlotHeldByLiveRun,
@@ -173,31 +215,37 @@ pub enum DeferralReason {
     PublishedWithSetAside,
     /// It had work due and set all of it aside, so it moved nothing.
     MovedNothing,
+    /// Automatic attempts had stopped, so it didn't run. A person must
+    /// record a resolution first.
+    Stopped(StopReason),
 }
 
 impl DeferralReason {
     /// The stored name.
-    pub const fn as_str(self) -> &'static str {
+    pub const fn as_str(&self) -> &'static str {
         match self {
             Self::SlotHeldByLiveRun => "slot_held_by_live_run",
             Self::OwnerUnreadable => "owner_unreadable",
             Self::WaitingForCapacity => "waiting_for_capacity",
             Self::PublishedWithSetAside => "published_with_set_aside",
             Self::MovedNothing => "moved_nothing",
+            Self::Stopped(_) => "stopped",
         }
     }
 
-    /// Reads a stored name.
-    pub fn parse(value: &str) -> Option<Self> {
-        [
-            Self::SlotHeldByLiveRun,
-            Self::OwnerUnreadable,
-            Self::WaitingForCapacity,
-            Self::PublishedWithSetAside,
-            Self::MovedNothing,
-        ]
-        .into_iter()
-        .find(|reason| reason.as_str() == value)
+    /// Reads a stored name, with the stop reason a stopped night stored.
+    pub(crate) fn from_stored(value: &str, stopped: Option<StopReason>) -> Option<Self> {
+        let reason = match (value, stopped) {
+            ("stopped", Some(why)) => Self::Stopped(why),
+            (_, Some(_)) => return None,
+            ("slot_held_by_live_run", None) => Self::SlotHeldByLiveRun,
+            ("owner_unreadable", None) => Self::OwnerUnreadable,
+            ("waiting_for_capacity", None) => Self::WaitingForCapacity,
+            ("published_with_set_aside", None) => Self::PublishedWithSetAside,
+            ("moved_nothing", None) => Self::MovedNothing,
+            _ => return None,
+        };
+        Some(reason)
     }
 }
 
@@ -235,56 +283,115 @@ pub(crate) fn from_stored(
         ("succeeded", None, None) => {
             Some(NightOutcome::Succeeded(Succeeded { activated: version }))
         }
-        ("deferred", Some(reason), None) => Some(NightOutcome::Deferred(Deferred { reason })),
-        ("failed", None, Some(code)) => Some(NightOutcome::Failed(Failed { code })),
+        ("deferred", Some(reason), None) if version.is_none() => {
+            Some(NightOutcome::deferred(reason))
+        }
+        ("failed", None, Some(code)) if version.is_none() => Some(NightOutcome::failed(code)),
         _ => None,
     }
+}
+
+/// A success with nothing activated, for this crate's own tests of the rules
+/// that read the history.
+#[cfg(test)]
+pub(crate) fn test_success() -> NightOutcome {
+    NightOutcome::Succeeded(Succeeded { activated: None })
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    fn activation() -> Activation {
-        Activation {
-            version: VersionId::new("v2").unwrap(),
+    fn tally(due_left: u64, done: u64, set_aside: u64, needs_version: bool) -> Tally {
+        Tally {
+            due_left,
+            done,
+            set_aside,
+            needs_version,
         }
     }
 
-    /// AC2: only a night with nothing due, or one that published with
-    /// nothing set aside, is a success.
+    fn v2() -> VersionId {
+        VersionId::new("v2").unwrap()
+    }
+
+    /// AC8: only a tally with nothing left due and nothing set aside is a
+    /// success, and due work left undone fails the night.
     #[test]
-    fn only_complete_nights_succeed() {
-        assert!(NightOutcome::nothing_due().success().is_some());
-        let published = NightOutcome::published(activation(), 0);
+    fn only_complete_tallies_succeed() {
+        assert!(
+            NightOutcome::from_tally(&Tally::default(), None)
+                .success()
+                .is_some()
+        );
+        assert!(
+            NightOutcome::from_tally(&tally(0, 4, 0, false), None)
+                .success()
+                .is_some()
+        );
+        let published = NightOutcome::from_tally(&tally(0, 4, 0, false), Some(v2()));
         assert_eq!(
             published.success().and_then(Succeeded::activated),
-            Some(&VersionId::new("v2").unwrap())
+            Some(&v2())
         );
 
-        let partial = NightOutcome::published(activation(), 3);
-        assert!(partial.success().is_none());
-        assert_eq!(partial.kind(), OutcomeKind::Deferred);
+        let undone = NightOutcome::from_tally(&tally(1, 4, 0, false), None);
+        assert_eq!(
+            undone,
+            NightOutcome::failed(FailureCode::known(FailureCode::DUE_WORK_LEFT_UNDONE))
+        );
+        let unpublished = NightOutcome::from_tally(&tally(0, 4, 0, true), None);
+        assert_eq!(unpublished, undone);
+        // Content admitted after the night's activation still awaits one.
+        let admitted_after = NightOutcome::from_tally(&tally(0, 4, 0, true), Some(v2()));
+        assert_eq!(admitted_after, undone);
 
+        let partial = NightOutcome::from_tally(&tally(0, 3, 1, false), None);
+        assert_eq!(
+            partial,
+            NightOutcome::deferred(DeferralReason::PublishedWithSetAside)
+        );
+        assert_eq!(partial.streak(), Streak::Breaks);
+        let nothing = NightOutcome::from_tally(&tally(0, 0, 2, false), None);
+        assert_eq!(
+            nothing,
+            NightOutcome::deferred(DeferralReason::MovedNothing)
+        );
+        assert_eq!(nothing.streak(), Streak::Counts);
+    }
+
+    /// AC3: a deferral or a failure is never a success, and every stored
+    /// name reads back.
+    #[test]
+    fn deferrals_and_failures_are_never_successes() {
+        let stop = StopReason::SameFailureTwice(FailureCode::new("build_failed").unwrap());
         for reason in [
             DeferralReason::SlotHeldByLiveRun,
             DeferralReason::OwnerUnreadable,
             DeferralReason::WaitingForCapacity,
             DeferralReason::PublishedWithSetAside,
             DeferralReason::MovedNothing,
+            DeferralReason::Stopped(stop.clone()),
         ] {
+            let stopped = match &reason {
+                DeferralReason::Stopped(why) => Some(why.clone()),
+                _ => None,
+            };
+            assert_eq!(
+                DeferralReason::from_stored(reason.as_str(), stopped).as_ref(),
+                Some(&reason)
+            );
             assert!(NightOutcome::deferred(reason).success().is_none());
-            assert_eq!(DeferralReason::parse(reason.as_str()), Some(reason));
         }
-        assert!(NightOutcome::recorded(4, 0).success().is_some());
-        assert!(NightOutcome::recorded(0, 0).success().is_some());
-        let partial = NightOutcome::recorded(3, 1);
-        assert!(partial.success().is_none());
-        assert!(!partial.counts_as_failed_night());
-        let nothing = NightOutcome::recorded(0, 2);
-        assert!(nothing.success().is_none());
-        assert!(nothing.counts_as_failed_night());
-
+        assert_eq!(DeferralReason::from_stored("stopped", None), None);
+        assert_eq!(
+            DeferralReason::from_stored("moved_nothing", Some(stop.clone())),
+            None
+        );
+        assert_eq!(
+            NightOutcome::deferred(DeferralReason::Stopped(stop)).streak(),
+            Streak::Leaves
+        );
         let failed = NightOutcome::failed(FailureCode::new("build_failed").unwrap());
         assert!(failed.success().is_none());
     }

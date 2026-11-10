@@ -1,8 +1,10 @@
 //! NCBI's E-utilities, within NCBI's rate limit.
 //!
 //! NCBI allows 10 requests a second with an API key and 3 without, across
-//! every E-utilities call a key or address makes. The client spaces its own
-//! requests to that rate, and backs off when NCBI says it is throttling or
+//! every E-utilities call a key or address makes. Requests overlap, because
+//! each takes over a second while the limit allows one every 100 ms, but one
+//! limiter shared by every request in flight spaces their starts to that
+//! rate, and backs off when NCBI says it is throttling or
 //! fails on its side, honouring `Retry-After` when NCBI sends it. A request
 //! NCBI refuses as malformed or unauthorised is never retried: it would fail
 //! the same way.
@@ -36,6 +38,10 @@ const MAX_BODY_BYTES: usize = super::efetch::MAX_RESPONSE_BYTES;
 pub trait StatusSource: Send + Sync {
     /// NLM's EFetch response for `pmids`, as sent.
     async fn efetch(&self, pmids: &[Pmid]) -> Result<Vec<u8>, FetchError>;
+
+    /// How many requests may be in flight at once. The source's own pacing
+    /// still spaces their starts.
+    fn in_flight(&self) -> usize;
 }
 
 /// Why NCBI gave no usable response.
@@ -100,6 +106,9 @@ pub struct Pacing {
     pub longest_wait: Duration,
     /// How long one request may take.
     pub timeout: Duration,
+    /// How many requests may be in flight at once: enough to keep the rate
+    /// limit busy while each request waits on NCBI.
+    pub in_flight: usize,
 }
 
 impl Pacing {
@@ -116,6 +125,9 @@ impl Pacing {
             backoff: Duration::from_secs(1),
             longest_wait: Duration::from_secs(60),
             timeout: Duration::from_secs(60),
+            // At about 1.3 s a request, the limit keeps about 13 busy with a
+            // key and 4 without; twice that leaves room for slow answers.
+            in_flight: if with_key { 32 } else { 8 },
         }
     }
 }
@@ -186,15 +198,18 @@ impl Eutils {
         text.chars().take(200).collect()
     }
 
-    /// Waits until the next request may start, and reserves its turn.
+    /// Waits until the next request may start, and reserves its turn. Every
+    /// request in flight takes its turn here, so their starts keep to the
+    /// pacing however many overlap.
+    ///
+    /// The next turn is counted from when this one actually starts, not when
+    /// it was due: a request woken late, say behind the night's writes, still
+    /// leaves a full interval before the next.
     async fn turn(&self) {
-        let start = {
-            let mut next = self.next_start.lock().await;
-            let start = (*next).max(Instant::now());
-            *next = start + self.pacing.interval;
-            start
-        };
-        tokio::time::sleep_until(start).await;
+        // Held across the wait, so requests take their turns in order.
+        let mut next = self.next_start.lock().await;
+        tokio::time::sleep_until(*next).await;
+        *next = Instant::now() + self.pacing.interval;
     }
 
     /// Sends one request, paced.
@@ -253,6 +268,10 @@ enum Reply {
 
 #[async_trait]
 impl StatusSource for Eutils {
+    fn in_flight(&self) -> usize {
+        self.pacing.in_flight.max(1)
+    }
+
     async fn efetch(&self, pmids: &[Pmid]) -> Result<Vec<u8>, FetchError> {
         let mut wait = self.pacing.backoff;
         let mut attempt = 1;

@@ -17,6 +17,11 @@ impl FailureCode {
     /// over its slot.
     pub const ENDED_WITHOUT_OUTCOME: &str = "ended_without_outcome";
 
+    /// A night said it finished, but the store's tally shows work due
+    /// tonight that it neither admitted nor set aside, or admitted content
+    /// that no new version publishes.
+    pub const DUE_WORK_LEFT_UNDONE: &str = "due_work_left_undone";
+
     /// Checks and wraps a code.
     pub fn new(code: impl Into<String>) -> Result<Self, InvalidFailureCode> {
         let code = code.into();
@@ -78,5 +83,6 @@ mod tests {
             assert!(FailureCode::new(bad).is_err(), "{bad:?}");
         }
         assert!(FailureCode::new(FailureCode::ENDED_WITHOUT_OUTCOME).is_ok());
+        assert!(FailureCode::new(FailureCode::DUE_WORK_LEFT_UNDONE).is_ok());
     }
 }

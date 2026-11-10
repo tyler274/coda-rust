@@ -15,4 +15,6 @@ pub mod refresh;
 
 pub use client::{Eutils, FetchError, Pacing, StatusSource};
 pub use record::{InvalidPmid, Notices, Pmid, Relation, StatusRecord, StoredStatus};
-pub use refresh::{CheckResult, RefreshError, Report, SetAside, StatusCheck, refresh};
+pub use refresh::{
+    CheckResult, PubmedStatus, RefreshError, Report, SetAside, StatusCheck, refresh,
+};

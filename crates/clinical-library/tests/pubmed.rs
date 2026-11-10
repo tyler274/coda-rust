@@ -27,14 +27,14 @@ use clinical_library::pubmed::{
     self, Eutils, FetchError, Notices, Pacing, Pmid, RefreshError, SetAside, StatusSource,
 };
 use clinical_library::{
-    Acquired, ArticleState, DeferralReason, HolderState, ItemKey, NightOutcome, RunId, SlotName,
-    Store, StoreError, WaitReason,
+    Acquired, ArticleState, DeferralReason, Ending, Failure, FailureDetail, HolderState, ItemKey,
+    JobError, NightOutcome, RunId, SlotName, Source, Store, StoreError, Streak, WaitReason,
 };
 use tokio::time::Instant;
 
 mod common;
 
-use common::Scratch;
+use common::{Says, Scratch, complete, hold_slot};
 
 const KNOWN: &str = include_str!("fixtures/pubmed/efetch-known-statuses.xml");
 
@@ -149,6 +149,7 @@ fn quick() -> Pacing {
         backoff: Duration::from_millis(10),
         longest_wait: Duration::from_secs(5),
         timeout: Duration::from_secs(10),
+        in_flight: 4,
     }
 }
 
@@ -157,10 +158,7 @@ fn slot() -> SlotName {
 }
 
 async fn hold(store: &Store) -> clinical_library::Lease {
-    match store.acquire(&slot(), RunId::new(), None).await.unwrap() {
-        Acquired::Holds(lease) => lease,
-        Acquired::Waits(waiting) => panic!("the slot is free, but the run waits: {waiting:?}"),
-    }
+    hold_slot(store, &slot(), RunId::new()).await
 }
 
 async fn notices(store: &Store, value: u64) -> Notices {
@@ -200,10 +198,9 @@ async fn stored_status_matches_nlm() {
     // A missing record is set aside, so the night defers rather than
     // succeeding, and it moved something.
     assert_eq!(
-        report.outcome(),
+        complete(&store, lease).await,
         NightOutcome::deferred(DeferralReason::PublishedWithSetAside)
     );
-    store.finish(lease, &report.outcome()).await.unwrap();
 
     let retracted = Notices {
         retracted: true,
@@ -288,7 +285,7 @@ async fn stored_status_matches_nlm() {
     let again = pubmed::refresh(&store, &lease, &client, &known_pmids())
         .await
         .unwrap();
-    store.finish(lease, &again.outcome()).await.unwrap();
+    complete(&store, lease).await;
     assert_eq!(again.done.len(), 5);
     let confirmed = store.pubmed_status(pmid(9500320)).await.unwrap().unwrap();
     assert_eq!(confirmed.observed_at, wakefield.observed_at);
@@ -344,8 +341,8 @@ async fn one_failing_article_is_set_aside_and_the_rest_finish() {
     let first = pubmed::refresh(&store, &lease, &client, pmids)
         .await
         .unwrap();
-    store.finish(lease, &first.outcome()).await.unwrap();
-    assert!(first.outcome().success().is_some());
+    assert_eq!(first.done.len(), 5);
+    assert!(complete(&store, lease).await.success().is_some());
     let good = store.pubmed_status(pmid(34336033)).await.unwrap().unwrap();
 
     // The next night NLM's record for one of them can't be read.
@@ -359,10 +356,9 @@ async fn one_failing_article_is_set_aside_and_the_rest_finish() {
         [(broken, SetAside::OwnDefect(RecordError::NoRefType))] if *broken == pmid(34336033)
     ));
     assert_eq!(
-        report.outcome(),
+        complete(&store, lease).await,
         NightOutcome::deferred(DeferralReason::PublishedWithSetAside)
     );
-    store.finish(lease, &report.outcome()).await.unwrap();
 
     let broken = state(&store, 34336033).await.unwrap();
     assert_eq!(
@@ -386,7 +382,7 @@ async fn one_failing_article_is_set_aside_and_the_rest_finish() {
     let later = pubmed::refresh(&store, &lease, &client, pmids)
         .await
         .unwrap();
-    store.finish(lease, &later.outcome()).await.unwrap();
+    complete(&store, lease).await;
     assert_eq!(later.not_due, [pmid(34336033)]);
     let asked = script.requests.lock().unwrap()[0].1.clone();
     assert!(!asked.contains("34336033"));
@@ -402,6 +398,10 @@ impl StatusSource for Outage {
     async fn efetch(&self, _: &[Pmid]) -> Result<Vec<u8>, FetchError> {
         Err(FetchError::Throttled)
     }
+
+    fn in_flight(&self) -> usize {
+        4
+    }
 }
 
 /// AC2: an outage sets every new article aside to retry, a night that set
@@ -416,7 +416,8 @@ async fn an_outage_sets_articles_aside_without_losing_status() {
     let admitted = pubmed::refresh(&store, &lease, &client, &[pmid(9500320)])
         .await
         .unwrap();
-    store.finish(lease, &admitted.outcome()).await.unwrap();
+    assert_eq!(admitted.done, [pmid(9500320)]);
+    assert!(complete(&store, lease).await.success().is_some());
 
     let lease = hold(&store).await;
     let report = pubmed::refresh(&store, &lease, &Outage, &[pmid(9500320), pmid(34336033)])
@@ -430,13 +431,12 @@ async fn an_outage_sets_articles_aside_without_losing_status() {
             SetAside::Outside { code, cause: Cause::Fetch(_) } if code.as_str() == "ncbi_throttled"
         ));
     }
-    let outcome = report.outcome();
+    let outcome = complete(&store, lease).await;
     assert_eq!(
         outcome,
         NightOutcome::deferred(DeferralReason::MovedNothing)
     );
-    assert!(outcome.counts_as_failed_night());
-    store.finish(lease, &outcome).await.unwrap();
+    assert_eq!(outcome.streak(), Streak::Counts);
 
     assert_eq!(state(&store, 9500320).await, Some(ArticleState::Admitted));
     assert!(notices(&store, 9500320).await.retracted);
@@ -444,6 +444,85 @@ async fn an_outage_sets_articles_aside_without_losing_status() {
         state(&store, 34336033).await,
         Some(ArticleState::WaitingToRetry(retry)) if retry.failures() == 1
     ));
+    scratch.drop().await;
+}
+
+/// A failed re-confirmation of an admitted article isn't tonight's work: it
+/// leaves the article unconfirmed, which the freshness report shows, and
+/// doesn't count against the night or toward the stop rule.
+#[tokio::test]
+async fn failed_reconfirms_dont_count_against_the_night() {
+    let scratch = Scratch::new().await;
+    let store = scratch.store().await;
+    let (client, _) = ncbi(vec![Scripted::ok(&only(&[9500320]))], quick()).await;
+    let lease = hold(&store).await;
+    pubmed::refresh(&store, &lease, &client, &[pmid(9500320)])
+        .await
+        .unwrap();
+    assert!(complete(&store, lease).await.success().is_some());
+    let confirmed = store.pubmed_status(pmid(9500320)).await.unwrap().unwrap();
+
+    let lease = hold(&store).await;
+    let report = pubmed::refresh(&store, &lease, &Outage, &[pmid(9500320)])
+        .await
+        .unwrap();
+    assert_eq!(report.set_aside.len(), 1);
+    assert!(complete(&store, lease).await.success().is_some());
+    assert_eq!(
+        store.pubmed_status(pmid(9500320)).await.unwrap(),
+        Some(confirmed),
+        "unconfirmed tonight, with its status kept"
+    );
+    scratch.drop().await;
+}
+
+/// An article a person resolves after the night took the slot is the next
+/// night's: tonight's refresh doesn't try it, even though its list names it,
+/// and the night isn't held back by it.
+#[tokio::test]
+async fn an_article_resolved_mid_night_is_the_next_nights() {
+    let scratch = Scratch::new().await;
+    let store = scratch.store().await;
+    let key = ItemKey::pubmed(pmid(9500320));
+
+    // Three outside failures in one night put it in front of a person.
+    let lease = hold(&store).await;
+    store.qualify(&lease, &key).await.unwrap();
+    let missing = clinical_library::ArticleEvent::OutsideFailure(
+        clinical_library::FailureCode::new("pubmed_record_missing").unwrap(),
+    );
+    for _ in 0..3 {
+        store.apply(&lease, &key, &missing).await.unwrap();
+    }
+    assert!(matches!(
+        state(&store, 9500320).await,
+        Some(ArticleState::NeedsPerson { .. })
+    ));
+    complete(&store, lease).await;
+
+    // Tonight takes the slot, then a person resolves it.
+    let lease = hold(&store).await;
+    assert!(store.resolve_item(&key).await.unwrap().is_due());
+    let report = pubmed::refresh(&store, &lease, &Outage, &[pmid(9500320)])
+        .await
+        .unwrap();
+    assert_eq!(report.not_due, [pmid(9500320)]);
+    assert!(report.set_aside.is_empty());
+    assert!(complete(&store, lease).await.success().is_some());
+    assert_eq!(
+        state(&store, 9500320).await,
+        Some(ArticleState::new_article()),
+        "no attempt counted against it tonight"
+    );
+
+    // The next night tries it.
+    let (client, _) = ncbi(vec![Scripted::ok(&only(&[9500320]))], quick()).await;
+    let lease = hold(&store).await;
+    let report = pubmed::refresh(&store, &lease, &client, &[pmid(9500320)])
+        .await
+        .unwrap();
+    assert_eq!(report.done, [pmid(9500320)]);
+    assert!(complete(&store, lease).await.success().is_some());
     scratch.drop().await;
 }
 
@@ -455,12 +534,17 @@ async fn a_run_that_lost_its_slot_records_no_status() {
     let store = scratch.store().await;
     let old = hold(&store).await;
     match store
-        .acquire(&slot(), RunId::new(), Some((old.run(), HolderState::Ended)))
+        .acquire(
+            &slot(),
+            &[Source::PubMed],
+            RunId::new(),
+            &Says(HolderState::Ended),
+        )
         .await
         .unwrap()
     {
         Acquired::Holds(_) => {}
-        Acquired::Waits(waiting) => panic!("an ended holder's slot is taken: {waiting:?}"),
+        other => panic!("an ended holder's slot is taken: {other:?}"),
     }
     let (client, _) = ncbi(vec![Scripted::ok(&only(&[9500320]))], quick()).await;
     let error = pubmed::refresh(&store, &old, &client, &[pmid(9500320)])
@@ -470,7 +554,7 @@ async fn a_run_that_lost_its_slot_records_no_status() {
         error,
         RefreshError::Store(StoreError::LeaseLost { .. })
     ));
-    assert_eq!(error.code(), None);
+    assert_eq!(error.failure(), Failure::LostSlot);
     assert_eq!(store.pubmed_status(pmid(9500320)).await.unwrap(), None);
     assert_eq!(state(&store, 9500320).await, None);
     scratch.drop().await;
@@ -562,10 +646,14 @@ async fn a_refused_request_fails_the_night() {
     let error = pubmed::refresh(&store, &lease, &client, &[pmid(9500320)])
         .await
         .unwrap_err();
-    let code = error.code().unwrap();
+    let Failure::Code(code) = error.failure() else {
+        panic!("a refusal fails the night with a code")
+    };
     assert_eq!(code.as_str(), "ncbi_refused_request");
+    let detail = FailureDetail::of(&error);
+    assert!(!detail.as_str().contains("api_key"));
     store
-        .finish(lease, &NightOutcome::failed(code))
+        .finish(lease, Ending::Failed { code, detail })
         .await
         .unwrap();
     // The list qualified it, but no attempt counted against it.
@@ -608,7 +696,8 @@ async fn a_changed_record_replaces_the_stored_status() {
     let first = pubmed::refresh(&store, &lease, &client, pmids)
         .await
         .unwrap();
-    store.finish(lease, &first.outcome()).await.unwrap();
+    assert_eq!(first.done.len(), 5);
+    assert!(complete(&store, lease).await.success().is_some());
     let before = store.pubmed_status(pmid(34336033)).await.unwrap().unwrap();
     assert!(!before.record.notices().retracted);
 
@@ -616,8 +705,8 @@ async fn a_changed_record_replaces_the_stored_status() {
     let second = pubmed::refresh(&store, &lease, &client, pmids)
         .await
         .unwrap();
-    store.finish(lease, &second.outcome()).await.unwrap();
-    assert!(second.outcome().success().is_some());
+    assert_eq!(second.done.len(), 5);
+    assert!(complete(&store, lease).await.success().is_some());
 
     let after = store.pubmed_status(pmid(34336033)).await.unwrap().unwrap();
     assert!(after.record.notices().retracted);
