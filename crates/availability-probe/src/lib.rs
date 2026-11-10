@@ -116,7 +116,7 @@ impl Default for Endpoints {
     fn default() -> Self {
         Self {
             metadata: "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default".into(),
-            sign_jwt: "https://iamcredentials.googleapis.com/v1/projects/-/serviceAccounts".into(),
+            sign_jwt: http::signjwt::IAM_CREDENTIALS.into(),
             monitoring: "https://monitoring.googleapis.com/v3/projects".into(),
             storage: "https://storage.googleapis.com".into(),
         }
@@ -249,21 +249,16 @@ impl Credentials {
     }
     async fn iap_jwt(&self, origin: &str) -> Result<String, Error> {
         let access = self.access_token().await?;
-        let now = unix_now();
-        let payload = json!({ "iss": self.email, "sub": self.email, "aud": format!("{origin}/*"), "iat": now, "exp": now + 600 }).to_string();
+        let call =
+            http::signjwt::iap_request(&self.endpoints.sign_jwt, &self.email, origin, unix_now());
         let signed = bounded_json(
             self.client
-                .post(format!(
-                    "{}/{}:signJwt",
-                    self.endpoints.sign_jwt, self.email
-                ))
+                .post(call.url)
                 .bearer_auth(access)
-                .json(&json!({ "payload": payload })),
+                .json(&call.body),
         )
         .await?;
-        signed["signedJwt"]
-            .as_str()
-            .filter(|v| v.split('.').count() == 3)
+        http::signjwt::signed_jwt(&signed)
             .map(str::to_owned)
             .ok_or_else(|| "signJwt response has no signedJwt".into())
     }

@@ -1,3 +1,4 @@
+mod langfuse;
 mod live;
 mod model;
 mod probe;
@@ -18,6 +19,7 @@ use model::{
 const USAGE: &str = "\
 observability-drill datadog|grafana|watchdog fail|recover|status --output-dir DIR
 observability-drill probe --output-dir DIR
+observability-drill langfuse rehearse|alert-to-run|isolation|fail|recover|signin-breakglass --output-dir DIR
 
 Probe runs one availability-probe slot as the probe identity, which IAP admits,
 reads each target's readiness outcome and the heartbeat back from Cloud
@@ -27,12 +29,17 @@ Workstation identity tokens carry gcloud's audience, which IAP refuses.
 Datadog reads DD_API_KEY from Doppler project coda-rust config stg and does not print it.
 Grafana fail expects a port-forward to Loki on 127.0.0.1:3100.
 Watchdog pauses or resumes the availability-probe scheduler in coda-rust-staging.
+Langfuse drives a rehearsal chat as the physician rehearsal identity and reads
+it back from Langfuse and the operations backends; see `langfuse --help`.
 Each run writes observation JSON for dev/observability/qualify-alerts.py --observations.
 A run stops at 40 minutes and 2 reminders, and restores the signal if it aborts.";
 
 pub fn from_args(args: &[String]) -> Result<(), Failure> {
     if let Some(("probe", rest)) = args.split_first().map(|(head, tail)| (head.as_str(), tail)) {
         return probe::from_args(rest);
+    }
+    if let Some(("langfuse", rest)) = args.split_first().map(|(head, tail)| (head.as_str(), tail)) {
+        return langfuse::from_args(rest);
     }
     let (request, output) = parse_args(args).map_err(|message| Failure::new(2, message))?;
     let mut live = Live::new(request.route);

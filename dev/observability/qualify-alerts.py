@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 FIXTURE = Path(__file__).with_name("qualification.json")
-ROUTES = ("datadog", "cloud-monitoring", "grafana-test")
+ROUTES = ("datadog", "cloud-monitoring", "grafana-test", "langfuse")
 REQUIRED_TARGET_FIELDS = (
     "evaluator_id", "signal_id", "query_and_thresholds", "evaluation_timing",
     "notification_policy", "slack_account", "contact_id", "channel_id", "configuration_evidence",
@@ -34,6 +34,11 @@ STEPS = {
         "Keep service rules in shadow/no-notification mode. Read back the separately labeled qualification-test rule and contact route, never the operational service route.",
         "After separate approval, drive its dedicated synthetic datasource series from healthy to failing through the actual Grafana rule evaluator; capture Normal, Pending and Alerting with exact times.",
         "Confirm the labeled test Slack receipt, then restore the series and capture Normal and Slack recovery. A contact-point test or local webhook receipt alone does not qualify the rule or Slack.",
+    ],
+    "langfuse": [
+        "Read back the Datadog collector export-failure and Langfuse readiness monitors, their exporter:otlphttp/langfuse group and the #engineering-observability route.",
+        "After explicit approval, run `observability-drill langfuse fail --confirm`: it scales only langfuse-web to zero, drives one rehearsal chat and requires the reply, the operations trace and an exporter failure or queue before reading the monitor's own firing time.",
+        "Confirm the Slack alert by a person. Then run `observability-drill langfuse recover --confirm`: langfuse-web returns, a new rehearsal turn lands in Langfuse, and the monitor's own recovery time is recorded; confirm Slack recovery. The 40-minute cap restores langfuse-web on abort.",
     ],
 }
 
