@@ -121,6 +121,12 @@ pub(super) fn datadog_trace_id(trace_id: &str) -> Option<String> {
     u64::from_str_radix(low, 16).ok().map(|id| id.to_string())
 }
 
+/// Whether Datadog's trace id names the OpenTelemetry `trace_id`. Datadog
+/// answers either the lower 64 bits in decimal or the full 128-bit hex id.
+pub(super) fn same_trace(datadog: &str, trace_id: &str) -> bool {
+    datadog_trace_id(trace_id).as_deref() == Some(datadog) || datadog.eq_ignore_ascii_case(trace_id)
+}
+
 /// What an operations backend holds for the same trace.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub(super) struct OpsSpan {
@@ -425,6 +431,15 @@ mod tests {
             )
         );
         assert_eq!(datadog_trace_id("short"), None);
+    }
+
+    #[test]
+    fn a_datadog_trace_matches_in_decimal_or_full_hex() {
+        let low = datadog_trace_id(TRACE).unwrap();
+        assert!(same_trace(&low, TRACE));
+        assert!(same_trace(TRACE, TRACE));
+        assert!(same_trace(&TRACE.to_uppercase(), TRACE));
+        assert!(!same_trace("1", TRACE));
     }
 
     fn datadog_body(extra: Value) -> Value {
