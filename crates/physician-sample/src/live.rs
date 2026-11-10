@@ -727,7 +727,9 @@ fn turn_kind(role: &str) -> &'static str {
 /// The reference `SnapshotResponse` subset this site owns. A failed turn adds
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes. A running turn offers Stop. A
-/// held turn offers Resume. The physician's text stays saved.
+/// held turn offers Resume. An answered turn names the attempt that answered
+/// it, so an operator can match the reply to its telemetry by attempt id. The
+/// physician's text stays saved.
 fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
@@ -757,6 +759,11 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
                 "text": WRITING,
                 "stop_target": { "work_item_id": conversation.work },
             }));
+        }
+        "completed" => {
+            if let Some(attempt) = conversation.attempts.last() {
+                runs.push(json!({ "run_id": attempt.id, "state": "completed" }));
+            }
         }
         _ => {}
     }
@@ -1248,7 +1255,10 @@ mod durable_snapshot_tests {
         assert_eq!(held["runs"][0]["state"], "held");
         let done = durable_snapshot_body(Some(&conversation("completed")));
         assert_eq!(done["conversation"].as_array().unwrap().len(), 1);
-        assert!(done["runs"].as_array().unwrap().is_empty());
+        assert_eq!(
+            done["runs"],
+            serde_json::json!([{ "run_id": "run-1", "state": "completed" }])
+        );
         let empty = durable_snapshot_body(None);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
     }

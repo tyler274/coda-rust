@@ -739,11 +739,13 @@ pub struct ChatSnapshotResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// One run the open chat snapshot names. Present when the turn is held or failed.
+/// One run the open chat snapshot names: the latest attempt once the turn is
+/// held, failed or answered.
 pub struct ChatRun {
     /// The attempt id.
     pub run_id: String,
-    /// `held` while Stop is in force, or `failed` when the turn couldn't finish.
+    /// `held` while Stop is in force, `failed` when the turn couldn't finish,
+    /// or `completed` once it was answered.
     pub state: String,
 }
 
@@ -754,7 +756,8 @@ pub struct ChatSnapshot {
     /// The `conversation` value.
     pub conversation: Vec<ChatTurn>,
     #[serde(default)]
-    /// The latest run when the turn is held or failed. Older servers omit it.
+    /// The latest run when the turn is held, failed or answered. Older
+    /// servers omit it.
     pub runs: Vec<ChatRun>,
 }
 
