@@ -65,13 +65,8 @@ output "physician_scale" {
   value = local.physician_scale ? {
     redis_host            = google_redis_instance.physician["physician"].host
     redis_port            = google_redis_instance.physician["physician"].port
-    chat_topic            = google_pubsub_topic.chat_turns["physician"].id
-    chat_subscription     = google_pubsub_subscription.chat_turns["physician"].id
-    dead_letter_topic     = google_pubsub_topic.chat_turns_dead_letter["physician"].id
     worker_service        = google_cloud_run_v2_service.physician_worker["physician"].name
     worker_url            = google_cloud_run_v2_service.physician_worker["physician"].uri
-    worker_audience       = local.physician_worker_audience
-    push_service_account  = google_service_account.physician_pubsub_push["physician"].email
     worker_identity       = google_service_account.physician_worker["physician"].email
     worker_doppler_config = try(var.doppler_configs["physician-runtime"], "")
   } : null

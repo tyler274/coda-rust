@@ -184,7 +184,7 @@ variable "runtime_and_database_contract_approved" {
 variable "enable_physician_scale" {
   type        = bool
   default     = false
-  description = "Explicit cost gate for physician scaling: Memorystore Redis (workspace_changed fan-out), the Pub/Sub chat-turn queue with its dead-letter topic, the internal physician-worker service, and one always-on physician site instance with allocated CPU, which runs the recovery sweep for accepted turns. Effective only when enable_workloads is true. Duet is never affected."
+  description = "Explicit cost gate for physician scaling: Memorystore Redis (workspace_changed fan-out) and the internal physician-worker service, which pulls accepted turns from Postgres. Effective only when enable_workloads is true. Duet is never affected."
 }
 
 variable "images" {

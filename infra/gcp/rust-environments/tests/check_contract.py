@@ -124,11 +124,10 @@ class Contract(unittest.TestCase):
         self.assertEqual(result.stdout, "")
 
     def test_physician_scale_is_physician_only(self):
-        # Every Redis, Pub/Sub and worker resource iterates physician_scale_apps
-        # (or the physician_scale flag), so Duet can never receive one.
+        # Every Redis and worker resource iterates physician_scale_apps (or the
+        # physician_scale flag), so Duet can never receive one.
         text = config_text()
-        scale_kinds = ["google_redis_instance", "google_pubsub_topic", "google_pubsub_subscription",
-                       "google_pubsub_topic_iam_binding", "google_pubsub_subscription_iam_binding"]
+        scale_kinds = ["google_redis_instance"]
         for kind in scale_kinds:
             blocks = resource_blocks(text, kind)
             self.assertTrue(blocks, kind)
@@ -137,7 +136,7 @@ class Contract(unittest.TestCase):
                     self.assertIn("for_each = local.physician_scale_apps", re.sub(r"\s+", " ", body))
         # No scaling resource body names Duet, its identities or its slots.
         scale_kinds += ["google_service_account", "google_cloud_run_v2_service", "google_cloud_run_v2_service_iam_binding",
-                        "google_service_account_iam_member", "google_project_iam_member", "google_project_service_identity"]
+                        "google_service_account_iam_member", "google_project_iam_member"]
         for kind in scale_kinds:
             for name, body in resource_blocks(text, kind).items():
                 if "physician_scale" not in body:
@@ -146,19 +145,25 @@ class Contract(unittest.TestCase):
                     # Descriptions are prose; only references are checked.
                     references = "\n".join(line for line in body.splitlines() if "description" not in line)
                     self.assertNotIn("duet", references.lower())
-        # Only physician is ever handed the chat topic; Duet has no PHYSICIAN_* env.
+        # Hosted Pub/Sub is gone: no topic, subscription, push identity or API.
+        self.assertNotIn("google_pubsub_", text)
+        self.assertNotIn("pubsub.googleapis.com", text)
+        self.assertNotIn("physician_pubsub_push", text)
+        # Only physician is ever handed the durable chat switch; Duet has no PHYSICIAN_* env.
         workloads = config_text("workloads.tf")
-        self.assertIn('for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}', workloads)
+        self.assertIn('for_each = each.key == "physician" ? local.physician_durable_chat_env : {}', workloads)
+        for retired in ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "custom_audiences"]:
+            self.assertNotIn(retired, workloads)
         # Of the two sites, only physician keeps CPU between requests, with or
         # without the otel-collector sidecar: telemetry never decides CPU
         # allocation, so it never makes Duet bill for idle instance time.
         self.assertEqual(workloads.count('cpu_idle          = each.key != "physician"'), 2)
         self.assertNotRegex(workloads, r"cpu_idle\s+=.*observability")
-        # Of the two sites, only physician keeps a minimum instance, and only
-        # while its queue exists.
-        self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
+        # Neither site keeps a minimum instance: the worker owns accepted turns.
+        app = resource_blocks(workloads, "google_cloud_run_v2_service")["app"]
+        self.assertRegex(app, r"min_instance_count = 0\n")
 
-    def test_worker_is_internal_and_invoked_only_by_push_and_probe(self):
+    def test_worker_is_internal_and_invoked_only_by_the_probe(self):
         workloads = config_text("workloads.tf")
         worker = resource_blocks(workloads, "google_cloud_run_v2_service")["physician_worker"]
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
@@ -173,8 +178,7 @@ class Contract(unittest.TestCase):
         members = invoker.split("members", 1)[1]
         self.assertEqual(
             re.sub(r"\s+", " ", members).strip(),
-            '= concat( ["serviceAccount:${google_service_account.physician_pubsub_push[each.key].email}"], '
-            '[for identity in google_service_account.availability : "serviceAccount:${identity.email}"], )',
+            '= [for identity in google_service_account.availability : "serviceAccount:${identity.email}"]',
         )
         # No additive run.invoker grant may widen the authoritative binding.
         for kind in ["google_cloud_run_v2_service_iam_member", "google_cloud_run_service_iam_member", "google_project_iam_member"]:
