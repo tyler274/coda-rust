@@ -136,15 +136,64 @@ impl RatingState {
     }
 }
 
-/// One response's feedback on the page.
+/// Where the physician's latest details save on a response stands.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub(crate) enum DetailsSaving {
+    /// No details save is on its way, and the last one, if any, landed.
+    #[default]
+    Idle,
+    /// These details are on their way.
+    Saving(FeedbackDetails),
+    /// These details failed to save; the saved details still stand.
+    Failed(FeedbackDetails),
+}
+
+/// One response's feedback on the page. One save at a time, of either kind,
+/// so an older answer never replaces what a newer save changed.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct Entry {
     pub(crate) rating: RatingState,
     pub(crate) details: Option<FeedbackDetails>,
+    pub(crate) details_saving: DetailsSaving,
     /// The desk's clock when the page last changed this entry itself.
     changed: u64,
-    /// The desk's clock when its latest rating save started.
+    /// The desk's clock when its latest save, of either kind, started.
     saving: u64,
+}
+
+impl Entry {
+    fn new(rating: RatingState) -> Self {
+        Self {
+            rating,
+            details: None,
+            details_saving: DetailsSaving::Idle,
+            changed: 0,
+            saving: 0,
+        }
+    }
+
+    /// A save of either kind is on its way.
+    pub(crate) fn busy(&self) -> bool {
+        matches!(self.rating, RatingState::Saving { .. })
+            || matches!(self.details_saving, DetailsSaving::Saving(_))
+    }
+
+    /// What the controls say beside the thumbs, if anything.
+    pub(crate) fn notice(&self) -> Option<&'static str> {
+        match self.details_saving {
+            DetailsSaving::Failed(_) => Some(NOT_SAVED),
+            _ => self.rating.notice(),
+        }
+    }
+
+    /// The details the dialog opens with: those on their way or that failed
+    /// to save, else the saved ones.
+    pub(crate) fn draft(&self) -> FeedbackDetails {
+        match &self.details_saving {
+            DetailsSaving::Saving(draft) | DetailsSaving::Failed(draft) => draft.clone(),
+            DetailsSaving::Idle => self.details.clone().unwrap_or_default(),
+        }
+    }
 }
 
 /// A rating save the page started, from [`Desk::choose`]. Only the latest
@@ -153,6 +202,16 @@ pub(crate) struct Entry {
 pub(crate) struct RatingSave {
     pub(crate) chat: ChatKey,
     run: RunId,
+    started: u64,
+}
+
+/// A details save the page started, from [`Desk::save_details`]. Only the
+/// latest save on a response settles it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct DetailsSave {
+    pub(crate) chat: ChatKey,
+    run: RunId,
+    details: FeedbackDetails,
     started: u64,
 }
 
@@ -171,9 +230,11 @@ pub(crate) struct Desk {
     clock: u64,
     /// The clock when this chat was opened; reads started before it are of an earlier visit.
     opened: u64,
-    /// Rating saves still on their way, in any chat: leaving a chat never
-    /// forgets them, and returning shows them saving again.
+    /// Saves still on their way, in any chat: leaving a chat never forgets
+    /// them, and returning shows them saving again.
     pending: BTreeMap<(ChatKey, RunId), Entry>,
+    /// The response whose details dialog is open in this chat.
+    dialog: Option<RunId>,
 }
 
 impl Desk {
@@ -197,11 +258,13 @@ impl Desk {
             clock: opened,
             opened,
             pending: std::mem::take(&mut self.pending),
+            dialog: None,
         };
     }
 
     /// The open chat.
-    pub(crate) fn chat(&self) -> Option<&ChatKey> {
+    #[cfg(test)]
+    fn chat(&self) -> Option<&ChatKey> {
         self.chat.as_ref()
     }
 
@@ -237,18 +300,14 @@ impl Desk {
             .into_iter()
             .map(|feedback| (feedback.run.clone(), feedback))
             .collect();
-        let kept = |entry: &Entry| {
-            entry.changed > started.0 || matches!(entry.rating, RatingState::Saving { .. })
-        };
+        let kept = |entry: &Entry| entry.changed > started.0 || entry.busy();
         self.entries
             .retain(|run, entry| saved.contains_key(run) || kept(entry));
         for (run, feedback) in saved {
-            let entry = self.entries.entry(run).or_insert(Entry {
-                rating: RatingState::Unrated,
-                details: None,
-                changed: 0,
-                saving: 0,
-            });
+            let entry = self
+                .entries
+                .entry(run)
+                .or_insert(Entry::new(RatingState::Unrated));
             if !kept(entry) {
                 entry.rating = RatingState::Rated(feedback.rating);
                 entry.details = feedback.details;
@@ -261,16 +320,47 @@ impl Desk {
         if let Some(entry) = self.entries.get(run) {
             return entry.clone();
         }
-        Entry {
-            rating: match self.read {
-                None => RatingState::Loading,
-                Some(false) => RatingState::Unknown,
-                Some(true) => RatingState::Unrated,
-            },
-            details: None,
-            changed: 0,
-            saving: 0,
+        Entry::new(match self.read {
+            None => RatingState::Loading,
+            Some(false) => RatingState::Unknown,
+            Some(true) => RatingState::Unrated,
+        })
+    }
+
+    /// Records `entry` as changed by a save starting now, kept while it is
+    /// on its way; answers the save's start.
+    fn start_save(&mut self, chat: &ChatKey, run: &RunId, mut entry: Entry) -> u64 {
+        let started = self.tick();
+        entry.changed = started;
+        entry.saving = started;
+        self.pending
+            .insert((chat.clone(), run.clone()), entry.clone());
+        self.entries.insert(run.clone(), entry);
+        started
+    }
+
+    /// Forgets the pending save that started at `started`, if it is the
+    /// latest on its response, and answers the open entry it settles: none
+    /// when its chat is closed or a newer save started since.
+    fn settle(&mut self, chat: &ChatKey, run: &RunId, started: u64) -> Option<&mut Entry> {
+        let key = (chat.clone(), run.clone());
+        if self
+            .pending
+            .get(&key)
+            .is_some_and(|entry| entry.saving == started)
+        {
+            self.pending.remove(&key);
         }
+        if self.chat.as_ref() != Some(chat) {
+            return None;
+        }
+        let changed = self.tick();
+        let entry = self
+            .entries
+            .get_mut(run)
+            .filter(|entry| entry.saving == started)?;
+        entry.changed = changed;
+        Some(entry)
     }
 
     /// Presses `choice` on a response; answers the save to make when the
@@ -278,21 +368,58 @@ impl Desk {
     pub(crate) fn choose(&mut self, run: &RunId, choice: FeedbackRating) -> Option<RatingSave> {
         let chat = self.chat.clone()?;
         let current = self.entry(run);
-        let saving = current.rating.choose(choice)?;
-        let changed = self.tick();
-        let entry = Entry {
-            rating: saving,
-            details: current.details,
-            changed,
-            saving: changed,
-        };
-        self.pending
-            .insert((chat.clone(), run.clone()), entry.clone());
-        self.entries.insert(run.clone(), entry);
+        if current.busy() {
+            return None;
+        }
+        let rating = current.rating.choose(choice)?;
+        let started = self.start_save(&chat, run, Entry { rating, ..current });
         Some(RatingSave {
             chat,
             run: run.clone(),
-            started: changed,
+            started,
+        })
+    }
+
+    /// Opens the details dialog on a rated response whose rating isn't saving.
+    pub(crate) fn open_details(&mut self, run: &RunId) {
+        let rating = self.entry(run).rating;
+        if rating.saved().is_some() && !matches!(rating, RatingState::Saving { .. }) {
+            self.dialog = Some(run.clone());
+        }
+    }
+
+    /// Closes the details dialog. A details save on its way keeps going.
+    pub(crate) fn close_details(&mut self) {
+        self.dialog = None;
+    }
+
+    /// Whether the details dialog is open on `run`.
+    pub(crate) fn details_open(&self, run: &RunId) -> bool {
+        self.dialog.as_ref() == Some(run)
+    }
+
+    /// Saves `details` on a rated response; answers the save to make, or
+    /// `None` while the rating isn't saved or another save is on its way.
+    pub(crate) fn save_details(
+        &mut self,
+        run: &RunId,
+        details: FeedbackDetails,
+    ) -> Option<DetailsSave> {
+        let chat = self.chat.clone()?;
+        let current = self.entry(run);
+        if current.busy() || current.rating.saved().is_none() {
+            return None;
+        }
+        let entry = Entry {
+            details_saving: DetailsSaving::Saving(details.clone()),
+            ..current
+        };
+        let started = self.start_save(&chat, run, entry);
+        Some(DetailsSave {
+            chat,
+            run: run.clone(),
+            details,
+            started,
         })
     }
 
@@ -304,25 +431,9 @@ impl Desk {
         save: &RatingSave,
         answer: Result<ResponseFeedback, ()>,
     ) {
-        let key = (save.chat.clone(), save.run.clone());
-        if self
-            .pending
-            .get(&key)
-            .is_some_and(|entry| entry.saving == save.started)
-        {
-            self.pending.remove(&key);
-        }
-        if self.chat.as_ref() != Some(&save.chat) {
-            return;
-        }
-        let changed = self.tick();
-        let Some(entry) = self.entries.get_mut(&save.run) else {
+        let Some(entry) = self.settle(&save.chat, &save.run, save.started) else {
             return;
         };
-        if entry.saving != save.started {
-            return;
-        }
-        entry.changed = changed;
         match answer {
             Ok(saved) => {
                 entry.rating = entry.rating.answered(Some(saved.rating));
@@ -332,23 +443,29 @@ impl Desk {
         }
     }
 
-    /// A details save on `chat` answered with the saved feedback.
-    pub(crate) fn details_saved(&mut self, chat: &ChatKey, run: &RunId, saved: ResponseFeedback) {
-        if self.chat.as_ref() != Some(chat) {
+    /// `save` answered with the saved feedback, or failed. A landed save
+    /// closes its dialog; a failed one keeps its details for the dialog to
+    /// show again, open or reopened. Like a rating save, it settles its
+    /// response only as the latest save there.
+    pub(crate) fn details_answered(
+        &mut self,
+        save: &DetailsSave,
+        answer: Result<ResponseFeedback, ()>,
+    ) {
+        let Some(entry) = self.settle(&save.chat, &save.run, save.started) else {
             return;
+        };
+        match answer {
+            Ok(saved) => {
+                entry.rating = RatingState::Rated(saved.rating);
+                entry.details = saved.details;
+                entry.details_saving = DetailsSaving::Idle;
+                if self.dialog.as_ref() == Some(&save.run) {
+                    self.dialog = None;
+                }
+            }
+            Err(()) => entry.details_saving = DetailsSaving::Failed(save.details.clone()),
         }
-        let changed = self.tick();
-        let entry = self.entries.entry(run.clone()).or_insert(Entry {
-            rating: RatingState::Rated(saved.rating),
-            details: None,
-            changed,
-            saving: 0,
-        });
-        entry.changed = changed;
-        if !matches!(entry.rating, RatingState::Saving { .. }) {
-            entry.rating = RatingState::Rated(saved.rating);
-        }
-        entry.details = saved.details;
     }
 }
 
@@ -406,9 +523,12 @@ pub(crate) fn ResponseRating(run: RunId) -> Element {
         client,
         owner,
     } = use_context::<Feedback>();
-    let mut open = use_signal(|| false);
-    let entry = desk.read().entry(&run);
+    let (entry, open) = {
+        let desk = desk.read();
+        (desk.entry(&run), desk.details_open(&run))
+    };
     let rating = entry.rating;
+    let notice = entry.notice();
     let rated = run.clone();
     let rate = move |choice: ui::Rating| {
         let choice = match choice {
@@ -434,15 +554,17 @@ pub(crate) fn ResponseRating(run: RunId) -> Element {
         FeedbackRating::Down => ui::Rating::Down,
     });
     let busy = matches!(rating, RatingState::Saving { .. });
+    let opened = run.clone();
     rsx! {
-        ui::MessageActions { label: ACTIONS, shown: rating.saved().is_some() || rating.notice().is_some() || busy,
+        ui::MessageActions { label: ACTIONS, shown: rating.saved().is_some() || notice.is_some() || entry.busy(),
             ui::FeedbackRating {
                 selected,
                 label: RATE,
                 up_label: GOOD,
                 down_label: POOR,
                 busy,
-                disabled: matches!(rating, RatingState::Loading | RatingState::Unknown),
+                disabled: matches!(rating, RatingState::Loading | RatingState::Unknown)
+                    || (entry.busy() && !busy),
                 on_rate: rate,
             }
             if rating.saved().is_some() {
@@ -450,66 +572,64 @@ pub(crate) fn ResponseRating(run: RunId) -> Element {
                     variant: ButtonVariant::Quiet,
                     compact: true,
                     class: "feedback-details-open",
-                    onclick: move |_| open.set(true),
+                    disabled: busy,
+                    onclick: move |_| desk.write().open_details(&opened),
                     if entry.details.is_some() { "{EDIT_DETAILS}" } else { "{ADD_DETAILS}" }
                 }
             }
-            if let Some(notice) = rating.notice() {
+            if let Some(notice) = notice {
                 span { class: "quiet-line feedback-notice", role: "status", "{notice}" }
             }
         }
-        if open() {
+        if open {
             // Keys pressed anywhere in the dialog are its own, never the page's
             // shortcuts or Send; the dialog answers Escape itself.
             div {
                 class: "feedback-details-host",
                 onkeydown: move |event| event.stop_propagation(),
-                DetailsDialog {
-                    run,
-                    saved: entry.details.clone().unwrap_or_default(),
-                    on_close: move |_| open.set(false),
-                }
+                DetailsDialog { run, entry }
             }
         }
     }
 }
 
 /// The details dialog: reasons, the physician's words and its own Save.
-/// Closing it without saving leaves the rating and any saved details.
+/// Closing it without saving leaves the rating and any saved details; a
+/// save on its way keeps going, and reopening shows it.
 #[component]
-fn DetailsDialog(run: RunId, saved: FeedbackDetails, on_close: EventHandler) -> Element {
+fn DetailsDialog(run: RunId, entry: Entry) -> Element {
     let Feedback {
-        mut desk, client, ..
+        mut desk,
+        client,
+        owner,
     } = use_context::<Feedback>();
-    let initial = saved.clone();
-    let mut reasons = use_signal(|| initial.reasons.iter().copied().collect::<BTreeSet<_>>());
-    let mut text = use_signal(|| initial.text.clone());
-    let mut saving = use_signal(|| false);
-    let mut failed = use_signal(|| false);
+    let draft = entry.draft();
+    let mut reasons = use_signal(|| draft.reasons.iter().copied().collect::<BTreeSet<_>>());
+    let mut text = use_signal(|| draft.text.clone());
+    let saving = matches!(entry.details_saving, DetailsSaving::Saving(_));
+    let failed = matches!(entry.details_saving, DetailsSaving::Failed(_));
     let save = move |_| {
-        let Some(chat) = desk.peek().chat().cloned() else {
-            return;
-        };
         let details = FeedbackDetails {
             reasons: reasons.peek().iter().copied().collect(),
             text: text.peek().clone(),
         };
-        saving.set(true);
-        failed.set(false);
+        let Some(save) = desk.write().save_details(&run, details) else {
+            return;
+        };
         let client = client.peek().clone();
-        let run = run.clone();
-        spawn(async move {
-            let answer = client
-                .save_feedback_details(&chat.workspace, &chat.chat, &run, &details)
-                .await;
-            saving.set(false);
-            match answer {
-                Ok(saved) => {
-                    desk.write().details_saved(&chat, &run, saved);
-                    on_close.call(());
-                }
-                Err(_) => failed.set(true),
-            }
+        Runtime::current().in_scope(owner, || {
+            spawn(async move {
+                let answer = client
+                    .save_feedback_details(
+                        &save.chat.workspace,
+                        &save.chat.chat,
+                        &save.run,
+                        &save.details,
+                    )
+                    .await
+                    .map_err(|_| ());
+                desk.write().details_answered(&save, answer);
+            })
         });
     };
     rsx! {
@@ -518,13 +638,13 @@ fn DetailsDialog(run: RunId, saved: FeedbackDetails, on_close: EventHandler) -> 
             title: DETAILS_TITLE,
             subtitle: DETAILS_SUBTITLE,
             close_label: CLOSE,
-            on_close: move |_| on_close.call(()),
+            on_close: move |_| desk.write().close_details(),
             div { class: "feedback-reasons",
                 for (reason, label) in REASONS {
                     ToggleChip {
                         key: "{label}",
                         pressed: reasons.read().contains(&reason),
-                        disabled: saving(),
+                        disabled: saving,
                         onclick: move |_| {
                             let mut chosen = reasons.write();
                             if !chosen.remove(&reason) {
@@ -540,15 +660,16 @@ fn DetailsDialog(run: RunId, saved: FeedbackDetails, on_close: EventHandler) -> 
                 kind: TextKind::Multiline,
                 value: text(),
                 on_input: move |words| text.set(words),
-                disabled: saving(),
+                disabled: saving,
             }
             ActionRow {
-                if failed() {
+                if failed {
                     span { class: "quiet-line feedback-notice", role: "status", "{NOT_SAVED}" }
                 }
                 Button {
                     variant: ButtonVariant::Primary,
-                    busy: saving(),
+                    busy: saving,
+                    disabled: entry.busy() && !saving,
                     pending_label: SAVING_DETAILS,
                     onclick: save,
                     "{SAVE_DETAILS}"
@@ -796,15 +917,120 @@ mod tests {
             }),
         );
         assert_eq!(desk.entry(&run(1)).details, Some(details.clone()));
-        desk.details_saved(
-            &chat("a"),
-            &run(1),
-            ResponseFeedback {
-                details: None,
+        let cleared = desk
+            .save_details(&run(1), FeedbackDetails::default())
+            .unwrap();
+        desk.details_answered(
+            &cleared,
+            Ok(ResponseFeedback {
+                details: Some(FeedbackDetails::default()),
                 ..saved(1, Down)
-            },
+            }),
         );
-        assert_eq!(desk.entry(&run(1)).details, None);
+        assert_eq!(
+            desk.entry(&run(1)).details,
+            Some(FeedbackDetails::default())
+        );
         assert_eq!(desk.entry(&run(1)).rating, RatingState::Rated(Down));
+    }
+
+    fn words(text: &str) -> FeedbackDetails {
+        FeedbackDetails {
+            reasons: vec![FeedbackReason::MissingContext],
+            text: text.into(),
+        }
+    }
+
+    #[test]
+    fn a_details_save_outlives_closing_its_dialog() {
+        let mut desk = Desk::default();
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![saved(1, Up)]);
+        desk.open_details(&run(1));
+        let save = desk.save_details(&run(1), words("Trend missing.")).unwrap();
+        desk.close_details();
+        assert!(!desk.details_open(&run(1)));
+        // Reopened while on its way, the dialog shows the save, not the old details.
+        desk.open_details(&run(1));
+        let entry = desk.entry(&run(1));
+        assert_eq!(
+            entry.details_saving,
+            DetailsSaving::Saving(words("Trend missing."))
+        );
+        assert_eq!(entry.draft(), words("Trend missing."));
+        desk.close_details();
+        desk.details_answered(
+            &save,
+            Ok(ResponseFeedback {
+                details: Some(words("Trend missing.")),
+                ..saved(1, Up)
+            }),
+        );
+        let entry = desk.entry(&run(1));
+        assert_eq!(entry.details, Some(words("Trend missing.")));
+        assert_eq!(entry.details_saving, DetailsSaving::Idle);
+
+        // A failure after the dialog closed says so and keeps the words to retry.
+        let save = desk.save_details(&run(1), words("Second try.")).unwrap();
+        desk.details_answered(&save, Err(()));
+        let entry = desk.entry(&run(1));
+        assert_eq!(entry.notice(), Some(NOT_SAVED));
+        assert_eq!(entry.details, Some(words("Trend missing.")));
+        assert_eq!(entry.draft(), words("Second try."));
+    }
+
+    #[test]
+    fn a_details_save_outlives_leaving_its_chat() {
+        let mut desk = Desk::default();
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![saved(1, Up)]);
+        desk.open_details(&run(1));
+        let save = desk.save_details(&run(1), words("Trend missing.")).unwrap();
+        desk.open(Some(chat("b")));
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![saved(1, Up)]);
+        assert!(!desk.details_open(&run(1)), "a new visit opens no dialog");
+        assert!(desk.entry(&run(1)).busy(), "returning forgot the save");
+        desk.details_answered(
+            &save,
+            Ok(ResponseFeedback {
+                details: Some(words("Trend missing.")),
+                ..saved(1, Up)
+            }),
+        );
+        assert_eq!(desk.entry(&run(1)).details, Some(words("Trend missing.")));
+    }
+
+    #[test]
+    fn one_save_at_a_time_so_an_older_answer_never_undoes_newer_details() {
+        let mut desk = Desk::default();
+        desk.open(Some(chat("a")));
+        read(&mut desk, vec![saved(1, Up)]);
+        let rating = desk.choose(&run(1), Down).unwrap();
+        assert_eq!(
+            desk.save_details(&run(1), words("Trend missing.")),
+            None,
+            "details wait for the rating save"
+        );
+        desk.open_details(&run(1));
+        assert!(!desk.details_open(&run(1)), "the dialog waits too");
+        desk.rating_answered(&rating, Ok(saved(1, Down)));
+
+        let details = desk.save_details(&run(1), words("Trend missing.")).unwrap();
+        assert_eq!(
+            desk.choose(&run(1), Up),
+            None,
+            "the rating waits for details"
+        );
+        desk.details_answered(
+            &details,
+            Ok(ResponseFeedback {
+                details: Some(words("Trend missing.")),
+                ..saved(1, Down)
+            }),
+        );
+        // A late answer of the earlier rating save changes nothing.
+        desk.rating_answered(&rating, Ok(saved(1, Down)));
+        assert_eq!(desk.entry(&run(1)).details, Some(words("Trend missing.")));
     }
 }

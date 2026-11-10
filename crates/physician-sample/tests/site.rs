@@ -2549,6 +2549,40 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     ratings_when(&mut tab, "closing the dialog kept the rating", |ratings| {
         ratings[1]["pressed"] == "Poor response" && ratings[1]["details"] == "Add details"
     });
+    // A details save that answers after its dialog closed still lands.
+    tab.step("clickInRating", serde_json::json!([1, "Add details"]));
+    tab.wait_for_text(
+        "What would have made this response better?",
+        Duration::from_secs(5),
+    );
+    tab.click_named("dialog.feedback-details .toggle-chip", "Not useful");
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/physician-state/feedback/*" }] }),
+    );
+    tab.click_named("dialog.feedback-details button", "Save details");
+    let held = tab.held_request("PUT");
+    tab.click("dialog.feedback-details button[aria-label=\"Close\"]");
+    let closed = Instant::now();
+    while !tab.dialog_text().is_empty() {
+        assert!(
+            closed.elapsed() < Duration::from_secs(5),
+            "Close left the dialog open while its save was on its way"
+        );
+        std::thread::sleep(Duration::from_millis(60));
+    }
+    tab.release(&held);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    ratings_when(
+        &mut tab,
+        "the details saved after the dialog closed",
+        |ratings| {
+            ratings[1]["pressed"] == "Poor response"
+                && ratings[1]["details"] == "Edit details"
+                && ratings[1]["notice"].is_null()
+        },
+    );
 
     tab.step("clickInRating", serde_json::json!([0, "Add details"]));
     tab.wait_for_text(
@@ -2609,7 +2643,11 @@ async fn feedback_stays_on_its_response_across_site_restart() {
                 "rating": "up",
                 "details": {"reasons": ["missing_context"], "text": "It left out the trend?"},
             }),
-            serde_json::json!({"run": second, "rating": "down", "details": null}),
+            serde_json::json!({
+                "run": second,
+                "rating": "down",
+                "details": {"reasons": ["not_useful"], "text": ""},
+            }),
         ]
     );
     println!(
@@ -2628,7 +2666,7 @@ async fn feedback_stays_on_its_response_across_site_restart() {
                 && ratings[0]["pressed"] == "Good response"
                 && ratings[0]["details"] == "Edit details"
                 && ratings[1]["pressed"] == "Poor response"
-                && ratings[1]["details"] == "Add details"
+                && ratings[1]["details"] == "Edit details"
         },
     );
     fresh.save_pictures("feedback-after-restart", "[aria-label=\"Conversation\"]");
@@ -2655,7 +2693,9 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     fresh.save_picture("feedback-phone-controls");
     fresh.step("clickInRating", serde_json::json!([0, "Poor response"]));
     ratings_when(&mut fresh, "the phone rating saved", |ratings| {
-        ratings[0]["pressed"] == "Poor response" && ratings[0]["details"] == "Edit details"
+        ratings[0]["pressed"] == "Poor response"
+            && ratings[0]["enabled"] == true
+            && ratings[0]["details"] == "Edit details"
     });
     fresh.step("clickInRating", serde_json::json!([0, "Edit details"]));
     fresh.wait_for_text(
