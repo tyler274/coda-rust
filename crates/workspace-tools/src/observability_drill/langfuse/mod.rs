@@ -832,9 +832,7 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
     );
     report.put("langfuse", &turn);
     let mut found = attempt_gaps(&sent, &turn);
-    if readback::datadog_trace_id(&turn.trace_id).as_deref() != Some(trace.trace_id.as_str())
-        && !trace.trace_id.eq_ignore_ascii_case(&turn.trace_id)
-    {
+    if !readback::same_trace(&trace.trace_id, &turn.trace_id) {
         found.push(format!(
             "Datadog trace {} is not Langfuse trace {}",
             trace.trace_id, turn.trace_id
@@ -882,7 +880,7 @@ fn isolation(request: &Request, report: &mut Report, watch: &Watch) -> Result<()
     let mut spans: Vec<OpsSpan> = Vec::new();
     if let Some(datadog) = &datadog {
         let trace = datadog.attempt_trace(&sent.attempt, watch)?;
-        if readback::datadog_trace_id(&turn.trace_id).as_deref() != Some(trace.trace_id.as_str()) {
+        if !readback::same_trace(&trace.trace_id, &turn.trace_id) {
             found.push(format!(
                 "Datadog trace {} is not Langfuse trace {}",
                 trace.trace_id, turn.trace_id
