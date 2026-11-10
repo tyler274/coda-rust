@@ -105,6 +105,52 @@ agent CLIs and sandbox lifecycle belong to
 [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
 The hook prepares the store; subsequent commands still enter the Nix shell.
 
+### Worktrees and build output
+
+Every plan gets its own worktree (see the
+[worktree rule](.cursor/rules/worktree-per-plan.mdc)). Source is small; a
+worktree's `target/` is what fills disks, at tens of GB each. `dev/worktree.sh`
+keeps that shared:
+
+```sh
+dev/worktree.sh seed               # once per dependency change: third-party build output from origin/main
+dev/worktree.sh new my-plan        # .worktrees/my-plan on branch my-plan, target/ cloned from the seed
+dev/worktree.sh status             # worktrees, last build, disk use
+dev/worktree.sh rm my-plan         # after merge; `prune` does every merged, clean worktree
+```
+
+Worktrees live at `.worktrees/<slug>` in the main checkout. Each `target` is a
+link to `$CODA_BUILD_ROOT/wt/<slug>` (default `/agents/coda/build`), made as a
+reflink clone of the current seed, so it shares the seed's blocks until a build
+changes them and only this repository's crates compile at first. The build root
+must support reflinks (ZFS 2.2 or later, btrfs, XFS); the script stops rather
+than fall back to full copies. `seed` runs [dev/session-seed.sh](dev/session-seed.sh),
+the same seed the Apple container sessions use, keyed by `Cargo.lock`,
+`flake.lock` and `rust-toolchain.toml`. `dev/worktree.sh gc` (daily in the agent
+sandbox) resets any target unbuilt for seven days back to a seed clone, and
+removes targets whose worktree is gone; the worktree stays buildable.
+
+#### Agent sandbox on Cyrene
+
+On Cyrene, agents work in the `coda-agent` container, whose definition, boundaries
+and credentials live in the [NixOS configuration](https://github.com/tyler274/nixos)
+(README "Coda agent sandbox on Cyrene"). The main checkout there is
+`/agents/coda/src/coda-rust`, snapshotted hourly; the build root is
+`/agents/coda/build`, never snapshotted. Day to day:
+
+1. Connect Cursor with Remote-SSH to host `coda-agent` and open
+   `/agents/coda/src/coda-rust`.
+2. Start work with `dev/worktree.sh new <slug>` and open `.worktrees/<slug>`;
+   direnv enters the dev shell through the host's Nix store.
+3. Servers that tests or `physician-sample` start listen on the container's
+   loopback; Cursor's port forwarding shows them in the host browser.
+4. Push and open PRs from inside: git and `gh` use a token limited to this
+   repository. Submodules are not initialised there.
+
+The container cannot reach the host, the LAN or Tailscale, has no Docker, and
+the agent is not trusted by the Nix daemon. A bad edit can be recovered from the
+dataset's snapshots in `/agents/coda/src/.zfs/snapshot/`.
+
 ### Local CI checks
 
 From the repository's agent dev shell, install the small validation dependency
