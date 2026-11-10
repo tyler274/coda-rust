@@ -96,9 +96,16 @@ pub struct Feedback {
     /// Database-clock seconds of the latest rating.
     pub rated_at: i64,
     /// The latest saved details, if any were saved.
-    pub details: Option<Details>,
-    /// Database-clock seconds of the latest details save.
-    pub details_saved_at: Option<i64>,
+    pub details: Option<SavedDetails>,
+}
+
+/// Details as saved, with when.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct SavedDetails {
+    /// The details.
+    pub details: Details,
+    /// Database-clock seconds of the save.
+    pub saved_at: i64,
 }
 
 /// Outcome of a rating save.
@@ -152,16 +159,19 @@ fn nonempty(scope: &Scope) -> Result<(), DbErr> {
 }
 
 fn feedback(row: &response_feedback::Model) -> Result<Feedback, DbErr> {
+    let details = match (&row.details, row.details_saved_at) {
+        (None, None) => None,
+        (Some(stored), Some(saved_at)) => Some(SavedDetails {
+            details: serde_json::from_value(stored.clone())
+                .map_err(|cause| unconvertible("stored feedback details", "Details", cause))?,
+            saved_at,
+        }),
+        _ => return Err(error("feedback details without their save time")),
+    };
     Ok(Feedback {
         rating: Rating::parse(&row.rating)?,
         rated_at: row.rated_at,
-        details: row
-            .details
-            .clone()
-            .map(serde_json::from_value)
-            .transpose()
-            .map_err(|cause| unconvertible("stored feedback details", "Details", cause))?,
-        details_saved_at: row.details_saved_at,
+        details,
     })
 }
 

@@ -194,8 +194,10 @@ async fn details_need_a_rating_and_survive_a_new_rating() {
     else {
         panic!("details not saved");
     };
-    assert_eq!(with_details.details.as_ref(), Some(&details));
-    assert!(with_details.details_saved_at.is_some());
+    assert_eq!(
+        with_details.details.as_ref().map(|saved| &saved.details),
+        Some(&details)
+    );
 
     let rerated = saved(
         store
@@ -204,8 +206,8 @@ async fn details_need_a_rating_and_survive_a_new_rating() {
             .unwrap(),
     );
     assert_eq!(
-        (rerated.rating, rerated.details.as_ref()),
-        (Rating::Up, Some(&details))
+        (rerated.rating, rerated.details),
+        (Rating::Up, with_details.details)
     );
     assert!(
         store

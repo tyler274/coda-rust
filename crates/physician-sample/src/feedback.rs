@@ -44,8 +44,9 @@ fn wire(run: &RunId, feedback: Feedback) -> ResponseFeedback {
             Rating::Up => FeedbackRating::Up,
             Rating::Down => FeedbackRating::Down,
         },
-        details: feedback.details.map(|details| FeedbackDetails {
-            reasons: details
+        details: feedback.details.map(|saved| FeedbackDetails {
+            reasons: saved
+                .details
                 .reasons()
                 .iter()
                 .map(|reason| match reason {
@@ -55,7 +56,7 @@ fn wire(run: &RunId, feedback: Feedback) -> ResponseFeedback {
                     Reason::NotUseful => FeedbackReason::NotUseful,
                 })
                 .collect(),
-            text: details.text().to_owned(),
+            text: saved.details.text().to_owned(),
         }),
     }
 }
