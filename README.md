@@ -128,7 +128,8 @@ than fall back to full copies. `seed` runs [dev/session-seed.sh](dev/session-see
 the same seed the Apple container sessions use, keyed by `Cargo.lock`,
 `flake.lock` and `rust-toolchain.toml`. `dev/worktree.sh gc` (daily in the agent
 sandbox) resets any target unbuilt for seven days back to a seed clone, and
-removes targets whose worktree is gone; the worktree stays buildable.
+removes targets whose worktree is gone; the worktree stays buildable. A reset
+keeps `target/verification`, which holds retained proof rather than build output.
 
 #### Agent sandbox on Cyrene
 

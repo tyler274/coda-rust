@@ -54,21 +54,31 @@ current_seed() {
 
 # Clone the current seed into a target directory. Never falls back to a copy:
 # a full copy per worktree is the disk use this script exists to avoid.
+# target/verification holds retained proof, not build output, so it survives.
 clone_seed() {
-  local dest=$1 seed
+  local dest=$1 seed kept='' cloned=true
+  if [ -d "$dest/verification" ]; then
+    kept=$(mktemp -d "$targets/.verification.XXXXXX")
+    mv "$dest/verification" "$kept/"
+  fi
   rm -rf "$dest"
+  mkdir -p "$dest"
   seed=$(current_seed) || true
   if [ -z "$seed" ]; then
-    mkdir -p "$dest"
     echo "No seed yet; $dest starts empty. Run dev/worktree.sh seed to share third-party builds." >&2
-    return
-  fi
-  mkdir -p "$dest"
-  if ! cp -a --reflink=always "$seed/." "$dest/"; then
+  elif cp -a --reflink=always "$seed/." "$dest/"; then
+    basename "$seed" >"$dest/$marker"
+  else
+    cloned=false
     rm -rf "$dest"
-    die "reflink clone of $seed into $dest failed; the build root must support reflinks"
+    mkdir -p "$dest"
   fi
-  basename "$seed" >"$dest/$marker"
+  if [ -n "$kept" ]; then
+    rm -rf "$dest/verification"
+    mv "$kept/verification" "$dest/"
+    rmdir "$kept"
+  fi
+  $cloned || die "reflink clone of $seed into $dest failed; the build root must support reflinks"
 }
 
 link_target() {

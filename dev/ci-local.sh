@@ -43,9 +43,10 @@ git -C "$scratch/repo" bundle create --quiet "$scratch/repo.bundle" refs/coda-ci
 
 id=$(od -An -N6 -tx1 /dev/urandom | tr -d ' \n')
 cp "$scratch/repo.bundle" "$requests/$id.bundle"
-# The job file goes last: it marks the request complete.
-printf '%s\n' "$job" > "$scratch/job"
-cp "$scratch/job" "$requests/$id.job"
+# The job file goes last and appears whole, by rename: it marks the request
+# complete.
+printf '%s\n' "$job" > "$requests/.$id.job.part"
+mv "$requests/.$id.job.part" "$requests/$id.job"
 echo "ci-local: queued $id: act -j $job at $commit" >&2
 
 deadline=$((SECONDS + timeout_seconds))

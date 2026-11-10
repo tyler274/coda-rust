@@ -25,6 +25,15 @@ the README.
    cd .worktrees/<slug>
    ```
 
+   On an Apple silicon Mac without Nix there is no reflink build root; each
+   Apple container session keeps its own `target/` instead. Create the worktree
+   with Git there:
+
+   ```bash
+   git worktree add --no-track -b <slug> .worktrees/<slug> origin/main
+   cd .worktrees/<slug>
+   ```
+
 3. Do all plan work inside the worktree: edits, builds, tests, commits, and pushes.
    The nix dev shell still applies there (direnv picks up the repo's `.envrc`);
    see [nix-dev-shell](nix-dev-shell.mdc). On an Apple silicon Mac without Nix,
@@ -39,6 +48,9 @@ the README.
    git branch -d <slug>
    ```
 
+   On the Apple route, `git worktree remove .worktrees/<slug>` takes the place of
+   `dev/worktree.sh rm`.
+
 ## Rules
 
 - ❌ Do NOT implement a new plan directly in the main checkout or on `main`.
@@ -48,7 +60,8 @@ the README.
 - ❌ Do NOT edit files under `submodules/**`; the [rust-repo-first](rust-repo-first.mdc)
   rule still applies inside a worktree (`git rev-parse --show-toplevel` must
   print the worktree path, and file paths must not start with `submodules/`).
-- ✅ One worktree per plan, made with `dev/worktree.sh new <slug>`, with a matching branch.
+- ✅ One worktree per plan at `.worktrees/<slug>`, made with `dev/worktree.sh new <slug>`
+  (or Git on the Apple route), with a matching branch.
 
 ## ❌ BAD
 
