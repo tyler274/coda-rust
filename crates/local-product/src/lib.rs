@@ -9,8 +9,8 @@
 //! environment; this crate does not read it from disk.
 //! Physician HTTP chat runs inline through `execution::PhysicianSession` (file
 //! persistence over `harness::execution`) unless the site starts with
-//! `PHYSICIAN_CHAT_TOPIC`; then the site accepts turns into the Postgres
-//! `runtime` owner over `harness::engine`, and a worker runs them.
+//! `PHYSICIAN_DURABLE_CHAT=1`; then the site accepts turns into the Postgres
+//! `runtime` owner over `harness::engine`, and a worker claims them there.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
 #![allow(
