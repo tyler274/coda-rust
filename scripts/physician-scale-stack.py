@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Disposable synthetic physician stack. No cloud credentials or hosted auth bypass.
 
-Two physician-sample sites and one physician-worker share a throwaway Postgres,
-Valkey and Pub/Sub emulator on loopback ports. Sites run PHYSICIAN_AUTH=required
+Two physician-sample sites and one physician-worker share a throwaway Postgres
+and Valkey on loopback ports. The sites accept chat turns into Postgres and the
+worker claims them from there. Sites run PHYSICIAN_AUTH=required
 with local proof sign-in for the synthetic physician@codahealth.test account.
---dependencies-only --check proves Valkey, Postgres and Pub/Sub provisioning,
+--dependencies-only --check proves Valkey and Postgres provisioning,
 NOT the application journey. The coda-verify-physician recipe drives the rest.
 
 While running, SIGUSR1 restarts Valkey on the same port (the resync journey),
@@ -29,9 +30,6 @@ import urllib.error
 import urllib.request
 import uuid
 
-PROJECT = "coda-local-physician"
-TOPIC = f"projects/{PROJECT}/topics/physician-chat-turns"
-DLQ = f"projects/{PROJECT}/topics/physician-chat-turns-dead-letter"
 CHANNEL = "physician:workspace-events:v1"
 PRACTICE = "roger-synthetic-practice"
 PHYSICIAN = "staging-physician"
@@ -57,7 +55,7 @@ def environment(source, home):
     if source.get("HOME"):
         result.setdefault("CARGO_HOME", str(Path(source["HOME"]) / ".cargo"))
         result.setdefault("RUSTUP_HOME", str(Path(source["HOME"]) / ".rustup"))
-    result.update(HOME=str(home), TMPDIR=str(home), CLOUDSDK_CONFIG=str(home / "gcloud"))
+    result.update(HOME=str(home), TMPDIR=str(home))
     return result
 
 
@@ -65,14 +63,6 @@ def free_port():
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 0))
         return listener.getsockname()[1]
-
-
-def put(host, resource, body):
-    request = urllib.request.Request(
-        f"http://{host}/v1/{resource}", data=json.dumps(body).encode(),
-        headers={"Content-Type": "application/json"}, method="PUT")
-    with urllib.request.urlopen(request, timeout=3) as response:
-        return json.load(response)
 
 
 class Stack:
@@ -352,33 +342,30 @@ def run(args, root, evidence):
     signal.signal(signal.SIGUSR1, lambda _signal, _frame: restart.set())
     # Ports remain loopback-only; an allocation race fails startup, never falls
     # back to a public interface or an existing ambient service.
-    pg, redis, emulator, site_a, site_b, worker = [free_port() for _ in range(6)]
-    if len({pg, redis, emulator, site_a, site_b, worker}) != 6:
+    pg, redis, site_a, site_b, worker = [free_port() for _ in range(5)]
+    if len({pg, redis, site_a, site_b, worker}) != 5:
         raise RuntimeError("port allocation collided; retry the command")
-    host = f"127.0.0.1:{emulator}"
     database = f"postgresql://postgres@127.0.0.1:{pg}/postgres"
     shared = {
         "PHYSICIAN_LOCAL_SCALE": "1", "PHYSICIAN_AUTH": "required",
         "PHYSICIAN_DATABASE_URL": database,
         "PHYSICIAN_REDIS_URL": f"redis://127.0.0.1:{redis}",
-        "PUBSUB_EMULATOR_HOST": host, "GOOGLE_CLOUD_PROJECT": PROJECT,
-        "PHYSICIAN_CHAT_TOPIC": TOPIC, "CODA_LOCAL_MODEL_EXECUTION": "replay",
+        "PHYSICIAN_DURABLE_CHAT": "1", "CODA_LOCAL_MODEL_EXECUTION": "replay",
     }
     state = {
         "pid": os.getpid(), "root": str(root), "evidence": str(evidence) if evidence else None,
         "postgres": {"port": pg, "url": database}, "valkey": {"port": redis, "channel": CHANNEL},
-        "pubsub": {"host": host, "project": PROJECT, "topic": TOPIC, "dead_letter": DLQ},
         "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": FIXED_TEXT,
                    "fixed_failures": args.worker_failures,
-                   "fail_marker": args.worker_fail_marker},
+                   "fail_marker": args.worker_fail_marker,
+                   "retry_seconds": args.worker_retry_seconds},
         "sites": {"a": f"http://127.0.0.1:{site_a}", "b": f"http://127.0.0.1:{site_b}"},
         "account": {"email": EMAIL, "practice": PRACTICE, "physician": PHYSICIAN},
         "workspace": WORKSPACE,
         # Flat handles read by .agents/skills/coda-verify-physician/scripts/physician-drive.py.
-        "ports": {"postgres": pg, "valkey": redis, "pubsub": emulator, "worker": worker,
+        "ports": {"postgres": pg, "valkey": redis, "worker": worker,
                   "site-a": site_a, "site-b": site_b},
         "sign_in_email": EMAIL,
-        "pubsub_emulator_host": host,
         "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "dependencies_only": args.dependencies_only,
     }
@@ -394,25 +381,9 @@ def run(args, root, evidence):
         stack.start("postgres", ["postgres", "-D", str(root / "pg"), "-h", "127.0.0.1",
                                  "-p", str(pg), "-k", str(root), "-c", "fsync=off"])
         stack.start("valkey", valkey_argv(redis))
-        # gcloud writes env.yaml into --data-dir and does not create it.
-        (root / "pubsub").mkdir()
-        stack.start("pubsub", ["gcloud", "beta", "emulators", "pubsub", "start",
-                               f"--host-port={host}", f"--project={PROJECT}",
-                               f"--data-dir={root / 'pubsub'}", "--quiet"])
         stack.wait(lambda: subprocess.run(["pg_isready", "-d", database], env=stack.env,
                                           stdout=subprocess.DEVNULL).returncode == 0, "Postgres")
         stack.wait(lambda: valkey_ping(stack, redis), "Valkey")
-        stack.wait(lambda: tcp(emulator), "Pub/Sub emulator")
-        # TCP alone can open before the emulator HTTP API is ready.
-        stack.wait(lambda: put(host, TOPIC, {}), "Pub/Sub topic")
-        put(host, DLQ, {})
-        put(host, f"projects/{PROJECT}/subscriptions/physician-chat-turns-dead-letter", {"topic": DLQ})
-        put(host, f"projects/{PROJECT}/subscriptions/physician-chat-turns", {
-            "topic": TOPIC, "ackDeadlineSeconds": 600,
-            "pushConfig": {"pushEndpoint": f"http://127.0.0.1:{worker}/pubsub/chat-turn"},
-            "retryPolicy": {"minimumBackoff": "1s", "maximumBackoff": "10s"},
-            "deadLetterPolicy": {"deadLetterTopic": DLQ, "maxDeliveryAttempts": 5},
-        })
         if not args.dependencies_only:
             binary = args.bin_dir.resolve()
             subprocess.run([str(binary / "physician-migrate")], env=stack.env | shared, check=True)
@@ -426,7 +397,10 @@ def run(args, root, evidence):
                 "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}",
                 # The local stack is not API mode. The worker refuses to start
                 # without a provider; this fixed reply never leaves the process.
-                "PHYSICIAN_WORKER_FIXED_TEXT": FIXED_TEXT}
+                "PHYSICIAN_WORKER_FIXED_TEXT": FIXED_TEXT,
+                # Non-hosted proof only: the wait after a first failure. It
+                # doubles from here, so five failures take 15 times this.
+                "PHYSICIAN_WORKER_RETRY_SECONDS": str(args.worker_retry_seconds)}
             if args.worker_failures:
                 # Non-hosted proof only: the first N provider calls of this
                 # worker process fail, then the fixed text answers.
@@ -451,7 +425,7 @@ def run(args, root, evidence):
                   f"{args.worker_failures}; fail marker "
                   f"{'on' if args.worker_fail_marker else 'off'}", flush=True)
             print(f"Sites: http://127.0.0.1:{site_a} and http://127.0.0.1:{site_b}", flush=True)
-        print(f"Dependencies ready; emulator {host}, Redis {redis}, Postgres {pg}. Logs: {root}", flush=True)
+        print(f"Dependencies ready; Redis {redis}, Postgres {pg}. Logs: {root}", flush=True)
         write_state(ready_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
         if evidence:
             print(f"Evidence: {evidence} (stack.json; logs copied on exit). "
@@ -516,7 +490,10 @@ def main():
                         help="built synthetic charts (cargo run -p patient-bank -- build)")
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
                         help="PHYSICIAN_WORKER_FIXED_FAILURES: the worker's first N provider calls "
-                             "fail; 5 dead-letters the first turn")
+                             "fail; 5 end the first turn as failed")
+    parser.add_argument("--worker-retry-seconds", type=int, default=1, metavar="S",
+                        help="PHYSICIAN_WORKER_RETRY_SECONDS: the worker waits S seconds after a "
+                             "first failure and doubles it each time (hosted starts at 10)")
     parser.add_argument("--worker-fail-marker", action="store_true",
                         help="PHYSICIAN_WORKER_FIXED_FAIL_MARKER: a message containing [fail:K] "
                              "fails its first K attempts, counted from its saved attempts; unmarked turns "
@@ -535,6 +512,8 @@ def main():
         args.command = args.command[1:]
     if args.worker_failures < 0:
         parser.error("--worker-failures must be zero or more")
+    if not 0 <= args.worker_retry_seconds <= 600:
+        parser.error("--worker-retry-seconds must be 0 to 600")
     if args.dependencies_only and (args.worker_failures or args.worker_fail_marker
                                    or args.load_numbers):
         parser.error("--worker-failures, --worker-fail-marker and --load-numbers need the "

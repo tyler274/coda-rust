@@ -237,15 +237,12 @@ expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 
 # The worker as staging runs it: hosted, with no PHYSICIAN_AUTH passed in, so
 # the image's own setting must satisfy hosted startup. The placeholder key is
-# never used because no push is sent; the audience and push account only
-# configure token verification.
+# never used because the smoke database holds no accepted work.
 worker_port=$(free_port)
 serve coda-physician-worker "$worker_port" \
   -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" \
   -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
-  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
-  -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
-  -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com
+  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder
 expect_status "http://127.0.0.1:$worker_port/health" 200
 expect_status "http://127.0.0.1:$worker_port/readyz" 200
 # Listening at all proves hosted startup loaded the image's packaged catalog:
@@ -257,8 +254,6 @@ expect_failure "${tag_of[coda-physician-worker]} without its skill catalog" "phy
     -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
     -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
     -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
-    -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
-    -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com \
     -e PHYSICIAN_SKILLS_DIR=/tmp/no-skills -e PORT="$(free_port)" \
     "${tag_of[coda-physician-worker]}"
 

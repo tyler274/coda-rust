@@ -12,7 +12,7 @@ locals {
   physician_scale_apps = local.physician_scale ? toset(["physician"]) : toset([])
   # Infrastructure-owned (or Doppler-owned) physician settings that the
   # nonsecret runtime_environment map may not set or override.
-  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
+  scale_owned_env = ["PHYSICIAN_CHAT_TOPIC", "PHYSICIAN_DURABLE_CHAT", "PHYSICIAN_WORKER_AUDIENCE", "PHYSICIAN_PUSH_SERVICE_ACCOUNT", "PHYSICIAN_REDIS_URL", "PHYSICIAN_REDIS_CA_PEM", "PHYSICIAN_SIMULATION_PRACTICES", "PHYSICIAN_IAP_AUDIENCE", "PHYSICIAN_REHEARSAL_PRINCIPAL"]
   # Rehearsal practices (physician_simulation_practices): the same list on the
   # site, the worker and the migration job, which seeds the rehearsal practice.
   physician_simulation_env = length(var.physician_simulation_practices) > 0 ? { PHYSICIAN_SIMULATION_PRACTICES = join(",", sort(tolist(var.physician_simulation_practices))) } : {}

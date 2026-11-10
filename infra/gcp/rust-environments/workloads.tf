@@ -92,13 +92,22 @@ resource "google_cloud_run_v2_service" "app" {
         }
       }
       # Physician only, and only behind enable_physician_scale: the site
-      # publishes accepted chat turns here instead of running them inline.
+      # accepts chat turns into Postgres for the worker instead of running
+      # them inline. PHYSICIAN_DURABLE_CHAT selects that; a site revision that
+      # still publishes reads PHYSICIAN_CHAT_TOPIC, so both are set.
       # PHYSICIAN_REDIS_URL / PHYSICIAN_REDIS_CA_PEM come from Doppler.
       dynamic "env" {
         for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}
         content {
           name  = "PHYSICIAN_CHAT_TOPIC"
           value = env.value.id
+        }
+      }
+      dynamic "env" {
+        for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}
+        content {
+          name  = "PHYSICIAN_DURABLE_CHAT"
+          value = "1"
         }
       }
       dynamic "env" {

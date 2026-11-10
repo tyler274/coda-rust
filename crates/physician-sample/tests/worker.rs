@@ -868,7 +868,10 @@ async fn fail_marker_fails_only_the_marked_message() {
 #[tokio::test]
 async fn fail_marker_count_survives_a_worker_restart() {
     let _guard = lock().lock().await;
-    let Some(mut running) = running_with("marker_restart", None, None, true, &[]).await else {
+    // The retry waits, so the restart lands between the first attempt and
+    // the second instead of killing the second mid-run.
+    let wait = [("PHYSICIAN_WORKER_RETRY_SECONDS", "3")];
+    let Some(mut running) = running_with("marker_restart", None, None, true, &wait).await else {
         return;
     };
     let (scope, _) = accept_text(&running.database.url, &running.store, "Restart [fail:2]").await;

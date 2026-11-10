@@ -145,7 +145,7 @@ impl Drop for Database {
 ///
 /// Binding `127.0.0.1:0` and handing the number to a child is racy: the
 /// kernel draws it from the ephemeral range, which every outbound connection
-/// (Postgres, Valkey, the emulator) also draws from, so the port can be taken
+/// (Postgres, Valkey) also draws from, so the port can be taken
 /// before the child binds it. Ports here come from below that range
 /// (Linux defaults to 32768-60999), are never handed out twice by this test
 /// process, and are probed before use.

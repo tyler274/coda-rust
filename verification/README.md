@@ -67,7 +67,7 @@ calls for it.
 `scripts/scenarios.py` runs the product journeys that work on one machine and writes
 `receipt.json` under `target/verification/runs/`. P1, a physician asking about a patient, runs over
 HTTP against the [scale stack](../scripts/physician-scale-stack.py). That stack has two sites, the
-worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet conversation,
+worker with its fixed reply, Postgres and Valkey. D1, a Duet conversation,
 migrates a fresh database on the same Postgres through `duet-migrate` with a separate runtime
 login, then drives the `duet-api` binary over HTTP: sign-up, a message, a kill and restart while
 the reply is open, a retried send, and sign out everywhere. The binary runs with its local
