@@ -68,6 +68,25 @@ struct StoredItem {
     created_at: String,
     modified_at: String,
     transcription_id: Option<String>,
+    direction: &'static str,
+    deleted: bool,
+    /// The item's content is not a shape the reader can decode.
+    unreadable: bool,
+    /// File names attached to the item, served from `files`.
+    files: Vec<String>,
+}
+
+/// A saved contact the stand-in serves from `GET /contacts/{id}`.
+#[derive(Debug, Clone)]
+pub struct FakeContact {
+    /// Contact id.
+    pub id: String,
+    /// Display name.
+    pub display_name: String,
+    /// Phone numbers, E.164.
+    pub phone_numbers: Vec<String>,
+    /// Date of birth, `YYYY-MM-DD`.
+    pub date_of_birth: Option<String>,
 }
 
 struct FakeState {
@@ -82,6 +101,18 @@ struct FakeState {
     conversations: Vec<StoredConversation>,
     items: Vec<StoredItem>,
     transcriptions: HashMap<String, StoredTranscription>,
+    contacts: HashMap<String, FakeContact>,
+    /// Associated contact ids per conversation.
+    associations: HashMap<String, Vec<String>>,
+    /// File bytes by name.
+    files: HashMap<String, Vec<u8>>,
+    /// Bumped by [`FakeSpruce::expire_links`]; a link signed under an older
+    /// generation answers 403.
+    link_generation: u64,
+    /// Every path the stand-in was asked for, in order.
+    requests: Vec<String>,
+    /// `http://host:port`, for signing file links.
+    origin: String,
 }
 
 impl FakeState {
@@ -95,6 +126,12 @@ impl FakeState {
             conversations: Vec::new(),
             items: Vec::new(),
             transcriptions: HashMap::new(),
+            contacts: HashMap::new(),
+            associations: HashMap::new(),
+            files: HashMap::new(),
+            link_generation: 0,
+            requests: Vec::new(),
+            origin: String::new(),
         }
     }
 }
@@ -120,11 +157,18 @@ impl FakeSpruce {
             .route("/v1/conversations/{id}/items", get(items))
             .route("/v1/conversationItems/{id}", get(item))
             .route("/v1/transcriptions/{id}", get(transcription))
+            .route("/v1/contacts/{id}", get(contact))
+            .route("/files/{generation}/{name}", get(file))
+            .layer(axum::middleware::from_fn_with_state(
+                Arc::clone(&state),
+                record_request,
+            ))
             .with_state(Arc::clone(&state));
         let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
             .await
             .expect("spruce stand-in port");
         let address = listener.local_addr().expect("spruce stand-in address");
+        state.lock().expect("spruce stand-in lock").origin = format!("http://{address}");
         tokio::spawn(async move {
             axum::serve(listener, app).await.expect("spruce stand-in");
         });
@@ -176,12 +220,94 @@ impl FakeSpruce {
             created_at: delivery.created_at,
             modified_at: delivery.modified_at,
             transcription_id: delivery.transcription_id,
+            direction: "inbound",
+            deleted: false,
+            unreadable: false,
+            files: Vec::new(),
         };
         if let Some(existing) = state.items.iter_mut().find(|item| item.id == stored.id) {
             *existing = stored;
         } else {
             state.items.push(stored);
         }
+    }
+
+    /// Marks an item as sent by the practice (`outbound`).
+    pub fn mark_outbound(&self, id: &str) {
+        self.with_item(id, |item| item.direction = "outbound");
+    }
+
+    /// Spruce flags the item deleted and bumps `modifiedAt`. The item stays listed.
+    pub fn flag_deleted(&self, id: &str, modified_at: &str) {
+        self.with_item(id, |item| {
+            item.deleted = true;
+            item.modified_at = modified_at.to_owned();
+        });
+    }
+
+    /// The item's content stops decoding; its id and app link still do.
+    pub fn make_unreadable(&self, id: &str) {
+        self.with_item(id, |item| item.unreadable = true);
+    }
+
+    /// Attaches a file to an item. Its link is signed under the current
+    /// generation and stops working after [`Self::expire_links`].
+    pub fn attach(&self, id: &str, name: &str, bytes: &[u8]) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        state.files.insert(name.to_owned(), bytes.to_vec());
+        let item = state
+            .items
+            .iter_mut()
+            .find(|item| item.id == id)
+            .expect("item to attach to");
+        item.files.push(name.to_owned());
+    }
+
+    /// Every link handed out so far answers 403 from now on.
+    pub fn expire_links(&self) {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .link_generation += 1;
+    }
+
+    /// Serves a contact and associates it with a conversation.
+    pub fn add_contact(&self, conversation: &str, contact: FakeContact) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        state
+            .associations
+            .entry(conversation.to_owned())
+            .or_default()
+            .push(contact.id.clone());
+        state.contacts.insert(contact.id.clone(), contact);
+    }
+
+    /// Every request path so far, oldest first.
+    pub fn requests(&self) -> Vec<String> {
+        self.state
+            .lock()
+            .expect("spruce stand-in lock")
+            .requests
+            .clone()
+    }
+
+    /// Reads answer normally again after [`Self::fail`], [`Self::forbid`] or
+    /// [`Self::reject_unauthorized`].
+    pub fn recover(&self) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        state.failing.clear();
+        state.forbidden = false;
+        state.unauthorized = false;
+    }
+
+    fn with_item(&self, id: &str, change: impl FnOnce(&mut StoredItem)) {
+        let mut state = self.state.lock().expect("spruce stand-in lock");
+        let item = state
+            .items
+            .iter_mut()
+            .find(|item| item.id == id)
+            .expect("item in the stand-in");
+        change(item);
     }
 
     /// Changes an item's text and `modifiedAt`. Does not move `lastMessageAt`.
@@ -295,7 +421,7 @@ async fn conversations(
     let (page, has_more, token) = slice(rows, &state, &query);
     let conversations: Vec<Value> = page
         .iter()
-        .map(|conversation| conversation_json(conversation))
+        .map(|conversation| conversation_json(&state, conversation))
         .collect();
     Json(json!({
         "conversations": conversations,
@@ -324,7 +450,7 @@ async fn conversation(
     else {
         return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
     };
-    Json(json!({"conversation": conversation_json(conversation)})).into_response()
+    Json(json!({"conversation": conversation_json(&state, conversation)})).into_response()
 }
 
 async fn items(
@@ -369,7 +495,7 @@ async fn items(
         state.duplicate = None;
     }
     let (page, has_more, token) = slice(rows, &state, &query);
-    let conversation_items: Vec<Value> = page.iter().map(item_json).collect();
+    let conversation_items: Vec<Value> = page.iter().map(|item| item_json(&state, item)).collect();
     Json(json!({
         "conversationItems": conversation_items,
         "hasMore": has_more,
@@ -386,7 +512,7 @@ async fn item(State(state): State<Shared>, headers: HeaderMap, Path(id): Path<St
     let Some(item) = state.items.iter().find(|item| item.id == id) else {
         return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
     };
-    Json(json!({"conversationItem": item_json(item)})).into_response()
+    Json(json!({"conversationItem": item_json(&state, item)})).into_response()
 }
 
 async fn transcription(
@@ -412,27 +538,126 @@ async fn transcription(
     .into_response()
 }
 
-fn conversation_json(conversation: &StoredConversation) -> Value {
+async fn contact(
+    State(state): State<Shared>,
+    headers: HeaderMap,
+    Path(id): Path<String>,
+) -> Response {
+    if let Some(response) = deny(&state, &headers) {
+        return response;
+    }
+    let state = state.lock().expect("spruce stand-in lock");
+    let Some(contact) = state.contacts.get(&id) else {
+        return (StatusCode::NOT_FOUND, Json(json!({}))).into_response();
+    };
+    let phones: Vec<Value> = contact
+        .phone_numbers
+        .iter()
+        .map(|number| json!({"value": number, "label": "mobile"}))
+        .collect();
+    Json(json!({
+        "id": contact.id,
+        "object": "contact",
+        "category": "patient",
+        "displayName": contact.display_name,
+        "dateOfBirth": contact.date_of_birth,
+        "phoneNumbers": phones,
+        "emailAddresses": [],
+        "integrationLinks": [],
+    }))
+    .into_response()
+}
+
+/// A signed file link. It needs no bearer credential, like Spruce's.
+async fn file(
+    State(state): State<Shared>,
+    Path((generation, name)): Path<(u64, String)>,
+) -> Response {
+    let state = state.lock().expect("spruce stand-in lock");
+    if generation != state.link_generation {
+        return (StatusCode::FORBIDDEN, "expired").into_response();
+    }
+    match state.files.get(&name) {
+        Some(bytes) => bytes.clone().into_response(),
+        None => (StatusCode::NOT_FOUND, "missing").into_response(),
+    }
+}
+
+async fn record_request(
+    State(state): State<Shared>,
+    request: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> Response {
+    state
+        .lock()
+        .expect("spruce stand-in lock")
+        .requests
+        .push(request.uri().path().to_owned());
+    next.run(request).await
+}
+
+fn conversation_json(state: &FakeState, conversation: &StoredConversation) -> Value {
+    let associated = state
+        .associations
+        .get(&conversation.id)
+        .cloned()
+        .unwrap_or_default();
     json!({
         "id": conversation.id,
         "type": "secure",
         "lastMessageAt": conversation.last_message_at,
-        "externalParticipants": [{"displayName": "Synthetic", "endpoint": {"channel": "phone", "rawValue": "+12065550100"}}],
+        "externalParticipants": [{"displayName": "Synthetic", "contact": associated.first(), "endpoint": {"channel": "phone", "rawValue": "+12065550100"}}],
         "internalEndpoint": {"channel": "phone", "rawValue": "+12065551000"},
+        "associatedContactIds": associated,
     })
 }
 
-fn item_json(item: &StoredItem) -> Value {
+fn item_json(state: &FakeState, item: &StoredItem) -> Value {
+    let app_url = format!(
+        "https://app.sprucehealth.com/org/{ORGANIZATION_ID}/thread/{}/message/{}",
+        item.conversation, item.id
+    );
+    if item.unreadable {
+        return json!({
+            "id": item.id,
+            "conversationId": item.conversation,
+            "direction": item.direction,
+            "createdAt": item.created_at,
+            "modifiedAt": item.modified_at,
+            "appURL": app_url,
+            "text": {"unexpected": true},
+        });
+    }
+    let attachments: Vec<Value> = item
+        .files
+        .iter()
+        .map(|name| {
+            json!({
+                "type": "document",
+                "title": name,
+                "data": {
+                    "mimetype": "application/pdf",
+                    "name": name,
+                    "signedUrl": {
+                        "url": format!("{}/files/{}/{name}", state.origin, state.link_generation),
+                        "expiresAt": "2026-12-31T00:00:00Z",
+                    },
+                },
+            })
+        })
+        .collect();
     let mut body = json!({
         "id": item.id,
         "conversationId": item.conversation,
-        "direction": "inbound",
+        "direction": item.direction,
         "isInternalNote": false,
         "author": {"displayName": "Synthetic"},
         "createdAt": item.created_at,
         "modifiedAt": item.modified_at,
-        "appURL": format!("https://app.sprucehealth.com/org/{ORGANIZATION_ID}/thread/{}/message/{}", item.conversation, item.id),
+        "appURL": app_url,
         "text": item.text,
+        "attachments": attachments,
+        "deleted": item.deleted,
     });
     if let Some(id) = &item.transcription_id {
         body["event"] = json!({

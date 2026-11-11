@@ -73,6 +73,7 @@ mod tests {
                 direction: Some("inbound".into()),
                 is_internal_note: Some(false),
                 author_name: None,
+                author_id: None,
                 created_at: Some(modified.into()),
                 modified_at: Some(modified.into()),
                 app_url: None,

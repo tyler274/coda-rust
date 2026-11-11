@@ -1395,3 +1395,122 @@ async fn hosting_cancels_a_chat_whose_claim_has_been_replaced() {
         started.elapsed().as_secs()
     );
 }
+
+/// The scheduled wake-up reads a connected practice's Spruce channel through
+/// the real worker. A restart between wake-ups and overlapping wake-ups keep
+/// one row per message, and the stored cursor carries on from where it was.
+#[tokio::test]
+async fn the_spruce_wake_up_saves_each_message_once_across_a_restart() {
+    use local_product::runtime::channel::intake::{self, Api};
+    use local_product::runtime::channel::{ChannelKey, Direction};
+    use spruce::testing::{CREDENTIAL, Delivery, FakeSpruce};
+
+    let _guard = lock().lock().await;
+    let fake = FakeSpruce::spawn().await;
+    let key_hex = "5a".repeat(32);
+    let key = ChannelKey::from_hex(&key_hex).unwrap();
+    let Some(mut running) = running_with(
+        "spruce",
+        None,
+        None,
+        "[]",
+        support::FIXED_TEXT,
+        &[
+            ("PHYSICIAN_CHANNEL_KEY", key_hex.as_str()),
+            ("PHYSICIAN_SPRUCE_API_BASE", fake.base.as_str()),
+        ],
+    )
+    .await
+    else {
+        return;
+    };
+    let practice = "spruce-practice";
+    intake::connect(
+        &running.store,
+        &key,
+        &Api::At(fake.base.clone()),
+        practice,
+        "member-1",
+        CREDENTIAL,
+    )
+    .await
+    .expect("connect");
+    let wake = |host: String| async move {
+        support::exchange(&host, "POST", "/wake/spruce-intake", &[], Some(b""))
+            .await
+            .expect("wake-up")
+    };
+    let delivery = |id: &str, text: &str, at: &str| Delivery {
+        conversation: "conv-1".into(),
+        id: id.into(),
+        text: text.into(),
+        created_at: at.into(),
+        modified_at: at.into(),
+        activity_at: at.into(),
+        transcription_id: None,
+        transcription_text: None,
+        transcription_status: None,
+        transcription_summary: None,
+    };
+    // The first wake-up sets the history boundary.
+    assert_eq!(wake(running.worker_host.clone()).await.0, 204);
+    fake.deliver(delivery("m2", "second", "2030-01-01T00:00:20Z"));
+    fake.deliver(delivery("m1", "first", "2030-01-01T00:00:10Z"));
+    fake.mark_outbound("m2");
+    let (a, b) = tokio::join!(
+        wake(running.worker_host.clone()),
+        wake(running.worker_host.clone())
+    );
+    assert_eq!((a.0, b.0), (204, 204));
+    let cursor = running.store.channel_cursor(practice).await.unwrap();
+    running.worker.restart();
+    support::wait_ready(
+        &mut running.worker,
+        running
+            .worker_host
+            .rsplit_once(':')
+            .unwrap()
+            .1
+            .parse()
+            .unwrap(),
+    )
+    .await;
+    fake.deliver(delivery("m3", "third", "2030-01-01T00:00:30Z"));
+    assert_eq!(wake(running.worker_host.clone()).await.0, 204);
+    assert_eq!(wake(running.worker_host.clone()).await.0, 204);
+
+    let saved = running
+        .store
+        .channel_messages(practice, "conv-1")
+        .await
+        .unwrap();
+    let texts: Vec<_> = saved
+        .iter()
+        .map(|version| format!("{:?}", version.body))
+        .collect();
+    assert_eq!(saved.len(), 3, "{texts:?}\n{}", running.worker.tail());
+    assert_eq!(saved[1].direction, Direction::Practice);
+    for item in ["m1", "m2", "m3"] {
+        assert_eq!(
+            running
+                .store
+                .channel_message(practice, item)
+                .await
+                .unwrap()
+                .len(),
+            1
+        );
+    }
+    let after = running.store.channel_cursor(practice).await.unwrap();
+    assert!(cursor.is_some() && after.is_some());
+    let status = running.store.channel_status(practice).await.unwrap();
+    assert!(status.last_read_at.is_some() && status.failure.is_none());
+    let log = running.worker.tail();
+    assert!(log.contains("spruce intake wake-up finished"), "{log}");
+    assert!(
+        !log.contains("second") && !log.contains("third"),
+        "content in logs"
+    );
+    // Free the stand-in's organization for other suites on this database.
+    running.store.disconnect_channel(practice).await.unwrap();
+}
