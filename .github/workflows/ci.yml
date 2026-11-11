@@ -156,8 +156,12 @@ jobs:
         with:
           persist-credentials: false
       - uses: cachix/install-nix-action@v31
-      - name: Flake checks (build, cargo test, clippy, rustfmt)
-        run: nix flake check ./crates/workspace-tools/sandbox -L
+      # Every check but the VM tests (agent-sandbox, coda-firecracker).
+      - name: Flake checks (build, cargo test, clippy, rustfmt, coda-carry)
+        run: |
+          nix build -L --no-link \
+            ./crates/workspace-tools/sandbox#checks.x86_64-linux.{package,test,clippy,fmt,coda-carry} \
+            ./crates/workspace-tools/sandbox#nixosConfigurations.coda-ci-guest.config.system.build.toplevel
 
   ci:
     needs: [scope, lightweight]

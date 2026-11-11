@@ -1,6 +1,6 @@
-# Cyrene's sandbox, as configured by the nixos repository today. The NixOS
-# module will write this file to /etc/coda-sandbox/config.toml; until then pass
-# `--config crates/workspace-tools/sandbox/config/cyrene.toml`.
+# Cyrene's sandbox: the file services.coda-sandbox (nix/default.nix) writes to
+# /etc/coda-sandbox/config.toml with Cyrene's values. The crate's tests parse
+# it; on a host without the module, pass `--config crates/workspace-tools/sandbox/config/cyrene.toml`.
 #
 # Every path names the same directory on the host and inside the container.
 

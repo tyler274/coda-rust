@@ -6,9 +6,14 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     crane.url = "github:ipetkov/crane";
+    # The CI's Firecracker guest.
+    microvm = {
+      url = "github:microvm-nix/microvm.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, crane }:
+  outputs = { self, nixpkgs, crane, microvm }:
     let
       inherit (nixpkgs) lib;
       systems = [ "x86_64-linux" "aarch64-linux" ];
@@ -88,15 +93,47 @@
             fmt = craneLib.cargoFmt (common // { cargoExtraArgs = "-p coda-sandbox"; });
           };
         };
+
+      sandboxModule = import ./nix {
+        packages = self.packages;
+        microvmModule = microvm.nixosModules.microvm;
+      };
+
+      # The VM tests need KVM (coda-firecracker nested KVM), so hosted CI
+      # skips them; run them on the sandbox host.
+      vmChecks = pkgs: {
+        agent-sandbox = pkgs.testers.runNixOSTest (import ./nix/tests/agent-sandbox.nix { inherit sandboxModule; });
+        coda-firecracker = pkgs.testers.runNixOSTest (import ./nix/tests/coda-firecracker.nix { inherit sandboxModule; });
+      };
+
+      carryCheck = pkgs:
+        let carry = pkgs.callPackage ./nix/carry-package.nix { };
+        in pkgs.runCommand "coda-carry-test" { nativeBuildInputs = [ pkgs.git ]; } ''
+          bash ${./nix/tests/coda-carry.sh} ${carry}/bin/coda-carry
+          touch $out
+        '';
     in
     {
       packages = forEachSystem (pkgs:
         let coda-sandbox = (build pkgs).package;
         in { inherit coda-sandbox; default = coda-sandbox; });
 
+      nixosModules.default = sandboxModule;
+
       checks = forEachSystem (pkgs: (build pkgs).checks // {
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.coda-sandbox;
-      });
+        coda-carry = carryCheck pkgs;
+      } // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system == "x86_64-linux") (vmChecks pkgs));
+
+      # The CI guest on its own, for building or inspecting it:
+      #   nix build ./crates/workspace-tools/sandbox#nixosConfigurations.coda-ci-guest.config.microvm.declaredRunner
+      nixosConfigurations.coda-ci-guest = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          microvm.nixosModules.microvm
+          ./nix/ci-guest.nix
+        ];
+      };
 
       devShells = forEachSystem (pkgs: {
         default = pkgs.mkShell {
