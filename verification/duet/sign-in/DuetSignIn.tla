@@ -65,7 +65,7 @@ Saving == "Signing out: sending unconfirmed entries"
 Warning == "Signing out removes what Duet hasn't confirmed"
 \* A sign-in screen.
 SignInScreens == {Email, CheckEmail, Signing, LinkDead, Unreached, Removed}
-\* Your account's content: the conversation, and signing out's screens over it.
+\* Your account's content: the You and Shared tabs, and signing out's screens over it.
 Content == {Conversation, Saving, Warning}
 
 \* What the phone waits on.
@@ -106,7 +106,7 @@ Init ==
               holds |-> NoSession,     \* the session it keeps across restarts
               whose |-> Nobody,        \* whose account it shows
               heard |-> FALSE,         \* it has heard Duet recorded that account's Terms
-              draft |-> Nobody,       \* whose unsent message draft it keeps
+              draft |-> Nobody,       \* whose unsent draft it keeps
               entries |-> Nobody,      \* whose notes or medications Duet hasn't confirmed
               asks |-> NoAsk,          \* a check or Terms acceptance in flight
               sync |-> NoSync,         \* a sign-out's send of the entries in flight
@@ -118,7 +118,7 @@ Init ==
   /\ event = "start"
 
 Running == phone.screen # Closed
-\* Unconfirmed: a message draft you haven't sent, or notes or medications Duet hasn't confirmed.
+\* Unconfirmed: a draft you haven't sent, or notes or medications Duet hasn't confirmed.
 Unconfirmed(r) == r.draft # Nobody \/ r.entries # Nobody
 
 (* What `removed` records, whatever the step: a draft or entries leave    *)
@@ -163,7 +163,7 @@ OpenDuet ==
 (* The person closes Duet, or the phone ends it. What it waited on goes;   *)
 (* the session, where it was, the draft and entries stay. A sign-out not   *)
 (* yet finished, sending entries or warning, is abandoned, so Duet reopens *)
-(* in the conversation.                                                    *)
+(* where you were.                                                         *)
 CloseDuet ==
   /\ Running
   /\ phone' = [phone EXCEPT !.screen = Closed, !.asks = NoAsk, !.sync = NoSync, !.signIn = NoLink,
@@ -304,7 +304,7 @@ TermsUnheard ==
   /\ UNCHANGED session
   /\ Did("Duet records the Terms, but the answer is lost")
 
-\* The person starts a message and leaves it unsent.
+\* The person starts a draft and leaves it unsent.
 WriteDraft ==
   /\ phone.screen = Conversation /\ phone.draft = Nobody
   /\ phone' = [phone EXCEPT !.draft = phone.whose]

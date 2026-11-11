@@ -1,5 +1,4 @@
 use duet_api::{
-    conversation_routes::ModelProvider,
     database::AccountDatabase,
     durable::{DurableState, router},
     evidence::EvidenceStore,
@@ -72,12 +71,6 @@ async fn main() {
         .expect("base64url key")
         .try_into()
         .expect("256-bit key");
-    let conversation = duet_api::conversation_routes::ConversationState {
-        durable: state.clone(),
-        store: duet_api::conversation::ConversationStore::new(accepted_database.clone()),
-        model: env::var("DUET_MODEL").unwrap_or_else(|_| "gpt-5".into()),
-        provider: model_provider(),
-    };
     let producer_router = if let Ok(url) = env::var("DUET_HEALTH_CONTEXT_DATABASE_URL") {
         assert!(
             env::var("DUET_ACCEPTED_WORK_DATABASE_URL").is_ok(),
@@ -88,12 +81,6 @@ async fn main() {
             context: duet_api::health_context::HealthContextProducer::connect(&url)
                 .await
                 .expect("canonical context producer boundary"),
-            conversation: conversation.clone(),
-            today: duet_api::today::TodayStore::connect_producer(
-                &env::var("DUET_ACCEPTED_WORK_DATABASE_URL").expect("accepted work producer URL"),
-            )
-            .await
-            .expect("Today producer boundary"),
         })
     } else {
         axum::Router::new()
@@ -109,9 +96,6 @@ async fn main() {
         )
         .expect("publication configuration"),
     };
-    tokio::spawn(duet_api::conversation_routes::recover_pending(
-        conversation.clone(),
-    ));
     tokio::spawn(duet_api::background::recover_privacy(state.privacy.clone()));
     let front_door = match env::var("FRONT_DOOR_DATABASE_URL") {
         Ok(front_url) => Some(Arc::new(
@@ -124,7 +108,6 @@ async fn main() {
     let mut app = router(state.clone())
         .merge(duet_api::evidence_routes::router(state))
         .merge(duet_api::doctor_routes::router(doctor))
-        .merge(duet_api::conversation_routes::router(conversation))
         .merge(producer_router)
         .route("/health", axum::routing::get(duet_api::hosting::live))
         .route(
@@ -155,28 +138,6 @@ async fn main() {
         .with_graceful_shutdown(shutdown())
         .await
         .expect("serve");
-}
-
-fn model_provider() -> Option<ModelProvider> {
-    let allowed = env::var("CODA_ALLOW_MODEL_CALLS").as_deref() == Ok("1");
-    if let Ok(text) = env::var("DUET_LOCAL_MODEL_REPLY") {
-        assert!(
-            !allowed,
-            "DUET_LOCAL_MODEL_REPLY and CODA_ALLOW_MODEL_CALLS are exclusive"
-        );
-        assert!(!text.is_empty(), "DUET_LOCAL_MODEL_REPLY must not be empty");
-        let delay = env::var("DUET_LOCAL_MODEL_DELAY_MS")
-            .map(|ms| ms.parse().expect("DUET_LOCAL_MODEL_DELAY_MS milliseconds"))
-            .unwrap_or(0);
-        return Some(ModelProvider::Fixed {
-            text,
-            delay: std::time::Duration::from_millis(delay),
-        });
-    }
-    allowed.then(|| ModelProvider::Responses {
-        endpoint: "https://api.openai.com/v1/responses".into(),
-        key: env::var("OPENAI_API_KEY").expect("authorized provider key"),
-    })
 }
 
 async fn shutdown() {

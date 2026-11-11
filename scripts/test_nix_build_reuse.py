@@ -62,7 +62,7 @@ class BuildReuse(unittest.TestCase):
                 self.assertNotEqual(baseline[name], source_edit[name], name)
 
             # Non-Rust inputs must invalidate the real builds, not dependency artifacts.
-            append("crates/duet-api/agent/instructions/identity.md", "\nReuse proof.\n")
+            append("crates/duet-app/assets/duet.css", "\n/* Reuse proof. */\n")
             append("crates/physician-app/index.html", "\n<!-- Reuse proof. -->\n")
             assets_edit = evaluate()
             for name in DEPS:

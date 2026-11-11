@@ -45,8 +45,8 @@ fn correlated_safe_logs_respect_explicit_current_and_absent_parents() {
             error = "SECRET-PROVIDER-ERROR", gen_ai.input.messages = "SECRET-PROMPT",
             "SECRET-MESSAGE");
         tracing::warn!(
-            event = "duet.recovery.failed",
-            step = "launch",
+            event = "duet.privacy_recovery.failed",
+            step = "recover",
             error_class = "database",
             "SECRET-DUET"
         );
@@ -263,7 +263,7 @@ fn recovery_failures_keep_named_safe_classes_and_trace_identity() {
 }
 
 #[test]
-fn conversation_failures_keep_safe_steps_and_trace_identity() {
+fn privacy_recovery_failures_keep_safe_steps_and_trace_identity() {
     let exporter = InMemoryLogExporter::default();
     let provider = SdkLoggerProvider::builder()
         .with_simple_exporter(exporter.clone())
@@ -273,14 +273,14 @@ fn conversation_failures_keep_safe_steps_and_trace_identity() {
         .with(tracing_opentelemetry::layer().with_tracer(traces.tracer("test")))
         .with(SafeLogs::new(&provider, "duet-api"));
     let expected = tracing::subscriber::with_default(subscriber, || {
-        let span = tracing::info_span!("duet.conversation.execute");
+        let span = tracing::info_span!("duet.privacy_recovery.sweep");
         let expected = span.context().span().span_context().clone();
         let _entered = span.enter();
-        for step in ["execute", "steered", "claim", "confirm"] {
+        for step in ["pending", "recover"] {
             tracing::error!(
-                event = "duet.conversation.failed",
+                event = "duet.privacy_recovery.failed",
                 step,
-                error_class = "execution",
+                error_class = "database",
                 error = "SECRET-PROVIDER",
                 "SECRET-CONTENT"
             );
@@ -288,8 +288,8 @@ fn conversation_failures_keep_safe_steps_and_trace_identity() {
         expected
     });
     let logs = exporter.get_emitted_logs().unwrap();
-    assert_eq!(logs.len(), 4);
-    for (log, step) in logs.iter().zip(["execute", "steered", "claim", "confirm"]) {
+    assert_eq!(logs.len(), 2);
+    for (log, step) in logs.iter().zip(["pending", "recover"]) {
         assert_eq!(
             log.record.trace_context().unwrap().trace_id,
             expected.trace_id()
@@ -299,9 +299,9 @@ fn conversation_failures_keep_safe_steps_and_trace_identity() {
             expected.span_id()
         );
         for (key, value) in [
-            ("event", "duet.conversation.failed"),
+            ("event", "duet.privacy_recovery.failed"),
             ("step", step),
-            ("error_class", "execution"),
+            ("error_class", "database"),
         ] {
             assert!(
                 log.record
@@ -432,7 +432,7 @@ fn stalled_failed_export_drops_overflow_without_blocking_emitters() {
     let emitter = std::thread::spawn(move || {
         tracing::dispatcher::with_default(&dispatch, || {
             for _ in 0..10_000 {
-                tracing::error!(event = "duet.recovery.failed", "outage");
+                tracing::error!(event = "duet.privacy_recovery.failed", "outage");
             }
         });
         done_tx.send(()).unwrap();

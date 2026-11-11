@@ -1,4 +1,4 @@
-//! Fresh-install HTTP producer -> deterministic executor -> source reopening.
+//! Fresh-install HTTP health-context producer, account isolation and restriction.
 //! All product rows originate through authenticated product APIs; SQL only
 //! provisions isolated roles/schema and inspects durability/authority proofs.
 use async_trait::async_trait;
@@ -6,7 +6,6 @@ use axum::{Router, body::Body, http::Request};
 use chrono::{Duration, Utc};
 use duet_api::{
     ApiError,
-    conversation_routes::{ConversationState, ModelProvider},
     database::{AccountDatabase, migrate},
     durable::DurableState,
     evidence::EvidenceStore,
@@ -14,9 +13,6 @@ use duet_api::{
     privacy::{FileJournal, PrivacyStore},
     producer_database::{ProducerKind, grant},
     producer_routes::ProducerState,
-};
-use harness::execution::{
-    Call, Cancellation, Limits, Provider, Request as ModelRequest, Response, StreamEvent,
 };
 use serde_json::{Value, json};
 use sqlx::AssertSqlSafe;
@@ -69,57 +65,8 @@ async fn ok(app: &Router, method: &str, path: &str, who: &str, body: Value) -> V
     );
     value
 }
-struct Script {
-    batches: std::collections::VecDeque<Vec<Call>>,
-    text: String,
-}
-impl Provider for Script {
-    async fn exchange(
-        &mut self,
-        _: &ModelRequest,
-        _: &Cancellation,
-        _: &mut (dyn FnMut(StreamEvent) -> Result<(), String> + Send),
-    ) -> Result<Response, String> {
-        Ok(Response {
-            text: if self.batches.is_empty() {
-                self.text.clone()
-            } else {
-                String::new()
-            },
-            calls: self.batches.pop_front().unwrap_or_default(),
-            usage: Default::default(),
-            provenance: json!({"mode":"deterministic-local"}),
-        })
-    }
-}
-fn call(id: &str, name: &str, args: Value) -> Call {
-    Call {
-        id: id.into(),
-        name: name.into(),
-        arguments: args,
-    }
-}
-async fn execute(
-    store: &duet_api::conversation::ConversationStore,
-    c: &duet_api::identity::AccountContext,
-    id: Uuid,
-    batches: Vec<Vec<Call>>,
-) {
-    let mut owner = store.claim(c, id).await.unwrap();
-    owner
-        .execute(
-            &mut Script {
-                batches: batches.into(),
-                text: "Completed controlled accepted work".into(),
-            },
-            Limits::default(),
-            &Cancellation::default(),
-        )
-        .await
-        .unwrap();
-}
 #[tokio::test]
-async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
+async fn fresh_http_health_context_isolates_accounts_and_restricts() {
     let url = std::env::var("DUET_TEST_DATABASE_URL")
         .expect("real disposable loopback PostgreSQL required");
     let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
@@ -172,46 +119,15 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
             Arc::new(FileJournal::open(journal_path.clone()).await.unwrap()),
         ),
     };
-    let store = duet_api::conversation::ConversationStore::new(write_db.clone());
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
-    let model=Router::new().route("/responses",axum::routing::post(|axum::Json(body):axum::Json<Value>|async move {
-        let input=body["input"].as_array().unwrap();
-        let inventory=input.iter().filter_map(|v|v["content"].as_str()).find(|s|s.starts_with("Assigned Today slots")).unwrap();
-        let inventory:Value=serde_json::from_str(&inventory[inventory.find('{').unwrap()..]).unwrap();
-        let slot=&inventory["slots"][0];
-        let output=if !input.iter().any(|v|v["call_id"]=="api-read") {
-            json!([{"type":"function_call","call_id":"api-read","name":"read_assessment_fact","arguments":json!({"cycle_id":slot["cycle_id"],"fact_id":slot["facts"][0]["id"]}).to_string()}])
-        } else if !input.iter().any(|v|v["call_id"]=="api-publish") {
-            json!([{"type":"function_call","call_id":"api-publish","name":"stage_today","arguments":json!({"cycle_id":slot["cycle_id"],"outcome":"observations","insights":[{"title":"Recorded steps","detail":"Your source recorded 7654 steps yesterday.","read_ids":["api-read"]}]}).to_string()}])
-        } else {json!([{"type":"message","content":[{"type":"output_text","text":"Assessment complete"}]}])};
-        let event=json!({"type":"response.completed","response":{"status":"completed","output":output,"usage":{"input_tokens":3,"output_tokens":2}}});
-        ([("content-type","text/event-stream")],format!("data: {event}\n\n"))
-    }));
-    let model_task = tokio::spawn(async move { axum::serve(listener, model).await.unwrap() });
-    let conversation = ConversationState {
-        durable: durable.clone(),
-        store: store.clone(),
-        model: "local".into(),
-        provider: Some(ModelProvider::Responses {
-            endpoint,
-            key: "synthetic-local-only".into(),
-        }),
-    };
     let producer = duet_api::health_context::HealthContextProducer::connect(&context_url)
         .await
         .unwrap();
-    let today = duet_api::today::TodayStore::connect_producer(&executor_url)
-        .await
-        .unwrap();
-    let app = duet_api::durable::router(durable.clone())
-        .merge(duet_api::producer_routes::router(ProducerState {
+    let app = duet_api::durable::router(durable.clone()).merge(duet_api::producer_routes::router(
+        ProducerState {
             durable: durable.clone(),
             context: producer.clone(),
-            conversation: conversation.clone(),
-            today: today.clone(),
-        }))
-        .merge(duet_api::conversation_routes::router(conversation));
+        },
+    ));
     for who in ["a", "b"] {
         ok(&app, "PUT", "/api/auth/account", who, json!({})).await;
         ok(
@@ -242,7 +158,6 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
         )
         .await
         .unwrap();
-    let b = durable.identity.authenticate("b", false).await.unwrap();
     assert!(
         ok(&app, "GET", "/api/health-context", "a", json!(null))
             .await
@@ -276,306 +191,7 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
         .unwrap()
         .clone();
     assert_eq!(fact["value"], 7654.0);
-    let slot:duet_api::today::SlotRequest=serde_json::from_value(json!({"kind":"daily","window_start":start,"window_end":start+Duration::days(1),"timezone":"UTC","first_weekday":7,"snapshot_id":context["snapshot"]["id"]})).unwrap();
-    let accepted = ok(&app, "POST", "/api/insight-cycles", "a", json!(slot)).await;
-    let run: Uuid = serde_json::from_value(accepted["run_id"].clone()).unwrap();
-    let mut tx = write_db.begin(a.account_id).await.unwrap();
-    let assignment: Value =
-        sqlx::query_scalar("select today_assignment from duet_commands where user_id=$1 and id=$2")
-            .bind(a.account_id)
-            .bind(run)
-            .fetch_one(&mut *tx)
-            .await
-            .unwrap();
-    tx.rollback().await.unwrap();
-    let cycle = assignment["slots"][0]["cycle_id"].clone();
-    let ready = tokio::time::timeout(std::time::Duration::from_secs(10), async {
-        loop {
-            let status = ok(&app, "POST", "/api/insight-cycles/status", "a", json!(slot)).await;
-            if status["state"] == "ready" {
-                break status;
-            }
-            assert_ne!(status["state"], "failed", "assessment failed: {status}");
-            tokio::time::sleep(std::time::Duration::from_millis(20)).await;
-        }
-    })
-    .await
-    .expect("local HTTP assessment completed");
-    assert_eq!(ready["state"], "ready");
-    assert!(
-        store.phone_page(&a, true).await.unwrap()["messages"]
-            .as_array()
-            .unwrap()
-            .is_empty()
-    );
-    let insight = ready["cycle"]["insights"][0]["id"].clone();
-    let selection = json!({"kind":"published_insight","cycle_id":cycle,"insight_id":insight});
-    let selected = duet_api::conversation::Submission {
-        timezone: "UTC".into(),
-        selected_context: Some(serde_json::from_value(selection.clone()).unwrap()),
-        reply_to_message_id: None,
-    };
-    assert!(
-        store
-            .phone_accept_submission(&b, Uuid::new_v4(), "Foreign", "local", &selected)
-            .await
-            .is_err()
-    );
-    let command = Uuid::new_v4();
-    store
-        .phone_accept_submission(&a, command, "Explain this observation", "local", &selected)
-        .await
-        .unwrap();
-    execute(
-        &store,
-        &a,
-        command,
-        vec![
-            vec![call("selected", "read_selected_source", json!({}))],
-            vec![call(
-                "cite",
-                "cite_health_sources",
-                json!({"read_ids":["selected"]}),
-            )],
-        ],
-    )
-    .await;
-    let assistant = Uuid::from_u128(command.as_u128() ^ (1u128 << 127));
-    let reopened = store
-        .message_source(&a, assistant, "selected")
-        .await
-        .unwrap();
-    assert!(reopened.to_string().contains("7654"));
-    assert!(
-        store
-            .message_source(&b, assistant, "selected")
-            .await
-            .is_err()
-    );
-    ok(
-        &app,
-        "POST",
-        &format!(
-            "/api/insight-cycles/{}/insights/{}/correction",
-            cycle.as_str().unwrap(),
-            insight.as_str().unwrap()
-        ),
-        "a",
-        json!({}),
-    )
-    .await;
-    assert!(
-        store
-            .phone_accept_submission(&a, Uuid::new_v4(), "Corrected", "local", &selected)
-            .await
-            .is_err()
-    );
-    let measurement: duet_api::conversation::Submission = serde_json::from_value(json!({"timezone":"UTC","selected_context":{"kind":"measurement","source_boundary_id":context["snapshot"]["source_boundary_id"],"health_context_revision":context["revision"],"source":{"kind":"appleHealth","connection_id":"phone"},"measurement_id":"steps","period_start":fact["range_start"],"period_end":fact["range_end"],"fact":fact}})).unwrap();
-    assert!(matches!(
-        store
-            .phone_accept_submission(
-                &b,
-                Uuid::new_v4(),
-                "Foreign measurement",
-                "local",
-                &measurement
-            )
-            .await,
-        Err(ApiError::Conflict("selected_context_unavailable"))
-    ));
-    let mut altered = serde_json::to_value(&measurement).unwrap();
-    altered["selected_context"]["fact"]["value"] = json!(99_999);
-    let altered = serde_json::from_value(altered).unwrap();
-    assert!(matches!(
-        store
-            .phone_accept_submission(&a, Uuid::new_v4(), "Altered measurement", "local", &altered)
-            .await,
-        Err(ApiError::Conflict("selected_context_unavailable"))
-    ));
-    // The phone can omit optional nulls and express the same instant in local time.
-    let mut phone = serde_json::to_value(&measurement).unwrap();
-    let phone_fact = &mut phone["selected_context"]["fact"];
-    let range_start = chrono::DateTime::parse_from_rfc3339(fact["range_start"].as_str().unwrap())
-        .unwrap()
-        .with_timezone(&chrono::FixedOffset::west_opt(5 * 3600).unwrap());
-    phone_fact["range_start"] = json!(range_start);
-    assert_eq!(
-        phone_fact
-            .as_object_mut()
-            .unwrap()
-            .remove("comparison_value"),
-        Some(Value::Null)
-    );
-    let measurement = serde_json::from_value(phone).unwrap();
-    let measurement_command = Uuid::new_v4();
-    store
-        .phone_accept_submission(
-            &a,
-            measurement_command,
-            "Explain my measurement",
-            "local",
-            &measurement,
-        )
-        .await
-        .unwrap();
-    execute(
-        &store,
-        &a,
-        measurement_command,
-        vec![
-            vec![call("measurement-read", "read_selected_source", json!({}))],
-            vec![call(
-                "measurement-cite",
-                "cite_health_sources",
-                json!({"read_ids":["measurement-read"]}),
-            )],
-        ],
-    )
-    .await;
-    let measurement_assistant = Uuid::from_u128(measurement_command.as_u128() ^ (1u128 << 127));
-    let reopened = store
-        .message_source(&a, measurement_assistant, "measurement-read")
-        .await
-        .unwrap();
-    assert_eq!(
-        serde_json::from_str::<Value>(reopened["text"].as_str().unwrap()).unwrap(),
-        fact
-    );
-    // Actual accepted conversation tool creates follow-through; API cannot import it.
-    let command = Uuid::new_v4();
-    let follow = Uuid::new_v4();
-    store
-        .phone_accept(
-            &a,
-            command,
-            "Please remind me tomorrow to bring my questions.",
-            "local",
-        )
-        .await
-        .unwrap();
-    execute(&store,&a,command,vec![vec![call("create","create_follow_up",json!({"id":follow,"operation":"reminder","accepted_instruction":"Bring my questions","schedule":{"kind":"once","timezone":"UTC","local_date":(start+Duration::days(1)).date_naive(),"local_time":"12:00:00"},"source_message_ids":[command],"display_title":"Bring questions"}))]]).await;
-    let followup = ok(
-        &app,
-        "GET",
-        &format!("/api/follow-ups/{follow}"),
-        "a",
-        json!(null),
-    )
-    .await;
-    assert_eq!(followup["state"], "active");
-    assert_eq!(
-        http(
-            &app,
-            "GET",
-            &format!("/api/follow-ups/{follow}"),
-            "b",
-            json!(null)
-        )
-        .await
-        .0,
-        404
-    );
-    let selected_follow = duet_api::conversation::Submission {
-        timezone: "UTC".into(),
-        selected_context: Some(
-            serde_json::from_value(
-                json!({"kind":"follow_up","id":follow,"revision":followup["revision"]}),
-            )
-            .unwrap(),
-        ),
-        reply_to_message_id: None,
-    };
-    let follow_command = Uuid::new_v4();
-    let accepted_follow = store
-        .phone_accept_submission(
-            &a,
-            follow_command,
-            "What did I ask for?",
-            "local",
-            &selected_follow,
-        )
-        .await
-        .unwrap();
-    assert!(
-        accepted_follow["message"]["sources"]
-            .as_array()
-            .unwrap()
-            .is_empty(),
-        "accepted work is not evidence"
-    );
-    execute(&store, &a, follow_command, vec![]).await;
-    let event = Uuid::new_v4();
-    let path = format!("/api/follow-ups/{follow}/cancel");
-    let cancel = json!({"event_id":event,"expected_revision":followup["revision"]});
-    let receipt = ok(&app, "POST", &path, "a", cancel.clone()).await;
-    assert_eq!(ok(&app, "POST", &path, "a", cancel).await, receipt);
-    assert_eq!(
-        ok(
-            &app,
-            "GET",
-            &format!("/api/follow-ups/{follow}"),
-            "a",
-            json!(null)
-        )
-        .await["state"],
-        "cancelled"
-    );
-    assert!(
-        store
-            .phone_accept_submission(
-                &a,
-                Uuid::new_v4(),
-                "Cancelled",
-                "local",
-                &duet_api::conversation::Submission {
-                    timezone: "UTC".into(),
-                    selected_context: Some(
-                        serde_json::from_value(
-                            json!({"kind":"follow_up","id":follow,"revision":followup["revision"]})
-                        )
-                        .unwrap()
-                    ),
-                    reply_to_message_id: None
-                }
-            )
-            .await
-            .is_err()
-    );
-    // A process-independent owner reads the same published source and receipt.
-    let restored = duet_api::conversation::ConversationStore::new(
-        AccountDatabase::connect(&executor_url).await.unwrap(),
-    );
-    assert!(
-        restored
-            .message_source(&a, assistant, "selected")
-            .await
-            .is_ok()
-    );
     ok(&app,"POST","/api/auth/privacy-restrictions","a",json!({"event_id":Uuid::new_v4(),"operation":"device_withdraw","scope_id":a.account_id,"scope_version":0})).await;
-    assert!(
-        restored
-            .message_source(&a, assistant, "selected")
-            .await
-            .is_err()
-    );
-    assert!(
-        restored
-            .message_source(&a, measurement_assistant, "measurement-read")
-            .await
-            .is_err()
-    );
-    assert!(matches!(
-        store
-            .phone_accept_submission(
-                &a,
-                Uuid::new_v4(),
-                "Stale measurement",
-                "local",
-                &measurement
-            )
-            .await,
-        Err(ApiError::Conflict("selected_context_unavailable"))
-    ));
     assert!(producer.read(&a).await.is_err());
     let refreshed = ok(&app, "POST", "/api/health-context/refresh", "a", json!({})).await;
     assert!(
@@ -593,11 +209,7 @@ async fn fresh_http_producers_execute_admit_reopen_and_restrict() {
             .is_err()
     );
     tx.rollback().await.unwrap();
-    model_task.abort();
     drop(app);
-    drop(restored);
-    drop(store);
-    drop(today);
     drop(producer);
     drop(durable);
     drop(db);

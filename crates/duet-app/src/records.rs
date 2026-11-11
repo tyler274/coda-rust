@@ -1,60 +1,14 @@
 //! You → "All records": the complete exact inventory, paged by server cursor and
 //! never truncated. Each row is a person-facing record: title, literal value and
 //! unit, date or interval with its zone, a plain source, and a source-declared
-//! status. Selecting a record sends that exact revision with the next message.
-//! The page cursor and health-records generation stay on this client; they are
-//! not part of the send.
+//! status.
 use dioxus::prelude::*;
-use duet_wire::models::{
-    EvidenceBrowseRecord, EvidenceRevisionView, evidence_browse_record::Status as BrowseStatus,
-    evidence_revision_view::Status as RevisionStatus,
-};
+use duet_wire::models::{EvidenceBrowseRecord, evidence_browse_record::Status as BrowseStatus};
 
 /// Shown when a record has no declared date. Never replaced by an import time.
 pub const DATE_UNKNOWN: &str = "Date unknown";
-/// Shown on a source-removed record. It stays listed and citations still reopen it.
+/// Shown on a source-removed record. It stays listed.
 pub const REMOVED_BY_SOURCE: &str = "Removed by source";
-/// Shown when a citation names a revision that has since been corrected.
-pub const NEWER_VERSION: &str = "This is the cited version. A newer version of this record exists.";
-/// Shown when a citation names a record its source has since removed.
-pub const CITED_REMOVED: &str =
-    "This is the cited version. The source has since removed this record.";
-/// Shown when privacy erasure removed a cited record.
-pub const NO_LONGER_AVAILABLE: &str = "This record is no longer available.";
-
-/// One exact record revision selected for chat.
-///
-/// `evidence_revision` and `health_records_generation` remember the browse page.
-/// The message sends only the record id and revision.
-#[derive(Clone, Debug, PartialEq)]
-pub struct RecordSelection {
-    /// Canonical record identity.
-    pub record_id: uuid::Uuid,
-    /// Exact immutable revision the person reviewed.
-    pub revision: i32,
-    /// Visible title of that revision.
-    pub title: String,
-    /// Account evidence cursor of the page the person reviewed.
-    pub evidence_revision: i64,
-    /// Health Records withdrawal generation of that page.
-    pub health_records_generation: i32,
-}
-
-impl RecordSelection {
-    /// Chip text for the composer. Names the record; the revision is sent, not shown.
-    pub fn chip(&self) -> String {
-        format!("Asking about {}", self.title)
-    }
-}
-
-/// Root-owned chat handoff shared by You and the conversation tab.
-#[derive(Clone, Copy)]
-pub struct ChatHandoff {
-    /// The record awaiting the next send, if any.
-    pub selected: Signal<Option<RecordSelection>>,
-    /// Root tab selector; selection switches to the conversation tab.
-    pub tab: Signal<usize>,
-}
 
 /// The lines shown under a record's title, in display order. Pure for unit testing.
 pub fn record_lines(record: &EvidenceBrowseRecord) -> Vec<String> {
@@ -68,47 +22,6 @@ pub fn record_lines(record: &EvidenceBrowseRecord) -> Vec<String> {
         source: source_from_record(record),
         source_status: record.source_status.clone(),
     })
-}
-
-/// The notice above a reopened cited revision, if any.
-pub fn revision_notice(view: &EvidenceRevisionView) -> Option<&'static str> {
-    match view.status {
-        RevisionStatus::Current => None,
-        RevisionStatus::Superseded => Some(NEWER_VERSION),
-        RevisionStatus::RemovedBySource => Some(CITED_REMOVED),
-        RevisionStatus::Unavailable => Some(NO_LONGER_AVAILABLE),
-    }
-}
-
-/// Text body for a reopened cited revision: the status notice, then the same
-/// person-facing lines as You. The exact payload stays on the revision for its
-/// owner and is not rendered here.
-pub fn revision_text(view: &EvidenceRevisionView) -> String {
-    if view.status == RevisionStatus::Unavailable {
-        return NO_LONGER_AVAILABLE.to_owned();
-    }
-    let Some(payload) = view.payload.clone().flatten() else {
-        return revision_notice(view)
-            .unwrap_or(NO_LONGER_AVAILABLE)
-            .to_owned();
-    };
-    let (date, date_end) = declared_span(&payload);
-    let (value, unit) = value_from_map(&payload);
-    let lines = person_lines(Shown {
-        removed: false,
-        value,
-        unit,
-        time_zone: zone_from_map(&payload, date.as_deref()),
-        date,
-        date_end,
-        source: source_from_map(&payload),
-        source_status: source_status_from_map(&payload),
-    });
-    let body = lines.join("\n");
-    match revision_notice(view) {
-        Some(notice) => format!("{notice}\n\n{body}"),
-        None => body,
-    }
 }
 
 struct Shown {
@@ -203,113 +116,7 @@ fn source_from_record(record: &EvidenceBrowseRecord) -> Option<String> {
     plain_kind(&record.provenance.source_kind).map(str::to_owned)
 }
 
-fn source_from_map(payload: &Payload) -> Option<String> {
-    if let Some(label) = text_at(payload, &["source_label"]) {
-        return Some(label.to_owned());
-    }
-    if let Some(name) = pointer_str(payload, &["source", "source_name"]) {
-        return Some(name.to_owned());
-    }
-    plain_kind(pointer_str(payload, &["source", "kind"]).unwrap_or("")).map(str::to_owned)
-}
-
-fn source_status_from_map(payload: &Payload) -> Option<String> {
-    text_at(payload, &["status"])
-        .or_else(|| pointer_str(payload, &["clinical_record", "record_status"]))
-        .map(str::to_owned)
-}
-
 type Payload = std::collections::HashMap<String, serde_json::Value>;
-
-/// Start and end using the browse date rule: projected role, then common fields,
-/// then an RFC 3339 `measured_interval`.
-fn declared_span(payload: &Payload) -> (Option<String>, Option<String>) {
-    if let Some(role) = pointer_str(payload, &["source", "projected_date_role"])
-        && let Some(date) = payload
-            .get("source")
-            .and_then(|source| source.get("declared_dates"))
-            .and_then(|dates| dates.get(role))
-            .and_then(serde_json::Value::as_str)
-    {
-        return (Some(date.to_owned()), None);
-    }
-    for field in [
-        "measured_at",
-        "recorded_at",
-        "occurred_at",
-        "effective_at",
-        "date",
-    ] {
-        if let Some(date) = text_at(payload, &[field]) {
-            return (Some(date.to_owned()), None);
-        }
-    }
-    let Some(start) =
-        pointer_str(payload, &["measured_interval", "start"]).filter(|start| is_instant(start))
-    else {
-        return (None, None);
-    };
-    let end = pointer_str(payload, &["measured_interval", "end"])
-        .filter(|end| *end != start && is_instant(end));
-    (Some(start.to_owned()), end.map(str::to_owned))
-}
-
-fn is_instant(text: &str) -> bool {
-    text.parse::<chrono::DateTime<chrono::Utc>>().is_ok()
-}
-
-fn zone_from_map(payload: &Payload, date: Option<&str>) -> Option<String> {
-    if let Some(zone) = text_at(payload, &["time_zone"]) {
-        return Some(zone.to_owned());
-    }
-    if let Some(zone) = pointer_str(payload, &["source", "time_zone"]) {
-        return Some(zone.to_owned());
-    }
-    if let Some(zone) = text_at(payload, &["timezone"]) {
-        return Some(zone.to_owned());
-    }
-    let date = date?;
-    let parsed = chrono::DateTime::parse_from_rfc3339(date).ok()?;
-    if date.ends_with('Z') || date.ends_with('z') {
-        return Some("UTC".into());
-    }
-    Some(parsed.offset().to_string())
-}
-
-fn value_from_map(payload: &Payload) -> (Option<String>, Option<String>) {
-    match payload.get("value") {
-        Some(serde_json::Value::Object(value)) => {
-            let shown = value
-                .get("literal")
-                .or_else(|| value.get("value"))
-                .and_then(json_text);
-            let unit = value
-                .get("unit")
-                .and_then(serde_json::Value::as_str)
-                .map(str::to_owned);
-            (shown, unit)
-        }
-        Some(other) if !other.is_null() => (
-            json_text(other),
-            text_at(payload, &["unit"]).map(str::to_owned),
-        ),
-        _ => (text_at(payload, &["body"]).map(str::to_owned), None),
-    }
-}
-
-fn json_text(value: &serde_json::Value) -> Option<String> {
-    match value {
-        serde_json::Value::Null => None,
-        serde_json::Value::String(text) => Some(text.clone()),
-        serde_json::Value::Number(number) => Some(number.to_string()),
-        serde_json::Value::Bool(flag) => Some(flag.to_string()),
-        other => Some(other.to_string()),
-    }
-}
-
-fn text_at<'a>(payload: &'a Payload, path: &[&str]) -> Option<&'a str> {
-    pointer_str(payload, path).filter(|text| !text.trim().is_empty())
-}
 
 fn pointer_str<'a>(payload: &'a Payload, path: &[&str]) -> Option<&'a str> {
     let (first, rest) = path.split_first()?;
@@ -334,7 +141,6 @@ struct Loaded {
 /// server cursor until the inventory is exhausted; a changed snapshot restarts.
 #[component]
 pub fn RecordBrowser(base_url: String, bearer: String, reload: Signal<u32>) -> Element {
-    let handoff = try_use_context::<ChatHandoff>();
     let mut loaded = use_signal(|| None::<Loaded>);
     let mut failed = use_signal(|| false);
     let mut busy = use_signal(|| false);
@@ -429,32 +235,10 @@ pub fn RecordBrowser(base_url: String, bearer: String, reload: Signal<u32>) -> E
                             let id = record.address.canonical_record_id;
                             let lines = record_lines(&record);
                             let title = record.title.clone();
-                            let selection = RecordSelection {
-                                record_id: id,
-                                revision: record.address.revision,
-                                title: title.clone(),
-                                evidence_revision: state.evidence_revision,
-                                health_records_generation: state.generation,
-                            };
-                            let current = record.status == BrowseStatus::Current;
                             rsx! {
                                 article { class: "record-row", "data-record": "{id}",
                                     p { class: "card-text", "{title}" }
                                     for line in lines { p { class: "record-meta", "{line}" } }
-                                    if current && handoff.is_some() {
-                                        button {
-                                            class: "duet-retry",
-                                            r#type: "button",
-                                            aria_label: "Ask about {title}",
-                                            onclick: move |_| {
-                                                if let Some(mut handoff) = handoff {
-                                                    handoff.selected.set(Some(selection.clone()));
-                                                    handoff.tab.set(0);
-                                                }
-                                            },
-                                            "Ask about this"
-                                        }
-                                    }
                                 }
                             }
                         }
@@ -606,54 +390,5 @@ mod tests {
             || line.contains("vital:steps")
             || line.contains("phone")));
         hides_inspector(&lines);
-    }
-
-    #[test]
-    fn cited_revisions_name_their_status() {
-        let address =
-            CanonicalSourceAddress::new(uuid::Uuid::nil(), "id".into(), Entity::ClinicalNote, 1);
-        let mut view = EvidenceRevisionView::new(address, RevisionStatus::Superseded, false);
-        view.payload = Some(Some(
-            [("body".to_owned(), serde_json::json!("Original"))].into(),
-        ));
-        let text = revision_text(&view);
-        assert!(text.starts_with(NEWER_VERSION), "{text}");
-        assert!(text.contains("Original"), "{text}");
-        assert!(!text.contains('{'), "{text}");
-        view.status = RevisionStatus::RemovedBySource;
-        assert!(revision_text(&view).starts_with(CITED_REMOVED));
-        view.status = RevisionStatus::Unavailable;
-        view.payload = Some(None);
-        assert_eq!(revision_text(&view), NO_LONGER_AVAILABLE);
-        view.status = RevisionStatus::Current;
-        view.payload = Some(Some(Default::default()));
-        assert_eq!(revision_notice(&view), None);
-    }
-
-    #[test]
-    fn cited_acquisition_interval_keeps_the_range_without_json() {
-        let address = CanonicalSourceAddress::new(
-            uuid::Uuid::nil(),
-            "HKQuantitySample/steps-day".into(),
-            Entity::HealthEvidence,
-            1,
-        );
-        let mut view = EvidenceRevisionView::new(address, RevisionStatus::Current, true);
-        view.payload = Some(Some(
-            serde_json::from_value(acquisition_interval()).unwrap(),
-        ));
-        let text = revision_text(&view);
-        assert!(text.contains("7654 count"), "{text}");
-        assert!(
-            text.contains(
-                "2026-10-28T00:00:00-07:00 to 2026-10-29T00:00:00-07:00 (America/Los_Angeles)"
-            ),
-            "{text}"
-        );
-        assert!(text.contains("Source: Apple Watch"), "{text}");
-        assert!(text.contains("entered-in-error"), "{text}");
-        assert!(!text.contains("HKQuantitySample"), "{text}");
-        assert!(!text.contains("vital:steps"), "{text}");
-        assert!(!text.contains('{'), "{text}");
     }
 }

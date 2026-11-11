@@ -12,13 +12,13 @@ const screens = {
   "This link no longer works": "This link no longer works",
   "Duet couldn't be reached": "Duet couldn't be reached",
   Terms: "Terms",
-  Conversation: "Conversation",
+  Conversation: "Open",
 };
 
 export const state = (v) => {
   const p = v.phone;
   if (p.screen === "Duet closed") {
-    return p.holds === "No session" ? "Closed, signed out" : "Closed, reopens the conversation";
+    return p.holds === "No session" ? "Closed, signed out" : "Closed, reopens where you were";
   }
   const screen = screens[p.screen] ?? p.screen;
   if (p.holds !== "No session" && p.asks.startsWith("Checking")) return `${screen}, checking`;

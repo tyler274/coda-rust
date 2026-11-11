@@ -61,32 +61,26 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/assets/duet.css",
         kind: CssOverride,
-        count: 7,
-        reason: "Duet restyles `.card-title` and `.empty` everywhere, the shared `NavigationRow` on its thread rows and the title inside it, and the `.tabs` and `.action-row` spacing, until the shared components carry them.",
+        count: 4,
+        reason: "Duet restyles `.card-title` and `.empty` everywhere, and the `.tabs` and `.action-row` spacing, until the shared components carry them.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Input,
-        count: 10,
-        reason: "The corrected value, note, visit, question and medication fields, and the medication and insight notification checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
+        count: 8,
+        reason: "The corrected value, note, visit, question and medication fields, and the medication checkboxes, carry Duet's own labels and sit outside `TextField` and `Checkbox` until the Duet forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: Textarea,
-        count: 4,
-        reason: "The note, visit, cover note and You editor bodies, which become a multiline `TextField` when the Duet forms move.",
-    },
-    Entry {
-        file: "crates/duet-app/src/lib.rs",
-        kind: Button,
-        count: 1,
-        reason: "Clears the selected record, styled with `.duet-retry` until it moves to `Button`.",
+        count: 3,
+        reason: "The note, visit and cover note bodies, which become a multiline `TextField` when the Duet forms move.",
     },
     Entry {
         file: "crates/duet-app/src/lib.rs",
         kind: CardMarkup,
-        count: 15,
-        reason: "Today, You, thread and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
+        count: 8,
+        reason: "You, For my doctor and saved page preview cards put `card`, `card-title` and `card-text` on plain elements, with voice and number layouts that `Card` would have to hold before they move.",
     },
     Entry {
         file: "crates/duet-app/src/publication.rs",
@@ -103,8 +97,8 @@ const TABLE: &[Entry] = &[
     Entry {
         file: "crates/duet-app/src/records.rs",
         kind: Button,
-        count: 2,
-        reason: "Ask about a record and show more records, styled with `.duet-retry` until they move to `Button`.",
+        count: 1,
+        reason: "Show more records, styled with `.duet-retry` until it moves to `Button`.",
     },
     Entry {
         file: "crates/duet-app/src/records.rs",

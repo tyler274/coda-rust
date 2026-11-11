@@ -575,11 +575,6 @@ pub async fn revision_view_in_transaction(
     }))
 }
 
-/// `EvidenceRevisionView` for a retained citation whose record was privacy-erased.
-pub fn unavailable_view(address: &AddressedRecordRevision) -> Value {
-    serde_json::json!({"address": address, "status": "unavailable", "current": false, "payload": null})
-}
-
 async fn account_fences(
     tx: &mut Transaction<'_, Postgres>,
     account_id: Uuid,

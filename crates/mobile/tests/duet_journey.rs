@@ -6,9 +6,8 @@
 //! it does not qualify hosted login or live model generation.
 //!
 //! The client mode talks to `duet-stub` mounted in the same process under
-//! `/api`: the conversation tab shows the recorded thread, a send is accepted
-//! and the message lands on the page, and the Today and Shared tabs render
-//! their live data. The mode chooser walks both shells in the same browser.
+//! `/api`: the You and Shared tabs render their live data, and For my doctor
+//! saves through the stub. The mode chooser walks both shells in the same browser.
 
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, OnceLock};
@@ -19,8 +18,6 @@ mod devtools;
 
 use devtools::{Browser, DESKTOP, PHONE};
 
-const SEND_TEXT: &str = "How is my sleep this week?";
-
 #[path = "common/durable_doctor.rs"]
 mod durable_doctor;
 
@@ -30,9 +27,6 @@ mod session_refusal;
 // Durable-service D2 proof (no browser): isolated PostgreSQL + real owners + duet-client.
 #[path = "common/durable_d2.rs"]
 mod durable_d2;
-
-#[path = "common/account_switch.rs"]
-mod account_switch;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
@@ -56,10 +50,10 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     let mut browser = Browser::launch();
     browser.resize(PHONE);
 
-    // Client mode: the shell opens on the live stub, landing on Today.
-    let text = browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
+    // Client mode: the shell opens on the live stub, landing on You.
+    let text = browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
     assert!(
-        text.contains("Duet") && text.contains("Shared"),
+        text.contains("You") && text.contains("Shared"),
         "client mode did not show the Duet tabs:\n{text}"
     );
     assert!(
@@ -73,34 +67,15 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
             .evaluate("Object.keys(localStorage).filter(k => k !== 'coda-mode')"),
         serde_json::json!([])
     );
-    // The Duet tab renders the recorded thread through the live backend.
-    browser.click(r#"nav.tabs button:nth-of-type(1)"#);
-    let text = browser.wait_for("About seven hours.");
-    assert!(
-        text.contains("How did I sleep?"),
-        "the recorded thread did not render:\n{text}"
+    // For my doctor, in Shared, lays the saved page out with the letter layout.
+    browser.click(r#"nav.tabs button:nth-of-type(2)"#);
+    browser.wait_for("Open For my doctor");
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Open For my doctor"])),
+        true
     );
-
-    // The message's one Sources button opens its sources in a sheet; a source opens the
-    // retained note from the stub in a sheet over it, and closing that returns to the list.
-    browser.click("button.sources-button");
-    wait_for_selector(
-        &mut browser,
-        r#"dialog.dialog-sheet[open] button[aria-label="Open source Sleep note"]"#,
-    );
-    browser.click(r#"button[aria-label="Open source Sleep note"]"#);
-    let text = browser.wait_for("About seven hours, from the sleep note.");
-    assert!(
-        text.contains("Source: Sleep note") && !text.contains("\"body\""),
-        "the source sheet did not show the cited note:\n{text}"
-    );
-    browser.click(r#"dialog.dialog-sheet:last-of-type button[aria-label="Close"]"#);
-    wait_for_gone(&mut browser, "p.source-text");
-    browser.click(r#"dialog.dialog-sheet button[aria-label="Close"]"#);
-    wait_for_gone(&mut browser, "dialog.dialog-sheet");
-
-    // For my doctor lays the saved page out with the letter layout.
-    browser.click(r#"button[aria-label="Open For my doctor"]"#);
     browser.wait_for("Ask about sleep");
     browser.click(r#"button[aria-label="Edit page"]"#);
     browser.wait_for("Add a question");
@@ -125,27 +100,10 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
     assert_eq!(saved["page"]["date_of_birth"], "1990-04-02");
     assert_eq!(saved["page"]["questions"][0], "What changed this week?");
     browser.click(r#"button[aria-label="Close page"]"#);
-    browser.wait_for("About seven hours.");
-
-    // A send is accepted by the stub and the user line lands on the page.
-    browser.type_into(".composer-input", SEND_TEXT);
-    browser.click(".duet-send");
-    let text = browser.wait_for(SEND_TEXT);
-    assert!(
-        text.contains("How did I sleep?") && text.contains("About seven hours."),
-        "the accepted send did not join the thread:\n{text}"
-    );
-
-    // The Today tab reads the stub's live insights.
-    browser.click(r#"nav.tabs button[aria-current="false"]:nth-of-type(2)"#);
-    let text = browser.wait_for("Steady walks");
-    assert!(
-        text.contains("Walking has been steady this week."),
-        "the Today tab did not show the stub insights:\n{text}"
-    );
+    browser.wait_for("Open For my doctor");
 
     // You can correct one library row and delete another.
-    browser.click(r#"nav.tabs button:nth-of-type(3)"#);
+    browser.click(r#"nav.tabs button:nth-of-type(1)"#);
     browser.wait_for("Lisinopril");
     browser.click(r#"button[aria-label="Correct Lisinopril"]"#);
     browser.type_into(r#"input[aria-label="Corrected value"]"#, "Lisinopril 5 mg");
@@ -166,8 +124,7 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         "the corrected medication disappeared with the deleted lab:\n{text}"
     );
 
-    // Stub/browser D2 proof: You lists each record as a person would read it,
-    // and "Ask about this" hands that exact revision to the composer.
+    // Stub/browser D2 proof: You lists each record as a person would read it.
     browser.click("details.record-browser summary");
     let text = wait_until(&mut browser, |text| text.contains("Showing "));
     assert!(
@@ -178,21 +135,6 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
         !text.contains("Version 1") && !text.contains("Show original"),
         "the record browser still shows a technical inspector:\n{text}"
     );
-    wait_for_selector(
-        &mut browser,
-        r#"button[aria-label="Ask about Lisinopril 5 mg"]"#,
-    );
-    browser.click(r#"button[aria-label="Ask about Lisinopril 5 mg"]"#);
-    let text = wait_until(&mut browser, |text| {
-        text.contains("Asking about Lisinopril 5 mg") && !text.contains("(version 1)")
-    });
-    assert!(
-        text.contains("Asking about"),
-        "the selected record did not reach the composer:\n{text}"
-    );
-    browser.click(r#"button[aria-label="Clear selected record"]"#);
-    wait_until(&mut browser, |text| !text.contains("Asking about"));
-
     // The retired person-to-person endpoint stays absent. The Shared tab does not
     // expose physician consent controls.
     assert_eq!(
@@ -203,10 +145,10 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
             .status(),
         404
     );
-    browser.click(r#"nav.tabs button:nth-of-type(4)"#);
+    browser.click(r#"nav.tabs button:nth-of-type(2)"#);
     wait_for_selector(
         &mut browser,
-        r#"nav.tabs button:nth-of-type(4)[aria-current="page"]"#,
+        r#"nav.tabs button:nth-of-type(2)[aria-current="page"]"#,
     );
     let text = browser.wait_for("Shared");
     assert!(
@@ -221,9 +163,9 @@ async fn the_duet_journey_runs_on_a_live_stub_backend() {
 
     // The journey holds at the desktop viewport.
     browser.resize(DESKTOP);
-    let text = browser.wait_for("Duet");
+    let text = browser.wait_for("Shared");
     assert!(
-        text.contains("Today") && text.contains("You") && text.contains("Shared"),
+        text.contains("You") && text.contains("Shared"),
         "the desktop viewport lost the Duet tabs:\n{text}"
     );
 }
@@ -259,32 +201,102 @@ async fn the_mode_switch_walks_the_tabs_in_the_browser() {
         "switching back did not restore the chooser:\n{text}"
     );
 
-    // The client mode opens the Duet tabs on the live backend; the thread
-    // arrives after selecting the Duet tab.
+    // The client mode opens the Duet tabs on the live backend.
     browser.click("main.mode-chooser button:nth-of-type(2)");
-    let text = browser.wait_for("Today");
+    let text = browser.wait_for("Shared");
     assert!(
-        text.contains("Duet") && !text.contains("Find patient"),
+        text.contains("You") && !text.contains("Find patient"),
         "the client mode did not open the Duet shell:\n{text}"
-    );
-    browser.click(r#"nav.tabs button:nth-of-type(1)"#);
-    let text = browser.wait_for("About seven hours.");
-    assert!(
-        text.contains("How did I sleep?"),
-        "the client mode did not load the thread:\n{text}"
     );
 }
 
-fn wait_for_gone(browser: &mut Browser, selector: &str) {
-    let deadline = std::time::Instant::now() + Duration::from_secs(10);
-    while std::time::Instant::now() < deadline {
-        let found = browser.page().run("has", serde_json::json!([selector]));
-        if found.as_bool() == Some(false) {
-            return;
-        }
-        std::thread::sleep(Duration::from_millis(100));
-    }
-    panic!("{selector} stayed open");
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn shared_tries_a_failed_workspace_read_again() {
+    use axum::response::IntoResponse;
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use tower::ServiceExt;
+
+    let fail = Arc::new(AtomicBool::new(true));
+    let route_fail = fail.clone();
+    let stub = duet_stub::router(Arc::new(Mutex::new(
+        duet_stub::Store::open(
+            std::env::temp_dir().join(format!("shared-retry-{}.json", uuid::Uuid::new_v4())),
+        )
+        .unwrap(),
+    )));
+    let context = serde_json::json!({"account_id":uuid::Uuid::new_v4(),"incarnation":uuid::Uuid::new_v4(),"permission_revision":0,"authenticated_at":"2026-10-20T00:00:00Z"});
+    let api = axum::Router::new()
+        .route(
+            "/api/auth/account",
+            axum::routing::put(|| async { axum::Json(serde_json::json!({})) }),
+        )
+        .route(
+            "/api/auth/account/context",
+            axum::routing::get(move || {
+                let context = context.clone();
+                async move { axum::Json(context) }
+            }),
+        )
+        .fallback(move |request: axum::http::Request<axum::body::Body>| {
+            let stub = stub.clone();
+            let failing = route_fail.load(Ordering::SeqCst)
+                && request.method() == "GET"
+                && request.uri().path() == "/api/doctor-collection";
+            async move {
+                if failing {
+                    axum::http::StatusCode::SERVICE_UNAVAILABLE.into_response()
+                } else {
+                    stub.oneshot(request).await.unwrap()
+                }
+            }
+        });
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let site = site_router(shared_site(), api);
+    let server = tokio::spawn(async move { axum::serve(listener, site).await.unwrap() });
+    let base = format!("http://{address}");
+    let mut browser = Browser::launch();
+    browser.resize(PHONE);
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
+
+    // The first workspace read fails; Shared says so and offers to try again.
+    browser.click(r#"nav.tabs button:nth-of-type(2)"#);
+    let text = browser.wait_for("For my doctor: ");
+    assert!(!text.contains("Open For my doctor"), "{text}");
+    fail.store(false, Ordering::SeqCst);
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Try again"])),
+        true,
+        "Shared offered no way to load the workspace again:\n{}",
+        browser.body_text().unwrap_or_default()
+    );
+
+    // The workspace loads; the person opens it, edits and saves.
+    browser.wait_for("Open For my doctor");
+    assert!(!browser.body_text().unwrap().contains("For my doctor: "));
+    assert_eq!(
+        browser
+            .page()
+            .run("clickButton", serde_json::json!(["Open For my doctor"])),
+        true
+    );
+    browser.wait_for("Ask about sleep");
+    browser.click(r#"button[aria-label="Edit page"]"#);
+    browser.wait_for("Add a question");
+    browser.type_into(r#"input[aria-label="Name"]"#, "Ada Lovelace");
+    browser.click(r#"button[aria-label="Save page"]"#);
+    browser.wait_for("Saved page preview");
+    let saved: serde_json::Value = reqwest::get(format!("{base}/api/doctor-collection"))
+        .await
+        .unwrap()
+        .json()
+        .await
+        .unwrap();
+    assert_eq!(saved["page"]["name"], "Ada Lovelace");
+    server.abort();
 }
 
 fn wait_for_selector(browser: &mut Browser, selector: &str) {
@@ -340,18 +352,18 @@ async fn patient_tabs_do_not_offer_or_request_physician_sharing() {
         "Network.setExtraHTTPHeaders",
         serde_json::json!({"headers":{"Authorization":format!("Bearer {session}")}}),
     );
-    browser.text_until(&format!("{base}/?mode=client"), "Today");
+    browser.text_until(&format!("{base}/?mode=client"), "Shared");
     let evidence = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
         .join("../../target/verification/physician-sharing");
     std::fs::create_dir_all(&evidence).unwrap();
     for (tab, loaded, absent, image) in [
         (
-            3,
+            1,
             "Add health information",
             "Sharing with my physician",
             "you.json",
         ),
-        (4, "Shared", "Share with my physician", "shared.json"),
+        (2, "Shared", "Share with my physician", "shared.json"),
     ] {
         browser.click(&format!("nav.tabs button:nth-of-type({tab})"));
         wait_for_selector(

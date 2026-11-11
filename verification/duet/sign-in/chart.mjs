@@ -17,14 +17,14 @@ const screens = {
   "This link no longer works": "Link no longer works, or Duet couldn't be reached",
   "Duet couldn't be reached": "Link no longer works, or Duet couldn't be reached",
   Terms: "Terms",
-  Conversation: "Conversation",
+  Conversation: "Open",
 };
 
 export const state = (v) => {
   const p = v.phone;
   if (p.screen === "Duet closed") {
     if (p.holds === "No session") return "Closed, signed out";
-    return `Closed, reopens ${p.place === "Terms" ? "the Terms" : "the conversation"}`;
+    return `Closed, reopens ${p.place === "Terms" ? "the Terms" : "where you were"}`;
   }
   if (p.screen === "Terms" && p.asks.startsWith("Accepting")) return "Terms agreed, waiting for Duet";
   return screens[p.screen] ?? p.screen;

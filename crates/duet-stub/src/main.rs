@@ -48,7 +48,7 @@ async fn run() -> Result<(), String> {
         .await
         .map_err(|error| format!("listen on {listen}: {error}"))?;
     println!("Duet stub listening on {listen}");
-    println!("Accepted messages stay in {}", state.display());
+    println!("Writes stay beside {}", state.display());
     axum::serve(listener, app)
         .await
         .map_err(|error| error.to_string())

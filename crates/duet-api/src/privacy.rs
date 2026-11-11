@@ -1,11 +1,17 @@
 //! Restriction + SQL outbox, independent create-only journal, and fenced restore replay.
 use crate::{
     ApiError,
-    database::AccountDatabase,
+    database::{AccountDatabase, orm},
+    evidence_entity::account,
+    follow_up_entity::{command, conversation_event, follow_up, occurrence, settings, tool_effect},
     identity::{AccountContext, check_current},
 };
 use async_trait::async_trait;
 use chrono::{DateTime, Utc};
+use sea_orm::{
+    ColumnTrait, EntityName, EntityTrait, QueryFilter, QuerySelect, QueryTrait,
+    sea_query::{Expr, ExprTrait, Func, OnConflict, Query, extension::postgres::PgExpr},
+};
 use serde::{Deserialize, Serialize};
 use sqlx::{AssertSqlSafe, Row};
 use std::{path::PathBuf, sync::Arc};
@@ -826,12 +832,17 @@ async fn apply(
             if !restoring && revision != Some(r.scope_version) {
                 return Ok(false);
             }
-            crate::follow_up::replay_restriction(
+            let restriction = if r.operation == Restriction::FollowUpCancel {
+                FollowUpRestriction::Cancel
+            } else {
+                FollowUpRestriction::Pause
+            };
+            replay_restriction(
                 tx,
                 r.account_id,
                 r.account_incarnation,
                 r.scope_id,
-                r.operation == Restriction::FollowUpCancel,
+                restriction,
             )
             .await?;
         }
@@ -839,8 +850,7 @@ async fn apply(
             if r.scope_id != r.account_id {
                 return Ok(false);
             }
-            crate::follow_up::replay_settings_withdrawal(tx, r.account_id, r.account_incarnation)
-                .await?;
+            replay_settings_withdrawal(tx, r.account_id, r.account_incarnation).await?;
             sqlx::query("update duet_commands set state='cancelled',lease_id=null,lease_until=null,staged_memory=null where user_id=$1 and work_kind in ('today','follow_up') and state in ('accepted','running')").bind(r.account_id).execute(&mut **tx).await?;
         }
         Restriction::AccountDelete => {
@@ -894,4 +904,212 @@ async fn apply(
         }
     }
     Ok(true)
+}
+
+// Follow-up restriction replay, kept with the journal that owns it. The
+// follow-up tables stay, so every receipt kind still replays its effects,
+// through typed statements on the entities in `follow_up_entity`.
+type Tx<'a> = sqlx::Transaction<'a, sqlx::Postgres>;
+
+/// What a follow-up restriction receipt does to its follow-up.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum FollowUpRestriction {
+    /// Hold an active follow-up.
+    Pause,
+    /// End the follow-up for good.
+    Cancel,
+}
+
+async fn lock_account(tx: &mut Tx<'_>, account: Uuid) -> Result<(), ApiError> {
+    orm::row(
+        tx,
+        &account::Entity::find_by_id(account)
+            .select_only()
+            .column(account::Column::Id)
+            .lock_exclusive()
+            .into_query(),
+    )
+    .await?
+    .ok_or(ApiError::NotFound)?;
+    Ok(())
+}
+fn now() -> Expr {
+    Func::cust("now").into()
+}
+async fn notify(tx: &mut Tx<'_>, account: Uuid, id: Uuid) -> Result<(), ApiError> {
+    let changed = Func::cust("jsonb_build_object").args([
+        Expr::val("type"),
+        Expr::val("follow_up_changed"),
+        Expr::val("follow_up_id"),
+        Expr::val(id),
+    ]);
+    let commands = tool_effect::Entity::find()
+        .select_only()
+        .distinct()
+        .column(tool_effect::Column::UserId)
+        .column(tool_effect::Column::CommandId)
+        .expr(changed)
+        .filter(tool_effect::Column::UserId.eq(account))
+        .filter(
+            Expr::col((tool_effect::Entity, tool_effect::Column::Call))
+                .cast_json_field("name")
+                .is_in(tool_effect::FOLLOW_UP_TOOLS),
+        )
+        .filter(
+            Expr::col((tool_effect::Entity, tool_effect::Column::Result))
+                .cast_json_field("id")
+                .eq(Expr::val(id).cast_as("text")),
+        )
+        .into_query();
+    let insert = Query::insert()
+        .into_table(conversation_event::Entity.table_ref())
+        .columns([
+            conversation_event::Column::UserId,
+            conversation_event::Column::CommandId,
+            conversation_event::Column::Event,
+        ])
+        .select_from(commands)
+        .map_err(|error| ApiError::Storage(error.to_string()))?
+        .to_owned();
+    orm::execute(tx, &insert).await?;
+    Ok(())
+}
+async fn interrupt(tx: &mut Tx<'_>, account: Uuid, id: Uuid) -> Result<(), ApiError> {
+    // Wake clients of original action messages without rewriting historical text.
+    notify(tx, account, id).await?;
+    let carries_this_follow_up = occurrence::Entity::find()
+        .select_only()
+        .expr(Expr::val(1))
+        .filter(
+            Expr::col((occurrence::Entity, occurrence::Column::UserId))
+                .equals((command::Entity, command::Column::UserId)),
+        )
+        .filter(
+            Expr::col((occurrence::Entity, occurrence::Column::CommandId))
+                .equals((command::Entity, command::Column::Id)),
+        )
+        .filter(occurrence::Column::FollowUpId.eq(id))
+        .into_query();
+    orm::execute(
+        tx,
+        &command::Entity::update_many()
+            .col_expr(command::Column::State, Expr::val(command::State::Cancelled))
+            .col_expr(command::Column::LeaseId, Expr::null())
+            .col_expr(command::Column::LeaseUntil, Expr::null())
+            .col_expr(command::Column::StagedMemory, Expr::null())
+            .filter(command::Column::UserId.eq(account))
+            .filter(
+                command::Column::State.is_in([command::State::Accepted, command::State::Running]),
+            )
+            .filter(Expr::exists(carries_this_follow_up))
+            .into_query(),
+    )
+    .await?;
+    orm::execute(
+        tx,
+        &occurrence::Entity::update_many()
+            .col_expr(
+                occurrence::Column::Status,
+                Expr::val(occurrence::Status::Interrupted),
+            )
+            .col_expr(occurrence::Column::CompletedAt, now())
+            .col_expr(occurrence::Column::UpdatedAt, now())
+            .filter(occurrence::Column::UserId.eq(account))
+            .filter(occurrence::Column::FollowUpId.eq(id))
+            .filter(
+                occurrence::Column::Status
+                    .is_in([occurrence::Status::Queued, occurrence::Status::Running]),
+            )
+            .into_query(),
+    )
+    .await?;
+    Ok(())
+}
+/// Called ONLY by privacy replay after receipt byte verification and incarnation
+/// validation. It never grants authority, resumes work, or reopens ended work.
+pub async fn replay_restriction(
+    tx: &mut Tx<'_>,
+    account: Uuid,
+    incarnation: Uuid,
+    id: Uuid,
+    restriction: FollowUpRestriction,
+) -> Result<(), ApiError> {
+    lock_account(tx, account).await?;
+    let current: Uuid = orm::row(
+        tx,
+        &account::Entity::find_by_id(account)
+            .select_only()
+            .column(account::Column::DuetIncarnation)
+            .into_query(),
+    )
+    .await?
+    .ok_or(sqlx::Error::RowNotFound)?
+    .try_get(0)?;
+    if current != incarnation {
+        return Ok(());
+    }
+    // Cancel ends anything not already cancelled; pause holds only active work.
+    let restrict = match restriction {
+        FollowUpRestriction::Cancel => follow_up::Entity::update_many()
+            .col_expr(
+                follow_up::Column::State,
+                Expr::val(follow_up::State::Cancelled),
+            )
+            .col_expr(follow_up::Column::ConfirmationRequired, Expr::val(false))
+            .filter(follow_up::Column::State.ne(follow_up::State::Cancelled)),
+        FollowUpRestriction::Pause => follow_up::Entity::update_many()
+            .col_expr(
+                follow_up::Column::State,
+                Expr::val(follow_up::State::Paused),
+            )
+            .filter(follow_up::Column::State.eq(follow_up::State::Active)),
+    };
+    orm::execute(
+        tx,
+        &restrict
+            .col_expr(
+                follow_up::Column::Revision,
+                Expr::col(follow_up::Column::Revision).add(1),
+            )
+            .col_expr(follow_up::Column::NextOccurrenceAt, Expr::null())
+            .col_expr(follow_up::Column::UpdatedAt, now())
+            .filter(follow_up::Column::UserId.eq(account))
+            .filter(follow_up::Column::Id.eq(id))
+            .into_query(),
+    )
+    .await?;
+    interrupt(tx, account, id).await
+}
+/// Privacy-only monotonic settings replay after independent receipt validation.
+pub async fn replay_settings_withdrawal(
+    tx: &mut Tx<'_>,
+    account: Uuid,
+    incarnation: Uuid,
+) -> Result<(), ApiError> {
+    lock_account(tx, account).await?;
+    let this_incarnation = account::Entity::find()
+        .select_only()
+        .column(account::Column::Id)
+        .expr(Expr::val(false))
+        .filter(account::Column::Id.eq(account))
+        .filter(account::Column::DuetIncarnation.eq(incarnation))
+        .into_query();
+    // The revision rises only when the hold actually changes.
+    let withdraw = OnConflict::column(settings::Column::UserId)
+        .value(settings::Column::Enabled, false)
+        .value(
+            settings::Column::Revision,
+            Expr::col((settings::Entity, settings::Column::Revision))
+                .add(Expr::col((settings::Entity, settings::Column::Enabled)).cast_as("int")),
+        )
+        .to_owned();
+    let insert = Query::insert()
+        .into_table(settings::Entity.table_ref())
+        .columns([settings::Column::UserId, settings::Column::Enabled])
+        .select_from(this_incarnation)
+        .map_err(|error| ApiError::Storage(error.to_string()))?
+        .on_conflict(withdraw)
+        .to_owned();
+    orm::execute(tx, &insert).await?;
+    Ok(())
 }

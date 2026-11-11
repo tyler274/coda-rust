@@ -115,13 +115,12 @@ calls for it.
 `scripts/scenarios.py` runs the product journeys that work on one machine and writes
 `receipt.json` under `target/verification/runs/`. P1, a physician asking about a patient, runs over
 HTTP against the [scale stack](../scripts/physician-scale-stack.py). That stack has two sites, the
-worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet conversation,
+worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet account,
 migrates a fresh database on the same Postgres through `duet-migrate` with a separate runtime
-login, then drives the `duet-api` binary over HTTP: sign-up, a message, a kill and restart while
-the reply is open, a retried send, and sign out everywhere. The binary runs with its local
-stand-ins, `DUET_LOCAL_IDENTITY_SECRET` (HS256 tokens the runner signs) and
-`DUET_LOCAL_MODEL_REPLY` (a fixed reply held open for `DUET_LOCAL_MODEL_DELAY_MS`); hosted
-startup refuses all three. D1 then runs the duet-api Postgres suites. The run reads no credentials.
+login, then drives the `duet-api` binary over HTTP: sign-up, a stored health record, a kill and
+restart, two-account refusal, and sign out everywhere. The binary runs with its local identity
+stand-in, `DUET_LOCAL_IDENTITY_SECRET` (HS256 tokens the runner signs); hosted startup refuses it
+and the other local stand-ins. D1 then runs the duet-api Postgres suites. The run reads no credentials.
 
 ```sh
 nix develop .#agent --command scripts/scenarios.py

@@ -7,9 +7,9 @@ P1 runs over HTTP against scripts/physician-scale-stack.py: two physician-sample
 sites, physician-worker, Postgres, Valkey and the Pub/Sub emulator, with the
 worker's fixed reply. D1 migrates a fresh database on that same disposable
 Postgres through duet-migrate, drives the duet-api binary over HTTP with its
-local identity and fixed-reply stand-ins (killing and restarting it mid-reply),
-then runs the duet-api Postgres suites. Nothing reads Doppler, Google
-credentials or a model key.
+local identity stand-in (killing and restarting it after a write), then runs
+the duet-api Postgres suites. Nothing reads Doppler, Google credentials or a
+model key.
 
 receipt.json records the git revision, binary and chart digests, each step's
 command identity and observation, and each capability the journey needs that
@@ -41,23 +41,13 @@ spec.loader.exec_module(stack)
 
 BINARIES = ("physician-sample", "physician-worker", "physician-migrate")
 CHARTS = REPO / "target/patient-bank/bank"
-D1_SUITES = ("database_foundation", "steering", "conversation_proof")
+D1_SUITES = ("database_foundation", "public_budget")
 # What each D1 suite holds. The suites own the assertions; the receipt names them.
 D1_TESTS = {
     "fresh_and_upgrade_keep_identity_and_enforce_account_scope":
         "fresh and upgraded schema keep identity; one account cannot read another's rows",
-    "steer_reaches_the_reply_in_progress_once":
-        "a second message steers the running reply; one paid run; a restarted store cannot replay it",
-    "http_steer_relaunches_the_same_command_without_the_recovery_poll":
-        "account, Terms and AI consent over HTTP, then message and steered reply from a loopback Responses stand-in",
-    "durable_tool_recovery_memory_and_permission_fences":
-        "interrupted reply resumes its committed tool batch once; withdrawn permission fences effects",
-    "accepted_provider_failure_is_safe_and_correlated":
-        "a provider failure after 202 is traced to the accepted request without private content",
-    "failed_steer_lookup_still_attempts_privacy_confirmation":
-        "a database failure after 202 still attempts privacy confirmation and is traced without private content",
-    "a_landed_message_is_confirmed_by_reading_it":
-        "an uncertain send is confirmed by reading it back; another account reads it as missing",
+    "public_retrieval_budget_spans_pools_and_publication":
+        "the public retrieval budget holds across pools and counts publication reads and misses",
 }
 STRIPPED = ("OPENAI_API_KEY", "CODA_ALLOW_MODEL_CALLS", "GOOGLE_APPLICATION_CREDENTIALS")
 
@@ -256,12 +246,8 @@ def d1(receipt, state, out):
     receipt.gap("D1", "Apple, Google and email sign-up",
                 "the served binary verifies locally signed tokens (DUET_LOCAL_IDENTITY_SECRET), "
                 "not Identity Platform", "crates/duet-api/src/identity.rs")
-    receipt.gap("D1", "real-model reply",
-                f"the served binary answers with DUET_LOCAL_MODEL_REPLY={D1_REPLY!r}; real-model proof "
-                "needs CODA_ALLOW_MODEL_CALLS=1 with an authorized key", "crates/duet-api/src/conversation_routes.rs")
 
 
-D1_REPLY = "Thanks, noted."
 D1_BINARIES = ("duet-api", "duet-migrate")
 D1_TERMS, D1_CONSENT = "2026-09-23", "2026-09-24"
 
@@ -321,7 +307,6 @@ def d1_binary(receipt, state, out):
     subprocess.run(["cargo", "build", "--locked", "-p", "duet-api", "--bins"], cwd=REPO, check=True)
     bin_dir = REPO / "target/debug"
     receipt.data["sources"]["duet_binaries"] = {name: digest(bin_dir / name) for name in D1_BINARIES}
-    receipt.data["sources"]["duet_model_execution"] = f"duet-api DUET_LOCAL_MODEL_REPLY={D1_REPLY!r}"
     suffix = uuid.uuid4().hex[:12]
     database, role = f"duet_scenario_{suffix}", f"duet_runtime_{suffix}"
     admin = state["postgres"]["url"]
@@ -352,7 +337,7 @@ def d1_binary(receipt, state, out):
 
     secret = base64.urlsafe_b64encode(os.urandom(32)).decode()
     env = {**base, "DATABASE_URL": runtime_url, "DUET_LOCAL_IDENTITY_SECRET": secret,
-           "DUET_LOCAL_MODEL_REPLY": D1_REPLY, "DUET_PRIVACY_JOURNAL_DIRECTORY": str(out / "journal"),
+           "DUET_PRIVACY_JOURNAL_DIRECTORY": str(out / "journal"),
            "DUET_PUBLICATION_MASTER_KEY": base64.urlsafe_b64encode(os.urandom(32)).rstrip(b"=").decode()}
     duet = Duet(out, env)
     env.update(DUET_PUBLIC_ORIGIN=f"http://127.0.0.1:{duet.port}",
@@ -372,7 +357,7 @@ def d1_binary(receipt, state, out):
     ids = {"database": database, "runtime_role": role, "subject": subject}
     receipt.data["d1"] = ids
     try:
-        duet.start(DUET_LOCAL_MODEL_DELAY_MS="20000")
+        duet.start()
         enrolled = [(path, http(duet.port, "PUT", path, body, bearer)[0]) for path, body in (
             ("/api/auth/account", {}),
             ("/api/auth/account/terms", {"version": D1_TERMS}),
@@ -401,76 +386,45 @@ def d1_binary(receipt, state, out):
                      f"{other_enrolled}; context answered {status} with account {ids['other_account_id']}",
                      artifact=save(out, "other-account", {"enrolled": other_enrolled, "context": other_context}))
 
-        status, page = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
-        receipt.step("D1", "start a conversation", actor,
-                     status == 200 and (page or {}).get("messages") == []
-                     and (page or {}).get("availability", {}).get("can_send"),
-                     f"GET /api/conversation/messages answered {status} with "
-                     f"{len((page or {}).get('messages', []))} messages, availability {(page or {}).get('availability')}")
-
-        command = str(uuid.uuid4())
-        ids["command_id"] = command
-        message = {"id": command, "text": "I walked for twenty minutes after lunch.",
-                   "timezone": "America/New_York"}
-        status, accepted = http(duet.port, "POST", "/api/conversation/messages", message, bearer)
-        deadline = time.monotonic() + 15
-        durable = ""
-        while time.monotonic() < deadline:
-            durable = sql(d1_command_query(command))
-            if durable.startswith("running|") and durable.split("|")[2] != "0":
-                break
-            time.sleep(0.1)
-        receipt.step("D1", "message accepted and dispatched", actor,
-                     status == 202 and durable.startswith("running|1|1|"),
-                     f"POST answered {status} run {(accepted or {}).get('run', {}).get('state')}; durable "
-                     f"state|claim|dispatches|reply is {durable!r}", command_id=command,
-                     artifact=save(out, "send", {"request": message, "status": status, "body": accepted}))
+        record_id = str(uuid.uuid4())
+        ids["record_id"] = record_id
+        record = {"operation_id": str(uuid.uuid4()), "canonical_record_id": record_id,
+                  "record_id": "scenario/walk", "entity": "health_evidence",
+                  "payload": {"concept_id": "steps", "title": "Afternoon walk",
+                              "measured_at": "2026-10-28T13:00:00-04:00",
+                              "source": {"kind": "appleHealth"},
+                              "value": {"literal": "2400", "unit": "count"}}}
+        status, stored = http(duet.port, "POST", "/api/canonical-evidence", record, bearer)
+        address = {key: (stored or {}).get(key)
+                   for key in ("canonical_record_id", "record_id", "entity", "revision")}
+        ids["address"] = address
+        receipt.step("D1", "store a health record", actor,
+                     status == 200 and address["canonical_record_id"] == record_id,
+                     f"POST /api/canonical-evidence answered {status} with revision {address['revision']}",
+                     command_id=record_id, artifact=save(out, "record", {"request": record, "status": status,
+                                                                         "body": stored}))
 
         killed = duet.kill()
-        durable = sql(d1_command_query(command))
-        receipt.step("D1", "duet-api killed mid-reply", "runner",
-                     durable.startswith("running|1|1|") and durable.endswith("|f"),
-                     f"SIGKILL (exit {killed}) while the fixed provider held the exchange open; "
-                     f"state|claim|dispatches|reply is {durable!r}", command_id=command)
+        receipt.step("D1", "duet-api killed after the write", "runner", killed is not None,
+                     f"SIGKILL (exit {killed})", command_id=record_id)
 
         duet.start()
-        restarted = time.monotonic()
-        replied = lambda page: any(m.get("role") == "assistant" for m in (page or {}).get("messages", []))
-        page = None
-        while time.monotonic() - restarted < 90:
-            status, page = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
-            if replied(page):
-                break
-            time.sleep(0.5)
-        durable = sql(d1_command_query(command))
-        roles = [(m.get("role"), m.get("text")) for m in (page or {}).get("messages", [])]
-        receipt.step("D1", "reply persists after restart", actor,
-                     roles == [("user", message["text"]), ("assistant", D1_REPLY)]
-                     and durable.startswith("complete|2|") and durable.endswith("|t"),
-                     f"after {time.monotonic() - restarted:.1f}s the recovered transcript is {roles}; "
-                     f"state|claim|dispatches|reply is {durable!r}", command_id=command,
-                     artifact=save(out, "recovered", page))
+        status, view = http(duet.port, "POST", "/api/evidence/revision", {"address": address}, bearer)
+        kept = (view or {}).get("status") == "current" and \
+            ((view or {}).get("payload") or {}).get("value", {}).get("literal") == "2400"
+        receipt.step("D1", "the record persists after restart", actor, status == 200 and kept,
+                     f"POST /api/evidence/revision answered {status} with status {(view or {}).get('status')}",
+                     command_id=record_id, artifact=save(out, "recovered", view))
 
-        status, again = http(duet.port, "POST", "/api/conversation/messages", message, bearer)
-        time.sleep(2)
-        _, page = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
-        after = [(m.get("role"), m.get("text")) for m in (page or {}).get("messages", [])]
-        commands = sql(f"select count(*) from duet_commands where user_id = '{ids['account_id']}';\n")
-        receipt.step("D1", "retried send has one reply", actor,
-                     status == 202 and after == roles and commands == "1"
-                     and sql(d1_command_query(command)) == durable,
-                     f"the same message id answered {status}; the transcript holds {after}; "
-                     f"{commands} durable commands", command_id=command,
-                     artifact=save(out, "retry", {"status": status, "body": again, "page": page}))
-
-        d1_account_isolation(receipt, duet.port, out, other_bearer, ids, "after worker loss")
+        d1_account_isolation(receipt, duet.port, out, other_bearer, ids, "after restart")
 
         event = str(uuid.uuid4())
         ids["sign_out_event_id"] = event
         status, signed_out = http(duet.port, "POST", "/api/auth/privacy-restrictions",
                                   {"event_id": event, "operation": "sessions_revoke", "scope_version": 0},
                                   bearer)
-        refused_status, refused_body = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
+        refused_status, refused_body = http(duet.port, "POST", "/api/evidence/revision",
+                                            {"address": address}, bearer)
         receipt.step("D1", "sign out everywhere refuses the old session", actor,
                      status == 200 and refused_status == 401
                      and "session_revoked" in json.dumps(refused_body),
@@ -481,15 +435,15 @@ def d1_binary(receipt, state, out):
 
         stopped = duet.stop()
         duet.start()
-        refused_status, _ = http(duet.port, "GET", "/api/conversation/messages", bearer=bearer)
+        refused_status, _ = http(duet.port, "POST", "/api/evidence/revision", {"address": address}, bearer)
         time.sleep(1.1)  # auth_time has whole-second precision; the fence holds the sign-out instant
         fresh = local_token(secret, subject, int(time.time()))
-        status, page = http(duet.port, "GET", "/api/conversation/messages", bearer=fresh)
-        latest = [(m.get("role"), m.get("text")) for m in (page or {}).get("messages", [])]
-        receipt.step("D1", "after another restart the old session stays refused and a new sign-in reads the reply",
-                     actor, stopped == 0 and refused_status == 401 and status == 200 and latest == roles,
+        status, view = http(duet.port, "POST", "/api/evidence/revision", {"address": address}, fresh)
+        receipt.step("D1", "after another restart the old session stays refused and a new sign-in reads the record",
+                     actor, stopped == 0 and refused_status == 401 and status == 200
+                     and (view or {}).get("status") == "current",
                      f"SIGTERM exit {stopped}; the earlier bearer answered {refused_status}; a new "
-                     f"session answered {status} with {latest}", command_id=command)
+                     f"session answered {status} with status {(view or {}).get('status')}", command_id=record_id)
         d1_account_isolation(receipt, duet.port, out, other_bearer, ids, "after revocation and restart")
     finally:
         stopped = duet.stop()
@@ -498,27 +452,17 @@ def d1_binary(receipt, state, out):
 
 def d1_account_isolation(receipt, port, out, bearer, ids, phase):
     context_status, context = http(port, "GET", "/api/auth/account/context", bearer=bearer)
-    page_status, page = http(port, "GET", "/api/conversation/messages", bearer=bearer)
-    command = ids["command_id"]
-    refusals = [(method, suffix, *http(port, method, f"/api/conversation/commands/{command}/{suffix}",
-                                      bearer=bearer))
-                for method, suffix in (("GET", "events"), ("GET", "usage"), ("POST", "resume"))]
+    browse_status, browse = http(port, "POST", "/api/evidence/browse", {"include_removed": True}, bearer)
+    read_status, read = http(port, "POST", "/api/evidence/revision", {"address": ids["address"]}, bearer)
     passed = (context_status == 200 and (context or {}).get("account_id") == ids["other_account_id"]
-              and page_status == 200 and (page or {}).get("messages") == []
-              and all(status == 404 for _, _, status, _ in refusals))
+              and browse_status == 200 and (browse or {}).get("total_count") == 0
+              and read_status == 404)
     receipt.step("D1", f"two-account refusal {phase}", ids["other_subject"], passed,
-                 f"second account context {context_status}, transcript {page_status}; "
-                 f"foreign command endpoints {[(method, path, status) for method, path, status, _ in refusals]}",
-                 command_id=command,
+                 f"second account context {context_status}, browse {browse_status} with "
+                 f"{(browse or {}).get('total_count')} records; the first account's exact record {read_status}",
+                 command_id=ids["record_id"],
                  artifact=save(out, f"isolation-{phase.replace(' ', '-')}",
-                               {"context": context, "page": page, "refusals": refusals}))
-
-
-def d1_command_query(command):
-    return ("select c.state, c.claim, (select count(*) from duet_execution_records r "
-            "where r.user_id = c.user_id and r.command_id = c.id and r.record ? 'Dispatch'), "
-            "c.reply is not null from duet_commands c "
-            f"where c.id = '{uuid.UUID(command)}';\n")
+                               {"context": context, "browse": browse, "read": [read_status, read]}))
 
 
 def d1_suites(receipt, state, out):

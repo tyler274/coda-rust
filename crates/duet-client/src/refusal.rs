@@ -142,14 +142,16 @@ mod tests {
         server.abort();
     }
     #[tokio::test]
-    async fn refreshed_stream_survives_refusal_of_original_credential() {
+    async fn refreshed_credential_survives_refusal_of_original_credential() {
         use axum::{Router, routing::get};
         let router = Router::new().fallback(get(|headers: axum::http::HeaderMap| async move {
+            let json = [(axum::http::header::CONTENT_TYPE, "application/json")];
             if headers.get("authorization").and_then(|v| v.to_str().ok()) == Some("Bearer fresh") {
-                (reqwest::StatusCode::OK, "")
+                (reqwest::StatusCode::OK, json, "[]")
             } else {
                 (
                     reqwest::StatusCode::UNAUTHORIZED,
+                    json,
                     r#"{"detail":{"code":"session_invalid"}}"#,
                 )
             }
@@ -167,18 +169,9 @@ mod tests {
         let fresh = DuetClient::new(&url, "fresh", "0", "0")
             .unwrap()
             .bind_session(session.clone(), fence.clone(), sender);
-        assert!(
-            old.conversation_events(uuid::Uuid::new_v4(), 0)
-                .await
-                .is_err()
-        );
+        assert!(old.list_moments().await.is_err());
         assert!(session.is_current(&fence));
-        assert!(
-            fresh
-                .conversation_events(uuid::Uuid::new_v4(), 0)
-                .await
-                .is_ok()
-        );
+        assert!(fresh.list_moments().await.is_ok());
         assert!(session.is_current(&fence));
         server.abort();
     }

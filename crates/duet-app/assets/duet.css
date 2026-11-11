@@ -45,50 +45,17 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--surfac
   color: var(--muted);
   font: var(--type-body-sm);
 }
-.duet-date, .duet-greeting { margin: 0 0 12px; }
-.duet-greeting { font: var(--type-title-lg); }
 .voice-card, .number-card {
   margin: 0 0 12px;
   padding: 16px;
 }
 /* The thread after the October 21 design review: messages a clear step apart. */
 .duet-thread { display: flex; flex-direction: column; gap: 24px; }
-.thread-card { margin-top: 12px; padding-top: 8px; border-top: var(--hairline) solid var(--outline-variant); }
-button.thread-open {
-  display: block;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-}
-button.thread-open .card-title,
-button.thread-open > p.thread-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-button.thread-open .card-title::after,
-button.thread-open > p.thread-card::after {
-  content: "";
-  flex: none;
-  width: 8px;
-  height: 8px;
-  margin-right: 2px;
-  border-top: 2px solid currentColor;
-  border-right: 2px solid currentColor;
-  opacity: 0.45;
-  transform: rotate(45deg);
-}
 .card-title { margin: 0 0 8px; }
 .card-text, .empty, .status-detail { margin: 0; font: var(--type-body-md); }
 .record-meta { margin: 4px 0 0; color: var(--muted); font: var(--type-body-sm); }
 .card-text + .card-text, .record-meta + .card-text { margin-top: 12px; }
-.empty-title, .status-title { margin: 0 0 8px; font: var(--type-title-lg); }
+.status-title { margin: 0 0 8px; font: var(--type-title-lg); }
 .source-row {
   display: flex;
   justify-content: space-between;
@@ -99,22 +66,12 @@ button.thread-open > p.thread-card::after {
 .source-name { font-weight: var(--weight-strong); }
 .source-detail { color: var(--muted); text-align: right; }
 .duet .tabs { z-index: 2; margin-top: auto; }
-/* The composer stands over the page's bottom gutter too, so nothing in the thread shows beneath it. */
-.duet-composer-wrap {
-  position: sticky;
-  bottom: -16px;
-  z-index: 1;
-  margin-top: auto;
-  padding: 8px 0 16px;
-  background: var(--surface);
-}
 .duet-field {
   display: block;
   width: 100%;
   margin: 12px 0;
   padding: 10px 12px;
 }
-.duet-send { align-self: flex-end; flex: 0 0 auto; }
 .duet .action-row { margin-top: var(--space-3); }
 @media (prefers-reduced-motion: reduce) {
   .duet { animation: none !important; transition: none !important; }

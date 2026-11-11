@@ -12,7 +12,7 @@ export const state = (v) => {
   if (p.screen === "Enter your email") return "Signed out";
   if (p.screen.startsWith("You were signed out")) return "Signed out, told the draft and entries were removed";
   if (p.holds === "No session") return p.screen === "Duet closed" ? "Closed, signed out" : p.screen;
-  const where = p.screen === "Duet closed" ? "Closed" : "Conversation, draft and entries kept";
+  const where = p.screen === "Duet closed" ? "Closed" : "Open, draft and entries kept";
   const knows = p.asks !== "Nothing asked" ? ", checking" : p.told ? ", needs to check" : "";
   return `${where}, session ${ended(v) ? "ended elsewhere" : "live"}${p.screen === "Duet closed" ? "" : knows}`;
 };

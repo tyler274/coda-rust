@@ -224,8 +224,21 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
             .put_if_absent(event, &serde_json::to_vec(&legacy).unwrap())
             .await
             .unwrap();
-        assert_eq!(privacy.replay(event).await.is_ok(), accepted);
+        let replayed = privacy.replay(event).await;
+        assert_eq!(replayed.is_ok(), accepted);
         if !accepted {
+            // An account created after cohort migration cannot be enrolled by
+            // presenting a legacy receipt, and its raw journal bytes stay as written.
+            assert!(matches!(
+                replayed,
+                Err(ApiError::Unavailable(
+                    "legacy receipt account incarnation is not admitted by migration"
+                ))
+            ));
+            assert_eq!(
+                journal.read(event).await.unwrap().unwrap(),
+                serde_json::to_vec(&legacy).unwrap()
+            );
             tokio::fs::remove_file(dir.join(format!("{event}.json")))
                 .await
                 .unwrap();
@@ -314,24 +327,100 @@ async fn paginated_exact_membership_account_revision_and_restore_fences() {
     );
     // Imported follow-up incarnations are restricted by their original stable IDs.
     let follow = Uuid::new_v4();
-    sqlx::query("insert into follow_ups(id,user_id,accepted_instruction,schedule,schedule_summary,state,source_message_ids) values($1,$2,'Synthetic retained work','{}','Retained','active','{}')").bind(follow).bind(a.account_id).execute(&mut owner).await.unwrap();
-    for (operation, scope, state) in [
-        ("follow_up_pause", follow, "paused"),
-        ("follow_up_cancel", follow, "cancelled"),
-        ("proactive_withdraw", a.account_id, "cancelled"),
+    sqlx::query("insert into follow_ups(id,user_id,accepted_instruction,schedule,schedule_summary,state,source_message_ids,next_occurrence_at,confirmation_required) values($1,$2,'Synthetic retained work','{}','Retained','active','{}',now(),true)").bind(follow).bind(a.account_id).execute(&mut owner).await.unwrap();
+    // Its running occurrence, the command that carries it, and a tool effect naming it.
+    let (conversation, command) = (Uuid::new_v4(), Uuid::new_v4());
+    sqlx::query("insert into duet_conversations(user_id,id) values($1,$2)")
+        .bind(a.account_id)
+        .bind(conversation)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    sqlx::query("insert into duet_commands(user_id,id,conversation_id,context,input,base_revision,request,state,lease_id,lease_until,staged_memory) values($1,$2,$3,'{}','',0,'{}','running',$2,now(),'{}')").bind(a.account_id).bind(command).bind(conversation).execute(&mut owner).await.unwrap();
+    sqlx::query("insert into duet_follow_up_occurrences(user_id,id,follow_up_id,follow_up_revision,scheduled_for,command_id,operation,accepted_instruction,status) values($1,$2,$3,1,now(),$4,'check_in','Synthetic retained work','running')").bind(a.account_id).bind(Uuid::new_v4()).bind(follow).bind(command).execute(&mut owner).await.unwrap();
+    sqlx::query("insert into duet_tool_effects(user_id,command_id,invocation_id,call,result) values($1,$2,'call','{\"name\":\"create_follow_up\"}',jsonb_build_object('id',$3::text))").bind(a.account_id).bind(command).bind(follow).execute(&mut owner).await.unwrap();
+    sqlx::query("insert into duet_follow_up_settings(user_id,enabled) values($1,true)")
+        .bind(a.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    for (operation, scope, expected) in [
+        ("follow_up_pause", follow, ("paused", 2, true)),
+        ("follow_up_cancel", follow, ("cancelled", 3, false)),
+        // A pause replayed after the cancel leaves the follow-up cancelled.
+        ("follow_up_pause", follow, ("cancelled", 3, false)),
+        ("proactive_withdraw", a.account_id, ("cancelled", 3, false)),
+        // A second withdrawal leaves the settings revision where it is.
+        ("proactive_withdraw", a.account_id, ("cancelled", 3, false)),
     ] {
         let event = Uuid::new_v4();
         let bytes=serde_json::to_vec(&json!({"schema_version":1,"event_id":event,"account_id":a.account_id,"operation":operation,"scope_id":scope,"scope_version":"","occurred_at":chrono::Utc::now(),"state":"restriction_committed"})).unwrap();
         journal.put_if_absent(event, &bytes).await.unwrap();
         privacy.replay(event).await.unwrap();
         assert_eq!(journal.read(event).await.unwrap().unwrap(), bytes);
-        let current: String = sqlx::query_scalar("select state from follow_ups where id=$1")
-            .bind(follow)
+        let (state, revision, unscheduled, confirmation): (String, i64, bool, bool) =
+            sqlx::query_as("select state,revision,next_occurrence_at is null,confirmation_required from follow_ups where id=$1")
+                .bind(follow)
+                .fetch_one(&mut owner)
+                .await
+                .unwrap();
+        assert!(unscheduled);
+        assert_eq!((state.as_str(), revision, confirmation), expected);
+    }
+    // Each follow-up replay woke the command's clients and stopped its work.
+    let events: Vec<Value> = sqlx::query_scalar(
+        "select event from duet_conversation_events where user_id=$1 and command_id=$2",
+    )
+    .bind(a.account_id)
+    .bind(command)
+    .fetch_all(&mut owner)
+    .await
+    .unwrap();
+    assert_eq!(
+        events,
+        vec![json!({"type":"follow_up_changed","follow_up_id":follow}); 3]
+    );
+    let stopped: (String, bool) = sqlx::query_as("select state,lease_id is null and lease_until is null and staged_memory is null from duet_commands where id=$1").bind(command).fetch_one(&mut owner).await.unwrap();
+    assert_eq!(stopped, ("cancelled".to_owned(), true));
+    let interrupted: (String, bool) = sqlx::query_as("select status,completed_at is not null from duet_follow_up_occurrences where command_id=$1").bind(command).fetch_one(&mut owner).await.unwrap();
+    assert_eq!(interrupted, ("interrupted".to_owned(), true));
+    let held: (bool, i64) =
+        sqlx::query_as("select enabled,revision from duet_follow_up_settings where user_id=$1")
+            .bind(a.account_id)
             .fetch_one(&mut owner)
             .await
             .unwrap();
-        assert_eq!(current, state);
-    }
+    assert_eq!(held, (false, 2));
+    // A restriction replayed for a different account incarnation changes nothing.
+    let other = Uuid::new_v4();
+    sqlx::query("insert into follow_ups(id,user_id,accepted_instruction,schedule,schedule_summary,state,source_message_ids) values($1,$2,'Synthetic retained work','{}','Retained','active','{}')").bind(other).bind(a.account_id).execute(&mut owner).await.unwrap();
+    let revision: i64 = sqlx::query_scalar("select revision from follow_ups where id=$1")
+        .bind(other)
+        .fetch_one(&mut owner)
+        .await
+        .unwrap();
+    let foreign = duet_api::privacy::Receipt {
+        schema_version: 1,
+        event_id: Uuid::new_v4(),
+        account_id: a.account_id,
+        account_incarnation: Uuid::new_v4(),
+        operation: duet_api::privacy::Restriction::FollowUpCancel,
+        scope_id: other,
+        scope_version: revision,
+        occurred_at: chrono::Utc::now(),
+    };
+    journal
+        .put_if_absent(foreign.event_id, &serde_json::to_vec(&foreign).unwrap())
+        .await
+        .unwrap();
+    privacy.replay(foreign.event_id).await.unwrap();
+    let (current, after): (String, i64) =
+        sqlx::query_as("select state,revision from follow_ups where id=$1")
+            .bind(other)
+            .fetch_one(&mut owner)
+            .await
+            .unwrap();
+    assert_eq!((current.as_str(), after), ("active", revision));
     // Full restore withdraws later positive grants; targeted replay retains its revision fence.
     sqlx::query(
         "update users set intelligence_enabled=true,intelligence_control_revision=99 where id=$1",

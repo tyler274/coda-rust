@@ -19,7 +19,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 
 | Area | Navigation |
 | --- | --- |
-| Accounts, evidence, conversation and saved care | [Duet backend](backend-architecture.md), [security boundaries](security-posture.md), [privacy recovery](privacy-recovery.md) |
+| Accounts, evidence, the doctor workspace and saved care | [Duet backend](backend-architecture.md), [security boundaries](security-posture.md), [privacy recovery](privacy-recovery.md) |
 | Patient screens and design references | [Duet UI](ui-surface-map.md) |
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |

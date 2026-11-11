@@ -225,8 +225,8 @@ def test_privacy():
     print(f"PASS {BACKEND} privacy: 2 ops spans + 1 correlated log; 1 Langfuse generation, exact prompt/response preserved; unique markers absent from entire {BACKEND} payload")
 
 
-def test_operational_failure(service="duet-api", operation="duet.conversation.execute", event="duet.conversation.failed", classification=None):
-    classification = classification or {"step": "execute", "error_class": "execution"}
+def test_operational_failure(service="duet-api", operation="duet.privacy_recovery.sweep", event="duet.privacy_recovery.failed", classification=None):
+    classification = classification or {"step": "recover", "error_class": "database"}
     ops, path = sink(f"{BACKEND}-{event}-ops")
     lf = mock(f"{BACKEND}-{event}-langfuse")
     http, _ = gateway(f"{BACKEND}-{event}", ops, lf)

@@ -1,8 +1,7 @@
-//! Duet-owned account, privacy, evidence, conversation, workspace and publication
-//! services. `main.rs` composes the durable route families and recovery workers.
+//! Duet-owned account, privacy, evidence, workspace and publication services.
+//! `main.rs` composes the durable route families and recovery workers.
 //! The earlier router in this module retains moments, front-door join/consent/
 //! premium and in-memory care routes for its callers; the binary does not mount it.
-//! `conversation_execution` is also separate from the mounted conversation path.
 //! Book: `book/src/backend-architecture.md`.
 #![deny(missing_docs)]
 #![allow(
@@ -10,13 +9,8 @@
     reason = "converting to errors that keep their cause"
 )]
 
-pub mod accounting;
 pub mod background;
 pub mod care;
-pub mod conversation;
-mod conversation_context;
-pub mod conversation_execution;
-pub mod conversation_routes;
 pub mod database;
 pub mod doctor_routes;
 pub mod durable;
@@ -24,13 +18,12 @@ pub mod evidence;
 mod evidence_entity;
 pub mod evidence_paging;
 pub mod evidence_routes;
-pub mod follow_up;
+mod follow_up_entity;
 pub mod health_context;
 mod health_context_entity;
 pub mod hosting;
 pub mod identity;
 pub mod journal_gcs;
-pub mod luna;
 mod moment_entity;
 pub mod privacy;
 pub mod privacy_archive;
@@ -39,8 +32,6 @@ pub mod producer_routes;
 pub mod publication;
 pub mod session;
 pub mod site;
-pub mod skills;
-pub mod today;
 pub mod workspace;
 
 use std::env;
@@ -108,7 +99,7 @@ impl IntoResponse for ApiError {
             Self::Conflict(message) => (
                 StatusCode::CONFLICT,
                 serde_json::json!({"code":match message {
-                    "selected_context_unavailable" | "selected_follow_up_unavailable" | "selected_insight_unavailable" | "reply_target_unavailable" | "source_authority_refused" => message,
+                    "source_authority_refused" => message,
                     _ => "stale_state",
                 },"message":message}),
             ),

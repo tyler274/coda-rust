@@ -6,12 +6,8 @@ maintain a second visual specification.
 
 ## Direction and scope
 
-Keep one continuous conversation. Today is the home for insights and current
-care: Plans, reminders and Check-ins move out of the companion card, and the
-duplicate care hub is retired. Use the corpus's system sans, quieter solid
-surfaces and green direction. The full Today → selected item in chat → accepted
-save → same current item and originating conversation path must remain coherent
-across the client, backend and model interaction.
+The app has two tabs, You and Shared. Use the corpus's system sans, quieter
+solid surfaces and green direction.
 
 Person-to-person sharing is retired from product scope. Shared remains the
 practice-connection tab, with no People list or person-to-person notices.
@@ -33,7 +29,7 @@ clinician-preview prototype under “Mockups and interactive prototypes.”
 | Owner | What to inspect |
 | --- | --- |
 | [`duet-app::roots`](/crates/duet-app/src/roots.rs) | Tab roots, current copy and navigation |
-| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry and conversation/connection screens |
+| [`duet-app::account`](/crates/duet-app/src/account.rs), [`duet-app`](/crates/duet-app/src/lib.rs) | Standalone account entry, You and the Shared workspace |
 | [`duet-page`](/crates/duet-page/src/lib.rs) | Existing doctor-page layout; retaining this crate does not qualify later browser sharing or restore PDF acceptance |
 | [`duet-health`](/crates/duet-health/src/lib.rs), [`duet-notify`](/crates/duet-notify/src/lib.rs) | Native health and notification adapters; verify on installed clients under the owning outcomes |
 

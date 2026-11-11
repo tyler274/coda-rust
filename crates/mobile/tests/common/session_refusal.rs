@@ -33,7 +33,7 @@ async fn definitive_refusal_unmounts_private_content() {
             let refuse = route_refuse.load(Ordering::SeqCst);
             async move {
                 if refuse != 0
-                    && request.uri().path() == "/api/conversation/messages"
+                    && request.uri().path() == "/api/evidence"
                     && request.method() == "POST"
                 {
                     match refuse {
@@ -57,42 +57,44 @@ async fn definitive_refusal_unmounts_private_content() {
     let site = site_router(shared_site(), api);
     let server = tokio::spawn(async move { axum::serve(listener, site).await.unwrap() });
     let base = format!("http://{address}");
-    let response = reqwest::Client::new().post(format!("{base}/api/conversation/messages"))
-        .json(&serde_json::json!({"id":uuid::Uuid::new_v4(),"text":"Private account transcript","timezone":"UTC"}))
-        .send().await.unwrap();
-    assert_eq!(response.status(), StatusCode::ACCEPTED);
+    seed_record(&base, "Private account record").await;
     let mut browser = Browser::launch();
     browser.resize(PHONE);
-    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
-    browser.click("nav.tabs button:nth-of-type(1)");
-    browser.wait_for("Private account transcript");
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
+    browser.wait_for("Private account record");
     for failure in [1, 2] {
         refuse.store(failure, Ordering::SeqCst);
-        browser.type_into(".composer-input", "Unconfirmed private send");
-        browser.click(".duet-send");
-        browser.wait_for("Chat isn’t available right now.");
+        start_correction(
+            &mut browser,
+            "Private account record",
+            "Unconfirmed private correction",
+        );
+        browser.wait_for("This correction couldn’t be saved.");
         assert!(
             browser
                 .body_text()
                 .unwrap()
-                .contains("Private account transcript")
+                .contains("Private account record")
         );
         assert_eq!(
             browser
                 .page()
-                .run("inputValue", serde_json::json!([".composer-input"])),
-            "Unconfirmed private send"
+                .run("inputValue", serde_json::json!([CORRECTED])),
+            "Unconfirmed private correction"
         );
     }
     refuse.store(3, Ordering::SeqCst);
-    browser.type_into(".composer-input", "Unconfirmed private send");
-    browser.click(".duet-send");
+    start_correction(
+        &mut browser,
+        "Private account record",
+        "Unconfirmed private correction",
+    );
     browser.wait_for("Sign in to your Duet account.");
     let text = browser.body_text().unwrap();
-    assert!(!text.contains("Private account transcript"));
-    assert!(!text.contains("Unconfirmed private send"));
+    assert!(!text.contains("Private account record"));
+    assert!(!text.contains("Unconfirmed private correction"));
     screenshot(&mut browser, "after-refusal");
-    eprintln!("Product session_revoked removed mounted private transcript and composer.");
+    eprintln!("Product session_revoked removed mounted private records and the open correction.");
     refuse.store(0, Ordering::SeqCst);
     assert_eq!(
         browser
@@ -100,20 +102,21 @@ async fn definitive_refusal_unmounts_private_content() {
             .run("clickButton", serde_json::json!(["Retry saved sign-in"])),
         true
     );
-    browser.wait_for("Today");
-    browser.click("nav.tabs button:nth-of-type(1)");
-    browser.wait_for("Private account transcript");
+    browser.wait_for("Private account record");
     refuse.store(4, Ordering::SeqCst);
-    browser.type_into(".composer-input", "Deleted account send");
-    browser.click(".duet-send");
+    start_correction(
+        &mut browser,
+        "Private account record",
+        "Deleted account correction",
+    );
     browser.wait_for("Sign in to your Duet account.");
     assert!(
         !browser
             .body_text()
             .unwrap()
-            .contains("Private account transcript")
+            .contains("Private account record")
     );
-    eprintln!("Product absent-account refusal removed mounted private transcript.");
+    eprintln!("Product absent-account refusal removed mounted private records.");
     server.abort();
 }
 
@@ -154,7 +157,7 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
             let release = route_release.clone();
             let returned = route_returned.clone();
             async move {
-                if index == 0 && request.method() == "POST" && request.uri().path() == "/api/conversation/messages" {
+                if index == 0 && request.method() == "POST" && request.uri().path() == "/api/evidence" {
                     let (send, receive) = tokio::sync::oneshot::channel();
                     tokio::spawn(async move {
                         entered.notify_one();
@@ -173,16 +176,13 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
     let server = tokio::spawn(async move { axum::serve(listener, site).await.unwrap() });
     let base = format!("http://{address}");
     second.store(1, Ordering::SeqCst);
-    let response = reqwest::Client::new().post(format!("{base}/api/conversation/messages"))
-        .json(&serde_json::json!({"id":uuid::Uuid::new_v4(),"text":"B private transcript","timezone":"UTC"})).send().await.unwrap();
-    assert_eq!(response.status(), StatusCode::ACCEPTED);
+    seed_record(&base, "B private record").await;
     second.store(0, Ordering::SeqCst);
     let mut browser = Browser::launch();
     browser.resize(PHONE);
-    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Today");
-    browser.click("nav.tabs button:nth-of-type(1)");
-    browser.type_into(".composer-input", "A pending send");
-    browser.click(".duet-send");
+    browser.text_until(&format!("{base}/?mode=client&api={base}"), "Shared");
+    browser.wait_for("Lisinopril");
+    start_correction(&mut browser, "Lisinopril", "A pending correction");
     tokio::time::timeout(Duration::from_secs(10), entered.notified())
         .await
         .unwrap();
@@ -190,13 +190,6 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
         browser
             .page()
             .run("clickButton", serde_json::json!(["Sign out"])),
-        true
-    );
-    browser.wait_for("Signing out removes an unconfirmed message from this phone.");
-    assert_eq!(
-        browser
-            .page()
-            .run("clickButton", serde_json::json!(["Sign out anyway"])),
         true
     );
     browser.wait_for("Sign in to your Duet account.");
@@ -207,30 +200,58 @@ async fn late_a_refusal_cannot_end_mounted_b_session() {
             .run("clickButton", serde_json::json!(["Retry saved sign-in"])),
         true
     );
-    browser.wait_for("Today");
-    browser.click("nav.tabs button:nth-of-type(1)");
-    browser.wait_for("B private transcript");
-    browser.type_into(".composer-input", "B private draft");
+    browser.wait_for("B private record");
+    browser.click(r#"button[aria-label="Correct B private record"]"#);
+    browser.type_into(CORRECTED, "B private draft");
     release.notify_one();
     tokio::time::timeout(Duration::from_secs(10), returned.notified())
         .await
         .unwrap();
     for _ in 0..10 {
         let text = browser.body_text().unwrap();
-        assert!(text.contains("B private transcript"));
-        assert!(!text.contains("A pending send"));
+        assert!(text.contains("B private record"));
+        assert!(!text.contains("A pending correction"));
         assert!(!text.contains("Sign in to your Duet account."));
         assert_eq!(
             browser
                 .page()
-                .run("inputValue", serde_json::json!([".composer-input"])),
+                .run("inputValue", serde_json::json!([CORRECTED])),
             "B private draft"
         );
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
     screenshot(&mut browser, "after-stale-a-refusal");
-    eprintln!("Mounted B transcript and draft survived stale A refusal.");
+    eprintln!("Mounted B records and open correction survived stale A refusal.");
     server.abort();
+}
+
+const CORRECTED: &str = r#"input[aria-label="Corrected value"]"#;
+
+/// Stores one manual medication through the mounted stub, as the account in front.
+async fn seed_record(base: &str, title: &str) {
+    let response = reqwest::Client::new()
+        .post(format!("{base}/api/evidence"))
+        .json(&serde_json::json!({"items":[{
+            "id": uuid::Uuid::new_v4(),
+            "entity": "health_evidence",
+            "operation": "upsert",
+            "payload": {
+                "display_name": title,
+                "concept_id": "medication:manual",
+                "source_label": "Added in Duet"
+            }
+        }]}))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+}
+
+/// Opens the correction for `title`, types `value` and saves it.
+fn start_correction(browser: &mut Browser, title: &str, value: &str) {
+    browser.click(&format!(r#"button[aria-label="Correct {title}"]"#));
+    browser.type_into(CORRECTED, value);
+    browser.click(r#"button[aria-label="Save correction"]"#);
 }
 
 fn screenshot(browser: &mut Browser, name: &str) {

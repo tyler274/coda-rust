@@ -1,7 +1,6 @@
-//! Durable-service D2 proof: isolated PostgreSQL, the real durable evidence,
-//! conversation and privacy owners mounted in-process, and the real `duet-client`
-//! calls the patient app makes. Only the model is a controlled local responder.
-//! No installed phone, no portal provider and no live model participate.
+//! Durable-service D2 proof: isolated PostgreSQL, the real durable evidence and
+//! privacy owners mounted in-process, and the real `duet-client` calls the
+//! patient app makes. No installed phone and no portal provider participate.
 use duet_api::{
     database::{AccountDatabase, migrate},
     durable::DurableState,
@@ -17,7 +16,6 @@ use duet_wire::models::{
 use serde_json::{Value, json};
 use sqlx::{ConnectOptions, Connection};
 use std::sync::Arc;
-use std::time::Duration;
 use uuid::Uuid;
 
 const PATIENT: &str = "synthetic-d2-patient";
@@ -38,23 +36,6 @@ impl IdentityVerifier for Verifier {
             authenticated_at: chrono::Utc::now() - chrono::Duration::seconds(5),
         })
     }
-}
-
-/// The controlled model: read the admitted record source, cite it, reply.
-fn controlled(input: &[Value]) -> Value {
-    if !input.iter().any(|v| v["call_id"] == "d2-read") {
-        let context = input
-            .iter()
-            .filter_map(|v| v["content"].as_str())
-            .find(|s| s.starts_with("Selected context and reply reference"))
-            .expect("the selected record reaches the model");
-        let admission: Value = serde_json::from_str(context.split_once("): ").unwrap().1).unwrap();
-        return json!([{"type":"function_call","call_id":"d2-read","name":"read_health_source","arguments":json!({"address":admission["source"]["source"]["address"]}).to_string()}]);
-    }
-    if !input.iter().any(|v| v["call_id"] == "d2-cite") {
-        return json!([{"type":"function_call","call_id":"d2-cite","name":"cite_health_sources","arguments":"{\"read_ids\":[\"d2-read\"]}"}]);
-    }
-    json!([{"type":"message","content":[{"type":"output_text","text":"Here is the exact record you selected."}]}])
 }
 
 fn health(record: &str, payload: Value) -> Value {
@@ -79,45 +60,8 @@ fn address(value: &Value) -> CanonicalSourceAddress {
     serde_json::from_value(value.clone()).unwrap()
 }
 
-/// Send about one exact selected revision and wait for the cited reply.
-async fn ask(base: &str, client: &DuetClient, record: Uuid, revision: i32) -> (Uuid, Uuid) {
-    let id = Uuid::new_v4();
-    let accepted = client
-        .send_about_record(id, "What does this record say?", "UTC", record, revision)
-        .await
-        .expect("selected record admitted");
-    let selected = serde_json::to_value(&accepted.message.selected_context).unwrap();
-    assert_eq!(selected["record_id"], json!(record));
-    assert_eq!(selected["revision"], json!(revision));
-    let deadline = tokio::time::Instant::now() + Duration::from_secs(20);
-    loop {
-        let page: Value = reqwest::Client::new()
-            .get(format!("{base}/api/conversation/messages"))
-            .bearer_auth(PATIENT)
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap();
-        let messages = page["messages"].as_array().unwrap();
-        let user = messages.iter().position(|m| m["id"] == json!(id));
-        if let Some(reply) = user
-            .and_then(|i| messages[i..].iter().find(|m| m["role"] == "assistant"))
-            .filter(|m| m["state"] == "complete")
-        {
-            return (id, reply["id"].as_str().unwrap().parse().unwrap());
-        }
-        assert!(
-            tokio::time::Instant::now() < deadline,
-            "reply never completed: {page}"
-        );
-        tokio::time::sleep(Duration::from_millis(50)).await;
-    }
-}
-
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
-async fn d2_records_browse_select_cite_correct_remove_and_erase_on_durable_services() {
+async fn d2_records_browse_correct_remove_and_erase_on_durable_services() {
     let url = std::env::var("DUET_TEST_DATABASE_URL")
         .expect("DUET_TEST_DATABASE_URL must point at disposable loopback PostgreSQL");
     let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
@@ -179,30 +123,8 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     };
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let base = format!("http://{}", listener.local_addr().unwrap());
-    let routes = duet_api::durable::router(state.clone())
-        .merge(duet_api::evidence_routes::router(state.clone()))
-        .merge(duet_api::conversation_routes::router(
-            duet_api::conversation_routes::ConversationState {
-                durable: state,
-                store: duet_api::conversation::ConversationStore::new(database.clone()),
-                model: "no-live-provider".into(),
-                provider: Some(duet_api::conversation_routes::ModelProvider::Responses {
-                    endpoint: format!("{base}/controlled-response"),
-                    key: "local".into(),
-                }),
-            },
-        ))
-        .route(
-            "/controlled-response",
-            axum::routing::post(|axum::Json(body): axum::Json<Value>| async move {
-                let output = controlled(body["input"].as_array().unwrap());
-                let event = json!({"type":"response.completed","response":{"status":"completed","output":output,"usage":{"input_tokens":3,"output_tokens":2}}});
-                axum::http::Response::builder()
-                    .header("content-type", "text/event-stream")
-                    .body(axum::body::Body::from(format!("data: {event}\n\n")))
-                    .unwrap()
-            }),
-        );
+    let routes =
+        duet_api::durable::router(state.clone()).merge(duet_api::evidence_routes::router(state));
     tokio::spawn(async move { axum::serve(listener, routes).await.unwrap() });
     let client = DuetClient::new(&base, PATIENT, "1", "0.1.0").unwrap();
     let outsider = DuetClient::new(&base, FOREIGN, "1", "0.1.0").unwrap();
@@ -311,7 +233,7 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     let stale = first.next_cursor.clone().unwrap();
     assert!(outsider.browse_records(Some(stale.clone())).await.is_err());
 
-    // Select one exact record and hand it to chat; the reply cites that revision.
+    // One exact record revision reads back with its status.
     let note = health(
         "portal/a1c",
         json!({"concept_id":"lab:a1c","title":"Hemoglobin A1c","measured_at":"2026-10-01T09:00:00-04:00","source":{"kind":"healthRecords","record_id":"a1c-original"},"value":{"literal":"5.4","unit":"%"},"status":"final"}),
@@ -323,13 +245,9 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
         .parse()
         .unwrap();
     let first_revision = original["revision"].as_i64().unwrap() as i32;
-    let (user, reply) = ask(&base, &client, record, first_revision).await;
-    let cited = client.cited_revision(reply, "d2-read").await.unwrap();
-    assert_eq!(cited.status, Revision::Current);
-    assert_eq!(cited.address.revision, first_revision);
-    let selected_id = format!("selected-record-{record}-{first_revision}");
-    let selected = client.cited_revision(user, &selected_id).await.unwrap();
-    assert_eq!(selected.address.revision, first_revision);
+    let exact = client.record_revision(address(&original)).await.unwrap();
+    assert_eq!(exact.status, Revision::Current);
+    assert_eq!(exact.address.revision, first_revision);
     // A browse page read now carries the record's exact revision.
     let listed = client.all_records().await.unwrap();
     assert!(
@@ -340,8 +258,8 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
                 && r.status == Browse::Current)
     );
 
-    // Correction: the citation reopens the original revision with a newer-version notice;
-    // new work must read current evidence and refuses the stale selection.
+    // Correction: the original revision reopens with a newer-version notice and
+    // keeps its own value; the current revision carries the correction.
     let mut correction = note.clone();
     correction["operation_id"] = json!(Uuid::new_v4());
     correction["expected_revision"] = json!(first_revision);
@@ -349,34 +267,23 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
     let corrected = post(&base, PATIENT, "/api/canonical-evidence", &correction).await;
     let second_revision = corrected["revision"].as_i64().unwrap() as i32;
     assert!(second_revision > first_revision);
-    let reopened = client.cited_revision(reply, "d2-read").await.unwrap();
+    let reopened = client.record_revision(address(&original)).await.unwrap();
     assert_eq!(reopened.status, Revision::Superseded);
     assert_eq!(reopened.newer_revision_exists, Some(true));
     assert_eq!(reopened.address.revision, first_revision);
     let body = reopened.payload.clone().flatten().unwrap();
     assert_eq!(
         body["value"]["literal"], "5.4",
-        "the cited original, not the correction"
+        "the original, not the correction"
     );
-    assert!(
-        client
-            .send_about_record(Uuid::new_v4(), "Again?", "UTC", record, first_revision)
-            .await
-            .is_err(),
-        "a stale selected revision is not new work's evidence"
-    );
-    let (_, current_reply) = ask(&base, &client, record, second_revision).await;
-    let current = client
-        .cited_revision(current_reply, "d2-read")
-        .await
-        .unwrap();
+    let current = client.record_revision(address(&corrected)).await.unwrap();
     assert_eq!(current.status, Revision::Current);
     assert_eq!(
         current.payload.flatten().unwrap()["value"]["literal"],
         "5.6"
     );
 
-    // Source removal: still listed and labelled, and both citations stay readable.
+    // Source removal: still listed and labelled, and both revisions stay readable.
     let removal = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":record,"record_id":"portal/a1c","entity":"health_evidence","expected_revision":second_revision,"operation":"delete","payload":{"source":{"kind":"healthRecords"}}});
     post(&base, PATIENT, "/api/canonical-evidence", &removal).await;
     let browse = client.browse_records(None).await.unwrap();
@@ -387,29 +294,18 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
         .find(|r| r.address.canonical_record_id == record)
         .expect("source-removed records stay discoverable");
     assert_eq!(removed.status, Browse::RemovedBySource);
-    let old = client.cited_revision(reply, "d2-read").await.unwrap();
+    let old = client.record_revision(address(&original)).await.unwrap();
     assert_eq!(old.status, Revision::RemovedBySource);
     assert_eq!(old.payload.flatten().unwrap()["value"]["literal"], "5.4");
-    let latest = client
-        .cited_revision(current_reply, "d2-read")
-        .await
-        .unwrap();
+    let latest = client.record_revision(address(&corrected)).await.unwrap();
     assert_eq!(latest.status, Revision::RemovedBySource);
-    assert!(
-        client
-            .send_about_record(Uuid::new_v4(), "Again?", "UTC", record, second_revision)
-            .await
-            .is_err(),
-        "removed evidence cannot ground new work"
-    );
 
-    // Cross-account refusal: no browse membership, exact read or citation reopening.
+    // Cross-account refusal: no browse membership and no exact read.
     assert_eq!(outsider.all_records().await.unwrap().len(), 0);
     assert!(outsider.record_revision(address(&original)).await.is_err());
-    assert!(outsider.cited_revision(reply, "d2-read").await.is_err());
     let _ = foreign;
 
-    // Privacy erasure: an honest "no longer available", no payload, no listing.
+    // Privacy erasure: no exact read and no listing.
     let erasable = &accepted[UNDATED];
     let erased: Uuid = erasable["canonical_record_id"]
         .as_str()
@@ -417,7 +313,7 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
         .parse()
         .unwrap();
     let erased_revision = erasable["revision"].as_i64().unwrap() as i32;
-    let (_, erased_reply) = ask(&base, &client, erased, erased_revision).await;
+    assert!(client.record_revision(address(erasable)).await.is_ok());
     privacy
         .restrict(
             &patient,
@@ -428,12 +324,6 @@ async fn run(owner_url: &str, runtime_url: &str, journal: &std::path::Path) {
         )
         .await
         .unwrap();
-    let gone = client
-        .cited_revision(erased_reply, "d2-read")
-        .await
-        .unwrap();
-    assert_eq!(gone.status, Revision::Unavailable);
-    assert!(gone.payload.flatten().is_none());
     assert!(client.record_revision(address(erasable)).await.is_err());
     let listed = client.all_records().await.unwrap();
     assert!(

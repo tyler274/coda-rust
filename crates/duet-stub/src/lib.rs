@@ -5,9 +5,8 @@
 //! cargo run -p duet-stub -- --listen 127.0.0.1:8000 --state ~/.local/state/duet-stub/messages.json
 //! ```
 //!
-//! The four tab pages are the recorded fixtures. A send is accepted and appended
-//! to the state file, so the next process still has that line. The stand-in does
-//! not invent an assistant reply.
+//! The library and For my doctor pages start from the recorded fixtures. Writes
+//! go to `writes.json` beside the state path, so the next process still has them.
 #![deny(missing_docs)]
 #![allow(
     clippy::map_err_ignore,
@@ -22,47 +21,31 @@ use std::sync::{Arc, Mutex};
 
 use axum::Json;
 use axum::Router;
-use axum::extract::{Path, Query, State};
+use axum::extract::State;
 use axum::http::StatusCode;
 use axum::routing::{get, post, put};
 use duet_wire::models::canonical_record_revision::Entity as RevisionEntity;
-use duet_wire::models::conversation_message::Role;
 use duet_wire::models::evidence_item::{Entity as ItemEntity, Operation};
 use duet_wire::models::evidence_library_entry::Entity as LibraryEntity;
 use duet_wire::models::{
-    CanonicalRecordRevision, ConversationAcceptance, ConversationMessage, ConversationMessageState,
-    ConversationPage, ConversationRun, ConversationRunState, ConversationSendRequest,
-    ConversationSourceDetail, DoctorCollection, DoctorPageSave, EvidenceBatchRequest,
-    EvidenceBatchResponse, EvidenceItem, EvidenceLibraryEntry, EvidenceLibraryPage, FollowUp,
-    FollowUpPage, FollowUpState, FollowUpVersionRequest, InsightCyclePage, IntelligenceSettings,
-    SavedRoutine, SavedRoutineList, SavedRoutineUpdateRequest,
+    CanonicalRecordRevision, DoctorCollection, DoctorPageSave, EvidenceBatchRequest,
+    EvidenceBatchResponse, EvidenceItem, EvidenceLibraryEntry, EvidenceLibraryPage,
 };
 use serde::de::DeserializeOwned;
 
-const CONVERSATION: &str = include_str!("../fixtures/conversation.json");
-const INSIGHTS: &str = include_str!("../fixtures/insights.json");
-const SETTINGS: &str = include_str!("../fixtures/settings.json");
 const LIBRARY: &str = include_str!("../fixtures/library.json");
-const ROUTINES: &str = include_str!("../fixtures/routines.json");
-const FOLLOW_UPS: &str = include_str!("../fixtures/follow-ups.json");
 const DOCTOR: &str = include_str!("../fixtures/doctor.json");
-const RUN_ID: &str = "00000000-0000-0000-0000-000000000099";
 
-/// Accepted messages kept beside the recorded conversation.
+/// Writes kept beside the recorded fixtures.
 ///
 /// Medications, notes, and a saved For my doctor page live in `writes.json`
-/// next to the message file, so a restart keeps both.
+/// next to the state path, so a restart keeps them.
 pub struct Store {
-    path: PathBuf,
     writes_path: PathBuf,
-    sent: Vec<ConversationMessage>,
     records: Vec<EvidenceItem>,
     removed_evidence: Vec<String>,
     corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
-    routines: Vec<SavedRoutine>,
-    removed_routines: Vec<uuid::Uuid>,
-    follow_ups: Vec<FollowUp>,
     /// Connected Care state (`ENG-44`, `ENG-39`, `ENG-45`, `ENG-46`).
     pub care: care::ConnectedCareStore,
     /// Structurally unexportable private operating index (`ENG-52`).
@@ -78,26 +61,13 @@ struct Writes {
     corrections: Vec<EvidenceItem>,
     doctor: Option<DoctorCollection>,
     #[serde(default)]
-    routines: Vec<SavedRoutine>,
-    #[serde(default)]
-    removed_routines: Vec<uuid::Uuid>,
-    #[serde(default)]
-    follow_ups: Vec<FollowUp>,
-    #[serde(default)]
     care: care::ConnectedCareStore,
 }
 
 impl Store {
-    /// Loads accepted messages from `path`. A missing file starts empty.
-    /// Writes load from `writes.json` in the same directory.
+    /// Loads writes from `writes.json` beside `path`. A missing file starts empty.
     pub fn open(path: impl Into<PathBuf>) -> Result<Self, String> {
         let path = path.into();
-        let sent = if path.is_file() {
-            let text = fs::read_to_string(&path).map_err(|error| error.to_string())?;
-            serde_json::from_str(&text).map_err(|error| format!("{}: {error}", path.display()))?
-        } else {
-            Vec::new()
-        };
         let writes_path = writes_beside(&path);
         let writes = if writes_path.is_file() {
             let text = fs::read_to_string(&writes_path).map_err(|error| error.to_string())?;
@@ -107,23 +77,14 @@ impl Store {
             Writes::default()
         };
         Ok(Self {
-            path,
             writes_path,
-            sent,
             records: writes.records,
             removed_evidence: writes.removed_evidence,
             corrections: writes.corrections,
             doctor: writes.doctor,
-            routines: writes.routines,
-            removed_routines: writes.removed_routines,
-            follow_ups: writes.follow_ups,
             care: writes.care,
             private_operating_index: care::PrivateOperatingIndex::default(),
         })
-    }
-
-    fn save_messages(&self) -> Result<(), String> {
-        write_json(&self.path, &self.sent)
     }
 
     pub(crate) fn save_writes(&self) -> Result<(), String> {
@@ -134,9 +95,6 @@ impl Store {
                 removed_evidence: self.removed_evidence.clone(),
                 corrections: self.corrections.clone(),
                 doctor: self.doctor.clone(),
-                routines: self.routines.clone(),
-                removed_routines: self.removed_routines.clone(),
-                follow_ups: self.follow_ups.clone(),
                 care: self.care.clone(),
             },
         )
@@ -163,37 +121,12 @@ fn write_json(path: &std::path::Path, value: &impl serde::Serialize) -> Result<(
     fs::rename(&temporary, path).map_err(|error| error.to_string())
 }
 
-/// Builds the stand-in router. `store` is shared across requests and written on each new send.
+/// Builds the stand-in router. `store` is shared across requests and written on each write.
 pub fn router(store: Arc<Mutex<Store>>) -> Router {
     Router::new()
-        .route("/api/conversation/messages", get(messages).post(send))
-        .route(
-            "/api/conversation/messages/{message_id}/sources/{source_id}",
-            get(message_source),
-        )
-        .route(
-            "/api/conversation/messages/{message_id}/sources/{source_id}/revision",
-            get(cited_revision),
-        )
-        .route("/api/insight-cycles", get(insights))
-        .route("/api/intelligence/settings", get(settings))
         .route("/api/evidence/library", post(library))
         .route("/api/evidence/browse", post(browse))
         .route("/api/evidence", post(ingest))
-        .route("/api/saved-routines", get(routines))
-        .route(
-            "/api/saved-routines/{routine_id}",
-            put(update_routine).delete(delete_routine),
-        )
-        .route("/api/follow-ups", get(follow_ups))
-        .route(
-            "/api/follow-ups/{follow_up_id}/pause",
-            post(pause_follow_up),
-        )
-        .route(
-            "/api/follow-ups/{follow_up_id}/resume",
-            post(resume_follow_up),
-        )
         .route("/api/doctor-collection", get(doctor).delete(clear_doctor))
         .route("/api/doctor-collection/page", put(save_doctor))
         .route(
@@ -249,148 +182,6 @@ pub fn router(store: Arc<Mutex<Store>>) -> Router {
 
 pub(crate) fn fixture<T: DeserializeOwned>(name: &str, raw: &str) -> T {
     serde_json::from_str(raw).unwrap_or_else(|error| panic!("{name} fixture: {error}"))
-}
-
-fn base_page() -> ConversationPage {
-    fixture("conversation", CONVERSATION)
-}
-
-async fn messages(State(store): State<Arc<Mutex<Store>>>) -> Json<ConversationPage> {
-    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let mut page = base_page();
-    let extra = store.sent.len() as i32;
-    page.messages.extend(store.sent.iter().cloned());
-    page.revision += extra;
-    Json(page)
-}
-
-async fn send(
-    State(store): State<Arc<Mutex<Store>>>,
-    Json(request): Json<ConversationSendRequest>,
-) -> Result<(StatusCode, Json<ConversationAcceptance>), StatusCode> {
-    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    if let Some(existing) = find_message(&store, request.id) {
-        return Ok((
-            StatusCode::ACCEPTED,
-            Json(acceptance(existing, base_page().revision)),
-        ));
-    }
-    let sequence = next_sequence(&store);
-    let now = chrono::Utc::now().fixed_offset();
-    let message = ConversationMessage::new(
-        now,
-        request.id,
-        1,
-        Role::User,
-        sequence,
-        ConversationMessageState::Complete,
-        request.text,
-        now,
-    );
-    store.sent.push(message.clone());
-    if let Err(_error) = store.save_messages() {
-        store.sent.pop();
-        return Err(StatusCode::INTERNAL_SERVER_ERROR);
-    }
-    let revision = base_page().revision + store.sent.len() as i32;
-    Ok((StatusCode::ACCEPTED, Json(acceptance(message, revision))))
-}
-
-fn find_message(store: &Store, id: uuid::Uuid) -> Option<ConversationMessage> {
-    base_page()
-        .messages
-        .into_iter()
-        .chain(store.sent.iter().cloned())
-        .find(|message| message.id == id)
-}
-
-fn next_sequence(store: &Store) -> i32 {
-    base_page()
-        .messages
-        .iter()
-        .chain(store.sent.iter())
-        .map(|message| message.sequence)
-        .max()
-        .unwrap_or(0)
-        + 1
-}
-
-async fn message_source(
-    State(store): State<Arc<Mutex<Store>>>,
-    Path((message_id, source_id)): Path<(uuid::Uuid, String)>,
-) -> Result<Json<ConversationSourceDetail>, StatusCode> {
-    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let message = find_message(&store, message_id).ok_or(StatusCode::NOT_FOUND)?;
-    let source = message
-        .sources
-        .iter()
-        .flatten()
-        .find(|source| source.id == source_id)
-        .cloned()
-        .ok_or(StatusCode::NOT_FOUND)?;
-    let text = match source.id.as_str() {
-        "sleep-note" => "About seven hours, from the sleep note.".to_owned(),
-        _ => source.title.clone(),
-    };
-    Ok(Json(ConversationSourceDetail::new(source, text)))
-}
-
-/// Stand-in for the exact cited revision. The sleep note's payload stays on the
-/// revision; the client renders person-facing lines and does not dump JSON.
-async fn cited_revision(
-    Path((_message_id, source_id)): Path<(uuid::Uuid, String)>,
-) -> Result<Json<duet_wire::models::EvidenceRevisionView>, StatusCode> {
-    if source_id != "sleep-note" {
-        return Err(StatusCode::NOT_FOUND);
-    }
-    use duet_wire::models::{
-        CanonicalSourceAddress, EvidenceRevisionView, canonical_source_address::Entity,
-        evidence_revision_view::Status,
-    };
-    let mut view = EvidenceRevisionView::new(
-        CanonicalSourceAddress::new(
-            uuid::Uuid::nil(),
-            "sleep-note".into(),
-            Entity::ClinicalNote,
-            1,
-        ),
-        Status::Current,
-        true,
-    );
-    view.payload = Some(Some(
-        [
-            ("title".to_owned(), serde_json::json!("Sleep note")),
-            (
-                "body".to_owned(),
-                serde_json::json!("About seven hours, from the sleep note."),
-            ),
-            ("source_label".to_owned(), serde_json::json!("Sleep note")),
-        ]
-        .into(),
-    ));
-    Ok(Json(view))
-}
-
-fn acceptance(message: ConversationMessage, revision: i32) -> ConversationAcceptance {
-    let stamp = message.created_at;
-    let run = ConversationRun::new(
-        None,
-        stamp,
-        uuid::Uuid::parse_str(RUN_ID).expect("run id"),
-        Some(message.id),
-        1,
-        ConversationRunState::Queued,
-        stamp,
-    );
-    ConversationAcceptance::new(message, revision, run)
-}
-
-async fn insights() -> Json<InsightCyclePage> {
-    Json(fixture("insights", INSIGHTS))
-}
-
-async fn settings() -> Json<IntelligenceSettings> {
-    Json(fixture("settings", SETTINGS))
 }
 
 async fn library(State(store): State<Arc<Mutex<Store>>>) -> Json<EvidenceLibraryPage> {
@@ -485,131 +276,6 @@ async fn ingest(
     Ok(Json(response))
 }
 
-async fn routines(State(store): State<Arc<Mutex<Store>>>) -> Json<SavedRoutineList> {
-    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let mut page: SavedRoutineList = fixture("routines", ROUTINES);
-    page.items = listed_routines(&store);
-    Json(page)
-}
-
-async fn update_routine(
-    State(store): State<Arc<Mutex<Store>>>,
-    Path(id): Path<uuid::Uuid>,
-    Json(request): Json<SavedRoutineUpdateRequest>,
-) -> Result<Json<SavedRoutine>, StatusCode> {
-    if request.title.trim().is_empty() || request.body.trim().is_empty() {
-        return Err(StatusCode::BAD_REQUEST);
-    }
-    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let Some(mut routine) = listed_routines(&store)
-        .into_iter()
-        .find(|item| item.id == id)
-    else {
-        return Err(StatusCode::NOT_FOUND);
-    };
-    if routine.revision != request.expected_revision {
-        return Err(StatusCode::CONFLICT);
-    }
-    routine.title = request.title;
-    routine.body = request.body;
-    routine.revision += 1;
-    routine.updated_at = chrono::Utc::now().fixed_offset();
-    let previous = store.routines.clone();
-    remember_routine(&mut store, routine.clone());
-    if store.save_writes().is_err() {
-        store.routines = previous;
-        return Err(StatusCode::INTERNAL_SERVER_ERROR);
-    }
-    Ok(Json(routine))
-}
-
-#[derive(serde::Deserialize)]
-struct ExpectedRevision {
-    expected_revision: i32,
-}
-
-async fn delete_routine(
-    State(store): State<Arc<Mutex<Store>>>,
-    Path(id): Path<uuid::Uuid>,
-    Query(query): Query<ExpectedRevision>,
-) -> Result<StatusCode, StatusCode> {
-    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let Some(routine) = listed_routines(&store)
-        .into_iter()
-        .find(|item| item.id == id)
-    else {
-        return Err(StatusCode::NOT_FOUND);
-    };
-    if routine.revision != query.expected_revision {
-        return Err(StatusCode::CONFLICT);
-    }
-    let previous_routines = store.routines.clone();
-    let previous_removed = store.removed_routines.clone();
-    store.routines.retain(|item| item.id != id);
-    store.removed_routines.push(id);
-    if store.save_writes().is_err() {
-        store.routines = previous_routines;
-        store.removed_routines = previous_removed;
-        return Err(StatusCode::INTERNAL_SERVER_ERROR);
-    }
-    Ok(StatusCode::NO_CONTENT)
-}
-
-async fn follow_ups(State(store): State<Arc<Mutex<Store>>>) -> Json<FollowUpPage> {
-    let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let mut page: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
-    page.items = listed_follow_ups(&store);
-    Json(page)
-}
-
-async fn pause_follow_up(
-    State(store): State<Arc<Mutex<Store>>>,
-    Path(id): Path<uuid::Uuid>,
-    Json(request): Json<FollowUpVersionRequest>,
-) -> Result<Json<FollowUp>, StatusCode> {
-    set_follow_up_state(store, id, request.revision, FollowUpState::Paused)
-}
-
-async fn resume_follow_up(
-    State(store): State<Arc<Mutex<Store>>>,
-    Path(id): Path<uuid::Uuid>,
-    Json(request): Json<FollowUpVersionRequest>,
-) -> Result<Json<FollowUp>, StatusCode> {
-    set_follow_up_state(store, id, request.revision, FollowUpState::Active)
-}
-
-fn set_follow_up_state(
-    store: Arc<Mutex<Store>>,
-    id: uuid::Uuid,
-    revision: i32,
-    state: FollowUpState,
-) -> Result<Json<FollowUp>, StatusCode> {
-    let mut store = store.lock().unwrap_or_else(|poison| poison.into_inner());
-    let Some(mut follow_up) = listed_follow_ups(&store)
-        .into_iter()
-        .find(|item| item.id == id)
-    else {
-        return Err(StatusCode::NOT_FOUND);
-    };
-    if follow_up.revision != revision {
-        return Err(StatusCode::CONFLICT);
-    }
-    follow_up.state = state;
-    follow_up.pause_reason = match state {
-        FollowUpState::Paused => Some(Some(duet_wire::models::follow_up::PauseReason::User)),
-        _ => None,
-    };
-    follow_up.revision += 1;
-    follow_up.updated_at = chrono::Utc::now().fixed_offset();
-    let previous = store.follow_ups.clone();
-    remember_follow_up(&mut store, follow_up.clone());
-    if store.save_writes().is_err() {
-        store.follow_ups = previous;
-        return Err(StatusCode::INTERNAL_SERVER_ERROR);
-    }
-    Ok(Json(follow_up))
-}
-
 async fn doctor(State(store): State<Arc<Mutex<Store>>>) -> Json<DoctorCollection> {
     let store = store.lock().unwrap_or_else(|poison| poison.into_inner());
     Json(
@@ -669,54 +335,6 @@ fn recorded_day(item: &EvidenceItem) -> chrono::DateTime<chrono::FixedOffset> {
         .and_then(|value| value.as_str())
         .and_then(|text| chrono::DateTime::parse_from_rfc3339(text).ok())
         .unwrap_or_else(|| chrono::Local::now().fixed_offset())
-}
-
-fn listed_routines(store: &Store) -> Vec<SavedRoutine> {
-    let mut items = fixture::<SavedRoutineList>("routines", ROUTINES).items;
-    items.retain(|item| !store.removed_routines.contains(&item.id));
-    for saved in &store.routines {
-        if store.removed_routines.contains(&saved.id) {
-            continue;
-        }
-        if let Some(existing) = items.iter_mut().find(|item| item.id == saved.id) {
-            *existing = saved.clone();
-        } else {
-            items.push(saved.clone());
-        }
-    }
-    items
-}
-
-fn remember_routine(store: &mut Store, routine: SavedRoutine) {
-    if let Some(existing) = store.routines.iter_mut().find(|item| item.id == routine.id) {
-        *existing = routine;
-    } else {
-        store.routines.push(routine);
-    }
-}
-
-fn listed_follow_ups(store: &Store) -> Vec<FollowUp> {
-    let mut items = fixture::<FollowUpPage>("follow-ups", FOLLOW_UPS).items;
-    for saved in &store.follow_ups {
-        if let Some(existing) = items.iter_mut().find(|item| item.id == saved.id) {
-            *existing = saved.clone();
-        } else {
-            items.push(saved.clone());
-        }
-    }
-    items
-}
-
-fn remember_follow_up(store: &mut Store, follow_up: FollowUp) {
-    if let Some(existing) = store
-        .follow_ups
-        .iter_mut()
-        .find(|item| item.id == follow_up.id)
-    {
-        *existing = follow_up;
-    } else {
-        store.follow_ups.push(follow_up);
-    }
 }
 
 fn record_title(item: &EvidenceItem) -> Option<String> {
@@ -928,80 +546,17 @@ mod tests {
 
     #[test]
     fn fixtures_match_the_wire() {
-        let page: ConversationPage = fixture("conversation", CONVERSATION);
-        let insights: InsightCyclePage = fixture("insights", INSIGHTS);
-        let settings: IntelligenceSettings = fixture("settings", SETTINGS);
         let library: EvidenceLibraryPage = fixture("library", LIBRARY);
-        let routines: SavedRoutineList = fixture("routines", ROUTINES);
-        let follow_ups: FollowUpPage = fixture("follow-ups", FOLLOW_UPS);
         let doctor: DoctorCollection = fixture("doctor", DOCTOR);
-        assert_eq!(page.messages.len(), 3);
-        assert_eq!(routines.items[0].title, "Evening walk");
-        assert_eq!(
-            follow_ups.items[0].display_title,
-            Some(Some("Evening walk".into()))
-        );
         assert_eq!(doctor.items.as_ref().unwrap()[0].title, "Ask about sleep");
-        assert_eq!(
-            insights.items[0].insights.as_ref().unwrap()[0].title,
-            "Steady walks"
-        );
-        assert!(settings.enabled);
         assert_eq!(library.entries[0].title, "Lisinopril");
         assert_eq!(library.entries[1].title, "LDL cholesterol");
-        assert_eq!(
-            page.messages[1].sources.as_ref().unwrap()[0].title,
-            "Sleep note"
-        );
     }
 
     #[tokio::test]
-    async fn a_message_source_opens_and_evidence_can_be_corrected_or_deleted() {
+    async fn evidence_can_be_corrected_or_deleted() {
         let (path, store) = temp_store();
         let app = router(store);
-        let opened = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/sleep-note")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert!(opened.status().is_success());
-        let detail: ConversationSourceDetail = serde_json::from_str(&body(opened).await).unwrap();
-        assert_eq!(detail.text, "About seven hours, from the sleep note.");
-        assert_eq!(detail.reference.title, "Sleep note");
-        let revision = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/sleep-note/revision")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert!(revision.status().is_success());
-        let view: duet_wire::models::EvidenceRevisionView =
-            serde_json::from_str(&body(revision).await).unwrap();
-        assert_eq!(
-            view.payload.flatten().unwrap()["body"],
-            "About seven hours, from the sleep note."
-        );
-        let missing = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/conversation/messages/00000000-0000-0000-0000-000000000002/sources/missing")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(missing.status(), StatusCode::NOT_FOUND);
-
         let correction = serde_json::json!({
             "items": [{
                 "id": "00000000-0000-0000-0000-000000000071",
@@ -1076,77 +631,6 @@ mod tests {
         );
         let _ = fs::remove_file(&path);
         let _ = fs::remove_file(writes_beside(&path));
-    }
-
-    #[tokio::test]
-    async fn a_send_survives_reopening_the_state_file() {
-        let (path, store) = temp_store();
-        let app = router(store);
-        let request = ConversationSendRequest::new(
-            uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000030").unwrap(),
-            "keys for \"hello\"".into(),
-            "US/Arizona".into(),
-        );
-        let response = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri("/api/conversation/messages")
-                    .header("content-type", "application/json")
-                    .body(Body::from(serde_json::to_vec(&request).unwrap()))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(response.status(), StatusCode::ACCEPTED);
-        let acceptance: ConversationAcceptance =
-            serde_json::from_str(&body(response).await).unwrap();
-        assert_eq!(acceptance.message.text, "keys for \"hello\"");
-
-        let reopened = Arc::new(Mutex::new(Store::open(&path).unwrap()));
-        let page = router(reopened)
-            .oneshot(
-                Request::builder()
-                    .uri("/api/conversation/messages")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let page: ConversationPage = serde_json::from_str(&body(page).await).unwrap();
-        assert_eq!(page.messages.len(), 4);
-        assert_eq!(page.messages[3].text, "keys for \"hello\"");
-        let _ = fs::remove_file(path);
-    }
-
-    #[tokio::test]
-    async fn the_same_id_is_not_stored_twice() {
-        let (path, store) = temp_store();
-        let id = uuid::Uuid::parse_str("00000000-0000-0000-0000-000000000031").unwrap();
-        let first = ConversationSendRequest::new(id, "Ping".into(), "US/Arizona".into());
-        let second = ConversationSendRequest::new(id, "Other".into(), "US/Arizona".into());
-        let app = router(store);
-        for request in [first, second] {
-            let response = app
-                .clone()
-                .oneshot(
-                    Request::builder()
-                        .method("POST")
-                        .uri("/api/conversation/messages")
-                        .header("content-type", "application/json")
-                        .body(Body::from(serde_json::to_vec(&request).unwrap()))
-                        .unwrap(),
-                )
-                .await
-                .unwrap();
-            assert_eq!(response.status(), StatusCode::ACCEPTED);
-        }
-        let saved: Vec<ConversationMessage> =
-            serde_json::from_str(&fs::read_to_string(&path).unwrap()).unwrap();
-        assert_eq!(saved.len(), 1);
-        assert_eq!(saved[0].text, "Ping");
-        let _ = fs::remove_file(path);
     }
 
     #[tokio::test]
@@ -1326,119 +810,6 @@ mod tests {
         assert!(again.items.unwrap_or_default().is_empty());
         assert!(again.note.flatten().is_none());
         assert!(again.page.is_none());
-        let _ = fs::remove_file(&path);
-        let _ = fs::remove_file(writes_beside(&path));
-    }
-
-    #[tokio::test]
-    async fn a_plan_edit_and_a_paused_reminder_stay() {
-        let (path, store) = temp_store();
-        let app = router(store);
-        let routine = "00000000-0000-0000-0000-000000000041";
-        let follow_up = "00000000-0000-0000-0000-000000000042";
-        let save =
-            SavedRoutineUpdateRequest::new("A longer walk.".into(), 1, "Morning walk".into());
-        let saved = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("PUT")
-                    .uri(format!("/api/saved-routines/{routine}"))
-                    .header("content-type", "application/json")
-                    .body(Body::from(serde_json::to_vec(&save).unwrap()))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let status = saved.status();
-        let text = body(saved).await;
-        assert!(status.is_success(), "plan save {status}: {text}");
-        let saved: SavedRoutine = serde_json::from_str(&text).unwrap();
-        assert_eq!(saved.title, "Morning walk");
-        assert_eq!(saved.revision, 2);
-        let stale = SavedRoutineUpdateRequest::new("Other".into(), 1, "Other".into());
-        let rejected = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("PUT")
-                    .uri(format!("/api/saved-routines/{routine}"))
-                    .header("content-type", "application/json")
-                    .body(Body::from(serde_json::to_vec(&stale).unwrap()))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(rejected.status(), StatusCode::CONFLICT);
-        let listed = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/saved-routines")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let listed: SavedRoutineList = serde_json::from_str(&body(listed).await).unwrap();
-        assert_eq!(listed.items[0].title, "Morning walk");
-        assert_eq!(listed.items[0].body, "A longer walk.");
-        let removed = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("DELETE")
-                    .uri(format!("/api/saved-routines/{routine}?expected_revision=2"))
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        assert_eq!(removed.status(), StatusCode::NO_CONTENT);
-        let after = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .uri("/api/saved-routines")
-                    .body(Body::empty())
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let after: SavedRoutineList = serde_json::from_str(&body(after).await).unwrap();
-        assert!(after.items.iter().all(|item| item.title != "Morning walk"));
-        assert!(after.items.iter().all(|item| item.title != "Evening walk"));
-
-        let pause = FollowUpVersionRequest::new(1);
-        let paused = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri(format!("/api/follow-ups/{follow_up}/pause"))
-                    .header("content-type", "application/json")
-                    .body(Body::from(serde_json::to_vec(&pause).unwrap()))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let paused: FollowUp = serde_json::from_str(&body(paused).await).unwrap();
-        assert_eq!(paused.state, FollowUpState::Paused);
-        let resume = FollowUpVersionRequest::new(paused.revision);
-        let resumed = app
-            .clone()
-            .oneshot(
-                Request::builder()
-                    .method("POST")
-                    .uri(format!("/api/follow-ups/{follow_up}/resume"))
-                    .header("content-type", "application/json")
-                    .body(Body::from(serde_json::to_vec(&resume).unwrap()))
-                    .unwrap(),
-            )
-            .await
-            .unwrap();
-        let resumed: FollowUp = serde_json::from_str(&body(resumed).await).unwrap();
-        assert_eq!(resumed.state, FollowUpState::Active);
         let _ = fs::remove_file(&path);
         let _ = fs::remove_file(writes_beside(&path));
     }

@@ -16,37 +16,15 @@ pub mod health_upload;
 pub mod identity;
 pub mod retention;
 pub mod session;
-pub mod streaming;
 
 pub mod refusal;
 
 use duet_wire::apis::configuration::Configuration;
 pub use duet_wire::models::AccountMoment;
-pub use duet_wire::models::ConversationAcceptance;
-pub use duet_wire::models::ConversationPage;
 pub use duet_wire::models::EvidenceLibraryPage;
 pub use duet_wire::models::EvidenceLibraryQuery;
-pub use duet_wire::models::InsightCyclePage;
-pub use duet_wire::models::IntelligenceSettings;
 pub use duet_wire::models::evidence_library_query::Scope as EvidenceLibraryScope;
 use serde::{Deserialize, Serialize};
-
-/// Result of reading one message without sending it again.
-#[derive(Clone, Debug, PartialEq, Eq)]
-pub enum MessageLookup {
-    /// This account already accepted the message.
-    Landed {
-        /// Server state, such as `accepted` or `running`.
-        state: String,
-    },
-    /// This account has no message with that id.
-    Missing,
-}
-
-/// A landed read confirms the send. Anything else is the warning, not a resend.
-pub fn message_confirmed(lookup: Result<MessageLookup, String>) -> bool {
-    matches!(lookup, Ok(MessageLookup::Landed { .. }))
-}
 
 /// Status of the patient's practice link and versioned `"share with my physician"` consent (`ENG-47`).
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -191,99 +169,6 @@ impl DuetClient {
             .map_err(|error| self.wire_error(error))
     }
 
-    /// Lists the conversation page.
-    pub async fn list_messages(&self) -> Result<ConversationPage, String> {
-        duet_wire::apis::conversation_api::messages_api_conversation_messages_get(
-            &self.configuration,
-            None,
-            Some(50),
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Sends one message. `id` is the message identity: a retry of an uncertain
-    /// send passes the same id so the server can reconcile it.
-    pub async fn send_message(
-        &self,
-        id: uuid::Uuid,
-        text: &str,
-        timezone: &str,
-    ) -> Result<ConversationAcceptance, String> {
-        let request = duet_wire::models::ConversationSendRequest::new(
-            id,
-            text.to_owned(),
-            timezone.to_owned(),
-        );
-        duet_wire::apis::conversation_api::send_message_api_conversation_messages_post(
-            &self.configuration,
-            request,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Reads one message by id. Does not send it again.
-    ///
-    /// `Landed` means Duet accepted it. `Missing` means this account has no such
-    /// message. A transport failure is the error, and the caller warns instead
-    /// of retrying the send.
-    pub async fn read_message(&self, id: uuid::Uuid) -> Result<MessageLookup, String> {
-        let response = self
-            .configuration
-            .client
-            .get(format!(
-                "{}/api/conversation/messages/{id}",
-                self.configuration.base_path
-            ))
-            .bearer_auth(
-                self.configuration
-                    .bearer_access_token
-                    .as_deref()
-                    .unwrap_or_default(),
-            )
-            .send()
-            .await
-            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
-        let status = response.status();
-        if status == reqwest::StatusCode::NOT_FOUND {
-            return Ok(MessageLookup::Missing);
-        }
-        let body = response
-            .text()
-            .await
-            .map_err(|_| "Duet did not answer the message lookup".to_owned())?;
-        self.observe_refusal(status, &body);
-        if !status.is_success() {
-            return Err("Duet did not confirm the message".into());
-        }
-        let value: serde_json::Value = serde_json::from_str(&body)
-            .map_err(|_| "Duet did not confirm the message".to_owned())?;
-        let state = value["state"]
-            .as_str()
-            .ok_or_else(|| "Duet did not confirm the message".to_owned())?
-            .to_owned();
-        Ok(MessageLookup::Landed { state })
-    }
-
-    /// Lists insight cycles for Today.
-    pub async fn list_insight_cycles(&self) -> Result<InsightCyclePage, String> {
-        duet_wire::apis::health_intelligence_api::list_insight_cycles_api_insight_cycles_get(
-            &self.configuration,
-            None,
-            Some(20),
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Reads intelligence settings.
-    pub async fn intelligence_settings(&self) -> Result<IntelligenceSettings, String> {
-        duet_wire::apis::health_intelligence_api::get_intelligence_settings_api_intelligence_settings_get(&self.configuration)
-            .await
-            .map_err(|error| self.wire_error(error))
-    }
-
     /// Reads the evidence library.
     pub async fn evidence_library(&self) -> Result<EvidenceLibraryPage, String> {
         let mut query = EvidenceLibraryQuery::new();
@@ -352,65 +237,6 @@ impl DuetClient {
         .map_err(|error| self.wire_error(error))
     }
 
-    /// Reopens the exact record revision a message cited, including `unavailable`
-    /// after privacy erasure. Non-record citations answer an error; use
-    /// [`DuetClient::message_source`] for those.
-    pub async fn cited_revision(
-        &self,
-        message_id: uuid::Uuid,
-        source_id: &str,
-    ) -> Result<duet_wire::models::EvidenceRevisionView, String> {
-        duet_wire::apis::default_api::read_conversation_source_revision(
-            &self.configuration,
-            Some(&message_id.to_string()),
-            source_id,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Sends one message about one exact selected record revision.
-    pub async fn send_about_record(
-        &self,
-        id: uuid::Uuid,
-        text: &str,
-        timezone: &str,
-        record_id: uuid::Uuid,
-        revision: i32,
-    ) -> Result<ConversationAcceptance, String> {
-        let mut request = duet_wire::models::ConversationSendRequest::new(
-            id,
-            text.to_owned(),
-            timezone.to_owned(),
-        );
-        // The enum tag already writes `kind`; setting the field too would duplicate it.
-        let selected = duet_wire::models::SelectedRecordContext::new(record_id, revision);
-        request.selected_context = Some(Some(Box::new(
-            duet_wire::models::ConversationSendRequestSelectedContext::Record(Box::new(selected)),
-        )));
-        duet_wire::apis::conversation_api::send_message_api_conversation_messages_post(
-            &self.configuration,
-            request,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Opens one source cited on a conversation message.
-    pub async fn message_source(
-        &self,
-        message_id: uuid::Uuid,
-        source_id: &str,
-    ) -> Result<duet_wire::models::ConversationSourceDetail, String> {
-        duet_wire::apis::conversation_api::message_source_api_conversation_messages_message_id_sources_source_id_get(
-            &self.configuration,
-            &message_id.to_string(),
-            source_id,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
     /// Replaces the visible title of an existing library row.
     ///
     /// The correction is a new evidence upsert whose payload names the row it
@@ -469,105 +295,6 @@ impl DuetClient {
         .await
         .map(|_| ())
         .map_err(|error| self.wire_error(error))
-    }
-
-    /// Lists saved Plans.
-    pub async fn list_saved_routines(&self) -> Result<duet_wire::models::SavedRoutineList, String> {
-        duet_wire::apis::saved_routines_api::list_saved_routines_api_saved_routines_get(
-            &self.configuration,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Lists reminders and check-ins.
-    pub async fn list_follow_ups(&self) -> Result<duet_wire::models::FollowUpPage, String> {
-        duet_wire::apis::follow_ups_api::list_follow_ups_api_follow_ups_get(
-            &self.configuration,
-            None,
-            Some(50),
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Saves a new title and body for a Plan. `revision` is the one on screen.
-    pub async fn update_saved_routine(
-        &self,
-        id: uuid::Uuid,
-        revision: i32,
-        title: &str,
-        body: &str,
-    ) -> Result<duet_wire::models::SavedRoutine, String> {
-        let request = duet_wire::models::SavedRoutineUpdateRequest::new(
-            body.to_owned(),
-            revision,
-            title.to_owned(),
-        );
-        duet_wire::apis::saved_routines_api::update_saved_routine_api_saved_routines_routine_id_put(
-            &self.configuration,
-            &id.to_string(),
-            request,
-        )
-        .await
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Removes a Plan. `revision` is the one on screen.
-    pub async fn delete_saved_routine(&self, id: uuid::Uuid, revision: i32) -> Result<(), String> {
-        duet_wire::apis::saved_routines_api::delete_saved_routine_api_saved_routines_routine_id_delete(
-            &self.configuration,
-            &id.to_string(),
-            revision,
-        )
-        .await
-        .map(|_| ())
-        .map_err(|error| self.wire_error(error))
-    }
-
-    /// Pauses a reminder or check-in. `revision` is the one on screen.
-    pub async fn pause_follow_up(
-        &self,
-        id: uuid::Uuid,
-        revision: i32,
-    ) -> Result<duet_wire::models::FollowUp, String> {
-        self.set_follow_up(id, revision, true).await
-    }
-
-    /// Resumes a reminder or check-in. `revision` is the one on screen.
-    pub async fn resume_follow_up(
-        &self,
-        id: uuid::Uuid,
-        revision: i32,
-    ) -> Result<duet_wire::models::FollowUp, String> {
-        self.set_follow_up(id, revision, false).await
-    }
-
-    async fn set_follow_up(
-        &self,
-        id: uuid::Uuid,
-        revision: i32,
-        pause: bool,
-    ) -> Result<duet_wire::models::FollowUp, String> {
-        let request = duet_wire::models::FollowUpVersionRequest::new(revision);
-        let id = id.to_string();
-        if pause {
-            duet_wire::apis::follow_ups_api::pause_follow_up_api_follow_ups_follow_up_id_pause_post(
-                &self.configuration,
-                &id,
-                request,
-            )
-            .await
-            .map_err(|error| self.wire_error(error))
-        } else {
-            duet_wire::apis::follow_ups_api::resume_follow_up_api_follow_ups_follow_up_id_resume_post(
-                &self.configuration,
-                &id,
-                request,
-            )
-            .await
-            .map_err(|error| self.wire_error(error))
-        }
     }
 
     /// Reads the For my doctor collection.
@@ -1058,40 +785,6 @@ mod tests {
     use duet_wire::models::MomentKind;
 
     #[tokio::test]
-    async fn read_message_confirms_a_landed_id_and_warns_otherwise() {
-        let landed = uuid::Uuid::new_v4();
-        let app = axum::Router::new().route(
-            "/api/conversation/messages/{message_id}",
-            get(
-                move |axum::extract::Path(id): axum::extract::Path<uuid::Uuid>| async move {
-                    if id == landed {
-                        (
-                            reqwest::StatusCode::OK,
-                            Json(serde_json::json!({"id": id, "state": "accepted"})),
-                        )
-                    } else {
-                        (
-                            reqwest::StatusCode::NOT_FOUND,
-                            Json(serde_json::json!("missing")),
-                        )
-                    }
-                },
-            ),
-        );
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let address = listener.local_addr().unwrap();
-        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-        let client =
-            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
-        assert!(message_confirmed(client.read_message(landed).await));
-        assert!(!message_confirmed(
-            client.read_message(uuid::Uuid::new_v4()).await
-        ));
-        let silent = DuetClient::new("http://127.0.0.1:1", "test-token", "200", "1.0.0").unwrap();
-        assert!(!message_confirmed(silent.read_message(landed).await));
-    }
-
-    #[tokio::test]
     async fn lists_moments_from_a_json_server() {
         let moment = AccountMoment::new(
             uuid::Uuid::nil(),
@@ -1118,26 +811,8 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn reads_the_four_tab_roots() {
+    async fn reads_the_library_and_sharing_status() {
         let app = axum::Router::new()
-            .route(
-                "/api/conversation/messages",
-                get(|| async {
-                    Json(serde_json::json!({
-                        "availability": {"can_send": true},
-                        "messages": [],
-                        "revision": 1
-                    }))
-                }),
-            )
-            .route(
-                "/api/insight-cycles",
-                get(|| async { Json(serde_json::json!({"items": []})) }),
-            )
-            .route(
-                "/api/intelligence/settings",
-                get(|| async { Json(serde_json::json!({"enabled": true})) }),
-            )
             .route(
                 "/api/evidence/library",
                 axum::routing::post(|| async {
@@ -1163,80 +838,8 @@ mod tests {
         tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
         let client =
             DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
-        assert!(client.list_messages().await.unwrap().messages.is_empty());
-        assert!(client.list_insight_cycles().await.unwrap().items.is_empty());
-        assert!(client.intelligence_settings().await.unwrap().enabled);
         assert_eq!(client.evidence_library().await.unwrap().total_count, 0);
         assert!(!client.physician_sharing_status().await.unwrap().linked);
-    }
-
-    #[tokio::test]
-    async fn send_message_posts_the_callers_id() {
-        let posted = std::sync::Arc::new(std::sync::Mutex::new(Vec::new()));
-        let recorded = posted.clone();
-        let app = axum::Router::new().route(
-            "/api/conversation/messages",
-            axum::routing::post(move |Json(body): Json<serde_json::Value>| {
-                let recorded = recorded.clone();
-                async move {
-                    let id = body["id"].as_str().unwrap_or_default().to_owned();
-                    let text = body["text"].as_str().unwrap_or_default().to_owned();
-                    recorded.lock().unwrap().push(id.clone());
-                    if text == "fail" {
-                        return (
-                            axum::http::StatusCode::INTERNAL_SERVER_ERROR,
-                            Json(serde_json::json!({"detail": "unavailable"})),
-                        );
-                    }
-                    (
-                        axum::http::StatusCode::ACCEPTED,
-                        Json(serde_json::json!({
-                            "message": {
-                                "created_at": "2026-10-09T15:00:00Z",
-                                "id": id,
-                                "revision": 1,
-                                "role": "user",
-                                "sequence": 1,
-                                "state": "complete",
-                                "text": text,
-                                "updated_at": "2026-10-09T15:00:00Z"
-                            },
-                            "revision": 2,
-                            "run": {
-                                "assistant_message_id": null,
-                                "created_at": "2026-10-09T15:00:00Z",
-                                "id": "00000000-0000-0000-0000-000000000099",
-                                "message_id": null,
-                                "revision": 1,
-                                "state": "queued",
-                                "updated_at": "2026-10-09T15:00:00Z"
-                            }
-                        })),
-                    )
-                }
-            }),
-        );
-        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-        let address = listener.local_addr().unwrap();
-        tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-        let client =
-            DuetClient::new(format!("http://{address}"), "test-token", "200", "1.0.0").unwrap();
-        let id = uuid::Uuid::nil();
-        let accepted = client
-            .send_message(id, "How did I sleep?", "America/Los_Angeles")
-            .await
-            .unwrap();
-        assert_eq!(accepted.message.id, id);
-        assert_eq!(accepted.message.text, "How did I sleep?");
-        let retry = client.send_message(id, "fail", "America/Los_Angeles").await;
-        assert!(retry.is_err());
-        assert_eq!(
-            posted.lock().unwrap().as_slice(),
-            [
-                "00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000"
-            ]
-        );
     }
 
     #[tokio::test]

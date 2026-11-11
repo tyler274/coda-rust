@@ -172,7 +172,7 @@ pub mod clinical_note {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
-/// The account cursor and source-generation fences on `public.users`.
+/// The account cursor, source-generation fences and incarnation on `public.users`.
 pub mod account {
     use sea_orm::entity::prelude::*;
 
@@ -189,6 +189,8 @@ pub mod account {
         pub apple_health_generation: i32,
         /// Health Records source generation.
         pub health_records_generation: i32,
+        /// Account incarnation that privacy receipts must name.
+        pub duet_incarnation: Uuid,
     }
 
     /// No relations are navigated.

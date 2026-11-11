@@ -6,7 +6,7 @@
 (***************************************************************************)
 EXTENDS DuetSignIn
 
-\* You're signed in, in the conversation, with entries Duet hasn't confirmed and `draft`'s unsent draft.
+\* You're signed in, with entries Duet hasn't confirmed and `draft`'s unsent draft.
 SignedInWith(draft) ==
   /\ session = [s \in Sessions |-> IF s = SessionOrder[1] THEN Live("Yours") ELSE Unused]
   /\ accepted = [a \in Accounts |-> a = "Yours"]

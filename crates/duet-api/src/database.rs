@@ -204,22 +204,6 @@ impl AccountDatabase {
         Ok(database)
     }
 
-    /// Producer-only due-work discovery; no instruction or clinical prose.
-    pub async fn due_follow_up_accounts(&self) -> Result<Vec<Uuid>, sqlx::Error> {
-        sqlx::query_scalar(
-            "select user_id from public.duet_due_follow_up_accounts order by user_id limit 32",
-        )
-        .fetch_all(&self.pool)
-        .await
-    }
-    /// Bounded accepted-work recovery directory, with no private content.
-    pub async fn pending_commands(&self) -> Result<Vec<(Uuid, Uuid)>, sqlx::Error> {
-        sqlx::query_as(
-            "select user_id,id from public.duet_pending_commands order by user_id,id limit 32",
-        )
-        .fetch_all(&self.pool)
-        .await
-    }
     /// Shared atomic budget for a valid public retrieval.
     pub async fn admit_public_retrieval(&self) -> Result<bool, sqlx::Error> {
         sqlx::query_scalar("select public.duet_admit_public_retrieval()")

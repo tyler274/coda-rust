@@ -27,7 +27,7 @@ pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 # test time: four slow physician scale suites and the Pub/Sub emulator suites.
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
-  --test database_foundation --test pg_moments --test steering
+  --test database_foundation --test pg_moments
   --test runtime_postgres --test runtime_publication --test runtime_recovery
   --test redis --test fanout --test worker --test recovery --test try_again)
 shard_2_targets=(--test stop --test chat_draft --test reply_revision
@@ -44,17 +44,9 @@ shard_1() {
   # These identity targets must never silently return without exercising Postgres.
   pg_test --test identity
   pg_test --test luna_journal
-  # Admission capability exists only in cfg(test); real SQL proof is mandatory.
-  pg_test --lib conversation::tests::postgres_acceptance_isolation_dedup_restart_and_withdrawal -- --exact
-  pg_test --lib conversation::tests::postgres_operator_switch_allowance_and_context -- --exact
-  pg_test --lib conversation::tests::postgres_retry_context_reports_earlier_attempt -- --exact
-  pg_test --lib conversation_execution::tests::postgres_dispatch_claim_stream_completion_and_recovery -- --exact
   DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" pg_test --test database_foundation -- --exact fresh_and_upgrade_keep_identity_and_enforce_account_scope
   # Typed moments retain account scoping, ordering and the privacy-journal gate.
   DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" pg_test --test pg_moments
-  # ENG-200: a same-conversation message steers the reply in progress; one paid
-  # run, idempotent retries, restart survival and the ENG-191 refusals.
-  DUET_TEST_DATABASE_URL="$DUET_IDENTITY_TEST_DATABASE_URL" pg_test --test steering
   # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
   pg_test --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
   # Explicitly select ignored real-database proofs; serial execution prevents

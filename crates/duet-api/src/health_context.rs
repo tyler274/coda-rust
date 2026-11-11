@@ -17,7 +17,7 @@ use crate::{
 };
 use chrono::{DateTime, Datelike, Duration, NaiveDate, Utc};
 use duet_wire::models::{HealthFactInput, HealthFactKind, HealthWindow, InsightCycleKind};
-use sea_orm::{ColumnTrait, EntityTrait, QueryFilter, QueryTrait};
+use sea_orm::{EntityTrait, QueryTrait};
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
@@ -620,85 +620,6 @@ fn week_start(day: NaiveDate, weekday: u8) -> NaiveDate {
         (i64::from(day.weekday().num_days_from_sunday()) - i64::from(weekday - 1)).rem_euclid(7),
     )
 }
-/// Resolve a chat selection against the account's retained measurement facts. The
-/// submitted copy identifies what the patient selected; only the producer supplies evidence.
-pub(crate) async fn selected_measurement(
-    tx: &mut Transaction<'_, Postgres>,
-    account: Uuid,
-    selection: &duet_wire::models::SelectedMeasurementContextInput,
-) -> Result<(HealthFactInput, DateTime<Utc>), ApiError> {
-    let unavailable = || ApiError::Conflict("selected_context_unavailable");
-    let query = context_row::Entity::find_by_id(account)
-        .filter(context_row::Column::Revision.eq(i64::from(selection.health_context_revision)))
-        .filter(context_row::Column::SourceBoundaryId.eq(selection.source_boundary_id));
-    let row: context_row::Model = orm::model(tx, &query.into_query())
-        .await?
-        .ok_or_else(unavailable)?;
-    let projections = row
-        .projections
-        .as_array()
-        .ok_or_else(|| ApiError::Storage("invalid retained projections".into()))?;
-    if projections.is_empty() {
-        return Err(unavailable());
-    }
-    let retained = row
-        .facts
-        .as_array()
-        .ok_or_else(|| ApiError::Storage("invalid retained health facts".into()))?
-        .iter()
-        .find(|fact| fact["id"].as_str() == Some(&selection.fact.id))
-        .cloned()
-        .ok_or_else(unavailable)?;
-    let retained_at = row.generated_at;
-    if row.producer_fingerprint.is_some() {
-        let stored = stored_context(row).map_err(|_| unavailable())?;
-        current(tx, account, &stored)
-            .await
-            .map_err(|_| unavailable())?;
-    }
-    let fact: HealthFactInput = serde_json::from_value(retained)
-        .map_err(|_| ApiError::Storage("invalid retained health fact".into()))?;
-    let connection = selection
-        .source
-        .connection_id
-        .as_ref()
-        .and_then(|v| v.as_deref());
-    if comparison_fact(&fact)? != comparison_fact(&selection.fact)?
-        || !fact.concept_ids.contains(&selection.measurement_id)
-        || !fact.evidence.iter().any(|source| {
-            source.source_kind.as_ref().and_then(|v| v.as_deref())
-                == Some(selection.source.kind.as_str())
-                && connection.is_none_or(|id| {
-                    source
-                        .source_connection_ids
-                        .as_ref()
-                        .is_some_and(|ids| ids.iter().any(|v| v == id))
-                })
-        })
-    {
-        return Err(unavailable());
-    }
-    Ok((fact, retained_at))
-}
-
-// Phone clients can omit optional null fields, including on nested evidence.
-// Compare typed facts so two offsets representing the same instant also match.
-fn comparison_fact(fact: &HealthFactInput) -> Result<HealthFactInput, ApiError> {
-    fn omit_null_fields(value: &mut Value) {
-        match value {
-            Value::Object(fields) => {
-                fields.retain(|_, field| !field.is_null());
-                fields.values_mut().for_each(omit_null_fields);
-            }
-            Value::Array(items) => items.iter_mut().for_each(omit_null_fields),
-            _ => {}
-        }
-    }
-    let mut value = json!(fact);
-    omit_null_fields(&mut value);
-    serde_json::from_value(value).map_err(|_| ApiError::Storage("invalid health fact".into()))
-}
-
 /// Same-transaction freshness check for canonical-context consumers. Call only
 /// after the account lock; never substitute a doctor-device generation.
 pub async fn validate_current_in_transaction(

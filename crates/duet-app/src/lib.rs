@@ -1,4 +1,4 @@
-//! Duet's four tab roots. SwiftUI remains the shipping iPhone app.
+//! Duet's two tab roots, You and Shared. SwiftUI remains the shipping iPhone app.
 //! Book: `book/src/ui-surface-map.md`.
 #![deny(missing_docs)]
 #![allow(
@@ -17,7 +17,6 @@ mod publication;
 mod records;
 mod resolution;
 mod roots;
-pub use records::{ChatHandoff, RecordSelection};
 mod selection;
 pub use account::{DuetRoot, PatientSession};
 pub use approval::proposal_save;
@@ -29,34 +28,19 @@ use std::time::Duration;
 
 use dioxus::prelude::*;
 use duet_client::DuetClient;
-use duet_notify::{
-    AlertSnapshot, AlertState, PlatformAlerts, insight_alerts_wanted, plan_insight_delivery,
-};
-use duet_wire::models::ConversationMessage;
+use duet_notify::{AlertSnapshot, AlertState, PlatformAlerts};
 use roots::{
-    ALLOW_NOTIFICATIONS, CHAT_EMPTY_MESSAGE, CHAT_UNAVAILABLE, CHECK_UNAVAILABLE,
-    CHECK_UNAVAILABLE_DETAIL, CONNECTING, ConversationNote, ConversationRoot,
-    ConversationSourceChip, DoctorPage, INSIGHT_NOTIFICATIONS, INSIGHT_NOTIFICATIONS_DETAIL,
-    LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind, LibraryRecord, LibraryRoot, NoteOpen,
-    OPEN_NOTIFICATION_SETTINGS, REVIEWS_PAUSED, REVIEWS_PAUSED_DETAIL, SavedItemPage, TRY_AGAIN,
-    TodayRoot, closed_send, composer_open, conversation_root, date_line, doctor_page,
-    doctor_plan_section, draft_after_send, greeting, library_root, note_open, opens_doctor,
-    page_with_accepted, plan_page, reminder_page, send_id, today_root,
+    ALLOW_NOTIFICATIONS, CONNECTING, DoctorPage, LIBRARY_EMPTY, LIBRARY_UNAVAILABLE, LibraryKind,
+    LibraryRecord, LibraryRoot, OPEN_NOTIFICATION_SETTINGS, TRY_AGAIN, doctor_page,
+    doctor_plan_section, library_root,
 };
 use ui::{
-    ActionRow, Author, Button, ButtonVariant, Composer, Dialog, Disclosure, Icon, IconName,
-    ListRow, Message, NavigationControl, NavigationRow, SourcesButton, TabBar, TryAgain,
-    WorkingMark,
+    ActionRow, Button, ButtonVariant, Disclosure, Icon, IconName, NavigationControl, TabBar,
+    TryAgain,
 };
 
-const TABS: [&str; 4] = ["Duet", "Today", "You", "Shared"];
+const TABS: [&str; 2] = ["You", "Shared"];
 
-#[derive(Clone)]
-struct ThreadLoad {
-    page: duet_client::ConversationPage,
-    routines: Option<Vec<duet_wire::models::SavedRoutine>>,
-    follow_ups: Option<Vec<duet_wire::models::FollowUp>>,
-}
 const DUET_STYLES: &str = include_str!("../assets/duet.css");
 
 pub use roots::{api_base_url, api_bearer};
@@ -64,55 +48,34 @@ pub use roots::{api_base_url, api_bearer};
 #[component]
 fn PrivateRoot(base_url: String, bearer: String) -> Element {
     let mut tab = use_signal(|| 0usize);
-    let handoff_selected = use_signal(|| None::<RecordSelection>);
-    use_context_provider(|| ChatHandoff {
-        selected: handoff_selected,
-        tab,
-    });
     let mut alerts = use_signal(|| PlatformAlerts.snapshot());
-    let mut insight_alerts = use_signal(|| PlatformAlerts.insights_enabled());
     rsx! {
         ui::Stylesheet { app: DUET_STYLES }
         main { class: "duet theme-duet",
             div { class: "duet-page",
-                div { hidden: tab() != 0, ConversationTab { base_url: base_url.clone(), bearer: bearer.clone() } }
-                div { hidden: tab() != 1,
-                    TodayTab {
-                        base_url: base_url.clone(),
-                        bearer: bearer.clone(),
-                        insight_alerts,
-                    }
-                }
-                div { hidden: tab() != 2,
+                div { hidden: tab() != 0,
                     YouTab {
                         base_url: base_url.clone(),
                         bearer: bearer.clone(),
                         alerts: alerts(),
-                        insight_alerts: insight_alerts(),
                         on_allow_alerts: move |_| {
                             PlatformAlerts.request_access();
-                            alerts.set(PlatformAlerts.snapshot());
-                        },
-                        on_insight_alerts: move |enabled| {
-                            PlatformAlerts.set_insights(enabled);
-                            insight_alerts.set(PlatformAlerts.insights_enabled());
                             alerts.set(PlatformAlerts.snapshot());
                         },
                         on_open_settings: move |_| PlatformAlerts.open_settings(),
                     }
                 }
-                div { hidden: tab() != 3, SharedTab {} }
+                div { hidden: tab() != 1, SharedTab { base_url: base_url.clone(), bearer: bearer.clone() } }
             }
             TabBar {
                 label: "Sections",
                 labels: TABS.iter().map(|label| (*label).to_owned()).collect(),
-                icons: vec![IconName::Message, IconName::Sun, IconName::User, IconName::Users],
+                icons: vec![IconName::User, IconName::Users],
                 selected: tab(),
                 on_select: move |index| {
                     tab.set(index);
-                    if index == 2 {
+                    if index == 0 {
                         alerts.set(PlatformAlerts.snapshot());
-                        insight_alerts.set(PlatformAlerts.insights_enabled());
                     }
                 },
             }
@@ -235,103 +198,18 @@ enum YouEditor {
 }
 
 #[derive(Clone)]
-struct OpenedSource {
-    title: String,
-    text: Option<String>,
-    failed: bool,
-}
-
-#[derive(Clone)]
 struct EvidenceEdit {
     id: String,
     kind: LibraryKind,
     title: String,
 }
 
-#[derive(Clone)]
-enum ShownPage {
-    Doctor(DoctorPage),
-    Item(SavedItemPage),
-}
-
-impl ShownPage {
-    fn heading(&self) -> String {
-        match self {
-            ShownPage::Doctor(_) => "For my doctor".to_owned(),
-            ShownPage::Item(item) => item.heading.clone(),
-        }
-    }
-}
-
-async fn load_today(
-    base_url: String,
-    bearer: String,
-) -> Result<
-    (
-        duet_client::IntelligenceSettings,
-        duet_client::InsightCyclePage,
-    ),
-    String,
-> {
-    let api = open_client(base_url, bearer)?;
-    futures_util::future::try_join(api.intelligence_settings(), api.list_insight_cycles()).await
-}
-
-fn schedule_loaded_insights(page: &duet_client::InsightCyclePage) {
-    let state = PlatformAlerts.snapshot().state;
-    if state == AlertState::Allowed {
-        PlatformAlerts.register_remote();
-    }
-    if !insight_alerts_wanted(PlatformAlerts.insights_enabled(), state) {
-        PlatformAlerts.cancel_insight();
-        return;
-    }
-    let cycles: Vec<(uuid::Uuid, bool)> = page
-        .items
-        .iter()
-        .map(|cycle| {
-            (
-                cycle.id,
-                cycle
-                    .insights
-                    .as_ref()
-                    .is_some_and(|insights| !insights.is_empty()),
-            )
-        })
-        .collect();
-    let Some(delivery) = plan_insight_delivery(
-        chrono::Local::now(),
-        &cycles,
-        PlatformAlerts.last_planned_cycle(),
-    ) else {
-        return;
-    };
-    PlatformAlerts.submit_insight(&delivery);
-}
-
 #[component]
-fn ConversationTab(base_url: String, bearer: String) -> Element {
-    let handoff = try_use_context::<ChatHandoff>();
-    let fallback_selection = use_signal(|| None::<RecordSelection>);
-    let mut selected_record = handoff.map(|h| h.selected).unwrap_or(fallback_selection);
+fn SharedTab(base_url: String, bearer: String) -> Element {
     let mut attempt = use_signal(|| 0u32);
     let mut loading = use_signal(|| true);
-    let mut cache = use_signal(|| None);
-    let mut draft = use_signal(String::new);
-    let mut pending_id = use_signal(|| None::<(uuid::Uuid, String)>);
-    let uncertain = try_use_context::<account::UncertainMessage>();
-    use_effect(move || {
-        if let Some(mut slot) = uncertain {
-            slot.0.set(pending_id().map(|(id, _)| id));
-        }
-    });
-    let mut sending = use_signal(|| false);
-    let mut send_failed = use_signal(|| false);
-    let mut accepted = use_signal(|| None::<ConversationMessage>);
-    let mut routines = use_signal(Vec::new);
-    let mut follow_ups = use_signal(Vec::new);
     let mut doctor = use_signal(|| None);
-    let mut open_item = use_signal(|| None::<NoteOpen>);
+    let mut doctor_open = use_signal(|| false);
     let mut saving_page = use_signal(|| false);
     let mut page_failed = use_signal(|| false);
     let patient = use_context::<PatientSession>();
@@ -436,7 +314,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             confirmed_medications.set(draft.save.confirmed_medication_ids.unwrap_or_default());
             draft_proposal.set(draft.save.proposal_id.flatten());
             draft_uncertain.set(draft.uncertain_save);
-            open_item.set(Some(NoteOpen::Doctor));
+            doctor_open.set(true);
             doctor_editing.set(true);
         }
     };
@@ -455,20 +333,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
     };
     let mut confirm_fresh = use_signal(|| false);
     let mut fresh_failed = use_signal(|| false);
-    let mut editing = use_signal(|| false);
-    let mut plan_title = use_signal(String::new);
-    let mut plan_body = use_signal(String::new);
-    let mut confirm_remove = use_signal(|| false);
-    let mut removed_plan = use_signal(|| false);
-    let mut plan_save_failed = use_signal(|| false);
-    let mut plan_remove_failed = use_signal(|| false);
-    let mut follow_failed = use_signal(|| false);
-    let mut changing = use_signal(|| false);
-    let mut opened_source = use_signal(|| None::<OpenedSource>);
-    let mut message_sources = use_signal(|| None::<Vec<ConversationSourceChip>>);
     let export_url = base_url.clone();
-    let send_url = base_url.clone();
-    let send_bearer = bearer.clone();
+    let page_url = base_url.clone();
+    let page_bearer = bearer.clone();
     let reconcile_owner = patient.retention.clone();
     let reconcile_fence = patient.fence.clone();
     let workspace_url = base_url.clone();
@@ -522,379 +389,14 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             doctor.set(Some(collection));
         }
     });
-    let mut provisional = use_signal(duet_client::streaming::Provisional::default);
-    let stream_url = base_url.clone();
-    let stream_bearer = bearer.clone();
-    let stream_owner = patient.retention.clone();
-    let stream_fence = patient.fence.clone();
-    use_future(move || {
-        let url = stream_url.clone();
-        let bearer = stream_bearer.clone();
-        let owner = stream_owner.clone();
-        let fence = stream_fence.clone();
-        async move {
-            loop {
-                if !owner.session().is_current(&fence) {
-                    provisional.set(Default::default());
-                    break;
-                }
-                let command = cache
-                    .peek()
-                    .as_ref()
-                    .and_then(|page: &duet_client::ConversationPage| page.active_run.as_ref())
-                    .and_then(|run| run.as_ref())
-                    .map(|run| run.id);
-                if let Some(command) = command {
-                    let Ok(api) = open_client(url.clone(), bearer.clone()) else {
-                        break;
-                    };
-                    let mut next = provisional.peek().clone();
-                    if next.command != Some(command) {
-                        next = duet_client::streaming::Provisional::new(command);
-                    }
-                    let prior = next.after;
-                    match api.conversation_events(command, next.after).await {
-                        Ok(events) if owner.session().is_current(&fence) => {
-                            if next.apply(command, &events).is_err() {
-                                next.clear();
-                            }
-                            if next.stopped && next.after != prior {
-                                attempt.set(attempt() + 1);
-                            }
-                            provisional.set(next);
-                        }
-                        _ => {
-                            next.clear();
-                            provisional.set(next);
-                        }
-                    }
-                } else if provisional.peek().command.is_some() {
-                    provisional.set(Default::default());
-                }
-                futures_timer::Delay::new(Duration::from_millis(500)).await;
-            }
-        }
-    });
-    let resource = use_resource(move || {
-        let _attempt = attempt();
-        let base_url = base_url.clone();
-        let bearer = bearer.clone();
-        async move {
-            let api = open_client(base_url, bearer)?;
-            let (page, routines, follow_ups) = futures_util::future::try_join3(
-                api.list_messages(),
-                async { Ok(api.list_saved_routines().await.ok().map(|list| list.items)) },
-                async { Ok(api.list_follow_ups().await.ok().map(|page| page.items)) },
-            )
-            .await?;
-            Ok::<_, String>(ThreadLoad {
-                page,
-                routines,
-                follow_ups,
-            })
-        }
-    });
-    use_effect(move || {
-        loading.set(resource().is_none());
-        if let Some(Ok(loaded)) = resource() {
-            if let Some(items) = loaded.routines.clone() {
-                routines.set(items);
-            }
-            if let Some(items) = loaded.follow_ups.clone() {
-                follow_ups.set(items);
-            }
-            let page = match accepted() {
-                Some(message) => {
-                    let merged = page_with_accepted(loaded.page.clone(), message.clone());
-                    if loaded
-                        .page
-                        .messages
-                        .iter()
-                        .any(|item| item.id == message.id)
-                    {
-                        accepted.set(None);
-                    }
-                    merged
-                }
-                None => loaded.page,
-            };
-            cache.set(Some(page));
-        }
-    });
-    let current = resource();
-    let failed = matches!(current, Some(Err(_)));
-    let page = if accepted().is_some() {
-        cache()
+    use_effect(move || loading.set(workspace().is_none()));
+    let shown = if doctor_open() {
+        doctor().as_ref().map(doctor_page)
     } else {
-        match current {
-            Some(Ok(loaded)) => Some(loaded.page),
-            _ => cache(),
-        }
+        None
     };
-    let root = page
-        .as_ref()
-        .map(|page| conversation_root(page, &routines(), &follow_ups(), doctor().as_ref()));
-    let retry = move |_| attempt.set(attempt() + 1);
-    let shown = match open_item() {
-        Some(NoteOpen::Doctor) => doctor().as_ref().map(doctor_page).map(ShownPage::Doctor),
-        Some(NoteOpen::Routine(_)) if removed_plan() => Some(ShownPage::Item(SavedItemPage {
-            heading: "Plan".to_owned(),
-            title: None,
-            detail: Some("This saved plan was removed.".to_owned()),
-        })),
-        Some(NoteOpen::Routine(id)) => routines()
-            .iter()
-            .find(|routine| routine.id == id)
-            .map(plan_page)
-            .map(ShownPage::Item),
-        Some(NoteOpen::FollowUp(id)) => follow_ups()
-            .iter()
-            .find(|follow_up| follow_up.id == id)
-            .map(reminder_page)
-            .map(ShownPage::Item),
-        None => None,
-    };
-    let can_compose = page.as_ref().is_some_and(composer_open) && shown.is_none();
-    let closed = page.as_ref().and_then(closed_send);
-    let page_url = send_url.clone();
-    let page_bearer = send_bearer.clone();
-    let submit = move |text: String| {
-        if sending() {
-            return;
-        }
-        if text.trim().is_empty() {
-            return;
-        }
-        draft.set(text.clone());
-        let pending = pending_id();
-        let id = send_id(
-            pending
-                .as_ref()
-                .map(|(id, pending_text)| (*id, pending_text.as_str())),
-            &text,
-            uuid::Uuid::new_v4(),
-        );
-        pending_id.set(Some((id, text.clone())));
-        sending.set(true);
-        send_failed.set(false);
-        let base_url = send_url.clone();
-        let bearer = send_bearer.clone();
-        let selection = selected_record.peek().clone();
-        let shown = page.clone();
-        spawn(async move {
-            let timezone = match iana_time_zone::get_timezone() {
-                Ok(timezone) => timezone,
-                Err(_) => {
-                    send_failed.set(true);
-                    sending.set(false);
-                    return;
-                }
-            };
-            let api = match open_client(base_url, bearer) {
-                Ok(api) => api,
-                Err(_) => {
-                    send_failed.set(true);
-                    sending.set(false);
-                    return;
-                }
-            };
-            let sent = match &selection {
-                Some(record) => {
-                    api.send_about_record(id, &text, &timezone, record.record_id, record.revision)
-                        .await
-                }
-                None => api.send_message(id, &text, &timezone).await,
-            };
-            match sent {
-                Ok(admission) => {
-                    if selection.is_some() {
-                        selected_record.set(None);
-                    }
-                    let message = *admission.message;
-                    accepted.set(Some(message.clone()));
-                    if let Some(base) = shown {
-                        cache.set(Some(page_with_accepted(base, message)));
-                    }
-                    draft.set(draft_after_send(&draft(), true));
-                    pending_id.set(None);
-                    send_failed.set(false);
-                    attempt.set(attempt() + 1);
-                }
-                Err(_) => {
-                    draft.set(draft_after_send(&draft(), false));
-                    send_failed.set(true);
-                }
-            }
-            sending.set(false);
-        });
-    };
-    let plan_url = page_url.clone();
-    let plan_bearer = page_bearer.clone();
-    let remove_url = page_url.clone();
-    let remove_bearer = page_bearer.clone();
-    let pause_url = page_url.clone();
-    let pause_bearer = page_bearer.clone();
-    let resume_url = page_url.clone();
-    let resume_bearer = page_bearer.clone();
     let fresh_url = page_url.clone();
     let fresh_bearer = page_bearer.clone();
-    let source_url = page_url.clone();
-    let source_bearer = page_bearer.clone();
-    let save_plan = move |_| {
-        if changing() {
-            return;
-        }
-        let Some(NoteOpen::Routine(id)) = open_item() else {
-            return;
-        };
-        let title = plan_title().trim().to_owned();
-        let body = plan_body().trim().to_owned();
-        if title.is_empty() || body.is_empty() {
-            return;
-        }
-        let Some(revision) = routines()
-            .iter()
-            .find(|routine| routine.id == id)
-            .map(|routine| routine.revision)
-        else {
-            return;
-        };
-        changing.set(true);
-        plan_save_failed.set(false);
-        let base_url = plan_url.clone();
-        let bearer = plan_bearer.clone();
-        spawn(async move {
-            let saved = match open_client(base_url, bearer) {
-                Ok(api) => api.update_saved_routine(id, revision, &title, &body).await,
-                Err(_) => Err(String::new()),
-            };
-            match saved {
-                Ok(routine) => {
-                    let mut items = routines();
-                    if let Some(item) = items.iter_mut().find(|item| item.id == routine.id) {
-                        *item = routine;
-                    }
-                    routines.set(items);
-                    editing.set(false);
-                    plan_save_failed.set(false);
-                }
-                Err(_) => plan_save_failed.set(true),
-            }
-            changing.set(false);
-        });
-    };
-    let remove_plan = move |_| {
-        if changing() {
-            return;
-        }
-        let Some(NoteOpen::Routine(id)) = open_item() else {
-            return;
-        };
-        let Some(revision) = routines()
-            .iter()
-            .find(|routine| routine.id == id)
-            .map(|routine| routine.revision)
-        else {
-            return;
-        };
-        changing.set(true);
-        plan_remove_failed.set(false);
-        let base_url = remove_url.clone();
-        let bearer = remove_bearer.clone();
-        spawn(async move {
-            let saved = match open_client(base_url, bearer) {
-                Ok(api) => api.delete_saved_routine(id, revision).await,
-                Err(_) => Err(String::new()),
-            };
-            match saved {
-                Ok(()) => {
-                    let mut items = routines();
-                    items.retain(|item| item.id != id);
-                    routines.set(items);
-                    editing.set(false);
-                    confirm_remove.set(false);
-                    removed_plan.set(true);
-                    plan_remove_failed.set(false);
-                }
-                Err(_) => plan_remove_failed.set(true),
-            }
-            changing.set(false);
-        });
-    };
-    let pause_reminder = move |_| {
-        if changing() {
-            return;
-        }
-        let Some(NoteOpen::FollowUp(id)) = open_item() else {
-            return;
-        };
-        let Some(revision) = follow_ups()
-            .iter()
-            .find(|follow_up| follow_up.id == id)
-            .map(|follow_up| follow_up.revision)
-        else {
-            return;
-        };
-        changing.set(true);
-        follow_failed.set(false);
-        let base_url = pause_url.clone();
-        let bearer = pause_bearer.clone();
-        spawn(async move {
-            let saved = match open_client(base_url, bearer) {
-                Ok(api) => api.pause_follow_up(id, revision).await,
-                Err(_) => Err(String::new()),
-            };
-            match saved {
-                Ok(follow_up) => {
-                    let mut items = follow_ups();
-                    if let Some(item) = items.iter_mut().find(|item| item.id == follow_up.id) {
-                        *item = follow_up;
-                    }
-                    follow_ups.set(items);
-                    follow_failed.set(false);
-                }
-                Err(_) => follow_failed.set(true),
-            }
-            changing.set(false);
-        });
-    };
-    let resume_reminder = move |_| {
-        if changing() {
-            return;
-        }
-        let Some(NoteOpen::FollowUp(id)) = open_item() else {
-            return;
-        };
-        let Some(revision) = follow_ups()
-            .iter()
-            .find(|follow_up| follow_up.id == id)
-            .map(|follow_up| follow_up.revision)
-        else {
-            return;
-        };
-        changing.set(true);
-        follow_failed.set(false);
-        let base_url = resume_url.clone();
-        let bearer = resume_bearer.clone();
-        spawn(async move {
-            let saved = match open_client(base_url, bearer) {
-                Ok(api) => api.resume_follow_up(id, revision).await,
-                Err(_) => Err(String::new()),
-            };
-            match saved {
-                Ok(follow_up) => {
-                    let mut items = follow_ups();
-                    if let Some(item) = items.iter_mut().find(|item| item.id == follow_up.id) {
-                        *item = follow_up;
-                    }
-                    follow_ups.set(items);
-                    follow_failed.set(false);
-                }
-                Err(_) => follow_failed.set(true),
-            }
-            changing.set(false);
-        });
-    };
     let save_page = move |_| {
         if saving_page()
             || !doctor_draft_ready(&doctor_birth(), &doctor_cover(), &doctor_questions())
@@ -1221,11 +723,16 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
         });
     };
     rsx! {
-        resolution::OperationRecovery { base_url: doctor_source_url.clone(), on_released: move |_| { attempt.set(attempt() + 1); open_item.set(None); } }
-        selection::DeviceSources { base_url: doctor_source_url.clone(), blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); }, on_recheck: move |_| attempt.set(attempt() + 1) }
-        selection::DoctorSources { base_url: doctor_source_url, blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); open_item.set(Some(NoteOpen::Doctor)); } }
-        if let Some(Err(error)) = workspace() { p { role: "alert", "For my doctor: {error}" } }
-        if doctor().is_some() && open_item().is_none() { NavigationControl { onclick: move |_| open_item.set(Some(NoteOpen::Doctor)), "Open For my doctor" } }
+        resolution::OperationRecovery { base_url: doctor_source_url.clone(), on_released: move |_| { attempt.set(attempt() + 1); doctor_open.set(false); } }
+        selection::DeviceSources { base_url: doctor_source_url.clone(), blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); doctor_open.set(true); }, on_recheck: move |_| attempt.set(attempt() + 1) }
+        selection::DoctorSources { base_url: doctor_source_url, blocked: source_blocked, on_selected: move |collection| { doctor.set(Some(collection)); doctor_open.set(true); } }
+        if let Some(Err(error)) = workspace() {
+            div { role: "alert",
+                p { "For my doctor: {error}" }
+                TryAgain { label: TRY_AGAIN, on_retry: move |_| attempt.set(attempt() + 1) }
+            }
+        }
+        if doctor().is_some() && !doctor_open() { NavigationControl { onclick: move |_| doctor_open.set(true), "Open For my doctor" } }
         if let Some(proposal) = doctor().and_then(|c| c.proposal.flatten()) {
             if proposal_review() != Some(proposal.id) {
                 Button { onclick: move |_| { proposal_review.set(Some(proposal.id)); confirmed_medications.set(Vec::new()); }, "Review proposed doctor page" }
@@ -1283,19 +790,13 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
             }
         }
         if let Some(shown) = shown {
-            TabHeading { name: shown.heading(), loading }
+            TabHeading { name: "For my doctor".to_owned(), loading }
             NavigationControl {
                 aria_label: "Close page",
                 onclick: move |_| {
-                    open_item.set(None);
-                    editing.set(false);
+                    doctor_open.set(false);
                     doctor_editing.set(false);
                     confirm_fresh.set(false);
-                    confirm_remove.set(false);
-                    removed_plan.set(false);
-                    plan_save_failed.set(false);
-                    plan_remove_failed.set(false);
-                    follow_failed.set(false);
                     page_failed.set(false);
                     fresh_failed.set(false);
                 },
@@ -1303,7 +804,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 "Close"
             }
             match shown {
-                ShownPage::Doctor(DoctorPage::Lines(entries)) if !doctor_editing() => rsx! {
+                DoctorPage::Lines(entries) if !doctor_editing() => rsx! {
                     div { class: "duet-thread",
                         for entry in entries {
                             p { class: "card-text", "{entry.title}" }
@@ -1314,106 +815,13 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     }
                     DoctorLetter { collection: doctor(), base_url: export_url.clone() }
                 },
-                ShownPage::Doctor(DoctorPage::Empty) if !doctor_editing() => rsx! {
+                DoctorPage::Empty if !doctor_editing() => rsx! {
                     p { class: "empty", "{LIBRARY_EMPTY}" }
                     DoctorLetter { collection: doctor(), base_url: export_url.clone() }
                 },
-                ShownPage::Doctor(_) => rsx! {},
-                ShownPage::Item(item) if !editing() => rsx! {
-                    div { class: "duet-thread",
-                        if let Some(title) = item.title {
-                            p { class: "card-text", "{title}" }
-                        }
-                        if let Some(detail) = item.detail {
-                            p { class: "record-meta", "{detail}" }
-                        }
-                        if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id && follow_up.state == duet_wire::models::FollowUpState::Paused)) {
-                            p { class: "record-meta", "Paused" }
-                        }
-                    }
-                },
-                ShownPage::Item(_) => rsx! {},
+                _ => rsx! {},
             }
-            if editing() {
-                PlanEditor {
-                    title: plan_title,
-                    body: plan_body,
-                    saving: changing,
-                    failed: plan_save_failed,
-                    on_save: save_plan,
-                }
-            }
-            if !editing() && !removed_plan() && !confirm_remove() && matches!(open_item(), Some(NoteOpen::Routine(_))) {
-                ActionRow {
-                    Button {
-                        disabled: changing(),
-                        onclick: move |_| {
-                            let Some(NoteOpen::Routine(id)) = open_item() else {
-                                return;
-                            };
-                            let Some(routine) = routines().iter().find(|routine| routine.id == id).cloned() else {
-                                return;
-                            };
-                            plan_title.set(routine.title);
-                            plan_body.set(routine.body);
-                            plan_save_failed.set(false);
-                            editing.set(true);
-                        },
-                        "Edit plan"
-                    }
-                    Button {
-                        danger: true,
-                        disabled: changing(),
-                        onclick: move |_| {
-                            plan_remove_failed.set(false);
-                            confirm_remove.set(true);
-                        },
-                        "Remove plan"
-                    }
-                }
-                if plan_remove_failed() {
-                    p { class: "empty", role: "alert", "The plan couldn’t be removed. Review the current version and try again." }
-                }
-            }
-            if confirm_remove() {
-                p { class: "status-title", "Remove this plan?" }
-                p { class: "status-detail", "This removes the saved plan and discards your unsaved edits. Your conversation stays in Duet." }
-                ActionRow {
-                    Button {
-                        variant: ButtonVariant::Primary,
-                        danger: true,
-                        disabled: changing(),
-                        onclick: remove_plan,
-                        "Remove"
-                    }
-                    Button {
-                        disabled: changing(),
-                        onclick: move |_| confirm_remove.set(false),
-                        "Cancel"
-                    }
-                }
-            }
-            if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id)) {
-                if follow_failed() {
-                    p { class: "empty", role: "alert", "Duet couldn’t change this scheduled item. Its last saved state is still here." }
-                }
-                if matches!(open_item(), Some(NoteOpen::FollowUp(id)) if follow_ups().iter().any(|follow_up| follow_up.id == id && follow_up.state == duet_wire::models::FollowUpState::Paused)) {
-                    Button {
-                        variant: ButtonVariant::Primary,
-                        disabled: changing(),
-                        onclick: resume_reminder,
-                        "Resume reminder"
-                    }
-                } else {
-                    Button {
-                        variant: ButtonVariant::Primary,
-                        disabled: changing(),
-                        onclick: pause_reminder,
-                        "Pause reminder"
-                    }
-                }
-            }
-            if matches!(open_item(), Some(NoteOpen::Doctor)) && doctor_editing() && !draft_uncertain() {
+            if doctor_editing() && !draft_uncertain() {
                 if let Some(base) = draft_base() {
                     for item in base.items.iter().flatten().filter(|item| approval::is_medication(item)) {
                         label {
@@ -1435,7 +843,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     on_save: save_page,
                 }
             }
-            if matches!(open_item(), Some(NoteOpen::Doctor)) && !doctor_editing() && confirm_fresh() {
+            if !doctor_editing() && confirm_fresh() {
                 p { class: "status-title", "Start fresh?" }
                 p { class: "status-detail", "This clears your words, questions, chosen information and cover note. Save a PDF first if you want a copy." }
                 if fresh_failed() {
@@ -1455,7 +863,7 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                     }
                 }
             }
-            if matches!(open_item(), Some(NoteOpen::Doctor)) && !doctor_editing() && !confirm_fresh() {
+            if !doctor_editing() && !confirm_fresh() {
                 ActionRow {
                     Button {
                         disabled: saving_page(),
@@ -1505,231 +913,9 @@ fn ConversationTab(base_url: String, bearer: String) -> Element {
                 }
             }
         } else {
-        TabHeading { name: "Duet".to_owned(), loading }
-        match root {
-            None if !failed => rsx! {},
-            None => rsx! {
-                div { role: "alert",
-                    p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                    TryAgain { label: TRY_AGAIN, on_retry: retry }
-                }
-            },
-            Some(ConversationRoot::Empty { title, message }) => rsx! {
-                div { class: "duet-thread",
-                    p { class: "empty-title", "{title}" }
-                    p { class: "empty", "{message}" }
-                    if failed {
-                        TryAgain { label: TRY_AGAIN, on_retry: retry }
-                    }
-                }
-            },
-            Some(ConversationRoot::Messages(lines)) => rsx! {
-                if let Some(sources) = message_sources() {
-                    Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| message_sources.set(None),
-                        ol { class: "row-list",
-                            for source in sources {
-                                li {
-                                    SourceButton {
-                                        chip: source.clone(),
-                                        base_url: source_url.clone(),
-                                        bearer: source_bearer.clone(),
-                                        opened: opened_source,
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                if let Some(open) = opened_source() {
-                    Dialog { close_label: "Close", sheet: true, title: open.title, on_close: move |_| opened_source.set(None),
-                        if let Some(text) = open.text {
-                            p { class: "source-text", "{text}" }
-                        }
-                        if open.failed {
-                            p { class: "empty", role: "alert", "This source couldn’t be opened." }
-                        }
-                    }
-                }
-                div { class: "duet-thread",
-                    for line in lines {
-                        Message {
-                            author: if line.from_duet { Author::Assistant } else { Author::Person },
-                            by: line.role.clone(),
-                            p { "{line.text}" }
-                            if !line.sources.is_empty() {
-                                MessageSources { sources: line.sources.clone(), open: message_sources }
-                            }
-                            for note in line.notes {
-                                ThreadNote {
-                                    note: note.clone(),
-                                    open: note_open(&note, doctor().is_some(), &routines(), &follow_ups()),
-                                    on_open: move |which| open_item.set(Some(which)),
-                                }
-                            }
-                        }
-                    }
-                    if provisional().stopped {
-                        p { class: "status-detail", "Draft ended. Checking the saved response; unfinished work remains available for recovery." }
-                    }
-                    // While a reply runs it holds its place in the thread: the typing indicator
-                    // until its first words, then the words as they stream.
-                    if provisional().command.is_some() && !provisional().stopped {
-                        Message { author: Author::Assistant, class: "is-replying", aria_label: "Duet's reply",
-                            if provisional().text.is_empty() {
-                                span { class: "sr-only", role: "status", "Duet is responding" }
-                                WorkingMark {}
-                            } else {
-                                p { "{provisional().text}" }
-                            }
-                        }
-                    }
-                    if let Some(closed) = closed {
-                        p { class: "empty-title", "{closed.title}" }
-                        p { class: "empty", "{closed.message}" }
-                    }
-                    if failed {
-                        div { role: "alert",
-                            p { class: "empty", "{CHAT_UNAVAILABLE}" }
-                            TryAgain { label: TRY_AGAIN, on_retry: retry }
-                        }
-                    }
-                }
-            },
-        }
-        if can_compose {
-            div { class: "duet-composer-wrap",
-                if let Some(record) = selected_record() {
-                    div { class: "source-row", role: "status",
-                        span { class: "source-detail", "{record.chip()}" }
-                        button { class: "duet-retry", r#type: "button", aria_label: "Clear selected record", onclick: move |_| selected_record.set(None), "Clear" }
-                    }
-                }
-                if send_failed() {
-                    p { class: "empty", role: "alert", "{CHAT_UNAVAILABLE}" }
-                }
-                Composer {
-                    label: CHAT_EMPTY_MESSAGE,
-                    inline: true,
-                    value: draft(),
-                    on_input: move |text| draft.set(text),
-                    on_submit: submit,
-                    Button {
-                        variant: ButtonVariant::Primary,
-                        compact: true,
-                        icon_only: true,
-                        class: "duet-send",
-                        submit: true,
-                        disabled: sending(),
-                        aria_label: "Send",
-                        "↑"
-                    }
-                }
-            }
-        }
+            TabHeading { name: "Shared".to_owned(), loading }
         }
     }
-}
-
-#[component]
-fn ThreadNote(
-    note: ConversationNote,
-    open: Option<NoteOpen>,
-    on_open: EventHandler<NoteOpen>,
-) -> Element {
-    if let Some(open) = open {
-        let label = if opens_doctor(&note) {
-            "Open For my doctor"
-        } else {
-            "Open saved item"
-        };
-        let body = note_body(note);
-        rsx! {
-            NavigationRow {
-                class: "thread-open",
-                aria_label: "{label}",
-                onclick: move |_| on_open.call(open),
-                {body}
-            }
-        }
-    } else {
-        note_body(note)
-    }
-}
-
-/// A message's one Sources button; its sources open together in a sheet.
-#[component]
-fn MessageSources(
-    sources: Vec<ConversationSourceChip>,
-    open: Signal<Option<Vec<ConversationSourceChip>>>,
-) -> Element {
-    let count = sources.len();
-    rsx! {
-        SourcesButton { label: "Sources", count, onclick: move |_| open.set(Some(sources.clone())) }
-    }
-}
-
-#[component]
-fn SourceButton(
-    chip: ConversationSourceChip,
-    base_url: String,
-    bearer: String,
-    opened: Signal<Option<OpenedSource>>,
-) -> Element {
-    let title = chip.title.clone();
-    let label = format!("Open source {title}");
-    let open = move |_| load_source(opened, base_url.clone(), bearer.clone(), chip.clone());
-    rsx! {
-        ListRow { title, aria_label: "{label}", onclick: open }
-    }
-}
-
-fn load_source(
-    mut opened: Signal<Option<OpenedSource>>,
-    base_url: String,
-    bearer: String,
-    chip: ConversationSourceChip,
-) {
-    let title = chip.title.clone();
-    opened.set(Some(OpenedSource {
-        title: title.clone(),
-        text: None,
-        failed: false,
-    }));
-    spawn(async move {
-        let api = open_client(base_url, bearer);
-        // Record citations reopen their exact cited revision with a truthful status;
-        // other citations (insights, follow-ups, measurements) keep the detail read.
-        if let Ok(api) = &api
-            && let Ok(view) = api.cited_revision(chip.message_id, &chip.source_id).await
-        {
-            opened.set(Some(OpenedSource {
-                title,
-                text: Some(records::revision_text(&view)),
-                failed: false,
-            }));
-            return;
-        }
-        let loaded = match api {
-            Ok(api) => api.message_source(chip.message_id, &chip.source_id).await,
-            Err(_) => Err(String::new()),
-        };
-        match loaded {
-            Ok(detail) => opened.set(Some(OpenedSource {
-                title,
-                text: Some(if detail.superseded.flatten() == Some(true) {
-                    format!("This is the cited version. A newer version of this record is available.\n\n{}", detail.text)
-                } else {
-                    detail.text
-                }),
-                failed: false,
-            })),
-            Err(_) => opened.set(Some(OpenedSource {
-                title,
-                text: None,
-                failed: true,
-            })),
-        }
-    });
 }
 
 fn evidence_entity(kind: LibraryKind) -> duet_wire::models::evidence_item::Entity {
@@ -1903,97 +1089,6 @@ fn DoctorLetter(
     }
 }
 
-fn note_body(note: ConversationNote) -> Element {
-    match note {
-        ConversationNote::Card(card) => rsx! {
-            div { class: "thread-card",
-                p { class: "card-title", "{card.receipt}" }
-                if let Some(title) = card.title {
-                    p { class: "card-text", "{title}" }
-                }
-                if let Some(detail) = card.detail {
-                    p { class: "record-meta", "{detail}" }
-                }
-                if let Some(schedule) = card.schedule {
-                    p { class: "record-meta", "{schedule}" }
-                }
-                for entry in card.entries {
-                    p { class: "card-text", "{entry.title}" }
-                    if let Some(detail) = entry.detail {
-                        p { class: "record-meta", "{detail}" }
-                    }
-                }
-            }
-        },
-        ConversationNote::Receipt(sentence) => rsx! {
-            p { class: "record-meta thread-card", "{sentence}" }
-        },
-    }
-}
-
-#[component]
-fn TodayTab(base_url: String, bearer: String, insight_alerts: Signal<bool>) -> Element {
-    let mut attempt = use_signal(|| 0u32);
-    let mut loading = use_signal(|| true);
-    let mut cache = use_signal(|| None);
-    let resource = use_resource(move || {
-        let _attempt = attempt();
-        let base_url = base_url.clone();
-        let bearer = bearer.clone();
-        load_today(base_url, bearer)
-    });
-    use_effect(move || {
-        let _preference = insight_alerts();
-        loading.set(resource().is_none());
-        if let Some(Ok(value)) = resource() {
-            schedule_loaded_insights(&value.1);
-            cache.set(Some(value));
-        }
-    });
-    let current = resource();
-    let failed = matches!(current, Some(Err(_)));
-    let ready = match current {
-        Some(Ok(value)) => Some(value),
-        _ => cache(),
-    };
-    let root = ready
-        .as_ref()
-        .map(|(settings, cycles)| today_root(settings, cycles));
-    let now = chrono::Local::now();
-    let date = date_line(now);
-    let hello = greeting(now.format("%H").to_string().parse().unwrap_or(0));
-    let retry = move |_| attempt.set(attempt() + 1);
-    let show_unavailable = failed && !matches!(root, Some(TodayRoot::Insights(_)));
-    rsx! {
-        TabHeading { name: "Today".to_owned(), loading }
-        p { class: "duet-date", "{date}" }
-        p { class: "duet-greeting", "{hello}" }
-        match root {
-            Some(TodayRoot::Quiet) => rsx! {},
-            Some(TodayRoot::Paused) => rsx! {
-                p { class: "status-title", "{REVIEWS_PAUSED}" }
-                p { class: "status-detail", "{REVIEWS_PAUSED_DETAIL}" }
-            },
-            Some(TodayRoot::Insights(cards)) => rsx! {
-                for card in cards {
-                    article { class: "card voice-card",
-                        p { class: "card-title", "{card.title}" }
-                        p { class: "card-text", "{card.sentence}" }
-                    }
-                }
-            },
-            None => rsx! {},
-        }
-        if show_unavailable {
-            div { role: "alert",
-                p { class: "status-title", "{CHECK_UNAVAILABLE}" }
-                p { class: "status-detail", "{CHECK_UNAVAILABLE_DETAIL}" }
-                TryAgain { label: TRY_AGAIN, on_retry: retry }
-            }
-        }
-    }
-}
-
 #[component]
 fn PhoneHealthControl(base_url: String, attempt: Signal<u32>) -> Element {
     #[cfg(target_os = "ios")]
@@ -2017,9 +1112,7 @@ fn YouTab(
     base_url: String,
     bearer: String,
     alerts: AlertSnapshot,
-    insight_alerts: bool,
     on_allow_alerts: EventHandler<()>,
-    on_insight_alerts: EventHandler<bool>,
     on_open_settings: EventHandler<()>,
 ) -> Element {
     let mut attempt = use_signal(|| 0u32);
@@ -2225,16 +1318,6 @@ fn YouTab(
                     }
                 }
             }
-            div { class: "source-row",
-                span { class: "source-name", "{INSIGHT_NOTIFICATIONS}" }
-                span { class: "source-detail", "{INSIGHT_NOTIFICATIONS_DETAIL}" }
-                input {
-                    r#type: "checkbox",
-                    checked: insight_alerts,
-                    aria_label: "{INSIGHT_NOTIFICATIONS}",
-                    onchange: move |event| on_insight_alerts.call(event.checked()),
-                }
-            }
             if alerts.state == AlertState::Denied {
                 Button {
                     aria_label: "{OPEN_NOTIFICATION_SETTINGS}",
@@ -2316,39 +1399,6 @@ fn YouTab(
             onclick: move |_| menu.set(true),
             "Add health information"
         }
-        }
-    }
-}
-
-#[component]
-fn PlanEditor(
-    title: Signal<String>,
-    body: Signal<String>,
-    saving: Signal<bool>,
-    failed: Signal<bool>,
-    on_save: EventHandler,
-) -> Element {
-    let ready = !title().trim().is_empty() && !body().trim().is_empty();
-    rsx! {
-        input {
-            class: "field duet-field",
-            r#type: "text",
-            value: "{title}",
-            oninput: move |event| title.set(event.value()),
-        }
-        textarea {
-            class: "field duet-field",
-            value: "{body}",
-            oninput: move |event| body.set(event.value()),
-        }
-        if failed() {
-            p { class: "empty", role: "alert", "Your changes haven’t been confirmed. Your words are kept; refresh to check the saved version." }
-        }
-        Button {
-            variant: ButtonVariant::Primary,
-            disabled: saving() || !ready,
-            onclick: move |_| on_save.call(()),
-            "Save changes"
         }
     }
 }
@@ -2548,13 +1598,5 @@ fn HealthDraft(
                 }
             },
         }
-    }
-}
-
-#[component]
-fn SharedTab() -> Element {
-    let loading = use_signal(|| false);
-    rsx! {
-        TabHeading { name: "Shared".to_owned(), loading }
     }
 }

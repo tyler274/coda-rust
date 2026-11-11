@@ -128,22 +128,22 @@ mod tests {
             .finish();
         tracing::subscriber::with_default(subscriber, || {
             let span = tracing::info_span!(
-                "duet.recovery.sweep",
+                "duet.privacy_recovery.sweep",
                 otel.status_code = tracing::field::Empty
             );
             let _entered = span.enter();
             failed(
-                "duet.recovery.failed",
-                "launch",
+                "duet.privacy_recovery.failed",
+                "recover",
                 api_error_class(&ApiError::Storage("SECRET-PATIENT-TEXT".into())),
             );
         });
         let bytes = capture.0.lock().map(|b| b.clone()).unwrap_or_default();
         let output = String::from_utf8_lossy(&bytes);
-        assert!(output.contains("duet.recovery.sweep"), "{output}");
+        assert!(output.contains("duet.privacy_recovery.sweep"), "{output}");
         assert!(output.contains("otel.status_code=\"ERROR\""), "{output}");
-        assert!(output.contains("duet.recovery.failed"), "{output}");
-        assert!(output.contains("step=\"launch\""), "{output}");
+        assert!(output.contains("duet.privacy_recovery.failed"), "{output}");
+        assert!(output.contains("step=\"recover\""), "{output}");
         assert!(output.contains("error_class"), "{output}");
         assert!(output.contains("database"), "{output}");
         assert!(!output.contains("SECRET-PATIENT-TEXT"), "{output}");

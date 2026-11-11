@@ -7,8 +7,8 @@ How you sign in to Duet on iPhone and Android, stay signed in and sign out of a 
 - **Signed in on a phone:** the phone holds a session for your account.
 - **Live:** a session Duet hasn't ended. It ends only when you sign out of that phone, sign out everywhere, or Duet revokes it.
 - **Duet refuses a session:** Duet answers the phone's check or request by refusing that session, because it has ended.
-- **Your account's content:** the conversation, and signing out's screens over it.
-- **Unconfirmed:** a message draft you haven't sent, or notes or medications Duet hasn't confirmed.
+- **Your account's content:** the You and Shared tabs, and signing out's screens over it.
+- **Unconfirmed:** a draft you haven't sent, or notes or medications Duet hasn't confirmed.
 - **A sign-in screen:** Enter your email, Check your email, Signing you in, This link no longer works, Duet couldn't be reached, or the screen saying what was removed.
 
 ## Journey
@@ -43,7 +43,7 @@ Staying signed in:
 
 When Duet can't be reached:
 
-- The cached conversation and drafts stay usable, and the phone asks again once it can.
+- Drafts stay usable, and the phone asks again once it can.
 
 A session ended from elsewhere:
 
@@ -58,7 +58,7 @@ Signing out of this phone:
 - With unconfirmed notes or medications, Duet tries to send them first.
 - If it can't confirm them, or there's an unsent draft, Duet says what signing out removes from this phone and offers Stay signed in or Sign out anyway.
 - If Duet confirms the entries while it says so, signing out finishes, or with a draft left, Duet says only that the draft goes.
-- If Duet closes before signing out finishes, the sign-out is abandoned and Duet reopens in the conversation.
+- If Duet closes before signing out finishes, the sign-out is abandoned and Duet reopens where you were.
 - Signing out takes effect at once, even offline, and clears the draft; Duet hears of it as soon as the phone can reach it.
 
 One phone, another person:

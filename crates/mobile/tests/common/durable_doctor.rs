@@ -1,6 +1,4 @@
 //! Real PostgreSQL + durable routes + compiled patient UI; no stub or live model.
-#[path = "../../../duet-api/tests/support/retained_measurement.rs"]
-mod retained_measurement;
 
 use super::*;
 use duet_api::{
@@ -16,40 +14,6 @@ use sqlx::{ConnectOptions, Connection};
 use uuid::Uuid;
 
 const TOKEN: &str = "synthetic-durable-browser-only";
-const PROPOSAL_REQUEST: &str = "Prepare a doctor page proposal for review: set my name to Explicitly approved proposal and add the question Review this proposal? Keep my existing question and do not save or share it.";
-const PROPOSAL_REPLY: &str =
-    "Your proposed doctor page is ready for review. Nothing has been saved or shared.";
-
-/// Only the test server impersonates the model; admission, tool dispatch, receipts,
-/// proposal staging and approval still belong to the real conversation/workspace owners.
-fn controlled_proposal(input: &[serde_json::Value]) -> serde_json::Value {
-    use serde_json::json;
-    let result = |id: &str| {
-        input
-            .iter()
-            .find(|v| v["type"] == "function_call_output" && v["call_id"] == id)
-            .map(|v| {
-                serde_json::from_str::<serde_json::Value>(v["output"].as_str().unwrap()).unwrap()
-            })
-    };
-    let Some(workspace) = result("browser-workspace") else {
-        return json!([{"type":"function_call","call_id":"browser-workspace","name":"read_workspace","arguments":"{}"}]);
-    };
-    if let Some(proposal) = result("browser-proposal") {
-        assert_eq!(proposal["base_generation"], workspace["note_generation"]);
-        assert_eq!(proposal["page"]["name"], "Explicitly approved proposal");
-        return json!([{"type":"message","content":[{"type":"output_text","text":PROPOSAL_REPLY}]}]);
-    }
-    // Compose from the actual tool result, never a hard-coded generation or SQL seed.
-    let mut page = workspace["page"].clone();
-    page["name"] = json!("Explicitly approved proposal");
-    page["questions"]
-        .as_array_mut()
-        .unwrap()
-        .push(json!("Review this proposal?"));
-    let proposal = json!({"base_generation":workspace["note_generation"],"note":workspace["note"],"items":workspace["items"],"page":page});
-    json!([{"type":"function_call","call_id":"browser-proposal","name":"stage_proposal","arguments":proposal.to_string()}])
-}
 struct SyntheticIdentity;
 #[async_trait::async_trait]
 impl IdentityVerifier for SyntheticIdentity {
@@ -87,17 +51,6 @@ async fn saved_page_publishes_and_revokes_through_real_durable_routes() {
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 4)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
-async fn chat_citations_reopen_the_retained_source() {
-    with_durable_browser(async |base, _, account, owner_url, _| {
-        let mut patient = Browser::launch();
-        patient.resize(PHONE);
-        prove_conversation_source(base, account, owner_url, &mut patient).await;
-    })
-    .await;
-}
-
-#[tokio::test(flavor = "multi_thread", worker_threads = 4)]
-#[ignore = "browser qualification; run explicitly with --ignored"]
 async fn switching_accounts_shows_only_the_current_patients_imported_measurements() {
     with_durable_browser(async |base, _, _, _, _| {
         let http = reqwest::Client::new();
@@ -116,8 +69,8 @@ async fn switching_accounts_shows_only_the_current_patients_imported_measurement
         }
 
         let mut patient = Browser::launch();
-        patient.text_until(&format!("{base}/?mode=client"), "Today");
-        patient.click("nav.tabs button:nth-of-type(3)");
+        patient.text_until(&format!("{base}/?mode=client"), "Shared");
+        patient.click("nav.tabs button:nth-of-type(1)");
         patient.wait_for("First patient steps");
         click_text(&mut patient, "Sign out");
         patient.wait_for("Sign in to your Duet account.");
@@ -131,9 +84,9 @@ async fn switching_accounts_shows_only_the_current_patients_imported_measurement
         }));
         patient.page().evaluate("window.previousPatientShown = false; new MutationObserver(() => { if (document.body.innerText.includes('First patient steps')) window.previousPatientShown = true }).observe(document.body, {subtree:true,childList:true,characterData:true,attributes:true}); true");
         click_text(&mut patient, "Retry saved sign-in");
-        patient.wait_for("Today");
+        patient.wait_for("Shared");
         patient.click("nav.tabs button:nth-of-type(2)");
-        patient.click("nav.tabs button:nth-of-type(3)");
+        patient.click("nav.tabs button:nth-of-type(1)");
         patient.wait_for("Second patient steps");
         assert_eq!(patient.page().evaluate("window.previousPatientShown"), serde_json::json!(false));
     }).await;
@@ -234,20 +187,9 @@ async fn backend_process() {
         .merge(duet_api::evidence_routes::router(state.clone()))
         .merge(duet_api::doctor_routes::router(
             duet_api::doctor_routes::DoctorState {
-                durable: state.clone(),
+                durable: state,
                 workspace: workspace.clone(),
                 publications,
-            },
-        ))
-        .merge(duet_api::conversation_routes::router(
-            duet_api::conversation_routes::ConversationState {
-                durable: state,
-                store: duet_api::conversation::ConversationStore::new(database.clone()),
-                model: "no-live-provider".into(),
-                provider: Some(duet_api::conversation_routes::ModelProvider::Responses {
-                    endpoint: format!("{base}/controlled-response"),
-                    key: "local-synthetic".into(),
-                }),
             },
         ));
     let app =
@@ -256,45 +198,6 @@ async fn backend_process() {
             let site = site.clone();
             async move {
                 use tower::Service;
-                if request.uri().path() == "/controlled-response" {
-                    let bytes = axum::body::to_bytes(request.into_body(), 1_000_000).await.unwrap();
-                    let body: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
-                    let input = body["input"].as_array().unwrap();
-                    let proposal_request = input.iter().rev().find(|v| v["role"] == "user").is_some_and(|v| v["content"] == PROPOSAL_REQUEST);
-                    let output = if proposal_request {
-                        controlled_proposal(input)
-                    } else if !input.iter().any(|v|v["call_id"] == "browser-read") {
-                        let context = input.iter().filter_map(|v|v["content"].as_str()).find(|s|s.starts_with("Selected context and reply reference")).unwrap();
-                        let admission: serde_json::Value = serde_json::from_str(context.split_once("): ").unwrap().1).unwrap();
-                        if admission["source"]["kind"].is_string() {
-                            serde_json::json!([{"type":"function_call","call_id":"browser-read","name":"read_selected_source","arguments":"{}"}])
-                        } else {
-                            serde_json::json!([{"type":"function_call","call_id":"browser-read","name":"read_health_source","arguments":serde_json::json!({"address":admission["source"]["source"]["address"]}).to_string()}])
-                        }
-                    } else if !input.iter().any(|v|v["call_id"] == "browser-citation") {
-                        serde_json::json!([{"type":"function_call","call_id":"browser-citation","name":"cite_health_sources","arguments":"{\"read_ids\":[\"browser-read\"]}"}])
-                    } else {
-                        serde_json::json!([{"type":"message","content":[{"type":"output_text","text":"Here is the original record you selected. Nothing has been saved or shared."}]}])
-                    };
-                    let event = serde_json::json!({"type":"response.completed","response":{"status":"completed","output":output,"usage":{"input_tokens":3,"output_tokens":2}}});
-                    if proposal_request && output[0]["type"] == "message" {
-                        let chunks = futures_util::stream::unfold(0, move |step| {
-                            let event = event.clone();
-                            async move {
-                                match step {
-                                    0 => Some((Ok::<_, std::io::Error>(format!("data: {}\n\n", serde_json::json!({"type":"response.output_text.delta","delta":"Controlled provisional preview"}))), 1)),
-                                    1 => {
-                                        tokio::time::sleep(Duration::from_secs(4)).await;
-                                        Some((Ok(format!("data: {event}\n\n")), 2))
-                                    },
-                                    _ => None,
-                                }
-                            }
-                        });
-                        return axum::http::Response::builder().header("content-type", "text/event-stream").body(axum::body::Body::from_stream(chunks)).unwrap();
-                    }
-                    return axum::http::Response::builder().header("content-type", "text/event-stream").body(axum::body::Body::from(format!("data: {event}\n\n"))).unwrap();
-                }
                 if request.uri().path() == "/independent-reader" {
                     return axum::http::Response::builder().header("content-type", "text/html").body(axum::body::Body::from("<!doctype html><title>Independent SHL reader</title><p>Independent reader</p>")).unwrap();
                 }
@@ -373,308 +276,6 @@ impl Drop for BackendProcess {
     }
 }
 
-fn open_assistant_source(browser: &mut Browser, reply_number: usize, title: &str) {
-    let trigger = format!(
-        ".message-assistant:nth-child({reply_number} of .message-assistant) .sources-button"
-    );
-    wait_for_selector(browser, &trigger);
-    browser.click(&trigger);
-    let row = format!("dialog [aria-label='Open source {title}']");
-    wait_for_selector(browser, &row);
-    browser.click(&row);
-}
-
-fn close_source_sheets(browser: &mut Browser) {
-    browser.click("dialog ~ dialog button[aria-label='Close']");
-    wait_for_gone(browser, "dialog ~ dialog");
-    browser.click("dialog button[aria-label='Close']");
-    wait_for_gone(browser, "dialog");
-}
-
-async fn prove_conversation_source(
-    base: &str,
-    account: &duet_api::identity::AccountContext,
-    owner_url: &str,
-    patient: &mut Browser,
-) {
-    use serde_json::json;
-    let mut admin = sqlx::PgConnection::connect(owner_url).await.unwrap();
-    sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version='2026-09-23' where id=$1").bind(account.account_id).execute(&mut admin).await.unwrap();
-    let http = reqwest::Client::new();
-    let record = Uuid::new_v4();
-    let mut mutation = json!({"operation_id":Uuid::new_v4(),"canonical_record_id":record,"record_id":"browser-literal-note","entity":"clinical_note","payload":{"title":"Retained browser note","body":"Original exact browser wording","source_label":"Health Records"}});
-    let address: serde_json::Value = http
-        .post(format!("{base}/api/canonical-evidence"))
-        .bearer_auth(TOKEN)
-        .json(&mutation)
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    let id = Uuid::new_v4();
-    let submission = json!({"id":id,"text":"Explain the selected original note","timezone":"UTC","selected_context":{"kind":"record","record_id":record,"revision":address["revision"]}});
-    let accepted = http
-        .post(format!("{base}/api/conversation/messages"))
-        .bearer_auth(TOKEN)
-        .json(&submission)
-        .send()
-        .await
-        .unwrap();
-    assert_eq!(accepted.status(), 202, "{}", accepted.text().await.unwrap());
-    let deadline = tokio::time::Instant::now() + Duration::from_secs(10);
-    let page = loop {
-        let page: serde_json::Value = http
-            .get(format!("{base}/api/conversation/messages"))
-            .bearer_auth(TOKEN)
-            .send()
-            .await
-            .unwrap()
-            .json()
-            .await
-            .unwrap();
-        if page["messages"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .any(|v| v["role"] == "assistant")
-        {
-            break page;
-        }
-        assert!(
-            tokio::time::Instant::now() < deadline,
-            "controlled conversation never completed: {page}"
-        );
-        tokio::time::sleep(Duration::from_millis(25)).await;
-    };
-    let assistant = page["messages"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|v| v["role"] == "assistant")
-        .unwrap();
-    let detail_url = format!(
-        "{base}/api/conversation/messages/{}/sources/browser-read",
-        assistant["id"].as_str().unwrap()
-    );
-    assert_eq!(http.get(&detail_url).send().await.unwrap().status(), 401);
-    http.put(format!("{base}/api/auth/account"))
-        .json(&json!({}))
-        .bearer_auth("synthetic-foreign-browser-only")
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap();
-    assert_eq!(
-        http.get(&detail_url)
-            .bearer_auth("synthetic-foreign-browser-only")
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        404
-    );
-    let original: serde_json::Value = http
-        .get(&detail_url)
-        .bearer_auth(TOKEN)
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    assert_eq!(original["superseded"], false);
-    mutation["operation_id"] = json!(Uuid::new_v4());
-    mutation["expected_revision"] = address["revision"].clone();
-    mutation["payload"]["body"] = json!("Corrected current browser wording");
-    http.post(format!("{base}/api/canonical-evidence"))
-        .bearer_auth(TOKEN)
-        .json(&mutation)
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap();
-    let old: serde_json::Value = http
-        .get(&detail_url)
-        .bearer_auth(TOKEN)
-        .send()
-        .await
-        .unwrap()
-        .error_for_status()
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    assert_eq!(old["superseded"], true);
-    assert_eq!(old["text"], original["text"]);
-    assert!(old["current_revision"].as_i64().unwrap() > address["revision"].as_i64().unwrap());
-    // Exact retry is retained despite correction; changed submission is rejected.
-    assert_eq!(
-        http.post(format!("{base}/api/conversation/messages"))
-            .bearer_auth(TOKEN)
-            .json(&submission)
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        202
-    );
-    let mut changed = submission.clone();
-    changed["timezone"] = json!("America/New_York");
-    assert_eq!(
-        http.post(format!("{base}/api/conversation/messages"))
-            .bearer_auth(TOKEN)
-            .json(&changed)
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        409
-    );
-    changed["id"] = json!(Uuid::new_v4());
-    assert_eq!(
-        http.post(format!("{base}/api/conversation/messages"))
-            .bearer_auth(TOKEN)
-            .json(&changed)
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        409
-    );
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
-    patient.wait_for("Here is the original record you selected.");
-    open_assistant_source(patient, 1, "Retained browser note");
-    patient.wait_for("Original exact browser wording");
-    patient.wait_for("A newer version of this record exists.");
-    let cited = patient
-        .page()
-        .evaluate("document.querySelector('dialog .source-text').innerText");
-    assert!(
-        !cited
-            .as_str()
-            .unwrap()
-            .contains("Corrected current browser wording")
-    );
-    close_source_sheets(patient);
-    let boundary = Uuid::new_v4();
-    let snapshot = Uuid::new_v4();
-    let cycle = Uuid::new_v4();
-    let insight = Uuid::new_v4();
-    let fact = json!({"id":"steps:day","kind":"current_value","window":"day","concept_ids":["steps"],"title":"Frozen browser measurement","range_start":"2026-10-19T00:00:00Z","range_end":"2026-10-20T00:00:00Z","value":7654.0,"evidence":[{"id":"stat:steps","kind":"stat","title":"Steps","source_kind":"appleHealth"}]});
-    retained_measurement::insert(owner_url, account.account_id, snapshot, boundary, &fact).await;
-    sqlx::query("insert into insight_cycles(id,user_id,context_snapshot_id,kind,window_start,window_end,timezone,first_weekday,status,insights,supporting_facts,observed_through,generated_at) values($1,$2,$3,'daily','2026-10-19','2026-10-20','UTC',1,'ready',$4,$5,now(),now())").bind(cycle).bind(account.account_id).bind(snapshot).bind(json!([{"id":insight,"title":"Frozen browser observation","detail":"Original published browser observation","evidence":[],"fact_ids":["steps:day"]}])).bind(json!([fact])).execute(&mut admin).await.unwrap();
-    for (index, (selected, title, text)) in [
-        (
-            json!({"kind":"measurement","source_boundary_id":boundary,"health_context_revision":1,"source":{"kind":"appleHealth"},"measurement_id":"steps","period_start":"2026-10-19T00:00:00Z","period_end":"2026-10-20T00:00:00Z","fact":fact}),
-            "Frozen browser measurement",
-            "7654",
-        ),
-        (
-            json!({"kind":"published_insight","cycle_id":cycle,"insight_id":insight}),
-            "Frozen browser observation",
-            "Original published browser observation",
-        ),
-    ].into_iter().enumerate() {
-        let id = Uuid::new_v4();
-        http.post(format!("{base}/api/conversation/messages")).bearer_auth(TOKEN).json(&json!({"id":id,"text":"Explain this retained context","timezone":"UTC","selected_context":selected})).send().await.unwrap().error_for_status().unwrap();
-        let assistant_id = Uuid::from_u128(id.as_u128() ^ (1u128 << 127));
-        let deadline = tokio::time::Instant::now() + Duration::from_secs(30);
-        loop {
-            let page: serde_json::Value = http
-                .get(format!("{base}/api/conversation/messages"))
-                .bearer_auth(TOKEN)
-                .send()
-                .await
-                .unwrap()
-                .json()
-                .await
-                .unwrap();
-            if page["messages"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .any(|m| m["id"] == json!(assistant_id))
-            {
-                break;
-            }
-            assert!(
-                tokio::time::Instant::now() < deadline,
-                "retained context completion: {page}"
-            );
-            tokio::time::sleep(Duration::from_millis(25)).await;
-        }
-        patient.text_until(&format!("{base}/?mode=client"), "Today");
-        patient.click("nav.tabs button:nth-of-type(1)");
-        open_assistant_source(patient, index + 2, title);
-        patient.wait_for(text);
-        close_source_sheets(patient);
-        let detail =
-            format!("{base}/api/conversation/messages/{assistant_id}/sources/browser-read");
-        assert_eq!(
-            http.get(&detail)
-                .bearer_auth("synthetic-foreign-browser-only")
-                .send()
-                .await
-                .unwrap()
-                .status(),
-            404
-        );
-    }
-    let workspace: serde_json::Value = http
-        .get(format!("{base}/api/doctor-collection"))
-        .bearer_auth(TOKEN)
-        .send()
-        .await
-        .unwrap()
-        .json()
-        .await
-        .unwrap();
-    assert_eq!(workspace["note_generation"], 0);
-    assert!(workspace["items"].as_array().unwrap().is_empty());
-    assert_eq!(
-        sqlx::query_scalar::<_, i64>("select count(*) from duet_publications")
-            .fetch_one(&mut admin)
-            .await
-            .unwrap(),
-        0
-    );
-    // Withdraw through the actual owner: persisted delivered prose must not reopen.
-    let restriction = json!({"event_id":Uuid::new_v4(),"operation":"evidence_delete","scope_id":record,"scope_version":old["current_revision"]});
-    let deleted = http
-        .post(format!("{base}/api/auth/privacy-restrictions"))
-        .bearer_auth(TOKEN)
-        .json(&restriction)
-        .send()
-        .await
-        .unwrap();
-    assert!(
-        deleted.status().is_success(),
-        "{}",
-        deleted.text().await.unwrap()
-    );
-    assert_eq!(
-        http.get(&detail_url)
-            .bearer_auth(TOKEN)
-            .send()
-            .await
-            .unwrap()
-            .status(),
-        404
-    );
-    open_assistant_source(patient, 1, "Retained browser note");
-    patient.wait_for("This record is no longer available.");
-    close_source_sheets(patient);
-}
-
 async fn run_browser_checks(
     base: &str,
     workspace: &WorkspaceStore,
@@ -684,9 +285,8 @@ async fn run_browser_checks(
 ) {
     let mut patient = Browser::launch();
     patient.resize(PHONE);
-    prove_conversation_source(base, account, owner_url, &mut patient).await;
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
+    patient.text_until(&format!("{base}/?mode=client"), "Shared");
+    patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
     patient.click("button[aria-label='Edit page']");
@@ -698,8 +298,8 @@ async fn run_browser_checks(
     patient.wait_for("Saved page preview");
     let saved = workspace.read(account).await.unwrap();
     assert_eq!(saved["page"]["name"], "Synthetic Ada");
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
+    patient.text_until(&format!("{base}/?mode=client"), "Shared");
+    patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
     patient.wait_for("Saved page preview");
@@ -788,8 +388,8 @@ async fn run_browser_checks(
             .unwrap(),
         original_pdf
     );
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
+    patient.text_until(&format!("{base}/?mode=client"), "Shared");
+    patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Open For my doctor");
     click_text(&mut patient, "Open For my doctor");
     patient.wait_for("Revoke link…");
@@ -912,110 +512,47 @@ async fn run_browser_checks(
         "expired capabilities: {result}"
     );
     drop(expiry_owner);
-    // A person message must traverse ConversationOwner::execute and the local
-    // Responses transport; no direct stage_proposal call or proposal SQL insertion.
+    // Stage a proposal through the real workspace owner; the patient reviews it.
     let mut owner = sqlx::PgConnection::connect(owner_url).await.unwrap();
+    sqlx::query("update users set intelligence_enabled=true,luna_consent_decision='accepted',luna_consent_version='2026-09-24',terms_version='2026-09-23' where id=$1")
+        .bind(account.account_id)
+        .execute(&mut owner)
+        .await
+        .unwrap();
+    let staging = duet_api::identity::AccountContext {
+        permission_revision: sqlx::query_scalar(
+            "select intelligence_control_revision from users where id=$1",
+        )
+        .bind(account.account_id)
+        .fetch_one(&mut owner)
+        .await
+        .unwrap(),
+        ..account.clone()
+    };
     let current = workspace.read(account).await.unwrap();
     let publication_count: i64 = sqlx::query_scalar("select count(*) from duet_publications")
         .fetch_one(&mut owner)
         .await
         .unwrap();
-    let message_id = Uuid::new_v4();
-    let assistant_id = Uuid::from_u128(message_id.as_u128() ^ (1u128 << 127));
-    let submission = serde_json::json!({"id":message_id,"text":PROPOSAL_REQUEST,"timezone":"UTC"});
-    let accepted = http
-        .post(format!("{base}/api/conversation/messages"))
-        .bearer_auth(TOKEN)
-        .json(&submission)
-        .send()
-        .await
-        .unwrap();
-    assert_eq!(accepted.status(), 202, "{}", accepted.text().await.unwrap());
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
-    patient.wait_for("Controlled provisional preview");
-    let pending: serde_json::Value = http
-        .get(format!("{base}/api/conversation/messages"))
-        .bearer_auth(TOKEN)
-        .send()
-        .await
+    let run = Uuid::new_v4();
+    let mut page = current["page"].clone();
+    page["name"] = serde_json::json!("Explicitly approved proposal");
+    page["questions"]
+        .as_array_mut()
         .unwrap()
-        .json()
-        .await
-        .unwrap();
-    assert!(
-        !pending["messages"]
-            .to_string()
-            .contains("Controlled provisional preview")
-    );
-    patient.wait_for(PROPOSAL_REPLY);
-    assert!(
-        !patient
-            .body_text()
-            .unwrap()
-            .contains("Controlled provisional preview")
-    );
-    let deadline = tokio::time::Instant::now() + Duration::from_secs(30);
-    loop {
-        let messages: serde_json::Value = http
-            .get(format!("{base}/api/conversation/messages"))
-            .bearer_auth(TOKEN)
-            .send()
-            .await
-            .unwrap()
-            .error_for_status()
-            .unwrap()
-            .json()
-            .await
-            .unwrap();
-        if let Some(assistant) = messages["messages"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .find(|m| m["id"] == serde_json::json!(assistant_id))
-        {
-            assert_eq!(assistant["role"], "assistant");
-            break;
-        }
-        assert!(
-            tokio::time::Instant::now() < deadline,
-            "executor proposal never completed: {messages}"
-        );
-        tokio::time::sleep(Duration::from_millis(25)).await;
-    }
-    let effects: Vec<(String, serde_json::Value)> = sqlx::query_as(
-        "select call->>'name',result from duet_tool_effects where user_id=$1 and command_id=$2 order by call->>'name'"
-    ).bind(account.account_id).bind(message_id).fetch_all(&mut owner).await.unwrap();
-    assert_eq!(
-        effects.len(),
-        2,
-        "exactly the executor read and stage effects"
-    );
-    assert_eq!(effects[0].0, "read_workspace");
-    assert_eq!(effects[0].1, current);
-    assert_eq!(effects[1].0, "stage_proposal");
-    let proposal = &effects[1].1;
-    assert_eq!(proposal["run_id"], serde_json::json!(message_id));
-    assert_eq!(proposal["message_id"], serde_json::json!(message_id));
-    assert_eq!(proposal["base_generation"], current["note_generation"]);
+        .push(serde_json::json!("Review this proposal?"));
+    let proposal = &serde_json::json!({"id":Uuid::new_v4(),"run_id":run,"message_id":run,"base_generation":current["note_generation"],"note":current["note"],"items":current["items"],"page":page});
+    workspace.stage_proposal(&staging, proposal).await.unwrap();
     assert_eq!(
         proposal["page"]["questions"],
         serde_json::json!(["What changed this week?", "Review this proposal?"])
-    );
-    assert_eq!(
-        sqlx::query_scalar::<_, String>("select state from duet_commands where id=$1")
-            .bind(message_id)
-            .fetch_one(&mut owner)
-            .await
-            .unwrap(),
-        "complete"
     );
     assert_eq!(
         sqlx::query_scalar::<_, i64>(
             "select count(*) from duet_doctor_proposals where user_id=$1 and run_id=$2"
         )
         .bind(account.account_id)
-        .bind(message_id)
+        .bind(run)
         .fetch_one(&mut owner)
         .await
         .unwrap(),
@@ -1033,9 +570,8 @@ async fn run_browser_checks(
             .unwrap(),
         publication_count
     );
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
-    patient.wait_for(PROPOSAL_REPLY);
+    patient.text_until(&format!("{base}/?mode=client"), "Shared");
+    patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Review proposed doctor page");
     click_text(&mut patient, "Review proposed doctor page");
     patient.wait_for("Proposed page — not saved");
@@ -1079,8 +615,8 @@ async fn run_browser_checks(
     );
     // Reload from the server: the approved proposal is now the saved page, not
     // a browser-local preview, and both the existing and new question survive.
-    patient.text_until(&format!("{base}/?mode=client"), "Today");
-    patient.click("nav.tabs button:nth-of-type(1)");
+    patient.text_until(&format!("{base}/?mode=client"), "Shared");
+    patient.click("nav.tabs button:nth-of-type(2)");
     patient.wait_for("Open For my doctor");
     assert!(
         !patient

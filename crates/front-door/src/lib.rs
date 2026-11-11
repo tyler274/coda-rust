@@ -3,7 +3,7 @@
 //! binary's readiness check and separate Duet library routers. Invitations explicitly establish the roster link;
 //! SHA-256 token hashes and single-use redemption protect that store's contract.
 //!
-//! This crate also contains Duet identity, conversation and privacy-journal
+//! This crate also contains Duet identity and privacy-journal
 //! modules. They are separate from the durable owners composed by `duet-api`'s
 //! current binary; their presence does not make them mounted patient routes.
 //! Book: `book/src/front-door.md` records consumers and migration boundaries.
@@ -29,8 +29,6 @@ mod store;
 pub use error::{InviteError, LinkError, SessionError, SignInError};
 pub use store::PostgresFrontDoorStore;
 
-/// Duet-only durable plain-text conversation acceptance and retained readback.
-pub mod conversation;
 /// Durable Identity Platform mapping and Duet permission authority.
 pub mod identity;
 /// Transactional Luna privacy restrictions and independent receipt reconciliation.

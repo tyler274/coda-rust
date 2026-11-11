@@ -1,7 +1,7 @@
 // The words of the chart of signing out with work Duet hasn't confirmed, for PStack's statechart
 // skill. Run it with Charts.tla and chart-sign-out.cfg: you're signed in with entries Duet hasn't
 // confirmed, may write a draft, and sign out of this phone. Closing Duet ends the scene; the main
-// chart draws reopening in the conversation. It leaves out a session ended elsewhere, which
+// chart draws reopening where you were. It leaves out a session ended elsewhere, which
 // chart-ended draws, telling Duet of the sign-out, signing back in, and logging more entries.
 
 export const title = "Signing out with work Duet hasn't confirmed";
@@ -19,12 +19,12 @@ const warned = (p) =>
 export const state = (v) => {
   const p = v.phone;
   if (p.holds === "No session") return "Signed out";
-  if (p.screen === "Duet closed") return `Closed, reopens the conversation: ${held(p)}`;
+  if (p.screen === "Duet closed") return `Closed, reopens where you were: ${held(p)}`;
   if (p.screen === "Signing out: sending unconfirmed entries") {
     return `Signing out, sending entries${p.draft !== "Nobody" ? ", draft unsent" : ""}`;
   }
   if (p.screen === "Signing out removes what Duet hasn't confirmed") return warned(p);
-  return `Conversation, ${held(p)}`;
+  return `Open, ${held(p)}`;
 };
 
 const steps = {

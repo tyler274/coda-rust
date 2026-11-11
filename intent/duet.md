@@ -2,7 +2,7 @@
 
 This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
-The MVP is accounts, connected records and readings, and a small workspace in Shared, where the patient writes and sends to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP. Engineering still qualifies the full patient harness, even though the MVP does not release conversation.
+The MVP is accounts, connected records and readings, and a small workspace in Shared, where the patient writes and sends to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP.
 
 ## What Duet is
 

@@ -12,7 +12,7 @@ const screens = {
   "Duet couldn't be reached": "Duet couldn't be reached",
   "This link no longer works": "This link no longer works",
   Terms: "Terms",
-  Conversation: "Conversation",
+  Conversation: "Open",
   "Signing out: sending unconfirmed entries": "Signing out, sending entries",
 };
 

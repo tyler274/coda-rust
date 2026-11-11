@@ -152,9 +152,6 @@ impl Visit for SafeFields<'_> {
                     | "physician.queue.dispatch_failed"
                     | "physician.recovery.failed"
                     | "physician.receipt_compaction.failed"
-                    | "duet.conversation.failed"
-                    | "duet.follow_up.failed"
-                    | "duet.recovery.failed"
                     | "duet.privacy_recovery.failed"
             ),
             "error.type" => matches!(
@@ -174,28 +171,10 @@ impl Visit for SafeFields<'_> {
                 value,
                 "committed" | "settled" | "retry" | "absent" | "claim_error"
             ),
-            "step" => matches!(
-                value,
-                "launch"
-                    | "accept"
-                    | "contexts"
-                    | "context"
-                    | "pending"
-                    | "recover"
-                    | "execute"
-                    | "steered"
-                    | "claim"
-                    | "confirm"
-            ),
+            "step" => matches!(value, "pending" | "recover"),
             "error_class" => matches!(
                 value,
-                "database"
-                    | "identity"
-                    | "conflict"
-                    | "not_found"
-                    | "unavailable"
-                    | "invalid"
-                    | "execution"
+                "database" | "identity" | "conflict" | "not_found" | "unavailable" | "invalid"
             ),
             "coda.run_id" => uuid_shaped(value),
             _ => false,
