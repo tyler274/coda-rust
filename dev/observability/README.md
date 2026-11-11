@@ -188,6 +188,9 @@ The checker preserves records and computes decimal failure→firing,
 failure→Slack, firing→Slack, restore→recovery and recovery→Slack intervals.
 It flags missing observations, unstable grouping, excessive/early reminders,
 notifications during maintenance, unfinished maintenance and out-of-order times.
+The order is failure, firing, then the Slack alert and the restore in either
+order (a route may restore its signal before the alert reaches Slack), then
+recovery, then the Slack recovery.
 Even clean input is only an offline consistency check: it always returns
 `live_qualified: false`. Inspect the referenced artifacts yourself; no parser can
 authenticate a human assertion. Separate live proof is required for routing,

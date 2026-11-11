@@ -69,11 +69,107 @@ impl Watch {
         }
         self.check()
     }
+
+    /// Runs `read` up to `polls` times, `pause` apart, until it finds what it
+    /// waits for. A read that times out or cannot connect counts as one more
+    /// poll; any other error ends the wait at once. `Ok(None)` means every
+    /// poll ran and the last one answered without it; if the last one failed
+    /// to connect or timed out instead, that error is the answer.
+    pub(super) fn poll<T>(
+        &self,
+        polls: u32,
+        pause: Duration,
+        mut read: impl FnMut(u32) -> Result<Option<T>, DrillError>,
+    ) -> Result<Option<T>, DrillError> {
+        let mut last = None;
+        for poll in 0..polls {
+            match read(poll) {
+                Ok(Some(found)) => return Ok(Some(found)),
+                Ok(None) => last = None,
+                Err(error) if error.is_transient() => last = Some(error),
+                Err(error) => return Err(error),
+            }
+            self.pause(pause)?;
+        }
+        match last {
+            None => Ok(None),
+            Some(error) => Err(DrillError::PollsFailed {
+                polls,
+                last: Box::new(error),
+            }),
+        }
+    }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn watch() -> Watch {
+        Watch::new(Utc::now(), Arc::new(AtomicBool::new(false)))
+    }
+
+    /// A real connect failure: nothing listens on a port just released.
+    fn refused() -> DrillError {
+        let port = std::net::TcpListener::bind("127.0.0.1:0")
+            .and_then(|listener| listener.local_addr())
+            .map(|address| address.port())
+            .unwrap();
+        let source = reqwest::blocking::get(format!("http://127.0.0.1:{port}/")).unwrap_err();
+        DrillError::Request {
+            what: "a refused read",
+            source,
+        }
+    }
+
+    #[test]
+    fn a_transient_read_is_one_more_poll() {
+        let mut reads = 0;
+        let found = watch().poll(5, Duration::ZERO, |_| {
+            reads += 1;
+            if reads < 3 {
+                Err(refused())
+            } else {
+                Ok(Some(reads))
+            }
+        });
+        assert_eq!(found.unwrap(), Some(3));
+    }
+
+    #[test]
+    fn a_status_error_ends_the_wait_at_once() {
+        let mut reads = 0;
+        let found: Result<Option<()>, _> = watch().poll(5, Duration::ZERO, |_| {
+            reads += 1;
+            Err(DrillError::Status {
+                what: "a read",
+                status: 503,
+            })
+        });
+        assert!(matches!(found, Err(DrillError::Status { status: 503, .. })));
+        assert_eq!(reads, 1);
+    }
+
+    #[test]
+    fn polls_that_keep_failing_keep_the_last_cause() {
+        let found: Result<Option<()>, _> = watch().poll(3, Duration::ZERO, |_| Err(refused()));
+        let Err(DrillError::PollsFailed { polls, last }) = found else {
+            panic!("expected PollsFailed, got {found:?}");
+        };
+        assert_eq!(polls, 3);
+        assert!(matches!(*last, DrillError::Request { .. }));
+        assert!(std::error::Error::source(&DrillError::PollsFailed { polls, last }).is_some());
+    }
+
+    #[test]
+    fn an_answer_after_a_transient_read_is_a_plain_miss() {
+        let found: Option<()> = watch()
+            .poll(2, Duration::ZERO, |poll| {
+                if poll == 0 { Err(refused()) } else { Ok(None) }
+            })
+            .unwrap();
+        assert_eq!(found, None);
+    }
 
     #[test]
     fn an_interrupt_or_the_cap_ends_a_wait() {

@@ -422,9 +422,9 @@ against:
 | Action | What must hold |
 | --- | --- |
 | `rehearse` | A canary turn sent as the rehearsal physician answers, and Langfuse holds its generation in environment `simulation`, with the scenario, the chat as session, `coda.run_id`, a 128-bit trace id and the canary in its input or output. |
-| `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id. |
-| `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Loki holds the physician logs of the same trace (its positive control) and no line with the canary. |
-| `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers through redelivery and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
+| `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id, and the trace holds the site's `physician.queue.publish` span with the worker's attempt, so the Pub/Sub handoff carried it. |
+| `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Datadog Logs, and Loki under `grafana`, hold the physician logs of the same trace (their positive control) and no physician log event since the turn carries the canary in any field. |
+| `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers through redelivery and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. The failed attempt's trace holds the site's publish span, so the handoff carried the first delivery. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
 | `fail` | With `langfuse-web` at 0 replicas, a turn still answers and its operations trace arrives, the collector reports `otlphttp/langfuse` send failures or queue pressure, and a Langfuse export monitor fires. `langfuse-web` stays down for `recover`. |
 | `recover` | `langfuse-web` returns to the replica count `fail` recorded, a new turn lands in Langfuse, and every exporter monitor group resolves after the restore while the drill keeps sending a turn every minute. |
 | `signin-breakglass` | With `langfuse-sso` at 0 replicas, the init admin's password sign-in through a port-forward: CSRF token, credentials callback, then the session. Under the issuer it is refused, so the drill fails and the break-glass is the apply in the [Langfuse row above](#content-policy). |
@@ -444,7 +444,10 @@ and reads the Langfuse, init admin and Datadog keys from Doppler
 
 `fail`, `recover` and `signin-breakglass` scale a workload and need
 `--confirm`. Every wait runs under the exercise's 40-minute cap and the
-operator's Ctrl-C; either ends the run, and a workload the run scaled down is
+operator's Ctrl-C. A readback request that times out or cannot connect, as a
+port-forward may, counts as one of the wait's polls; an error status or a
+malformed answer ends the run at once, and a wait whose every poll failed
+reports the last failure. The cap or Ctrl-C ends the run, and a workload the run scaled down is
 restored to its recorded count before it exits. Only a passed `fail` leaves
 `langfuse-web` down, with its count in `langfuse-web-down.json` for `recover`.
 `recover` keeps that file, with its first restore time, until its checks

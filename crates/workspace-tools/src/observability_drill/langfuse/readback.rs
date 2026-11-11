@@ -398,6 +398,88 @@ pub(super) fn isolation_gaps(span: &OpsSpan, run_id: Option<&str>) -> Vec<String
     gaps
 }
 
+/// Where one Datadog trace misses the Pub/Sub handoff: the site's publish
+/// span and the worker's attempt span must share the trace, or the worker
+/// started a trace of its own.
+pub(super) fn handoff_gaps(trace: &Value) -> Vec<String> {
+    let spans = trace["data"]
+        .as_array()
+        .map(Vec::as_slice)
+        .unwrap_or_default();
+    let holds = |service: &str, resource: &str| {
+        spans.iter().any(|span| {
+            span["attributes"]["service"] == service
+                && span["attributes"]["resource_name"] == resource
+        })
+    };
+    [
+        ("physician-sample", "physician.queue.publish"),
+        ("physician-worker", "physician.worker.attempt"),
+    ]
+    .into_iter()
+    .filter(|(service, resource)| !holds(service, resource))
+    .map(|(service, resource)| {
+        format!("the trace has no {service} {resource} span; the Pub/Sub handoff did not carry it")
+    })
+    .collect()
+}
+
+/// One log backend's answer for one turn: the physician log lines of its
+/// trace (the positive control that its logs arrive at all) and the lines
+/// that carry the canary.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+pub(super) struct LogIsolation {
+    pub(super) backend: &'static str,
+    pub(super) trace_lines: usize,
+    pub(super) canary_lines: usize,
+}
+
+impl LogIsolation {
+    pub(super) fn gaps(&self) -> Vec<String> {
+        let backend = self.backend;
+        let mut gaps = Vec::new();
+        if self.trace_lines == 0 {
+            gaps.push(format!(
+                "{backend} holds no physician log for the turn's trace; an empty answer is not proof"
+            ));
+        }
+        if self.canary_lines > 0 {
+            gaps.push(format!(
+                "{backend} holds {} log line(s) with the canary",
+                self.canary_lines
+            ));
+        }
+        gaps
+    }
+}
+
+/// Reads a Datadog `POST /api/v2/logs/events/search` page: every event is
+/// scanned whole, so the canary is found in its message, attributes or
+/// error fields alike. `None` when the answer has no `data` list, or when it
+/// may be incomplete: more pages follow, the search timed out, or Datadog
+/// warns of partial results. Such a page cannot vouch for the window.
+pub(super) fn datadog_logs(body: &Value, trace_id: &str, canary: &str) -> Option<LogIsolation> {
+    let meta = &body["meta"];
+    let complete = !meta["page"]["after"].is_string()
+        && meta["status"] == "done"
+        && meta["warnings"].as_array().is_none_or(Vec::is_empty);
+    if !complete {
+        return None;
+    }
+    let events = body["data"].as_array()?;
+    Some(LogIsolation {
+        backend: "datadog",
+        trace_lines: events
+            .iter()
+            .filter(|event| mentions(event, trace_id))
+            .count(),
+        canary_lines: events
+            .iter()
+            .filter(|event| mentions(event, canary))
+            .count(),
+    })
+}
+
 /// Number of log lines in a Loki `query_range` answer, or `None` when the
 /// answer is not a successful streams result: a malformed answer is never
 /// read as zero lines.
@@ -612,6 +694,57 @@ mod tests {
             isolation_gaps(&span, Some("run-1")),
             ["datadog carries the canary"]
         );
+    }
+
+    #[test]
+    fn the_handoff_needs_the_publish_and_the_attempt_in_one_trace() {
+        let span = |service: &str, resource: &str| json!({ "attributes": { "service": service, "resource_name": resource } });
+        let carried = json!({ "data": [
+            span("physician-sample", "physician.queue.publish"),
+            span("physician-worker", "physician.worker.attempt"),
+        ]});
+        assert!(handoff_gaps(&carried).is_empty());
+        let broken = json!({ "data": [span("physician-worker", "physician.worker.attempt")] });
+        let gaps = handoff_gaps(&broken);
+        assert_eq!(gaps.len(), 1, "{gaps:?}");
+        assert!(gaps[0].contains("physician.queue.publish"), "{gaps:?}");
+    }
+
+    #[test]
+    fn datadog_logs_need_the_trace_and_no_canary() {
+        let event = |extra: Value| {
+            json!({ "attributes": { "service": "physician-sample",
+                "attributes": { "otel": { "trace_id": TRACE } }, "extra": extra } })
+        };
+        let clean = json!({ "data": [event(json!(null)), event(json!(null))], "meta": { "status": "done" } });
+        let logs = datadog_logs(&clean, TRACE, "canary-123").unwrap();
+        assert_eq!((logs.trace_lines, logs.canary_lines), (2, 0));
+        assert!(logs.gaps().is_empty());
+
+        let leaked = json!({ "data": [event(json!({ "error": { "message": "canary-123" } }))],
+            "meta": { "status": "done" } });
+        let logs = datadog_logs(&leaked, TRACE, "canary-123").unwrap();
+        assert_eq!(logs.gaps(), ["datadog holds 1 log line(s) with the canary"]);
+
+        let empty = json!({ "data": [], "meta": { "status": "done" } });
+        let empty = datadog_logs(&empty, TRACE, "canary-123").unwrap();
+        assert!(empty.gaps()[0].contains("not proof"));
+
+        let paged =
+            json!({ "data": [], "meta": { "status": "done", "page": { "after": "next" } } });
+        assert_eq!(datadog_logs(&paged, TRACE, "canary-123"), None);
+        assert_eq!(datadog_logs(&json!({}), TRACE, "canary-123"), None);
+
+        // A search that timed out or warns of partial results may have left
+        // out the very event with the canary, so it vouches for nothing.
+        let traced = [event(json!(null))];
+        let timed_out = json!({ "data": traced, "meta": { "status": "timeout" } });
+        assert_eq!(datadog_logs(&timed_out, TRACE, "canary-123"), None);
+        let warned = json!({ "data": traced, "meta": { "status": "done",
+            "warnings": [{ "code": "unknown_index", "title": "partial" }] } });
+        assert_eq!(datadog_logs(&warned, TRACE, "canary-123"), None);
+        let done = json!({ "data": traced, "meta": { "status": "done", "warnings": [] } });
+        assert!(datadog_logs(&done, TRACE, "canary-123").is_some());
     }
 
     #[test]

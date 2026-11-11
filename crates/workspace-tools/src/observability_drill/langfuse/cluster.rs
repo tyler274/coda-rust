@@ -86,15 +86,14 @@ pub(super) fn revisions() -> Result<Value, DrillError> {
             json!({ "revision": revision, "image": image }),
         );
     }
+    // Each deployment's own container shares its name; langfuse-web also runs
+    // a cloud-sql-proxy sidecar first.
     for deployment in ["langfuse-web", "otel-collector"] {
+        let path = format!(
+            "jsonpath={{.spec.template.spec.containers[?(@.name==\"{deployment}\")].image}}"
+        );
         let image = kubectl_value(
-            &[
-                "get",
-                "deployment",
-                deployment,
-                "-o",
-                "jsonpath={.spec.template.spec.containers[0].image}",
-            ],
+            &["get", "deployment", deployment, "-o", &path],
             "a cluster image",
         )?;
         found.insert(deployment.to_owned(), json!({ "image": image }));

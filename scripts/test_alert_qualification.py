@@ -150,7 +150,20 @@ class QualificationTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "UTC"):
             qualification.instant("2026-01-01T00:00:00")
         events = observations()
+        events[5]["kind"], events[6]["kind"] = events[6]["kind"], events[5]["kind"]
+        self.assertTrue(any("order violated" in gap for gap in gaps(events)))
+        events = observations()
+        events[2]["kind"], events[4]["kind"] = events[4]["kind"], events[2]["kind"]
+        self.assertTrue(any("order violated" in gap for gap in gaps(events)))
+
+    def test_a_self_stopping_failure_may_restore_before_its_slack_alert(self):
+        events = observations()
         events[4]["kind"], events[5]["kind"] = events[5]["kind"], events[4]["kind"]
+        events[4]["source"], events[5]["source"] = events[5]["source"], events[4]["source"]
+        self.assertEqual(gaps(events), [])
+        events = observations()
+        alert = events.pop(4)
+        events.insert(6, dict(alert, at="2026-01-01T00:06:01.123456789Z"))
         self.assertTrue(any("order violated" in gap for gap in gaps(events)))
 
     def test_reminder_interval_and_count(self):

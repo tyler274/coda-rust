@@ -27,7 +27,9 @@ use super::model::{DrillRoute, EvalKind, Exercise, SignalError, SignalKind};
 use crate::failure::Failure;
 use chat::{Physician, Turn};
 use cluster::{Forward, Kubectl, Workload};
-use readback::{AttemptSpan, LangfuseTurn, MonitorGroup, NamedMonitor, OpsSpan, PasswordSignIn};
+use readback::{
+    AttemptSpan, LangfuseTurn, LogIsolation, MonitorGroup, NamedMonitor, OpsSpan, PasswordSignIn,
+};
 use watch::Watch;
 
 const USAGE: &str = "\
@@ -112,6 +114,12 @@ pub(super) enum DrillError {
     TurnFailed { run: String },
     #[error("{what} did not arrive within {seconds} seconds")]
     Timeout { what: &'static str, seconds: u64 },
+    #[error("all {polls} polls failed; the last could not reach its backend")]
+    PollsFailed {
+        polls: u32,
+        #[source]
+        last: Box<DrillError>,
+    },
     #[error("{what} failed")]
     Io {
         what: &'static str,
@@ -193,6 +201,15 @@ pub(super) enum DrillError {
         resolved: DateTime<Utc>,
         restored: DateTime<Utc>,
     },
+}
+
+impl DrillError {
+    /// A request that timed out or could not connect, which the next poll
+    /// may get through: a port-forward or a backend that was briefly slow.
+    /// An HTTP status or an unreadable answer is not.
+    fn is_transient(&self) -> bool {
+        matches!(self, Self::Request { source, .. } if source.is_timeout() || source.is_connect())
+    }
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -723,24 +740,20 @@ impl LangfuseApi<'_> {
 
     /// Waits for the chat's trace and its generation.
     fn turn(&self, sent: &Sent, watch: &Watch) -> Result<LangfuseTurn, DrillError> {
-        for _poll in 0..READBACK_POLLS {
-            let traces = self.get(
-                "/api/public/traces",
-                &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                "Langfuse traces",
-            )?;
-            if let Some(id) = readback::session_trace(&traces) {
+        watch
+            .poll(READBACK_POLLS, POLL, |_| {
+                let traces = self.get(
+                    "/api/public/traces",
+                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
+                    "Langfuse traces",
+                )?;
+                let Some(id) = readback::session_trace(&traces) else {
+                    return Ok(None);
+                };
                 let trace = self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                if let Some(turn) = readback::langfuse_turn(&trace, &sent.canary) {
-                    return Ok(turn);
-                }
-            }
-            watch.pause(POLL)?;
-        }
-        Err(DrillError::Timeout {
-            what: "the Langfuse generation",
-            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
-        })
+                Ok(readback::langfuse_turn(&trace, &sent.canary))
+            })?
+            .ok_or(readback_timeout("the Langfuse generation"))
     }
 
     /// Waits for the generation of attempt `run_id` among the chat's traces:
@@ -751,26 +764,25 @@ impl LangfuseApi<'_> {
         run_id: &str,
         watch: &Watch,
     ) -> Result<LangfuseTurn, DrillError> {
-        for _poll in 0..READBACK_POLLS {
-            let traces = self.get(
-                "/api/public/traces",
-                &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                "Langfuse traces",
-            )?;
-            for id in readback::session_traces(&traces) {
-                let trace = self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                let turn = readback::langfuse_turn(&trace, &sent.canary)
-                    .filter(|turn| turn.run_id.as_deref() == Some(run_id));
-                if let Some(turn) = turn {
-                    return Ok(turn);
+        watch
+            .poll(READBACK_POLLS, POLL, |_| {
+                let traces = self.get(
+                    "/api/public/traces",
+                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
+                    "Langfuse traces",
+                )?;
+                for id in readback::session_traces(&traces) {
+                    let trace =
+                        self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
+                    let turn = readback::langfuse_turn(&trace, &sent.canary)
+                        .filter(|turn| turn.run_id.as_deref() == Some(run_id));
+                    if turn.is_some() {
+                        return Ok(turn);
+                    }
                 }
-            }
-            watch.pause(POLL)?;
-        }
-        Err(DrillError::Timeout {
-            what: "the failed attempt's Langfuse generation",
-            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
-        })
+                Ok(None)
+            })?
+            .ok_or(readback_timeout("the failed attempt's Langfuse generation"))
     }
 }
 
@@ -839,25 +851,82 @@ impl Datadog {
         let query = format!(
             "env:{DATADOG_ENV} service:physician-worker resource_name:physician.worker.attempt @coda.run_id:{attempt}"
         );
-        for _poll in 0..READBACK_POLLS {
-            let found = self.spans(&query)?;
-            let trace_id = found["data"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned));
-            if let Some(trace_id) = trace_id {
+        watch
+            .poll(READBACK_POLLS, POLL, |_| {
+                let Some(trace_id) = first_trace_id(&self.spans(&query)?) else {
+                    return Ok(None);
+                };
                 let body = self.spans(&format!("trace_id:{trace_id}"))?;
-                if readback::datadog_span(&body, "").found {
-                    return Ok(DatadogTrace { trace_id, body });
-                }
-            }
-            watch.pause(POLL)?;
+                Ok(readback::datadog_span(&body, "")
+                    .found
+                    .then_some(DatadogTrace { trace_id, body }))
+            })?
+            .ok_or(readback_timeout("the Datadog attempt and generation spans"))
+    }
+
+    /// Re-reads `trace` until it also holds the site's publish span: spans
+    /// land in Datadog independently, so the worker's may come first. Returns
+    /// the latest read of the trace, which every later verdict must judge,
+    /// and the handoff gaps that outlast the polls.
+    fn await_handoff(
+        &self,
+        trace: DatadogTrace,
+        watch: &Watch,
+    ) -> Result<(DatadogTrace, Vec<String>), DrillError> {
+        if readback::handoff_gaps(&trace.body).is_empty() {
+            return Ok((trace, Vec::new()));
         }
-        Err(DrillError::Timeout {
-            what: "the Datadog attempt and generation spans",
-            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
-        })
+        let mut latest = trace;
+        watch.poll(READBACK_POLLS, POLL, |_| {
+            latest.body = self.spans(&format!("trace_id:{}", latest.trace_id))?;
+            Ok(readback::handoff_gaps(&latest.body)
+                .is_empty()
+                .then_some(()))
+        })?;
+        let gaps = readback::handoff_gaps(&latest.body);
+        Ok((latest, gaps))
+    }
+
+    /// Waits for the physician logs of the turn's trace, then judges every
+    /// physician log event since `since` whole: message, attributes and
+    /// error fields alike may not carry the canary.
+    fn log_isolation(
+        &self,
+        trace_id: &str,
+        canary: &str,
+        since: DateTime<Utc>,
+        watch: &Watch,
+    ) -> Result<LogIsolation, DrillError> {
+        let what = "Datadog log search";
+        let body = json!({
+            "filter": {
+                "query": format!("env:{DATADOG_ENV} service:physician*"),
+                "from": since.to_rfc3339(),
+                "to": "now",
+            },
+            "page": { "limit": 1000 },
+        });
+        let read = || -> Result<LogIsolation, DrillError> {
+            let found = chat::send_json(
+                self.authorized(
+                    self.client
+                        .post(format!("{DATADOG_API}/api/v2/logs/events/search"))
+                        .json(&body),
+                ),
+                what,
+            )?;
+            readback::datadog_logs(&found, trace_id, canary).ok_or(DrillError::Shape {
+                what,
+                field: "one complete page of log events",
+            })
+        };
+        let traced = watch.poll(READBACK_POLLS, POLL, |_| {
+            read().map(|logs| (logs.trace_lines > 0).then_some(logs))
+        })?;
+        match traced {
+            Some(logs) => Ok(logs),
+            None => read(),
+        }
     }
 
     fn query(&self, query: &str, from: i64, to: i64) -> Result<Value, DrillError> {
@@ -915,24 +984,19 @@ impl Datadog {
         let query = format!(
             "env:{DATADOG_ENV} service:physician-worker resource_name:physician.worker.attempt @coda.run_id:{run_id}"
         );
-        for _poll in 0..READBACK_POLLS {
-            let found = self.spans(&query)?;
-            let span = readback::attempt_span(&found, run_id);
-            let trace_id = found["data"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned));
-            if let (Some(span), Some(trace_id)) = (span, trace_id) {
+        watch
+            .poll(READBACK_POLLS, POLL, |_| {
+                let found = self.spans(&query)?;
+                let (Some(span), Some(trace_id)) = (
+                    readback::attempt_span(&found, run_id),
+                    first_trace_id(&found),
+                ) else {
+                    return Ok(None);
+                };
                 let body = self.spans(&format!("trace_id:{trace_id}"))?;
-                return Ok((span, DatadogTrace { trace_id, body }));
-            }
-            watch.pause(POLL)?;
-        }
-        Err(DrillError::Timeout {
-            what: "the Datadog attempt span",
-            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
-        })
+                Ok(Some((span, DatadogTrace { trace_id, body })))
+            })?
+            .ok_or(readback_timeout("the Datadog attempt span"))
     }
 
     /// The trace id of attempt `run_id`'s failed generation, found by the
@@ -941,22 +1005,30 @@ impl Datadog {
         let query = format!(
             "service:physician-worker env:{DATADOG_ENV} status:error @coda.job:physician_* @gen_ai.system:* @coda.run_id:{run_id}"
         );
-        for _poll in 0..READBACK_POLLS {
-            let found = self.spans(&query)?;
-            let trace_id = found["data"]
-                .as_array()
-                .into_iter()
-                .flatten()
-                .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned));
-            if let Some(trace_id) = trace_id {
-                return Ok(trace_id);
-            }
-            watch.pause(POLL)?;
-        }
-        Err(DrillError::Timeout {
-            what: "the Datadog error generation the monitor counts",
-            seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
-        })
+        watch
+            .poll(READBACK_POLLS, POLL, |_| {
+                Ok(first_trace_id(&self.spans(&query)?))
+            })?
+            .ok_or(readback_timeout(
+                "the Datadog error generation the monitor counts",
+            ))
+    }
+}
+
+/// The trace id of the first span in a Datadog span search answer.
+fn first_trace_id(found: &Value) -> Option<String> {
+    found["data"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .find_map(|span| span["attributes"]["trace_id"].as_str().map(str::to_owned))
+}
+
+/// What a readback that ran out of polls without finding `what` answers.
+fn readback_timeout(what: &'static str) -> DrillError {
+    DrillError::Timeout {
+        what,
+        seconds: u64::from(READBACK_POLLS) * POLL.as_secs(),
     }
 }
 
@@ -996,6 +1068,7 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
     let datadog = Datadog::open()?;
     let sent = send_turn(request, report, watch)?;
     let trace = datadog.attempt_trace(&sent.attempt, watch)?;
+    let (trace, handoff) = datadog.await_handoff(trace, watch)?;
     let turn = api.turn(&sent, watch)?;
     let generation = readback::datadog_span(&trace.body, &sent.canary);
     let attempt_run = trace.attempt_run_id();
@@ -1011,6 +1084,7 @@ fn alert_to_run(request: &Request, report: &mut Report, watch: &Watch) -> Result
             trace.trace_id, turn.trace_id
         ));
     }
+    found.extend(handoff);
     let attempt = Some(sent.attempt.as_str());
     if generation.run_id.as_deref() != attempt {
         found.push(format!(
@@ -1051,6 +1125,7 @@ fn isolation(request: &Request, report: &mut Report, watch: &Watch) -> Result<()
     }
     let attempt = Some(sent.attempt.as_str());
     let mut spans: Vec<OpsSpan> = Vec::new();
+    let mut logs: Vec<LogIsolation> = Vec::new();
     if let Some(datadog) = &datadog {
         let trace = datadog.attempt_trace(&sent.attempt, watch)?;
         if !readback::same_trace(&trace.trace_id, &turn.trace_id) {
@@ -1060,6 +1135,7 @@ fn isolation(request: &Request, report: &mut Report, watch: &Watch) -> Result<()
             ));
         }
         spans.push(readback::datadog_span(&trace.body, &sent.canary));
+        logs.push(datadog.log_isolation(&turn.trace_id, &sent.canary, started, watch)?);
     }
     if let Some(tempo) = &tempo {
         spans.push(tempo_span(tempo, &turn.trace_id, &sent.canary, watch)?);
@@ -1069,10 +1145,12 @@ fn isolation(request: &Request, report: &mut Report, watch: &Watch) -> Result<()
     }
     report.put("operations", &spans);
     if let Some(loki) = &loki {
-        let lines = loki_isolation(loki, &sent, &turn.trace_id, started, watch)?;
-        report.put("loki", &lines);
-        found.extend(lines.gaps());
+        logs.push(loki_isolation(loki, &sent, &turn.trace_id, started, watch)?);
     }
+    for log in &logs {
+        found.extend(log.gaps());
+    }
+    report.put("logs", &logs);
     gaps("content isolation", found)
 }
 
@@ -1083,7 +1161,7 @@ fn tempo_span(
     watch: &Watch,
 ) -> Result<OpsSpan, DrillError> {
     let client = client()?;
-    for _poll in 0..READBACK_POLLS {
+    let found = watch.poll(READBACK_POLLS, POLL, |_| {
         let response = client
             .get(format!("{}/api/traces/{trace_id}", tempo.url()))
             .send()
@@ -1091,43 +1169,13 @@ fn tempo_span(
                 what: "Tempo trace",
                 source,
             })?;
-        if response.status().as_u16() != 404 {
-            let body = json_body(response, "Tempo trace")?;
-            let span = readback::tempo_span(&body, canary);
-            if span.found {
-                return Ok(span);
-            }
+        if response.status().as_u16() == 404 {
+            return Ok(None);
         }
-        watch.pause(POLL)?;
-    }
-    Ok(readback::tempo_span(&Value::Null, canary))
-}
-
-/// Loki's answer for one turn: the physician logs of its trace (the positive
-/// control that its logs arrive at all) and any line with the canary.
-#[derive(serde::Serialize)]
-struct LokiIsolation {
-    trace_lines: usize,
-    canary_lines: usize,
-}
-
-impl LokiIsolation {
-    fn gaps(&self) -> Vec<String> {
-        let mut gaps = Vec::new();
-        if self.trace_lines == 0 {
-            gaps.push(
-                "Loki holds no physician log for the turn's trace; an empty answer is not proof"
-                    .to_owned(),
-            );
-        }
-        if self.canary_lines > 0 {
-            gaps.push(format!(
-                "Loki holds {} line(s) with the canary",
-                self.canary_lines
-            ));
-        }
-        gaps
-    }
+        let span = readback::tempo_span(&json_body(response, "Tempo trace")?, canary);
+        Ok(span.found.then_some(span))
+    })?;
+    Ok(found.unwrap_or_else(|| readback::tempo_span(&Value::Null, canary)))
 }
 
 /// Waits for the physician logs of the turn's trace, then counts canary lines in
@@ -1138,7 +1186,7 @@ fn loki_isolation(
     trace_id: &str,
     since: DateTime<Utc>,
     watch: &Watch,
-) -> Result<LokiIsolation, DrillError> {
+) -> Result<LogIsolation, DrillError> {
     let client = client()?;
     let start = since.timestamp_nanos_opt().unwrap_or_default().to_string();
     let count = |query: &str| -> Result<usize, DrillError> {
@@ -1161,19 +1209,17 @@ fn loki_isolation(
     // for its POST /commands: the first delivery's attempt continues that
     // trace. Loki keeps `trace_id` as structured metadata.
     let traced = format!("{{service_name=~\"physician.*\"}} | trace_id=\"{trace_id}\"");
-    let mut trace_lines = 0;
-    for _poll in 0..READBACK_POLLS {
-        trace_lines = count(&traced)?;
-        if trace_lines > 0 {
-            break;
-        }
-        watch.pause(POLL)?;
-    }
+    let trace_lines = watch
+        .poll(READBACK_POLLS, POLL, |_| {
+            count(&traced).map(|lines| (lines > 0).then_some(lines))
+        })?
+        .unwrap_or(0);
     let canary_lines = count(&format!(
         "{{service_name=~\"physician.*\"}} |= \"{}\"",
         sent.canary
     ))?;
-    Ok(LokiIsolation {
+    Ok(LogIsolation {
+        backend: "loki",
         trace_lines,
         canary_lines,
     })
@@ -1269,7 +1315,7 @@ fn await_monitor(
     watch: &Watch,
     mut between: impl FnMut(u32) -> Result<(), DrillError>,
 ) -> Result<Option<(MonitorGroup, DateTime<Utc>)>, DrillError> {
-    for poll in 0..MONITOR_POLLS {
+    watch.poll(MONITOR_POLLS, POLL, |poll| {
         between(poll)?;
         let groups = datadog.exporter_groups()?;
         if let Some(reached) = monitor_reached(&groups, alerting, since) {
@@ -1281,9 +1327,8 @@ fn await_monitor(
                 restored: since,
             });
         }
-        watch.pause(POLL)?;
-    }
-    Ok(None)
+        Ok(None)
+    })
 }
 
 fn ledger(dir: &Path) -> Result<Exercise, DrillError> {
@@ -1409,13 +1454,10 @@ fn fail_checks(
         readback::isolation_gaps(&span, Some(&sent.attempt)),
     )?;
     let mut pressure = Value::Null;
-    for _poll in 0..READBACK_POLLS {
+    watch.poll(READBACK_POLLS, POLL, |_| {
         pressure = exporter_pressure(datadog, failed_at.timestamp() - 60, Utc::now().timestamp())?;
-        if pressure_rose(&pressure) {
-            break;
-        }
-        watch.pause(POLL)?;
-    }
+        Ok(pressure_rose(&pressure).then_some(()))
+    })?;
     report.put("exporter", &pressure);
     if !pressure_rose(&pressure) {
         return Err(DrillError::Gaps {
@@ -1461,14 +1503,11 @@ fn await_chat_monitor(
     polls: u32,
     watch: &Watch,
 ) -> Result<(MonitorGroup, DateTime<Utc>), DrillError> {
-    for _poll in 0..polls {
+    let reached = watch.poll(polls, POLL, |_| {
         let monitor = datadog.chat_failure_monitor()?;
-        if let Some(reached) = monitor_reached(&monitor.groups, alerting, since) {
-            return Ok(reached);
-        }
-        watch.pause(POLL)?;
-    }
-    Err(DrillError::Timeout {
+        Ok(monitor_reached(&monitor.groups, alerting, since))
+    })?;
+    reached.ok_or(DrillError::Timeout {
         what: if alerting {
             "the chat failure monitor alert"
         } else {
@@ -1636,6 +1675,8 @@ fn follow_failure(
         )]);
     };
     let (failed, failed_trace) = datadog.attempt(&failed_run, watch)?;
+    // The first delivery continues the site's trace; the redelivery may not.
+    let (failed_trace, handoff) = datadog.await_handoff(failed_trace, watch)?;
     let alerted_trace = datadog.failed_generation(&failed_run, watch)?;
     let langfuse = api.attempt_generation(sent, &failed_run, watch)?;
     let failed_generation = readback::datadog_span(&failed_trace.body, &sent.canary);
@@ -1677,6 +1718,7 @@ fn follow_failure(
     if failed_generation.canary {
         found.push("Datadog carries the canary in the failed attempt's trace".to_owned());
     }
+    found.extend(handoff);
     found.extend(readback::isolation_gaps(
         &successor_generation,
         Some(&sent.attempt),

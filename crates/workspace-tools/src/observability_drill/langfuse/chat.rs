@@ -198,15 +198,15 @@ impl Physician {
             "{}/patient-workspaces/{}/chats/{}/snapshot",
             self.origin, turn.workspace, turn.chat
         );
-        for _attempt in 0..attempts {
+        let answer = watch.poll(attempts, pause, |_| {
             let body = send_json(self.authorized(self.client.get(&path)), "chat snapshot")?;
             match turn_state(&body) {
-                TurnState::Answered(answer) => return Ok(answer),
-                TurnState::Failed(run) => return Err(DrillError::TurnFailed { run }),
-                TurnState::Writing => watch.pause(pause)?,
+                TurnState::Answered(answer) => Ok(Some(answer)),
+                TurnState::Failed(run) => Err(DrillError::TurnFailed { run }),
+                TurnState::Writing => Ok(None),
             }
-        }
-        Err(DrillError::Timeout {
+        })?;
+        answer.ok_or(DrillError::Timeout {
             what: "the rehearsal reply",
             seconds: u64::from(attempts) * pause.as_secs(),
         })

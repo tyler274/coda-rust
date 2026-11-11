@@ -160,8 +160,14 @@ def assess(events):
         latencies = {}
         if all(len(kinds.get(kind, [])) == 1 for kind in required):
             ordered = [instant(kinds[kind][0]["at"]) for kind in required]
-            if ordered != sorted(ordered):
-                gaps.append("failure, firing, receipt, restore, recovery, receipt order violated")
+            failure, firing, alert, restored, recovered, recovery = ordered
+            # The Slack alert and the restore both fall between firing and
+            # recovery, in either order: a drill whose failure stops by itself
+            # can restore before the provider's Slack message lands.
+            if not (failure <= firing <= min(alert, restored)
+                    and max(alert, restored) <= recovered <= recovery):
+                gaps.append("order violated: failure, firing, then receipt and restore, "
+                            "then recovery, then receipt")
             if any(not ordered[0] <= instant(event["at"]) <= ordered[1] for event in kinds.get("pending", [])):
                 gaps.append("pending must occur between signal failure and firing")
             if ordered[-1] - ordered[0] > 2400:
