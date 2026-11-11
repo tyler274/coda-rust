@@ -1,6 +1,6 @@
 # Merged after collector.yaml and collector.gke.yaml, before the backend
 # overlay, only while the GKE gateway runs without Langfuse
-# (infra/gcp/observability langfuse_enabled = false). The ops pipelines are
+# (infra/gcp/observability without langfuse_host). The ops pipelines are
 # unchanged. Generation spans still pass the caller and generation filters,
 # then go to nop (defined in collector.yaml) instead of Langfuse, so no
 # Langfuse endpoint or keys are needed. The extension list drops

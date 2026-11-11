@@ -34,23 +34,9 @@ output "datadog_gcp_integration" {
   } : null
 }
 
-# The Langfuse outputs are null while langfuse_enabled is off.
-output "langfuse_web_url" {
-  description = "In-cluster Langfuse URL. It carries the /langfuse base path under staging_proxy; people use <origin>/langfuse/ then, otherwise kubectl port-forward svc/langfuse-web 3000."
-  value       = var.langfuse_enabled ? local.langfuse_web_url : null
-}
-
-output "langfuse_cloud_sql_connection_name" {
-  value = one(google_sql_database_instance.langfuse[*].connection_name)
-}
-
-output "langfuse_blob_bucket" {
-  value = one(google_storage_bucket.langfuse[*].name)
-}
-
-output "langfuse_hmac_service_account" {
-  description = "Mint the S3-interop HMAC key for this account and store it in Doppler as LANGFUSE_S3_ACCESS_KEY_ID / LANGFUSE_S3_SECRET_ACCESS_KEY."
-  value       = one(google_service_account.langfuse_blobs[*].email)
+output "langfuse_otlp_endpoint" {
+  description = "Where the gateway sends generation spans: the Langfuse project's OTLP endpoint. Null while langfuse_host is unset."
+  value       = local.langfuse_otlp_endpoint
 }
 
 output "telemetry_backend" {
@@ -88,10 +74,9 @@ output "grafana" {
 
 # Null until staging_proxy is set.
 output "staging_proxy" {
-  description = "Where people reach Grafana and Langfuse through public-site, and the internal load balancer addresses the relay forwards to."
+  description = "Where people reach Grafana through public-site, and the internal load balancer address the relay forwards to."
   value = var.staging_proxy == null ? null : {
-    grafana_url  = local.grafana_backend ? local.grafana_public_url : null
-    langfuse_url = var.langfuse_enabled ? "${var.staging_proxy.origin}/langfuse/" : null
-    internal     = { for name, lb in local.observability_web : name => "http://${lb.ip}:3000/${name}/" }
+    grafana_url = local.grafana_backend ? local.grafana_public_url : null
+    internal    = { for name, lb in local.observability_web : name => "http://${lb.ip}:3000/${name}/" }
   }
 }

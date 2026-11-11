@@ -56,9 +56,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | Crate | Entry | Owns | Chapter |
 | --- | --- | --- | --- |
 | `public-site` | [`src/lib.rs`](/crates/public-site/src/lib.rs) | The startup-rendered public marketing site, isolated from the physician runtime | [Public site](public-site.md) |
-| `observability-relay` | [`src/lib.rs`](/crates/observability-relay/src/lib.rs) | The staging hop from public-site's `/grafana/`, `/langfuse/` and `/langfuse-sso/` mounts to the private observability load balancers | [Public site](public-site.md#observability-mounts) |
-| `langfuse-sso` | [`src/lib.rs`](/crates/langfuse-sso/src/lib.rs) | The OIDC issuer that signs engineers into staging Langfuse as the Google account IAP verified: discovery, JWKS, single-use PKCE codes and ES256 ID tokens | [Observability](observability.md) |
-
+| `observability-relay` | [`src/lib.rs`](/crates/observability-relay/src/lib.rs) | The staging hop from public-site's `/grafana/` mount to Grafana's private load balancer | [Public site](public-site.md#observability-mounts) |
 ## Tooling and guards
 
 | Crate | Entry | Owns | Chapter |

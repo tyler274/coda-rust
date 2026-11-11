@@ -13,13 +13,9 @@ pub struct RuntimeConfig {
     /// `/physician/` mount both follow it.
     pub physician_proxy: Option<crate::proxy::ProxyConfig>,
     /// Present only when `OBSERVABILITY_RELAY_URL` names the staging relay. It
-    /// alone mounts `/grafana/` and `/langfuse/`, signed with the same
+    /// alone mounts `/grafana/`, signed with the same
     /// `PHYSICIAN_PROXY_SERVICE_ACCOUNT` identity as the physician mount.
     pub observability_proxy: Option<crate::proxy::ProxyConfig>,
-    /// `LANGFUSE_SIGN_IN`: `password` (the default) or `sso`, matching
-    /// whether the `observability` root deploys `langfuse-sso`. Only with the
-    /// relay.
-    pub langfuse_sign_in: crate::proxy::LangfuseSignIn,
     pub health_token: Option<String>,
     pub release_sha: Option<String>,
     pub max_concurrency: usize,
@@ -35,7 +31,6 @@ impl Default for RuntimeConfig {
             access: AccessConfig::default(),
             physician_proxy: None,
             observability_proxy: None,
-            langfuse_sign_in: crate::proxy::LangfuseSignIn::default(),
             health_token: None,
             release_sha: None,
             max_concurrency: 1024,
@@ -107,18 +102,9 @@ impl RuntimeConfig {
         if observability_proxy.is_some() && !staging {
             return Err("OBSERVABILITY_RELAY_URL is staging-only".into());
         }
-        let langfuse_sign_in = match nonempty("LANGFUSE_SIGN_IN").as_deref() {
-            None | Some("password") => crate::proxy::LangfuseSignIn::Password,
-            Some("sso") => crate::proxy::LangfuseSignIn::Sso,
-            Some(_) => return Err("LANGFUSE_SIGN_IN must be password or sso".into()),
-        };
-        if langfuse_sign_in == crate::proxy::LangfuseSignIn::Sso && observability_proxy.is_none() {
-            return Err("LANGFUSE_SIGN_IN=sso needs OBSERVABILITY_RELAY_URL".into());
-        }
         let mut config = Self {
             physician_proxy,
             observability_proxy,
-            langfuse_sign_in,
             environment,
             staging,
             access,
@@ -330,37 +316,6 @@ mod tests {
                 .observability_proxy
                 .is_none()
         );
-    }
-
-    #[test]
-    fn langfuse_sign_in_is_password_unless_sso_is_named_with_the_relay() {
-        use crate::proxy::LangfuseSignIn;
-        let load_sign_in = |relay: Option<&str>, sign_in: Option<&str>| {
-            RuntimeConfig::from_lookup(|name| match name {
-                "APP_ENV" => Some("staging".into()),
-                "PUBLIC_SITE_IAP_AUDIENCE" => Some(crate::access::tests::AUDIENCE.into()),
-                "OBSERVABILITY_RELAY_URL" => relay.map(str::to_owned),
-                "PHYSICIAN_PROXY_SERVICE_ACCOUNT" => {
-                    Some("site@project.iam.gserviceaccount.com".into())
-                }
-                "LANGFUSE_SIGN_IN" => sign_in.map(str::to_owned),
-                _ => None,
-            })
-        };
-        let relay = Some("https://relay.example.test");
-        for (sign_in, expected) in [
-            (None, LangfuseSignIn::Password),
-            (Some("password"), LangfuseSignIn::Password),
-            (Some("sso"), LangfuseSignIn::Sso),
-        ] {
-            assert_eq!(
-                load_sign_in(relay, sign_in).unwrap().langfuse_sign_in,
-                expected,
-                "{sign_in:?}"
-            );
-        }
-        assert!(load_sign_in(relay, Some("SSO")).is_err());
-        assert!(load_sign_in(None, Some("sso")).is_err());
     }
 
     #[test]

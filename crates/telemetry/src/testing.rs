@@ -31,13 +31,6 @@ fn fixture(name: &str) -> PathBuf {
 
 /// What the test needs from the fixture beyond Langfuse web.
 pub enum Shape {
-    /// Langfuse web and its stores, with an overlay from
-    /// `dev/observability/test/` (for example `langfuse-sso.yaml`) and the
-    /// variables it requires.
-    Overlay {
-        file: &'static str,
-        env: Vec<(&'static str, String)>,
-    },
     /// Also langfuse-worker and the real collector (`collector.yaml` plus the
     /// test overlay), whose operations pipelines deliver to OTLP/HTTP on
     /// `ops_sink_port`.
@@ -73,35 +66,23 @@ impl Langfuse {
             ("MINIO_PORT", free_port().to_string()),
             ("LANGFUSE_PORT", langfuse_port.to_string()),
         ];
-        let mut files = vec![fixture("langfuse.yaml")];
-        let mut profiles = Vec::new();
-        let mut otlp_http = None;
-        match shape {
-            Shape::Overlay { file, env: extra } => {
-                files.push(fixture(file));
-                env.extend(extra);
-            }
-            Shape::Ingest { ops_sink_port } => {
-                let http = free_port();
-                profiles.push("ingest");
-                env.extend([
-                    ("LANGFUSE_WORKER_PORT", free_port().to_string()),
-                    ("COLLECTOR_GRPC_PORT", free_port().to_string()),
-                    ("COLLECTOR_HTTP_PORT", http.to_string()),
-                    ("COLLECTOR_HEALTH_PORT", free_port().to_string()),
-                    ("OPS_SINK_PORT", ops_sink_port.to_string()),
-                ]);
-                otlp_http = Some(format!("http://127.0.0.1:{http}"));
-            }
-        }
+        let Shape::Ingest { ops_sink_port } = shape;
+        let http = free_port();
+        env.extend([
+            ("LANGFUSE_WORKER_PORT", free_port().to_string()),
+            ("COLLECTOR_GRPC_PORT", free_port().to_string()),
+            ("COLLECTOR_HTTP_PORT", http.to_string()),
+            ("COLLECTOR_HEALTH_PORT", free_port().to_string()),
+            ("OPS_SINK_PORT", ops_sink_port.to_string()),
+        ]);
         let langfuse = Self {
             project: format!("{label}-{}", std::process::id()),
-            files,
-            profiles,
+            files: vec![fixture("langfuse.yaml")],
+            profiles: vec!["ingest"],
             env,
             url: format!("http://127.0.0.1:{langfuse_port}"),
             postgres_port,
-            otlp_http,
+            otlp_http: Some(format!("http://127.0.0.1:{http}")),
         };
         langfuse.run(&["up", "-d", "--wait", "--wait-timeout", "600"]);
         langfuse

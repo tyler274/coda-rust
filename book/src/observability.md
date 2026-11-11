@@ -1,13 +1,14 @@
 # Observability
 
 The observability stack has selectable **operations destinations** (traces,
-logs, metrics, alerts) and **self-hosted Langfuse** for agent runs. Destinations
+logs, metrics, alerts) and **Langfuse** for agent runs. Destinations
 are Datadog (APM, logs, Error Tracking, monitors), a self-hosted Grafana
 stack (Tempo, Loki, Prometheus, Grafana). Both use the same OpenTelemetry
 trace. The operations backend gets every span with agent content removed.
-Langfuse gets only model generations and stays inside our GCP project. The
-collector strips content from the operations pipelines unconditionally, so no
-content depends on a vendor's BAA scope.
+Langfuse gets only model generations, in the hosted project at
+`https://hipaa.cloud.langfuse.com`, which Langfuse's BAA covers. The collector
+strips content from the operations pipelines unconditionally, so no content
+depends on an operations vendor's BAA scope.
 
 This page describes configuration and verification, not live deployment status.
 Infrastructure, Datadog and Grafana changes require separately authorized,
@@ -82,7 +83,7 @@ Locally, services export straight to the compose collector
 (`dev/observability/collector.yaml` plus the debug, Datadog or Grafana
 overlay) with no sidecar or gateway.
 
-Langfuse can be switched off on its own (`langfuse_enabled = false` in
+Langfuse can be switched off on its own (no `langfuse_host` in
 `infra/gcp/observability`). The gateway then merges
 `collector.gke-no-langfuse.yaml` before the backend overlay, and
 `traces/langfuse` ends in `nop`. The ops pipelines and every privacy and
@@ -92,7 +93,7 @@ Per signal:
 
 - **Traces.** Every span goes to the operations backend (Datadog APM or Tempo)
   with content deleted. Generation spans also go, with content as the service
-  sent it, to the self-hosted Langfuse in the same cluster.
+  sent it, to the Langfuse project at `langfuse_host`.
 - **Logs.** Services emit their log events as OTLP log records over the same
   sidecar path. Every HTTP response emits one `info` record with `status`,
   `latency_ms` and the request's trace id, so a request with a span and no log
@@ -185,14 +186,14 @@ collector processors, and the backend overlay changes only the exporters.
 
 | Where | Rule |
 | --- | --- |
-| Service | `CODA_TELEMETRY_CONTENT=none` (default) records no prompt or completion text. `full` attaches it as `langfuse.observation.input/output`. Simulation traffic may use `full` anywhere. Real traffic may use it only when spans go to the in-project Langfuse. |
+| Service | `CODA_TELEMETRY_CONTENT=none` (default) records no prompt or completion text. `full` attaches it as `langfuse.observation.input/output`. Simulation traffic may use `full` anywhere. Real traffic may use it only when spans go to the Langfuse project under the BAA. |
 | Collector → ops traces | `transform/strip_content` on `traces/ops` keeps only an allowlist of operational attributes on resources, spans and span events, so prompt and completion text (`langfuse.observation.input/output` and any other key) never leaves for the operations backend. It also clears status messages and renames unknown span names. The policy setting does not change this. Model, usage, run, scenario and origin attributes stay. |
 | Collector → Langfuse | `filter/langfuse_generations` keeps only spans with `langfuse.observation.type` or the `gen_ai.*` attributes the crate sets. HTTP and infrastructure spans stay in the operations backend. |
 | Collector → ops logs | `transform/strip_log_content` on `logs/ops` applies the same kind of allowlist to log record and resource attributes and replaces every body. No log pipeline exports to Langfuse. |
 | Datadog Agent (`datadog`) | Tails no container logs and excludes the `observability` namespace, because Langfuse can log payloads on errors. It receives logs only as OTLP from the gateway. |
 | Tempo, Loki, Prometheus (`grafana`) | Only the gateway collector writes to Tempo and Loki; Prometheus receives only Tempo's span metrics. Nothing scrapes container logs. All ClusterIP only. |
 | Gateway | Accepts only Google ID tokens with the gateway audience from the listed Cloud Run runtime service accounts, over the internal load balancer restricted to the Cloud Run egress range. |
-| Langfuse | ClusterIP, plus an internal load balancer that admits only the observability relay's subnet when `observability_web` is set. In staging people open `https://staging.codahealth.ai/langfuse/` through public-site's IAP and the relay. With `langfuse_sso_image`, [`langfuse-sso`](/crates/langfuse-sso) signs them in as their IAP-verified Google account with no form; a first sign-in gets the `NONE` role and no project until an admin grants one ([sign-in](/infra/gcp/observability/README%2Emd#staging-proxy)). With the issuer, passwords are off on every route, `kubectl port-forward` included, and stay off while the issuer is down. Without it they use Langfuse's own login, through the proxy or `kubectl port-forward`. The break-glass when the issuer fails is therefore a reviewed apply that removes it ([break-glass](/infra/gcp/observability/README%2Emd#staging-proxy)), after which the init admin signs in by password. Retention defaults to 90 days. |
+| Langfuse | The hosted HIPAA cloud project at `langfuse_host`, reached over HTTPS with the project's key pair. People sign in at `https://hipaa.cloud.langfuse.com` as members of the Coda organization; nothing in the cluster serves Langfuse. Retention is the project's 90-day setting. |
 | Grafana | ClusterIP, plus the same relay-only internal load balancer. In staging it serves under `https://staging.codahealth.ai/grafana/` and signs people in from the forwarded IAP assertion (`X-Coda-IAP-Assertion`) after checking its signature, issuer and the public-site audience; otherwise `kubectl port-forward`. Grafana-stack retention is 14 days of traces, 30 of logs and 30 of metrics by default. |
 
 `tofu test` in `infra/gcp/observability` reads the deployed collector config
@@ -242,8 +243,8 @@ PHYSICIAN_RUNTIME_TEST_DATABASE_URL=postgres://... \
 
 Doppler holds every observability secret: the Datadog API and app keys (under
 `datadog`), `GRAFANA_ADMIN_PASSWORD` and `GRAFANA_SLACK_WEBHOOK_URL` (under
-`grafana`), the Langfuse salt, NextAuth secret, encryption key, ClickHouse and
-Valkey passwords, the GCS HMAC pair, and the Langfuse project keys. Only the
+`grafana`), and the Langfuse project keys (`LANGFUSE_PUBLIC_KEY`,
+`LANGFUSE_SECRET_KEY`, with `LANGFUSE_BASE_URL` beside them). Only the
 selected backend's keys are synced, so the other backend's keys need not
 exist. The Doppler Kubernetes Operator syncs them into the `observability`
 namespace;
@@ -402,7 +403,7 @@ readiness until those observations exist. Production is outside this procedure.
    surrounding conversation, chart, instructions or model records to Datadog or
    Grafana.
    Never use a retry's newer attempt as proof for the originally alerted attempt.
-4. In Langfuse (port-forward or the IAP host), find the generation with the same
+4. In Langfuse (`https://hipaa.cloud.langfuse.com`), find the generation with the same
    trace ID and `coda.run_id`. A trace may contain several attempts, so verify both
    identifiers. The environment is `coda.origin`, and tags include `coda.job`.
    Input/output exists only when content capture was explicitly enabled; absent
@@ -436,9 +437,6 @@ against:
 | `alert-to-run` | The same turn found from Datadog: the snapshot's attempt id, the attempt span, the generation span and Langfuse agree on `coda.run_id` and the trace id, and the trace holds the site's `physician.queue.publish` span with the worker's attempt, so the Pub/Sub handoff carried it. |
 | `isolation` | Langfuse holds the canary (the positive control) under the snapshot's attempt; the operations spans of the same trace exist in Datadog, and in Tempo under `grafana`, with model and usage, and no canary anywhere; Datadog Logs, and Loki under `grafana`, hold the physician logs of the same trace (their positive control) and no physician log event since the turn carries the canary in any field. |
 | `chat-failure` | The physician chat failure monitor is OK, then the drill sends one more canary turn than its threshold, each marked `[fail:1]`. Every turn answers through redelivery and the monitor fires. For one turn, the answering attempt's span names the failed attempt as its predecessor in the same `coda.work_id`; the failed attempt's span has `error.type` `rehearsed`; the monitor's own query, narrowed to that attempt, finds the error generation in the failed attempt's trace; and Langfuse holds that attempt's generation in the same trace at level `ERROR`, with the canary. The failed attempt's trace holds the site's publish span, so the handoff carried the first delivery. Datadog holds no canary in either attempt's trace, and the monitor recovers after its 10-minute window. |
-| `fail` | With `langfuse-web` at 0 replicas, a turn still answers and its operations trace arrives, the collector reports `otlphttp/langfuse` send failures or queue pressure, and a Langfuse export monitor fires. `langfuse-web` stays down for `recover`. |
-| `recover` | `langfuse-web` returns to the replica count `fail` recorded, a new turn lands in Langfuse, and every exporter monitor group resolves after the restore while the drill keeps sending a turn every minute. |
-| `signin-breakglass` | With `langfuse-sso` at 0 replicas, the init admin's password sign-in through a port-forward: CSRF token, credentials callback, then the session. Under the issuer it is refused, so the drill fails and the break-glass is the apply in the [Langfuse row above](#content-policy). |
 
 The rehearsal physician is the `physician-rehearsal` service account. Its turns
 belong to a practice in `physician_simulation_practices`
@@ -449,31 +447,22 @@ whatever it sends. The operator signs in with gcloud as one of
 IAM `signJwt`; `POST /auth/rehearsal` then admits exactly that principal.
 Every `kubectl` call names the staging context
 `gke_coda-rust-staging_us-east1_rust-observability`, so an ambient context is
-never used; the drill opens its own port-forwards to Langfuse, Tempo and Loki
-and reads the Langfuse, init admin and Datadog keys from Doppler
-`coda-rust/stg` without printing them.
+never used; the drill opens its own port-forwards to Tempo and Loki, reads
+Langfuse at `LANGFUSE_BASE_URL` with the project keys, and reads those and the
+Datadog keys from Doppler `coda-rust/stg` without printing them. Every receipt
+records the Langfuse origin it read as `langfuse_host`.
 
-`fail`, `recover` and `signin-breakglass` scale a workload and need
-`--confirm`. Every wait runs under the exercise's 40-minute cap and the
-operator's Ctrl-C. A readback request that times out or cannot connect, as a
-port-forward may, counts as one of the wait's polls; an error status or a
-malformed answer ends the run at once, and a wait whose every poll failed
-reports the last failure. The cap or Ctrl-C ends the run, and a workload the run scaled down is
-restored to its recorded count before it exits. Only a passed `fail` leaves
-`langfuse-web` down, with its count in `langfuse-web-down.json` for `recover`.
-`recover` keeps that file, with its first restore time, until its checks
-pass, so a failed `recover` can be rerun against the same restore; it
-fails at once when the monitor had already resolved before the restore,
-since no later transition will come. A failed restore is reported with the original error and the `kubectl scale`
-command that finishes it. `fail` and `recover` also write
-`observations-langfuse-<stamp>.json`, the
-`langfuse` route of `qualify-alerts.py`. Run each drill only with the
-operator's approval for that window; the monitors are
-[`langfuse-monitors.tf`](/infra/gcp/observability/langfuse-monitors.tf) behind
-`langfuse_monitors_enabled`.
+Every wait runs under the exercise's 40-minute cap and the operator's Ctrl-C.
+A readback request that times out or cannot connect, as a port-forward may,
+counts as one of the wait's polls; an error status or a malformed answer ends
+the run at once, and a wait whose every poll failed reports the last failure.
+The Langfuse export monitors in
+[`langfuse-monitors.tf`](/infra/gcp/observability/langfuse-monitors.tf), behind
+`langfuse_monitors_enabled`, page when the collector cannot deliver to the
+hosted project; no drill takes the hosted project down to fire them.
 
-`chat-failure` pages `#engineering-observability`, so it needs `--confirm`
-too. Its failure is the worker's own: a rehearsal turn marked `[fail:K]` fails
+`chat-failure` pages `#engineering-observability`, so it needs `--confirm`,
+and runs only with the operator's approval for that window. Its failure is the worker's own: a rehearsal turn marked `[fail:K]` fails
 its first K attempts before any model call, with `error.type` `rehearsed`,
 and Pub/Sub redelivers it. Only a practice in `physician_simulation_practices`
 on the `staging-preview` profile honours the marker; a real practice's turn

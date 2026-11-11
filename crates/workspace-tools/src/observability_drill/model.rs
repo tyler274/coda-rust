@@ -14,8 +14,8 @@ pub(super) enum DrillRoute {
     Datadog,
     Grafana,
     Watchdog,
-    /// Langfuse export (`observability-drill langfuse fail|recover`) and the
-    /// physician chat failure it follows to Langfuse (`langfuse chat-failure`).
+    /// The physician chat failure followed to Langfuse
+    /// (`observability-drill langfuse chat-failure`).
     Langfuse,
 }
 

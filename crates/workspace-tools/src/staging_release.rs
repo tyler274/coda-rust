@@ -2033,7 +2033,6 @@ mod tests {
             [
                 "duet-migration",
                 "duet-runtime",
-                "langfuse-sso",
                 "observability-relay",
                 "physician-migration",
                 "physician-runtime",

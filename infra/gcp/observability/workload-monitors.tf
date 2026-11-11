@@ -39,12 +39,8 @@ variable "observability_workload_monitors_enabled" {
 
 locals {
   workload_scope = "env:${local.dd_env},kube_cluster_name:${var.cluster_name},kube_namespace:${local.namespace}"
-  # Operator-qualified targets under their own gate, plus the Langfuse
-  # workloads under langfuse_monitors_enabled (langfuse-monitors.tf).
-  monitored_workloads = merge(
-    var.observability_workload_monitors_enabled ? var.observability_workload_targets : {},
-    local.langfuse_workload_targets,
-  )
+  # Operator-qualified targets under their own gate.
+  monitored_workloads = var.observability_workload_monitors_enabled ? var.observability_workload_targets : {}
   workload_signals = {
     for name, target in local.monitored_workloads : name => {
       metric  = target.kind == "deployment" ? "kubernetes_state.deployment.replicas_available" : "kubernetes_state.statefulset.replicas_ready"

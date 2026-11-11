@@ -1,5 +1,5 @@
-//! Transport-only proxy mounts: `/physician/`, and in staging `/grafana/` and
-//! `/langfuse/` through the observability relay. No identities or application
+//! Transport-only proxy mounts: `/physician/`, and in staging `/grafana/`
+//! through the observability relay. No identities, cookies or application
 //! state live here.
 #[cfg(test)]
 #[path = "proxy_tests.rs"]
@@ -92,51 +92,25 @@ pub fn validate_origin(value: &str, deployed: bool) -> Result<Url, &'static str>
 
 /// One site path family and how it maps onto its upstream. Each mount's
 /// policy is fixed here; nothing about it comes from configuration or clients.
+/// No cookies cross any mount.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Mount {
-    /// Physician product: the prefix is removed and no cookies cross.
+    /// Physician product: the prefix is removed.
     Physician,
     /// Staging Grafana through the observability relay. JWT auth reads the
-    /// forwarded assertion on every request, so no cookies cross.
+    /// forwarded assertion on every request.
     Grafana,
-    /// Staging Langfuse through the observability relay. Only NextAuth's
-    /// cookies cross. Under [`LangfuseSignIn::Sso`], page navigations without
-    /// a session start its SSO sign-in.
-    Langfuse,
-    /// The authorize step of `langfuse-sso`, the issuer that turns the
-    /// forwarded assertion into Langfuse's sign-in. No cookies cross.
-    LangfuseSso,
-}
-/// How staging Langfuse signs people in, which decides what public-site
-/// mounts for it. It must match the `observability` root's
-/// `langfuse_sso_image`: only with the issuer deployed does Langfuse offer
-/// the `custom` provider that [`Self::Sso`] sends people to.
-#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
-pub enum LangfuseSignIn {
-    /// Langfuse's own login form, passed through unchanged.
-    #[default]
-    Password,
-    /// `langfuse-sso` from the IAP identity: the issuer's authorize step is
-    /// mounted, and page navigations without a session start SSO.
-    Sso,
 }
 
 impl Mount {
     /// The staging mounts behind the observability relay.
-    pub fn observability(sign_in: LangfuseSignIn) -> &'static [Self] {
-        match sign_in {
-            LangfuseSignIn::Password => &[Self::Grafana, Self::Langfuse],
-            LangfuseSignIn::Sso => &[Self::Grafana, Self::Langfuse, Self::LangfuseSso],
-        }
-    }
+    pub const OBSERVABILITY: &'static [Self] = &[Self::Grafana];
 
     /// The site path, without a trailing slash.
     pub fn prefix(self) -> &'static str {
         match self {
             Self::Physician => "/physician",
             Self::Grafana => "/grafana",
-            Self::Langfuse => "/langfuse",
-            Self::LangfuseSso => "/langfuse-sso",
         }
     }
     /// True when `path` is this mount's root or anything below it.
@@ -144,8 +118,8 @@ impl Mount {
         path.strip_prefix(self.prefix())
             .is_some_and(|rest| rest.is_empty() || rest.starts_with('/'))
     }
-    /// The physician upstream serves at its root. The observability apps are
-    /// configured with their site prefix, so the path passes through unchanged.
+    /// The physician upstream serves at its root. Grafana is configured with
+    /// its site prefix, so the path passes through unchanged.
     fn strips_prefix(self) -> bool {
         self == Self::Physician
     }
@@ -153,97 +127,6 @@ impl Mount {
     fn forwards_assertion(self) -> bool {
         self != Self::Physician
     }
-    fn allows_cookie(self, name: &str) -> bool {
-        self == Self::Langfuse
-            && (name.starts_with("__Secure-next-auth.") || name == "__Host-next-auth.csrf-token")
-    }
-    /// Browsers reach only the issuer's authorize step; Langfuse's server
-    /// calls the rest inside the cluster.
-    fn serves(self, path: &str) -> bool {
-        self != Self::LangfuseSso || path == LANGFUSE_SSO_AUTHORIZE
-    }
-    /// Where this mount's redirects may point, besides its own prefix.
-    fn allows_redirect(self, path: &str) -> bool {
-        self == Self::LangfuseSso && path == LANGFUSE_CALLBACK
-    }
-}
-
-const LANGFUSE_SSO_AUTHORIZE: &str = "/langfuse-sso/authorize";
-const LANGFUSE_CALLBACK: &str = "/langfuse/api/auth/callback/custom";
-const LANGFUSE_SSO_INITIATE: &str = "/langfuse/auth/sso-initiate";
-const LANGFUSE_SIGN_IN: &str = "/langfuse/auth/sign-in";
-
-/// Sends a Langfuse page navigation into SSO, or out of it once signed in.
-///
-/// Langfuse's `sso-initiate` page signs in with itself as the callback URL,
-/// so it would sign in again forever. Every initiate URL therefore carries
-/// the page the user asked for as `target`, and a navigation to it with a
-/// session cookie goes there instead. A sign-in page with an `error` stays,
-/// so a failing sign-in cannot loop.
-fn langfuse_navigation(
-    headers: &HeaderMap,
-    method: &Method,
-    uri: &axum::http::Uri,
-) -> Option<String> {
-    if *method != Method::GET
-        || headers
-            .get("sec-fetch-mode")
-            .is_none_or(|mode| mode != "navigate")
-    {
-        return None;
-    }
-    let signed_in = request_cookie(headers, Mount::Langfuse).is_some_and(|cookie| {
-        cookie.to_str().is_ok_and(|cookie| {
-            cookie
-                .split("; ")
-                .any(|pair| pair.starts_with("__Secure-next-auth.session-token"))
-        })
-    });
-    let path = uri.path();
-    let query = || {
-        url::form_urlencoded::parse(uri.query().unwrap_or_default().as_bytes())
-            .map(|(name, value)| (name.into_owned(), value.into_owned()))
-    };
-    let page = |target: Option<String>| {
-        target
-            .filter(|target| langfuse_page(target))
-            .unwrap_or_else(|| "/langfuse/".into())
-    };
-    let initiate = |target: String| {
-        let query = url::form_urlencoded::Serializer::new(String::new())
-            .append_pair("provider", "custom")
-            .append_pair("target", &target)
-            .finish();
-        format!("{LANGFUSE_SSO_INITIATE}?{query}")
-    };
-    let param = |wanted: &str| {
-        query()
-            .find(|(name, _)| name == wanted)
-            .map(|(_, value)| value)
-    };
-    if path == LANGFUSE_SSO_INITIATE {
-        return signed_in.then(|| page(param("target")));
-    }
-    if path == LANGFUSE_SIGN_IN {
-        return param("error")
-            .is_none()
-            .then(|| initiate(page(param("callbackUrl"))));
-    }
-    if signed_in || path.starts_with("/langfuse/api/") || path.starts_with("/langfuse/auth/") {
-        return None;
-    }
-    Some(initiate(page(
-        uri.path_and_query()
-            .map(|target| target.as_str().to_owned()),
-    )))
-}
-
-/// A same-site Langfuse page path that cannot leave the mount.
-fn langfuse_page(target: &str) -> bool {
-    Mount::Langfuse.owns(target.split(['?', '#']).next().unwrap_or_default())
-        && !target.contains(['\\', '\r', '\n'])
-        && !target.contains("//")
-        && !target.contains("/../")
 }
 
 /// The verified user assertion, re-sent to the observability apps. Clients can
@@ -256,7 +139,6 @@ pub(crate) struct Proxy {
     config: ProxyConfig,
     client: Client,
     credentials: Option<Arc<Credentials>>,
-    langfuse_sign_in: LangfuseSignIn,
 }
 impl Proxy {
     pub(crate) fn new(config: ProxyConfig) -> Self {
@@ -286,7 +168,6 @@ impl Proxy {
             config,
             client,
             credentials,
-            langfuse_sign_in: LangfuseSignIn::default(),
         }
     }
 
@@ -295,14 +176,6 @@ impl Proxy {
         Self {
             mount,
             ..self.clone()
-        }
-    }
-
-    /// The same proxy, with the Langfuse mount signing people in this way.
-    pub(crate) fn langfuse_sign_in(self, langfuse_sign_in: LangfuseSignIn) -> Self {
-        Self {
-            langfuse_sign_in,
-            ..self
         }
     }
 
@@ -331,20 +204,9 @@ impl Proxy {
             return failure(StatusCode::FORBIDDEN);
         }
         let prefix = self.mount.prefix();
-        if !self.mount.serves(request.uri().path()) {
-            return failure(StatusCode::NOT_FOUND);
-        }
-        if self.mount == Mount::Langfuse
-            && self.langfuse_sign_in == LangfuseSignIn::Sso
-            && let Some(location) =
-                langfuse_navigation(request.headers(), request.method(), request.uri())
-        {
-            return (StatusCode::SEE_OTHER, [(header::LOCATION, location)]).into_response();
-        }
-        // Only the stripping mount picks the canonical root. The others pass
-        // the bare prefix through, because each app has its own trailing-slash
-        // rule (Next.js redirects `/langfuse/` to `/langfuse`, Grafana the
-        // reverse) and a redirect here would loop against it.
+        // Only the stripping mount picks the canonical root. Grafana gets the
+        // bare prefix through, because it redirects `/grafana` to `/grafana/`
+        // itself and a redirect here could loop against it.
         if self.mount.strips_prefix() && request.uri().path() == prefix {
             let location = match request.uri().query() {
                 Some(query) => format!("{prefix}/?{query}"),
@@ -395,14 +257,10 @@ impl Proxy {
             .then(|| http::iap::single_header(&headers, http::iap::ASSERTION_HEADER))
             .flatten()
             .and_then(|value| HeaderValue::from_str(value).ok());
-        let cookie = request_cookie(&headers, self.mount);
         sanitize(&mut headers);
         if let Some(mut assertion) = assertion {
             assertion.set_sensitive(true);
             headers.insert(FORWARDED_ASSERTION, assertion);
-        }
-        if let Some(cookie) = cookie {
-            headers.insert(header::COOKIE, cookie);
         }
         if let Some(credentials) = &self.credentials {
             let Ok(token) = credentials.token().await else {
@@ -437,11 +295,7 @@ impl Proxy {
             };
             headers.insert(header::LOCATION, location);
         }
-        let set_cookies = response_cookies(&headers, self.mount);
         sanitize(&mut headers);
-        for cookie in set_cookies {
-            headers.append(header::SET_COOKIE, cookie);
-        }
         // Refresh can navigate without Location and Link can disclose the private origin.
         headers.remove("refresh");
         headers.remove(header::LINK);
@@ -469,9 +323,8 @@ fn rewrite_location(value: &HeaderValue, target: &Url, origin: &Url) -> Option<H
     HeaderValue::from_str(&location).ok()
 }
 
-/// A mount that keeps its prefix may redirect only within that prefix, or to
-/// the one path its policy allows, on the upstream or the public origin. The
-/// browser sees a path on this site.
+/// A mount that keeps its prefix may redirect only within that prefix, on the
+/// upstream or the public origin. The browser sees a path on this site.
 fn mounted_location(
     value: &HeaderValue,
     target: &Url,
@@ -483,7 +336,7 @@ fn mounted_location(
     if (resolved.origin() != config.upstream.origin() && origin != config.public_origin)
         || !resolved.username().is_empty()
         || resolved.password().is_some()
-        || !(mount.owns(resolved.path()) || mount.allows_redirect(resolved.path()))
+        || !mount.owns(resolved.path())
     {
         return None;
     }
@@ -501,54 +354,6 @@ fn push_query_and_fragment(location: &mut String, resolved: &Url) {
         location.push('#');
         location.push_str(fragment);
     }
-}
-
-/// One `Cookie` header with only the mount's allowlisted pairs, or none.
-fn request_cookie(headers: &HeaderMap, mount: Mount) -> Option<HeaderValue> {
-    let kept: Vec<&str> = headers
-        .get_all(header::COOKIE)
-        .iter()
-        .filter_map(|value| value.to_str().ok())
-        .flat_map(|value| value.split(';'))
-        .map(str::trim)
-        .filter(|pair| {
-            pair.split_once('=')
-                .is_some_and(|(name, _)| mount.allows_cookie(name.trim()))
-        })
-        .collect();
-    if kept.is_empty() {
-        return None;
-    }
-    let mut value = HeaderValue::from_str(&kept.join("; ")).ok()?;
-    value.set_sensitive(true);
-    Some(value)
-}
-
-/// Allowlisted `Set-Cookie` values. A `Domain` attribute could widen the
-/// cookie beyond this host, so those are dropped too.
-fn response_cookies(headers: &HeaderMap, mount: Mount) -> Vec<HeaderValue> {
-    headers
-        .get_all(header::SET_COOKIE)
-        .iter()
-        .filter(|value| {
-            let Ok(text) = value.to_str() else {
-                return false;
-            };
-            let mut attributes = text.split(';');
-            let named = attributes
-                .next()
-                .and_then(|pair| pair.split_once('='))
-                .is_some_and(|(name, _)| mount.allows_cookie(name.trim()));
-            named
-                && !attributes.any(|attribute| {
-                    attribute
-                        .trim()
-                        .get(..6)
-                        .is_some_and(|name| name.eq_ignore_ascii_case("domain"))
-                })
-        })
-        .cloned()
-        .collect()
 }
 
 /// Applied symmetrically, including every Connection-nominated extension header.

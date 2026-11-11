@@ -1,6 +1,6 @@
 //! The operator's tools the drill drives: gcloud for the physician origin,
 //! the access token and the deployed revisions; kubectl, always pinned to the
-//! staging observability cluster, for scaling and port-forwards.
+//! staging observability cluster, for the collector image and port-forwards.
 use std::io::{BufRead, BufReader};
 use std::process::{Child, Command, Stdio};
 
@@ -86,18 +86,15 @@ pub(super) fn revisions() -> Result<Value, DrillError> {
             json!({ "revision": revision, "image": image }),
         );
     }
-    // Each deployment's own container shares its name; langfuse-web also runs
-    // a cloud-sql-proxy sidecar first.
-    for deployment in ["langfuse-web", "otel-collector"] {
-        let path = format!(
-            "jsonpath={{.spec.template.spec.containers[?(@.name==\"{deployment}\")].image}}"
-        );
-        let image = kubectl_value(
-            &["get", "deployment", deployment, "-o", &path],
-            "a cluster image",
-        )?;
-        found.insert(deployment.to_owned(), json!({ "image": image }));
-    }
+    // The collector's container shares its deployment's name.
+    let deployment = "otel-collector";
+    let path =
+        format!("jsonpath={{.spec.template.spec.containers[?(@.name==\"{deployment}\")].image}}");
+    let image = kubectl_value(
+        &["get", "deployment", deployment, "-o", &path],
+        "a cluster image",
+    )?;
+    found.insert(deployment.to_owned(), json!({ "image": image }));
     found.insert("kube_context".to_owned(), json!(CONTEXT));
     Ok(Value::Object(found))
 }
@@ -122,148 +119,6 @@ fn kubectl_value(args: &[&str], what: &'static str) -> Result<String, DrillError
         });
     }
     Ok(String::from_utf8_lossy(&output.stdout).trim().to_owned())
-}
-
-/// The deployments a drill may scale to zero.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(super) enum Workload {
-    LangfuseWeb,
-    LangfuseSso,
-}
-
-impl Workload {
-    pub(super) fn name(self) -> &'static str {
-        match self {
-            Self::LangfuseWeb => "langfuse-web",
-            Self::LangfuseSso => "langfuse-sso",
-        }
-    }
-}
-
-/// Scales the drill's workloads in the staging observability namespace.
-pub(super) struct Kubectl;
-
-impl Kubectl {
-    pub(super) fn replicas(&mut self, workload: Workload) -> Result<u32, DrillError> {
-        let what = "a deployment's replicas";
-        let text = kubectl_value(
-            &[
-                "get",
-                "deployment",
-                workload.name(),
-                "-o",
-                "jsonpath={.spec.replicas}",
-            ],
-            what,
-        )?;
-        text.parse()
-            .map_err(|source| DrillError::Count { what, text, source })
-    }
-
-    /// Scales `workload` to zero and returns the guard that owns putting it
-    /// back. `replicas` was read first, so the restore uses the real count.
-    pub(super) fn scale_down(&mut self, workload: Workload) -> Result<ScaledDown, DrillError> {
-        let replicas = self.replicas(workload)?;
-        if replicas == 0 {
-            return Err(DrillError::AlreadyDown(workload.name()));
-        }
-        self.scale(workload, 0)?;
-        Ok(ScaledDown {
-            workload,
-            replicas,
-            settled: false,
-        })
-    }
-
-    /// Scales `workload` to `replicas` and waits for the rollout.
-    pub(super) fn scale(&mut self, workload: Workload, replicas: u32) -> Result<(), DrillError> {
-        kubectl_value(
-            &[
-                "scale",
-                "deployment",
-                workload.name(),
-                &format!("--replicas={replicas}"),
-            ],
-            "kubectl scale",
-        )?;
-        if replicas == 0 {
-            return Ok(());
-        }
-        kubectl_value(
-            &[
-                "rollout",
-                "status",
-                &format!("deployment/{}", workload.name()),
-                "--timeout=300s",
-            ],
-            "kubectl rollout status",
-        )
-        .map(|_| ())
-    }
-}
-
-/// A workload the drill scaled to zero. It must be settled: restored, or
-/// deliberately left down for a later `recover`. Dropping it unsettled, on a
-/// panic, restores it as a last resort.
-#[must_use = "a scaled-down workload must be restored or left down on purpose"]
-pub(super) struct ScaledDown {
-    workload: Workload,
-    replicas: u32,
-    settled: bool,
-}
-
-impl ScaledDown {
-    pub(super) fn replicas(&self) -> u32 {
-        self.replicas
-    }
-
-    pub(super) fn restore(mut self, kubectl: &mut Kubectl) -> Result<(), DrillError> {
-        self.settled = true;
-        kubectl.scale(self.workload, self.replicas)
-    }
-
-    /// Restores after `primary` ended the run, keeping both errors. The
-    /// second value says whether the workload is back.
-    pub(super) fn restore_after(
-        self,
-        primary: DrillError,
-        kubectl: &mut Kubectl,
-    ) -> (DrillError, bool) {
-        let workload = self.workload.name();
-        match self.restore(kubectl) {
-            Ok(()) => (primary, true),
-            Err(restore) => (
-                DrillError::Restore {
-                    primary: Box::new(primary),
-                    workload,
-                    restore: Box::new(restore),
-                },
-                false,
-            ),
-        }
-    }
-
-    /// Leaves the workload down for `recover`, which reads the count back
-    /// from this run's report.
-    pub(super) fn leave_down(mut self) {
-        self.settled = true;
-    }
-}
-
-impl Drop for ScaledDown {
-    fn drop(&mut self) {
-        if self.settled {
-            return;
-        }
-        let name = self.workload.name();
-        if let Err(error) = Kubectl.scale(self.workload, self.replicas) {
-            eprintln!(
-                "{name} is still at 0 replicas and could not be restored ({error}); run \
-                 kubectl --context {CONTEXT} -n {NAMESPACE} scale deployment {name} --replicas={}",
-                self.replicas
-            );
-        }
-    }
 }
 
 /// A `kubectl port-forward` on a free local port, stopped when dropped.

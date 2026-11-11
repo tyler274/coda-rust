@@ -494,7 +494,7 @@ pub(super) fn loki_lines(body: &Value) -> Option<usize> {
     Some(lines)
 }
 
-/// A Datadog monitor group's state for the Langfuse exporter, from
+/// A Datadog monitor group's state, from
 /// `GET /api/v1/monitor?name=...&group_states=all`.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub(super) struct MonitorGroup {
@@ -502,70 +502,6 @@ pub(super) struct MonitorGroup {
     pub(super) status: String,
     pub(super) last_triggered_ts: Option<i64>,
     pub(super) last_resolved_ts: Option<i64>,
-}
-
-pub(super) fn exporter_groups(monitors: &Value, exporter: &str) -> Vec<MonitorGroup> {
-    let wanted = format!("exporter:{exporter}");
-    let mut groups = Vec::new();
-    for monitor in monitors.as_array().into_iter().flatten() {
-        let name = monitor["name"].as_str().unwrap_or_default();
-        let Some(states) = monitor["state"]["groups"].as_object() else {
-            continue;
-        };
-        for (group, state) in states {
-            if !group.split(',').any(|tag| tag == wanted) {
-                continue;
-            }
-            groups.push(MonitorGroup {
-                monitor: name.to_owned(),
-                status: state["status"].as_str().unwrap_or_default().to_owned(),
-                last_triggered_ts: state["last_triggered_ts"].as_i64(),
-                last_resolved_ts: state["last_resolved_ts"].as_i64(),
-            });
-        }
-    }
-    groups
-}
-
-/// The total of a Datadog `GET /api/v1/query` answer's points.
-pub(super) fn series_total(body: &Value) -> f64 {
-    body["series"]
-        .as_array()
-        .into_iter()
-        .flatten()
-        .flat_map(|series| series["pointlist"].as_array().into_iter().flatten())
-        .filter_map(|point| point.get(1).and_then(Value::as_f64))
-        .sum()
-}
-
-/// What a NextAuth `POST /api/auth/callback/credentials` with `json=true`
-/// did. Langfuse lists the credentials provider even with passwords off
-/// (`AUTH_DISABLE_USERNAME_PASSWORD`), and refuses inside its callback, so
-/// only an attempted sign-in and the session it leaves say whether passwords
-/// work.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
-#[serde(rename_all = "snake_case")]
-pub(super) enum PasswordSignIn {
-    /// The callback answered without an error and the session holds a user.
-    SignedIn,
-    /// The callback answered with an error, or left no user in the session.
-    Refused,
-}
-
-/// Judges the credentials callback's redirect `url` and the session read
-/// right after it.
-pub(super) fn password_sign_in(callback: &Value, session: &Value) -> PasswordSignIn {
-    let refused = callback["url"]
-        .as_str()
-        .is_none_or(|url| url.contains("error="));
-    let user = session["user"]["email"]
-        .as_str()
-        .is_some_and(|email| !email.is_empty());
-    if !refused && user {
-        PasswordSignIn::SignedIn
-    } else {
-        PasswordSignIn::Refused
-    }
 }
 
 #[cfg(test)]
@@ -769,24 +705,7 @@ mod tests {
     }
 
     #[test]
-    fn monitor_groups_are_picked_by_exporter() {
-        let monitors = json!([{
-            "name": "[staging] otel-collector send_failed_spans",
-            "state": { "groups": {
-                "exporter:otlphttp/langfuse": { "status": "Alert", "last_triggered_ts": 10 },
-                "exporter:datadog": { "status": "OK" }
-            }}
-        }]);
-        let groups = exporter_groups(&monitors, "otlphttp/langfuse");
-        assert_eq!(groups.len(), 1);
-        assert_eq!(groups[0].status, "Alert");
-        assert_eq!(groups[0].last_triggered_ts, Some(10));
-    }
-
-    #[test]
-    fn series_and_loki_and_providers_are_counted() {
-        let series = json!({ "series": [{ "pointlist": [[1, 2.0], [2, null], [3, 1.5]] }] });
-        assert!((series_total(&series) - 3.5).abs() < f64::EPSILON);
+    fn loki_lines_are_counted() {
         let loki = json!({ "status": "success", "data": {
             "resultType": "streams",
             "result": [{ "values": [["1", "a"], ["2", "b"]] }]
@@ -899,17 +818,5 @@ mod tests {
         }]);
         let monitor = named_monitor(&grouped, "m").unwrap();
         assert_eq!(monitor.groups[0].last_resolved_ts, Some(7));
-    }
-
-    #[test]
-    fn only_a_session_with_a_user_counts_as_password_sign_in() {
-        let ok = json!({ "url": "http://127.0.0.1/langfuse/" });
-        let user = json!({ "user": { "email": "admin@codahealth.ai" } });
-        assert_eq!(password_sign_in(&ok, &user), PasswordSignIn::SignedIn);
-        let refused =
-            json!({ "url": "http://127.0.0.1/langfuse/auth/sign-in?error=CredentialsSignin" });
-        assert_eq!(password_sign_in(&refused, &user), PasswordSignIn::Refused);
-        assert_eq!(password_sign_in(&ok, &json!({})), PasswordSignIn::Refused);
-        assert_eq!(password_sign_in(&json!({}), &user), PasswordSignIn::Refused);
     }
 }

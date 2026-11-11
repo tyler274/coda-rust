@@ -101,14 +101,9 @@ Runtime configuration:
   sample physician server sets `http://127.0.0.1:8790`. Deployed values must use
   HTTPS; credentials, non-root paths, queries and fragments are rejected.
 - `OBSERVABILITY_RELAY_URL`: staging only, optional. It is the fixed HTTPS origin of
-  the observability relay. When set, the site mounts `/grafana/` and `/langfuse/`
-  (see [Observability mounts](#observability-mounts)); when unset, both are 404.
+  the observability relay. When set, the site mounts `/grafana/`
+  (see [Observability mounts](#observability-mounts)); when unset, it is 404.
   It has the same validation as `PHYSICIAN_APP_URL`.
-- `LANGFUSE_SIGN_IN`: `password` (default) or `sso`, and `sso` only with
-  `OBSERVABILITY_RELAY_URL`. `sso` mounts `/langfuse-sso/` and starts Langfuse's
-  SSO for page navigations without a session; it must match whether the
-  `observability` root deploys `langfuse-sso` (the public-site root's
-  `langfuse_sso`). `password` passes Langfuse's own login through.
 - `PHYSICIAN_PROXY_SERVICE_ACCOUNT`: service identity used for keyless upstream
   IAP authentication. Required in staging whenever `PHYSICIAN_APP_URL` or
   `OBSERVABILITY_RELAY_URL` is set.
@@ -130,7 +125,7 @@ Runtime configuration:
 - `PUBLIC_SITE_MAX_CONCURRENCY`: default 1024, accepted range 1–65536; excess
   concurrent requests receive 503 with `Retry-After: 1`.
 - `PUBLIC_SITE_REQUEST_TIMEOUT_MS`: static-site response deadline; default 5000,
-  accepted range 100–30000. `/physician/`, `/grafana/` and `/langfuse/` requests have one 60-second deadline
+  accepted range 100–30000. `/physician/` and `/grafana/` requests have one 60-second deadline
   through authentication, upstream startup and response headers. The proxy
   does not impose a second deadline, and streaming response bodies are not
   capped by this header deadline.
@@ -181,24 +176,21 @@ reconnect rather than relying on a longer request timeout.
 
 ## Observability mounts
 
-In staging, `/grafana/`, `/langfuse/` and, with `LANGFUSE_SIGN_IN=sso`, `/langfuse-sso/` are proxied to one upstream: the
-IAP-protected `observability-relay` Cloud Run service
-([`crates/observability-relay`](/crates/observability-relay)). The relay
-forwards each prefix to its internal load balancer
+In staging, `/grafana/` is proxied to the IAP-protected `observability-relay`
+Cloud Run service ([`crates/observability-relay`](/crates/observability-relay)),
+which forwards it to Grafana's internal load balancer
 ([observability README](/infra/gcp/observability/README%2Emd#staging-proxy)).
-Each mount is a policy in [`proxy.rs`](/crates/public-site/src/proxy.rs) and
-differs from `/physician/` as follows:
+Langfuse is the hosted HIPAA cloud project and has no mount. Each mount is a
+policy in [`proxy.rs`](/crates/public-site/src/proxy.rs); `/grafana/` differs
+from `/physician/` as follows:
 
 | Mount | Path | Cookies | Identity forwarded |
 | --- | --- | --- | --- |
 | `/physician/` | prefix stripped; `Location` rewritten back under it | none | none |
 | `/grafana/` | prefix kept; `Location` must stay under `/grafana` on the public origin, otherwise 502 | none, because Grafana signs in from the assertion on every request | the caller's verified IAP assertion as `X-Coda-IAP-Assertion` |
-| `/langfuse/` | prefix kept; same `Location` rule under `/langfuse`. With `LANGFUSE_SIGN_IN=sso`, a top-level page navigation without a NextAuth session, and the sign-in page unless it shows an error, get a 303 to `sso-initiate?provider=custom` carrying the requested page as `target`; once signed in, `sso-initiate` sends the browser to that `target` | only the NextAuth cookies (`__Secure-next-auth.*`, `__Host-next-auth.csrf-token`), in both directions, without `Domain` | the same assertion |
-| `/langfuse-sso/` | mounted only with `LANGFUSE_SIGN_IN=sso`, and then only `/langfuse-sso/authorize`; anything else is 404. `Location` may leave the prefix only for `/langfuse/api/auth/callback/custom` | none | the same assertion, which [`langfuse-sso`](/crates/langfuse-sso) turns into Langfuse's sign-in |
-
 The site drops any `X-Coda-IAP-Assertion` that the client sent before it forwards
 the verified one. It also drops every `x-goog-*` header and the hop-by-hop
-headers. Like `/physician/`, the observability mounts authenticate to the relay with a JWT
+headers. Like `/physician/`, the Grafana mount authenticates to the relay with a JWT
 signed for the site's own service account, sent as `Proxy-Authorization`. The
 responses are `no-store` with `Vary: *`. The relay's own IAP admits only the
 engineering group and the accounts in `rust-environments`'
@@ -413,7 +405,7 @@ keep their product-repository apply authority; this ownership covers only
   behind its own IAP. Setting it mounts `/physician/`, renders Sign in and gives the
   runtime its proxy signing identity. `observability_relay_url` (staging only) is
   `rust-environments`' `observability_relay.url`; setting it mounts `/grafana/`
-  and `/langfuse/` with the same signing identity.
+  with the same signing identity.
 - **No Doppler.** The running site and its deploy read no Doppler config and no
   secret; these files and the CI inputs are the only deploy values.
 

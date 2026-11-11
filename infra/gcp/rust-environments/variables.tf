@@ -87,7 +87,7 @@ variable "physician_simulation_practices" {
 }
 
 variable "observability_proxy_invokers" {
-  description = "Explicit operator-approved service-account IAP members for the observability relay only: in staging, the public-site service account that serves /grafana/ and /langfuse/. Never grants physician, Duet or direct run.invoker access."
+  description = "Explicit operator-approved service-account IAP members for the observability relay only: in staging, the public-site service account that serves /grafana/. Never grants physician, Duet or direct run.invoker access."
   type        = set(string)
   default     = []
   nullable    = false
@@ -264,7 +264,7 @@ variable "telemetry_backend" {
 variable "telemetry_content" {
   type        = string
   default     = "none"
-  description = "CODA_TELEMETRY_CONTENT set on the product containers while observability_enabled is on: none records no prompt or completion text; full attaches it to generation spans, which the gateway sends only to the in-project Langfuse. Must match infra/gcp/observability's telemetry_content, which refuses full without Langfuse."
+  description = "CODA_TELEMETRY_CONTENT set on the product containers while observability_enabled is on: none records no prompt or completion text; full attaches it to generation spans, which the gateway sends only to Langfuse HIPAA cloud. Must match infra/gcp/observability's telemetry_content, which refuses full without langfuse_host."
   validation {
     condition     = contains(["none", "full"], var.telemetry_content)
     error_message = "telemetry_content must be none or full."

@@ -31,8 +31,8 @@ locals {
         apm = { enabled = true }
         # Log forwarding stays on for the OTLP log records the gateway sends
         # (already stripped of content). No container in this cluster is
-        # tailed by default: the cluster runs only this stack, and Langfuse
-        # and its stores can log agent content on errors.
+        # tailed by default: the cluster runs only this stack, and a
+        # container log may carry span content the pipelines never strip.
         logCollection = {
           enabled             = true
           containerCollectAll = false

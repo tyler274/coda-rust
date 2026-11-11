@@ -88,7 +88,7 @@ variable "physician_app_url" {
 }
 
 variable "observability_relay_url" {
-  description = "Staging only: the observability relay's HTTPS origin (infra/gcp/rust-environments output observability_relay.url). It mounts /grafana/ and /langfuse/, which public-site proxies to the relay with the same signed service-account JWT as /physician, plus the caller's verified IAP assertion as X-Coda-IAP-Assertion. Operators add this site's service account to rust-environments' observability_proxy_invokers first. Null means neither mount exists."
+  description = "Staging only: the observability relay's HTTPS origin (infra/gcp/rust-environments output observability_relay.url). It mounts /grafana/, which public-site proxies to the relay with the same signed service-account JWT as /physician, plus the caller's verified IAP assertion as X-Coda-IAP-Assertion. Operators add this site's service account to rust-environments' observability_proxy_invokers first. Null means the mount does not exist."
   type        = string
   default     = null
   validation {
@@ -98,16 +98,6 @@ variable "observability_relay_url" {
   validation {
     condition     = var.observability_relay_url == null || var.environment == "staging"
     error_message = "observability_relay_url is staging-only."
-  }
-}
-
-variable "langfuse_sso" {
-  description = "Staging only: true once infra/gcp/observability deploys langfuse-sso (langfuse_sso_image set). /langfuse/ then signs people in from their IAP identity and /langfuse-sso/authorize is mounted; false passes Langfuse's own login through. It must match that root, or sign-in sends people to a provider Langfuse does not offer."
-  type        = bool
-  default     = false
-  validation {
-    condition     = !var.langfuse_sso || var.observability_relay_url != null
-    error_message = "langfuse_sso needs observability_relay_url."
   }
 }
 
