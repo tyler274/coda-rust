@@ -1,0 +1,45 @@
+name: Release archive
+description: >-
+  Download one release asset through the GitHub API and check its SHA-256.
+  github.com download URLs ignore the token and are throttled first as
+  anonymous traffic, so the asset comes from the API with the job token. Uses
+  curl and jq rather than gh, which the act image does not ship.
+inputs:
+  repo:
+    description: owner/name of the repository that publishes the release
+    required: true
+  tag:
+    description: Release tag
+    required: true
+  asset:
+    description: Asset file name; it is written to /tmp/<asset>
+    required: true
+  sha256:
+    description: Expected SHA-256 of the asset
+    required: true
+  token:
+    description: Token for the GitHub API; empty under act, which then reads anonymously
+    default: ${{ github.token }}
+runs:
+  using: composite
+  steps:
+    - name: Download ${{ inputs.asset }}
+      shell: bash
+      env:
+        REPO: ${{ inputs.repo }}
+        TAG: ${{ inputs.tag }}
+        ASSET: ${{ inputs.asset }}
+        SHA256: ${{ inputs.sha256 }}
+        TOKEN: ${{ inputs.token }}
+      run: |
+        auth=()
+        if [ -n "$TOKEN" ]; then
+          auth=(-H "Authorization: Bearer $TOKEN")
+        fi
+        api=(curl -fsSL --retry 3 "${auth[@]}" -H "X-GitHub-Api-Version: 2022-11-28")
+        url=$("${api[@]}" -H "Accept: application/vnd.github+json" \
+          "https://api.github.com/repos/${REPO}/releases/tags/${TAG}" |
+          jq -er --arg name "$ASSET" '.assets[] | select(.name == $name) | .url')
+        # curl drops the Authorization header on the redirect to the asset host.
+        "${api[@]}" -H "Accept: application/octet-stream" -o "/tmp/${ASSET}" "$url"
+        echo "${SHA256}  /tmp/${ASSET}" | sha256sum -c -
