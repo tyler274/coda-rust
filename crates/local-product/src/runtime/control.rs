@@ -117,6 +117,8 @@ struct ConversationState {
     scenario: Option<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     queued: Vec<QueuedMessage>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    archived_at: Option<i64>,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -167,6 +169,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         last_activity_at,
         scenario,
         queued,
+        archived_at,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -181,6 +184,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         last_activity_at: *last_activity_at,
         scenario: scenario.clone(),
         queued: queued.clone(),
+        archived_at: *archived_at,
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -261,6 +265,7 @@ pub(super) fn conversation(
         last_activity_at,
         scenario,
         queued,
+        archived_at,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -281,6 +286,7 @@ pub(super) fn conversation(
         last_activity_at,
         scenario,
         queued,
+        archived_at,
     };
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {
         conversation.status = outcome.into();

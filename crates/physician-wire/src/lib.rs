@@ -239,6 +239,9 @@ pub struct WorkspaceChat {
     pub title: Option<String>,
     /// The `created_at` value.
     pub created_at: String,
+    #[serde(default)]
+    /// Listed under Archived until a message, Resume, Try again or Undo.
+    pub archived: bool,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq)]

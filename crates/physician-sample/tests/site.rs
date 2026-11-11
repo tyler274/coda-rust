@@ -2700,6 +2700,305 @@ async fn send_next_queues_on_the_server_and_stop_returns_it_to_the_composer() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Archive with Undo on the hosted site, and what brings an archived
+/// conversation back. Archive waits while Coda is writing; once the answer
+/// ends it moves the chat under Archived and offers Undo, which moves it back.
+/// Sending, Try again on a failed turn and Resume after Stop each return an
+/// archived conversation to the active list.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn archive_offers_undo_and_sending_try_again_and_resume_bring_it_back() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("archive_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let home = std::env::temp_dir().join(format!("physician-archive-{}", uuid::Uuid::new_v4()));
+    fs::create_dir_all(&home).unwrap();
+    let valkey = scale::Valkey::start().await;
+    let redis = valkey.url();
+    let worker_port = scale::free_port();
+    let site_port = scale::free_port();
+    let emulator = scale::Emulator::start().await;
+    emulator.provision(worker_port).await;
+    let topic = scale::topic();
+    let worker_listen = format!("127.0.0.1:{worker_port}");
+    let host = format!("127.0.0.1:{site_port}");
+    // Long enough to see Archive wait, and to press Stop.
+    let stub = scale::ResponsesStub::start(&home, 0, 3000, "[]").await;
+    let mut worker = scale::Process::spawn(
+        "archive-worker",
+        scale::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+            // The staging practice rehearses, so its `[fail:K]` marker fails
+            // the turn on purpose.
+            ("CODA_HOSTED_PROFILE", "staging-preview"),
+            (
+                "PHYSICIAN_SIMULATION_PRACTICES",
+                physician_sample::STAGING_PRACTICE_ID,
+            ),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut worker, worker_port).await;
+    let mut process = scale::Process::spawn(
+        "archive-site",
+        scale::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+            ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+            ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut process, site_port).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let chat = format!("chat-archive-{}", uuid::Uuid::new_v4().simple());
+    let url = format!("http://{host}/?patient={patient}&chat={chat}");
+    let mut tab = Tab::open(&url);
+    tab.wait_for_text("Work email", Duration::from_secs(20));
+    tab.request_sign_in("physician@codahealth.test");
+    tab.wait_composer("", Duration::from_secs(20));
+    let title = "Review the potassium";
+    let listed = |state: &serde_json::Value, group: &str| {
+        state[group]
+            .as_array()
+            .is_some_and(|titles| titles.iter().any(|t| t == title))
+    };
+
+    // While Coda writes, Archive waits.
+    tab.type_composer(title);
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    wait_send_next(&mut tab);
+    let busy = wait_archive(&mut tab, "Archive never waited for the answer", |state| {
+        state["archive"] == "disabled"
+    });
+    assert!(!listed(&busy, "archived"), "{busy}");
+    tab.save_pictures("archive-busy", "[aria-label=\"Conversation\"]");
+    wait_reply_count(&mut tab, 1);
+
+    // Archive, then Undo from its toast.
+    archive_now(&mut tab);
+    let archived = wait_archive(&mut tab, "Archive never moved the chat", |state| {
+        listed(state, "archived") && state["toast"].as_str().is_some()
+    });
+    assert_eq!(
+        archived["toast"], "Conversation archived.Undo",
+        "{archived}"
+    );
+    assert!(archived["archivedLine"] == true, "{archived}");
+    tab.save_pictures("archive-toast", ".sidebar-content");
+    tab.click_named(".toast button", "Undo");
+    let undone = wait_archive(&mut tab, "Undo never moved the chat back", |state| {
+        listed(state, "active") && !listed(state, "archived")
+    });
+    assert_eq!(undone["archive"], "enabled", "{undone}");
+    tab.save_pictures("archive-undone", ".sidebar-content");
+
+    // An Archive whose answer is lost is asked again by the reload under its
+    // own key, and still offers Undo once it is taken.
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{
+            "urlPattern": "*/commands",
+            "requestStage": "Response"
+        }] }),
+    );
+    archive_now(&mut tab);
+    let answered = tab.held_request("POST");
+    let lost_key = held_body(&answered)["idempotency_key"].clone();
+    assert_eq!(held_body(&answered)["type"], "conversation.archive");
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": answered["requestId"], "errorReason": "Failed" }),
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    );
+    tab.reload();
+    let reasked = tab.held_request("POST");
+    assert_eq!(
+        held_body(&reasked)["idempotency_key"],
+        lost_key,
+        "the reload issued a new command for an Archive whose answer was lost"
+    );
+    tab.release(&reasked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.release_all();
+    let recovered = wait_archive(
+        &mut tab,
+        "a recovered Archive never offered Undo",
+        |state| listed(state, "archived") && state["toast"].as_str().is_some(),
+    );
+    assert_eq!(
+        recovered["toast"], "Conversation archived.Undo",
+        "{recovered}"
+    );
+    tab.save_pictures("archive-recovered-toast", ".sidebar-content");
+    tab.click_named(".toast button", "Undo");
+    wait_archive(
+        &mut tab,
+        "the recovered Archive's Undo never moved the chat back",
+        |state| listed(state, "active") && !listed(state, "archived"),
+    );
+
+    // Sending brings it back.
+    archive_now(&mut tab);
+    wait_archive(
+        &mut tab,
+        "the second Archive never moved the chat",
+        |state| listed(state, "archived"),
+    );
+    tab.type_composer("And the sodium?");
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    wait_archive(&mut tab, "sending never brought the chat back", |state| {
+        listed(state, "active") && !listed(state, "archived")
+    });
+    tab.save_pictures("archive-send-brings-back", ".sidebar-content");
+    wait_reply_count(&mut tab, 2);
+
+    // Try again on a failed turn brings it back. The marker fails every
+    // delivery the subscription allows, so the turn ends as failed.
+    tab.type_composer("Check the creatinine [fail:5]");
+    tab.step("sendWithKeyboard", serde_json::json!([]));
+    wait_mechanical(
+        &mut tab,
+        "Try again",
+        Duration::from_secs(150),
+        &process,
+        &worker,
+    );
+    archive_now(&mut tab);
+    wait_archive(&mut tab, "a failed turn never archived", |state| {
+        listed(state, "archived")
+    });
+    tab.save_pictures("archive-failed-archived", ".sidebar-content");
+    tab.click_named(".conversation-mechanical button", "Try again");
+    wait_archive(&mut tab, "Try again never brought the chat back", |state| {
+        listed(state, "active") && !listed(state, "archived")
+    });
+    tab.save_pictures("archive-try-again-brings-back", ".sidebar-content");
+
+    // Resume after Stop brings it back.
+    wait_mechanical(&mut tab, "Stop", Duration::from_secs(30), &process, &worker);
+    tab.click_named(".conversation-mechanical button", "Stop");
+    wait_mechanical(
+        &mut tab,
+        "Resume",
+        Duration::from_secs(30),
+        &process,
+        &worker,
+    );
+    archive_now(&mut tab);
+    wait_archive(&mut tab, "a stopped turn never archived", |state| {
+        listed(state, "archived")
+    });
+    tab.save_pictures("archive-stopped-archived", ".sidebar-content");
+    tab.click_named(".conversation-mechanical button", "Resume");
+    wait_archive(&mut tab, "Resume never brought the chat back", |state| {
+        listed(state, "active") && !listed(state, "archived")
+    });
+    tab.save_pictures("archive-resume-brings-back", ".sidebar-content");
+    wait_reply_count(&mut tab, 3);
+
+    drop(tab);
+    drop(process);
+    drop(worker);
+    fs::remove_dir_all(home).unwrap();
+}
+
+/// Presses Archive once it can be pressed.
+fn archive_now(tab: &mut Tab) {
+    wait_archive(tab, "Archive never became available", |state| {
+        state["archive"] == "enabled"
+    });
+    tab.click("button.conversation-archive");
+}
+
+/// Waits until the page's archive state satisfies `done`, and returns it.
+fn wait_archive(
+    tab: &mut Tab,
+    why: &str,
+    done: impl Fn(&serde_json::Value) -> bool,
+) -> serde_json::Value {
+    let started = Instant::now();
+    loop {
+        let state = tab.step("archiveState", serde_json::json!([]));
+        if done(&state) {
+            return state;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "{why}: {state}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+}
+
+/// Waits until the conversation shows `count` of Coda's fixed replies and nothing running.
+fn wait_reply_count(tab: &mut Tab, count: usize) {
+    let started = Instant::now();
+    loop {
+        let lines = tab.step("conversationLines", serde_json::json!([]));
+        let replies = lines
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|line| line.as_str().is_some_and(|t| t.contains(scale::FIXED_TEXT)))
+            .count();
+        if replies == count && tab.step("sendWords", serde_json::json!([])) == "Send" {
+            return;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(60),
+            "never showed {count} replies: {lines}"
+        );
+        std::thread::sleep(Duration::from_millis(200));
+    }
+}
+
+/// Waits until the conversation offers `words` on its mechanical line.
+fn wait_mechanical(
+    tab: &mut Tab,
+    words: &str,
+    timeout: Duration,
+    site: &scale::Process,
+    worker: &scale::Process,
+) {
+    let started = Instant::now();
+    loop {
+        let shown = tab.step("mechanicalActions", serde_json::json!([]));
+        if shown
+            .as_array()
+            .is_some_and(|all| all.iter().any(|w| w == words))
+        {
+            return;
+        }
+        assert!(
+            started.elapsed() < timeout,
+            "never offered {words}: {shown}\n{}\n{}",
+            site.tail(),
+            worker.tail()
+        );
+        std::thread::sleep(Duration::from_millis(200));
+    }
+}
+
 /// Waits until Coda is writing in `tab`, so its Send reads Send next.
 fn wait_send_next(tab: &mut Tab) {
     let started = Instant::now();

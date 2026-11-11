@@ -19,7 +19,7 @@ fn typed(key: &str, text: &str) -> Input {
 }
 
 /// Hosted Send or Send next with the test skills and chat recipe.
-async fn send(
+pub(super) async fn send(
     store: &Store,
     scope: &Scope,
     input: &Input,
@@ -47,7 +47,7 @@ fn terminal(text: &str) -> Turn {
 }
 
 /// Publishes the claimed attempt's answer through the ordinary fence.
-async fn answer(store: &Store, claim: &Claim, text: &str) {
+pub(super) async fn answer(store: &Store, claim: &Claim, text: &str) {
     let turn = terminal(text);
     for (sequence, kind) in [
         engine::EventKind::ProviderReturned(turn.clone()),
