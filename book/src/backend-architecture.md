@@ -48,7 +48,7 @@ record's source kind, connection and note label are fixed when it is created.
   ([privacy recovery](privacy-recovery.md)) deletes base rows and their
   retained revisions, and remains authoritative.
 
-The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns the For my doctor workspace
+The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns For my doctor
 and what it sends to a connected practice. The binary still mounts the publication
 routes in `doctor_routes`, including HTML, PDF and SMART Health Link retrieval. A
 mounted route doesn't put external sharing or PDF download in scope, and it keeps

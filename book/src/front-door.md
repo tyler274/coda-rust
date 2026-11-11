@@ -10,7 +10,7 @@ are not migrated from the old app. The products keep separate data and authority
 The <a href="/intent/connected-care%2Emd">connected-care spec</a> owns what a practice
 connection does, from invitation and fixed consent to leaving, discharge and
 re-invitation. The <a href="/intent/duet%2Emd">Duet spec</a> (D4) owns the patient's
-For my doctor workspace, including sending a saved version to a connected practice.
+For my doctor, including sending marked records and notes to a connected practice.
 
 ## Implementation
 
