@@ -146,6 +146,9 @@ pub struct Message {
     pub role: MessageRole,
     /// Exact authored text.
     pub text: String,
+    /// Exact sources cited by this answer, retained independently of later chart changes.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub citations: Vec<crate::physician_chat::Citation>,
 }
 
 /// The durable name of one of Coda's published replies: the id its
@@ -877,6 +880,7 @@ impl Store {
                 revision: state.revision,
             },
             text: input.text.clone(),
+            citations: Vec::new(),
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -1260,7 +1264,12 @@ impl Store {
         {
             return Err(error("partial result differs from recorded terminal turn").into());
         }
-        let answer = turn.text();
+        let delivered = crate::physician_sources::delivered_citations(
+            records.iter(),
+            &state.message_sources(),
+        )?;
+        let (answer, citations) =
+            crate::physician_chat::published_partial(&turn.text(), &delivered);
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Held;
         state.end_run(RunOutcome::Held {
@@ -1274,18 +1283,22 @@ impl Store {
                     partial: true,
                 },
                 text: answer,
+                citations,
             });
         }
         Ok(Self::save(tx, &claim.scope, &state).await?)
     }
 
     /// Locks the real auth owner on this same transaction through reply publication.
+    /// An answer citing a record that did not reach the model whole in its
+    /// current window is refused without writing, so the model can correct it
+    /// in the same run.
     pub async fn commit_authorized(
         &self,
         claim: &Claim,
         turn: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<(), engine::Cause> {
+    ) -> Result<Finish, engine::Cause> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
         Self::conversation_events(&tx, &claim.scope, &mut state).await?;
         authority
@@ -1324,6 +1337,22 @@ impl Store {
             return Err(error("completion differs from recorded terminal turn").into());
         }
         let answer = terminal_answer(terminal)?;
+        let records = records::ordered(
+            &tx,
+            &claim.scope,
+            records::Owner::Chat,
+            &state.work_attempt_ids(),
+        )
+        .await?;
+        let delivered = crate::physician_sources::delivered_citations(
+            records.iter(),
+            &state.message_sources(),
+        )?;
+        let (answer, citations) = match crate::physician_chat::published(&answer, &delivered) {
+            Ok(published) => published,
+            // Dropping the transaction writes nothing; the attempt stays current.
+            Err(refused) => return Ok(Finish::Refused(engine::recipe::Refusal::new(refused))),
+        };
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Completed;
         state.end_run(RunOutcome::Completed)?;
@@ -1334,8 +1363,10 @@ impl Store {
                 partial: false,
             },
             text: answer,
+            citations,
         });
-        Ok(Self::save(tx, &claim.scope, &state).await?)
+        Self::save(tx, &claim.scope, &state).await?;
+        Ok(Finish::Committed)
     }
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
@@ -1850,8 +1881,7 @@ impl<A: Authority> Product for PhysicianHost<A> {
         self.assert_current().await?;
         self.store
             .commit_authorized(&self.claim, turn, &mut self.authority)
-            .await?;
-        Ok(Finish::Committed)
+            .await
     }
 
     async fn finish_partial(

@@ -30,6 +30,82 @@ function (step, ...args) {
         font: getComputedStyle(host.querySelector("p:has(strong)")).font,
       };
     },
+    citationLayout(scroll = false) {
+      const pane = one(".source-reading-pane");
+      const content = one(".source-reading-pane .source-pane-body");
+      content.scrollTop = scroll ? content.scrollHeight : 0;
+      const rect = element => {
+        const r = element.getBoundingClientRect();
+        return { x:r.x, y:r.y, width:r.width, height:r.height, bottom:r.bottom, right:r.right };
+      };
+      const way = [...pane.querySelectorAll(".source-pane-close, .source-pane-back")]
+        .find((control) => control.checkVisibility());
+      const d = rect(pane), close = way ? rect(way) : { x:-1, y:-1, bottom:0, right:0, width:0 };
+      const blocks = [...pane.querySelectorAll(".clinical-source-reader > *")];
+      return {
+        opacity: getComputedStyle(pane).opacity,
+        animating: pane.getAnimations({subtree:true}).some(a => a.playState === "running"),
+        geometry: [d, ...blocks.map(rect)],
+        fits: d.x >= 0 && d.right <= innerWidth + 1 && d.y >= 0 && d.bottom <= innerHeight + 1
+          && content.scrollWidth <= content.clientWidth + 1
+          && blocks.every(b => b.scrollWidth <= b.clientWidth + 1),
+        separated: rect(pane.querySelector(".source-pane-heading")).bottom <= rect(blocks[0]).y + 1
+          && blocks.every((b, i) => !i || rect(blocks[i-1]).bottom <= rect(b).y + 1),
+        closeVisible: close.width > 0 && close.y >= 0 && close.bottom <= innerHeight
+          && close.x >= 0 && close.right <= innerWidth,
+        scrollable: content.scrollHeight > content.clientHeight + 1,
+        scrolled: content.scrollTop > 0,
+      };
+    },
+    // Where a mouse rests on the conversation's citation, in viewport pixels.
+    citationCenter() {
+      const chip = one("section[aria-label='Conversation'] .citation-chip");
+      chip.scrollIntoView({ block: "center" });
+      const box = chip.getBoundingClientRect();
+      return [box.x + box.width / 2, box.y + box.height / 2];
+    },
+    citationPreview() {
+      const chip = one("section[aria-label='Conversation'] .citation-chip");
+      const preview = document.getElementById(chip.getAttribute("aria-controls"));
+      const body = preview?.querySelector(".citation-preview-body");
+      if (!body) return null;
+      const original = preview.querySelector(".citation-preview-actions a");
+      return { text: body.innerText, original: original?.getAttribute("href") ?? null,
+        originalLabel: original?.innerText ?? null };
+    },
+    citationClosed() { return !document.querySelector(".source-reading-pane"); },
+    citationReading() {
+      const pane = one(".source-reading-pane");
+      const technical = pane.querySelector(".source-technical-details");
+      return {
+        title: pane.querySelector("h2").textContent,
+        kind: pane.querySelector(".source-record-kind")?.textContent ?? "",
+        sections: [...pane.querySelectorAll(".source-record-section")].map(s => s.textContent).join("\n"),
+        visible: pane.querySelector(".clinical-source-reader").innerText,
+        technicalOpen: technical.open,
+        technical: technical.textContent,
+        original: pane.querySelector(".source-original-data").textContent,
+        focused: document.activeElement === pane.querySelector("h2"),
+        order: [...pane.querySelectorAll(
+          ".clinical-source-reader > .citation-open, .source-coda-summary, .source-record-kind",
+        )].map((node) => node.className),
+        link: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("href") ?? null,
+        linkTitle: pane.querySelector(".clinical-source-reader > .citation-open")?.getAttribute("title") ?? null,
+        summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
+      };
+    },
+    // Presses the pane's way out a person can see: Close beside a wide reader, Back over a narrow
+    // one. A control hidden at this width is never clicked.
+    citationDismiss() {
+      const shown = [...document.querySelectorAll(".source-pane-close, .source-pane-back")]
+        .filter((control) => control.checkVisibility() && control.getBoundingClientRect().width > 0);
+      if (shown.length !== 1) throw new Error(`expected one visible way out, saw ${shown.length}`);
+      shown[0].click();
+      return shown[0].classList.contains("source-pane-back") ? "back" : "close";
+    },
+    citationFocusReturned() {
+      return document.activeElement?.classList.contains("citation-chip") ?? false;
+    },
     readText(selector) {
       return one(selector).innerText;
     },

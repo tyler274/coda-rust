@@ -390,6 +390,7 @@ async fn a_read_recorded_after_a_steer_is_retained_by_the_successor() {
         sha256: local_product::sha256_hex(b"Potassium 4.1"),
         readable_parts: vec![],
         provenance: json!({"native_record":"late-read-lab"}),
+        native: None,
     })
     .await
     .unwrap();
@@ -1702,6 +1703,74 @@ fn skill_limits() -> engine::RunLimits {
         max_response_bytes: 131_072,
         ..engine::RunLimits::default()
     }
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_citation_to_an_unread_record_is_refused_and_corrected_in_the_same_run() {
+    // First answer cites a record the model never opened; the second sees why
+    // it was refused and answers without the citation.
+    #[derive(Default)]
+    struct Corrects(u32);
+    impl engine::recipe::Provider for Corrects {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn Observer,
+        ) -> Result<engine::Turn, engine::Cause> {
+            self.0 += 1;
+            if self.0 == 1 {
+                return Ok(turn("Potassium is 4.1 [[patient_source:never-opened]]."));
+            }
+            // The provider request carries the refusal as developer feedback.
+            assert!(
+                request.items.iter().any(|item| matches!(
+                    item,
+                    engine::Item::Message { role, text }
+                        if role == "developer" && text.contains("never-opened")
+                            && text.contains("\"executed\":false")
+                )),
+                "the model is told why its answer was refused: {:?}",
+                request.items
+            );
+            Ok(turn("I have not opened a potassium record yet."))
+        }
+    }
+    let store = store().await;
+    let scope = scope();
+    accept(&store, &scope, &input()).await.unwrap();
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut provider = Corrects::default();
+    PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: Allowed,
+    }
+    .run(
+        &mut provider,
+        skill_limits(),
+        &engine::Cancellation::default(),
+    )
+    .await
+    .unwrap();
+    assert_eq!(provider.0, 2, "the correction happens inside the one run");
+    let saved = store.conversation(&scope).await.unwrap();
+    let answers: Vec<_> = saved
+        .messages
+        .iter()
+        .filter(|message| {
+            matches!(
+                message.role,
+                local_product::runtime::MessageRole::Assistant { .. }
+            )
+        })
+        .collect();
+    assert_eq!(answers.len(), 1, "the refused answer is never published");
+    assert_eq!(answers[0].text, "I have not opened a potassium record yet.");
+    assert!(answers[0].citations.is_empty());
+    assert_eq!(saved.status, WorkStatus::Completed);
 }
 
 #[tokio::test]

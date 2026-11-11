@@ -37,6 +37,7 @@ fn source(scope: &Scope, id: &str, revision: &str, content: &str) -> SourceRevis
         sha256: crate::sha256_hex(content.as_bytes()),
         readable_parts: vec![],
         provenance: serde_json::json!({"native_record": id}),
+        native: None,
     }
 }
 
