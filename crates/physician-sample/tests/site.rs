@@ -790,6 +790,122 @@ async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_co
         );
         tokio::time::sleep(Duration::from_millis(100)).await;
     }
+
+    // 3. The answer is lost while the page stays open: the page shows it is
+    // confirming and asks again under the same key, with no click.
+    let third = "Recheck the magnesium";
+    tab.type_composer(third);
+    tab.wait_saved();
+    let respond_held = serde_json::json!({ "patterns": [{
+        "urlPattern": "*/commands",
+        "requestStage": "Response"
+    }] });
+    tab.call("Fetch.enable", respond_held.clone());
+    tab.click_named(".composer-toolbar button", "Send");
+    let lost = tab.held_request("POST");
+    let lost_key = held_body(&lost)["idempotency_key"].clone();
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": lost["requestId"], "errorReason": "Failed" }),
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    );
+    tab.wait_for_text("Confirming with Coda…", Duration::from_secs(5));
+    let reasked = tab.held_request("POST");
+    assert_eq!(
+        held_body(&reasked)["idempotency_key"],
+        lost_key,
+        "confirming a lost answer issued a new command"
+    );
+    tab.save_pictures("command-confirming", ".composer-context");
+    tab.release(&reasked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.wait_for_text(third, Duration::from_secs(20));
+    tab.wait_composer("", Duration::from_secs(10));
+    assert_eq!(
+        sent_count(&mut tab, third),
+        1,
+        "the confirmed message did not appear exactly once"
+    );
+    assert!(
+        !tab.dom().contains("Check again"),
+        "a confirmed command still offered Check again"
+    );
+
+    // 4. Every re-ask is lost too: only then does the page say it couldn't
+    // confirm, and Check again asks once more under the same key.
+    let fourth = "Add a urine sodium";
+    tab.type_composer(fourth);
+    tab.wait_saved();
+    tab.call("Fetch.enable", respond_held);
+    tab.click_named(".composer-toolbar button", "Send");
+    let first_try = tab.held_request("POST");
+    let lost_key = held_body(&first_try)["idempotency_key"].clone();
+    let mut tries = vec![first_try];
+    while tries.len() < 4 {
+        let lost = tries.last().unwrap().clone();
+        tab.call(
+            "Fetch.failRequest",
+            serde_json::json!({ "requestId": lost["requestId"], "errorReason": "Failed" }),
+        );
+        assert!(
+            !tab.dom().contains("Check again"),
+            "Check again showed while Coda was still confirming"
+        );
+        tries.push(tab.held_request("POST"));
+    }
+    let last = tries.last().unwrap().clone();
+    tab.call(
+        "Fetch.failRequest",
+        serde_json::json!({ "requestId": last["requestId"], "errorReason": "Failed" }),
+    );
+    for asked in &tries {
+        assert_eq!(
+            held_body(asked)["idempotency_key"],
+            lost_key,
+            "a re-ask changed key"
+        );
+    }
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.wait_for_text("Coda couldn’t confirm that.", Duration::from_secs(10));
+    tab.save_pictures("command-unconfirmed", ".composer-context");
+    assert_eq!(
+        tab.composer().0,
+        fourth,
+        "an unconfirmed Send cleared its text"
+    );
+    tab.call(
+        "Fetch.enable",
+        serde_json::json!({ "patterns": [{ "urlPattern": "*/commands" }] }),
+    );
+    tab.click_named("button", "Check again");
+    let checked = tab.held_request("POST");
+    assert_eq!(
+        held_body(&checked)["idempotency_key"],
+        lost_key,
+        "Check again issued a new command"
+    );
+    tab.release(&checked);
+    tab.call("Fetch.disable", serde_json::json!({}));
+    tab.wait_for_text(fourth, Duration::from_secs(20));
+    tab.wait_composer("", Duration::from_secs(10));
+    assert_eq!(
+        sent_count(&mut tab, fourth),
+        1,
+        "Check again sent the message twice"
+    );
+}
+
+/// How many conversation lines say `text`.
+fn sent_count(tab: &mut Tab, text: &str) -> usize {
+    tab.step("conversationLines", serde_json::json!([]))
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|line| line.as_str().is_some_and(|line| line.contains(text)))
+        .count()
 }
 
 #[derive(Clone, Copy, Debug)]

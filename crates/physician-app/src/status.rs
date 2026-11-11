@@ -44,19 +44,22 @@ pub enum CommandStage {
     Idle,
     /// Sent and not yet answered.
     Sending,
-    /// The answer never arrived, so whether it took is unknown; the host's check again action
-    /// follows.
+    /// An answer was lost, and the same command is being asked again on its own.
+    Confirming,
+    /// Asking again never got an answer, so whether it took is unknown; the host's check
+    /// again action follows.
     Unconfirmed,
     /// It was answered and not taken, saying why.
     Refused(String),
 }
 
-/// A command's own line: sending, couldn't confirm with its check again action, or why
-/// it was refused. Idle adds nothing.
+/// A command's own line: sending, confirming a lost answer, couldn't confirm with its
+/// check again action, or why it was refused. Idle adds nothing.
 #[component]
 pub fn CommandNotice(
     stage: CommandStage,
     sending: String,
+    confirming: String,
     unconfirmed: String,
     check_again: String,
     on_check_again: EventHandler,
@@ -64,6 +67,7 @@ pub fn CommandNotice(
     match stage {
         CommandStage::Idle => rsx! {},
         CommandStage::Sending => rsx! { StatusLine { message: sending } },
+        CommandStage::Confirming => rsx! { StatusLine { message: confirming } },
         CommandStage::Unconfirmed => rsx! {
             StatusLine { message: unconfirmed, retry: check_again, on_retry: on_check_again }
         },

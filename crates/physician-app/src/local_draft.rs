@@ -15,6 +15,11 @@
 //!
 //! Storage can be missing, denied or full. Writes then report failure; the
 //! shell keeps the text in memory and says reload recovery is unavailable.
+//!
+//! A command whose answer hasn't arrived is kept here too, one per command
+//! slot under the same physician scope, so a reload asks it again under its
+//! own key instead of losing it. The same sign-out, session end and removed
+//! access rules forget it.
 // Storage is browser-only; native builds keep recovery in memory.
 #![cfg_attr(not(target_arch = "wasm32"), allow(dead_code))]
 
@@ -24,6 +29,9 @@ use crate::composer::{DraftTarget, Recovery};
 
 /// Every recovery key starts with this, version included.
 const PREFIX: &str = "coda.physician.draft.v1|";
+
+/// Every unanswered command's key starts with this, version included.
+const COMMAND_PREFIX: &str = "coda.physician.command.v1|";
 
 /// Who a record belongs to: the backend and the signed-in physician.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -129,27 +137,76 @@ pub(crate) fn write(
     Ok(())
 }
 
-/// Forgets this physician's records for one workspace (access removed).
+fn command_key(scope: &Scope, slot: &str) -> String {
+    let parts = serde_json::to_string(&[
+        scope.base.as_str(),
+        scope.practice.as_str(),
+        scope.physician.as_str(),
+        slot,
+    ])
+    .unwrap_or_default();
+    format!("{COMMAND_PREFIX}{parts}")
+}
+
+/// The unanswered command this physician's `slot` kept, if any.
+pub(crate) fn read_command(
+    backend: &dyn Backend,
+    scope: &Scope,
+    slot: &str,
+) -> Option<serde_json::Value> {
+    serde_json::from_str(&backend.get(&command_key(scope, slot))?).ok()
+}
+
+/// Keeps `command` for this physician's `slot`, or removes it when `None`.
+pub(crate) fn write_command(
+    backend: &dyn Backend,
+    scope: &Scope,
+    slot: &str,
+    command: Option<&serde_json::Value>,
+) -> Result<(), ()> {
+    let key = command_key(scope, slot);
+    match command {
+        Some(command) => backend.set(&key, &command.to_string()),
+        None => {
+            backend.remove(&key);
+            Ok(())
+        }
+    }
+}
+
+/// Forgets this physician's records for one workspace (access removed),
+/// including any unanswered command about it.
 pub(crate) fn forget_workspace(backend: &dyn Backend, scope: &Scope, workspace: &str) {
+    let mine = |parts: &[String]| {
+        parts[..3]
+            == [
+                scope.base.clone(),
+                scope.practice.clone(),
+                scope.physician.clone(),
+            ]
+    };
     for key in backend.keys() {
-        if parse(&key).is_some_and(|(parts, _)| {
-            parts[..3]
-                == [
-                    scope.base.clone(),
-                    scope.practice.clone(),
-                    scope.physician.clone(),
-                ]
-                && parts[3] == workspace
-        }) {
+        let draft = parse(&key).is_some_and(|(parts, _)| mine(&parts) && parts[3] == workspace);
+        let command = key
+            .strip_prefix(COMMAND_PREFIX)
+            .and_then(|rest| serde_json::from_str::<[String; 4]>(rest).ok())
+            .is_some_and(|parts| mine(&parts))
+            && backend
+                .get(&key)
+                .and_then(|stored| serde_json::from_str::<serde_json::Value>(&stored).ok())
+                .is_some_and(|command| {
+                    command["payload"]["patient_workspace_id"].as_str() == Some(workspace)
+                });
+        if draft || command {
             backend.remove(&key);
         }
     }
 }
 
-/// Forgets every record (sign-out, another physician signing in).
+/// Forgets every record and kept command (sign-out, another physician signing in).
 pub(crate) fn forget_all(backend: &dyn Backend) {
     for key in backend.keys() {
-        if key.starts_with(PREFIX) {
+        if key.starts_with(PREFIX) || key.starts_with(COMMAND_PREFIX) {
             backend.remove(&key);
         }
     }
@@ -205,7 +262,9 @@ pub(crate) mod tests {
     use std::cell::RefCell;
     use std::collections::BTreeMap;
 
-    use super::{Backend, Scope, forget_all, forget_workspace, read, write};
+    use super::{
+        Backend, Scope, forget_all, forget_workspace, read, read_command, write, write_command,
+    };
     use crate::composer::{DraftTarget, Recovery};
 
     #[derive(Default)]
@@ -389,5 +448,42 @@ pub(crate) mod tests {
         assert!(read(&store, &scope("other"), &one).is_some());
         forget_all(&store);
         assert_eq!(store.keys(), vec!["coda.physician.session".to_owned()]);
+    }
+
+    fn command(workspace: &str) -> serde_json::Value {
+        serde_json::json!({
+            "type": "work.stop",
+            "idempotency_key": format!("stop-{workspace}"),
+            "payload": { "patient_workspace_id": workspace },
+        })
+    }
+
+    /// A kept command comes back exactly, only for its own physician and slot.
+    #[test]
+    fn an_unanswered_command_comes_back_for_its_own_physician_and_slot() {
+        let store = Memory::default();
+        write_command(&store, &scope("doc"), "chat-stop", Some(&command("pw-1"))).unwrap();
+        assert_eq!(
+            read_command(&store, &scope("doc"), "chat-stop"),
+            Some(command("pw-1"))
+        );
+        assert!(read_command(&store, &scope("doc"), "queued").is_none());
+        assert!(read_command(&store, &scope("other"), "chat-stop").is_none());
+        write_command(&store, &scope("doc"), "chat-stop", None).unwrap();
+        assert!(store.keys().is_empty());
+    }
+
+    #[test]
+    fn removed_access_and_sign_out_forget_kept_commands() {
+        let store = Memory::default();
+        write_command(&store, &scope("doc"), "chat-stop", Some(&command("pw-1"))).unwrap();
+        write_command(&store, &scope("doc"), "queued", Some(&command("pw-2"))).unwrap();
+        write_command(&store, &scope("other"), "queued", Some(&command("pw-1"))).unwrap();
+        forget_workspace(&store, &scope("doc"), "pw-1");
+        assert!(read_command(&store, &scope("doc"), "chat-stop").is_none());
+        assert!(read_command(&store, &scope("doc"), "queued").is_some());
+        assert!(read_command(&store, &scope("other"), "queued").is_some());
+        forget_all(&store);
+        assert!(store.keys().is_empty());
     }
 }
