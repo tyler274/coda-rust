@@ -223,7 +223,7 @@ async fn chat_work_answers_only_its_owner_and_a_repeated_submit_is_one_turn() {
             assert_eq!(status, 200, "{name}: {body}");
             assert_eq!(
                 body["snapshot"],
-                json!({ "conversation": [], "runs": [] }),
+                json!({ "conversation": [], "queued": [], "runs": [] }),
                 "{name} read the owner's chat"
             );
         }

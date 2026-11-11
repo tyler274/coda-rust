@@ -709,6 +709,10 @@ pub struct ChatSnapshot {
     /// Whether the signed-in physician's feedback on the responses could be
     /// read. Sites without feedback omit it.
     pub feedback: SnapshotFeedback,
+    #[serde(default)]
+    /// Send next messages waiting for the running answer, oldest first.
+    /// Each is still editable and removable. Older servers omit it.
+    pub queued: Vec<QueuedMessage>,
 }
 
 /// Whether a chat snapshot could read the physician's feedback. The
@@ -736,6 +740,16 @@ impl ResponseId {
     pub fn as_str(&self) -> &str {
         &self.0
     }
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+/// A Send next message that has not started yet.
+pub struct QueuedMessage {
+    /// The key of the `message.submit` that queued it; `message.edit` and
+    /// `message.withdraw` name it.
+    pub message_id: String,
+    /// The physician's text as it stands now.
+    pub text: String,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -1024,6 +1038,24 @@ mod tests {
             })
         );
         assert_eq!(page.snapshot.conversation[0].resume_target, None);
+        assert!(page.snapshot.queued.is_empty());
+    }
+
+    #[test]
+    fn reads_queued_messages() {
+        let page: ChatSnapshotResponse = serde_json::from_str(
+            r#"{"snapshot": {"conversation": [], "runs": [], "queued": [
+                {"message_id": "k1", "text": "And the potassium?"}
+            ]}}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            page.snapshot.queued,
+            vec![QueuedMessage {
+                message_id: "k1".into(),
+                text: "And the potassium?".into(),
+            }]
+        );
     }
 
     #[test]

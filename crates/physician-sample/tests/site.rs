@@ -2975,6 +2975,234 @@ async fn feedback_stays_on_its_response_across_site_restart() {
     fs::remove_dir_all(home).unwrap();
 }
 
+/// Send next on the hosted site, against a slow fixed worker. Three messages
+/// queued behind a running answer show in a second browser, take a removal
+/// and an edit there, and the two left get one reply after the answer ends. Two more queued
+/// behind the next answer return to the composer on Stop and are never sent.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser and disposable Postgres qualification; run explicitly with --ignored"]
+async fn send_next_queues_on_the_server_and_stop_returns_it_to_the_composer() {
+    let _guard = test_lock().lock().await;
+    let Some(database) = scale::Database::create("send_next_browser").await else {
+        return;
+    };
+    let site = build_site();
+    scale::staging_account(&database.url).await;
+    let home = std::env::temp_dir().join(format!("physician-send-next-{}", uuid::Uuid::new_v4()));
+    fs::create_dir_all(&home).unwrap();
+    let valkey = scale::Valkey::start().await;
+    let redis = valkey.url();
+    let worker_port = scale::free_port();
+    let site_port = scale::free_port();
+    let emulator = scale::Emulator::start().await;
+    emulator.provision(worker_port).await;
+    let topic = scale::topic();
+    let worker_listen = format!("127.0.0.1:{worker_port}");
+    let host = format!("127.0.0.1:{site_port}");
+    // Long enough to queue, edit and remove behind the answer.
+    let stub = scale::ResponsesStub::start(&home, 0, 8000, "[]").await;
+    let mut worker = scale::Process::spawn(
+        "send-next-worker",
+        scale::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut worker, worker_port).await;
+    let mut process = scale::Process::spawn(
+        "send-next-site",
+        scale::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", scale::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_AUTH_PROOF_TOKENS", "1"),
+            ("PHYSICIAN_SITE_DIR", site.to_str().unwrap()),
+            ("PHYSICIAN_LISTEN_ADDR", host.as_str()),
+        ],
+        &home,
+    );
+    scale::wait_ready(&mut process, site_port).await;
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    let chat = format!("chat-send-next-{}", uuid::Uuid::new_v4().simple());
+    let url = format!("http://{host}/?patient={patient}&chat={chat}");
+    let mut a = Tab::open(&url);
+    a.wait_for_text("Work email", Duration::from_secs(20));
+    a.request_sign_in("physician@codahealth.test");
+    a.wait_composer("", Duration::from_secs(20));
+    let mut b = Tab::open(&url);
+    b.wait_for_text("Work email", Duration::from_secs(20));
+    b.request_sign_in("physician@codahealth.test");
+    b.wait_composer("", Duration::from_secs(20));
+
+    a.type_composer("Hello");
+    a.step("sendWithKeyboard", serde_json::json!([]));
+    wait_send_next(&mut a);
+    for text in ["And the potassium?", "Also the creatinine", "Never mind"] {
+        a.type_composer(text);
+        a.step("sendWithKeyboard", serde_json::json!([]));
+        a.wait_composer("", Duration::from_secs(10));
+    }
+    let shown = wait_queued(&mut a, 3);
+    let waiting = |text: &str| serde_json::json!({"text": text, "status": "Waiting for next response", "actions": ["Edit", "Remove"]});
+    assert_eq!(
+        shown,
+        serde_json::json!([
+            waiting("And the potassium?"),
+            waiting("Also the creatinine"),
+            waiting("Never mind"),
+        ])
+    );
+    a.save_pictures("send-next-queued", "[aria-label=\"Conversation\"]");
+    // The other browser reads the same queue from Coda, not from this tab.
+    assert_eq!(wait_queued(&mut b, 3), shown);
+    b.step("clickQueued", serde_json::json!(["Never mind", "Remove"]));
+    wait_queued(&mut a, 2);
+    b.step(
+        "clickQueued",
+        serde_json::json!(["And the potassium?", "Edit"]),
+    );
+    b.browser
+        .type_into(".queued-edit textarea", "And the sodium?");
+    std::thread::sleep(Duration::from_millis(100));
+    b.click_named(".queued-edit button", "Save");
+    let edited = wait_queued_text(&mut a, "And the sodium?");
+    assert_eq!(
+        edited,
+        serde_json::json!([waiting("And the sodium?"), waiting("Also the creatinine")])
+    );
+
+    // The answer ends; the two queued messages are answered in one reply.
+    let started = Instant::now();
+    loop {
+        let lines = a.step("conversationLines", serde_json::json!([]));
+        let texts: Vec<&str> = lines
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter_map(|line| line.as_str())
+            .collect();
+        let replies = texts
+            .iter()
+            .filter(|text| text.contains(scale::FIXED_TEXT))
+            .count();
+        if replies == 2 && queued_now(&mut a).as_array().is_some_and(Vec::is_empty) {
+            // Both queued messages sit between the first reply and the
+            // second, so one reply answers them together.
+            let at = |needle: &str| texts.iter().position(|text| text.contains(needle));
+            let first_reply = at(scale::FIXED_TEXT).unwrap();
+            let last_reply = texts
+                .iter()
+                .rposition(|text| text.contains(scale::FIXED_TEXT))
+                .unwrap();
+            for queued in ["And the sodium?", "Also the creatinine"] {
+                let index = at(queued).unwrap_or_else(|| panic!("{queued} not sent: {lines}"));
+                assert!(first_reply < index && index < last_reply, "{lines}");
+            }
+            assert!(
+                !texts.iter().any(|text| text.contains("Never mind")),
+                "a removed message was sent: {lines}"
+            );
+            break;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(60),
+            "the queue was never answered: {lines}\n{}\n{}",
+            process.tail(),
+            worker.tail()
+        );
+        std::thread::sleep(Duration::from_millis(200));
+    }
+
+    // Two more behind the next answer; Stop returns both to the composer.
+    a.type_composer("One more");
+    a.step("sendWithKeyboard", serde_json::json!([]));
+    wait_send_next(&mut a);
+    for text in ["Draft one", "Draft two"] {
+        a.type_composer(text);
+        a.step("sendWithKeyboard", serde_json::json!([]));
+        a.wait_composer("", Duration::from_secs(10));
+    }
+    wait_queued(&mut a, 2);
+    a.click_named(".conversation-mechanical button", "Stop");
+    a.wait_composer("Draft one\n\nDraft two", Duration::from_secs(20));
+    b.wait_composer("Draft one\n\nDraft two", Duration::from_secs(20));
+    a.save_pictures("send-next-stopped", ".composer-dock");
+    assert!(queued_now(&mut a).as_array().is_some_and(Vec::is_empty));
+    let lines = a.step("conversationLines", serde_json::json!([]));
+    assert!(
+        !lines.to_string().contains("Draft one"),
+        "Stop sent a queued message: {lines}"
+    );
+    drop(a);
+    drop(b);
+    drop(process);
+    drop(worker);
+    fs::remove_dir_all(home).unwrap();
+}
+
+/// Waits until Coda is writing in `tab`, so its Send reads Send next.
+fn wait_send_next(tab: &mut Tab) {
+    let started = Instant::now();
+    loop {
+        let words = tab.step("sendWords", serde_json::json!([]));
+        if words == "Send next" {
+            return;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "Send never became Send next: {words}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+}
+
+/// Waits until `tab` shows `count` queued messages, and returns them.
+fn wait_queued(tab: &mut Tab, count: usize) -> serde_json::Value {
+    let started = Instant::now();
+    loop {
+        let shown = queued_now(tab);
+        if shown.as_array().map(Vec::len) == Some(count) {
+            return shown;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "never showed {count} queued messages: {shown}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+}
+
+/// Waits until `tab` shows a queued message saying `text`, and returns the queue.
+fn wait_queued_text(tab: &mut Tab, text: &str) -> serde_json::Value {
+    let started = Instant::now();
+    loop {
+        let shown = queued_now(tab);
+        if shown.to_string().contains(text) {
+            return shown;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(20),
+            "never showed queued {text:?}: {shown}"
+        );
+        std::thread::sleep(Duration::from_millis(100));
+    }
+}
+
+fn queued_now(tab: &mut Tab) -> serde_json::Value {
+    tab.step("queuedLines", serde_json::json!([]))
+}
+
 async fn dump_dom(chrome: &std::path::Path, url: &str) -> String {
     let child = Command::new(chrome)
         .env_remove("LD_LIBRARY_PATH")

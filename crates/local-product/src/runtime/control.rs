@@ -1,8 +1,8 @@
 //! Typed status and attempt storage. Public readback combines these rows with
 //! authored state and, when requested, the appended execution record.
 use super::{
-    Attempt, AttemptStatus, BindingRef, Conversation, Message, Scope, SkillPackageId,
-    conversion_error,
+    Attempt, AttemptStatus, BindingRef, Conversation, Message, QueuedMessage, Scope,
+    SkillPackageId, conversion_error,
     entities::{chat_attempt, conversation, reply_draft, reply_revision, revision_attempt},
     error,
     reply::{AcceptedRevision, Draft, EarlierRevision, RevisionAttempt},
@@ -144,6 +144,8 @@ struct ConversationState {
     last_activity_at: i64,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     scenario: Option<String>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    queued: Vec<QueuedMessage>,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -193,6 +195,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         opened_at,
         last_activity_at,
         scenario,
+        queued,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -206,6 +209,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         opened_at: *opened_at,
         last_activity_at: *last_activity_at,
         scenario: scenario.clone(),
+        queued: queued.clone(),
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -285,6 +289,7 @@ pub(super) fn conversation(
         opened_at,
         last_activity_at,
         scenario,
+        queued,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -304,6 +309,7 @@ pub(super) fn conversation(
         opened_at,
         last_activity_at,
         scenario,
+        queued,
     };
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {
         conversation.status = outcome.into();

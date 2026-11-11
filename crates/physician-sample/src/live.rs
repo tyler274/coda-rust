@@ -12,6 +12,7 @@ use axum::http::{HeaderValue, StatusCode};
 use axum::response::{IntoResponse, Response};
 use futures_util::stream;
 use local_product::runtime::feedback::Feedback;
+use local_product::runtime::queue::QueueChanged;
 use physician_bus::{Bus, Event};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -145,10 +146,35 @@ struct SubmitPayload {
     /// hosted path may send one; see [`crate::hosting::SimulationPractices`].
     #[serde(default)]
     scenario: Option<String>,
+    /// `queue` is Send next; anything else, or none, is Send.
+    #[serde(default)]
+    intent: Option<String>,
 }
 
-/// Accepts chat, Stop/Resume and reply-revision commands into the durable owner.
-/// Every other command is rejected.
+impl SubmitPayload {
+    fn mode(&self) -> local_product::runtime::SendMode {
+        match self.intent.as_deref() {
+            Some("queue") => local_product::runtime::SendMode::Next,
+            _ => local_product::runtime::SendMode::Now,
+        }
+    }
+}
+
+/// `message.edit` or `message.withdraw` on a queued message, named by the
+/// key of the `message.submit` that queued it.
+#[derive(Deserialize)]
+struct QueuedPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    message_id: String,
+    /// The replacement text; `message.edit` only.
+    #[serde(default)]
+    text: Option<String>,
+}
+
+/// Accepts chat, Send next, queued edit and withdraw, Stop/Resume and
+/// reply-revision commands into the durable owner. Every other command is
+/// rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -165,6 +191,9 @@ pub(crate) async fn submit(
     }
     if body.kind == "work.stop" {
         return stop_durable(live, auth_ctx, body).await;
+    }
+    if matches!(body.kind.as_str(), "message.edit" | "message.withdraw") {
+        return change_queued(live, auth_ctx, body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -235,6 +264,7 @@ async fn accept_durable(
         workspace: payload.patient_workspace_id.clone(),
         chat: payload.chat_id.clone(),
     };
+    let mode = payload.mode();
     let Ok(scenario) = chat.admit_scenario(&scope.practice, payload.scenario) else {
         return rejected_scenario();
     };
@@ -245,13 +275,20 @@ async fn accept_durable(
         scenario,
     };
     let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
-    match chat.accept(&scope, &input, session_hash).await {
-        Ok(_) => Json(json!({
-            "outcome": "accepted",
-            "patient_workspace_id": payload.patient_workspace_id,
-            "chat_id": payload.chat_id,
-        }))
-        .into_response(),
+    match chat.accept(&scope, &input, session_hash, mode).await {
+        Ok(accepted) => {
+            // Every open page on this patient shows the queued message.
+            if accepted == local_product::runtime::Accepted::Queued {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+                "queued": accepted == local_product::runtime::Accepted::Queued,
+            }))
+            .into_response()
+        }
         Err(error) => {
             let collision = error.contains("idempotency collision");
             tracing::warn!(collision, "physician chat accept failed");
@@ -348,21 +385,23 @@ fn durable_snapshot_body(
             json!({ "feedback": physician_wire::SnapshotFeedback::Unavailable }),
         ),
     };
-    let (conversation, runs) = match conversation {
+    let (conversation, runs, queued) = match conversation {
         Some(conversation) => snapshot_turns(conversation, saved),
-        None => (Vec::new(), Vec::new()),
+        None => (Vec::new(), Vec::new(), Vec::new()),
     };
     body["conversation"] = json!(conversation);
     body["runs"] = json!(runs);
+    body["queued"] = json!(queued);
     body
 }
 
-/// A saved conversation's turns and its latest run, as the snapshot names
-/// them, with `feedback` on each rated response when it was read.
+/// A saved conversation's turns, its latest run and its Send next messages,
+/// as the snapshot names them, with `feedback` on each rated response when it
+/// was read.
 fn snapshot_turns(
     conversation: &local_product::runtime::Conversation,
     feedback: Option<&BTreeMap<local_product::runtime::ResponseId, Feedback>>,
-) -> (Vec<Value>, Vec<Value>) {
+) -> (Vec<Value>, Vec<Value>, Vec<Value>) {
     let responses: BTreeMap<_, _> = conversation
         .responses()
         .map(|response| (response.place, response.id))
@@ -449,7 +488,13 @@ fn snapshot_turns(
             Some(RunOutcome::Cancelled) | None => {}
         }
     }
-    (items, runs)
+    // Send next messages wait after the running answer, still editable.
+    let queued: Vec<Value> = conversation
+        .queued
+        .iter()
+        .map(|queued| json!({ "message_id": queued.id, "text": queued.text }))
+        .collect();
+    (items, runs, queued)
 }
 
 fn resume_line(
@@ -564,16 +609,8 @@ async fn stop_durable(
     {
         Ok(local_product::runtime::Stopped::Refused) => rejected("work.stop"),
         Ok(outcome) => {
-            if outcome == local_product::runtime::Stopped::Held
-                && live
-                    .bus
-                    .publish(Event::WorkspaceChanged {
-                        workspace_id: payload.patient_workspace_id.clone(),
-                    })
-                    .await
-                    .is_err()
-            {
-                tracing::warn!("physician workspace invalidation not published");
+            if outcome == local_product::runtime::Stopped::Held {
+                announce(&live, &payload.patient_workspace_id).await;
             }
             Json(json!({
                 "outcome": "accepted",
@@ -594,6 +631,90 @@ async fn stop_durable(
             )
                 .into_response()
         }
+    }
+}
+
+/// `message.edit` and `message.withdraw` on a queued message. The workspace
+/// is checked by the auth middleware; the runtime changes only this
+/// physician's message while it is still queued, once per key.
+async fn change_queued(
+    live: Arc<Live>,
+    auth_ctx: Option<Extension<AuthContext>>,
+    body: CommandBody,
+) -> Response {
+    let kind = body.kind.as_str();
+    let chat = &live.chat;
+    let Some(Extension(ctx)) = auth_ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<QueuedPayload>(value).ok())
+    else {
+        return rejected(kind);
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected(kind);
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let changed = match (kind, payload.text.as_deref()) {
+        ("message.edit", Some(text)) => {
+            chat.store
+                .edit_queued(&scope, &key, &payload.message_id, text)
+                .await
+        }
+        ("message.withdraw", None) => {
+            chat.store
+                .withdraw_queued(&scope, &key, &payload.message_id)
+                .await
+        }
+        _ => return rejected(kind),
+    };
+    match changed {
+        Ok(QueueChanged::Refused) => rejected(kind),
+        Ok(outcome) => {
+            if outcome == QueueChanged::Changed {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+                "message_id": payload.message_id,
+            }))
+            .into_response()
+        }
+        Err(_) => {
+            tracing::warn!(command = kind, "physician queued message change failed");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message(kind),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
+/// Tells every open page on this workspace to refetch. Lossy: a page that
+/// misses it converges on its next refetch or resync.
+async fn announce(live: &Live, workspace_id: &str) {
+    if live
+        .bus
+        .publish(Event::WorkspaceChanged {
+            workspace_id: workspace_id.to_owned(),
+        })
+        .await
+        .is_err()
+    {
+        tracing::warn!("physician workspace invalidation not published");
     }
 }
 
@@ -711,6 +832,7 @@ mod durable_snapshot_tests {
             opened_at: 0,
             last_activity_at: 0,
             scenario: None,
+            queued: vec![],
         }
     }
 
@@ -932,7 +1054,12 @@ mod durable_snapshot_tests {
         let empty = durable_snapshot_body(None, &SnapshotFeedback::Unavailable);
         assert_eq!(
             empty,
-            serde_json::json!({ "feedback": "unavailable", "conversation": [], "runs": [] })
+            serde_json::json!({
+                "feedback": "unavailable",
+                "conversation": [],
+                "queued": [],
+                "runs": []
+            })
         );
     }
 
@@ -988,5 +1115,30 @@ mod durable_snapshot_tests {
                 .collect();
             assert_eq!(read.snapshot.runs, expected, "{outcome:?}");
         }
+    }
+
+    #[test]
+    fn queued_messages_follow_the_running_answer() {
+        let mut running = conversation(WorkStatus::Active);
+        running.queued = vec![local_product::runtime::QueuedMessage {
+            id: "key-2".into(),
+            text: "And the potassium?".into(),
+            session_hash: vec![1; 32],
+            scenario: None,
+            binding: serde_json::from_value(
+                serde_json::json!({ "id": "recipe", "cache_key": null }),
+            )
+            .unwrap(),
+            skills: serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
+        }];
+        let body = snapshot(Some(&running));
+        assert_eq!(
+            body["queued"],
+            serde_json::json!([{ "message_id": "key-2", "text": "And the potassium?" }])
+        );
+        // The session reference never reaches the page.
+        assert!(body["queued"][0].get("session_hash").is_none());
+        let done = snapshot(Some(&conversation(WorkStatus::Completed)));
+        assert_eq!(done["queued"], serde_json::json!([]));
     }
 }
