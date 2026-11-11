@@ -55,7 +55,26 @@ pub struct SourceRevision {
     pub readable_parts: Vec<ReadablePart>,
     /// Source-owned provenance, including native record identity.
     pub provenance: Value,
+    /// Where the source system can open this record, when its adapter supplies one.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub native: Option<NativeLink>,
 }
+
+/// An address in the source system that opens the record itself.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct NativeLink {
+    /// The source system's name, such as the EHR's.
+    pub label: String,
+    /// The address as the source adapter recorded it.
+    pub uri: String,
+}
+
+/// Opaque citation identity for one exact record, including its provenance.
+pub fn citation_id(source: &SourceRevision) -> String {
+    crate::sha256_hex(&serde_json::to_vec(source).expect("source serialization"))
+}
+
 impl SourceRevision {
     /// Refuses corrupt or unidentified source evidence.
     pub fn validate(&self) -> Result<(), String> {
@@ -351,6 +370,71 @@ pub fn caught_up_context<'a>(
     Ok(unread)
 }
 
+/// Whole records the model received in full in its latest working window, as
+/// an answer may cite them. A passage, a preview of a large result, or a read
+/// from an earlier window never grants citation authority.
+pub fn delivered_citations<'a>(
+    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
+    messages: &[harness::engine::ProductMessage],
+) -> Result<Vec<crate::physician_chat::Citation>, DeliveredCitationError> {
+    let mut cited = Vec::new();
+    for output in harness::engine::results::delivered_originals(records, messages)? {
+        // Other tools' results share the window; only chart reads decode.
+        let Ok(receipt) = serde_json::from_str::<chart::ReadReceipt>(output) else {
+            continue;
+        };
+        for result in receipt.results {
+            let chart::RecordReceipt::Available {
+                reference,
+                revision,
+                record_type,
+                dates,
+                content,
+                readable_parts,
+                sha256,
+                provenance,
+                native,
+                citation_id: Some(id),
+                ..
+            } = result
+            else {
+                continue;
+            };
+            if crate::sha256_hex(content.as_bytes()) != sha256 {
+                return Err(DeliveredCitationError::Corrupt { reference });
+            }
+            cited.push(crate::physician_chat::Citation {
+                id,
+                reference,
+                revision,
+                record_type,
+                dates,
+                content,
+                readable_parts,
+                sha256,
+                provenance,
+                summary: None,
+                native,
+            });
+        }
+    }
+    Ok(cited)
+}
+
+/// Why the delivered chart reads could not be resolved for publication.
+#[derive(Debug, thiserror::Error)]
+pub enum DeliveredCitationError {
+    /// The run's records do not show what reached the model.
+    #[error("delivered chart reads are unreadable")]
+    Delivery(#[from] harness::engine::Failure),
+    /// A delivered record's bytes no longer match the digest read with them.
+    #[error("delivered record {reference} does not match its digest")]
+    Corrupt {
+        /// The record whose retained bytes changed.
+        reference: String,
+    },
+}
+
 /// A last page can be requested directly. Only the union of delivered exact
 /// spans can establish that a changed record was read after a refresh.
 fn delivered_part(source: &SourceRevision, part: usize, results: &[&chart::RecordReceipt]) -> bool {
@@ -407,6 +491,7 @@ mod tests {
             sha256: crate::sha256_hex(content.as_bytes()),
             readable_parts: vec![],
             provenance: json!({"native_record": "lab"}),
+            native: None,
         }
     }
 

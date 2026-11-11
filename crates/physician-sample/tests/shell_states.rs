@@ -338,9 +338,13 @@ impl Walk {
 
         if self.exists("button.citation-chip") {
             self.press_first("button.citation-chip");
-            self.appears("dialog[open].citation-inspection");
+            self.appears(".source-reading-pane");
             self.stage("17-citation");
-            self.press("Close");
+            self.press(if self.size == "phone" {
+                "Back to answer"
+            } else {
+                "Close source"
+            });
         }
 
         self.press_in_sidebar("New conversation");
