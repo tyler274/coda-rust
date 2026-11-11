@@ -115,6 +115,10 @@ pub fn durable_site(
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
         )
+        .route(
+            "/patient-workspaces/{id}/chats/{chat}/citations/{citation}",
+            get(live::citation),
+        )
         // The bus carries invalidations; chat state remains in Postgres.
         .route(
             "/patient-workspaces/events",
