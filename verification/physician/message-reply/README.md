@@ -1,6 +1,6 @@
 # Message reply
 
-How Coda proposes a reply to a patient's message, and how you, a physician, revise it and send it, from the time its conversation is linked until the practice has answered. [physician.md](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) links here.
+How Coda proposes a reply to a patient's message, how you, a physician, revise and copy it, and how Coda handles what the practice answers in Spruce. The practice sends in Spruce; Coda reads the conversation. [physician.md](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) links here.
 
 ## Words
 

@@ -51,6 +51,54 @@ Each feature's browser test lives in its own file named for the feature, such as
 `sign_in_model.rs`, and runs locally. CI doesn't run TLC. The `statechart` skill gives its own
 command and setup; the feature's verify skill names the model, its charts and its browser test.
 
+## Local model runs
+
+Use the existing [statechart runner](../.agents/skills/statechart/SKILL.md), including for a
+model too large to draw. Keep the runner's own settings; a separate batch of direct Java
+invocations can multiply both the work and the memory used.
+
+Run one model at a time. This invocation caps the Java heap at 4 GiB, limits the JVM's
+processor and garbage-collector thread counts, and stops after 20 minutes. The output
+directory must be new or empty. Use the skill's Java and TLC setup; `JAVA` and `TLA2TOOLS`
+can select an existing installation.
+
+```sh
+JAVA_TOOL_OPTIONS='-Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2' \
+python3 -c '
+import subprocess, sys
+try:
+    result = subprocess.run(sys.argv[1:], timeout=1200)
+except subprocess.TimeoutExpired:
+    print("Model check timed out; incomplete.", file=sys.stderr)
+    sys.exit(124)
+sys.exit(result.returncode)
+' \
+  .agents/skills/statechart/scripts/statechart \
+  verification/physician/message-reply/MessageReply.tla \
+  --out target/verification/message-reply
+```
+
+The heap limit is not a limit on all process memory. A timeout exits with status 124. A timeout or resource failure is an
+incomplete check, never a pass. Preserve the command and available output, then stop; do not
+automatically retry, increase the heap, or launch other cases. Investigate the model and
+execution cost before agreeing a larger budget. Do not reduce model bounds or remove rules
+to fit the budget. The runner removes temporary state on interruption, so an interrupted run
+may have no TLC report. For a deliberate break, use the runner's documented failure exit and
+inspect the counterexample to establish that the intended rule failed.
+
+For a correction, check every rule at the default bounds and show the changed paths are
+reachable. Select deliberate breaks for changed rule semantics and failure modes introduced
+by changed actions; run each against its rule alone and against the other rules. Record why
+the selection exercises the correction and how the default run covers neighboring guarantees.
+Read affected charts and check the README-to-action mapping.
+Independent review must leave no unresolved finding that affects the correction. Reuse
+completed evidence only when its inputs and relevant dependencies still match the change.
+
+Full qualification also runs every deliberate break, every chart and every larger bound
+listed by the feature's skill. Scope and budget that work explicitly. Report the exact
+scope completed; a checked correction does not establish full qualification, and an
+unfinished qualification matrix does not authorize an automatic local batch.
+
 ## Verify skills
 
 A verify skill names the commands, expected results and evidence that hold one feature to

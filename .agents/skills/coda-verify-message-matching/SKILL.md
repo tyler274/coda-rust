@@ -34,18 +34,17 @@ code and its tests exist.
 
 ## Coverage
 
-The sync commit is 0065473e. At that commit, the model describes the README, the check passed, and each
-rule failed on its break below while the other rules held. No product code carries the model's
-steps. When code does, each action's comment names that code, and the code joins "When a change
-needs this". Move the sync commit forward only after all of that holds again, on a README or code
-that changed since it, as `/maintain-formal-verification-skill` describes.
+The sync commit is 0065473e. It is the reference for full qualification, not evidence that a later
+revision passed. No product code carries the model's steps. When code does, each action's comment
+names that code, and the code joins "When a change needs this". Move the sync commit forward only
+after full qualification, as `/maintain-formal-verification-skill` describes.
 
 ## When it's verified
 
-A change is verified at a named commit when TLC finds no rule broken, each rule fails on its break
-below while the other rules hold, bounds one larger find nothing, each README step is an action in
-the model and each action a step, and an independent reviewer who got the README and
-[verification/README.md](../../../verification/README.md) found nothing open.
+Follow [local model runs](../../../verification/README.md#local-model-runs) for correction checks,
+full qualification, resource limits and stopping conditions. Name the checked commit and keep
+unfinished cases visible in the PR's evidence. The default configuration checks all fourteen rules;
+full qualification also covers every break, chart and enlarged bound below.
 
 ## When a change needs this
 
@@ -55,19 +54,21 @@ Run it when a change touches the message-matching README, `MessageMatching.tla`,
 ## Run
 
 1. Check the model with TLC: `MessageMatching.tla` with `MessageMatching.cfg`. It passes when all
-   fourteen rules hold. TLC reaches 144,007 distinct states in about 15 seconds. That is more
-   than the chart budget, so use TLC directly, or `/statechart`, which then draws no chart.
-2. When the README or the model changed, run each break in the table below on a scratch copy:
-   against its rule alone, which must fail, and against all the other rules, which must hold. A new
-   rule gets a new break. Preserve each exact scratch model and configuration, the command, its
+   fourteen rules hold. Use `/statechart` with the local resource limits; the full state space
+   exceeds the chart budget, so it checks the model without drawing a chart.
+2. Select and explain correction breaks as [local model runs](../../../verification/README.md#local-model-runs)
+   describes. Run them on scratch copies: against the rule alone, which must fail, and against all the other
+   rules, which must hold. Full qualification runs every break. A new rule gets a new break.
+   Preserve each exact scratch model and configuration, the command, its
    exit status and the complete TLC output, including the counterexample for the intended failure.
    Summary tables alone do not establish these checks.
 3. Check that each step in the README's tables is an action in the model, and each action a step.
-4. When the README or the model changed, run the model one size larger on each constant in turn:
-   three patients, three physicians, three messages, three moves. Each run must find nothing. Three
-   messages is the largest: 2.2 million states in about 6 minutes. Preserve each enlarged
-   configuration and its command, exit status and complete TLC output.
-5. Draw each chart with `/statechart` on `Charts.tla`, with its `.cfg` and its `.mjs` as the view.
+4. For full qualification, run the model one size larger on each constant in turn:
+   three patients, three physicians, three messages, three moves. Each run must find nothing.
+   Preserve each enlarged configuration and its command, exit status and complete TLC output.
+   Agree the execution budget first; an incomplete run is not a pass.
+5. Draw affected charts with `/statechart` on `Charts.tla`, with their `.cfg` and `.mjs` as the view.
+   Full qualification draws every chart.
    Render it as the skill says, and read it. All rules must hold in each chart.
 
 | Chart | Starts | Shows |
@@ -101,7 +102,7 @@ Each `.mjs` says what its chart leaves out.
 
 ## Each rule fails on its own
 
-| Rule | Break | The rule alone | The other rules |
+| Rule | Break | Expected: rule alone | Expected: other rules |
 | --- | --- | --- | --- |
 | OnlyWithAccess | a move leaves it open for a physician who may not access the new patient | fails | hold |
 | SuggestionsWithAccess | "Messages to match" shows the suggestion to every physician | fails | hold |
