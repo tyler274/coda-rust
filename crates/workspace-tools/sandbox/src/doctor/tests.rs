@@ -68,7 +68,7 @@ fn missing_config_fails_and_says_how_to_pass_one() {
 
 #[test]
 fn unknown_config_keys_warn_and_the_machine_is_still_checked() {
-    let newer = format!("{CONFIG}queue = \"/x\"\n");
+    let newer = CONFIG.replace("[ci]\n", "[ci]\nqueue = \"/x\"\n");
     let findings = run(
         &healthy(),
         &Config::parse_with_unknown_keys(Path::new("t"), &newer),

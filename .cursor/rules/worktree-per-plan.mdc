@@ -9,11 +9,12 @@ When starting a new plan (multi-step implementation work), do not execute it on 
 main checkout's current branch. Create a dedicated git worktree first so multiple
 plans can proceed in parallel without touching each other's files or branches.
 
-`dev/worktree.sh` owns worktrees. It puts each one at `.worktrees/<slug>` inside
-the main checkout (ignored by Git) and links its `target/` to a directory on the
-build root, cloned from a shared seed of third-party build output, so a new
-worktree costs its source and no build disk. The script's header lists its
-commands.
+`coda-sandbox worktree` owns worktrees. It puts each one at `.worktrees/<slug>`
+inside the main checkout (ignored by Git) and links its `target/` to a directory
+on the build root, cloned from a shared seed of third-party build output, so a
+new worktree costs its source and no build disk. `coda-sandbox worktree --help`
+lists its commands. Where `coda-sandbox` is not installed yet, run it from the
+checkout as `nix run ./crates/workspace-tools/sandbox -- worktree new <slug>`.
 
 ## Steps
 
@@ -21,7 +22,7 @@ commands.
 2. From the main checkout, create the worktree and its branch:
 
    ```bash
-   dev/worktree.sh new <slug>          # branch <slug> from origin/main
+   coda-sandbox worktree new <slug>    # branch <slug> from origin/main
    cd .worktrees/<slug>
    ```
 
@@ -44,12 +45,12 @@ commands.
    `dev/apple-session.sh down` inside the worktree first to return its disk:
 
    ```bash
-   dev/worktree.sh rm <slug>           # or `dev/worktree.sh prune` for every merged one
+   coda-sandbox worktree rm <slug>     # or `coda-sandbox worktree prune` for every merged one
    git branch -d <slug>
    ```
 
    On the Apple route, `git worktree remove .worktrees/<slug>` takes the place of
-   `dev/worktree.sh rm`.
+   `coda-sandbox worktree rm`.
 
 ## Rules
 
@@ -60,7 +61,7 @@ commands.
 - ❌ Do NOT edit files under `submodules/**`; the [rust-repo-first](rust-repo-first.mdc)
   rule still applies inside a worktree (`git rev-parse --show-toplevel` must
   print the worktree path, and file paths must not start with `submodules/`).
-- ✅ One worktree per plan at `.worktrees/<slug>`, made with `dev/worktree.sh new <slug>`
+- ✅ One worktree per plan at `.worktrees/<slug>`, made with `coda-sandbox worktree new <slug>`
   (or Git on the Apple route), with a matching branch.
 
 ## ❌ BAD
@@ -73,6 +74,6 @@ git checkout -b my-plan   # blocks the main checkout and other parallel work
 ## ✅ GOOD
 
 ```bash
-dev/worktree.sh new my-plan
+coda-sandbox worktree new my-plan
 cd .worktrees/my-plan     # all plan work happens here
 ```

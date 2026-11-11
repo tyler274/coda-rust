@@ -123,3 +123,17 @@ name_type!(
     SeedKey,
     IdKind::SeedKey
 );
+
+impl SeedKey {
+    /// The key for a digest: its first 8 bytes as 16 lowercase hex digits.
+    pub fn from_digest(digest: &[u8; 32]) -> Self {
+        Self(digest[..8].iter().map(|b| format!("{b:02x}")).collect())
+    }
+}
+
+impl RequestId {
+    /// The id for 6 random bytes, as 12 lowercase hex digits.
+    pub fn from_bytes(bytes: [u8; 6]) -> Self {
+        Self(bytes.iter().map(|b| format!("{b:02x}")).collect())
+    }
+}

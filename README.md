@@ -90,6 +90,24 @@ agent CLIs and sandbox lifecycle belong to
 [Coda Open-Inspect](https://github.com/Coda-Health/coda-open-inspect/tree/main/packages/sandbox-images).
 The hook prepares the store; subsequent commands still enter the Nix shell.
 
+### Agent sandbox
+
+`coda-sandbox`, built from its own flake under [`crates/workspace-tools/sandbox/`](crates/workspace-tools/sandbox/flake.nix),
+runs the agent sandbox: `worktree` makes worktrees under `.worktrees/<slug>`
+whose `target/` is a reflink clone of a shared seed of third-party build output,
+`ci run` queues a CI job of a committed revision on the self-hosted Firecracker
+runner, and `carry` bundles the host's worktrees for the sandbox. It reads the
+machine's paths from `/etc/coda-sandbox/config.toml`, or from `--config`. Where
+it is not installed yet, run it from the checkout through Nix:
+
+```sh
+nix run ./crates/workspace-tools/sandbox -- worktree new <slug>
+nix run ./crates/workspace-tools/sandbox -- --help
+```
+
+`coda-sandbox worktree seed` builds the seed with
+[`dev/session-seed.sh`](dev/session-seed.sh).
+
 ### Local CI checks
 
 From the repository's agent dev shell, install the small validation dependency

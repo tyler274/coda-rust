@@ -1,37 +1,17 @@
 //! `coda-sandbox`: set up, check and run the Coda agent sandbox.
 
+mod cli;
+
 use std::io::Write as _;
-use std::path::PathBuf;
 use std::process::ExitCode;
 
-use clap::{Parser, Subcommand};
-use coda_sandbox::config::{self, Config};
+use clap::Parser as _;
+use cli::{Ci, Cli, Command, Worktree};
+use coda_sandbox::config::Config;
 use coda_sandbox::error::Error;
 use coda_sandbox::probe::SystemProbe;
-use coda_sandbox::{doctor, status};
-
-#[derive(Debug, Parser)]
-#[command(version, about)]
-struct Cli {
-    /// The sandbox config file.
-    #[arg(long, global = true, env = "CODA_SANDBOX_CONFIG", default_value = config::DEFAULT_PATH)]
-    config: PathBuf,
-    #[command(subcommand)]
-    command: Command,
-}
-
-#[derive(Debug, Subcommand)]
-enum Command {
-    /// Check the sandbox on this machine and name the fix for each problem.
-    /// Exits 1 when any check fails, else 2 when any check could not run.
-    Doctor,
-    /// Show the container, build root and CI state.
-    Status {
-        /// Print the versioned JSON schema instead of text.
-        #[arg(long)]
-        json: bool,
-    },
-}
+use coda_sandbox::worktree::{self, Layout, prune::Confirm};
+use coda_sandbox::{carry, ci, doctor, status};
 
 fn main() -> ExitCode {
     let cli = Cli::parse();
@@ -39,8 +19,18 @@ fn main() -> ExitCode {
         Ok(code) => code,
         Err(error) => {
             eprintln!("coda-sandbox: {}", error.chain());
-            ExitCode::FAILURE
+            exit_code(&error)
         }
+    }
+}
+
+/// `ci run` keeps the exit codes of the script it replaced, which callers
+/// tell apart: 124 for a timeout, as `timeout(1)` uses, and 2 for no spool.
+fn exit_code(error: &Error) -> ExitCode {
+    match error {
+        Error::CiTimeout { .. } => ExitCode::from(124),
+        Error::NoSpool { .. } => ExitCode::from(2),
+        _ => ExitCode::FAILURE,
     }
 }
 
@@ -64,6 +54,49 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
             print(&text)?;
             Ok(ExitCode::SUCCESS)
         }
+        Command::Worktree(command) => {
+            let config = Config::load(&cli.config)?;
+            worktree_command(&config, command)?;
+            Ok(ExitCode::SUCCESS)
+        }
+        Command::Ci(Ci::Run { target, job }) => {
+            let config = Config::load(&cli.config)?;
+            let target = ci::Target::from_arg(target.as_deref());
+            let status = ci::run(&config.ci, &target, job)?;
+            Ok(ExitCode::from(status.0))
+        }
+        Command::Carry => {
+            let config = Config::load(&cli.config)?;
+            let carry_config = config.carry.as_ref().ok_or(Error::NoCarry)?;
+            let carried = carry::carry(carry_config)?;
+            print(&carry::render(&carried, &carry_config.out))?;
+            Ok(ExitCode::SUCCESS)
+        }
+    }
+}
+
+fn worktree_command(config: &Config, command: &Worktree) -> Result<(), Error> {
+    let cwd = std::env::current_dir().map_err(|source| Error::Inspect {
+        path: ".".into(),
+        source,
+    })?;
+    let layout = Layout::discover(&cwd, &config.container.repo, &config.build)?;
+    match command {
+        Worktree::New { slug, from } => {
+            let tree = worktree::new::new(&layout, slug, from)?;
+            print(&format!("{}\n", tree.display()))
+        }
+        Worktree::Seed { reference } => {
+            worktree::seed::seed(&layout, reference.as_deref()).map(drop)
+        }
+        Worktree::Reset { slug } => worktree::new::reset(&layout, slug),
+        Worktree::Gc { idle } => worktree::gc::gc(&layout, *idle),
+        Worktree::Rm { slug } => worktree::new::rm(&layout, slug),
+        Worktree::Prune { yes } => {
+            let confirm = if *yes { Confirm::Yes } else { Confirm::Ask };
+            worktree::prune::prune(&layout, confirm)
+        }
+        Worktree::Status => print(&worktree::status::status(&layout)?),
     }
 }
 

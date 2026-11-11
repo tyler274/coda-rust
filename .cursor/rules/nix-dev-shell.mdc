@@ -12,7 +12,7 @@ Nix development shell. Host tools outside the shell are missing or mismatched.
 
 - This repo has its own `.envrc` (`use flake`) that activates the checkout's
   `flake.nix` whenever a shell cd's into the repo or one of its worktrees
-  (`dev/worktree.sh new` allows it for new worktrees).
+  (`coda-sandbox worktree new` allows it for new worktrees).
 - After editing `.envrc` or the flake, direnv may require re-approval:
   run `direnv allow` once inside the repo.
 - The flake provides: rustc, cargo, clippy, rustfmt, lld, pkg-config, openssl,

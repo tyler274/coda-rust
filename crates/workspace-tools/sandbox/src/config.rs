@@ -3,6 +3,7 @@
 
 use std::fmt;
 use std::io;
+use std::num::NonZeroUsize;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
@@ -32,6 +33,19 @@ pub struct Config {
     pub container: Container,
     pub build: Build,
     pub ci: Ci,
+    /// Only the host that carries its worktrees into the sandbox has one.
+    #[serde(default)]
+    pub carry: Option<Carry>,
+}
+
+/// `coda-sandbox carry`: which checkout to record and where the bundle goes.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct Carry {
+    /// The host's main checkout; all its worktrees are carried.
+    pub repo: PathBuf,
+    /// Receives `carry.bundle`, `ignored.txt` and `summary.txt`; the
+    /// container binds it read-only.
+    pub out: PathBuf,
 }
 
 /// The config schema's version, `version = 1` in the file.
@@ -71,14 +85,30 @@ pub struct Container {
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 pub struct Build {
-    /// Where worktree build output lives; it must support reflinks.
+    /// Where worktree build output lives; it must support reflinks. Seeds go
+    /// under `seed/`, worktree targets under `wt/`.
     pub root: PathBuf,
+    /// How many seeds `worktree seed` keeps, newest first; at least the one
+    /// just built.
+    #[serde(default = "default_keep_seeds")]
+    pub keep_seeds: NonZeroUsize,
+}
+
+fn default_keep_seeds() -> NonZeroUsize {
+    NonZeroUsize::MIN.saturating_add(1)
+}
+
+fn default_timeout_seconds() -> u64 {
+    4 * 3600
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 pub struct Ci {
     /// Holds `requests/` and `results/`.
     pub spool: PathBuf,
+    /// How long `ci run` waits for a result.
+    #[serde(default = "default_timeout_seconds")]
+    pub timeout_seconds: u64,
     pub timer: UnitName,
     pub service: UnitName,
 }

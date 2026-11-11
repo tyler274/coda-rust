@@ -76,7 +76,11 @@
             meta.mainProgram = "coda-sandbox";
           });
           checks = {
-            test = craneLib.cargoTest (common // { inherit cargoArtifacts; });
+            # The integration tests drive git in scratch repositories.
+            test = craneLib.cargoTest (common // {
+              inherit cargoArtifacts;
+              nativeCheckInputs = [ pkgs.git ];
+            });
             clippy = craneLib.cargoClippy (common // {
               inherit cargoArtifacts;
               cargoClippyExtraArgs = "--all-targets -- -D warnings";

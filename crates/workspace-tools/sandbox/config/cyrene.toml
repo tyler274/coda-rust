@@ -16,9 +16,15 @@ repo = "/agents/coda/src/coda-rust"
 [build]
 # A ZFS dataset on the `agents` pool; reflinks need zfs_bclone_enabled = 1.
 root = "/agents/coda/build"
+keep_seeds = 2
 
 [ci]
 # Holds requests/ and results/.
 spool = "/agents/coda/ci/spool"
+timeout_seconds = 14400
 timer = "coda-ci.timer"
 service = "coda-ci.service"
+
+[carry]
+repo = "/home/luluco/code/coda/coda-rust"
+out = "/var/lib/coda-carry"

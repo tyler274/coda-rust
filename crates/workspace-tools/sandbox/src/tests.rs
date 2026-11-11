@@ -27,7 +27,10 @@ fn cyrene_config_parses() {
 
 #[test]
 fn config_keeps_unknown_keys_and_rejects_bad_units_versions_and_missing_sections() {
-    let newer = format!("{CYRENE}queue = \"/x\"\n[broker]\nsocket = \"/y\"\n");
+    let newer = format!(
+        "{}[broker]\nsocket = \"/y\"\n",
+        CYRENE.replace("[ci]\n", "[ci]\nqueue = \"/x\"\n")
+    );
     let loaded = Config::parse_with_unknown_keys(Path::new("t"), &newer).expect("newer config");
     assert_eq!(loaded.unknown_keys, ["broker", "ci.queue"]);
     let typo = CYRENE.replace("ssh_host", "ssh_hots");
