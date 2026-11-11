@@ -139,6 +139,37 @@ function (step, ...args) {
       if (!button) throw new Error(`no ${words} beside ${text}`);
       button.click();
     },
+    // Where the page stands with Discuss: the open chat named in the address, the sidebar's
+    // titles, each of Coda's responses with whether it offers Discuss, and how many Discuss
+    // controls the reply cards hold.
+    discussState() {
+      const conversation = document.querySelector('[aria-label="Conversation"]');
+      return {
+        chat: new URL(location.href).searchParams.get("chat"),
+        titles: [...document.querySelectorAll(".sidebar-conversation-link")].map((row) =>
+          row.textContent.trim(),
+        ),
+        responses: [...(conversation?.querySelectorAll(".message-assistant") ?? [])].map(
+          (message) => ({
+            text: message.textContent.replace(/^Coda/, "").trim(),
+            discuss: !!message.parentElement.matches(".message-turn") &&
+              !!message.parentElement.querySelector(":scope > .message-actions .message-discuss"),
+          }),
+        ),
+        replies: document.querySelectorAll("article.reply-review").length,
+        replyDiscuss: document.querySelectorAll("article.reply-review .message-discuss").length,
+        notice: [...(conversation?.querySelectorAll('[role="alert"]') ?? [])].map((line) =>
+          line.textContent.trim(),
+        ),
+      };
+    },
+    // Presses Discuss under Coda's `place`th response (from zero) in the open chat.
+    clickDiscuss(place) {
+      const buttons = document.querySelectorAll('[aria-label="Conversation"] .message-discuss');
+      const button = buttons[place];
+      if (!button) throw new Error(`no Discuss under response ${place} of ${buttons.length}`);
+      button.click();
+    },
     // Where the open chat stands with Archive: the sidebar's active and archived titles, whether
     // the page offers Archive (and whether it can be pressed), the archived line, and the toast.
     archiveState() {

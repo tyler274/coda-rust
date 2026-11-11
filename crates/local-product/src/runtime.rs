@@ -322,6 +322,17 @@ pub struct Conversation {
     /// `None` while it is in the active list. Sending, Resume and Try again
     /// clear it in the same transaction as their change.
     pub archived_at: Option<i64>,
+    /// The response this chat was opened to discuss, when Discuss opened it.
+    pub discusses: Option<Discusses>,
+}
+
+/// The response a Discuss chat is about: Coda's message in another chat.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct Discusses {
+    /// The chat the response is in.
+    pub chat: String,
+    /// The response's place among that chat's messages.
+    pub response: usize,
 }
 
 /// A Send next message that has not started. It leaves the queue exactly
@@ -481,6 +492,7 @@ impl Conversation {
             scenario: None,
             queued: vec![],
             archived_at: None,
+            discusses: None,
         }
     }
 
@@ -610,6 +622,18 @@ pub enum Archived {
     /// saved, so the same key may be asked again once the work ends.
     Busy,
     /// No such conversation, a blank field, or another command under this key.
+    Refused,
+}
+
+/// Outcome of a physician's Discuss on one of Coda's responses.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Discussed {
+    /// The new chat is open, and any running work in the source chat is held.
+    Opened,
+    /// The same Discuss was already taken; its chat is the one it opened.
+    Duplicate,
+    /// Not one of Coda's responses, no such chat, the new chat already
+    /// exists, a blank field, or another command under this key.
     Refused,
 }
 
@@ -1554,6 +1578,20 @@ impl Store {
         if !state.status.running() || state.work != work_item_id {
             return Ok(Stopped::Refused);
         }
+        Self::hold(&tx, scope, &mut state, session_hash).await?;
+        Self::save(tx, scope, &state).await?;
+        Ok(Stopped::Held)
+    }
+
+    /// Holds running work until Resume or newer input: its open run is
+    /// cancelled, and queued messages go back to the composer. Stop and
+    /// Discuss both hold this way.
+    async fn hold(
+        tx: &sea_orm::DatabaseTransaction,
+        scope: &Scope,
+        state: &mut Conversation,
+        session_hash: Vec<u8>,
+    ) -> Result<(), RuntimeError> {
         if let Some(attempt) = state
             .attempts
             .last_mut()
@@ -1565,9 +1603,106 @@ impl Store {
             reason: HoldReason::Stopped,
         })?;
         state.session_hash = Some(session_hash);
-        queue::return_to_draft(&tx, scope, &mut state).await?;
-        Self::save(tx, scope, &state).await?;
-        Ok(Stopped::Held)
+        queue::return_to_draft(tx, scope, state).await?;
+        Ok(())
+    }
+
+    /// Hosted Discuss on one of Coda's responses: opens `discussion` as a new
+    /// chat that starts with that response, and holds the source chat's
+    /// running work the way Stop does, until Resume. The new chat's id
+    /// travels in the command, so its receipt ties the key to that chat: the
+    /// same command answers [`Discussed::Duplicate`] with the same chat, and
+    /// a later deliberate Discuss, under its own key, opens a fresh one.
+    /// Refused, with nothing kept, when the response is not Coda's, the
+    /// source chat is missing, the new chat already exists, a field is
+    /// blank, or another command holds the key.
+    pub async fn discuss_authorized(
+        &self,
+        source: &Scope,
+        key: &str,
+        session_hash: Vec<u8>,
+        response: usize,
+        discussion: &str,
+    ) -> Result<Discussed, RuntimeError> {
+        if session_hash.len() != 32 {
+            return Err(error("invalid session reference").into());
+        }
+        if [
+            key,
+            discussion,
+            &source.practice,
+            &source.physician,
+            &source.workspace,
+            &source.chat,
+        ]
+        .iter()
+        .any(|part| part.trim().is_empty())
+            || discussion == source.chat
+        {
+            return Ok(Discussed::Refused);
+        }
+        let tx = self.db.begin().await?;
+        let command = serde_json::json!({
+            "scope": source,
+            "discuss": {"response": response, "chat": discussion},
+        });
+        match receipt::record(&tx, &source.practice, &source.physician, key, &command).await? {
+            receipt::Receipt::New => {}
+            receipt::Receipt::Same => {
+                tx.commit().await?;
+                return Ok(Discussed::Duplicate);
+            }
+            receipt::Receipt::Different => {
+                tx.commit().await?;
+                return Ok(Discussed::Refused);
+            }
+        }
+        // A refusal drops the transaction, which rolls the receipt back.
+        let Some(row) = conversation::Entity::find_by_id(keys(source))
+            .lock_exclusive()
+            .one(&tx)
+            .await?
+        else {
+            return Ok(Discussed::Refused);
+        };
+        let mut state = Self::conversation_control(&tx, source, row).await?;
+        let Some(discussed) = state
+            .messages
+            .get(response)
+            .filter(|message| matches!(message.role, MessageRole::Assistant { .. }))
+            .cloned()
+        else {
+            return Ok(Discussed::Refused);
+        };
+        let now = now(&tx).await?;
+        let scope = Scope {
+            chat: discussion.to_owned(),
+            ..source.clone()
+        };
+        let opened = Conversation {
+            messages: vec![discussed],
+            opened_at: now,
+            last_activity_at: now,
+            discusses: Some(Discusses {
+                chat: source.chat.clone(),
+                response,
+            }),
+            // A placeholder package: the physician's first Send in the
+            // discussion keeps the skills that answer it.
+            ..Conversation::new(state.skills.clone())
+        };
+        let inserted = conversation::Entity::insert(conversation_model(&scope, &opened)?)
+            .on_conflict(OnConflict::new().do_nothing().to_owned())
+            .exec_without_returning(&tx)
+            .await?;
+        if inserted != 1 {
+            return Ok(Discussed::Refused);
+        }
+        if state.status.running() {
+            Self::hold(&tx, source, &mut state, session_hash).await?;
+        }
+        Self::save(tx, source, &state).await?;
+        Ok(Discussed::Opened)
     }
 
     /// Hosted Archive, or its Undo. The receipt is saved with the change: the
@@ -1691,11 +1826,17 @@ impl Store {
         for row in rows {
             let chat = row.chat.clone();
             let state = control::conversation(row, vec![])?;
-            let Some(first) = state
+            // A Discuss chat is named by the response it discusses until the
+            // physician writes in it.
+            let first = state
                 .messages
                 .iter()
                 .find(|m| matches!(m.role, MessageRole::User { .. }))
-            else {
+                .or(state
+                    .discusses
+                    .as_ref()
+                    .and_then(|_| state.messages.first()));
+            let Some(first) = first else {
                 continue;
             };
             chats.push(ChatSummary {

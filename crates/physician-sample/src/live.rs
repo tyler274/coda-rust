@@ -171,8 +171,8 @@ struct QueuedPayload {
 }
 
 /// Accepts chat, Send next, queued edit and withdraw, Archive and its Undo,
-/// Stop/Resume and reply-revision commands into the durable owner. Every
-/// other command is rejected.
+/// Stop/Resume, Discuss and reply-revision commands into the durable owner.
+/// Every other command is rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -192,6 +192,9 @@ pub(crate) async fn submit(
     }
     if matches!(body.kind.as_str(), "message.edit" | "message.withdraw") {
         return change_queued(live, auth_ctx, body).await;
+    }
+    if body.kind == "discussion.open" {
+        return discuss(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
     }
     if matches!(
         body.kind.as_str(),
@@ -358,9 +361,15 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
     let mut items: Vec<Value> = conversation
         .messages
         .iter()
-        .flat_map(|message| {
-            let authored =
-                json!({ "kind": turn_kind(message.role.as_str()), "text": message.text });
+        .enumerate()
+        .flat_map(|(place, message)| {
+            let kind = turn_kind(message.role.as_str());
+            // Coda's responses carry their place, which Discuss names.
+            let authored = if kind == "model" {
+                json!({ "kind": kind, "text": message.text, "response": place })
+            } else {
+                json!({ "kind": kind, "text": message.text })
+            };
             let partial = message.partial().then(|| {
                 json!({
                     "kind": "mechanical", "text": "Partial response.",
@@ -722,6 +731,78 @@ async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -
     }
 }
 
+/// `discussion.open` on one of Coda's responses: the chat it is in, its place
+/// there, and the new chat the page picked for the discussion.
+#[derive(Deserialize)]
+struct DiscussPayload {
+    patient_workspace_id: String,
+    chat_id: String,
+    response: usize,
+    discussion_chat_id: String,
+}
+
+/// `discussion.open` on the hosted path. The workspace is checked by the auth
+/// middleware; only this physician's chats are read and opened.
+async fn discuss(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    use local_product::runtime::Discussed;
+    const KIND: &str = "discussion.open";
+    let Some(ctx) = ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<DiscussPayload>(value).ok())
+    else {
+        return rejected(KIND);
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected(KIND);
+    };
+    let source = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    match live
+        .chat
+        .store
+        .discuss_authorized(
+            &source,
+            &key,
+            session_hash,
+            payload.response,
+            &payload.discussion_chat_id,
+        )
+        .await
+    {
+        Ok(Discussed::Refused) => rejected(KIND),
+        Ok(outcome) => {
+            if outcome == Discussed::Opened {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.discussion_chat_id,
+            }))
+            .into_response()
+        }
+        Err(error) => {
+            tracing::warn!(command = KIND, %error, "physician discussion open failed");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message(KIND),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
 /// Tells every open page on this workspace to refetch. Lossy: a page that
 /// misses it converges on its next refetch or resync.
 async fn announce(live: &Live, workspace_id: &str) {
@@ -843,6 +924,7 @@ mod durable_snapshot_tests {
             scenario: None,
             queued: vec![],
             archived_at: None,
+            discusses: None,
         }
     }
 

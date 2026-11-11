@@ -1,7 +1,7 @@
 //! Typed status and attempt storage. Public readback combines these rows with
 //! authored state and, when requested, the appended execution record.
 use super::{
-    Attempt, AttemptStatus, BindingRef, Conversation, Message, QueuedMessage, Scope,
+    Attempt, AttemptStatus, BindingRef, Conversation, Discusses, Message, QueuedMessage, Scope,
     SkillPackageId, conversion_error,
     entities::{chat_attempt, conversation, reply_draft, reply_revision, revision_attempt},
     error,
@@ -119,6 +119,8 @@ struct ConversationState {
     queued: Vec<QueuedMessage>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     archived_at: Option<i64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    discusses: Option<Discusses>,
 }
 
 /// The reply draft row's `state`: each [`Draft`] field that has no column or
@@ -170,6 +172,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         scenario,
         queued,
         archived_at,
+        discusses,
     } = conversation;
     serde_json::to_value(ConversationState {
         messages: messages.clone(),
@@ -185,6 +188,7 @@ pub(super) fn conversation_state(conversation: &Conversation) -> Result<Value, D
         scenario: scenario.clone(),
         queued: queued.clone(),
         archived_at: *archived_at,
+        discusses: discusses.clone(),
     })
     .map_err(conversion_error("Conversation", "conversation state"))
 }
@@ -266,6 +270,7 @@ pub(super) fn conversation(
         scenario,
         queued,
         archived_at,
+        discusses,
     } = serde_json::from_value(row.state)
         .map_err(conversion_error("conversation state", "ConversationState"))?;
     let mut conversation = Conversation {
@@ -287,6 +292,7 @@ pub(super) fn conversation(
         scenario,
         queued,
         archived_at,
+        discusses,
     };
     if let Some(outcome) = conversation.run().and_then(|run| run.outcome) {
         conversation.status = outcome.into();
