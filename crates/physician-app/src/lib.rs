@@ -84,6 +84,15 @@ const DRAFT_USE_NEWER: &str = "Use newer text";
 const RECOVERY_UNAVAILABLE: &str =
     "This tab can’t keep a reload copy of your draft. Keep the page open until it saves.";
 const CONVERSATION_UNAVAILABLE: &str = "Coda couldn’t open this conversation.";
+const SEND: &str = "Send";
+/// Send while Coda is writing: the message waits for the running answer.
+const SEND_NEXT: &str = "Send next";
+const QUEUED_WAITING: &str = "Waiting for next response";
+const QUEUED_EDIT: &str = "Edit";
+const QUEUED_REMOVE: &str = "Remove";
+const QUEUED_EDIT_LABEL: &str = "Queued message";
+const QUEUED_SAVE: &str = "Save";
+const QUEUED_CANCEL: &str = "Cancel";
 const DICTATION_UNAVAILABLE: &str =
     "Dictation is unavailable. Check microphone support and server configuration.";
 const CONNECTIONS: &str = "Connections";
@@ -954,6 +963,9 @@ fn PhysicianShell(
     let resume_slot = use_command_slot();
     let chat_resume_slot = use_command_slot();
     let chat_stop_slot = use_command_slot();
+    let queued_slot = use_command_slot();
+    // The queued message being edited, and its words so far.
+    let mut queued_editing = use_signal(|| None::<(String, String)>);
     let work_slot = use_command_slot();
     use_effect(move || {
         let open = workspace_cache.read().clone();
@@ -1225,7 +1237,10 @@ fn PhysicianShell(
     });
     // Opening a target reads its saved draft and the revision a save names.
     // A failed read changes nothing: it never stands for "no draft".
+    // A snapshot refresh rereads it too: Stop returns queued messages to
+    // this draft, in this tab or another.
     let _draft_read = use_resource(move || {
+        let _attempt = snapshot_attempt();
         let target = draft_target();
         let reader = client.read().pinned();
         async move {
@@ -2070,6 +2085,34 @@ fn PhysicianShell(
                                     });
                                 }
                             },
+                            queued_editing: queued_editing(),
+                            queued_busy: queued_slot.unanswered(),
+                            queued_notice: queued_slot.notice(client),
+                            on_queued_edit: move |(id, text): (String, String)| queued_editing.set(Some((id, text))),
+                            on_queued_edit_cancel: move |_| queued_editing.set(None),
+                            on_queued_edit_save: move |_| {
+                                let Some((id, text)) = queued_editing() else { return };
+                                if let Some(command) =
+                                    queued_edit_command(selected(), open_chat(), &id, &text)
+                                {
+                                    queued_slot.run(client.read().clone(), command, move || {
+                                        // Words typed after Save stay open to save.
+                                        if queued_editing.peek().as_ref() == Some(&(id.clone(), text.clone())) {
+                                            queued_editing.set(None);
+                                        }
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
+                            on_queued_withdraw: move |id: String| {
+                                if let Some(command) =
+                                    queued_withdraw_command(selected(), open_chat(), &id)
+                                {
+                                    queued_slot.run(client.read().clone(), command, move || {
+                                        *snapshot_attempt.write() += 1;
+                                    });
+                                }
+                            },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
                             on_new_chat: move |_| start_chat(),
                             on_send: move |_| send_message(),
@@ -2310,6 +2353,15 @@ fn use_command_slot() -> CommandSlot {
 impl CommandSlot {
     fn sending(&self) -> bool {
         *self.stage.read() == CommandStage::Sending
+    }
+
+    /// Sent, and not yet known to be taken or refused. Another command must
+    /// wait, so Check again can only resend this one.
+    fn unanswered(&self) -> bool {
+        matches!(
+            *self.stage.read(),
+            CommandStage::Sending | CommandStage::Unconfirmed
+        )
     }
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
@@ -3126,6 +3178,14 @@ fn PatientSurface(
     conversation_stop_busy: bool,
     conversation_stop_notice: Element,
     on_conversation_stop: EventHandler<WorkStopTarget>,
+    /// The queued message being edited, and its words so far.
+    queued_editing: Option<(String, String)>,
+    queued_busy: bool,
+    queued_notice: Element,
+    on_queued_edit: EventHandler<(String, String)>,
+    on_queued_edit_cancel: EventHandler,
+    on_queued_edit_save: EventHandler,
+    on_queued_withdraw: EventHandler<String>,
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
     conversation_open: bool,
@@ -3143,6 +3203,9 @@ fn PatientSurface(
     on_revise_reply: EventHandler<(String, u64, String)>,
     on_resume_reply: EventHandler<WorkResumeTarget>,
 ) -> Element {
+    let running = conversation
+        .content()
+        .is_some_and(|lines| conversation_running(lines));
     let clinic_demographic = workspace
         .as_ref()
         .is_some_and(PatientWorkspaceResponse::is_clinic_demographic);
@@ -3571,7 +3634,18 @@ fn PatientSurface(
                             h3 { class: "conversation-empty", "{CONVERSATION_EMPTY}" }
                         }
                         for line in conversation.content().cloned().unwrap_or_default() {
-                            if let Some(target) = line.stop {
+                            if let Some(id) = line.queued {
+                                QueuedLine {
+                                    id,
+                                    text: line.text,
+                                    editing: queued_editing.clone(),
+                                    busy: queued_busy,
+                                    on_edit: on_queued_edit,
+                                    on_cancel: on_queued_edit_cancel,
+                                    on_save: on_queued_edit_save,
+                                    on_withdraw: on_queued_withdraw,
+                                }
+                            } else if let Some(target) = line.stop {
                                 div { class: "conversation-mechanical", role: "status",
                                     p { "{line.text}" }
                                     Button {
@@ -3605,6 +3679,7 @@ fn PatientSurface(
                         }
                         {conversation_resume_notice}
                         {conversation_stop_notice}
+                        {queued_notice}
                         div { class: "composer-dock",
                             ui::Composer {
                                 label: "Message",
@@ -3639,7 +3714,9 @@ fn PatientSurface(
                                     }
                                 }),
                                 Button { compact: true, onclick: move |_| on_dictate.call(()), "Dictate" }
-                                Button { variant: ButtonVariant::Primary, compact: true, submit: true, "Send" }
+                                Button { variant: ButtonVariant::Primary, compact: true, submit: true,
+                                    if running { "{SEND_NEXT}" } else { "{SEND}" }
+                                }
                             }
                         }
                         if recovery_unavailable {
@@ -3672,6 +3749,74 @@ fn PatientSurface(
                 }
             }
         }
+        }
+    }
+}
+
+/// A Send next message waiting for the running answer: an outlined bubble
+/// with Edit and Remove until its turn starts.
+#[component]
+fn QueuedLine(
+    id: String,
+    text: String,
+    /// The queued message being edited, and its words so far.
+    editing: Option<(String, String)>,
+    busy: bool,
+    on_edit: EventHandler<(String, String)>,
+    on_cancel: EventHandler,
+    on_save: EventHandler,
+    on_withdraw: EventHandler<String>,
+) -> Element {
+    let words = editing
+        .filter(|(editing, _)| *editing == id)
+        .map(|(_, words)| words);
+    if let Some(words) = words {
+        return rsx! {
+            div { class: "queued-edit", "data-queued-id": "{id}",
+                TextField {
+                    label: QUEUED_EDIT_LABEL,
+                    kind: TextKind::Multiline,
+                    value: words,
+                    on_input: {
+                        let id = id.clone();
+                        move |words: String| on_edit.call((id.clone(), words))
+                    },
+                }
+                ActionRow {
+                    Button { compact: true, disabled: busy, onclick: move |_| on_save.call(()), "{QUEUED_SAVE}" }
+                    Button { compact: true, variant: ButtonVariant::Quiet, onclick: move |_| on_cancel.call(()), "{QUEUED_CANCEL}" }
+                }
+            }
+        };
+    }
+    rsx! {
+        ui::Message { author: Author::Person, by: "You", state: ui::MessageState::Queued,
+            "data-queued-id": "{id}",
+            status: rsx! {
+                ui::MessageStatus { words: QUEUED_WAITING, icon: IconName::Clock,
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        compact: true,
+                        disabled: busy,
+                        onclick: {
+                            let (id, text) = (id.clone(), text.clone());
+                            move |_| on_edit.call((id.clone(), text.clone()))
+                        },
+                        "{QUEUED_EDIT}"
+                    }
+                    Button {
+                        variant: ButtonVariant::Quiet,
+                        compact: true,
+                        disabled: busy,
+                        onclick: {
+                            let id = id.clone();
+                            move |_| on_withdraw.call(id.clone())
+                        },
+                        "{QUEUED_REMOVE}"
+                    }
+                }
+            },
+            LiteralWords { text }
         }
     }
 }
@@ -4386,6 +4531,7 @@ fn message_command(
             "chat_id": chat_id,
             "text": text,
             "physician_time_zone": time_zone,
+            "intent": "queue",
         }),
     ))
 }
@@ -4403,6 +4549,9 @@ struct ConversationLine {
     stop: Option<WorkStopTarget>,
     /// This resume is an intentional Stop. A failed turn's resume is Try again.
     held: bool,
+    /// A Send next message waiting for the running answer, named by the id
+    /// its Edit and Remove send. Only the physician's own words are queued.
+    queued: Option<String>,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4439,9 +4588,65 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 resume,
                 stop,
                 held,
+                queued: None,
             })
         })
+        .chain(snapshot.queued.iter().map(|queued| ConversationLine {
+            text: queued.text.clone(),
+            author: Some(Author::Person),
+            resume: None,
+            stop: None,
+            held: false,
+            queued: Some(queued.message_id.clone()),
+        }))
         .collect()
+}
+
+/// Whether Coda is writing in this conversation, so Send waits as Send next.
+fn conversation_running(lines: &[ConversationLine]) -> bool {
+    lines.iter().any(|line| line.stop.is_some())
+}
+
+/// Edit on a queued message. Each save is its own command; Check again
+/// reuses it, so a lost answer never applies a second, different edit.
+fn queued_edit_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    message_id: &str,
+    text: &str,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    if text.trim().is_empty() {
+        return None;
+    }
+    Some(Command::new(
+        "message.edit",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+            "text": text,
+        }),
+    ))
+}
+
+/// Remove on a queued message. Its key names the message: removing it again
+/// is the same request.
+fn queued_withdraw_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    message_id: &str,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::keyed(
+        "message.withdraw",
+        format!("withdraw-{message_id}"),
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "message_id": message_id,
+        }),
+    ))
 }
 
 /// Try again on chat or reply-revision work. Like the Today row, its key
@@ -4561,13 +4766,86 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
+        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines,
+        conversation_running, message_command, new_chat_id, queued_edit_command,
+        queued_withdraw_command,
     };
     use crate::shell::STOPPED;
     use physician_wire::{
         ChatRunOutcome, ChatSnapshotResponse, HoldReason, WorkResumeTarget, WorkStopTarget,
     };
     use ui::Author;
+
+    #[test]
+    fn queued_messages_follow_the_conversation_with_edit_and_remove() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "physician", "text": "Hello" },
+                    { "kind": "mechanical", "text": "Coda is writing this response.",
+                      "stop_target": { "work_item_id": "work-1" } },
+                ],
+                "runs": [],
+                "queued": [
+                    { "message_id": "submit-1", "text": "And the potassium?" },
+                    { "message_id": "submit-2", "text": "Also the creatinine" },
+                ],
+            }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        assert!(conversation_running(&lines));
+        let queued: Vec<_> = lines
+            .iter()
+            .filter_map(|line| Some((line.queued.as_deref()?, line.text.as_str(), line.author)))
+            .collect();
+        assert_eq!(
+            queued,
+            [
+                ("submit-1", "And the potassium?", Some(Author::Person)),
+                ("submit-2", "Also the creatinine", Some(Author::Person)),
+            ]
+        );
+        // Queued lines come after the running answer, never before it.
+        assert!(lines[1].stop.is_some() && lines[2].queued.is_some());
+        let done: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "conversation": [{ "kind": "physician", "text": "Hello" }], "runs": [] }
+        }))
+        .unwrap();
+        assert!(!conversation_running(&conversation_lines(&done.snapshot)));
+    }
+
+    #[test]
+    fn edit_and_remove_name_the_queued_message() {
+        let (ws, chat) = (Some("pw-1".to_owned()), Some("chat-1".to_owned()));
+        let edit = queued_edit_command(ws.clone(), chat.clone(), "submit-1", "New").unwrap();
+        assert_eq!(edit.0["type"], "message.edit");
+        assert_eq!(edit.0["payload"]["message_id"], "submit-1");
+        assert_eq!(edit.0["payload"]["text"], "New");
+        let again = queued_edit_command(ws.clone(), chat.clone(), "submit-1", "New").unwrap();
+        assert_ne!(edit.key(), again.key(), "each save is its own edit");
+        assert!(queued_edit_command(ws.clone(), chat.clone(), "submit-1", "  ").is_none());
+        let remove = queued_withdraw_command(ws.clone(), chat.clone(), "submit-1").unwrap();
+        assert_eq!(remove.0["type"], "message.withdraw");
+        assert_eq!(remove.0["payload"]["message_id"], "submit-1");
+        assert!(remove.0["payload"].get("text").is_none());
+        let twice = queued_withdraw_command(ws, chat.clone(), "submit-1").unwrap();
+        assert_eq!(
+            remove.key(),
+            twice.key(),
+            "Remove again is the same request"
+        );
+        assert!(queued_withdraw_command(None, chat, "submit-1").is_none());
+        // Send asks for Send next; the server queues it only while Coda writes.
+        let send = message_command(
+            Some("pw-1".into()),
+            Some("chat-1".into()),
+            Some("America/New_York".into()),
+            "Hi".into(),
+        )
+        .unwrap();
+        assert_eq!(send.0["payload"]["intent"], "queue");
+    }
 
     #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
@@ -4608,6 +4886,7 @@ mod conversation_line_tests {
                     resume: None,
                     stop: None,
                     held: false,
+                    queued: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -4615,6 +4894,7 @@ mod conversation_line_tests {
                     resume: Some(target()),
                     stop: None,
                     held: false,
+                    queued: None,
                 },
             ]
         );
