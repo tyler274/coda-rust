@@ -380,6 +380,11 @@ pub(super) async fn chat_attempts(
                 status: row.status,
                 expires: row.expires,
                 events: vec![],
+                sources_version: row
+                    .sources_version
+                    .map(u64::try_from)
+                    .transpose()
+                    .map_err(conversion_error("saved attempt sources version", "u64"))?,
             })
         })
         .collect()
@@ -439,6 +444,11 @@ pub(super) fn chat_models(
                 ),
                 status: Set(attempt.status),
                 expires: Set(attempt.expires),
+                sources_version: Set(attempt
+                    .sources_version
+                    .map(i64::try_from)
+                    .transpose()
+                    .map_err(conversion_error("attempt sources version", "i64"))?),
             })
         })
         .collect()

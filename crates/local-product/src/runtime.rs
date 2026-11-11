@@ -147,6 +147,14 @@ pub struct Message {
     /// Exact sources cited by this answer, retained independently of later chart changes.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub citations: Vec<crate::physician_chat::Citation>,
+    /// What an answer rests on and its limits, kept apart from its text.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub basis: Option<String>,
+    /// The workspace source version the answer's attempt started from. A newer
+    /// version means records arrived after the answer. `None` on physician
+    /// messages and on answers saved before it was recorded.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sources_version: Option<u64>,
 }
 
 /// Where a conversation's current work stands. Each value is saved as its
@@ -268,6 +276,9 @@ pub struct Attempt {
     pub expires: i64,
     /// Ordered acknowledged engine evidence, internal only.
     pub events: Vec<Event>,
+    /// The workspace source version when this attempt was claimed. `None` on
+    /// attempts that never ran and on those saved before it was recorded.
+    pub sources_version: Option<u64>,
 }
 
 impl Attempt {
@@ -786,6 +797,8 @@ impl Store {
             },
             text: input.text.clone(),
             citations: Vec::new(),
+            basis: None,
+            sources_version: None,
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
@@ -874,6 +887,10 @@ impl Store {
         input_id: Option<&str>,
     ) -> Result<Option<Claim>, RuntimeError> {
         let lease = Lease::new(lease_seconds)?;
+        // Read before the conversation lock, so the claim never holds that row
+        // while waiting on the source tables. A record landing after this read
+        // marks the answer as having newer records, which is the safe side.
+        let sources_version = self.source_version(&scope.workspace).await?;
         let (tx, mut state, now) = self.locked(scope).await?;
         if input_id.is_some_and(|id| state.input_id() != Some(id)) {
             tx.commit().await?;
@@ -911,6 +928,7 @@ impl Store {
             status: AttemptStatus::Active,
             expires: lease.expires(now),
             events: vec![],
+            sources_version: Some(sources_version),
         });
         state.status = WorkStatus::Active;
         let claim = Claim {
@@ -1186,22 +1204,24 @@ impl Store {
             records.iter(),
             &state.message_sources(),
         )?;
-        let (answer, citations) =
-            crate::physician_chat::published_partial(&turn.text(), &delivered);
+        let published = crate::physician_chat::published_partial(&turn.text(), &delivered);
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Held;
+        let sources_version = attempt.sources_version;
         state.end_run(RunOutcome::Held {
             reason: HoldReason::Limit,
         })?;
         state.last_activity_at = now;
-        if !answer.trim().is_empty() {
+        if !published.text.trim().is_empty() {
             state.messages.push(Message {
                 role: MessageRole::Assistant {
                     id: format!("{}:reply", claim.attempt),
                     partial: true,
                 },
-                text: answer,
-                citations,
+                text: published.text,
+                citations: published.citations,
+                basis: published.basis,
+                sources_version,
             });
         }
         Ok(Self::save(tx, &claim.scope, &state).await?)
@@ -1266,13 +1286,14 @@ impl Store {
             records.iter(),
             &state.message_sources(),
         )?;
-        let (answer, citations) = match crate::physician_chat::published(&answer, &delivered) {
+        let published = match crate::physician_chat::published(&answer, &delivered) {
             Ok(published) => published,
             // Dropping the transaction writes nothing; the attempt stays current.
             Err(refused) => return Ok(Finish::Refused(engine::recipe::Refusal::new(refused))),
         };
         let attempt = state.attempts.last_mut().unwrap();
         attempt.status = AttemptStatus::Completed;
+        let sources_version = attempt.sources_version;
         state.end_run(RunOutcome::Completed)?;
         state.last_activity_at = now;
         state.messages.push(Message {
@@ -1280,8 +1301,10 @@ impl Store {
                 id: format!("{}:reply", claim.attempt),
                 partial: false,
             },
-            text: answer,
-            citations,
+            text: published.text,
+            citations: published.citations,
+            basis: published.basis,
+            sources_version,
         });
         Self::save(tx, &claim.scope, &state).await?;
         Ok(Finish::Committed)
