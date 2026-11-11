@@ -355,7 +355,9 @@ def run(args, root, evidence):
         stack.env.update({key: value for key, value in os.environ.items()
                           if key.startswith(("OTEL_", "DD_", "CODA_TELEMETRY_"))})
     restart = threading.Event()
+    restart_apps = threading.Event()
     signal.signal(signal.SIGUSR1, lambda _signal, _frame: restart.set())
+    signal.signal(signal.SIGUSR2, lambda _signal, _frame: restart_apps.set())
     # Ports remain loopback-only; an allocation race fails startup, never falls
     # back to a public interface or an existing ambient service.
     pg, redis, emulator, site_a, site_b, worker, provider = [free_port() for _ in range(7)]
@@ -374,7 +376,7 @@ def run(args, root, evidence):
         "pid": os.getpid(), "root": str(root), "evidence": str(evidence) if evidence else None,
         "postgres": {"port": pg, "url": database}, "valkey": {"port": redis, "channel": CHANNEL},
         "pubsub": {"host": host, "project": PROJECT, "topic": TOPIC, "dead_letter": DLQ},
-        "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": FIXED_TEXT,
+        "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": args.worker_text or FIXED_TEXT,
                    "fixed_failures": args.worker_failures,
                    "failures_file": str(root / "provider-failures")},
         "sites": {"a": f"http://127.0.0.1:{site_a}", "b": f"http://127.0.0.1:{site_b}"},
@@ -439,7 +441,9 @@ def run(args, root, evidence):
                 failures = root / "provider-failures"
                 failures.write_text(str(args.worker_failures))
                 stack.start("responses", [sys.executable, str(Path(__file__).with_name("physician-responses-stub.py")),
-                                          "--port", str(provider), "--failures", str(failures)])
+                                          "--port", str(provider), "--failures", str(failures),
+                                          "--reply", args.worker_text or FIXED_TEXT,
+                                          "--delay-ms", str(args.worker_delay_ms)])
                 stack.wait(lambda: healthy(provider), "local Responses stub readiness")
                 worker_env["PHYSICIAN_RESPONSES_STUB_PORT"] = str(provider)
             else:
@@ -492,7 +496,21 @@ def run(args, root, evidence):
             }).returncode
         if not args.check:
             restarts = 0
+            app_restarts = 0
             while True:
+                if restart_apps.is_set():
+                    restart_apps.clear()
+                    stack.stop("worker")
+                    stack.stop("site-a")
+                    stack.stop("site-b")
+                    stack.start("worker", [str(binary / "physician-worker")], worker_env | model_settings)
+                    stack.start("site-a", [str(binary / "physician-sample")], site_env | {
+                        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_a}"})
+                    stack.start("site-b", [str(binary / "physician-sample")], site_env | {
+                        "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{site_b}"})
+                    stack.wait(lambda: healthy(worker) and healthy(site_a) and healthy(site_b), "application restart")
+                    app_restarts += 1
+                    write_state(application_restarts=app_restarts)
                 if restart.is_set():
                     restart.clear()
                     restart_valkey(stack, redis)
@@ -541,6 +559,8 @@ def main():
                              "the sites fall back to target/physician-web")
     parser.add_argument("--charts", type=Path, default=Path("target/patient-bank/bank"),
                         help="built synthetic charts (cargo run -p patient-bank -- build)")
+    parser.add_argument("--worker-text", help="local stub answer; {{citation_id}} makes it read a chart record in full and cite it")
+    parser.add_argument("--worker-delay-ms", type=int, default=0, help="controlled provider delay")
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
                         help="the local provider's first N calls "
                              "fail; 5 dead-letters the first turn")

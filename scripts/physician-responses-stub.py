@@ -61,7 +61,26 @@ def output_for(body, rounds, reply):
         if references:
             return [call(identity, "read_patient_sources", {"references": references[:8], "max_result_bytes": 65536})]
         return [call(identity, "finish_reply_revision", {"text": "Noted.", "review_basis": "Synthetic provider response."})]
+    if "{{citation_id}}" in reply:
+        return cited(reply, results)
     return [message(reply)]
+
+
+def cited(reply, results):
+    """A reply naming `{{citation_id}}` first searches the chart, reads the first
+    record it finds in full, then answers with that read's citation identity, as
+    a model cites what it was handed."""
+    if "chart-search" not in results:
+        return [call("chart-search", "search_patient_information",
+                     {"query": "", "record_type": None, "after": None})]
+    if "chart-read" not in results:
+        found = json.loads(results["chart-search"])["results"]
+        assert found, "no recorded chart source to read"
+        return [call("chart-read", "read_patient_sources",
+                     {"references": [found[0]["reference"]], "max_result_bytes": 65536})]
+    read = json.loads(results["chart-read"])["results"][0]
+    assert read.get("citation_id"), f"the record was not read whole: {read}"
+    return [message(reply.replace("{{citation_id}}", read["citation_id"]))]
 
 
 def encode_stream(response):
