@@ -220,12 +220,12 @@ Along the way:
 This is how we prove principle 4, Design for the patient who does nothing.
 
 1. A multi-week world of synthetic patients and a practice runs on the real coda-rust services. Time advances, the app closes and services restart.
-2. Coda checks each patient on its schedule, reviews when something changed, and runs follow-ups on their own schedules. Locally the simulation drives this on its own clock.
+2. Coda checks each patient on its schedule, reviews when something changed, and runs follow-ups on their own schedules. On staging the simulation drives this.
 3. Patients never act. Coda notices what changed and carries each episode to the physician's decision and follow-through.
 4. The physician sees only what needs them, and everything else is logged in Updates.
 5. An undecided medication recommendation never becomes a plan, and a corrected lab retires a stale reply.
 6. The run reports physician-touched items per 100 patients per week, read alongside whether necessary care happened.
-7. A clinician on the team starts it locally with one command, uses the physician app, and reruns and shapes scenarios.
+7. It runs on staging. A clinician or engineer drives it from the repository with their own agent, uses the physician app, and sends an event again to rerun.
 8. Simulations run the way the [harness](harness.md#how-it-works) describes. Evals are the jobs the product must do, run as simulations across patient types and scenarios.
 9. The synthetic panel has a realistic spread of time since each patient was last seen. Each chart stops at the patient's last contact and ends at the simulation's today, with pending items and booked visits but nothing later.
 
