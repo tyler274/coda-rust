@@ -178,6 +178,19 @@ async fn accept_text(url: &str, store: &Store, text: &str) -> (Scope, Delivery) 
     accept_in(url, store, text, None, None).await
 }
 
+/// [`accept_text`], also returning the physician's session.
+async fn accept_signed_in(url: &str, store: &Store, text: &str) -> (Scope, Delivery, String) {
+    accept_signed_in_with(
+        url,
+        store,
+        text,
+        &PhysicianSkills::configured(None, false).unwrap(),
+        None,
+        None,
+    )
+    .await
+}
+
 /// Accepts `text` from a new physician in `practice` (a new one when `None`),
 /// tagged with `scenario`.
 async fn accept_in(
@@ -206,6 +219,19 @@ async fn accept_with_skills(
     practice: Option<&str>,
     scenario: Option<&str>,
 ) -> (Scope, Delivery) {
+    let (scope, delivery, _) =
+        accept_signed_in_with(url, store, text, skills, practice, scenario).await;
+    (scope, delivery)
+}
+
+async fn accept_signed_in_with(
+    url: &str,
+    store: &Store,
+    text: &str,
+    skills: &PhysicianSkills,
+    practice: Option<&str>,
+    scenario: Option<&str>,
+) -> (Scope, Delivery, String) {
     let auth = PostgresAuthStore::connect_without_migrations(url)
         .await
         .expect("auth store");
@@ -271,7 +297,7 @@ async fn accept_with_skills(
         )
         .await
         .expect("accept");
-    (scope.clone(), Delivery::chat_turn(scope, key))
+    (scope.clone(), Delivery::chat_turn(scope, key), session)
 }
 
 async fn wait_assistant(store: &Store, scope: &Scope, worker: &support::Process) -> Conversation {
@@ -1345,7 +1371,8 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     let Some(running) = running_with("chart_citations", None, None, "[]", reply, &[]).await else {
         return;
     };
-    let (scope, delivery) = accept_turn(&running.database.url, &running.store).await;
+    let (scope, delivery, session) =
+        accept_signed_in(&running.database.url, &running.store, "Hello").await;
     let mut source = local_product::physician_sources::SourceRevision {
         workspace: scope.workspace.clone(),
         source_id: "test-ehr".into(),
@@ -1397,6 +1424,7 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
         local_product::physician_sources::citation_id(&source)
     );
     assert!(!format!("{state:?}").contains("other-lab"));
+    read_citation_evidence(&running, &scope, &session, citation).await;
     let original = serde_json::to_value(&state.messages).unwrap();
     source.revision = "r2".into();
     source.content = "{\"potassium\":6.8}".into();
@@ -1425,6 +1453,102 @@ async fn chart_reads_and_exact_citations_survive_readback_and_duplicate_delivery
     let saved = fresh.read(&scope).await.unwrap().unwrap();
     assert_eq!(serde_json::to_value(saved.messages).unwrap(), original);
     assert_eq!(saved.attempts.len(), 1);
+}
+
+/// Opening the answer's citation reads the exact revision it retained, through a real site on the
+/// same Postgres, under the same workspace authority as the conversation itself: a same-clinic
+/// colleague without the patient on their panel, no session, and an id the answer never cited
+/// read nothing.
+async fn read_citation_evidence(
+    running: &Running,
+    scope: &Scope,
+    session: &str,
+    citation: &local_product::physician_chat::Citation,
+) {
+    let port = support::free_port();
+    let listen = format!("127.0.0.1:{port}");
+    let topic = support::topic();
+    let mut site = support::Process::spawn(
+        "site",
+        support::site_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", running.database.url.as_str()),
+            ("PUBSUB_EMULATOR_HOST", running.emulator.host.as_str()),
+            ("GOOGLE_CLOUD_PROJECT", support::PROJECT),
+            ("PHYSICIAN_CHAT_TOPIC", topic.as_str()),
+            ("PHYSICIAN_AUTH", "required"),
+            ("PHYSICIAN_LISTEN_ADDR", listen.as_str()),
+        ],
+        &running.home,
+    );
+    support::wait_ready(&mut site, port).await;
+    let path = |id: &str| {
+        format!(
+            "/patient-workspaces/{}/chats/{}/citations/{id}",
+            scope.workspace, scope.chat
+        )
+    };
+    let (status, body) = support::get_json(&listen, &path(&citation.id), session).await;
+    assert_eq!(status, 200, "{body}\n{}", site.tail());
+    let read: physician_wire::SourceEvidence = serde_json::from_value(body).unwrap();
+    let mut source = physician_sample::source_inspection::inspection(citation);
+    assert!(source.coda_preview.is_some(), "this answer summarized it");
+    // The summary is this answer's, and comes with it; the read is the source alone.
+    source.coda_preview = None;
+    assert_eq!(read.inspection, source);
+    assert_eq!(read.inspection.technical.original, citation.content);
+    assert_eq!(read.inspection.technical.revision, "r1");
+
+    let (status, body) = support::get_json(&listen, &path("never-cited"), session).await;
+    assert_eq!(status, 404, "{body}");
+
+    let colleague = colleague_session(&running.database.url, scope).await;
+    let (status, body) = support::get_json(&listen, &path(&citation.id), &colleague).await;
+    assert_eq!(
+        status, 404,
+        "a colleague off the panel reads no evidence: {body}"
+    );
+
+    let (status, text) = support::exchange(&listen, "GET", &path(&citation.id), &[], None)
+        .await
+        .unwrap();
+    assert_eq!(status, 401, "{text}");
+    site.kill_now();
+}
+
+/// A second physician in `practice`, signed in, without the patient on their panel.
+async fn colleague_session(url: &str, scope: &Scope) -> String {
+    let practice = scope.practice.as_str();
+    let auth = PostgresAuthStore::connect_without_migrations(url)
+        .await
+        .expect("auth store");
+    let now = support::unix_now();
+    let unique = uuid::Uuid::new_v4().simple().to_string();
+    let email = format!("colleague-{unique}@example.test");
+    auth.ensure_account(
+        practice,
+        &format!("colleague-{unique}"),
+        &email,
+        "Colleague",
+        false,
+        now,
+    )
+    .await
+    .expect("colleague account");
+    let token = auth
+        .begin_sign_in(&email, now)
+        .await
+        .expect("sign-in token");
+    let (identity, session) = auth
+        .complete_sign_in(&email, &token, now)
+        .await
+        .expect("colleague session");
+    assert_eq!(
+        auth.membership(&identity, &scope.workspace).await,
+        Membership::ClinicDemographic
+    );
+    session
 }
 
 #[tokio::test]

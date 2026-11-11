@@ -1,5 +1,5 @@
 //! Maps the server's Today and workspace JSON onto the shipping shell.
-//! The reader shows the row the physician chose. It does not fetch a citation.
+//! The reader shows the row the physician chose, and an answer's citation as its evidence read.
 
 use physician_wire::{
     AutomationRun, CitationDestination, ClinicalSegment, ConnectedSource, PatientWorkspaceResponse,
@@ -407,6 +407,9 @@ pub struct SourceChip {
     pub as_of: String,
     /// Retained source presentation, separate from the authored preview.
     pub inspection: Option<physician_wire::SourceInspection>,
+    /// The citation's identity in its conversation, when it resolved: what an answer's
+    /// evidence read asks for.
+    pub citation_id: Option<String>,
     /// `Open in {chart}` or `Open original` when a native link exists.
     pub open_label: Option<String>,
     /// The native destination URI.
@@ -499,6 +502,7 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
                     chips.push(source_chip(
                         number,
                         state,
+                        source_id.as_deref(),
                         display_label.as_deref(),
                         source_presentation.as_ref(),
                         destination.as_ref(),
@@ -549,6 +553,7 @@ pub fn answer_sources(segments: &[ClinicalSegment]) -> Vec<SourceChip> {
 fn source_chip(
     index: usize,
     state: &str,
+    source_id: Option<&str>,
     display_label: Option<&str>,
     presentation: Option<&SourcePresentation>,
     destination: Option<&CitationDestination>,
@@ -581,6 +586,9 @@ fn source_chip(
         inspection: presentation
             .filter(|_| open)
             .and_then(|presentation| presentation.inspection.clone()),
+        citation_id: source_id
+            .filter(|id| open && !id.trim().is_empty())
+            .map(str::to_owned),
         open_label,
         open_uri,
     }
@@ -1308,15 +1316,58 @@ pub fn reply_urgency_words(urgency: &str) -> String {
     }
 }
 
-/// The citation inspection the reader shows from the preview already on the chip.
+/// Where reading one citation's retained evidence stands.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum EvidenceRead {
+    /// No evidence is read for this source, and none came with it.
+    NotRead,
+    /// The read is under way.
+    Loading,
+    /// The exact revision the citation retained.
+    Loaded(std::sync::Arc<physician_wire::SourceInspection>),
+    /// The read failed; the reader offers Try again.
+    Failed(EvidenceFailure),
+}
+
+impl EvidenceRead {
+    /// What one evidence read answered.
+    pub fn answered(
+        read: Result<physician_wire::SourceEvidence, physician_client::HttpError>,
+    ) -> Self {
+        match read {
+            Ok(evidence) => Self::Loaded(std::sync::Arc::new(evidence.inspection)),
+            Err(error) => Self::Failed(EvidenceFailure(std::sync::Arc::new(error))),
+        }
+    }
+}
+
+/// Why an evidence read failed, kept whole for whoever reports it.
+#[derive(Debug, Clone)]
+pub struct EvidenceFailure(pub std::sync::Arc<physician_client::HttpError>);
+
+impl PartialEq for EvidenceFailure {
+    /// One failure equals only itself: two reads that failed alike are still two reads.
+    fn eq(&self, other: &Self) -> bool {
+        std::sync::Arc::ptr_eq(&self.0, &other.0)
+    }
+}
+
+impl Eq for EvidenceFailure {}
+
+/// An open citation's evidence while it is read.
+pub const EVIDENCE_LOADING: &str = "Opening the source…";
+/// An open citation whose evidence read failed.
+pub const EVIDENCE_UNAVAILABLE: &str = "Coda couldn’t load this source.";
+
+/// The citation inspection the reader shows: the chip's own words, with the evidence read.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct CitationInspection {
     /// `Source {n}`.
     pub eyebrow: String,
     /// The source title.
     pub title: String,
-    /// The retained source, independent of preview availability.
-    pub source: Option<physician_wire::SourceInspection>,
+    /// The retained source as read, independent of preview availability.
+    pub evidence: EvidenceRead,
     /// Preview paragraphs. Empty when the citation recorded none.
     pub paragraphs: Vec<String>,
     /// `Prepared by Coda · as of {date}` when the preview has a date.
@@ -1329,22 +1380,40 @@ pub struct CitationInspection {
     pub open_uri: Option<String>,
 }
 
-/// Builds the inspection surface from a chip. It does not fetch the record.
-pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
+/// Builds the inspection surface from a chip and its evidence read. A source no read was asked for
+/// shows the presentation that came with the chip. A read source carries no summary: the answer's
+/// own, which came with the chip, joins it.
+pub fn citation_inspection(chip: &SourceChip, evidence: &EvidenceRead) -> CitationInspection {
+    let carried = chip.inspection.as_ref();
+    let evidence = match (evidence, carried) {
+        (EvidenceRead::NotRead, Some(carried)) => {
+            EvidenceRead::Loaded(std::sync::Arc::new(carried.clone()))
+        }
+        (EvidenceRead::Loaded(read), Some(carried)) if carried.coda_preview.is_some() => {
+            let mut source = (**read).clone();
+            source.coda_preview = carried.coda_preview.clone();
+            EvidenceRead::Loaded(std::sync::Arc::new(source))
+        }
+        (read, _) => read.clone(),
+    };
     let paragraphs = preview_paragraphs(&chip.preview);
-    let unavailable = if chip.open && paragraphs.is_empty() && chip.inspection.is_none() {
-        Some(SOURCE_UNAVAILABLE)
-    } else {
-        None
+    let unavailable =
+        if chip.open && paragraphs.is_empty() && matches!(evidence, EvidenceRead::NotRead) {
+            Some(SOURCE_UNAVAILABLE)
+        } else {
+            None
+        };
+    let title = match &evidence {
+        EvidenceRead::Loaded(source) => source.title.clone(),
+        _ => chip
+            .inspection
+            .as_ref()
+            .map_or_else(|| chip.label.clone(), |source| source.title.clone()),
     };
     CitationInspection {
         eyebrow: format!("Source {}", chip.index),
-        title: chip
-            .inspection
-            .as_ref()
-            .map(|source| source.title.clone())
-            .unwrap_or_else(|| chip.label.clone()),
-        source: chip.inspection.clone(),
+        title,
+        evidence,
         paragraphs,
         provenance: if unavailable.is_some() {
             None
@@ -1652,9 +1721,14 @@ mod tests {
         assert!(closed_chip.preview.is_empty());
         assert!(closed_chip.open_uri.is_none());
         assert_eq!(chip_name(closed_chip), "Source 1 unavailable");
+        assert!(
+            closed_chip.citation_id.is_none(),
+            "an unresolved citation reads no evidence"
+        );
         let unlabeled = source_chip(
             3,
             "resolved",
+            Some("lab-citation"),
             Some("Lab"),
             None,
             Some(&CitationDestination {
@@ -1664,6 +1738,7 @@ mod tests {
             }),
         );
         assert_eq!(unlabeled.open_label.as_deref(), Some("Open original"));
+        assert_eq!(unlabeled.citation_id.as_deref(), Some("lab-citation"));
         for uri in ["https://ehr.example/a/1", "/local-ehr/lab"] {
             assert!(web_address(uri), "{uri}");
         }
@@ -1906,7 +1981,7 @@ mod tests {
             .flatten()
             .collect();
         let discharge = chips.iter().find(|chip| chip.index == 2).expect("chip 2");
-        let inspection = citation_inspection(discharge);
+        let inspection = citation_inspection(discharge, &EvidenceRead::NotRead);
         assert_eq!(inspection.eyebrow, "Source 2");
         assert_eq!(inspection.title, "Discharge Summary");
         assert!(inspection.unavailable.is_none());
@@ -1918,9 +1993,100 @@ mod tests {
         let mut closed = discharge.clone();
         closed.preview.clear();
         closed.as_of.clear();
-        let missing = citation_inspection(&closed);
+        let missing = citation_inspection(&closed, &EvidenceRead::NotRead);
         assert_eq!(missing.unavailable, Some(SOURCE_UNAVAILABLE));
         assert!(missing.provenance.is_none());
+    }
+
+    fn retained(title: &str) -> physician_wire::SourceInspection {
+        serde_json::from_value(serde_json::json!({
+            "title": title, "record_kind": "Allergy record", "dates": [], "sections": [],
+            "cited_passage": null, "coda_preview": null, "attribution": [], "record_details": [],
+            "technical": {"reference": "r", "revision": "1", "sha256": "s", "storage_dates": [],
+                "original": "{}", "provenance": "{}"}
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn the_reader_shows_the_evidence_read_not_the_chip_s_copy() {
+        let mut chip = source_chip(1, "resolved", Some("c-1"), Some("Allergy"), None, None);
+        chip.inspection = Some(retained("Carried with the answer"));
+        let shown = |read: &EvidenceRead| citation_inspection(&chip, read);
+
+        // Under way: no source shows, and the chip's carried copy doesn't stand in for the read.
+        let loading = shown(&EvidenceRead::Loading);
+        assert_eq!(loading.evidence, EvidenceRead::Loading);
+        assert_eq!(loading.title, "Carried with the answer");
+        assert!(loading.unavailable.is_none());
+
+        let failure = physician_client::HttpError::Status {
+            status: 503,
+            body: String::new(),
+        };
+        let failed = EvidenceRead::answered(Err(failure));
+        let EvidenceRead::Failed(why) = &shown(&failed).evidence else {
+            panic!("a failed read stays failed");
+        };
+        assert!(
+            matches!(
+                *why.0,
+                physician_client::HttpError::Status { status: 503, .. }
+            ),
+            "the failure keeps its cause"
+        );
+
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
+            inspection: retained("No known drug allergies"),
+        }));
+        let loaded = shown(&read);
+        assert_eq!(loaded.title, "No known drug allergies");
+        assert_eq!(loaded.evidence, read);
+
+        // Nothing asked for: the presentation that came with the chip shows.
+        let carried = shown(&EvidenceRead::NotRead);
+        assert_eq!(
+            carried.evidence,
+            EvidenceRead::Loaded(std::sync::Arc::new(retained("Carried with the answer")))
+        );
+    }
+
+    #[test]
+    fn a_read_source_shows_the_summary_of_the_answer_that_cited_it() {
+        let summarized = |text: &str| {
+            let mut source = retained("Allergy");
+            source.coda_preview = Some(physician_wire::SourcePreviewContent {
+                text: text.to_owned(),
+                as_of: "2018-09-11".to_owned(),
+                as_of_label: "Recorded".to_owned(),
+            });
+            source
+        };
+        let mut chip = source_chip(1, "resolved", Some("c-1"), Some("Allergy"), None, None);
+        chip.inspection = Some(summarized("This answer's summary"));
+        // Another answer citing the same revision summarized it differently; the read carries none.
+        let read = EvidenceRead::answered(Ok(physician_wire::SourceEvidence {
+            inspection: retained("Allergy"),
+        }));
+        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+            panic!("the read loaded");
+        };
+        assert_eq!(
+            shown
+                .coda_preview
+                .as_ref()
+                .map(|preview| preview.text.as_str()),
+            Some("This answer's summary")
+        );
+
+        chip.inspection = Some(retained("Allergy"));
+        let EvidenceRead::Loaded(shown) = citation_inspection(&chip, &read).evidence else {
+            panic!("the read loaded");
+        };
+        assert!(
+            shown.coda_preview.is_none(),
+            "an unsummarized answer gains none"
+        );
     }
 
     #[test]
