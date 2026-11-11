@@ -204,7 +204,7 @@ Inside the workspace:
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
-5. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
+5. Any practice member can invite a roster patient from that patient's roster row. To discharge a patient, the practice asks Coda. The connection itself belongs to Connected care.
 6. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
 7. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
 8. Drafts and seen state live on the server, not in the browser.

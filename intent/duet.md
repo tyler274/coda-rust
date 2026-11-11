@@ -92,7 +92,7 @@ Concepts for what comes after the MVP say what the thing is. Their rules are not
 After sign-up, the MVP opens on You, with Shared beside it.
 
 1. The person installs Duet from the App Store on iPhone or the Play Store on Android.
-2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. A practice invitation arrives by text, with email as a backup, as [Connected care](connected-care.md) describes. Duet has no web surface; an invitation link opens the app.
+2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. A practice invitation arrives by email, as [Connected care](connected-care.md) describes. Duet has no web surface; an invitation link opens the app.
 3. They accept the Terms with one explicit "I agree and continue", with no prechecked box. Accepting them also confirms the person is 18 or over and in the U.S. A quiet Sign out sits under this step for a wrong account or declined Terms.
 4. An optional last step offers to connect their health, with every available connector on one panel and Not now.
 5. **App restart.** The person is still signed in, and Duet reopens where they were, with any draft they left.
