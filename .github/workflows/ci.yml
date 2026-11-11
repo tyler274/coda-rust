@@ -173,21 +173,24 @@ jobs:
           # Optional developer references are never fetched by CI.
           submodules: false
           persist-credentials: false
-      # On a runner the service is a published port on loopback. act publishes
-      # none and leaves the port empty; its job container reaches the service
-      # only by name, so a relay puts it on loopback, which the proofs require.
+      # The service's port is published on loopback. act publishes it too but
+      # leaves job.services empty; its job container shares the host network,
+      # so the port comes from Docker, keyed by the service image above.
       - name: Point the PostgreSQL proofs at the service
         env:
           PORT: ${{ job.services.postgres.ports['5432'] }}
         run: |
-          if [ -z "$PORT" ]; then
-            if [ "${ACT:-}" != true ]; then
-              echo "The postgres service published no port" >&2
+          if [ -z "$PORT" ] && [ "${ACT:-}" = true ]; then
+            ids=$(docker ps -q --filter ancestor=pgvector/pgvector:0.8.2-pg16 --filter status=running)
+            if [ "$(wc -w <<<"$ids")" -ne 1 ]; then
+              echo "Expected one running postgres service under act, found: ${ids:-none}" >&2
               exit 1
             fi
-            PORT=5432
-            getent hosts postgres || true
-            python3 "$GITHUB_WORKSPACE/scripts/act-postgres-relay.py" "$PORT" postgres 5432
+            PORT=$(docker port "$ids" 5432/tcp | sed -n 's/^0\.0\.0\.0://p')
+          fi
+          if [ -z "$PORT" ]; then
+            echo "The postgres service published no port" >&2
+            exit 1
           fi
           url="postgresql://postgres@127.0.0.1:${PORT}/postgres"
           {
