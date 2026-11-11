@@ -1,6 +1,6 @@
 # Message matching
 
-How a patient's message in the practice's channel gets to the right patient in Coda Agents, and how you, a physician, fix a wrong link. [physician.md](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) links here.
+How a patient's message in the practice's channel gets to the right patient in Chords, and how you, a physician, fix a wrong link. [physician.md](../../../intent/physician.md#p3-a-patient-message-is-linked-a-reply-is-proposed-revised-and-handed-off) links here.
 
 ## Words
 

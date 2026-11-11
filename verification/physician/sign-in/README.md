@@ -1,6 +1,6 @@
 # Physician sign-in
 
-How you, a physician, sign in to Coda Agents, stay signed in across the browser's tabs and sign out. [physician.md](../../../intent/physician.md#a1-sign-in-and-access) links here.
+How you, a physician, sign in to Chords, stay signed in across the browser's tabs and sign out. [physician.md](../../../intent/physician.md#a1-sign-in-and-access) links here.
 
 ## Words
 
@@ -14,7 +14,7 @@ How you, a physician, sign in to Coda Agents, stay signed in across the browser'
 
 Signing in:
 
-- You sign in only through Coda Agents, with a link Coda emails you. There's no password and no code screen.
+- You sign in only through Chords, with a link Coda emails you. There's no password and no code screen.
 - Accounts are invite-only: Coda sets up each practice and invites its first physician, and any member can then invite colleagues.
 - You enter your work email and always see "Check your email".
 - Coda never reveals whether an account exists, and an address with no account gets no email.
