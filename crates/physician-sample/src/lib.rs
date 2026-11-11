@@ -771,6 +771,7 @@ pub(crate) struct RosterQuery {
 pub fn rejection_message(command_type: &str) -> &'static str {
     match command_type {
         "message.submit" => "Coda couldn’t accept that message.",
+        "message.edit" => "Coda couldn’t change that queued message.",
         "message.withdraw" => "Coda couldn’t remove that queued message.",
         "work.resume" => "Coda couldn’t resume that work.",
         "work.stop" => "Coda couldn’t stop that work.",

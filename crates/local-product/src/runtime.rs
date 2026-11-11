@@ -38,6 +38,8 @@ mod entities;
 mod frozen;
 pub use frozen::{BindingRef, SkillPackageId};
 mod migration;
+/// Send next: the queue of messages waiting behind a running answer.
+pub mod queue;
 mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
@@ -312,6 +314,31 @@ pub struct Conversation {
     pub last_activity_at: i64,
     /// The latest accepted input's rehearsal scenario; see [`Input::scenario`].
     pub scenario: Option<String>,
+    /// Send next messages waiting for the running answer to end, in order.
+    /// Only a message still here can be edited or withdrawn; once its turn
+    /// starts it is an authored [`Message`] instead.
+    pub queued: Vec<QueuedMessage>,
+}
+
+/// A Send next message that has not started. It leaves the queue exactly
+/// once: into the conversation when the answer ends, to the composer on Stop,
+/// or by withdrawal. Edit and withdraw find only items still queued, so a
+/// message whose turn has started is out of their reach.
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+pub struct QueuedMessage {
+    /// The queue command's key, which names the item for edit and withdraw.
+    pub id: String,
+    /// Exact authored text, replaced by an edit.
+    pub text: String,
+    /// The session that queued it; its turn runs under that session.
+    pub session_hash: Vec<u8>,
+    /// The queued input's rehearsal scenario; see [`Input::scenario`].
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scenario: Option<String>,
+    /// The chat recipe frozen when it was queued, as a Send would freeze it.
+    pub binding: BindingRef,
+    /// The skill package frozen when it was queued.
+    pub skills: SkillPackageId,
 }
 
 use harness::engine::{
@@ -446,7 +473,44 @@ impl Conversation {
             opened_at: 0,
             last_activity_at: 0,
             scenario: None,
+            queued: vec![],
         }
+    }
+
+    /// When an answer ends, every queued message starts one new work
+    /// together, in the order queued, under the latest queuing session and
+    /// the recipe and skills frozen when that message was queued. The
+    /// recovery sweep publishes its wakeup: the work is pending with no
+    /// dispatch hint. Nothing queued changes nothing.
+    fn start_queued(&mut self) -> Result<(), RuntimeError> {
+        let queued = std::mem::take(&mut self.queued);
+        let Some(last) = queued.last() else {
+            return Ok(());
+        };
+        self.work = Uuid::new_v4().to_string();
+        let mut runs = RunHistory::default();
+        self.failures = runs.start(Uuid::new_v4().to_string())?;
+        self.runs.insert(self.work.clone(), runs);
+        self.skills = last.skills.clone();
+        self.bindings
+            .insert(self.work.clone(), last.binding.clone());
+        self.budget_resume_after = 0;
+        self.revision += 1;
+        self.session_hash = Some(last.session_hash.clone());
+        self.scenario = last.scenario.clone();
+        self.dispatch_after = 0;
+        self.status = WorkStatus::Pending;
+        let (work, revision) = (self.work.clone(), self.revision);
+        self.messages
+            .extend(queued.into_iter().map(|queued| Message {
+                role: MessageRole::User {
+                    id: queued.id,
+                    work: work.clone(),
+                    revision,
+                },
+                text: queued.text,
+            }));
+        Ok(())
     }
 }
 
@@ -468,8 +532,19 @@ pub struct Claim {
 pub enum Accepted {
     /// Input saved for execution.
     New,
+    /// Send next behind running work: saved in the queue, not dispatched.
+    Queued,
     /// Exact original command already saved; do not dispatch it again.
     Duplicate,
+}
+
+/// How a physician message is sent.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SendMode {
+    /// Send: steers running work at once, or starts a turn.
+    Now,
+    /// Send next: waits behind running work, or starts a turn when none runs.
+    Next,
 }
 
 /// Outcome of a physician's Try again on failed or held work.
@@ -714,6 +789,24 @@ impl Store {
         skills: &PhysicianSkills,
         recipe: &RequestRecipe,
     ) -> Result<Accepted, RuntimeError> {
+        self.send_authorized(scope, input, session_hash, SendMode::Now, skills, recipe)
+            .await
+    }
+
+    /// Hosted Send or Send next. Send next behind running work is held in
+    /// [`Conversation::queued`] and answers [`Accepted::Queued`]; it is not
+    /// dispatched until the answer ends. With nothing running it is sent at
+    /// once, like Send. The receipt records which was asked, so the same key
+    /// for the other one collides.
+    pub async fn send_authorized(
+        &self,
+        scope: &Scope,
+        input: &Input,
+        session_hash: Vec<u8>,
+        mode: SendMode,
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+    ) -> Result<Accepted, RuntimeError> {
         if session_hash.len() != 32 {
             return Err(error("invalid session reference").into());
         }
@@ -732,7 +825,11 @@ impl Store {
             return Err(error("empty command field").into());
         }
         let tx = self.db.begin().await?;
-        let command = serde_json::json!({"scope": scope, "input": input});
+        // Send keeps the receipt shape it always had; Send next is marked.
+        let command = match mode {
+            SendMode::Now => serde_json::json!({"scope": scope, "input": input}),
+            SendMode::Next => serde_json::json!({"scope": scope, "input": input, "next": true}),
+        };
         match receipt::record(&tx, &scope.practice, &scope.physician, &input.key, &command).await? {
             receipt::Receipt::New => {}
             receipt::Receipt::Same => {
@@ -755,6 +852,19 @@ impl Store {
             .await?
             .ok_or_else(|| error("missing conversation"))?;
         let mut state = Self::conversation_control(&tx, scope, row).await?;
+        if mode == SendMode::Next && state.status.running() {
+            let binding = recipe.bind(Some(scope.cache_key("chords-chat")));
+            state.queued.push(QueuedMessage {
+                id: input.key.clone(),
+                text: input.text.clone(),
+                session_hash,
+                scenario: input.scenario.clone(),
+                binding: frozen::keep_binding(&tx, scope, &binding).await?,
+                skills: package,
+            });
+            Self::save(tx, scope, &state).await?;
+            return Ok(Accepted::Queued);
+        }
         if !state.status.running() {
             state.work = Uuid::new_v4().to_string();
             let mut runs = RunHistory::default();
@@ -1253,6 +1363,7 @@ impl Store {
             },
             text: answer,
         });
+        state.start_queued()?;
         Ok(Self::save(tx, &claim.scope, &state).await?)
     }
 
@@ -1415,6 +1526,7 @@ impl Store {
             reason: HoldReason::Stopped,
         })?;
         state.session_hash = Some(session_hash);
+        queue::return_to_draft(&tx, scope, &mut state).await?;
         Self::save(tx, scope, &state).await?;
         Ok(Stopped::Held)
     }

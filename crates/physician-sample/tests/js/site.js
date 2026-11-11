@@ -115,6 +115,34 @@ function (step, ...args) {
         (line) => line.textContent,
       );
     },
+    // Each queued message as shown: its words, and the actions beside it.
+    queuedLines() {
+      return [...document.querySelectorAll('[aria-label="Conversation"] .message.is-queued')].map(
+        (line) => ({
+          text: line.querySelector("p, pre")?.textContent ?? line.textContent,
+          status: line.parentElement.querySelector(".message-status span")?.textContent ?? "",
+          actions: [...line.parentElement.querySelectorAll(".message-status button")].map(
+            (button) => button.textContent.trim(),
+          ),
+        }),
+      );
+    },
+    // Clicks `words` beside the queued message that says `text`.
+    clickQueued(text, words) {
+      const line = [...document.querySelectorAll('[aria-label="Conversation"] .message.is-queued')].find(
+        (line) => line.textContent.includes(text),
+      );
+      if (!line) throw new Error(`no queued message says ${text}`);
+      const button = [...line.parentElement.querySelectorAll(".message-status button")].find(
+        (button) => button.textContent.trim() === words,
+      );
+      if (!button) throw new Error(`no ${words} beside ${text}`);
+      button.click();
+    },
+    // The composer's primary action words.
+    sendWords() {
+      return one(".composer-dock button[type=submit]").textContent.trim();
+    },
     // The conflict the composer shows: the newer revision and its text, or null.
     conflict() {
       const conflict = document.querySelector(".draft-conflict");

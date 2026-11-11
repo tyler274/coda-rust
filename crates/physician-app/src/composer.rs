@@ -90,6 +90,12 @@ pub(crate) struct PendingSend {
     pub(crate) text: String,
     pub(crate) generation: u64,
     pub(crate) command: serde_json::Value,
+    /// This page took a draft revision it can't prove it wrote while the
+    /// Send was unanswered, such as Stop returning the queued message. The
+    /// Send is still confirmed by its key, but its acceptance no longer
+    /// clears the composer: the words there may not be the ones it sent.
+    #[serde(default)]
+    pub(crate) fenced: bool,
 }
 
 /// How the server answered a Send.
@@ -139,6 +145,10 @@ struct Held {
     pending_send: Option<PendingSend>,
     /// An accepted Send's text is not yet durably cleared.
     pending_clear: bool,
+    /// The newest server read that arrived while a save ran. The save's
+    /// answer settles first, then this is reconciled, so a newer draft
+    /// written meanwhile (such as Stop returning queued text) still shows.
+    unread: Option<(i64, String)>,
 }
 
 impl Held {
@@ -154,12 +164,17 @@ impl Held {
         }
         // Even saved text belongs to an unresolved Send. Do not replace it
         // with another writer's text under the submitted edit generation.
+        // A newer revision with this page's words, while a Send of them is
+        // unanswered, may be another writer's: Stop returns a queued message
+        // to the draft. Taking it as this page's baseline would let the Send's
+        // clear erase it, so the physician decides.
+        let newer_beside_send = self.pending_send.is_some() && revision > self.revision;
         if !self.unsaved() && self.pending_send.is_none() && !self.pending_clear {
             self.text = text.to_owned();
             self.saved = text.to_owned();
             self.revision = revision;
             self.conflict = None;
-        } else if self.text == text {
+        } else if self.text == text && !newer_beside_send {
             self.saved = text.to_owned();
             self.revision = revision;
             self.conflict = None;
@@ -168,6 +183,13 @@ impl Held {
                 revision,
                 text: text.to_owned(),
             });
+        }
+    }
+
+    /// The unanswered Send, if any, loses the right to clear the composer.
+    fn fence_send(&mut self) {
+        if let Some(send) = self.pending_send.as_mut() {
+            send.fenced = true;
         }
     }
 
@@ -319,7 +341,15 @@ impl Composer {
     pub(crate) fn loaded(&mut self, target: &DraftTarget, revision: i64, text: &str) {
         let held = self.held.entry(target.clone()).or_default();
         if held.in_flight.is_some() {
-            // The running save's answer settles the baseline.
+            // The running save's answer settles the baseline; this read is
+            // reconciled after it.
+            if held
+                .unread
+                .as_ref()
+                .is_none_or(|(seen, _)| revision >= *seen)
+            {
+                held.unread = Some((revision, text.to_owned()));
+            }
             return;
         }
         held.reconcile(revision, text);
@@ -439,10 +469,17 @@ impl Composer {
                 held.failures = 0;
                 // The server holds this page's text already (a lost answer):
                 // take its revision as the baseline instead of a conflict.
-                if text == held.text || text == attempt.text {
+                // Not while an accepted Send's clear waits: Stop may have
+                // written the same words, and the clear would erase them.
+                if held.pending_clear && !text.is_empty() {
+                    held.conflict = Some(ConflictDraft { revision, text });
+                } else if text == held.text || text == attempt.text {
                     if revision >= held.revision {
                         held.revision = revision;
                         held.saved = text;
+                        // Another writer, such as Stop, may have written
+                        // these same words.
+                        held.fence_send();
                     }
                 } else {
                     held.conflict = Some(ConflictDraft { revision, text });
@@ -453,7 +490,13 @@ impl Composer {
                 held.failures = held.failures.saturating_add(1);
             }
         }
+        // A Send's clear this save finished settles first, so a newer read
+        // that waited behind it is taken, not mistaken for a conflict.
         held.settle();
+        if let Some((revision, text)) = held.unread.take() {
+            held.reconcile(revision, &text);
+            held.settle();
+        }
     }
 
     /// How many saves of `target` failed in a row while its last one is
@@ -510,6 +553,7 @@ impl Composer {
         held.generation += 1;
         held.failed = false;
         held.pending_clear = false;
+        held.fence_send();
         held.settle();
     }
 
@@ -532,6 +576,7 @@ impl Composer {
             text: text.to_owned(),
             generation: held.generation,
             command,
+            fenced: false,
         };
         held.pending_send = Some(send.clone());
         Some(send)
@@ -547,7 +592,7 @@ impl Composer {
         let Some(send) = held.pending_send.take_if(|send| send.key == key) else {
             return;
         };
-        if answer == SendAnswer::Refused {
+        if answer == SendAnswer::Refused || send.fenced {
             return;
         }
         let rest = if held.generation == send.generation || held.text == send.text {
@@ -787,6 +832,130 @@ mod tests {
         assert_eq!(composer.text(at), "mine");
         composer.edit(at, "mine, more".into());
         assert_eq!(composer.begin(&one).unwrap().expected_revision, 1);
+    }
+
+    /// Stop in another tab returns queued text to the draft while this
+    /// page's Send clear is saving; the read that brings it is kept for
+    /// after the clear settles, and shows.
+    #[test]
+    fn a_newer_read_during_a_send_clear_shows_once_the_clear_answers() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 1, "hello");
+        let send = composer
+            .begin_send(&one, "k1".into(), "hello", command())
+            .unwrap();
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        let clear = composer.begin(&one).unwrap();
+        assert_eq!((clear.expected_revision, clear.text.as_str()), (1, ""));
+        composer.loaded(&one, 3, "returned");
+        assert_eq!(composer.text(at), "");
+        composer.finish(&clear, SaveOutcome::Saved(2));
+        assert!(!composer.clearing(at));
+        assert_eq!(composer.text(at), "returned");
+        assert_eq!(composer.conflict(at), None);
+        assert!(!composer.wants_save(&one));
+    }
+
+    /// Stop returned a queued message after the copy this page still holds
+    /// for an unanswered Send. The newer draft is a conflict, so resolving
+    /// the Send never clears what Stop returned.
+    #[test]
+    fn stop_returned_text_beside_an_unanswered_send_is_a_conflict() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 1, "Q");
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 2, "Q\n\nQ");
+        assert_eq!(composer.conflict(at).unwrap().revision, 2);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert!(composer.begin(&one).is_none(), "no clear over the conflict");
+    }
+
+    /// Sent before autosave, its receipt lost; Stop elsewhere returns the
+    /// same words as the first draft revision. The Send's clear must not
+    /// take that revision as its own and erase it.
+    #[test]
+    fn stop_returned_words_matching_an_unsaved_send_are_never_cleared() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 1, "Q");
+        assert_eq!(composer.conflict(at).unwrap().revision, 1);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "");
+        assert!(
+            composer.begin(&one).is_none(),
+            "no empty save over Stop's text"
+        );
+        assert_eq!(composer.conflict(at).unwrap().text, "Q");
+    }
+
+    /// The physician takes Stop's returned words before the Send is
+    /// answered; the Send's acceptance must not clear what they chose.
+    #[test]
+    fn use_newer_text_fences_an_unanswered_send() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.loaded(&one, 1, "Q");
+        composer.take_newer(at);
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "Q");
+        assert!(!composer.clearing(at));
+        assert!(!composer.wants_save(&one));
+    }
+
+    /// The autosave of the words being sent loses a race with Stop writing
+    /// the same words: its conflict answer is not proof the page wrote
+    /// them, so the Send's acceptance leaves them.
+    #[test]
+    fn an_equal_save_conflict_fences_an_unanswered_send() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let save = composer.begin(&one).unwrap();
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.finish(&save, SaveOutcome::Conflict(1, "Q".into()));
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert_eq!(composer.text(at), "Q");
+        assert!(!composer.wants_save(&one));
+    }
+
+    /// The same race with the Send accepted first: its clear waits behind
+    /// the autosave, and the autosave's equal conflict is kept as a
+    /// conflict, so the clear never lands over Stop's words.
+    #[test]
+    fn an_equal_save_conflict_holds_an_accepted_sends_clear() {
+        let one = chat("chat-1");
+        let at = Some(&one);
+        let mut composer = opened(&one, 0, "");
+        composer.edit(at, "Q".into());
+        let save = composer.begin(&one).unwrap();
+        let send = composer
+            .begin_send(&one, "k1".into(), "Q", command())
+            .unwrap();
+        composer.sent(&one, &send.key, SendAnswer::Accepted);
+        assert!(composer.clearing(at));
+        composer.finish(&save, SaveOutcome::Conflict(1, "Q".into()));
+        assert!(
+            composer.begin(&one).is_none(),
+            "no empty save over Stop's text"
+        );
+        assert_eq!(composer.conflict(at).unwrap().text, "Q");
     }
 
     #[test]
@@ -1166,14 +1335,16 @@ mod tests {
                 (replay.expected_revision, replay.text.as_str()),
                 (0, "submitted")
             );
-            page.finish(
-                &replay,
-                if committed {
-                    SaveOutcome::Conflict(1, "submitted".into())
-                } else {
-                    SaveOutcome::Saved(1)
-                },
-            );
+            if committed {
+                // The replay finds the same words already saved. This page
+                // can't tell its own lost answer from Stop returning them in
+                // another tab, so it asks rather than clear them.
+                page.finish(&replay, SaveOutcome::Conflict(1, "submitted".into()));
+                assert!(page.begin(&one).is_none());
+                assert_eq!(page.conflict(at).unwrap().text, "submitted");
+                continue;
+            }
+            page.finish(&replay, SaveOutcome::Saved(1));
             let clear = page.begin(&one).unwrap();
             assert_eq!((clear.expected_revision, clear.text.as_str()), (1, ""));
             page.finish(&clear, SaveOutcome::Saved(2));
