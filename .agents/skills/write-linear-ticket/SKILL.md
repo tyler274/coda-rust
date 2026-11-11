@@ -63,9 +63,9 @@ required outcomes still have an owner, including verification of the complete wo
 After the outcome, give the scope. Keep three things apart: what is decided,
 ideas that are not requirements, and what is open for the engineer.
 
-An undecided point about the product is an open question in the specification.
-Name it in the ticket; its answer goes into the specification. An undecided
-point about the work, such as a method or a format, stays in the ticket.
+An undecided point lives in the ticket that needs it, whether it is about the
+product or about the work. When a point about the product is answered, the
+answer goes into the specification.
 
 Say where to start: the spec section that owns the rules, any decided input
 the work must use, and the area of code that owns the behavior, named by crate

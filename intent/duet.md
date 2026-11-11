@@ -1,8 +1,8 @@
 # Duet
 
-This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions are at the end, and git keeps the history.
+This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Git keeps the history.
 
-The MVP is accounts, connected records and readings, and For my doctor in Shared, where the patient marks records, writes notes and sends them to a connected practice. General patient conversation, proactive care and AI preparation of For my doctor are the direction this spec describes, and the MVP is the first step toward it. Scope says what exists now and what is still an idea.
+The MVP has one job: a patient of a Coda practice gets their records and their own words in front of their doctor, with almost no effort after setup. It is accounts, connected records and readings, and For my doctor in Shared, where the patient marks records, writes notes and sends them to a connected practice. General patient conversation, proactive care and AI preparation of For my doctor are the direction this spec describes, and the MVP is the first step toward it. Scope says what exists now and what is parked.
 
 ## What Duet is
 
@@ -33,7 +33,7 @@ Coda's shared principles (README.md) govern this spec. These are the ones specif
 11. **Grounded, cited and faithful.** Facts and calculations come from evidence Duet actually received, with citations that reopen it. Records show as the source sent them. Every claim Duet makes, such as "read", "current" or "will try again", traces to recorded evidence, and Duet is honest about gaps and about how old its information is.
 12. **No silence that looks like health.** Anything behind, stuck or degraded is shown, with its reason, to someone who can act.
 13. **Live where you work; history as it was.** What the person is looking at updates live. Anything already said or sent keeps the version it used and is marked when a newer one exists.
-14. **Plain, calm and smooth.** Duet follows the shared UI principles (README.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly. Duet follows the phone's light or dark appearance.
+14. **Plain, calm and smooth.** Duet follows the shared UI principles (README.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly. Duet follows the phone's light or dark appearance unless the person chooses one.
 
 ## The concepts
 
@@ -81,7 +81,7 @@ Concepts for what comes after the MVP say what the thing is. Their rules are not
 
 **Connected care.** An invited practice's consented connection to the person's Duet account. Patients join a practice only through that practice's invitation and their consent, and joining links to the account they already have. A person may connect to more than one practice, each connection separate. Every Duet flow works without a connected practice.
 
-**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." Duet shows it at sign-up, and the person can open it from account settings without chat. In the later conversation, it also stays within reach in chat, and Duet doesn't repeat it in every reply.
+**Standing notice.** The fixed statement of what Duet's AI is and its limits: "Duet's AI isn't a doctor. It explains health information and doesn't diagnose or treat. In an emergency, call 911." It arrives with Duet's AI. Duet shows it at sign-up and keeps it within reach in settings and in chat, without repeating it in every reply.
 
 **Companion.** A small face the person picks during setup. It's Duet's face, not a second assistant, and it changes how Duet looks, not what it can do.
 
@@ -89,23 +89,21 @@ Concepts for what comes after the MVP say what the thing is. Their rules are not
 
 ### D1. Sign up and stay signed in
 
-After sign-up, the MVP opens on You, with Shared beside it. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
+After sign-up, the MVP opens on You, with Shared beside it.
 
 1. The person installs Duet from the App Store on iPhone or the Play Store on Android.
 2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. A practice invitation arrives by text, with email as a backup, as [Connected care](connected-care.md) describes. Duet has no web surface; an invitation link opens the app.
-3. They see the standing notice.
-4. They accept the Terms with one explicit "I agree and continue", with no prechecked box. Accepting them also confirms the person is 18 or over and in the U.S. A quiet Sign out sits under this step for a wrong account or declined Terms.
-5. They make one choice about AI: Allow AI or Not now. Not now keeps every non-AI part of the app working.
-6. An optional last step offers to connect their health, with every available connector on one panel and Not now.
-7. **App restart.** The person is still signed in, and Duet reopens where they were, with any draft they left.
-8. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed. A phone that can't reach Duet learns this only once it can, and keeps showing the account until then, behind the app's screen cover and the phone's own passcode.
-9. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The person's saved content and drafts stay usable while Duet checks the account.
+3. They accept the Terms with one explicit "I agree and continue", with no prechecked box. Accepting them also confirms the person is 18 or over and in the U.S. A quiet Sign out sits under this step for a wrong account or declined Terms.
+4. An optional last step offers to connect their health, with every available connector on one panel and Not now.
+5. **App restart.** The person is still signed in, and Duet reopens where they were, with any draft they left.
+6. **Revoked session, or another account.** Either is refused, including after a restart. A phone whose session ended elsewhere leaves the account, and the sign-in screen says what it removed that Duet hadn't confirmed. A phone that can't reach Duet learns this only once it can, and keeps showing the account until then, behind the app's screen cover and the phone's own passcode.
+7. **Duet unreachable.** After a short wait, "Connecting…" takes the place of the screen title, as in Messages, so nothing is pushed down or covered. The person's saved content and drafts stay usable while Duet checks the account.
 
 Signing in, staying signed in and signing out of a phone, with their model, live in [sign-in](../verification/duet/sign-in/README.md).
 
 ### D2. Records come in and stay faithful
 
-1. The person opens Sources & data in You, or the setup panel, and searches "Doctors & hospitals" by name, and Duet works out which portal vendor it is. The list shows exactly the portals that are switched on: Epic/MyChart and Oracle Health first, healow, and athena once its route works.
+1. The person opens Sources & data in You, or the setup panel, and searches "Doctors & hospitals" by name, and Duet works out which portal vendor it is. The list shows exactly the portals that are switched on: Epic/MyChart and Oracle Health.
 2. They can connect several organizations, including several MyChart organizations. Each one connects, refreshes, fails and disconnects on its own.
 3. They let Duet read Apple Health on iPhone or Health Connect on Android. Wearables linked to Apple Health come through HealthKit, with one instruction to turn that on in the wearable's app.
 4. Duet imports all the available history and never calls an import complete when it isn't. One unreadable record fails alone, with its reason, and the rest publish. A part that never becomes readable ends the import as partial, with the rest usable and the next daily refresh trying again.
@@ -139,14 +137,16 @@ In the MVP, For my doctor is in Shared.
 
 ### D5. Export, deletion and sign-out
 
-1. **Export.** The person exports everything Duet keeps about them, every kind of data with its source and date. Export never waits on a refresh or on newer Terms; it packages what Duet holds now and says what's still importing.
-2. **Deletion.** The person deletes their account, which removes everything and stops all practice sharing.
+1. **Export.** The person asks Coda for everything Duet keeps about them, and Coda sends it, every kind of data with its source and date. Export never waits on a refresh or on newer Terms.
+2. **Deletion.** The person deletes their account, which removes everything and stops all practice sharing. The same email can sign up again later and gets a new, empty account.
 3. **Interrupted deletion.** The deletion finishes, and neither old work nor a restored backup brings deleted or withdrawn data back. A deletion that didn't finish is offered to the person to finish.
 4. **Sign out.** There are two scopes, this device and everywhere. Signing out everywhere ends every session while the account and its history stay, and Duet never says "signed out everywhere" until every session has ended. With unsent notes or medications, Duet tries to sync first, and if it can't confirm them, says how many entries it hasn't confirmed and that signing out removes them from this phone, and offers Stay signed in or Sign out anyway. Signing out of this device takes effect at once, even offline, and Duet hears of it as soon as the phone can reach it.
 5. **Withdrawing AI isn't deletion.** The conversation and Duet's understanding of the person stay viewable, exportable and deletable.
-6. **Rights never wait on Terms.** While newer Terms wait, Settings still open for export, disconnecting a source, leaving a practice, deleting the account and withdrawing AI. Everything else waits.
+6. **Rights never wait on Terms.** While newer Terms wait, Settings still open for disconnecting a source, leaving a practice and deleting the account. Everything else waits.
 
 ### AI permission and Terms
+
+The MVP asks for Terms only. AI permission, its versions and the operator switch arrive with the first AI feature, and the rules below then apply.
 
 1. At sign-up, Terms come first and are accepted explicitly, and AI permission is its own choice after them.
 2. No model call happens without accepted Terms, AI permission and the operator switch.
@@ -212,11 +212,11 @@ Authority:
 **Now.** What exists or is in flight:
 
 - Duet on iPhone and Android, running on coda-rust, connected through Connected care to one or more practices.
-- Sign-up, the standing notice, Terms, AI permission, preferences, export, deletion and sign-out.
-- Portal records (Epic/MyChart, Oracle Health, healow, and athena once its route works), Apple HealthKit and Health Connect.
+- Sign-up by email, Terms, display name and appearance, deletion, and sign-out on this phone and everywhere.
+- Portal records (Epic/MyChart and Oracle Health), Apple HealthKit and Health Connect.
 - You, record search, original record details and measurement views with their values, units, dates, sources and corrections.
 - For my doctor in Shared: marked records and notes, kept private until sent, and sends to a named connected practice with a Sent and Received status.
-- Account and records use on their own, with no practice and no general patient chat. Each permission still holds for the AI features that use it, even though those features are not in the MVP.
+- Account and records use on their own, with no practice. Shared then says no practice is connected, and nothing else is designed for that person yet.
 
 How it is built today:
 
@@ -240,9 +240,13 @@ How it is built today:
 - Recording doctor visits.
 - A role for MedDecider; the decisions-API idea waits with NPI matching.
 
-**Ideas.** The direction is set above. Nobody has actioned these, and the shape of each is not decided:
+**Parked.** The direction is set above. Nobody is working on these, and we spec each one when we pick it up:
 
 - Conversation with Duet's AI, with citations, corrections, reply feedback and private memory.
+- AI permission, the standing notice and the companion, with the first AI feature. Whether the person can add or edit notes and medications in You while AI isn't allowed is undecided.
+- Export in the app.
+- healow, and athena once its route works.
+- The push registration fix from the security review, with notifications.
 - Today, insights, Plans, Reminders, Check-ins, re-engagement and their notifications.
 - AI help preparing For my doctor, and appointment context.
 - The doctor's plan in Duet, with its explanation.
@@ -260,14 +264,3 @@ How it is built today:
 - A search index covered by a BAA, as the way past the clinical library.
 - The jointly maintained shared space between patient and practice.
 - A patient-state foundation model trained on data collected over time.
-
-## Open questions
-
-These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
-
-- **Q4. You while AI isn't allowed.** Whether the person can add or edit notes and medications in You while AI isn't allowed.
-- **Q6. Deleting an email or Google account.** How a person who signs in with email or Google reconfirms before deleting their account.
-- **Q7. Newer Terms.** How the app shows newer Terms and takes acceptance.
-
-- **E4. Freshness after a one-time pull.** How records from other systems stay fresh.
-- **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.

@@ -1,7 +1,7 @@
 # Coda Rust operating contract
 
 This repository is the Rust workspace for Duet and the physician client. The [intent specs](intent/README.md) own product intent: the principles, the
-product specs with their open questions, stated as current truth. Linear tracks scope, work and acceptance against them; this workspace owns Rust
+product specs, stated as current truth. Linear tracks scope, work and acceptance against them; this workspace owns Rust
 implementation, operations and proof. Start with the [canonical map](book/src/reading.md).
 The user's latest explicit decisions take precedence and land in the specs. Submodules are read-only: behavior that appears only in a
 submodule or a generated wire schema is not a specification, and is not restored merely because it is there.

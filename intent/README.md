@@ -11,13 +11,13 @@ These specs say what we're building and why. They are the source of truth for wh
    - `connected-care.md`: how a Duet patient and a Coda practice connect.
    - `harness.md`: the shared agent loop. It stays outside product behavior and meets the products only through tools and events.
 
-Each spec has the same shape: what the product is and the point of it, principles, concepts, journeys, rules, scope and open questions. Scope says what exists now, what the product does not have, and the ideas nobody has actioned yet. An open question is undecided and concerns something that exists or is in flight, so someone building it needs the answer. Each has an ID. A doubt about an idea is part of the idea. Nothing here is owned by a person.
+Each spec has the same shape: what the product is and the point of it, principles, concepts, journeys, rules and scope. Scope says what exists now, what the product does not have, and what is parked: work nobody has started, which we spec when we pick it up. A spec holds what is decided. An undecided point lives in the Linear ticket that needs it. Nothing here is owned by a person.
 
-**Changing them.** Edit the line so it says what's true now. When an open question is answered, the answer goes into every spec it touches and the question leaves that spec's open questions. A Linear ticket, doc or website line that disagrees with a spec gets corrected at its source.
+**Changing them.** Edit the line so it says what's true now. When an undecided point is answered, the answer goes into every spec it touches. A Linear ticket, doc or website line that disagrees with a spec gets corrected at its source.
 
 ## Coda principles
 
-These govern everything below them: physician.md, duet.md, connected-care.md, harness.md and the feature models. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, go to the open questions at the end of each spec.
+These govern everything below them: physician.md, duet.md, connected-care.md, harness.md and the feature models. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, are decided in the ticket that needs the answer, and the answer goes into the spec.
 
 ### The principles
 
