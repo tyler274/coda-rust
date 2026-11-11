@@ -27,6 +27,7 @@ pub mod patients;
 pub mod queue;
 pub mod rehearsal;
 mod reply;
+pub mod source_inspection;
 pub mod synthetic_chart;
 mod synthetic_reply;
 mod timestamp;

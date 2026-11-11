@@ -83,6 +83,13 @@ pub(super) enum RecordReceipt {
         readable_parts: Vec<super::ReadablePart>,
         sha256: String,
         provenance: Value,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        native: Option<super::NativeLink>,
+        /// The identity an answer cites. Only a whole record carries one; a
+        /// passage is not citable. Receipts recorded before citations existed
+        /// have none.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        citation_id: Option<String>,
     },
     Passage {
         reference: String,
@@ -375,6 +382,8 @@ fn read_record(source: &SourceRevision, cursor: Option<Position>, budget: usize)
             readable_parts: source.readable_parts.clone(),
             sha256: source.sha256.clone(),
             provenance: source.provenance.clone(),
+            native: source.native.clone(),
+            citation_id: Some(super::citation_id(source)),
         };
         if full.encoded_len() <= budget {
             return full;

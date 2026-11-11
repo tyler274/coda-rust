@@ -302,6 +302,36 @@ fn turn_kind(role: &str) -> &'static str {
     }
 }
 
+/// The answer split into text and the exact citations it published with. A
+/// marker without its retained citation ends the split; the rest stays text.
+fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
+    let mut parts = Vec::new();
+    let mut text = message.text.as_str();
+    while let Some((before, suffix)) = text.split_once("[[patient_source:") {
+        let Some((id, rest)) = suffix.split_once("]]") else {
+            break;
+        };
+        let Some(citation) = message.citations.iter().find(|citation| citation.id == id) else {
+            break;
+        };
+        parts.push(json!({"kind":"text", "text":before}));
+        let inspection = crate::source_inspection::inspection(citation);
+        let destination = citation.native.as_ref().map(
+            |native| json!({"kind":"source_native", "source_label":native.label, "uri":native.uri}),
+        );
+        parts.push(
+            json!({"kind":"citation", "state":"resolved", "source":"patient",
+            "source_id":citation.id, "handle":citation.reference,
+            "display_label":inspection.title,
+            "source_presentation":{"inspection":inspection},
+            "destination":destination}),
+        );
+        text = rest;
+    }
+    parts.push(json!({"kind":"text", "text":text}));
+    parts
+}
+
 /// The reference `SnapshotResponse` subset this site owns. A failed turn adds
 /// its run and a mechanical "couldn't finish" line whose `resume_target` names
 /// the exact work and run Try again resumes. A running turn offers Stop. A
@@ -316,8 +346,8 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
         .messages
         .iter()
         .flat_map(|message| {
-            let authored =
-                json!({ "kind": turn_kind(message.role.as_str()), "text": message.text });
+            let authored = json!({ "kind": turn_kind(message.role.as_str()),
+                "text": message.text, "segments": citation_segments(message) });
             let partial = message.partial().then(|| {
                 json!({
                     "kind": "mechanical", "text": "Partial response.",
@@ -617,6 +647,7 @@ mod durable_snapshot_tests {
                     revision: 1,
                 },
                 text: "Hello".into(),
+                citations: vec![],
             }],
             status,
             work: "work-1".into(),
@@ -662,6 +693,7 @@ mod durable_snapshot_tests {
                             partial: true,
                         },
                         text: "The saved part of the answer.".into(),
+                        citations: Vec::new(),
                     });
                 }
                 let raw = "internal_provider_error: account billing identifier 739";
@@ -802,5 +834,46 @@ mod durable_snapshot_tests {
                 .collect();
             assert_eq!(read.snapshot.runs, expected, "{outcome:?}");
         }
+    }
+}
+
+#[cfg(test)]
+mod citation_segment_tests {
+    use super::citation_segments;
+    use local_product::physician_chat::Citation;
+    use local_product::runtime::Message;
+    use serde_json::json;
+
+    fn cited(id: &str, native: serde_json::Value) -> Citation {
+        serde_json::from_value(json!({
+            "id":id, "reference":id, "revision":"r1", "record_type":"AllergyIntolerance",
+            "content":"{}", "sha256":local_product::sha256_hex(b"{}"),
+            "provenance":{}, "native":native
+        }))
+        .unwrap()
+    }
+
+    #[test]
+    fn a_source_native_link_becomes_the_citation_destination() {
+        let message = Message {
+            role: local_product::runtime::MessageRole::Assistant {
+                id: "reply-1".into(),
+                partial: false,
+            },
+            text: "A [[patient_source:linked]] B [[patient_source:plain]]".into(),
+            citations: vec![
+                cited(
+                    "linked",
+                    json!({"label":"Demo chart","uri":"https://ehr.example/a/1"}),
+                ),
+                cited("plain", json!(null)),
+            ],
+        };
+        let segments = citation_segments(&message);
+        assert_eq!(
+            segments[1]["destination"],
+            json!({"kind":"source_native", "source_label":"Demo chart", "uri":"https://ehr.example/a/1"})
+        );
+        assert!(segments[3]["destination"].is_null());
     }
 }
