@@ -116,6 +116,7 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
                     status: AttemptStatus::Interrupted,
                     expires: i64::MAX,
                     events: vec![],
+                    sources_version: None,
                 },
                 Attempt {
                     id: "latest".into(),
@@ -125,6 +126,7 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
                     status: AttemptStatus::Active,
                     expires,
                     events: vec![],
+                    sources_version: None,
                 },
             ];
         }

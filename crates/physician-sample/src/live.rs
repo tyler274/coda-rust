@@ -290,7 +290,11 @@ async fn durable_snapshot(
         Ok(conversation) => conversation,
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
-    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref()) })).into_response()
+    let Ok(sources_version) = chat.store.source_version(&scope.workspace).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref(), sources_version) }))
+        .into_response()
 }
 
 /// Who wrote a turn, as the snapshot names it: Coda's turns are the model's, every other the physician's.
@@ -337,8 +341,13 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
 /// the exact work and run Try again resumes. A running turn offers Stop. A
 /// held turn offers Resume. An answered turn names its run and the attempt
 /// that answered it, so an operator can match the reply to its telemetry by
-/// attempt id. The physician's text stays saved.
-fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversation>) -> Value {
+/// attempt id. The physician's text stays saved. `sources_version` is the
+/// workspace's current source version: an answer begun from an older one is
+/// marked as having newer records.
+fn durable_snapshot_body(
+    conversation: Option<&local_product::runtime::Conversation>,
+    sources_version: u64,
+) -> Value {
     let Some(conversation) = conversation else {
         return json!({ "conversation": [], "runs": [] });
     };
@@ -346,8 +355,12 @@ fn durable_snapshot_body(conversation: Option<&local_product::runtime::Conversat
         .messages
         .iter()
         .flat_map(|message| {
+            let newer_records = message
+                .sources_version
+                .is_some_and(|answered| answered < sources_version);
             let authored = json!({ "kind": turn_kind(message.role.as_str()),
-                "text": message.text, "segments": citation_segments(message) });
+                "text": message.text, "segments": citation_segments(message),
+                "basis": message.basis, "newer_records": newer_records });
             let partial = message.partial().then(|| {
                 json!({
                     "kind": "mechanical", "text": "Partial response.",
@@ -622,7 +635,9 @@ fn rejected_submit() -> Response {
 #[cfg(test)]
 mod durable_snapshot_tests {
     use super::{COULDNT_FINISH, STOPPED, WRITING, durable_snapshot_body};
-    use local_product::runtime::{Attempt, AttemptStatus, Conversation, Message, WorkStatus};
+    use local_product::runtime::{
+        Attempt, AttemptStatus, Conversation, Message, MessageRole, WorkStatus,
+    };
 
     fn conversation(status: WorkStatus) -> Conversation {
         use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
@@ -648,6 +663,8 @@ mod durable_snapshot_tests {
                 },
                 text: "Hello".into(),
                 citations: vec![],
+                basis: None,
+                sources_version: None,
             }],
             status,
             work: "work-1".into(),
@@ -659,6 +676,7 @@ mod durable_snapshot_tests {
                 status: AttemptStatus::Interrupted,
                 expires: 0,
                 events: vec![],
+                sources_version: None,
             }],
             revision: 1,
             skills: serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
@@ -694,6 +712,8 @@ mod durable_snapshot_tests {
                         },
                         text: "The saved part of the answer.".into(),
                         citations: Vec::new(),
+                        basis: None,
+                        sources_version: None,
                     });
                 }
                 let raw = "internal_provider_error: account billing identifier 739";
@@ -703,7 +723,7 @@ mod durable_snapshot_tests {
                     ordinal: 1,
                     kind: harness::engine::EventKind::ProviderBlocked { reason: raw.into() },
                 });
-                let snapshot = durable_snapshot_body(Some(&saved));
+                let snapshot = durable_snapshot_body(Some(&saved), 0);
                 let lines = snapshot["conversation"].as_array().unwrap();
                 let status = lines.last().unwrap()["text"].as_str().unwrap();
                 assert!(
@@ -734,7 +754,7 @@ mod durable_snapshot_tests {
 
     #[test]
     fn a_failed_turn_keeps_the_message_and_names_the_run_to_resume() {
-        let body = durable_snapshot_body(Some(&conversation(WorkStatus::Failed)));
+        let body = durable_snapshot_body(Some(&conversation(WorkStatus::Failed)), 0);
         let items = body["conversation"].as_array().unwrap();
         assert_eq!(items[0]["kind"], "physician");
         assert_eq!(items[0]["text"], "Hello");
@@ -749,7 +769,7 @@ mod durable_snapshot_tests {
     #[test]
     fn a_running_turn_offers_stop_and_a_held_turn_offers_resume() {
         for status in [WorkStatus::Pending, WorkStatus::Active] {
-            let body = durable_snapshot_body(Some(&conversation(status)));
+            let body = durable_snapshot_body(Some(&conversation(status)), 0);
             let items = body["conversation"].as_array().unwrap();
             assert_eq!(items.len(), 2, "{status:?}");
             assert_eq!(items[1]["text"], WRITING, "{status:?}");
@@ -760,14 +780,14 @@ mod durable_snapshot_tests {
             assert!(items[1].get("resume_target").is_none(), "{status:?}");
             assert!(body["runs"].as_array().unwrap().is_empty(), "{status:?}");
         }
-        let held = durable_snapshot_body(Some(&conversation(WorkStatus::Held)));
+        let held = durable_snapshot_body(Some(&conversation(WorkStatus::Held)), 0);
         let items = held["conversation"].as_array().unwrap();
         assert_eq!(items[1]["text"], STOPPED);
         assert_eq!(items[1]["resume_target"]["work_item_id"], "work-1");
         assert_eq!(items[1]["resume_target"]["expected_run_id"], "run-1");
         assert!(items[1].get("stop_target").is_none());
         assert_eq!(held["runs"][0]["state"], "held");
-        let done = durable_snapshot_body(Some(&conversation(WorkStatus::Completed)));
+        let done = durable_snapshot_body(Some(&conversation(WorkStatus::Completed)), 0);
         assert_eq!(done["conversation"].as_array().unwrap().len(), 1);
         assert_eq!(
             done["runs"],
@@ -778,7 +798,7 @@ mod durable_snapshot_tests {
                 "attempt_id": "attempt-1",
             }])
         );
-        let empty = durable_snapshot_body(None);
+        let empty = durable_snapshot_body(None, 0);
         assert!(empty["conversation"].as_array().unwrap().is_empty());
     }
 
@@ -822,7 +842,7 @@ mod durable_snapshot_tests {
             let mut saved = conversation(WorkStatus::Active);
             saved.status = outcome.into();
             saved.runs.get_mut("work-1").unwrap().end(outcome).unwrap();
-            let body = serde_json::json!({ "snapshot": durable_snapshot_body(Some(&saved)) });
+            let body = serde_json::json!({ "snapshot": durable_snapshot_body(Some(&saved), 0) });
             let read: ChatSnapshotResponse = serde_json::from_value(body)
                 .unwrap_or_else(|error| panic!("{outcome:?}: the app cannot read it: {error}"));
             let expected: Vec<_> = expected
@@ -834,6 +854,33 @@ mod durable_snapshot_tests {
                 .collect();
             assert_eq!(read.snapshot.runs, expected, "{outcome:?}");
         }
+    }
+
+    #[test]
+    fn an_answer_keeps_its_basis_and_is_marked_when_records_arrive_after_it() {
+        let mut done = conversation(WorkStatus::Completed);
+        done.messages.push(Message {
+            role: MessageRole::Assistant {
+                id: "attempt-1:reply".into(),
+                partial: false,
+            },
+            text: "None recorded.".into(),
+            citations: vec![],
+            basis: Some("Rests on one allergy record.".into()),
+            sources_version: Some(3),
+        });
+        let current = durable_snapshot_body(Some(&done), 3);
+        let answer = &current["conversation"][1];
+        assert_eq!(answer["text"], "None recorded.");
+        assert_eq!(answer["basis"], "Rests on one allergy record.");
+        assert_eq!(answer["newer_records"], false);
+        assert_eq!(current["conversation"][0]["newer_records"], false);
+        let newer = durable_snapshot_body(Some(&done), 4);
+        assert_eq!(newer["conversation"][1]["newer_records"], true);
+        assert_eq!(newer["conversation"][1]["text"], "None recorded.");
+        done.messages[1].sources_version = None;
+        let unrecorded = durable_snapshot_body(Some(&done), 4);
+        assert_eq!(unrecorded["conversation"][1]["newer_records"], false);
     }
 }
 
@@ -861,6 +908,8 @@ mod citation_segment_tests {
                 partial: false,
             },
             text: "A [[patient_source:linked]] B [[patient_source:plain]]".into(),
+            basis: None,
+            sources_version: None,
             citations: vec![
                 cited(
                     "linked",
