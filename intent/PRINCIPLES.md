@@ -1,6 +1,6 @@
 # Coda principles
 
-These govern everything below them: physician.md, duet.md, connected-care.md, harness.md and the feature models. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, go to DECISIONS.md.
+These govern everything below them: physician.md, duet.md, connected-care.md, harness.md and the feature models. Each product spec keeps only its product-specific principles and defers to these. When a spec line conflicts with a principle, the principle wins and the line changes. A cap, gate, pause, dialog, toggle, fixed count or code-side judgment is ruled out by default. Questions the principles don't settle, such as what's in scope, consent and data choices, and real product trade-offs, go to OPEN-QUESTIONS.md.
 
 ## The principles
 

@@ -10,8 +10,8 @@ These specs say what we're building and why. They are the source of truth for wh
    - `duet.md`: Duet, the patient app.
    - `connected-care.md`: how a Duet patient and a Coda practice connect.
    - `harness.md`: the shared agent loop. It stays outside product behavior and meets the products only through tools and events.
-3. `DECISIONS.md`: the open questions, split into product decisions and engineering decisions. The specs themselves hold only what's decided.
+3. `OPEN-QUESTIONS.md`: the open questions, split into product questions and engineering questions. The specs themselves hold only what's decided.
 
 Each spec states the product's behavior first and ends with its engineering decisions. Product decisions and engineering decisions are the two kinds of choice; nothing here is owned by a person.
 
-**Changing them.** Edit the line so it says what's true now. When an open question is answered, the answer goes into every spec it touches and the question leaves DECISIONS.md. A Linear ticket, doc or website line that disagrees with a spec gets corrected at its source.
+**Changing them.** Edit the line so it says what's true now. When an open question is answered, the answer goes into every spec it touches and the question leaves OPEN-QUESTIONS.md. A Linear ticket, doc or website line that disagrees with a spec gets corrected at its source.

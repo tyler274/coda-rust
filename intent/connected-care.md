@@ -1,6 +1,6 @@
 # Connected care
 
-This is how a Duet patient and a Coda practice connect: what crosses between them, who controls it, and what happens when the connection ends. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
+This is how a Duet patient and a Coda practice connect: what crosses between them, who controls it, and what happens when the connection ends. It describes the product as we intend it today. Open questions live in OPEN-QUESTIONS.md, and git keeps the history.
 
 ## What Connected care is
 

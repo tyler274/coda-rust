@@ -1,6 +1,6 @@
 # Chords
 
-This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
+This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in OPEN-QUESTIONS.md, and git keeps the history.
 
 ## What Chords is
 
@@ -200,7 +200,7 @@ Physicians sign in only through Chords, with an emailed link and no password or 
 
 Inside the workspace:
 
-1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](DECISIONS.md)). Everything here follows what it decides.
+1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](OPEN-QUESTIONS.md)). Everything here follows what it decides.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.

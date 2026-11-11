@@ -5,7 +5,7 @@ The harness is the agent loop that Chords and Duet both run on. It isn't a produ
 The models are smart. The harness gives them the right tools, the right context at the right time and skills they can find, then gets out of the way.
 
 - **References.** The harness is built from four reference harnesses: Codex, Hermes, OpenClaw and Pi. Each part below names the reference it follows and says where we differ.
-- **Open questions** are in DECISIONS.md. Git keeps the history.
+- **Open questions** are in OPEN-QUESTIONS.md. Git keeps the history.
 
 ## Terms
 

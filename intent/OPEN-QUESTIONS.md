@@ -1,8 +1,8 @@
-# Open decisions
+# Open questions
 
 Everything here is undecided. The specs hold only what's decided, so when one of these is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID, for example "Q5: they see a short notice".
 
-## Product decisions
+## Open product questions
 
 **Physician**
 
@@ -57,7 +57,7 @@ Everything here is undecided. The specs hold only what's decided, so when one of
 
 - **B1. Epic questionnaire and privacy policy.** Correct the draft Epic Data Use Questionnaire and the privacy wording to match what Duet does when a source is disconnected.
 
-## Engineering decisions
+## Open engineering questions
 
 - **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from.
 - **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
