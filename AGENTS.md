@@ -26,6 +26,14 @@ submodule or a generated wire schema is not a specification, and is not restored
   database API, browser behaviour lives in its own script files and takes
   arguments, and errors are types. Where the owner truly can't express something,
   say why at that spot and pass values as parameters, never spliced in.
+- **State each rule once.** A rule the program depends on, such as which records
+  belong to the current work or whether an attempt is still current, lives in one
+  function at its owner, and every caller asks it. The compiler checks how a value
+  is shaped; it cannot see two functions that answer the same question
+  differently. A path that rebuilds state after a crash, a retry or a resume calls
+  what the live path calls, so the two cannot drift apart. Common misses: the same
+  filter written inline in several functions, and recovery that reconstructs what
+  the live path already builds.
 - **Errors keep their cause.** An error says what went wrong and carries why.
   Keep the original error as its source instead of replacing it with a sentence,
   and choose the words a person sees at the place that shows them. Extend the

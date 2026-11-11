@@ -33,12 +33,22 @@ repository hasn't stated are not rules.
 ## Judge the whole solution
 
 Trace the affected workflow from its trigger through state, responsible owners,
-consumers, and visible results or side effects. Ask:
+consumers, and visible results or side effects. In a large change, start where
+defects concentrate: the functions with the most branches and the files that
+changed most. Ask:
 
 - Does the implementation solve the intended problem across the relevant paths?
 - Does each fact and responsibility have one authoritative owner? Could an owner
   correction, deletion, or removal of an unsupported promise replace added
   branches, caches, fallbacks, or adapters?
+- Is each rule the change relies on decided in one place? Take the questions the
+  code asks more than once, such as which records belong to this work or whether
+  this attempt is current. Find every place that answers each one and compare the
+  answers. Two answers that differ are a finding even when each looks right alone.
+- Does every path that rebuilds state, after a crash, a retry or a resume, arrive
+  where the live path would? Read the two side by side. Then ask what can arrive
+  while the work runs, such as new input, a stop, a failure or a limit, and follow
+  the pairs this change touches. A pair that nothing exercises is a proof gap.
 - Do the types the change adds or touches make the domain's invalid states
   unrepresentable? Look for bools or `Option`s that together encode one state,
   strings carrying codes, ids or states across a boundary, state held beside
@@ -50,7 +60,8 @@ consumers, and visible results or side effects. Ask:
 - Is the complexity justified by an observed failure, explicit requirement, or
   necessary guarantee?
 - Do code, tests, documentation, and the change's narrative share an assumption
-  that conflicts with the intended workflow or independent evidence?
+  that conflicts with the intended workflow or independent evidence? Look for
+  statements in the docs and runbooks that this change makes false.
 
 A structural finding needs a concrete consequence or violated contract. Explain
 why the current approach fails and what a coherent correction would change. A
@@ -84,8 +95,10 @@ contract calls for revisiting its owner, not another isolated patch.
 
 Use proportional checks within the read-only scope. Prefer observable behavior and
 meaningful failure and recovery paths over tests that mirror the implementation.
-State what source inspection, tests, runtime observations, and deployment evidence
-actually establish.
+Ask of each check whether it would fail if the thing it guards were wrong. A
+migration that exits 0 on the wrong tables, or a test that passes without running,
+proves nothing. State what source inspection, tests, runtime observations, and
+deployment evidence actually establish.
 
 Check each acceptance criterion against inspectable evidence at the reviewed
 revision. A criterion without it, or with evidence from an earlier revision that

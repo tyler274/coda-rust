@@ -25,12 +25,19 @@ Read the relevant conversation, governing guidance, and current owners. Supply:
   and dispositions, and inspected verification with its limits: each acceptance
   criterion with its evidence artifacts and the revision they ran against.
 - The type-model plan, when the work has one: what the types should rule out,
-  what stays unmodelled and why, and the author's open questions.
+  what is decided once, what stays unmodelled and why, and the author's open
+  questions.
 
 Give enough context for independent judgment without prescribing a verdict or
 limiting investigation to known concerns. Keep unrelated private material and
 credentials out of the handoff. Retrieve missing intent or name its effect on
 confidence; ordinary correctness defects can still be established.
+
+For a large change, send the reading to where defects concentrate before the
+rest. A reviewer given the whole change and a broad question reports what is
+easiest to see. When a concern runs across the change, such as how state is
+modelled or whether recovery matches the live path, give one reviewer that single
+question for the whole change.
 
 ## Run the reviewer
 

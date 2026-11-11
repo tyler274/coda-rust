@@ -54,6 +54,9 @@ them now. Then write down:
 - **What the types should rule out:** each mistake or invalid state, how the
   code allows it today, and the representation that makes it unrepresentable
   or refused at one owner.
+- **What is decided once:** each rule more than one path needs, and the one
+  function that owns it. For work that reacts to events (new input, stop, crash,
+  limit), the pairs of events a test will cross.
 - **What stays unmodelled, and why:** for example, a migration cost out of
   scope, or a newtype that would spread through a wire crate for one caller.
 - **Questions for the reviewer:** where the model is least certain.
