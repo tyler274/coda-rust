@@ -167,34 +167,34 @@ jobs:
           --health-timeout 5s
           --health-retries 12
     steps:
-      # On a runner the service is a published port on loopback. act publishes
-      # none and leaves the port empty; its job container reaches the service
-      # by name on the job network instead.
-      - name: Point the PostgreSQL proofs at the service
-        env:
-          PORT: ${{ job.services.postgres.ports['5432'] }}
-        run: |
-          if [ -n "$PORT" ]; then
-            address="127.0.0.1:${PORT}"
-          elif [ "${ACT:-}" = true ]; then
-            address="postgres:5432"
-          else
-            echo "The postgres service published no port" >&2
-            exit 1
-          fi
-          url="postgresql://postgres@${address}/postgres"
-          {
-            echo "DUET_TEST_DATABASE_URL=${url}"
-            echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
-            echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
-            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
-          } >> "$GITHUB_ENV"
       - name: Check out repository
         uses: actions/checkout@v7
         with:
           # Optional developer references are never fetched by CI.
           submodules: false
           persist-credentials: false
+      # On a runner the service is a published port on loopback. act publishes
+      # none and leaves the port empty; its job container reaches the service
+      # only by name, so a relay puts it on loopback, which the proofs require.
+      - name: Point the PostgreSQL proofs at the service
+        env:
+          PORT: ${{ job.services.postgres.ports['5432'] }}
+        run: |
+          if [ -z "$PORT" ]; then
+            if [ "${ACT:-}" != true ]; then
+              echo "The postgres service published no port" >&2
+              exit 1
+            fi
+            PORT=5432
+            python3 "$GITHUB_WORKSPACE/scripts/act-postgres-relay.py" "$PORT" postgres 5432
+          fi
+          url="postgresql://postgres@127.0.0.1:${PORT}/postgres"
+          {
+            echo "DUET_TEST_DATABASE_URL=${url}"
+            echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
+            echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
+            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
+          } >> "$GITHUB_ENV"
       - name: Install Node for the Node-based tests
         uses: actions/setup-node@v7
         with:
