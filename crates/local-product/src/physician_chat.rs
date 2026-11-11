@@ -79,9 +79,11 @@ patient-specific fact. Do not invent references or citations. Distinguish provis
 verified support, and state material limits beside the conclusion they qualify. Use unambiguous calendar \
 dates with the year.
 
-Answer the physician's request directly. Close with a brief, physician-readable basis for the answer: what \
-it rests on (source records, physician input, skill guidance, general medical knowledge) and any limitation that could \
-materially change interpretation. Usually keep that basis under 80 words. Use physician language, never \
+Answer the physician's request directly. After the answer, write a [[basis]] block: a brief, \
+physician-readable basis for the answer, what it rests on (source records, physician input, skill guidance, \
+general medical knowledge) and any limitation that could materially change interpretation, then [[/basis]]. \
+The physician reads it in a collapsed Basis and limitations section beside Sources, so important uncertainty \
+still belongs in the answer itself. Usually keep that basis under 80 words, with no citation markers. Use physician language, never \
 runtime terminology, private deliberation, or tool activity. Requesting tools continues work; your final \
 response without tool calls is the complete answer the physician reads, so do not leave it to earlier \
 messages. Communicate completed clinical work, not model identities, tools, schemas or runtime IDs.";
@@ -121,27 +123,45 @@ const CITATION_OPEN: &str = "[[patient_source:";
 const SUMMARIES_OPEN: &str = "[[source_summaries]]";
 const SUMMARIES_CLOSE: &str = "[[/source_summaries]]";
 const SUMMARY_MAX_CHARS: usize = 400;
+const BASIS_OPEN: &str = "[[basis]]";
+const BASIS_CLOSE: &str = "[[/basis]]";
+
+/// An answer as the physician reads it.
+#[derive(Debug)]
+pub struct Published {
+    /// The answer, without its basis or source summaries.
+    pub text: String,
+    /// What the answer rests on and its limits, shown apart from the answer.
+    /// `None` when the model wrote no closed, marker-free basis block.
+    pub basis: Option<String>,
+    /// The sources the answer cites, in first-cited order.
+    pub citations: Vec<Citation>,
+}
 
 /// The answer the physician reads and the citations it publishes with. The model's
-/// `[[source_summaries]]` block leaves the visible text; each line that names a cited
-/// source, fits, and carries no citation marker becomes that citation's summary. A line
-/// that breaks the contract is dropped, leaving that source to read as its record.
+/// `[[basis]]` block leaves the visible text and becomes the answer's basis. Its
+/// `[[source_summaries]]` block leaves too; each line that names a cited source, fits,
+/// and carries no citation marker becomes that citation's summary. A line that breaks
+/// the contract is dropped, leaving that source to read as its record.
 /// `delivered` holds the whole records that reached the model in its current window.
-pub fn published(
-    text: &str,
-    delivered: &[Citation],
-) -> Result<(String, Vec<Citation>), PublicationError> {
-    let (visible, block) = split_summaries(text);
+pub fn published(text: &str, delivered: &[Citation]) -> Result<Published, PublicationError> {
+    let (visible, basis) = split_basis(text);
+    let (visible, block) = split_block(&visible, SUMMARIES_OPEN, SUMMARIES_CLOSE);
     let cited = citations(&visible, delivered)?;
-    Ok((visible, summarized(cited, block)))
+    Ok(Published {
+        text: visible,
+        basis,
+        citations: summarized(cited, block),
+    })
 }
 
 /// A partial answer ends the run, so a citation the model could not correct is
 /// removed rather than refused. Resolution is the same as [`published`]: only
 /// whole records delivered in the current window are cited, and the rest of the
 /// answer is kept. An unclosed marker loses only its opening `[[patient_source:`.
-pub fn published_partial(text: &str, delivered: &[Citation]) -> (String, Vec<Citation>) {
-    let (visible, block) = split_summaries(text);
+pub fn published_partial(text: &str, delivered: &[Citation]) -> Published {
+    let (visible, basis) = split_basis(text);
+    let (visible, block) = split_block(&visible, SUMMARIES_OPEN, SUMMARIES_CLOSE);
     let mut kept = String::with_capacity(visible.len());
     let mut cited: Vec<Citation> = Vec::new();
     let mut remaining = visible.as_str();
@@ -162,7 +182,21 @@ pub fn published_partial(text: &str, delivered: &[Citation]) -> (String, Vec<Cit
         remaining = rest;
     }
     kept.push_str(remaining);
-    (kept, summarized(cited, block))
+    Published {
+        text: kept,
+        basis,
+        citations: summarized(cited, block),
+    }
+}
+
+/// Removes the closed `[[basis]]` block. A basis that is blank or carries a
+/// marker is dropped, so a citation never hides in the collapsed section.
+fn split_basis(text: &str) -> (String, Option<String>) {
+    let (visible, basis) = split_block(text, BASIS_OPEN, BASIS_CLOSE);
+    let basis = Some(basis.trim())
+        .filter(|basis| !basis.is_empty() && !basis.contains("[["))
+        .map(str::to_owned);
+    (visible, basis)
 }
 
 /// Attaches each well-formed `[[source_summaries]]` line to the citation it names.
@@ -186,14 +220,14 @@ fn summarized(mut cited: Vec<Citation>, block: &str) -> Vec<Citation> {
     cited
 }
 
-/// Removes one closed `[[source_summaries]]` block, the last one, and returns its body.
-/// An unclosed marker stays in the answer: it is not a block, and hiding the text after it
-/// would drop part of what the physician asked for.
-fn split_summaries(text: &str) -> (String, &str) {
-    let Some((before, after)) = text.rsplit_once(SUMMARIES_OPEN) else {
+/// Removes one closed block, the last one, and returns its body. An unclosed marker
+/// stays in the answer: it is not a block, and hiding the text after it would drop part
+/// of what the physician asked for.
+fn split_block<'a>(text: &'a str, open: &str, close: &str) -> (String, &'a str) {
+    let Some((before, after)) = text.rsplit_once(open) else {
         return (text.to_owned(), "");
     };
-    let Some((block, tail)) = after.split_once(SUMMARIES_CLOSE) else {
+    let Some((block, tail)) = after.split_once(close) else {
         return (text.to_owned(), "");
     };
     let head = before.trim_end();
@@ -203,7 +237,7 @@ fn split_summaries(text: &str) -> (String, &str) {
         (true, false) => tail.to_owned(),
         (false, false) => format!("{head}\n\n{tail}"),
     };
-    // A block that is the whole turn is not a summary. Removing it would publish a blank answer.
+    // A block that is the whole turn is not a block. Removing it would publish a blank answer.
     if visible.trim().is_empty() {
         return (text.to_owned(), "");
     }
@@ -390,6 +424,185 @@ mod tests {
     fn skills() -> PhysicianSkills {
         PhysicianSkills::load(&PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills"))
             .unwrap()
+    }
+
+    /// A whole record as delivered to the model, ready to cite.
+    fn delivered(id: &str, native: Option<crate::physician_sources::NativeLink>) -> Citation {
+        let content = format!("{{\"id\":\"{id}\"}}");
+        Citation {
+            id: format!("cite-{id}"),
+            reference: id.into(),
+            revision: "r1".into(),
+            record_type: "AllergyIntolerance".into(),
+            dates: vec![],
+            sha256: crate::sha256_hex(content.as_bytes()),
+            content,
+            readable_parts: vec![],
+            provenance: json!({"native_record": id}),
+            summary: None,
+            native,
+        }
+    }
+
+    #[test]
+    fn invented_citations_cannot_publish() {
+        assert_eq!(
+            published("Claim [[patient_source:invented]]", &[]).err(),
+            Some(PublicationError::NotRead("invented".into()))
+        );
+        let invented = "Claim.\n[[source_summaries]]\ninvented: A record.\n[[/source_summaries]]";
+        let answered = published(invented, &[]).unwrap();
+        assert_eq!(answered.text, "Claim.");
+        assert!(answered.citations.is_empty());
+        let answered = published("General knowledge only.", &[]).unwrap();
+        assert_eq!(answered.text, "General knowledge only.");
+        assert!(answered.citations.is_empty());
+    }
+
+    #[test]
+    fn a_summary_joins_its_citation_and_leaves_the_answer() {
+        let records = [delivered("allergy", None), delivered("note", None)];
+        let (allergy, note) = (&records[0].id, &records[1].id);
+        let long = "x".repeat(SUMMARY_MAX_CHARS + 1);
+        let answer = format!(
+            "No drug allergies are recorded [[patient_source:{allergy}]].\n\n\
+             [[source_summaries]]\n\
+             {allergy}: Records no known drug allergies, entered September 11, 2018.\n\
+             {note}: Not cited in the answer.\n\
+             unknown: Names no source.\n\
+             [[/source_summaries]]\n"
+        );
+        let answered = published(&answer, &records).unwrap();
+        assert_eq!(
+            answered.text,
+            format!("No drug allergies are recorded [[patient_source:{allergy}]].")
+        );
+        assert_eq!(answered.citations.len(), 1);
+        assert_eq!(
+            answered.citations[0].summary.as_deref(),
+            Some("Records no known drug allergies, entered September 11, 2018.")
+        );
+
+        for broken in [
+            long,
+            format!("Points elsewhere [[patient_source:{note}]]."),
+            " ".into(),
+        ] {
+            let answer = format!(
+                "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: {broken}\n[[/source_summaries]]"
+            );
+            let answered = published(&answer, &records).unwrap();
+            assert_eq!(
+                answered.text,
+                format!("Claim [[patient_source:{allergy}]].")
+            );
+            assert_eq!(answered.citations[0].summary, None, "kept {broken:?}");
+        }
+
+        let unclosed = format!(
+            "Claim [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none."
+        );
+        let answered = published(&unclosed, &records).unwrap();
+        assert_eq!(answered.text, unclosed);
+        assert_eq!(answered.citations[0].summary, None);
+
+        let around = format!(
+            "Before [[patient_source:{allergy}]].\n[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]\nAfter."
+        );
+        let answered = published(&around, &records).unwrap();
+        assert_eq!(
+            answered.text,
+            format!("Before [[patient_source:{allergy}]].\n\nAfter.")
+        );
+        assert_eq!(
+            answered.citations[0].summary.as_deref(),
+            Some("Records none.")
+        );
+
+        let only_block =
+            format!("[[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]");
+        let answered = published(&only_block, &records).unwrap();
+        assert_eq!(answered.text, only_block);
+        assert!(answered.citations.is_empty());
+        let blank_around = format!(
+            " \n[[source_summaries]]\n[[patient_source:{allergy}]]\n[[/source_summaries]]\n "
+        );
+        let answered = published(&blank_around, &records).unwrap();
+        assert_eq!(answered.text, blank_around);
+        assert_eq!(answered.citations.len(), 1);
+        assert_eq!(answered.citations[0].summary, None);
+    }
+
+    #[test]
+    fn a_citation_marker_inside_the_summary_block_is_not_a_citation() {
+        let records = [delivered("allergy", None)];
+        let allergy = &records[0].id;
+        let answer = format!(
+            "General knowledge only.\n[[source_summaries]]\n{allergy}: See [[patient_source:invented]].\n[[/source_summaries]]"
+        );
+        let answered = published(&answer, &records).unwrap();
+        assert_eq!(answered.text, "General knowledge only.");
+        assert!(answered.citations.is_empty());
+    }
+
+    #[test]
+    fn a_source_native_link_travels_with_its_citation() {
+        let link = crate::physician_sources::NativeLink {
+            label: "Demo chart".into(),
+            uri: "https://ehr.example/allergy/1".into(),
+        };
+        let records = [
+            delivered("allergy", Some(link.clone())),
+            delivered("note", None),
+        ];
+        let answered = published(
+            &format!(
+                "A [[patient_source:{}]] B [[patient_source:{}]]",
+                records[0].id, records[1].id
+            ),
+            &records,
+        )
+        .unwrap();
+        assert_eq!(answered.citations[0].native, Some(link));
+        assert_eq!(answered.citations[1].native, None);
+    }
+
+    #[test]
+    fn the_basis_leaves_the_answer_and_publishes_beside_it() {
+        let records = [delivered("allergy", None)];
+        let allergy = &records[0].id;
+        let answer = format!(
+            "None recorded [[patient_source:{allergy}]].\n\n[[basis]]\nRests on one allergy record.\n[[/basis]]\n\
+             [[source_summaries]]\n{allergy}: Records none.\n[[/source_summaries]]"
+        );
+        let answered = published(&answer, &records).unwrap();
+        assert_eq!(
+            answered.text,
+            format!("None recorded [[patient_source:{allergy}]].")
+        );
+        assert_eq!(
+            answered.basis.as_deref(),
+            Some("Rests on one allergy record.")
+        );
+        assert_eq!(
+            answered.citations[0].summary.as_deref(),
+            Some("Records none.")
+        );
+        // A partial answer separates its basis the same way.
+        let partial = published_partial(&answer, &records);
+        assert_eq!(partial.text, answered.text);
+        assert_eq!(partial.basis, answered.basis);
+
+        let cited_basis = format!("Claim.\n[[basis]]See [[patient_source:{allergy}]].[[/basis]]");
+        let answered = published(&cited_basis, &records).unwrap();
+        assert_eq!(answered.text, "Claim.");
+        assert_eq!(answered.basis, None);
+        assert!(answered.citations.is_empty());
+
+        let unclosed = "Claim.\n[[basis]]Rests on nothing.";
+        let answered = published(unclosed, &records).unwrap();
+        assert_eq!(answered.text, unclosed);
+        assert_eq!(answered.basis, None);
     }
 
     #[test]

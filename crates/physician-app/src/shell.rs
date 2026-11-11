@@ -529,6 +529,23 @@ pub fn synopsis_pieces(segments: &[ClinicalSegment]) -> Vec<SynopsisPiece> {
     parts
 }
 
+/// The distinct sources an answer cites, once each, in source-number order.
+pub fn answer_sources(segments: &[ClinicalSegment]) -> Vec<SourceChip> {
+    let mut sources: Vec<SourceChip> = Vec::new();
+    for piece in synopsis_pieces(segments) {
+        let SynopsisPiece::Chips(chips) = piece else {
+            continue;
+        };
+        for chip in chips {
+            // Numbers follow first citation, so a repeat is always a known number.
+            if !sources.iter().any(|known| known.index == chip.index) {
+                sources.push(chip);
+            }
+        }
+    }
+    sources
+}
+
 fn source_chip(
     index: usize,
     state: &str,
@@ -1904,6 +1921,38 @@ mod tests {
         let missing = citation_inspection(&closed);
         assert_eq!(missing.unavailable, Some(SOURCE_UNAVAILABLE));
         assert!(missing.provenance.is_none());
+    }
+
+    #[test]
+    fn an_answer_lists_each_cited_source_once() {
+        let cite = |id: &str| ClinicalSegment::Citation {
+            state: "resolved".to_owned(),
+            display_label: Some(format!("Record {id}")),
+            source: Some("patient".to_owned()),
+            source_id: Some(id.to_owned()),
+            handle: Some(id.to_owned()),
+            source_presentation: None,
+            destination: None,
+        };
+        let text = |text: &str| ClinicalSegment::Text {
+            text: text.to_owned(),
+        };
+        let segments = [
+            text("A "),
+            cite("a"),
+            text(" B "),
+            cite("b"),
+            text(" again "),
+            cite("a"),
+            text("."),
+        ];
+        let sources = answer_sources(&segments);
+        let listed: Vec<(usize, &str)> = sources
+            .iter()
+            .map(|chip| (chip.index, chip.label.as_str()))
+            .collect();
+        assert_eq!(listed, [(1, "Record a"), (2, "Record b")]);
+        assert!(answer_sources(&[text("General knowledge only.")]).is_empty());
     }
 
     #[test]
