@@ -47,7 +47,7 @@ use status::{CommandNotice, CommandStage, ReadNotice, ReadStage};
 use ui::{
     ActionRow, Author, Button, ButtonVariant, Card, Count, Dialog, DraftConflict, EmptyLine, Icon,
     IconName, LiveDot, NavigationControl, NavigationRow, PageTitle, ProgressBar, SearchField,
-    StatePill, StatusLine, TextField, TextKind, Tone,
+    StatePill, StatusLine, TextField, TextKind, Toast, Tone,
 };
 
 const SHELL_STYLES: &str = include_str!("../assets/shell.css");
@@ -74,6 +74,11 @@ const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
+const ARCHIVE: &str = "Archive";
+const ARCHIVED: &str = "Archived";
+const ARCHIVED_TOAST: &str = "Conversation archived.";
+const ARCHIVED_LINE: &str = "This conversation is archived. Sending a message brings it back.";
+const UNDO: &str = "Undo";
 const NOT_SAVED: &str = "Not saved";
 const DRAFT_CONFLICT: &str = "A newer version of this draft was saved elsewhere.";
 const DRAFT_CONFLICT_HELP: &str =
@@ -981,6 +986,18 @@ fn PhysicianShell(
     // The queued message being edited, and its words so far.
     let mut queued_editing = use_signal(|| None::<(String, String)>);
     let work_slot = use_command_slot("work", command_scope);
+    let archive_slot = use_command_slot("archive", command_scope);
+    let restore_slot = use_command_slot("restore", command_scope);
+    // The Undo toast for the latest Archive, keyed by its count: its patient and chat.
+    let mut archived_toast = use_signal(|| None::<(u32, String, String)>);
+    let mut archives = use_signal(|| 0u32);
+    // An accepted Archive, clicked or recovered after a reload, offers Undo.
+    let mut offer_undo = move |workspace: String, chat: String| {
+        *workspace_attempt.write() += 1;
+        let shown = archives() + 1;
+        archives.set(shown);
+        archived_toast.set(Some((shown, workspace, chat)));
+    };
     // Commands a reload interrupted are asked again under their own keys
     // once this physician is known; every read follows whatever they changed.
     #[cfg(target_arch = "wasm32")]
@@ -1003,8 +1020,19 @@ fn PhysicianShell(
                 chat_stop_slot,
                 queued_slot,
                 work_slot,
+                restore_slot,
             ] {
                 slot.ask_kept(client.peek().clone(), settled);
+            }
+            if let Some(command) = archive_slot.kept_command() {
+                let target = command.archive_target();
+                let accepted = Callback::new(move |()| {
+                    settled.call(());
+                    if let Some((workspace, chat)) = target.clone() {
+                        offer_undo(workspace, chat);
+                    }
+                });
+                archive_slot.send(client.peek().clone(), command, accepted, Some(settled));
             }
         });
     }
@@ -1524,6 +1552,14 @@ fn PhysicianShell(
         }),
         open_chat.read().as_deref(),
     );
+    // Whether the open conversation is archived, once the list says.
+    let open_archived = match (&chats, open_chat.read().as_deref()) {
+        (ChatView::Chats(lines), Some(id)) => lines
+            .iter()
+            .find(|line| line.id == id)
+            .map(|line| line.archived),
+        _ => None,
+    };
     let patient_list = patients
         .read()
         .as_ref()
@@ -1627,6 +1663,25 @@ fn PhysicianShell(
     );
     rsx! {
         ui::Stylesheet { app: SHELL_STYLES }
+        if let Some((key, workspace, chat)) = archived_toast() {
+            Toast {
+                key: "{key}",
+                words: ARCHIVED_TOAST,
+                action: UNDO.to_owned(),
+                on_action: move |_| {
+                    // Undo is its own command, under a new key.
+                    let command = archive_command("conversation.restore", &workspace, &chat);
+                    restore_slot.run(client.read().clone(), command, move || {
+                        *workspace_attempt.write() += 1;
+                    });
+                },
+                on_gone: move |_| {
+                    if archived_toast.peek().as_ref().map(|(standing, ..)| *standing) == Some(key) {
+                        archived_toast.set(None);
+                    }
+                },
+            }
+        }
         if app_collapsed() {
             Button {
                 class: "coda-restore",
@@ -1815,22 +1870,43 @@ fn PhysicianShell(
                                     ChatView::Pending => rsx! {},
                                     ChatView::Unavailable if patient_gone => rsx! {},
                                     ChatView::Unavailable => rsx! { p { class: "sidebar-loading", "{WORKSPACE_UNAVAILABLE}" } },
-                                    ChatView::Chats(lines) => rsx! {
-                                        for line in lines {
-                                            NavigationRow {
-                                                class: "sidebar-conversation-link",
-                                                onclick: {
-                                                    let id = line.id.clone();
-                                                    move |_| {
-                                                        open_chat.set(Some(id.clone()));
-                                                        drawer.set(Drawer::Dismissed);
+                                    ChatView::Chats(lines) => {
+                                        let (archived, active): (Vec<_>, Vec<_>) =
+                                            lines.into_iter().partition(|line| line.archived);
+                                        rsx! {
+                                            for line in active {
+                                                NavigationRow {
+                                                    class: "sidebar-conversation-link",
+                                                    onclick: {
+                                                        let id = line.id.clone();
+                                                        move |_| {
+                                                            open_chat.set(Some(id.clone()));
+                                                            drawer.set(Drawer::Dismissed);
+                                                        }
+                                                    },
+                                                    Icon { name: IconName::Message }
+                                                    "{line.title}"
+                                                }
+                                            }
+                                            if !archived.is_empty() {
+                                                div { class: "sidebar-section-heading", h2 { "{ARCHIVED}" } }
+                                                for line in archived {
+                                                    NavigationRow {
+                                                        class: "sidebar-conversation-link sidebar-archived-link",
+                                                        onclick: {
+                                                            let id = line.id.clone();
+                                                            move |_| {
+                                                                open_chat.set(Some(id.clone()));
+                                                                drawer.set(Drawer::Dismissed);
+                                                            }
+                                                        },
+                                                        Icon { name: IconName::Archive }
+                                                        "{line.title}"
                                                     }
-                                                },
-                                                Icon { name: IconName::Message }
-                                                "{line.title}"
+                                                }
                                             }
                                         }
-                                    },
+                                    }
                                 }
                             }
                         }
@@ -2130,6 +2206,8 @@ fn PhysicianShell(
                                 {
                                     chat_resume_slot.run(client.read().clone(), command, move || {
                                         *snapshot_attempt.write() += 1;
+                                        // Resume and Try again bring an archived conversation back.
+                                        *workspace_attempt.write() += 1;
                                     });
                                 }
                             },
@@ -2173,6 +2251,21 @@ fn PhysicianShell(
                                 }
                             },
                             on_open_chat: move |id: String| open_chat.set(Some(id)),
+                            open_archived,
+                            archive_busy: archive_slot.unanswered() || restore_slot.unanswered(),
+                            archive_notice: rsx! {
+                                {archive_slot.notice(client)}
+                                {restore_slot.notice(client)}
+                            },
+                            on_archive: move |_| {
+                                let (Some(workspace), Some(chat)) = (selected(), open_chat()) else {
+                                    return;
+                                };
+                                let command = archive_command("conversation.archive", &workspace, &chat);
+                                archive_slot.run(client.read().clone(), command, move || {
+                                    offer_undo(workspace.clone(), chat.clone());
+                                });
+                            },
                             on_new_chat: move |_| start_chat(),
                             on_send: move |_| send_message(),
                             on_dictate: move |_| {
@@ -2348,6 +2441,17 @@ impl Command {
             .unwrap_or_default()
             .to_owned()
     }
+
+    /// The patient and chat an Archive names, so its Undo can name them too.
+    #[cfg(any(target_arch = "wasm32", test))]
+    fn archive_target(&self) -> Option<(String, String)> {
+        if self.0.get("type")?.as_str()? != "conversation.archive" {
+            return None;
+        }
+        let payload = self.0.get("payload")?;
+        let field = |name: &str| payload.get(name)?.as_str().map(str::to_owned);
+        Some((field("patient_workspace_id")?, field("chat_id")?))
+    }
 }
 
 /// How a command was answered.
@@ -2511,18 +2615,18 @@ impl CommandSlot {
     /// the old page.
     #[cfg(target_arch = "wasm32")]
     fn ask_kept(self, client: PhysicianClient, settled: Callback) {
-        let Some((name, scope)) = self.kept else {
-            return;
-        };
-        let Some(scope) = scope.peek().clone() else {
-            return;
-        };
-        let Some(storage) = local_draft::SessionStorage::open() else {
-            return;
-        };
-        if let Some(command) = local_draft::read_command(&storage, &scope, name) {
-            self.send(client, Command(command), settled, Some(settled));
+        if let Some(command) = self.kept_command() {
+            self.send(client, command, settled, Some(settled));
         }
+    }
+
+    /// The command a reload interrupted, if this slot kept one.
+    #[cfg(target_arch = "wasm32")]
+    fn kept_command(&self) -> Option<Command> {
+        let (name, scope) = self.kept?;
+        let scope = scope.peek().clone()?;
+        let storage = local_draft::SessionStorage::open()?;
+        local_draft::read_command(&storage, &scope, name).map(Command)
     }
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
@@ -3473,6 +3577,11 @@ fn PatientSurface(
     on_queued_withdraw: EventHandler<String>,
     on_open_chat: EventHandler<String>,
     on_new_chat: EventHandler,
+    /// The open conversation is archived; `None` until the list names it.
+    open_archived: Option<bool>,
+    archive_busy: bool,
+    archive_notice: Element,
+    on_archive: EventHandler,
     conversation_open: bool,
     /// The open chat, which its responses' feedback belongs to.
     feedback_chat: Option<feedback::ChatKey>,
@@ -3870,7 +3979,7 @@ fn PatientSurface(
                         }
                     },
                     ChatView::Chats(lines) => rsx! {
-                        for line in lines {
+                        for line in lines.iter().filter(|line| !line.archived).cloned() {
                             NavigationRow {
                                 class: "sidebar-conversation-link",
                                 onclick: {
@@ -3880,6 +3989,23 @@ fn PatientSurface(
                                 Icon { name: IconName::Message }
                                 "{line.title}"
                             }
+                        }
+                        if conversation_open {
+                            if open_archived == Some(true) {
+                                p { class: "quiet-line conversation-archived", role: "status", "{ARCHIVED_LINE}" }
+                            } else if open_archived == Some(false) {
+                                ActionRow {
+                                    Button {
+                                        compact: true,
+                                        class: "conversation-archive",
+                                        disabled: archive_busy || running,
+                                        onclick: move |_| on_archive.call(()),
+                                        Icon { name: IconName::Archive }
+                                        "{ARCHIVE}"
+                                    }
+                                }
+                            }
+                            {archive_notice}
                         }
                         if conversation_open {
                             ReadNotice {
@@ -4883,6 +5009,19 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         .collect()
 }
 
+/// Archive (`conversation.archive`) or its Undo (`conversation.restore`) on
+/// one chat. Each press is its own command, so an Archive asked again after a
+/// lost answer never undoes a later Undo.
+fn archive_command(kind: &str, workspace_id: &str, chat_id: &str) -> Command {
+    Command::new(
+        kind,
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+        }),
+    )
+}
+
 /// Whether Coda is writing in this conversation, so Send waits as Send next.
 fn conversation_running(lines: &[ConversationLine]) -> bool {
     lines.iter().any(|line| line.stop.is_some())
@@ -5047,9 +5186,9 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, chat_resume_command, chat_stop_command, conversation_lines,
-        conversation_running, message_command, new_chat_id, queued_edit_command,
-        queued_withdraw_command,
+        ConversationLine, archive_command, chat_resume_command, chat_stop_command,
+        conversation_lines, conversation_running, message_command, new_chat_id,
+        queued_edit_command, queued_withdraw_command,
     };
     use crate::feedback;
     use crate::shell::STOPPED;
@@ -5347,6 +5486,17 @@ mod conversation_line_tests {
             "an unknown hold offers Try again, never Stop's Resume"
         );
         assert!(lines[0].stop.is_none());
+    }
+
+    #[test]
+    fn a_recovered_archive_names_the_chat_its_undo_restores() {
+        let archive = archive_command("conversation.archive", "pw-1", "chat-1");
+        assert_eq!(
+            archive.archive_target(),
+            Some(("pw-1".to_owned(), "chat-1".to_owned()))
+        );
+        let undo = archive_command("conversation.restore", "pw-1", "chat-1");
+        assert_eq!(undo.archive_target(), None);
     }
 
     #[test]

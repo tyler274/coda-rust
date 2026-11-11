@@ -60,7 +60,7 @@ impl Live {
             let created_at = crate::timestamp::format_rfc3339(
                 std::time::UNIX_EPOCH + std::time::Duration::from_secs(chat.opened_at.max(0) as u64),
             );
-            json!({"chat_id": chat.chat, "title": chat_title(&chat.first_message), "created_at": created_at})
+            json!({"chat_id": chat.chat, "title": chat_title(&chat.first_message), "created_at": created_at, "archived": chat.archived})
         }).collect())
     }
 }
@@ -185,9 +185,9 @@ struct QueuedPayload {
     text: Option<String>,
 }
 
-/// Accepts chat, Send next, queued edit and withdraw, Stop/Resume and
-/// reply-revision commands into the durable owner. Every other command is
-/// rejected.
+/// Accepts chat, Send next, queued edit and withdraw, Archive and its Undo,
+/// Stop/Resume and reply-revision commands into the durable owner. Every
+/// other command is rejected.
 pub(crate) async fn submit(
     State(live): State<Arc<Live>>,
     auth_ctx: Option<Extension<AuthContext>>,
@@ -207,6 +207,12 @@ pub(crate) async fn submit(
     }
     if matches!(body.kind.as_str(), "message.edit" | "message.withdraw") {
         return change_queued(live, auth_ctx, body).await;
+    }
+    if matches!(
+        body.kind.as_str(),
+        "conversation.archive" | "conversation.restore"
+    ) {
+        return archive(live, auth_ctx.map(|Extension(ctx)| ctx), body).await;
     }
     if body.kind != "message.submit" {
         return Json(json!({
@@ -716,6 +722,83 @@ async fn change_queued(
     }
 }
 
+/// `conversation.archive` and `conversation.restore` name one chat.
+#[derive(Deserialize)]
+struct ArchivePayload {
+    patient_workspace_id: String,
+    chat_id: String,
+}
+
+/// Why Archive waits, shown beside the control.
+const ARCHIVE_BUSY: &str = "Coda can archive this conversation once nothing is running or queued.";
+
+/// `conversation.archive` and its Undo, `conversation.restore`, once per key,
+/// in the durable owner. The workspace is checked by the auth middleware;
+/// only this physician's chat moves.
+async fn archive(live: Arc<Live>, ctx: Option<AuthContext>, body: CommandBody) -> Response {
+    use local_product::runtime::{Archive, Archived};
+    let kind = body.kind.as_str();
+    let direction = if kind == "conversation.archive" {
+        Archive::Archive
+    } else {
+        Archive::Restore
+    };
+    let Some(payload) = body
+        .payload
+        .and_then(|value| serde_json::from_value::<ArchivePayload>(value).ok())
+    else {
+        return rejected(kind);
+    };
+    let Some(key) = body.idempotency_key.filter(|key| !key.trim().is_empty()) else {
+        return rejected(kind);
+    };
+    let Some(ctx) = ctx else {
+        return StatusCode::UNAUTHORIZED.into_response();
+    };
+    let scope = local_product::runtime::Scope {
+        practice: ctx.identity.practice_id.clone(),
+        physician: ctx.identity.physician_id.clone(),
+        workspace: payload.patient_workspace_id.clone(),
+        chat: payload.chat_id.clone(),
+    };
+    let session_hash = physician_auth::PostgresAuthStore::session_reference(&ctx.token);
+    let outcome = live
+        .chat
+        .store
+        .archive_authorized(&scope, &key, session_hash, direction)
+        .await;
+    match outcome {
+        Ok(Archived::Refused) => rejected(kind),
+        Ok(Archived::Busy) => Json(json!({
+            "outcome": "rejected",
+            "message": ARCHIVE_BUSY,
+        }))
+        .into_response(),
+        Ok(outcome) => {
+            if outcome == Archived::Done {
+                announce(&live, &payload.patient_workspace_id).await;
+            }
+            Json(json!({
+                "outcome": "accepted",
+                "patient_workspace_id": payload.patient_workspace_id,
+                "chat_id": payload.chat_id,
+            }))
+            .into_response()
+        }
+        Err(error) => {
+            tracing::warn!(command = kind, %error, "physician conversation archive failed");
+            (
+                StatusCode::SERVICE_UNAVAILABLE,
+                Json(json!({
+                    "outcome": "rejected",
+                    "message": rejection_message(kind),
+                })),
+            )
+                .into_response()
+        }
+    }
+}
+
 /// Tells every open page on this workspace to refetch. Lossy: a page that
 /// misses it converges on its next refetch or resync.
 async fn announce(live: &Live, workspace_id: &str) {
@@ -846,6 +929,7 @@ mod durable_snapshot_tests {
             last_activity_at: 0,
             scenario: None,
             queued: vec![],
+            archived_at: None,
         }
     }
 

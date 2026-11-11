@@ -1,4 +1,6 @@
 use harness::engine::MAX_FAILED_ATTEMPTS;
+#[path = "tests/archive.rs"]
+mod archive_tests;
 #[path = "tests/feedback.rs"]
 mod feedback_tests;
 #[path = "tests/migration.rs"]

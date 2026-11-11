@@ -174,6 +174,29 @@ function (step, ...args) {
       if (!button) throw new Error(`no ${words} beside ${text}`);
       button.click();
     },
+    // Where the open chat stands with Archive: the sidebar's active and archived titles, whether
+    // the page offers Archive (and whether it can be pressed), the archived line, and the toast.
+    archiveState() {
+      const titles = (selector) =>
+        [...document.querySelectorAll(selector)].map((row) => row.textContent.trim());
+      const archive = document.querySelector("button.conversation-archive");
+      return {
+        active: titles(".sidebar-conversation-link:not(.sidebar-archived-link)"),
+        archived: titles(".sidebar-archived-link"),
+        archive: archive ? (archive.disabled ? "disabled" : "enabled") : "absent",
+        archivedLine: !!document.querySelector(".conversation-archived"),
+        toast: document.querySelector(".toast:not(.is-leaving)")?.textContent.trim() ?? null,
+        notice: [...document.querySelectorAll('[aria-label="Conversation"] [role="status"], [aria-label="Conversation"] [role="alert"]')]
+          .map((line) => line.textContent.trim())
+          .filter((text) => text.includes("archive")),
+      };
+    },
+    // The words on the conversation's mechanical line buttons, such as Stop or Try again.
+    mechanicalActions() {
+      return [...document.querySelectorAll(".conversation-mechanical button")].map((button) =>
+        button.textContent.trim(),
+      );
+    },
     // The composer's primary action words.
     sendWords() {
       return one(".composer-dock button[type=submit]").textContent.trim();
