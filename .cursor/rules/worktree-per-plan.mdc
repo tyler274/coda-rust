@@ -12,8 +12,8 @@ plans can proceed in parallel without touching each other's files or branches.
 `dev/worktree.sh` owns worktrees. It puts each one at `.worktrees/<slug>` inside
 the main checkout (ignored by Git) and links its `target/` to a directory on the
 build root, cloned from a shared seed of third-party build output, so a new
-worktree costs its source and no build disk. See "Worktrees and build output" in
-the README.
+worktree costs its source and no build disk. The script's header lists its
+commands.
 
 ## Steps
 

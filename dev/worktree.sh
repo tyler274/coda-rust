@@ -2,7 +2,7 @@
 # Worktrees whose build output costs nothing until it diverges. Each worktree
 # under .worktrees/<slug> keeps only its source; its target/ links to its own
 # directory under the build root, made as a reflink clone of a seed that holds
-# the third-party build output. See "Worktrees and build output" in README.md.
+# the third-party build output.
 #
 #   dev/worktree.sh new <slug> [--from <ref>]   worktree plus a seeded target
 #   dev/worktree.sh seed [<ref>]                build a seed from <ref> (origin/main)
@@ -11,6 +11,13 @@
 #   dev/worktree.sh rm <slug>                   remove a worktree and its target
 #   dev/worktree.sh prune [--yes]               rm every clean worktree merged into origin/main
 #   dev/worktree.sh status                      worktrees, targets and disk use
+#
+# The build root ($CODA_BUILD_ROOT, default /agents/coda/build) must support
+# reflinks (ZFS 2.2 or later, btrfs, XFS); the script stops rather than fall
+# back to full copies. `seed` runs dev/session-seed.sh, keyed by Cargo.lock,
+# flake.lock and rust-toolchain.toml. `gc` resets targets unbuilt for <days>
+# (7) to a seed clone and removes targets whose worktree is gone; a reset keeps
+# target/verification, which holds retained proof.
 set -euo pipefail
 
 common=$(git rev-parse --path-format=absolute --git-common-dir)
