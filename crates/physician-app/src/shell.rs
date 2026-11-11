@@ -28,7 +28,8 @@ pub const PAST_WORK_EMPTY: &str = "No past conversations or work are available."
 /// An open conversation whose snapshot has no turns.
 pub const CONVERSATION_EMPTY: &str = "What would you like Coda to review?";
 /// A resolved citation whose preview prose is missing.
-pub const SOURCE_UNAVAILABLE: &str = "Source content is unavailable here.";
+pub const SOURCE_UNAVAILABLE: &str =
+    "A readable presentation is unavailable here. This does not mean the source record is missing.";
 /// Copies the reply draft as shown.
 pub const REPLY_COPY: &str = "Copy reply";
 /// Closes a ready reply without sending it.
@@ -404,6 +405,8 @@ pub struct SourceChip {
     pub preview: String,
     /// The preview's as-of date, as the citation recorded it.
     pub as_of: String,
+    /// Retained source presentation, separate from the authored preview.
+    pub inspection: Option<physician_wire::SourceInspection>,
     /// `Open in {chart}` or `Open original` when a native link exists.
     pub open_label: Option<String>,
     /// The native destination URI.
@@ -558,6 +561,9 @@ fn source_chip(
         open,
         preview,
         as_of,
+        inspection: presentation
+            .filter(|_| open)
+            .and_then(|presentation| presentation.inspection.clone()),
         open_label,
         open_uri,
     }
@@ -580,7 +586,7 @@ fn native_open(
         .uri
         .as_deref()
         .map(str::trim)
-        .filter(|uri| !uri.is_empty())
+        .filter(|uri| web_address(uri))
     else {
         return (None, None);
     };
@@ -592,6 +598,22 @@ fn native_open(
         .map(|label| format!("Open in {label}"))
         .unwrap_or_else(|| "Open original".to_owned());
     (Some(label), Some(uri.to_owned()))
+}
+
+/// A source adapter supplies this address, so only a web address or a same-origin path
+/// becomes a link. A backslash or a line break is refused: browsers treat those as `/`
+/// or strip them, which turns a path into a protocol-relative address.
+fn web_address(uri: &str) -> bool {
+    if uri
+        .chars()
+        .any(|character| matches!(character, '\\' | '\t' | '\n' | '\r'))
+    {
+        return false;
+    }
+    let lower = uri.to_ascii_lowercase();
+    lower.starts_with("https://")
+        || lower.starts_with("http://")
+        || (uri.starts_with('/') && !uri.starts_with("//"))
 }
 
 fn chip_number(
@@ -691,6 +713,70 @@ pub fn format_calendar_date(day: &str) -> String {
         return day.to_owned();
     };
     format!("{name} {date}, {year}")
+}
+
+/// Displays a full calendar date in words. A timestamp keeps its time and offset as recorded,
+/// without converting zones; partial dates and anything else stay as the source gave them.
+pub fn source_date(value: &str) -> String {
+    if let Some((day, time)) = value.split_once('T')
+        && day.len() == 10
+        && !time.is_empty()
+    {
+        let shown = source_day(day);
+        return if shown == day {
+            value.into()
+        } else {
+            format!("{shown}, {time} as recorded")
+        };
+    }
+    source_day(value)
+}
+
+/// The sentence under Coda's summary. A recorded, authored, effective, issued, or document
+/// date is the record's date. Any other retained date keeps that field's own label.
+pub fn summary_provenance(label: &str, as_of: &str) -> String {
+    let as_of = as_of.trim();
+    if as_of.is_empty() {
+        return "Coda wrote this from the record.".into();
+    }
+    let shown = source_date(as_of);
+    match label {
+        "" | "Recorded" | "Authored" | "Effective" | "Issued" | "Dated" => {
+            format!("Coda wrote this from the record dated {shown}.")
+        }
+        other => format!("Coda wrote this from the record. {other} {shown}."),
+    }
+}
+
+fn source_day(value: &str) -> String {
+    const MONTHS: [&str; 12] = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+    if value.len() != 10 {
+        return value.into();
+    }
+    let parts: Vec<_> = value.split('-').collect();
+    if let [year, month, day] = parts.as_slice()
+        && year.len() == 4
+        && year.parse::<u32>().is_ok()
+        && let (Ok(month), Ok(day)) = (month.parse::<usize>(), day.parse::<u32>())
+        && let Some(name) = MONTHS.get(month.wrapping_sub(1))
+        && (1..=31).contains(&day)
+    {
+        return format!("{name} {day}, {year}");
+    }
+    value.into()
 }
 
 /// The sidebar where the window can't hold it beside a page: whether it is over the page, and
@@ -1212,6 +1298,8 @@ pub struct CitationInspection {
     pub eyebrow: String,
     /// The source title.
     pub title: String,
+    /// The retained source, independent of preview availability.
+    pub source: Option<physician_wire::SourceInspection>,
     /// Preview paragraphs. Empty when the citation recorded none.
     pub paragraphs: Vec<String>,
     /// `Prepared by Coda · as of {date}` when the preview has a date.
@@ -1227,14 +1315,19 @@ pub struct CitationInspection {
 /// Builds the inspection surface from a chip. It does not fetch the record.
 pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
     let paragraphs = preview_paragraphs(&chip.preview);
-    let unavailable = if chip.open && paragraphs.is_empty() {
+    let unavailable = if chip.open && paragraphs.is_empty() && chip.inspection.is_none() {
         Some(SOURCE_UNAVAILABLE)
     } else {
         None
     };
     CitationInspection {
         eyebrow: format!("Source {}", chip.index),
-        title: chip.label.clone(),
+        title: chip
+            .inspection
+            .as_ref()
+            .map(|source| source.title.clone())
+            .unwrap_or_else(|| chip.label.clone()),
+        source: chip.inspection.clone(),
         paragraphs,
         provenance: if unavailable.is_some() {
             None
@@ -1250,6 +1343,17 @@ pub fn citation_inspection(chip: &SourceChip) -> CitationInspection {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn source_dates_keep_their_precision_and_recorded_time() {
+        assert_eq!(source_date("2020-09-14"), "September 14, 2020");
+        assert_eq!(
+            source_date("2018-09-11T12:20:00+00:00"),
+            "September 11, 2018, 12:20:00+00:00 as recorded"
+        );
+        assert_eq!(source_date("2026-08"), "2026-08");
+        assert_eq!(source_date("2020-13-01T00:00"), "2020-13-01T00:00");
+    }
 
     fn admin_with_colleague() -> WhoamiResponse {
         serde_json::from_value(serde_json::json!({
@@ -1509,9 +1613,11 @@ mod tests {
             source_id: Some("doc".to_owned()),
             handle: Some("h".to_owned()),
             source_presentation: Some(SourcePresentation {
+                inspection: None,
                 content: Some(physician_wire::SourcePreviewContent {
                     text: "This stays closed.".to_owned(),
                     as_of: "April 13, 2026".to_owned(),
+                    as_of_label: String::new(),
                 }),
             }),
             destination: Some(CitationDestination {
@@ -1541,6 +1647,34 @@ mod tests {
             }),
         );
         assert_eq!(unlabeled.open_label.as_deref(), Some("Open original"));
+        for uri in ["https://ehr.example/a/1", "/local-ehr/lab"] {
+            assert!(web_address(uri), "{uri}");
+        }
+        for uri in [
+            "javascript:alert(1)",
+            "JavaScript:x",
+            "data:text/html,x",
+            "//evil.example",
+            "",
+            "/\\evil.example",
+            "/\\/evil.example",
+            "/\n/evil.example",
+            "/\t/evil.example",
+        ] {
+            assert!(!web_address(uri), "{uri}");
+        }
+        assert_eq!(
+            summary_provenance("Recorded", "2018-09-11T12:20:00+00:00"),
+            "Coda wrote this from the record dated September 11, 2018, 12:20:00+00:00 as recorded."
+        );
+        assert_eq!(
+            summary_provenance("Onset recorded", "2010-01-02T08:00:00+00:00"),
+            "Coda wrote this from the record. Onset recorded January 2, 2010, 08:00:00+00:00 as recorded."
+        );
+        assert_eq!(
+            summary_provenance("", ""),
+            "Coda wrote this from the record."
+        );
         assert!(workspace_event_rereads(
             "workspace_changed",
             r#"{"patient_workspace_id":"pw-mary","cursor":2,"practice_day":true}"#,

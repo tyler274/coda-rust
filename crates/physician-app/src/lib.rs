@@ -930,8 +930,23 @@ fn PhysicianShell(
     // Draft text and the Save mark, per patient workspace and chat.
     let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
+    let mut source_reader = use_signal(|| None::<OpenReading>);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
+    // A source belongs to the conversation that cited it: going to another patient, chat or
+    // page closes it, so one patient's record never stands beside another's.
+    let mut source_owner = use_signal(|| None::<(Option<String>, Option<String>, Place)>);
+    use_effect(move || {
+        let here = (selected(), open_chat(), place());
+        if source_owner
+            .peek()
+            .as_ref()
+            .is_some_and(|owner| *owner != here)
+        {
+            source_owner.set(None);
+            source_reader.set(None);
+        }
+    });
     let mut moved = use_signal(|| false);
     let mut editing = use_signal(|| false);
     let mut query = use_signal(String::new);
@@ -1842,6 +1857,18 @@ fn PhysicianShell(
                         "Collapse Coda"
                     }
                 }
+                ui::SourceReading {
+                    source: source_reader().map(|open| ui::SourcePane {
+                        eyebrow: open.eyebrow.clone().unwrap_or_default(),
+                        title: open.title.clone(),
+                        content: rsx! { SourceReaderContent { reading: open } },
+                        back: "Back to answer".into(),
+                        close: "Close source".into(),
+                    }),
+                    on_close: move |_| {
+                        source_owner.set(None);
+                        source_reader.set(None);
+                    },
                 match place() {
                     Place::Today => rsx! {
                         TodaySurface {
@@ -2037,7 +2064,8 @@ fn PhysicianShell(
                                 reading.set(Some(prose_reading(title, body)));
                             },
                             on_open_source: move |chip: SourceChip| {
-                                reading.set(Some(source_reading(chip)));
+                                source_owner.set(Some((selected(), open_chat(), place())));
+                                source_reader.set(Some(source_reading(chip)));
                             },
                             on_draft: move |value: String| {
                                 let target = draft_target();
@@ -2149,6 +2177,7 @@ fn PhysicianShell(
                             },
                         }
                     },
+                }
                 }
             }
         }
@@ -3597,7 +3626,11 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
-                                    MessageWords { text: line.text }
+                                    if line.segments.is_empty() {
+                                        MessageWords { text: line.text }
+                                    } else {
+                                        CitedWords { segments: line.segments, on_open_source }
+                                    }
                                 }
                             } else {
                                 MessageWords { text: line.text }
@@ -3772,6 +3805,7 @@ fn ConnectionsDialog(lines: Vec<String>, failed: bool, on_close: EventHandler) -
 
 #[derive(Clone, PartialEq, Eq)]
 struct OpenReading {
+    source: Option<physician_wire::SourceInspection>,
     eyebrow: Option<String>,
     title: String,
     paragraphs: Vec<String>,
@@ -3783,6 +3817,7 @@ struct OpenReading {
 
 fn prose_reading(title: String, body: String) -> OpenReading {
     OpenReading {
+        source: None,
         eyebrow: None,
         title,
         paragraphs: if body.is_empty() {
@@ -3800,6 +3835,7 @@ fn prose_reading(title: String, body: String) -> OpenReading {
 fn source_reading(chip: SourceChip) -> OpenReading {
     let inspection = citation_inspection(&chip);
     OpenReading {
+        source: inspection.source,
         eyebrow: Some(inspection.eyebrow),
         title: inspection.title,
         paragraphs: inspection.paragraphs,
@@ -3816,11 +3852,122 @@ fn CitationChip(chip: SourceChip, on_open: EventHandler<SourceChip>) -> Element 
     let index = chip.index;
     if chip.open {
         rsx! {
-            ui::CitationChip { index, label, onclick: move |_| on_open.call(chip.clone()) }
+            ui::CitationPreview {
+                index,
+                label: chip.label.clone(),
+                eyebrow: "Source {index}",
+                citation_label: label,
+                close_label: "Close source preview",
+                expand_label: "Read source",
+                on_expand: {
+                    let chip = chip.clone();
+                    move |_| on_open.call(chip.clone())
+                },
+                original: chip.open_uri.clone(),
+                original_label: chip.open_label.clone(),
+                new_tab_hint: "Opens in a new tab",
+                if let Some(summary) = chip.inspection.as_ref().and_then(|source| source.coda_preview.as_ref()) {
+                    span { class: "citation-summary-label", "Coda's summary" }
+                    ui::SourceText { text: summary.text.clone() }
+                    span { class: "reader-provenance citation-summary-date",
+                        "{shell::summary_provenance(&summary.as_of_label, &summary.as_of)}"
+                    }
+                } else if let Some(source) = &chip.inspection {
+                    span { "{source.record_kind}" }
+                    span { "Statement in the retained record. Open to read source details." }
+                } else {
+                    ui::SourceText { text: chip.preview.clone() }
+                }
+            }
         }
     } else {
         rsx! {
             ui::CitationChip { index, label }
+        }
+    }
+}
+
+#[component]
+fn SourceReaderContent(reading: OpenReading) -> Element {
+    rsx! {
+        article { class: "clinical-source-reader",
+            if let (Some(label), Some(uri)) = (reading.link_label, reading.link_uri) {
+                a { class: "citation-open", href: uri, target: "_blank", rel: "noopener noreferrer", title: "Opens in a new tab", "{label}" }
+            }
+            if let Some(source) = reading.source {
+                if let Some(preview) = source.coda_preview {
+                    section { class: "source-coda-summary",
+                        h3 { "Coda's summary" }
+                        ui::SourceText { text: preview.text }
+                        p { class: "reader-provenance", "{shell::summary_provenance(&preview.as_of_label, &preview.as_of)}" }
+                    }
+                }
+                p { class: "source-record-kind", "{source.record_kind}" }
+                if source.dates.is_empty() {
+                    p { class: "reader-provenance", "No record date was retained with this citation." }
+                }
+                for date in source.dates {
+                    p { class: "source-record-date", "{date.label} {shell::source_date(&date.text)}" }
+                }
+                for attribution in source.attribution {
+                    p { class: "reader-provenance", "{attribution.label}: {attribution.text}" }
+                }
+                p { class: "source-record-notice", "This is the retained source record, not a current chart-wide conclusion." }
+                if let Some(passage) = source.cited_passage {
+                    section {
+                        h3 { "Exact cited passage" }
+                        blockquote { ui::SourceText { text: passage } }
+                    }
+                } else {
+                    p { class: "reader-provenance", "The specific supporting passage is not identified in this citation." }
+                }
+                for section in source.sections {
+                    section { class: "source-record-section",
+                        h3 { "{section.label}" }
+                        ui::SourceText { text: section.text }
+                    }
+                }
+                if !source.record_details.is_empty() {
+                    section { class: "source-record-section",
+                        h3 { "Record details" }
+                        dl {
+                            for detail in source.record_details {
+                                dt { "{detail.label}" }
+                                dd { "{detail.text}" }
+                            }
+                        }
+                    }
+                }
+                details { class: "source-technical-details",
+                    summary { "Technical details" }
+                    dl {
+                        dt { "Record identifier" } dd { "{source.technical.reference}" }
+                        dt { "Retained revision" } dd { "{source.technical.revision}" }
+                        dt { "SHA-256" } dd { "{source.technical.sha256}" }
+                        for date in source.technical.storage_dates {
+                            dt { "{date.label}" } dd { "{date.text}" }
+                        }
+                    }
+                    details {
+                        summary { "Original source data (exact retained representation)" }
+                        pre { class: "source-original-data", "{source.technical.original}" }
+                    }
+                    details {
+                        summary { "Source provenance" }
+                        pre { class: "source-original-data", "{source.technical.provenance}" }
+                    }
+                }
+            }
+            if !reading.paragraphs.is_empty() {
+                section { class: "source-coda-preview",
+                    h3 { "Coda-authored preview" }
+                    for paragraph in reading.paragraphs { p { class: "reader-body", "{paragraph}" } }
+                    if let Some(provenance) = reading.provenance { p { class: "reader-provenance", "{provenance}" } }
+                }
+            }
+            if let Some(unavailable) = reading.unavailable {
+                p { class: "citation-unavailable", "{unavailable}" }
+            }
         }
     }
 }
@@ -3878,6 +4025,27 @@ fn PastWorkDialog(patient: String, on_close: EventHandler) -> Element {
             p { class: "past-work-empty", "{PAST_WORK_EMPTY}" }
         }
     }
+}
+
+#[component]
+fn CitedWords(
+    segments: Vec<physician_wire::ClinicalSegment>,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
+    let parts = synopsis_pieces(&segments)
+        .into_iter()
+        .map(|piece| match piece {
+            SynopsisPiece::Text(text) => ui::ProsePart::Words(text),
+            SynopsisPiece::Chips(chips) => ui::ProsePart::Inline(rsx! {
+                for chip in chips { CitationChip { chip, on_open: on_open_source } }
+            }),
+        })
+        .collect();
+    rsx! { ui::Prose {
+        message: true,
+        names: ui::ProseNames { code: "Code".into(), table: "Table".into() },
+        parts,
+    } }
 }
 
 /// What Coda says in a chat snapshot, drawn richly. This doesn't fetch a source or run a model.
@@ -4396,6 +4564,7 @@ fn message_command(
 #[derive(Debug, Clone, PartialEq)]
 struct ConversationLine {
     text: String,
+    segments: Vec<physician_wire::ClinicalSegment>,
     /// Who wrote it, when the server says: the physician or Coda. A turn that
     /// doesn't say shows without a speaker rather than as either.
     author: Option<Author>,
@@ -4435,6 +4604,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
             };
             Some(ConversationLine {
                 text,
+                segments: turn.segments.clone(),
                 author,
                 resume,
                 stop,
@@ -4570,6 +4740,24 @@ mod conversation_line_tests {
     use ui::Author;
 
     #[test]
+    fn saved_chat_citation_opens_the_exact_record() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({"snapshot": {
+            "runs": [], "conversation":[{"kind":"model", "text":"Read [[patient_source:exact]]",
+                "segments":[{"kind":"text","text":"Read "},{"kind":"citation","state":"resolved",
+                    "source":"patient","source_id":"exact","handle":"lab","display_label":"Observation",
+                    "source_presentation":{"content":{"text":"{\"potassium\":4.1}","as_of":"revision r1"}}}]}]
+        }})).unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        let pieces = crate::shell::synopsis_pieces(&lines[0].segments);
+        let crate::shell::SynopsisPiece::Chips(chips) = &pieces[1] else {
+            panic!("citation chip");
+        };
+        let inspection = crate::shell::citation_inspection(&chips[0]);
+        assert_eq!(inspection.paragraphs, ["{\"potassium\":4.1}"]);
+        assert!(inspection.unavailable.is_none());
+    }
+
+    #[test]
     fn new_conversation_ids_are_distinct_chat_ids() {
         let (first, second) = (new_chat_id(), new_chat_id());
         assert!(first.starts_with("chat-") && second.starts_with("chat-"));
@@ -4604,6 +4792,7 @@ mod conversation_line_tests {
             vec![
                 ConversationLine {
                     text: "Hello".into(),
+                    segments: vec![],
                     author: Some(Author::Person),
                     resume: None,
                     stop: None,
@@ -4611,6 +4800,7 @@ mod conversation_line_tests {
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
+                    segments: vec![],
                     author: None,
                     resume: Some(target()),
                     stop: None,

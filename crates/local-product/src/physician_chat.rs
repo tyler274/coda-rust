@@ -55,6 +55,13 @@ patient workspace and open the exact revisions. A search hit identifies a candid
 the content actually returned, name the dated source and distinguish a partial read from a whole one. \
 If chart tools or evidence are unavailable, say what you cannot confirm.
 
+Cite record-supported claims with [[patient_source:CITATION_ID]], using only citation_id values from whole \
+records opened in this conversation's current context. A passage of a large record carries no citation_id \
+and cannot be cited. Never invent a citation. When you cite, end the answer with a [[source_summaries]] \
+block: one line per cited source, CITATION_ID: one or two plain sentences on what that record itself says \
+that bears on the answer, then [[/source_summaries]]. The physician sees each line beside its source, not \
+in the answer; it describes the record, adds no new claim and contains no citation markers.
+
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. Before relying on a matching, materially \
 overlapping, or explicitly invoked skill whose body is absent, load it through skill_view, even when the \
@@ -78,6 +85,168 @@ materially change interpretation. Usually keep that basis under 80 words. Use ph
 runtime terminology, private deliberation, or tool activity. Requesting tools continues work; your final \
 response without tool calls is the complete answer the physician reads, so do not leave it to earlier \
 messages. Communicate completed clinical work, not model identities, tools, schemas or runtime IDs.";
+
+/// Exact source bytes retained with a published answer, never re-resolved at readback.
+#[derive(Clone, Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+pub struct Citation {
+    /// Opaque identity emitted by the source reader.
+    pub id: String,
+    /// Source-owned record identity.
+    pub reference: String,
+    /// Immutable source version.
+    pub revision: String,
+    /// Source record type.
+    pub record_type: String,
+    /// Source-labeled dates retained by the exact read.
+    #[serde(default)]
+    pub dates: Vec<crate::physician_sources::RecordDate>,
+    /// Exact retained bytes the model read.
+    pub content: String,
+    /// Original decoded evidence alongside the source-native bytes.
+    #[serde(default)]
+    pub readable_parts: Vec<crate::physician_sources::ReadablePart>,
+    /// Digest of the retained bytes.
+    pub sha256: String,
+    /// Source-owned provenance.
+    pub provenance: Value,
+    /// Coda's summary of this record for this answer; never source text.
+    #[serde(default)]
+    pub summary: Option<String>,
+    /// Where the source system can open this record, when its adapter supplies one.
+    #[serde(default)]
+    pub native: Option<crate::physician_sources::NativeLink>,
+}
+
+const CITATION_OPEN: &str = "[[patient_source:";
+const SUMMARIES_OPEN: &str = "[[source_summaries]]";
+const SUMMARIES_CLOSE: &str = "[[/source_summaries]]";
+const SUMMARY_MAX_CHARS: usize = 400;
+
+/// The answer the physician reads and the citations it publishes with. The model's
+/// `[[source_summaries]]` block leaves the visible text; each line that names a cited
+/// source, fits, and carries no citation marker becomes that citation's summary. A line
+/// that breaks the contract is dropped, leaving that source to read as its record.
+/// `delivered` holds the whole records that reached the model in its current window.
+pub fn published(
+    text: &str,
+    delivered: &[Citation],
+) -> Result<(String, Vec<Citation>), PublicationError> {
+    let (visible, block) = split_summaries(text);
+    let cited = citations(&visible, delivered)?;
+    Ok((visible, summarized(cited, block)))
+}
+
+/// A partial answer ends the run, so a citation the model could not correct is
+/// removed rather than refused. Resolution is the same as [`published`]: only
+/// whole records delivered in the current window are cited, and the rest of the
+/// answer is kept. An unclosed marker loses only its opening `[[patient_source:`.
+pub fn published_partial(text: &str, delivered: &[Citation]) -> (String, Vec<Citation>) {
+    let (visible, block) = split_summaries(text);
+    let mut kept = String::with_capacity(visible.len());
+    let mut cited: Vec<Citation> = Vec::new();
+    let mut remaining = visible.as_str();
+    while let Some((before, suffix)) = remaining.split_once(CITATION_OPEN) {
+        kept.push_str(before);
+        let Some((id, rest)) = suffix.split_once("]]") else {
+            remaining = suffix;
+            break;
+        };
+        if let Some(citation) = delivered.iter().find(|c| c.id == id) {
+            kept.push_str(CITATION_OPEN);
+            kept.push_str(id);
+            kept.push_str("]]");
+            if !cited.iter().any(|c| c.id == id) {
+                cited.push(citation.clone());
+            }
+        }
+        remaining = rest;
+    }
+    kept.push_str(remaining);
+    (kept, summarized(cited, block))
+}
+
+/// Attaches each well-formed `[[source_summaries]]` line to the citation it names.
+fn summarized(mut cited: Vec<Citation>, block: &str) -> Vec<Citation> {
+    for line in block.lines() {
+        let Some((id, summary)) = line.split_once(':') else {
+            continue;
+        };
+        let summary = summary.trim();
+        if summary.is_empty()
+            || summary.chars().count() > SUMMARY_MAX_CHARS
+            || summary.contains("[[")
+        {
+            continue;
+        }
+        let id = id.trim().trim_start_matches(['-', '*']).trim();
+        if let Some(citation) = cited.iter_mut().find(|c| c.id == id) {
+            citation.summary = Some(summary.to_owned());
+        }
+    }
+    cited
+}
+
+/// Removes one closed `[[source_summaries]]` block, the last one, and returns its body.
+/// An unclosed marker stays in the answer: it is not a block, and hiding the text after it
+/// would drop part of what the physician asked for.
+fn split_summaries(text: &str) -> (String, &str) {
+    let Some((before, after)) = text.rsplit_once(SUMMARIES_OPEN) else {
+        return (text.to_owned(), "");
+    };
+    let Some((block, tail)) = after.split_once(SUMMARIES_CLOSE) else {
+        return (text.to_owned(), "");
+    };
+    let head = before.trim_end();
+    let tail = tail.trim();
+    let visible = match (head.is_empty(), tail.is_empty()) {
+        (_, true) => head.to_owned(),
+        (true, false) => tail.to_owned(),
+        (false, false) => format!("{head}\n\n{tail}"),
+    };
+    // A block that is the whole turn is not a summary. Removing it would publish a blank answer.
+    if visible.trim().is_empty() {
+        return (text.to_owned(), "");
+    }
+    (visible, block)
+}
+
+/// Why an answer's citations cannot be published. Each is a correctable model
+/// mistake: the finish is refused with this reason and the run continues.
+#[derive(Debug, PartialEq, Eq, thiserror::Error)]
+pub enum PublicationError {
+    /// A citation marker has no closing `]]`.
+    #[error(
+        "A citation marker is missing its closing ]]. Close every [[patient_source:CITATION_ID]] marker."
+    )]
+    Unterminated,
+    /// The answer cites an identity no whole record in the current window carries.
+    #[error(
+        "The answer cites {0}, which no whole record opened in the current context carries. Open the record in full and cite its citation_id, or remove the citation."
+    )]
+    NotRead(String),
+}
+
+/// Resolve only citations carried by whole records delivered in the current
+/// window. An unsupported marker refuses publication rather than becoming
+/// fabricated evidence.
+fn citations(text: &str, delivered: &[Citation]) -> Result<Vec<Citation>, PublicationError> {
+    let mut result: Vec<Citation> = Vec::new();
+    let mut remaining = text;
+    while let Some((_, suffix)) = remaining.split_once(CITATION_OPEN) {
+        let (id, rest) = suffix
+            .split_once("]]")
+            .ok_or(PublicationError::Unterminated)?;
+        let citation = delivered
+            .iter()
+            .find(|c| c.id == id)
+            .ok_or_else(|| PublicationError::NotRead(id.to_owned()))?;
+        if !result.iter().any(|c| c.id == id) {
+            result.push(citation.clone());
+        }
+        remaining = rest;
+    }
+    Ok(result)
+}
 
 /// Capabilities shared by every ordinary Chords chat request.
 pub fn tools() -> Vec<Tool> {
