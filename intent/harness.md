@@ -5,7 +5,7 @@ The harness is the agent loop that Chords and Duet both run on. It isn't a produ
 The models are smart. The harness gives them the right tools, the right context at the right time and skills they can find, then gets out of the way.
 
 - **References.** The harness is built from four reference harnesses: Codex, Hermes, OpenClaw and Pi. Each part below names the reference it follows and says where we differ.
-- **Open questions** are in OPEN-QUESTIONS.md. Git keeps the history.
+- **Open questions** are at the end. Git keeps the history.
 
 ## Terms
 
@@ -45,7 +45,7 @@ Each term has one meaning in this spec.
 
 ## Principles
 
-PRINCIPLES.md holds Coda's shared principles, and they apply here. The principles below are specific to the harness. The first five are its founding principles.
+README.md holds Coda's shared principles, and they apply here. The principles below are specific to the harness. The first five are its founding principles.
 
 1. **Lightweight, with progressive disclosure.**
    - The model starts with what its job needs and opens more when it wants it: the full text of a skill, the next page of a tool result, an earlier message.
@@ -312,7 +312,7 @@ Reply text:
 - The run record saves the reply once, when the message ends, as Codex, Hermes, Pi and OpenClaw do.
 - If a product shows text while the model writes, the text reaches the screen over a live connection, the way Codex's app server sends each piece as a notification.
 
-## Boundaries
+## Scope
 
 ### The products own these
 
@@ -329,13 +329,14 @@ Reply text:
 - Goals that run work again and again. Each product decides when its work continues.
 - A model that writes or edits its own skills.
 
-### Later
+### Ideas
 
 - A formal model of the harness, only when a promise such as steering, restarts or no duplicate effects needs proof.
 - Programmatic tool calling.
 - Image and file tool outputs, with the chart work.
+- Prompt injection: a capability lane with no design yet.
 
-## Engineering decisions
+### How it is built today
 
 - **Model provider.**
   - Production model calls go through the OpenAI API, under its BAA.
@@ -382,3 +383,12 @@ Reply text:
   - The proof that matters is dogfooding the real model through the ChatGPT plan, on synthetic patients.
   - It reports tokens and cached tokens for each request, window changes, the tools and skills chosen, and what went wrong.
   - Scripted tests cover what dogfooding can't cause.
+
+## Open questions
+
+These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
+
+- **E11. The simulation's clock.** What "today" means once the clock moves.
+- **E17. Recent messages in a fresh window.** Whether a fresh window also carries the last few messages word for word.
+- **E18. Pausing for the person.** Whether a run can stop to ask the person a question, or for approval of an exact action, and resume with the answer, as Codex, Hermes and OpenClaw can. Closing it means deciding how the model asks (a tool), how a waiting run is kept (held durably, taking no slot), how the answer returns (a saved input carried into the next request once, like a steer), what happens when no answer comes, and that an approval covers exactly the action shown. Physician write-back needs it first.
+- **E19. Steering a running worker.** Whether the lead can message or stop a worker while it runs, as Codex and OpenClaw allow.

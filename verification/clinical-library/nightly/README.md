@@ -1,6 +1,6 @@
 # Clinical library nightly
 
-How the clinical library refreshes from its sources every night, and what happens when part of a night fails. [physician.md](../../../intent/physician.md#engineering-decisions) links here. There is no model yet; the [verify skill](../../../.agents/skills/coda-verify-clinical-nightly/SKILL.md) names the tests that hold each rule.
+How the clinical library refreshes from its sources every night, and what happens when part of a night fails. [physician.md](../../../intent/physician.md#scope) links here. There is no model yet; the [verify skill](../../../.agents/skills/coda-verify-clinical-nightly/SKILL.md) names the tests that hold each rule.
 
 ## Words
 
@@ -102,4 +102,4 @@ Telling people:
 
 ## Outside this spec
 
-Which sources the library collects, its freshness targets and how search reads it follow [physician.md](../../../intent/physician.md#engineering-decisions). Where alerts go, how often reminders repeat, and alerting on the same failure code repeating across fresh starts belong to the alerts that read these records.
+Which sources the library collects, its freshness targets and how search reads it follow [physician.md](../../../intent/physician.md#scope). Where alerts go, how often reminders repeat, and alerting on the same failure code repeating across fresh starts belong to the alerts that read these records.

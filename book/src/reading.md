@@ -9,7 +9,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 
 | Question | Canonical owner |
 | --- | --- |
-| What are we building and why? | <a href="/intent/README%2Emd">Intent specs</a>: principles, then the physician, Duet, connected-care and harness specs, then decisions; Linear tracks the work against them |
+| What are we building and why? | <a href="/intent/README%2Emd">Intent specs</a>: principles, then the physician, Duet, connected-care and harness specs; Linear tracks the work against them |
 | How should Duet look and read? | [Design language](https://linear.app/coda-health/document/duet-design-language-foundations-patterns-and-current-care-e3d0bc28fa6d) |
 | Where is it implemented? | [Crate map](crate-map.md), then the owning source file and tests |
 | How do I work here? | <a href="/AGENTS%2Emd">AGENTS.md</a> and <a href="/README%2Emd">README setup</a> |

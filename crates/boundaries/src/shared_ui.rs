@@ -1,4 +1,4 @@
-//! Holds both apps to principle U5, one shared component set (`intent/PRINCIPLES.md`).
+//! Holds both apps to principle U5, one shared component set (`intent/README.md`).
 //!
 //! The `TABLE` below records the raw controls, `card` family markup and CSS rules naming a library
 //! class or a control element that `physician-app` and `duet-app` still have, per file and with its

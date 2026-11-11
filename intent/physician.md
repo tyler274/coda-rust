@@ -1,6 +1,6 @@
 # Chords
 
-This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in OPEN-QUESTIONS.md, and git keeps the history.
+This is what we're building for physicians: what Chords is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions are at the end, and git keeps the history.
 
 ## What Chords is
 
@@ -18,7 +18,7 @@ The measure of success is more patient relationship without more physician work.
 
 ## Principles
 
-Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones specific to the physician product.
+Coda's shared principles (README.md) govern this spec. These are the ones specific to the physician product.
 
 1. **A team, not a copilot.** Coda reviews what changed, carries what is due, and brings the physician in only when their judgment helps. Within its authority it is extremely proactive.
 2. **The physician holds clinical authority.** The physician decides diagnosis, treatment and medication. Nothing reaches a patient without the physician, even in an emergency. Every message to a patient needs the physician's approval; updates Coda notices, such as a documented care decision reaching the patient's Duet, need none.
@@ -32,7 +32,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 10. **Messages stay in the practice’s channels.** For the MVP, Spruce is the practice inbox. The physician reviews Spruce messages in Coda and sends replies in the original Spruce conversation. Coda has no inbox of its own.
 11. **Never anchor on FHIR or any one API.** Every source comes through its own adapter.
 12. **Fail closed on access, consent and patient data; fail gracefully everywhere else.** A small failure never closes a whole screen, and a list never reads as complete when something is missing.
-13. **The shared UI principles apply** (PRINCIPLES.md U1–U9). In particular, a label or control exists only because a real state or capability exists.
+13. **The shared UI principles apply** (README.md U1–U9). In particular, a label or control exists only because a real state or capability exists.
 
 ## The concepts
 
@@ -200,7 +200,7 @@ Physicians sign in only through Chords, with an emailed link and no password or 
 
 Inside the workspace:
 
-1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](OPEN-QUESTIONS.md)). Everything here follows what it decides.
+1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](#open-questions)). Everything here follows what it decides.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
@@ -244,6 +244,7 @@ Authority and sending:
 - A retrieved record that tells Coda to do something is evidence, never an instruction.
 - A follow-up grants no access and no authority to message, order, schedule or write back.
 - Silence, elapsed time or a finished run never proves physician approval or clinical resolution.
+- Code never ranks clinical importance.
 
 Access and privacy:
 
@@ -258,6 +259,7 @@ Data and consent:
 - A record missing from a later pull is noticed and never deleted on absence alone.
 - Calls are kept only as a record that a call happened; recordings are never fetched or kept. Spruce texts, voicemail transcripts and fax pages are evidence.
 - A message moved off the wrong patient is marked entered in error and never deleted. None of its content stays in that patient's record anywhere, and the flags, summaries, citations and follow-ups it produced there are retracted or re-reviewed.
+- An adapter copies. It never rewrites a value and never makes a clinical call.
 
 Evidence and honesty:
 
@@ -267,6 +269,7 @@ Evidence and honesty:
 - The library's freshness is reported as it is.
 - Patient summary dates say when Coda wrote, reviewed and pulled. None of them says the patient is stable.
 - No "saved" label ever shows, only "Not saved".
+- A new citation requires the exact supporting passage to have reached the answering model in its current window.
 
 Safety:
 
@@ -282,6 +285,7 @@ Work integrity:
 - Background work never steals focus or opens anything on its own.
 - The physician's time zone comes from their browser.
 - Panel choices are remembered per physician, and cancelling dictation keeps the text.
+- Working notes are separate from patient memory.
 
 ## Where Coda's information comes from
 
@@ -326,21 +330,43 @@ Coda's Chrome extension acts only as the signed-in physician, never takes the ph
 
 ## Scope
 
-In the MVP:
+**Now.** What exists or is in flight:
 
 - One practice using Chords on the web, with patients on Duet, the two connected through Connected care.
-- Journeys P1 to P5 and L1, with P1 first.
 - The first practice's EHR, read only.
-- Coda assists the first practice with setup and physician onboarding.
 - Spruce for practice patient messaging, with Copy reply and Open in Spruce.
 - Reading attachments, including scans and faxes through OCR.
 - Dictation into the composer.
 - The clinical library with semantic retrieval: a documented, tag-defined PMC set that includes reviews and case reports.
 - A Filtered list of mail the linking pass judged not to be from a patient, with "This is a patient" to restore it, and the same through plain words in chat.
-- No paid tier; everything is free.
-- Done when every journey is walked on real services, hosting and real-patient readiness are in place, and we decide to go.
 
-Not in the MVP:
+How it is built today:
+
+**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. There's no limit on background runs in the MVP. Care-team cadence in Chords is separate from patient automations in Duet.
+
+**Memory.** The model maintains the operating index. It is not a rigid schema, and its changes are auditable. Any change to what is kept or shared is a product decision.
+
+**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. The nightly's rules are in [Clinical library nightly](../verification/clinical-library/nightly/README.md).
+
+**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Chords:
+
+- A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
+- Recovery never alerts the physician.
+- A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
+- Each patient's work starts independently and runs side by side.
+  - An admission limit and priority classes come only once load measurements justify them.
+
+**Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
+
+**Live status.** Run steps are the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
+
+**Mail.** No message from a practice’s Spruce connection is filed twice or lost. After a rollback, a connection a newer release has touched stops filing and shows on the health page until an operator acts.
+
+**Reliability.** If a startup piece can't start, the server still starts, the piece retries, and readiness reports it truthfully. Once a practice holds real data, storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. Until then the cutover is clean, as the [harness](harness.md) says. Chart answers work without the literature service.
+
+**Sources.** Each source has its own adapter that translates its format into Coda's common evidence, and new sources come as new adapters. An adapter's mapping is a declared table. For each kind of record the source has, the table names its bucket, the role of each date field, and where its status, codes and title are. Every record carries the same envelope: its bucket, the source's own name for its kind, its source, ID and version, its dates with their role and the source's field name, its status in the source's words, its codes, a title, and the exact record with its hash, readable text and link into the source. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the exact record. Sources that share a format share a table. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work.
+
+**Not in Chords.**
 
 - A Coda inbox of its own.
 - Coda sending patient mail, ordering or writing to the EHR.
@@ -350,53 +376,39 @@ Not in the MVP:
 - Clinical trials data in the library.
 - A desktop app.
 
-Later:
+**Ideas.** Nobody has actioned these, and the shape of each is not decided:
 
 - Read-only outside records through Kno2, with Coda acting as the physician’s delegate. These records complement the practice’s chart.
 - Send beside Copy, where Coda sends exactly the approved words for the physician.
-- EHR write-back, starting with a physician-approved unsigned draft note entered by computer use.
+- EHR write-back, starting with a physician-approved unsigned draft note entered by computer use. A write makes exactly the change the physician approved, then re-reads the chart and reports what it now shows.
 - Licensed clinical content (UpToDate, DynaMed, Wiley) once a contract lands; nothing in the MVP waits on it.
 - The Chrome extension also as the minimized, ambient Coda and a way for replies to reach the native composer. Until then the web app's collapsed Coda, the orb, carries the banner and Updates.
 - Coda reaching out to patients from its own findings.
 - Learned physician preferences, from the physician's own words and edits only, with Undo.
+- Memory that is more knowledge- or graph-based.
 - Practice-wide direction from Today, such as panel sweeps.
 - Rich results in chat, such as lab tables and trend charts, every value a cited record value.
 - Coda-chosen visualizations of vitals that stay with the patient's understanding.
 - Additional practice patient-message channels, including patient email through Gmail, native EHR messaging and text outside Spruce.
 - The shared patient–physician space.
 - Self-serve for hundreds of practices.
+- A Hint route that doesn't depend on the practice's open Chrome.
+- Coda keeping its own clinical record, or building into EHRs. Today the EHR is the source of truth, read only, and Duet data a practice receives lives in Coda.
+- A limit on background runs. There's none today.
 
-## Engineering decisions
+## Open questions
 
-These are how we build the product above. They matter to its behavior but are engineering's to change.
+These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
 
-**Models.** Two roles. Sol runs the physician's conversation, including its own housekeeping. Luna does background work: reviews, initial understanding, visit preparation, workers, judging and ambiguous patient linking. Background work will probably run at max effort.
+- **Q2. Practice access and roles.** Which patients each physician may access, and whether a practice has roles. Patient messaging waits on it for who sees a message before it's matched, who sees a patient's phone and email while matching, and who may send.
+- **Q3. Judging necessary care in the simulation.** How the patients-who-do-nothing run judges that necessary care happened, and who judges it.
 
-**Schedules and cadence.** Proactive review of every source (the EHR, a connected patient's Duet data) runs on scheduled jobs that pull what's new. Patient mail is handled as it arrives, and a patient joining through Connected care starts the practice's agents right away; nothing else wakes on arrival. Each connection fetches changes without model calls, and a model review runs only when something new arrived or a follow-up came due. A records check is a full re-pull of each patient compared with what Coda holds, starting daily. How often each schedule runs, what it costs and the per-practice or per-patient settings are engineering decisions. There's no limit on background runs in the MVP. Care-team cadence in Chords is separate from patient automations in Duet.
+UI questions are judged against the UI principles (README.md U1–U9).
 
-**Memory.** The operating index is Markdown the model maintains, not a rigid schema, and its changes are auditable. Memory may become more knowledge- or graph-based after the MVP, and nothing in the MVP waits on that; any change to what is kept or shared is a product decision.
-
-**Clinical library.** The corpus pipeline is critical infrastructure: a bad article is set aside while the rest publish, a failed night resumes on its own, and the same bug twice or three failed nights in a row stops automatic attempts and tells someone why. Freshness and speed are targets, measured and reported: retractions and corrections within a day, content updates within three days, currentness re-confirmed within a week, and whole search in about 3 seconds at p95 and 5 at p99. A skill teaches Coda how to search and read the library well, and improves from traces. The nightly's rules are in [Clinical library nightly](../verification/clinical-library/nightly/README.md).
-
-**Runs.** Every job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What's specific to Chords:
-
-- A failed preparation, review or initial understanding retries on its own before it counts as can't restart.
-- Recovery never alerts the physician.
-- A refused review is recorded as a refusal with its reason, and Couldn't finish, Try again and the automatic retries read from it.
-- A new citation requires the exact supporting passage to have reached the answering model in its current window.
-- Working notes are separate from patient memory.
-- Each patient's work starts independently and runs side by side.
-  - How much runs at once is an engineering decision. An admission limit and priority classes come only once load measurements justify them.
-  - Code never ranks clinical importance.
-
-**Commands and state.** Commands are accepted or not. A lost receipt resolves without a second effect, and an ambiguous command retries only itself before reading authoritative state. Reload, reconnect and another client converge on the same server state.
-
-**Live status.** Run steps are the same on CLI and API, and the run record stays inspectable by the team. Reasoning summaries stay in the team inspector.
-
-**Mail.** Each practice’s Spruce connection has one intake lease, so no message is filed twice or lost. After a rollback, a connection a newer release has touched stops filing and shows on the health page until an operator acts.
-
-**Reliability.** If a startup piece can't start, the server still starts, the piece retries with backoff, and readiness reports it truthfully. Once a practice holds real data, storage changes never refuse to start or wipe data, and permanent records are never rewritten to add fields. Until then the cutover is clean, as the [harness](harness.md) says. The literature service is an optional gateway, and chart answers work without it.
-
-**Sources.** Each source has its own adapter that translates its format into Coda's common evidence, and new sources come as new adapters. An adapter is a declared table plus the code that signs in and fetches. For each kind of record the source has, the table names its bucket, the role of each date field, and where its status, codes and title are. An adapter copies. It never rewrites a value and never makes a clinical call. Every record carries the same envelope: its bucket, the source's own name for its kind, its source, ID and version, its dates with their role and the source's field name, its status in the source's words, its codes, a title, and the exact record with its hash, readable text and link into the source. A record with no version from its source is versioned by its content. Search uses the envelope, and citations point into the exact record. Sources that share a format share a table. Synthetic patients come in the same way, through their own adapter. Reads happen automatically for authorized patient work. When write-back arrives, a write needs the physician's approval of the exact text, makes exactly that change, then reopens the record and reports what the chart now shows.
-
-**Storage.** Per-practice database topology is decided when it's needed.
+- **UI6. Deleting a physician conversation.** Whether Delete sits beside Archive.
+- **UI7. The Updates log.** Whether the full log keeps its own page beyond Today's collapsed line, and how it looks.
+- **E1. Production triggers and the schedule source.** How scheduled and pre-visit work runs in production, and where the real schedule comes from.
+- **E2. Schedule mapping.** How each EHR's schedule and encounters map to patients.
+- **E3. The patient roster.** How the first practice populates and maintains its active roster remains open. Decide after checking what its sources provide and what the practice needs.
+- **E13. Physician run preconditions.** What the physician product checks before each run, stated in harness terms.
+- **S2. CDS compliance.** Whether a lightweight deterministic contract should back the prompts.

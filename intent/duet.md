@@ -1,8 +1,8 @@
 # Duet
 
-This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in OPEN-QUESTIONS.md, and git keeps the history.
+This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions are at the end, and git keeps the history.
 
-The MVP is accounts, connected records and readings, and For my doctor in Shared, where the patient marks records, writes notes and sends them to a connected practice. General patient conversation, proactive care and AI preparation of For my doctor are the direction this spec describes, and the MVP is the first step toward it. The Scope section says which parts are in the MVP.
+The MVP is accounts, connected records and readings, and For my doctor in Shared, where the patient marks records, writes notes and sends them to a connected practice. General patient conversation, proactive care and AI preparation of For my doctor are the direction this spec describes, and the MVP is the first step toward it. Scope says what exists now and what is still an idea.
 
 ## What Duet is
 
@@ -18,7 +18,7 @@ A person should feel understood by something that actually knows their health, d
 
 ## Principles
 
-Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones specific to Duet.
+Coda's shared principles (README.md) govern this spec. These are the ones specific to Duet.
 
 1. **A managed health agent.** The conversation is the product, and every other surface is a layer over it.
 2. **Free and standalone.** Duet works with no doctor and no invitation. A practice connection attaches to the person's own Duet account.
@@ -33,7 +33,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 11. **Grounded, cited and faithful.** Facts and calculations come from evidence Duet actually received, with citations that reopen it. Records show as the source sent them. Every claim Duet makes, such as "read", "current" or "will try again", traces to recorded evidence, and Duet is honest about gaps and about how old its information is.
 12. **No silence that looks like health.** Anything behind, stuck or degraded is shown, with its reason, to someone who can act.
 13. **Live where you work; history as it was.** What the person is looking at updates live. Anything already said or sent keeps the version it used and is marked when a newer one exists.
-14. **Plain, calm and smooth.** Duet follows the shared UI principles (PRINCIPLES.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly. Duet follows the phone's light or dark appearance.
+14. **Plain, calm and smooth.** Duet follows the shared UI principles (README.md U1–U9). It shows no internal or technical language and few controls. Work happens on the server, so the app stays responsive and new information arrives smoothly. Duet follows the phone's light or dark appearance.
 
 ## The concepts
 
@@ -209,7 +209,7 @@ Authority:
 
 ## Scope
 
-In the MVP:
+**Now.** What exists or is in flight:
 
 - Duet on iPhone and Android, running on coda-rust, connected through Connected care to one or more practices.
 - Sign-up, the standing notice, Terms, AI permission, preferences, export, deletion and sign-out.
@@ -217,9 +217,14 @@ In the MVP:
 - You, record search, original record details and measurement views with their values, units, dates, sources and corrections.
 - For my doctor in Shared: marked records and notes, kept private until sent, and sends to a named connected practice with a Sent and Received status.
 - Account and records use on their own, with no practice and no general patient chat. Each permission still holds for the AI features that use it, even though those features are not in the MVP.
-- Everything free for everyone, with no paid tier or feature gating.
 
-Not in the MVP, and absent from the app rather than shown as coming soon:
+How it is built today:
+
+- Every AI job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end.
+- Imports resume without duplicates and end in a stated outcome, and engineering can see which connection is overdue and why.
+- Deletion and sign-out everywhere complete before they're reported done.
+
+**Not in Duet.** These are absent from the app rather than shown as coming soon:
 
 - Person-to-person sharing.
 - Migrating existing Duet accounts and data.
@@ -235,7 +240,7 @@ Not in the MVP, and absent from the app rather than shown as coming soon:
 - Recording doctor visits.
 - A role for MedDecider; the decisions-API idea waits with NPI matching.
 
-Later. The direction is set above. The shape of each of these is not decided:
+**Ideas.** The direction is set above. Nobody has actioned these, and the shape of each is not decided:
 
 - Conversation with Duet's AI, with citations, corrections, reply feedback and private memory.
 - Today, insights, Plans, Reminders, Check-ins, re-engagement and their notifications.
@@ -246,21 +251,23 @@ Later. The direction is set above. The shape of each of these is not decided:
 - Document upload.
 - A model organizing records in You.
 - Google Calendar and Outlook as appointment context.
+- Calendar and email connections in Duet.
+- Reference ranges on For my doctor, once their sourcing is better.
 - CGM, after ingestion and daily portal refresh are solid.
 - More wearables and patient-access sources, such as Oura, Whoop, Fitbit, Withings, Garmin, the VA and Medicare.
-- Helping people navigate the health system with computer and browser use.
+- Helping people navigate the health system with computer and browser use. The leaning is Duet's own browser loop first, with native computer use as the fallback.
 - Photo, PDF and voice input.
 - A search index covered by a BAA, as the way past the clinical library.
 - The jointly maintained shared space between patient and practice.
 - A patient-state foundation model trained on data collected over time.
 
-## Engineering decisions
+## Open questions
 
-These are how we build Duet. They shape its behavior but are engineering's to change.
+These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
 
-**Runs.** Every AI job runs on the [harness](harness.md), which owns how runs start, recover, manage context and end. What engineering holds for Duet today:
+- **Q4. You while AI isn't allowed.** Whether the person can add or edit notes and medications in You while AI isn't allowed.
+- **Q6. Deleting an email or Google account.** How a person who signs in with email or Google reconfirms before deleting their account.
+- **Q7. Newer Terms.** How the app shows newer Terms and takes acceptance.
 
-- Imports resume without duplicates and end in a stated outcome, and engineering can see which connection is overdue and why.
-- Deletion and sign-out everywhere complete before they're reported done.
-
-**Proof.** We prove Duet by running the jobs it must do as simulations across patient types and scenarios, local and synthetic first, with production traces added over time. Simulations run the way the [harness](harness.md#how-it-works) describes.
+- **E4. Freshness after a one-time pull.** How records from other systems stay fresh.
+- **E6. Push registration.** Fixing the push problem from the security review, now that notifications follow whoever is signed in.

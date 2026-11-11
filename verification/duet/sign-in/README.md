@@ -77,4 +77,4 @@ One phone, another person:
 
 ## Outside this spec
 
-The rest of first run, newer Terms, AI permission, notifications, invitations, signing out everywhere, changing an email, getting back in without access to one's email, deletion, and how messages and entries reach Duet follow [duet.md](../../../intent/duet.md) and connected care; how the app shows newer Terms is open question Q7 in [OPEN-QUESTIONS.md](../../../intent/OPEN-QUESTIONS.md). Where they meet sign-in, they act as one event: another phone signing out everywhere ends this phone's session the way a revoke does.
+The rest of first run, newer Terms, AI permission, notifications, invitations, signing out everywhere, changing an email, getting back in without access to one's email, deletion, and how messages and entries reach Duet follow [duet.md](../../../intent/duet.md) and connected care; how the app shows newer Terms is open question Q7 in [duet.md](../../../intent/duet.md#open-questions). Where they meet sign-in, they act as one event: another phone signing out everywhere ends this phone's session the way a revoke does.

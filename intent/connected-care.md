@@ -1,18 +1,18 @@
 # Connected care
 
-This is how a Duet patient and a Coda practice connect: what crosses between them, who controls it, and what happens when the connection ends. It describes the product as we intend it today. Open questions live in OPEN-QUESTIONS.md, and git keeps the history.
+This is how a Duet patient and a Coda practice connect: what crosses between them, who controls it, and what happens when the connection ends. It describes the product as we intend it today. Open questions are at the end, and git keeps the history.
 
 ## What Connected care is
 
 Connected care joins two separate products. Duet is the patient's own health app, and Chords is the practice's team of agents. A practice invites a patient, the patient joins and consents once, and from then on what the patient connected in Duet reaches the practice live. In the other direction, the practice's documented care decisions and appointment details come back to the patient's Duet.
 
-The MVP includes practice invitations, consented records and readings, and what the patient sends from Shared. Patients can connect personal sources such as Apple Health on their own. In the MVP, the only thing that comes back from the practice into Duet is the status of a send. The doctor's plan, practice messages, Check-ins and appointment preparation come later. The concepts below describe how they will work, but the MVP does not need them.
+The MVP includes practice invitations, consented records and readings, and what the patient sends from Shared. Patients can connect personal sources such as Apple Health on their own. In the MVP, the only thing that comes back from the practice into Duet is the status of a send. The doctor's plan, practice messages, Check-ins and appointment preparation come later. Their shape is not decided yet, and Scope lists them as ideas.
 
 The point is that the data a patient can connect actually gets to their physician. The physician sees what the chart doesn't hold, such as the patient's other health systems, phone health readings and the notes they've made, and the patient understands what their clinician documented, without anyone running an approval queue for Duet. Connecting patients to their providers is where we ultimately add the most value, and it has to reduce work for both sides rather than create more.
 
 ## Principles
 
-Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side shows of the connection follows the shared UI principles (U1–U9). These are the ones specific to Connected care.
+Coda's shared principles (README.md) govern this spec, and what either side shows of the connection follows the shared UI principles (U1–U9). These are the ones specific to Connected care.
 
 1. **Two products, two owners.** Each product keeps its own data and identity, and neither reads the other's storage. The patient account belongs to Duet; Connected care attaches connections to it and owns no accounts. Physicians sign in only through Chords.
 2. **Duet is the patient's; the chart is the practice's.** What a practice receives becomes part of its record, held in Coda's record for that patient and never written to the EHR. Duet stays the patient's after any ending.
@@ -32,6 +32,8 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 
 ## The concepts
 
+Some concepts below say only what the thing is. Their rules are not decided yet, and Scope lists them as ideas.
+
 **Connection.** One patient and one practice. The roster shows three statuses: Invited, Connected and Ended. A connection ends when the patient leaves, the practice discharges them or the account is deleted. A physician leaving the practice doesn't end it; their patients are reassigned. A patient may connect to more than one practice, each connection separate, and ending one leaves the others alone.
 
 **Practice members.** Anyone signed in to the practice can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once.
@@ -40,17 +42,17 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 
 **Consent.** One record per connection, granted for a given wording. In the MVP the wording is fixed and consent is given once, at join, by tapping Share, after a plain preview of what it shares. Only the patient changes it, and in the MVP the way to change it is to leave. Data crosses only while connected and consent is current.
 
-**What the patient shares.** What the patient connected in Duet: portal records, phone health readings and medications they entered. A For my doctor note crosses only when the patient sends it. What the patient tells Duet's AI crosses only as a note the patient saved, either one they asked Duet to save or one Duet proposed and they approved. Duet's AI keeps private notes about the patient, and those never cross. Copies of records the practice’s chart already holds arrive labeled as duplicates, and a corrected record arrives as a new version. Plan Check-in answers reach the practice's next review.
+**What the patient shares.** What the patient connected in Duet: portal records, phone health readings and medications they entered. A For my doctor note crosses only when the patient sends it. Duet's AI keeps private notes about the patient, and those never cross. Copies of records the practice’s chart already holds arrive labeled as duplicates, and a corrected record arrives as a new version.
 
 **How the practice picks it up.** A patient joining or rejoining starts the practice's agents on what they shared right away. After that, the practice's agents pick up what arrives on their scheduled reviews and judge what matters to the physician. This is the practice's care-team work, separate from Duet's own work for the person.
 
-**For my doctor.** The records the patient marked and the notes they wrote for their doctor. It belongs to Duet and is separate from the connection. Connected care owns only the sending: while connected, the patient sends marked records and notes to the practice. A send arrives once, as sent, like any shared record, marked by the patient. Marking or writing shares nothing, and nothing in it is streamed live. Connected records already reach the practice live, so a send grants nothing new. The mark tells the practice's agents what the patient wants them to notice. The agents can give it more priority. The practice returns one status to Duet: received, once its agents have picked the send up. It is the first step toward the shared space under Later.
+**For my doctor.** The records the patient marked and the notes they wrote for their doctor. It belongs to Duet and is separate from the connection. Connected care owns only the sending: while connected, the patient sends marked records and notes to the practice. A send arrives once, as sent, like any shared record, marked by the patient. Marking or writing shares nothing, and nothing in it is streamed live. Connected records already reach the practice live, so a send grants nothing new. The mark tells the practice's agents what the patient wants them to notice. The agents can give it more priority. The practice returns one status to Duet: received, once its agents have picked the send up. It is the first step toward the shared space under Ideas.
 
-**Your doctor's plan.** Documented care decisions and open items from the connected practice, each with its source, author, date and status, read-only in Duet. It is separate from the patient's own Plans, which are their routines. With more than one connected practice, each practice's plan shows separately, labeled with its practice, and Duet's AI can explain them together. After an ending, the last plan stays visible as the patient's own care information, marked as no longer updated, and joining again brings it current.
+**Your doctor's plan.** Documented care decisions and open items from the connected practice, each with its source, author, date and status, read-only in Duet. Only what is final in the EHR goes, such as signed notes, active medications and orders, and the problem list. Unsigned drafts never go.
 
-**Appointment details.** The practice's appointment facts, sent back over the connection. They keep their schedule as the source and never authorize new clinical instructions. They handle updates, cancellations and duplicate reports, conflicting dates stay visible, and a suggested follow-up is never presented as a booked appointment. When the connection ends, the practice's appointment goes away and the patient's own appointment date stays.
+**Appointment details.** The practice's appointment facts, sent back over the connection. They keep their schedule as the source and never authorize new clinical instructions.
 
-**Plan Check-in.** A Duet Check-in tied to the doctor's plan. Duet's AI proposes one when it's useful, and like any recurring Check-in it runs only once the patient accepts it, within the scope they accepted. Its answers feed the practice's next review and never become alerts.
+**Plan Check-in.** A Duet Check-in tied to the doctor's plan.
 
 **Roster status.** The practice's only view of the connection itself: Invited, Connected or Ended on the roster, with no notifications.
 
@@ -81,35 +83,13 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 ### C1.3 Consented records reaching the physician
 
 1. While connected, what the patient connected in Duet reaches the practice continuously: portal records, phone readings and medications they entered.
-2. In the later conversation, Duet's AI proposes short dated notes, and a note crosses only once the patient saves it. A note or medication the patient asks Duet to save is saved at once and crosses like anything else they entered. Records and sending from Shared do not wait for that conversation.
-3. Duet's AI's private notes about the patient never cross.
-4. The practice's agents pick up what arrived on their scheduled reviews and judge whether a physician needs to see it.
-5. The physician sees Duet data in the patient's chart, reviews, preparation and answers, each item labeled with its origin and date ("from Epic, via the patient's Duet"), and reads each record exactly as it was sent.
-6. Copies of records the chart already holds arrive labeled as duplicates.
-7. When a record is corrected at its source, the new version arrives as its own event. Unfinished work doesn't publish from the version it replaced, and the practice keeps the earlier version it received, dated.
-8. The patient sees no "your care team looked" receipt on anything they share.
-9. If sharing is behind or failing, someone who can act sees it, with the reason. The patient sees problems with their own sources in Duet, and Coda's operations team sees problems in the sharing pipeline.
-
-### C1.4 Documented care decisions reaching Duet
-
-1. The practice documents care decisions in its own record. What reaches Duet is what's final in the EHR: signed notes, active medications and orders, and the problem list. The practice's agents judge what is a care decision for the patient, and unsigned drafts never go.
-2. Documented decisions and open items reach Duet with their source, author, date and current status. They're updates, so no physician approves them.
-3. The patient sees them as Your doctor's plan, read-only and separate from their own Plans.
-4. The patient asks Duet to explain the plan, and Duet explains it faithfully in plain language.
-5. Duet keeps a documented decision, an unconfirmed suggestion and a patient report distinct. An undecided medication recommendation stays an unconfirmed suggestion until the source records a decision.
-6. When the source is ambiguous, Duet shows the ambiguity instead of turning it into an instruction.
-7. The practice's appointment details arrive too, keeping their schedule as the source, and never authorize new instructions.
-8. The patient prepares their side of a visit in For my doctor.
-9. When the plan changes, the patient's view takes the newer plan with its source. Anything Duet already said or sent keeps the version it used and is marked when a newer one exists.
-10. The physician has nothing new to do here: there's no Duet approval queue, and physicians don't manage the patient's Duet.
-11. News from the practice, such as the plan arriving or changing, an invite, or an appointment scheduled, moved or cancelled, alerts the patient with a generic lock-screen line and no health content. Tapping it opens it in Duet.
-
-### C1.5 Plan Check-ins
-
-1. Duet's AI proposes a Check-in from the doctor's plan when it's useful.
-2. It runs only once the patient accepts it, and adapts only within the limits they accepted.
-3. Its answers reach the practice's next review.
-4. They never become individual alerts for the physician; the practice's agents decide whether a physician needs to see anything.
+2. Duet's AI's private notes about the patient never cross.
+3. The practice's agents pick up what arrived on their scheduled reviews and judge whether a physician needs to see it.
+4. The physician sees Duet data in the patient's chart, reviews, preparation and answers, each item labeled with its origin and date ("from Epic, via the patient's Duet"), and reads each record exactly as it was sent.
+5. Copies of records the chart already holds arrive labeled as duplicates.
+6. When a record is corrected at its source, the new version arrives as its own event. Unfinished work doesn't publish from the version it replaced, and the practice keeps the earlier version it received, dated.
+7. The patient sees no "your care team looked" receipt on anything they share.
+8. If sharing is behind or failing, someone who can act sees it, with the reason. The patient sees problems with their own sources in Duet, and Coda's operations team sees problems in the sharing pipeline.
 
 ### C1.6 Sending For my doctor
 
@@ -129,7 +109,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 1. The patient leaves the practice in Duet.
 2. The connection ends everywhere at once, and new data stops.
 3. The patient keeps their Duet account and history.
-4. The last doctor's plan stays visible as the patient's own care information, dated and marked as no longer updated. The practice's appointment goes away, and the patient's own appointment date stays. Practice news already in Duet's thread stays there, and nothing from the practice updates after the end.
+4. Nothing from the practice updates after the end.
 5. The practice keeps the dated copies it already received, and the roster shows Ended, with no notification.
 6. In the MVP, leaving is the only way to stop sharing, short of deleting the account.
 
@@ -139,7 +119,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 2. The connection and the data flow end at once.
 3. Duet shows the patient a dated notice.
 4. The practice's own notice obligations never extend Duet's sharing permission.
-5. The patient keeps their account and history and the last doctor's plan, marked as no longer updated. The practice's appointment goes away, and practice news already in the thread stays.
+5. The patient keeps their account and history.
 6. The practice keeps the dated copies it already received, and the roster and Duet both show Ended.
 
 ### X3. Account deletion
@@ -159,7 +139,6 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 1. After a connection ends, whether the patient left or was discharged, any practice member can send a new invite at any time. For inviting, Ended is the same as never connected.
 2. The patient accepts and consents again, through C1.1 and C1.2.
 3. Joining again shares everything the patient has, including what they added while disconnected, and the practice's agents start on it right away.
-4. The doctor's plan becomes current again. The old appointment clears, and the practice's current schedule brings back any visit it has ahead.
 
 ### What each side sees
 
@@ -169,14 +148,12 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 | Reminder or expiry | One reminder, then expired | The status, with resend or cancel |
 | Join | Date of birth check, the practice and physician, a plain preview, Share | Connected; existing records arrive and the agents start |
 | Live sharing | No activity view and no "care team looked" receipt | Items labeled with origin and date in the chart, reviews, preparation and answers, duplicates labeled |
-| Doctor's plan | Your doctor's plan with source, author, date and status, explained in plain language | Nothing to approve |
-| Plan Check-in | The accepted Check-in | Answers inside the next review, never an alert |
 | For my doctor | Send, records at their current version, a Sent and Received status | Arrives once, like any shared record, marked by the patient. The agents judge whether a physician needs to see it |
-| Leave | Account, history and the last plan marked as no longer updated; the practice's appointment gone | Ended, dated copies kept |
-| Discharge | A dated notice; account, history and last plan kept | Ended, dated copies kept |
+| Leave | Account and history kept | Ended, dated copies kept |
+| Discharge | A dated notice; account and history kept | Ended, dated copies kept |
 | Account deletion | Account gone | Ended, copies kept |
 | Physician leaves | Later: who their doctor is now | Panel reassigned |
-| Rejoin | New invite and consent; plan current again; old appointment cleared | Connected; existing data arrives again |
+| Rejoin | New invite and consent | Connected; existing data arrives again |
 
 ## Rules
 
@@ -187,9 +164,9 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 5. Duet and the practice always show the same connection status.
 6. Any practice member may invite, re-invite or discharge. Discharge asks for confirmation and takes effect at once.
 7. The practice keeps dated copies of what it already received after any ending.
-8. Ending keeps the patient's Duet account and history, including practice news already in the thread, and the last doctor's plan, marked as no longer updated. The practice's appointment goes away, and nothing updates after the end.
+8. Ending keeps the patient's Duet account and history, and nothing updates after the end.
 9. On discharge, data stops at once and Duet shows a dated notice. The practice's notice obligations don't extend sharing.
-10. Notes from conversation cross only after the patient saves them, and Duet's AI's private notes never cross.
+10. Duet's AI's private notes never cross.
 11. For my doctor crosses only when the patient sends it, once, as sent, with each record at its current version, and a corrected record says so.
 12. Every item that crosses keeps its origin and date.
 13. A corrected record is a new version and its own event, and unfinished work never publishes from the version it replaced.
@@ -202,11 +179,12 @@ Coda's shared principles (PRINCIPLES.md) govern this spec, and what either side 
 20. There's no "your care team looked" receipt on anything the patient shares.
 21. Each request sees only its own person's data.
 22. Adults 18 and over only.
-23. Every MVP feature is free. Chords never knows who pays and doesn't handle billing.
+23. Connection status has one owner that both sides read.
+24. Neither product reads the other's storage. Data crosses only through the connection.
 
 ## Scope
 
-In the MVP:
+**Now.** What exists or is in flight:
 
 - Practice connections, each started by an invite, with fixed consent at join, sharing until the patient leaves, the practice discharges or the account is deleted.
 - Connections to more than one practice, each separate.
@@ -215,10 +193,20 @@ In the MVP:
 - The practice's agents review each send like any shared record, marked by the patient. Duet shows the send as received once they have picked it up.
 - Ending a connection with the account and history kept, and re-inviting after an ending.
 - The physician on Chords on the web; patients on Duet on iPhone and Android, with no Duet web surface.
-- Free for every connected patient.
-- General phone-health data and daily portal refresh, ahead of continuous glucose monitors, which don't gate sharing.
 
-Not in the MVP:
+How it is built today:
+
+**Shared events.** Both products see the same events: an invite sent, reminded, accepted, expired or cancelled, a join, a leave, a discharge, an account deletion, the live feed of shared items, and a For my doctor send with its received status.
+
+**Endings.** An ending takes effect at once, and no item crosses after it.
+
+**Delivery.** A For my doctor send is delivered exactly once, as sent. A record correction is its own event and reaches unfinished work before that work publishes. A join delivers the patient's existing records and starts the practice's agents. Plan Check-in answers go into the next review, never into alerting.
+
+**Schedules.** Apart from a join or rejoin, the practice's review of Duet data runs on scheduled jobs that pull what's current.
+
+**Failures.** Failed or slow pulls retry, then degrade honestly with the date of what's shown, and repeated failure becomes visible to someone who can act.
+
+**Not in Connected care.**
 
 - Anything from the practice into Duet beyond the status of a send, including answers to the patient.
 - Pausing and resuming sharing, withdrawing consent, and consenting again after a wording change.
@@ -227,10 +215,9 @@ Not in the MVP:
 - Caregivers, proxies and minors.
 - Telling the patient their new doctor after a physician leaves.
 - Release of information.
-- A paid tier. When one comes, premium belongs to the connection, and nothing clinical is paywalled.
 - Any "coming soon" entry. Features we don't support are absent from the app.
 
-Later, as the ideal product:
+**Ideas.** This is the ideal product. Nobody has actioned these, and the shape of each is not decided:
 
 - The doctor's plan in Duet, with a plain-language explanation and plan Check-ins. Each practice's plan keeps its own label, and the rules for ending a connection apply to it.
 - Appointment context from the patient and the practice, and AI preparation. Ending a connection removes the practice's appointment and keeps the patient's own date and saved preparation.
@@ -240,21 +227,18 @@ Later, as the ideal product:
 - It needs the physician on Chords. Specialists who aren't on Coda get a read-only view that grows out of For my doctor.
 - Urgent symptoms send the patient straight to call the practice or 911 and never wait in the space.
 - Every message from the practice to the patient still needs the physician's approval, and Coda never answers the patient from standing rules.
+- The patient as co-owner of the record.
+- NPI registry ingestion as its own groundwork.
 
-## Engineering decisions
+## Open questions
 
-These are how we build the connection. They matter to its behavior but are engineering's to change.
+These are undecided. When one is answered, the answer goes into every spec it touches and the question leaves this list. Answer by ID.
 
-**Shared events.** Both products see the same events: an invite sent, reminded, accepted, expired or cancelled, a join, a leave, a discharge, an account deletion, the live feed of shared items, and a For my doctor send with its received status.
-
-**One owner for status.** Connection status has one owner that both sides read.
-
-**Endings.** An ending takes effect at once, and no item crosses after it.
-
-**Delivery.** A For my doctor send is delivered exactly once, as sent. A record correction is its own event and reaches unfinished work before that work publishes. A join delivers the patient's existing records and starts the practice's agents. Plan Check-in answers go into the next review, never into alerting.
-
-**Schedules.** Apart from a join or rejoin, the practice's review of Duet data runs on scheduled jobs that pull what's current. How often they run and what they cost are engineering decisions.
-
-**Failures.** Failed or slow pulls retry, then degrade honestly with the date of what's shown, and repeated failure becomes visible to someone who can act.
-
-**Storage.** Neither product reads the other's storage. Data crosses only through the connection.
+- **Q8. An expired or cancelled invite.** What the patient sees when they open one.
+- **Q9. An invite opened but not shared.** What happens to the invite, and what the practice sees, when a patient opens it and doesn't tap Share.
+- **Q10. Leaving a practice.** Whether Duet confirms before the patient leaves, and what it says.
+- **Q11. Work in progress when a connection ends.** What happens to work the practice's agents are doing on that patient's Duet data.
+- **Q12. The discharge notice.** What it says, such as the reason and who to contact.
+- **Q13. After a rejoin.** Whether the practice sees the disconnected period marked.
+- **Q14. Declining invites.** Whether a patient can decline future invites from a practice.
+- **Q15. Account deletion copy.** The confirmation wording when a connected patient deletes their account.
