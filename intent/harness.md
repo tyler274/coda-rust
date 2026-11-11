@@ -15,8 +15,8 @@ Each term has one meaning in this spec.
 - **Job:** a kind of work a product runs, such as chat, a revision, a Check-in or Today.
 - **Run:** one piece of accepted work, such as the answer to one message, one revision or one Check-in.
 - **Attempt:** one try at a run. After a crash or restart, a new attempt continues the same run.
-- **Recipe:** what a product gives the harness for a run: the model settings, resident instructions, skill catalog, tools and the job's assignment.
-- **Resident instructions:** the instructions the model always has during a job.
+- **Recipe:** what a product gives the harness for a run: the model settings, system prompt, skill catalog, tools and the job's assignment.
+- **System prompt:** the instructions the model always has during a job.
 - **Skill:** a package of guidance the model opens by name.
 - **Window:** the context the model works in.
 - **Fresh window:** a new window that starts from a short, exact starting point instead of the full history.
@@ -135,18 +135,18 @@ Each tool result has a size limit, as Codex limits tool output.
 
 ### Skills
 
-- **Each product supplies** its resident instructions, its skills folder and its visibility rule.
+- **Each product supplies** its system prompt, its skills folder and its visibility rule.
 - **One shared loader** lists a short index and opens a skill by name. The same visibility rule controls both listing and opening.
 - **Reading a skill gives no permission.**
 - **The skill package is frozen with the accepted work,** so recovery reads the same version.
 - **Chat** starts small and finds what it needs.
 - **Background work** starts from its assignment, gets all the product's tools, and can preload the skills its assignment always needs, as Hermes's scheduled jobs do.
 - **Text the model reads** has no ticket numbers or porting notes.
-- **Each piece of guidance lives in one place:** the resident instructions or a skill, not both.
+- **Each piece of guidance lives in one place:** the system prompt or a skill, not both.
 - **Skills improve from traces.**
   - Traces show which skills load, what they cost in context, and what goes wrong after a load.
   - A skill that runs long gets shorter, with details moved into linked references.
-  - What nearly every run needs moves into the resident instructions.
+  - What nearly every run needs moves into the system prompt.
   - A failing tool gets fixed at the tool, not patched in a skill.
 
 ### Context
@@ -338,7 +338,7 @@ Reply text:
   - A steer or a correctable tool error doesn't count as a failed attempt.
   - One owner decides what counts as a failed attempt.
 - **Caching.**
-  - Each request runs in this order: resident instructions, tools, the job's start, then the conversation, which only grows.
+  - Each request runs in this order: system prompt, tools, the job's start, then the conversation, which only grows.
   - The cache key is per scope, made only from scope IDs and never from message text, as Codex keys by session.
   - We measure how narrow each scope needs to be.
 - **Storage.**
