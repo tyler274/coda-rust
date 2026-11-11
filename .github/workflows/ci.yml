@@ -65,31 +65,32 @@ jobs:
         run: python3 -m unittest discover -s .agents/skills/review-pr/scripts -p 'test_*.py' -v
       - name: Test proof capture against a scratch repository
         run: python3 -m unittest discover -s .agents/skills/capture-proof/scripts -p 'test_*.py' -v
-      # Release archives come through the authenticated API: github.com
-      # download URLs ignore the token and fail first when GitHub throttles
-      # anonymous traffic.
+      # Release archives come through the authenticated API
+      # (.github/actions/release-archive).
+      - name: Download mdBook
+        uses: ./.github/actions/release-archive
+        with:
+          repo: rust-lang/mdBook
+          tag: v0.4.52
+          asset: mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz
+          sha256: c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768
       - name: Install mdBook
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          version=0.4.52
-          archive="mdbook-v${version}-x86_64-unknown-linux-gnu.tar.gz"
-          gh release download "v${version}" --repo rust-lang/mdBook --pattern "$archive" --dir /tmp
-          echo "c0b903f01dd8f4edc644372ad2b80b1fdddd12552d37b6a098657cbd8eddd768  /tmp/${archive}" | sha256sum -c -
-          tar -xzf "/tmp/${archive}" -C /tmp
+          tar -xzf /tmp/mdbook-v0.4.52-x86_64-unknown-linux-gnu.tar.gz -C /tmp
           install -m 755 /tmp/mdbook "${CARGO_HOME:-$HOME/.cargo}/bin/mdbook"
           mdbook --version
       # lychee 0.24.2 matches flake `lychee`. Static musl build, so it does
       # not depend on the runner's glibc.
+      - name: Download lychee
+        uses: ./.github/actions/release-archive
+        with:
+          repo: lycheeverse/lychee
+          tag: lychee-v0.24.2
+          asset: lychee-x86_64-unknown-linux-musl.tar.gz
+          sha256: 73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5
       - name: Install lychee
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          version=0.24.2
-          archive="lychee-x86_64-unknown-linux-musl.tar.gz"
-          gh release download "lychee-v${version}" --repo lycheeverse/lychee --pattern "$archive" --dir /tmp
-          echo "73657a111819a30c47c08352896796f23d64e4eb2b3ed39b6d32149241566fc5  /tmp/${archive}" | sha256sum -c -
-          tar -xzf "/tmp/${archive}" -C /tmp
+          tar -xzf /tmp/lychee-x86_64-unknown-linux-musl.tar.gz -C /tmp
           install -m 755 /tmp/lychee-x86_64-unknown-linux-musl/lychee "${CARGO_HOME:-$HOME/.cargo}/bin/lychee"
           lychee --version
       - name: Check engineering-skill references
@@ -166,21 +167,38 @@ jobs:
           --health-timeout 5s
           --health-retries 12
     steps:
-      - name: Point the PostgreSQL proofs at the service
-        run: |
-          url="postgresql://postgres@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres"
-          {
-            echo "DUET_TEST_DATABASE_URL=${url}"
-            echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
-            echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
-            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
-          } >> "$GITHUB_ENV"
       - name: Check out repository
         uses: actions/checkout@v7
         with:
           # Optional developer references are never fetched by CI.
           submodules: false
           persist-credentials: false
+      # The service's port is published on loopback. act publishes it too but
+      # leaves job.services empty; its job container shares the host network,
+      # so the port comes from Docker, keyed by the service image above.
+      - name: Point the PostgreSQL proofs at the service
+        env:
+          PORT: ${{ job.services.postgres.ports['5432'] }}
+        run: |
+          if [ -z "$PORT" ] && [ "${ACT:-}" = true ]; then
+            ids=$(docker ps -q --filter ancestor=pgvector/pgvector:0.8.2-pg16 --filter status=running)
+            if [ "$(wc -w <<<"$ids")" -ne 1 ]; then
+              echo "Expected one running postgres service under act, found: ${ids:-none}" >&2
+              exit 1
+            fi
+            PORT=$(docker port "$ids" 5432/tcp | sed -n 's/^0\.0\.0\.0://p')
+          fi
+          if [ -z "$PORT" ]; then
+            echo "The postgres service published no port" >&2
+            exit 1
+          fi
+          url="postgresql://postgres@127.0.0.1:${PORT}/postgres"
+          {
+            echo "DUET_TEST_DATABASE_URL=${url}"
+            echo "PHYSICIAN_TEST_DATABASE_URL=${url}"
+            echo "FRONT_DOOR_TEST_DATABASE_URL=${url}"
+            echo "CLINICAL_LIBRARY_TEST_DATABASE_URL=${url}"
+          } >> "$GITHUB_ENV"
       - name: Install Node for the Node-based tests
         uses: actions/setup-node@v7
         with:
@@ -218,16 +236,17 @@ jobs:
       - name: Install Rust
         run: rustup toolchain install
       # Release binary, not `cargo install`; matches the flake pin.
+      - name: Download wasm-bindgen
+        uses: ./.github/actions/release-archive
+        with:
+          repo: wasm-bindgen/wasm-bindgen
+          tag: 0.2.129
+          asset: wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz
+          sha256: 82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e
       - name: Install wasm-bindgen
-        env:
-          GH_TOKEN: ${{ github.token }}
         run: |
-          version=0.2.129
-          archive="wasm-bindgen-${version}-x86_64-unknown-linux-musl.tar.gz"
-          gh release download "$version" --repo wasm-bindgen/wasm-bindgen --pattern "$archive" --dir /tmp
-          echo "82d12bb940e2d4e72e0d5605387fc1b8ca179044e012b620f0ce4e7440e8320e  /tmp/${archive}" | sha256sum -c -
-          tar -xzf "/tmp/${archive}" -C /tmp
-          install -m 755 "/tmp/wasm-bindgen-${version}-x86_64-unknown-linux-musl/wasm-bindgen" "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
+          tar -xzf /tmp/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl.tar.gz -C /tmp
+          install -m 755 /tmp/wasm-bindgen-0.2.129-x86_64-unknown-linux-musl/wasm-bindgen "${CARGO_HOME:-$HOME/.cargo}/bin/wasm-bindgen"
           wasm-bindgen --version
       - name: Rustc version
         id: rustc
