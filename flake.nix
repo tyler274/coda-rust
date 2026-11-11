@@ -98,7 +98,13 @@
         };
     in
     {
-      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self crane; };
+      packages.${system} = import ./nix/packages.nix { pkgs = pkgsFor system; inherit self crane; } // {
+        # Streams the CI Postgres job's container; see nix/postgres-ci-image.nix.
+        postgres-ci-image = import ./nix/postgres-ci-image.nix {
+          pkgs = pkgsFor system;
+          shell = (devShellsFor system).postgres-ci;
+        };
+      };
       devShells = nixpkgs.lib.genAttrs devSystems devShellsFor;
     };
 }

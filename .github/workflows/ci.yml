@@ -2,6 +2,20 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      postgres_probe:
+        description: Temporary probe only; none runs ordinary full CI
+        type: choice
+        options: [none, baseline, A, B, C]
+        default: none
+      probe_sample:
+        description: Probe repetition 1 through 5
+        type: string
+        default: '1'
+      probe_target_key:
+        description: Exact portable postgres-v2 shard-2 cache key (required for probe)
+        type: string
+        default: ''
   pull_request:
   # The merge queue checks each pull request on top of main and the entries
   # ahead of it. `CI result` on that candidate is what lets it merge.
@@ -27,7 +41,21 @@ permissions:
   # Actions write, which would also let repository code dispatch a release.
 
 jobs:
+  postgres-probe:
+    if: github.event_name == 'workflow_dispatch' && inputs.postgres_probe != 'none' && inputs.postgres_probe != ''
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+    uses: ./.github/workflows/postgres-image-probe.yml
+    with:
+      variant: ${{ inputs.postgres_probe }}
+      sample: ${{ inputs.probe_sample }}
+      target_key: ${{ inputs.probe_target_key }}
+    secrets: inherit
+
   scope:
+    if: github.event_name != 'workflow_dispatch' || inputs.postgres_probe == 'none' || inputs.postgres_probe == ''
     name: Select CI scope
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
@@ -47,6 +75,7 @@ jobs:
         run: python3 scripts/ci_scope.py select
 
   lightweight:
+    if: github.event_name != 'workflow_dispatch' || inputs.postgres_probe == 'none' || inputs.postgres_probe == ''
     name: Documentation and engineering skills
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
@@ -105,8 +134,8 @@ jobs:
 
   result:
     name: CI result
-    if: always()
-    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator, sandbox]
+    if: always() && (github.event_name != 'workflow_dispatch' || inputs.postgres_probe == 'none' || inputs.postgres_probe == '')
+    needs: [scope, lightweight, ci, foundations, images, postgres-image, postgres, observability, cargo-deny, android-emulator, sandbox]
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
       contents: read
@@ -801,11 +830,97 @@ jobs:
         if: always() && env.NIX_CACHE_STATE_DIR != ''
         run: python3 scripts/nix-cache/nix_cache.py cleanup
 
-  postgres:
-    needs: [scope, lightweight]
+  # One setup/evaluation runs alongside lightweight. Fork pull_request tokens
+  # are downgraded to read-only by GitHub; explicit guards also prohibit writes.
+  # Manual dispatch on repository branches supports approved image qualification.
+  postgres-image:
+    needs: [scope]
     if: needs.scope.outputs.full == 'true'
+    name: Prepare immutable Postgres CI image
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+      packages: write
+    env:
+      CAN_PUBLISH: >-
+        ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) ||
+            github.event_name == 'workflow_dispatch' ||
+            (github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')) }}
+    outputs:
+      image: ${{ steps.address.outputs.image || steps.resolve.outputs.image }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install Nix
+        uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Inspect exact private image without masking registry failures
+        id: address
+        env:
+          GHCR_READ_TOKEN: ${{ github.token }}
+        run: python3 scripts/nix-cache/postgres_ci_image.py inspect
+      - name: Refuse unauthorized missing-image publication
+        if: steps.address.outputs.missing == 'true' && env.CAN_PUBLISH != 'true'
+        run: |
+          echo '::error::Exact Postgres CI image is missing. Forks cannot publish; an authorized same-repository run must publish it first.'
+          exit 1
+      - name: Build missing image without registry credentials
+        if: steps.address.outputs.missing == 'true' && env.CAN_PUBLISH == 'true'
+        env:
+          IMAGE_TAG: ${{ steps.address.outputs.tag }}
+        run: |
+          stream=$(nix build .#postgres-ci-image --no-link --print-out-paths)
+          "$stream" | docker load
+          docker tag postgres-ci:latest "$IMAGE_TAG"
+      - name: Publish image with isolated registry credentials
+        if: steps.address.outputs.missing == 'true' && env.CAN_PUBLISH == 'true'
+        env:
+          GHCR_WRITE_TOKEN: ${{ github.token }}
+          IMAGE_TAG: ${{ steps.address.outputs.tag }}
+        run: |
+          export DOCKER_CONFIG
+          DOCKER_CONFIG=$(mktemp -d "$RUNNER_TEMP/postgres-registry.XXXXXX")
+          trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+          printf '%s' "$GHCR_WRITE_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+          unset GHCR_WRITE_TOKEN
+          docker push "$IMAGE_TAG"
+      - name: Resolve newly published immutable digest
+        id: resolve
+        if: steps.address.outputs.missing == 'true' && env.CAN_PUBLISH == 'true'
+        env:
+          GHCR_READ_TOKEN: ${{ github.token }}
+          IMAGE_TAG: ${{ steps.address.outputs.tag }}
+        run: python3 scripts/nix-cache/postgres_ci_image.py resolve --image-tag "$IMAGE_TAG"
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
+
+  postgres:
+    needs: [scope, lightweight, postgres-image]
+    if: >-
+      !cancelled() && needs.scope.outputs.full == 'true' &&
+      needs.lightweight.result == 'success' && needs.postgres-image.result == 'success'
     name: Fresh Postgres migrations and tests (shard ${{ matrix.shard }})
     runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+      packages: read
+    container:
+      image: ${{ needs.postgres-image.outputs.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+    defaults:
+      run:
+        shell: bash --noprofile --norc -eo pipefail {0}
     timeout-minutes: 30
     # check-postgres.sh splits its suites in two; together the shards run every
     # suite once. `result` needs postgres, which fails if either shard fails.
@@ -821,14 +936,14 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-        ports:
-          - 5432/tcp
         options: >-
           --health-cmd "pg_isready -U postgres -d postgres"
           --health-interval 5s
           --health-timeout 5s
           --health-retries 12
     env:
+      BASH_ENV: /etc/coda/postgres-ci.env
+      CARGO_HOME: ${{ github.workspace }}/.ci-cargo
       CODA_REQUIRE_POSTGRES_TESTS: '1'
       CARGO_INCREMENTAL: '0'
       CARGO_PROFILE_DEV_DEBUG: '0'
@@ -836,25 +951,22 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
-      - name: Install Nix
-        uses: cachix/install-nix-action@v31
-      - name: Read private Nix cache
-        uses: ./.github/actions/nix-cache
         with:
-          enabled: ${{ vars.NIX_CACHE_ENABLED }}
-          bucket: ${{ vars.NIX_CACHE_BUCKET }}
-          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
-          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
-          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+          persist-credentials: false
+      - name: Prepare container workspace
+        run: |
+          git config --global --add safe.directory "$PWD"
+          printf 'CARGO_HOME=%s/.ci-cargo\n' "$PWD" >> "$GITHUB_ENV"
       - name: Restore Postgres proof build
         id: postgres-cache
         continue-on-error: true
         uses: actions/cache/restore@v6
         with:
+          # Workspace-relative archives restore identically on hosts and in containers.
           path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git/db
+            .ci-cargo/registry/index
+            .ci-cargo/registry/cache
+            .ci-cargo/git/db
             target
           # The script chooses the package set, and so the dependency features
           # in target/. Each shard links its own test binaries, so each keeps
@@ -862,27 +974,28 @@ jobs:
           # (PKG_CONFIG_PATH reaches build scripts), so it is in the key too.
           # Main and scheduled runs save one per commit, so concurrent merges don't race for a key ("another job may be
           # creating this cache") and PRs restore the newest main build.
-          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-${{ github.sha }}
+          key: postgres-v2-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-image.nix', 'scripts/nix-cache/postgres_image_env.py', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-${{ github.sha }}
           restore-keys: |
-            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-
-            postgres-${{ runner.os }}-shard${{ matrix.shard }}-
-            postgres-${{ runner.os }}-
+            postgres-v2-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-image.nix', 'scripts/nix-cache/postgres_image_env.py', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-
+            postgres-v2-${{ runner.os }}-shard${{ matrix.shard }}-
+            postgres-v2-${{ runner.os }}-
       # Shard 2 finishes first, so it also checks SQL formatting.
       - name: Check authored SQL formatting
         if: matrix.shard == 2
-        run: nix develop .#postgres-ci --command python scripts/check-sql.py
+        run: python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
-          MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
-          PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
-          FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
-          DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/front_door_ci
-          PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
+          DUET_TEST_ALLOW_POSTGRES_SERVICE: '1'
+          MIGRATION_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+          PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@postgres:5432/physician_ci
+          FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@postgres:5432/front_door_ci
+          DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/front_door_ci
+          PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/physician_ci
           POSTGRES_SHARD: ${{ matrix.shard }}
         run: |
-          nix develop .#postgres-ci --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
-          nix develop .#postgres-ci --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
-          nix develop .#postgres-ci --command bash scripts/check-postgres.sh
+          createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          bash scripts/check-postgres.sh
       # A PR saves (about 1.5 GB per shard) only when main had nothing for its
       # dependency set, so ordinary PRs don't evict main's entries. A merge
       # queue candidate never saves, as with the Rust build cache.
@@ -890,19 +1003,16 @@ jobs:
         if: >-
           github.event_name != 'merge_group' &&
           steps.postgres-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' ||
-          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix'))))
+          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-v2-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-image.nix', 'scripts/nix-cache/postgres_image_env.py', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix'))))
         continue-on-error: true
         uses: actions/cache/save@v6
         with:
           path: |
-            ~/.cargo/registry/index
-            ~/.cargo/registry/cache
-            ~/.cargo/git/db
+            .ci-cargo/registry/index
+            .ci-cargo/registry/cache
+            .ci-cargo/git/db
             target
           key: ${{ steps.postgres-cache.outputs.cache-primary-key }}
-      - name: Remove private cache credentials
-        if: always() && env.NIX_CACHE_STATE_DIR != ''
-        run: python3 scripts/nix-cache/nix_cache.py cleanup
 
   # Rebuilds the public marketing site from this main commit, pushes it by
   # digest to the private public-site repository and applies the staging

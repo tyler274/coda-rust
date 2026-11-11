@@ -30,19 +30,35 @@ class RootTests(unittest.TestCase):
         workflow = (REPO / '.github/workflows/ci.yml').read_text()
         used = set(re.findall(r'nix develop \.#([\w-]+)', workflow))
         self.assertTrue(used)
+        # The container now carries postgres-ci's closure rather than entering
+        # that shell in each shard; retain its inputs in the reusable cache.
+        self.assertIn('nix build .#postgres-ci-image', workflow)
+        used.add('postgres-ci')
         self.assertEqual({r.rsplit('.', 1)[1] for r in roots.SHELL_ROOTS}, used)
 
     def test_build_preserves_json_and_only_builds_allowlist(self):
         result = [{'drvPath': '/nix/store/example.drv', 'outputs': {'out': '/nix/store/example'}}]
+        archive = {'path': '/nix/store/self-source', 'inputs': {
+            'nixpkgs': {'path': '/nix/store/nixpkgs-source', 'inputs': {}},
+            'crane': {'path': '/nix/store/crane-source', 'inputs': {
+                'nested': {'path': '/nix/store/nested-source', 'inputs': {}}}}}}
+        commands = []
         def run(command, **kwargs):
-            self.assertEqual(command, ['nix', 'build', '--no-link', '--json',
-                                       '--no-update-lock-file', *[f'.#{r}' for r in roots.ROOTS]])
+            commands.append(command)
             self.assertTrue(kwargs['check'])
-            kwargs['stdout'].write(json.dumps(result))
+            output = archive if command[1] == 'flake' else result
+            return subprocess.CompletedProcess(command, 0, json.dumps(output), '')
         with tempfile.TemporaryDirectory() as temp, patch.object(roots.subprocess, 'run', run):
             output = Path(temp) / 'build.json'
             roots.build(output)
-            self.assertEqual(json.loads(output.read_text()), result)
+            # The repository's own source stays out; only locked inputs are published.
+            self.assertEqual(json.loads(output.read_text()), result + [{'flakeInputs': {
+                'nixpkgs': '/nix/store/nixpkgs-source', 'crane': '/nix/store/crane-source',
+                'crane/nested': '/nix/store/nested-source'}}])
+        self.assertEqual(commands, [
+            ['nix', 'build', '--no-link', '--json', '--no-update-lock-file',
+             *[f'.#{r}' for r in roots.ROOTS]],
+            ['nix', 'flake', 'archive', '--json', '--no-update-lock-file']])
 
     def test_checkout_checks_full_sha_head_and_untracked_files(self):
         sha = 'a' * 40

@@ -71,8 +71,13 @@ can break substitution. Retention changes must account for the reference graph.
 
 [The local workflow](/.github/workflows/nix-cache-local.yml) builds the same
 [allowlisted roots](/scripts/nix-cache/nix_cache_roots.py) as the hosted writer: three
-dependency artifacts, six runtime, migration and job images, and the four dev
-shells CI enters (`agent`, `postgres-ci`, `release`, `observability`). It only warms the
+dependency artifacts, six runtime, migration and job images, the four dev
+shells CI enters (`agent`, `postgres-ci`, `release`, `observability`), and the
+locked flake input sources. When those sources are available in the cache,
+readers substitute them using the locked `narHash` rather than downloading
+GitHub tarballs. A cache miss still falls back to the upstream source. The fresh
+reader verification includes the recorded input paths as well as the dependency
+closure. This workflow only warms the
 binary cache; it does not load or push images, deploy services, or replace the
 hosted image proofs. Hosted publication remains a protected `main`-push operation.
 Local publication is an explicit operator-authorized exception for a reviewed,

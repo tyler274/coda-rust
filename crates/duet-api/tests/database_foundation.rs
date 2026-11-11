@@ -4,16 +4,15 @@ use sqlx::AssertSqlSafe;
 use sqlx::{Connection, PgConnection};
 use uuid::Uuid;
 
+#[path = "support/disposable_postgres.rs"]
+mod disposable_postgres;
+
 #[tokio::test]
 async fn fresh_and_upgrade_keep_identity_and_enforce_account_scope() {
     let admin_url = std::env::var("DUET_TEST_DATABASE_URL")
         .expect("DUET_TEST_DATABASE_URL must name a disposable local PostgreSQL instance");
-    let admin_options: sqlx::postgres::PgConnectOptions = admin_url.parse().unwrap();
-    assert!(
-        matches!(admin_options.get_host(), "localhost" | "127.0.0.1" | "::1"),
-        "foundation tests only operate on loopback PostgreSQL"
-    );
-    let mut admin = PgConnection::connect(&admin_url).await.unwrap();
+    let admin_options = disposable_postgres::options(&admin_url);
+    let mut admin = PgConnection::connect_with(&admin_options).await.unwrap();
     let suffix = Uuid::new_v4().simple().to_string();
     let role = format!("duet_test_{suffix}");
     // A per-run random password lets the role log in over TCP whether the
@@ -35,9 +34,8 @@ async fn fresh_and_upgrade_keep_identity_and_enforce_account_scope() {
             .execute(&mut admin)
             .await
             .unwrap();
-        // Explicit localhost test URLs; credentials are never taken from runtime env.
-        let options: sqlx::postgres::PgConnectOptions = admin_url.parse().unwrap();
-        let options = options.database(&db);
+        // Derive both connections from the validated disposable admin options.
+        let options = admin_options.clone().database(&db);
         use sqlx::ConnectOptions;
         let owner_url = options.to_url_lossy().to_string();
         let runtime_url = options

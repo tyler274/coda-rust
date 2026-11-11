@@ -346,6 +346,49 @@ class NixCacheSelection(unittest.TestCase):
                 verify = self.call(["--store", f"local?root={store}", "path-info", self.paths[name]])
                 self.assertNotEqual(verify.returncode, 0, "the path must not become valid")
 
+    def test_locked_flake_input_substitutes_without_github(self):
+        # nix_cache_roots.build publishes locked input sources. A reader then
+        # evaluates without downloading the GitHub tarball at all.
+        tree = self.root / "dependency"
+        tree.mkdir()
+        (tree / "payload.txt").write_text("locked input payload\n")
+        source = self.nix_ok(["--store", self.source, "store", "add-path", "--name", "source", str(tree)]).stdout.strip()
+        nar_hash = json.loads(self.nix_ok(["--store", self.source, "path-info", "--json", "--json-format", "1",
+                                           source]).stdout)[source]["narHash"]
+        flake = self.root / "flake"
+        flake.mkdir()
+        (flake / "flake.nix").write_text(
+            '{ inputs.dep = { url = "github:coda-test-unreachable/dependency"; flake = false; };\n'
+            '  outputs = { self, dep }: { value = builtins.readFile "${dep}/payload.txt"; }; }\n')
+        locked = {"type": "github", "owner": "coda-test-unreachable", "repo": "dependency",
+                  "rev": "0" * 40, "lastModified": 1, "narHash": nar_hash}
+        (flake / "flake.lock").write_text(json.dumps({"root": "root", "version": 7, "nodes": {
+            "root": {"inputs": {"dep": "dep"}},
+            "dep": {"flake": False, "locked": locked,
+                    "original": {"type": "github", "owner": "coda-test-unreachable", "repo": "dependency"}}}}))
+        server = CacheServer()
+        self.enterContext(server)
+        self.nix_ok(["copy", "--from", self.source, "--to", server.destination, source])
+
+        def evaluate(name, reader):
+            env = dict(reader, XDG_CACHE_HOME=str(self.root / f"eval-cache-{name}"),
+                       https_proxy="http://127.0.0.1:9", HTTPS_PROXY="http://127.0.0.1:9", NO_PROXY="127.0.0.1")
+            return self.call(["--store", f"local?root={self.root / f'eval-{name}'}", "--option", "connect-timeout", "3",
+                              "--extra-experimental-features", "flakes",
+                              "eval", "--raw", "--no-update-lock-file", f"path:{flake}#value"], env=env)
+
+        result = evaluate("cached", self.reader(server))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout, "locked input payload\n")
+        self.assertNotIn("github.com", result.stderr)
+        self.assertEqual(len([k for m, k, s in server.events if m == "GET" and "/nar/" in k and s == 200]), 1)
+        # Control: without the cache the same evaluation needs github.com and fails.
+        started = time.monotonic()
+        result = evaluate("uncached", dict(self.env, NIX_CONFIG=self.env["NIX_CONFIG"] + "substituters =\n"))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("github.com", result.stderr)
+        self.assertLess(time.monotonic() - started, 30)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

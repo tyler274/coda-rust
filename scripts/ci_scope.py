@@ -10,7 +10,7 @@ import subprocess
 import sys
 
 
-FULL_JOBS = ("ci", "foundations", "images", "postgres", "observability", "cargo-deny")
+FULL_JOBS = ("ci", "foundations", "images", "postgres-image", "postgres", "observability", "cargo-deny")
 MOBILE_JOBS = ("android-emulator",)
 SANDBOX_JOBS = ("sandbox",)
 # Pull requests and main pushes do not run the Android emulator yet; only a

@@ -1,0 +1,278 @@
+name: Postgres image probe
+
+# TEMPORARY: invoked through CI's manual input; all measured jobs are readers.
+# At one reviewed SHA: five baseline samples BEFORE source publication, then
+# operator warming, then five alternating A/B/C samples. Prewarm calibration is
+# necessarily nonalternating. A is an upstream-prefetch diagnostic, not the
+# adoption baseline. Baseline/B measure only ordinary production shell entry;
+# B verifies S3 provenance from that entry's logs without prewarming inputs.
+# A portable v2 shard-2 snapshot from ordinary CI is mandatory, never saved here.
+# C inspects the same production helper's image; publish it separately first.
+# Final full CI (without probe input) must pass both shards and all other checks.
+on:
+  workflow_call:
+    inputs:
+      variant:
+        type: string
+        required: true
+      sample:
+        type: string
+        required: true
+      target_key:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: postgres-image-probe
+  cancel-in-progress: false
+
+env:
+  PROBE_VARIANT: ${{ inputs.variant }}
+  PROBE_SAMPLE: ${{ inputs.sample }}
+  PROBE_TARGET_KEY: ${{ inputs.target_key }}
+  CARGO_HOME: ${{ github.workspace }}/.ci-cargo
+  CARGO_INCREMENTAL: '0'
+  CARGO_PROFILE_DEV_DEBUG: '0'
+  CARGO_PROFILE_TEST_DEBUG: '0'
+  CODA_REQUIRE_POSTGRES_TESTS: '1'
+
+jobs:
+  shell:
+    name: Probe shell
+    if: inputs.variant == 'baseline' || inputs.variant == 'A' || inputs.variant == 'B'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 45
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.2-pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Require comparable warm target
+        run: |
+          case "$PROBE_TARGET_KEY" in postgres-v2-Linux-shard2-*) ;; *) echo '::error::An exact portable v2 shard-2 cache key is required'; exit 1 ;; esac
+          case "$PROBE_SAMPLE" in 1|2|3|4|5) ;; *) exit 1 ;; esac
+      - uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Require private priority-50 reader
+        run: test -n "$NIX_CACHE_STATE_DIR"
+      - name: Restore exact Postgres target snapshot
+        id: target
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            .ci-cargo/registry/index
+            .ci-cargo/registry/cache
+            .ci-cargo/git/db
+            target
+          key: ${{ inputs.target_key }}
+          fail-on-cache-miss: true
+      - name: Require usable exact Cargo and target snapshot
+        env:
+          PROBE_TARGET_HIT: ${{ steps.target.outputs.cache-hit }}
+        run: python3 scripts/nix-cache/shell_probe.py cache-ready --directory probe-result
+      - name: Realize production shell and record source split
+        run: python3 scripts/nix-cache/shell_probe.py shell --variant "$PROBE_VARIANT" --directory probe-result
+      - name: Exercise full shard 2
+        env:
+          POSTGRES_PORT: ${{ job.services.postgres.ports['5432'] }}
+          POSTGRES_SHARD: '2'
+        run: |
+          export MIGRATION_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:$POSTGRES_PORT/postgres"
+          export PHYSICIAN_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:$POSTGRES_PORT/physician_ci"
+          export FRONT_DOOR_DATABASE_URL="postgres://postgres:postgres@127.0.0.1:$POSTGRES_PORT/front_door_ci"
+          export DUET_IDENTITY_TEST_DATABASE_URL="$FRONT_DOOR_DATABASE_URL"
+          export PHYSICIAN_RUNTIME_TEST_DATABASE_URL="$PHYSICIAN_DATABASE_URL"
+          # Deliberate child-shell expansion from exported database URLs.
+          # shellcheck disable=SC2016
+          nix develop .#postgres-ci --command bash -euc '
+            python scripts/check-sql.py
+            createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+            createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+            bash scripts/check-postgres.sh
+          '
+      - name: Record cache state
+        if: always()
+        env:
+          PROBE_TARGET_MATCH: ${{ steps.target.outputs.cache-matched-key }}
+          PROBE_TARGET_HIT: ${{ steps.target.outputs.cache-hit }}
+        run: python3 scripts/nix-cache/shell_probe.py record --variant "$PROBE_VARIANT" --directory probe-result
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: probe-sample
+          path: probe-result
+          if-no-files-found: error
+
+  image:
+    name: Prepare probe image
+    if: inputs.variant == 'C'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      packages: read
+    outputs:
+      image: ${{ steps.address.outputs.image }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Require comparable warm target
+        run: |
+          case "$PROBE_TARGET_KEY" in postgres-v2-Linux-shard2-*) ;; *) echo '::error::An exact portable v2 shard-2 cache key is required'; exit 1 ;; esac
+          case "$PROBE_SAMPLE" in 1|2|3|4|5) ;; *) exit 1 ;; esac
+      - uses: cachix/install-nix-action@v31
+      - name: Read private Nix cache
+        uses: ./.github/actions/nix-cache
+        with:
+          enabled: ${{ vars.NIX_CACHE_ENABLED }}
+          bucket: ${{ vars.NIX_CACHE_BUCKET }}
+          public-key: ${{ vars.NIX_CACHE_PUBLIC_KEY }}
+          access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
+      - name: Require private priority-50 reader
+        run: test -n "$NIX_CACHE_STATE_DIR"
+      - name: Inspect exact image
+        id: address
+        env:
+          GHCR_READ_TOKEN: ${{ github.token }}
+        run: python3 scripts/nix-cache/postgres_ci_image.py inspect
+      - name: Require operator-prepared image
+        if: steps.address.outputs.missing == 'true'
+        run: |
+          echo '::error::Exact image missing. Publish separately before measured runs; probes are readers only.'
+          exit 1
+      - name: Remove private cache credentials
+        if: always() && env.NIX_CACHE_STATE_DIR != ''
+        run: python3 scripts/nix-cache/nix_cache.py cleanup
+
+  container:
+    name: Probe container
+    needs: image
+    if: inputs.variant == 'C'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+    container:
+      image: ${{ needs.image.outputs.image }}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ github.token }}
+    defaults:
+      run:
+        shell: bash --noprofile --norc -eo pipefail {0}
+    env:
+      BASH_ENV: /etc/coda/postgres-ci.env
+      PROBE_IMAGE: ${{ needs.image.outputs.image }}
+      POSTGRES_SHARD: '2'
+      MIGRATION_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
+      PHYSICIAN_DATABASE_URL: postgres://postgres:postgres@postgres:5432/physician_ci
+      FRONT_DOOR_DATABASE_URL: postgres://postgres:postgres@postgres:5432/front_door_ci
+      DUET_IDENTITY_TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/front_door_ci
+      PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@postgres:5432/physician_ci
+    services:
+      postgres:
+        image: pgvector/pgvector:0.8.2-pg16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 5s --health-timeout 5s --health-retries 12
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Prepare container workspace
+        run: |
+          git config --global --add safe.directory "$PWD"
+          printf 'CARGO_HOME=%s/.ci-cargo\n' "$PWD" >> "$GITHUB_ENV"
+      - name: Restore exact Postgres target snapshot
+        id: target
+        uses: actions/cache/restore@v6
+        with:
+          path: |
+            .ci-cargo/registry/index
+            .ci-cargo/registry/cache
+            .ci-cargo/git/db
+            target
+          key: ${{ inputs.target_key }}
+          fail-on-cache-miss: true
+      - name: Require usable exact Cargo and target snapshot
+        env:
+          PROBE_TARGET_HIT: ${{ steps.target.outputs.cache-hit }}
+        run: python scripts/nix-cache/shell_probe.py cache-ready --directory probe-result
+      - name: Exercise full shard 2
+        env:
+          DUET_TEST_ALLOW_POSTGRES_SERVICE: '1'
+        run: |
+          python scripts/check-sql.py
+          createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          bash scripts/check-postgres.sh
+      - name: Record cache state
+        if: always()
+        env:
+          PROBE_TARGET_MATCH: ${{ steps.target.outputs.cache-matched-key }}
+          PROBE_TARGET_HIT: ${{ steps.target.outputs.cache-hit }}
+        run: python scripts/nix-cache/shell_probe.py record --variant C --directory probe-result
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: probe-sample
+          path: probe-result
+          if-no-files-found: error
+
+  report:
+    name: Measure completed probe jobs
+    needs: [shell, image, container]
+    if: always()
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Collect job and step timings including dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/nix-cache/shell_probe.py collect --directory probe-timings
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: probe-timings
+          path: probe-timings
+          if-no-files-found: error
+      - name: Require selected proof jobs to succeed
+        env:
+          JOBS: ${{ toJSON(needs) }}
+        run: |
+          python3 -c 'import json, os; jobs = json.loads(os.environ["JOBS"]); selected = {"baseline": ["shell"], "A": ["shell"], "B": ["shell"], "C": ["image", "container"]}[os.environ["PROBE_VARIANT"]]; assert all(jobs[name]["result"] == "success" for name in selected), jobs'

@@ -56,6 +56,32 @@ class ReaderTests(unittest.TestCase):
                 verify.verify(env, str(build))
             self.assertFalse(list(Path(scratch).glob('coda-nix-reader-*')))
 
+    def test_recorded_flake_sources_are_copied_and_verified(self):
+        source = '/nix/store/' + 'c' * 32 + '-source'
+        with tempfile.TemporaryDirectory() as scratch:
+            build = Path(scratch) / 'build.json'
+            build.write_text(json.dumps([
+                {'drvPath': '/nix/store/' + 'a' * 32 + '-coda-servers-deps-0.1.0.drv',
+                 'outputs': {'out': OUT}},
+                {'flakeInputs': {'nixpkgs': source}},
+            ]))
+            env = {'RUNNER_TEMP': scratch, 'NIX_CACHE_BUCKET': 'private-cache',
+                   'NIX_CACHE_PUBLIC_KEY': PUBLIC, 'NIX_CACHE_READ_ACCESS_KEY_ID': 'GOOGREAD',
+                   'NIX_CACHE_READ_SECRET_ACCESS_KEY': 'readerSecret'}
+            with patch.object(cache, 'run', return_value='') as run:
+                verify.verify(env, str(build))
+            for call in run.call_args_list:
+                self.assertIn(source, call.args[0])
+                self.assertIn(OUT, call.args[0])
+            build.write_text(json.dumps([
+                {'drvPath': '/nix/store/' + 'a' * 32 + '-coda-servers-deps-0.1.0.drv',
+                 'outputs': {'out': OUT}},
+                {'flakeInputs': {'nixpkgs': '--untrusted-option'}},
+            ]))
+            with patch.object(cache, 'run') as run, self.assertRaises(cache.CacheError):
+                verify.verify(env, str(build))
+            run.assert_not_called()
+
     def test_empty_build_is_refused(self):
         with tempfile.TemporaryDirectory() as scratch:
             build = Path(scratch) / 'build.json'

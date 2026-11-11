@@ -1,4 +1,4 @@
-//! Bounded PgMoments proof against a disposable loopback PostgreSQL database.
+//! Bounded PgMoments proof against a validated disposable PostgreSQL database.
 //! The fixture represents the externally owned relation; no migration is run or
 //! rewritten. Other Duet SQLx transactions are deliberately outside this slice.
 
@@ -6,15 +6,14 @@ use duet_api::{ApiError, Moments, PgMoments};
 use sqlx::{AssertSqlSafe, Connection, PgConnection, postgres::PgPoolOptions};
 use uuid::Uuid;
 
+#[path = "support/disposable_postgres.rs"]
+mod disposable_postgres;
+
 #[tokio::test]
 async fn moments_preserve_account_scope_order_kind_and_delete_semantics() {
     let url = std::env::var("DUET_TEST_DATABASE_URL")
-        .expect("DUET_TEST_DATABASE_URL must name disposable loopback PostgreSQL; never skips");
-    let options: sqlx::postgres::PgConnectOptions = url.parse().unwrap();
-    assert!(matches!(
-        options.get_host(),
-        "localhost" | "127.0.0.1" | "::1"
-    ));
+        .expect("DUET_TEST_DATABASE_URL must name disposable PostgreSQL; never skips");
+    let options = disposable_postgres::options(&url);
     let mut admin = PgConnection::connect_with(&options).await.unwrap();
     // Database identifiers are code-owned UUIDs; SQL DDL is only fixture setup,
     // not production CRUD or a new schema/migration owner.

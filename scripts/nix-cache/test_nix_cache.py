@@ -220,6 +220,17 @@ class CacheTests(unittest.TestCase):
         cache.publish(self.env, [], str(path))
         self.assertIn(['nix-store', '--query', '--requisites', '--include-outputs', DRV, OUT], [c[0] for c in self.calls])
 
+    def test_build_json_includes_flake_input_sources(self):
+        source = '/nix/store/' + 'c' * 32 + '-source'
+        path = self.directory / 'build.json'
+        path.write_text(json.dumps([{'drvPath': DRV, 'outputs': {'out': OUT}},
+                                    {'flakeInputs': {'nixpkgs': source}}]))
+        self.assertEqual(cache.selected_paths([], str(path)), sorted([DRV, OUT, source]))
+        for bad in ({'nixpkgs': '.#x'}, {'nixpkgs': '/tmp/source'}):
+            path.write_text(json.dumps([{'drvPath': DRV, 'outputs': {}}, {'flakeInputs': bad}]))
+            with self.subTest(bad=bad), self.assertRaises(cache.CacheError):
+                cache.selected_paths([], str(path))
+
     def test_runtime_only_and_expression_roots_rejected(self):
         for paths in ([], [OUT], ['.#package'], [DRV, '/tmp/secret'], [DRV, '--all']):
             with self.subTest(paths=paths), self.assertRaises(cache.CacheError):

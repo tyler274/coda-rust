@@ -14,9 +14,11 @@ def verify(env, build_json):
     try:
         results = json.loads(Path(build_json).read_text())
         dependency = next(item for item in results
-                          if '-coda-servers-deps-' in item['drvPath'])
+                          if '-coda-servers-deps-' in item.get('drvPath', ''))
         paths = list(dependency['outputs'].values())
-    except (OSError, ValueError, KeyError, IndexError, TypeError, StopIteration):
+        for item in results:
+            paths.extend(item.get('flakeInputs', {}).values())
+    except (OSError, ValueError, KeyError, IndexError, TypeError, AttributeError, StopIteration):
         raise cache.CacheError('Expected build JSON with a dependency output') from None
     if not paths or any(not isinstance(p, str) or not cache.STORE_PATH.fullmatch(p) for p in paths):
         raise cache.CacheError('Invalid verification paths')
@@ -40,11 +42,11 @@ def verify(env, build_json):
         store = f'local?root={directory / "store"}'
         common = ['--option', 'trusted-public-keys', public,
                   '--option', 'require-sigs', 'true', '--option', 'substituters', '']
-        print('Fresh reader: copying dependency closure from private cache only; builds disabled.', flush=True)
+        print('Fresh reader: copying dependency closure and recorded flake inputs from private cache only; builds disabled.', flush=True)
         cache.run(['nix', 'copy', '--from', url, '--to', store, *common, *paths], env=child)
         cache.run(['nix', 'store', 'verify', '--store', store, '--recursive',
                    '--sigs-needed', '1', *common, *paths], env=child)
-        print('Fresh reader: dependency closure fetched and contents/trust verified.', flush=True)
+        print('Fresh reader: dependency closure and recorded flake inputs fetched and contents/trust verified.', flush=True)
 
 
 def main():
