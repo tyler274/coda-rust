@@ -19,8 +19,8 @@ concurrency:
 
 permissions:
   contents: read
-  # Saving the Rust build cache needs this. The default token is contents-only.
-  actions: write
+  # Cache save/restore uses the runner's cache token. Validation must not gain
+  # Actions write, which would also let repository code dispatch a release.
 
 jobs:
   scope:

@@ -317,6 +317,18 @@ class WarmRunTests(unittest.TestCase):
             if name.startswith("deploy-") or name == "nix-cache-publish":
                 self.assertIn("github.event_name == 'push'", job["if"], name)
 
+    def test_validation_cannot_dispatch_other_workflows(self):
+        # GitHub's dispatch API requires Actions write. Validation executes
+        # proposed source and dependencies; its token must not approve releases.
+        for name, job in self.jobs.items():
+            if name.startswith("deploy-") or name == "nix-cache-publish":
+                continue
+            with self.subTest(job=name):
+                permissions = job.get("permissions", self.workflow.get("permissions", {}))
+                self.assertNotEqual(permissions, "write-all")
+                if isinstance(permissions, dict):
+                    self.assertIn(permissions.get("actions"), (None, "read"))
+
     def test_postgres_saves_per_commit_and_restores_by_prefix(self):
         steps = {s.get("name"): s for s in self.jobs["postgres"]["steps"]}
         restore = steps["Restore Postgres proof build"]
