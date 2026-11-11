@@ -823,6 +823,12 @@ pub struct ChatTurn {
     /// On one of Coda's replies the signed-in physician rated: their saved
     /// feedback on it.
     pub feedback: Option<ResponseFeedback>,
+    #[serde(default)]
+    /// On an answer: what it rests on and its limits, written apart from it.
+    pub basis: Option<String>,
+    #[serde(default)]
+    /// On an answer: patient records arrived after it was written.
+    pub newer_records: bool,
 }
 
 /// A physician's rating of one of Coda's responses.

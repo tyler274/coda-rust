@@ -74,6 +74,35 @@ function (step, ...args) {
         originalLabel: original?.innerText ?? null };
     },
     citationClosed() { return !document.querySelector(".source-reading-pane"); },
+    // What closes the conversation's answer: Update, its Sources control, and its basis, in view.
+    answerControls() {
+      const controls = one("section[aria-label='Conversation'] .answer-controls");
+      controls.scrollIntoView({ block: "center" });
+      const basis = controls.querySelector(".disclosure");
+      const sources = [...document.querySelectorAll(".answer-sources .list-row")];
+      const box = (element) => element?.getBoundingClientRect();
+      const words = box(controls.previousElementSibling), update = box(controls.querySelector(".answer-update"));
+      const button = box(controls.querySelector(".sources-button")), toggle = box(basis?.querySelector(".disclosure-toggle"));
+      const within = (inner) => !inner || (inner.width > 0 && inner.left >= words.left - 1
+        && inner.right <= Math.max(words.right, controls.getBoundingClientRect().right) + 1);
+      return {
+        // Below the answer, Update and Sources on one line, the basis on its own line beneath.
+        laidOut: !!words && controls.getBoundingClientRect().top >= words.bottom - 1
+          && (!update || !button || Math.abs(update.top + update.height / 2 - (button.top + button.height / 2)) < 4)
+          && (!button || !toggle || toggle.top >= button.bottom - 1)
+          && [update, button, toggle].every(within),
+        update: controls.querySelector(".answer-update > :not(.sr-only)")?.innerText ?? null,
+        updateSpoken: controls.querySelector(".answer-update .sr-only")?.textContent ?? null,
+        updateTitle: controls.querySelector(".answer-update")?.getAttribute("title") ?? null,
+        sourcesButtons: controls.querySelectorAll(".sources-button").length,
+        sourcesCount: controls.querySelector(".sources-count")?.textContent ?? null,
+        chipsInAnswer: document.querySelectorAll("section[aria-label='Conversation'] .citation-chip").length,
+        basisTitle: basis?.querySelector(".disclosure-toggle")?.innerText ?? null,
+        basisOpen: basis?.querySelector(".disclosure-toggle")?.getAttribute("aria-expanded") === "true",
+        basisText: basis?.querySelector(".answer-basis")?.textContent ?? null,
+        listed: sources.map((row) => row.innerText.replace(/\s+/g, " ").trim()),
+      };
+    },
     citationReading() {
       const pane = one(".source-reading-pane");
       const technical = pane.querySelector(".source-technical-details");

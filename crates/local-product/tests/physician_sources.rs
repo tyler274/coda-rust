@@ -50,11 +50,12 @@ fn exact_reader_rejects_corruption_and_cross_workspace_and_never_truncates_conte
     let events = delivered_read("read", &read.to_string());
     let delivered =
         local_product::physician_sources::delivered_citations(events.iter(), &[]).unwrap();
-    let (_, citations) = local_product::physician_chat::published(
+    let citations = local_product::physician_chat::published(
         &format!("Claim [[patient_source:{citation_id}]]"),
         &delivered,
     )
-    .unwrap();
+    .unwrap()
+    .citations;
     let saved = serde_json::to_value(&citations[0]).unwrap();
     assert_eq!(
         saved["readable_parts"],
@@ -261,17 +262,17 @@ fn only_whole_records_delivered_in_the_current_window_are_citable() {
 
     let current = delivered_read("read", &whole);
     let delivered = delivered_citations(current.iter(), &[]).unwrap();
-    let (text, cited) = published(&answer, &delivered).unwrap();
-    assert_eq!(text, answer);
-    assert_eq!(cited[0].id, id);
-    assert_eq!(cited[0].content, content);
+    let answered = published(&answer, &delivered).unwrap();
+    assert_eq!(answered.text, answer);
+    assert_eq!(answered.citations[0].id, id);
+    assert_eq!(answered.citations[0].content, content);
 
     // Returned but never delivered: not citable.
     let undelivered = &current[..1];
     let delivered = delivered_citations(undelivered.iter(), &[]).unwrap();
     assert_eq!(
-        published(&answer, &delivered),
-        Err(PublicationError::NotRead(id.clone()))
+        published(&answer, &delivered).err(),
+        Some(PublicationError::NotRead(id.clone()))
     );
 
     // Delivered in a window the model has since left: not citable.
@@ -288,13 +289,13 @@ fn only_whole_records_delivered_in_the_current_window_are_citable() {
     let delivered = delivered_citations(earlier.iter(), &[]).unwrap();
     assert!(delivered.is_empty());
     assert_eq!(
-        published(&answer, &delivered),
-        Err(PublicationError::NotRead(id.clone()))
+        published(&answer, &delivered).err(),
+        Some(PublicationError::NotRead(id.clone()))
     );
     // A partial answer cannot be corrected, so the unsupported marker leaves it.
-    let (text, cited) = published_partial(&answer, &delivered);
-    assert_eq!(text, "Potassium is 4.1 .");
-    assert!(cited.is_empty());
+    let partial = published_partial(&answer, &delivered);
+    assert_eq!(partial.text, "Potassium is 4.1 .");
+    assert!(partial.citations.is_empty());
 
     // A passage is delivered but carries no citation identity.
     let mut large = source;
@@ -316,11 +317,11 @@ fn only_whole_records_delivered_in_the_current_window_are_citable() {
 
     // An unclosed marker refuses a final answer and loses only its opening in a partial one.
     assert_eq!(
-        published("Claim [[patient_source:abc", &[]),
-        Err(PublicationError::Unterminated)
+        published("Claim [[patient_source:abc", &[]).err(),
+        Some(PublicationError::Unterminated)
     );
     assert_eq!(
-        published_partial("Claim [[patient_source:abc", &[]).0,
+        published_partial("Claim [[patient_source:abc", &[]).text,
         "Claim abc"
     );
 }

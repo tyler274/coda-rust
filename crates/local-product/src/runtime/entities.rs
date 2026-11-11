@@ -312,6 +312,7 @@ pub(super) mod chat_attempt {
         pub revision: i64,
         pub status: AttemptStatus,
         pub expires: i64,
+        pub sources_version: Option<i64>,
     }
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
     pub enum Relation {}

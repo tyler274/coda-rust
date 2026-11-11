@@ -306,8 +306,13 @@ async fn durable_snapshot(
             SnapshotFeedback::Unavailable
         }
     };
-    Json(json!({ "snapshot": durable_snapshot_body(conversation.as_ref(), &feedback) }))
-        .into_response()
+    let Ok(sources_version) = chat.store.source_version(&scope.workspace).await else {
+        return StatusCode::SERVICE_UNAVAILABLE.into_response();
+    };
+    Json(json!({
+        "snapshot": durable_snapshot_body(conversation.as_ref(), &feedback, sources_version)
+    }))
+    .into_response()
 }
 
 /// The physician's feedback on a chat's responses, as the snapshot read it.
@@ -367,9 +372,12 @@ fn citation_segments(message: &local_product::runtime::Message) -> Vec<Value> {
 /// `feedback` on it, if they rated it; a partial answer carries neither. The
 /// physician's text stays saved. When the feedback read failed, the snapshot
 /// says `"feedback": "unavailable"` and no turn carries feedback.
+/// `sources_version` is the workspace's current source version: an answer
+/// begun from an older one is marked as having newer records.
 fn durable_snapshot_body(
     conversation: Option<&local_product::runtime::Conversation>,
     feedback: &SnapshotFeedback,
+    sources_version: u64,
 ) -> Value {
     let (saved, mut body) = match feedback {
         SnapshotFeedback::Loaded(saved) => (Some(saved), json!({})),
@@ -379,7 +387,7 @@ fn durable_snapshot_body(
         ),
     };
     let (conversation, runs) = match conversation {
-        Some(conversation) => snapshot_turns(conversation, saved),
+        Some(conversation) => snapshot_turns(conversation, saved, sources_version),
         None => (Vec::new(), Vec::new()),
     };
     body["conversation"] = json!(conversation);
@@ -388,10 +396,13 @@ fn durable_snapshot_body(
 }
 
 /// A saved conversation's turns and its latest run, as the snapshot names
-/// them, with `feedback` on each rated response when it was read.
+/// them, with `feedback` on each rated response when it was read, and each
+/// answer begun from a source version older than `sources_version` marked as
+/// having newer records.
 fn snapshot_turns(
     conversation: &local_product::runtime::Conversation,
     feedback: Option<&BTreeMap<local_product::runtime::ResponseId, Feedback>>,
+    sources_version: u64,
 ) -> (Vec<Value>, Vec<Value>) {
     let responses: BTreeMap<_, _> = conversation
         .responses()
@@ -402,8 +413,12 @@ fn snapshot_turns(
         .iter()
         .enumerate()
         .flat_map(|(place, message)| {
+            let newer_records = message
+                .sources_version
+                .is_some_and(|answered| answered < sources_version);
             let mut authored = json!({ "kind": turn_kind(message.role.as_str()),
-                "text": message.text, "segments": citation_segments(message) });
+                "text": message.text, "segments": citation_segments(message),
+                "basis": message.basis, "newer_records": newer_records });
             if let Some(id) = responses.get(&place) {
                 authored["response_id"] = json!(id);
                 if let Some(saved) = feedback.and_then(|feedback| feedback.get(id)) {
@@ -688,13 +703,13 @@ mod durable_snapshot_tests {
     use super::{COULDNT_FINISH, STOPPED, SnapshotFeedback, WRITING, durable_snapshot_body};
     use local_product::runtime::feedback::{Details, Feedback, Rating, Reason};
     use local_product::runtime::{
-        Attempt, AttemptStatus, Conversation, Message, ResponseId, WorkStatus,
+        Attempt, AttemptStatus, Conversation, Message, MessageRole, ResponseId, WorkStatus,
     };
     use serde_json::Value;
 
     /// The snapshot of a chat with no feedback.
     fn snapshot(conversation: Option<&Conversation>) -> Value {
-        durable_snapshot_body(conversation, &SnapshotFeedback::Loaded(BTreeMap::new()))
+        durable_snapshot_body(conversation, &SnapshotFeedback::Loaded(BTreeMap::new()), 0)
     }
     fn conversation(status: WorkStatus) -> Conversation {
         use harness::engine::runs::{HoldReason, RunHistory, RunOutcome};
@@ -720,6 +735,8 @@ mod durable_snapshot_tests {
                 },
                 text: "Hello".into(),
                 citations: vec![],
+                basis: None,
+                sources_version: None,
             }],
             status,
             work: "work-1".into(),
@@ -731,6 +748,7 @@ mod durable_snapshot_tests {
                 status: AttemptStatus::Interrupted,
                 expires: 0,
                 events: vec![],
+                sources_version: None,
             }],
             revision: 1,
             skills: serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
@@ -766,6 +784,8 @@ mod durable_snapshot_tests {
                         },
                         text: "The saved part of the answer.".into(),
                         citations: Vec::new(),
+                        basis: None,
+                        sources_version: None,
                     });
                 }
                 let raw = "internal_provider_error: account billing identifier 739";
@@ -857,7 +877,6 @@ mod durable_snapshot_tests {
     /// A completed chat whose two assistant messages are a partial answer
     /// (`attempt-0:reply`) and then the published reply (`attempt-1:reply`).
     fn answered() -> Conversation {
-        use local_product::runtime::MessageRole;
         let mut answered = conversation(WorkStatus::Completed);
         for (id, partial, text) in [
             ("attempt-0:reply", true, "The saved part."),
@@ -870,6 +889,8 @@ mod durable_snapshot_tests {
                 },
                 text: text.into(),
                 citations: vec![],
+                basis: None,
+                sources_version: None,
             });
         }
         answered
@@ -924,7 +945,7 @@ mod durable_snapshot_tests {
             ),
             (ResponseId::from("attempt-9:reply".to_owned()), unrated),
         ]);
-        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Loaded(feedback));
+        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Loaded(feedback), 0);
         let items = body["conversation"].as_array().unwrap();
         let carried: Vec<_> = items.iter().map(|item| item.get("feedback")).collect();
         let rated = serde_json::json!({
@@ -944,7 +965,7 @@ mod durable_snapshot_tests {
     #[test]
     fn unavailable_feedback_keeps_the_conversation_and_says_so() {
         use physician_wire::{ChatSnapshotResponse, SnapshotFeedback as Wire};
-        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Unavailable);
+        let body = durable_snapshot_body(Some(&answered()), &SnapshotFeedback::Unavailable, 0);
         let loaded = snapshot(Some(&answered()));
         assert_eq!(body["conversation"], loaded["conversation"], "{body}");
         assert_eq!(body["runs"], loaded["runs"], "{body}");
@@ -962,7 +983,7 @@ mod durable_snapshot_tests {
                 .iter()
                 .all(|turn| turn.feedback.is_none())
         );
-        let empty = durable_snapshot_body(None, &SnapshotFeedback::Unavailable);
+        let empty = durable_snapshot_body(None, &SnapshotFeedback::Unavailable, 0);
         assert_eq!(
             empty,
             serde_json::json!({ "feedback": "unavailable", "conversation": [], "runs": [] })
@@ -1022,6 +1043,36 @@ mod durable_snapshot_tests {
             assert_eq!(read.snapshot.runs, expected, "{outcome:?}");
         }
     }
+
+    #[test]
+    fn an_answer_keeps_its_basis_and_is_marked_when_records_arrive_after_it() {
+        let mut done = conversation(WorkStatus::Completed);
+        done.messages.push(Message {
+            role: MessageRole::Assistant {
+                id: "attempt-1:reply".into(),
+                partial: false,
+            },
+            text: "None recorded.".into(),
+            citations: vec![],
+            basis: Some("Rests on one allergy record.".into()),
+            sources_version: Some(3),
+        });
+        let current =
+            durable_snapshot_body(Some(&done), &SnapshotFeedback::Loaded(BTreeMap::new()), 3);
+        let answer = &current["conversation"][1];
+        assert_eq!(answer["text"], "None recorded.");
+        assert_eq!(answer["basis"], "Rests on one allergy record.");
+        assert_eq!(answer["newer_records"], false);
+        assert_eq!(current["conversation"][0]["newer_records"], false);
+        let newer =
+            durable_snapshot_body(Some(&done), &SnapshotFeedback::Loaded(BTreeMap::new()), 4);
+        assert_eq!(newer["conversation"][1]["newer_records"], true);
+        assert_eq!(newer["conversation"][1]["text"], "None recorded.");
+        done.messages[1].sources_version = None;
+        let unrecorded =
+            durable_snapshot_body(Some(&done), &SnapshotFeedback::Loaded(BTreeMap::new()), 4);
+        assert_eq!(unrecorded["conversation"][1]["newer_records"], false);
+    }
 }
 
 #[cfg(test)]
@@ -1048,6 +1099,8 @@ mod citation_segment_tests {
                 partial: false,
             },
             text: "A [[patient_source:linked]] B [[patient_source:plain]]".into(),
+            basis: None,
+            sources_version: None,
             citations: vec![
                 cited(
                     "linked",

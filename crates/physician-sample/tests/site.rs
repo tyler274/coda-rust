@@ -1885,6 +1885,10 @@ const ALLERGY_SUMMARY: &str = "Records no known drug allergies, confirmed and ac
 /// The patient bank's own potassium result, as the synthetic chart retains it.
 const BANK_POTASSIUM: &str = r#"{"resourceType":"Observation","id":"obs-447fdd24f33f","meta":{"versionId":"1","lastUpdated":"2019-03-12T00:00:00+00:00"},"status":"final","category":[{"coding":[{"system":"http://terminology.hl7.org/CodeSystem/observation-category","code":"laboratory","display":"Laboratory"}]}],"code":{"coding":[{"system":"http://loinc.org","code":"2823-3","display":"Potassium [Moles/volume] in Serum or Plasma"}],"text":"Potassium"},"subject":{"reference":"Patient/MRN00001101"},"encounter":{"reference":"Encounter/enc-26183a468076"},"effectiveDateTime":"2019-03-12T14:10:00+00:00","issued":"2019-03-12T17:32:00+00:00","valueQuantity":{"value":3.9,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"referenceRange":[{"low":{"value":3.5,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"},"high":{"value":5.0,"unit":"mmol/L","system":"http://unitsofmeasure.org","code":"mmol/L"}}]}"#;
 const POTASSIUM_CHAT: &str = "chat-potassium-citation";
+/// The same answer citing its source twice, with a basis, after newer records arrived.
+const CONTROLS_CHAT: &str = "chat-allergy-controls";
+const ALLERGY_BASIS: &str =
+    "Rests on one allergy record from 2018. No reaction history was recorded.";
 
 /// Lists one chat for the review patient whose answer cites `BANK_ALLERGY`, presented by the
 /// same `source_inspection` the live projection uses.
@@ -1920,7 +1924,7 @@ async fn with_allergy_citation(
         )
         .into_response();
     }
-    let chat = [ALLERGY_CHAT, SUMMARY_CHAT]
+    let chat = [ALLERGY_CHAT, SUMMARY_CHAT, CONTROLS_CHAT]
         .into_iter()
         .find(|chat| path == format!("/patient-workspaces/{REVIEW_PATIENT}/chats/{chat}/snapshot"));
     if let Some(chat) = chat {
@@ -1943,6 +1947,22 @@ async fn with_allergy_citation(
                 "uri": "https://ehr.example/allergy/0493010f2a16"});
         }
         let inspection = physician_sample::source_inspection::inspection(&citation);
+        if chat == CONTROLS_CHAT {
+            let cite = serde_json::json!({"kind": "citation", "state": "resolved", "source": "patient",
+                "source_id": "allergy-citation", "handle": citation.reference,
+                "display_label": inspection.title,
+                "source_presentation": {"inspection": inspection}});
+            return axum::Json(serde_json::json!({"snapshot": {"runs": [], "conversation": [
+                {"kind": "physician", "text": "Any drug allergies?"},
+                {"kind": "model",
+                 "text": "The chart records none [[patient_source:allergy-citation]], confirmed and active [[patient_source:allergy-citation]].",
+                 "segments": [
+                    {"kind": "text", "text": "The chart records none "}, cite,
+                    {"kind": "text", "text": ", confirmed and active "}, cite,
+                    {"kind": "text", "text": "."}],
+                 "basis": ALLERGY_BASIS, "newer_records": true}]}}))
+            .into_response();
+        }
         return axum::Json(
             serde_json::json!({"snapshot": {"runs": [], "conversation": [
             {"kind": "physician", "text": "Any drug allergies?"},
@@ -1967,7 +1987,8 @@ async fn with_allergy_citation(
     workspace["chats"] = serde_json::json!([
         {"chat_id": ALLERGY_CHAT, "title": "Drug allergies", "created_at": "2026-08-27T12:05:00Z"},
         {"chat_id": SUMMARY_CHAT, "title": "Drug allergies, summarized", "created_at": "2026-08-27T12:06:00Z"},
-        {"chat_id": POTASSIUM_CHAT, "title": "Latest potassium", "created_at": "2026-08-27T12:07:00Z"},
+        {"chat_id": POTASSIUM_CHAT, "title": "Latest potassium", "created_at": "2026-08-27T12:08:00Z"},
+        {"chat_id": CONTROLS_CHAT, "title": "Drug allergies, with basis", "created_at": "2026-08-27T12:07:00Z"},
     ]);
     parts.headers.remove(axum::http::header::CONTENT_LENGTH);
     axum::response::Response::from_parts(parts, axum::body::Body::from(workspace.to_string()))
@@ -2119,6 +2140,91 @@ async fn an_observation_citation_reads_as_its_recorded_value() {
     }
     assert_eq!(shown["original"].as_str().unwrap(), BANK_POTASSIUM);
     tab.save_picture("observation-reader");
+}
+
+/// An answer ends with Update when newer records arrived after it, one Sources control however
+/// often it cites a source, and its Basis and limitations collapsed. Sources lists each source
+/// once and opens the one chosen.
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn an_answer_ends_with_update_one_sources_control_and_a_collapsed_basis() {
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", &site);
+    }
+    let app =
+        physician_sample::fixture_site().layer(axum::middleware::from_fn(with_allergy_citation));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    let url = format!("http://{address}/?patient={REVIEW_PATIENT}&chat={CONTROLS_CHAT}");
+    let mut tab = Tab::open(&url);
+    tab.set_viewport(1280, 800, false);
+    tab.wait_for_text("confirmed and active", Duration::from_secs(20));
+    let shown = tab.step("answerControls", serde_json::json!([]));
+    assert_eq!(shown["update"], "Update", "{shown}");
+    for told in ["updateTitle", "updateSpoken"] {
+        assert_eq!(
+            shown[told], "Newer patient records arrived after this answer.",
+            "{shown}"
+        );
+    }
+    assert_eq!(shown["chipsInAnswer"], 2, "{shown}");
+    assert_eq!(shown["sourcesButtons"], 1, "{shown}");
+    assert_eq!(shown["sourcesCount"], "1", "{shown}");
+    assert_eq!(shown["basisTitle"], "Basis and limitations", "{shown}");
+    assert_eq!(shown["basisOpen"], false, "{shown}");
+    assert_eq!(shown["laidOut"], true, "{shown}");
+    tab.save_picture("answer-controls");
+    tab.set_viewport(390, 844, false);
+    std::thread::sleep(Duration::from_millis(400));
+    let phone = tab.step("answerControls", serde_json::json!([]));
+    assert_eq!(phone["laidOut"], true, "{phone}");
+    tab.save_picture("answer-controls-phone");
+    tab.set_viewport(1280, 800, false);
+    std::thread::sleep(Duration::from_millis(400));
+
+    tab.click("section[aria-label='Conversation'] .answer-controls .disclosure-toggle");
+    std::thread::sleep(Duration::from_millis(400));
+    let opened = tab.step("answerControls", serde_json::json!([]));
+    assert_eq!(opened["basisOpen"], true, "{opened}");
+    assert_eq!(opened["basisText"], ALLERGY_BASIS, "{opened}");
+    tab.save_picture("basis-open");
+
+    tab.click("section[aria-label='Conversation'] .answer-controls .sources-button");
+    let started = Instant::now();
+    let listed = loop {
+        let listed = tab.step("answerControls", serde_json::json!([]));
+        if listed["listed"]
+            .as_array()
+            .is_some_and(|rows| !rows.is_empty())
+        {
+            break listed;
+        }
+        assert!(
+            started.elapsed() < Duration::from_secs(10),
+            "Sources listed nothing"
+        );
+        std::thread::sleep(Duration::from_millis(50));
+    };
+    std::thread::sleep(Duration::from_millis(400));
+    assert_eq!(
+        listed["listed"],
+        serde_json::json!(["1 No known drug allergies"]),
+        "{listed}"
+    );
+    tab.save_picture("sources-list");
+
+    tab.click(".answer-sources .list-row");
+    tab.wait_for_text("Technical details", Duration::from_secs(10));
+    std::thread::sleep(Duration::from_millis(400));
+    let reading = tab.step("citationReading", serde_json::json!([]));
+    assert_eq!(reading["title"], "No known drug allergies", "{reading}");
+    tab.save_picture("source-from-sources");
 }
 
 /// The citation funnel: when the EHR supplies a link and Coda's summary passed its contract, the
