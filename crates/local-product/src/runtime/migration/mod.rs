@@ -2,6 +2,7 @@
 
 use sea_orm_migration::prelude::*;
 
+mod m20261111_attempt_sources_version;
 mod m20261111_init;
 
 /// The table this chain records applied migrations in. The runtime shares the
@@ -18,6 +19,9 @@ impl MigratorTrait for Migrator {
     }
 
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20261111_init::Migration)]
+        vec![
+            Box::new(m20261111_init::Migration),
+            Box::new(m20261111_attempt_sources_version::Migration),
+        ]
     }
 }
