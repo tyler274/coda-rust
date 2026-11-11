@@ -28,18 +28,18 @@ use physician_wire::{
 
 use panels::Panel;
 use shell::{
-    CONVERSATION_EMPTY, ChatView, Drawer, KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK,
-    REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
-    RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
-    TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
-    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_sources,
-    answer_to, chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
-    format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
-    need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
-    records_time, reply_channel_label, reply_review_actions, reply_revision_words,
-    reply_urgency_words, row_icon, row_tone, schedule_empty_copy, shows_today_schedule,
-    summary_times, synopsis_pieces, today_lines, today_view, upcoming_visits, work_end_reason,
-    work_heading,
+    CONVERSATION_EMPTY, ChatView, Drawer, EVIDENCE_LOADING, EVIDENCE_UNAVAILABLE, EvidenceRead,
+    KeyInput, NavCommand, PAST_WORK_EMPTY, REPLY_ASK, REPLY_CLOSED_NOTICE, REPLY_COPY,
+    REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA, RESUME, ReadView, ReplyReviewAction,
+    STOP, SourceChip, SynopsisPiece, TODAY_LOADING, TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE,
+    TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine, TodayView, VisitLine, WORKSPACE_CLOSED,
+    WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_sources, answer_to, chat_view, chip_name,
+    citation_inspection, connection_lines, demographic_card_view, format_calendar_date,
+    format_clock, format_local_date, format_waited, keyboard_command, need_you_words, opens_reader,
+    panel_target, past_work_copy, patient_upcoming_visits, read_view, records_time,
+    reply_channel_label, reply_review_actions, reply_revision_words, reply_urgency_words, row_icon,
+    row_tone, schedule_empty_copy, shows_today_schedule, summary_times, synopsis_pieces,
+    today_lines, today_view, upcoming_visits, work_end_reason, work_heading,
 };
 #[cfg(target_arch = "wasm32")]
 use shell::{EventRefetch, event_refetch};
@@ -932,7 +932,11 @@ fn PhysicianShell(
     // Draft text and the Save mark, per patient workspace and chat.
     let mut composer = use_signal(Composer::default);
     let mut reading = use_signal(|| None::<OpenReading>);
-    let mut source_reader = use_signal(|| None::<OpenReading>);
+    // The open citation and its evidence read. `evidence_asked` counts reads, so an answer to one
+    // the physician has since replaced never lands.
+    let mut source_reader = use_signal(|| None::<SourceChip>);
+    let evidence = use_signal(|| EvidenceRead::NotRead);
+    let evidence_asked = use_signal(|| 0u64);
     let mut focus = use_signal(|| -1i32);
     let mut open_chat = use_signal(|| None::<String>);
     // A source belongs to the conversation that cited it: going to another patient, chat or
@@ -1879,12 +1883,24 @@ fn PhysicianShell(
                     }
                 }
                 ui::SourceReading {
-                    source: source_reader().map(|open| ui::SourcePane {
-                        eyebrow: open.eyebrow.clone().unwrap_or_default(),
-                        title: open.title.clone(),
-                        content: rsx! { SourceReaderContent { reading: open } },
-                        back: "Back to answer".into(),
-                        close: "Close source".into(),
+                    source: source_reader().map(|chip| {
+                        let open = source_reading(&chip, &evidence.read());
+                        ui::SourcePane {
+                            eyebrow: open.eyebrow.clone().unwrap_or_default(),
+                            title: open.title.clone(),
+                            content: rsx! {
+                                EvidenceNotice {
+                                    evidence: evidence(),
+                                    on_retry: move |_| {
+                                        let asked = (selected(), open_chat());
+                                        read_evidence(client, asked, &chip, evidence, evidence_asked);
+                                    },
+                                }
+                                SourceReaderContent { reading: open }
+                            },
+                            back: "Back to answer".into(),
+                            close: "Close source".into(),
+                        }
                     }),
                     on_close: move |_| {
                         source_owner.set(None);
@@ -2086,7 +2102,14 @@ fn PhysicianShell(
                             },
                             on_open_source: move |chip: SourceChip| {
                                 source_owner.set(Some((selected(), open_chat(), place())));
-                                source_reader.set(Some(source_reading(chip)));
+                                // Not an answer's citation: no read, and none still in flight lands.
+                                read_evidence(client, (None, None), &chip, evidence, evidence_asked);
+                                source_reader.set(Some(chip));
+                            },
+                            on_open_cited: move |chip: SourceChip| {
+                                source_owner.set(Some((selected(), open_chat(), place())));
+                                read_evidence(client, (selected(), open_chat()), &chip, evidence, evidence_asked);
+                                source_reader.set(Some(chip));
                             },
                             on_draft: move |value: String| {
                                 let target = draft_target();
@@ -3167,6 +3190,8 @@ fn PatientSurface(
     on_decide_recommendation: EventHandler<String>,
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
+    /// Opens a citation in one of the conversation's answers, reading its evidence.
+    on_open_cited: EventHandler<SourceChip>,
     on_draft: EventHandler<String>,
     on_send: EventHandler,
     on_dictate: EventHandler,
@@ -3658,13 +3683,13 @@ fn PatientSurface(
                                     if line.segments.is_empty() {
                                         MessageWords { text: line.text }
                                     } else {
-                                        CitedWords { segments: line.segments.clone(), on_open_source }
+                                        CitedWords { segments: line.segments.clone(), on_open_source: on_open_cited }
                                     }
                                     AnswerControls {
                                         sources: answer_sources(&line.segments),
                                         basis: line.basis,
                                         newer_records: line.newer_records,
-                                        on_open_source,
+                                        on_open_source: on_open_cited,
                                     }
                                 }
                             } else {
@@ -3867,10 +3892,55 @@ fn prose_reading(title: String, body: String) -> OpenReading {
     }
 }
 
-fn source_reading(chip: SourceChip) -> OpenReading {
-    let inspection = citation_inspection(&chip);
+/// Reads the evidence `chip`'s citation retained in the open conversation `(workspace, chat)`.
+/// A citation outside a conversation, or one that never resolved, reads nothing and shows what
+/// came with it. Each read replaces the last: only the newest one's answer lands.
+fn read_evidence(
+    client: Signal<PhysicianClient>,
+    (workspace, chat): (Option<String>, Option<String>),
+    chip: &SourceChip,
+    mut evidence: Signal<EvidenceRead>,
+    mut asked: Signal<u64>,
+) {
+    let ticket = *asked.peek() + 1;
+    asked.set(ticket);
+    let (Some(workspace), Some(chat), Some(citation)) = (workspace, chat, chip.citation_id.clone())
+    else {
+        evidence.set(EvidenceRead::NotRead);
+        return;
+    };
+    evidence.set(EvidenceRead::Loading);
+    let client = client.peek().clone();
+    spawn(async move {
+        let read = client.citation_evidence(&workspace, &chat, &citation).await;
+        if *asked.peek() == ticket {
+            evidence.set(EvidenceRead::answered(read));
+        }
+    });
+}
+
+/// The evidence read's own line above the source: opening, or couldn't load with Try again.
+#[component]
+fn EvidenceNotice(evidence: EvidenceRead, on_retry: EventHandler) -> Element {
+    match evidence {
+        EvidenceRead::Loading => rsx! {
+            StatusLine { message: EVIDENCE_LOADING, pending: true }
+        },
+        EvidenceRead::Failed(_) => rsx! {
+            StatusLine { message: EVIDENCE_UNAVAILABLE, alert: true, retry: TRY_AGAIN, on_retry }
+        },
+        EvidenceRead::NotRead | EvidenceRead::Loaded(_) => rsx! {},
+    }
+}
+
+fn source_reading(chip: &SourceChip, evidence: &EvidenceRead) -> OpenReading {
+    let inspection = citation_inspection(chip, evidence);
+    let source = match inspection.evidence {
+        EvidenceRead::Loaded(source) => Some(std::sync::Arc::unwrap_or_clone(source)),
+        EvidenceRead::NotRead | EvidenceRead::Loading | EvidenceRead::Failed(_) => None,
+    };
     OpenReading {
-        source: inspection.source,
+        source,
         eyebrow: Some(inspection.eyebrow),
         title: inspection.title,
         paragraphs: inspection.paragraphs,
@@ -4869,7 +4939,8 @@ mod conversation_line_tests {
         let crate::shell::SynopsisPiece::Chips(chips) = &pieces[1] else {
             panic!("citation chip");
         };
-        let inspection = crate::shell::citation_inspection(&chips[0]);
+        let inspection =
+            crate::shell::citation_inspection(&chips[0], &crate::shell::EvidenceRead::NotRead);
         assert_eq!(inspection.paragraphs, ["{\"potassium\":4.1}"]);
         assert!(inspection.unavailable.is_none());
     }
