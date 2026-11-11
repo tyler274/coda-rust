@@ -780,6 +780,10 @@ pub struct ChatTurn {
     /// On one of Coda's replies the signed-in physician rated: their saved
     /// feedback on it.
     pub feedback: Option<ResponseFeedback>,
+    #[serde(default)]
+    /// On one of Coda's responses: its place in the chat, which Discuss
+    /// names. Absent where the server doesn't offer Discuss.
+    pub response: Option<usize>,
 }
 
 /// A physician's rating of one of Coda's responses.

@@ -208,13 +208,17 @@ async fn feedback_stays_on_its_response_and_with_its_author() {
             (json!("model"), Some(json!(second))),
         ]
     );
+    let turns = snapshot["snapshot"]["conversation"].as_array().unwrap();
     assert!(
-        snapshot["snapshot"]["conversation"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .all(|turn| turn.get("response").is_none() && turn.get("feedback").is_none()),
-        "no turn is named by its place, and none is rated yet: {snapshot}"
+        turns.iter().all(|turn| turn.get("feedback").is_none()),
+        "no turn is rated yet: {snapshot}"
+    );
+    // Discuss names a response by its place; feedback names it by its id.
+    let places: Vec<_> = turns.iter().map(|turn| turn.get("response")).collect();
+    assert_eq!(
+        places,
+        [None, Some(&json!(1)), None, Some(&json!(3))],
+        "{snapshot}"
     );
 
     let rated = put(

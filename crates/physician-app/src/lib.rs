@@ -74,6 +74,7 @@ const RECENT_UNAVAILABLE: &str = "Coda couldn’t load recent conversations.";
 const NO_CONVERSATIONS: &str = "No conversations yet.";
 /// The React shell's `new_conversation` command label.
 const NEW_CONVERSATION: &str = "New conversation";
+const DISCUSS: &str = "Discuss";
 const ARCHIVE: &str = "Archive";
 const ARCHIVED: &str = "Archived";
 const ARCHIVED_TOAST: &str = "Conversation archived.";
@@ -988,6 +989,17 @@ fn PhysicianShell(
     let work_slot = use_command_slot("work", command_scope);
     let archive_slot = use_command_slot("archive", command_scope);
     let restore_slot = use_command_slot("restore", command_scope);
+    let discuss_slot = use_command_slot("discuss", command_scope);
+    // An accepted Discuss, clicked or recovered after a reload, opens its
+    // chat, which the list then names. It goes through the requested chat, so
+    // a workspace that has not loaded yet opens it once it does.
+    let mut open_discussion = move |workspace: String, chat: String| {
+        *workspace_attempt.write() += 1;
+        if selected.peek().as_deref() == Some(workspace.as_str()) {
+            requested_chat.set(Some((workspace, chat)));
+            open_chat.set(None);
+        }
+    };
     // The Undo toast for the latest Archive, keyed by its count: its patient and chat.
     let mut archived_toast = use_signal(|| None::<(u32, String, String)>);
     let mut archives = use_signal(|| 0u32);
@@ -1033,6 +1045,16 @@ fn PhysicianShell(
                     }
                 });
                 archive_slot.send(client.peek().clone(), command, accepted, Some(settled));
+            }
+            if let Some(command) = discuss_slot.kept_command() {
+                let target = command.discussion_target();
+                let accepted = Callback::new(move |()| {
+                    settled.call(());
+                    if let Some((workspace, chat)) = target.clone() {
+                        open_discussion(workspace, chat);
+                    }
+                });
+                discuss_slot.send(client.peek().clone(), command, accepted, Some(settled));
             }
         });
     }
@@ -2222,6 +2244,19 @@ fn PhysicianShell(
                                     });
                                 }
                             },
+                            discuss_busy: discuss_slot.unanswered(),
+                            discuss_notice: discuss_slot.notice(client),
+                            on_discuss: move |response: usize| {
+                                let Some(command) = discuss_command(selected(), open_chat(), response) else {
+                                    return;
+                                };
+                                let target = command.discussion_target();
+                                discuss_slot.run(client.read().clone(), command, move || {
+                                    if let Some((workspace, chat)) = target.clone() {
+                                        open_discussion(workspace, chat);
+                                    }
+                                });
+                            },
                             queued_editing: queued_editing(),
                             queued_busy: queued_slot.unanswered(),
                             queued_notice: queued_slot.notice(client),
@@ -2451,6 +2486,17 @@ impl Command {
         let payload = self.0.get("payload")?;
         let field = |name: &str| payload.get(name)?.as_str().map(str::to_owned);
         Some((field("patient_workspace_id")?, field("chat_id")?))
+    }
+
+    /// The patient and the new chat a Discuss opens, so a Discuss a reload
+    /// asks again still opens its chat.
+    fn discussion_target(&self) -> Option<(String, String)> {
+        if self.0.get("type")?.as_str()? != "discussion.open" {
+            return None;
+        }
+        let payload = self.0.get("payload")?;
+        let field = |name: &str| payload.get(name)?.as_str().map(str::to_owned);
+        Some((field("patient_workspace_id")?, field("discussion_chat_id")?))
     }
 }
 
@@ -3567,6 +3613,10 @@ fn PatientSurface(
     conversation_stop_busy: bool,
     conversation_stop_notice: Element,
     on_conversation_stop: EventHandler<WorkStopTarget>,
+    discuss_busy: bool,
+    discuss_notice: Element,
+    /// Discuss on one of Coda's responses, by its place in the chat.
+    on_discuss: EventHandler<usize>,
     /// The queued message being edited, and its words so far.
     queued_editing: Option<(String, String)>,
     queued_busy: bool,
@@ -3602,6 +3652,10 @@ fn PatientSurface(
     let running = conversation
         .content()
         .is_some_and(|lines| conversation_running(lines));
+    // The latest response keeps its actions shown; earlier ones show them on hover.
+    let latest_response = conversation
+        .content()
+        .and_then(|lines| lines.iter().rev().find_map(|line| line.discuss));
     let clinic_demographic = workspace
         .as_ref()
         .is_some_and(PatientWorkspaceResponse::is_clinic_demographic);
@@ -4058,9 +4112,24 @@ fn PatientSurface(
                                 }
                             } else if line.author == Some(Author::Assistant) {
                                 ui::Message { author: Author::Assistant, by: "Coda",
-                                    actions: feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
-                                        feedback::ResponseRating { chat, response, read }
-                                    }),
+                                    actions: {
+                                        let rating = feedback_chat.clone().zip(line.response).map(|(chat, (response, read))| rsx! {
+                                            feedback::ResponseRating { chat, response, read }
+                                        });
+                                        let discuss = line.discuss.map(|response| rsx! {
+                                            ui::MessageActions { label: "Response", shown: latest_response == Some(response),
+                                                Button {
+                                                    variant: ButtonVariant::Quiet,
+                                                    compact: true,
+                                                    class: "message-discuss",
+                                                    disabled: discuss_busy,
+                                                    onclick: move |_| on_discuss.call(response),
+                                                    "{DISCUSS}"
+                                                }
+                                            }
+                                        });
+                                        (rating.is_some() || discuss.is_some()).then(|| rsx! { {rating} {discuss} })
+                                    },
                                     MessageWords { text: line.text }
                                 }
                             } else {
@@ -4069,6 +4138,7 @@ fn PatientSurface(
                         }
                         {conversation_resume_notice}
                         {conversation_stop_notice}
+                        {discuss_notice}
                         {queued_notice}
                         div { class: "composer-dock",
                             ui::Composer {
@@ -4946,6 +5016,8 @@ struct ConversationLine {
     /// A Send next message waiting for the running answer, named by the id
     /// its Edit and Remove send. Only the physician's own words are queued.
     queued: Option<String>,
+    /// One of Coda's responses the server offers Discuss on: its place in the chat.
+    discuss: Option<usize>,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4987,6 +5059,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                     };
                     (id, read)
                 });
+            let discuss = turn.response.filter(|_| author == Some(Author::Assistant));
             Some(ConversationLine {
                 text,
                 author,
@@ -4995,6 +5068,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 held,
                 response,
                 queued: None,
+                discuss,
             })
         })
         .chain(snapshot.queued.iter().map(|queued| ConversationLine {
@@ -5005,6 +5079,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
             held: false,
             response: None,
             queued: Some(queued.message_id.clone()),
+            discuss: None,
         }))
         .collect()
 }
@@ -5038,6 +5113,26 @@ fn archive_command(action: ArchiveAction, workspace_id: &str, chat_id: &str) -> 
             "chat_id": chat_id,
         }),
     )
+}
+
+/// Discuss on one of Coda's responses. The page picks the new chat, and the
+/// command carries it, so asking again after a lost answer opens that same
+/// chat; each press is its own command and opens a fresh one.
+fn discuss_command(
+    workspace_id: Option<String>,
+    chat_id: Option<String>,
+    response: usize,
+) -> Option<Command> {
+    let (workspace_id, chat_id) = (workspace_id?, chat_id?);
+    Some(Command::new(
+        "discussion.open",
+        serde_json::json!({
+            "patient_workspace_id": workspace_id,
+            "chat_id": chat_id,
+            "response": response,
+            "discussion_chat_id": new_chat_id(),
+        }),
+    ))
 }
 
 /// Whether Coda is writing in this conversation, so Send waits as Send next.
@@ -5205,7 +5300,7 @@ fn now_millis() -> u128 {
 mod conversation_line_tests {
     use super::{
         ArchiveAction, ConversationLine, archive_command, chat_resume_command, chat_stop_command,
-        conversation_lines, conversation_running, message_command, new_chat_id,
+        conversation_lines, conversation_running, discuss_command, message_command, new_chat_id,
         queued_edit_command, queued_withdraw_command,
     };
     use crate::feedback;
@@ -5328,6 +5423,7 @@ mod conversation_line_tests {
                     held: false,
                     response: None,
                     queued: None,
+                    discuss: None,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -5337,6 +5433,7 @@ mod conversation_line_tests {
                     held: false,
                     response: None,
                     queued: None,
+                    discuss: None,
                 },
             ]
         );
@@ -5415,6 +5512,40 @@ mod conversation_line_tests {
             lines[1].response,
             Some((ResponseId("r-1".into()), feedback::Read::Unavailable))
         );
+    }
+
+    #[test]
+    fn only_codas_responses_offer_discuss() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "runs": [], "conversation": [
+                { "kind": "physician", "text": "Start metoprolol?", "response": 0 },
+                { "kind": "model", "text": "Her heart rate allows it.", "response": 1 },
+                { "kind": "model", "text": "Older server answer" },
+                { "kind": "mechanical", "text": "Coda is writing this response.", "response": 3,
+                  "stop_target": { "work_item_id": "work-1" } },
+            ] }
+        }))
+        .unwrap();
+        let discuss: Vec<_> = conversation_lines(&page.snapshot)
+            .into_iter()
+            .map(|line| line.discuss)
+            .collect();
+        assert_eq!(discuss, vec![None, Some(1), None, None]);
+    }
+
+    #[test]
+    fn each_discuss_press_opens_its_own_chat_and_a_reask_names_the_same_one() {
+        let first = discuss_command(Some("pw".into()), Some("chat".into()), 1).unwrap();
+        let again = first.clone();
+        let later = discuss_command(Some("pw".into()), Some("chat".into()), 1).unwrap();
+        assert_eq!(again.key(), first.key());
+        assert_eq!(again.discussion_target(), first.discussion_target());
+        assert_ne!(later.key(), first.key());
+        let (workspace, chat) = first.discussion_target().unwrap();
+        assert_eq!(workspace, "pw");
+        assert_ne!(chat, "chat");
+        assert_ne!(Some((workspace, chat)), later.discussion_target());
+        assert_eq!(discuss_command(None, Some("chat".into()), 1), None);
     }
 
     #[test]
