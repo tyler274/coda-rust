@@ -3,6 +3,7 @@
 use sea_orm_migration::prelude::*;
 
 mod m20261111_init;
+mod m20261111_spruce_channel;
 
 /// The table this chain records applied migrations in. The runtime shares the
 /// physician database with other chains, and each chain owns its own ledger.
@@ -18,6 +19,9 @@ impl MigratorTrait for Migrator {
     }
 
     fn migrations() -> Vec<Box<dyn MigrationTrait>> {
-        vec![Box::new(m20261111_init::Migration)]
+        vec![
+            Box::new(m20261111_init::Migration),
+            Box::new(m20261111_spruce_channel::Migration),
+        ]
     }
 }

@@ -24,6 +24,8 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[path = "physician-worker/channel.rs"]
+mod channel;
 #[path = "physician-worker/revision.rs"]
 mod revision;
 use attempt::{Claimed, Failure, Outcome, Push, Tally};
@@ -78,6 +80,7 @@ fn router(worker: Arc<Worker>) -> Router {
         .route("/health", get(health))
         .route("/readyz", get(readyz))
         .route("/pubsub/chat-turn", post(chat_turn))
+        .route("/wake/spruce-intake", post(channel::wake))
         .layer(telemetry::http_layer())
         .with_state(worker)
 }
@@ -496,6 +499,8 @@ struct Worker {
     origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
     simulation_practices: SimulationPractices,
+    /// Spruce channel intake, present when `PHYSICIAN_CHANNEL_KEY` is set.
+    intake: Option<local_product::runtime::channel::intake::Intake>,
 }
 
 impl Worker {
@@ -577,6 +582,7 @@ impl Worker {
         let roles = local_product::model_roles(transport.adapter(), &environment)
             .map_err(|error| error.to_string())?;
         let model = ModelSource { transport, roles };
+        let intake = channel::from_env(&get, hosted)?;
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         let store = Store::connect(&database)
@@ -596,6 +602,7 @@ impl Worker {
             verifier,
             origin,
             simulation_practices,
+            intake,
         })
     }
 }

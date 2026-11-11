@@ -5,9 +5,11 @@
 //! failed: that item is [`ItemEntry::Unreadable`] when its id was readable and
 //! [`ItemEntry::Malformed`] when nothing can address it.
 //!
-//! Signed URLs and call recordings are dropped. A URL Spruce signs changes on
-//! every read, and a call is kept without its recording. Voicemail stays as a
-//! transcription id; the text is filled in by the change reader.
+//! Call recordings and voicemail audio are dropped, and so is every signed URL
+//! except an attachment's, which is kept only as a [`FileLink`]. A link cannot
+//! be serialized and is not part of [`Item::version`], because Spruce signs it
+//! again on every read. Voicemail stays as a transcription id; the text is
+//! filled in by the change reader.
 
 use serde_json::{Map, Value};
 use sha2::{Digest, Sha256};
@@ -71,6 +73,41 @@ pub struct Conversation {
     pub external_participants: Vec<Participant>,
     /// The practice endpoint the conversation sits on.
     pub internal_endpoint: Option<Endpoint>,
+    /// Contacts the practice associated with the conversation, which may not
+    /// be participants (a parent writing for a child).
+    pub associated_contact_ids: Vec<String>,
+}
+
+/// A saved contact from `GET /contacts/{id}`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct Contact {
+    /// Spruce contact id (`entity_…`).
+    pub id: String,
+    /// Spruce's category string (`patient`, `clinic`, or a later one).
+    pub category: Option<String>,
+    /// Name Spruce shows.
+    pub display_name: Option<String>,
+    /// Given name, when the practice entered one.
+    pub given_name: Option<String>,
+    /// Family name, when the practice entered one.
+    pub family_name: Option<String>,
+    /// Date of birth as Spruce sent it (`YYYY-MM-DD`).
+    pub date_of_birth: Option<String>,
+    /// Phone numbers, E.164 as Spruce sent them.
+    pub phone_numbers: Vec<String>,
+    /// Email addresses.
+    pub email_addresses: Vec<String>,
+    /// Links to records in other systems, such as an EHR.
+    pub integration_links: Vec<IntegrationLink>,
+}
+
+/// A contact's link to a record in another system.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct IntegrationLink {
+    /// Spruce's link type string (`custom`, or an EHR name).
+    pub kind: String,
+    /// The other system's record id.
+    pub external_id: String,
 }
 
 /// One conversation in a list page.
@@ -98,6 +135,9 @@ pub struct Envelope {
     pub is_internal_note: Option<bool>,
     /// Author display name.
     pub author_name: Option<String>,
+    /// Author entity id. Spruce sets it for teammates and for a saved contact
+    /// writing over secure messaging, and omits it for SMS, voice, email and fax.
+    pub author_id: Option<String>,
     /// When Spruce created the item.
     pub created_at: Option<String>,
     /// When Spruce last changed the item. Part of [`Item::version`].
@@ -106,7 +146,8 @@ pub struct Envelope {
     pub app_url: Option<String>,
 }
 
-/// A file or card attached to an item. Bytes are not fetched.
+/// A file or card attached to an item. Bytes are fetched only through
+/// [`crate::api::Client::download`].
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Attachment {
     /// Spruce's attachment type string.
@@ -117,6 +158,39 @@ pub struct Attachment {
     pub mimetype: Option<String>,
     /// File name Spruce sent.
     pub name: Option<String>,
+    /// Where this read's bytes are, when the attachment is a file.
+    pub link: Option<FileLink>,
+}
+
+/// A signed download link from one read.
+///
+/// It expires, so fetch the bytes while the read is current. It has no
+/// serialized form and its `Debug` hides the URL, so it cannot be stored or
+/// logged by accident.
+#[derive(Clone, PartialEq, Eq)]
+pub struct FileLink {
+    url: String,
+    expires_at: Option<String>,
+}
+
+impl FileLink {
+    pub(crate) fn url(&self) -> &str {
+        &self.url
+    }
+
+    /// When Spruce said the link expires.
+    pub fn expires_at(&self) -> Option<&str> {
+        self.expires_at.as_deref()
+    }
+}
+
+impl std::fmt::Debug for FileLink {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter
+            .debug_struct("FileLink")
+            .field("expires_at", &self.expires_at)
+            .finish_non_exhaustive()
+    }
 }
 
 /// A button on an item.
@@ -435,7 +509,62 @@ fn conversation(value: &Value) -> Option<Conversation> {
             .get("internalEndpoint")
             .filter(|value| !value.is_null())
             .and_then(endpoint),
+        associated_contact_ids: ids(row.get("associatedContactIds")),
     })
+}
+
+/// A contact from `GET /contacts/{id}`. Spruce answers with the bare contact.
+pub fn contact(value: &Value) -> Option<Contact> {
+    let row = record(value)?;
+    let values = |key: &str| -> Vec<String> {
+        row.get(key)
+            .and_then(|value| array(value, 1_000))
+            .map(|entries| {
+                entries
+                    .iter()
+                    .filter_map(|entry| match entry {
+                        Value::String(_) => optional_text(Some(entry)),
+                        _ => optional_text(record(entry)?.get("value")),
+                    })
+                    .collect()
+            })
+            .unwrap_or_default()
+    };
+    let integration_links = row
+        .get("integrationLinks")
+        .and_then(|value| array(value, 1_000))
+        .map(|entries| {
+            entries
+                .iter()
+                .filter_map(|entry| {
+                    let link = record(entry)?;
+                    Some(IntegrationLink {
+                        kind: short(link.get("type")?)?,
+                        external_id: short(link.get("externalId")?)?,
+                    })
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+    Some(Contact {
+        id: identity(row.get("id")?)?,
+        category: optional_text(row.get("category")),
+        display_name: optional_text(row.get("displayName")),
+        given_name: optional_text(row.get("givenName")),
+        family_name: optional_text(row.get("familyName")),
+        date_of_birth: optional_text(row.get("dateOfBirth")),
+        phone_numbers: values("phoneNumbers"),
+        email_addresses: values("emailAddresses"),
+        integration_links,
+    })
+}
+
+/// Ids in a list of strings. An entry that is not an id is skipped.
+fn ids(value: Option<&Value>) -> Vec<String> {
+    value
+        .and_then(|value| array(value, 1_000))
+        .map(|entries| entries.iter().filter_map(identity).collect())
+        .unwrap_or_default()
 }
 
 fn participant(value: &Value) -> Option<Participant> {
@@ -481,6 +610,7 @@ fn envelope(value: &Value) -> Option<Envelope> {
         direction: optional_text(row.get("direction")),
         is_internal_note: row.get("isInternalNote").and_then(Value::as_bool),
         author_name: author.and_then(|author| optional_text(author.get("displayName"))),
+        author_id: author.and_then(|author| author.get("id").and_then(identity)),
         created_at: optional_text(row.get("createdAt")),
         modified_at: optional_text(row.get("modifiedAt")),
         app_url: optional_text(row.get("appURL")),
@@ -539,8 +669,25 @@ fn attachment(value: &Value) -> Option<Attachment> {
         mimetype: data
             .as_ref()
             .and_then(|data| optional_text(data.get("mimetype"))),
-        name: data.and_then(|data| optional_text(data.get("name"))),
+        name: data
+            .as_ref()
+            .and_then(|data| optional_text(data.get("name"))),
+        link: data.and_then(|data| file_link(data.get("signedUrl")?)),
     })
+}
+
+/// Spruce documents `signedUrl` as `{url, expiresAt}`. A bare string is read as the URL.
+fn file_link(value: &Value) -> Option<FileLink> {
+    let (url, expires_at) = match value {
+        Value::String(url) => (url.clone(), None),
+        Value::Object(row) => (
+            row.get("url")?.as_str()?.to_owned(),
+            optional_text(row.get("expiresAt")),
+        ),
+        _ => return None,
+    };
+    (url.starts_with("https://") || url.starts_with("http://"))
+        .then_some(FileLink { url, expires_at })
 }
 
 fn button(value: &Value) -> Option<Button> {

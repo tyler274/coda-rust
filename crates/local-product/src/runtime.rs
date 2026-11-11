@@ -28,6 +28,8 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
+/// The practice's messaging channel: connection, intake and saved messages.
+pub mod channel;
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
 mod control;
