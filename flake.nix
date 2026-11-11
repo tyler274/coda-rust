@@ -72,6 +72,10 @@
           observability = pkgs.mkShell {
             packages = with pkgs; [ opentelemetry-collector-contrib opentofu ];
           };
+          # The CI Postgres job: SQL formatting and the Postgres suites only.
+          postgres-ci = import ./nix/postgres-ci-shell.nix {
+            inherit pkgs postgres rustToolchain;
+          };
           default = import ./nix/dev-shell.nix {
             inherit pkgs postgres wheelLibs chromiumBin rustToolchain;
           };

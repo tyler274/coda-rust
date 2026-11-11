@@ -89,6 +89,8 @@ class CacheTests(unittest.TestCase):
         self.assertEqual(stat.S_IMODE((state / 'credentials').stat().st_mode), 0o600)
         settings = (state / 'nix.conf').read_text()
         self.assertIn('extra-substituters = https://cache.nixos.org s3://private-cache?endpoint=https://storage.googleapis.com&scheme=https', settings)
+        # Upstream (Priority 40) must win for public paths; private fills gaps.
+        self.assertRegex(settings, r'extra-substituters = \S+ s3://private-cache\?\S*&priority=50\n')
         self.assertIn('extra-trusted-public-keys = ' + PUBLIC, settings)
         self.assertIn('require-sigs = true', settings)
         self.assertIn('fallback = true', settings)

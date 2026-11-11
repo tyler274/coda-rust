@@ -18,8 +18,11 @@ import signal
 import subprocess
 import tempfile
 import threading
+import time
 import unittest
 import urllib.parse
+
+import nix_cache as cache
 
 
 class CacheServer(http.server.ThreadingHTTPServer):
@@ -228,6 +231,120 @@ class NixCacheTransport(unittest.TestCase):
             self.assert_preserved(before, server)
             self.assertEqual(sum(key.endswith(".narinfo") for key in server.objects), 2)
             self.assertEqual(sum(method == "PUT" and "/nar/" in key for method, key, _ in server.events), 1)
+
+
+@unittest.skipUnless(os.environ.get("NIX_CACHE_TRANSPORT_TEST") == "1", "requires explicit real-Nix opt-in")
+class NixCacheSelection(unittest.TestCase):
+    """The reader's production substituter line against two local caches.
+
+    `public` stands in for cache.nixos.org (Priority 40); the S3 server is the
+    private cache. Paths are signed by the trusted private key unless noted.
+    """
+
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory(prefix="nix-cache-selection-")
+        self.addCleanup(self.temp.cleanup)
+        self.root = root = Path(self.temp.name)
+        self.nix_bin = os.environ.get("NIX_CACHE_TRANSPORT_NIX", "nix")
+        self.env = {key: value for key, value in os.environ.items()
+                    if not key.startswith(("AWS_", "NIX_")) and key.lower() not in
+                    {"http_proxy", "https_proxy", "all_proxy", "no_proxy"}}
+        self.env.update({
+            "HOME": str(root), "XDG_CACHE_HOME": str(root / "cache"),
+            "NIX_CONF_DIR": str(root), "NIX_USER_CONF_FILES": "/dev/null",
+            "NIX_CONFIG": "experimental-features = nix-command\n",
+            "AWS_ACCESS_KEY_ID": "synthetic-local-access", "AWS_SECRET_ACCESS_KEY": "synthetic-local-secret",
+            "AWS_EC2_METADATA_DISABLED": "true", "AWS_REGION": "us-east-1",
+            "AWS_CONFIG_FILE": str(root / "absent-config"),
+            "AWS_SHARED_CREDENTIALS_FILE": str(root / "absent-credentials"),
+            "NO_PROXY": "*",
+        })
+        self.source = "local?root=" + str(root / "store")
+        self.key = self.keypair("coda-test-1")
+        self.untrusted = self.keypair("untrusted-1")
+        self.paths = {}
+        for name in ("shared", "private-only", "bad-signature", "missing"):
+            payload = root / f"{name}.txt"
+            payload.write_text(f"{name} payload\n")
+            path = self.nix_ok(["--store", self.source, "store", "add-path", "--name", name, str(payload)]).stdout.strip()
+            key = self.untrusted if name == "bad-signature" else self.key
+            self.nix_ok(["--store", self.source, "store", "sign", "--key-file", str(key[0]), path])
+            self.paths[name] = path
+        self.public = f"file://{root / 'public'}"
+        self.nix_ok(["copy", "--from", self.source, "--to", self.public, self.paths["shared"]])
+        # Same advertisement as https://cache.nixos.org/nix-cache-info.
+        (root / "public" / "nix-cache-info").write_text("StoreDir: /nix/store\nWantMassQuery: 1\nPriority: 40\n")
+
+    def keypair(self, name):
+        secret, public = self.root / f"{name}.sec", self.root / f"{name}.pub"
+        secret.write_text(self.nix_ok(["key", "generate-secret", "--key-name", name]).stdout)
+        public.write_text(self.nix_ok(["key", "convert-secret-to-public"], stdin=secret.read_text()).stdout)
+        return secret, public.read_text().strip()
+
+    def call(self, args, *, stdin=None, env=None):
+        cmd = [self.nix_bin, *args]
+        result = subprocess.run(cmd, env=env or self.env, input=stdin, capture_output=True, text=True, timeout=60)
+        print("COMMAND:", shlex.join(cmd), "\nEXIT:", result.returncode, "\nSTDERR:", result.stderr, flush=True)
+        return result
+
+    def nix_ok(self, args, **kwargs):
+        result = self.call(args, **kwargs)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return result
+
+    def reader(self, server):
+        # The production line, with only the public endpoint made local.
+        settings = cache.nix_config(server.destination, self.key[1]).replace("https://cache.nixos.org", self.public)
+        conf = self.root / "reader.conf"
+        conf.write_text("substituters =\ntrusted-public-keys =\n" + settings)
+        return dict(self.env, NIX_USER_CONF_FILES=str(conf), XDG_CACHE_HOME=str(self.root / "reader-cache"))
+
+    def substitute(self, server, name):
+        store = self.root / f"dest-{name}"
+        result = self.call(["--store", f"local?root={store}", "build", "--no-link", self.paths[name]],
+                          env=self.reader(server))
+        nar_gets = [key for method, key, status in server.events if method == "GET" and "/nar/" in key and status == 200]
+        return result, nar_gets
+
+    def private_server(self):
+        server = CacheServer()
+        self.enterContext(server)
+        names = ("shared", "private-only", "bad-signature")
+        self.nix_ok(["copy", "--from", self.source, "--to", server.destination,
+                     *(self.paths[name] for name in names)])
+        # add-path makes content-addressed paths, which Nix trusts unsigned.
+        # Dropping CA turns this one into an input-addressed claim whose only
+        # authority is its (untrusted) signature, as for a forged narinfo.
+        digest = Path(self.paths["bad-signature"]).name.split("-", 1)[0]
+        key = f"/{server.bucket}/{digest}.narinfo"
+        with server.lock:
+            server.objects[key] = b"".join(line for line in server.objects[key].splitlines(True)
+                                            if not line.startswith(b"CA:"))
+        server.events.clear()
+        return server
+
+    def test_reader_prefers_public_and_falls_back_to_private(self):
+        settings = cache.nix_config("s3://bucket?endpoint=https://e", self.key[1])
+        self.assertIn("require-sigs = true", settings)
+        server = self.private_server()
+        result, gets = self.substitute(server, "shared")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(gets, [], "a path present in both caches must come from the public cache")
+        result, gets = self.substitute(server, "private-only")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(len(gets), 1, "a private-only path must still come from the private cache")
+
+    def test_reader_refuses_missing_and_untrusted_paths(self):
+        server = self.private_server()
+        for name in ("missing", "bad-signature"):
+            with self.subTest(name=name):
+                started = time.monotonic()
+                result, gets = self.substitute(server, name)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertLess(time.monotonic() - started, 30)
+                store = self.root / f"dest-{name}"
+                verify = self.call(["--store", f"local?root={store}", "path-info", self.paths[name]])
+                self.assertNotEqual(verify.returncode, 0, "the path must not become valid")
 
 
 if __name__ == "__main__":

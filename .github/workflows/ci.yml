@@ -858,18 +858,19 @@ jobs:
             target
           # The script chooses the package set, and so the dependency features
           # in target/. Each shard links its own test binaries, so each keeps
-          # its own entry. Main and scheduled runs save one per commit, so
-          # concurrent merges don't race for a key ("another job may be
+          # its own entry. The job's shell sets the build environment
+          # (PKG_CONFIG_PATH reaches build scripts), so it is in the key too.
+          # Main and scheduled runs save one per commit, so concurrent merges don't race for a key ("another job may be
           # creating this cache") and PRs restore the newest main build.
-          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}-${{ github.sha }}
+          key: postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-${{ github.sha }}
           restore-keys: |
-            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh') }}-
+            postgres-${{ runner.os }}-shard${{ matrix.shard }}-${{ hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix') }}-
             postgres-${{ runner.os }}-shard${{ matrix.shard }}-
             postgres-${{ runner.os }}-
       # Shard 2 finishes first, so it also checks SQL formatting.
       - name: Check authored SQL formatting
         if: matrix.shard == 2
-        run: nix develop .#agent --command python scripts/check-sql.py
+        run: nix develop .#postgres-ci --command python scripts/check-sql.py
       - name: Apply fresh migrations, rerun, and exercise Postgres stores
         env:
           MIGRATION_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/postgres
@@ -879,9 +880,9 @@ jobs:
           PHYSICIAN_RUNTIME_TEST_DATABASE_URL: postgres://postgres:postgres@localhost:${{ job.services.postgres.ports['5432'] }}/physician_ci
           POSTGRES_SHARD: ${{ matrix.shard }}
         run: |
-          nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
-          nix develop .#agent --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
-          nix develop .#agent --command bash scripts/check-postgres.sh
+          nix develop .#postgres-ci --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" front_door_ci
+          nix develop .#postgres-ci --command createdb --maintenance-db "$MIGRATION_DATABASE_URL" physician_ci
+          nix develop .#postgres-ci --command bash scripts/check-postgres.sh
       # A PR saves (about 1.5 GB per shard) only when main had nothing for its
       # dependency set, so ordinary PRs don't evict main's entries. A merge
       # queue candidate never saves, as with the Rust build cache.
@@ -889,7 +890,7 @@ jobs:
         if: >-
           github.event_name != 'merge_group' &&
           steps.postgres-cache.outputs.cache-hit != 'true' && (github.event_name != 'pull_request' ||
-          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh'))))
+          !startsWith(steps.postgres-cache.outputs.cache-matched-key, format('postgres-{0}-shard{1}-{2}-', runner.os, matrix.shard, hashFiles('flake.lock', 'Cargo.lock', 'scripts/check-postgres.sh', 'nix/postgres-ci-shell.nix', 'nix/shell-common.nix'))))
         continue-on-error: true
         uses: actions/cache/save@v6
         with:
