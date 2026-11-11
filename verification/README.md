@@ -13,14 +13,14 @@ does. Features without a folder follow the intent specs alone.
 - **`README.md`:** the feature's spec in plain words, with nothing about how it's checked. The
   intent spec keeps a short summary and links here. Its sections, in order:
   - **Intro:** what the spec covers, and the link to the intent spec.
-  - **Words:** each word a rule or journey line depends on, defined once, so each rule has one
+  - **Words:** each word a rule or step depends on, defined once, so each rule has one
     meaning and maps to one thing in the model.
-  - **Journey:** what happens, one claim per line, grouped by step. A promise that rests on
-    stored records stays here as a plain promise; the verify skill names the tests that hold it.
-  - **Rules:** numbered, one sentence each, with every condition the check uses written into
-    the sentence.
-  - **Outside this spec:** what other specs own, and open decisions with their
-    [DECISIONS.md](../intent/DECISIONS.md) link.
+  - **States and steps:** the feature's graph, as tables of from, step and to. Each step is one
+    action in the model, and each state is one value of it.
+  - **Rules:** the invariants, numbered, one sentence each, with every condition the check uses
+    written into the sentence. A rule that rests on code or records rather than on the order of
+    steps follows them, marked as one the model doesn't check.
+  - **Outside this spec:** what other specs own.
 - **`<Feature>.tla` and `.cfg`:** the model, written from the README, not from the code. Its
   header says what it takes as one step, its scope, and what it leaves to records. Each
   `INVARIANT` or `PROPERTY` is one rule, quoting its sentence word for word with nothing added.
@@ -50,6 +50,54 @@ does. Features without a folder follow the intent specs alone.
 Each feature's browser test lives in its own file named for the feature, such as
 `sign_in_model.rs`, and runs locally. CI doesn't run TLC. The `statechart` skill gives its own
 command and setup; the feature's verify skill names the model, its charts and its browser test.
+
+## Local model runs
+
+Use the existing [statechart runner](../.agents/skills/statechart/SKILL.md), including for a
+model too large to draw. Keep the runner's own settings; a separate batch of direct Java
+invocations can multiply both the work and the memory used.
+
+Run one model at a time. This invocation caps the Java heap at 4 GiB, limits the JVM's
+processor and garbage-collector thread counts, and stops after 20 minutes. The output
+directory must be new or empty. Use the skill's Java and TLC setup; `JAVA` and `TLA2TOOLS`
+can select an existing installation.
+
+```sh
+JAVA_TOOL_OPTIONS='-Xmx4g -XX:ActiveProcessorCount=2 -XX:+UseParallelGC -XX:ParallelGCThreads=2' \
+python3 -c '
+import subprocess, sys
+try:
+    result = subprocess.run(sys.argv[1:], timeout=1200)
+except subprocess.TimeoutExpired:
+    print("Model check timed out; incomplete.", file=sys.stderr)
+    sys.exit(124)
+sys.exit(result.returncode)
+' \
+  .agents/skills/statechart/scripts/statechart \
+  verification/physician/message-reply/MessageReply.tla \
+  --out target/verification/message-reply
+```
+
+The heap limit is not a limit on all process memory. A timeout exits with status 124. A timeout or resource failure is an
+incomplete check, never a pass. Preserve the command and available output, then stop; do not
+automatically retry, increase the heap, or launch other cases. Investigate the model and
+execution cost before agreeing a larger budget. Do not reduce model bounds or remove rules
+to fit the budget. The runner removes temporary state on interruption, so an interrupted run
+may have no TLC report. For a deliberate break, use the runner's documented failure exit and
+inspect the counterexample to establish that the intended rule failed.
+
+For a correction, check every rule at the default bounds and show the changed paths are
+reachable. Select deliberate breaks for changed rule semantics and failure modes introduced
+by changed actions; run each against its rule alone and against the other rules. Record why
+the selection exercises the correction and how the default run covers neighboring guarantees.
+Read affected charts and check the README-to-action mapping.
+Independent review must leave no unresolved finding that affects the correction. Reuse
+completed evidence only when its inputs and relevant dependencies still match the change.
+
+Full qualification also runs every deliberate break, every chart and every larger bound
+listed by the feature's skill. Scope and budget that work explicitly. Report the exact
+scope completed; a checked correction does not establish full qualification, and an
+unfinished qualification matrix does not authorize an automatic local batch.
 
 ## Verify skills
 

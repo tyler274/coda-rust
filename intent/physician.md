@@ -43,8 +43,8 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 Things Coda typically puts on Today:
 
 - a concern, cleared with Done;
-- one row per patient message, carrying the drafted reply and any concern about that message (Review reply);
-- a message waiting to be matched to a patient, on the messaging manager's Today, and an urgent-looking unmatched message as Now for everyone who sees it;
+- one row per patient conversation with a reply ready, carrying the drafted reply and any concern about its messages (Review reply);
+- a message waiting to be matched to a patient, and an urgent-looking unmatched message as Now for everyone who sees it;
 - a message Coda can't read, linking to it in Spruce until it's read or marked Done;
 - a visit nudge, when Coda sees something new before a visit;
 - work Coda can't restart that left something unhandled, one row per patient, cleared with Done;
@@ -133,50 +133,15 @@ Along the way:
 
 ### P3. A patient message is linked, a reply is proposed, revised and handed off
 
-Connecting a channel:
+A patient's message in Spruce reaches the right patient, Coda proposes a reply when one would help, and the physician revises it and sends it themselves in Spruce. Coda reads the channel and never sends patient mail in the MVP. The full behavior and its rules live in [message matching](../verification/physician/message-matching/README.md) and [message reply](../verification/physician/message-reply/README.md).
 
-1. The practice connects Spruce once for read-only patient-message intake.
-2. Each physician sees linked conversations only for patients they may access.
-3. Coda starts with new messages and offers an explicit option to review a backlog.
-4. Catching up and temporary sync problems are never shown. Only a revoked grant or an administrator's block asks the physician to Reconnect, with the reason.
-5. Disconnecting and reconnecting loses and duplicates nothing. A completed disconnect deletes messages that were never accepted into a patient's record, and reply drafts; accepted evidence stays under the record's policy.
+Beyond it:
 
-A message arrives:
-
-6. A message arrives. Coda handles mail from patients; mail from colleagues or insurers about a patient is outside the MVP. The model decides whether mail is patient mail, with no brittle filters.
-7. A conversation or sender already confirmed for one patient routes on its own, and so does a Spruce conversation whose one outside participant is saved as the contact of exactly one patient, linked to exactly one EHR record that matches exactly one Coda patient. Every other message gets Coda's suggestion and waits for a person to confirm. Matching always ends with a suggestion or a person deciding, and it never hangs.
-8. One conversation belongs to one patient.
-9. A message waiting for a match goes to the messaging manager and to a practice-wide Messages to match list any physician can match from. It shows the suggested patient and alternatives, and Confirm names the patient. Model scores never appear as confidence. The person confirms, picks another patient or leaves it unlinked.
-10. An unmatched message that looks urgent can be marked so, and its row leads Today as Now for everyone who sees it.
-11. Once linked, the message joins the patient's record and wakes their review. The whole conversation, including replies the practice sent itself, becomes evidence Coda can cite.
-
-A reply is proposed:
-
-12. The review decides whether a reply would help. Acknowledgments and resolved conversations get no draft and no Today row.
-13. A proposed reply shows on Today as one row for the message: the start of the patient's words, Drafted a reply (with Flagged when Coda also has a concern), and Review reply. The row leaves when both are handled.
-14. The physician opens the reply in place and sees the patient's unanswered messages with attachments, then what Coda flagged, then the proposed reply, with Basis and Sources describing Coda's work behind it.
-15. The patient's words are never changed, only formatted, with unsafe content stripped. Readable attachments are used, and unreadable ones are named.
-
-Revise:
-
-16. The physician edits the reply directly, or asks Coda to revise it in place, and Restore my version brings their own text back. Anything new that arrives before the draft is shown is taken in first, so the physician only ever sees a current draft.
-17. If the patient writes again, an untouched draft updates in place with one quiet line. If the physician already edited it, the card says the patient sent another message, and Coda's update replaces their text only if they choose it.
-
-Hand off:
-
-18. The physician copies the reply and sends it themselves in the original Spruce conversation (Copy reply, Open in Spruce). Coda keeps no approval state for patient mail and never sends it in the MVP.
-19. The row stays until Coda sees the sent reply. A reply the practice sent outside Coda shows on the card right away and wakes the review, which decides whether anything is left to track. The patient's history records that the practice answered.
-20. In the ideal product, after the MVP, the card offers Send beside Copy, and Coda sends exactly the words the physician approved, shown as sent by Coda for the physician, with accepted, sent and delivered kept distinct.
-
-Along the way:
-
-- **No reply needed.** The physician closes the reply without giving a reason and gets a short Undo. A newer message's reply replaces a pending No reply needed.
+- **Urgent message.** Coda flags an unlinked message that looks urgent, and its row leads Today as Now for everyone who sees it. For a linked one, Coda raises a Now concern on its row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
+- **Attachments.** Readable attachments are used, and unreadable ones are named.
 - **Ask Coda to reply.** If no reply is ready, the physician asks for one and Coda always drafts one. The ask waits behind a review that's already running, and a reply from that review answers it.
-- **Wrong patient.** The messaging manager uses Wrong patient? on a confirmed link (another patient, or not a patient). The fix applies going forward: the message stops affecting the wrong patient and moves to the right one, and one correction never starts two reviews. Undo within a few seconds restores the reply exactly.
-- **Wrong link after use.** Until the re-review decides, anything that relied on the moved message is withheld (never left blank), then redrafted or closed. Everything Coda wrote while its memory held the moved message is marked and can't surface. The audit trail stays.
-- **Message Coda can't read.** The patient goes on Today with a link to the message in Spruce until Coda reads it or the physician marks it Done. A message Coda is holding or retrying is never invisible.
-- **Urgent message.** Coda raises a Now concern on the message's row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
 - **A connected patient sends For my doctor.** It arrives through [Connected care](connected-care.md#c16-sending-for-my-doctor) like any record from the patient's Duet, marked as emphasized by the patient. The practice's agents can give it more priority and judge whether a physician needs to see it. If one does, it reaches Today. Nothing goes back into the patient's Duet in the MVP.
+- **After the MVP.** The card offers Send beside Copy, and Coda sends exactly the words the physician approved, shown as sent by Coda for the physician, with accepted, sent and delivered kept distinct.
 
 ### P4. Pre-visit preparation and briefings
 
@@ -235,15 +200,14 @@ Physicians sign in only through Chords, with an emailed link and no password or 
 
 Inside the workspace:
 
-1. A physician sees same-clinic patients outside their panel as identity only: name, DOB and MRN, no clinical content.
+1. Which patients a physician may access, and whether a practice has roles, are open ([Q2](DECISIONS.md)). Everything here follows what it decides.
 2. When a physician loses access to a patient, that patient's screens close at once and anything that physician personally started stops; practice-owned work continues.
 3. Every list across patients reads within the physician's access. A list that couldn't check a patient skips only that patient and says it may be missing someone.
 4. Spruce conversations show only for patients the physician may access.
-5. Correcting a confirmed message link belongs to the messaging manager, who is the person who set up the practice’s Spruce connection.
-6. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
-7. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
-8. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
-9. Drafts and seen state live on the server, not in the browser.
+5. Any practice member can invite or discharge a roster patient from that patient's roster row. Discharge asks for confirmation and takes effect at once. The connection itself belongs to Connected care.
+6. Authorized operators inspect and adjust cadence by practice or patient. Physicians don't change it, but they can ask Coda for specific scheduled jobs for a patient.
+7. Authorized Coda staff may inspect submitted feedback and the minimum evidence linked to it.
+8. Drafts and seen state live on the server, not in the browser.
 
 ### K1. Correcting Coda
 
@@ -283,12 +247,7 @@ Authority and sending:
 
 Access and privacy:
 
-- Every list reads within the physician's access, and opening a source needs access to clinical content.
-- Identity-only access shows name, DOB and MRN and no clinical content.
-- Any signed-in physician can match a patient message; correcting a confirmed match belongs to the messaging manager.
-- The chart's phone and email show only to the messaging manager while matching.
-- A reply row names the channel's sender, never the linked patient, so a family member's words aren't put in the patient's name.
-- The linking pass reads unlinked mail only to decide who it's from and whether it's patient mail. Patient review never reads unlinked mail.
+- Every list reads within the physician's access, and opening a source needs access to the patient.
 
 Data and consent:
 
