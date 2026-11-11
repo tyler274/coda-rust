@@ -70,6 +70,20 @@ impl Cursor {
         }
         Ok(cursor)
     }
+
+    /// The first pass has finished, so [`Self::is_history`] can answer.
+    pub fn is_established(&self) -> bool {
+        self.floor.is_some() && self.boundary.is_some()
+    }
+
+    /// The item was already there when the connection was established, so
+    /// it is history and not a change. `false` until the first pass has set
+    /// the floor, and for a time that does not parse.
+    pub fn is_history(&self, created_at: Option<&str>) -> bool {
+        self.floor
+            .as_deref()
+            .is_some_and(|floor| at_or_before(created_at, floor))
+    }
 }
 
 /// Why a conversation on this page still needs a full read.
@@ -473,7 +487,7 @@ impl Reader {
         if self.refused(&error, org).await? {
             return Ok(Outcome::ReconnectRequired);
         }
-        if matches!(error, Error::Temporary { .. } | Error::Unavailable) {
+        if matches!(error, Error::Temporary { .. } | Error::Unavailable(_)) {
             return Ok(Outcome::Unavailable);
         }
         Err(error)
@@ -490,7 +504,7 @@ impl Reader {
         Ok(match error {
             Error::NotFound => ConversationRead::Missing,
             Error::Contract => ConversationRead::Undecodable,
-            Error::Temporary { .. } | Error::Unavailable | Error::Rejected { .. } => {
+            Error::Temporary { .. } | Error::Unavailable(_) | Error::Rejected { .. } => {
                 ConversationRead::Unavailable
             }
             other => return Err(other),
@@ -555,7 +569,7 @@ impl Reader {
             Err(
                 Error::Contract
                 | Error::Temporary { .. }
-                | Error::Unavailable
+                | Error::Unavailable(_)
                 | Error::Rejected { .. },
             ) => Ok(TranscriptionState::Unavailable { id: id.to_owned() }),
             Err(error) => Err(error),
@@ -577,7 +591,7 @@ impl Reader {
                 Err(Error::AuthorizationRejected | Error::Rejected { status: 403 }) => {
                     OrgCheck::Refused
                 }
-                Err(Error::Temporary { .. } | Error::Unavailable) => OrgCheck::Unreachable,
+                Err(Error::Temporary { .. } | Error::Unavailable(_)) => OrgCheck::Unreachable,
                 Err(error) => return Err(error),
                 Ok(_) => OrgCheck::Accepted,
             };
@@ -715,6 +729,25 @@ mod tests {
             seen: None,
         };
         assert_eq!(Cursor::decode(&cursor.encode()).unwrap(), cursor);
+    }
+
+    #[test]
+    fn history_is_at_or_before_the_floor() {
+        let unset = Cursor {
+            floor: None,
+            boundary: None,
+            page: None,
+            seen: None,
+        };
+        assert!(!unset.is_history(Some("2026-10-27T18:00:00Z")));
+        let cursor = Cursor {
+            floor: Some("2026-10-27T18:00:00Z".into()),
+            ..unset
+        };
+        assert!(cursor.is_history(Some("2026-10-27T18:00:00Z")));
+        assert!(cursor.is_history(Some("2026-10-27T17:59:59Z")));
+        assert!(!cursor.is_history(Some("2026-10-27T18:00:01Z")));
+        assert!(!cursor.is_history(None));
     }
 
     #[test]

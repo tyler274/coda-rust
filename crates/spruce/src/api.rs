@@ -14,7 +14,8 @@ use serde::Serialize;
 use serde_json::Value;
 
 use crate::payload::{
-    self, Conversation, ConversationEntry, Endpoint, ItemEntry, Organization, Page, Transcription,
+    self, Contact, Conversation, ConversationEntry, Endpoint, FileLink, ItemEntry, Organization,
+    Page, Transcription,
 };
 
 /// Spruce's production API.
@@ -30,8 +31,10 @@ const MAX_RESPONSE_BYTES: usize = 16 * 1024 * 1024;
 
 /// Why a Spruce read failed.
 ///
-/// The status is the whole decision. The body of an error response is discarded.
-#[derive(Debug, thiserror::Error, PartialEq, Eq)]
+/// A response's status is the whole decision; the body of an error response
+/// is discarded. A transport failure keeps its cause with the URL removed, so
+/// no signed link reaches a log.
+#[derive(Debug, thiserror::Error)]
 pub enum Error {
     /// Spruce answered 401.
     #[error("spruce refused the credential")]
@@ -53,13 +56,19 @@ pub enum Error {
     },
     /// The connection failed, timed out, or was redirected.
     #[error("spruce did not answer")]
-    Unavailable,
+    Unavailable(#[source] reqwest::Error),
     /// The body was empty, not JSON, larger than the cap, or the wrong shape.
     #[error("spruce returned an unreadable body")]
     Contract,
     /// The credential, base URL, id, page size, or query combination cannot be sent.
     #[error("spruce request was invalid")]
     InvalidRequest,
+    /// A file was larger than the caller's cap. Nothing past the cap was kept.
+    #[error("spruce file is larger than {limit} bytes")]
+    FileTooLarge {
+        /// The cap that was passed.
+        limit: usize,
+    },
 }
 
 /// Which page to read. `start_from` and `pagination_token` cannot both be set:
@@ -211,6 +220,34 @@ impl Client {
         payload::transcription(&body).ok_or(Error::Contract)
     }
 
+    /// `GET /contacts/{id}`.
+    pub async fn get_contact(&self, id: &str) -> Result<Contact, Error> {
+        let body = self
+            .get(&format!("contacts/{}", path_id(id)?), &NoQuery {})
+            .await?;
+        payload::contact(&body).ok_or(Error::Contract)
+    }
+
+    /// The bytes behind an attachment link, at most `max_bytes` of them.
+    ///
+    /// The link is signed, so the Spruce credential is not sent with it. An
+    /// expired link answers like any other refusal, usually 403 or 404. A file
+    /// past the cap is [`Error::FileTooLarge`]; reading stops at the cap.
+    pub async fn download(&self, link: &FileLink, max_bytes: usize) -> Result<Vec<u8>, Error> {
+        let url = Url::parse(link.url()).map_err(|_| Error::InvalidRequest)?;
+        if !base_ok(&url) {
+            return Err(Error::InvalidRequest);
+        }
+        let response = self.http.get(url).send().await.map_err(transport)?;
+        let status = response.status();
+        if !status.is_success() {
+            return Err(classify(status.as_u16()));
+        }
+        read_capped(response, max_bytes)
+            .await?
+            .ok_or(Error::FileTooLarge { limit: max_bytes })
+    }
+
     async fn get<Q: Serialize>(&self, path: &str, query: &Q) -> Result<Value, Error> {
         let url = self.base.join(path).map_err(|_| Error::InvalidRequest)?;
         let response = self
@@ -221,21 +258,36 @@ impl Client {
             .query(query)
             .send()
             .await
-            .map_err(|_| Error::Unavailable)?;
+            .map_err(transport)?;
         let status = response.status();
         if !status.is_success() {
             return Err(classify(status.as_u16()));
         }
-        let mut body = Vec::new();
-        let mut response = response;
-        while let Some(chunk) = response.chunk().await.map_err(|_| Error::Unavailable)? {
-            if body.len().saturating_add(chunk.len()) > self.max_bytes {
-                return Err(Error::Contract);
-            }
-            body.extend_from_slice(&chunk);
-        }
+        let body = read_capped(response, self.max_bytes)
+            .await?
+            .ok_or(Error::Contract)?;
         serde_json::from_slice(&body).map_err(|_| Error::Contract)
     }
+}
+
+/// The body, or `None` once it passes `max_bytes`.
+async fn read_capped(
+    mut response: reqwest::Response,
+    max_bytes: usize,
+) -> Result<Option<Vec<u8>>, Error> {
+    let mut body = Vec::new();
+    while let Some(chunk) = response.chunk().await.map_err(transport)? {
+        if body.len().saturating_add(chunk.len()) > max_bytes {
+            return Ok(None);
+        }
+        body.extend_from_slice(&chunk);
+    }
+    Ok(Some(body))
+}
+
+/// A transport failure, without the URL it was sending to.
+fn transport(error: reqwest::Error) -> Error {
+    Error::Unavailable(error.without_url())
 }
 
 fn classify(status: u16) -> Error {
@@ -382,6 +434,6 @@ mod tests {
             pagination_token: Some("next"),
         };
         let error = client.list_conversations(query).await.unwrap_err();
-        assert_eq!(error, Error::InvalidRequest);
+        assert!(matches!(error, Error::InvalidRequest));
     }
 }
