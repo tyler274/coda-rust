@@ -50,7 +50,7 @@ Things Coda typically puts on Today:
 - work Coda can't restart that left something unhandled, one row per patient, cleared with Done;
 - running work the physician would recognize, such as a reply to a patient's message or something they started;
 - a disconnected messaging account, so Today never claims nothing needs the physician;
-- a For my doctor summary a connected patient sent, when Coda judges a physician should see it;
+- what a connected patient sent from For my doctor, when Coda judges a physician should see it;
 - one line for the practice when its whole records source is down.
 
 The day's schedule sits in a collapsible pane beside the list. Below the rows, one collapsed line summarizes everything else Coda did that day ("Coda also reviewed 9 patients today"), and opening it shows that day's Updates. A Now item stays at the top of every page until it has been opened once. Opening a row marks it seen and never removes it; a row leaves when the physician acts (Done, No reply needed, or a reply Coda sees them send) or Coda resolves it. A seen row that changes comes back as new and says what changed.
@@ -140,7 +140,7 @@ Beyond it:
 - **Urgent message.** Coda flags an unlinked message that looks urgent, and its row leads Today as Now for everyone who sees it. For a linked one, Coda raises a Now concern on its row, and the draft tells the patient to call 911 or seek emergency care, for the physician to send.
 - **Attachments.** Readable attachments are used, and unreadable ones are named.
 - **Ask Coda to reply.** If no reply is ready, the physician asks for one and Coda always drafts one. The ask waits behind a review that's already running, and a reply from that review answers it.
-- **A connected patient sends For my doctor.** It arrives through [Connected care](connected-care.md#c16-sending-for-my-doctor) like any record from the patient's Duet, marked as emphasized by the patient. The practice's agents can give it more priority and judge whether a physician needs to see it. If one does, it reaches Today. Nothing goes back into the patient's Duet in the MVP.
+- **A connected patient sends For my doctor.** It arrives through [Connected care](connected-care.md#c16-sending-for-my-doctor) like any record from the patient's Duet, marked by the patient. The practice's agents can give it more priority and judge whether a physician needs to see it. If one does, it reaches Today. When the agents pick it up, the patient's Duet shows the send as received. Nothing else goes back into the patient's Duet in the MVP.
 - **After the MVP.** The card offers Send beside Copy, and Coda sends exactly the words the physician approved, shown as sent by Coda for the physician, with accepted, sent and delivered kept distinct.
 
 ### P4. Pre-visit preparation and briefings
@@ -239,7 +239,7 @@ A wrong message link is fixed with Wrong patient? (P3).
 Authority and sending:
 
 - The physician decides diagnosis, treatment and medication.
-- In the MVP Coda never sends patient mail or anything into a patient's Duet. It never orders and never writes back to the EHR.
+- In the MVP Coda never sends patient mail, and sends nothing into a patient's Duet except the received status of a send. It never orders and never writes back to the EHR.
 - Coda never sends anything to a patient without the physician, even in an emergency. The one exception is a Connected care invitation, which a practice member starts.
 - A retrieved record that tells Coda to do something is evidence, never an instruction.
 - A follow-up grants no access and no authority to message, order, schedule or write back.

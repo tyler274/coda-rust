@@ -2,7 +2,7 @@
 
 This is what we're building for patients: what Duet is, why it exists, and how it should behave. It describes the product as we intend it today. Open questions live in DECISIONS.md, and git keeps the history.
 
-The MVP is accounts, connected records and readings, and a small workspace in Shared, where the patient writes and sends to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP.
+The MVP is accounts, connected records and readings, and For my doctor in Shared, where the patient marks records, writes notes and sends them to a connected practice. General patient conversation, proactive care and AI preparation of the workspace stay the broader direction below. The Scope section says which parts are in the MVP.
 
 ## What Duet is
 
@@ -63,13 +63,19 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 **Source and citation.** A source is a connected patient portal, Apple Health or Health Connect, and the imported original always stays inspectable. A citation reopens exactly the evidence the AI received. In chat, each message with sources has one Sources button that opens a sheet.
 
-**For my doctor.** One continuing workspace the patient owns, where they help their providers understand what matters, what changed, what they've tried and what they need next. It's useful with or without an appointment date. It's one live version everywhere: it shows each record's current version, and a save never erases a newer save. It's separate from the practice connection and reaches a practice only when the patient sends it. Physicians don't approve its wording or manage it.
+**For my doctor.** What the patient wants their doctor to notice: the records they marked and the notes they wrote. It lives in Shared and works with or without a connected practice. It is private, and nothing in it reaches a practice until the patient sends it. Physicians don't approve its wording or manage it.
+
+**Mark.** The patient marks anything they can open in You: a record, one value, a reading or a trend. A mark is on or off. Marking changes nothing in the record and shares nothing.
+
+**Note.** The patient's own words in For my doctor, as free text with no prompt, categories or required form. A note can point at a record. A note is private until the patient sends it.
+
+**Send.** While connected, the patient sends marked records and notes to one named practice. A send is fixed once made and can't be taken back. It clears the marks it carried, and the patient can mark and send the same record again later. Each send shows Sent, then Received by the care team once the practice's agents have picked it up. Duet never says a physician saw it.
 
 **Appointment context.** Dates and details the patient provides or a connected practice's schedule supplies, attached to For my doctor.
 
 **Your doctor's plan.** The documented care decisions and open items a connected practice sends back, with source, author, date and status. It's read only, lives on Today, and Duet explains it faithfully. With more than one connected practice, each practice's plan shows separately, labeled with its practice, and Duet explains them together when asked. When a connection ends, the plan stays, marked no longer updated.
 
-**Shared.** The patient's place to write, select records and readings, save privately and send a saved version to a named connected practice. It also shows the practice connection. It works without a patient-side conversational agent. In the MVP it has no person-to-person People list and no publishing to doctors outside Coda.
+**Shared.** The tab that holds For my doctor and the practice connection. It shows what is marked and what was sent. It works without a patient-side conversational agent. In the MVP it has no person-to-person People list and no publishing to doctors outside Coda.
 
 **Connected care.** An invited practice's consented connection to the person's Duet account. Patients join a practice only through that practice's invitation and their consent, and joining links to the account they already have. A person may connect to more than one practice, each connection separate. Every Duet flow works without a connected practice.
 
@@ -81,7 +87,7 @@ Coda's shared principles (PRINCIPLES.md) govern this spec. These are the ones sp
 
 ### D1. Sign up, talk to Duet, keep everything across a restart
 
-The account steps apply to the MVP. After sign-up, the MVP leads to records and Shared, with no conversation. The steps below about conversation, replies and chat notifications describe the later experience. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
+The account steps apply to the MVP. After sign-up, the MVP opens on You, with Shared beside it and no conversation. The steps below about conversation, replies and chat notifications describe the later experience. Each permission applies only to the features that use it, so AI permission never blocks account, records or Shared use.
 
 1. The person installs Duet from the App Store on iPhone or the Play Store on Android.
 2. They sign up on their own, with no invitation, by email on iPhone and Android: Duet emails a link that opens the app, with a short code as the fallback. A practice invitation arrives by text, with email as a backup, as [Connected care](connected-care.md) describes. Duet has no web surface; an invitation link opens the app.
@@ -160,17 +166,22 @@ Alerts:
 22. Duet keeps no quiet hours of its own; the phone's Focus or Do Not Disturb decides.
 23. **Shared phone.** Notifications follow whoever is signed in. Signing out removes that phone from the account's notifications and clears its pending ones. Two phones on one account each get notifications.
 
-### D4. The For my doctor workspace
+### D4. For my doctor
 
-In the MVP, this workspace is in Shared.
+In the MVP, For my doctor is in Shared.
 
-1. The person writes in their own words and selects records or readings from You. They can save and reopen this content without a practice or an appointment.
-2. Saving is private. The person can edit their words and inspect the selected sources. A failed or unfinished save never shows as complete.
-3. While connected, Send to my practice names the practice and sends the saved version, marked as emphasized by the patient. Without a live connection, there is no Send to my practice.
-4. The practice's agents review it like any shared record and judge whether a physician needs to see it.
-5. The person can inspect what they sent. Nothing comes back into Duet from a send in the MVP, and no receipt claims that a physician looked at it.
-6. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending. Private edits do not change an earlier send. A failed or uncertain send says so honestly, and a retry never sends twice.
-7. Newer saves appear in open editors and keep the person's unsaved words. Ending the connection stops anything new from crossing. What the practice already received keeps where it came from and when. There is no PDF download.
+1. The person opens anything in You and marks it for their doctor. Marking is one tap and needs no writing.
+2. The person writes notes in their own words, as many as they want. A note needs no record. A note written from a record points at that record, shows the record's own label, and takes the record with it when sent.
+3. Shared lists what is marked and not yet sent. The person can unmark a record and edit or delete a note. A note edited on another phone shows its newer version and keeps the person's unsaved words. A failed or unfinished save never shows as complete.
+4. All of this works without a practice or an appointment, and none of it is shared.
+5. While connected, Send names the practice and sends the marked records and notes the person chooses. One send can hold several. From a record, the person can also send that one record straight away. Without a live connection there is no Send. With more than one connected practice, the person picks one.
+6. Before sending, Duet says that a send can't be taken back, and that it isn't for urgent needs or for questions that need an answer.
+7. A send clears the marks it carried. The person can mark the same record again later and send it again.
+8. Shared lists each send with its date and status: Sent, then Received by the care team once the practice's agents have picked it up. Sends show as a list, never as a chat thread, so nothing suggests a reply is coming. The person can open a send and see exactly what went. No status claims that a physician looked at it. Nothing else comes back into Duet from a send in the MVP.
+9. The practice's agents review a send like any shared record and judge whether a physician needs to see it.
+10. Joining a practice sends nothing from For my doctor and asks nothing about it. What was marked stays marked, and Send becomes available.
+11. Each record shows and sends its current version and says when its source corrected it. A source correction never blocks sending and never changes an earlier send. A failed or uncertain send says so honestly, and a retry never sends twice.
+12. Ending the connection stops anything new from crossing. What the practice already received keeps where it came from and when. There is no PDF download.
 
 ### D4.1 AI preparation and appointment context
 
@@ -285,7 +296,7 @@ In the MVP:
 - Sign-up, the standing notice, Terms, AI permission, preferences, export, deletion and sign-out.
 - Portal records (Epic/MyChart, Oracle Health, healow, and athena once its route works), Apple HealthKit and Health Connect.
 - You, record search, original record details and measurement views with their values, units, dates, sources and corrections.
-- A small workspace in Shared: the patient's words and selected records and readings, private saving, and sends to a named connected practice.
+- For my doctor in Shared: marked records and notes, kept private until sent, and sends to a named connected practice with a Sent and Received status.
 - Account and records use on their own, with no practice and no general patient chat. Each permission still holds for the AI features that use it, even though those features are not in the MVP.
 - Everything free for everyone, with no paid tier or feature gating.
 
