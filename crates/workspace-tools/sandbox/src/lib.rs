@@ -1,9 +1,11 @@
 //! The Coda agent sandbox: its config, the names it passes around, the
-//! read-only checks behind `doctor` and `status`, and the commands that
-//! replace the sandbox scripts: `worktree`, `ci run` and `carry`.
+//! read-only checks behind `doctor` and `status`, the commands that
+//! replace the sandbox scripts (`worktree`, `ci run` and `carry`), and the
+//! CI controller.
 
 pub mod carry;
 pub mod ci;
+pub mod ci_controller;
 pub mod config;
 pub mod doctor;
 pub mod editor_settings;

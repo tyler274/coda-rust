@@ -3,10 +3,11 @@
 mod cli;
 
 use std::io::Write as _;
+use std::path::PathBuf;
 use std::process::ExitCode;
 
 use clap::Parser as _;
-use cli::{Ci, Cli, Command, Worktree};
+use cli::{Ci, Cli, Command, ControllerMode, Worktree};
 use coda_sandbox::config::Config;
 use coda_sandbox::error::Error;
 use coda_sandbox::probe::SystemProbe;
@@ -72,6 +73,7 @@ fn dispatch(cli: &Cli) -> Result<ExitCode, Error> {
             print(&carry::render(&carried, &carry_config.out))?;
             Ok(ExitCode::SUCCESS)
         }
+        Command::CiController { mode } => Ok(ci_controller(*mode)),
     }
 }
 
@@ -97,6 +99,48 @@ fn worktree_command(config: &Config, command: &Worktree) -> Result<(), Error> {
             worktree::prune::prune(&layout, confirm)
         }
         Worktree::Status => print(&worktree::status::status(&layout)?),
+    }
+}
+
+/// The controller reads its own environment, not the sandbox config, and
+/// exits 143 on SIGTERM as the Python controller did.
+fn ci_controller(mode: Option<ControllerMode>) -> ExitCode {
+    use coda_sandbox::ci_controller::{self as ctl, Controller, Mode};
+    use ctl::termination::{TERMINATED_EXIT, Termination};
+    let termination = match Termination::install() {
+        Ok(termination) => termination,
+        Err(error) => {
+            eprintln!("coda-sandbox ci-controller: cannot handle SIGTERM: {error}");
+            return ExitCode::FAILURE;
+        }
+    };
+    let run = || -> Result<(), ctl::error::Error> {
+        let config = ctl::config::ControllerConfig::from_env()?;
+        let credentials = std::env::var_os("CREDENTIALS_DIRECTORY").map(PathBuf::from);
+        let token = ctl::read_token(credentials.as_deref())?;
+        let controller = Controller {
+            config,
+            disks: &ctl::disk::SystemDisks,
+            memory: ctl::memory::MemoryFiles::system(),
+            termination: termination.clone(),
+            timers: ctl::guest::Timers::PRODUCTION,
+        };
+        let mode = match mode {
+            Some(ControllerMode::Seed) => Mode::Seed,
+            None => Mode::Pass,
+        };
+        controller.run(mode, token)
+    };
+    match run() {
+        Ok(()) => ExitCode::SUCCESS,
+        Err(ctl::error::Error::Terminated) => std::process::exit(TERMINATED_EXIT),
+        Err(error) => {
+            eprintln!("coda-sandbox ci-controller: {}", ctl::error::chain(&error));
+            if error.is_terminated() {
+                std::process::exit(TERMINATED_EXIT);
+            }
+            ExitCode::FAILURE
+        }
     }
 }
 

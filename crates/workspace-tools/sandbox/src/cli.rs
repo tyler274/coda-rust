@@ -41,6 +41,17 @@ pub enum Command {
     /// bundle them into the carry directory for the sandbox. Runs as the
     /// checkout's owner, never as root.
     Carry,
+    /// Run one Coda CI pass, or build a fresh seed with `seed`. Run by the
+    /// coda-ci units, configured by their CODA_CI_* environment.
+    CiController {
+        #[arg(value_enum)]
+        mode: Option<ControllerMode>,
+    },
+}
+
+#[derive(Debug, Clone, Copy, clap::ValueEnum)]
+pub enum ControllerMode {
+    Seed,
 }
 
 #[derive(Debug, Subcommand)]
