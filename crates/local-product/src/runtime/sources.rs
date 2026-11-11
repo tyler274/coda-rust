@@ -361,6 +361,15 @@ impl Store {
         Ok(pulls)
     }
 
+    /// A workspace's current source version, without its sources; 0 before
+    /// anything was recorded.
+    pub async fn source_version(&self, workspace: &str) -> Result<u64, DbErr> {
+        source_version::Entity::find_by_id(workspace.to_owned())
+            .one(&self.db)
+            .await?
+            .map_or(Ok(0), |row| version_of(row.version))
+    }
+
     /// Unlocked read of a workspace's current observation.
     pub async fn sources(&self, workspace: &str) -> Result<Observation, DbErr> {
         let tx = self.db.begin().await?;

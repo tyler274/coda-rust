@@ -32,8 +32,8 @@ use shell::{
     REPLY_CLOSED_NOTICE, REPLY_COPY, REPLY_NO_NEEDED, REPLY_REVISION_STALE, REPLY_TELL_CODA,
     RESUME, ReadView, ReplyReviewAction, STOP, SourceChip, SynopsisPiece, TODAY_LOADING,
     TODAY_QUIET, TODAY_QUIET_DETAIL, TODAY_STALE, TODAY_UNAVAILABLE, TRY_AGAIN, TodayLine,
-    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_to,
-    chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
+    TodayView, VisitLine, WORKSPACE_CLOSED, WORKSPACE_EMPTY, WORKSPACE_UNAVAILABLE, answer_sources,
+    answer_to, chat_view, chip_name, citation_inspection, connection_lines, demographic_card_view,
     format_calendar_date, format_clock, format_local_date, format_waited, keyboard_command,
     need_you_words, opens_reader, panel_target, past_work_copy, patient_upcoming_visits, read_view,
     records_time, reply_channel_label, reply_review_actions, reply_revision_words,
@@ -3658,7 +3658,13 @@ fn PatientSurface(
                                     if line.segments.is_empty() {
                                         MessageWords { text: line.text }
                                     } else {
-                                        CitedWords { segments: line.segments, on_open_source }
+                                        CitedWords { segments: line.segments.clone(), on_open_source }
+                                    }
+                                    AnswerControls {
+                                        sources: answer_sources(&line.segments),
+                                        basis: line.basis,
+                                        newer_records: line.newer_records,
+                                        on_open_source,
                                     }
                                 }
                             } else {
@@ -4076,6 +4082,64 @@ fn CitedWords(
         parts,
     } }
 }
+
+/// What closes an answer: Update when newer records arrived after it, its one
+/// Sources control, and its Basis and limitations, collapsed.
+#[component]
+fn AnswerControls(
+    sources: Vec<SourceChip>,
+    basis: Option<String>,
+    newer_records: bool,
+    on_open_source: EventHandler<SourceChip>,
+) -> Element {
+    let mut listing = use_signal(|| false);
+    if sources.is_empty() && basis.is_none() && !newer_records {
+        return rsx! {};
+    }
+    let count = sources.len();
+    rsx! {
+        div { class: "answer-controls",
+            if newer_records {
+                span { class: "answer-update", title: "{NEWER_RECORDS}",
+                    StatePill { tone: Tone::Warning, "{UPDATE}" }
+                    span { class: "sr-only", "{NEWER_RECORDS}" }
+                }
+            }
+            if count > 0 {
+                ui::SourcesButton { label: "Sources", count, onclick: move |_| listing.set(true) }
+            }
+            if let Some(basis) = basis {
+                div { class: "answer-basis-row",
+                    ui::Disclosure { title: "Basis and limitations", detail: true,
+                        p { class: "answer-basis", "{basis}" }
+                    }
+                }
+            }
+        }
+        if listing() {
+            Dialog { close_label: "Close", sheet: true, title: "Sources", on_close: move |_| listing.set(false),
+                ol { class: "row-list answer-sources",
+                    for chip in sources {
+                        li { key: "{chip.index}",
+                            ui::ListRow {
+                                number: chip.index,
+                                title: chip.label.clone(),
+                                detail: None,
+                                onclick: move |_| {
+                                    listing.set(false);
+                                    on_open_source.call(chip.clone());
+                                },
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+const UPDATE: &str = "Update";
+const NEWER_RECORDS: &str = "Newer patient records arrived after this answer.";
 
 /// What Coda says in a chat snapshot, drawn richly. This doesn't fetch a source or run a model.
 #[component]
@@ -4605,6 +4669,10 @@ struct ConversationLine {
     /// feedback names, and the physician's feedback on it as the snapshot
     /// read it.
     response: Option<(ResponseId, feedback::Read)>,
+    /// On an answer: what it rests on and its limits.
+    basis: Option<String>,
+    /// On an answer: patient records arrived after it.
+    newer_records: bool,
 }
 
 /// The lines a chat snapshot shows, in order. Only a mechanical line keeps a
@@ -4654,6 +4722,8 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 stop,
                 held,
                 response,
+                basis: turn.basis.clone().filter(|basis| !basis.trim().is_empty()),
+                newer_records: turn.newer_records,
             })
         })
         .collect()
@@ -4845,6 +4915,8 @@ mod conversation_line_tests {
                     stop: None,
                     held: false,
                     response: None,
+                    basis: None,
+                    newer_records: false,
                 },
                 ConversationLine {
                     text: "Coda couldn’t finish this response. Your message is saved.".into(),
@@ -4854,6 +4926,8 @@ mod conversation_line_tests {
                     stop: None,
                     held: false,
                     response: None,
+                    basis: None,
+                    newer_records: false,
                 },
             ]
         );
@@ -4932,6 +5006,26 @@ mod conversation_line_tests {
             lines[1].response,
             Some((ResponseId("r-1".into()), feedback::Read::Unavailable))
         );
+    }
+
+    #[test]
+    fn an_answer_carries_its_basis_and_update_mark() {
+        let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": { "runs": [], "conversation": [
+                { "kind": "model", "text": "None recorded.",
+                  "basis": "Rests on one allergy record.", "newer_records": true },
+                { "kind": "model", "text": "Older answer.", "basis": "  " },
+            ] }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&page.snapshot);
+        assert_eq!(
+            lines[0].basis.as_deref(),
+            Some("Rests on one allergy record.")
+        );
+        assert!(lines[0].newer_records);
+        assert_eq!(lines[1].basis, None);
+        assert!(!lines[1].newer_records);
     }
 
     #[test]
