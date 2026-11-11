@@ -558,13 +558,16 @@ impl Langfuse {
 /// `value` as a bare https origin, the shape the observability root's
 /// `langfuse_host` takes; a trailing slash is dropped.
 fn langfuse_origin(value: &str) -> Option<String> {
-    let origin = value.trim().trim_end_matches('/');
-    let host = origin.strip_prefix("https://")?;
-    let bare = !host.is_empty()
-        && host
-            .bytes()
-            .all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b".-".contains(&b));
-    bare.then(|| origin.to_owned())
+    let url = reqwest::Url::parse(value.trim()).ok()?;
+    let bare = url.scheme() == "https"
+        && url.domain().is_some()
+        && url.port().is_none()
+        && url.username().is_empty()
+        && url.password().is_none()
+        && url.path() == "/"
+        && url.query().is_none()
+        && url.fragment().is_none();
+    bare.then(|| url.origin().ascii_serialization())
 }
 
 fn json_body(
@@ -606,26 +609,34 @@ impl LangfuseApi<'_> {
         )
     }
 
-    /// Waits for the chat's trace and its generation.
+    /// The chat's generations, newest first, from the observations API: the
+    /// real-time read path, where the trace endpoints lag by minutes.
+    fn session_generations(&self, sent: &Sent) -> Result<Vec<LangfuseTurn>, DrillError> {
+        let observations = self.get(
+            "/api/public/v2/observations",
+            &[
+                ("sessionId", sent.turn.chat.as_str()),
+                ("name", readback::GENERATION),
+                ("fields", "core,basic,io,metadata,model"),
+                ("expandMetadata", "attributes"),
+                ("limit", "20"),
+            ],
+            "Langfuse observations",
+        )?;
+        Ok(readback::session_generations(&observations, &sent.canary))
+    }
+
+    /// Waits for the chat's newest generation.
     fn turn(&self, sent: &Sent, watch: &Watch) -> Result<LangfuseTurn, DrillError> {
         watch
             .poll(READBACK_POLLS, POLL, |_| {
-                let traces = self.get(
-                    "/api/public/traces",
-                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                    "Langfuse traces",
-                )?;
-                let Some(id) = readback::session_trace(&traces) else {
-                    return Ok(None);
-                };
-                let trace = self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                Ok(readback::langfuse_turn(&trace, &sent.canary))
+                Ok(self.session_generations(sent)?.into_iter().next())
             })?
             .ok_or(readback_timeout("the Langfuse generation"))
     }
 
-    /// Waits for the generation of attempt `run_id` among the chat's traces:
-    /// a redelivered attempt starts a trace of its own.
+    /// Waits for the generation of attempt `run_id` among the chat's
+    /// generations: a redelivered attempt has a trace of its own.
     fn attempt_generation(
         &self,
         sent: &Sent,
@@ -634,21 +645,10 @@ impl LangfuseApi<'_> {
     ) -> Result<LangfuseTurn, DrillError> {
         watch
             .poll(READBACK_POLLS, POLL, |_| {
-                let traces = self.get(
-                    "/api/public/traces",
-                    &[("sessionId", sent.turn.chat.as_str()), ("limit", "10")],
-                    "Langfuse traces",
-                )?;
-                for id in readback::session_traces(&traces) {
-                    let trace =
-                        self.get(&format!("/api/public/traces/{id}"), &[], "Langfuse trace")?;
-                    let turn = readback::langfuse_turn(&trace, &sent.canary)
-                        .filter(|turn| turn.run_id.as_deref() == Some(run_id));
-                    if turn.is_some() {
-                        return Ok(turn);
-                    }
-                }
-                Ok(None)
+                Ok(self
+                    .session_generations(sent)?
+                    .into_iter()
+                    .find(|turn| turn.run_id.as_deref() == Some(run_id)))
             })?
             .ok_or(readback_timeout("the failed attempt's Langfuse generation"))
     }
@@ -1450,6 +1450,9 @@ mod tests {
         assert!(langfuse_origin("https://hipaa.cloud.langfuse.com/langfuse").is_none());
         assert!(langfuse_origin("https://127.0.0.1:3000").is_none());
         assert!(langfuse_origin("https://").is_none());
+        assert!(langfuse_origin("https://hipaa.cloud.langfuse.com:8443").is_none());
+        assert!(langfuse_origin("https://user@hipaa.cloud.langfuse.com").is_none());
+        assert!(langfuse_origin("https://hipaa.cloud.langfuse.com/?x=1").is_none());
     }
 
     #[test]

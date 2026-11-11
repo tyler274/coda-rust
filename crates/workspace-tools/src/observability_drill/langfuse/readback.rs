@@ -57,28 +57,38 @@ pub(super) struct LangfuseTurn {
     pub(super) canary_in_content: bool,
 }
 
-/// The newest trace id in a `GET /api/public/traces?sessionId=` answer.
-pub(super) fn session_trace(body: &Value) -> Option<String> {
-    body["data"]
-        .as_array()?
-        .iter()
-        .max_by_key(|trace| trace["timestamp"].as_str().unwrap_or_default().to_owned())
-        .and_then(|trace| trace["id"].as_str())
-        .map(str::to_owned)
+/// The generations in a `GET /api/public/v2/observations?sessionId=` answer,
+/// newest first: a redelivered attempt's generation comes before the one it
+/// replaced.
+pub(super) fn session_generations(body: &Value, canary: &str) -> Vec<LangfuseTurn> {
+    let mut generations: Vec<&Value> = body["data"]
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter(|observation| observation["name"] == GENERATION)
+        .collect();
+    generations.sort_by_key(|observation| {
+        std::cmp::Reverse(
+            observation["startTime"]
+                .as_str()
+                .unwrap_or_default()
+                .to_owned(),
+        )
+    });
+    generations
+        .into_iter()
+        .filter_map(|generation| langfuse_turn(generation, canary))
+        .collect()
 }
 
-/// Reads a `GET /api/public/traces/{id}` answer for its generation.
-pub(super) fn langfuse_turn(trace: &Value, canary: &str) -> Option<LangfuseTurn> {
-    let generation = trace["observations"]
-        .as_array()?
-        .iter()
-        .find(|observation| observation["name"] == GENERATION)?;
+/// Reads one generation observation (v2 observations API) as a turn.
+fn langfuse_turn(generation: &Value, canary: &str) -> Option<LangfuseTurn> {
     let text = |value: &Value| value.as_str().map(str::to_owned);
     let content_has = |field: &str| mentions(&generation[field], canary);
     Some(LangfuseTurn {
-        trace_id: text(&trace["id"])?,
-        environment: text(&trace["environment"]).or_else(|| text(&generation["environment"])),
-        session_id: text(&trace["sessionId"]),
+        trace_id: text(&generation["traceId"])?,
+        environment: text(&generation["environment"]),
+        session_id: text(&generation["sessionId"]),
         run_id: attribute(&generation["metadata"], "coda.run_id").map(str::to_owned),
         scenario_id: attribute(&generation["metadata"], "coda.scenario_id").map(str::to_owned),
         model: text(&generation["model"])
@@ -89,19 +99,6 @@ pub(super) fn langfuse_turn(trace: &Value, canary: &str) -> Option<LangfuseTurn>
         level: text(&generation["level"]),
         canary_in_content: content_has("input") || content_has("output"),
     })
-}
-
-/// The trace ids in a `GET /api/public/traces?sessionId=` answer, newest
-/// first.
-pub(super) fn session_traces(body: &Value) -> Vec<String> {
-    let mut traces: Vec<&Value> = body["data"].as_array().into_iter().flatten().collect();
-    traces.sort_by_key(|trace| {
-        std::cmp::Reverse(trace["timestamp"].as_str().unwrap_or_default().to_owned())
-    });
-    traces
-        .iter()
-        .filter_map(|trace| trace["id"].as_str().map(str::to_owned))
-        .collect()
 }
 
 /// What `chat-failure` requires of the failed attempt's Langfuse generation:
@@ -511,28 +508,39 @@ mod tests {
 
     const TRACE: &str = "0af7651916cd43dd8448eb211c80319c";
 
-    fn langfuse_trace() -> Value {
+    /// One generation as `GET /api/public/v2/observations` returns it.
+    fn generation() -> Value {
         json!({
-            "id": TRACE,
+            "id": "obs-1",
+            "traceId": TRACE,
+            "startTime": "2026-11-09T10:00:00.000Z",
+            "type": "GENERATION",
+            "name": "gen_ai.generation",
             "environment": "simulation",
             "sessionId": "chat-1",
-            "observations": [
-                { "name": "physician.worker.attempt", "metadata": {} },
-                {
-                    "name": "gen_ai.generation",
-                    "model": "gpt-6-sol",
-                    "input": "canary-123 hello",
-                    "output": "reply",
-                    "metadata": {
-                        "attributes": {
-                            "coda.run_id": "run-1",
-                            "coda.scenario_id": "langfuse-drill"
-                        },
-                        "resourceAttributes": { "service.name": "physician-worker" }
-                    }
-                }
-            ]
+            "model": "gpt-6-sol",
+            "input": "canary-123 hello",
+            "output": "reply",
+            "metadata": {
+                "attributes": {
+                    "coda.run_id": "run-1",
+                    "coda.scenario_id": "langfuse-drill"
+                },
+                "resourceAttributes": { "service.name": "physician-worker" }
+            }
         })
+    }
+
+    fn observations(items: &[Value]) -> Value {
+        let attempt =
+            json!({ "traceId": TRACE, "name": "physician.worker.attempt", "metadata": {} });
+        let mut data = vec![attempt];
+        data.extend_from_slice(items);
+        json!({ "data": data, "meta": {} })
+    }
+
+    fn turn_of(item: Value) -> LangfuseTurn {
+        session_generations(&observations(&[item]), "canary-123").remove(0)
     }
 
     #[test]
@@ -546,7 +554,8 @@ mod tests {
 
     #[test]
     fn a_rehearsal_generation_meets_the_contract() {
-        let turn = langfuse_turn(&langfuse_trace(), "canary-123").unwrap();
+        let turn = turn_of(generation());
+        assert_eq!(turn.trace_id, TRACE);
         assert_eq!(turn.run_id.as_deref(), Some("run-1"));
         assert_eq!(turn.model.as_deref(), Some("gpt-6-sol"));
         assert!(rehearsal_gaps(&turn, "chat-1", "langfuse-drill").is_empty());
@@ -554,29 +563,29 @@ mod tests {
 
     #[test]
     fn a_real_or_mislabelled_generation_is_refused() {
-        let mut trace = langfuse_trace();
-        trace["environment"] = json!("real");
-        trace["observations"][1]["input"] = json!("hello");
-        let turn = langfuse_turn(&trace, "canary-123").unwrap();
-        let gaps = rehearsal_gaps(&turn, "chat-2", "langfuse-drill");
+        let mut item = generation();
+        item["environment"] = json!("real");
+        item["input"] = json!("hello");
+        let gaps = rehearsal_gaps(&turn_of(item), "chat-2", "langfuse-drill");
         assert_eq!(gaps.len(), 3, "{gaps:?}");
     }
 
     #[test]
-    fn a_trace_without_its_generation_is_not_a_turn() {
-        let mut trace = langfuse_trace();
-        trace["observations"] = json!([]);
-        assert_eq!(langfuse_turn(&trace, "c"), None);
+    fn a_session_without_its_generation_has_no_turn() {
+        assert!(session_generations(&observations(&[]), "c").is_empty());
+        assert!(session_generations(&json!({}), "c").is_empty());
     }
 
     #[test]
-    fn the_newest_session_trace_wins() {
-        let body = json!({ "data": [
-            { "id": "old", "timestamp": "2026-11-09T10:00:00.000Z" },
-            { "id": "new", "timestamp": "2026-11-09T11:00:00.000Z" }
-        ]});
-        assert_eq!(session_trace(&body).as_deref(), Some("new"));
-        assert_eq!(session_trace(&json!({ "data": [] })), None);
+    fn session_generations_come_newest_first() {
+        let mut first = generation();
+        first["traceId"] = json!("first");
+        let mut redelivered = generation();
+        redelivered["traceId"] = json!("redelivered");
+        redelivered["startTime"] = json!("2026-11-09T10:00:12.000Z");
+        let turns = session_generations(&observations(&[first, redelivered]), "canary-123");
+        let traces: Vec<&str> = turns.iter().map(|turn| turn.trace_id.as_str()).collect();
+        assert_eq!(traces, ["redelivered", "first"]);
     }
 
     #[test]
@@ -720,30 +729,19 @@ mod tests {
 
     #[test]
     fn a_failed_generation_is_an_error_of_that_attempt_with_the_canary() {
-        let mut trace = langfuse_trace();
-        trace["observations"][1]["level"] = json!("ERROR");
-        trace["observations"][1]["output"] = Value::Null;
-        let turn = langfuse_turn(&trace, "canary-123").unwrap();
+        let mut item = generation();
+        item["level"] = json!("ERROR");
+        item["output"] = Value::Null;
+        let turn = turn_of(item.clone());
         assert!(
             failed_generation_gaps(&turn, "run-1").is_empty(),
             "{turn:?}"
         );
         let gaps = failed_generation_gaps(&turn, "run-2");
         assert_eq!(gaps.len(), 1, "{gaps:?}");
-        trace["observations"][1]["level"] = json!("DEFAULT");
-        trace["observations"][1]["input"] = json!("hello");
-        let turn = langfuse_turn(&trace, "canary-123").unwrap();
-        assert_eq!(failed_generation_gaps(&turn, "run-1").len(), 2);
-    }
-
-    #[test]
-    fn session_traces_come_newest_first() {
-        let body = json!({ "data": [
-            { "id": "first", "timestamp": "2026-11-09T10:00:00.000Z" },
-            { "id": "redelivered", "timestamp": "2026-11-09T10:00:12.000Z" }
-        ]});
-        assert_eq!(session_traces(&body), ["redelivered", "first"]);
-        assert!(session_traces(&json!({})).is_empty());
+        item["level"] = json!("DEFAULT");
+        item["input"] = json!("hello");
+        assert_eq!(failed_generation_gaps(&turn_of(item), "run-1").len(), 2);
     }
 
     fn attempt_body(run: &str, extra: Value) -> Value {

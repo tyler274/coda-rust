@@ -91,6 +91,10 @@ exporters:
     endpoint: ${env:LANGFUSE_OTLP_ENDPOINT:-http://langfuse-web:3000/api/public/otel}
     auth:
       authenticator: basicauth/langfuse
+    # Langfuse v4 ingestion makes spans readable at once through the v2
+    # observations API the drills read back from.
+    headers:
+      x-langfuse-ingestion-version: "4"
     timeout: 5s
     sending_queue:
       enabled: true

@@ -294,8 +294,9 @@ returns Grafana to its root path for port-forward.
 `coda-langfuse`, its database and IAM user, and the
 `<project>-langfuse-blobs` bucket out of this root's state without destroying
 them; they hold staging traces from before the hosted project. The
-`coda-langfuse` and `coda-langfuse-blobs` service accounts, the bucket's HMAC
-key and the Doppler keys that self-hosted Langfuse read outlive them too.
+`coda-langfuse` and `coda-langfuse-blobs` service accounts are forgotten the
+same way; the bucket's HMAC key and the Doppler keys that self-hosted Langfuse
+read outlive them too.
 Deleting any of them is a separate operation with its own authorization, after
 the hosted project's drills pass.
 
@@ -420,6 +421,11 @@ the hosted project's drills pass.
 
   `LANGFUSE_BASE_URL` sits beside the key pair in Doppler for the drills and
   other API clients; the collector takes its origin from `langfuse_host`.
+  The collector reads the key pair as environment at start, and the operator
+  resyncs every 300 seconds, so after an apply that changes which keys
+  `otel-collector-langfuse` carries, or after rotating them in Doppler, wait
+  for the Secret to hold the new keys and run
+  `kubectl -n observability rollout restart deployment/otel-collector`.
   Under `datadog`, the Datadog provider reads `DD_API_KEY`/`DD_APP_KEY`
   from the environment: `doppler run --project coda-rust --config stg -- tofu plan`.
 - **Identity.** The collector holds no Google identity; it only verifies

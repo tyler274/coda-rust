@@ -34,3 +34,22 @@ removed {
     destroy = false
   }
 }
+
+# The workload and blob accounts outlive the stores with them: the bucket's
+# HMAC key belongs to `coda-langfuse-blobs`, and rolling back to the
+# self-hosted Langfuse needs both.
+removed {
+  from = google_service_account.langfuse
+
+  lifecycle {
+    destroy = false
+  }
+}
+
+removed {
+  from = google_service_account.langfuse_blobs
+
+  lifecycle {
+    destroy = false
+  }
+}
