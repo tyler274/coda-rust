@@ -581,7 +581,7 @@ jobs:
           access-key-id: ${{ secrets.NIX_CACHE_READ_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.NIX_CACHE_READ_SECRET_ACCESS_KEY }}
       - name: Restore Rust and Gradle caches
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: |
             ~/.cargo/registry

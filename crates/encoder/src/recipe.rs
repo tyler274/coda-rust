@@ -6,8 +6,8 @@ use sha2::{Digest, Sha256};
 
 use crate::window::{STRIDE, WINDOW};
 
-/// candle-core version this binary was built against. Kept beside the `=0.11.0` pin in Cargo.toml.
-pub const CANDLE_RUNTIME: &str = "0.11.0";
+/// candle-core version this binary was built against. Kept beside the `=0.11.1` pin in Cargo.toml.
+pub const CANDLE_RUNTIME: &str = "0.11.1";
 
 pub const QUERY_PREFIX: &str = "Represent this sentence for searching relevant passages: ";
 
