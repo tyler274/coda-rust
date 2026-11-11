@@ -32,6 +32,7 @@ jobs:
       full: ${{ steps.select.outputs.full }}
       deps: ${{ steps.select.outputs.deps }}
       mobile: ${{ steps.select.outputs.mobile }}
+      sandbox: ${{ steps.select.outputs.sandbox }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -101,7 +102,7 @@ jobs:
   result:
     name: CI result
     if: always()
-    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator]
+    needs: [scope, lightweight, ci, foundations, images, postgres, observability, cargo-deny, android-emulator, sandbox]
     runs-on: blacksmith-2vcpu-ubuntu-2404
     permissions:
       contents: read
@@ -138,6 +139,25 @@ jobs:
         env:
           REPORT_URL: ${{ steps.timings.outputs.artifact-url }}
         run: printf '\n[Download timing graphs and raw data](%s)\n' "$REPORT_URL" >> "$GITHUB_STEP_SUMMARY"
+
+  # coda-sandbox has its own flake under crates/workspace-tools/sandbox/,
+  # whose checks build, test and lint the crate from the root Cargo workspace,
+  # so it has its own scope. Its VM checks need KVM and run on the sandbox
+  # host, not here.
+  sandbox:
+    name: Build, test and lint coda-sandbox
+    needs: [scope, lightweight]
+    if: needs.scope.outputs.sandbox == 'true'
+    runs-on: blacksmith-2vcpu-ubuntu-2404
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: cachix/install-nix-action@v31
+      - name: Flake checks (build, cargo test, clippy, rustfmt)
+        run: nix flake check ./crates/workspace-tools/sandbox -L
 
   ci:
     needs: [scope, lightweight]

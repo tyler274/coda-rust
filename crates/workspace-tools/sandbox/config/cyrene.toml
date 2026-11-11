@@ -1,0 +1,24 @@
+# Cyrene's sandbox, as configured by the nixos repository today. The NixOS
+# module will write this file to /etc/coda-sandbox/config.toml; until then pass
+# `--config crates/workspace-tools/sandbox/config/cyrene.toml`.
+#
+# Every path names the same directory on the host and inside the container.
+
+version = 1
+
+[container]
+name = "coda-agent"
+unit = "container@coda-agent.service"
+ssh_host = "coda-agent"
+agent_uid = 656360
+repo = "/agents/coda/src/coda-rust"
+
+[build]
+# A ZFS dataset on the `agents` pool; reflinks need zfs_bclone_enabled = 1.
+root = "/agents/coda/build"
+
+[ci]
+# Holds requests/ and results/.
+spool = "/agents/coda/ci/spool"
+timer = "coda-ci.timer"
+service = "coda-ci.service"

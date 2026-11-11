@@ -1,0 +1,281 @@
+use std::path::{Path, PathBuf};
+
+use super::{Check, Finding, Fix, Outcome, SpoolDir, reflink};
+use crate::config::{Config, Loaded, UnitName};
+use crate::editor_settings::{Editor, ForwardingKey, Setting, Settings};
+use crate::error::Error;
+use crate::probe::{ActiveState, LoadState, PathKind, Probe, SSH_DEADLINE, SshReach, UnitScope};
+
+const REBUILD: &str = "declare it in the NixOS configuration, then `sudo nixos-rebuild switch`";
+
+/// Directories that held a root-owned GitHub token before the broker. They
+/// are history, not machine layout, so they live here rather than in config.
+/// Their parents keep the host user out, so the check reports each directory.
+pub const LEGACY_TOKEN_DIRS: [&str; 2] = ["/var/lib/agent-secrets/coda-agent", "/var/lib/coda-ci"];
+
+/// Runs every check. Editor checks run even when the config does not load.
+pub fn run(probe: &dyn Probe, config: &Result<Loaded, Error>) -> Vec<Finding> {
+    let mut findings = vec![Finding {
+        check: Check::Config,
+        outcome: config_outcome(config),
+    }];
+    if let Ok(loaded) = config {
+        findings.extend(machine(probe, &loaded.config));
+    }
+    findings.extend(Editor::ALL.map(|editor| Finding {
+        check: Check::EditorSettings(editor),
+        outcome: editor_outcome(probe, editor),
+    }));
+    findings
+}
+
+fn config_outcome(config: &Result<Loaded, Error>) -> Outcome {
+    match config {
+        Ok(Loaded { unknown_keys, .. }) if unknown_keys.is_empty() => Outcome::Pass {
+            detail: "loaded".to_owned(),
+        },
+        Ok(Loaded { unknown_keys, .. }) => Outcome::Warn {
+            detail: format!(
+                "config has keys this binary does not know ({}); binary older than config?",
+                unknown_keys.join(", ")
+            ),
+            fix: Fix::instruction(
+                "run a coda-sandbox built from the revision that wrote the config, \
+                 or remove the keys if they are typos",
+            ),
+        },
+        Err(error @ Error::ConfigMissing { .. }) => Outcome::Fail {
+            detail: error.chain(),
+            fix: Fix::instruction(
+                "pass `--config crates/workspace-tools/sandbox/config/cyrene.toml` \
+                 or set CODA_SANDBOX_CONFIG; \
+                 the NixOS module will write the default path",
+            ),
+        },
+        Err(error) => Outcome::Fail {
+            detail: error.chain(),
+            fix: Fix::instruction("correct the config file"),
+        },
+    }
+}
+
+fn machine(probe: &dyn Probe, config: &Config) -> Vec<Finding> {
+    let root = &config.build.root;
+    let root_kind = probe.path_kind(root);
+    let reflinks = match &root_kind {
+        Ok(PathKind::Directory) => reflink::outcome(probe, root),
+        _ => Outcome::Skip {
+            reason: "needs the build root".to_owned(),
+        },
+    };
+    let mut findings = vec![
+        (Check::BuildRoot, build_root_outcome(root, root_kind)),
+        (Check::Reflinks, reflinks),
+        (
+            Check::ContainerUnit,
+            unit_outcome(probe, UnitScope::System, &config.container.unit),
+        ),
+        (Check::Ssh, ssh_outcome(probe, &config.container.ssh_host)),
+        (
+            Check::SpoolDir(SpoolDir::Requests),
+            spool_outcome(probe, &config.ci.requests()),
+        ),
+        (
+            Check::SpoolDir(SpoolDir::Results),
+            spool_outcome(probe, &config.ci.results()),
+        ),
+        (
+            Check::CiTimer,
+            unit_outcome(probe, UnitScope::System, &config.ci.timer),
+        ),
+    ];
+    for dir in LEGACY_TOKEN_DIRS.map(PathBuf::from) {
+        let outcome = legacy_token_outcome(probe, &dir);
+        findings.push((Check::LegacyToken(dir), outcome));
+    }
+    findings
+        .into_iter()
+        .map(|(check, outcome)| Finding { check, outcome })
+        .collect()
+}
+
+fn build_root_outcome(root: &Path, kind: Result<PathKind, Error>) -> Outcome {
+    let shown = root.display();
+    match kind {
+        Ok(PathKind::Directory) => Outcome::Pass {
+            detail: format!("{shown}"),
+        },
+        Ok(PathKind::Missing) => Outcome::Fail {
+            detail: format!("{shown} does not exist"),
+            fix: Fix::instruction(format!(
+                "mount a reflink filesystem (ZFS with block cloning, Btrfs or XFS) at {shown}"
+            )),
+        },
+        Ok(other) => Outcome::Fail {
+            detail: format!("{shown} is a {other:?}, not a directory"),
+            fix: Fix::instruction(format!(
+                "move it aside and mount a reflink filesystem at {shown}"
+            )),
+        },
+        Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+fn systemctl(scope: UnitScope, verb: &str, unit: &UnitName) -> Fix {
+    let args = [verb, unit.as_str()].map(str::to_owned);
+    match scope {
+        UnitScope::System => Fix::command("sudo", ["systemctl".to_owned()].into_iter().chain(args)),
+        UnitScope::User => Fix::command("systemctl", ["--user".to_owned()].into_iter().chain(args)),
+    }
+}
+
+fn unit_outcome(probe: &dyn Probe, scope: UnitScope, unit: &UnitName) -> Outcome {
+    let state = match probe.unit(scope, unit) {
+        Ok(state) => state,
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    let detail = format!("{unit} {:?}/{:?}", state.load, state.active);
+    let status = || match scope {
+        UnitScope::System => Fix::command("systemctl", ["status", unit.as_str()]),
+        UnitScope::User => Fix::command("systemctl", ["--user", "status", unit.as_str()]),
+    };
+    match (state.load, state.active) {
+        (
+            LoadState::Loaded,
+            ActiveState::Active | ActiveState::Reloading | ActiveState::Refreshing,
+        ) => Outcome::Pass {
+            detail: format!("{unit} {:?}", state.active).to_lowercase(),
+        },
+        (
+            LoadState::Loaded,
+            ActiveState::Inactive
+            | ActiveState::Failed
+            | ActiveState::Activating
+            | ActiveState::Deactivating
+            | ActiveState::Maintenance,
+        ) => Outcome::Fail {
+            detail,
+            fix: systemctl(scope, "start", unit),
+        },
+        (LoadState::NotFound, _) => Outcome::Fail {
+            detail: format!("{unit} not found"),
+            fix: Fix::instruction(REBUILD),
+        },
+        (LoadState::Masked, _) => Outcome::Fail {
+            detail,
+            fix: systemctl(scope, "unmask", unit),
+        },
+        (LoadState::Stub | LoadState::BadSetting | LoadState::Error | LoadState::Merged, _) => {
+            Outcome::Fail {
+                detail,
+                fix: status(),
+            }
+        }
+    }
+}
+
+fn ssh_outcome(probe: &dyn Probe, host: &str) -> Outcome {
+    let why = || Fix::command("ssh", ["-v", host, "true"]);
+    match probe.ssh(host) {
+        Ok(SshReach::Reachable) => Outcome::Pass {
+            detail: format!("{host} answers"),
+        },
+        Ok(SshReach::Failed { exit_code, stderr }) => Outcome::Fail {
+            detail: match exit_code {
+                Some(code) => format!("`ssh {host} true` exited {code}: {stderr}"),
+                None => format!("`ssh {host} true` was killed by a signal: {stderr}"),
+            },
+            fix: why(),
+        },
+        Ok(SshReach::TimedOut) => Outcome::Fail {
+            detail: format!(
+                "`ssh {host} true` did not finish in {} s",
+                SSH_DEADLINE.as_secs()
+            ),
+            fix: why(),
+        },
+        Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+fn spool_outcome(probe: &dyn Probe, path: &Path) -> Outcome {
+    match probe.path_kind(path) {
+        Ok(PathKind::Directory) => Outcome::Pass {
+            detail: path.display().to_string(),
+        },
+        Ok(kind) => Outcome::Fail {
+            detail: format!("{} is {kind:?}, not a directory", path.display()),
+            fix: Fix::instruction(format!("the CI module creates it: {REBUILD}")),
+        },
+        Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+fn legacy_token_outcome(probe: &dyn Probe, dir: &Path) -> Outcome {
+    match probe.path_kind(dir) {
+        Ok(PathKind::Missing) => Outcome::Pass {
+            detail: "absent".to_owned(),
+        },
+        Ok(_) => Outcome::Warn {
+            detail: "present; it may hold a root-owned GitHub token, \
+                     which the token broker PR removes"
+                .to_owned(),
+            fix: Fix::command("sudo", ["ls", "-la", &dir.display().to_string()]),
+        },
+        Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+fn editor_outcome(probe: &dyn Probe, editor: Editor) -> Outcome {
+    let Some(home) = probe.home() else {
+        return Outcome::CannotCheck {
+            cause: Error::NoHome,
+        };
+    };
+    let path: PathBuf = editor.settings_path(&home);
+    let text = match probe.read_file(&path) {
+        Ok(Some(text)) => text,
+        Ok(None) => {
+            return Outcome::Skip {
+                reason: format!("no {}", path.display()),
+            };
+        }
+        Err(cause) => return Outcome::CannotCheck { cause },
+    };
+    match Settings::parse(&path, &text) {
+        Ok(settings) => forwarding_outcome(&settings, &path),
+        Err(cause) => Outcome::CannotCheck { cause },
+    }
+}
+
+/// Unset fails like `true`: the editors default these keys on, so an unset
+/// key forwards the host's credentials just the same.
+fn forwarding_outcome(settings: &Settings, path: &Path) -> Outcome {
+    let not_off: Vec<(ForwardingKey, Setting)> = ForwardingKey::ALL
+        .into_iter()
+        .map(|key| (key, settings.get(key)))
+        .filter(|(_, setting)| *setting != Setting::Off)
+        .collect();
+    if not_off.is_empty() {
+        return Outcome::Pass {
+            detail: "credential forwarding off".to_owned(),
+        };
+    }
+    let keys: Vec<&str> = not_off.iter().map(|(key, _)| key.key()).collect();
+    let described: Vec<String> = not_off
+        .iter()
+        .map(|(key, setting)| match setting {
+            Setting::Absent => format!("{} unset (defaults to true)", key.key()),
+            Setting::NotBoolean(value) => format!("{} = {value}", key.key()),
+            Setting::On | Setting::Off => format!("{} = true", key.key()),
+        })
+        .collect();
+    Outcome::Fail {
+        detail: described.join("; "),
+        fix: Fix::instruction(format!(
+            "set {} to false in {}",
+            keys.join(", "),
+            path.display()
+        )),
+    }
+}

@@ -1,6 +1,6 @@
 # Crate map
 
-Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The Shared table below is the list of crates both products may use.
+Every crate in [`crates/`](/crates) is listed here, with the file where it starts and the chapter that covers its behavior. The module docs at the top of each entry file are the maintained description. When this table and a crate disagree, the crate is right and this table needs fixing. [`boundaries`](/crates/boundaries/src/lib.rs) keeps Duet and the physician client from importing each other's clinical crates. The Shared table below is the list of crates both products may use. One crate sits a level deeper: `coda-sandbox`, the agent sandbox tool, lives in [`crates/workspace-tools/sandbox/`](/crates/workspace-tools/sandbox/flake.nix) and is listed under [Tooling and guards](#tooling-and-guards).
 
 ## Shared
 
@@ -67,6 +67,7 @@ Every crate in [`crates/`](/crates) is listed here, with the file where it start
 | `ui-gallery` | [`src/main.rs`](/crates/ui-gallery/src/main.rs), [`scripts/ui-gallery.sh`](/scripts/ui-gallery.sh) | Every `ui` family rendered with its states, each at its own address, the command that builds and serves it, and the browser test that opens every family. Nothing depends on it | — |
 | `boundaries` | [`src/lib.rs`](/crates/boundaries/src/lib.rs) | Tests that keep product dependencies apart, retain the reference shipping clients, and hold both apps' raw controls, hand-built cards and library overrides to a [checked-in table](/crates/boundaries/src/shared_ui.rs) | This page |
 | `workspace-tools` | [`src/main.rs`](/crates/workspace-tools/src/main.rs) | Workspace command entrypoints, including `generate-duet-wire`, `install-doppler`, `apply-migrations` and the `observability-drill` routes, among them the staging Langfuse drills; supporting checks and generator assets remain in [`scripts/`](/scripts) | [Build, CI, and release](release.md) |
+| `coda-sandbox` | [`src/main.rs`](/crates/workspace-tools/sandbox/src/main.rs), [`src/lib.rs`](/crates/workspace-tools/sandbox/src/lib.rs) | The agent sandbox tool: its config, `doctor` and `status`. A root workspace member nested under `workspace-tools`, with its own [flake](/crates/workspace-tools/sandbox/flake.nix) that builds only this crate from the root lockfile, so a host deploys it without the product flake. No crate depends on it | — |
 | `android` | [`src/main.rs`](/crates/android/src/main.rs) | Builds the APK, opens the Android emulator (a window, or headless in CI) and runs one UI Automator class (`cargo run -p android -- test [--headless] coda.duet.ModeShellTest`) | [Release](release.md#android-and-google-play) |
 
 ## Platform bindings

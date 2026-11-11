@@ -68,10 +68,48 @@ class ScopeTests(unittest.TestCase):
                                 env=env, capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
         lines = output.read_text().splitlines()
-        self.assertEqual([line.split("=")[0] for line in lines], ["full", "deps", "mobile"])
+        self.assertEqual([line.split("=")[0] for line in lines],
+                         ["full", "deps", "mobile", "sandbox"])
         self.last_deps = lines[1]
         self.last_mobile = lines[2]
+        self.last_sandbox = lines[3]
         return lines[0]
+
+    def test_sandbox_changes_select_only_the_sandbox_job(self):
+        cases = {
+            # path: (full, deps, sandbox)
+            "crates/workspace-tools/sandbox/src/main.rs": (False, False, True),
+            "crates/workspace-tools/sandbox/Cargo.toml": (False, False, True),
+            "crates/workspace-tools/sandbox/flake.nix": (False, False, True),
+            "crates/workspace-tools/sandbox/flake.lock": (False, False, True),
+            "crates/workspace-tools/sandbox/config/cyrene.toml": (False, False, True),
+            ".github/workflows/ci.yml": (True, False, True),
+            # The sandbox flake builds from the root manifest and lockfile.
+            "Cargo.lock": (True, True, True),
+            "Cargo.toml": (True, True, True),
+            "crates/workspace-tools/src/main.rs": (True, False, False),
+            "crates/app/Cargo.toml": (True, True, False),
+            "book/src/page.md": (False, False, False),
+        }
+        for path, (full, deps, sandbox) in cases.items():
+            with self.subTest(path=path):
+                self.git("reset", "--hard", self.base)
+                self.write(path, "changed\n")
+                self.commit()
+                self.assertEqual(self.scope(), f"full={str(full).lower()}")
+                self.assertEqual(self.last_deps, f"deps={str(deps).lower()}")
+                self.assertEqual(self.last_sandbox, f"sandbox={str(sandbox).lower()}")
+        # A sandbox change beside product code still selects both.
+        self.git("reset", "--hard", self.base)
+        self.write("crates/workspace-tools/sandbox/Cargo.toml", "changed\n")
+        self.write("crates/app/src/lib.rs", "changed\n")
+        self.commit()
+        self.assertEqual(self.scope(), "full=true")
+        self.assertEqual((self.last_deps, self.last_sandbox), ("deps=false", "sandbox=true"))
+        for event in ("workflow_dispatch", "schedule", "unknown"):
+            with self.subTest(event=event):
+                self.scope(event, event={})
+                self.assertEqual(self.last_sandbox, "sandbox=true")
 
     def test_scope_matches_approved_categories_not_file_size(self):
         cases = {
@@ -239,12 +277,15 @@ class ResultTests(unittest.TestCase):
         self.jobs = yaml.safe_load(WORKFLOW.read_text())["jobs"]
         self.dependencies = self.jobs["result"]["needs"]
 
-    def needs(self, full, mobile=None):
+    def needs(self, full, mobile=None, sandbox=None):
         mobile = full if mobile is None else mobile
+        sandbox = full if sandbox is None else sandbox
         result = {job: {"result": "success" if full else "skipped"} for job in self.dependencies}
         result["android-emulator"] = {"result": "success" if mobile else "skipped"}
+        result["sandbox"] = {"result": "success" if sandbox else "skipped"}
         result["scope"] = {"result": "success",
-                           "outputs": {"full": str(full).lower(), "mobile": str(mobile).lower()}}
+                           "outputs": {"full": str(full).lower(), "mobile": str(mobile).lower(),
+                                       "sandbox": str(sandbox).lower()}}
         result["lightweight"] = {"result": "success"}
         return result
 
@@ -268,7 +309,7 @@ class ResultTests(unittest.TestCase):
                 missing = copy.deepcopy(needs)
                 del missing[job]
                 self.check(missing, False)
-        for output in ("full", "mobile"):
+        for output in ("full", "mobile", "sandbox"):
             for flag in (None, "", "unknown"):
                 needs = self.needs(False)
                 needs["scope"]["outputs"][output] = flag
@@ -284,6 +325,19 @@ class ResultTests(unittest.TestCase):
                 needs = self.needs(True, mobile=True)
                 needs["android-emulator"]["result"] = state
                 self.check(needs, False)
+
+    def test_sandbox_result_follows_its_own_scope(self):
+        self.check(self.needs(False, sandbox=True), True)
+        self.check(self.needs(True, sandbox=False), True)
+        for full in (False, True):
+            for state in ("failure", "cancelled", "skipped"):
+                with self.subTest(full=full, state=state):
+                    needs = self.needs(full, sandbox=True)
+                    needs["sandbox"]["result"] = state
+                    self.check(needs, False)
+            ran = self.needs(full, sandbox=False)
+            ran["sandbox"]["result"] = "success"
+            self.check(ran, False)
 
     def test_gate_covers_every_validation_job_and_deployment_consumes_gate(self):
         # This is a workflow topology contract, not a copy of the job inventory.
