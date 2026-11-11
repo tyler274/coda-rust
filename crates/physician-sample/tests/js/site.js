@@ -123,6 +123,33 @@ function (step, ...args) {
         summary: pane.querySelector(".source-coda-summary")?.innerText ?? null,
       };
     },
+    // What the open reader says of its evidence read: opening, failed with a retry, or the source.
+    citationEvidence() {
+      const pane = one(".source-reading-pane");
+      const alert = pane.querySelector("[role=alert]");
+      return {
+        title: pane.querySelector("h2")?.textContent ?? "",
+        loading: !!pane.querySelector(".pending-status"),
+        loadingWords: pane.querySelector(".pending-status")?.textContent ?? "",
+        failed: alert?.querySelector("p")?.textContent ?? null,
+        retry: alert?.querySelector("button")?.textContent ?? null,
+        source: pane.querySelector(".source-record-kind")?.textContent ?? null,
+        passage: pane.querySelector("blockquote")?.textContent ?? null,
+        notice: [...pane.querySelectorAll(".reader-provenance")]
+          .some((line) => line.textContent.includes("supporting passage is not identified")),
+      };
+    },
+    // Brings the reader's no-passage notice into view, for the picture of it.
+    showPassageNotice() {
+      const notice = [...one(".source-reading-pane").querySelectorAll(".reader-provenance")]
+        .find((line) => line.textContent.includes("supporting passage is not identified"));
+      notice.scrollIntoView({ block: "center" });
+      return true;
+    },
+    citationRetry() {
+      one(".source-reading-pane [role=alert] button").click();
+      return true;
+    },
     // Presses the pane's way out a person can see: Close beside a wide reader, Back over a narrow
     // one. A control hidden at this width is never clicked.
     citationDismiss() {
