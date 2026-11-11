@@ -961,15 +961,53 @@ fn PhysicianShell(
     let mut panel_notice = use_signal(String::new);
     let mut past_work_open = use_signal(|| false);
     let mut reply_notice = use_signal(String::new);
-    let reply_slot = use_command_slot();
-    let send_slot = use_command_slot();
-    let resume_slot = use_command_slot();
-    let chat_resume_slot = use_command_slot();
-    let chat_stop_slot = use_command_slot();
-    let queued_slot = use_command_slot();
+    // Whose tab this is, for what a reload of it may ask again.
+    let command_scope = use_memo(move || {
+        let account = whoami.read();
+        let account = account.as_ref()?;
+        local_draft::Scope::new(
+            client.read().base(),
+            &account.practice_id,
+            &account.physician_id,
+        )
+    });
+    let reply_slot = use_command_slot("reply", command_scope);
+    // A Send's command is kept with its draft, and re-asked from there.
+    let send_slot = use_unkept_command_slot();
+    let resume_slot = use_command_slot("resume", command_scope);
+    let chat_resume_slot = use_command_slot("chat-resume", command_scope);
+    let chat_stop_slot = use_command_slot("chat-stop", command_scope);
+    let queued_slot = use_command_slot("queued", command_scope);
     // The queued message being edited, and its words so far.
     let mut queued_editing = use_signal(|| None::<(String, String)>);
-    let work_slot = use_command_slot();
+    let work_slot = use_command_slot("work", command_scope);
+    // Commands a reload interrupted are asked again under their own keys
+    // once this physician is known; every read follows whatever they changed.
+    #[cfg(target_arch = "wasm32")]
+    {
+        let mut asked = use_signal(|| false);
+        use_effect(move || {
+            if command_scope.read().is_none() || *asked.peek() {
+                return;
+            }
+            asked.set(true);
+            let settled = Callback::new(move |()| {
+                *today_attempt.write() += 1;
+                *workspace_attempt.write() += 1;
+                *snapshot_attempt.write() += 1;
+            });
+            for slot in [
+                reply_slot,
+                resume_slot,
+                chat_resume_slot,
+                chat_stop_slot,
+                queued_slot,
+                work_slot,
+            ] {
+                slot.ask_kept(client.peek().clone(), settled);
+            }
+        });
+    }
     use_effect(move || {
         let open = workspace_cache.read().clone();
         let showing = place();
@@ -2051,7 +2089,7 @@ fn PhysicianShell(
                                     },
                                 );
                             },
-                            work_busy: work_slot.sending() || resume_slot.sending(),
+                            work_busy: work_slot.unanswered() || resume_slot.unanswered(),
                             work_notice: work_slot.notice(client),
                             resume_notice: resume_slot.notice(client),
                             on_resume: {
@@ -2084,7 +2122,7 @@ fn PhysicianShell(
                             },
                             conversation: conversation.clone(),
                             on_conversation_retry: move |_| *snapshot_attempt.write() += 1,
-                            conversation_resume_busy: chat_resume_slot.sending(),
+                            conversation_resume_busy: chat_resume_slot.unanswered(),
                             conversation_resume_notice: chat_resume_slot.notice(client),
                             on_conversation_resume: move |target: WorkResumeTarget| {
                                 if let Some(command) =
@@ -2095,7 +2133,7 @@ fn PhysicianShell(
                                     });
                                 }
                             },
-                            conversation_stop_busy: chat_stop_slot.sending(),
+                            conversation_stop_busy: chat_stop_slot.unanswered(),
                             conversation_stop_notice: chat_stop_slot.notice(client),
                             on_conversation_stop: move |target: WorkStopTarget| {
                                 if let Some(command) =
@@ -2151,7 +2189,7 @@ fn PhysicianShell(
                             }),
                             past_work: open_workspace.as_ref().is_some_and(|open| past_work_copy(open).is_some()),
                             reply_notice: reply_notice(),
-                            reply_busy: reply_slot.sending(),
+                            reply_busy: reply_slot.unanswered(),
                             reply_command_notice: reply_slot.notice(client),
                             send_notice: send_slot.notice(client),
                             on_open_past_work: move |_| past_work_open.set(true),
@@ -2267,8 +2305,11 @@ fn PhysicianShell(
 
 const COMMAND_REFUSED: &str = "Coda didn’t take that.";
 const COMMAND_SENDING: &str = "Sending…";
+const COMMAND_CONFIRMING: &str = "Confirming with Coda…";
 const COMMAND_UNCONFIRMED: &str = "Coda couldn’t confirm that.";
 const CHECK_AGAIN: &str = "Check again";
+const COMMAND_UNKEPT: &str =
+    "This tab can’t keep a reload copy of that. Keep the page open until Coda confirms it.";
 const MESSAGE_REFUSED: &str = "Coda couldn’t accept that message.";
 
 fn command_rejection(value: &serde_json::Value) -> Option<String> {
@@ -2341,6 +2382,31 @@ fn answer(result: &Result<serde_json::Value, physician_client::HttpError>) -> An
     }
 }
 
+/// The waits before each automatic re-ask of a command whose answer was lost.
+/// Every re-ask is the same request under the same key, so the server takes it
+/// at most once.
+const CONFIRM_BACKOFF_MS: [u32; 3] = [1_000, 2_000, 4_000];
+
+/// Asks until an answer arrives. While none does, `confirming` runs and the
+/// same request is asked again after each wait in [`CONFIRM_BACKOFF_MS`];
+/// the answer is `Unconfirmed` only once every re-ask went unanswered too.
+async fn ask_until_answered(
+    mut ask: impl AsyncFnMut() -> Answer,
+    mut wait: impl AsyncFnMut(u32),
+    mut confirming: impl FnMut(),
+) -> Answer {
+    let mut answer = ask().await;
+    for ms in CONFIRM_BACKOFF_MS {
+        if answer != Answer::Unconfirmed {
+            break;
+        }
+        confirming();
+        wait(ms).await;
+        answer = ask().await;
+    }
+    answer
+}
+
 /// One command at a time on one item: what is in flight, and what Check again resends.
 #[derive(Clone, Copy, PartialEq)]
 struct CommandSlot {
@@ -2348,6 +2414,13 @@ struct CommandSlot {
     /// The unconfirmed command, what runs once it is taken, and what runs if
     /// it is refused.
     last: Signal<Option<(Command, Callback, Option<Callback>)>>,
+    /// Where an unanswered command is kept across a reload of this tab: the
+    /// slot's name and the signed-in physician's scope. `None` for a slot
+    /// whose command another owner keeps (Send's lives with its draft).
+    kept: Option<(&'static str, Memo<Option<local_draft::Scope>>)>,
+    /// The unanswered command could not be kept for a reload, so a reload
+    /// would lose it; the notice says so until it is answered.
+    unkept: Signal<bool>,
 }
 
 /// A schedule rail shows while its day is loading or failed: only an answered day
@@ -2367,16 +2440,34 @@ fn use_read_view<T: Clone + 'static>(resource: Resource<Result<T, ()>>) -> ReadV
     read_view(last.read().clone(), resource.read().clone())
 }
 
-fn use_command_slot() -> CommandSlot {
+/// A slot whose unanswered command is kept under `name` for this physician, so
+/// a reload asks it again under its own key.
+fn use_command_slot(name: &'static str, scope: Memo<Option<local_draft::Scope>>) -> CommandSlot {
     CommandSlot {
         stage: use_signal(|| CommandStage::Idle),
         last: use_signal(|| None),
+        kept: Some((name, scope)),
+        unkept: use_signal(|| false),
+    }
+}
+
+/// A slot whose command another owner keeps across a reload.
+fn use_unkept_command_slot() -> CommandSlot {
+    CommandSlot {
+        stage: use_signal(|| CommandStage::Idle),
+        last: use_signal(|| None),
+        kept: None,
+        unkept: use_signal(|| false),
     }
 }
 
 impl CommandSlot {
+    /// Sent or being confirmed, and not yet answered.
     fn sending(&self) -> bool {
-        *self.stage.read() == CommandStage::Sending
+        matches!(
+            *self.stage.read(),
+            CommandStage::Sending | CommandStage::Confirming
+        )
     }
 
     /// Sent, and not yet known to be taken or refused. Another command must
@@ -2384,8 +2475,54 @@ impl CommandSlot {
     fn unanswered(&self) -> bool {
         matches!(
             *self.stage.read(),
-            CommandStage::Sending | CommandStage::Unconfirmed
+            CommandStage::Sending | CommandStage::Confirming | CommandStage::Unconfirmed
         )
+    }
+
+    /// Keeps `command` for a reload of this tab, or forgets it when `None`.
+    /// Without storage or a known physician nothing is kept: the command is
+    /// still confirmed while the page stays open, and the notice says a reload
+    /// would lose it.
+    fn keep(mut self, command: Option<&Command>) {
+        #[cfg(target_arch = "wasm32")]
+        if let Some((name, scope)) = self.kept {
+            let kept = scope.peek().as_ref().is_some_and(|scope| {
+                local_draft::SessionStorage::open().is_some_and(|storage| {
+                    local_draft::write_command(
+                        &storage,
+                        scope,
+                        name,
+                        command.map(|command| &command.0),
+                    )
+                    .is_ok()
+                })
+            });
+            let unkept = command.is_some() && !kept;
+            if *self.unkept.peek() != unkept {
+                self.unkept.set(unkept);
+            }
+        }
+        #[cfg(not(target_arch = "wasm32"))]
+        let _ = (command, &mut self.unkept);
+    }
+
+    /// Asks again, under its own key, the command a reload interrupted.
+    /// `settled` runs on any answer, since what the command was for went with
+    /// the old page.
+    #[cfg(target_arch = "wasm32")]
+    fn ask_kept(self, client: PhysicianClient, settled: Callback) {
+        let Some((name, scope)) = self.kept else {
+            return;
+        };
+        let Some(scope) = scope.peek().clone() else {
+            return;
+        };
+        let Some(storage) = local_draft::SessionStorage::open() else {
+            return;
+        };
+        if let Some(command) = local_draft::read_command(&storage, &scope, name) {
+            self.send(client, Command(command), settled, Some(settled));
+        }
     }
 
     /// Sends `command` unless one is already in flight; `then` runs once it is taken.
@@ -2411,21 +2548,46 @@ impl CommandSlot {
         then: Callback,
         refused: Option<Callback>,
     ) {
-        if *self.stage.peek() == CommandStage::Sending {
+        if matches!(
+            *self.stage.peek(),
+            CommandStage::Sending | CommandStage::Confirming
+        ) {
+            return;
+        }
+        // A slot that keeps its command holds the unconfirmed one until it is
+        // answered: a new command would take its place and its reload copy, so
+        // it could never be confirmed. Send keeps each target's own.
+        let replaces_unconfirmed = *self.stage.peek() == CommandStage::Unconfirmed
+            && self
+                .last
+                .peek()
+                .as_ref()
+                .is_some_and(|(last, ..)| last.key() != command.key());
+        if self.kept.is_some() && replaces_unconfirmed {
             return;
         }
         self.last.set(Some((command.clone(), then, refused)));
+        self.keep(Some(&command));
         self.stage.set(CommandStage::Sending);
         spawn(async move {
-            match answer(&client.command(&command.0).await) {
+            let mut stage = self.stage;
+            let answered = ask_until_answered(
+                async || answer(&client.command(&command.0).await),
+                async |ms| sleep_ms(ms).await,
+                || stage.set(CommandStage::Confirming),
+            )
+            .await;
+            match answered {
                 Answer::Accepted => {
                     self.stage.set(CommandStage::Idle);
                     self.last.set(None);
+                    self.keep(None);
                     then.call(());
                 }
                 Answer::Refused(reason) => {
                     self.stage.set(CommandStage::Refused(reason));
                     self.last.set(None);
+                    self.keep(None);
                     if let Some(refused) = refused {
                         refused.call(());
                     }
@@ -2444,14 +2606,16 @@ impl CommandSlot {
     ) {
         match command {
             Ok(command) => self.run(client, command, then),
-            Err(reason) if !self.sending() => self.stage.set(CommandStage::Refused(reason)),
+            Err(reason) if !self.unanswered() => self.stage.set(CommandStage::Refused(reason)),
             Err(_) => {}
         }
     }
 
     /// Resends the unconfirmed command as the same request, with its own follow-up.
     fn check_again(self, client: PhysicianClient) {
-        if let Some((command, then, refused)) = self.last.peek().clone() {
+        // Read and let go of `last` before `send` writes it again.
+        let last = self.last.peek().clone();
+        if let Some((command, then, refused)) = last {
             self.send(client, command, then, refused);
         }
     }
@@ -2462,11 +2626,108 @@ impl CommandSlot {
             CommandNotice {
                 stage: self.stage.read().clone(),
                 sending: COMMAND_SENDING,
+                confirming: COMMAND_CONFIRMING,
                 unconfirmed: COMMAND_UNCONFIRMED,
                 check_again: CHECK_AGAIN,
                 on_check_again: move |_| self.check_again(client.peek().clone()),
             }
+            if self.unanswered() && *self.unkept.read() {
+                p { class: "quiet-line", role: "status", "{COMMAND_UNKEPT}" }
+            }
         }
+    }
+}
+
+#[cfg(test)]
+mod confirm_tests {
+    use std::cell::RefCell;
+    use std::future::Future;
+    use std::pin::pin;
+    use std::task::{Context, Poll, Waker};
+
+    use super::{Answer, CONFIRM_BACKOFF_MS, ask_until_answered};
+
+    /// Runs `future`, whose fakes never wait, to its end.
+    fn run<T>(future: impl Future<Output = T>) -> T {
+        let mut future = pin!(future);
+        let mut context = Context::from_waker(Waker::noop());
+        loop {
+            if let Poll::Ready(value) = future.as_mut().poll(&mut context) {
+                return value;
+            }
+        }
+    }
+
+    /// What one command's asking did: each request, wait and confirming
+    /// notice in order, and how it was answered in the end.
+    fn asked(answers: Vec<Answer>) -> (Vec<String>, Answer) {
+        let answers = RefCell::new(answers.into_iter());
+        let seen = RefCell::new(Vec::new());
+        let answer = run(ask_until_answered(
+            async || {
+                seen.borrow_mut().push("ask".to_owned());
+                answers.borrow_mut().next().expect("asked once too often")
+            },
+            async |ms| seen.borrow_mut().push(format!("wait {ms}")),
+            || seen.borrow_mut().push("confirming".to_owned()),
+        ));
+        (seen.into_inner(), answer)
+    }
+
+    #[test]
+    fn an_answered_command_is_asked_once() {
+        assert_eq!(
+            asked(vec![Answer::Accepted]),
+            (vec!["ask".into()], Answer::Accepted)
+        );
+        assert_eq!(
+            asked(vec![Answer::Refused("No.".into())]),
+            (vec!["ask".into()], Answer::Refused("No.".into()))
+        );
+    }
+
+    #[test]
+    fn a_lost_answer_is_confirmed_by_asking_again_after_a_wait() {
+        let (seen, answer) = asked(vec![
+            Answer::Unconfirmed,
+            Answer::Unconfirmed,
+            Answer::Accepted,
+        ]);
+        assert_eq!(
+            seen,
+            [
+                "ask",
+                "confirming",
+                "wait 1000",
+                "ask",
+                "confirming",
+                "wait 2000",
+                "ask"
+            ]
+        );
+        assert_eq!(answer, Answer::Accepted);
+        let (_, answer) = asked(vec![Answer::Unconfirmed, Answer::Refused("Gone.".into())]);
+        assert_eq!(
+            answer,
+            Answer::Refused("Gone.".into()),
+            "a re-ask's refusal still counts"
+        );
+    }
+
+    #[test]
+    fn it_is_unconfirmed_only_once_every_re_ask_went_unanswered() {
+        let lost = (0..=CONFIRM_BACKOFF_MS.len()).map(|_| Answer::Unconfirmed);
+        let (seen, answer) = asked(lost.collect());
+        assert_eq!(answer, Answer::Unconfirmed);
+        assert_eq!(
+            seen.iter().filter(|step| *step == "ask").count(),
+            CONFIRM_BACKOFF_MS.len() + 1
+        );
+        assert_eq!(
+            seen.last().map(String::as_str),
+            Some("ask"),
+            "no wait after the last ask"
+        );
     }
 }
 
