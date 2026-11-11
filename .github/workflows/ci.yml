@@ -186,6 +186,7 @@ jobs:
               exit 1
             fi
             PORT=5432
+            getent hosts postgres || true
             python3 "$GITHUB_WORKSPACE/scripts/act-postgres-relay.py" "$PORT" postgres 5432
           fi
           url="postgresql://postgres@127.0.0.1:${PORT}/postgres"

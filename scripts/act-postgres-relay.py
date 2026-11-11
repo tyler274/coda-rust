@@ -46,6 +46,12 @@ def main(argv):
     if len(argv) != 3:
         raise SystemExit(__doc__.strip().splitlines()[-1].strip())
     listen_port, host, port = int(argv[0]), argv[1], int(argv[2])
+    # Reach the service once while the step can still fail on it; a relay
+    # that can't would only reset every connection later.
+    try:
+        socket.create_connection((host, port), timeout=10).close()
+    except OSError as error:
+        raise SystemExit(f"act-postgres-relay: cannot reach {host}:{port}: {error}") from error
     listener = socket.create_server(("127.0.0.1", listen_port))
     # Bound before the fork, so the step that starts the relay can connect as
     # soon as this returns.
