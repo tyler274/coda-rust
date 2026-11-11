@@ -99,19 +99,19 @@ pub fn recipe_version() -> String {
 
 /// Opens a `gen_ai.generation` span for one model call.
 ///
-/// `system` is the provider (`openai`, `codex`), `model` the requested
-/// model, and `adapter` the Coda adapter (`openai-responses`, `codex`). The
-/// span's parent is the current span. Usage, input, output, and status are
-/// recorded later through [`record_usage`], [`record_input`],
-/// [`record_output`], and [`record_error`].
-pub fn generation_span(ctx: &RunContext, system: &str, model: &str, adapter: &str) -> Span {
+/// `system` is the provider (`openai`, `codex`) and `adapter` the Coda adapter
+/// (`openai-responses`, `codex`). The caller records `gen_ai.request.model`
+/// when it dispatches the actual request. The span's parent is the current span.
+/// Usage, input, output, and status are recorded later through [`record_usage`],
+/// [`record_input`], [`record_output`], and [`record_error`].
+pub fn generation_span(ctx: &RunContext, system: &str, adapter: &str) -> Span {
     let origin = ctx.origin.as_str();
     let span = tracing::info_span!(
         "gen_ai.generation",
         otel.kind = "client",
         langfuse.observation.type = "generation",
         gen_ai.system = %system,
-        gen_ai.request.model = %model,
+        gen_ai.request.model = Empty,
         coda.adapter = %adapter,
         coda.run_id = %ctx.run_id,
         coda.job = ctx.job,
@@ -197,7 +197,8 @@ mod tests {
     #[test]
     fn generation_spans_carry_the_run_contract() {
         let spans = capture(|| {
-            let span = generation_span(&context(), "codex", "gpt-6-sol", "codex");
+            let span = generation_span(&context(), "codex", "codex");
+            span.record("gen_ai.request.model", "gpt-6-sol");
             record_usage(&span, 12, 34);
         });
         let span = spans
@@ -229,7 +230,7 @@ mod tests {
     #[test]
     fn content_is_recorded_only_under_the_full_policy() {
         let spans = capture(|| {
-            let span = generation_span(&context(), "openai", "m", "openai-responses");
+            let span = generation_span(&context(), "openai", "openai-responses");
             record_input_with(ContentPolicy::None, &span, "secret prompt");
             record_output_with(ContentPolicy::None, &span, "secret reply");
         });
@@ -243,7 +244,7 @@ mod tests {
         );
 
         let spans = capture(|| {
-            let span = generation_span(&context(), "openai", "m", "openai-responses");
+            let span = generation_span(&context(), "openai", "openai-responses");
             record_input_with(ContentPolicy::Full, &span, "prompt");
             record_output_with(ContentPolicy::Full, &span, "reply");
         });
@@ -261,7 +262,7 @@ mod tests {
     #[test]
     fn errors_set_the_status_without_content() {
         let spans = capture(|| {
-            let span = generation_span(&context(), "codex", "m", "codex");
+            let span = generation_span(&context(), "codex", "codex");
             record_error(&span, "Codex exec exited 1");
         });
         let span = &spans[0];

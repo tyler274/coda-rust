@@ -101,9 +101,9 @@ def snapshot(stack, site, session, chat):
     return request("GET", url, bearer=session)
 
 
-def mechanical(body):
+def resume_line(body):
     for item in (body or {}).get("snapshot", {}).get("conversation", []):
-        if item.get("kind") == "mechanical":
+        if item.get("kind") == "mechanical" and "resume_target" in item:
             return item
     return None
 
@@ -170,7 +170,7 @@ def main():
             status, body = snapshot(stack, args.site, args.session, args.chat)
             done = status == 200 and (
                 (args.wait_text and args.wait_text in texts(body))
-                or (args.wait_failed and mechanical(body) is not None)
+                or (args.wait_failed and resume_line(body) is not None)
                 or (not args.wait_text and not args.wait_failed))
             if done or time.monotonic() >= deadline:
                 break
@@ -180,7 +180,7 @@ def main():
         return 0 if done else 1
     if args.action == "resume":
         status, body = snapshot(stack, args.site, args.session, args.chat)
-        line = mechanical(body)
+        line = resume_line(body)
         if line is None:
             sys.exit(f"no failed turn to resume in {args.chat}: {body}")
         target = line["resume_target"]

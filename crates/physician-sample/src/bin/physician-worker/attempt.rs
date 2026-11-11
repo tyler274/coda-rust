@@ -10,9 +10,7 @@
 use std::collections::HashMap;
 
 use harness::engine::{Event, EventKind};
-use harness::execution::Record;
 use local_product::runtime::delivery::Delivery;
-use serde_json::Value;
 use telemetry::propagation::{self, Relation};
 use tracing::Span;
 use tracing::field::Empty;
@@ -36,8 +34,6 @@ pub(super) enum Failure {
     ModelCall,
     /// The durable claim could not be read or written.
     Claim,
-    /// The revision attempt ran past its deadline.
-    Timeout,
     /// The failed attempt could not be returned to pending.
     RetryPersist,
     /// The reply revision's execution failed.
@@ -52,7 +48,6 @@ impl Failure {
             Self::ProviderInit => "provider_init",
             Self::ModelCall => "model_call",
             Self::Claim => "claim",
-            Self::Timeout => "timeout",
             Self::RetryPersist => "retry_persist",
             Self::Revision => "revision",
             Self::Rehearsed => "rehearsed",
@@ -66,7 +61,6 @@ impl Failure {
             Self::ProviderInit => "model provider unavailable",
             Self::ModelCall => "model execution failed",
             Self::Claim => "attempt claim failed",
-            Self::Timeout => "attempt deadline exceeded",
             Self::RetryPersist => "failed attempt not returned to pending",
             Self::Revision => "reply revision failed",
             Self::Rehearsed => "rehearsed attempt failure",
@@ -249,26 +243,20 @@ impl Tally {
         (self.calls > 0 && !self.unknown).then_some((self.input, self.output))
     }
 
-    /// Usage from a chat attempt's retained provider receipts.
+    /// Usage from a chat attempt's retained provider returns.
     pub(super) fn from_events(events: &[Event]) -> Self {
         let mut tally = Self::default();
         for event in events {
-            if let EventKind::ProviderReturned(turn) = &event.kind {
-                let count = |key: &str| {
-                    turn.receipt
-                        .pointer(&format!("/usage/{key}"))
-                        .and_then(Value::as_u64)
-                };
-                tally.add(count("input_tokens"), count("output_tokens"));
-            }
+            tally.event(event);
         }
         tally
     }
 
-    /// Usage from one retained revision record.
-    pub(super) fn record(&mut self, record: &Record) {
-        if let Record::Exchange { response, .. } = record {
-            self.add(response.usage.input_tokens, response.usage.output_tokens);
+    /// Usage from one retained event. Only a provider return carries a call's
+    /// reported counts.
+    pub(super) fn event(&mut self, event: &Event) {
+        if let EventKind::ProviderReturned(turn) = &event.kind {
+            self.add(turn.usage.input_tokens, turn.usage.output_tokens);
         }
     }
 }
@@ -441,7 +429,6 @@ mod tests {
             Failure::ProviderInit,
             Failure::ModelCall,
             Failure::Claim,
-            Failure::Timeout,
             Failure::RetryPersist,
             Failure::Revision,
             Failure::Rehearsed,
@@ -453,7 +440,6 @@ mod tests {
                 "provider_init",
                 "model_call",
                 "claim",
-                "timeout",
                 "retry_persist",
                 "revision",
                 "rehearsed"
@@ -475,6 +461,7 @@ mod tests {
 
     fn push(attributes: &[(&str, &str)], delivery_attempt: Option<u32>) -> Push {
         let delivery: Delivery = serde_json::from_value(json!({
+            "kind": "chat_turn",
             "scope": {"practice": "p", "physician": "d", "workspace": "w", "chat": "c"},
             "input_id": "k"
         }))
@@ -588,26 +575,31 @@ mod tests {
         assert_eq!(event_attribute("coda.outcome").as_deref(), Some("retry"));
     }
 
-    fn returned(receipt: Value) -> Event {
+    fn returned(input_tokens: Option<u64>, output_tokens: Option<u64>) -> Event {
         Event {
             attempt_id: "a".into(),
             sequence: 1,
+            ordinal: 1,
             kind: EventKind::ProviderReturned(Turn {
                 items: vec![],
-                receipt,
+                receipt: json!({"id": "r"}),
+                usage: harness::engine::recipe::Usage {
+                    input_tokens,
+                    cached_input_tokens: None,
+                    output_tokens,
+                },
             }),
         }
     }
 
     #[test]
     fn usage_is_reported_only_when_every_call_reported_it() {
-        let usage = |input: u64, output: u64| json!({"id": "r", "usage": {"input_tokens": input, "output_tokens": output}});
-        let both = [returned(usage(10, 2)), returned(usage(5, 1))];
+        let both = [returned(Some(10), Some(2)), returned(Some(5), Some(1))];
         assert_eq!(Tally::from_events(&both).known(), Some((15, 3)));
-        // The fixed provider reports no usage: nothing is invented.
-        let fixed = [returned(json!({"provider": "fixed"}))];
-        assert_eq!(Tally::from_events(&fixed).known(), None);
-        let partial = [returned(usage(10, 2)), returned(json!({"usage": null}))];
+        // A provider that reports no usage: nothing is invented.
+        let unreported = [returned(None, None)];
+        assert_eq!(Tally::from_events(&unreported).known(), None);
+        let partial = [returned(Some(10), Some(2)), returned(Some(4), None)];
         assert_eq!(Tally::from_events(&partial).known(), None);
         assert_eq!(Tally::from_events(&[]).known(), None);
     }

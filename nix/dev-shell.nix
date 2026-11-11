@@ -12,6 +12,8 @@ pkgs.mkShell {
     dioxus-cli
     openapi-generator-cli
     nodejs_22
+    # Model-backed browser checks use the statechart skill's pinned TLC and Java.
+    mise
     python314
     uv
     poppler-utils

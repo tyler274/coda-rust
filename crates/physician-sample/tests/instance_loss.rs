@@ -10,8 +10,9 @@
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
+use harness::engine::MAX_FAILED_ATTEMPTS;
 use local_product::runtime::delivery::{Delivery, DeliveryState};
-use local_product::runtime::{MAX_FAILED_ATTEMPTS, Store};
+use local_product::runtime::{Store, WorkStatus};
 use physician_auth::AuthStore;
 use physician_bus::{Bus, Event};
 use serde_json::Value;
@@ -45,6 +46,7 @@ impl Drop for Home {
 }
 
 fn spawn_worker(
+    stub: &support::ResponsesStub,
     home: &Home,
     database: &str,
     redis: &str,
@@ -60,7 +62,7 @@ fn spawn_worker(
             ("PHYSICIAN_REDIS_URL", redis),
             ("PUBSUB_EMULATOR_HOST", emulator),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", listen),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
         &home.0,
     )
@@ -222,7 +224,15 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
     // B may already have republished the input, but it cannot complete until
     // the worker starts. Subscribe first: invalidations are live notices, not
     // a replay log for pages that were disconnected when the reply landed.
-    let mut worker = spawn_worker(&home, &database.url, &redis, &emulator.host, &worker_listen);
+    let stub = support::ResponsesStub::start(&home.0, 0, 0, "[]").await;
+    let mut worker = spawn_worker(
+        &stub,
+        &home,
+        &database.url,
+        &redis,
+        &emulator.host,
+        &worker_listen,
+    );
     support::wait_ready(&mut worker, port(&worker_listen)).await;
 
     let deadline = Instant::now() + Duration::from_secs(45);
@@ -246,12 +256,12 @@ async fn a_turn_accepted_by_a_dead_site_instance_is_finished_by_another_instance
         .await
         .expect("read")
         .expect("conversation");
-    assert_eq!(state.status, "completed");
+    assert_eq!(state.status, WorkStatus::Completed);
     assert_eq!(
         state
             .attempts
             .iter()
-            .map(|attempt| attempt.status.as_str())
+            .map(|attempt| sea_orm::ActiveEnum::to_value(&attempt.status))
             .collect::<Vec<_>>(),
         ["completed"],
         "recovery republishes the wakeup; it never runs the turn twice"
@@ -301,7 +311,15 @@ async fn exhausted_leases_announce_the_failed_turn_and_dead_letter_its_wakeup() 
     let worker_listen = format!("127.0.0.1:{}", support::free_port());
     let emulator = support::Emulator::start().await;
     emulator.provision(port(&worker_listen)).await;
-    let mut worker = spawn_worker(&home, &database.url, &redis, &emulator.host, &worker_listen);
+    let stub = support::ResponsesStub::start(&home.0, 0, 0, "[]").await;
+    let mut worker = spawn_worker(
+        &stub,
+        &home,
+        &database.url,
+        &redis,
+        &emulator.host,
+        &worker_listen,
+    );
     support::wait_ready(&mut worker, port(&worker_listen)).await;
     let store = Store::connect(&database.url).await.expect("runtime store");
     let delivery = accepted(&database.url, &store).await;
@@ -356,12 +374,12 @@ async fn exhausted_leases_announce_the_failed_turn_and_dead_letter_its_wakeup() 
         .await
         .expect("read")
         .expect("conversation");
-    assert_eq!(state.status, "failed", "{:?}", state.attempts);
+    assert_eq!(state.status, WorkStatus::Failed, "{:?}", state.attempts);
     assert!(
         state
             .messages
             .iter()
-            .all(|message| message.role != "assistant"),
+            .all(|message| message.role.as_str() != "assistant"),
         "the model never ran"
     );
     assert_eq!(
@@ -455,6 +473,8 @@ async fn accepted(url: &str, store: &Store) -> Delivery {
                 scenario: None,
             },
             physician_auth::PostgresAuthStore::session_reference(&session),
+            &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+            &support::models::chat_recipe(),
         )
         .await
         .expect("accept");

@@ -86,17 +86,17 @@ def check(path):
             # Hosted physician startup refuses without it; Doppler must not be
             # the only place it is set.
             assert env.get("PHYSICIAN_AUTH") == "required", "physician servers require sessions"
-        if labels["com.coda.binary"].endswith("/physician-worker"):
-            # Hosted worker startup loads the catalog from here and refuses
+        if labels["com.coda.binary"].endswith("/physician-sample"):
+            # Physician admission loads the catalog from here and refuses
             # without it; every packaged file must be in the image.
-            assert "PHYSICIAN_SKILLS_DIR" in env, "the worker image must name its skill catalog"
+            assert "PHYSICIAN_SKILLS_DIR" in env, "the physician site image must name its skill catalog"
             directory = env["PHYSICIAN_SKILLS_DIR"].lstrip("/")
             expected = packaged_skills()
             assert expected, "the source catalog is empty"
             missing = [name for name in expected if f"{directory}/{name}" not in paths]
-            assert not missing, f"skill assets missing from the worker image: {missing}"
+            assert not missing, f"skill assets missing from the physician site image: {missing}"
         elif "PHYSICIAN_SKILLS_DIR" in env:
-            raise AssertionError("only the worker image carries the skill catalog")
+            raise AssertionError("only the physician site image carries the skill catalog")
         if labels["com.coda.binary"].endswith("/physician-migrate"):
             assert "PHYSICIAN_SYNTHETIC_CHARTS" in env, "the migration image must name its chart bank"
             directory = env["PHYSICIAN_SYNTHETIC_CHARTS"].lstrip("/")

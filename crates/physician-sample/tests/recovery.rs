@@ -9,7 +9,7 @@
 use std::sync::{Arc, Mutex};
 
 use local_product::runtime::delivery::Delivery;
-use local_product::runtime::{Accepted, Input, Scope, Store};
+use local_product::runtime::{Accepted, Input, Scope, Store, WorkStatus};
 use physician_sample::durable::DurableChat;
 use physician_sample::queue::ChatQueue;
 #[path = "scale/mod.rs"]
@@ -77,7 +77,12 @@ async fn harness(label: &str, refusals: usize) -> Option<Harness> {
     let database = support::Database::create(label).await?;
     let store = Store::connect(&database.url).await.expect("runtime store");
     let queue = FlakyQueue::new(refusals);
-    let chat = DurableChat::new(store.clone(), queue.clone());
+    let chat = DurableChat::new(
+        store.clone(),
+        queue.clone(),
+        local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+        &support::models::roles(),
+    );
     Some(Harness {
         _database: database,
         store,
@@ -154,7 +159,12 @@ async fn recovery_failures_are_named_correlated_errors_without_content() {
     // Closing this pool deterministically fails real database reads without
     // changing schemas or relying on an external server outage.
     let connection = sea_orm::Database::connect(&h._database.url).await.unwrap();
-    let unavailable = DurableChat::new(Store::from_connection(connection.clone()), h.queue.clone());
+    let unavailable = DurableChat::new(
+        Store::from_connection(connection.clone()),
+        h.queue.clone(),
+        local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+        &support::models::roles(),
+    );
     connection.close().await.unwrap();
     assert!(unavailable.recover_page(None).await.is_err());
     assert!(unavailable.recover_revision_page(None).await.is_err());
@@ -261,8 +271,8 @@ async fn failed_publish_is_republished_once_by_the_recovery_sweep() {
     assert!(h.queue.published().is_empty(), "the broker refused it");
 
     let saved = h.chat.snapshot(&scope).await.expect("snapshot");
-    assert_eq!(saved.status, "pending");
-    assert_eq!(saved.input_id.as_deref(), Some(input.key.as_str()));
+    assert_eq!(saved.status, WorkStatus::Pending);
+    assert_eq!(saved.input_id(), Some(input.key.as_str()));
     assert_eq!(saved.dispatch_after, 0, "an unpublished turn stays due");
     assert_eq!(due(&h.store).await, std::slice::from_ref(&delivery));
 
@@ -274,7 +284,11 @@ async fn failed_publish_is_republished_once_by_the_recovery_sweep() {
         "recovery must republish exactly the delivery whose publish failed"
     );
     let dispatched = h.chat.snapshot(&scope).await.expect("snapshot");
-    assert_eq!(dispatched.status, "pending", "recovery never runs the turn");
+    assert_eq!(
+        dispatched.status,
+        WorkStatus::Pending,
+        "recovery never runs the turn"
+    );
     assert!(
         dispatched.dispatch_after > 0,
         "a published recovery wakeup must be marked dispatched"
@@ -355,7 +369,7 @@ async fn duplicate_accept_is_never_published_again() {
         saved
             .messages
             .iter()
-            .filter(|message| message.role == "user")
+            .filter(|message| message.role.as_str() == "user")
             .count(),
         1,
         "a duplicate must not append the input again"

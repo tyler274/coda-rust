@@ -1,10 +1,17 @@
+use harness::engine::MAX_FAILED_ATTEMPTS;
+#[path = "tests/migration.rs"]
+mod migration_tests;
+#[path = "tests/read_snapshot.rs"]
+mod read_snapshot;
 #[path = "tests/reply.rs"]
 mod reply_tests;
 #[path = "tests/sources.rs"]
 mod source_tests;
 
 use super::delivery::{Delivery, DeliveryState};
+use super::entities::command;
 use super::*;
+use harness::engine::recipe::Request;
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
@@ -30,7 +37,24 @@ async fn concurrent_commands_and_claims_serialize_on_the_composite_conversation_
         timezone: "UTC".into(),
         scenario: None,
     };
-    let (a, b) = tokio::join!(store.accept(&scope, &first), store.accept(&scope, &second));
+    let accepted_recipe = test_chat_recipe();
+    let accepted_skills = test_skills();
+    let (a, b) = tokio::join!(
+        store.accept_authorized(
+            &scope,
+            &first,
+            vec![0; 32],
+            &accepted_skills,
+            &accepted_recipe
+        ),
+        store.accept_authorized(
+            &scope,
+            &second,
+            vec![0; 32],
+            &accepted_skills,
+            &accepted_recipe
+        )
+    );
     assert_eq!(a.unwrap(), Accepted::New);
     assert_eq!(b.unwrap(), Accepted::New);
     let state = store.conversation(&scope).await.unwrap();
@@ -59,15 +83,15 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
     let mut expected = Vec::new();
     // Insert out of order; the cursor must compare every composite-key component.
     for (physician, workspace, chat, status, expiry) in [
-        ("b", "a", "a", "pending", None),
-        ("a", "b", "a", "active", Some(0)),
-        ("a", "a", "b", "pending", None),
-        ("a", "a", "a", "pending", None),
-        ("a", "a", "held", "held", None),
-        ("a", "a", "failed", "failed", None),
-        ("a", "a", "done", "completed", None),
-        ("a", "a", "live", "active", Some(i64::MAX)),
-        ("a", "a", "empty", "active", None),
+        ("b", "a", "a", WorkStatus::Pending, None),
+        ("a", "b", "a", WorkStatus::Active, Some(0)),
+        ("a", "a", "b", WorkStatus::Pending, None),
+        ("a", "a", "a", WorkStatus::Pending, None),
+        ("a", "a", "held", WorkStatus::Held, None),
+        ("a", "a", "failed", WorkStatus::Failed, None),
+        ("a", "a", "done", WorkStatus::Completed, None),
+        ("a", "a", "live", WorkStatus::Active, Some(i64::MAX)),
+        ("a", "a", "empty", WorkStatus::Active, None),
     ] {
         let scope = Scope {
             practice: practice.clone(),
@@ -76,8 +100,10 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
             chat: chat.into(),
         };
         let mut state = Conversation {
-            status: status.into(),
-            ..Default::default()
+            status,
+            ..Conversation::new(
+                serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
+            )
         };
         if let Some(expires) = expiry {
             // Only the final attempt's expiry determines eligibility.
@@ -87,7 +113,7 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
                     predecessor: None,
                     work: "work".into(),
                     revision: 1,
-                    status: "interrupted".into(),
+                    status: AttemptStatus::Interrupted,
                     expires: i64::MAX,
                     events: vec![],
                 },
@@ -96,20 +122,20 @@ async fn pending_keyset_orders_all_scope_keys_and_filters_terminal_and_live_work
                     predecessor: Some("old".into()),
                     work: "work".into(),
                     revision: 1,
-                    status: "active".into(),
+                    status: AttemptStatus::Active,
                     expires,
                     events: vec![],
                 },
             ];
         }
-        conversation::Entity::insert(conversation_model(
-            &scope,
-            serde_json::to_value(state).unwrap(),
-        ))
-        .exec(&store.db)
-        .await
-        .unwrap();
-        if status == "pending" || expiry == Some(0) {
+        control::save_chat_attempts(&store.db, &scope, &state.attempts)
+            .await
+            .unwrap();
+        conversation::Entity::insert(conversation_model(&scope, &state).unwrap())
+            .exec(&store.db)
+            .await
+            .unwrap();
+        if status == WorkStatus::Pending || expiry == Some(0) {
             expected.push(scope);
         }
     }
@@ -153,11 +179,17 @@ async fn corrupt_conversation_rolls_back_receipt_and_conflicts_never_overwrite_i
         timezone: "UTC".into(),
         scenario: None,
     };
-    conversation::Entity::insert(conversation_model(&scope, serde_json::json!({})))
+    let mut corrupt = conversation_model(
+        &scope,
+        &Conversation::new(serde_json::from_value(serde_json::json!("fixture-package")).unwrap()),
+    )
+    .unwrap();
+    corrupt.state = Set(serde_json::json!({}));
+    conversation::Entity::insert(corrupt)
         .exec(&store.db)
         .await
         .unwrap();
-    assert!(store.accept(&scope, &input).await.is_err());
+    assert!(accept(&store, &scope, &input, 0).await.is_err());
     assert!(
         command::Entity::find_by_id((
             scope.practice.clone(),
@@ -171,21 +203,25 @@ async fn corrupt_conversation_rolls_back_receipt_and_conflicts_never_overwrite_i
     );
     conversation_model(
         &scope,
-        serde_json::to_value(Conversation::default()).unwrap(),
+        &Conversation::new(serde_json::from_value(serde_json::json!("fixture-package")).unwrap()),
     )
+    .unwrap()
     .update(&store.db)
     .await
     .unwrap();
-    assert_eq!(store.accept(&scope, &input).await.unwrap(), Accepted::New);
+    assert_eq!(
+        accept(&store, &scope, &input, 0).await.unwrap(),
+        Accepted::New
+    );
     let mut other_chat = scope.clone();
     other_chat.chat = "different-chat".into();
-    assert!(store.accept(&other_chat, &input).await.is_err());
+    assert!(accept(&store, &other_chat, &input, 0).await.is_err());
     assert!(store.conversation(&other_chat).await.is_err());
     let mut collision = input.clone();
     collision.timezone = "America/New_York".into();
-    assert!(store.accept(&scope, &collision).await.is_err());
+    assert!(accept(&store, &scope, &collision, 0).await.is_err());
     assert_eq!(
-        store.accept(&scope, &input).await.unwrap(),
+        accept(&store, &scope, &input, 0).await.unwrap(),
         Accepted::Duplicate
     );
     assert_eq!(store.conversation(&scope).await.unwrap().revision, 1);
@@ -209,25 +245,58 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
         timezone: "UTC".into(),
         scenario: None,
     };
-    s.accept(&scope, &input).await.unwrap();
+    accept(&s, &scope, &input, 0).await.unwrap();
     let first = s.claim(&scope, 60).await.unwrap().unwrap();
+    let display = s.snapshot().await.unwrap();
+    let control_before = conversation::Entity::find_by_id(keys(&scope))
+        .one(&display)
+        .await
+        .unwrap()
+        .unwrap();
     s.persist(
         &first,
         engine::Event {
             attempt_id: first.attempt.clone(),
+            ordinal: 1,
             sequence: 1,
             kind: engine::EventKind::ProviderStarted {
-                ordinal: 1,
-                context: engine::Context {
-                    instructions: "test".into(),
+                dispatched_at_unix_ms: 1,
+                request: engine::SavedRequest {
+                    added: vec![],
                     items: vec![],
-                    tools: vec![],
                 },
+                context: Default::default(),
             },
         },
     )
     .await
     .unwrap();
+    let control_after = conversation::Entity::find_by_id(keys(&scope))
+        .one(&s.db)
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(
+        control_after, control_before,
+        "appending execution evidence must not rewrite conversation control"
+    );
+    let mut old_view = Store::conversation_control(&display, &scope, control_before)
+        .await
+        .unwrap();
+    Store::conversation_events(&display, &scope, &mut old_view)
+        .await
+        .unwrap();
+    assert!(
+        old_view.attempts[0].events.is_empty(),
+        "one display snapshot cannot join a later event to earlier control state"
+    );
+    display.commit().await.unwrap();
+    assert_eq!(
+        s.read(&scope).await.unwrap().unwrap().attempts[0]
+            .events
+            .len(),
+        1
+    );
     s.assert_current(&first).await.unwrap();
     // Establish expiry only after real evidence is durable. A one-second lease
     // can expire before persist() on a busy runner because the DB clock floors
@@ -253,9 +322,11 @@ async fn expired_attempt_recovery_preserves_accepted_work_and_evidence() {
     );
     let next = s.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(first.attempt, next.attempt);
-    assert!(s.assert_current(&first).await.is_err());
+    s.assert_current(&first).await.unwrap();
+    assert!(s.renew_claim(&first).await.is_err());
+    s.renew_claim(&next).await.unwrap();
     let state = s.conversation(&scope).await.unwrap();
-    assert_eq!(state.attempts[0].status, "interrupted");
+    assert_eq!(state.attempts[0].status, AttemptStatus::Interrupted);
     assert_eq!(state.attempts[0].events.len(), 1);
     assert_eq!(
         state.attempts[1].predecessor.as_deref(),
@@ -298,14 +369,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
         chat: String::new(),
     };
     let scope = delivery_scope(&practice, "chat");
-    let unauthorized = delivery_scope(&practice, "local-only");
-    store
-        .accept_authorized(&scope, &delivery_input("first"), vec![7; 32])
-        .await
-        .unwrap();
-    // Local (session-less) work never becomes a hosted queue wakeup.
-    store
-        .accept(&unauthorized, &delivery_input("local"))
+    accept(&store, &scope, &delivery_input("first"), 7)
         .await
         .unwrap();
     let ours = |page: &delivery::DispatchPage| -> Vec<Delivery> {
@@ -329,8 +393,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
 
     // A newer accepted input supersedes the old wakeup: it can never claim,
     // and acknowledging it is safe because the newer input is recoverable.
-    store
-        .accept_authorized(&scope, &delivery_input("second"), vec![7; 32])
+    accept(&store, &scope, &delivery_input("second"), 7)
         .await
         .unwrap();
     assert!(store.claim_delivery(&first, 60).await.unwrap().is_none());
@@ -347,7 +410,7 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     // Duplicate wakeups find no second live claim.
     let claim = store.claim_delivery(&second, 60).await.unwrap().unwrap();
     assert!(store.claim_delivery(&second, 60).await.unwrap().is_none());
-    store.heartbeat(&claim, 120).await.unwrap();
+    store.renew_claim(&claim).await.unwrap();
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
         DeliveryState::Claimed
@@ -355,15 +418,18 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
 
     // A failed run is released for broker redelivery as a successor attempt,
     // and its history says it failed: a lost lease is "interrupted" instead.
-    store.retry_delivery(&claim).await.unwrap();
+    store
+        .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
     let state = store.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "pending");
-    assert_eq!(state.attempts.last().unwrap().status, "failed");
+    assert_eq!(state.status, WorkStatus::Pending);
+    assert_eq!(state.attempts.last().unwrap().status, AttemptStatus::Failed);
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
         DeliveryState::Due
     );
-    assert!(store.heartbeat(&claim, 60).await.is_err());
+    assert!(store.renew_claim(&claim).await.is_err());
     let retry = store.claim_delivery(&second, 60).await.unwrap().unwrap();
     let state = store.conversation(&scope).await.unwrap();
     assert_eq!(
@@ -372,9 +438,21 @@ async fn queue_delivery_is_fenced_to_its_input_and_recovers_through_typed_owners
     );
 
     // Intentional Stop settles the delivery and cannot be reopened by retry.
-    store.stop(&scope).await.unwrap();
-    store.retry_delivery(&retry).await.unwrap();
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "held");
+    assert_eq!(
+        store
+            .stop_authorized(&scope, "stop-delivery", vec![7; 32], &state.work)
+            .await
+            .unwrap(),
+        Stopped::Held
+    );
+    store
+        .settle_chat_attempt(&retry, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        WorkStatus::Held
+    );
     assert_eq!(
         store.delivery_state(&second).await.unwrap(),
         DeliveryState::Settled
@@ -404,23 +482,32 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
             .collect()
     };
     let scope = delivery_scope(&practice, "chat");
-    store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+    accept(&store, &scope, &delivery_input("turn"), 5)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(scope.clone(), "turn".into());
     for failure in 1..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .await
+            .unwrap();
         let state = store.conversation(&scope).await.unwrap();
-        assert_eq!(state.status, "pending", "failure {failure} still retries");
+        assert_eq!(
+            state.status,
+            WorkStatus::Pending,
+            "failure {failure} still retries"
+        );
         assert_eq!(state.failures, failure);
     }
     // The last allowed failure ends the work; recovery has given up.
     let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-    store.retry_delivery(&claim).await.unwrap();
+    store
+        .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
     let state = store.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "failed");
+    assert_eq!(state.status, WorkStatus::Failed);
     assert_eq!(state.failures, MAX_FAILED_ATTEMPTS);
     assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
     assert!(
@@ -435,9 +522,19 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     );
 
     // Resume is the physician's Try again: a fresh budget for the same input.
-    store.resume(&scope).await.unwrap();
+    let resumed = store
+        .resume_authorized(
+            &scope,
+            "try-again",
+            vec![5; 32],
+            &state.work,
+            state.run().unwrap().id,
+        )
+        .await
+        .unwrap();
+    assert!(matches!(resumed, crate::runtime::Resumed::Pending { .. }));
     let state = store.conversation(&scope).await.unwrap();
-    assert_eq!((state.status.as_str(), state.failures), ("pending", 0));
+    assert_eq!((state.status, state.failures), (WorkStatus::Pending, 0));
     assert_eq!(
         ours(store.dispatch_due(100, Some(&start)).await.unwrap()),
         vec![turn.clone()]
@@ -453,7 +550,7 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     }
     assert!(store.claim_delivery(&turn, 60).await.unwrap().is_none());
     let state = store.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "failed");
+    assert_eq!(state.status, WorkStatus::Failed);
     assert_eq!(state.failures, MAX_FAILED_ATTEMPTS);
     assert_eq!(
         store.delivery_state(&turn).await.unwrap(),
@@ -461,12 +558,11 @@ async fn repeated_failures_end_the_input_as_failed_until_resume_or_new_input() {
     );
 
     // New input starts its own budget.
-    store
-        .accept_authorized(&scope, &delivery_input("next"), vec![5; 32])
+    accept(&store, &scope, &delivery_input("next"), 5)
         .await
         .unwrap();
     let state = store.conversation(&scope).await.unwrap();
-    assert_eq!((state.status.as_str(), state.failures), ("pending", 0));
+    assert_eq!((state.status, state.failures), (WorkStatus::Pending, 0));
 }
 
 #[tokio::test]
@@ -489,8 +585,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
             .collect()
     };
     let scope = delivery_scope(&practice, "chat");
-    store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+    accept(&store, &scope, &delivery_input("turn"), 5)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(scope.clone(), "turn".into());
@@ -505,12 +600,15 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     );
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .await
+            .unwrap();
     }
     let failed = store.conversation(&scope).await.unwrap();
-    assert_eq!(failed.status, "failed");
+    assert_eq!(failed.status, WorkStatus::Failed);
     let work = failed.work.clone();
-    let run = failed.attempts.last().unwrap().id.clone();
+    let run = failed.run().unwrap().id.to_owned();
     let earlier = failed.attempts.first().unwrap().id.clone();
 
     // A wrong run, wrong work, or another chat is refused and changes nothing.
@@ -535,8 +633,8 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     }
     let unchanged = store.conversation(&scope).await.unwrap();
     assert_eq!(
-        (unchanged.status.as_str(), unchanged.failures),
-        ("failed", MAX_FAILED_ATTEMPTS)
+        (unchanged.status, unchanged.failures),
+        (WorkStatus::Failed, MAX_FAILED_ATTEMPTS)
     );
     assert!(
         store
@@ -558,7 +656,10 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
             "{key:?}"
         );
     }
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "failed");
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        WorkStatus::Failed
+    );
 
     // The named failed run resumes with a fresh budget and the current session.
     assert_eq!(
@@ -567,11 +668,11 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
             .await
             .unwrap(),
         Resumed::Pending {
-            input_id: "turn".into()
+            delivery: Delivery::chat_turn(scope.clone(), "turn".into())
         }
     );
     let resumed = store.conversation(&scope).await.unwrap();
-    assert_eq!((resumed.status.as_str(), resumed.failures), ("pending", 0));
+    assert_eq!((resumed.status, resumed.failures), (WorkStatus::Pending, 0));
     assert_eq!(resumed.session_hash.as_deref(), Some(&[6u8; 32][..]));
     assert_eq!(resumed.work, work, "Try again keeps the work identity");
     assert_eq!(
@@ -597,8 +698,8 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     // Completed work is never reopened, even with its last run named.
     let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
     let (tx, mut state, _) = store.locked(&scope).await.unwrap();
-    state.attempts.last_mut().unwrap().status = "completed".into();
-    state.status = "completed".into();
+    state.attempts.last_mut().unwrap().status = AttemptStatus::Completed;
+    state.status = WorkStatus::Completed;
     Store::save(tx, &scope, &state).await.unwrap();
     assert_eq!(
         store
@@ -609,7 +710,7 @@ async fn try_again_resumes_only_the_named_failed_run_and_never_completed_work() 
     );
     assert_eq!(
         store.conversation(&scope).await.unwrap().status,
-        "completed"
+        WorkStatus::Completed
     );
 }
 
@@ -627,8 +728,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         workspace: String::new(),
         chat: String::new(),
     };
-    store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![5; 32])
+    accept(&store, &scope, &delivery_input("turn"), 5)
         .await
         .unwrap();
     let claim = store
@@ -643,6 +743,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             engine::Event {
                 attempt_id: claim.attempt.clone(),
                 sequence: 1,
+                ordinal: 1,
                 kind: engine::EventKind::Candidate {
                     text: "late".into(),
                 },
@@ -650,10 +751,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         )
         .await
         .unwrap();
-    let candidate = engine::Candidate {
-        text: "late".into(),
-        transcript: vec![],
-        usage: engine::Usage::default(),
+    let candidate = Turn {
+        items: vec![Item::assistant("late")],
+        usage: Default::default(),
+        receipt: serde_json::json!({"source":"fixture"}),
     };
 
     let mut other = scope.clone();
@@ -674,7 +775,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .unwrap(),
         Stopped::Refused
     );
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        WorkStatus::Active
+    );
     assert_eq!(
         store
             .stop_authorized(&scope, "mismatch", vec![6; 32], "other-work")
@@ -699,7 +803,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             "{key:?} {work_id:?}"
         );
     }
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        WorkStatus::Active
+    );
     assert!(store.is_current(&claim).await.unwrap());
 
     assert_eq!(
@@ -711,8 +818,17 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     );
     assert!(!store.is_current(&claim).await.unwrap());
     let held = store.conversation(&scope).await.unwrap();
-    assert_eq!(held.status, "held");
-    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    assert_eq!(held.status, WorkStatus::Held);
+    assert_eq!(
+        held.attempts.last().unwrap().status,
+        AttemptStatus::Cancelled
+    );
+    let endings: Vec<_> = held.runs[&held.work]
+        .events()
+        .iter()
+        .filter(|event| matches!(event, engine::runs::RunEvent::RunEnded { .. }))
+        .collect();
+    assert_eq!(endings.len(), 1, "Stop must save exactly one run outcome");
     assert_eq!(held.session_hash.as_deref(), Some(&[6u8; 32][..]));
     assert_eq!(
         store
@@ -735,7 +851,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .is_err()
     );
     let held = store.conversation(&scope).await.unwrap();
-    assert_eq!(held.status, "held");
+    assert_eq!(held.status, WorkStatus::Held);
     assert_eq!(held.messages.len(), 1);
     assert!(
         !store
@@ -750,20 +866,33 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     drop(store);
     let store = Store::connect(&url).await.unwrap();
     let held = store.conversation(&scope).await.unwrap();
-    assert_eq!(held.status, "held");
-    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
-    let run = held.attempts.last().unwrap().id.clone();
+    assert_eq!(held.status, WorkStatus::Held);
+    assert_eq!(
+        held.attempts.last().unwrap().status,
+        AttemptStatus::Cancelled
+    );
+    let run = held.run().unwrap().id.to_owned();
     assert_eq!(
         store
             .resume_authorized(&scope, "resume", vec![9; 32], &work, &run)
             .await
             .unwrap(),
         Resumed::Pending {
-            input_id: "turn".into()
+            delivery: Delivery::chat_turn(scope.clone(), "turn".into())
         }
     );
+    assert!(store.claim(&scope, 60).await.unwrap().is_none());
+    // The first worker disappeared. Recovery waits for its lease to expire.
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
     let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_eq!(store.conversation(&scope).await.unwrap().failures, 0);
     assert_ne!(successor.attempt, claim.attempt);
+    let continued = store.conversation(&scope).await.unwrap();
+    assert_ne!(continued.run().unwrap().id, run);
+    assert_eq!(continued.run().unwrap().continues, Some(run.as_str()));
+    assert_eq!(continued.runs[&work].events().len(), 3);
 
     // Resume keeps the work identity. Replaying the first Stop is that same,
     // already-taken command and leaves the resumed run going; a second Stop
@@ -775,7 +904,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .unwrap(),
         Stopped::Duplicate
     );
-    assert_eq!(store.conversation(&scope).await.unwrap().status, "active");
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().status,
+        WorkStatus::Active
+    );
     assert_eq!(
         store
             .stop_authorized(&scope, "stop-again", vec![6; 32], &work)
@@ -784,21 +916,23 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         Stopped::Held
     );
     let held = store.conversation(&scope).await.unwrap();
-    assert_eq!(held.status, "held");
+    assert_eq!(held.status, WorkStatus::Held);
     assert_eq!(held.attempts.last().unwrap().id, successor.attempt);
-    assert_eq!(held.attempts.last().unwrap().status, "cancelled");
+    assert_eq!(
+        held.attempts.last().unwrap().status,
+        AttemptStatus::Cancelled
+    );
 
     // Sending something else releases the hold and the new message is
     // answered. Neither stopped run can publish over it, and its Resume is gone.
     assert_eq!(
-        store
-            .accept_authorized(&scope, &delivery_input("steered"), vec![4; 32])
+        accept(&store, &scope, &delivery_input("steered"), 4)
             .await
             .unwrap(),
         Accepted::New
     );
     let steered = store.conversation(&scope).await.unwrap();
-    assert_eq!(steered.status, "pending");
+    assert_eq!(steered.status, WorkStatus::Pending);
     assert_eq!(
         steered
             .messages
@@ -836,12 +970,15 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .unwrap(),
         Resumed::Refused
     );
+    store
+        .settle_chat_attempt(&successor, engine::AttemptFailure::Interrupted)
+        .await
+        .unwrap();
     let answering = store.claim(&scope, 60).await.unwrap().unwrap();
     assert_ne!(answering.attempt, successor.attempt);
 
     let quiet = delivery_scope(&practice, "before-claim");
-    store
-        .accept_authorized(&quiet, &delivery_input("early"), vec![5; 32])
+    accept(&store, &quiet, &delivery_input("early"), 5)
         .await
         .unwrap();
     let early = store.conversation(&quiet).await.unwrap();
@@ -854,8 +991,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         Stopped::Held
     );
     let stopped = store.conversation(&quiet).await.unwrap();
-    assert_eq!(stopped.attempts.len(), 1);
-    assert_eq!(stopped.attempts[0].status, "cancelled");
+    assert!(stopped.attempts.is_empty());
     // Pressing Stop again on the held work is not a refusal: it is held.
     assert_eq!(
         store
@@ -866,10 +1002,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
     );
     let unchanged = store.conversation(&quiet).await.unwrap();
     assert_eq!(
-        (unchanged.status.as_str(), unchanged.attempts.len()),
-        ("held", 1)
+        (unchanged.status, unchanged.attempts.len()),
+        (WorkStatus::Held, 0)
     );
-    let first_run = stopped.attempts[0].id.clone();
+    let first_run = stopped.run().unwrap().id.to_owned();
     // The page keys Resume by the run it names, as `resume-{work}-{run}`.
     assert_eq!(
         store
@@ -883,7 +1019,7 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .await
             .unwrap(),
         Resumed::Pending {
-            input_id: "early".into()
+            delivery: Delivery::chat_turn(quiet.clone(), "early".into())
         }
     );
     // Stop again before any worker claims the resumed turn. That hold names
@@ -896,13 +1032,10 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         Stopped::Held
     );
     let again = store.conversation(&quiet).await.unwrap();
-    assert_eq!(again.status, "held");
-    let second_run = again.attempts.last().unwrap().id.clone();
+    assert_eq!(again.status, WorkStatus::Held);
+    let second_run = again.run().unwrap().id.to_owned();
     assert_ne!(second_run, first_run);
-    assert_eq!(
-        again.attempts.last().unwrap().predecessor.as_deref(),
-        Some(first_run.as_str())
-    );
+    assert_eq!(again.run().unwrap().continues, Some(first_run.as_str()));
     assert_eq!(
         store
             .resume_authorized(
@@ -915,24 +1048,29 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
             .await
             .unwrap(),
         Resumed::Pending {
-            input_id: "early".into()
+            delivery: Delivery::chat_turn(quiet.clone(), "early".into())
         }
     );
-    assert_eq!(store.conversation(&quiet).await.unwrap().status, "pending");
+    assert_eq!(
+        store.conversation(&quiet).await.unwrap().status,
+        WorkStatus::Pending
+    );
 
     // Couldn't finish stays Try again. Stop does not turn it into a hold.
     let failed_scope = delivery_scope(&practice, "failed");
-    store
-        .accept_authorized(&failed_scope, &delivery_input("gave-up"), vec![5; 32])
+    accept(&store, &failed_scope, &delivery_input("gave-up"), 5)
         .await
         .unwrap();
     let turn = Delivery::chat_turn(failed_scope.clone(), "gave-up".into());
     for _ in 0..MAX_FAILED_ATTEMPTS {
         let claim = store.claim_delivery(&turn, 60).await.unwrap().unwrap();
-        store.retry_delivery(&claim).await.unwrap();
+        store
+            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .await
+            .unwrap();
     }
     let failed = store.conversation(&failed_scope).await.unwrap();
-    assert_eq!(failed.status, "failed");
+    assert_eq!(failed.status, WorkStatus::Failed);
     assert_eq!(
         store
             .stop_authorized(&failed_scope, "stop-failed", vec![6; 32], &failed.work)
@@ -941,15 +1079,15 @@ async fn stop_holds_the_named_work_until_resume_and_refuses_a_late_commit() {
         Stopped::Refused
     );
     let still = store.conversation(&failed_scope).await.unwrap();
-    assert_eq!(still.status, "failed");
-    let run = still.attempts.last().unwrap().id.clone();
+    assert_eq!(still.status, WorkStatus::Failed);
+    let run = still.run().unwrap().id.to_owned();
     assert_eq!(
         store
             .resume_authorized(&failed_scope, "try-again", vec![9; 32], &still.work, &run,)
             .await
             .unwrap(),
         Resumed::Pending {
-            input_id: "gave-up".into()
+            delivery: Delivery::chat_turn(failed_scope.clone(), "gave-up".into())
         }
     );
 }
@@ -960,46 +1098,133 @@ async fn engine_failure_stays_leased_until_the_lease_expires() {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
+    for cancelled in [false, true] {
+        let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
+        accept(&store, &scope, &delivery_input("turn"), 0)
+            .await
+            .unwrap();
+        let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+        let mut host = PhysicianHost {
+            store: store.clone(),
+            claim: claim.clone(),
+            authority: OpenAuthority,
+        };
+        let cancel = engine::Cancellation::default();
+        if cancelled {
+            cancel.cancel();
+        }
+        assert!(
+            host.run(&mut Fails, harness::engine::RunLimits::default(), &cancel)
+                .await
+                .is_err()
+        );
+        let state = store.conversation(&scope).await.unwrap();
+        assert_eq!(state.status, WorkStatus::Active);
+        assert_eq!(state.attempts.last().unwrap().status, AttemptStatus::Active);
+        assert_eq!(state.failures, 0);
+        assert_eq!(state.messages.len(), 1);
+        if cancelled {
+            assert_eq!(
+                store
+                    .settle_chat_attempt(&claim, AttemptFailure::Interrupted)
+                    .await
+                    .unwrap(),
+                delivery::AttemptSettlement::Applied,
+                "hosting settlement must be the attempt-end writer"
+            );
+            let saved = store.conversation(&scope).await.unwrap();
+            assert_eq!(saved.attempts[0].status, AttemptStatus::Interrupted);
+            assert_eq!(saved.failures, 0);
+            continue;
+        }
+        let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+        state.attempts.last_mut().unwrap().expires = 0;
+        Store::save(tx, &scope, &state).await.unwrap();
+        let successor = store.claim(&scope, 60).await.unwrap().unwrap();
+        // Once hosting reclaims the abandoned attempt, its late cancellation cannot
+        // release the successor or erase the recorded failure.
+        assert_eq!(
+            store
+                .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Interrupted)
+                .await
+                .unwrap(),
+            delivery::AttemptSettlement::Superseded
+        );
+        assert_ne!(successor.attempt, claim.attempt);
+        let state = store.conversation(&scope).await.unwrap();
+        assert_eq!(state.status, WorkStatus::Active);
+        assert_eq!(state.failures, 1);
+        assert_eq!(state.messages.len(), 1);
+    }
+}
+
+/// A steer keeps the work and leaves the old attempt active until its worker
+/// settles it. That worker can end at a limit or fail before it next checks
+/// currency; its reason belongs to the old input, not to the newer message.
+async fn settle_after_steer(reason: AttemptFailure) -> (Conversation, DeliveryState) {
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
     let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "chat");
-    store.accept(&scope, &delivery_input("turn")).await.unwrap();
-    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
-    let mut host = PhysicianHost {
-        store: store.clone(),
-        claim: claim.clone(),
-        authority: OpenAuthority,
-        instructions: "versioned test".into(),
-        skills: None,
-    };
-    assert!(
-        host.run(
-            &mut Fails,
-            &engine_limits(),
-            &engine::Cancellation::default()
-        )
+    accept(&store, &scope, &delivery_input("first"), 5)
         .await
-        .is_err()
+        .unwrap();
+    let old = store.claim(&scope, 60).await.unwrap().unwrap();
+    accept(&store, &scope, &delivery_input("steer"), 5)
+        .await
+        .unwrap();
+    store.settle_chat_attempt(&old, reason).await.unwrap();
+    let state = store.conversation(&scope).await.unwrap();
+    let steer = store
+        .delivery_state(&Delivery::chat_turn(scope, "steer".into()))
+        .await
+        .unwrap();
+    (state, steer)
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_limit_on_a_steered_attempt_leaves_the_newer_message_pending() {
+    let (state, steer) = settle_after_steer(AttemptFailure::Limit).await;
+    assert_eq!(
+        (state.status, state.failures, state.run().unwrap().outcome),
+        (WorkStatus::Pending, 0, None),
+        "the newer message never ran, so it is not held at a limit"
     );
-    let state = store.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "active");
-    assert_eq!(state.attempts.last().unwrap().status, "active");
-    assert_eq!(state.failures, 0);
-    assert_eq!(state.messages.len(), 1);
-    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
-    state.attempts.last_mut().unwrap().expires = 0;
-    Store::save(tx, &scope, &state).await.unwrap();
-    let successor = store.claim(&scope, 60).await.unwrap().unwrap();
-    assert_ne!(successor.attempt, claim.attempt);
-    let state = store.conversation(&scope).await.unwrap();
-    assert_eq!(state.status, "active");
-    assert_eq!(state.failures, 1);
-    assert_eq!(state.messages.len(), 1);
+    assert_eq!(steer, DeliveryState::Due);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_failure_on_a_steered_attempt_leaves_the_newer_messages_allowance_whole() {
+    let (state, steer) = settle_after_steer(AttemptFailure::Failed).await;
+    assert_eq!(
+        (state.status, state.failures, state.run().unwrap().outcome),
+        (WorkStatus::Pending, 0, None),
+        "a steer consumes no failure allowance, so the newer message keeps all of it"
+    );
+    assert_eq!(steer, DeliveryState::Due);
+}
+
+async fn open_draft(store: &Store, scope: &Scope, text: &str) -> u64 {
+    store
+        .open_draft_authorized(scope, text, &[7; 32], &mut OpenAuthority)
+        .await
+        .unwrap()
+        .expect("authorized fixture draft")
+        .revision
 }
 
 struct OpenAuthority;
 
 #[async_trait]
 impl Authority for OpenAuthority {
-    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+    async fn check(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
         Ok(())
     }
 
@@ -1015,28 +1240,15 @@ impl Authority for OpenAuthority {
 
 struct Fails;
 
-#[async_trait]
-impl engine::Provider for Fails {
-    fn request_bytes(&self, _: &engine::Request<'_>) -> Result<usize, String> {
-        Ok(1)
-    }
-
-    async fn complete(&mut self, _: engine::Request<'_>) -> Result<engine::Turn, String> {
-        Err("provider failed".into())
-    }
-}
-
-fn engine_limits() -> engine::Limits {
-    engine::Limits {
-        model_calls: 2,
-        tool_calls: 0,
-        calls_per_turn: 4,
-        request_bytes: 10_000,
-        response_bytes: 10_000,
-        tool_result_bytes: 1000,
-        total_tool_result_bytes: 1000,
-        output_tokens: 500,
-        elapsed: std::time::Duration::from_secs(5),
+impl Provider for Fails {
+    async fn exchange(
+        &mut self,
+        _: &Request,
+        _: &engine::Cancellation,
+        _: &engine::RunLimits,
+        _: &mut dyn engine::recipe::Observer,
+    ) -> Result<Turn, engine::Cause> {
+        Err("synthetic provider failure".into())
     }
 }
 
@@ -1054,8 +1266,7 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
         chat: String::new(),
     };
     let scope = delivery_scope(&practice, "chat");
-    store
-        .accept_authorized(&scope, &delivery_input("turn"), vec![9; 32])
+    accept(&store, &scope, &delivery_input("turn"), 9)
         .await
         .unwrap();
     let delivery = Delivery::chat_turn(scope.clone(), "turn".into());
@@ -1069,7 +1280,7 @@ async fn expired_worker_lease_is_redispatched_by_the_database_clock() {
     Store::save(tx, &scope, &state).await.unwrap();
     let page = store.dispatch_due(100, Some(&start)).await.unwrap();
     assert!(page.deliveries.contains(&delivery));
-    assert!(store.heartbeat(&claim, 60).await.is_err());
+    assert!(store.renew_claim(&claim).await.is_err());
     let successor = store.claim_delivery(&delivery, 60).await.unwrap().unwrap();
     assert_ne!(successor.attempt, claim.attempt);
 }
@@ -1101,7 +1312,7 @@ async fn chats_list_one_physicians_workspace_by_latest_activity() {
         ("y1", scope("me", "elsewhere", "chat-y"), "Other patient"),
     ] {
         assert_eq!(
-            store.accept(&s, &input(key, text)).await.unwrap(),
+            accept(&store, &s, &input(key, text), 0).await.unwrap(),
             Accepted::New
         );
     }
@@ -1170,19 +1381,19 @@ async fn chat_list_orders_by_activity_before_its_limit() {
     // chat-005..chat-204 and leave chat-000 out.
     let total = MAX_LISTED_CHATS as usize + 5;
     for n in 0..total {
-        store
-            .accept(
-                &scope("me", format!("chat-{n:03}")),
-                &input(format!("me-{n}")),
-            )
-            .await
-            .unwrap();
+        accept(
+            &store,
+            &scope("me", format!("chat-{n:03}")),
+            &input(format!("me-{n}")),
+            0,
+        )
+        .await
+        .unwrap();
     }
     // Another physician's newer chats in the same workspace never list.
     for n in 0..3 {
         let theirs = scope("other", format!("chat-zzz-{n}"));
-        store
-            .accept(&theirs, &input(format!("other-{n}")))
+        accept(&store, &theirs, &input(format!("other-{n}")), 0)
             .await
             .unwrap();
         let (tx, mut state, now) = store.locked(&theirs).await.unwrap();
@@ -1214,8 +1425,7 @@ async fn chat_list_orders_by_activity_before_its_limit() {
         tokio::time::sleep(std::time::Duration::from_millis(100)).await;
     }
     assert_eq!(
-        store
-            .accept(&oldest, &input("me-again".into()))
+        accept(&store, &oldest, &input("me-again".into()), 0)
             .await
             .unwrap(),
         Accepted::New
@@ -1240,7 +1450,7 @@ async fn chat_list_orders_by_activity_before_its_limit() {
         .chain((0..3).map(|n| scope("other", format!("chat-zzz-{n}"))));
     for chat in chats {
         let (tx, mut state, _) = store.locked(&chat).await.unwrap();
-        state.status = "completed".into();
+        state.status = WorkStatus::Completed;
         Store::save(tx, &chat, &state).await.unwrap();
     }
     assert!(
@@ -1257,7 +1467,12 @@ async fn chat_list_orders_by_activity_before_its_limit() {
 struct Gate(bool);
 #[async_trait]
 impl Authority for Gate {
-    async fn check(&mut self, _: &Scope) -> Result<(), String> {
+    async fn check(
+        &mut self,
+        _: &PublicationTransaction,
+        _: &Scope,
+        _: Option<&[u8]>,
+    ) -> Result<(), String> {
         Ok(())
     }
     async fn lock_publication(
@@ -1396,7 +1611,6 @@ async fn chat_drafts_save_under_a_revision_fence_for_one_physician() {
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
 async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
-    use entities::command;
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
     let store = Store::connect(&url).await.unwrap();
     store.migrate().await.unwrap();
@@ -1427,15 +1641,13 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         }
     };
     assert_eq!(
-        store
-            .accept(&scope, &input("old", "old text"))
+        accept(&store, &scope, &input("old", "old text"), 0)
             .await
             .unwrap(),
         Accepted::New
     );
     assert_eq!(
-        store
-            .accept(&scope, &input("new", "new text"))
+        accept(&store, &scope, &input("new", "new text"), 0)
             .await
             .unwrap(),
         Accepted::New
@@ -1486,23 +1698,20 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     // The digest still recognizes the exact command and refuses a different
     // one under the same key; the conversation keeps the authored text.
     assert_eq!(
-        store
-            .accept(&scope, &input("old", "old text"))
+        accept(&store, &scope, &input("old", "old text"), 0)
             .await
             .unwrap(),
         Accepted::Duplicate
     );
     assert!(
-        store
-            .accept(&scope, &input("old", "other text"))
+        accept(&store, &scope, &input("old", "other text"), 0)
             .await
             .is_err()
     );
     let mut other_chat = scope.clone();
     other_chat.chat = "other-chat".into();
     assert!(
-        store
-            .accept(&other_chat, &input("old", "old text"))
+        accept(&store, &other_chat, &input("old", "old text"), 0)
             .await
             .is_err()
     );
@@ -1523,14 +1732,25 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     let hash = vec![9_u8; 32];
     store
-        .accept_authorized(&resume_scope, &input("turn", "turn text"), hash.clone())
+        .accept_authorized(
+            &resume_scope,
+            &input("turn", "turn text"),
+            hash.clone(),
+            &test_skills(),
+            &test_chat_recipe(),
+        )
         .await
         .unwrap();
-    let claim = store.claim(&resume_scope, 60).await.unwrap().unwrap();
-    store.interrupt(&claim, true).await.unwrap();
+    for _ in 0..MAX_FAILED_ATTEMPTS {
+        let claim = store.claim(&resume_scope, 60).await.unwrap().unwrap();
+        store
+            .settle_chat_attempt(&claim, harness::engine::AttemptFailure::Failed)
+            .await
+            .unwrap();
+    }
     let failed = store.conversation(&resume_scope).await.unwrap();
-    assert_eq!(failed.status, "failed");
-    let run = failed.attempts.last().unwrap().id.clone();
+    assert_eq!(failed.status, WorkStatus::Failed);
+    let run = failed.run().unwrap().id.to_owned();
     assert!(matches!(
         store
             .resume_authorized(&resume_scope, "resume", hash.clone(), &failed.work, &run)
@@ -1574,7 +1794,7 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
         chat: "reply".into(),
         ..scope.clone()
     };
-    store.open_draft(&reply_scope, "Reply text.").await.unwrap();
+    open_draft(&store, &reply_scope, "Reply text.").await;
     let revise = reply::RevisionInput {
         key: "revise".into(),
         expected_revision: 1,
@@ -1584,7 +1804,13 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32])
+            .accept_revision(
+                &reply_scope,
+                &revise,
+                vec![9; 32],
+                &test_skills(),
+                &test_revision_recipe()
+            )
             .await
             .unwrap(),
         reply::RevisionAccepted::New
@@ -1608,7 +1834,13 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     }
     assert_eq!(
         store
-            .accept_revision(&reply_scope, &revise, vec![9; 32])
+            .accept_revision(
+                &reply_scope,
+                &revise,
+                vec![9; 32],
+                &test_skills(),
+                &test_revision_recipe()
+            )
             .await
             .unwrap(),
         reply::RevisionAccepted::Duplicate
@@ -1619,12 +1851,21 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
     };
     assert!(
         store
-            .accept_revision(&reply_scope, &collision, vec![9; 32])
+            .accept_revision(
+                &reply_scope,
+                &collision,
+                vec![9; 32],
+                &test_skills(),
+                &test_revision_recipe()
+            )
             .await
             .is_err()
     );
     let draft = store.draft(&reply_scope).await.unwrap().unwrap();
-    assert_eq!(draft.input.as_ref(), Some(&revise));
+    assert_eq!(
+        draft.accepted.as_ref().map(|accepted| &accepted.input),
+        Some(&revise)
+    );
     // Settle the revision so other suites' recovery sweeps never pick it up.
     store
         .save_draft(
@@ -1639,168 +1880,319 @@ async fn old_receipts_reduce_to_a_digest_that_still_answers_duplicates() {
 
     // Settle the work so other suites' restart sweeps never pick it up.
     let (tx, mut state, _) = store.locked(&resume_scope).await.unwrap();
-    state.status = "completed".into();
+    state.status = WorkStatus::Completed;
     Store::save(tx, &resume_scope, &state).await.unwrap();
     let (tx, mut state, _) = store.locked(&scope).await.unwrap();
-    state.status = "completed".into();
+    state.status = WorkStatus::Completed;
     Store::save(tx, &scope, &state).await.unwrap();
+}
+
+fn test_skills() -> PhysicianSkills {
+    PhysicianSkills::configured(None, false).unwrap()
 }
 
 #[tokio::test]
 #[ignore = "requires explicit local Postgres"]
-async fn migration_dates_existing_receipts_and_keeps_their_commands() {
-    use entities::command;
-    use sea_orm::ConnectionTrait;
+async fn currency_is_read_only_and_renewal_touches_only_the_current_chat_attempt() {
+    use entities::chat_attempt::{Column as C, Entity};
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
-    let (base, _) = url.rsplit_once('/').unwrap();
-    let name = format!("runtime_upgrade_{}", uuid::Uuid::new_v4().simple());
-    let admin = Database::connect(format!("{base}/postgres")).await.unwrap();
-    admin
-        .execute_unprepared(&format!("CREATE DATABASE {name}"))
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = Scope {
+        practice: Uuid::new_v4().to_string(),
+        physician: "physician".into(),
+        workspace: "workspace".into(),
+        chat: "chat".into(),
+    };
+    accept(
+        &store,
+        &scope,
+        &Input {
+            key: "input".into(),
+            text: "Hello".into(),
+            timezone: "UTC".into(),
+            scenario: None,
+        },
+        0,
+    )
+    .await
+    .unwrap();
+    let old = store.claim(&scope, 60).await.unwrap().unwrap();
+    assert_eq!(
+        store
+            .settle_chat_attempt(&old, engine::AttemptFailure::Interrupted)
+            .await
+            .unwrap(),
+        delivery::AttemptSettlement::Applied
+    );
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let tx = store.db.begin().await.unwrap();
+    let near_expiry = now(&tx).await.unwrap() + 5;
+    tx.commit().await.unwrap();
+    Entity::update_many()
+        .col_expr(C::Expires, Expr::value(near_expiry))
+        .filter(control::chat_scope(&scope))
+        .exec(&store.db)
         .await
         .unwrap();
-    let upgraded = format!("{base}/{name}");
-    // The schema as it stood before this migration: the recorded tables, and
-    // one receipt written by the previous code.
-    let before = Database::connect(&upgraded).await.unwrap();
-    before
-        .execute_unprepared(include_str!("../runtime.sql"))
+    let (locked, _, _) = store.locked(&scope).await.unwrap();
+    let read = tokio::time::timeout(
+        std::time::Duration::from_secs(1),
+        store.assert_current(&claim),
+    )
+    .await;
+    let mut host = PhysicianHost {
+        store: store.clone(),
+        claim: claim.clone(),
+        authority: OpenAuthority,
+    };
+    let sources =
+        tokio::time::timeout(std::time::Duration::from_secs(1), host.message_sources()).await;
+    let mut reads = tokio::task::JoinSet::new();
+    for index in 0..8 {
+        let call = Invocation {
+            id: format!("skill-{index}"),
+            name: harness::skills::SKILL_VIEW.into(),
+            arguments: "{}".into(),
+        };
+        reads.spawn(host.execute(
+            &call,
+            serde_json::json!({"name":"patient-record-retrieval"}),
+        ));
+    }
+    let resolved = host.read_result("absent-result");
+    let tool_reads = tokio::time::timeout(std::time::Duration::from_secs(2), async {
+        assert_eq!(resolved.await.unwrap(), None);
+        while let Some(result) = reads.join_next().await {
+            assert!(matches!(result.unwrap().unwrap(), ToolOutcome::Returned(_)));
+        }
+    })
+    .await;
+    locked.rollback().await.unwrap();
+    assert!(
+        sources.is_ok(),
+        "source refresh waited for a publication lock"
+    );
+    assert!(
+        tool_reads.is_ok(),
+        "tool reads waited for the conversation mutation lock"
+    );
+    let sources = sources.unwrap().unwrap().unwrap();
+    assert!(sources.iter().any(|message| message.text == "Hello"));
+    assert!(read.is_ok(), "currency check waited for a write lock");
+    read.unwrap().unwrap();
+    assert_eq!(
+        store.conversation(&scope).await.unwrap().attempts[1].expires,
+        near_expiry,
+        "currency check wrote the lease"
+    );
+    store.renew_claim(&claim).await.unwrap();
+    let state = store.conversation(&scope).await.unwrap();
+    assert_eq!(state.attempts[0].expires, near_expiry);
+    assert!(
+        state.attempts[1].expires >= near_expiry + 50,
+        "current lease was not renewed"
+    );
+    assert!(store.renew_claim(&old).await.is_err());
+    store.assert_current(&old).await.unwrap();
+    assert_eq!(
+        store
+            .settle_chat_attempt(&old, engine::AttemptFailure::Failed)
+            .await
+            .unwrap(),
+        delivery::AttemptSettlement::Superseded
+    );
+    let preserved = store.conversation(&scope).await.unwrap();
+    assert_eq!(preserved.failures, state.failures);
+    assert_eq!(preserved.attempts[1].status, AttemptStatus::Active);
+    assert_eq!(preserved.attempts[1].id, claim.attempt);
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn deleted_history_source_is_absent_from_chords_records_and_successor_request() {
+    struct Reader {
+        requests: Vec<Request>,
+        resume: bool,
+    }
+    impl Provider for Reader {
+        async fn exchange(
+            &mut self,
+            request: &Request,
+            _: &engine::Cancellation,
+            _: &engine::RunLimits,
+            _: &mut dyn engine::recipe::Observer,
+        ) -> Result<Turn, engine::Cause> {
+            self.requests.push(request.clone());
+            if self.resume {
+                return Ok(Turn {
+                    items: vec![Item::assistant("Continued from remaining sources.")],
+                    receipt: Value::Null,
+                    usage: Default::default(),
+                });
+            }
+            if self.requests.len() == 2 {
+                return Err("synthetic process loss before history acceptance".into());
+            }
+            Ok(Turn {
+                items: vec![Item::Call(engine::Invocation {
+                    id: "history-read".into(),
+                    name: engine::history::READ.into(),
+                    arguments: serde_json::json!({"id":"private-old-input"}).to_string(),
+                })],
+                receipt: Value::Null,
+                usage: Default::default(),
+            })
+        }
+    }
+    let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+    let store = Store::connect(&url).await.unwrap();
+    store.migrate().await.unwrap();
+    let scope = delivery_scope(&uuid::Uuid::new_v4().to_string(), "history-deletion");
+    let private = "Distinct private Chords message 🪕 that the product removes";
+    accept(
+        &store,
+        &scope,
+        &Input {
+            key: "private-old-input".into(),
+            text: private.into(),
+            timezone: "UTC".into(),
+            scenario: None,
+        },
+        0,
+    )
+    .await
+    .unwrap();
+    accept(&store, &scope, &delivery_input("current-input"), 0)
         .await
         .unwrap();
-    before
-        .execute_unprepared(
-            r#"INSERT INTO physician_runtime_commands (practice, physician, key, command)
-               VALUES ('p', 'd', 'k', '{"scope": {}, "input": {"text": "kept"}}')"#,
+    let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    let mut host = PhysicianHost {
+        store: store.clone(),
+        claim,
+        authority: OpenAuthority,
+    };
+    let bounds = engine::RunLimits {
+        max_calls: 8,
+        ..engine::RunLimits::default()
+    };
+    let mut reader = Reader {
+        requests: vec![],
+        resume: false,
+    };
+    assert!(
+        host.run(&mut reader, bounds, &engine::Cancellation::default())
+            .await
+            .is_err()
+    );
+    assert!(reader.requests[1].items.iter().any(|item| matches!(item,
+        Item::MaterializedResult { output, .. } if output.as_str().contains(private))));
+    // Remove the authored source at its product owner before the successor reads it.
+    let (tx, mut state, _) = store.locked(&scope).await.unwrap();
+    state
+        .messages
+        .retain(|message| message.source().id != "private-old-input");
+    state.attempts.last_mut().unwrap().expires = 0;
+    Store::save(tx, &scope, &state).await.unwrap();
+    let saved = store.conversation(&scope).await.unwrap();
+    assert!(
+        !serde_json::to_string(&saved.attempts)
+            .unwrap()
+            .as_str()
+            .contains(private),
+        "Chords run records must reference history text at its product owner"
+    );
+    host.claim = store.claim(&scope, 60).await.unwrap().unwrap();
+    reader.resume = true;
+    host.run(&mut reader, bounds, &engine::Cancellation::default())
+        .await
+        .unwrap();
+    assert_ne!(reader.requests[1].items, reader.requests[2].items);
+    assert!(
+        !serde_json::to_string(&reader.requests[2])
+            .unwrap()
+            .as_str()
+            .contains(private)
+    );
+    let finished = store.conversation(&scope).await.unwrap();
+    assert_eq!(finished.status, WorkStatus::Completed);
+    assert_eq!(
+        finished.messages.last().unwrap().text,
+        "Continued from remaining sources."
+    );
+    assert!(
+        !serde_json::to_string(&finished.attempts)
+            .unwrap()
+            .as_str()
+            .contains(private)
+    );
+    assert_eq!(finished.attempts.iter().flat_map(|attempt| &attempt.events).filter(|event|
+        matches!(&event.kind, engine::EventKind::ToolStarted(call) if call.id == "history-read")).count(), 1);
+}
+
+#[test]
+fn a_run_lifecycle_error_keeps_its_cause_and_a_wrapped_database_error_still_retries() {
+    use harness::engine::runs::RunError;
+    let lifecycle = RuntimeError::from(RunError::StillRunning);
+    assert_eq!(
+        std::error::Error::source(&lifecycle).and_then(|cause| cause.downcast_ref::<RunError>()),
+        Some(&RunError::StillRunning)
+    );
+    assert!(!persistence_failure(lifecycle).is::<engine::RetryablePersistence>());
+    let timeout = || DbErr::ConnectionAcquire(sea_orm::ConnAcquireErr::Timeout);
+    assert!(persistence_failure(timeout()).is::<engine::RetryablePersistence>());
+    assert!(
+        persistence_failure(RuntimeError::from(timeout())).is::<engine::RetryablePersistence>()
+    );
+}
+
+fn test_binding() -> crate::ModelBinding {
+    crate::ModelBinding {
+        model: "controlled".into(),
+        effort: "none".into(),
+        adapter: "fixed".into(),
+        context_window_tokens: 272_000,
+        max_input_tokens: 272_000,
+    }
+}
+fn test_chat_recipe() -> harness::engine::recipe::RequestRecipe {
+    crate::physician_chat::recipe(&test_binding(), "Owner", &test_skills())
+}
+fn test_revision_recipe() -> harness::engine::recipe::RequestRecipe {
+    crate::runtime::reply::recipe(&test_binding(), &test_skills())
+}
+/// Accepts a chat input with the test skills and recipe under one session byte.
+async fn accept(
+    store: &Store,
+    scope: &Scope,
+    input: &Input,
+    session: u8,
+) -> Result<Accepted, RuntimeError> {
+    store
+        .accept_authorized(
+            scope,
+            input,
+            vec![session; 32],
+            &test_skills(),
+            &test_chat_recipe(),
         )
         .await
-        .unwrap();
-    before.close().await.unwrap();
-    let store = Store::connect(&upgraded).await.unwrap();
-    store.migrate().await.unwrap();
-    store.migrate().await.unwrap();
-    let row = command::Entity::find_by_id(("p".to_owned(), "d".to_owned(), "k".to_owned()))
-        .one(&store.db)
-        .await
-        .unwrap()
-        .unwrap();
-    assert_eq!(row.command["input"]["text"], "kept");
-    let now = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .unwrap()
-        .as_secs() as i64;
-    assert!((now - row.accepted_at).abs() < 300, "{}", row.accepted_at);
-    // Not old enough yet: the 90 days count from the migration.
+}
+/// Accepts a reply revision with the test skills and revision recipe.
+async fn accept_revision_input(
+    store: &Store,
+    scope: &Scope,
+    input: &reply::RevisionInput,
+) -> Result<reply::RevisionAccepted, RuntimeError> {
     store
-        .compact_receipts(receipt::RECEIPT_FULL_SECONDS, 10)
+        .accept_revision(
+            scope,
+            input,
+            vec![7; 32],
+            &test_skills(),
+            &test_revision_recipe(),
+        )
         .await
-        .unwrap();
-    let row = command::Entity::find_by_id(("p".to_owned(), "d".to_owned(), "k".to_owned()))
-        .one(&store.db)
-        .await
-        .unwrap()
-        .unwrap();
-    assert_eq!(row.command["input"]["text"], "kept");
-    drop(store);
-    admin
-        .execute_unprepared(&format!("DROP DATABASE {name} WITH (FORCE)"))
-        .await
-        .unwrap();
-}
-
-fn event(sequence: u64, kind: engine::EventKind) -> Event {
-    Event {
-        attempt_id: "attempt".into(),
-        sequence,
-        kind,
-    }
-}
-
-fn said(text: &str) -> Item {
-    Item::Message {
-        role: "assistant".into(),
-        text: text.into(),
-    }
-}
-
-fn returned(items: Vec<Item>) -> engine::EventKind {
-    engine::EventKind::ProviderReturned(engine::Turn {
-        items,
-        receipt: serde_json::json!({}),
-    })
-}
-
-fn candidate(text: &str) -> engine::EventKind {
-    engine::EventKind::Candidate { text: text.into() }
-}
-
-#[test]
-fn the_published_answer_is_only_the_terminal_turns_text_in_order() {
-    let call = Item::Call(engine::Invocation {
-        id: "c".into(),
-        name: "skill_view".into(),
-        arguments: "{}".into(),
-    });
-    let events = [
-        event(1, returned(vec![said("Narration. "), call.clone()])),
-        event(
-            2,
-            engine::EventKind::ToolReturned {
-                call_id: "c".into(),
-                output: "{}".into(),
-                executed: true,
-            },
-        ),
-        event(
-            3,
-            returned(vec![
-                said("One. "),
-                Item::Opaque(serde_json::json!({"type": "reasoning"})),
-                said("Two."),
-            ]),
-        ),
-        event(4, candidate("Narration. One. Two.")),
-    ];
-    assert_eq!(terminal_answer(&events).unwrap(), "One. Two.");
-}
-
-#[test]
-fn a_blank_or_tool_calling_or_missing_terminal_turn_never_publishes() {
-    let call = Item::Call(engine::Invocation {
-        id: "c".into(),
-        name: "skill_view".into(),
-        arguments: "{}".into(),
-    });
-    let narrated = event(1, returned(vec![said("Narration."), call.clone()]));
-    for terminal in [
-        vec![],
-        vec![said("  \n")],
-        vec![Item::Opaque(serde_json::json!({}))],
-        vec![said("Answer"), call],
-    ] {
-        let events = [
-            narrated.clone(),
-            event(2, returned(terminal)),
-            event(3, candidate("Narration.")),
-        ];
-        assert!(terminal_answer(&events).is_err());
-    }
-    // The candidate must directly follow the turn that produced it.
-    assert!(terminal_answer(&[event(1, candidate("Narration."))]).is_err());
-    assert!(
-        terminal_answer(&[
-            event(1, returned(vec![said("Answer")])),
-            event(
-                2,
-                engine::EventKind::ToolReturned {
-                    call_id: "c".into(),
-                    output: "{}".into(),
-                    executed: false,
-                },
-            ),
-            event(3, candidate("Answer")),
-        ])
-        .is_err()
-    );
 }
 
 #[test]
@@ -1828,9 +2220,86 @@ fn an_input_without_a_scenario_serializes_as_before() {
         serde_json::to_value(&rehearsal).unwrap()["scenario"],
         "canary"
     );
-    let state: Conversation = serde_json::from_value(serde_json::json!({
-        "messages": [], "revision": 0, "status": "completed", "work": "", "attempts": []
-    }))
+    let untagged = control::conversation_state(&Conversation::new(
+        serde_json::from_value(serde_json::json!("fixture-package")).unwrap(),
+    ))
+    .unwrap();
+    assert!(untagged.get("scenario").is_none());
+    let state = control::conversation(
+        conversation::Model {
+            practice: "practice".into(),
+            physician: "physician".into(),
+            workspace: "workspace".into(),
+            chat: "chat".into(),
+            status: WorkStatus::Completed,
+            revision: 0,
+            session_hash: None,
+            state: untagged,
+        },
+        vec![],
+    )
     .unwrap();
     assert_eq!(state.scenario, None);
+}
+
+/// The saved text of every status value. A renamed variant must not change it.
+fn saved_text<S: sea_orm::ActiveEnum<Value = String> + sea_orm::Iterable>() -> Vec<(S, String)> {
+    S::iter()
+        .map(|status| {
+            let text = status.to_value();
+            (status, text)
+        })
+        .collect()
+}
+
+#[test]
+fn work_status_keeps_its_saved_text() {
+    use WorkStatus::*;
+    let expected = [
+        (Pending, "pending"),
+        (Active, "active"),
+        (Completed, "completed"),
+        (Held, "held"),
+        (Failed, "failed"),
+        (Cancelled, "cancelled"),
+    ];
+    assert_eq!(
+        saved_text(),
+        expected.map(|(status, text)| (status, text.to_owned()))
+    );
+}
+
+#[test]
+fn draft_status_keeps_its_saved_text() {
+    use reply::DraftStatus::*;
+    let expected = [
+        (Idle, "idle"),
+        (Pending, "pending"),
+        (Active, "active"),
+        (Completed, "completed"),
+        (Held, "held"),
+        (Failed, "failed"),
+        (Cancelled, "cancelled"),
+    ];
+    assert_eq!(
+        saved_text(),
+        expected.map(|(status, text)| (status, text.to_owned()))
+    );
+}
+
+#[test]
+fn attempt_status_keeps_its_saved_text() {
+    use AttemptStatus::*;
+    let expected = [
+        (Active, "active"),
+        (Interrupted, "interrupted"),
+        (Cancelled, "cancelled"),
+        (Failed, "failed"),
+        (Held, "held"),
+        (Completed, "completed"),
+    ];
+    assert_eq!(
+        saved_text(),
+        expected.map(|(status, text)| (status, text.to_owned()))
+    );
 }

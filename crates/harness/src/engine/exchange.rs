@@ -1,344 +1,214 @@
-//! One provider dispatch followed by acknowledged evidence retention. The two
-//! public facades supply different presentation policies, not different loops.
-
+//! Await the product's acknowledgment of each transport observation. Work can
+//! lose authority or have its inputs change while the provider is silent, so
+//! currency is checked in flight. Late usage survives a failed presentation fence.
 use super::*;
-use crate::execution as legacy;
+use recipe::{CallUsage, Observer, Provider, Request, StreamEvent};
+use tokio::sync::{mpsc, oneshot};
 
-trait Exchange {
-    type Response;
-    type Error;
+// Give cancellation a brief chance to retain final usage without waiting on a stalled callback.
+const GRACE: Duration = Duration::from_secs(1);
+type Receipt = oneshot::Sender<()>;
+struct Sink(mpsc::Sender<(StreamEvent, Receipt)>);
 
-    async fn dispatch(&mut self) -> Result<Self::Response, Self::Error>;
-    async fn retain(
-        &mut self,
-        result: Result<Self::Response, Self::Error>,
-    ) -> Result<Self::Response, Self::Error>;
-}
-
-async fn drive<E: Exchange>(exchange: &mut E) -> Result<E::Response, E::Error> {
-    let result = exchange.dispatch().await;
-    // Evidence retention precedes interpretation/currentness/publication. Each
-    // facade retains its existing failure and cancellation acknowledgment policy.
-    exchange.retain(result).await
-}
-
-pub(super) struct Acknowledged<'a, 'cancel> {
-    pub provider: &'a mut dyn Provider,
-    pub host: &'a mut dyn Host,
-    pub request: Request<'a>,
-    pub sequence: &'a mut u64,
-    pub gate: &'a mut Gate<'cancel>,
-}
-
-impl Exchange for Acknowledged<'_, '_> {
-    type Response = Turn;
-    type Error = Failure;
-
-    async fn dispatch(&mut self) -> Result<Turn, Failure> {
-        let mut sink = OwnerSink {
-            host: self.host,
-            attempt: self.request.attempt_id,
-            sequence: self.sequence,
-            ordinal: self.request.ordinal,
-            cancel: self.gate.cancel.clone(),
-            deadline: self.gate.deadline,
-        };
-        let request = Request {
-            attempt_id: self.request.attempt_id,
-            ordinal: self.request.ordinal,
-            context: self.request.context,
-            limits: self.request.limits,
-        };
-        self.gate
-            .wait(
-                "provider dispatch",
-                self.provider.complete_stream(request, &mut sink),
-            )
+#[async_trait]
+impl Observer for Sink {
+    async fn emit(&mut self, event: StreamEvent) -> Result<(), Cause> {
+        let (receipt, ack) = oneshot::channel();
+        self.0
+            .send((event, receipt))
             .await
-    }
-
-    async fn retain(&mut self, result: Result<Turn, Failure>) -> Result<Turn, Failure> {
-        let turn = result?;
-        record(
-            self.gate,
-            self.host,
-            self.request.attempt_id,
-            self.sequence,
-            EventKind::ProviderReturned(turn.clone()),
-        )
-        .await?;
-        Ok(turn)
+            .map_err(|_| "observation channel closed")?;
+        Ok(ack.await?)
     }
 }
 
-pub(super) async fn acknowledged(exchange: &mut Acknowledged<'_, '_>) -> Result<Turn, Failure> {
-    drive(exchange).await
-}
-
-const SETTLEMENT_EXPIRED: &str = "provider cancellation settlement deadline exceeded";
-
-/// One cancellation window per phase: transport/callback/drain settlement,
-/// followed by final evidence retention with its own single one-second grace.
-/// Normal durable writes have no timeout. Dropping a callback at its deadline
-/// leaves its write uncertain, never safe to retry.
-#[derive(Default)]
-struct Settlement {
-    deadline: Option<Instant>,
-}
-
-impl Settlement {
-    fn observe(&mut self, cancel: &legacy::Cancellation) {
-        if cancel.is_cancelled() && self.deadline.is_none() {
-            self.deadline = Some(Instant::now() + Duration::from_secs(1));
-        }
-    }
-
-    async fn deadline(&mut self, cancel: &legacy::Cancellation) {
-        // The compatibility cancellation token is atomic, not a notification.
-        // Poll even while an owner future is pending so it cannot hide a stop.
-        while self.deadline.is_none() {
-            self.observe(cancel);
-            if self.deadline.is_none() {
-                tokio::time::sleep(Duration::from_millis(10)).await;
-            }
-        }
-        tokio::time::sleep_until(self.deadline.expect("observed cancellation")).await;
-    }
-
-    async fn wait<T>(
-        &mut self,
-        cancel: &legacy::Cancellation,
-        future: impl Future<Output = Result<T, String>>,
-    ) -> Result<T, String> {
-        self.observe(cancel);
-        tokio::select! {
+// Once cancellation starts, draining transport and its callbacks share one
+// deadline. Final retention gets a separate grace period. A drain that runs
+// out ends as a cancellation; when a presentation failure started the drain,
+// `dispatch` returns that failure instead.
+async fn settle<T>(
+    cancel: &Cancellation,
+    deadline: &mut Option<Instant>,
+    future: impl Future<Output = Result<T, Failure>>,
+) -> Result<T, Failure> {
+    tokio::pin!(future);
+    let at = match *deadline {
+        Some(at) => at,
+        None => tokio::select! {
             biased;
-            // Responsive evidence can still acknowledge at the boundary. A
-            // pending write gets no additional time and remains uncertain.
-            result = future => result,
-            () = self.deadline(cancel) => Err(SETTLEMENT_EXPIRED.into()),
-        }
+            value=&mut future=>return value,
+            ()=cancel.cancelled()=>*deadline.insert(Instant::now()+GRACE)
+        },
+    };
+    tokio::time::timeout_at(at, future)
+        .await
+        .map_err(|_| Failure::Cancelled)?
+}
+
+fn provider_failure(cause: Cause) -> Failure {
+    match cause.downcast::<Failure>() {
+        Ok(failure) => *failure,
+        Err(cause) => Failure::Provider(cause),
     }
 }
 
-struct Observed<'a, P, O> {
-    provider: &'a mut P,
-    owner: &'a mut O,
-    request: &'a legacy::Request,
-    progress: &'a mut legacy::Progress,
-    cancel: &'a legacy::Cancellation,
-    emit: &'a mut (dyn FnMut(legacy::StreamEvent) -> Result<(), String> + Send),
-    usage: legacy::Usage,
-    identity: Value,
-    evidence_failed: bool,
-    settlement: Settlement,
-}
-
-impl<P: legacy::Provider, O: legacy::Owner> Exchange for Observed<'_, P, O> {
-    type Response = legacy::Response;
-    type Error = String;
-
-    async fn dispatch(&mut self) -> Result<legacy::Response, String> {
-        use legacy::{Record, StreamEvent};
-        let sequence = self.progress.calls;
-        // A synchronous transport cannot await the owner. Bound its bridge and
-        // drain observations while the exchange is pending, including after a
-        // presentation refusal. Transport settlement remains cooperative.
-        let (observations, mut pending_observations) = tokio::sync::mpsc::channel(64);
-        let mut deliver = |event: StreamEvent| {
-            match &event {
-                StreamEvent::Usage(usage) => {
-                    self.usage.input_tokens = usage.input_tokens.or(self.usage.input_tokens);
-                    self.usage.output_tokens = usage.output_tokens.or(self.usage.output_tokens);
-                }
-                StreamEvent::ProviderIdentity(identity) => self.identity = identity.clone(),
-                StreamEvent::Text(_) => {}
-            }
-            let pending = match &event {
-                StreamEvent::Text(text) => Err(text.clone()),
-                _ => Ok(Record::Observation {
-                    sequence,
-                    usage: self.usage.clone(),
-                    provenance: self.identity.clone(),
-                }),
-            };
-            observations
-                .try_send(pending)
-                .map_err(|_| "provider observation backpressure".to_owned())?;
-            self.cancel.check()?;
-            (self.emit)(event)
-        };
-        let exchange = self
-            .provider
-            .exchange(self.request, self.cancel, &mut deliver);
-        tokio::pin!(exchange);
-        let mut delivery_error = None;
-        let check_interval = Duration::from_millis(100);
-        let mut currentness =
-            tokio::time::interval_at(Instant::now() + check_interval, check_interval);
+pub(super) async fn dispatch<P: Provider + ?Sized>(
+    run: &mut work::Run<'_>,
+    provider: &mut P,
+    request: &Request,
+    context: &DispatchContext,
+) -> Result<Turn, Failure> {
+    let (send, mut receive) = mpsc::channel(1);
+    let mut sink = Sink(send);
+    let cancel = run.cancel;
+    let limits = run.limits;
+    let (transport, interrupt) = cancel.for_request();
+    let wire_request = run.for_provider(request)?;
+    let pending = provider.exchange(&wire_request, &transport, &limits, &mut sink);
+    tokio::pin!(pending);
+    let mut deadline = None;
+    let mut call = CallUsage::new(context.usage.input_tokens);
+    let mut receipt = Value::Null;
+    let mut visible = false;
+    let mut presentation: Option<Failure> = None;
+    let prior = run.progress.usage.clone();
+    // The transport may be dropped at cancellation during any callback.
+    // Count available observations as they arrive. Recovery independently
+    // reconstructs usage from the acknowledgments that reached the store.
+    let account = |progress: &mut recipe::Progress, call: &CallUsage| {
+        progress.clone_from(&prior);
+        progress.account(call);
+    };
+    account(&mut run.progress.usage, &call);
+    let interval = work::CURRENCY_INTERVAL;
+    let mut tick = tokio::time::interval_at(Instant::now() + interval, interval);
+    // Keep the first presentation/currentness failure authoritative even when
+    // a later acknowledgment fails or exhausts the drain grace.
+    let result = async {
         let result = loop {
+            if cancel.is_cancelled() {
+                deadline.get_or_insert_with(|| Instant::now() + GRACE);
+            }
             tokio::select! {
                 biased;
-                () = self.settlement.deadline(self.cancel) => break Err(SETTLEMENT_EXPIRED.into()),
-                Some(observation) = pending_observations.recv() => match observation {
-                    Ok(record) => {
-                        if let Err(error) = self.settlement.wait(self.cancel, self.owner.record(record)).await {
-                            self.evidence_failed = true;
-                            return Err(error);
+                () = tokio::time::sleep_until(deadline.unwrap_or_else(Instant::now)), if deadline.is_some() => {
+                    break Err(Failure::Cancelled);
+                }
+                () = cancel.cancelled(), if deadline.is_none() => {
+                    deadline = Some(Instant::now() + GRACE);
+                }
+                _ = tick.tick(), if presentation.is_none() => {
+                    if let Err(reason) = settle(cancel, &mut deadline, async {run.product.assert_current().await.map_err(Failure::Host)}).await {
+                        interrupt.send_replace(true);
+                        presentation = Some(reason);
+                        deadline.get_or_insert_with(|| Instant::now() + GRACE);
+                    }
+                }
+                Some((event,ack))=receive.recv()=>{
+                    let kind = match event {
+                        StreamEvent::Usage(reported) => {
+                            call.usage.merge(&reported);
+                            EventKind::ProviderObservation { usage: call.usage.clone(), receipt: receipt.clone() }
                         }
-                    },
-                    Err(text) if delivery_error.is_none() && !self.cancel.is_cancelled() => {
-                        if let Err(error) = self.settlement.wait(self.cancel, async {
-                            self.cancel.check()?;
-                            self.owner.provisional(sequence, &text).await
-                        }).await {
-                            delivery_error = Some(error);
-                            self.cancel.cancel();
+                        StreamEvent::Receipt { identity, usage: reported } => {
+                            receipt = identity;
+                            call.usage.merge(&reported);
+                            EventKind::ProviderObservation { usage: call.usage.clone(), receipt: receipt.clone() }
                         }
-                    },
-                    Err(_) => {},
-                },
-                result = &mut exchange => break result,
-                _ = currentness.tick() => {
-                    if self.settlement.wait(self.cancel, self.owner.check()).await.is_err() {
-                        self.cancel.cancel();
-                    }
+                        StreamEvent::Text(delta) => {
+                            if presentation.is_some() {
+                                drop(ack);
+                                continue;
+                            }
+                            let has_text = !delta.text.is_empty();
+                            let delivered = settle(cancel, &mut deadline, async {
+                                cancel.check()?;
+                                run.product.live_text(run.progress.provider_ordinal, delta)
+                                    .await.map_err(Failure::Host)
+                            }).await;
+                            match delivered {
+                                Ok(delivery) => {
+                                    visible |= has_text && delivery == recipe::TextDelivery::Visible;
+                                    let _ = ack.send(());
+                                }
+                                Err(error) => {
+                                    drop(ack);
+                                    interrupt.send_replace(true);
+                                    presentation.get_or_insert(error);
+                                    deadline.get_or_insert_with(|| Instant::now() + GRACE);
+                                }
+                            }
+                            continue;
+                        }
+                    };
+                    call.observe(&kind);
+                    account(&mut run.progress.usage, &call);
+                    settle(cancel, &mut deadline, run.record(kind)).await?;
+                    let _ = ack.send(());
                 }
-            }
-        };
-        while let Ok(observation) = pending_observations.try_recv() {
-            match observation {
-                Ok(record) => {
-                    if let Err(error) = self
-                        .settlement
-                        .wait(self.cancel, self.owner.record(record))
-                        .await
-                    {
-                        self.evidence_failed = true;
-                        return Err(error);
+                result=&mut pending=>break result.map_err(|cause| {
+                    if visible && cause.is::<crate::responses::Transient>() {
+                        return Failure::AfterOutput(cause);
                     }
-                }
-                Err(text) if delivery_error.is_none() && !self.cancel.is_cancelled() => {
-                    if let Err(error) = self
-                        .settlement
-                        .wait(self.cancel, async {
-                            self.cancel.check()?;
-                            self.owner.provisional(sequence, &text).await
-                        })
-                        .await
-                    {
-                        delivery_error = Some(error);
-                        self.cancel.cancel();
-                    }
-                }
-                Err(_) => {}
-            }
-        }
-        // A successful late exchange still carries usage; the caller fences
-        // effects/publication only after retain acknowledges that evidence.
-        match result {
-            Ok(response) => Ok(response),
-            Err(error) => Err(delivery_error.unwrap_or(error)),
-        }
-    }
-
-    async fn retain(
-        &mut self,
-        result: Result<legacy::Response, String>,
-    ) -> Result<legacy::Response, String> {
-        use legacy::Record;
-        // A failed durable acknowledgment stops immediately; it is not a
-        // transport failure and must not cause another write to the failed owner.
-        if self.evidence_failed {
-            // Available evidence still counts even when its write was refused
-            // or timed out. Do not retry the uncertain write to obtain an ack.
-            account(self.progress, &self.usage);
-            return result;
-        }
-        // Transport settlement may have consumed its entire cancellation
-        // window. Give final evidence one bounded grace period, shared by all
-        // records below, so a responsive async durable owner can actually ack.
-        // This is a phase transition, never a per-record timeout reset.
-        let mut retention = Settlement::default();
-        retention.observe(self.cancel);
-        let sequence = self.progress.calls;
-        let response = match result {
-            Ok(mut response) => {
-                response.usage.input_tokens =
-                    response.usage.input_tokens.or(self.usage.input_tokens);
-                response.usage.output_tokens =
-                    response.usage.output_tokens.or(self.usage.output_tokens);
-                response
-            }
-            Err(reason) => {
-                account(self.progress, &self.usage);
-                retention
-                    .wait(
-                        self.cancel,
-                        self.owner.record(Record::Observation {
-                            sequence,
-                            usage: self.usage.clone(),
-                            provenance: self.identity.clone(),
-                        }),
-                    )
-                    .await?;
-                retention
-                    .wait(
-                        self.cancel,
-                        self.owner.record(Record::Failure {
-                            sequence,
-                            reason: reason.clone(),
-                        }),
-                    )
-                    .await?;
-                return Err(reason);
-            }
-        };
-        // Live counters retain available usage even if final acknowledgment
-        // fails. Recovery still reconstructs durable truth from owner records.
-        account(self.progress, &response.usage);
-        retention
-            .wait(
-                self.cancel,
-                self.owner.record(Record::Exchange {
-                    sequence,
-                    response: response.clone(),
+                    provider_failure(cause)
                 }),
-            )
-            .await?;
-        Ok(response)
-    }
-}
 
-fn account(progress: &mut legacy::Progress, usage: &legacy::Usage) {
-    progress.known_tokens = progress
-        .known_tokens
-        .saturating_add(usage.input_tokens.unwrap_or(0))
-        .saturating_add(usage.output_tokens.unwrap_or(0));
-    if usage.input_tokens.is_none() || usage.output_tokens.is_none() {
-        progress.unknown_usage = progress.unknown_usage.saturating_add(1);
+            }
+        };
+        let mut final_deadline =
+            (deadline.is_some() || cancel.is_cancelled()).then(|| Instant::now() + GRACE);
+        match result {
+            Ok(mut turn) => {
+                run.assign_call_ids(&mut turn);
+                call.usage.merge(&turn.usage);
+                turn.usage = call.usage.clone();
+                call.observe(&EventKind::ProviderReturned(turn.clone()));
+                account(&mut run.progress.usage, &call);
+                settle(
+                    cancel,
+                    &mut final_deadline,
+                    run.record(EventKind::ProviderReturned(turn.clone())),
+                )
+                .await?;
+                run.progress.warned |= context.warning_added;
+                Ok(turn)
+            }
+            Err(error) => {
+                settle(
+                    cancel,
+                    &mut final_deadline,
+                    run.record(EventKind::ProviderObservation {
+                        usage: call.usage.clone(),
+                        receipt,
+                    }),
+                )
+                .await?;
+                let kind = if crate::responses::context_rejected(&error) {
+                    EventKind::ContextRejected
+                } else if crate::responses::provider_blocked(&error) {
+                    EventKind::ProviderBlocked {
+                        reason: error.to_string(),
+                    }
+                } else if error.transport_retry() {
+                    EventKind::TransportRetry {
+                        reason: error.to_string(),
+                    }
+                } else {
+                    EventKind::ProviderFailed {
+                        reason: error.to_string(),
+                    }
+                };
+                settle(cancel, &mut final_deadline, run.record(kind)).await?;
+                if error.transport_retry() {
+                    run.progress.usage.transport_retries += 1;
+                }
+                Err(error)
+            }
+        }
     }
-}
-
-pub(crate) async fn observed<P: legacy::Provider, O: legacy::Owner>(
-    provider: &mut P,
-    owner: &mut O,
-    request: &legacy::Request,
-    progress: &mut legacy::Progress,
-    cancel: &legacy::Cancellation,
-    emit: &mut (dyn FnMut(legacy::StreamEvent) -> Result<(), String> + Send),
-) -> Result<legacy::Response, String> {
-    drive(&mut Observed {
-        provider,
-        owner,
-        request,
-        progress,
-        cancel,
-        emit,
-        usage: legacy::Usage::default(),
-        identity: Value::Null,
-        evidence_failed: false,
-        settlement: Settlement::default(),
-    })
-    .await
+    .await;
+    if let Some(error) = presentation {
+        return Err(error);
+    }
+    result
 }

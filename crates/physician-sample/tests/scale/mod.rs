@@ -24,6 +24,9 @@ use serde_json::{Value, json};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
+#[path = "../support/models.rs"]
+pub(crate) mod models;
+
 pub const PROJECT: &str = "coda-local-physician";
 pub const FIXED_TEXT: &str = "Noted.";
 
@@ -202,6 +205,10 @@ impl Process {
         directory: &Path,
     ) -> Self {
         let mut env = kept_env(directory);
+        // The synthetic stack declares each real product role at startup.
+        for (key, value) in models::environment() {
+            env.insert(key, value);
+        }
         for (key, value) in extra {
             env.insert((*key).to_owned(), (*value).to_owned());
         }
@@ -292,6 +299,100 @@ fn signal_group(pid: u32, signal: &str) {
         .stdout(Stdio::null())
         .stderr(Stdio::null())
         .status();
+}
+
+/// A separate provider process. Worker restarts leave its transport controls in place.
+pub struct ResponsesStub {
+    pub port: String,
+    _process: Process,
+    failures: PathBuf,
+    rejections: PathBuf,
+    rounds: PathBuf,
+    requests: PathBuf,
+}
+
+impl ResponsesStub {
+    pub async fn start(directory: &Path, failures: u32, delay_ms: u64, rounds: &str) -> Self {
+        Self::start_with_reply(directory, failures, delay_ms, rounds, FIXED_TEXT).await
+    }
+
+    pub async fn start_with_reply(
+        directory: &Path,
+        failures: u32,
+        delay_ms: u64,
+        rounds: &str,
+        reply: &str,
+    ) -> Self {
+        let port = free_port();
+        let counter = directory.join("remaining-provider-failures");
+        std::fs::write(&counter, failures.to_string()).unwrap();
+        let rejections = directory.join("remaining-provider-rejections");
+        std::fs::write(&rejections, "0").unwrap();
+        let script = directory.join("provider-tool-rounds.json");
+        std::fs::write(&script, rounds).unwrap();
+        let requests = directory.join("provider-requests.jsonl");
+        std::fs::write(&requests, "").unwrap();
+        let mut process = Process::spawn(
+            "responses",
+            "python3",
+            &[
+                concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/../../scripts/physician-responses-stub.py"
+                ),
+                "--port",
+                &port.to_string(),
+                "--failures",
+                counter.to_str().unwrap(),
+                "--rejections",
+                rejections.to_str().unwrap(),
+                "--delay-ms",
+                &delay_ms.to_string(),
+                "--rounds-file",
+                script.to_str().unwrap(),
+                "--reply",
+                reply,
+                "--requests-file",
+                requests.to_str().unwrap(),
+            ],
+            &[],
+            directory,
+        );
+        wait_ready(&mut process, port).await;
+        Self {
+            port: port.to_string(),
+            _process: process,
+            failures: counter,
+            rejections,
+            rounds: script,
+            requests,
+        }
+    }
+
+    pub fn requests(&self) -> Vec<serde_json::Value> {
+        std::fs::read_to_string(&self.requests)
+            .unwrap()
+            .lines()
+            .map(|line| serde_json::from_str(line).unwrap())
+            .collect()
+    }
+
+    /// The next `count` provider responses break the stream contract, which
+    /// the harness reads as a protocol error, so each of those attempts fails
+    /// and recovery tries it again.
+    pub fn fail_next(&self, count: u32) {
+        std::fs::write(&self.failures, count.to_string()).unwrap();
+    }
+
+    /// The provider rejects the next `count` requests with HTTP 400, which
+    /// holds the run.
+    pub fn reject_next(&self, count: u32) {
+        std::fs::write(&self.rejections, count.to_string()).unwrap();
+    }
+
+    pub fn tool_rounds(&self, rounds: &serde_json::Value) {
+        std::fs::write(&self.rounds, serde_json::to_vec(rounds).unwrap()).unwrap();
+    }
 }
 
 pub struct Valkey {

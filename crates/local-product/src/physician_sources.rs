@@ -3,6 +3,9 @@
 //! come from a source adapter, never projection prose or a provider. This
 //! reader neither discovers new records nor claims that a snapshot is a
 //! complete chart.
+mod chart;
+pub use chart::{ChartInputError, ChartRequest, ChartScope, SEARCH_TOOL, read_tool, search_tool};
+
 use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
@@ -123,47 +126,38 @@ pub fn workspace_id(source_id: &str, source_patient_id: &str) -> String {
     format!("pw-{}", &digest[..32])
 }
 
-/// Exact, per-reference outcomes with a byte bound. A missing reference never
-/// means no clinical information exists. No source version is silently selected.
+/// The only source-reading capability granted to a physician reply revision.
+pub const READ_TOOL: &str = "read_patient_sources";
+
+/// Dispatch a tool against this revision's pinned sources. A correctable call
+/// yields model feedback. Invalid evidence still stops the reader.
+pub fn read_sources(
+    sources: &[SourceRevision],
+    workspace: &str,
+    call: &harness::engine::Invocation<Value>,
+) -> Result<harness::engine::ToolOutcome, harness::engine::Cause> {
+    use harness::engine::ToolOutcome;
+    match ChartRequest::parse(&call.name, &call.arguments, ChartScope::PinnedReply) {
+        Ok(read) => read.run(workspace, 0, sources).map_err(Into::into),
+        Err(reason) => Ok(ToolOutcome::refused(reason.to_string())),
+    }
+}
+
+/// Reads candidate IDs inside the supplied pinned observation.
 pub fn exact_read(
     sources: &[SourceRevision],
     workspace: &str,
     references: &[String],
     max_bytes: usize,
-) -> Result<Value, String> {
-    if references.is_empty() || references.len() > 8 {
-        return Err("read requires one to eight exact references".into());
+) -> Result<harness::engine::ToolOutcome, String> {
+    match ChartRequest::parse(
+        READ_TOOL,
+        &json!({"references":references,"max_result_bytes":max_bytes}),
+        ChartScope::PinnedReply,
+    ) {
+        Ok(read) => read.run(workspace, 0, sources),
+        Err(reason) => Ok(harness::engine::ToolOutcome::refused(reason)),
     }
-    let budget = max_bytes.clamp(4096, 65536);
-    let mut results = Vec::new();
-    for reference in references {
-        let result = match sources
-            .iter()
-            .find(|s| s.workspace == workspace && s.candidate_id == *reference)
-        {
-            Some(source) => {
-                source.validate()?;
-                json!({"reference": reference, "outcome": "available", "revision": source.revision,
-                    "record_type": source.record_type, "dates": source.dates,
-                    "read_representation": "native_record", "content": source.content,
-                    "readable_parts": source.readable_parts,
-                    "sha256": source.sha256, "provenance": source.provenance})
-            }
-            None => {
-                json!({"reference": reference, "outcome": "unavailable", "reason": "not_in_recorded_observation"})
-            }
-        };
-        results.push(result);
-        if serde_json::to_vec(&json!({"results": results}))
-            .map_err(|e| e.to_string())?
-            .len()
-            > budget
-        {
-            *results.last_mut().unwrap() =
-                json!({"reference": reference, "outcome": "over_budget"});
-        }
-    }
-    Ok(json!({"results": results}))
 }
 
 /// A source that changed revision between two pins of the same work.
@@ -190,9 +184,8 @@ pub struct SourceRefresh {
     pub corrected: Vec<SourceCorrection>,
     /// Sources that are no longer in the observation.
     pub withdrawn: Vec<SourceRevision>,
-    /// How many execution records the work had retained when it was
+    /// How many execution facts the work had retained when it was
     /// refreshed. Only a model call dispatched after this point may finish.
-    #[serde(default)]
     pub after_records: usize,
 }
 
@@ -293,48 +286,64 @@ pub fn unread_result(references: &[String]) -> Value {
 /// `Err` when no model call followed the latest refresh, which the run loop
 /// never does: a replayed or stale terminal. `Ok` lists the references still
 /// unread; empty means the work may finish.
-pub fn caught_up(
-    records: &[harness::execution::Record],
+#[cfg(test)]
+fn caught_up(
+    events: &[harness::engine::Event],
     refreshes: &[SourceRefresh],
     current: &[SourceRevision],
 ) -> Result<Vec<String>, String> {
-    use harness::execution::{Item, Record};
+    use harness::engine::EventKind;
+    let dispatched = events
+        .iter()
+        .rposition(|event| matches!(event.kind, EventKind::ProviderStarted { .. }));
+    caught_up_context(
+        dispatched,
+        events
+            .iter()
+            .map(harness::engine::recipe::ReplayEvent::Admitted),
+        refreshes,
+        current,
+    )
+}
+
+/// Product source rules consume the harness's delivery coverage. The caller
+/// supplies the latest dispatch's position relative to its source refresh.
+pub fn caught_up_context<'a>(
+    dispatched: Option<usize>,
+    records: impl IntoIterator<Item = impl Into<harness::engine::recipe::ReplayEvent<'a>>>,
+    refreshes: &[SourceRefresh],
+    current: &[SourceRevision],
+) -> Result<Vec<String>, String> {
+    use harness::engine::results;
     let Some(latest) = refreshes.last() else {
         return Ok(vec![]);
     };
-    let Some((index, context)) = records
-        .iter()
-        .enumerate()
-        .rev()
-        .find_map(|(index, record)| match record {
-            Record::Dispatch { request, .. } => Some((index, &request.items)),
-            _ => None,
-        })
-    else {
+    let Some(index) = dispatched else {
         return Err("no model call followed the source refresh".into());
     };
     if index < latest.after_records {
         return Err("no model call followed the source refresh".into());
     }
+    let delivered: Vec<chart::RecordReceipt> = results::delivered_originals(records, &[])
+        .map_err(|cause| cause.to_string())?
+        .into_iter()
+        .filter_map(|output| serde_json::from_str::<chart::ReadReceipt>(output).ok())
+        .flat_map(|receipt| receipt.results)
+        .collect();
     let mut unread = Vec::new();
     for reference in refreshes.iter().flat_map(SourceRefresh::to_read) {
         let Some(source) = current.iter().find(|s| s.candidate_id == reference) else {
             continue; // withdrawn again since
         };
-        let read = context.iter().any(|item| match item {
-            Item::Result { value, .. } => value["results"].as_array().is_some_and(|results| {
-                results.iter().any(|r| {
-                    r["reference"] == source.candidate_id.as_str()
-                        && r["outcome"] == "available"
-                        && r["revision"] == source.revision.as_str()
-                        && r["read_representation"] == "native_record"
-                        && r["content"] == source.content.as_str()
-                        && r["sha256"] == source.sha256.as_str()
-                        && r["provenance"] == source.provenance
-                })
-            }),
-            _ => false,
-        });
+        let results: Vec<_> = delivered
+            .iter()
+            .filter(|receipt| receipt.names(source))
+            .collect();
+        let read = results.iter().any(|receipt| matches!(receipt,
+            chart::RecordReceipt::Available { content, sha256, provenance, .. }
+                if content == &source.content && sha256 == &source.sha256 && provenance == &source.provenance
+        )) || (0..=source.readable_parts.len())
+            .all(|part| delivered_part(source, part, &results));
         if !read && !unread.contains(&reference) {
             unread.push(reference);
         }
@@ -342,96 +351,49 @@ pub fn caught_up(
     Ok(unread)
 }
 
-/// A versioned in-memory source observation for the single-process inline
-/// path. The version moves only when a recorded observation changes, the
-/// same rule as the hosted runtime's source store. A stand-in for a source
-/// owner, seeded from the retained snapshot; not production ingestion.
-#[derive(Debug, Clone, Default)]
-pub struct Observation {
-    version: u64,
-    sources: Vec<SourceRevision>,
-    // Retained after correction and withdrawal so a replay cannot roll back
-    // the observation or redefine an immutable revision identity.
-    history: Vec<SourceRevision>,
-}
-
-impl Observation {
-    /// Seeds version 1 with validated, uniquely identified sources (version 0
-    /// when empty).
-    pub fn seeded(sources: Vec<SourceRevision>) -> Result<Self, String> {
-        let mut observation = Self::default();
-        for source in sources {
-            observation.record(source)?;
-        }
-        observation.version = u64::from(!observation.sources.is_empty());
-        Ok(observation)
+/// A last page can be requested directly. Only the union of delivered exact
+/// spans can establish that a changed record was read after a refresh.
+fn delivered_part(source: &SourceRevision, part: usize, results: &[&chart::RecordReceipt]) -> bool {
+    let (_, text) = chart::part(source, part).expect("existing source part");
+    let mut spans: Vec<_> = results
+        .iter()
+        .filter_map(|receipt| match receipt {
+            chart::RecordReceipt::Passage {
+                part: delivered_part,
+                start_byte,
+                end_byte,
+                content,
+                ..
+            } if *delivered_part == part && text.get(*start_byte..*end_byte) == Some(content) => {
+                Some((*start_byte, *end_byte))
+            }
+            _ => None,
+        })
+        .collect();
+    if spans.is_empty() {
+        return false;
     }
-
-    /// Records an unseen revision, including restoration after withdrawal.
-    /// Identical historical revisions are no-ops; conflicting content or
-    /// provenance for the same identity is refused. Returns whether changed.
-    pub fn record(&mut self, source: SourceRevision) -> Result<bool, String> {
-        source.validate()?;
-        if let Some(recorded) = self.history.iter().find(|recorded| {
-            recorded.workspace == source.workspace
-                && recorded.candidate_id == source.candidate_id
-                && recorded.revision == source.revision
-        }) {
-            return if *recorded == source {
-                Ok(false)
-            } else {
-                Err("conflicting source revision identity".into())
-            };
+    spans.sort_unstable();
+    let mut through = 0;
+    for (start, end) in spans {
+        if start > through {
+            return false;
         }
-        self.history.push(source.clone());
-        match self
-            .sources
-            .iter_mut()
-            .find(|s| s.workspace == source.workspace && s.candidate_id == source.candidate_id)
-        {
-            Some(existing) => *existing = source,
-            None => self.sources.push(source),
-        }
-        self.version += 1;
-        Ok(true)
+        through = through.max(end);
     }
-
-    /// Withdraws a source. Returns whether it was present.
-    pub fn withdraw(&mut self, workspace: &str, candidate_id: &str) -> bool {
-        let before = self.sources.len();
-        self.sources
-            .retain(|s| !(s.workspace == workspace && s.candidate_id == candidate_id));
-        let changed = self.sources.len() != before;
-        if changed {
-            self.version += 1;
-        }
-        changed
-    }
-
-    /// The current version and this workspace's sources.
-    pub fn workspace(&self, workspace: &str) -> (u64, Vec<SourceRevision>) {
-        (
-            self.version,
-            self.sources
-                .iter()
-                .filter(|s| s.workspace == workspace)
-                .cloned()
-                .collect(),
-        )
-    }
+    through == text.len()
 }
 
 /// The ordinary exact-read definition. No memory or delegation tools are
 /// advertised by a reply revision.
 pub fn read_definition() -> Value {
-    json!({"type":"function", "name":"read_patient_sources", "description":"Read exact retained source revisions from this work's recorded patient source observation. Unavailable is not absence. No search or projection grants citation authority.",
-        "parameters":{"type":"object", "properties":{"references":{"type":"array","items":{"type":"string"},"minItems":1,"maxItems":8},"max_result_bytes":{"type":"integer","minimum":4096,"maximum":65536}},"required":["references","max_result_bytes"],"additionalProperties":false}})
+    read_tool(ChartScope::PinnedReply).function()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use harness::execution::{Item, Record, Request};
+    use harness::engine::{Event, EventKind, Item};
 
     fn source(revision: &str, content: &str) -> SourceRevision {
         SourceRevision {
@@ -448,45 +410,194 @@ mod tests {
         }
     }
 
-    #[test]
-    fn inline_historical_reimports_do_not_rollback_or_restore() {
-        let original = source("r1", "Potassium 4.1");
-        let corrected = source("r2", "Potassium 6.8");
-        let mut observation = Observation::seeded(vec![original.clone()]).unwrap();
-        assert!(observation.record(corrected.clone()).unwrap());
-        let before = observation.workspace("patient");
-        assert!(!observation.record(original.clone()).unwrap());
-        assert_eq!(observation.workspace("patient"), before);
-        assert!(observation.withdraw("patient", "lab"));
-        let withdrawn = observation.workspace("patient");
-        for revision in [original, corrected] {
-            assert!(!observation.record(revision).unwrap());
-            assert_eq!(observation.workspace("patient"), withdrawn);
+    fn accepted_result(
+        events: &mut Vec<Event>,
+        id: &str,
+        original: &str,
+        view: harness::engine::results::ResultView,
+    ) {
+        use harness::engine::{RequestItem, SavedRequest, Turn, results::ToolResult};
+        if !events.iter().any(
+            |event| matches!(&event.kind, EventKind::ToolReturned { call_id, .. } if call_id == id),
+        ) {
+            events.push(Event {
+                attempt_id: "inline".into(),
+                sequence: events.len() as u64 + 1,
+                ordinal: events.len() as u64 + 1,
+                kind: EventKind::ToolReturned {
+                    call_id: id.into(),
+                    result: ToolResult::Original(original.into()),
+                },
+            });
         }
-        let restored = source("r3", "Potassium 4.2");
-        assert!(observation.record(restored.clone()).unwrap());
-        assert_eq!(observation.workspace("patient"), (4, vec![restored]));
+        let sequence = events.len() as u64 + 1;
+        events.push(Event {
+            attempt_id: "inline".into(),
+            sequence,
+            ordinal: sequence,
+            kind: EventKind::ProviderStarted {
+                dispatched_at_unix_ms: 1,
+                context: Default::default(),
+                request: SavedRequest {
+                    added: vec![Item::Result {
+                        call_id: id.into(),
+                        output: view,
+                    }],
+                    items: vec![RequestItem::Event {
+                        attempt: "inline".into(),
+                        sequence,
+                        index: 0,
+                    }],
+                },
+            },
+        });
+        events.push(Event {
+            attempt_id: "inline".into(),
+            sequence: sequence + 1,
+            ordinal: sequence,
+            kind: EventKind::ProviderReturned(Turn {
+                items: vec![Item::assistant("Finish revision")],
+                receipt: json!({}),
+                usage: Default::default(),
+            }),
+        });
     }
 
     #[test]
-    fn inline_revision_identity_is_immutable_even_after_withdrawal() {
-        let original = source("r1", "Potassium 4.1");
-        let mut observation = Observation::seeded(vec![original.clone()]).unwrap();
-        for phase in 0..3 {
-            let before = observation.workspace("patient");
-            let changed_bytes = source("r1", "Potassium 6.8");
-            let mut changed_provenance = original.clone();
-            changed_provenance.provenance = json!({"native_record": "another-lab"});
-            for conflict in [changed_bytes, changed_provenance] {
-                assert!(observation.record(conflict).is_err());
-                assert_eq!(observation.workspace("patient"), before);
-            }
-            if phase == 0 {
-                observation.record(source("r2", "Corrected")).unwrap();
-            } else {
-                observation.withdraw("patient", "lab");
-            }
+    fn refreshed_source_requires_all_retained_result_pages() {
+        use harness::engine::results::{ByteRange, Representation, ResultView};
+        let current = source("r2", &"New clinical text. ".repeat(600));
+        let refresh = SourceRefresh::between(
+            1,
+            &[source("r1", "Old text")],
+            2,
+            std::slice::from_ref(&current),
+        );
+        let original = exact_read(
+            std::slice::from_ref(&current),
+            "patient",
+            &["lab".into()],
+            65_536,
+        )
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_owned();
+        let mut preview = ResultView::whole("source", &original);
+        preview.representation = Representation::Preview {
+            head: ByteRange { start: 0, end: 100 },
+            tail: ByteRange {
+                start: original.len() - 100,
+                end: original.len(),
+            },
+        };
+        let mut events = Vec::new();
+        accepted_result(&mut events, "source", &original, preview);
+        assert_eq!(
+            caught_up(
+                &events,
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current)
+            )
+            .unwrap(),
+            vec!["lab"]
+        );
+        let middle = original.len() / 2;
+        for (n, (start, end)) in [(0, middle), (middle, original.len())]
+            .into_iter()
+            .enumerate()
+        {
+            let mut page = ResultView::whole("source", &original);
+            page.representation = Representation::Page {
+                range: ByteRange { start, end },
+            };
+            accepted_result(&mut events, "source", &original, page);
+            let unread = caught_up(
+                &events,
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current),
+            )
+            .unwrap();
+            assert_eq!(
+                unread.is_empty(),
+                n == 1,
+                "full delivered pages must satisfy the refreshed source read"
+            );
         }
+    }
+
+    #[test]
+    fn a_refreshed_source_from_an_earlier_window_is_not_current_delivery() {
+        use harness::engine::results::ResultView;
+        let current = source("r2", "New clinical text");
+        let refresh = SourceRefresh::between(0, &[], 1, std::slice::from_ref(&current));
+        let original = exact_read(
+            std::slice::from_ref(&current),
+            "patient",
+            &["lab".into()],
+            65_536,
+        )
+        .unwrap()
+        .text()
+        .unwrap()
+        .to_owned();
+        let mut events = Vec::new();
+        accepted_result(
+            &mut events,
+            "source",
+            &original,
+            ResultView::whole("source", &original),
+        );
+        assert!(
+            caught_up(
+                &events,
+                std::slice::from_ref(&refresh),
+                std::slice::from_ref(&current)
+            )
+            .unwrap()
+            .is_empty()
+        );
+        events.push(Event {
+            attempt_id: "inline".into(),
+            sequence: events.len() as u64 + 1,
+            ordinal: 2,
+            kind: EventKind::WindowOpened {
+                opened_at_unix_ms: 0,
+                reason: harness::engine::WindowReason::Full,
+                handoff: None,
+            },
+        });
+        let sequence = events.len() as u64 + 1;
+        events.extend([
+            Event {
+                attempt_id: "inline".into(),
+                sequence,
+                ordinal: 3,
+                kind: EventKind::ProviderStarted {
+                    dispatched_at_unix_ms: 2,
+                    context: Default::default(),
+                    request: harness::engine::SavedRequest {
+                        added: vec![],
+                        items: vec![],
+                    },
+                },
+            },
+            Event {
+                attempt_id: "inline".into(),
+                sequence: sequence + 1,
+                ordinal: 3,
+                kind: EventKind::ProviderReturned(harness::engine::Turn {
+                    items: vec![Item::assistant("Finish revision.")],
+                    receipt: json!({}),
+                    usage: Default::default(),
+                }),
+            },
+        ]);
+        assert_eq!(
+            caught_up(&events, &[refresh], &[current]).unwrap(),
+            vec!["lab"],
+            "a refreshed source must be delivered in the current window before finishing"
+        );
     }
 
     #[test]
@@ -500,27 +611,36 @@ mod tests {
             65536,
         )
         .unwrap();
-        let check = |value| {
+        let exact: Value = serde_json::from_str(exact.text().unwrap()).unwrap();
+        let check = |value: serde_json::Value| {
+            let original = value.to_string();
+            let mut events = Vec::new();
+            accepted_result(
+                &mut events,
+                "read",
+                &original,
+                harness::engine::results::ResultView::whole("read", &original),
+            );
             caught_up(
-                &[Record::Dispatch {
-                    sequence: 2,
-                    request: Request {
-                        model: "fixed".into(),
-                        options: json!({}),
-                        instructions: String::new(),
-                        tools: vec![],
-                        items: vec![Item::Result {
-                            call_id: "read".into(),
-                            value,
-                        }],
-                    },
-                }],
+                &events,
                 std::slice::from_ref(&refresh),
                 std::slice::from_ref(&current),
             )
             .unwrap()
         };
         assert!(check(exact.clone()).is_empty());
+        let split = |start: usize, end: usize| {
+            json!({"reference":"lab","revision":current.revision,
+            "outcome":"passage","part":0,"label":"native_record","start_byte":start,"end_byte":end,
+            "total_bytes":current.content.len(),"next":null,"content":&current.content[start..end]})
+        };
+        let end = current.content.len();
+        assert_eq!(check(json!({"results":[split(5,end)]})), vec!["lab"]);
+        assert_eq!(
+            check(json!({"results":[split(0,3),split(5,end)]})),
+            vec!["lab"]
+        );
+        assert!(check(json!({"results":[split(5,end),split(0,5)]})).is_empty());
         for (field, wrong) in [
             ("content", json!("Potassium 4.1")),
             ("sha256", json!(crate::sha256_hex(b"Potassium 4.1"))),
@@ -538,6 +658,7 @@ mod tests {
             65536,
         )
         .unwrap();
+        let stale: Value = serde_json::from_str(stale.text().unwrap()).unwrap();
         assert_eq!(check(stale), vec!["lab".to_string()]);
     }
 }

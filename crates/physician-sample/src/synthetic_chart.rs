@@ -17,7 +17,8 @@ use local_product::physician_sources::{
 use local_product::sha256_hex;
 use serde_json::{Value, json};
 
-const SOURCE_ID: &str = "synthetic-charts";
+/// Identity of the synthetic chart adapter, including developer-plan admission.
+pub const SOURCE_ID: &str = "synthetic-charts";
 const SOURCE_LABEL: &str = "Synthetic chart";
 
 /// The fields that date a record, in the source's names.

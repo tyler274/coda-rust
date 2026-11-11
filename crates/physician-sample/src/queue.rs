@@ -9,7 +9,6 @@ use local_product::runtime::{
     delivery::{Delivery, DeliveryKind},
 };
 use std::collections::HashMap;
-use std::sync::Arc;
 use tracing::Instrument;
 
 /// Transport of accepted input identities, never messages or session secrets.
@@ -17,42 +16,6 @@ use tracing::Instrument;
 pub trait ChatQueue: Send + Sync {
     /// Resolve only after the transport accepted the wakeup.
     async fn publish(&self, delivery: &Delivery) -> Result<(), String>;
-}
-
-/// Local execution adapter; durable recovery still owns process-crash retries.
-#[async_trait]
-pub trait InlineHandler: Send + Sync {
-    /// Execute a wakeup through the same fenced worker as push delivery.
-    async fn handle(&self, delivery: Delivery) -> Result<(), String>;
-}
-
-/// In-process fallback for local runs, not a hosted durability mechanism.
-pub struct InlineQueue {
-    handler: Arc<dyn InlineHandler>,
-}
-impl InlineQueue {
-    /// Builds the explicitly selected local fallback.
-    pub fn new(handler: Arc<dyn InlineHandler>) -> Self {
-        Self { handler }
-    }
-}
-#[async_trait]
-impl ChatQueue for InlineQueue {
-    async fn publish(&self, delivery: &Delivery) -> Result<(), String> {
-        let handler = self.handler.clone();
-        let delivery = delivery.clone();
-        let span = publish_span(&delivery, "inline");
-        // The spawned execution stays a child of the publishing span.
-        tokio::spawn(
-            async move {
-                if handler.handle(delivery).await.is_err() {
-                    tracing::warn!("inline physician execution requires recovery");
-                }
-            }
-            .instrument(span),
-        );
-        Ok(())
-    }
 }
 
 /// Official Google publisher using workload ADC; waits for server acceptance.
@@ -95,7 +58,7 @@ impl ChatQueue for PubSubQueue {
 
 /// The broker message for `delivery`: its identity as data, and the current
 /// span's W3C trace context as attributes.
-pub fn message(delivery: &Delivery) -> Result<google_cloud_pubsub::model::Message, &'static str> {
+fn message(delivery: &Delivery) -> Result<google_cloud_pubsub::model::Message, &'static str> {
     let bytes = serde_json::to_vec(delivery).map_err(|_| "invalid queue identity")?;
     let mut attributes = HashMap::new();
     telemetry::propagation::inject_current(&mut attributes);

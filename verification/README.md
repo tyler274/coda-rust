@@ -48,8 +48,13 @@ does. Features without a folder follow the intent specs alone.
    fix.
 
 Each feature's browser test lives in its own file named for the feature, such as
-`sign_in_model.rs`, and runs locally. CI doesn't run TLC. The `statechart` skill gives its own
-command and setup; the feature's verify skill names the model, its charts and its browser test.
+`sign_in_model.rs`, and runs locally and in manually requested CI browser qualification.
+The dev shell supplies `mise`; the replay runner installs the statechart skill's pinned TLC
+and Java when they are absent. The `statechart` skill gives its own command and setup; the
+feature's verify skill names the model, its charts and its browser test.
+
+[`model_text.rs`](model_text.rs) holds the test-only guard for skill text against the tools a
+job offers. Chords includes it only in its test builds.
 
 ## Local model runs
 
@@ -115,8 +120,8 @@ calls for it.
 `scripts/scenarios.py` runs the product journeys that work on one machine and writes
 `receipt.json` under `target/verification/runs/`. P1, a physician asking about a patient, runs over
 HTTP against the [scale stack](../scripts/physician-scale-stack.py). That stack has two sites, the
-worker with its fixed reply, Postgres, Valkey and the Pub/Sub emulator. D1, a Duet account,
-migrates a fresh database on the same Postgres through `duet-migrate` with a separate runtime
+worker answering through the local Responses stub, Postgres, Valkey and the Pub/Sub emulator.
+D1, a Duet account, migrates a fresh database on the same Postgres through `duet-migrate` with a separate runtime
 login, then drives the `duet-api` binary over HTTP: sign-up, a stored health record, a kill and
 restart, two-account refusal, and sign out everywhere. The binary runs with its local identity
 stand-in, `DUET_LOCAL_IDENTITY_SECRET` (HS256 tokens the runner signs); hosted startup refuses it

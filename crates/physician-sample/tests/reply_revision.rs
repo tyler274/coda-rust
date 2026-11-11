@@ -6,11 +6,14 @@
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
 
-use harness::execution::{Item, Record, Request};
+use harness::engine::MAX_FAILED_ATTEMPTS;
+use harness::engine::recipe::Request;
+use harness::engine::runs::RunOutcome;
+use harness::engine::{EventKind, Item};
 use local_product::physician_sources::SourceRevision;
 use local_product::runtime::delivery::Delivery;
-use local_product::runtime::reply::{Draft, RevisionAttempt};
-use local_product::runtime::{MAX_FAILED_ATTEMPTS, Scope, Store};
+use local_product::runtime::reply::{Draft, DraftStatus};
+use local_product::runtime::{AttemptStatus, Scope, Store};
 use physician_auth::{AuthStore, Membership, PostgresAuthStore};
 use serde_json::{Value, json};
 
@@ -57,6 +60,7 @@ struct Running {
     emulator: support::Emulator,
     valkey: support::Valkey,
     worker: support::Process,
+    stub: support::ResponsesStub,
     sites: Vec<support::Process>,
     hosts: [String; 2],
     worker_host: String,
@@ -91,7 +95,7 @@ impl Running {
     }
 
     /// Like `start_with`, with extra environment for both sites and the
-    /// worker (the browser journey adds the page directory and fail marker).
+    /// worker (the browser journey adds the page directory).
     async fn start_full(
         label: &str,
         failures: u32,
@@ -114,16 +118,13 @@ impl Running {
         let emulator = support::Emulator::start().await;
         emulator.provision(worker_port).await;
         let worker_host = format!("127.0.0.1:{worker_port}");
-        let failures = failures.to_string();
-        let delay = delay_ms.to_string();
+        let stub = support::ResponsesStub::start(&home, failures, delay_ms, "[]").await;
         let mut env = vec![
             ("PHYSICIAN_DATABASE_URL", database.url.as_str()),
             ("PHYSICIAN_REDIS_URL", &redis),
             ("PUBSUB_EMULATOR_HOST", &emulator.host),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", &worker_host),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
-            ("PHYSICIAN_WORKER_FIXED_FAILURES", &failures),
-            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", &delay),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", stub.port.as_str()),
         ];
         env.extend_from_slice(worker_env);
         let mut worker = support::Process::spawn("worker", support::worker_bin(), &[], &env, &home);
@@ -169,6 +170,7 @@ impl Running {
         }
         let session = support::sign_in(&hosts[0]).await;
         Some(Self {
+            stub,
             database,
             store,
             emulator,
@@ -199,7 +201,19 @@ impl Running {
             workspace: physician_sample::WORKSPACE_IDS[0].into(),
             chat: format!("reply-{}", uuid::Uuid::new_v4().simple()),
         };
-        assert_eq!(self.store.open_draft(&scope, ORIGINAL).await.unwrap(), 1);
+        let hash = PostgresAuthStore::session_reference(&self.session);
+        let draft = self
+            .store
+            .open_draft_authorized(
+                &scope,
+                ORIGINAL,
+                &hash,
+                &mut physician_sample::durable::RuntimeAuthority,
+            )
+            .await
+            .unwrap()
+            .expect("authenticated physician can open fixture reply");
+        assert_eq!(draft.revision, 1);
         scope
     }
 
@@ -237,6 +251,33 @@ impl Running {
 
     async fn read(&self, site: usize, scope: &Scope) -> (u16, Value) {
         support::get_json(&self.hosts[site], &path(scope), &self.session).await
+    }
+
+    async fn restart_worker(&mut self) {
+        self.worker.kill_now();
+        let redis = self.valkey.url();
+        let env = [
+            ("PHYSICIAN_DATABASE_URL", self.database.url.as_str()),
+            ("PHYSICIAN_REDIS_URL", redis.as_str()),
+            ("PUBSUB_EMULATOR_HOST", self.emulator.host.as_str()),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", self.worker_host.as_str()),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", self.stub.port.as_str()),
+        ];
+        self.worker = support::Process::spawn(
+            "worker-restarted",
+            support::worker_bin(),
+            &[],
+            &env,
+            &self.home,
+        );
+        let port = self
+            .worker_host
+            .rsplit(':')
+            .next()
+            .unwrap()
+            .parse()
+            .unwrap();
+        support::wait_ready(&mut self.worker, port).await;
     }
 
     async fn save(&self, scope: &Scope, revision: u64, text: &str) -> (u16, String) {
@@ -278,13 +319,80 @@ fn revise(scope: &Scope, key: &str, expected: u64) -> Value {
     })
 }
 
-fn dispatches(draft: &Draft) -> Vec<&Request> {
+/// Every field of two drafts is equal. Attempts compare through their saved
+/// JSON, since their events have no equality of their own.
+fn assert_same_draft(left: &Draft, right: &Draft) {
+    let Draft {
+        revision,
+        text,
+        restore_text,
+        status,
+        accepted,
+        runs,
+        base_text,
+        sources,
+        sources_version,
+        allowance_after,
+        attempts,
+        session_hash,
+        dispatch_after,
+        failures,
+    } = left;
+    assert_eq!(*revision, right.revision);
+    assert_eq!(text, &right.text);
+    assert_eq!(restore_text, &right.restore_text);
+    assert_eq!(*status, right.status);
+    assert_eq!(
+        accepted.as_ref().map(|a| (&a.input, &a.binding, &a.skills)),
+        right
+            .accepted
+            .as_ref()
+            .map(|a| (&a.input, &a.binding, &a.skills))
+    );
+    assert_eq!(runs, &right.runs);
+    assert_eq!(base_text, &right.base_text);
+    assert_eq!(sources, &right.sources);
+    assert_eq!(*sources_version, right.sources_version);
+    assert_eq!(*allowance_after, right.allowance_after);
+    assert_eq!(
+        serde_json::to_value(attempts).unwrap(),
+        serde_json::to_value(&right.attempts).unwrap()
+    );
+    assert_eq!(session_hash, &right.session_hash);
+    assert_eq!(*dispatch_after, right.dispatch_after);
+    assert_eq!(*failures, right.failures);
+}
+
+async fn dispatches(running: &Running, scope: &Scope, draft: &Draft) -> Vec<Request> {
+    let messages: Vec<_> = running
+        .store
+        .revision_messages(scope, draft)
+        .await
+        .unwrap()
+        .iter()
+        .map(harness::engine::history::Message::source)
+        .collect();
+    let recipe = running
+        .store
+        .frozen_binding(scope, &draft.accepted.as_ref().unwrap().binding)
+        .await
+        .unwrap();
     draft
         .attempts
         .iter()
-        .flat_map(|attempt| &attempt.records)
-        .filter_map(|record| match record {
-            Record::Dispatch { request, .. } => Some(request),
+        .flat_map(|attempt| &attempt.events)
+        .filter_map(|event| match &event.kind {
+            EventKind::ProviderStarted { request, .. } => Some(
+                recipe.request(
+                    request
+                        .restore(
+                            draft.attempts.iter().flat_map(|attempt| &attempt.events),
+                            &messages,
+                        )
+                        .unwrap()
+                        .expect("saved request sources remain available"),
+                ),
+            ),
             _ => None,
         })
         .collect()
@@ -297,8 +405,14 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
         1,
         250,
         false,
-        &[],
-        &[("CODA_LOG_FORMAT", "json")],
+        &[("CODA_BACKGROUND_MODEL", "accepted-site-model")],
+        &[
+            ("CODA_BACKGROUND_MODEL", "replacement-worker-model"),
+            ("CODA_BACKGROUND_EFFORT", "low"),
+            ("CODA_BACKGROUND_CONTEXT_WINDOW_TOKENS", "200000"),
+            ("CODA_BACKGROUND_INPUT_LIMIT_TOKENS", "250000"),
+            ("CODA_LOG_FORMAT", "json"),
+        ],
     )
     .await
     else {
@@ -309,7 +423,7 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     let command = revise(&scope, &key, 1);
     running.command(0, &command, "accepted").await;
     let accepted = running.store.draft(&scope).await.unwrap().unwrap();
-    let input = accepted.input.clone().expect("accepted input");
+    let input = accepted.accepted.clone().expect("accepted input").input;
     assert_eq!(input.key, key);
     assert_eq!(input.expected_revision, 1);
     assert_eq!(input.instruction, INSTRUCTION);
@@ -322,7 +436,13 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     );
     // The first attempt dispatches on the accepted pin, then fails.
     let first = running
-        .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
+        .wait_draft(&scope, |draft| {
+            draft
+                .attempts
+                .iter()
+                .flat_map(|attempt| &attempt.events)
+                .any(|event| matches!(event.kind, EventKind::ProviderStarted { .. }))
+        })
         .await;
     assert_eq!(first.attempts[0].sources, accepted.sources);
     // A lab arrives, then the other site accepts the duplicate command.
@@ -330,16 +450,19 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     running.store.record_source(&lab).await.unwrap();
     running.command(1, &command, "accepted").await;
     let complete = running
-        .wait_draft(&scope, |draft| draft.status == "completed")
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
         .await;
-    assert_eq!(complete.input.as_ref(), Some(&input));
+    assert_eq!(
+        complete.accepted.as_ref().map(|accepted| &accepted.input),
+        Some(&input)
+    );
     assert_eq!(
         complete
             .attempts
             .iter()
-            .map(|attempt| attempt.status.as_str())
+            .map(|attempt| sea_orm::ActiveEnum::to_value(&attempt.status))
             .collect::<Vec<_>>(),
-        ["interrupted", "completed"]
+        ["failed", "completed"]
     );
     assert!(
         complete
@@ -367,29 +490,68 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
         assert!(!logs.contains(content), "clinical content in worker logs");
     }
     assert_eq!(complete.sources, newest);
-    assert!(complete.attempts.iter().all(|a| a.refreshes.is_empty()));
+    assert!(complete.attempts[0].refreshes.is_empty());
+    assert_eq!(complete.attempts[1].refreshes.len(), 1);
+    assert_eq!(
+        complete.attempts[1].refreshes[0].added,
+        std::slice::from_ref(&lab)
+    );
     assert_eq!(complete.revision, 2);
     assert_eq!(complete.text, support::FIXED_TEXT);
     assert_eq!(complete.restore_text.as_deref(), Some(ORIGINAL));
-    let requests = dispatches(&complete);
-    assert_eq!(requests.len(), 2, "one provider call on each delivery");
+    let requests = dispatches(&running, &scope, &complete).await;
+    assert_eq!(
+        requests.len(),
+        4,
+        "failed opening, refreshed successor, read, finish"
+    );
+    assert_eq!(
+        requests[0].model, "accepted-site-model",
+        "the worker must use the recipe accepted by the site"
+    );
+    assert_eq!(requests[0].options["effort"], "max");
+    assert_eq!(requests[0].context_window_tokens, 272_000);
+    assert_eq!(requests[0].max_input_tokens, 922_000);
+    assert!(requests[0].options.get("max_output_tokens").is_none());
+    let mut original_recipe = requests[0].clone();
+    original_recipe.items = requests[1].items.clone();
+    assert_eq!(
+        requests[1], original_recipe,
+        "a successor changes only authorized source items"
+    );
     let Item::Message { text, .. } = &requests[0].items[0] else {
         panic!("revision context must be a message")
     };
     let context: Value = serde_json::from_str(text).expect("revision request context");
     assert_eq!(context["saved_draft"], ORIGINAL);
-    assert_eq!(context["instruction"], INSTRUCTION);
-    assert_eq!(references(requests[0]), json!([SNAPSHOT_SOURCE]));
-    assert_eq!(
-        references(requests[1]),
-        json!(newest.iter().map(|s| &s.candidate_id).collect::<Vec<_>>())
-    );
+    assert!(!context.as_object().unwrap().contains_key("instruction"));
+    assert!(requests[0].items.iter().any(|item| matches!(item,
+        Item::ProductMessage(message) if message.id == format!("{key}:instruction")
+            && message.role == harness::engine::history::Role::User && message.text == INSTRUCTION
+    )));
+    assert_eq!(references(&requests[0]), json!([SNAPSHOT_SOURCE]));
+    assert_eq!(references(&requests[1]), references(&requests[0]));
+    assert!(requests[1].items.iter().any(|item| matches!(item,
+        Item::Feedback { text } if serde_json::from_str::<Value>(text).is_ok_and(|feedback| feedback["outcome"] == "sources_changed" && feedback["added"] == json!([lab.candidate_id]))
+    )), "the retained opening receives explicit current source feedback");
+    let sent = running.stub.requests();
+    assert_eq!(sent.len(), requests.len());
+    for request in &sent {
+        assert_eq!(request["model"], "accepted-site-model");
+        assert_eq!(request["reasoning"]["effort"], "max");
+    }
+    assert!(has_outcome(&sent[2], "sources_unread"));
+    assert!(has_read(&sent[3], &lab));
 
     let (status, read) = running.read(1, &scope).await;
     assert_eq!(status, 200, "{read}");
     assert_eq!(read["revision"], 2);
     assert_eq!(read["text"], support::FIXED_TEXT);
     assert_eq!(read["restore_text"], ORIGINAL);
+    println!(
+        "hosted revision readback {}",
+        json!({"attempts": complete.attempts, "readback": read})
+    );
 
     // Completion does not invalidate the receipt; neither duplicate command
     // nor duplicate Pub/Sub wakeup may create another attempt or draft revision.
@@ -419,123 +581,35 @@ async fn duplicate_acceptance_and_worker_retry_keep_one_input_and_pinned_sources
     );
 }
 
-/// Whether any item in `request` is a terminal result with `outcome`.
-fn has_outcome(request: &Request, outcome: &str) -> bool {
-    request
-        .items
+/// Structured outputs at the real provider boundary, including source feedback.
+fn result_values(request: &Value) -> impl Iterator<Item = Value> + '_ {
+    request["input"]
+        .as_array()
+        .unwrap()
         .iter()
-        .any(|item| matches!(item, Item::Result { value, .. } if value["outcome"] == outcome))
+        .filter_map(|item| {
+            if item["type"] != "function_call_output" {
+                return None;
+            }
+            let encoded = item["output"].as_str()?;
+            serde_json::from_str(encoded).ok()
+        })
 }
 
-/// Whether `request` carries an exact read of `source` at its revision.
-fn has_read(request: &Request, source: &SourceRevision) -> bool {
-    request.items.iter().any(|item| match item {
-        Item::Result { value, .. } => value["results"].as_array().is_some_and(|results| {
-            results.iter().any(|r| {
-                r["reference"] == source.candidate_id.as_str()
-                    && r["revision"] == source.revision.as_str()
-                    && r["content"] == source.content.as_str()
+fn has_outcome(request: &Value, outcome: &str) -> bool {
+    result_values(request).any(|value| value["outcome"] == outcome)
+}
+
+fn has_read(request: &Value, source: &SourceRevision) -> bool {
+    result_values(request).any(|value| {
+        value["results"].as_array().is_some_and(|results| {
+            results.iter().any(|result| {
+                result["reference"] == source.candidate_id.as_str()
+                    && result["revision"] == source.revision.as_str()
+                    && result["content"] == source.content.as_str()
             })
-        }),
-        _ => false,
+        })
     })
-}
-
-#[tokio::test]
-async fn a_source_arriving_mid_revision_is_read_before_the_revision_publishes() {
-    let Some(running) = Running::start("reply_arrival", 0, 1500).await else {
-        return;
-    };
-    let scope = running.seed().await;
-    running
-        .command(0, &revise(&scope, "revision-arrival", 1), "accepted")
-        .await;
-    let accepted = running.store.draft(&scope).await.unwrap().unwrap();
-    // The model is working on the accepted pin when a lab arrives.
-    running
-        .wait_draft(&scope, |draft| !dispatches(draft).is_empty())
-        .await;
-    let lab = source("lab-arrived", "immutable-1", "Potassium 5.9 mmol/L (high).");
-    running.store.record_source(&lab).await.unwrap();
-
-    let complete = running
-        .wait_draft(&scope, |draft| draft.status == "completed")
-        .await;
-    assert_eq!(complete.attempts.len(), 1, "a catch-up is not a failure");
-    assert_eq!(complete.failures, 0);
-    let attempt = &complete.attempts[0];
-    assert_eq!(attempt.refreshes.len(), 1);
-    let refresh = &attempt.refreshes[0];
-    assert_eq!(refresh.from_version, accepted.sources_version);
-    assert_eq!(refresh.added, vec![lab.clone()]);
-    assert!(refresh.corrected.is_empty() && refresh.withdrawn.is_empty());
-    // The attempt keeps what it claimed; the refresh records what came after.
-    assert_eq!(attempt.sources, accepted.sources);
-    assert!(!attempt.sources.contains(&lab));
-    assert!(complete.sources.contains(&lab));
-    assert_eq!(complete.sources_version, refresh.to_version);
-
-    // First call: finish on the accepted set. Second: sees sources_changed
-    // and reads the lab. Third: holds that exact read, then finishes.
-    let requests = dispatches(&complete);
-    assert_eq!(requests.len(), 3, "{requests:#?}");
-    assert!(!has_outcome(requests[0], "sources_changed"));
-    assert!(has_outcome(requests[1], "sources_changed"));
-    assert!(!has_read(requests[1], &lab));
-    assert!(has_read(requests[2], &lab));
-    assert_eq!(complete.revision, 2);
-    assert_eq!(complete.text, support::FIXED_TEXT);
-    let (status, read) = running.read(1, &scope).await;
-    assert_eq!(status, 200, "{read}");
-    assert_eq!(read["revision"], 2);
-    assert_eq!(read["text"], support::FIXED_TEXT);
-}
-
-#[tokio::test]
-async fn a_chart_that_keeps_changing_fails_the_revision_and_keeps_the_draft() {
-    let Some(running) = Running::start("reply_churn", 0, 300).await else {
-        return;
-    };
-    let scope = running.seed().await;
-    running
-        .command(0, &revise(&scope, "revision-churn", 1), "accepted")
-        .await;
-    // Sources keep arriving faster than any model call returns.
-    let mut arrivals = 0u32;
-    let failed = loop {
-        let draft = running.store.draft(&scope).await.unwrap().unwrap();
-        if draft.status == "failed" {
-            break draft;
-        }
-        assert_ne!(draft.status, "completed", "published on an older reading");
-        arrivals += 1;
-        let lab = source(
-            &format!("lab-churn-{arrivals}"),
-            "immutable-1",
-            &format!("Synthetic churn observation {arrivals}."),
-        );
-        running.store.record_source(&lab).await.unwrap();
-        assert!(arrivals < 2000, "revision never ended: {draft:?}");
-        tokio::time::sleep(Duration::from_millis(60)).await;
-    };
-    assert_eq!(failed.revision, 1);
-    assert_eq!(failed.text, ORIGINAL);
-    let refreshes: usize = failed.attempts.iter().map(|a| a.refreshes.len()).sum();
-    assert!(refreshes > 0, "{failed:?}");
-    // Catch-ups spent the revision's one call budget; no attempt got a
-    // fresh one, and no attempt completed.
-    assert_eq!(dispatches(&failed).len(), 8);
-    assert!(failed.attempts.iter().all(|a| a.status != "completed"));
-    for site in 0..2 {
-        let (status, read) = running.read(site, &scope).await;
-        assert_eq!(status, 200, "{read}");
-        assert_eq!(read["revision"], 1);
-        assert_eq!(read["text"], ORIGINAL);
-        assert_eq!(
-            read["revision_run"],
-            json!({"run_id": "revision-churn", "status": "failed"})
-        );
-    }
 }
 
 #[tokio::test]
@@ -552,7 +626,7 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
         false,
         &[],
         &[
-            ("PHYSICIAN_WORKER_FIXED_TEXT", ""),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", ""),
             ("CODA_LOCAL_MODEL_EXECUTION", "api"),
             ("CODA_ALLOW_MODEL_CALLS", "1"),
             ("OPENAI_API_KEY", "synthetic"),
@@ -591,18 +665,18 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
             draft
                 .attempts
                 .iter()
-                .flat_map(|attempt| &attempt.records)
-                .any(|record| matches!(record, Record::Failure { .. }))
+                .flat_map(|attempt| &attempt.events)
+                .any(|record| matches!(record.kind, EventKind::ProviderFailed { .. }))
         })
         .await;
-    assert_eq!(late.status, "superseded");
+    assert_eq!(late.status, DraftStatus::Cancelled);
     assert_eq!(late.revision, 2);
     assert_eq!(late.text, SAVED);
     assert_eq!(late.restore_text.as_deref(), Some(ORIGINAL));
     assert!(
         late.attempts
             .iter()
-            .all(|attempt| attempt.status != "completed")
+            .all(|attempt| attempt.status != AttemptStatus::Completed)
     );
     let delivery = Delivery::reply_revision(scope.clone(), "revision-before-save".into());
     let push = support::push_body(&delivery, "superseded-revision");
@@ -627,169 +701,288 @@ async fn physician_save_cancels_an_in_flight_revision_and_preserves_the_edit() {
         .await;
 }
 
-fn exchanges(attempts: &[RevisionAttempt]) -> usize {
-    attempts
-        .iter()
-        .flat_map(|attempt| &attempt.records)
-        .filter(|record| matches!(record, Record::Exchange { .. }))
-        .count()
-}
-
 #[tokio::test]
-async fn a_later_revision_keeps_the_earlier_revisions_execution_evidence() {
-    let Some(running) = Running::start("reply_history", 0, 0).await else {
-        return;
-    };
-    let scope = running.seed().await;
-    let (status, read) = running.read(0, &scope).await;
-    assert_eq!(status, 200, "{read}");
-    assert_eq!(read["revision_run"], Value::Null);
-
-    // Three revisions in turn, alternating sites. Snapshot each one while it
-    // is current, so the history can be compared byte for byte afterwards.
-    let keys = ["revision-first", "revision-second", "revision-third"];
-    let mut current = Vec::new();
-    for (index, key) in keys.iter().enumerate() {
-        let expected = index as u64 + 1;
-        running
-            .command(index % 2, &revise(&scope, key, expected), "accepted")
-            .await;
-        let done = running
-            .wait_draft(&scope, |draft| {
-                draft.status == "completed" && draft.revision == expected + 1
-            })
-            .await;
-        assert_eq!(done.input.as_ref().unwrap().key, *key);
-        assert!(done.attempts.iter().all(|attempt| attempt.input_id == *key));
-        assert_eq!(exchanges(&done.attempts), 1);
-        current.push(done);
-    }
-
-    // The draft row holds only the current revision's work.
-    let draft = running.store.draft(&scope).await.unwrap().unwrap();
-    let stored = serde_json::to_value(&draft).unwrap();
-    assert!(stored.get("earlier").is_none(), "{stored}");
-    assert_eq!(
-        serde_json::to_value(&draft.attempts).unwrap(),
-        serde_json::to_value(&current[2].attempts).unwrap()
-    );
-    for key in &keys[..2] {
-        assert!(
-            !stored.to_string().contains(key),
-            "draft row must not carry earlier revision {key}: {stored}"
-        );
-    }
-
-    // The history table keeps the first two, oldest first, unchanged.
-    let earlier = running.store.earlier_revisions(&scope).await.unwrap();
-    assert_eq!(
-        earlier
-            .iter()
-            .map(|e| e.input.key.as_str())
-            .collect::<Vec<_>>(),
-        &keys[..2],
-        "earlier revisions must be retained in order"
-    );
-    for (kept, then) in earlier.iter().zip(&current) {
-        assert_eq!(&kept.input, then.input.as_ref().unwrap());
-        assert_eq!(kept.status, "completed");
-        assert_eq!(kept.failures, then.failures);
-        assert_eq!(kept.base_text, then.base_text);
-        assert_eq!(
-            serde_json::to_value(&kept.sources).unwrap(),
-            serde_json::to_value(&then.sources).unwrap()
-        );
-        assert_eq!(
-            serde_json::to_value(&kept.attempts).unwrap(),
-            serde_json::to_value(&then.attempts).unwrap(),
-            "accepting a revision must not rewrite or drop the previous attempts"
-        );
-    }
-    assert_eq!(earlier[0].base_text, ORIGINAL);
-
-    // Another physician's scope over the same patient and reply sees none.
-    let mut other = scope.clone();
-    other.physician = "other-revision-physician".into();
-    assert!(
-        running
-            .store
-            .earlier_revisions(&other)
-            .await
-            .unwrap()
-            .is_empty()
-    );
-
-    let (status, read) = running.read(1, &scope).await;
-    assert_eq!(status, 200, "{read}");
-    assert_eq!(read["revision"], 4);
-    assert_eq!(
-        read["revision_run"],
-        json!({"run_id": "revision-third", "status": "completed"})
-    );
-}
-
-#[tokio::test]
-async fn a_terminally_failed_revision_is_visible_over_http_and_cannot_be_resumed() {
-    let Some(running) = Running::start("reply_failed", MAX_FAILED_ATTEMPTS, 0).await else {
+async fn revision_capabilities_survive_a_window_and_worker_replacement_between_attempts() {
+    let Some(mut running) = Running::start("reply_capabilities", 0, 500).await else {
         return;
     };
     let scope = running.seed().await;
     running
-        .command(0, &revise(&scope, "revision-fails", 1), "accepted")
+        .command(0, &revise(&scope, "revision-before", 1), "accepted")
         .await;
-    let failed = running
-        .wait_draft(&scope, |draft| draft.status == "failed")
+    running
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
         .await;
-    assert_eq!(failed.attempts.len(), MAX_FAILED_ATTEMPTS as usize);
-    assert_eq!(failed.revision, 1);
-    let history = running.store.earlier_revisions(&scope).await.unwrap();
-    let resume = json!({
-        "type": "work.resume",
-        "idempotency_key": "resume-failed-revision",
-        "payload": {
-            "patient_workspace_id": scope.workspace,
-            "chat_id": scope.chat,
-            "work_item_id": scope.chat,
-            "expected_run_id": failed.attempts.last().unwrap().id,
-        }
-    });
-    // A failed reply is not a resumable chat turn. Replaying the same command
-    // on the other site must still refuse it, not find an accepted receipt.
-    for site in [0, 1, 0] {
-        let (status, body) = support::post(
-            &running.hosts[site],
-            "/commands",
-            Some(&running.session),
-            &resume,
-        )
+    let note = "Continue this revision using the saved skill result and earlier reply. Do not send anything.";
+    running.stub.tool_rounds(&json!([
+        [
+            {"name":"skill_view","arguments":{"name":"patient-communication"}},
+            {"name":"list_conversation_history","arguments":{"order":"oldest_first"}},
+            {"name":"search_conversation_history","arguments":{"text":INSTRUCTION}},
+            {"name":"read_conversation_message","arguments":{"id":"revision-before:instruction"}},
+            {"name":"read_patient_sources","arguments":{"references":[SNAPSHOT_SOURCE],"max_result_bytes":65536}}
+        ],
+        [{"name":"save_working_note","arguments":{"text":note,"fresh_window":true}}],
+        [
+            {"name":"read_working_note","arguments":{"reference":"revision-capabilities:fixed-2-0"}},
+            {"name":"read_tool_result","arguments":{"call_id":"fixed-1-0","offset":0}},
+            {"name":"read_conversation_message","arguments":{"id":"revision-before:reply"}}
+        ]
+    ]));
+    running
+        .command(0, &revise(&scope, "revision-capabilities", 2), "accepted")
         .await;
-        assert_eq!(status, 200, "{body}\n{}", running.logs());
-        assert_eq!(body["outcome"], "rejected", "{body}");
-        assert_eq!(body["message"], "Coda couldn’t resume that work.");
+    let crossed = running
+        .wait_draft(&scope, |draft| {
+            draft
+                .attempts
+                .iter()
+                .flat_map(|a| &a.events)
+                .any(|event| matches!(event.kind, EventKind::WindowOpened { .. }))
+        })
+        .await;
+    assert_eq!(
+        crossed.text,
+        support::FIXED_TEXT,
+        "a working note must not replace the saved draft"
+    );
+    running.stub.fail_next(1);
+    running
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Pending)
+        .await;
+    running.restart_worker().await;
+    let done = running
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
+        .await;
+    assert_eq!(done.revision, 3);
+    assert_eq!(done.attempts.len(), 2);
+    assert_eq!(done.attempts[0].status, AttemptStatus::Failed);
+    assert_eq!(done.attempts[1].status, AttemptStatus::Completed);
+    let events: Vec<_> = done
+        .attempts
+        .iter()
+        .flat_map(|attempt| &attempt.events)
+        .collect();
+    for id in [
+        "fixed-1-0",
+        "fixed-1-1",
+        "fixed-1-2",
+        "fixed-1-3",
+        "fixed-1-4",
+        "fixed-2-0",
+    ] {
         assert_eq!(
-            serde_json::to_value(running.store.draft(&scope).await.unwrap().unwrap()).unwrap(),
-            serde_json::to_value(&failed).unwrap(),
-            "refusal must preserve the failed draft and every attempt"
+            events
+                .iter()
+                .filter(
+                    |event| matches!(&event.kind, EventKind::ToolStarted(call) if call.id == id)
+                )
+                .count(),
+            1,
+            "completed call {id} must not replay"
         );
+    }
+    let messages: Vec<_> = running
+        .store
+        .revision_messages(&scope, &done)
+        .await
+        .unwrap()
+        .iter()
+        .map(harness::engine::history::Message::source)
+        .collect();
+    let records = running.store.revision_records(&scope, &done).await.unwrap();
+    let result = |id: &str| {
+        let output = harness::engine::results::resolve(records.iter(), id, &messages)
+            .unwrap()
+            .unwrap_or_else(|| panic!("missing successful {id}"));
+        serde_json::from_str::<Value>(&output).unwrap()
+    };
+    assert_eq!(result("fixed-1-3")["items"][0]["text"], INSTRUCTION);
+    assert_eq!(result("fixed-3-0")["text"], note);
+    assert_eq!(result("fixed-3-2")["items"][0]["text"], support::FIXED_TEXT);
+    assert!(
+        result("fixed-1-1")["items"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|item| item["id"] == "revision-before:reply")
+    );
+    assert_eq!(result("fixed-1-2")["items"].as_array().unwrap().len(), 2);
+    let skill = result("fixed-1-0");
+    let page = result("fixed-3-1");
+    assert_eq!(page["source_call_id"], "fixed-1-0");
+    assert_eq!(
+        serde_json::from_str::<Value>(page["text"].as_str().unwrap()).unwrap(),
+        skill
+    );
+    for site in 0..2 {
+        let (status, read) = running.read(site, &scope).await;
+        assert_eq!(status, 200);
+        assert_eq!(read["text"], support::FIXED_TEXT);
+        assert_eq!(read["revision"], 3);
+    }
+}
+
+#[tokio::test]
+async fn a_failed_revision_retries_over_http_as_a_linked_run() {
+    for (ending, failures) in [("failed", MAX_FAILED_ATTEMPTS), ("held", 0)] {
+        let Some(running) = Running::start_with("reply_retry", failures, 0, true).await else {
+            return;
+        };
+        if ending == "held" {
+            let calls = harness::engine::RunLimits::default().max_calls;
+            let rounds: Vec<_> = (0..calls)
+                .map(|_| {
+                    json!([
+                        {"name":"skill_view","arguments":{"name":"patient-communication"}}
+                    ])
+                })
+                .collect();
+            running.stub.tool_rounds(&json!(rounds));
+        }
+        let scope = synthetic_scope();
+        let initial = running.listed(0, &running.session).await.unwrap()["draft_text"].clone();
+        running
+            .command(0, &revise(&scope, "revision-fails", 1), "accepted")
+            .await;
+        let failed = running
+            .wait_draft(&scope, |draft| {
+                sea_orm::ActiveEnum::to_value(&draft.status) == ending
+            })
+            .await;
         assert_eq!(
-            serde_json::to_value(running.store.earlier_revisions(&scope).await.unwrap()).unwrap(),
-            serde_json::to_value(&history).unwrap(),
-            "refusal must preserve revision history"
+            failed.attempts.len(),
+            if ending == "held" {
+                1
+            } else {
+                failures as usize
+            }
+        );
+        if ending == "held" {
+            assert!(matches!(
+                failed.runs.current().unwrap().outcome,
+                Some(RunOutcome::Held {
+                    reason: harness::engine::runs::HoldReason::Limit
+                })
+            ));
+            running.stub.tool_rounds(&json!([]));
+        }
+        let failed_run = failed.runs.current().unwrap().id.to_owned();
+        let resume = json!({
+            "type": "work.resume",
+            "idempotency_key": "resume-failed-revision",
+            "payload": {
+                "patient_workspace_id": scope.workspace,
+                "chat_id": scope.chat,
+                "work_item_id": scope.chat,
+                "expected_run_id": failed_run,
+            }
+        });
+        for site in 0..2 {
+            let (status, read) = running.read(site, &scope).await;
+            assert_eq!(status, 200, "{read}");
+            assert_eq!(read["revision"], 1);
+            assert_eq!(read["text"], initial);
+            assert_eq!(
+                read["revision_run"],
+                json!({"run_id": failed_run, "status": ending, "resume_target": {"work_item_id": scope.chat, "expected_run_id": failed_run}})
+            );
+        }
+        for site in [0, 1, 0] {
+            let (status, body) = support::post(
+                &running.hosts[site],
+                "/commands",
+                Some(&running.session),
+                &resume,
+            )
+            .await;
+            assert_eq!(status, 200, "{body}\n{}", running.logs());
+            assert_eq!(
+                body["outcome"], "accepted",
+                "failed revision must accept Try again: {body}"
+            );
+        }
+        let done = running
+            .wait_draft(&scope, |draft| {
+                draft.runs.current().is_some_and(|run| run.id != failed_run)
+                    && matches!(
+                        draft.status,
+                        DraftStatus::Completed | DraftStatus::Held | DraftStatus::Failed
+                    )
+            })
+            .await;
+        assert_eq!(
+            done.status,
+            DraftStatus::Completed,
+            "Try again must give the worker fresh allowance"
+        );
+        assert_eq!(done.revision, 2);
+        assert_eq!(done.text, support::FIXED_TEXT);
+        assert_eq!(done.failures, 0);
+        assert_eq!(done.attempts.len(), failed.attempts.len() + 1);
+        assert_eq!(
+            done.runs.current().unwrap().continues,
+            Some(failed_run.as_str())
+        );
+        assert_ne!(done.runs.current().unwrap().id, failed_run);
+        assert_eq!(
+            &done.runs.events()[..failed.runs.events().len()],
+            failed.runs.events()
+        );
+        for (before, after) in failed.attempts.iter().zip(&done.attempts) {
+            assert_eq!(
+                serde_json::to_value(before).unwrap(),
+                serde_json::to_value(after).unwrap()
+            );
+        }
+        assert_eq!(
+            done.accepted.as_ref().map(|accepted| &accepted.binding),
+            failed.accepted.as_ref().map(|accepted| &accepted.binding),
+            "Try again preserves the accepted recipe"
         );
         assert!(
             running.store.read(&scope).await.unwrap().is_none(),
-            "refusal must not create chat work"
+            "revision retry must not create chat work"
         );
-    }
-    for site in 0..2 {
-        let (status, read) = running.read(site, &scope).await;
-        assert_eq!(status, 200, "{read}");
-        assert_eq!(read["revision"], 1);
-        assert_eq!(read["text"], ORIGINAL);
-        assert_eq!(
-            read["revision_run"],
-            json!({"run_id": "revision-fails", "status": "failed"})
-        );
+        let mut stale = resume.clone();
+        for run_id in [failed_run.as_str(), done.runs.current().unwrap().id] {
+            stale["idempotency_key"] = json!(format!("refuse-{run_id}"));
+            stale["payload"]["expected_run_id"] = json!(run_id);
+            let (status, body) = support::post(
+                &running.hosts[1],
+                "/commands",
+                Some(&running.session),
+                &stale,
+            )
+            .await;
+            assert_eq!(status, 200, "{body}");
+            assert_eq!(body["outcome"], "rejected", "{body}");
+        }
+        assert_same_draft(&running.store.draft(&scope).await.unwrap().unwrap(), &done);
+        // A physician save supersedes failed work. Both read paths must stop
+        // offering the old run even though its historical status remains failed.
+        running.stub.fail_next(MAX_FAILED_ATTEMPTS);
+        running
+            .command(0, &revise(&scope, "revision-edited", 2), "accepted")
+            .await;
+        running
+            .wait_draft(&scope, |draft| draft.status == DraftStatus::Failed)
+            .await;
+        assert!(running.read(0, &scope).await.1["revision_run"]["resume_target"].is_object());
+        let (status, saved) = running.save(&scope, 2, SAVED).await;
+        assert_eq!(status, 200, "{saved}");
+        for site in 0..2 {
+            let read = running.read(site, &scope).await.1;
+            assert!(
+                read["revision_run"]["resume_target"].is_null(),
+                "saved edits cannot retry old work: {read}"
+            );
+            let listed = running.listed(site, &running.session).await.unwrap();
+            assert!(
+                listed["revision_run"]["resume_target"].is_null(),
+                "saved edits cannot offer retry on the card: {listed}"
+            );
+        }
     }
 }
 
@@ -868,7 +1061,7 @@ async fn missing_and_other_physician_drafts_are_not_created_or_exposed() {
     let original = running.store.draft(&scope).await.unwrap().unwrap();
     assert_eq!(original.revision, 1);
     assert_eq!(original.text, ORIGINAL);
-    assert!(original.input.is_none());
+    assert!(original.accepted.is_none());
 
     let (status, _) = support::exchange(&running.hosts[0], "GET", &path(&scope), &[], None)
         .await
@@ -991,8 +1184,10 @@ async fn the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision(
             "accepted",
         )
         .await;
+    let accepted = running.store.draft(&scope).await.unwrap().unwrap();
+    let run_id = accepted.runs.current().unwrap().id.to_owned();
     let running_now = running.listed(0, &running.session).await.unwrap();
-    assert_eq!(running_now["revision_run"]["run_id"], "synthetic-revise");
+    assert_eq!(running_now["revision_run"]["run_id"], run_id);
     assert!(
         matches!(
             running_now["revision_run"]["status"].as_str(),
@@ -1003,7 +1198,7 @@ async fn the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision(
 
     // The worker's wording replaces the draft; both sites project it.
     running
-        .wait_draft(&scope, |draft| draft.status == "completed")
+        .wait_draft(&scope, |draft| draft.status == DraftStatus::Completed)
         .await;
     for site in 0..2 {
         let done = running.listed(site, &running.session).await.unwrap();
@@ -1011,40 +1206,13 @@ async fn the_synthetic_reply_opens_once_and_revises_from_the_displayed_revision(
         assert_eq!(done["draft_revision"], 3);
         assert_eq!(
             done["revision_run"],
-            json!({"run_id": "synthetic-revise", "status": "completed"})
+            json!({"run_id": run_id, "status": "completed", "resume_target": null})
         );
     }
     // Opening again never resets the revised draft or its history.
     let again = running.store.draft(&scope).await.unwrap().unwrap();
     assert_eq!(again.revision, 3);
     assert_eq!(again.text, support::FIXED_TEXT);
-}
-
-#[tokio::test]
-async fn a_failed_synthetic_revision_shows_failed_and_keeps_the_draft() {
-    let Some(running) =
-        Running::start_with("reply_synthetic_failed", MAX_FAILED_ATTEMPTS, 0, true).await
-    else {
-        return;
-    };
-    let scope = synthetic_scope();
-    let shown = running.listed(0, &running.session).await.unwrap();
-    let text = shown["draft_text"].clone();
-    running
-        .command(0, &revise(&scope, "synthetic-fails", 1), "accepted")
-        .await;
-    running
-        .wait_draft(&scope, |draft| draft.status == "failed")
-        .await;
-    for site in 0..2 {
-        let failed = running.listed(site, &running.session).await.unwrap();
-        assert_eq!(failed["draft_text"], text);
-        assert_eq!(failed["draft_revision"], 1);
-        assert_eq!(
-            failed["revision_run"],
-            json!({"run_id": "synthetic-fails", "status": "failed"})
-        );
-    }
 }
 
 #[tokio::test]
@@ -1167,6 +1335,25 @@ fn card(browser: &mut devtools::Browser) -> Option<(u64, String, String, String)
     ))
 }
 
+fn capture_reply(browser: &mut devtools::Browser, name: &str) {
+    use base64::Engine;
+    let Ok(folder) = std::env::var("PHYSICIAN_PROOF_SHOTS") else {
+        return;
+    };
+    let shot = browser
+        .page()
+        .call_session("Page.captureScreenshot", json!({"format":"png"}));
+    let bytes = base64::engine::general_purpose::STANDARD
+        .decode(shot["result"]["data"].as_str().unwrap())
+        .unwrap();
+    std::fs::create_dir_all(&folder).unwrap();
+    std::fs::write(
+        std::path::Path::new(&folder).join(format!("{name}.png")),
+        bytes,
+    )
+    .unwrap();
+}
+
 /// Waits up to `seconds` until the card satisfies `done`, and returns it.
 fn wait_card(
     browser: &mut devtools::Browser,
@@ -1235,7 +1422,7 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
         1_500,
         true,
         &[("PHYSICIAN_SITE_DIR", &page)],
-        &[("PHYSICIAN_WORKER_FIXED_FAIL_MARKER", "1")],
+        &[],
     )
     .await
     else {
@@ -1279,10 +1466,11 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
         "{status}: {words}"
     );
     let input = running
-        .wait_draft(&scope, |draft| draft.input.is_some())
+        .wait_draft(&scope, |draft| draft.accepted.is_some())
         .await
-        .input
-        .unwrap();
+        .accepted
+        .unwrap()
+        .input;
     assert_eq!(input.expected_revision, 1);
     for browser in [&mut a, &mut b] {
         let (revision, status, text, words) =
@@ -1326,7 +1514,8 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
         "Records as of",
     );
     wait_card(&mut b, 30, "revision 3 on B", |(r, _, _, _)| *r == 3);
-    ask_from_page(&mut b, "Rephrase it [fail:9]");
+    running.stub.fail_next(9);
+    ask_from_page(&mut b, "Rephrase it");
     wait_card(
         &mut b,
         15,
@@ -1360,40 +1549,43 @@ async fn the_synthetic_reply_revises_in_the_browser_across_two_sites() {
         wait_card(&mut a, 30, "the reloaded card", |(r, _, _, _)| *r == 3);
     assert_eq!((revision, status.as_str()), (3, "failed"));
     assert!(text.contains(SAVED));
-}
-
-/// With the switch off, a signed-in page on the hosted stack shows no
-/// synthetic reply at all.
-#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
-#[ignore = "browser qualification on the scale stack; run explicitly with --ignored"]
-async fn the_synthetic_switch_off_shows_no_reply_in_the_browser() {
-    let page = support::page_dir();
-    let page = page.to_str().unwrap().to_owned();
-    let Some(running) = Running::start_full(
-        "reply_synthetic_browser_off",
-        0,
-        0,
-        false,
-        &[("PHYSICIAN_SITE_DIR", &page)],
-        &[],
-    )
-    .await
-    else {
-        return;
-    };
-    let mut browser = devtools::Browser::launch();
-    browser.resize(devtools::DESKTOP);
-    open_workspace(&mut browser, &running.hosts[0]);
-    std::thread::sleep(Duration::from_secs(2));
-    let text = browser.body_text().unwrap_or_default();
-    assert!(card(&mut browser).is_none(), "{text}");
-    assert!(!text.contains("Synthetic message"), "{text}");
-    assert!(
-        running
-            .store
-            .draft(&synthetic_scope())
-            .await
-            .unwrap()
-            .is_none()
+    let previous = running
+        .store
+        .draft(&scope)
+        .await
+        .unwrap()
+        .unwrap()
+        .runs
+        .current()
+        .unwrap()
+        .id
+        .to_owned();
+    assert_eq!(
+        a.page()
+            .evaluate("!!document.querySelector('button[data-reply-action=\"try-again\"]')"),
+        json!(true)
     );
+    capture_reply(&mut a, "failed-revision-try-again");
+    running.stub.fail_next(0);
+    a.click("button[data-reply-action=\"try-again\"]");
+    for browser in [&mut a, &mut b] {
+        let (revision, _, text, _) =
+            wait_card(browser, 30, "the retried revision", |(r, s, _, _)| {
+                *r == 4 && s == "completed"
+            });
+        assert_eq!(revision, 4);
+        assert!(text.contains(support::FIXED_TEXT));
+        assert_eq!(
+            browser
+                .page()
+                .evaluate("!!document.querySelector('button[data-reply-action=\"try-again\"]')"),
+            json!(false)
+        );
+    }
+    let done = running.store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(
+        done.runs.current().unwrap().continues,
+        Some(previous.as_str())
+    );
+    capture_reply(&mut a, "retried-revision-completed");
 }

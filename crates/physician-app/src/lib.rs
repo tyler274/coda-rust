@@ -20,8 +20,8 @@ use composer::{Composer, ConflictDraft, DraftTarget, Notice, SaveOutcome, SendAn
 use dioxus::prelude::*;
 use physician_client::{DraftSave, PhysicianClient};
 use physician_wire::{
-    ChatSnapshot, PatientWorkspaceResponse, PracticeAccountSummary, RecentConversation,
-    SignInResponse, SimulationStatus, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
+    ChatRunOutcome, ChatSnapshot, HoldReason, PatientWorkspaceResponse, PracticeAccountSummary,
+    RecentConversation, SignInResponse, WhoamiResponse, WorkResumeTarget, WorkStopTarget,
     WorkspaceReply,
 };
 
@@ -1424,10 +1424,6 @@ fn PhysicianShell(
         .and_then(|result| result.as_ref().ok())
         .map(|list| connection_lines(&list.connections))
         .unwrap_or_default();
-    let simulation_status = today_read
-        .as_ref()
-        .and_then(|result| result.as_ref().ok())
-        .and_then(|list| list.simulation.clone());
     let practice_state = use_read_view(practice);
     let updates_state = use_read_view(updates);
     let schedule = practice_state.stage();
@@ -1850,7 +1846,6 @@ fn PhysicianShell(
                     Place::Today => rsx! {
                         TodaySurface {
                             state: today_state.clone(),
-                            simulation: simulation_status.clone(),
                             connections: connections.clone(),
                             visits: visits.clone(),
                             show_schedule,
@@ -1864,19 +1859,6 @@ fn PhysicianShell(
                             need_you,
                             focused: shown_focus,
                             on_retry: move |_| today_attempt.set(today_attempt() + 1),
-                            on_run_scenario: move |scenario: String| {
-                                let client = client.read().clone();
-                                spawn(async move {
-                                    let _ = client
-                                        .command(&serde_json::json!({
-                                            "type": "simulation.run",
-                                            "payload": { "scenario": scenario },
-                                        }))
-                                        .await;
-                                    today_attempt.set(today_attempt() + 1);
-                                    workspace_attempt.set(workspace_attempt() + 1);
-                                });
-                            },
                             on_open_patient: move |id: String| {
                                 selected.set(Some(id));
                                 place.set(Place::Workspace);
@@ -2033,20 +2015,6 @@ fn PhysicianShell(
                                     },
                                 );
                             },
-                            on_admit_corrected_labs: move |_| {
-                                let Some(ws_id) = selected() else { return };
-                                work_slot.run(
-                                    client.read().clone(),
-                                    Command::new(
-                                        "simulation.admit_corrected_labs",
-                                        serde_json::json!({ "patient_workspace_id": ws_id }),
-                                    ),
-                                    move || {
-                                        *workspace_attempt.write() += 1;
-                                        *today_attempt.write() += 1;
-                                    },
-                                );
-                            },
                             work_busy: work_slot.sending() || resume_slot.sending(),
                             work_notice: work_slot.notice(client),
                             resume_notice: resume_slot.notice(client),
@@ -2134,6 +2102,19 @@ fn PhysicianShell(
                                         *today_attempt.write() += 1;
                                         reply_notice.set(REPLY_CLOSED_NOTICE.to_owned());
                                     },
+                                );
+                            },
+                            on_resume_reply: move |target: WorkResumeTarget| {
+                                let Some(command) = chat_resume_command(selected(), Some(target.work_item_id.clone()), &target) else { return };
+                                reply_notice.set(String::new());
+                                reply_slot.run_answered(
+                                    client.read().clone(),
+                                    command,
+                                    Callback::new(move |()| *workspace_attempt.write() += 1),
+                                    Callback::new(move |()| {
+                                        reply_notice.set(REPLY_REVISION_STALE.to_owned());
+                                        *workspace_attempt.write() += 1;
+                                    }),
                                 );
                             },
                             on_revise_reply: move |(reply_id, revision, instruction): (String, u64, String)| {
@@ -2845,7 +2826,6 @@ fn RecentRow(conversation: RecentConversation) -> Element {
 #[component]
 fn TodaySurface(
     state: TodayView,
-    simulation: Option<SimulationStatus>,
     connections: Vec<String>,
     visits: Vec<VisitLine>,
     show_schedule: bool,
@@ -2859,7 +2839,6 @@ fn TodaySurface(
     need_you: usize,
     focused: Option<i32>,
     on_retry: EventHandler,
-    on_run_scenario: EventHandler<String>,
     on_open_patient: EventHandler<String>,
     on_open_row: EventHandler<TodayLine>,
     on_open_visit: EventHandler<VisitLine>,
@@ -2898,13 +2877,6 @@ fn TodaySurface(
             }
             div { class: if scheduled { "today-layout has-schedule" } else { "today-layout" },
                 section { class: "today-main", aria_label: "Needs you",
-                    if let Some(sim) = simulation {
-                        SimulationPanel {
-                            sim,
-                            on_run_scenario,
-                            on_open_patient,
-                        }
-                    }
                     for line in connections {
                         p { class: "today-connection", "{line}" }
                     }
@@ -2945,89 +2917,6 @@ fn TodaySurface(
                     }
                 }
             }
-        }
-    }
-}
-
-#[component]
-fn SimulationPanel(
-    sim: SimulationStatus,
-    on_run_scenario: EventHandler<String>,
-    on_open_patient: EventHandler<String>,
-) -> Element {
-    let metric = &sim.investor_metric;
-    let agg = &sim.aggregate_metric;
-    let items_per_100 = format!("{:.1}", metric.items_per_100_patients_per_week);
-    let agg_items_per_100 = format!("{:.1}", agg.items_per_100_patients_per_week);
-    let active_description = sim
-        .scenarios
-        .iter()
-        .find(|scenario| scenario.key == sim.active_scenario_key)
-        .map(|scenario| scenario.description.clone())
-        .unwrap_or_default();
-    rsx! {
-        Card { class: "simulation-panel", aria_label: "Local practice simulation",
-            div { class: "simulation-header",
-                h2 { "Simulated practice walk — {sim.active_scenario_label}" }
-                span { class: "simulation-clock", "{sim.current_time}" }
-            }
-            if !active_description.is_empty() {
-                p { class: "simulation-description", "{active_description}" }
-            }
-            InvestorMetric {
-                value: items_per_100,
-                detail: format!(
-                    "{} physician touches across {} patients ({} handled ambiently). Across {} simulation runs: {agg_items_per_100} items per 100 patients per week.",
-                    metric.physician_touched_items,
-                    metric.panel_size,
-                    metric.ambient_handled_items,
-                    agg.runs_count,
-                ),
-            }
-            div { class: "simulation-scenarios", aria_label: "Simulation scenarios",
-                for scenario in sim.scenarios.iter() {
-                    Button {
-                        variant: if scenario.key == sim.active_scenario_key {
-                            ButtonVariant::Primary
-                        } else {
-                            ButtonVariant::Secondary
-                        },
-                        compact: true,
-                        "data-scenario-key": "{scenario.key}",
-                        onclick: {
-                            let key = scenario.key.clone();
-                            move |_| on_run_scenario.call(key.clone())
-                        },
-                        "{scenario.label}"
-                    }
-                }
-            }
-            div { class: "simulation-panel-patients", aria_label: "Synthetic panel patients",
-                for patient in sim.panel_patients.iter() {
-                    Button {
-                        compact: true,
-                        "data-panel-patient": "{patient.patient_workspace_id}",
-                        onclick: {
-                            let id = patient.patient_workspace_id.clone();
-                            move |_| on_open_patient.call(id.clone())
-                        },
-                        "{patient.display_name} (MRN {patient.mrn})"
-                    }
-                }
-            }
-        }
-    }
-}
-
-/// What the local simulation measures, on Today and on a patient's page.
-#[component]
-fn InvestorMetric(value: String, detail: String) -> Element {
-    rsx! {
-        ui::MeasurementTile {
-            icon: IconName::Users,
-            label: "Items the physician touched per 100 patients per week",
-            value: vec![(value, String::new())],
-            detail,
         }
     }
 }
@@ -3223,7 +3112,6 @@ fn PatientSurface(
     on_remove_panel: EventHandler,
     on_retry: EventHandler,
     on_decide_recommendation: EventHandler<String>,
-    on_admit_corrected_labs: EventHandler,
     on_read: EventHandler<(String, String)>,
     on_open_source: EventHandler<SourceChip>,
     on_draft: EventHandler<String>,
@@ -3253,6 +3141,7 @@ fn PatientSurface(
     on_open_past_work: EventHandler,
     on_close_reply: EventHandler<String>,
     on_revise_reply: EventHandler<(String, u64, String)>,
+    on_resume_reply: EventHandler<WorkResumeTarget>,
 ) -> Element {
     let clinic_demographic = workspace
         .as_ref()
@@ -3270,7 +3159,6 @@ fn PatientSurface(
         .as_ref()
         .map(|open| open.active_follow_ups.clone())
         .unwrap_or_default();
-    let simulation = workspace.as_ref().and_then(|open| open.simulation.clone());
     let replies = workspace
         .as_ref()
         .map(|open| open.replies.clone())
@@ -3319,7 +3207,6 @@ fn PatientSurface(
         .map(|card| card.display_name.clone())
         .filter(|value| !value.is_empty())
         .unwrap_or_else(|| name.clone());
-    let is_simulated = simulation.is_some();
     if gone {
         // Nothing of the patient shows, not even the name.
         return rsx! {
@@ -3474,28 +3361,6 @@ fn PatientSurface(
                     }
                 }
             } else {
-            if let Some(sim) = &simulation {
-                div { class: "patient-metric",
-                    InvestorMetric {
-                        value: format!("{:.1}", sim.investor_metric.items_per_100_patients_per_week),
-                        detail: format!(
-                            "Scenario: {} · {} touches across {} patients",
-                            sim.active_scenario_label,
-                            sim.investor_metric.physician_touched_items,
-                            sim.investor_metric.panel_size,
-                        ),
-                    }
-                    if !replies.is_empty() {
-                        Button {
-                            compact: true,
-                            "data-action": "admit-corrected-labs",
-                            disabled: work_busy,
-                            onclick: move |_| on_admit_corrected_labs.call(()),
-                            "Admit corrected BMP"
-                        }
-                    }
-                }
-            }
             {work_notice}
             {resume_notice}
             if !rows.is_empty() {
@@ -3525,6 +3390,7 @@ fn PatientSurface(
                             on_editing,
                             on_close_reply,
                             on_revise_reply,
+                            on_resume_reply,
                         }
                     }
                     for superseded in superseded_replies {
@@ -3593,7 +3459,7 @@ fn PatientSurface(
                     }
                 }
             }
-            if is_simulated || !active_plan_items.is_empty() {
+            if !active_plan_items.is_empty() {
                 section { class: "patient-section", aria_label: "Active plan",
                     h2 { "Active plan" }
                     for item in active_plan_items {
@@ -3605,12 +3471,9 @@ fn PatientSurface(
                     }
                 }
             }
-            if is_simulated || !undecided_recommendations.is_empty() {
+            if !undecided_recommendations.is_empty() {
                 section { class: "patient-section", aria_label: "Undecided medication recommendations",
                     h2 { "Undecided medication recommendations" }
-                    if undecided_recommendations.is_empty() {
-                        p { class: "patient-synopsis-meta", "No undecided medication recommendations." }
-                    }
                     for rec in undecided_recommendations {
                         Card {
                             "data-recommendation-id": "{rec.recommendation_id}",
@@ -4045,6 +3908,7 @@ fn ReplyReviewCard(
     on_editing: EventHandler<bool>,
     on_close_reply: EventHandler<String>,
     on_revise_reply: EventHandler<(String, u64, String)>,
+    on_resume_reply: EventHandler<WorkResumeTarget>,
 ) -> Element {
     let mut instruction = use_signal(String::new);
     let mut copied = use_signal(String::new);
@@ -4062,6 +3926,10 @@ fn ReplyReviewCard(
         .as_ref()
         .map(|run| run.status.clone())
         .unwrap_or_default();
+    let resume_target = reply
+        .revision_run
+        .as_ref()
+        .and_then(|run| run.resume_target.clone());
     let run_words = reply_revision_words(&reply);
     let can_copy = actions.contains(&ReplyReviewAction::Copy);
     let can_close = actions.contains(&ReplyReviewAction::NoReplyNeeded);
@@ -4096,6 +3964,15 @@ fn ReplyReviewCard(
                     role: "status",
                     "data-reply-revision": "{run_status}",
                     "{words}"
+                }
+            }
+            if let Some(target) = resume_target {
+                Button {
+                    compact: true,
+                    "data-reply-action": "try-again",
+                    disabled: busy,
+                    onclick: move |_| on_resume_reply.call(target.clone()),
+                    "Try again"
                 }
             }
             if can_copy || can_close {
@@ -4509,7 +4386,6 @@ fn message_command(
             "chat_id": chat_id,
             "text": text,
             "physician_time_zone": time_zone,
-            "intent": "queue",
         }),
     ))
 }
@@ -4544,10 +4420,13 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
                 .clone()
                 .filter(|_| mechanical && stop.is_none());
             let held = resume.as_ref().is_some_and(|target| {
-                snapshot
-                    .runs
-                    .iter()
-                    .any(|run| run.run_id == target.expected_run_id && run.state == "held")
+                snapshot.runs.iter().any(|run| {
+                    run.run_id == target.expected_run_id
+                        && run.outcome
+                            == ChatRunOutcome::Held {
+                                hold_reason: HoldReason::Stopped,
+                            }
+                })
             });
             let author = match turn.kind.as_deref() {
                 Some("physician") => Some(Author::Person),
@@ -4565,7 +4444,7 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         .collect()
 }
 
-/// Try again on a chat turn Coda couldn't finish. Like the Today row, its key
+/// Try again on chat or reply-revision work. Like the Today row, its key
 /// names the run, so pressing again for the same run is the same request.
 fn chat_resume_command(
     workspace_id: Option<String>,
@@ -4685,7 +4564,9 @@ mod conversation_line_tests {
         ConversationLine, chat_resume_command, chat_stop_command, conversation_lines, new_chat_id,
     };
     use crate::shell::STOPPED;
-    use physician_wire::{ChatSnapshotResponse, WorkResumeTarget, WorkStopTarget};
+    use physician_wire::{
+        ChatRunOutcome, ChatSnapshotResponse, HoldReason, WorkResumeTarget, WorkStopTarget,
+    };
     use ui::Author;
 
     #[test]
@@ -4742,10 +4623,10 @@ mod conversation_line_tests {
     #[test]
     fn only_a_turn_that_names_its_writer_gets_a_speaker() {
         let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "conversation": [
+            "snapshot": { "runs": [], "conversation": [
                 { "kind": "physician", "text": "Start metoprolol?" },
                 { "kind": "model", "text": "Her heart rate allows it." },
-                { "text": "Recorded in local simulation." },
+                { "text": "Recorded work status." },
             ] }
         }))
         .unwrap();
@@ -4762,7 +4643,7 @@ mod conversation_line_tests {
     #[test]
     fn only_a_mechanical_line_offers_try_again() {
         let page: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "conversation": [
+            "snapshot": { "runs": [], "conversation": [
                 { "kind": "model", "text": "Done",
                   "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
                 { "text": "Older server line" },
@@ -4779,7 +4660,7 @@ mod conversation_line_tests {
     #[test]
     fn a_writing_line_offers_stop_and_a_stopped_line_offers_resume() {
         let writing: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
-            "snapshot": { "conversation": [
+            "snapshot": { "runs": [], "conversation": [
                 { "kind": "physician", "text": "Hello" },
                 { "kind": "mechanical", "text": "Coda is writing this response.",
                   "stop_target": { "work_item_id": "work-1" } },
@@ -4801,7 +4682,7 @@ mod conversation_line_tests {
                       "text": "Coda stopped this response. Your message is saved.",
                       "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
                 ],
-                "runs": [{ "run_id": "run-1", "state": "held" }],
+                "runs": [{ "run_id": "run-1", "state": "held", "hold_reason": "stopped" }],
             }
         }))
         .unwrap();
@@ -4809,6 +4690,42 @@ mod conversation_line_tests {
         assert_eq!(lines[0].text, STOPPED);
         assert_eq!(lines[0].resume, Some(target()));
         assert!(lines[0].held);
+        assert!(lines[0].stop.is_none());
+        let mut limited = stopped.snapshot;
+        limited.runs[0].outcome = ChatRunOutcome::Held {
+            hold_reason: HoldReason::Limit,
+        };
+        let limited = conversation_lines(&limited);
+        assert_eq!(limited[0].resume, Some(target()));
+        assert!(
+            !limited[0].held,
+            "a limit offers Try again, never Stop's Resume"
+        );
+    }
+
+    #[test]
+    fn a_hold_reason_this_app_does_not_know_reads_like_a_limit() {
+        let held: ChatSnapshotResponse = serde_json::from_value(serde_json::json!({
+            "snapshot": {
+                "conversation": [
+                    { "kind": "mechanical",
+                      "text": "Coda paused this response. Choose Try again to continue.",
+                      "resume_target": { "work_item_id": "work-1", "expected_run_id": "run-1" } },
+                ],
+                "runs": [{ "run_id": "run-1", "state": "held", "hold_reason": "a_reason_from_a_newer_site" }],
+            }
+        }))
+        .unwrap();
+        let lines = conversation_lines(&held.snapshot);
+        assert_eq!(
+            lines[0].text,
+            "Coda paused this response. Choose Try again to continue."
+        );
+        assert_eq!(lines[0].resume, Some(target()));
+        assert!(
+            !lines[0].held,
+            "an unknown hold offers Try again, never Stop's Resume"
+        );
         assert!(lines[0].stop.is_none());
     }
 

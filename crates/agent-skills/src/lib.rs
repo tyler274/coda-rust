@@ -1,10 +1,8 @@
 //! Loads the clinical skill catalog and answers `skill_view`.
 //!
-//! The markdown lives in `skills/` at the workspace root. This crate reads that
-//! directory once: one folder per skill, `SKILL.md` with a YAML mapping, no
-//! symlinks, and a sha256 identity of the file bytes. A skill never authorizes
-//! a tool or a patient read. The harness in `crates/harness` is the caller.
-//! Book: `book/src/physician-site.md`.
+//! Each product supplies its own package root. Each skill directory contains a
+//! `SKILL.md` with YAML front matter. The loader refuses symlinks and identifies
+//! files by their SHA-256 digest. Reading guidance grants no tool or patient access.
 #![deny(missing_docs)]
 #![allow(
     clippy::map_err_ignore,
@@ -14,15 +12,85 @@
 use std::fs;
 use std::path::{Path, PathBuf};
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use sha2::{Digest, Sha256};
 
+/// The tool that opens guidance from a product's admitted package.
+pub const SKILL_VIEW: &str = "skill_view";
+
+/// A correctable request outside the advertised skill tool schema.
+#[derive(Debug, thiserror::Error)]
+#[error("{0}")]
+pub struct SkillArgumentError(&'static str);
+
+impl SkillArgumentError {
+    /// Model feedback for the field that failed validation.
+    pub fn message(&self) -> &'static str {
+        self.0
+    }
+}
+
+/// One skill name and, for a supporting resource, its registered path.
 #[derive(Debug, Clone, PartialEq, Eq)]
+struct SkillViewRequest {
+    /// Skill name.
+    pub name: String,
+    /// Package-relative resource path, or `None` for `SKILL.md`.
+    pub file_path: Option<String>,
+}
+
+impl SkillViewRequest {
+    /// Validates the exact argument object. Unknown or missing keys, or an
+    /// invalid resource path receive corrective feedback.
+    pub fn parse(arguments: &Value) -> Result<Self, SkillArgumentError> {
+        let object = arguments.as_object().ok_or(SkillArgumentError(
+            "Invalid skill_view arguments: arguments must be an object",
+        ))?;
+        if object
+            .keys()
+            .any(|key| !matches!(key.as_str(), "name" | "file_path"))
+        {
+            return Err(SkillArgumentError(
+                "Invalid skill_view arguments: unexpected field; use name and an optional file_path",
+            ));
+        }
+        let name = object
+            .get("name")
+            .and_then(Value::as_str)
+            .ok_or(SkillArgumentError(
+                "Invalid skill_view arguments: name must be a string",
+            ))?;
+        if !valid_skill_name(name) {
+            return Err(SkillArgumentError(
+                "Invalid skill_view arguments: name must be 1-64 lowercase letters, digits and single hyphens",
+            ));
+        }
+        let file_path = match object.get("file_path") {
+            None | Some(Value::Null) => None,
+            Some(Value::String(path)) if (1..=500).contains(&path.chars().count()) => {
+                Some(path.clone())
+            }
+            Some(_) => {
+                return Err(SkillArgumentError(
+                    "Invalid skill_view arguments: file_path must be null or a 1-500 character path",
+                ));
+            }
+        };
+        Ok(Self {
+            name: name.to_owned(),
+            file_path,
+        })
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 /// The `SkillResource` value exchanged by this crate.
 pub struct SkillResource {
     /// The `file_path` value.
     pub file_path: String,
-    /// The `version_id` value.
+    /// SHA-256 of the exact file text: a short stable name, so saved runs can be
+    /// grouped or compared by skill version without comparing whole texts.
     pub version_id: String,
     /// The `byte_length` value.
     pub byte_length: usize,
@@ -30,22 +98,87 @@ pub struct SkillResource {
     pub content: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
-/// The `AgentSkill` value exchanged by this crate.
-pub struct AgentSkill {
-    /// The `name` value.
+/// Immutable guidance selected by a product for its accepted work. This
+/// snapshot supplies both the resident index and every later resource read.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Package {
+    /// Product whose approved folder supplied the package.
+    pub product: String,
+    /// Digest of the sorted skills and their exact resource contents: a short
+    /// stable name, so saved runs can be grouped or compared by package without
+    /// comparing whole packages.
+    pub version: String,
+    skills: Vec<AgentSkill>,
+}
+
+/// A required job skill is absent from the configured package.
+#[derive(Debug, thiserror::Error)]
+#[error("required skill {name} is missing")]
+pub struct MissingSkill {
+    /// Missing configured skill name.
     pub name: String,
-    /// The `description` value.
+}
+
+impl Package {
+    /// Load and validate the selected product folder.
+    pub fn load(product: &str, root: &Path) -> Result<Self, String> {
+        let skills = load_agent_skills(root)?;
+        let version = version_id(&serde_json::to_vec(&skills).expect("skill data serializes"));
+        Ok(Self {
+            product: product.into(),
+            version,
+            skills,
+        })
+    }
+    /// Keep only the names the product permits for this job. The selected package
+    /// supplies both its index and every subsequent body or resource read.
+    pub fn select(&self, names: &[&str]) -> Result<Self, MissingSkill> {
+        for name in names {
+            if !self.skills.iter().any(|skill| &skill.name == name) {
+                return Err(MissingSkill {
+                    name: (*name).into(),
+                });
+            }
+        }
+        let skills: Vec<_> = self
+            .skills
+            .iter()
+            .filter(|skill| names.contains(&skill.name.as_str()))
+            .cloned()
+            .collect();
+        let version = version_id(&serde_json::to_vec(&skills).expect("skill data serializes"));
+        Ok(Self {
+            product: self.product.clone(),
+            version,
+            skills,
+        })
+    }
+
+    /// Metadata from this admitted package, excluding all bodies.
+    pub fn catalog_instructions(&self) -> String {
+        catalog_instructions(&self.skills)
+    }
+    /// Open only a name or path present in this admitted package.
+    pub fn execute_skill_view(&self, arguments: &Value) -> Result<SkillView, SkillArgumentError> {
+        execute_skill_view(&self.skills, arguments)
+    }
+}
+
+/// One visible skill, either loaded from a product package or frozen with a run.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct AgentSkill {
+    /// Indexed name and the only key for opening this skill.
+    pub name: String,
+    /// Resident index description.
     pub description: String,
-    /// The `file_path` value.
-    pub file_path: String,
-    /// The `version_id` value.
+    /// SHA-256 of the exact skill text: a short stable name, so saved runs can be
+    /// grouped or compared by skill version without comparing whole texts.
+    #[serde(rename = "version")]
     pub version_id: String,
-    /// The `byte_length` value.
-    pub byte_length: usize,
-    /// The `content` value.
+    /// Exact text available to the run.
     pub content: String,
-    /// The `resources` value.
+    /// Registered files for products offering resource reads.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub resources: Vec<SkillResource>,
 }
 
@@ -53,7 +186,6 @@ pub struct AgentSkill {
 pub fn load_agent_skills(root: &Path) -> Result<Vec<AgentSkill>, String> {
     let root = fs::canonicalize(root).map_err(|error| error.to_string())?;
     let mut skills = Vec::new();
-    let mut names = Vec::new();
     let entries = fs::read_dir(&root).map_err(|error| error.to_string())?;
     for entry in entries {
         let entry = entry.map_err(|error| error.to_string())?;
@@ -70,12 +202,7 @@ pub fn load_agent_skills(root: &Path) -> Result<Vec<AgentSkill>, String> {
         if !file_type.is_dir() {
             continue;
         }
-        let skill = load_skill(&root, &name)?;
-        if names.iter().any(|existing| existing == &skill.name) {
-            return Err(format!("Duplicate packaged skill name {}", skill.name));
-        }
-        names.push(skill.name.clone());
-        skills.push(skill);
+        skills.push(load_skill(&root, &name)?);
     }
     if skills.is_empty() {
         return Err("No packaged skills were found".to_owned());
@@ -84,8 +211,25 @@ pub fn load_agent_skills(root: &Path) -> Result<Vec<AgentSkill>, String> {
     Ok(skills)
 }
 
+/// Renders the model-facing metadata index, without opening a skill body.
+pub fn catalog_instructions(skills: &[AgentSkill]) -> String {
+    format!(
+        "Approved skill catalog (metadata only; read bodies with skill_view):\n{}",
+        catalog_json(skills)
+    )
+}
+
+/// Parses one common invocation and opens only guidance in this product's supplied package.
+pub fn execute_skill_view(
+    skills: &[AgentSkill],
+    arguments: &Value,
+) -> Result<SkillView, SkillArgumentError> {
+    let request = SkillViewRequest::parse(arguments)?;
+    view_skill(skills, &request.name, request.file_path.as_deref())
+}
+
 /// Publishes the compact catalog. Resource metadata only; no file bodies.
-pub fn catalog_json(skills: &[AgentSkill]) -> String {
+fn catalog_json(skills: &[AgentSkill]) -> String {
     let catalog = Catalog {
         kind: "approved_skill_catalog",
         skills: skills.iter().map(SkillMetadata::from).collect(),
@@ -93,29 +237,34 @@ pub fn catalog_json(skills: &[AgentSkill]) -> String {
     serde_json::to_string(&catalog).expect("skill catalog is json")
 }
 
+/// Opens a name only within the skills visible in this product or run's index.
+fn named_skill<'a>(skills: &'a [AgentSkill], name: &str) -> Option<&'a AgentSkill> {
+    skills.iter().find(|skill| skill.name == name)
+}
+
 /// Reads one skill body or one registered resource.
-///
-/// `file_path` is null for the skill body. `max_result_bytes` is 4096 through
-/// 65536. A larger JSON result is `over_budget` and carries no partial content.
-pub fn view_skill(
+/// The product retains the exact body; the harness owns its presentation.
+fn view_skill(
     skills: &[AgentSkill],
     name: &str,
     file_path: Option<&str>,
-    max_result_bytes: u32,
-) -> Result<SkillView, String> {
-    if !(4096..=65536).contains(&max_result_bytes) {
-        return Err(format!(
-            "max_result_bytes {max_result_bytes} is outside 4096..=65536"
-        ));
-    }
-    let Some(skill) = skills.iter().find(|skill| skill.name == name) else {
-        return Ok(unavailable(name, file_path));
+) -> Result<SkillView, SkillArgumentError> {
+    // An unknown name returns the names of the skills this package has, as
+    // Hermes does, so the model can correct its request.
+    let Some(skill) = named_skill(skills, name) else {
+        return Ok(SkillView::UnknownSkill {
+            name: name.to_owned(),
+            file_path: file_path.map(str::to_owned),
+            available_skills: skills.iter().map(|skill| skill.name.clone()).collect(),
+        });
     };
+    // `SKILL.md` by name is the skill body, as in the Hermes reference.
+    let file_path = file_path.filter(|path| *path != "SKILL.md");
     let resource = match file_path {
         None => Some(SkillResource {
-            file_path: skill.file_path.clone(),
+            file_path: "SKILL.md".to_owned(),
             version_id: skill.version_id.clone(),
-            byte_length: skill.byte_length,
+            byte_length: skill.content.len(),
             content: skill.content.clone(),
         }),
         Some(path) if is_registered_path(path) => skill
@@ -125,62 +274,28 @@ pub fn view_skill(
             .cloned(),
         Some(_) => None,
     };
+    let paths = || {
+        skill
+            .resources
+            .iter()
+            .map(|item| item.file_path.clone())
+            .collect()
+    };
+    // A path the skill does not have returns the paths it does have, so the
+    // model can correct its request.
     let Some(resource) = resource else {
-        return Ok(unavailable(name, file_path));
-    };
-    let encoded_len = {
-        let available = AvailableView {
-            status: "available",
-            name: &skill.name,
-            file_path,
-            version_id: &resource.version_id,
-            byte_length: resource.byte_length,
-            content: &resource.content,
-            resources: if file_path.is_none() {
-                Some(skill.resources.iter().map(ResourceMetadata::from).collect())
-            } else {
-                None
-            },
-        };
-        serde_json::to_vec(&available)
-            .map_err(|error| error.to_string())?
-            .len()
-    };
-    if encoded_len <= usize::try_from(max_result_bytes).unwrap_or(usize::MAX) {
-        Ok(SkillView::Available {
-            name: skill.name.clone(),
+        return Ok(SkillView::Unavailable {
+            name: name.to_owned(),
             file_path: file_path.map(str::to_owned),
-            version_id: resource.version_id,
-            byte_length: resource.byte_length,
-            content: resource.content,
-            resources: file_path.is_none().then(|| {
-                skill
-                    .resources
-                    .iter()
-                    .map(|item| OwnedResourceMetadata {
-                        file_path: item.file_path.clone(),
-                        version_id: item.version_id.clone(),
-                        byte_length: item.byte_length,
-                    })
-                    .collect()
-            }),
-        })
-    } else {
-        Ok(SkillView::OverBudget {
-            name: skill.name.clone(),
-            file_path: file_path.map(str::to_owned),
-            version_id: resource.version_id,
-            byte_length: resource.byte_length,
-            required_bytes: encoded_len,
-        })
-    }
-}
-
-fn unavailable(name: &str, file_path: Option<&str>) -> SkillView {
-    SkillView::Unavailable {
-        name: name.to_owned(),
+            resources: paths(),
+        });
+    };
+    Ok(SkillView::Available {
+        name: skill.name.clone(),
         file_path: file_path.map(str::to_owned),
-    }
+        content: resource.content,
+        resources: file_path.is_none().then(paths),
+    })
 }
 
 fn is_registered_path(path: &str) -> bool {
@@ -193,110 +308,90 @@ fn is_registered_path(path: &str) -> bool {
             .all(|component| !component.is_empty() && component != "." && component != "..")
 }
 
-/// One `skill_view` outcome. `OverBudget` has no content.
+/// One `skill_view` outcome.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum SkillView {
-    /// The whole body, plus resource metadata when `file_path` was null.
+    /// The whole body, plus registered resource paths when `file_path` was null
+    /// or `SKILL.md`.
     Available {
         /// Skill name.
         name: String,
         /// The requested path. Null is the skill body.
         file_path: Option<String>,
-        /// Sha256 identity of the returned file.
-        version_id: String,
-        /// File byte length.
-        byte_length: usize,
         /// The whole file. Never a prefix.
         content: String,
         /// Present only for the skill body.
-        resources: Option<Vec<OwnedResourceMetadata>>,
+        resources: Option<Vec<String>>,
     },
-    /// Unknown skill or unregistered path.
+    /// A path the named skill does not have.
     Unavailable {
         /// Requested skill name.
         name: String,
         /// Requested path.
         file_path: Option<String>,
+        /// The skill's registered resource paths.
+        resources: Vec<String>,
     },
-    /// The available JSON is larger than `max_result_bytes`.
-    OverBudget {
+    /// A name the package does not have.
+    UnknownSkill {
         /// Requested skill name.
         name: String,
         /// Requested path.
         file_path: Option<String>,
-        /// Sha256 identity of the file that did not fit.
-        version_id: String,
-        /// File byte length.
-        byte_length: usize,
-        /// Bytes the available JSON would have used.
-        required_bytes: usize,
+        /// Names of the skills in the package the job was given.
+        available_skills: Vec<String>,
     },
 }
 
-impl SkillView {
-    /// The model-visible JSON result. An `available` view encodes exactly the
-    /// bytes [`view_skill`] measured against `max_result_bytes`, so a returned
-    /// view always fits the budget it was read under.
-    pub fn to_json(&self) -> String {
+impl Serialize for SkillView {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         match self {
             Self::Available {
                 name,
                 file_path,
-                version_id,
-                byte_length,
                 content,
                 resources,
-            } => serde_json::to_string(&AvailableView {
+            } => AvailableView {
                 status: "available",
                 name,
                 file_path: file_path.as_deref(),
-                version_id,
-                byte_length: *byte_length,
                 content,
-                resources: resources.as_ref().map(|items| {
-                    items
-                        .iter()
-                        .map(|item| ResourceMetadata {
-                            file_path: &item.file_path,
-                            version_id: &item.version_id,
-                            byte_length: item.byte_length,
-                        })
-                        .collect()
-                }),
-            }),
-            Self::Unavailable { name, file_path } => serde_json::to_string(&UnavailableView {
+                resources: resources.as_deref(),
+            }
+            .serialize(serializer),
+            Self::Unavailable {
+                name,
+                file_path,
+                resources,
+            } => UnavailableView {
                 status: "unavailable",
                 name,
                 file_path: file_path.as_deref(),
-            }),
-            Self::OverBudget {
+                resources: Some(resources),
+                available_skills: None,
+            }
+            .serialize(serializer),
+            Self::UnknownSkill {
                 name,
                 file_path,
-                version_id,
-                byte_length,
-                required_bytes,
-            } => serde_json::to_string(&OverBudgetView {
-                status: "over_budget",
+                available_skills,
+            } => UnavailableView {
+                status: "unavailable",
                 name,
                 file_path: file_path.as_deref(),
-                version_id,
-                byte_length: *byte_length,
-                required_bytes: *required_bytes,
-            }),
+                resources: None,
+                available_skills: Some(available_skills),
+            }
+            .serialize(serializer),
         }
-        .expect("skill view is json")
     }
 }
 
-/// Resource identity published with a skill body. No file content.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct OwnedResourceMetadata {
-    /// Relative path inside the skill folder.
-    pub file_path: String,
-    /// Sha256 identity of that file.
-    pub version_id: String,
-    /// File byte length.
-    pub byte_length: usize,
+impl SkillView {
+    /// The exact JSON result, before harness presentation.
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(self).expect("skill view is json")
+    }
 }
 
 #[derive(Serialize)]
@@ -309,16 +404,7 @@ struct Catalog<'a> {
 struct SkillMetadata<'a> {
     name: &'a str,
     description: &'a str,
-    version_id: &'a str,
-    byte_length: usize,
-    resources: Vec<ResourceMetadata<'a>>,
-}
-
-#[derive(Serialize)]
-struct ResourceMetadata<'a> {
-    file_path: &'a str,
-    version_id: &'a str,
-    byte_length: usize,
+    resources: Vec<&'a str>,
 }
 
 #[derive(Serialize)]
@@ -326,11 +412,9 @@ struct AvailableView<'a> {
     status: &'a str,
     name: &'a str,
     file_path: Option<&'a str>,
-    version_id: &'a str,
-    byte_length: usize,
     content: &'a str,
     #[serde(skip_serializing_if = "Option::is_none")]
-    resources: Option<Vec<ResourceMetadata<'a>>>,
+    resources: Option<&'a [String]>,
 }
 
 #[derive(Serialize)]
@@ -338,16 +422,10 @@ struct UnavailableView<'a> {
     status: &'a str,
     name: &'a str,
     file_path: Option<&'a str>,
-}
-
-#[derive(Serialize)]
-struct OverBudgetView<'a> {
-    status: &'a str,
-    name: &'a str,
-    file_path: Option<&'a str>,
-    version_id: &'a str,
-    byte_length: usize,
-    required_bytes: usize,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    resources: Option<&'a [String]>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    available_skills: Option<&'a [String]>,
 }
 
 impl<'a> From<&'a AgentSkill> for SkillMetadata<'a> {
@@ -355,19 +433,11 @@ impl<'a> From<&'a AgentSkill> for SkillMetadata<'a> {
         Self {
             name: &skill.name,
             description: &skill.description,
-            version_id: &skill.version_id,
-            byte_length: skill.byte_length,
-            resources: skill.resources.iter().map(ResourceMetadata::from).collect(),
-        }
-    }
-}
-
-impl<'a> From<&'a SkillResource> for ResourceMetadata<'a> {
-    fn from(resource: &'a SkillResource) -> Self {
-        Self {
-            file_path: &resource.file_path,
-            version_id: &resource.version_id,
-            byte_length: resource.byte_length,
+            resources: skill
+                .resources
+                .iter()
+                .map(|resource| resource.file_path.as_str())
+                .collect(),
         }
     }
 }
@@ -412,9 +482,7 @@ fn load_skill(root: &Path, folder: &str) -> Result<AgentSkill, String> {
     Ok(AgentSkill {
         name,
         description,
-        file_path: main.file_path,
         version_id: main.version_id,
-        byte_length: main.byte_length,
         content: main.content,
         resources: collect_resources(&folder_path)?,
     })
@@ -485,7 +553,8 @@ fn load_resource(folder: &Path, file_path: &str) -> Result<SkillResource, String
     })
 }
 
-/// Returns the sha256 identity of `bytes`.
+/// Returns `sha256:` and the hex SHA-256 of `bytes`, the short stable name of an
+/// exact skill text or package.
 pub fn version_id(bytes: &[u8]) -> String {
     let digest = Sha256::digest(bytes);
     let mut out = String::with_capacity("sha256:".len() + digest.len() * 2);
@@ -560,6 +629,67 @@ fn resolve_inside(root: &Path, child: &str) -> Result<PathBuf, String> {
 mod tests {
     use super::*;
 
+    #[test]
+    fn arguments_follow_the_reference_schema() {
+        let ok = serde_json::json!({"name":"pre-visit-preparation"});
+        assert_eq!(
+            SkillViewRequest::parse(&ok).unwrap(),
+            SkillViewRequest {
+                name: "pre-visit-preparation".into(),
+                file_path: None,
+            }
+        );
+        let path = serde_json::json!({"name":"a1-b2","file_path":"references/x.md"});
+        assert_eq!(
+            SkillViewRequest::parse(&path).unwrap().file_path.as_deref(),
+            Some("references/x.md")
+        );
+        for bad in [
+            serde_json::json!([]),
+            serde_json::json!({"name":"pre-visit-preparation","max_result_bytes":4096}),
+            serde_json::json!({"name":"pre-visit-preparation","file_path":""}),
+            serde_json::json!({"name":"pre-visit-preparation","file_path":7}),
+            serde_json::json!({"name":"pre-visit-preparation","file_path":"x".repeat(501)}),
+            serde_json::json!({"name":"Pre-Visit"}),
+            serde_json::json!({"name":"pre--visit"}),
+            serde_json::json!({"name":"-pre"}),
+            serde_json::json!({"name":""}),
+            serde_json::json!({"name":"a".repeat(65)}),
+            serde_json::json!({"name":"pre-visit-preparation","extra":1}),
+        ] {
+            let reason = SkillViewRequest::parse(&bad).unwrap_err();
+            assert!(
+                reason.message().starts_with("Invalid skill_view arguments"),
+                "{bad}"
+            );
+        }
+    }
+
+    #[test]
+    fn the_supplied_package_controls_listing_and_opening() {
+        let package = Package::load("chords", &catalog_root()).unwrap();
+        let selected = package.select(&["patient-record-retrieval"]).unwrap();
+        assert_ne!(selected.version, package.version);
+        let index: Value = serde_json::from_str(&catalog_json(&selected.skills)).unwrap();
+        assert_eq!(index["skills"].as_array().unwrap().len(), 1);
+        assert_eq!(index["skills"][0]["name"], "patient-record-retrieval");
+        assert!(
+            !selected
+                .catalog_instructions()
+                .contains("patient-communication")
+        );
+        for (name, expected) in [
+            ("patient-record-retrieval", "available"),
+            ("patient-communication", "unavailable"),
+        ] {
+            let result = selected
+                .execute_skill_view(&serde_json::json!({"name":name}))
+                .unwrap();
+            let opened = serde_json::to_value(result).unwrap();
+            assert_eq!(opened["status"], expected);
+        }
+    }
+
     fn catalog_root() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills")
     }
@@ -585,66 +715,158 @@ mod tests {
         for skill in skills {
             let bytes = fs::read(root.join(&skill.name).join("SKILL.md")).unwrap();
             assert_eq!(skill.version_id, version_id(&bytes));
-            assert_eq!(skill.byte_length, bytes.len());
+            assert_eq!(skill.content.as_bytes(), bytes);
             assert!(!skill.description.is_empty());
         }
     }
 
     #[test]
-    fn view_json_is_the_measured_result_and_names_its_outcome() {
-        let skills = load_agent_skills(&catalog_root()).unwrap();
-        let body = view_skill(&skills, "pre-visit-preparation", None, 65536).unwrap();
+    fn view_json_preserves_the_exact_body_and_names_its_outcome() {
+        let skills = skills_with_guide();
+        let guide = "Read the registered guide exactly.";
+        let body = view_skill(&skills, "patient-record-retrieval", None).unwrap();
         let encoded = body.to_json();
         let SkillView::Available { content, .. } = &body else {
             panic!("expected the body, got {body:?}");
         };
         let value: serde_json::Value = serde_json::from_str(&encoded).unwrap();
         assert_eq!(value["status"], "available");
+        assert!(
+            value.get("version_id").is_none(),
+            "skill output exposes a digest to the model"
+        );
+        assert!(
+            value.get("byte_length").is_none(),
+            "skill output exposes byte accounting to the model"
+        );
         assert_eq!(value["file_path"], serde_json::Value::Null);
         assert_eq!(value["content"].as_str(), Some(content.as_str()));
-        assert!(value["resources"].is_array());
-        // The exact budget admits the body; one byte less does not.
-        let exact = u32::try_from(encoded.len()).unwrap();
-        assert!(matches!(
-            view_skill(&skills, "pre-visit-preparation", None, exact).unwrap(),
-            SkillView::Available { .. }
-        ));
-        match view_skill(&skills, "pre-visit-preparation", None, exact - 1).unwrap() {
-            SkillView::OverBudget { required_bytes, .. } => {
-                assert_eq!(required_bytes, encoded.len());
-            }
-            other => panic!("expected over_budget, got {other:?}"),
-        }
+        assert_eq!(
+            value["resources"],
+            serde_json::json!(["references/authoring-guide.md"])
+        );
         let resource = view_skill(
             &skills,
-            "patient-memory-maintenance",
+            "patient-record-retrieval",
             Some("references/authoring-guide.md"),
-            65536,
         )
         .unwrap()
         .to_json();
         let value: serde_json::Value = serde_json::from_str(&resource).unwrap();
         assert_eq!(value["file_path"], "references/authoring-guide.md");
+        assert_eq!(value["content"], guide);
+        assert!(value.get("version_id").is_none());
+        assert!(value.get("byte_length").is_none());
         assert!(value.get("resources").is_none());
-        let missing: serde_json::Value = serde_json::from_str(
-            &view_skill(&skills, "pre-visit-preparation", Some("../SKILL.md"), 4096)
-                .unwrap()
-                .to_json(),
+        let mut large = skills.clone();
+        let skill = large
+            .iter_mut()
+            .find(|skill| skill.name == "patient-record-retrieval")
+            .unwrap();
+        skill.content = "Guidance. ".repeat(8_000);
+        skill.version_id = version_id(skill.content.as_bytes());
+        let opened = execute_skill_view(
+            &large,
+            &serde_json::json!({"name":"patient-record-retrieval"}),
+        )
+        .unwrap();
+        assert!(
+            matches!(opened, SkillView::Available { content, .. } if content.len() == 80_000),
+            "a loaded skill body must remain available for harness paging"
+        );
+    }
+
+    /// The packaged catalog, with one registered resource on patient-record-retrieval.
+    fn skills_with_guide() -> Vec<AgentSkill> {
+        let mut skills = load_agent_skills(&catalog_root()).unwrap();
+        let guide = "Read the registered guide exactly.";
+        skills
+            .iter_mut()
+            .find(|skill| skill.name == "patient-record-retrieval")
+            .unwrap()
+            .resources
+            .push(SkillResource {
+                file_path: "references/authoring-guide.md".into(),
+                version_id: version_id(guide.as_bytes()),
+                byte_length: guide.len(),
+                content: guide.into(),
+            });
+        skills
+    }
+
+    #[test]
+    fn skill_md_by_name_opens_the_body() {
+        let skills = skills_with_guide();
+        let named = execute_skill_view(
+            &skills,
+            &serde_json::json!({"name":"patient-record-retrieval","file_path":"SKILL.md"}),
+        )
+        .unwrap();
+        let absent = execute_skill_view(
+            &skills,
+            &serde_json::json!({"name":"patient-record-retrieval"}),
+        )
+        .unwrap();
+        assert_eq!(named.to_json(), absent.to_json());
+        let value: Value = serde_json::from_str(&named.to_json()).unwrap();
+        assert_eq!(value["status"], "available");
+        assert_eq!(
+            value["resources"],
+            serde_json::json!(["references/authoring-guide.md"])
+        );
+    }
+
+    #[test]
+    fn missing_file_on_a_known_skill_lists_its_files() {
+        let skills = skills_with_guide();
+        let missing: Value = serde_json::from_str(
+            &view_skill(
+                &skills,
+                "patient-record-retrieval",
+                Some("references/absent.md"),
+            )
+            .unwrap()
+            .to_json(),
         )
         .unwrap();
         assert_eq!(
             missing,
-            serde_json::json!({"status":"unavailable","name":"pre-visit-preparation","file_path":"../SKILL.md"})
+            serde_json::json!({"status":"unavailable","name":"patient-record-retrieval","file_path":"references/absent.md","resources":["references/authoring-guide.md"]})
         );
-        let over: serde_json::Value = serde_json::from_str(
-            &view_skill(&skills, "pre-visit-preparation", None, 4096)
-                .unwrap()
-                .to_json(),
+        let bare: Value = serde_json::from_str(
+            &view_skill(
+                &skills,
+                "patient-communication",
+                Some("references/absent.md"),
+            )
+            .unwrap()
+            .to_json(),
         )
         .unwrap();
-        assert_eq!(over["status"], "over_budget");
-        assert!(over.get("content").is_none());
-        assert!(over["required_bytes"].as_u64().unwrap() > 4096);
+        assert_eq!(bare["status"], "unavailable");
+        assert_eq!(bare["resources"], serde_json::json!([]));
+    }
+
+    #[test]
+    fn unknown_skill_lists_the_skills_of_the_package_the_job_has() {
+        let package = Package::load("chords", &catalog_root()).unwrap();
+        let job = package.select(&["patient-record-retrieval"]).unwrap();
+        assert!(
+            package.skills.len() > job.skills.len(),
+            "the catalog has skills this job was not given"
+        );
+        for path in [None, Some("SKILL.md")] {
+            let value = serde_json::to_value(
+                job.execute_skill_view(&serde_json::json!({"name":"not-a-skill","file_path":path}))
+                    .unwrap(),
+            )
+            .unwrap();
+            assert_eq!(
+                value,
+                serde_json::json!({"status":"unavailable","name":"not-a-skill","file_path":path,
+                    "available_skills":["patient-record-retrieval"]})
+            );
+        }
     }
 
     #[test]

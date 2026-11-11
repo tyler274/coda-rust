@@ -1,6 +1,6 @@
 //! One bounded execution loop. Hosts own durable truth and every effect.
 //!
-//! There is no retry or recovery loop here. In particular, dropping a tool
+//! Transient provider requests retry only before visible output. Dropping a tool
 //! future does not establish that its effect was rolled back. After any failure
 //! following `ToolStarted`, the host reconciles the original operation before
 //! deciding whether to resume. Persisted events are execution evidence, not a
@@ -13,103 +13,168 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use tokio::{sync::watch, time::Instant};
 
-mod compatibility;
+/// Model-window measurement, kept separate from cumulative token budgets and transport bounds.
+pub mod context;
 mod exchange;
+/// Shared cursor protocol for exact product-owned conversation reads.
+pub mod history;
+mod limits;
+/// Frozen recipes, materialized requests, token usage and the provider contract.
+pub mod recipe;
+/// Reconstruct continuations from product-owned execution and message facts.
+pub mod recovery;
+mod request_parts;
+/// Bounded access to the authorized receipts of this work.
+pub mod results;
+/// Shared run lifecycle, persisted at each product's accepted-work owner.
+pub mod runs;
+mod windows;
+mod work;
+pub use limits::{LimitBackstop, ReachedBackstops, RunLimits};
+use recipe::Window;
+pub use recipe::{Product, ToolOutcome};
+pub use request_parts::{RequestItem, SavedRequest};
+pub use windows::{FINAL_REQUEST, LIMIT_WARNING, handoff_ask, handoff_ending, offer_working_notes};
+pub use windows::{
+    NoteReference, ReadWorkingNote, SaveWorkingNote, WindowSeed, WorkingNoteReceipt,
+};
+pub use work::{AcceptedInput, PendingFinal, Work, pending_final, tool_is_read_only};
+pub(crate) use work::{WorkProgress, run_work};
 
-// Facades describe representation, evidence and authority callbacks. Only this
-// driver decides when another model request or a tool batch may run.
-trait Batch {
-    type Call;
-    type Error;
-
-    async fn tool(&mut self, call: Self::Call) -> Result<(), Self::Error>;
-}
-
-trait Driver: Batch {
-    type Prepared;
-    type Turn;
-    type Output;
-
-    async fn prepare(&mut self) -> Result<Self::Prepared, Self::Error>;
-    async fn exchange(&mut self, prepared: &Self::Prepared) -> Result<Self::Turn, Self::Error>;
-    fn validate(
-        &mut self,
-        prepared: &Self::Prepared,
-        turn: &Self::Turn,
-    ) -> Result<Vec<Self::Call>, Self::Error>;
-    async fn settle(
-        &mut self,
-        prepared: Self::Prepared,
-        turn: Self::Turn,
-        empty: bool,
-    ) -> Result<Decision<Self::Output>, Self::Error>;
-}
-
-enum Decision<T> {
-    Complete(T),
-    Continue,
-    Tools,
-}
-
-async fn drive<D: Driver>(driver: &mut D) -> Result<D::Output, D::Error> {
-    loop {
-        let prepared = driver.prepare().await?;
-        let turn = driver.exchange(&prepared).await?;
-        // No completion callback or effect is reachable before whole-batch
-        // validation, even if a response mixes terminal and effect calls.
-        let calls = driver.validate(&prepared, &turn)?;
-        match driver.settle(prepared, turn, calls.is_empty()).await? {
-            Decision::Complete(output) => return Ok(output),
-            Decision::Continue => continue,
-            Decision::Tools => execute_batch(driver, calls).await?,
-        }
+/// A provider can author assistant output and calls. Only a product supplies results.
+pub(crate) fn validate_output(items: &[Item]) -> Result<(), &'static str> {
+    if items.contains(&Item::OutputCutoff) && items.len() != 1 {
+        return Err("incomplete output cannot include executable items");
     }
-}
-
-async fn execute_batch<D: Batch>(driver: &mut D, calls: Vec<D::Call>) -> Result<(), D::Error> {
-    for call in calls {
-        driver.tool(call).await?;
+    for item in items {
+        match item {
+            Item::Result { .. } | Item::MaterializedResult { .. } => {
+                return Err("provider authored a tool result");
+            }
+            Item::Feedback { .. } | Item::FinishRefused(_) => {
+                return Err("provider authored harness feedback");
+            }
+            Item::ProductMessage(_) => return Err("provider authored a product message identity"),
+            Item::Message { role, .. } if role != "assistant" => {
+                return Err("provider authored a non-assistant message");
+            }
+            Item::OutputCutoff | Item::Message { .. } | Item::Call(_) | Item::Opaque(_) => (),
+        }
     }
     Ok(())
 }
 
-fn validate_identities<'a>(
-    seen: &mut HashSet<String>,
-    calls: impl IntoIterator<Item = (&'a str, &'a str)>,
-) -> bool {
-    calls.into_iter().all(|(id, name)| {
-        !id.trim().is_empty() && !name.trim().is_empty() && seen.insert(id.to_owned())
-    })
+/// SQLSTATEs for transient acknowledgment failures. Products classify their
+/// driver and pool errors and keep the original cause when requesting a retry.
+pub fn retryable_sqlstate(code: Option<&str>) -> bool {
+    matches!(
+        code,
+        Some(
+            "08000"
+                | "08001"
+                | "08003"
+                | "08006"
+                | "08007"
+                | "40001"
+                | "40P01"
+                | "55P03"
+                | "53300"
+                | "57P01"
+                | "57P02"
+                | "57P03"
+        )
+    )
 }
-
-pub(crate) use compatibility::{continued, resume_tools, run as run_compatibility};
 
 /// A cooperative stop signal, independent of any product terminal state.
 #[derive(Clone, Debug)]
-pub struct Cancellation(watch::Sender<bool>);
+pub struct Cancellation {
+    run: watch::Sender<bool>,
+    request: Option<watch::Receiver<bool>>,
+}
 
 impl Default for Cancellation {
     fn default() -> Self {
-        Self(watch::channel(false).0)
+        Self {
+            run: watch::channel(false).0,
+            request: None,
+        }
     }
 }
 
 impl Cancellation {
     /// Requests cancellation. An already committed effect is not undone.
     pub fn cancel(&self) {
-        self.0.send_replace(true);
+        self.run.send_replace(true);
     }
 
-    async fn cancelled(&self) {
-        let mut rx = self.0.subscribe();
-        let _ = rx.wait_for(|cancelled| *cancelled).await;
+    /// Whether this run has been cancelled.
+    pub fn is_cancelled(&self) -> bool {
+        *self.run.borrow() || self.request.as_ref().is_some_and(|signal| *signal.borrow())
     }
+
+    /// Refuses a dispatch after cancellation.
+    pub fn check(&self) -> Result<(), Failure> {
+        if self.is_cancelled() {
+            Err(Failure::Cancelled)
+        } else {
+            Ok(())
+        }
+    }
+
+    // Losing a product fence stops this exchange. Only the product can cancel
+    // the entire run, whose cancellation handle can outlive the exchange.
+    fn for_request(&self) -> (Self, watch::Sender<bool>) {
+        let (signal, request) = watch::channel(false);
+        (
+            Self {
+                run: self.run.clone(),
+                request: Some(request),
+            },
+            signal,
+        )
+    }
+    pub(crate) async fn cancelled(&self) {
+        let mut run = self.run.subscribe();
+        let mut request = self.request.clone();
+        tokio::select! {
+            _ = run.wait_for(|flag|*flag) => (),
+            () = async {
+                if let Some(signal) = &mut request { let _ = signal.wait_for(|flag|*flag).await; }
+                else { std::future::pending().await }
+            } => (),
+        }
+    }
+}
+
+/// Current authorized text resolved by the product's canonical message store.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProductMessage {
+    /// Stable message identity within this product conversation or work.
+    pub id: String,
+    /// Authorship supplied by the product.
+    pub role: history::Role,
+    /// Exact current text; never copied into a dispatch record.
+    pub text: String,
 }
 
 /// Provider-neutral conversation item. Opaque items retain provider continuation
 /// data, never authority to execute a tool.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Item {
+    /// Authored product message; dispatch records retain only its identity.
+    ProductMessage(ProductMessage),
+    /// Harness-owned continuation feedback, retained at the end of a fresh window.
+    /// The provider boundary sends it as developer guidance.
+    Feedback {
+        /// Exact continuation content.
+        text: String,
+    },
+    /// A product refused a finish proposed without calls. The harness renders
+    /// it as developer feedback only at the provider boundary.
+    FinishRefused(recipe::Refusal),
+    /// Provider hit its output limit; the receipt retains the incomplete output.
+    OutputCutoff,
     /// Authored message; input roles are user, assistant or developer.
     Message {
         /// Wire role.
@@ -123,23 +188,65 @@ pub enum Item {
     Result {
         /// Matching call identity.
         call_id: String,
-        /// Result bytes interpreted by the model, not the engine.
+        /// Typed model-visible projection of an exact retained result.
+        output: results::ResultView,
+    },
+    /// Provider-wire form of a typed result. The harness creates this only after
+    /// it has durably recorded the request's [`results::ResultView`].
+    MaterializedResult {
+        /// Matching call identity.
+        call_id: String,
+        /// Exact provider-facing bytes encoded from the typed projection.
         output: String,
     },
     /// Provider-specific continuation item, for example reasoning metadata.
     Opaque(Value),
 }
 
+impl Item {
+    /// The provider-requested call this item holds, if it is one.
+    pub fn call(&self) -> Option<&Invocation> {
+        match self {
+            Self::Call(call) => Some(call),
+            Self::ProductMessage(_)
+            | Self::Feedback { .. }
+            | Self::FinishRefused(_)
+            | Self::OutputCutoff
+            | Self::Message { .. }
+            | Self::Result { .. }
+            | Self::MaterializedResult { .. }
+            | Self::Opaque(_) => None,
+        }
+    }
+
+    /// A message authored by the assistant.
+    pub fn assistant(text: impl Into<String>) -> Self {
+        Self::Message {
+            role: "assistant".into(),
+            text: text.into(),
+        }
+    }
+}
+
 /// An invocation identity is unique within an execution attempt. Products supply
 /// their own durable effect identity; a provider call ID is not an idempotency key.
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
-pub struct Invocation {
+pub struct Invocation<A = String> {
     /// Provider call identity.
     pub id: String,
     /// Tool name.
     pub name: String,
-    /// Raw JSON arguments. Invalid JSON produces feedback, not an invocation.
-    pub arguments: String,
+    /// Raw provider text on the wire, or a validated object at the tool boundary.
+    pub arguments: A,
+}
+
+impl Invocation {
+    pub(crate) fn parse_arguments(&self) -> Result<Value, &'static str> {
+        serde_json::from_str::<Value>(&self.arguments)
+            .ok()
+            .filter(Value::is_object)
+            .ok_or("arguments must be a JSON object")
+    }
 }
 
 /// A tool offered by the product, not inferred from a skill or provider response.
@@ -153,113 +260,164 @@ pub struct Tool {
     pub parameters: Value,
 }
 
-/// One product-prepared context. Selection and preservation policy stay outside
-/// the engine; the engine checks complete call/result pairing before dispatch.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Context {
-    /// Product-owned instructions.
-    pub instructions: String,
-    /// Ordered conversation and provider continuation items.
-    pub items: Vec<Item>,
-    /// Tools callable on this request.
-    pub tools: Vec<Tool>,
-}
-
-/// Owner-selected bounds for one attempt; hosts retain cross-attempt usage.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Limits {
-    /// Maximum dispatched provider requests.
-    pub model_calls: u32,
-    /// Maximum executed tools across all turns.
-    pub tool_calls: u32,
-    /// Maximum calls in a single provider response; oversized batches run none.
-    pub calls_per_turn: usize,
-    /// Maximum serialized provider request bytes.
-    pub request_bytes: usize,
-    /// Maximum buffered provider response bytes.
-    pub response_bytes: usize,
-    /// Maximum single tool result bytes.
-    pub tool_result_bytes: usize,
-    /// Maximum aggregate delivered tool result bytes.
-    pub total_tool_result_bytes: usize,
-    /// Provider output-token ceiling.
-    pub output_tokens: u32,
-    /// Whole attempt deadline, including host callbacks.
-    pub elapsed: Duration,
-}
-
-/// Attempt-local accounting; durable owners aggregate across attempts.
-#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct Usage {
-    /// Provider requests dispatched, including uncertain outcomes.
-    pub model_calls: u32,
-    /// Tools dispatched, including uncertain outcomes.
-    pub tool_calls: u32,
-    /// Tool-result bytes delivered to subsequent context.
-    pub tool_result_bytes: usize,
-}
-
-/// Immutable request information passed to the provider.
-pub struct Request<'a> {
-    /// Owner-provided attempt identity, not a new engine-owned run identity.
-    pub attempt_id: &'a str,
-    /// One-based provider request ordinal.
-    pub ordinal: u32,
-    /// Product context after engine bound checks.
-    pub context: &'a Context,
-    /// Execution limits, including the response byte cap.
-    pub limits: &'a Limits,
-}
-
-/// A completed provider exchange; neither text nor tool calls are committed.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Turn {
-    /// Ordered output, including opaque continuation items.
-    pub items: Vec<Item>,
-    /// Provider-owned usage/response evidence for the host's record.
-    pub receipt: Value,
-}
-
-/// Adapter mechanics only. No automatic retry or product authority.
-#[async_trait]
-pub trait Provider: Send {
-    /// Exact serialized request size, including adapter-specific framing.
-    fn request_bytes(&self, request: &Request<'_>) -> Result<usize, String>;
-    /// Executes one request, honoring response bounds. No transparent retries.
-    async fn complete(&mut self, request: Request<'_>) -> Result<Turn, String>;
-    /// Optional streaming path. Existing buffered adapters need no changes.
-    /// Await each sink acknowledgment; never retry a failed or cancelled stream.
-    async fn complete_stream(
-        &mut self,
-        request: Request<'_>,
-        _sink: &mut dyn DeltaSink,
-    ) -> Result<Turn, Failure> {
-        self.complete(request).await.map_err(Failure::Provider)
+impl Tool {
+    /// Declares this product tool to the Responses protocol.
+    pub fn function(&self) -> Value {
+        serde_json::json!({"type":"function", "name":self.name, "description":self.description, "parameters":self.parameters})
     }
 }
 
-/// Identity-bearing authored text, not permission to publish it.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+/// A completed provider exchange; neither text nor tool calls are committed.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct Turn {
+    /// Ordered output, including opaque continuation items.
+    #[serde(deserialize_with = "read_output")]
+    pub items: Vec<Item>,
+    /// Provider-owned usage/response evidence for the host's record.
+    pub receipt: Value,
+    /// Provider-reported token counts. A missing observation stays unknown.
+    #[serde(default)]
+    pub usage: recipe::Usage,
+}
+
+fn read_output<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Vec<Item>, D::Error> {
+    let items = Vec::deserialize(d)?;
+    validate_output(&items).map_err(serde::de::Error::custom)?;
+    Ok(items)
+}
+
+impl Turn {
+    /// Authored prose in provider order.
+    pub fn text(&self) -> String {
+        self.items
+            .iter()
+            .filter_map(|item| match item {
+                Item::Message { text, .. } => Some(text.as_str()),
+                Item::ProductMessage(_)
+                | Item::Feedback { .. }
+                | Item::FinishRefused(_)
+                | Item::OutputCutoff
+                | Item::Call(_)
+                | Item::Result { .. }
+                | Item::MaterializedResult { .. }
+                | Item::Opaque(_) => None,
+            })
+            .collect()
+    }
+
+    /// Keep the authored text and billing evidence of a reserved final. Its
+    /// raw calls remain in the run record and confer no execution authority.
+    fn handoff(mut self) -> Self {
+        self.items
+            .retain(|item| matches!(item, Item::Message { .. }));
+        self
+    }
+
+    /// A completed exchange with no calls or substantive assistant text.
+    pub fn is_empty(&self) -> bool {
+        !self.items.iter().any(|item| match item {
+            Item::Call(_) => true,
+            Item::Message { text, .. } => !text.trim().is_empty(),
+            Item::ProductMessage(_)
+            | Item::Feedback { .. }
+            | Item::FinishRefused(_)
+            | Item::OutputCutoff
+            | Item::Result { .. }
+            | Item::MaterializedResult { .. }
+            | Item::Opaque(_) => false,
+        })
+    }
+
+    // Only valid provider turns reach this point. Preserve the turn itself and
+    // pair every rejected call before the next dispatch.
+    fn correction(&self) -> Option<Vec<Item>> {
+        if self.items == [Item::OutputCutoff] {
+            Some(vec![Item::Feedback { text: "Your output was cut off at the provider limit. Re-issue any tool call with complete arguments or provide a complete answer.".into() }])
+        } else if self.is_empty() {
+            Some(vec![Item::Feedback { text: "Your last turn contained no answer or tool call. Provide an answer or use an offered tool.".into() }])
+        } else {
+            None
+        }
+    }
+
+    fn feedback(&self, value: &Value) -> Vec<Item> {
+        let output = value.to_string();
+        if self.calls().next().is_none() {
+            return vec![Item::Feedback { text: output }];
+        }
+        self.calls()
+            .map(|call| Item::Result {
+                call_id: call.id.clone(),
+                output: results::ResultView::inline(output.clone()),
+            })
+            .collect()
+    }
+
+    /// A refused finish stays typed under each call, or as one feedback item.
+    fn refused(&self, refusal: &recipe::Refusal) -> Vec<Item> {
+        if self.calls().next().is_none() {
+            return vec![Item::FinishRefused(refusal.clone())];
+        }
+        self.calls()
+            .map(|call| Item::Result {
+                call_id: call.id.clone(),
+                output: results::ResultView::finish_refused(refusal.clone()),
+            })
+            .collect()
+    }
+
+    /// Calls in provider order, including calls whose arguments need correction.
+    pub fn calls(&self) -> impl Iterator<Item = &Invocation> {
+        self.items.iter().filter_map(Item::call)
+    }
+
+    /// The items that can enter context, in provider order. The cut-off
+    /// marker stays in the record only; `window_items` refuses it.
+    fn context_items(&self) -> impl Iterator<Item = &Item> {
+        self.items
+            .iter()
+            .filter(|item| **item != Item::OutputCutoff)
+    }
+}
+
+/// A text fragment and the provider location when the transport supplied one.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 pub struct TextDelta {
+    /// Exact authored fragment.
+    pub text: String,
+    /// Provider identity and location. Some transports expose only the text.
+    #[serde(flatten)]
+    pub location: Option<DeltaLocation>,
+}
+
+impl From<String> for TextDelta {
+    fn from(text: String) -> Self {
+        Self {
+            text,
+            location: None,
+        }
+    }
+}
+
+impl From<&str> for TextDelta {
+    fn from(text: &str) -> Self {
+        text.to_owned().into()
+    }
+}
+
+/// Coordinates supplied with an identified streamed fragment.
+#[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
+pub struct DeltaLocation {
     /// Provider response identity.
     pub response_id: String,
     /// Provider output item identity.
     pub item_id: String,
-    /// Provider event sequence number.
+    /// Provider event sequence.
     pub sequence: u64,
     /// Output item position.
     pub output_index: usize,
-    /// Content part position.
+    /// Content position.
     pub content_index: usize,
-    /// Exact authored fragment.
-    pub text: String,
-}
-
-/// Provider-facing acknowledged delta delivery; implementations may reject output.
-#[async_trait]
-pub trait DeltaSink: Send {
-    /// Returns only after owner persistence/publication acknowledgment.
-    async fn deliver(&mut self, delta: TextDelta) -> Result<(), Failure>;
 }
 
 /// Execution evidence awaited before dependent operations. Sequence numbers are
@@ -270,8 +428,53 @@ pub struct Event {
     pub attempt_id: String,
     /// Monotonic, one-based event ordinal within this invocation of `run`.
     pub sequence: u64,
+    /// Provider request this fact belongs to, including calls restored across attempts.
+    pub ordinal: u64,
     /// Evidence to persist through the product owner.
     pub kind: EventKind,
+}
+
+/// Why the harness prepared this request.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum RequestPurpose {
+    /// An ordinary model step.
+    #[default]
+    Work,
+    /// The model can answer or save a note for its next window.
+    Handoff,
+    /// Retain authored text and execute no calls.
+    Final {
+        /// The backstops that reserved this dispatch.
+        backstops: ReachedBackstops,
+    },
+}
+
+/// Transient instructions applied to one provider request. The event keeps
+/// its exact wire-facing items and enough information to continue cleanly.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct DispatchContext {
+    /// Measured and estimated context at this exact dispatch.
+    pub usage: context::ContextUsage,
+    /// Newly accepted product input included in this dispatch, in delivery order.
+    pub carried_inputs: Vec<String>,
+    /// A final or handoff request has one appended developer instruction.
+    pub purpose: RequestPurpose,
+    /// This request first added the near-limit warning to the growing context.
+    pub warning_added: bool,
+    /// Saved with the dispatch so a restart cannot renew the refusal allowance.
+    pub window_stage: WindowStage,
+}
+
+/// Where this request stands in the bounded fresh-window refusal sequence.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub enum WindowStage {
+    /// Ordinary accumulated work has not yet been reopened for this request.
+    #[default]
+    Accumulated,
+    /// The exact fresh seed and pending results have not been accepted yet.
+    Fresh,
+    /// The one retry uses previews and shorter complete pages.
+    Reduced,
 }
 
 /// Neutral event payloads. The product decides retention and redaction.
@@ -279,605 +482,351 @@ pub struct Event {
 pub enum EventKind {
     /// Must be acknowledged before dispatch; owner may reserve durable budget.
     ProviderStarted {
-        /// Request ordinal.
-        ordinal: u32,
-        /// Exact request context.
-        context: Context,
+        /// Unix-millisecond admission time, retained unchanged on persistence retries.
+        dispatched_at_unix_ms: u64,
+        /// Typed projection of this dispatch's temporary instructions.
+        context: DispatchContext,
+        /// Exact context references; the recipe lives once with the accepted work.
+        request: SavedRequest,
+    },
+    /// Identity or usage available before a completed exchange can be retained.
+    /// A terminal receipt precedes validation of the completed output.
+    /// A buffered success retains the receipt directly in `ProviderReturned`.
+    ProviderObservation {
+        /// Provider identity, status, and any reported usage.
+        receipt: Value,
+        /// Cumulative token counts available at this observation.
+        usage: recipe::Usage,
+    },
+    /// Transport failed after dispatch. Later receipts still belong to the same request.
+    ProviderFailed {
+        /// Failure reported by the transport.
+        reason: String,
+    },
+    /// No visible output was produced. The provider can retry this model step.
+    TransportRetry {
+        /// Provider failure retained for accounting and inspection.
+        reason: String,
     },
     /// Must be acknowledged before interpreting calls or returning a candidate.
     ProviderReturned(Turn),
-    /// Owner durably records the delta and decides whether/how it becomes visible.
-    /// Acknowledgment must precede consumption of another provider delta.
-    TextDelta {
-        /// Provider request ordinal within this attempt.
-        ordinal: u32,
-        /// Identity and exact text bytes.
-        delta: TextDelta,
-    },
     /// Must be acknowledged before an effect; not proof that it happened.
     ToolStarted(Invocation),
     /// Includes rejected calls and results whose delivery was refused by bounds.
     ToolReturned {
         /// Original call identity.
         call_id: String,
-        /// Exact result, before any bounded model-visible replacement.
-        output: String,
-        /// Whether the callback executed (not whether it mutated product state).
-        executed: bool,
+        /// Exact original, a typed projection of an earlier retained result,
+        /// or the typed refusal of an operation that did not run.
+        result: results::ToolResult,
     },
+    /// Provider requires operator intervention; the product atomically holds
+    /// automatic recovery when acknowledging this fact under its current fence.
+    ProviderBlocked {
+        /// Actionable provider failure, with no secret response body.
+        reason: String,
+    },
+    /// This request was too long. Continue the same work in a fresh window.
+    ContextRejected,
     /// Candidate evidence only; never a product completion event.
     Candidate {
-        /// Candidate authored text across this attempt.
+        /// Candidate authored text from the terminal turn.
         text: String,
+    },
+    /// A fresh window opened. It carries the newest note saved in this work.
+    WindowOpened {
+        /// Wall-clock time when the fresh window opened.
+        opened_at_unix_ms: u64,
+        /// Why this boundary was opened.
+        reason: WindowReason,
+        /// Product-confirmed note saved for this change, when the model asked.
+        handoff: Option<NoteReference>,
     },
 }
 
-/// Explicit product tool admission after mechanical protocol checks.
-pub enum Admission {
-    /// The host permits this operation now; mutation still needs its own fence.
-    Allow,
-    /// Return this reason to the model without executing the operation.
-    Deny(String),
+impl EventKind {
+    /// Receipts remain inspectable after currency is lost; new work and
+    /// candidate direction require a current attempt.
+    pub fn survives_loss_of_currency(&self) -> bool {
+        match self {
+            Self::ProviderObservation { .. }
+            | Self::ProviderReturned(_)
+            | Self::ProviderFailed { .. }
+            | Self::TransportRetry { .. }
+            | Self::ToolReturned { .. }
+            | Self::ProviderBlocked { .. }
+            | Self::ContextRejected => true,
+            Self::ProviderStarted { .. }
+            | Self::ToolStarted(_)
+            | Self::Candidate { .. }
+            | Self::WindowOpened { .. } => false,
+        }
+    }
 }
 
-/// Product-owned connectors. Implementations must not rely on callback cancellation
-/// to undo writes. `persist` succeeds only after durable acknowledgment. The host
-/// owns operation reconciliation, transactions, leases and cross-attempt budgets.
-#[async_trait]
-pub trait Host: Send {
-    /// Supplies context/preservation policy, using retained execution items.
-    async fn prepare(&mut self, transcript: &[Item], usage: &Usage) -> Result<Context, String>;
-    /// Checks the current owner authority before provider/tool dispatch.
-    async fn assert_current(&mut self) -> Result<(), String>;
-    /// Durably records evidence/reservations; rejection stops dependent execution.
-    /// For TextDelta, also acknowledge the product's publication decision before
-    /// returning. Enforce visibility/currentness transactionally; an engine check
-    /// alone cannot fence a racing revocation. Persisted deltas are not completion.
-    async fn persist(&mut self, event: Event) -> Result<(), String>;
-    /// Validates product schema, permission and allowed effects for this call.
-    async fn admit(&mut self, call: &Invocation, arguments: &Value) -> Result<Admission, String>;
-    /// Runs one admitted tool. Enforce currentness transactionally for mutations.
-    /// An error is an uncertain outcome, not a safe-to-retry tool error.
-    /// Known refusals/errors should be returned as model-visible `Ok` feedback.
-    async fn execute(&mut self, call: &Invocation, arguments: Value) -> Result<String, String>;
+/// The cause of a fresh working window, preserved with its opening.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WindowReason {
+    /// The model saved a note and requested a window.
+    ModelAsked,
+    /// The harness asked for a handoff near the window limit.
+    NearEnd,
+    /// Local measurement found the window full.
+    Full,
+    /// The provider refused the request as too long.
+    Refused,
 }
 
-/// A candidate that must still pass the product's publication/commit fence.
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct Candidate {
-    /// All authored assistant text in this invocation, including pre-tool prose.
-    pub text: String,
-    /// Retained complete exchange items; host decides durable context policy.
-    pub transcript: Vec<Item>,
-    /// Attempt-local usage (not an account allowance record).
-    pub usage: Usage,
+/// Original error supplied by a product or provider adapter.
+pub type Cause = Box<dyn std::error::Error + Send + Sync>;
+
+/// Accepted work or input has changed; this attempt no longer supplies direction.
+#[derive(Debug, thiserror::Error)]
+#[error("accepted work or inputs no longer current")]
+pub struct Superseded;
+
+/// A transient ordered-event write failure, classified by the product storage owner.
+/// The identical event may be saved again: products must acknowledge exact replay
+/// without repeating any related effects, including an unknown commit outcome.
+#[derive(Debug, thiserror::Error)]
+#[error("{0}")]
+pub struct RetryablePersistence(#[source] Cause);
+impl RetryablePersistence {
+    /// Preserve the original storage failure as the source.
+    pub fn new(cause: impl Into<Cause>) -> Self {
+        Self(cause.into())
+    }
 }
 
 /// Why execution stopped, without deciding a product terminal state.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Debug)]
 pub enum Failure {
     /// Cooperative cancellation.
     Cancelled,
-    /// Whole-attempt deadline expired.
-    Deadline,
-    /// An owner-selected bound was reached.
+    /// One of the two runaway backstops was reached.
     Limit(String),
+    /// A final request or the reduced fresh window was refused by the provider.
+    ContextRefused,
+    /// The reserved final dispatch failed before it yielded a handoff.
+    Final(Box<Failure>),
     /// Provider or context protocol integrity failed.
     Protocol(String),
     /// A provider failure; may have dispatched and consumed provider usage.
-    Provider(String),
+    Provider(Cause),
+    /// Transport failed after acknowledged visible output; never replay this request.
+    AfterOutput(Cause),
     /// Product callback failure; durable writes may need reconciliation.
-    Host(String),
+    Host(Cause),
+    /// A materialized request or response could not be encoded.
+    Encoding(serde_json::Error),
 }
 
-/// Failure plus diagnostic boundary/usage, so the owner can reconcile before retry.
-#[derive(Clone, Debug)]
-pub struct ExecutionError {
-    /// Failure category.
-    pub failure: Failure,
-    /// Last boundary entered. This is diagnostic, not a durable lifecycle state.
-    pub boundary: &'static str,
-    /// Dispatched work counts retained even after cancellation or failure.
-    pub usage: Usage,
-}
-
-struct Gate<'a> {
-    cancel: &'a Cancellation,
-    deadline: Instant,
-    boundary: &'static str,
-    usage: Usage,
-}
-
-impl Gate<'_> {
-    async fn wait<T>(
-        &mut self,
-        boundary: &'static str,
-        future: impl Future<Output = Result<T, Failure>>,
-    ) -> Result<T, Failure> {
-        self.boundary = boundary;
-        tokio::select! {
-            biased;
-            () = self.cancel.cancelled() => Err(Failure::Cancelled),
-            () = tokio::time::sleep_until(self.deadline) => Err(Failure::Deadline),
-            value = future => value,
-        }
+impl Failure {
+    fn transport_retry(&self) -> bool {
+        matches!(self, Self::Provider(cause) if cause.is::<crate::responses::Transient>())
     }
 }
 
-/// Executes one bounded attempt. No automatic retries, durable claims or product
-/// commits. The caller must provide a fresh attempt identity for each invocation
-/// and reconcile prior uncertain operations before invoking again.
-pub async fn run(
-    provider: &mut dyn Provider,
-    host: &mut dyn Host,
-    attempt_id: &str,
-    initial: Vec<Item>,
-    limits: &Limits,
-    cancel: &Cancellation,
-) -> Result<Candidate, ExecutionError> {
-    let deadline = Instant::now()
-        .checked_add(limits.elapsed)
-        .ok_or_else(|| ExecutionError {
-            failure: Failure::Limit("deadline cannot be represented".into()),
-            boundary: "configuration",
-            usage: Usage::default(),
-        })?;
-    let mut gate = Gate {
-        cancel,
-        deadline,
-        boundary: "configuration",
-        usage: Usage::default(),
-    };
-    let result = execute(provider, host, attempt_id, initial, limits, &mut gate).await;
-    result.map_err(|failure| ExecutionError {
-        failure,
-        boundary: gate.boundary,
-        usage: gate.usage,
-    })
-}
-
-async fn record(
-    gate: &mut Gate<'_>,
-    host: &mut dyn Host,
-    attempt: &str,
-    sequence: &mut u64,
-    kind: EventKind,
-) -> Result<(), Failure> {
-    *sequence += 1;
-    gate.wait("event acknowledgment", async {
-        host.persist(Event {
-            attempt_id: attempt.to_owned(),
-            sequence: *sequence,
-            kind,
+impl std::fmt::Display for Failure {
+    fn fmt(&self, formatter: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        formatter.write_str(match self {
+            Self::Cancelled => "execution cancelled",
+            Self::ContextRefused => "provider refused the last permitted context request",
+            Self::Limit(reason) | Self::Protocol(reason) => reason,
+            Self::Provider(error) | Self::AfterOutput(error) | Self::Host(error) => {
+                return error.fmt(formatter);
+            }
+            Self::Final(error) => return std::fmt::Display::fmt(error, formatter),
+            Self::Encoding(error) => return std::fmt::Display::fmt(error, formatter),
         })
-        .await
-        .map_err(Failure::Host)
-    })
-    .await
-}
-
-async fn current(gate: &mut Gate<'_>, host: &mut dyn Host) -> Result<(), Failure> {
-    gate.wait("currentness", async {
-        host.assert_current().await.map_err(Failure::Host)
-    })
-    .await
-}
-
-struct OwnerSink<'a> {
-    host: &'a mut dyn Host,
-    attempt: &'a str,
-    sequence: &'a mut u64,
-    ordinal: u32,
-    cancel: Cancellation,
-    deadline: Instant,
-}
-
-impl OwnerSink<'_> {
-    fn check(&self) -> Result<(), Failure> {
-        if *self.cancel.0.borrow() {
-            return Err(Failure::Cancelled);
-        }
-        if Instant::now() >= self.deadline {
-            return Err(Failure::Deadline);
-        }
-        Ok(())
     }
 }
 
-#[async_trait]
-impl DeltaSink for OwnerSink<'_> {
-    async fn deliver(&mut self, delta: TextDelta) -> Result<(), Failure> {
-        self.check()?;
-        self.host.assert_current().await.map_err(Failure::Host)?;
-        self.check()?;
-        *self.sequence += 1;
-        self.host
-            .persist(Event {
-                attempt_id: self.attempt.to_owned(),
-                sequence: *self.sequence,
-                kind: EventKind::TextDelta {
-                    ordinal: self.ordinal,
-                    delta,
-                },
-            })
-            .await
-            .map_err(Failure::Host)?;
-        self.check()
+// Written by hand: the cause of `Final` must be the inner `Failure`, not its box, so `AttemptFailure::from_cause` can find it. A derived `#[source]` would return the box.
+impl std::error::Error for Failure {
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Self::Provider(error) | Self::AfterOutput(error) | Self::Host(error) => {
+                Some(error.as_ref())
+            }
+            Self::Final(error) => Some(error.as_ref()),
+            Self::Encoding(error) => Some(error),
+            Self::Cancelled | Self::Limit(_) | Self::ContextRefused | Self::Protocol(_) => None,
+        }
     }
 }
 
-async fn execute(
-    provider: &mut dyn Provider,
-    host: &mut dyn Host,
-    attempt: &str,
-    transcript: Vec<Item>,
-    limits: &Limits,
-    gate: &mut Gate<'_>,
-) -> Result<Candidate, Failure> {
-    if attempt.trim().is_empty()
-        || limits.model_calls == 0
-        || limits.calls_per_turn == 0
-        || limits.request_bytes == 0
-        || limits.response_bytes == 0
-        || limits.output_tokens == 0
-        || limits.tool_result_bytes == 0
-        || limits.total_tool_result_bytes == 0
-        || limits.elapsed.is_zero()
-    {
-        return Err(Failure::Limit(
-            "invalid execution bounds or attempt identity".into(),
+/// Automatic recovery stops after five actual failed attempts. Explicit Try
+/// again can resume the retained work, as specified in `intent/harness.md`.
+pub const MAX_FAILED_ATTEMPTS: u32 = 5;
+
+/// Shared classification of an attempt that did not complete. Products retain
+/// authority checks and map this reason to their own durable lifecycle.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum AttemptFailure {
+    /// Cancellation or superseding input, not a failed attempt.
+    Interrupted,
+    /// A reached bound, including an unsuccessful reserved final request.
+    Limit,
+    /// An operational failure after in-run transport recovery.
+    Failed,
+    /// An active execution disappeared before hosting could settle it.
+    Abandoned,
+    /// The provider requires operator action before another attempt.
+    ProviderBlocked,
+}
+
+impl AttemptFailure {
+    /// Cancellation takes precedence over the retained error chain. Hosting
+    /// supplies the same cancellation signal used by the run; display text is never read.
+    pub fn from_error(error: &(dyn std::error::Error + 'static), cancel: &Cancellation) -> Self {
+        if cancel.is_cancelled() {
+            return Self::Interrupted;
+        }
+        Self::from_cause(error)
+    }
+
+    /// Classify a persisted or admission error when no execution signal exists.
+    pub fn from_cause(mut error: &(dyn std::error::Error + 'static)) -> Self {
+        let blocked = crate::responses::provider_blocked(error);
+        let mut reason = if blocked {
+            Self::ProviderBlocked
+        } else {
+            Self::Failed
+        };
+        loop {
+            if error.is::<Superseded>() {
+                return Self::Interrupted;
+            }
+            match error.downcast_ref::<Failure>() {
+                Some(Failure::Cancelled) => return Self::Interrupted,
+                Some(Failure::Limit(_) | Failure::Final(_) | Failure::ContextRefused)
+                    if !blocked =>
+                {
+                    reason = Self::Limit;
+                }
+                None
+                | Some(
+                    Failure::Limit(_)
+                    | Failure::Final(_)
+                    | Failure::ContextRefused
+                    | Failure::Protocol(_)
+                    | Failure::Provider(_)
+                    | Failure::AfterOutput(_)
+                    | Failure::Host(_)
+                    | Failure::Encoding(_),
+                ) => (),
+            }
+            let Some(source) = error.source() else {
+                return reason;
+            };
+            error = source;
+        }
+    }
+
+    /// Only actual failures consume the shared automatic recovery allowance.
+    pub const fn counts_as_failure(self) -> bool {
+        match self {
+            Self::Failed | Self::Abandoned => true,
+            Self::Interrupted | Self::Limit | Self::ProviderBlocked => false,
+        }
+    }
+}
+
+fn checked_calls(turn: &Turn) -> Result<Vec<Invocation>, Failure> {
+    validate_output(&turn.items).map_err(|reason| Failure::Protocol(reason.into()))?;
+    Ok(turn.calls().cloned().collect())
+}
+
+/// Give every call in a new response an ID no other call in the run has, as
+/// OpenClaw and Hermes do. A call keeps a nonempty ID that is new to the run
+/// and to this response. An empty ID or a repeated one gets a new ID. The new
+/// ID depends only on the response and the IDs already taken, so a retried
+/// save is the same. This runs once, before the response is saved, so the
+/// record, the result and every later request carry the same ID.
+fn assign_call_ids<'a>(turn: &mut Turn, taken: impl IntoIterator<Item = &'a str>) {
+    let mut taken: HashSet<String> = taken.into_iter().map(str::to_owned).collect();
+    // A new ID never takes the ID a later call in this response brought.
+    let mut reserved: HashSet<String> = turn
+        .calls()
+        .map(|call| call.id.clone())
+        .filter(|id| !id.trim().is_empty() && !taken.contains(id))
+        .collect();
+    let mut position = 0;
+    for item in &mut turn.items {
+        let Item::Call(call) = item else {
+            continue;
+        };
+        position += 1;
+        if !call.id.trim().is_empty() && taken.insert(call.id.clone()) {
+            reserved.remove(&call.id);
+            continue;
+        }
+        let base = if call.id.trim().is_empty() {
+            format!("call_{position}")
+        } else {
+            call.id.clone()
+        };
+        let mut id = base.clone();
+        let mut suffix = 2;
+        while taken.contains(&id) || reserved.contains(&id) {
+            id = format!("{base}_d{suffix}");
+            suffix += 1;
+        }
+        taken.insert(id.clone());
+        call.id = id;
+    }
+}
+
+fn work_response_bound(turn: &Turn, max: usize) -> Result<(), Failure> {
+    let bytes = serde_json::to_vec(turn).map_err(Failure::Encoding)?;
+    if bytes.len() > max {
+        return Err(Failure::Protocol(
+            "execution context byte bound reached".into(),
         ));
     }
-    validate_context(&transcript)?;
-    let seen: HashSet<String> = transcript
-        .iter()
-        .filter_map(|item| match item {
-            Item::Call(call) => Some(call.id.clone()),
-            _ => None,
-        })
-        .collect();
-    drive(&mut AcknowledgedDriver {
-        provider,
-        host,
-        attempt,
-        transcript,
-        limits,
-        gate,
-        seen,
-        sequence: 0,
-        text: String::new(),
-        names: HashSet::new(),
-    })
-    .await
+    Ok(())
 }
 
-struct AcknowledgedDriver<'a, 'cancel> {
-    provider: &'a mut dyn Provider,
-    host: &'a mut dyn Host,
-    attempt: &'a str,
-    transcript: Vec<Item>,
-    limits: &'a Limits,
-    gate: &'a mut Gate<'cancel>,
-    seen: HashSet<String>,
-    sequence: u64,
-    text: String,
-    names: HashSet<String>,
-}
-
-impl Driver for AcknowledgedDriver<'_, '_> {
-    type Prepared = Context;
-    type Turn = Turn;
-    type Output = Candidate;
-
-    async fn prepare(&mut self) -> Result<Context, Failure> {
-        let Self {
-            provider,
-            host,
-            attempt,
-            transcript,
-            limits,
-            gate,
-            seen,
-            sequence,
-            ..
-        } = self;
-        let host = &mut **host;
-        if gate.usage.model_calls >= limits.model_calls {
-            return Err(Failure::Limit("model calls".into()));
-        }
-        current(gate, host).await?;
-        let usage = gate.usage.clone();
-        let mut context = gate
-            .wait("context preparation", async {
-                host.prepare(transcript, &usage)
-                    .await
-                    .map_err(Failure::Host)
-            })
-            .await?;
-        if gate.usage.tool_calls >= limits.tool_calls {
-            context.tools.clear();
-        }
-        validate_context(&context.items)?;
-        // Context selected by the owner may restore earlier exchanges. Their IDs
-        // must also be protected against a new provider invocation.
-        for item in &context.items {
-            if let Item::Call(call) = item {
-                seen.insert(call.id.clone());
-            }
-        }
-        let mut names = HashSet::new();
-        if context
-            .tools
-            .iter()
-            .any(|tool| tool.name.trim().is_empty() || !names.insert(tool.name.clone()))
-        {
-            return Err(Failure::Protocol(
-                "empty or repeated offered tool name".into(),
-            ));
-        }
-        let ordinal = gate.usage.model_calls + 1;
-        let request = || Request {
-            attempt_id: attempt,
-            ordinal,
-            context: &context,
-            limits,
-        };
-        if provider
-            .request_bytes(&request())
-            .map_err(Failure::Provider)?
-            > limits.request_bytes
-        {
-            return Err(Failure::Limit(
-                "request bytes; owner must preserve context".into(),
-            ));
-        }
-        record(
-            gate,
-            host,
-            attempt,
-            sequence,
-            EventKind::ProviderStarted {
-                ordinal,
-                context: context.clone(),
-            },
-        )
-        .await?;
-        current(gate, host).await?;
-        self.names = names;
-        Ok(context)
-    }
-
-    async fn exchange(&mut self, context: &Context) -> Result<Turn, Failure> {
-        self.gate.usage.model_calls += 1;
-        exchange::acknowledged(&mut exchange::Acknowledged {
-            provider: self.provider,
-            host: self.host,
-            request: Request {
-                attempt_id: self.attempt,
-                ordinal: self.gate.usage.model_calls,
-                context,
-                limits: self.limits,
-            },
-            sequence: &mut self.sequence,
-            gate: self.gate,
-        })
-        .await
-    }
-
-    fn validate(&mut self, _context: &Context, turn: &Turn) -> Result<Vec<Invocation>, Failure> {
-        let calls: Vec<_> = turn
-            .items
-            .iter()
-            .filter_map(|item| match item {
-                Item::Call(call) => Some(call.clone()),
-                _ => None,
-            })
-            .collect();
-        // Validate the entire batch before invoking any callback with effects.
-        for item in &turn.items {
-            match item {
-                Item::Result { .. } => {
-                    return Err(Failure::Protocol("provider authored a tool result".into()));
-                }
-                Item::Message { role, .. } if role != "assistant" => {
-                    return Err(Failure::Protocol(
-                        "provider authored a non-assistant message".into(),
-                    ));
-                }
-                _ => (),
-            }
-        }
-        if !validate_identities(
-            &mut self.seen,
-            calls
-                .iter()
-                .map(|call| (call.id.as_str(), call.name.as_str())),
-        ) {
-            return Err(Failure::Protocol(
-                "empty or repeated tool call identity/name".into(),
-            ));
-        }
-        if calls.len() > self.limits.calls_per_turn {
-            return Err(Failure::Limit("tool batch; no calls executed".into()));
-        }
-        Ok(calls)
-    }
-
-    async fn settle(
-        &mut self,
-        context: Context,
-        turn: Turn,
-        empty: bool,
-    ) -> Result<Decision<Candidate>, Failure> {
-        let Self {
-            host,
-            attempt,
-            transcript,
-            gate,
-            sequence,
-            text,
-            ..
-        } = self;
-        let host = &mut **host;
-        for item in &turn.items {
-            if let Item::Message { text: part, .. } = item {
-                text.push_str(part);
-            }
-        }
-        *transcript = context.items;
-        transcript.extend(turn.items);
-        if empty {
-            if text.trim().is_empty() {
-                return Err(Failure::Protocol("no authored completion".into()));
-            }
-            current(gate, host).await?;
-            record(
-                gate,
-                host,
-                attempt,
-                sequence,
-                EventKind::Candidate { text: text.clone() },
-            )
-            .await?;
-            return Ok(Decision::Complete(Candidate {
-                text: std::mem::take(text),
-                transcript: std::mem::take(transcript),
-                usage: gate.usage.clone(),
-            }));
-        }
-        Ok(Decision::Tools)
-    }
-}
-
-impl Batch for AcknowledgedDriver<'_, '_> {
-    type Call = Invocation;
-    type Error = Failure;
-
-    async fn tool(&mut self, call: Invocation) -> Result<(), Failure> {
-        let Self {
-            host,
-            attempt,
-            transcript,
-            limits,
-            gate,
-            sequence,
-            names,
-            ..
-        } = self;
-        let host = &mut **host;
-        let arguments = serde_json::from_str::<Value>(&call.arguments);
-        let denial = if !names.contains(&call.name) {
-            Some("unknown or unoffered tool".to_owned())
-        } else if arguments.as_ref().is_err() || !arguments.as_ref().is_ok_and(Value::is_object) {
-            Some("arguments must be a JSON object".to_owned())
-        } else if gate.usage.tool_calls >= limits.tool_calls {
-            Some("tool execution allowance exhausted".to_owned())
-        } else if gate.usage.tool_result_bytes >= limits.total_tool_result_bytes {
-            return Err(Failure::Limit(
-                "tool result allowance exhausted before dispatch".into(),
-            ));
-        } else {
-            current(gate, host).await?;
-            match gate
-                .wait("tool admission", async {
-                    host.admit(&call, arguments.as_ref().expect("validated arguments"))
-                        .await
-                        .map_err(Failure::Host)
-                })
-                .await?
-            {
-                Admission::Allow => None,
-                Admission::Deny(reason) => Some(reason),
-            }
-        };
-        let executed = denial.is_none();
-        let output = if let Some(reason) = denial {
-            serde_json::json!({"executed": false, "error": reason}).to_string()
-        } else {
-            record(
-                gate,
-                host,
-                attempt,
-                sequence,
-                EventKind::ToolStarted(call.clone()),
-            )
-            .await?;
-            current(gate, host).await?;
-            gate.usage.tool_calls += 1;
-            gate.wait("tool dispatch; reconcile uncertain effects", async {
-                host.execute(&call, arguments.expect("validated arguments"))
-                    .await
-                    .map_err(Failure::Host)
-            })
-            .await?
-        };
-        record(
-            gate,
-            host,
-            attempt,
-            sequence,
-            EventKind::ToolReturned {
-                call_id: call.id.clone(),
-                output: output.clone(),
-                executed,
-            },
-        )
-        .await?;
-        // Never replay an effect to obtain a smaller result. Its exact output
-        // is already acknowledged by the owner before refusing delivery.
-        if output.len() > limits.tool_result_bytes
-            || output.len()
-                > limits
-                    .total_tool_result_bytes
-                    .saturating_sub(gate.usage.tool_result_bytes)
-        {
-            return Err(Failure::Limit(
-                "tool result bytes; result retained by owner".into(),
-            ));
-        }
-        gate.usage.tool_result_bytes += output.len();
-        transcript.push(Item::Result {
-            call_id: call.id,
-            output,
-        });
-        Ok(())
-    }
-}
-
-/// Checks complete, unique call/result pairing; context preservation must never
-/// create orphan results, duplicate identities or split an unfinished exchange.
-pub fn validate_context(items: &[Item]) -> Result<(), Failure> {
+/// Items enter a window only through here: the product's items on a fresh
+/// start, a saved request on recovery, a rearmed allowance, accepted input and
+/// a fresh window's seed. Checks call identities, message roles and that only
+/// retained forms enter the context, then matches every call with one result.
+/// Window handoff, result sizing, the size estimate, the saved request and
+/// dispatch all read these same items.
+pub(crate) fn window_items(items: Vec<Item>) -> Result<Vec<Item>, Failure> {
     let mut seen = HashSet::new();
-    let mut pending = HashSet::new();
-    for item in items {
+    for item in &items {
         match item {
+            Item::OutputCutoff => {
+                return Err(Failure::Protocol(
+                    "incomplete turn cannot enter dispatched context".into(),
+                ));
+            }
             Item::Call(call) => {
                 if call.id.trim().is_empty() || !seen.insert(call.id.as_str()) {
                     return Err(Failure::Protocol(
                         "duplicate/empty context call identity".into(),
                     ));
                 }
-                pending.insert(call.id.as_str());
             }
-            Item::Result { call_id, .. } => {
-                if !pending.remove(call_id.as_str()) {
-                    return Err(Failure::Protocol("orphan/duplicate context result".into()));
-                }
+            Item::MaterializedResult { .. } => {
+                return Err(Failure::Protocol(
+                    "provider-wire result entered retained context".into(),
+                ));
             }
             Item::Message { role, .. } => {
-                if (!pending.is_empty() && role != "assistant")
-                    || !matches!(role.as_str(), "user" | "assistant" | "developer")
-                {
-                    return Err(Failure::Protocol(
-                        "invalid message role or unpaired exchange".into(),
-                    ));
+                if !matches!(role.as_str(), "user" | "assistant" | "developer" | "system") {
+                    return Err(Failure::Protocol("invalid message role".into()));
                 }
             }
-            Item::Opaque(_) => (),
+            Item::Feedback { .. }
+            | Item::ProductMessage(_)
+            | Item::Result { .. }
+            | Item::FinishRefused(_)
+            | Item::Opaque(_) => (),
         }
     }
-    if !pending.is_empty() {
-        return Err(Failure::Protocol("missing context tool result".into()));
-    }
-    Ok(())
+    Ok(request_parts::paired(items))
 }

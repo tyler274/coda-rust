@@ -55,7 +55,7 @@ configuration, checks, and the
 | Flake output | Image | Role | Entrypoint binary |
 | --- | --- | --- | --- |
 | `physician-sample-image` | `coda-physician-sample` | runtime | `physician-sample` serving `PHYSICIAN_SITE_DIR` (Dioxus WASM bundle) |
-| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker, loading the skill catalog at `PHYSICIAN_SKILLS_DIR` |
+| `physician-worker-image` | `coda-physician-worker` | runtime | `physician-worker`, the Pub/Sub chat-turn worker |
 | `observability-relay-image` | `coda-observability-relay` | runtime | `observability-relay`, which forwards public-site's `/grafana/`, `/langfuse/` and `/langfuse-sso/` requests to the internal load balancers. It reads no secrets and starts without Doppler |
 | `langfuse-sso-image` | `coda-langfuse-sso` | runtime | `langfuse-sso`, the in-cluster OIDC issuer for Langfuse sign-in. It runs in GKE, not Cloud Run, and reads its secrets from a Doppler-synced Kubernetes Secret, so it starts without Doppler. The release publishes its digest; `infra/gcp/observability` pins it as `langfuse_sso_image` |
 | `duet-api-image` | `coda-duet-api` | runtime | `duet-api` serving `DUET_SITE_DIR` (Dioxus WASM bundle) |
@@ -256,6 +256,12 @@ charts through the normal signed-in physician roster before treating the staging
 journey as qualified.
 
 ### Direct staging rollout
+
+The harness cutover needs a
+[one-time reset of the Chords runtime tables](physician-site.md#runtime-schema-cutover)
+before its first release. The automatic deploy below does not perform it. After
+the cutover, each physician runtime schema change is a new migration in the
+runtime chain, and the migration job applies each one once.
 
 The `deploy-staging` job in [`.github/workflows/ci.yml`](/.github/workflows/ci.yml)
 runs on pushes to `main`, after every check job, when the repository variable

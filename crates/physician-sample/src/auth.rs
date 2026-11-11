@@ -36,8 +36,8 @@ use futures_util::{StreamExt, stream};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
+use crate::timestamp::format_rfc3339;
 use front_door::{FrontDoorStore, MemoryFrontDoorStore, PostgresFrontDoorStore, RosterPatient};
-use local_product::codex::format_rfc3339;
 use physician_auth::{
     AuthStore, AuthorityFeed, CachedAuthStore, Membership, MemoryAuthStore, PanelError,
     PhysicianIdentity, PostgresAuthStore, PracticeClock, ReviewCadence, SessionError, SignInError,
@@ -2021,7 +2021,7 @@ mod tests {
         assert_eq!(current_time(&workspace, &synthetic).await, FIXED);
 
         let before = UNIX_EPOCH + Duration::from_secs(now());
-        let before = local_product::codex::format_rfc3339(before);
+        let before = crate::timestamp::format_rfc3339(before);
         assert!(current_time("/practice-day", &real).await >= before);
     }
 
@@ -2206,7 +2206,11 @@ mod tests {
             Arc::new(MemoryFrontDoorStore::new()),
         )
         .await;
-        let live_base = crate::live_router(crate::live::ChatModel::Fixed("Noted.".to_owned()));
+        let bus: Arc<dyn physician_bus::Bus> = Arc::new(physician_bus::LocalBus::new(64));
+        let live_base = axum::Router::new().route(
+            "/patient-workspaces/events",
+            get(crate::live::events).with_state(Arc::clone(&bus)),
+        );
         let app = required_router(live_base, Arc::clone(&auth));
 
         // Grant colleague only WORKSPACE_IDS[0]; WORKSPACE_IDS[1] is not on colleague's panel.
@@ -2222,8 +2226,6 @@ mod tests {
             .unwrap();
 
         let colleague_session = session_for(&app, COLLEAGUE_EMAIL).await;
-        let staging_session = session_for(&app, STAGING_EMAIL).await;
-
         let req = Request::builder()
             .method(Method::GET)
             .uri("/patient-workspaces/events")
@@ -2237,46 +2239,13 @@ mod tests {
         assert_eq!(response.status(), StatusCode::OK);
         let mut body_stream = response.into_body().into_data_stream();
 
-        // Trigger a live chat event on `other_ws` (not on colleague's panel) and then on `allowed_ws`.
-        let submit_other = json!({
-            "type": "message.submit",
-            "idempotency_key": "sse-other",
-            "payload": {
-                "patient_workspace_id": other_ws,
-                "chat_id": "chat-1",
-                "text": "Other",
-                "physician_time_zone": "America/New_York"
-            }
-        })
-        .to_string();
-        let _ = send(
-            &app,
-            Method::POST.as_str(),
-            "/commands",
-            Some(&staging_session),
-            Some(submit_other),
-        )
-        .await;
-
-        let submit_allowed = json!({
-            "type": "message.submit",
-            "idempotency_key": "sse-allowed",
-            "payload": {
-                "patient_workspace_id": allowed_ws,
-                "chat_id": "chat-1",
-                "text": "Allowed",
-                "physician_time_zone": "America/New_York"
-            }
-        })
-        .to_string();
-        let _ = send(
-            &app,
-            Method::POST.as_str(),
-            "/commands",
-            Some(&staging_session),
-            Some(submit_allowed),
-        )
-        .await;
+        for workspace in [other_ws, allowed_ws] {
+            bus.publish(physician_bus::Event::WorkspaceChanged {
+                workspace_id: workspace.to_owned(),
+            })
+            .await
+            .unwrap();
+        }
 
         let next_frame = tokio::time::timeout(Duration::from_secs(2), body_stream.next())
             .await

@@ -187,7 +187,8 @@ impl Walk {
     fn walk_the_schedule(&mut self, base: &str) {
         self.reload_with(
             base,
-            json!([{ "path": "/practice-day", "hold": true, "keep": true }]),
+            json!([{ "path": "/practice-day", "hold": true, "keep": true,
+                "status": 200, "body": calendar() }]),
             "Loading the schedule…",
         );
         self.stage_at(".schedule-rail", "03a-schedule-loading");
@@ -195,8 +196,7 @@ impl Walk {
         self.run("release", &[]);
         self.browser.wait_for("3:30 PM");
 
-        let mut empty_day: Value =
-            serde_json::from_str(include_str!("../fixtures/practice-day.json")).unwrap();
+        let mut empty_day = calendar();
         empty_day["visits"] = json!([]);
         self.reload_with(
             base,
@@ -212,6 +212,7 @@ impl Walk {
         );
         self.stage_at(".schedule-rail", "03c-schedule-failed");
         self.run("forgetAnswers", &[]);
+        self.answer(json!({ "path": "/practice-day", "status": 200, "body": calendar() }));
         self.press("Try again");
         let recovered = self.browser.wait_for("3:30 PM");
         assert!(
@@ -241,7 +242,7 @@ impl Walk {
         self.stage("10b-connections-failed");
         self.press("Close");
         self.run("forgetAnswers", &[]);
-        self.open(&format!("{base}/"), "Simulated practice walk");
+        self.open(&format!("{base}/"), "Collapse Coda");
     }
 
     /// Find patient: nothing typed, loading, results, no match, the failure and its way back.
@@ -294,41 +295,41 @@ impl Walk {
         self.browser.wait_for(needle);
     }
 
-    /// A patient's cards through the practice walk: a reply to review, which a correction then
-    /// supersedes, and a held recommendation approved into the plan.
-    fn walk_the_patient(&mut self) {
-        self.press("Critical lab arrival (ED reply)");
-        self.browser.wait_for("Urgent potassium");
-        self.open_patient("Jake", "Patient replies");
+    /// Opens the retained patient records, past work and a new conversation.
+    fn walk_the_patient(&mut self, base: &str) {
+        // The fixture directory has no past work. Supply that display state explicitly.
+        let handle = tokio::runtime::Handle::current();
+        let (path, body) = tokio::task::block_in_place(|| {
+            handle.block_on(async {
+                let rows: Value = reqwest::get(format!("{base}/patient-workspaces"))
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                let patient = rows["patients"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .find(|row| row["display_name"].as_str().unwrap().contains("Jake"))
+                    .unwrap();
+                let path = format!(
+                    "/patient-workspaces/{}",
+                    patient["patient_workspace_id"].as_str().unwrap()
+                );
+                let mut body: Value = reqwest::get(format!("{base}{path}"))
+                    .await
+                    .unwrap()
+                    .json()
+                    .await
+                    .unwrap();
+                body["has_past_work"] = json!(true);
+                (path, body)
+            })
+        });
+        self.answer(json!({"path": path, "status": 200, "body": body}));
+        self.open_patient("Jake", "Records as of");
         self.stage("11-patient-top");
-        self.stage_at(r#"[data-reply-state]"#, "12-reply-review");
-        assert_eq!(
-            self.run(
-                "attribute",
-                &[json!("[data-reply-state]"), json!("aria-label")]
-            )
-            .as_str()
-            .map(|label| label.starts_with("Replying in")),
-            Some(true),
-            "the reply card lost its name"
-        );
-
-        self.press("Admit corrected BMP");
-        self.browser.wait_for("Superseded by corrected labs");
-        self.appears(r#"[data-reply-state="superseded_by_correction"]"#);
-        self.stage_at(
-            r#"[data-reply-state="superseded_by_correction"]"#,
-            "13-reply-superseded",
-        );
-
-        self.browser.wait_for("Losartan 50 mg daily");
-        self.stage_at(r#"[data-recommendation-id]"#, "14-recommendation-held");
-        self.press("Approve into plan");
-        self.appears(r#"[data-plan-item="plan-rec-jake-losartan-50"]"#);
-        self.stage_at(
-            r#"[data-plan-item="plan-rec-jake-losartan-50"]"#,
-            "15-plan-item",
-        );
 
         self.press("Past work");
         self.browser.wait_for("Past work");
@@ -388,6 +389,10 @@ impl Walk {
     }
 }
 
+fn calendar() -> Value {
+    serde_json::from_str(include_str!("../fixtures/practice-day.json")).unwrap()
+}
+
 fn each_way(mut walk: impl FnMut((&'static str, (u32, u32)), &'static str)) {
     for size in [("desktop", DESKTOP), ("phone", PHONE)] {
         for theme in ["light", "dark"] {
@@ -396,11 +401,11 @@ fn each_way(mut walk: impl FnMut((&'static str, (u32, u32)), &'static str)) {
     }
 }
 
-async fn spawn_simulation() -> String {
+async fn spawn_fixture() -> String {
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     tokio::spawn(async move {
-        axum::serve(listener, physician_sample::simulation_router())
+        axum::serve(listener, physician_sample::fixture_site())
             .await
             .unwrap();
     });
@@ -458,21 +463,27 @@ async fn every_shell_screen_keeps_its_controls_and_states() {
 
     each_way(|size, theme| {
         let handle = tokio::runtime::Handle::current();
-        // The practice walk moves on with each press, so each way starts with its own.
-        let base = tokio::task::block_in_place(|| handle.block_on(spawn_simulation()));
+        // Each layout starts with its own fixture server.
+        let base = tokio::task::block_in_place(|| handle.block_on(spawn_fixture()));
         std::thread::sleep(Duration::from_millis(200));
         let mut walk = Walk::launch(size, theme);
-        walk.open(&format!("{base}/"), "Simulated practice walk");
+        walk.open(&format!("{base}/"), "Collapse Coda");
+        walk.reload_with(
+            &base,
+            json!([{ "path": "/practice-day", "status": 200,
+            "keep": true, "body": calendar() }]),
+            "3:30 PM",
+        );
         walk.stage("01-today");
         walk.walk_the_frame();
         walk.walk_the_schedule(&base);
         walk.walk_the_connections(&base);
         walk.walk_the_search();
         walk.walk_the_dialogs();
-        walk.walk_the_patient();
+        walk.walk_the_patient(&base);
     });
 
-    // SAFETY: as above; the simulation servers read theirs when they started.
+    // SAFETY: as above; the fixture servers read theirs when they started.
     unsafe {
         std::env::set_var("PHYSICIAN_AUTH", "required");
         std::env::set_var("PHYSICIAN_AUTH_PROOF_TOKENS", "1");

@@ -23,7 +23,7 @@ Linear tracks the gap, and the responsible owner changes as the work lands.
 | Patient screens and design references | [Duet UI](ui-surface-map.md) |
 | Invitations, consent and practice connections | [Accounts and practice connection](front-door.md) |
 | Physician client, sign-in and execution | [Physician site](physician-site.md) |
-| The physician clinical skill catalog | [`skills/`](/skills), read by `agent-skills` for `harness`; [skills in hosted chat](physician-site.md#skills-in-hosted-chat) |
+| The physician clinical skill catalog | [`skills/`](/skills), read by `agent-skills` for `harness`; [skills in physician chat](physician-site.md#skills-in-physician-chat) |
 | Public marketing site | [Public site](public-site.md) |
 | Coda's Chrome extension and its EHR reads, Hint first | <a href="/extension/README%2Emd">Chrome extension</a> |
 | Gym cases, promotion and runs | <a href="/submodules/coda-gym/AGENTS%2Emd">coda-gym AGENTS.md</a> |

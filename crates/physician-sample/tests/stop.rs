@@ -48,6 +48,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
     let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_listen = format!("127.0.0.1:{site_port}");
+    let stub = support::ResponsesStub::start(&home.0, 0, 4000, "[]").await;
     let mut worker = support::Process::spawn(
         "worker",
         support::worker_bin(),
@@ -57,9 +58,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
             ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
-            // Long enough that Stop lands before the reply is published.
-            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "4000"),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
         &home.0,
     );
@@ -240,9 +239,7 @@ async fn stop_holds_across_restart_and_again_after_resume_until_a_newer_message(
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
             ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
-            // The resumed run is still writing when Stop lands again.
-            ("PHYSICIAN_WORKER_FIXED_DELAY_MS", "4000"),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
         &home.0,
     );
@@ -363,7 +360,11 @@ async fn wait_claimed(url: &str, chat: &str) -> Result<(), String> {
     let deadline = Instant::now() + Duration::from_secs(20);
     loop {
         match store.read(&scope).await {
-            Ok(Some(conversation)) if conversation.status == "active" => return Ok(()),
+            Ok(Some(conversation))
+                if conversation.status == local_product::runtime::WorkStatus::Active =>
+            {
+                return Ok(());
+            }
             Ok(other) => {
                 if Instant::now() >= deadline {
                     let status = other.map(|conversation| conversation.status);

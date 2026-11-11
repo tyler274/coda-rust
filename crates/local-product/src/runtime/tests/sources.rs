@@ -5,27 +5,11 @@ use super::*;
 use crate::physician_sources::{
     ReadablePart, RecordDate, SourcePatient, SourceRevision, exact_read,
 };
-use crate::runtime::reply::{FINISH_TOOL, RevisionCommit, RevisionInput};
+use crate::runtime::reply::{DraftStatus, FINISH_TOOL, RevisionCommit, RevisionInput};
 use crate::runtime::sources::SourcePull;
-use harness::execution::{Call, Item, Record, Request, Response, Usage};
-
-struct Allow;
-
-#[async_trait]
-impl Authority for Allow {
-    async fn check(&mut self, _: &Scope) -> Result<(), String> {
-        Ok(())
-    }
-
-    async fn lock_publication(
-        &mut self,
-        _: &PublicationTransaction,
-        _: &Scope,
-        _: Option<&[u8]>,
-    ) -> Result<(), String> {
-        Ok(())
-    }
-}
+use harness::engine::recipe::Usage;
+use harness::engine::{Event, EventKind};
+use harness::engine::{Invocation, Item, Turn};
 
 async fn setup() -> (Store, Scope) {
     let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
@@ -66,16 +50,18 @@ fn input(key: &str, revision: u64) -> RevisionInput {
     }
 }
 
-fn finish(id: &str, text: &str) -> Response {
-    Response {
-        text: String::new(),
-        calls: vec![Call {
-            id: id.into(),
-            name: FINISH_TOOL.into(),
-            arguments: serde_json::json!({"text": text, "review_basis": "Read sources"}),
-        }],
+fn finish(id: &str, text: &str) -> Turn {
+    Turn {
+        items: vec![
+            Invocation {
+                id: id.into(),
+                name: FINISH_TOOL.into(),
+                arguments: serde_json::json!({"text": text, "review_basis": "Read sources"}),
+            }
+            .into(),
+        ],
         usage: Usage::default(),
-        provenance: serde_json::json!({"synthetic": true}),
+        receipt: serde_json::json!({"synthetic": true}),
     }
 }
 
@@ -86,23 +72,30 @@ async fn read_then_finish(
     sequence: u64,
     read: &[SourceRevision],
     references: &[String],
-    output: &Response,
+    output: &Turn,
 ) {
-    let value = exact_read(read, &claim.scope.workspace, references, 65536).unwrap();
+    let outcome = exact_read(read, &claim.scope.workspace, references, 65536).unwrap();
+    let value: Value = serde_json::from_str(outcome.text().unwrap()).unwrap();
+    let count = store
+        .draft(&claim.scope)
+        .await
+        .unwrap()
+        .unwrap()
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .len() as u64;
     store
         .record_revision(
             claim,
-            Record::Dispatch {
-                sequence,
-                request: Request {
-                    model: "fixed".into(),
-                    options: serde_json::json!({}),
-                    instructions: String::new(),
-                    tools: vec![],
-                    items: vec![Item::Result {
-                        call_id: format!("read-{sequence}"),
-                        value,
-                    }],
+            Event {
+                attempt_id: claim.attempt.clone(),
+                sequence: count + 1,
+                ordinal: sequence,
+                kind: EventKind::ToolReturned {
+                    call_id: format!("read-{sequence}"),
+                    result: harness::engine::results::ToolResult::Original(value.to_string()),
                 },
             },
         )
@@ -111,32 +104,73 @@ async fn read_then_finish(
     store
         .record_revision(
             claim,
-            Record::Exchange {
-                sequence,
-                response: output.clone(),
+            Event {
+                attempt_id: claim.attempt.clone(),
+                sequence: count + 2,
+                ordinal: sequence,
+                kind: EventKind::ProviderStarted {
+                    dispatched_at_unix_ms: 1,
+                    request: harness::engine::SavedRequest {
+                        added: vec![Item::Result {
+                            call_id: format!("read-{sequence}"),
+                            output: harness::engine::results::ResultView::whole(
+                                format!("read-{sequence}"),
+                                &value.to_string(),
+                            ),
+                        }],
+                        items: vec![harness::engine::RequestItem::Event {
+                            attempt: claim.attempt.clone(),
+                            sequence: count + 2,
+                            index: 0,
+                        }],
+                    },
+                    context: Default::default(),
+                },
             },
         )
         .await
         .unwrap();
+    exchange(store, claim, sequence, output).await;
 }
 
-async fn exchange(store: &Store, claim: &reply::RevisionClaim, sequence: u64, output: &Response) {
-    store
-        .record_revision(
-            claim,
-            Record::Exchange {
-                sequence,
-                response: output.clone(),
-            },
-        )
+async fn exchange(store: &Store, claim: &reply::RevisionClaim, ordinal: u64, output: &Turn) {
+    let count = store
+        .draft(&claim.scope)
         .await
-        .unwrap();
+        .unwrap()
+        .unwrap()
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .len() as u64;
+    for (offset, kind) in [
+        EventKind::ProviderReturned(output.clone()),
+        EventKind::Candidate {
+            text: output.text(),
+        },
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        store
+            .record_revision(
+                claim,
+                Event {
+                    attempt_id: claim.attempt.clone(),
+                    sequence: count + offset as u64 + 1,
+                    ordinal,
+                    kind,
+                },
+            )
+            .await
+            .unwrap();
+    }
 }
 
 async fn accepted_claim(store: &Store, scope: &Scope, key: &str) -> reply::RevisionClaim {
-    store.open_draft(scope, "Original").await.unwrap();
-    store
-        .accept_revision(scope, &input(key, 1), vec![7; 32])
+    open_draft(store, scope, "Original").await;
+    accept_revision_input(store, scope, &input(key, 1))
         .await
         .unwrap();
     store
@@ -276,45 +310,95 @@ async fn unchanged_imports_keep_the_version_and_changes_append() {
     let lab = source(&scope, "lab", "r1", "Potassium 4.1");
     let note = source(&scope, "note", "r1", "Seen in clinic");
     assert_eq!(store.sources(&scope.workspace).await.unwrap().version, 0);
+    assert!(
+        !store
+            .has_sources_outside(&scope.workspace, "ehr")
+            .await
+            .unwrap()
+    );
     store
         .import_sources(&[lab.clone(), note.clone()])
         .await
         .unwrap();
     let first = store.sources(&scope.workspace).await.unwrap();
     assert_eq!(first.version, 2);
+    assert!(
+        !store
+            .has_sources_outside(&scope.workspace, "ehr")
+            .await
+            .unwrap()
+    );
+    assert!(
+        store
+            .has_sources_outside(&scope.workspace, "synthetic-charts")
+            .await
+            .unwrap()
+    );
     // A site restart imports the same snapshot again: nothing moves.
     store
         .import_sources(&[lab.clone(), note.clone()])
         .await
         .unwrap();
     assert_eq!(store.sources(&scope.workspace).await.unwrap(), first);
-    // Withdrawing what was never recorded changes nothing either.
-    assert_eq!(
-        store
-            .withdraw_source(&scope.workspace, "unknown")
-            .await
-            .unwrap(),
-        2
-    );
     let corrected = source(&scope, "lab", "r2", "Potassium 4.3");
     assert_eq!(store.record_source(&corrected).await.unwrap(), 3);
     assert_eq!(
         store
-            .withdraw_source(&scope.workspace, "note")
+            .record_chart(
+                &scope.workspace,
+                std::slice::from_ref(&corrected),
+                &pull("ehr", 100)
+            )
             .await
             .unwrap(),
-        4
+        1
     );
     assert_eq!(
         store
-            .withdraw_source(&scope.workspace, "note")
+            .record_chart(
+                &scope.workspace,
+                std::slice::from_ref(&corrected),
+                &pull("ehr", 100)
+            )
             .await
             .unwrap(),
-        4
+        0
     );
     let now = store.sources(&scope.workspace).await.unwrap();
     assert_eq!(now.version, 4);
     assert_eq!(now.sources, vec![corrected]);
+    assert!(
+        store
+            .has_sources_outside(&scope.workspace, "synthetic-charts")
+            .await
+            .unwrap()
+    );
+    store
+        .record_chart(&scope.workspace, &[], &pull("ehr", 100))
+        .await
+        .unwrap();
+    assert!(
+        store
+            .sources(&scope.workspace)
+            .await
+            .unwrap()
+            .sources
+            .is_empty(),
+        "every record is withdrawn"
+    );
+    assert!(
+        store
+            .has_sources_outside(&scope.workspace, "synthetic-charts")
+            .await
+            .unwrap(),
+        "answers written from withdrawn records stay in the workspace's history"
+    );
+    assert!(
+        !store
+            .has_sources_outside(&scope.workspace, "ehr")
+            .await
+            .unwrap()
+    );
     // Another workspace's sources never appear.
     let other = Scope {
         workspace: uuid::Uuid::new_v4().to_string(),
@@ -355,7 +439,7 @@ async fn restart_imports_do_not_rollback_corrections_or_restore_withdrawals() {
         .unwrap();
     assert_eq!(restarted.sources(&scope.workspace).await.unwrap(), before);
     store
-        .withdraw_source(&scope.workspace, "lab")
+        .record_chart(&scope.workspace, &[], &pull("ehr", 100))
         .await
         .unwrap();
     let withdrawn = store.sources(&scope.workspace).await.unwrap();
@@ -397,7 +481,7 @@ async fn source_identity_conflicts_are_refused_throughout_history() {
                 .unwrap();
         } else {
             store
-                .withdraw_source(&scope.workspace, "lab")
+                .record_chart(&scope.workspace, &[], &pull("ehr", 100))
                 .await
                 .unwrap();
         }
@@ -440,7 +524,7 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
     let arrived = source(&scope, "lab-2", "r1", "Creatinine 2.4 (high)");
     store.record_source(&arrived).await.unwrap();
     let RevisionCommit::SourcesMoved { refresh, sources } = store
-        .commit_revision(&claim, &early, &mut Allow)
+        .commit_revision(&claim, &early, &mut OpenAuthority)
         .await
         .unwrap()
     else {
@@ -452,7 +536,7 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
     assert_eq!(sources, vec![lab.clone(), arrived.clone()]);
     let draft = store.draft(&scope).await.unwrap().unwrap();
     assert_eq!((draft.revision, draft.text.as_str()), (1, "Original"));
-    assert_eq!(draft.status, "active");
+    assert_eq!(draft.status, DraftStatus::Active);
     assert_eq!(draft.sources_version, 2);
     let attempt = draft.attempts.last().unwrap();
     assert_eq!(attempt.sources, vec![lab.clone()], "the original pin stays");
@@ -472,7 +556,7 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
     .await;
     assert_eq!(
         store
-            .commit_revision(&claim, &unread, &mut Allow)
+            .commit_revision(&claim, &unread, &mut OpenAuthority)
             .await
             .unwrap(),
         RevisionCommit::SourcesUnread(vec!["lab-2".into()])
@@ -495,7 +579,7 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
         .await;
         assert_eq!(
             store
-                .commit_revision(&claim, &unread, &mut Allow)
+                .commit_revision(&claim, &unread, &mut OpenAuthority)
                 .await
                 .unwrap(),
             RevisionCommit::SourcesUnread(vec!["lab-2".into()])
@@ -512,9 +596,49 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
         &caught_up,
     )
     .await;
+    // A returned provider turn rejected by the currency fence cannot establish
+    // that the model received the refreshed source.
+    use crate::runtime::entities::execution_event::{Column as C, Entity};
+    use sea_orm::sea_query::Expr;
+    let response_sequence = store
+        .draft(&scope)
+        .await
+        .unwrap()
+        .unwrap()
+        .attempts
+        .last()
+        .unwrap()
+        .events
+        .iter()
+        .find(|event| event.ordinal == 5 && matches!(event.kind, EventKind::ProviderReturned(_)))
+        .unwrap()
+        .sequence;
+    let response_row = Entity::update_many()
+        .filter(C::Practice.eq(scope.practice.as_str()))
+        .filter(C::Attempt.eq(claim.attempt.as_str()))
+        .filter(C::Sequence.eq(response_sequence as i64));
+    response_row
+        .clone()
+        .col_expr(C::Admissible, Expr::value(false))
+        .exec(&store.db)
+        .await
+        .unwrap();
     assert_eq!(
         store
-            .commit_revision(&claim, &caught_up, &mut Allow)
+            .commit_revision(&claim, &caught_up, &mut OpenAuthority)
+            .await
+            .unwrap(),
+        RevisionCommit::SourcesUnread(vec!["lab-2".into()]),
+        "a non-admissible provider response cannot establish source delivery"
+    );
+    response_row
+        .col_expr(C::Admissible, Expr::value(true))
+        .exec(&store.db)
+        .await
+        .unwrap();
+    assert_eq!(
+        store
+            .commit_revision(&claim, &caught_up, &mut OpenAuthority)
             .await
             .unwrap(),
         RevisionCommit::Committed
@@ -522,7 +646,7 @@ async fn a_source_arriving_mid_revision_must_be_read_before_publication() {
     let draft = store.draft(&scope).await.unwrap().unwrap();
     assert_eq!(draft.revision, 2);
     assert_eq!(draft.text, "Potassium is normal; creatinine is high.");
-    assert_eq!(draft.status, "completed");
+    assert_eq!(draft.status, DraftStatus::Completed);
 }
 
 #[tokio::test]
@@ -541,11 +665,15 @@ async fn a_correction_replaces_the_pinned_revision_and_keeps_the_old_one_on_reco
     let corrected = source(&scope, "lab", "r2", "Potassium 4.2 (repeat)");
     store.record_source(&corrected).await.unwrap();
     store
-        .withdraw_source(&scope.workspace, "note")
+        .record_chart(
+            &scope.workspace,
+            std::slice::from_ref(&corrected),
+            &pull("ehr", 100),
+        )
         .await
         .unwrap();
     let RevisionCommit::SourcesMoved { refresh, sources } = store
-        .commit_revision(&claim, &output, &mut Allow)
+        .commit_revision(&claim, &output, &mut OpenAuthority)
         .await
         .unwrap()
     else {
@@ -572,7 +700,7 @@ async fn a_correction_replaces_the_pinned_revision_and_keeps_the_old_one_on_reco
     .await;
     assert_eq!(
         store
-            .commit_revision(&claim, &stale, &mut Allow)
+            .commit_revision(&claim, &stale, &mut OpenAuthority)
             .await
             .unwrap(),
         RevisionCommit::SourcesUnread(vec!["lab".into()])
@@ -589,7 +717,7 @@ async fn a_correction_replaces_the_pinned_revision_and_keeps_the_old_one_on_reco
     .await;
     assert_eq!(
         store
-            .commit_revision(&claim, &current, &mut Allow)
+            .commit_revision(&claim, &current, &mut OpenAuthority)
             .await
             .unwrap(),
         RevisionCommit::Committed
@@ -641,7 +769,7 @@ async fn ingestion_racing_a_commit_is_caught_or_lands_after_it_never_lost() {
         let output = finish("finish-1", "Potassium is normal.");
         exchange(&store, &claim, 1, &output).await;
         let arriving = source(&scope, "lab-2", "r1", &format!("Creatinine {round}"));
-        let mut allow = Allow;
+        let mut allow = OpenAuthority;
         let (committed, recorded) = tokio::join!(
             store.commit_revision(&claim, &output, &mut allow),
             store.record_source(&arriving)
@@ -678,8 +806,7 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
     store.record_source(&arrived).await.unwrap();
     // A duplicate acceptance answers from the receipt and keeps the pin.
     assert_eq!(
-        store
-            .accept_revision(&scope, &input("first", 1), vec![7; 32])
+        accept_revision_input(&store, &scope, &input("first", 1))
             .await
             .unwrap(),
         reply::RevisionAccepted::Duplicate
@@ -688,7 +815,10 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
         store.draft(&scope).await.unwrap().unwrap().sources_version,
         1
     );
-    store.retry_revision(&first).await.unwrap();
+    store
+        .settle_revision_attempt(&first, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
     let retry = store
         .claim_revision(&Delivery::reply_revision(scope.clone(), "first".into()), 60)
         .await
@@ -704,11 +834,174 @@ async fn retries_pin_the_newest_sources_and_duplicates_keep_the_original_pin() {
     exchange(&store, &retry, 1, &output).await;
     assert_eq!(
         store
-            .commit_revision(&retry, &output, &mut Allow)
+            .commit_revision(&retry, &output, &mut OpenAuthority)
             .await
             .unwrap(),
         RevisionCommit::Committed
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn retained_model_context_requires_new_sources_after_a_no_dispatch_successor() {
+    let (store, scope) = setup().await;
+    let lab = source(&scope, "lab", "r1", "Potassium 4.1");
+    store.record_source(&lab).await.unwrap();
+    let first = accepted_claim(&store, &scope, "first").await;
+    let old = finish("finish-old", "Potassium is normal.");
+    read_then_finish(&store, &first, 1, &first.sources, &["lab".into()], &old).await;
+    let arrived = source(&scope, "lab-2", "r1", "Creatinine 2.4 (high)");
+    store.record_source(&arrived).await.unwrap();
+    store
+        .settle_revision_attempt(&first, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
+    let delivery = Delivery::reply_revision(scope.clone(), "first".into());
+    let second = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
+    // Losing a successor before dispatch must not erase the earlier context
+    // or its obligation to incorporate the newly pinned source.
+    store
+        .settle_revision_attempt(&second, harness::engine::AttemptFailure::Failed)
+        .await
+        .unwrap();
+    let third = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
+    assert_eq!(third.sources_version, 2);
+    exchange(&store, &third, 1, &old).await;
+    let refused = store
+        .commit_revision(&third, &old, &mut OpenAuthority)
+        .await
+        .unwrap_err();
+    assert!(
+        refused
+            .to_string()
+            .as_str()
+            .contains("no model call followed the source refresh")
+    );
+    let unchanged = store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(
+        (unchanged.revision, unchanged.text.as_str()),
+        (1, "Original")
+    );
+
+    let updated = finish("finish-updated", "Potassium is normal; creatinine is high.");
+    read_then_finish(
+        &store,
+        &third,
+        2,
+        &third.sources,
+        &["lab-2".into()],
+        &updated,
+    )
+    .await;
+    assert_eq!(
+        store
+            .commit_revision(&third, &updated, &mut OpenAuthority)
+            .await
+            .unwrap(),
+        RevisionCommit::Committed
+    );
+    let published = store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(published.revision, 2);
+    assert_eq!(published.text, "Potassium is normal; creatinine is high.");
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn a_source_change_after_a_lost_revision_reaches_the_model_before_its_saved_finish() {
+    for withdrawn in [false, true] {
+        let case = if withdrawn { "withdrawn" } else { "corrected" };
+        let (store, scope) = setup().await;
+        let lab = source(&scope, "lab", "r1", "Potassium 4.1");
+        let note = source(&scope, "note", "r1", "Seen in clinic");
+        store
+            .import_sources(&[lab.clone(), note.clone()])
+            .await
+            .unwrap();
+        let first = accepted_claim(&store, &scope, "first").await;
+        let saved = finish("finish-saved", "Potassium is normal; seen in clinic.");
+        read_then_finish(
+            &store,
+            &first,
+            1,
+            &first.sources,
+            &["lab".into(), "note".into()],
+            &saved,
+        )
+        .await;
+        // The worker dies before publication; its lease runs out.
+        use entities::revision_attempt::{Column, Entity};
+        Entity::update_many()
+            .col_expr(Column::Expires, Expr::value(0_i64))
+            .filter(Column::Id.eq(first.attempt.as_str()))
+            .exec(&store.db)
+            .await
+            .unwrap();
+        if withdrawn {
+            store
+                .record_chart(
+                    &scope.workspace,
+                    std::slice::from_ref(&lab),
+                    &pull("ehr", 100),
+                )
+                .await
+                .unwrap();
+        } else {
+            store
+                .record_source(&source(
+                    &scope,
+                    "note",
+                    "r2",
+                    "Seen in clinic; plan changed",
+                ))
+                .await
+                .unwrap();
+        }
+        let delivery = Delivery::reply_revision(scope.clone(), "first".into());
+        let successor = store.claim_revision(&delivery, 60).await.unwrap().unwrap();
+        // What the worker passes the model as source feedback on recovery.
+        let told = store
+            .draft(&scope)
+            .await
+            .unwrap()
+            .unwrap()
+            .attempts
+            .last()
+            .unwrap()
+            .refreshes
+            .last()
+            .is_some_and(|refresh| {
+                refresh
+                    .withdrawn
+                    .iter()
+                    .chain(refresh.corrected.iter().map(|c| &c.previous))
+                    .any(|source| source.candidate_id == "note")
+            });
+        // The saved finish, offered again without another model call.
+        store
+            .record_revision(
+                &successor,
+                Event {
+                    attempt_id: successor.attempt.clone(),
+                    sequence: 1,
+                    ordinal: 1,
+                    kind: EventKind::Candidate { text: saved.text() },
+                },
+            )
+            .await
+            .unwrap();
+        let committed = matches!(
+            store
+                .commit_revision(&successor, &saved, &mut OpenAuthority)
+                .await,
+            Ok(RevisionCommit::Committed)
+        );
+        let draft = store.draft(&scope).await.unwrap().unwrap();
+        assert_eq!(
+            (told, committed, draft.revision, draft.text.as_str()),
+            (true, false, 1, "Original"),
+            "{case}: the model hears of the changed source before its saved finish can publish"
+        );
+    }
 }
 
 #[tokio::test]
@@ -749,4 +1042,83 @@ async fn a_chart_delivery_says_what_the_source_holds_now() {
         store.sources(&scope.workspace).await.unwrap().sources,
         [first]
     );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn currency_is_read_only_and_renewal_touches_only_the_current_revision_attempt() {
+    use entities::revision_attempt::{Column as C, Entity};
+    let (store, scope) = setup().await;
+    let old = accepted_claim(&store, &scope, "lease").await;
+    assert_eq!(
+        store
+            .settle_revision_attempt(&old, engine::AttemptFailure::Interrupted)
+            .await
+            .unwrap(),
+        delivery::AttemptSettlement::Applied
+    );
+    let claim = store
+        .claim_revision(&Delivery::reply_revision(scope.clone(), "lease".into()), 60)
+        .await
+        .unwrap()
+        .unwrap();
+    let tx = store.db.begin().await.unwrap();
+    let near_expiry = now(&tx).await.unwrap() + 5;
+    tx.commit().await.unwrap();
+    Entity::update_many()
+        .col_expr(C::Expires, Expr::value(near_expiry))
+        .filter(control::revision_scope(&scope))
+        .exec(&store.db)
+        .await
+        .unwrap();
+    let locked = store.db.begin().await.unwrap();
+    super::super::entities::reply_draft::Entity::find_by_id((
+        scope.practice.clone(),
+        scope.physician.clone(),
+        scope.workspace.clone(),
+        scope.chat.clone(),
+    ))
+    .lock_exclusive()
+    .one(&locked)
+    .await
+    .unwrap()
+    .unwrap();
+    let read = tokio::time::timeout(
+        std::time::Duration::from_secs(1),
+        store.assert_revision_current(&claim),
+    )
+    .await;
+    locked.rollback().await.unwrap();
+    assert!(
+        read.is_ok(),
+        "revision currency check waited for a write lock"
+    );
+    read.unwrap().unwrap();
+    let unchanged = store.draft(&scope).await.unwrap().unwrap();
+    assert!(
+        unchanged
+            .attempts
+            .iter()
+            .all(|attempt| attempt.expires == near_expiry)
+    );
+    store.renew_revision_claim(&claim).await.unwrap();
+    let state = store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(state.attempts[0].expires, near_expiry);
+    assert!(
+        state.attempts[1].expires >= near_expiry + 50,
+        "current lease was not renewed"
+    );
+    assert!(store.renew_revision_claim(&old).await.is_err());
+    store.assert_revision_current(&old).await.unwrap();
+    assert_eq!(
+        store
+            .settle_revision_attempt(&old, engine::AttemptFailure::Failed)
+            .await
+            .unwrap(),
+        delivery::AttemptSettlement::Superseded
+    );
+    let preserved = store.draft(&scope).await.unwrap().unwrap();
+    assert_eq!(preserved.failures, state.failures);
+    assert_eq!(preserved.attempts[1].status, AttemptStatus::Active);
+    assert_eq!(preserved.attempts[1].id, claim.attempt);
 }

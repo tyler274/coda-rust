@@ -9,8 +9,8 @@
 use std::collections::BTreeMap;
 use std::sync::{Arc, Mutex};
 
+use crate::timestamp::format_rfc3339;
 use async_trait::async_trait;
-use local_product::codex::format_rfc3339;
 use local_product::physician_sources::{MedicalRecordNumber, SourcePatient};
 use local_product::runtime::Store;
 use local_product::runtime::sources::SourcePull;
@@ -87,7 +87,7 @@ impl MemoryPatients {
 
 /// A fixture patient as one source's pull.
 pub(crate) fn fixture_pull(workspace: &str) -> SourcePull {
-    let body = crate::simulation::workspace_body(workspace).expect("fixture patient");
+    let body = workspace_body(workspace).expect("fixture patient");
     let body: Value = serde_json::from_str(body).expect("fixture patient");
     let identity = &body["identity"];
     let text = |value: &Value| value.as_str().map(str::to_owned);
@@ -352,6 +352,27 @@ pub(crate) async fn search(
     found.retain(|patient| patient.matches(&words));
     found.truncate(SEARCH_LIMIT);
     Ok(found)
+}
+
+pub(crate) fn workspace_body(id: &str) -> Option<&'static str> {
+    Some(match id {
+        "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee" => {
+            include_str!("../fixtures/workspaces/pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee.json")
+        }
+        "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d" => {
+            include_str!("../fixtures/workspaces/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d.json")
+        }
+        "pw-f5404d89-acde-4bb5-8c42-2fa191766811" => {
+            include_str!("../fixtures/workspaces/pw-f5404d89-acde-4bb5-8c42-2fa191766811.json")
+        }
+        "pw-d11a35f7-0d8d-466f-a48e-5812df0a4971" => {
+            include_str!("../fixtures/workspaces/pw-d11a35f7-0d8d-466f-a48e-5812df0a4971.json")
+        }
+        "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e" => {
+            include_str!("../fixtures/workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e.json")
+        }
+        _ => return None,
+    })
 }
 
 #[cfg(test)]

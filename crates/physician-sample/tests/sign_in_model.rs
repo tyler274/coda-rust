@@ -12,8 +12,8 @@
 //! removed your access, a used link, and Coda out of reach. Sessions expire by
 //! ending them on the server.
 //!
-//! This needs TLC, so it runs locally through the coda-verify-sign-in skill
-//! and CI leaves it out. The spec and model are in
+//! This uses TLC locally through the coda-verify-sign-in skill and in explicitly
+//! requested CI browser qualification. The spec and model are in
 //! `verification/physician/sign-in/`.
 
 use std::path::PathBuf;

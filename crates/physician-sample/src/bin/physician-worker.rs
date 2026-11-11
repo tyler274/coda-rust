@@ -3,18 +3,13 @@
 //! Postgres owns the turn. Pub/Sub only wakes this process. The push body
 //! carries a scope and an input id, never clinical text, and logs stay that way.
 //! A duplicate or settled delivery is acknowledged without calling the model.
-//! The worker loads the packaged skill catalog once at startup and offers
-//! chat turns the read-only `skill_view` tool (book: `physician-site.md`,
-//! "Skills in hosted chat").
+//! Skill reads use the package saved with the work at acceptance.
 #![allow(
     clippy::map_err_ignore,
     reason = "converting to errors that keep their cause"
 )]
 
-use std::path::PathBuf;
 use std::sync::Arc;
-use std::sync::atomic::Ordering;
-use std::time::Duration;
 
 use axum::Json;
 use axum::Router;
@@ -22,9 +17,9 @@ use axum::extract::{Request, State};
 use axum::http::StatusCode;
 use axum::routing::{get, post};
 use base64::Engine;
-use harness::engine::{Cancellation, Item, Limits, Provider, Request as ModelRequest, Turn};
-use local_product::physician_chat::{self, PhysicianSkills};
-use local_product::runtime::async_trait;
+use harness::engine::recipe::Provider;
+use harness::engine::{Cancellation, RunLimits};
+use harness::provider::ResponsesProvider;
 use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
@@ -36,12 +31,15 @@ use local_product::runtime::{Claim, Conversation, PhysicianHost, Scope, Store};
 use physician_auth::PostgresAuthStore;
 use physician_bus::{Bus, Event};
 use physician_sample::durable::RuntimeAuthority;
-use physician_sample::hosting::{self, SimulationPractices, is_hosted, marked_attempt_fails};
+use physician_sample::hosting::{self, SimulationPractices, is_hosted};
 use serde_json::{Value, json};
 use telemetry::genai::{self, RunContext};
 use tracing::Instrument;
 
+// A dead replica's work waits at most 540 seconds for its ownership to expire.
+// Hosting renews every fifth of that duration, independently of the run clock.
 const LEASE_SECONDS: i64 = 540;
+// A Pub/Sub wake carries identities, not clinical payloads. Bound request buffering.
 const BODY_LIMIT: usize = 64 * 1024;
 
 #[tokio::main]
@@ -151,11 +149,10 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             return StatusCode::INTERNAL_SERVER_ERROR;
         }
     };
-    let run_id = claim.attempt.clone();
     let workspace_id = claim.scope.workspace.clone();
     let session_id = claim.scope.chat.clone();
     let conversation = worker.store.read(&claim.scope).await.ok().flatten();
-    let (origin, scenario_id) = worker.simulation_practices.origin(
+    let (origin, scenario_id) = worker.turn_origin(
         &claim.scope.practice,
         conversation
             .as_ref()
@@ -174,7 +171,7 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
     attempt::record_claim(
         span,
         &Claimed {
-            run_id: &run_id,
+            run_id: &claim.attempt,
             work_id: claimed.map(|a| a.work.as_str()),
             predecessor_run_id: claimed.and_then(|a| a.predecessor.as_deref()),
             input_revision: Some(claim.revision),
@@ -184,62 +181,68 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
     drop(conversation);
     let generation = genai::generation_span(
         &RunContext {
-            run_id: run_id.clone(),
+            run_id: claim.attempt.clone(),
             job: CHAT_JOB,
             recipe_version: genai::recipe_version(),
             origin,
             scenario_id,
             session_id: Some(session_id),
         },
-        worker.system,
-        &worker.model_name,
-        worker.adapter,
+        "openai",
+        &worker.model.roles.chat.adapter,
     );
     genai::record_input(&generation, &input_text);
     // A rehearsal turn marked `[fail:K]` fails its first K attempts before
     // any model call, so a drill exercises the real failure path at no cost.
-    let provider = if worker.simulation_practices.rehearsed_failure(
+    if worker.simulation_practices.rehearsed_failure(
         &claim.scope.practice,
         &input_text,
         earlier_attempts,
     ) {
-        Err(Failure::Rehearsed)
-    } else {
-        worker
-            .model
-            .provider(earlier_attempts, &input_text)
-            .map_err(|_| Failure::ProviderInit)
-    };
+        genai::record_error(&generation, Failure::Rehearsed.description());
+        let attempt = Settling {
+            span,
+            generation: &generation,
+            failure: Failure::Rehearsed,
+        };
+        let reason = harness::engine::AttemptFailure::Failed;
+        return settle_attempt(worker, &claim, workspace_id, reason, &attempt).await;
+    }
+    let provider = worker.model.provider(worker.quota.clone()).await;
     drop(input_text);
     let mut host = PhysicianHost {
         store: worker.store.clone(),
         claim,
-        authority: RuntimeAuthority {
-            store: worker.store.clone(),
-        },
-        instructions: worker.instructions.to_string(),
-        skills: Some(worker.skills.clone()),
+        authority: worker.model.authority(worker.store.clone()),
     };
     let cancel = Cancellation::default();
-    let watcher = watch_currentness(worker.store.clone(), host.claim.clone(), cancel.clone());
     // One provider per turn: concurrent pushes on this instance run side by
     // side instead of queueing behind one another's model call.
     let mut provider = match provider {
         Ok(provider) => provider,
-        Err(failure) => {
-            watcher.abort();
-            genai::record_error(&generation, failure.description());
-            // Counted like a model failure, so the fifth one ends the turn.
-            let status = failed_attempt(worker, span, &host.claim, workspace_id).await;
-            attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Retry, Some(failure));
-            return status;
+        Err(error) => {
+            genai::record_error(&generation, "physician chat provider unavailable");
+            let reason = harness::engine::AttemptFailure::from_error(
+                &harness::engine::Failure::Provider(error),
+                &cancel,
+            );
+            let attempt = Settling {
+                span,
+                generation: &generation,
+                failure: Failure::ProviderInit,
+            };
+            return settle_attempt(worker, &host.claim, workspace_id, reason, &attempt).await;
         }
     };
-    let result = host
-        .run(&mut provider, &worker.limits, &cancel)
-        .instrument(generation.clone())
-        .await;
-    watcher.abort();
+    let claimed = host.claim.clone();
+    let result = while_owned(
+        claimed.lease,
+        &cancel,
+        || worker.store.renew_claim(&claimed),
+        host.run(&mut provider, RunLimits::default(), &cancel)
+            .instrument(generation.clone()),
+    )
+    .await;
     record_chat_usage(&worker.store, &host.claim, &generation).await;
     match result {
         Ok(()) => {
@@ -248,34 +251,29 @@ async fn chat_attempt(worker: &Worker, delivery: &Delivery, span: &tracing::Span
             drop(output);
             // The turn is committed. Redelivery sees it settled and acks.
             announce(worker, workspace_id).await;
-            attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Committed, None);
+            attempt::finish(
+                span,
+                CHAT_JOB,
+                Some(&host.claim.attempt),
+                Outcome::Committed,
+                None,
+            );
             StatusCode::NO_CONTENT
         }
-        Err(_) => {
-            genai::record_error(&generation, "physician chat failed");
-            if turn_settled(&worker.store, &host.claim).await {
-                // Stop or a newer message already owns the turn. Ack so the
-                // broker does not count this delivery as a failure.
-                announce(worker, workspace_id).await;
-                attempt::finish(span, CHAT_JOB, Some(&run_id), Outcome::Settled, None);
-                StatusCode::NO_CONTENT
-            } else {
-                let status = failed_attempt(worker, span, &host.claim, workspace_id).await;
-                attempt::finish(
-                    span,
-                    CHAT_JOB,
-                    Some(&run_id),
-                    Outcome::Retry,
-                    Some(Failure::ModelCall),
-                );
-                status
-            }
+        Err(error) => {
+            let reason = harness::engine::AttemptFailure::from_error(&error, &cancel);
+            let attempt = Settling {
+                span,
+                generation: &generation,
+                failure: Failure::ModelCall,
+            };
+            settle_attempt(worker, &host.claim, workspace_id, reason, &attempt).await
         }
     }
 }
 
 /// Records the provider-reported usage of this attempt's retained receipts.
-/// The fixed provider and a provider that reported no usage leave it unset.
+/// A provider that reported no usage leaves it unset.
 async fn record_chat_usage(store: &Store, claim: &Claim, generation: &tracing::Span) {
     let Ok(Some(state)) = store.read(&claim.scope).await else {
         return;
@@ -291,50 +289,83 @@ async fn record_chat_usage(store: &Store, claim: &Claim, generation: &tracing::S
     }
 }
 
-/// Cancels the provider call once this claim is no longer the current attempt.
-/// A database blip does not cancel: publication still refuses a stale result.
-fn watch_currentness(
-    store: Store,
-    claim: Claim,
-    cancel: Cancellation,
-) -> tokio::task::JoinHandle<()> {
-    tokio::spawn(async move {
+/// Hosting keeps ownership independently of the model loop and every product callback.
+async fn while_owned<T, E, F: std::future::Future<Output = Result<(), E>>>(
+    lease: local_product::runtime::Lease,
+    cancel: &Cancellation,
+    mut renew: impl FnMut() -> F,
+    work: impl std::future::Future<Output = Result<T, harness::engine::Failure>>,
+) -> Result<T, harness::engine::Failure>
+where
+    E: std::error::Error + Send + Sync + 'static,
+{
+    let renewal = async {
+        let interval = lease.renewal_interval();
+        let mut tick = tokio::time::interval_at(tokio::time::Instant::now() + interval, interval);
+        tick.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
         loop {
-            match store.is_current(&claim).await {
-                Ok(false) => {
-                    cancel.cancel();
-                    break;
-                }
-                Ok(true) | Err(_) => tokio::time::sleep(Duration::from_millis(100)).await,
+            tick.tick().await;
+            if let Err(error) = renew().await {
+                break error;
             }
         }
-    })
-}
-
-/// Whether this claim must not be retried: Stop held it, it committed, or a
-/// newer input replaced it.
-async fn turn_settled(store: &Store, claim: &Claim) -> bool {
-    let Ok(Some(state)) = store.read(&claim.scope).await else {
-        return false;
     };
-    state.revision != claim.revision || matches!(state.status.as_str(), "completed" | "held")
+    tokio::pin!(work);
+    tokio::pin!(renewal);
+    tokio::select! {
+        biased;
+        error = &mut renewal => {
+            tracing::warn!(error = %error, "physician attempt ownership could not be renewed");
+            cancel.cancel();
+            work.await
+        }
+        result = &mut work => result,
+    }
 }
 
-/// One unsuccessful attempt, whether the provider could not start or the
-/// model call failed. Records it (the fifth ends the turn as failed), tells
-/// open pages to refetch, and refuses the push so the broker redelivers or
-/// dead-letters it.
-async fn failed_attempt(
+/// The spans and the primary failure class of an attempt being settled.
+struct Settling<'a> {
+    /// The delivery's `physician.worker.attempt` span.
+    span: &'a tracing::Span,
+    /// The attempt's `gen_ai.generation` span.
+    generation: &'a tracing::Span,
+    failure: Failure,
+}
+
+/// Retain the shared failure classification, then announce the durable state.
+/// Actual failures refuse the delivery for broker retry or dead-letter handling;
+/// a reached limit acknowledges the delivery and stays held for explicit Resume.
+async fn settle_attempt(
     worker: &Worker,
-    span: &tracing::Span,
     claim: &Claim,
     workspace_id: String,
+    reason: harness::engine::AttemptFailure,
+    attempt: &Settling<'_>,
 ) -> StatusCode {
-    if worker.store.retry_delivery(claim).await.is_err() {
-        attempt::retry_not_persisted(span, CHAT_JOB, &claim.attempt);
-    }
+    use local_product::runtime::delivery::AttemptSettlement;
+    let run_id = Some(claim.attempt.as_str());
+    let settlement = worker.store.settle_chat_attempt(claim, reason).await;
+    let status = match settlement {
+        Err(_) => {
+            attempt::retry_not_persisted(attempt.span, CHAT_JOB, &claim.attempt);
+            let failure = Some(attempt.failure);
+            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Retry, failure);
+            return StatusCode::INTERNAL_SERVER_ERROR;
+        }
+        Ok(AttemptSettlement::Applied) if reason.counts_as_failure() => {
+            genai::record_error(attempt.generation, "physician chat failed");
+            let failure = Some(attempt.failure);
+            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Retry, failure);
+            StatusCode::INTERNAL_SERVER_ERROR
+        }
+        // Superseded delivery cannot consume the successor's broker allowance.
+        Ok(AttemptSettlement::Applied | AttemptSettlement::Superseded) => {
+            attempt::finish(attempt.span, CHAT_JOB, run_id, Outcome::Settled, None);
+            StatusCode::NO_CONTENT
+        }
+    };
     announce(worker, workspace_id).await;
-    StatusCode::INTERNAL_SERVER_ERROR
+    status
 }
 
 async fn absent_claim(worker: &Worker, delivery: &Delivery) -> StatusCode {
@@ -393,7 +424,7 @@ fn last_text(conversation: &Conversation, role: &str) -> String {
         .messages
         .iter()
         .rev()
-        .find(|message| message.role == role)
+        .find(|message| message.role.as_str() == role)
         .map(|message| message.text.clone())
         .unwrap_or_default()
 }
@@ -458,174 +489,94 @@ struct Worker {
     auth: PostgresAuthStore,
     bus: Arc<dyn Bus>,
     model: ModelSource,
+    /// One durable provider cooldown for this product across worker replicas.
+    quota: Arc<dyn harness::provider::QuotaGate>,
     verifier: Option<google_cloud_auth::credentials::idtoken::verifier::Verifier>,
-    limits: Limits,
-    system: &'static str,
-    model_name: String,
-    adapter: &'static str,
-    /// The packaged catalog, loaded once at startup and shared by every turn.
-    skills: PhysicianSkills,
-    /// Versioned hosted instructions followed by that catalog's metadata.
-    instructions: Arc<str>,
+    /// `Simulation` for every turn when the model is the local Responses stub.
+    origin: genai::Origin,
     /// Practices whose turns are rehearsal traffic in telemetry.
     simulation_practices: SimulationPractices,
 }
 
-/// The packaged skill catalog. Hosted startup requires `PHYSICIAN_SKILLS_DIR`
-/// (the image sets it); a local worker defaults to this workspace's
-/// `skills/`. A missing or invalid catalog stops startup: hosted chat never
-/// runs with an empty one.
-fn skills_dir(get: &impl Fn(&str) -> Option<String>, hosted: bool) -> Result<PathBuf, String> {
-    match configured(get, "PHYSICIAN_SKILLS_DIR") {
-        Some(dir) => Ok(PathBuf::from(dir)),
-        None if hosted => Err("hosted physician worker requires PHYSICIAN_SKILLS_DIR".into()),
-        None => Ok(PathBuf::from(concat!(
-            env!("CARGO_MANIFEST_DIR"),
-            "/../../skills"
-        ))),
-    }
-}
-
 impl Worker {
+    /// The telemetry origin and scenario of a turn in `practice` accepted
+    /// with `scenario`. A rehearsal practice's turn is `simulation` with its
+    /// scenario; any other turn takes this worker's own origin and no
+    /// scenario.
+    fn turn_origin(
+        &self,
+        practice: &str,
+        scenario: Option<&str>,
+    ) -> (genai::Origin, Option<String>) {
+        match self.simulation_practices.origin(practice, scenario) {
+            (genai::Origin::Real, _) => (self.origin, None),
+            rehearsal => rehearsal,
+        }
+    }
+
     async fn from_env(get: impl Fn(&str) -> Option<String>) -> Result<Self, String> {
         let hosted = is_hosted(&get);
         let simulation_practices = SimulationPractices::from_env(&get)?;
-        let fixed = configured(&get, "PHYSICIAN_WORKER_FIXED_TEXT");
-        let failures = configured(&get, "PHYSICIAN_WORKER_FIXED_FAILURES");
-        if hosted && fixed.is_some() {
-            return Err("PHYSICIAN_WORKER_FIXED_TEXT is refused in hosted execution".into());
-        }
-        // Non-hosted proof only. A counted number of fixed-provider failures,
-        // then the fixed text. Hosted execution refuses the variable itself.
-        if hosted && failures.is_some() {
-            return Err("PHYSICIAN_WORKER_FIXED_FAILURES is refused in hosted execution".into());
-        }
-        let failure_count = match failures {
-            Some(value) => value
-                .parse::<u32>()
-                .map_err(|_| "PHYSICIAN_WORKER_FIXED_FAILURES must be a whole number".to_owned())?,
-            None => 0,
-        };
-        if failure_count > 0 && fixed.is_none() {
-            return Err(
-                "PHYSICIAN_WORKER_FIXED_FAILURES requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
-            );
-        }
-        // Non-hosted proof only: how long each fixed reply takes, so a test can
-        // show that concurrent pushes on one instance run side by side.
-        let delay = configured(&get, "PHYSICIAN_WORKER_FIXED_DELAY_MS");
-        if hosted && delay.is_some() {
-            return Err("PHYSICIAN_WORKER_FIXED_DELAY_MS is refused in hosted execution".into());
-        }
-        let delay = match delay {
-            Some(value) => Duration::from_millis(value.parse::<u64>().map_err(|_| {
-                "PHYSICIAN_WORKER_FIXED_DELAY_MS must be a whole number".to_owned()
-            })?),
-            None => Duration::ZERO,
-        };
-        if !delay.is_zero() && fixed.is_none() {
-            return Err(
-                "PHYSICIAN_WORKER_FIXED_DELAY_MS requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
-            );
-        }
-        // Non-hosted proof only: a message containing `[fail:K]` fails its
-        // first K attempts, counted from the attempts saved on that message, so one stack can drive a
-        // retry, a dead letter and Try again alongside ordinary turns.
-        let marker = configured(&get, "PHYSICIAN_WORKER_FIXED_FAIL_MARKER");
-        if hosted && marker.is_some() {
-            return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER is refused in hosted execution".into());
-        }
-        let marker = match marker.as_deref() {
-            None | Some("0") => false,
-            Some("1") => true,
-            Some(_) => return Err("PHYSICIAN_WORKER_FIXED_FAIL_MARKER must be 0 or 1".into()),
-        };
-        if marker && fixed.is_none() {
-            return Err(
-                "PHYSICIAN_WORKER_FIXED_FAIL_MARKER requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
-            );
-        }
-        // Non-hosted proof only: tool rounds the fixed provider requests
-        // before its text, so a test can drive skill reads through the real
-        // host and worker.
-        let rounds = configured(&get, "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS");
-        if hosted && rounds.is_some() {
-            return Err("PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS is refused in hosted execution".into());
-        }
-        if rounds.is_some() && fixed.is_none() {
-            return Err(
-                "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS requires PHYSICIAN_WORKER_FIXED_TEXT".into(),
-            );
-        }
-        let rounds = Arc::new(match rounds {
-            Some(script) => tool_rounds(&script)?,
-            None => Vec::new(),
-        });
-        let execution = local_product::model_execution(
-            configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
-        )?;
-        if hosted && execution != local_product::ModelExecution::Api {
-            return Err("hosted physician worker requires CODA_LOCAL_MODEL_EXECUTION=api".into());
-        }
-        // Before any connection: a worker without its catalog never serves.
-        let skills = PhysicianSkills::load(&skills_dir(&get, hosted)?)?;
-        let instructions: Arc<str> = skills.instructions(physician_chat::INSTRUCTIONS).into();
-        let (model, system, model_name, adapter) = if let Some(text) = fixed {
-            if failure_count > 0 {
-                tracing::info!(
-                    failure_count,
-                    "physician worker fixed provider will fail before succeeding"
+        let (transport, origin) = if let Some(port) =
+            configured(&get, "PHYSICIAN_RESPONSES_STUB_PORT")
+        {
+            if hosted {
+                return Err(
+                    "hosted physician worker requires the public Responses endpoint".into(),
                 );
-            } else {
-                tracing::info!("physician worker model execution: fixed text");
             }
-            if marker {
-                tracing::info!("physician worker fixed provider honors [fail:K] markers");
-            }
+            let port: u16 = port
+                .parse()
+                .map_err(|_| "invalid local Responses stub port")?;
             (
-                ModelSource::Fixed {
-                    text,
-                    failures_remaining: Arc::new(std::sync::atomic::AtomicU32::new(failure_count)),
-                    revision_failures: failure_count,
-                    delay,
-                    marker,
-                    rounds,
+                ModelTransport::Responses {
+                    endpoint: format!("http://127.0.0.1:{port}/responses"),
+                    key: "local-proof".to_owned(),
                 },
-                "fixed",
-                "fixed".to_owned(),
-                "fixed",
-            )
-        } else if execution == local_product::ModelExecution::Api {
-            let key = local_product::open_ai_api_key(
-                configured(&get, "CODA_ALLOW_MODEL_CALLS").as_deref(),
-                configured(&get, "OPENAI_API_KEY").as_deref(),
-            )?;
-            let owned = role_environment(&get);
-            let environment: Vec<(&str, &str)> = owned
-                .iter()
-                .map(|(key, value)| (key.as_str(), value.as_str()))
-                .collect();
-            let roles = local_product::model_roles("openai-responses", &environment)?;
-            let model_name = roles.chat.model.clone();
-            // Fail at startup, not on the first push, when the binding is invalid.
-            harness::responses::Responses::new(key.clone(), model_name.clone())?;
-            tracing::info!("physician worker model execution: api");
-            (
-                ModelSource::Api {
-                    key,
-                    binding: roles.chat,
-                },
-                "openai",
-                model_name,
-                "openai-responses",
+                genai::Origin::Simulation,
             )
         } else {
-            return Err(
-                "physician worker requires CODA_LOCAL_MODEL_EXECUTION=api or PHYSICIAN_WORKER_FIXED_TEXT"
-                    .into(),
-            );
+            match if hosted {
+                local_product::ModelExecution::Api
+            } else {
+                local_product::model_execution(
+                    configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
+                )?
+            } {
+                local_product::ModelExecution::Subscription => {
+                    local_product::chatgpt::require_sign_in().map_err(|error| error.to_string())?;
+                    (ModelTransport::DeveloperPlan, genai::Origin::Real)
+                }
+                local_product::ModelExecution::Api => {
+                    let key = local_product::open_ai_api_key(
+                        configured(&get, "CODA_ALLOW_MODEL_CALLS").as_deref(),
+                        configured(&get, "OPENAI_API_KEY").as_deref(),
+                    )?;
+                    (
+                        ModelTransport::Responses {
+                            endpoint: harness::responses::ENDPOINT.to_owned(),
+                            key,
+                        },
+                        genai::Origin::Real,
+                    )
+                }
+                local_product::ModelExecution::Disabled => {
+                    return Err(
+                        "physician worker requires CODA_LOCAL_MODEL_EXECUTION=subscription or api"
+                            .into(),
+                    );
+                }
+            }
         };
         let verifier = push_verifier(&get, hosted)?;
+        let owned = role_environment(&get);
+        let environment: Vec<_> = owned
+            .iter()
+            .map(|(key, value)| (key.as_str(), value.as_str()))
+            .collect();
+        let roles = local_product::model_roles(transport.adapter(), &environment)
+            .map_err(|error| error.to_string())?;
+        let model = ModelSource { transport, roles };
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
         let store = Store::connect(&database)
@@ -635,18 +586,15 @@ impl Worker {
             .await
             .map_err(|_| "physician auth store unavailable".to_string())?;
         let bus = physician_bus::from_env(&get, hosted).await?;
+        let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
         Ok(Self {
             store,
             auth,
             bus,
             model,
+            quota,
             verifier,
-            limits: limits(),
-            system,
-            model_name,
-            adapter,
-            skills,
-            instructions,
+            origin,
             simulation_practices,
         })
     }
@@ -712,28 +660,6 @@ fn identity_verifier(
     google_cloud_auth::credentials::idtoken::verifier::Builder::new([audience]).with_email(email)
 }
 
-/// Bounds for one hosted chat attempt. The context bound matches the site's
-/// in-process chat (`harness::execution::Limits::default`), so a conversation
-/// that runs on the site also runs here. The reply bounds match Duet's chat.
-/// The only tool is `skill_view`: up to eight model calls leave room for a
-/// skill, its supporting resources and an answer. A single result may be as
-/// large as the loader's largest budget (65536 bytes); four such results fill
-/// the attempt's allowance. `elapsed` stays inside the 540 s lease and the
-/// 600 s push deadline.
-fn limits() -> Limits {
-    Limits {
-        model_calls: 8,
-        tool_calls: 16,
-        calls_per_turn: 8,
-        request_bytes: 1_048_576,
-        response_bytes: 131_072,
-        tool_result_bytes: physician_chat::MAX_RESULT_BYTES as usize,
-        total_tool_result_bytes: 4 * physician_chat::MAX_RESULT_BYTES as usize,
-        output_tokens: 8192,
-        elapsed: Duration::from_secs(480),
-    }
-}
-
 /// Whether `address` binds only loopback. A name, a wildcard or any other
 /// address is refused: it is checked as written, not after resolution.
 fn is_loopback_listener(address: &str) -> bool {
@@ -757,214 +683,145 @@ fn configured(get: &impl Fn(&str) -> Option<String>, key: &str) -> Option<String
 }
 
 fn role_environment(get: &impl Fn(&str) -> Option<String>) -> Vec<(String, String)> {
-    const KEYS: [&str; 8] = [
-        "CODA_CHAT_MODEL",
-        "CODA_CHAT_EFFORT",
-        "CODA_BACKGROUND_MODEL",
-        "CODA_BACKGROUND_EFFORT",
-        "CODA_WORKER_MODEL",
-        "CODA_WORKER_EFFORT",
-        "CODA_LINKING_MODEL",
-        "CODA_LINKING_EFFORT",
-    ];
-    KEYS.into_iter()
+    local_product::MODEL_SETTING_KEYS
+        .into_iter()
         .filter_map(|key| configured(get, key).map(|value| (key.to_owned(), value)))
         .collect()
 }
 
-/// Builds one provider per turn. The key stays here and in each provider; it
-/// is never logged or sent anywhere but the fixed Responses endpoint.
-enum ModelSource {
-    Api {
-        key: String,
-        binding: local_product::ModelBinding,
-    },
-    /// Non-hosted proof only. The failure count is shared by every turn on
-    /// this process, so "fail N times, then answer" holds across redeliveries.
-    Fixed {
-        text: String,
-        failures_remaining: Arc<std::sync::atomic::AtomicU32>,
-        // Revision failures use durable attempt counts, including across restarts.
-        revision_failures: u32,
-        delay: Duration,
-        marker: bool,
-        rounds: Arc<Vec<ToolRound>>,
-    },
+/// Credentials stay in the worker; both choices run the same durable job.
+enum ModelTransport {
+    Responses { endpoint: String, key: String },
+    DeveloperPlan,
 }
 
-/// One scripted provider turn: `(tool name, raw JSON arguments)` per call.
-type ToolRound = Vec<(String, String)>;
+impl ModelTransport {
+    fn adapter(&self) -> &'static str {
+        match self {
+            Self::Responses { .. } => "openai-responses",
+            Self::DeveloperPlan => "chatgpt-plan",
+        }
+    }
+}
 
-/// Parses `PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS`: a JSON array of rounds, each
-/// an array of `{"name": ..., "arguments": ...}`. Object arguments are sent
-/// as their JSON; a string is sent as written, so a test can send bytes
-/// that are not JSON.
-fn tool_rounds(script: &str) -> Result<Vec<ToolRound>, String> {
-    let invalid = || "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS must be a JSON array of call arrays";
-    let rounds: Vec<Vec<Value>> = serde_json::from_str(script).map_err(|_| invalid())?;
-    rounds
-        .into_iter()
-        .map(|round| {
-            round
-                .into_iter()
-                .map(|call| {
-                    let name = call
-                        .get("name")
-                        .and_then(Value::as_str)
-                        .ok_or_else(invalid)?;
-                    let arguments = match call.get("arguments") {
-                        Some(Value::String(raw)) => raw.clone(),
-                        Some(value @ Value::Object(_)) => value.to_string(),
-                        _ => return Err(invalid().to_owned()),
-                    };
-                    Ok((name.to_owned(), arguments))
-                })
-                .collect::<Result<ToolRound, String>>()
-                .and_then(|round| {
-                    if round.is_empty() {
-                        Err(invalid().to_owned())
-                    } else {
-                        Ok(round)
-                    }
-                })
-        })
-        .collect()
+/// Transport and model configuration shared by chat and reply revision.
+struct ModelSource {
+    transport: ModelTransport,
+    roles: local_product::ModelRoles,
 }
 
 impl ModelSource {
-    /// One provider for one attempt on a physician message `input`, after
-    /// `earlier_attempts` saved attempts on that input. Only the fixed
-    /// provider reads either, for its fail marker.
-    fn provider(&self, earlier_attempts: u32, input: &str) -> Result<Model, String> {
-        match self {
-            Self::Api { key, binding } => Ok(Model::Api(
-                harness::responses::Responses::new(key.clone(), binding.model.clone())?
-                    .reasoning_effort(binding.effort.clone()),
-            )),
-            Self::Fixed {
-                text,
-                failures_remaining,
-                delay,
-                marker,
-                rounds,
-                ..
-            } => Ok(Model::Fixed {
-                text: text.clone(),
-                failures_remaining: failures_remaining.clone(),
-                delay: *delay,
-                marked_failure: *marker && marked_attempt_fails(earlier_attempts, input),
-                rounds: rounds.clone(),
-            }),
-        }
-    }
-}
-
-/// Takes one from `count` unless it is zero; true when it took one. An
-/// explicit compare-exchange loop: `fetch_update` is deprecated on newer
-/// stable (renamed `try_update`), which the dev shell's toolchain predates.
-fn take_one(count: &std::sync::atomic::AtomicU32) -> bool {
-    let mut left = count.load(Ordering::SeqCst);
-    while let Some(next) = left.checked_sub(1) {
-        match count.compare_exchange_weak(left, next, Ordering::SeqCst, Ordering::SeqCst) {
-            Ok(_) => return true,
-            Err(actual) => left = actual,
-        }
-    }
-    false
-}
-
-enum Model {
-    Api(harness::responses::Responses),
-    Fixed {
-        text: String,
-        failures_remaining: Arc<std::sync::atomic::AtomicU32>,
-        delay: Duration,
-        marked_failure: bool,
-        rounds: Arc<Vec<ToolRound>>,
-    },
-}
-
-/// The scripted turn for request `ordinal`: narration plus that round's
-/// calls. Every call of the earlier rounds must already have its result in
-/// this request, or the fixed provider fails the attempt.
-fn scripted_round(
-    rounds: &[ToolRound],
-    request: &ModelRequest<'_>,
-) -> Result<Option<Turn>, String> {
-    let ordinal = request.ordinal as usize;
-    let answered = |id: &str| {
-        request
-            .context
-            .items
-            .iter()
-            .any(|item| matches!(item, Item::Result { call_id, .. } if call_id == id))
-    };
-    for (round, calls) in rounds.iter().enumerate().take(ordinal - 1) {
-        for index in 0..calls.len() {
-            if !answered(&fixed_call_id(round + 1, index)) {
-                return Err("fixed tool result missing from the next request".into());
+    async fn provider(
+        &self,
+        quota: Arc<dyn harness::provider::QuotaGate>,
+    ) -> Result<ModelProvider, harness::engine::Cause> {
+        let provider = match &self.transport {
+            ModelTransport::Responses { endpoint, key } => {
+                ResponsesProvider::new(endpoint.clone(), key.clone(), quota.clone())?
             }
-        }
-    }
-    let Some(calls) = rounds.get(ordinal - 1) else {
-        return Ok(None);
-    };
-    let mut items = vec![Item::Message {
-        role: "assistant".into(),
-        text: format!("Fixed narration before tool round {ordinal}. "),
-    }];
-    items.extend(calls.iter().enumerate().map(|(index, (name, arguments))| {
-        Item::Call(harness::engine::Invocation {
-            id: fixed_call_id(ordinal, index),
-            name: name.clone(),
-            arguments: arguments.clone(),
+            ModelTransport::DeveloperPlan => {
+                let token = local_product::chatgpt::access_token().await?;
+                ResponsesProvider::chatgpt_plan(token, quota.clone())?
+            }
+        };
+        Ok(ModelProvider {
+            provider,
+            developer_plan: matches!(self.transport, ModelTransport::DeveloperPlan),
+            quota,
         })
-    }));
-    Ok(Some(Turn {
-        items,
-        receipt: json!({ "provider": "fixed", "round": ordinal }),
-    }))
-}
-
-fn fixed_call_id(round: usize, index: usize) -> String {
-    format!("fixed-{round}-{index}")
-}
-
-#[async_trait]
-impl Provider for Model {
-    fn request_bytes(&self, request: &ModelRequest<'_>) -> Result<usize, String> {
-        match self {
-            Self::Api(provider) => provider.request_bytes(request),
-            Self::Fixed { .. } => Ok(1),
-        }
     }
 
-    async fn complete(&mut self, request: ModelRequest<'_>) -> Result<Turn, String> {
-        if let Self::Fixed { delay, .. } = self
-            && !delay.is_zero()
-        {
-            tokio::time::sleep(*delay).await;
-        }
-        match self {
-            Self::Api(provider) => provider.complete(request).await,
-            Self::Fixed {
-                marked_failure: true,
-                ..
-            } => Err("fixed physician reply failed by marker".into()),
-            Self::Fixed {
-                failures_remaining, ..
-            } if take_one(failures_remaining) => Err("fixed physician reply failed".into()),
-            Self::Fixed { text, rounds, .. } => match scripted_round(rounds, &request)? {
-                Some(turn) => Ok(turn),
-                None => Ok(Turn {
-                    items: vec![Item::Message {
-                        role: "assistant".into(),
-                        text: text.clone(),
-                    }],
-                    receipt: json!({ "provider": "fixed" }),
-                }),
+    fn authority(&self, store: Store) -> WorkerAuthority {
+        WorkerAuthority {
+            inner: RuntimeAuthority,
+            store,
+            synthetic_only: match self.transport {
+                ModelTransport::DeveloperPlan => true,
+                ModelTransport::Responses { .. } => false,
             },
         }
+    }
+}
+
+/// The plan grant may refresh during a long durable run. Request execution and
+/// quota handling remain with the shared Responses provider.
+struct ModelProvider {
+    provider: ResponsesProvider,
+    developer_plan: bool,
+    quota: Arc<dyn harness::provider::QuotaGate>,
+}
+
+impl Provider for ModelProvider {
+    async fn ready(&mut self) -> Result<(), harness::engine::Cause> {
+        self.provider.ready().await
+    }
+
+    async fn exchange(
+        &mut self,
+        request: &harness::engine::recipe::Request,
+        cancel: &Cancellation,
+        limits: &RunLimits,
+        observer: &mut dyn harness::engine::recipe::Observer,
+    ) -> Result<harness::engine::Turn, harness::engine::Cause> {
+        tracing::Span::current().record("gen_ai.request.model", request.model.as_str());
+        if self.developer_plan {
+            let token = local_product::chatgpt::access_token().await?;
+            self.provider = ResponsesProvider::chatgpt_plan(token, self.quota.clone())?;
+        }
+        self.provider
+            .exchange(request, cancel, limits, observer)
+            .await
+    }
+}
+
+/// Developer-plan inference retains the synthetic-chart boundary of local
+/// practice. The same auth owner still fences chat and revision publication.
+struct WorkerAuthority {
+    inner: RuntimeAuthority,
+    store: Store,
+    synthetic_only: bool,
+}
+
+#[local_product::runtime::async_trait]
+impl local_product::runtime::Authority for WorkerAuthority {
+    async fn check(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        self.check_source_boundary(scope).await?;
+        self.inner.check(tx, scope, hash).await
+    }
+
+    async fn lock_publication(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        self.check_source_boundary(scope).await?;
+        self.inner.lock_publication(tx, scope, hash).await
+    }
+}
+
+impl WorkerAuthority {
+    async fn check_source_boundary(&self, scope: &Scope) -> Result<(), String> {
+        if !self.synthetic_only {
+            return Ok(());
+        }
+        let outside = self
+            .store
+            .has_sources_outside(
+                &scope.workspace,
+                physician_sample::synthetic_chart::SOURCE_ID,
+            )
+            .await
+            .map_err(|e| e.to_string())?;
+        if outside {
+            return Err("Developer ChatGPT plans can read only the synthetic practice".into());
+        }
+        Ok(())
     }
 }
 
@@ -988,7 +845,161 @@ mod tests {
     use super::*;
     use axum::http::StatusCode;
     use base64::Engine;
+    use harness::engine::recipe::Provider;
     use serde_json::json;
+    use std::time::Duration;
+
+    pub(super) struct WaitingGate;
+
+    #[tokio::test]
+    async fn successful_work_keeps_renewing_its_ownership() {
+        let renewals = std::sync::atomic::AtomicUsize::new(0);
+        let result = while_owned(
+            local_product::runtime::Lease::new(1).unwrap(),
+            &Cancellation::default(),
+            || async {
+                renewals.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                Ok::<_, std::io::Error>(())
+            },
+            async {
+                tokio::time::sleep(Duration::from_millis(1500)).await;
+                Ok(42)
+            },
+        )
+        .await
+        .unwrap();
+        assert_eq!(result, 42);
+        assert!(renewals.load(std::sync::atomic::Ordering::SeqCst) >= 5);
+    }
+
+    #[tokio::test]
+    async fn renewal_failure_preserves_work_errors_and_classifies_interruption() {
+        for other_error in [false, true] {
+            let cancel = Cancellation::default();
+            let result: Result<(), _> = while_owned(
+                local_product::runtime::Lease::new(1).unwrap(),
+                &cancel,
+                || async {
+                    Err(sea_orm::DbErr::Custom(
+                        "renewal database unavailable".into(),
+                    ))
+                },
+                async {
+                    while !cancel.is_cancelled() {
+                        tokio::time::sleep(Duration::from_millis(1)).await;
+                    }
+                    if other_error {
+                        Err(harness::engine::Failure::Host(
+                            "settlement failed during cancellation".into(),
+                        ))
+                    } else {
+                        Err(harness::engine::Failure::Cancelled)
+                    }
+                },
+            )
+            .await;
+            let error = result.unwrap_err();
+            assert_eq!(
+                matches!(error, harness::engine::Failure::Host(_)),
+                other_error,
+                "hosting must preserve the actual work error"
+            );
+            assert_eq!(
+                harness::engine::AttemptFailure::from_error(&error, &cancel),
+                harness::engine::AttemptFailure::Interrupted,
+                "renewal loss must not charge a failed attempt"
+            );
+        }
+    }
+
+    #[async_trait::async_trait]
+    impl harness::provider::QuotaGate for WaitingGate {
+        async fn remaining(&self) -> Result<Duration, harness::engine::Cause> {
+            Ok(Duration::from_secs(1))
+        }
+        async fn defer(&self, _: Duration) -> Result<(), harness::engine::Cause> {
+            Ok(())
+        }
+    }
+
+    #[tokio::test]
+    async fn generation_telemetry_uses_the_dispatched_recipe_model() {
+        use opentelemetry::trace::TracerProvider as _;
+        use opentelemetry_sdk::trace::{InMemorySpanExporter, SdkTracerProvider};
+        use tracing::instrument::WithSubscriber;
+        use tracing_subscriber::layer::SubscriberExt;
+        let exporter = InMemorySpanExporter::default();
+        let tracer = SdkTracerProvider::builder()
+            .with_simple_exporter(exporter.clone())
+            .build();
+        let subscriber = tracing_subscriber::registry()
+            .with(tracing_opentelemetry::layer().with_tracer(tracer.tracer("worker-test")));
+        async {
+            let span = genai::generation_span(
+                &RunContext {
+                    run_id: "accepted-work".into(),
+                    job: "physician_chat",
+                    recipe_version: "test".into(),
+                    origin: genai::Origin::Simulation,
+                    scenario_id: None,
+                    session_id: None,
+                },
+                "openai",
+                "responses",
+            );
+            let mut provider = ModelProvider {
+                provider: ResponsesProvider::new(
+                    "http://127.0.0.1:1/responses".into(),
+                    "synthetic".into(),
+                    Arc::new(WaitingGate),
+                )
+                .unwrap(),
+                developer_plan: false,
+                quota: Arc::new(WaitingGate),
+            };
+            let request = harness::engine::recipe::Request {
+                cache_key: None,
+                model: "accepted-model".into(),
+                context_window_tokens: 272_000,
+                max_input_tokens: 272_000,
+                options: json!({}),
+                instructions: "Owner".into(),
+                tools: vec![],
+                items: vec![],
+            };
+            let result = provider
+                .exchange(
+                    &request,
+                    &Cancellation::default(),
+                    &RunLimits::default(),
+                    &mut |_| Ok(()),
+                )
+                .instrument(span)
+                .await;
+            assert!(
+                result.is_err(),
+                "the unavailable transport still names its attempted model"
+            );
+        }
+        .with_subscriber(subscriber)
+        .await;
+        tracer.force_flush().unwrap();
+        let spans = exporter.get_finished_spans().unwrap();
+        let generation = spans
+            .iter()
+            .find(|span| span.name == "gen_ai.generation")
+            .unwrap();
+        let model = generation
+            .attributes
+            .iter()
+            .find(|field| field.key.as_str() == "gen_ai.request.model")
+            .expect("telemetry must record the dispatched recipe model");
+        assert_eq!(
+            model.value.to_string(),
+            "accepted-model",
+            "telemetry must name the dispatched recipe model"
+        );
+    }
 
     #[tokio::test]
     async fn signed_push_tokens_enforce_audience_issuer_email_and_expiry() {
@@ -1085,7 +1096,7 @@ mod tests {
 
     #[test]
     fn push_body_decodes_standard_base64_delivery_without_requiring_one_id_field() {
-        let delivery = r#"{"scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
+        let delivery = r#"{"kind":"chat_turn","scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
         let data = base64::engine::general_purpose::STANDARD.encode(delivery);
         let body = json!({
             "message": {"data": data, "messageId": "m1", "message_id": "m1"},
@@ -1117,7 +1128,7 @@ mod tests {
 
     #[test]
     fn push_body_carries_trace_attributes_and_the_delivery_attempt() {
-        let delivery = r#"{"scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
+        let delivery = r#"{"kind":"chat_turn","scope":{"practice":"p","physician":"d","workspace":"w","chat":"c"},"input_id":"k"}"#;
         let data = base64::engine::general_purpose::STANDARD.encode(delivery);
         let traceparent = "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01";
         let body = json!({
@@ -1157,194 +1168,27 @@ mod tests {
     }
 
     #[test]
-    fn startup_refuses_a_hosted_fixed_reply_and_an_unverified_local_worker() {
-        let hosted = |name: &str| match name {
-            "K_SERVICE" => Some("physician-worker".into()),
-            "PHYSICIAN_WORKER_FIXED_TEXT" => Some("Noted.".into()),
-            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
-            _ => None,
-        };
-        match block(Worker::from_env(hosted)) {
-            Err(error) => assert!(error.contains("PHYSICIAN_WORKER_FIXED_TEXT"), "{error}"),
-            Ok(_) => panic!("hosted fixed text must refuse to start"),
-        }
-        let local = |name: &str| (name == "PHYSICIAN_WORKER_FIXED_TEXT").then(|| "Noted.".into());
-        match block(Worker::from_env(local)) {
-            Err(error) => assert!(error.contains("PUBSUB_EMULATOR_HOST"), "{error}"),
-            Ok(_) => panic!("a worker without push verification must refuse to start"),
-        }
-        let hosted_failures = |name: &str| match name {
-            "K_SERVICE" => Some("physician-worker".into()),
-            "PHYSICIAN_WORKER_FIXED_FAILURES" => Some("2".into()),
-            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
-            _ => None,
-        };
-        match block(Worker::from_env(hosted_failures)) {
-            Err(error) => {
-                assert_eq!(
-                    error,
-                    "PHYSICIAN_WORKER_FIXED_FAILURES is refused in hosted execution"
-                );
+    fn hosted_worker_refuses_local_provider_and_local_worker_requires_verified_push() {
+        let get = |name: &str| (name == "PHYSICIAN_RESPONSES_STUB_PORT").then(|| "8080".into());
+        let hosted = |name: &str| {
+            if name == "K_SERVICE" {
+                Some("physician-worker".into())
+            } else {
+                get(name)
             }
-            Ok(_) => panic!("hosted fixed failures must refuse to start"),
-        }
-        let hosted_marker = |name: &str| match name {
-            "K_SERVICE" => Some("physician-worker".into()),
-            "PHYSICIAN_WORKER_FIXED_FAIL_MARKER" => Some("1".into()),
-            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
-            _ => None,
         };
-        match block(Worker::from_env(hosted_marker)) {
-            Err(error) => {
-                // Exactly the hosted refusal: the "requires fixed text" error
-                // also names the variable.
-                assert_eq!(
-                    error,
-                    "PHYSICIAN_WORKER_FIXED_FAIL_MARKER is refused in hosted execution"
-                );
-            }
-            Ok(_) => panic!("a hosted fail marker must refuse to start"),
-        }
-        let marker_without_text =
-            |name: &str| (name == "PHYSICIAN_WORKER_FIXED_FAIL_MARKER").then(|| "1".into());
-        match block(Worker::from_env(marker_without_text)) {
-            Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
-            Ok(_) => panic!("a fail marker without fixed text must refuse to start"),
-        }
-    }
-
-    #[test]
-    fn startup_requires_a_complete_skill_catalog() {
-        // Hosted startup names the variable rather than using the source tree.
-        let hosted = |name: &str| match name {
-            "K_SERVICE" => Some("physician-worker".into()),
-            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
-            _ => None,
-        };
-        match block(Worker::from_env(hosted)) {
-            Err(error) => assert_eq!(
-                error,
-                "hosted physician worker requires PHYSICIAN_SKILLS_DIR"
-            ),
-            Ok(_) => panic!("a hosted worker without its catalog must refuse to start"),
-        }
-        // A configured directory without a catalog stops startup before any
-        // connection; there is no empty fallback.
-        let missing = std::env::temp_dir().join(format!(
-            "physician-worker-missing-skills-{}",
-            std::process::id()
-        ));
-        let missing_text = missing.display().to_string();
-        let local_missing = |name: &str| match name {
-            "PHYSICIAN_WORKER_FIXED_TEXT" => Some("Noted.".into()),
-            "PHYSICIAN_SKILLS_DIR" => Some(missing_text.clone()),
-            _ => None,
-        };
-        match block(Worker::from_env(local_missing)) {
-            Err(error) => {
-                assert!(error.starts_with("physician skill catalog at"), "{error}");
-                assert!(error.contains(&missing_text), "{error}");
-            }
-            Ok(_) => panic!("a missing catalog must refuse to start"),
-        }
-        // The workspace catalog loads and reaches the push-verification check.
-        let local = |name: &str| (name == "PHYSICIAN_WORKER_FIXED_TEXT").then(|| "Noted.".into());
-        match block(Worker::from_env(local)) {
-            Err(error) => assert!(error.contains("PUBSUB_EMULATOR_HOST"), "{error}"),
-            Ok(_) => panic!("a worker without push verification must refuse to start"),
-        }
-    }
-
-    #[test]
-    fn scripted_tool_rounds_are_proof_only_and_parse_strictly() {
-        let hosted = |name: &str| match name {
-            "K_SERVICE" => Some("physician-worker".into()),
-            "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS" => Some("[]".into()),
-            "CODA_LOCAL_MODEL_EXECUTION" => Some("api".into()),
-            _ => None,
-        };
-        match block(Worker::from_env(hosted)) {
-            Err(error) => assert_eq!(
-                error,
-                "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS is refused in hosted execution"
-            ),
-            Ok(_) => panic!("hosted scripted rounds must refuse to start"),
-        }
-        let without_text =
-            |name: &str| (name == "PHYSICIAN_WORKER_FIXED_TOOL_ROUNDS").then(|| "[]".into());
-        match block(Worker::from_env(without_text)) {
-            Err(error) => assert!(error.contains("requires PHYSICIAN_WORKER_FIXED_TEXT")),
-            Ok(_) => panic!("scripted rounds without fixed text must refuse to start"),
-        }
-        let rounds = tool_rounds(
-            r#"[[{"name":"skill_view","arguments":{"name":"a","file_path":null,"max_result_bytes":4096}},
-                 {"name":"skill_view","arguments":"not json"}],
-                [{"name":"other","arguments":{}}]]"#,
-        )
-        .unwrap();
-        assert_eq!(rounds.len(), 2);
-        assert_eq!(rounds[0][1], ("skill_view".into(), "not json".into()));
-        assert_eq!(rounds[1][0], ("other".into(), "{}".into()));
-        for bad in [
-            "{}",
-            "[[]]",
-            r#"[[{"arguments":{}}]]"#,
-            r#"[[{"name":"x"}]]"#,
-        ] {
-            assert!(tool_rounds(bad).is_err(), "{bad}");
-        }
-    }
-
-    #[test]
-    fn fixed_failures_count_down_to_zero_and_stop() {
-        let count = std::sync::atomic::AtomicU32::new(2);
-        assert!(take_one(&count));
-        assert!(take_one(&count));
-        assert!(!take_one(&count));
-        assert!(!take_one(&count));
-        assert_eq!(count.load(Ordering::SeqCst), 0);
-    }
-
-    fn attempt(id: &str, revision: u64) -> local_product::runtime::Attempt {
-        local_product::runtime::Attempt {
-            id: id.into(),
-            predecessor: None,
-            work: "work".into(),
-            revision,
-            status: "failed".into(),
-            expires: 0,
-            events: vec![],
-        }
-    }
-
-    #[test]
-    fn earlier_attempts_count_only_this_input_and_never_this_claim() {
-        let scope = Scope {
-            practice: "p".into(),
-            physician: "d".into(),
-            workspace: "w".into(),
-            chat: "c".into(),
-        };
-        let mut conversation = Conversation {
-            revision: 2,
-            ..Conversation::default()
-        };
-        // One attempt on the previous message, two failed ones on this one,
-        // then this claim's own attempt.
-        conversation.attempts = vec![
-            attempt("old", 1),
-            attempt("a1", 2),
-            attempt("a2", 2),
-            attempt("now", 2),
-        ];
-        let claim = Claim {
-            scope,
-            attempt: "now".into(),
-            revision: 2,
-        };
-        assert_eq!(earlier_attempts(&conversation, &claim), 2);
-        conversation.attempts.truncate(1);
-        assert_eq!(earlier_attempts(&conversation, &claim), 0);
+        assert!(
+            block(Worker::from_env(hosted))
+                .err()
+                .unwrap()
+                .contains("public Responses endpoint")
+        );
+        assert!(
+            block(Worker::from_env(get))
+                .err()
+                .unwrap()
+                .contains("PUBSUB_EMULATOR_HOST")
+        );
     }
 
     #[test]
@@ -1389,5 +1233,130 @@ mod tests {
             .build()
             .unwrap();
         runtime.block_on(future)
+    }
+
+    /// A developer's own ChatGPT plan never reaches patient data: the worker
+    /// refuses any workspace that holds a source outside the synthetic practice.
+    #[tokio::test]
+    #[ignore = "requires explicit local Postgres"]
+    async fn developer_plan_refuses_a_workspace_with_sources_outside_the_synthetic_practice() {
+        use local_product::runtime::Authority;
+        use sea_orm::TransactionTrait;
+        let url = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL").unwrap();
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let binding = local_product::ModelBinding {
+            model: "configured-model".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 272_000,
+            effort: "low".into(),
+            adapter: "fixed".into(),
+        };
+        let model = |transport| ModelSource {
+            transport,
+            roles: local_product::ModelRoles {
+                chat: binding.clone(),
+                background: binding.clone(),
+            },
+        };
+        let scope = |workspace: &str| Scope {
+            practice: "practice".into(),
+            physician: "physician".into(),
+            workspace: workspace.into(),
+            chat: "chat".into(),
+        };
+        let record = |workspace: &str, source_id: &str| {
+            let content = format!("{source_id} record");
+            local_product::physician_sources::SourceRevision {
+                workspace: workspace.into(),
+                source_id: source_id.into(),
+                candidate_id: format!("Observation/{source_id}"),
+                revision: "r1".into(),
+                record_type: "Observation".into(),
+                dates: vec![],
+                sha256: local_product::sha256_hex(content.as_bytes()),
+                content,
+                readable_parts: vec![],
+                provenance: json!({"native_record": "Observation"}),
+            }
+        };
+        let synthetic = physician_sample::synthetic_chart::SOURCE_ID;
+        let mixed = uuid::Uuid::new_v4().to_string();
+        store
+            .record_source(&record(&mixed, synthetic))
+            .await
+            .unwrap();
+        store.record_source(&record(&mixed, "ehr")).await.unwrap();
+        let practice = uuid::Uuid::new_v4().to_string();
+        store
+            .record_source(&record(&practice, synthetic))
+            .await
+            .unwrap();
+        let refusal =
+            Err("Developer ChatGPT plans can read only the synthetic practice".to_owned());
+
+        // A developer plan refuses the mixed workspace before the auth owner runs,
+        // for the check and for publication.
+        let mut plan = model(ModelTransport::DeveloperPlan).authority(store.clone());
+        let db = sea_orm::Database::connect(url.as_str()).await.unwrap();
+        let tx = db.begin().await.unwrap();
+        assert_eq!(
+            plan.check(&tx, &scope(&mixed), Some(&[0; 32])).await,
+            refusal
+        );
+        assert_eq!(
+            plan.lock_publication(&tx, &scope(&mixed), Some(&[0; 32]))
+                .await,
+            refusal
+        );
+        tx.rollback().await.unwrap();
+
+        // A Responses key may read the same workspace.
+        let responses = model(ModelTransport::Responses {
+            endpoint: "http://127.0.0.1:1/responses".into(),
+            key: "synthetic-key".into(),
+        })
+        .authority(store.clone());
+        responses
+            .check_source_boundary(&scope(&mixed))
+            .await
+            .unwrap();
+
+        // A developer plan may read a workspace that holds only the synthetic practice.
+        plan.check_source_boundary(&scope(&practice)).await.unwrap();
+
+        // A record from outside the synthetic practice that was later withdrawn
+        // still counts: answers written from it stay in the workspace's history.
+        let withdrawn = uuid::Uuid::new_v4().to_string();
+        store
+            .record_source(&record(&withdrawn, synthetic))
+            .await
+            .unwrap();
+        store
+            .record_source(&record(&withdrawn, "ehr"))
+            .await
+            .unwrap();
+        let empty_pull = local_product::runtime::sources::SourcePull {
+            source_id: "ehr".into(),
+            source_label: "EHR".into(),
+            patient: local_product::physician_sources::SourcePatient {
+                source_patient_id: "patient-1".into(),
+                display_name: "Synthetic Patient".into(),
+                birth_date: None,
+                sex_or_gender: None,
+                medical_record_numbers: vec![],
+            },
+            pulled_at: 1,
+        };
+        store
+            .record_chart(&withdrawn, &[], &empty_pull)
+            .await
+            .unwrap();
+        let current = store.sources(&withdrawn).await.unwrap().sources;
+        assert!(current.iter().all(|source| source.source_id == synthetic));
+        assert_eq!(
+            plan.check_source_boundary(&scope(&withdrawn)).await,
+            refusal
+        );
     }
 }

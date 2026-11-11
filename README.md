@@ -6,7 +6,7 @@ This is the monorepo for Coda's Rust workspace. It holds the shared Duet client,
 
 - `crates/` is one Cargo workspace. The [crate map](book/src/crate-map.md) lists every crate, what it owns, and which crates both products share.
 - `platform/` holds the iPhone and Android bindings for the shared Duet client.
-- `skills/` is the clinical skill catalog, read by `agent-skills` for `harness`; hosted physician chat in `physician-worker` loads it at startup.
+- [`skills/`](skills) holds the physician skill package. The site saves it with each accepted chat so workers can open the same guidance after a restart. [Physician chat skills](book/src/physician-site.md#skills-in-physician-chat) describes the runtime path.
 - `verification/` holds each feature's spec, TLA+ model and charts. Start with [verification](verification/README.md). `.agents/skills/` holds the engineering workflows used to maintain them; it is separate from the clinical catalog.
 - `crates/workspace-tools/` owns workspace commands, and `scripts/` holds supporting checks and generator assets. [API generation](book/src/backend-architecture.md#api-and-clients) covers the Duet wire generator.
 - `book/` documents Rust owners, setup, operational procedures and proof boundaries. Build with `mdbook build book`, serve this repository with `python3 -m http.server` from `nix develop`, and open `/target/book/reading.html`. `mdbook serve` cannot see `/crates` or `/submodules`. `scripts/check-book-links.sh` builds the book and checks every link against this checkout, offline; CI runs it without submodules, so links into them are checked only in a checkout that has them.
@@ -59,38 +59,23 @@ PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-pr
 
 `cargo run -p physician-sample` alone has no database, so its practice has no patients.
 
-### Physician chat (Codex CLI)
+### Local physician chat
 
-Local physician chat uses the Codex CLI subscription. Live, record, and replay do not read `OPENAI_API_KEY`.
-
-The dev shell provides the CLI. Sign in once:
+For a synthetic Chords chat on your own ChatGPT plan, authorize this local installation in the dev shell:
 
 ```sh
-codex login
+cargo run -p local-product --bin chords-login
 ```
 
-Then start the local practice with `PHYSICIAN_DATABASE_URL` set. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`.
+Open the printed **Continue with ChatGPT** link in a browser on the same machine. If the shell is in a dev container, forward the loopback port in the printed redirect URI to the same port on your machine. Run the sign-in command and the local server with the same config directory. After the terminal confirms authorization, select subscription mode explicitly:
 
 ```sh
-scripts/local-practice.sh
+CODA_LOCAL_MODEL_EXECUTION=subscription scripts/local-practice.sh
 ```
 
-Record a cassette outside the repository, then replay it. Replay makes no model call.
+Chords sends its physician instructions and approved skill catalog to the Responses API, runs requested `skill_view` reads locally, and returns their results to the model. Every enabled model role requires explicit model, effort, working-window and input-limit settings; see [model settings](book/src/physician-site.md#model-settings). The model must be available to your account. The command saves the developer grant in `$XDG_CONFIG_HOME/coda/chords-chatgpt` (by default `~/.config/coda/chords-chatgpt`). Chords renews it locally. Disconnect Chords in ChatGPT Settings to revoke access. Use synthetic questions on this path. The local stack starts Postgres, Valkey, Pub/Sub, the site and the worker, and keeps the practice database under `target/local-practice` (override with `CODA_LOCAL_PRACTICE_DIR`). It selects the role settings in `scripts/physician-scale-stack.py`.
 
-```sh
-CODA_LOCAL_MODEL_EXECUTION=record \
-CODA_CASSETTE_AUTHORIZATION='who approved this synthetic run' \
-CODA_CASSETTE_OUTPUT=/absolute/path/cassette.json \
-scripts/local-practice.sh
-
-CODA_LOCAL_MODEL_EXECUTION=replay \
-CODA_CASSETTE_PATH=/absolute/path/cassette.json \
-scripts/local-practice.sh
-```
-
-`CODA_LOCAL_MODEL_EXECUTION=api` still calls OpenAI Responses and requires `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
-
-A live chat after `codex login` is a check for the person who holds the subscription. Hold one physician chat on the local practice and confirm the reply lands in the thread. Cassette replay is the check that does not need that login.
+`local-practice.sh` defaults to subscription mode. The qualification stack can use its scripted provider with `scripts/physician-scale-stack.py --model-execution stub`. API-key execution requires `CODA_LOCAL_MODEL_EXECUTION=api`, `CODA_ALLOW_MODEL_CALLS=1` and `OPENAI_API_KEY`.
 
 ### Unattended development
 
@@ -125,6 +110,26 @@ mixed changes keep the full suite; missing Git comparison data also selects it.
 PRs use their complete diff from the merge base, and main pushes use the full
 before/after range. Manual dispatch retains full browser qualification. New PR
 revisions cancel superseded CI runs, without cancelling main deployment runs.
+
+The runtime crash-restart check uses a disposable PostgreSQL cluster in CI shard 1. Run it locally
+as an unprivileged user inside the agent dev shell, with port 55489 free:
+
+```sh
+coda_restart_test=$(cargo test --locked -p local-product --test runtime_postgres \
+  --no-run --message-format=json-render-diagnostics | python3 -c '
+import json, sys
+artifacts = [json.loads(line) for line in sys.stdin]
+[binary] = [a["executable"] for a in artifacts
+            if a.get("executable") and a["target"]["name"] == "runtime_postgres"]
+print(binary)') &&
+python3 scripts/check-crash-restart.py "$coda_restart_test"
+```
+
+The wrapper initializes a temporary cluster, runs the ignored
+`database_crash_restart_retains_acknowledged_command_and_event` test, and stops
+and removes that cluster. It does not use the development database. A container
+running as root must invoke the wrapper as an unprivileged user with the dev
+shell's tools on `PATH` and read access to the compiled executable.
 
 ### Dev container
 
@@ -218,8 +223,7 @@ The UI gallery builds and serves with one command, here on the published port:
 dev/apple-session.sh exec scripts/ui-gallery.sh
 ```
 
-Live chat on the physician page needs `codex login` in the session, or a
-[replay cassette](#physician-chat-codex-cli). The dev shell provides the Codex CLI.
+For live or offline physician chat, follow [local physician chat](#local-physician-chat).
 
 The session's Postgres lasts as long as the session. The database-backed tests
 need a cluster of their own, so run these in `dev/apple-session.sh exec bash`. Point the tests at it as

@@ -1,7 +1,8 @@
-//! Physician-owned mappings of the recorded runtime schema; not migrations.
+//! Typed access to physician runtime tables. The fixed starting schema lives in
+//! runtime.sql; later schema changes are migrations in the runtime chain.
 
 /// One physician's unsent composer text for one chat. The table is created
-/// from this entity by the store's migration, not by `runtime.sql`.
+/// by the fixed runtime baseline.
 pub(super) mod chat_draft {
     use sea_orm::entity::prelude::*;
 
@@ -34,6 +35,7 @@ pub(super) mod chat_draft {
 }
 
 pub(super) mod conversation {
+    use super::super::WorkStatus;
     use sea_orm::entity::prelude::*;
 
     #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
@@ -47,6 +49,9 @@ pub(super) mod conversation {
         pub workspace: String,
         #[sea_orm(primary_key, auto_increment = false)]
         pub chat: String,
+        pub status: WorkStatus,
+        pub revision: i64,
+        pub session_hash: Option<Vec<u8>>,
         pub state: Json,
     }
 
@@ -70,8 +75,7 @@ pub(super) mod command {
         pub key: String,
         /// The full command for 90 days, then only `{"salt", "sha256"}`.
         pub command: Json,
-        /// Database-clock seconds the command was accepted. Added by the
-        /// store's migration; rows older than that column carry its run time.
+        /// Database-clock seconds the command was accepted.
         pub accepted_at: i64,
     }
 
@@ -82,8 +86,9 @@ pub(super) mod command {
 }
 
 /// One physician's saved reply draft and its latest revision work. The table
-/// is created from this entity by the store's migration, not by `runtime.sql`.
+/// is created by the fixed runtime baseline.
 pub(super) mod reply_draft {
+    use super::super::reply::DraftStatus;
     use sea_orm::entity::prelude::*;
 
     #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
@@ -98,6 +103,9 @@ pub(super) mod reply_draft {
         /// The reply work this draft answers.
         #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
         pub reply: String,
+        pub status: DraftStatus,
+        pub revision: i64,
+        pub session_hash: Option<Vec<u8>>,
         #[sea_orm(column_type = "JsonBinary")]
         pub state: Json,
     }
@@ -157,7 +165,7 @@ pub(super) mod source {
 }
 
 /// One source's last delivery for one patient. A later pull replaces the row.
-/// The table is created from this entity by the store's migration.
+/// The table is created by the fixed runtime baseline.
 pub(super) mod source_pull {
     use sea_orm::entity::prelude::*;
 
@@ -185,10 +193,8 @@ pub(super) mod source_pull {
     impl ActiveModelBehavior for ActiveModel {}
 }
 
-/// Append-only history: one row per earlier revision of a reply draft, with
-/// its retained execution evidence. Written when the next revision is
-/// accepted, so the draft row holds only current work. Afterwards only late
-/// execution records from that revision's own attempts are appended.
+/// Immutable revision metadata, written when the next revision is accepted.
+/// Attempts and execution evidence retain their own rows across archival.
 pub(super) mod reply_revision {
     use sea_orm::entity::prelude::*;
 
@@ -241,5 +247,159 @@ pub(super) mod reply_revision {
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
     pub enum Relation {}
 
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Mutable chat attempt control, without any execution history.
+pub(super) mod chat_attempt {
+    use super::super::AttemptStatus;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_chat_attempts")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub chat: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub id: String,
+        pub position: i64,
+        pub predecessor: Option<String>,
+        pub work: String,
+        pub revision: i64,
+        pub status: AttemptStatus,
+        pub expires: i64,
+    }
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Revision attempt control and its source pins. Events are separate rows.
+pub(super) mod revision_attempt {
+    use super::super::AttemptStatus;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_revision_attempts")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub reply: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub id: String,
+        pub input_id: String,
+        pub position: i64,
+        pub status: AttemptStatus,
+        pub expires: i64,
+        pub sources_version: i64,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub sources: Json,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub refreshes: Json,
+    }
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One acknowledged fact. No update path exists for these rows.
+pub(super) mod execution_event {
+    use super::super::records::Owner;
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_events")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub workspace: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub target: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub owner: Owner,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub attempt: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub sequence: i64,
+        pub ordinal: i64,
+        pub admissible: bool,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub record: Json,
+    }
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// One product-wide provider cooldown, shared by hosted worker replicas.
+pub(super) mod provider_quota {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_provider_quota")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub singleton: bool,
+        /// Database-clock Unix milliseconds before the provider may be called.
+        pub not_before_ms: i64,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Immutable content retained once within the physician's authorization scope.
+pub(super) mod frozen_recipe {
+    use sea_orm::entity::prelude::*;
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_recipes")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub id: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub body: Json,
+    }
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Immutable content retained once within the physician's authorization scope.
+pub(super) mod skill_package {
+    use sea_orm::entity::prelude::*;
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_skill_packages")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false)]
+        pub id: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub body: Json,
+    }
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
     impl ActiveModelBehavior for ActiveModel {}
 }

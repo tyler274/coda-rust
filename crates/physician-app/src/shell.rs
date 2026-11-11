@@ -1180,7 +1180,8 @@ pub fn reply_revision_words(reply: &WorkspaceReply) -> Option<&'static str> {
         "active" => REPLY_REVISION_ACTIVE,
         "completed" => REPLY_REVISION_COMPLETED,
         "failed" => REPLY_REVISION_FAILED,
-        "superseded" => REPLY_REVISION_SUPERSEDED,
+        "cancelled" => REPLY_REVISION_SUPERSEDED,
+        "held" => "Revision paused. Your saved draft is unchanged.",
         _ => return None,
     })
 }
@@ -1796,6 +1797,7 @@ mod tests {
         );
         let run = |status: &str| WorkspaceReply {
             revision_run: Some(physician_wire::ReplyRevisionRun {
+                resume_target: None,
                 run_id: "k".into(),
                 status: status.into(),
             }),
@@ -1808,7 +1810,7 @@ mod tests {
                 "{status}"
             );
         }
-        for status in ["completed", "failed", "superseded"] {
+        for status in ["completed", "failed", "cancelled", "held"] {
             assert_eq!(
                 reply_review_actions(&run(status)),
                 vec![ReplyReviewAction::Copy, ReplyReviewAction::Revise],
@@ -1832,7 +1834,7 @@ mod tests {
             Some(REPLY_REVISION_FAILED)
         );
         assert_eq!(
-            reply_revision_words(&run("superseded")),
+            reply_revision_words(&run("cancelled")),
             Some(REPLY_REVISION_SUPERSEDED)
         );
         assert_eq!(reply_revision_words(&run("unknown")), None);

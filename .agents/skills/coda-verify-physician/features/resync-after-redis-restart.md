@@ -27,7 +27,7 @@ Preconditions:
 - `OUT="$RUN/resync-after-redis-restart"`.
 
 - **Hold streams on both sites.** Run `$D --out "$OUT" watch --site b --session "$S" --until resync --timeout 60 &` and `$D --out "$OUT" watch --site a --session "$S" --until resync --timeout 60 &`.
-- **Page held on B.** Set `C=chat-$(uuidgen | tr -d -)` and send one turn on it (`$D send --site a ... --chat "$C"`, then `snapshot --site b --wait-text Noted.`). In the browser, open `$($D page-url --site b --chat "$C")`, sign in, wait for `Noted.`, and save `$OUT/before.png`.
+- **Page held on B.** Set `C=chat-$(python3 -c 'import uuid; print(uuid.uuid4().hex)')` and send one turn on it (`$D send --site a ... --chat "$C"`, then `snapshot --site b --wait-text Noted.`). In the browser, open `$($D page-url --site b --chat "$C")`, sign in, wait for `Noted.`, and save `$OUT/before.png`.
 - **Restart Valkey.** Run `$D restart-valkey`, which sends SIGUSR1 to the stack. The stack prints `Valkey restarted on <port> (1)`, and `jq .valkey_restarts "$RUN/stack.json"` prints `1`.
 - **Resync on both.** `wait`. Both watchers exit `0`; `watch-a-resync.json` and `watch-b-resync.json` have `seen: true`, and `frames` contains `event: resync\ndata: {}`. Measured locally: about 2 s from the signal.
 - **Subscribers back.** Run `$D subscribers` until it prints `3`.

@@ -23,12 +23,12 @@ function tlc() {
   if (!tool || !java) throw new Error("the statechart skill's run.ts no longer names TLC_TOOL and JAVA_TOOL");
   const mise = (...args) => spawnSync("mise", args, { encoding: "utf8" });
   let where = mise("where", tool), which = mise("which", "java", "--tool", java);
-  if (where.status || which.status) {
+  if (where.status !== 0 || which.status !== 0) {
     mise("install", java, tool);
     where = mise("where", tool);
     which = mise("which", "java", "--tool", java);
   }
-  if (where.status || which.status) throw new Error("Cannot find TLC: run the statechart skill once, or set TLA2TOOLS and JAVA");
+  if (where.status !== 0 || which.status !== 0) throw new Error("Cannot find TLC: run the statechart skill once, or set TLA2TOOLS and JAVA");
   return { jar: path.join(where.stdout.trim(), "tla2tools.jar"), java: JAVA || which.stdout.trim() };
 }
 

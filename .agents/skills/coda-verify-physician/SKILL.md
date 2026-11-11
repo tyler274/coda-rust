@@ -45,20 +45,19 @@ Run the matching [feature](features/README.md) when a change touches:
 2. Start the stack in its own terminal and leave it running:
 
    ```bash
-   scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-fail-marker
+   scripts/physician-scale-stack.py --bin-dir target/stream-e/debug
    ```
 
-   One stack serves every feature. `--worker-fail-marker` makes a message containing
-   `[fail:K]` fail its first K attempts, counted from the attempts saved on that message (Retry `[fail:1]`, Try
-   again `[fail:5]`). Unmarked messages answer at once. `--worker-failures N` (the first N
-   provider calls of the process fail, whatever the message) is still available.
+   The stack starts a loopback Responses stub. For a retry journey, set the number
+   of upcoming provider responses that break the stream contract, each failing its attempt, in the file identified by `.worker.failures_file`
+   in `stack.json` before sending the message. Run those journeys one at a time.
 
    Readiness is these lines, in order:
 
    ```text
    Site A: http://127.0.0.1:<a> (port <a>)
    Site B: http://127.0.0.1:<b> (port <b>)
-   Worker: http://127.0.0.1:<w> (port <w>); fixed failures <n>; fail marker <on|off>
+   Worker: http://127.0.0.1:<w> (port <w>); stub
    Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>
    Dependencies ready; emulator 127.0.0.1:<p>, Redis <r>, Postgres <g>. Logs: /tmp/...
    Evidence: <repo>/target/verification/runs/physician-scale-stack-<time>-<pid> ... Restart Valkey: kill -USR1 <pid>. Stop: kill -TERM <pid>
@@ -88,7 +87,7 @@ curl -fsS -o /dev/null -w "%{http_code} page\n" "$(jq -r .sites.a "$RUN/stack.js
 D=.agents/skills/coda-verify-physician/scripts/physician-drive.py
 $D subscribers                       # 3: site A, site B and the worker on physician:workspace-events:v1
 S=$($D sign-in --site a) && echo "${#S}"   # a bearer session; proof sign-in works
-jq '.worker | {fixed_failures, fail_marker}' "$RUN/stack.json"   # 0 and true
+jq '.worker | {fixed_failures, failures_file}' "$RUN/stack.json"   # initial count and stub control file
 ```
 
 `physician-drive.py` reads the newest `physician-scale-stack-*/stack.json` (or `--stack`)
@@ -117,7 +116,7 @@ Shared driving conventions:
 - Sign in once per stack: `S=$($D sign-in --site a)`. The session works on both sites
   because both share the stack's Postgres. The browser signs in separately (see
   [Visual readback](#visual-readback)). It is the same physician, so it reads the same chats.
-- New chat per drive: `C=chat-$(uuidgen | tr -d -)`.
+- New chat per drive: `C=chat-$(python3 -c 'import uuid; print(uuid.uuid4().hex)')`.
 - Every evidence-producing call takes `--out "$RUN/<feature>"`.
 
 ## Evidence
@@ -127,7 +126,7 @@ and survives cleanup:
 
 | Artifact | Written by | Holds |
 | --- | --- | --- |
-| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `fail_marker`, `valkey_restarts`, `ready_at`, `stopped_at` |
+| `stack.json` | the stack, at start and on each Valkey restart and exit | pids, ports, URLs, `fixed_failures`, `failures_file`, `valkey_restarts`, `ready_at`, `stopped_at` |
 | `logs/{postgres,valkey,pubsub,worker,site-a,site-b}.log` | the stack, copied on exit | full process output |
 | `<feature>/send-<site>.json`, `snapshot-<site>.json`, `resume-<site>.json`, `watch-<site>-<event>.json`, `dead-letters.json` | `physician-drive.py --out` | the request key, HTTP status and full response body |
 | `load-numbers.json` | `--load-numbers` | see below |
@@ -142,7 +141,7 @@ transaction. Fields:
   stay at the same small background level.
 - `one_turn` holds the turn's transactions, including the reader's snapshot polls, plus
   `submit_to_reply_seconds` for a reply submitted on A and seen on B. It is skipped under
-  `--worker-failures`, but not under `--worker-fail-marker`: its text carries no marker.
+  a nonzero `--worker-failures` setting.
 - `stream_close_after_sign_out` records how long a stream held on site B takes to close
   after its session signs out on site A, and confirms other sessions' streams stay open.
 
@@ -158,7 +157,7 @@ Use a browser driver against `Site A` or `Site B` with a desktop viewport:
   Proof delivery redeems the token automatically, and the page opens Abigail Lemieux on `$C`.
   It does not go to Today, because the first shell after sign-in keeps `?patient=` and `?chat=`.
 - Wait for `Records as of` and the `Conversation` region's `Write a message` composer.
-  Write with `textarea.composer`, then choose the `Send` button in `.composer-actions`.
+  Write with `textarea.composer-input`, then choose the `Send` button in `.composer-toolbar`.
 - Capture a screenshot plus the accessibility snapshot of the `Conversation` region.
   Look at the image: a DOM string can be present while the panel is clipped or off-screen.
   Report visual failures beside the functional HTTP pass, not instead of it.
@@ -179,7 +178,7 @@ Do not kill processes that belong to another run.
 ## Helpers
 
 - [`scripts/physician-scale-stack.py`](../../../scripts/physician-scale-stack.py):
-  `--worker-fail-marker`, `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
+  `--worker-failures N`, `--load-numbers`, `--idle-seconds`, `--evidence DIR`,
   `--site-dir DIR`, `--check`, `--dependencies-only`, `-- <child command>`.
   `kill -USR1 <pid>` restarts Valkey on the same port.
   The Gmail push-wake suite reuses the stack's emulator through `PUBSUB_EMULATOR_HOST`:

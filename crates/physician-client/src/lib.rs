@@ -542,6 +542,7 @@ mod tests {
                     Json(serde_json::json!({
                         "workspace": {},
                         "snapshot": {
+                            "runs": [],
                             "conversation": [{ "text": "Hello", "authored_text": "" }]
                         }
                     }))

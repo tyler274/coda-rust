@@ -10,9 +10,10 @@
 #  3. Start a disposable PostgreSQL (initdb in mktemp, loopback only), run
 #     both migration images twice, import the packaged physician bank twice,
 #     and start the servers with PORT set:
-#     /health and /readyz must answer 200. physician-worker starts hosted
-#     on the image's own PHYSICIAN_AUTH and packaged skill catalog, and
-#     refuses to start when its catalog directory is missing.
+#     /health and /readyz must answer 200. The physician site starts hosted
+#     with its chat topic; physician-worker starts hosted on the image's own
+#     PHYSICIAN_AUTH. The physician site refuses to start when its packaged
+#     skill directory is missing.
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
@@ -223,44 +224,47 @@ expect_status() {
 }
 
 servers=()
+# Chords refuses to start without explicit model settings. These are the
+# local stack's values (scripts/physician-scale-stack.py).
+# No chat is submitted, so no model is called and the placeholder key is never
+# sent anywhere.
+chords_models=()
+for job in CHAT:gpt-6.1-sol:high BACKGROUND:gpt-6-luna:max; do
+  IFS=: read -r role model effort <<<"$job"
+  chords_models+=(-e "CODA_${role}_MODEL=$model" -e "CODA_${role}_EFFORT=$effort"
+    -e "CODA_${role}_CONTEXT_WINDOW_TOKENS=272000" -e "CODA_${role}_INPUT_LIMIT_TOKENS=922000")
+done
+# Chords as staging runs it: hosted, on the staging-preview profile. The site
+# accepts chat onto its Pub/Sub topic and does not run the model; it builds the
+# publisher at startup but contacts Pub/Sub only when a chat is accepted.
+chords=(-e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db"
+  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview
+  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder "${chords_models[@]}")
+chat_topic=(-e PHYSICIAN_CHAT_TOPIC=projects/image-smoke/topics/physician-chat-turns)
 physician_port=$(free_port)
-# API mode needs an explicit allowance and a key value to construct the
-# router; this placeholder is never sent anywhere because no chat is submitted.
-serve coda-physician-sample "$physician_port" \
-  -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" -e PHYSICIAN_AUTH=required \
-  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
-  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder
+serve coda-physician-sample "$physician_port" "${chords[@]}" "${chat_topic[@]}" \
+  -e PHYSICIAN_AUTH=required
 expect_status "http://127.0.0.1:$physician_port/health" 200
 expect_status "http://127.0.0.1:$physician_port/readyz" 200
 expect_status "http://127.0.0.1:$physician_port/" 200
 expect_status "http://127.0.0.1:$physician_port/physician-app_bg.wasm" 200
 
-# The worker as staging runs it: hosted, with no PHYSICIAN_AUTH passed in, so
-# the image's own setting must satisfy hosted startup. The placeholder key is
-# never used because no push is sent; the audience and push account only
-# configure token verification.
+# The worker with no PHYSICIAN_AUTH passed in, so the image's own setting must
+# satisfy hosted startup. The audience and push account only configure token
+# verification; no push is sent.
 worker_port=$(free_port)
-serve coda-physician-worker "$worker_port" \
-  -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_runtime_db" \
-  -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
-  -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
+serve coda-physician-worker "$worker_port" "${chords[@]}" \
   -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
   -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com
 expect_status "http://127.0.0.1:$worker_port/health" 200
 expect_status "http://127.0.0.1:$worker_port/readyz" 200
-# Listening at all proves hosted startup loaded the image's packaged catalog:
-# the worker loads PHYSICIAN_SKILLS_DIR before binding, outside any source
-# checkout. Pointed at a directory with no catalog, it must refuse to start.
-expect_failure "${tag_of[coda-physician-worker]} without its skill catalog" "physician skill catalog at /tmp/no-skills is unavailable" \
+# Accepted chat pins the image's catalog before any work reaches a worker.
+expect_failure "${tag_of[coda-physician-sample]} without its skill catalog" "physician skill catalog at /tmp/no-skills is unavailable" \
   run "${locked[@]}" --network host \
-    --entrypoint "$(binary_of "${tag_of[coda-physician-worker]}")" \
-    -e CODA_HOSTED=1 -e PHYSICIAN_DATABASE_URL="$physician_db" \
-    -e CODA_ENVIRONMENT=stg -e CODA_HOSTED_PROFILE=staging-preview \
-    -e CODA_ALLOW_MODEL_CALLS=1 -e OPENAI_API_KEY=image-smoke-placeholder \
-    -e PHYSICIAN_WORKER_AUDIENCE=https://physician-worker.image-smoke.invalid \
-    -e PHYSICIAN_PUSH_SERVICE_ACCOUNT=physician-pubsub-push@image-smoke.iam.gserviceaccount.com \
+    --entrypoint "$(binary_of "${tag_of[coda-physician-sample]}")" \
+    "${chords[@]}" "${chat_topic[@]}" \
     -e PHYSICIAN_SKILLS_DIR=/tmp/no-skills -e PORT="$(free_port)" \
-    "${tag_of[coda-physician-worker]}"
+    "${tag_of[coda-physician-sample]}"
 
 duet_port=$(free_port)
 publication_key=$(python3 -c 'import base64; print(base64.urlsafe_b64encode(b"0123456789abcdef0123456789abcdef").decode().rstrip("="))')

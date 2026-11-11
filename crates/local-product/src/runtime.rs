@@ -1,47 +1,57 @@
 //! Physician operational truth. Every mutation locks its conversation in Postgres.
 //! Construction never migrates or starts work. Expired attempts terminate as
 //! interrupted; a claim creates a successor rather than replaying an attempt.
-//! Hosted chat's only tool is the read-only `skill_view`
-//! ([`crate::physician_chat`]); mutation tools remain unavailable until their
-//! product effect owners are ported. A commit publishes only the attempt's
+//! Hosted chat opens packaged skills and reads the authorized workspace chart
+//! on demand ([`crate::physician_chat`]). A commit publishes only the attempt's
 //! final model response, never narration from earlier tool rounds. Reply
 //! drafts and their revisions live in [`reply`]. No process-memory
 //! persistence fallback.
 
 /// Async callback implementation helper for product adapters.
 pub use async_trait::async_trait;
-use engine::{Admission, Candidate, Context, Event, Host, Invocation, Item, Usage};
+use engine::recipe::{Finish, Provider, RequestBinding, RequestRecipe};
+use engine::{Event, Invocation, Item, Product, ToolOutcome, Turn};
 
 use crate::physician_chat::PhysicianSkills;
 /// Neutral execution types, reexported for the physician composition.
 pub use harness::engine;
-/// Existing API adapter; no second physician provider transport.
-pub use harness::responses::Responses;
+/// Shared API adapter; the job supplies its frozen model binding.
+pub use harness::provider::ResponsesProvider;
+use sea_orm::sea_query::StringLen;
 use sea_orm::{
     ActiveModelTrait, ColumnTrait, Condition, ConnectionTrait, Database, DatabaseConnection, DbErr,
     EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait,
     sea_query::{Alias, Expr, ExprTrait, OnConflict, Query, extension::postgres::PgExpr},
 };
+use sea_orm_migration::MigratorTrait;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+mod control;
+pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
 pub mod delivery;
 mod entities;
+mod frozen;
+pub use frozen::{BindingRef, SkillPackageId};
+mod migration;
+mod quota;
 /// Command receipts and their 90-day reduction to a salted digest.
 pub mod receipt;
-/// Explicit bounded restart activation, separate from construction.
-pub mod recovery;
+mod records;
 /// Hosted physician reply drafts and their revision work.
 pub mod reply;
 /// Versioned patient source observations: a stand-in source owner.
 pub mod sources;
 #[cfg(test)]
 mod tests;
-use entities::{command, conversation};
+/// Working notes derived from the authorized product record.
+pub mod working_notes;
+use crate::physician_sources::{ChartRequest, ChartScope, READ_TOOL, SEARCH_TOOL};
+use entities::conversation;
 
 /// Authenticated product scope, supplied by the server, never the command body.
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -54,6 +64,26 @@ pub struct Scope {
     pub workspace: String,
     /// Conversation identity. For a reply draft and its revisions, the reply work.
     pub chat: String,
+}
+
+impl Scope {
+    fn validate(&self) -> Result<(), DbErr> {
+        if [&self.practice, &self.physician, &self.workspace, &self.chat]
+            .iter()
+            .any(|s| s.trim().is_empty())
+        {
+            return Err(error("empty physician scope"));
+        }
+        Ok(())
+    }
+
+    /// Stable cache partition for this scoped conversation or reply job.
+    pub fn cache_key(&self, namespace: &str) -> harness::PromptCacheKey {
+        harness::PromptCacheKey::scoped(
+            namespace,
+            &[&self.practice, &self.physician, &self.workspace, &self.chat],
+        )
+    }
 }
 
 /// Accepted physician input, including timezone in the idempotency comparison.
@@ -73,13 +103,149 @@ pub struct Input {
     pub scenario: Option<String>,
 }
 
-/// A saved authored message, not execution telemetry.
+/// Origin of a conversation entry. Only physician input carries a command receipt.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+#[serde(tag = "role", rename_all = "lowercase")]
+pub enum MessageRole {
+    /// Physician command accepted on this work, in this fenced revision.
+    User {
+        /// Original physician command key.
+        id: String,
+        /// Accepted work that carries the command.
+        work: String,
+        /// Input generation of this command.
+        revision: u64,
+    },
+    /// Physician-visible model output.
+    Assistant {
+        /// Stable identity of the published assistant message.
+        id: String,
+        /// A retained terminal answer that did not complete the accepted work.
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        partial: bool,
+    },
+}
+
+impl MessageRole {
+    /// Role in product readback.
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::User { .. } => "user",
+            Self::Assistant { .. } => "assistant",
+        }
+    }
+}
+
+/// A saved authored message.
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct Message {
-    /// User or assistant.
-    pub role: String,
+    /// Authorship and, for physician input, its durable identity.
+    #[serde(flatten)]
+    pub role: MessageRole,
     /// Exact authored text.
     pub text: String,
+}
+
+/// Where a conversation's current work stands. Each value is saved as its
+/// text in the conversation row's status column.
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Serialize,
+    Deserialize,
+    sea_orm::EnumIter,
+    sea_orm::DeriveActiveEnum,
+)]
+#[serde(rename_all = "lowercase")]
+#[sea_orm(rs_type = "String", db_type = "String(StringLen::None)")]
+pub enum WorkStatus {
+    /// Accepted and waiting for an attempt.
+    #[sea_orm(string_value = "pending")]
+    Pending,
+    /// An attempt is running the work.
+    #[sea_orm(string_value = "active")]
+    Active,
+    /// The run published its answer. A conversation with no work yet also
+    /// starts here.
+    #[sea_orm(string_value = "completed")]
+    Completed,
+    /// Held until the physician continues it.
+    #[sea_orm(string_value = "held")]
+    Held,
+    /// Recovery gave up; Try again resumes it.
+    #[sea_orm(string_value = "failed")]
+    Failed,
+    /// The run was cancelled.
+    #[sea_orm(string_value = "cancelled")]
+    Cancelled,
+}
+
+impl WorkStatus {
+    /// Pending or active: the work has not ended.
+    pub fn running(self) -> bool {
+        match self {
+            Self::Pending | Self::Active => true,
+            Self::Completed | Self::Held | Self::Failed | Self::Cancelled => false,
+        }
+    }
+
+    /// Failed or held: the physician's Try again can continue it.
+    fn resumable(self) -> bool {
+        match self {
+            Self::Failed | Self::Held => true,
+            Self::Pending | Self::Active | Self::Completed | Self::Cancelled => false,
+        }
+    }
+}
+
+impl From<RunOutcome> for WorkStatus {
+    fn from(outcome: RunOutcome) -> Self {
+        match outcome {
+            RunOutcome::Completed => Self::Completed,
+            RunOutcome::Held { .. } => Self::Held,
+            RunOutcome::Failed => Self::Failed,
+            RunOutcome::Cancelled => Self::Cancelled,
+        }
+    }
+}
+
+/// Where one attempt stands, for chat and revision attempts alike. Each value
+/// is saved as its text in the attempt row's status column.
+#[derive(
+    Clone,
+    Copy,
+    Debug,
+    PartialEq,
+    Eq,
+    Serialize,
+    Deserialize,
+    sea_orm::EnumIter,
+    sea_orm::DeriveActiveEnum,
+)]
+#[serde(rename_all = "lowercase")]
+#[sea_orm(rs_type = "String", db_type = "String(StringLen::None)")]
+pub enum AttemptStatus {
+    /// Running under its lease.
+    #[sea_orm(string_value = "active")]
+    Active,
+    /// Ended before a result: lost lease, steer or cancellation of a revision.
+    #[sea_orm(string_value = "interrupted")]
+    Interrupted,
+    /// Ended by the physician's Stop.
+    #[sea_orm(string_value = "cancelled")]
+    Cancelled,
+    /// Ended by a failure.
+    #[sea_orm(string_value = "failed")]
+    Failed,
+    /// Ended at a limit or a provider block; the work is held.
+    #[sea_orm(string_value = "held")]
+    Held,
+    /// Published its result.
+    #[sea_orm(string_value = "completed")]
+    Completed,
 }
 
 /// Product attempt with its immutable predecessor and durable evidence.
@@ -93,51 +259,157 @@ pub struct Attempt {
     pub work: String,
     /// Input generation fenced at publication.
     pub revision: u64,
-    /// Active, interrupted, cancelled, failed, or completed.
-    pub status: String,
+    /// Where this attempt stands.
+    pub status: AttemptStatus,
     /// Database-clock lease expiry in seconds.
     pub expires: i64,
     /// Ordered acknowledged engine evidence, internal only.
     pub events: Vec<Event>,
 }
 
+impl Attempt {
+    fn owns_lease(&self, now: i64) -> bool {
+        let leased = match self.status {
+            AttemptStatus::Active | AttemptStatus::Interrupted | AttemptStatus::Cancelled => true,
+            AttemptStatus::Failed | AttemptStatus::Held | AttemptStatus::Completed => false,
+        };
+        self.expires > now && leased
+    }
+}
+
 /// Durable conversation and work projection.
-#[derive(Clone, Debug, Serialize, Deserialize)]
+#[derive(Clone, Debug)]
 pub struct Conversation {
     /// Authored conversation only.
     pub messages: Vec<Message>,
     /// Current accepted input generation.
     pub revision: u64,
-    /// Pending, active, held, failed, or completed.
-    pub status: String,
+    /// Pending or active, otherwise the shared run outcome.
+    pub status: WorkStatus,
     /// Current work identity; successors preserve it.
     pub work: String,
+    /// Lifecycle facts retained once for each accepted work.
+    pub runs: std::collections::BTreeMap<String, RunHistory>,
+    /// Identity of the immutable skill package supplied at acceptance.
+    pub skills: SkillPackageId,
     /// All retained attempts, including interrupted attempts.
     pub attempts: Vec<Attempt>,
-    /// Accepted session reference, never the bearer secret; absent legacy work is blocked.
-    #[serde(default)]
+    /// Accepted session reference, absent before acceptance; never the bearer secret.
     pub session_hash: Option<Vec<u8>>,
-    /// Latest accepted command identity; saved atomically with authored input.
-    #[serde(default)]
-    pub input_id: Option<String>,
     /// Database-clock time before which recovery need not republish a wakeup.
     /// This is a delivery hint, never proof of execution or completion.
-    #[serde(default)]
     pub dispatch_after: i64,
-    /// Unsuccessful attempts on the current input, including expired leases.
-    /// New input and Resume reset it; at [`MAX_FAILED_ATTEMPTS`] the work fails.
-    #[serde(default)]
+    /// Unsuccessful attempts in the current run, including expired leases.
+    /// Only a new run resets it; at [`harness::engine::MAX_FAILED_ATTEMPTS`] the work fails.
     pub failures: u32,
+    /// Last provider ordinal excluded by the physician’s explicit fresh allowance.
+    pub budget_resume_after: u64,
+    /// Each work's immutable recipe, retained once even after a later message.
+    pub bindings: std::collections::BTreeMap<String, BindingRef>,
     /// Database-clock seconds when the first physician message was accepted.
-    /// Zero on rows saved before the chat list existed.
-    #[serde(default)]
     pub opened_at: i64,
     /// Database-clock seconds of the latest accepted message or published reply.
-    #[serde(default)]
     pub last_activity_at: i64,
     /// The latest accepted input's rehearsal scenario; see [`Input::scenario`].
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub scenario: Option<String>,
+}
+
+use harness::engine::{
+    AttemptFailure,
+    runs::{HoldReason, RunHistory, RunOutcome},
+};
+
+/// Ends one attempt under the shared failure rule. Returns the outcome when
+/// the attempt also ended the run; `None` leaves the work pending.
+fn settle_attempt(
+    reason: AttemptFailure,
+    failures: &mut u32,
+    attempt_status: &mut AttemptStatus,
+    runs: &mut RunHistory,
+) -> Result<Option<RunOutcome>, RuntimeError> {
+    *attempt_status = match reason {
+        AttemptFailure::Interrupted | AttemptFailure::Abandoned => AttemptStatus::Interrupted,
+        AttemptFailure::Limit | AttemptFailure::ProviderBlocked => AttemptStatus::Held,
+        AttemptFailure::Failed => AttemptStatus::Failed,
+    };
+    *failures += u32::from(reason.counts_as_failure());
+    let outcome = RunOutcome::after_attempt(reason, *failures);
+    if let Some(outcome) = outcome {
+        runs.end(outcome)?;
+    }
+    Ok(outcome)
+}
+impl Conversation {
+    /// Current authorized messages used to resolve dispatch references.
+    pub fn message_sources(&self) -> Vec<engine::ProductMessage> {
+        self.messages.iter().map(Message::source).collect()
+    }
+    /// Ends the last attempt. An attempt that ran an older input than the
+    /// conversation's current revision ends as superseded, whatever reason was
+    /// reported: that reason belongs to the input it ran, not the newer one.
+    fn end_active_attempt(&mut self, reason: AttemptFailure) -> Result<(), RuntimeError> {
+        let attempt = self.attempts.last_mut().expect("active attempt");
+        let reason = if attempt.revision == self.revision {
+            reason
+        } else {
+            AttemptFailure::from_cause(&engine::Superseded)
+        };
+        let outcome = settle_attempt(
+            reason,
+            &mut self.failures,
+            &mut attempt.status,
+            self.runs
+                .get_mut(&self.work)
+                .ok_or_else(|| error("missing work lifecycle"))?,
+        )?;
+        self.status = outcome.map_or(WorkStatus::Pending, WorkStatus::from);
+        Ok(())
+    }
+
+    /// The current run is independent of worker attempts and survives recovery.
+    pub fn run(&self) -> Option<engine::runs::RunState<'_>> {
+        self.runs.get(&self.work).and_then(RunHistory::current)
+    }
+
+    /// The attempts whose records are the current work's records: every
+    /// attempt of this work, across steers. A run and its partial answer read
+    /// the same set.
+    fn work_attempt_ids(&self) -> Vec<String> {
+        self.work_attempts()
+            .map(|attempt| attempt.id.clone())
+            .collect()
+    }
+
+    /// The current work's attempts, oldest first.
+    fn work_attempts(&self) -> impl Iterator<Item = &Attempt> {
+        self.attempts
+            .iter()
+            .filter(|attempt| attempt.work == self.work)
+    }
+
+    /// The latest attempt, when it belongs to the current work.
+    fn latest_work_attempt(&self) -> Option<&Attempt> {
+        self.attempts
+            .last()
+            .filter(|attempt| attempt.work == self.work)
+    }
+
+    fn end_run(&mut self, outcome: RunOutcome) -> Result<(), RuntimeError> {
+        self.runs
+            .get_mut(&self.work)
+            .ok_or_else(|| error("missing work lifecycle"))?
+            .end(outcome)?;
+        self.status = outcome.into();
+        Ok(())
+    }
+
+    /// Latest accepted physician command, independent of assistant messages.
+    pub fn input_id(&self) -> Option<&str> {
+        self.messages.iter().rev().find_map(|m| match &m.role {
+            MessageRole::User { id, .. } => Some(id.as_str()),
+            MessageRole::Assistant { .. } => None,
+        })
+    }
 }
 
 /// One chat in a physician's workspace, for the workspace's chat list.
@@ -156,23 +428,21 @@ pub struct ChatSummary {
 /// The chat list reads at most this many conversations of one workspace.
 pub const MAX_LISTED_CHATS: u64 = 200;
 
-/// Recovery gives up after this many unsuccessful attempts on one input, so a
-/// turn that always fails ends as failed instead of calling the model forever.
-/// It matches the chat-turn subscription's `max_delivery_attempts`.
-pub const MAX_FAILED_ATTEMPTS: u32 = 5;
-
-impl Default for Conversation {
-    fn default() -> Self {
+impl Conversation {
+    fn new(skills: SkillPackageId) -> Self {
         Self {
             messages: vec![],
             revision: 0,
-            status: "completed".into(),
+            status: WorkStatus::Completed,
             work: String::new(),
+            runs: Default::default(),
+            skills,
             attempts: vec![],
             session_hash: None,
-            input_id: None,
             dispatch_after: 0,
             failures: 0,
+            budget_resume_after: 0,
+            bindings: Default::default(),
             opened_at: 0,
             last_activity_at: 0,
             scenario: None,
@@ -183,6 +453,8 @@ impl Default for Conversation {
 /// A fenced claim; safe to pass to the shared engine, never authority by itself.
 #[derive(Clone, Debug)]
 pub struct Claim {
+    /// Ownership duration and its renewal cadence.
+    pub lease: Lease,
     /// Product scope.
     pub scope: Scope,
     /// Saved attempt identity.
@@ -203,10 +475,10 @@ pub enum Accepted {
 /// Outcome of a physician's Try again on failed or held work.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Resumed {
-    /// The work is pending again; publish a wakeup for this input identity.
+    /// The work is pending again; publish its owner-specific wakeup.
     Pending {
-        /// Latest accepted input, the queue delivery's fence.
-        input_id: String,
+        /// The accepted input and durable owner to wake.
+        delivery: delivery::Delivery,
     },
     /// The exact same Try again was already taken; do not publish again.
     Duplicate,
@@ -238,6 +510,80 @@ pub struct Store {
 fn error(message: &str) -> DbErr {
     DbErr::Custom(message.into())
 }
+
+/// A value that did not convert between `from` and `into`, with the
+/// conversion's own error (serde's or the integer range check's) kept as the
+/// source.
+fn conversion_error<E>(from: &'static str, into: &'static str) -> impl FnOnce(E) -> DbErr
+where
+    E: std::error::Error + Send + Sync + 'static,
+{
+    move |source| DbErr::TryIntoErr {
+        from,
+        into,
+        source: std::sync::Arc::new(source),
+    }
+}
+
+/// A failure on the run-lifecycle path of the Chords runtime. Each variant
+/// keeps the original error as its source.
+#[derive(Debug, thiserror::Error)]
+pub enum RuntimeError {
+    /// The database refused or failed the operation.
+    #[error("{0}")]
+    Database(#[source] DbErr),
+    /// The saved run lifecycle refused the transition.
+    #[error("{0}")]
+    RunLifecycle(#[source] engine::runs::RunError),
+    /// The saved records could not be read as a reserved final exchange.
+    #[error("{0}")]
+    PendingFinal(#[source] engine::Failure),
+}
+
+impl From<DbErr> for RuntimeError {
+    fn from(error: DbErr) -> Self {
+        Self::Database(error)
+    }
+}
+
+impl From<engine::runs::RunError> for RuntimeError {
+    fn from(error: engine::runs::RunError) -> Self {
+        Self::RunLifecycle(error)
+    }
+}
+
+/// Classify only retryable database writes, preserving the original storage cause.
+/// Authorization, stale claims, invalid events and decoding errors never retry.
+/// A database error can arrive bare or inside a [`RuntimeError`].
+pub fn persistence_failure(error: impl Into<engine::Cause>) -> engine::Cause {
+    let error = error.into();
+    use sea_orm::{ConnAcquireErr, RuntimeErr, SqlxError};
+    let database = match error.downcast_ref::<RuntimeError>() {
+        Some(RuntimeError::Database(database)) => Some(database),
+        Some(RuntimeError::RunLifecycle(_) | RuntimeError::PendingFinal(_)) => None,
+        None => error.downcast_ref::<DbErr>(),
+    };
+    let retry = match database {
+        Some(DbErr::ConnectionAcquire(ConnAcquireErr::Timeout)) => true,
+        Some(
+            DbErr::Conn(RuntimeErr::SqlxError(source))
+            | DbErr::Exec(RuntimeErr::SqlxError(source))
+            | DbErr::Query(RuntimeErr::SqlxError(source)),
+        ) => match source.as_ref() {
+            SqlxError::Io(_) | SqlxError::PoolTimedOut => true,
+            SqlxError::Database(database) => engine::retryable_sqlstate(database.code().as_deref()),
+
+            _ => false,
+        },
+        _ => false,
+    };
+    if retry {
+        engine::RetryablePersistence::new(error).into()
+    } else {
+        error
+    }
+}
+
 fn keys(scope: &Scope) -> (String, String, String, String) {
     (
         scope.practice.clone(),
@@ -247,14 +593,21 @@ fn keys(scope: &Scope) -> (String, String, String, String) {
     )
 }
 
-fn conversation_model(scope: &Scope, state: Value) -> conversation::ActiveModel {
-    conversation::ActiveModel {
+fn conversation_model(
+    scope: &Scope,
+    state: &Conversation,
+) -> Result<conversation::ActiveModel, DbErr> {
+    Ok(conversation::ActiveModel {
         practice: Set(scope.practice.clone()),
         physician: Set(scope.physician.clone()),
         workspace: Set(scope.workspace.clone()),
         chat: Set(scope.chat.clone()),
-        state: Set(state),
-    }
+        status: Set(state.status),
+        revision: Set(i64::try_from(state.revision)
+            .map_err(conversion_error("conversation revision", "i64"))?),
+        session_hash: Set(state.session_hash.clone()),
+        state: Set(control::conversation_state(state)?),
+    })
 }
 
 fn database_clock() -> Expr {
@@ -287,53 +640,42 @@ impl Store {
         Self { db }
     }
 
-    /// Explicit additive, rerunnable migration, never invoked by connect.
+    // Display readback now joins several authoritative rows. One read-only
+    // snapshot keeps a concurrent finish from mixing old state with new events,
+    // without taking the publication lock.
+    async fn snapshot(&self) -> Result<sea_orm::DatabaseTransaction, DbErr> {
+        self.db
+            .begin_with_config(
+                Some(sea_orm::IsolationLevel::RepeatableRead),
+                Some(sea_orm::AccessMode::ReadOnly),
+            )
+            .await
+    }
+
+    /// Explicit migration, never invoked by connect. Applies the runtime
+    /// chain's pending migrations and records each in
+    /// `physician_runtime_migrations`, so a rerun changes nothing. The first
+    /// migration creates every runtime table and fails if one already exists.
+    /// Once a practice holds real data, storage changes never refuse to start
+    /// or wipe it; permanent records are not rewritten to add fields.
     pub async fn migrate(&self) -> Result<(), DbErr> {
         let tx = self.db.begin().await?;
-        // PostgreSQL-only migration serialization; the recorded schema below stays
-        // unchanged. Ordinary runtime access uses the owning typed entities.
+        // PostgreSQL-only migration serialization. The fixed DDL lives in its
+        // own SQL file; runtime queries use the owning typed entities.
         tx.execute_unprepared("SELECT pg_advisory_xact_lock(804081)")
             .await?;
-        tx.execute_unprepared(include_str!("runtime.sql")).await?;
-        // Later tables come from their entities through the SeaORM schema
-        // builder, so the recorded statements above never change.
-        let schema = sea_orm::Schema::new(sea_orm::DbBackend::Postgres);
-        let mut chat_drafts = schema.create_table_from_entity(entities::chat_draft::Entity);
-        chat_drafts.if_not_exists();
-        tx.execute(&chat_drafts).await?;
-        let mut drafts = schema.create_table_from_entity(entities::reply_draft::Entity);
-        drafts.if_not_exists();
-        tx.execute(&drafts).await?;
-        let mut revisions = schema.create_table_from_entity(entities::reply_revision::Entity);
-        revisions.if_not_exists();
-        tx.execute(&revisions).await?;
-        // The unique (draft, ordinal) index that orders a draft's history.
-        for mut index in schema.create_index_from_entity(entities::reply_revision::Entity) {
-            index.if_not_exists();
-            tx.execute(&index).await?;
-        }
-        let mut source_versions = schema.create_table_from_entity(entities::source_version::Entity);
-        source_versions.if_not_exists();
-        tx.execute(&source_versions).await?;
-        let mut sources = schema.create_table_from_entity(entities::source::Entity);
-        sources.if_not_exists();
-        tx.execute(&sources).await?;
-        let mut source_pulls = schema.create_table_from_entity(entities::source_pull::Entity);
-        source_pulls.if_not_exists();
-        tx.execute(&source_pulls).await?;
-        // Receipts older than this column get the migration's time, so the
-        // 90-day reduction counts from when it could first see them. `now()`
-        // is stable, so Postgres stores it once instead of rewriting rows.
-        let accepted_at = sea_orm::sea_query::Table::alter()
-            .table(command::Entity)
-            .add_column_if_not_exists(
-                sea_orm::sea_query::ColumnDef::new(command::Column::AcceptedAt)
-                    .big_integer()
-                    .not_null()
-                    .default(Expr::cust("floor(extract(epoch FROM now()))::bigint")),
-            )
-            .to_owned();
-        tx.execute(&accepted_at).await?;
+        migration::Migrator::up(&tx, None).await?;
+        entities::provider_quota::Entity::insert(entities::provider_quota::ActiveModel {
+            singleton: Set(true),
+            not_before_ms: Set(0),
+        })
+        .on_conflict(
+            OnConflict::column(entities::provider_quota::Column::Singleton)
+                .do_nothing()
+                .to_owned(),
+        )
+        .exec_without_returning(&tx)
+        .await?;
         tx.commit().await
     }
 
@@ -341,30 +683,16 @@ impl Store {
         &self,
         scope: &Scope,
     ) -> Result<(sea_orm::DatabaseTransaction, Conversation, i64), DbErr> {
-        if [
-            &scope.practice,
-            &scope.physician,
-            &scope.workspace,
-            &scope.chat,
-        ]
-        .iter()
-        .any(|s| s.trim().is_empty())
-        {
-            return Err(error("empty physician scope"));
-        }
+        scope.validate()?;
         let tx = self.db.begin().await?;
         let row = conversation::Entity::find_by_id(keys(scope))
             .lock_exclusive()
             .one(&tx)
             .await?
             .ok_or_else(|| error("conversation not found"))?;
-        let state = row.state;
+        let state = Self::conversation_control(&tx, scope, row).await?;
         let now = now(&tx).await?;
-        Ok((
-            tx,
-            serde_json::from_value(state).map_err(|_| error("corrupt conversation"))?,
-            now,
-        ))
+        Ok((tx, state, now))
     }
 
     async fn save(
@@ -372,18 +700,9 @@ impl Store {
         scope: &Scope,
         state: &Conversation,
     ) -> Result<(), DbErr> {
-        conversation_model(
-            scope,
-            serde_json::to_value(state).map_err(|_| error("invalid conversation"))?,
-        )
-        .update(&tx)
-        .await?;
+        control::save_chat_attempts(&tx, scope, &state.attempts).await?;
+        conversation_model(scope, state)?.update(&tx).await?;
         tx.commit().await
-    }
-
-    /// Atomically saves the command receipt and input. Colliding payloads fail.
-    pub async fn accept(&self, scope: &Scope, input: &Input) -> Result<Accepted, DbErr> {
-        self.accept_inner(scope, input, None).await
     }
 
     /// Accepts hosted input with its original session reference for restart authorization.
@@ -392,19 +711,12 @@ impl Store {
         scope: &Scope,
         input: &Input,
         session_hash: Vec<u8>,
-    ) -> Result<Accepted, DbErr> {
+        skills: &PhysicianSkills,
+        recipe: &RequestRecipe,
+    ) -> Result<Accepted, RuntimeError> {
         if session_hash.len() != 32 {
-            return Err(error("invalid session reference"));
+            return Err(error("invalid session reference").into());
         }
-        self.accept_inner(scope, input, Some(session_hash)).await
-    }
-
-    async fn accept_inner(
-        &self,
-        scope: &Scope,
-        input: &Input,
-        session_hash: Option<Vec<u8>>,
-    ) -> Result<Accepted, DbErr> {
         if [
             &input.key,
             &input.text,
@@ -417,7 +729,7 @@ impl Store {
         .iter()
         .any(|s| s.trim().is_empty())
         {
-            return Err(error("empty command field"));
+            return Err(error("empty command field").into());
         }
         let tx = self.db.begin().await?;
         let command = serde_json::json!({"scope": scope, "input": input});
@@ -427,12 +739,13 @@ impl Store {
                 tx.commit().await?;
                 return Ok(Accepted::Duplicate);
             }
-            receipt::Receipt::Different => return Err(error("idempotency collision")),
+            receipt::Receipt::Different => return Err(error("idempotency collision").into()),
         }
+        let package = frozen::keep_skills(&tx, scope, skills).await?;
         conversation::Entity::insert(conversation_model(
             scope,
-            serde_json::to_value(Conversation::default()).unwrap(),
-        ))
+            &Conversation::new(package.clone()),
+        )?)
         .on_conflict(OnConflict::new().do_nothing().to_owned())
         .exec_without_returning(&tx)
         .await?;
@@ -441,46 +754,112 @@ impl Store {
             .one(&tx)
             .await?
             .ok_or_else(|| error("missing conversation"))?;
-        let mut state: Conversation =
-            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
-        if state.status == "completed" {
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        if !state.status.running() {
             state.work = Uuid::new_v4().to_string();
-        }
-        if let Some(attempt) = state.attempts.last_mut().filter(|a| a.status == "active") {
-            attempt.status = "interrupted".into();
+            let mut runs = RunHistory::default();
+            state.failures = runs.start(Uuid::new_v4().to_string())?;
+            state.runs.insert(state.work.clone(), runs);
+            state.skills = package;
+            let recipe = recipe.bind(Some(scope.cache_key("chords-chat")));
+            let recipe = frozen::keep_binding(&tx, scope, &recipe).await?;
+            state.bindings.insert(state.work.clone(), recipe);
+            state.budget_resume_after = 0;
         }
         state.revision += 1;
-        state.session_hash = session_hash;
-        state.input_id = Some(input.key.clone());
+        state.session_hash = Some(session_hash);
         state.scenario = input.scenario.clone();
         state.dispatch_after = 0;
-        state.failures = 0;
         let now = now(&tx).await?;
         if state.messages.is_empty() {
             state.opened_at = now;
         }
         state.last_activity_at = now;
         state.messages.push(Message {
-            role: "user".into(),
+            role: MessageRole::User {
+                id: input.key.clone(),
+                work: state.work.clone(),
+                revision: state.revision,
+            },
             text: input.text.clone(),
         });
         // New input steers ordinary work. After Stop it is the physician
         // sending something else, which releases the hold and drops Resume.
-        state.status = "pending".into();
+        state.status = WorkStatus::Pending;
         Self::save(tx, scope, &state).await?;
         Ok(Accepted::New)
     }
 
     /// Reads authoritative state using the complete tenant/physician binding.
     pub async fn conversation(&self, scope: &Scope) -> Result<Conversation, DbErr> {
-        let (tx, state, _) = self.locked(scope).await?;
+        let tx = self.snapshot().await?;
+        let mut state = Self::read_conversation(&tx, scope).await?;
+        Self::conversation_events(&tx, scope, &mut state).await?;
         tx.commit().await?;
         Ok(state)
     }
 
+    async fn read_conversation(
+        db: &impl ConnectionTrait,
+        scope: &Scope,
+    ) -> Result<Conversation, DbErr> {
+        scope.validate()?;
+        let row = conversation::Entity::find_by_id(keys(scope))
+            .one(db)
+            .await?
+            .ok_or_else(|| error("conversation not found"))?;
+        Self::conversation_control(db, scope, row).await
+    }
+
+    /// One unlocked view of authored state, controls and the current work's records.
+    /// Earlier work remains available to note discovery through conversation().
+    async fn work_snapshot(
+        &self,
+        scope: &Scope,
+    ) -> Result<(Conversation, Vec<(Event, bool)>), DbErr> {
+        let tx = self.snapshot().await?;
+        let state = Self::read_conversation(&tx, scope).await?;
+        let records =
+            records::ordered(&tx, scope, records::Owner::Chat, &state.work_attempt_ids()).await?;
+        tx.commit().await?;
+        Ok((state, records))
+    }
+
+    /// Resolve an accepted recipe in this physician's immutable input store.
+    pub async fn frozen_binding(
+        &self,
+        scope: &Scope,
+        id: &BindingRef,
+    ) -> Result<RequestBinding, DbErr> {
+        frozen::binding(&self.db, scope, id).await
+    }
+
+    /// Resolve an accepted package, independent of the currently deployed library.
+    pub async fn frozen_skills(
+        &self,
+        scope: &Scope,
+        id: &SkillPackageId,
+    ) -> Result<PhysicianSkills, DbErr> {
+        frozen::skills(&self.db, scope, id).await
+    }
+
+    /// Resolve authored messages without publication locks or execution records.
+    async fn message_sources(&self, scope: &Scope) -> Result<Vec<engine::ProductMessage>, DbErr> {
+        scope.validate()?;
+        let row = conversation::Entity::find_by_id(keys(scope))
+            .one(&self.db)
+            .await?
+            .ok_or_else(|| error("conversation not found"))?;
+        Ok(control::conversation(row, Vec::new())?.message_sources())
+    }
+
     /// Claims pending work or recovers an expired active attempt as its successor.
-    /// Lease must cover the bounded engine deadline; no two live claims coexist.
-    pub async fn claim(&self, scope: &Scope, lease_seconds: i64) -> Result<Option<Claim>, DbErr> {
+    /// Renewable ownership is independent of run time; no two live claims coexist.
+    pub async fn claim(
+        &self,
+        scope: &Scope,
+        lease_seconds: i64,
+    ) -> Result<Option<Claim>, RuntimeError> {
         self.claim_inner(scope, lease_seconds, None).await
     }
 
@@ -489,47 +868,49 @@ impl Store {
         scope: &Scope,
         lease_seconds: i64,
         input_id: Option<&str>,
-    ) -> Result<Option<Claim>, DbErr> {
-        if !(1..=600).contains(&lease_seconds) {
-            return Err(error("invalid lease duration"));
-        }
+    ) -> Result<Option<Claim>, RuntimeError> {
+        let lease = Lease::new(lease_seconds)?;
         let (tx, mut state, now) = self.locked(scope).await?;
-        if input_id.is_some_and(|id| state.input_id.as_deref() != Some(id)) {
+        if input_id.is_some_and(|id| state.input_id() != Some(id)) {
             tx.commit().await?;
             return Ok(None);
         }
-        if state.status == "active" && state.attempts.last().is_some_and(|a| a.expires <= now) {
-            state.attempts.last_mut().unwrap().status = "interrupted".into();
-            state.status = "pending".into();
-            // A lease that ran out is an unsuccessful attempt too: a turn that
-            // keeps crashing its worker must reach the same end as one that fails.
-            state.failures += 1;
-            if state.failures >= MAX_FAILED_ATTEMPTS {
-                state.status = "failed".into();
+        // A steer invalidates publication immediately, but the previous worker
+        // still owns its running calls until settlement or lease expiry.
+        if state
+            .attempts
+            .last()
+            .is_some_and(|attempt| attempt.owns_lease(now))
+        {
+            tx.commit().await?;
+            return Ok(None);
+        }
+        if state.latest_work_attempt().is_some_and(|attempt| {
+            attempt.status == AttemptStatus::Active && attempt.expires <= now
+        }) {
+            state.end_active_attempt(AttemptFailure::Abandoned)?;
+            if state.status == WorkStatus::Failed {
                 Self::save(tx, scope, &state).await?;
                 return Ok(None);
             }
         }
-        if state.status != "pending" {
+        if state.status != WorkStatus::Pending {
             tx.commit().await?;
             return Ok(None);
         }
         let id = Uuid::new_v4().to_string();
         state.attempts.push(Attempt {
             id: id.clone(),
-            predecessor: state
-                .attempts
-                .last()
-                .filter(|a| a.work == state.work)
-                .map(|a| a.id.clone()),
+            predecessor: state.latest_work_attempt().map(|a| a.id.clone()),
             work: state.work.clone(),
             revision: state.revision,
-            status: "active".into(),
-            expires: now + lease_seconds,
+            status: AttemptStatus::Active,
+            expires: lease.expires(now),
             events: vec![],
         });
-        state.status = "active".into();
+        state.status = WorkStatus::Active;
         let claim = Claim {
+            lease,
             scope: scope.clone(),
             attempt: id,
             revision: state.revision,
@@ -538,24 +919,63 @@ impl Store {
         Ok(Some(claim))
     }
 
-    fn current(state: &Conversation, claim: &Claim, now: i64) -> bool {
-        state.status == "active"
-            && state.revision == claim.revision
-            && state
+    fn current(state: &Conversation, claim: &Claim, now: i64) -> control::Currentness {
+        control::current(
+            state.status == WorkStatus::Active,
+            state.revision,
+            state
                 .attempts
                 .last()
-                .is_some_and(|a| a.id == claim.attempt && a.status == "active" && a.expires > now)
+                .map(|a| (a.id.as_str(), a.status, a.expires)),
+            &claim.attempt,
+            claim.revision,
+            now,
+        )
     }
 
-    /// Revalidates the accepted session using the real auth owner's transaction locks.
+    async fn conversation_control(
+        db: &impl ConnectionTrait,
+        scope: &Scope,
+        row: conversation::Model,
+    ) -> Result<Conversation, DbErr> {
+        control::conversation(row, control::chat_attempts(db, scope).await?)
+    }
+
+    async fn conversation_events(
+        db: &impl ConnectionTrait,
+        scope: &Scope,
+        state: &mut Conversation,
+    ) -> Result<(), DbErr> {
+        let ids: Vec<_> = state
+            .attempts
+            .iter()
+            .map(|attempt| attempt.id.clone())
+            .collect();
+        let mut events =
+            records::load(db, scope, records::Owner::Chat, &ids, |event, _| event).await?;
+        for attempt in &mut state.attempts {
+            attempt.events = events.remove(&attempt.id).unwrap_or_default();
+        }
+        Ok(())
+    }
+
+    /// Revalidates the accepted session through the auth owner without taking publication locks.
     pub async fn authorize(
         &self,
         scope: &Scope,
         authority: &mut dyn Authority,
     ) -> Result<(), DbErr> {
-        let (tx, state, _) = self.locked(scope).await?;
+        scope.validate()?;
+        let tx = self.db.begin().await?;
+        let hash = conversation::Entity::find_by_id(keys(scope))
+            .select_only()
+            .column(conversation::Column::SessionHash)
+            .into_tuple::<Option<Vec<u8>>>()
+            .one(&tx)
+            .await?
+            .ok_or_else(|| error("conversation not found"))?;
         authority
-            .lock_publication(&tx, scope, state.session_hash.as_deref())
+            .check(&tx, scope, hash.as_deref())
             .await
             .map_err(|e| error(&e))?;
         tx.commit().await
@@ -566,148 +986,278 @@ impl Store {
     /// could not be read: the database, or a missing or unreadable
     /// conversation.
     pub async fn is_current(&self, claim: &Claim) -> Result<bool, DbErr> {
-        let (tx, state, now) = self.locked(&claim.scope).await?;
-        let current = Self::current(&state, claim, now);
+        claim.scope.validate()?;
+        let tx = self.db.begin().await?;
+        let current = Self::lock_claim(&tx, claim).await?;
         tx.commit().await?;
-        Ok(current)
+        Ok(current.is_current())
     }
 
-    /// Rechecks the current attempt against durable Stop, steering and expiry.
-    pub async fn assert_current(&self, claim: &Claim) -> Result<(), DbErr> {
-        if self.is_current(claim).await? {
+    async fn lock_claim(
+        tx: &sea_orm::DatabaseTransaction,
+        claim: &Claim,
+    ) -> Result<control::Currentness, DbErr> {
+        let (status, revision) = conversation::Entity::find_by_id(keys(&claim.scope))
+            .select_only()
+            .columns([conversation::Column::Status, conversation::Column::Revision])
+            .lock_exclusive()
+            .into_tuple::<(WorkStatus, i64)>()
+            .one(tx)
+            .await?
+            .ok_or_else(|| error("conversation not found"))?;
+        use entities::chat_attempt::Column as A;
+        let attempt = entities::chat_attempt::Entity::find()
+            .select_only()
+            .columns([A::Id, A::Status, A::Expires])
+            .filter(control::chat_scope(&claim.scope))
+            .order_by_desc(A::Position)
+            .into_tuple::<(String, AttemptStatus, i64)>()
+            .one(tx)
+            .await?;
+        let revision = u64::try_from(revision)
+            .map_err(conversion_error("saved conversation revision", "u64"))?;
+        Ok(control::current(
+            status == WorkStatus::Active,
+            revision,
+            attempt
+                .as_ref()
+                .map(|(id, status, expires)| (id.as_str(), *status, *expires)),
+            &claim.attempt,
+            claim.revision,
+            now(tx).await?,
+        ))
+    }
+
+    /// Read only whether the accepted work is still active at this input revision.
+    /// Attempt ownership is checked by hosting renewal and mutation fences.
+    pub async fn assert_current(&self, claim: &Claim) -> Result<(), engine::Cause> {
+        claim.scope.validate()?;
+        let state = conversation::Entity::find_by_id(keys(&claim.scope))
+            .select_only()
+            .columns([conversation::Column::Status, conversation::Column::Revision])
+            .into_tuple::<(WorkStatus, i64)>()
+            .one(&self.db)
+            .await?;
+        if state.is_some_and(|(status, revision)| {
+            u64::try_from(revision).is_ok_and(|revision| {
+                control::input_current(status == WorkStatus::Active, revision, claim.revision)
+            })
+        }) {
             Ok(())
         } else {
-            Err(error("attempt no longer current"))
+            Err(engine::Superseded.into())
         }
+    }
+
+    /// Hosting retains ownership while the attempt executes or drains its calls.
+    /// A steer removes publication authority without releasing that ownership.
+    pub async fn renew_claim(&self, claim: &Claim) -> Result<(), DbErr> {
+        claim.scope.validate()?;
+        let (tx, state, now) = self.locked(&claim.scope).await?;
+        if !state
+            .attempts
+            .last()
+            .is_some_and(|attempt| attempt.id == claim.attempt && attempt.owns_lease(now))
+        {
+            return Err(error("attempt ownership lost"));
+        }
+        use entities::chat_attempt::{Column as C, Entity};
+        Entity::update_many()
+            .col_expr(C::Expires, Expr::value(claim.lease.expires(now)))
+            .filter(control::chat_scope(&claim.scope))
+            .filter(C::Id.eq(&claim.attempt))
+            .exec(&tx)
+            .await?;
+        tx.commit().await
+    }
+
+    /// Validate dispatch against the recipe saved at acceptance.
+    pub async fn admit_binding(
+        &self,
+        claim: &Claim,
+        recipe: &RequestBinding,
+    ) -> Result<(), engine::Cause> {
+        let (tx, state, now) = self.locked(&claim.scope).await?;
+        Self::current(&state, claim, now).require()?;
+        if let Some(id) = state.bindings.get(&state.work) {
+            let saved = frozen::binding(&tx, &claim.scope, id).await?;
+            if &saved != recipe {
+                return Err(error("dispatch changed the accepted work recipe").into());
+            }
+            return Ok(tx.commit().await?);
+        }
+        Err(error("accepted work recipe is missing").into())
     }
 
     /// Acknowledges an ordered event only after commit. Exact replay is idempotent.
-    pub async fn persist(&self, claim: &Claim, event: Event) -> Result<(), DbErr> {
-        let (tx, mut state, now) = self.locked(&claim.scope).await?;
+    pub async fn persist(&self, claim: &Claim, event: Event) -> Result<(), engine::Cause> {
+        claim.scope.validate()?;
         if event.attempt_id != claim.attempt {
-            return Err(error("event attempt mismatch"));
+            return Err(error("event attempt mismatch").into());
         }
-        let current = Self::current(&state, claim, now);
+        let tx = self.db.begin().await?;
+        let current = Self::lock_claim(&tx, claim).await?;
         // Late provider/tool evidence is inspectable truth, not permission to
         // execute or publish. Never acknowledge a stale dispatch or candidate.
-        if !current
-            && !matches!(
-                event.kind,
-                engine::EventKind::ProviderReturned(_) | engine::EventKind::ToolReturned { .. }
-            )
-        {
-            return Err(error("stale event"));
+        if !event.kind.survives_loss_of_currency() {
+            current.require()?;
         }
-        let attempt = state
-            .attempts
-            .iter_mut()
-            .find(|a| a.id == claim.attempt && a.revision == claim.revision)
-            .ok_or_else(|| error("unknown attempt"))?;
-        let events = &mut attempt.events;
-        if event.sequence == 0 {
-            return Err(error("invalid event sequence"));
+        let current = current.is_current();
+        let blocked = current && matches!(event.kind, engine::EventKind::ProviderBlocked { .. });
+        use entities::chat_attempt::Column as A;
+        let known = entities::chat_attempt::Entity::find()
+            .select_only()
+            .column(A::Id)
+            .filter(control::chat_scope(&claim.scope))
+            .filter(A::Id.eq(claim.attempt.as_str()))
+            .filter(A::Revision.eq(
+                i64::try_from(claim.revision).map_err(conversion_error("claim revision", "i64"))?,
+            ))
+            .into_tuple::<String>()
+            .one(&tx)
+            .await?;
+        if known.is_none() {
+            return Err(error("unknown attempt").into());
         }
-        if let Some(previous) = events.get((event.sequence - 1) as usize) {
-            if serde_json::to_value(previous).unwrap() != serde_json::to_value(&event).unwrap() {
-                return Err(error("event collision"));
-            }
-        } else if event.sequence == events.len() as u64 + 1 {
-            events.push(event);
+        records::append(&tx, &claim.scope, records::Owner::Chat, &event, current).await?;
+        if blocked {
+            let row = conversation::Entity::find_by_id(keys(&claim.scope))
+                .one(&tx)
+                .await?
+                .ok_or_else(|| error("conversation not found"))?;
+            let mut state = Self::conversation_control(&tx, &claim.scope, row).await?;
+            state.end_active_attempt(AttemptFailure::ProviderBlocked)?;
+            Ok(Self::save(tx, &claim.scope, &state).await?)
         } else {
-            return Err(error("event sequence gap"));
+            Ok(tx.commit().await?)
         }
-        Self::save(tx, &claim.scope, &state).await
     }
 
-    /// Publishes a candidate only if its acknowledged evidence and claim still match.
-    pub async fn commit(&self, claim: &Claim, candidate: &Candidate) -> Result<(), DbErr> {
-        self.commit_inner(claim, candidate, None).await
+    /// Retains the reserved terminal answer as visibly incomplete work. It is
+    /// not a published completion and automatic delivery recovery cannot
+    /// reopen it; the physician's explicit Try again rearms the same work.
+    pub async fn retain_partial_authorized(
+        &self,
+        claim: &Claim,
+        turn: &Turn,
+        authority: &mut dyn Authority,
+    ) -> Result<(), engine::Cause> {
+        let (tx, mut state, _) = self.locked(&claim.scope).await?;
+        Self::conversation_events(&tx, &claim.scope, &mut state).await?;
+        authority
+            .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
+            .await
+            .map_err(|e| error(&e))?;
+        let now = now(&tx).await?;
+        Self::current(&state, claim, now).require()?;
+        let attempt = state.attempts.last().unwrap();
+        if !matches!(attempt.events.last().map(|e| &e.kind), Some(engine::EventKind::Candidate { text }) if text == &turn.text())
+        {
+            return Err(error("partial result lacks durable evidence").into());
+        }
+        let records = records::ordered(
+            &tx,
+            &claim.scope,
+            records::Owner::Chat,
+            &state.work_attempt_ids(),
+        )
+        .await?;
+        let recipe = state
+            .bindings
+            .get(&state.work)
+            .ok_or_else(|| error("accepted recipe missing"))?;
+        let recipe = frozen::binding(&tx, &claim.scope, recipe).await?;
+        if !engine::pending_final(
+            &recipe,
+            records.iter(),
+            state.budget_resume_after,
+            &state.message_sources(),
+        )
+        .map_err(RuntimeError::PendingFinal)?
+        .is_some_and(|saved| saved.turn == *turn)
+        {
+            return Err(error("partial result differs from recorded terminal turn").into());
+        }
+        let answer = turn.text();
+        let attempt = state.attempts.last_mut().unwrap();
+        attempt.status = AttemptStatus::Held;
+        state.end_run(RunOutcome::Held {
+            reason: HoldReason::Limit,
+        })?;
+        state.last_activity_at = now;
+        if !answer.trim().is_empty() {
+            state.messages.push(Message {
+                role: MessageRole::Assistant {
+                    id: format!("{}:reply", claim.attempt),
+                    partial: true,
+                },
+                text: answer,
+            });
+        }
+        Ok(Self::save(tx, &claim.scope, &state).await?)
     }
 
     /// Locks the real auth owner on this same transaction through reply publication.
     pub async fn commit_authorized(
         &self,
         claim: &Claim,
-        candidate: &Candidate,
+        turn: &Turn,
         authority: &mut dyn Authority,
-    ) -> Result<(), DbErr> {
-        self.commit_inner(claim, candidate, Some(authority)).await
-    }
-
-    async fn commit_inner(
-        &self,
-        claim: &Claim,
-        candidate: &Candidate,
-        authority: Option<&mut dyn Authority>,
-    ) -> Result<(), DbErr> {
+    ) -> Result<(), engine::Cause> {
         let (tx, mut state, _) = self.locked(&claim.scope).await?;
-        if let Some(authority) = authority {
-            authority
-                .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
-                .await
-                .map_err(|e| error(&e))?;
-        } else if state.session_hash.is_some() {
-            return Err(error("hosted publication requires transactional authority"));
-        }
+        Self::conversation_events(&tx, &claim.scope, &mut state).await?;
+        authority
+            .lock_publication(&tx, &claim.scope, state.session_hash.as_deref())
+            .await
+            .map_err(|e| error(&e))?;
         let now = now(&tx).await?;
-        if !Self::current(&state, claim, now) {
-            return Err(error("stale completion"));
-        }
+        Self::current(&state, claim, now).require()?;
         let attempt = state.attempts.last_mut().unwrap();
-        if !matches!(attempt.events.last().map(|e| &e.kind), Some(engine::EventKind::Candidate { text }) if text == &candidate.text)
+        if !matches!(attempt.events.last().map(|e| &e.kind), Some(engine::EventKind::Candidate { text }) if text == &turn.text())
         {
-            return Err(error("candidate lacks durable evidence"));
+            return Err(error("candidate lacks durable evidence").into());
         }
-        let answer = terminal_answer(&attempt.events)?;
-        attempt.status = "completed".into();
-        state.status = "completed".into();
+        let terminal = state
+            .attempts
+            .iter()
+            .filter(|saved| saved.revision == claim.revision)
+            .flat_map(|saved| &saved.events)
+            .rev()
+            .find_map(|event| match &event.kind {
+                engine::EventKind::ProviderStarted { .. } => Some(None),
+                engine::EventKind::ProviderReturned(retained) => Some(Some(retained)),
+                engine::EventKind::ProviderObservation { .. }
+                | engine::EventKind::ProviderFailed { .. }
+                | engine::EventKind::TransportRetry { .. }
+                | engine::EventKind::ToolStarted(_)
+                | engine::EventKind::ToolReturned { .. }
+                | engine::EventKind::ProviderBlocked { .. }
+                | engine::EventKind::ContextRejected
+                | engine::EventKind::Candidate { .. }
+                | engine::EventKind::WindowOpened { .. } => None,
+            })
+            .flatten()
+            .ok_or_else(|| error("candidate lacks a retained terminal turn"))?;
+        if terminal != turn {
+            return Err(error("completion differs from recorded terminal turn").into());
+        }
+        let answer = terminal_answer(terminal)?;
+        let attempt = state.attempts.last_mut().unwrap();
+        attempt.status = AttemptStatus::Completed;
+        state.end_run(RunOutcome::Completed)?;
         state.last_activity_at = now;
         state.messages.push(Message {
-            role: "assistant".into(),
+            role: MessageRole::Assistant {
+                id: format!("{}:reply", claim.attempt),
+                partial: false,
+            },
             text: answer,
         });
-        Self::save(tx, &claim.scope, &state).await
-    }
-
-    /// Ends only the named still-open attempt. Failure does not restart itself.
-    pub async fn interrupt(&self, claim: &Claim, failed: bool) -> Result<(), DbErr> {
-        let (tx, mut state, _) = self.locked(&claim.scope).await?;
-        if state
-            .attempts
-            .last()
-            .is_some_and(|a| a.id == claim.attempt && a.status == "active")
-        {
-            state.attempts.last_mut().unwrap().status =
-                if failed { "failed" } else { "interrupted" }.into();
-            state.status = if failed { "failed" } else { "pending" }.into();
-        }
-        Self::save(tx, &claim.scope, &state).await
-    }
-
-    /// Intentional Stop is durable and cannot be released by restart or late output.
-    pub async fn stop(&self, scope: &Scope) -> Result<(), DbErr> {
-        let (tx, mut state, _) = self.locked(scope).await?;
-        if state.status != "completed" {
-            if let Some(a) = state.attempts.last_mut().filter(|a| a.status == "active") {
-                a.status = "cancelled".into();
-            }
-            state.status = "held".into();
-        }
-        Self::save(tx, scope, &state).await
-    }
-
-    /// Explicit physician resume of held or failed work; never repeats completed work.
-    pub async fn resume(&self, scope: &Scope) -> Result<(), DbErr> {
-        let (tx, mut state, _) = self.locked(scope).await?;
-        if state.status == "held" || state.status == "failed" {
-            state.status = "pending".into();
-            state.failures = 0;
-        }
-        Self::save(tx, scope, &state).await
+        Ok(Self::save(tx, &claim.scope, &state).await?)
     }
 
     /// Hosted Try again. Resumes only the named work while it is failed or held
-    /// and its latest attempt is `expected_run_id`, so a stale page never
+    /// and its current run is `expected_run_id`, so a stale page never
     /// restarts newer work and completed work is never reopened. A blank field
     /// is refused. The receipt is saved with the change: the same `key` and
     /// target answers `Duplicate`.
@@ -720,9 +1270,9 @@ impl Store {
         session_hash: Vec<u8>,
         work_item_id: &str,
         expected_run_id: &str,
-    ) -> Result<Resumed, DbErr> {
+    ) -> Result<Resumed, RuntimeError> {
         if session_hash.len() != 32 {
-            return Err(error("invalid session reference"));
+            return Err(error("invalid session reference").into());
         }
         if [
             key,
@@ -759,26 +1309,32 @@ impl Store {
             .one(&tx)
             .await?
         else {
-            // Dropping the transaction rolls the receipt back.
-            return Ok(Resumed::Refused);
+            return Self::resume_revision(tx, scope, session_hash, work_item_id, expected_run_id)
+                .await;
         };
-        let mut state: Conversation =
-            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
-        let resumable = matches!(state.status.as_str(), "failed" | "held")
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
+        let resumable = state.status.resumable()
             && state.work == work_item_id
-            && state
-                .attempts
-                .last()
-                .is_some_and(|attempt| attempt.id == expected_run_id);
-        let Some(input_id) = state.input_id.clone().filter(|_| resumable) else {
+            && state.run().is_some_and(|run| run.id == expected_run_id);
+        let Some(input_id) = state.input_id().filter(|_| resumable).map(str::to_owned) else {
             return Ok(Resumed::Refused);
         };
-        state.status = "pending".into();
-        state.failures = 0;
+        Self::conversation_events(&tx, scope, &mut state).await?;
+        state.budget_resume_after = engine::recovery::resume_boundary(
+            state.work_attempts().flat_map(|attempt| &attempt.events),
+        );
+        state.failures = state
+            .runs
+            .get_mut(&state.work)
+            .ok_or_else(|| error("missing work lifecycle"))?
+            .start(Uuid::new_v4().to_string())?;
+        state.status = WorkStatus::Pending;
         state.dispatch_after = 0;
         state.session_hash = Some(session_hash);
         Self::save(tx, scope, &state).await?;
-        Ok(Resumed::Pending { input_id })
+        Ok(Resumed::Pending {
+            delivery: delivery::Delivery::chat_turn(scope.clone(), input_id),
+        })
     }
 
     /// Hosted Stop. Holds the named work until Resume or newer input, and
@@ -797,9 +1353,9 @@ impl Store {
         key: &str,
         session_hash: Vec<u8>,
         work_item_id: &str,
-    ) -> Result<Stopped, DbErr> {
+    ) -> Result<Stopped, RuntimeError> {
         if session_hash.len() != 32 {
-            return Err(error("invalid session reference"));
+            return Err(error("invalid session reference").into());
         }
         if [
             key,
@@ -837,43 +1393,27 @@ impl Store {
         else {
             return Ok(Stopped::Refused);
         };
-        let mut state: Conversation =
-            serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
+        let mut state = Self::conversation_control(&tx, scope, row).await?;
         // Another press on work that is already held, from a page that has
         // not caught up or a second tab, finds what it asked for. Nothing
         // changes, so its receipt is not kept.
-        if state.status == "held" && state.work == work_item_id {
+        if state.status == WorkStatus::Held && state.work == work_item_id {
             return Ok(Stopped::Duplicate);
         }
         // A failed turn stays Try again. Stop does not turn it into a hold.
-        if !matches!(state.status.as_str(), "pending" | "active") || state.work != work_item_id {
+        if !state.status.running() || state.work != work_item_id {
             return Ok(Stopped::Refused);
         }
         if let Some(attempt) = state
             .attempts
             .last_mut()
-            .filter(|attempt| attempt.status == "active")
+            .filter(|attempt| attempt.status == AttemptStatus::Active)
         {
-            attempt.status = "cancelled".into();
-        } else {
-            // Stop before a claim still needs a run Resume can name. The last
-            // run may be the one an earlier hold named and Resume already
-            // took, so this hold gets its own run, or Resume would be a replay.
-            state.attempts.push(Attempt {
-                id: Uuid::new_v4().to_string(),
-                predecessor: state
-                    .attempts
-                    .last()
-                    .filter(|a| a.work == state.work)
-                    .map(|a| a.id.clone()),
-                work: state.work.clone(),
-                revision: state.revision,
-                status: "cancelled".into(),
-                expires: 0,
-                events: vec![],
-            });
+            attempt.status = AttemptStatus::Cancelled;
         }
-        state.status = "held".into();
+        state.end_run(RunOutcome::Held {
+            reason: HoldReason::Stopped,
+        })?;
         state.session_hash = Some(session_hash);
         Self::save(tx, scope, &state).await?;
         Ok(Stopped::Held)
@@ -921,13 +1461,17 @@ impl Store {
             .await?;
         let mut chats = Vec::with_capacity(rows.len());
         for row in rows {
-            let state: Conversation =
-                serde_json::from_value(row.state).map_err(|_| error("corrupt conversation"))?;
-            let Some(first) = state.messages.iter().find(|m| m.role == "user") else {
+            let chat = row.chat.clone();
+            let state = control::conversation(row, vec![])?;
+            let Some(first) = state
+                .messages
+                .iter()
+                .find(|m| matches!(m.role, MessageRole::User { .. }))
+            else {
                 continue;
             };
             chats.push(ChatSummary {
-                chat: row.chat,
+                chat,
                 first_message: first.text.clone(),
                 opened_at: state.opened_at,
                 last_activity_at: Ord::max(state.last_activity_at, state.opened_at),
@@ -960,12 +1504,7 @@ impl Store {
             chat: String::new(),
         });
         let columns = [C::Practice, C::Physician, C::Workspace, C::Chat];
-        let status = Expr::col(C::State).cast_json_field("status");
-        let expires = Expr::col(C::State)
-            .get_json_field("attempts")
-            .get_json_field(-1_i32)
-            .cast_json_field("expires")
-            .cast_as(Alias::new("bigint"));
+        let expired = control::expired_chat();
         let mut query = conversation::Entity::find()
             .select_only()
             .columns(columns)
@@ -976,10 +1515,10 @@ impl Store {
                 Expr::val(after.chat),
             ])))
             .filter(
-                Condition::any().add(status.clone().eq("pending")).add(
+                Condition::any().add(C::Status.eq(WorkStatus::Pending)).add(
                     Condition::all()
-                        .add(status.eq("active"))
-                        .add(expires.lte(database_clock())),
+                        .add(C::Status.eq(WorkStatus::Active))
+                        .add(expired),
                 ),
             )
             .limit(maximum as u64);
@@ -1003,20 +1542,10 @@ impl Store {
 }
 
 /// The physician-visible answer of a completed attempt: the assistant text of
-/// the recorded provider turn that ended it, in order. The candidate spans
-/// every round, including narration written before a tool call; that stays in
-/// the attempt's events and is never published. The ending turn must be the
-/// call-free `ProviderReturned` recorded just before the candidate, and its
-/// text must not be blank. Earlier prose is never substituted.
-fn terminal_answer(events: &[Event]) -> Result<String, DbErr> {
-    let terminal = events
-        .len()
-        .checked_sub(2)
-        .and_then(|index| events.get(index))
-        .map(|event| &event.kind);
-    let Some(engine::EventKind::ProviderReturned(turn)) = terminal else {
-        return Err(error("candidate lacks a recorded terminal turn"));
-    };
+/// the exact retained terminal provider turn, in order. The publication owner
+/// validates its provenance and current candidate, including a successor that
+/// recovers the same paid result. A terminal answer has no calls or blank text.
+fn terminal_answer(turn: &Turn) -> Result<String, DbErr> {
     let mut answer = String::new();
     for item in &turn.items {
         match item {
@@ -1035,7 +1564,12 @@ fn terminal_answer(events: &[Event]) -> Result<String, DbErr> {
 #[async_trait]
 pub trait Authority: Send {
     /// Revalidates physician/session and patient workspace access.
-    async fn check(&mut self, scope: &Scope) -> Result<(), String>;
+    async fn check(
+        &mut self,
+        tx: &PublicationTransaction,
+        scope: &Scope,
+        session_hash: Option<&[u8]>,
+    ) -> Result<(), String>;
     /// Hold the auth owner's revocation locks until the supplied transaction commits.
     /// Default is fail-closed, never a separate preflight substituted for a fence.
     async fn lock_publication(
@@ -1051,10 +1585,8 @@ pub trait Authority: Send {
 /// Transaction borrowed by the auth owner, never a separate connection.
 pub type PublicationTransaction = sea_orm::DatabaseTransaction;
 
-/// Physician Host for the one shared execution loop. The only tool is
-/// `skill_view`, offered when `skills` is supplied; other tools stay
-/// unavailable until their real product effect/read owners exist, never fake
-/// success.
+/// Ordinary physician chat on the shared execution loop. The product owns
+/// skill admission, workspace access and the retained chart.
 pub struct PhysicianHost<A> {
     /// Durable owner.
     pub store: Store,
@@ -1062,105 +1594,282 @@ pub struct PhysicianHost<A> {
     pub claim: Claim,
     /// Current authorization owner.
     pub authority: A,
-    /// Product-selected versioned instructions, including the skill catalog
-    /// when `skills` is set (see [`PhysicianSkills::instructions`]).
-    pub instructions: String,
-    /// The process's loaded skill catalog. `None` offers no tools.
-    pub skills: Option<PhysicianSkills>,
+}
+
+impl Message {
+    /// Identity and exact authored content from the canonical transcript.
+    pub fn source(&self) -> engine::ProductMessage {
+        let (id, role) = match &self.role {
+            MessageRole::User { id, .. } => (id, engine::history::Role::User),
+            MessageRole::Assistant { id, .. } => (id, engine::history::Role::Assistant),
+        };
+        engine::ProductMessage {
+            id: id.clone(),
+            role,
+            text: self.text.clone(),
+        }
+    }
+    /// A retained terminal answer that did not complete the accepted work.
+    /// Physician input is never partial.
+    pub fn partial(&self) -> bool {
+        matches!(self.role, MessageRole::Assistant { partial: true, .. })
+    }
+    /// Model-visible history metadata: the partial flag, and authorship as the
+    /// role with its identity. Authorship never repeats the partial flag.
+    fn history_metadata(&self) -> Value {
+        let authorship = match &self.role {
+            MessageRole::User { id, work, revision } => {
+                serde_json::json!({"role": "user", "id": id, "work": work, "revision": revision})
+            }
+            MessageRole::Assistant { id, .. } => serde_json::json!({"role": "assistant", "id": id}),
+        };
+        serde_json::json!({"partial": self.partial(), "authorship": authorship})
+    }
+    fn items(&self) -> impl Iterator<Item = Item> {
+        let authored = Item::ProductMessage(self.source());
+        let partial = self.partial().then(engine::history::partial_answer);
+        std::iter::once(authored).chain(partial)
+    }
+}
+
+/// Exact position in the authored transcript, also used by read_conversation.
+fn current_work_start(state: &Conversation) -> Result<usize, DbErr> {
+    state.messages.iter().position(|message| matches!(&message.role, MessageRole::User { work, .. } if work == &state.work))
+        .ok_or_else(|| error("accepted work input is missing"))
+}
+
+fn earlier_messages(start: usize) -> Option<Item> {
+    (start > 0).then(engine::history::earlier_messages)
 }
 
 #[async_trait]
-impl<A: Authority> Host for PhysicianHost<A> {
-    async fn prepare(&mut self, transcript: &[Item], _: &Usage) -> Result<Context, String> {
-        self.assert_current().await?;
-        let state = self
-            .store
-            .conversation(&self.claim.scope)
-            .await
-            .map_err(|e| e.to_string())?;
-        let items = if transcript.is_empty() {
-            state
-                .messages
-                .into_iter()
-                .map(|m| Item::Message {
-                    role: m.role,
-                    text: m.text,
-                })
-                .collect()
-        } else {
-            // The engine returns the full prepared context, not only its delta.
-            transcript.to_vec()
-        };
-        Ok(Context {
-            instructions: self.instructions.clone(),
-            items,
-            tools: self
-                .skills
-                .as_ref()
-                .map(|_| vec![PhysicianSkills::tool()])
-                .unwrap_or_default(),
+impl<A: Authority> Product for PhysicianHost<A> {
+    async fn message_sources(
+        &mut self,
+    ) -> Result<Option<Vec<engine::ProductMessage>>, engine::Cause> {
+        Ok(Some(self.store.message_sources(&self.claim.scope).await?))
+    }
+
+    async fn admit_binding(&mut self, recipe: &RequestBinding) -> Result<(), engine::Cause> {
+        self.store
+            .authorize(&self.claim.scope, &mut self.authority)
+            .await?;
+        self.store.admit_binding(&self.claim, recipe).await?;
+        Ok(())
+    }
+
+    fn read_only(&self, name: &str) -> bool {
+        crate::physician_chat::read_only(name)
+    }
+
+    fn read_result(&mut self, id: &str) -> harness::engine::recipe::ToolFuture<Option<String>> {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let id = id.to_owned();
+        Box::pin(async move {
+            store.assert_current(&claim).await?;
+            let (state, records) = store.work_snapshot(&claim.scope).await?;
+            engine::results::resolve(records.iter(), &id, &state.message_sources())
+                .map_err(Into::into)
         })
     }
-    async fn assert_current(&mut self) -> Result<(), String> {
-        self.authority.check(&self.claim.scope).await?;
+    async fn assert_current(&mut self) -> Result<(), engine::Cause> {
         self.store
-            .assert_current(&self.claim)
-            .await
-            .map_err(|e| e.to_string())
+            .authorize(&self.claim.scope, &mut self.authority)
+            .await?;
+        self.store.assert_current(&self.claim).await?;
+        Ok(())
     }
-    async fn persist(&mut self, event: Event) -> Result<(), String> {
+    async fn persist(&mut self, event: Event) -> Result<(), engine::Cause> {
         self.store
             .persist(&self.claim, event)
             .await
-            .map_err(|e| e.to_string())
+            .map_err(persistence_failure)?;
+        Ok(())
     }
-    async fn admit(&mut self, call: &Invocation, arguments: &Value) -> Result<Admission, String> {
-        // The engine has already rechecked currentness; reads change nothing.
-        Ok(match &self.skills {
-            Some(skills) => skills.admit(call, arguments),
-            None => Admission::Deny("This hosted tool is not yet available".into()),
+    fn execute(
+        &mut self,
+        call: &Invocation,
+        arguments: Value,
+    ) -> harness::engine::recipe::ToolFuture {
+        let store = self.store.clone();
+        let claim = self.claim.clone();
+        let call = call.clone();
+        Box::pin(async move {
+            store.assert_current(&claim).await?;
+            if working_notes::is_tool(&call.name) {
+                let state = store.conversation(&claim.scope).await?;
+                let note_call = Invocation {
+                    id: call.id.clone(),
+                    name: call.name.clone(),
+                    arguments,
+                };
+                let attempt = state
+                    .attempts
+                    .iter()
+                    .find(|attempt| attempt.id == claim.attempt)
+                    .ok_or("missing hosted attempt")?;
+                return working_notes::execute(
+                    &attempt.work,
+                    &note_call,
+                    state.attempts.iter().flat_map(|attempt| {
+                        attempt
+                            .events
+                            .iter()
+                            .map(|event| (attempt.work.as_str(), event))
+                    }),
+                )?
+                .ok_or_else(|| "working note tool was not handled".into());
+            }
+            let (state, records) = store.work_snapshot(&claim.scope).await?;
+            if engine::history::is_tool(&call.name) {
+                let messages: Vec<_> = state
+                    .messages
+                    .iter()
+                    .map(|message| engine::history::Message {
+                        id: message.source().id,
+                        role: match message.role {
+                            MessageRole::User { .. } => engine::history::Role::User,
+                            MessageRole::Assistant { .. } => engine::history::Role::Assistant,
+                        },
+                        text: message.text.clone(),
+                        metadata: message.history_metadata(),
+                    })
+                    .collect();
+                let page = match engine::history::execute(
+                    &call.name,
+                    &arguments,
+                    &messages,
+                    records.iter(),
+                ) {
+                    Ok(page) => page,
+                    Err(reason) => return Ok(ToolOutcome::refused(reason)),
+                };
+                return Ok(ToolOutcome::History(page));
+            }
+            if matches!(call.name.as_str(), SEARCH_TOOL | READ_TOOL) {
+                let chart = match ChartRequest::parse(&call.name, &arguments, ChartScope::Chat) {
+                    Ok(chart) => chart,
+                    Err(reason) => {
+                        return Ok(ToolOutcome::refused(reason.to_string()));
+                    }
+                };
+                let workspace = &claim.scope.workspace;
+                let observation = store.chart_observation(workspace, &chart).await?;
+                return chart
+                    .run(workspace, observation.version, &observation.sources)
+                    .map_err(Into::into);
+            }
+            let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
+            Ok(skills.execute(&call.name, &arguments))
         })
     }
-    async fn execute(&mut self, call: &Invocation, arguments: Value) -> Result<String, String> {
-        match &self.skills {
-            Some(skills) => Ok(skills.execute(call, &arguments)),
-            None => Err("No hosted tool effect owner is configured".into()),
-        }
+    async fn finish(&mut self, turn: &Turn) -> Result<Finish, engine::Cause> {
+        self.assert_current().await?;
+        self.store
+            .commit_authorized(&self.claim, turn, &mut self.authority)
+            .await?;
+        Ok(Finish::Committed)
+    }
+
+    async fn finish_partial(
+        &mut self,
+        turn: &Turn,
+        _backstops: &[engine::LimitBackstop],
+    ) -> Result<(), engine::Cause> {
+        self.assert_current().await?;
+        self.store
+            .retain_partial_authorized(&self.claim, turn, &mut self.authority)
+            .await?;
+        Ok(())
+    }
+
+    async fn window_seed(&mut self) -> Result<harness::engine::WindowSeed, engine::Cause> {
+        self.assert_current().await?;
+        let state = self.store.conversation(&self.claim.scope).await?;
+        let start = current_work_start(&state)?;
+        let mut seed: Vec<_> = earlier_messages(start).into_iter().collect();
+        seed.extend(state.messages[start..].iter().flat_map(Message::items));
+        let note_references =
+            working_notes::references(state.attempts.iter().flat_map(|attempt| {
+                attempt
+                    .events
+                    .iter()
+                    .map(|event| (attempt.work.as_str(), event))
+            }))?;
+        Ok(engine::WindowSeed {
+            items: seed,
+            note_references,
+        })
     }
 }
 
 impl<A: Authority> PhysicianHost<A> {
-    /// Executes through the shared harness, then applies the product publication fence.
-    pub async fn run(
+    /// Hydrates one admitted recipe, then publishes through the product fence.
+    pub async fn run<P: Provider>(
         &mut self,
-        provider: &mut dyn engine::Provider,
-        limits: &engine::Limits,
+        provider: &mut P,
+        limits: engine::RunLimits,
         cancel: &engine::Cancellation,
-    ) -> Result<(), String> {
-        let attempt = self.claim.attempt.clone();
-        let result = engine::run(provider, self, &attempt, vec![], limits, cancel).await;
-        match result {
-            Ok(candidate) => {
-                self.assert_current().await?;
-                self.store
-                    .commit_authorized(&self.claim, &candidate, &mut self.authority)
-                    .await
-                    .map_err(|e| e.to_string())
+    ) -> Result<(), engine::Failure> {
+        self.assert_current().await.map_err(engine::Failure::Host)?;
+        let (state, records) = self
+            .store
+            .work_snapshot(&self.claim.scope)
+            .await
+            .map_err(|error| engine::Failure::Host(error.into()))?;
+        let recipe = state
+            .bindings
+            .get(&state.work)
+            .ok_or_else(|| engine::Failure::Host("accepted work recipe is missing".into()))?;
+        let mut request = self
+            .store
+            .frozen_binding(&self.claim.scope, recipe)
+            .await
+            .map_err(|cause| engine::Failure::Host(cause.into()))?
+            .request(Vec::new());
+        let messages = state.messages.as_slice();
+        request.items.clear();
+        let mut pending: Vec<engine::AcceptedInput> = Vec::new();
+        for message in messages {
+            if let MessageRole::User { id, work, .. } = &message.role
+                && work == &state.work
+            {
+                pending.push(engine::AcceptedInput {
+                    id: id.clone(),
+                    items: Vec::new(),
+                });
             }
-            Err(failure) => {
-                // A reached bound would be reached again, so the turn ends
-                // as couldn't finish. Any other failure leaves the attempt
-                // leased: Stop has already cancelled it, and an
-                // infrastructure failure stays active so `retry_delivery` or
-                // lease expiry counts it even if this process dies first.
-                if matches!(failure.failure, engine::Failure::Limit(_)) {
-                    self.store
-                        .interrupt(&self.claim, true)
-                        .await
-                        .map_err(|e| e.to_string())?;
-                }
-                Err(format!("execution ended: {:?}", failure.failure))
-            }
+            let target = match pending.last_mut() {
+                Some(input) => &mut input.items,
+                None => &mut request.items,
+            };
+            target.extend(message.items());
         }
+        let work_start =
+            current_work_start(&state).map_err(|cause| engine::Failure::Host(cause.into()))?;
+        let messages = state.message_sources();
+        let attempt = self.claim.attempt.clone();
+        let work = request.freeze()?.recover(
+            &attempt,
+            engine::recovery::Records {
+                events: records.iter().map(Into::into).collect(),
+                allowance_after: state.budget_resume_after,
+            },
+            engine::recovery::Messages {
+                sources: &messages,
+                partial: state.messages[work_start..]
+                    .iter()
+                    .rev()
+                    .find(|message| message.partial())
+                    .map(|message| message.source().id),
+            },
+            engine::recovery::Inputs {
+                accepted: pending,
+                source_feedback: None,
+            },
+        )?;
+        let result = work.run(provider, self, limits, cancel).await;
+        result.map(|_| ())
     }
 }

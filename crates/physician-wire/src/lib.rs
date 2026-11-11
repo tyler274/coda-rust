@@ -48,90 +48,6 @@ pub struct TodayListResponse {
     #[serde(default)]
     /// The `incomplete` value.
     pub incomplete: Option<bool>,
-    #[serde(default)]
-    /// Active simulation status and investor metric when running in simulation mode.
-    pub simulation: Option<SimulationStatus>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-/// Investor metric for a simulation run: items the physician touched per 100 patients per week.
-pub struct InvestorMetricWire {
-    /// Count of items directly touched by the physician during the run.
-    pub physician_touched_items: u32,
-    /// Count of episodes/reviews handled ambiently by Coda without physician touch.
-    pub ambient_handled_items: u32,
-    /// Number of patients on the simulated panel.
-    pub panel_size: u32,
-    /// Duration of the simulation run in weeks.
-    pub simulated_weeks: f64,
-    /// Normalized investor metric: `(physician_touched_items / (panel_size * simulated_weeks)) * 100.0`.
-    pub items_per_100_patients_per_week: f64,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-/// Aggregate investor metric across all simulation runs in the session.
-pub struct SimulationAggregateMetricWire {
-    /// Total simulation runs executed in this session.
-    pub runs_count: u32,
-    /// Total physician-touched items across all runs.
-    pub total_physician_touched_items: u32,
-    /// Total ambiently handled items across all runs.
-    pub total_ambient_handled_items: u32,
-    /// Total patient-weeks simulated across all runs.
-    pub total_patient_weeks: f64,
-    /// Aggregate items the physician touched per 100 patients per week across runs.
-    pub items_per_100_patients_per_week: f64,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// Metadata for one rerunnable simulation scenario.
-pub struct SimulationScenarioWire {
-    /// Scenario key (`connected-walk`, `reviewability`, etc.).
-    pub key: String,
-    /// Short human-readable scenario title.
-    pub label: String,
-    /// Detailed description of what the scenario exercises.
-    pub description: String,
-    /// Simulated duration in days.
-    pub simulated_days: u32,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// Summary of one synthetic patient on Roger's panel.
-pub struct SimulationPanelPatientWire {
-    /// Patient workspace identifier.
-    pub patient_workspace_id: String,
-    /// Patient display name.
-    pub display_name: String,
-    /// Date of birth (`YYYY-MM-DD`).
-    pub birth_date: String,
-    /// Medical record number.
-    pub mrn: String,
-    /// Clinical role in the simulation scenarios.
-    pub role_summary: String,
-    /// Whether the simulated patient takes no unprompted action.
-    pub passive_patient: bool,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
-/// Simulation status and investor metric exposed on `/today`, `/patient-workspaces/{id}`, and `/local-proof/simulations`.
-pub struct SimulationStatus {
-    /// Active scenario key.
-    pub active_scenario_key: String,
-    /// Human-readable label for the active scenario.
-    pub active_scenario_label: String,
-    /// Current simulated clock (`ISO-8601`).
-    pub current_time: String,
-    /// Investor metric for the current run.
-    pub investor_metric: InvestorMetricWire,
-    /// Aggregate investor metric across runs in this session.
-    pub aggregate_metric: SimulationAggregateMetricWire,
-    #[serde(default)]
-    /// Available scenarios Roger can run or rerun.
-    pub scenarios: Vec<SimulationScenarioWire>,
-    #[serde(default)]
-    /// Synthetic patients on Roger's panel.
-    pub panel_patients: Vec<SimulationPanelPatientWire>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -208,10 +124,12 @@ pub struct WorkspaceReply {
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The latest accepted revision of a saved reply draft and how it stands.
 pub struct ReplyRevisionRun {
-    /// The revision command's key.
+    /// Stable execution identity.
     pub run_id: String,
-    /// `pending`, `active`, `completed`, `failed` or `superseded`.
+    /// `pending`, `active`, `completed`, `held`, `failed` or `cancelled`.
     pub status: String,
+    /// Present only while the saved draft permits this run to continue.
+    pub resume_target: Option<WorkResumeTarget>,
 }
 
 impl ReplyRevisionRun {
@@ -274,7 +192,7 @@ pub struct TodayRow {
     pub resume_target: Option<WorkResumeTarget>,
 }
 
-#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 /// The `WorkResumeTarget` value exchanged by this crate.
 pub struct WorkResumeTarget {
     /// The `work_item_id` value.
@@ -521,9 +439,6 @@ pub struct PatientWorkspaceResponse {
     /// Undecided medication recommendations held out of the active plan.
     pub undecided_recommendations: Vec<WorkspaceMedicationRecommendation>,
     #[serde(default)]
-    /// Active simulation status and investor metric when running in simulation mode.
-    pub simulation: Option<SimulationStatus>,
-    #[serde(default)]
     /// The patient front-door link, versioned consent state, and review cadence (`ENG-44`).
     pub patient_link: Option<PatientLinkWire>,
     #[serde(default)]
@@ -739,14 +654,50 @@ pub struct ChatSnapshotResponse {
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
-/// One run the open chat snapshot names: the latest attempt once the turn is
-/// held, failed or answered.
+/// The run named by a chat snapshot once the turn is held, failed or answered.
 pub struct ChatRun {
-    /// The attempt id.
+    /// Stable execution identity, independent of attempts.
     pub run_id: String,
-    /// `held` while Stop is in force, `failed` when the turn couldn't finish,
-    /// or `completed` once it was answered.
-    pub state: String,
+    /// How the run ended, read from its `state` and that ending's fields.
+    #[serde(flatten)]
+    pub outcome: ChatRunOutcome,
+}
+
+#[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
+#[serde(tag = "state", rename_all = "snake_case")]
+/// The shared terminal run outcome a chat snapshot names, with each ending's data.
+pub enum ChatRunOutcome {
+    /// The run waits for the physician to continue it.
+    Held {
+        /// Why the run needs explicit continuation.
+        hold_reason: HoldReason,
+    },
+    /// Recovery gave up; Try again resumes the run.
+    Failed,
+    /// The run answered.
+    Completed {
+        /// The attempt that answered, so a reply can be matched to its
+        /// telemetry by attempt id.
+        attempt_id: String,
+    },
+}
+
+#[derive(Debug, Clone, Copy, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+/// Why a held chat run needs explicit continuation.
+pub enum HoldReason {
+    /// The physician stopped it; Resume continues it.
+    Stopped,
+    /// It reached its limit; Try again continues it.
+    Limit,
+    /// The provider refused to serve it; Try again continues it.
+    ProviderBlocked,
+    /// A reason this app version does not know. `#[serde(other)]` is here on
+    /// purpose: the site can be newer than an open app, the reason's own text
+    /// comes from the site in the conversation line, and the app treats it as
+    /// any hold that is not a stop. The site never writes this.
+    #[serde(other)]
+    Unrecognized,
 }
 
 #[derive(Debug, Clone, Deserialize, PartialEq, Eq)]
@@ -755,9 +706,7 @@ pub struct ChatSnapshot {
     #[serde(default)]
     /// The `conversation` value.
     pub conversation: Vec<ChatTurn>,
-    #[serde(default)]
-    /// The latest run when the turn is held, failed or answered. Older
-    /// servers omit it.
+    /// The held, failed or answered run, or an empty list when there is none.
     pub runs: Vec<ChatRun>,
 }
 
@@ -776,7 +725,6 @@ pub struct ChatTurn {
     #[serde(default)]
     /// On a mechanical "couldn't finish" or stopped line: the work Resume names.
     pub resume_target: Option<WorkResumeTarget>,
-    #[serde(default)]
     /// On a mechanical line while Coda is still writing: the work Stop names.
     pub stop_target: Option<WorkStopTarget>,
 }
@@ -1048,18 +996,17 @@ mod tests {
             })
         );
         assert_eq!(page.snapshot.runs[0].run_id, "r1");
-        assert_eq!(page.snapshot.runs[0].state, "failed");
-        let older: ChatSnapshotResponse =
-            serde_json::from_str(r#"{"snapshot": {"conversation": [{"text": "Hi"}]}}"#).unwrap();
-        assert_eq!(older.snapshot.conversation[0].kind, None);
-        assert_eq!(older.snapshot.conversation[0].resume_target, None);
-        assert_eq!(older.snapshot.conversation[0].stop_target, None);
+        assert_eq!(page.snapshot.runs[0].outcome, ChatRunOutcome::Failed);
+        assert!(
+            serde_json::from_str::<ChatSnapshotResponse>(r#"{"snapshot":{"conversation":[]}}"#)
+                .is_err()
+        );
     }
 
     #[test]
     fn reads_a_stop_target_on_a_running_turn() {
         let page: ChatSnapshotResponse = serde_json::from_str(
-            r#"{"snapshot": {"conversation": [{
+            r#"{"snapshot": {"runs": [], "conversation": [{
                 "text": "Coda is writing this response.",
                 "kind": "mechanical",
                 "stop_target": {"work_item_id": "w1"}

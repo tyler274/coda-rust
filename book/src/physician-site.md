@@ -1,6 +1,6 @@
 # The Chords physician site and its harness
 
-The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, consuming projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and the physician routes over the synthetic practice, with chat through the model execution described next; `--simulate` serves fixture patients through the local simulation, and `PHYSICIAN_UPSTREAM` forwards physician routes to the Node server. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`agent-skills`](/crates/agent-skills/src/lib.rs) reads the clinical skill catalog in [`skills/`](/skills) for [`harness`](/crates/harness/src/lib.rs); only hosted chat in `physician-worker` loads it (see [Skills in hosted chat](#skills-in-hosted-chat)); the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
+The Rust page is the Dioxus client in [`physician-app`](/crates/physician-app/src/lib.rs), mounting into `#main`, consuming projections through [`physician-wire`](/crates/physician-wire). [`physician-sample`](/crates/physician-sample/src/lib.rs) serves the page and the physician routes over the synthetic practice, with chat through the model execution described next; `PHYSICIAN_UPSTREAM` forwards physician routes to the Node server. Model execution is owned by [`local-product`](/crates/local-product/src/lib.rs); `api` mode is opt-in and never runs without an authorized key. [`agent-skills`](/crates/agent-skills/src/lib.rs) reads the clinical skill catalog in [`skills/`](/skills) for [`harness`](/crates/harness/src/lib.rs); physician chat loads it (see [Skills in physician chat](#skills-in-physician-chat)); the [`encoder`](/crates/encoder/src/lib.rs) runs the offline patient-text inference, and [`patient-work`](/crates/patient-work/src/lib.rs) models the dispatcher's grouping window.
 
 The web build calls the API at a loopback `?api=` URL when one is given, otherwise at `PHYSICIAN_API_URL` set at build time, otherwise at its own origin (under `/physician` when it is mounted there).
 
@@ -8,6 +8,77 @@ The web build calls the API at a loopback `?api=` URL when one is given, otherwi
 
 The <a href="/intent/physician%2Emd">physician spec</a> owns product intent; each
 feature's TLA+ model lives under <a href="/verification/README%2Emd">verification</a>.
+
+## Runtime schema cutover
+
+The harness cutover changes the shape of the Chords runtime tables. It is a
+clean cutover: nothing reads earlier runtime data, so these tables are reset
+once. Rust staging holds only synthetic physician runtime data. Ordinary
+releases never reset data, and neither startup nor `Store::migrate` performs
+this reset.
+
+This section states what the cutover needs. How staging stops writers, reaches
+the database, releases images and routes traffic is the infrastructure owner's
+procedure and is not described here.
+
+Before the site and the worker start, the settings in
+[Model settings](#model-settings) exist for both. Each refuses to start without
+them.
+
+The reset discards chats, drafts, revision history, attempts, command receipts,
+frozen execution inputs, provider cooldown and retained synthetic chart
+observations. It also drops `physician_runtime_migrations`, the runtime chain's
+ledger, so a reset leaves no ledger behind. It leaves account, session,
+practice, panel and front-door tables in place.
+
+```sql
+DROP TABLE IF EXISTS
+    physician_runtime_chat_attempts,
+    physician_runtime_chat_drafts,
+    physician_runtime_commands,
+    physician_runtime_conversations,
+    physician_runtime_events,
+    physician_runtime_migrations,
+    physician_runtime_provider_quota,
+    physician_runtime_recipes,
+    physician_runtime_skill_packages,
+    physician_runtime_reply_drafts,
+    physician_runtime_reply_revisions,
+    physician_runtime_revision_attempts,
+    physician_runtime_source_pulls,
+    physician_runtime_source_versions,
+    physician_runtime_sources;
+```
+
+After the drop:
+
+- The cutover's migration creates the tables. A migration image from before the
+  cutover creates the earlier tables again.
+- The synthetic charts are loaded again with `physician-migrate load-charts`,
+  because the reset drops the source tables that hold them. See
+  [Staging synthetic charts](gcp.md#staging-synthetic-charts).
+- A wakeup queued before the reset names work that no longer exists. The worker
+  answers it with an error, and Pub/Sub redelivers it up to its dead-letter
+  limit.
+- The earlier site and worker do not work with the new tables, and the new ones
+  do not work with the earlier tables.
+
+An automatic deploy of the cutover commit does not perform the reset. If the
+reset is skipped, the runtime migration fails: its first migration creates each
+runtime table and stops at the first one that already exists. It runs in one
+transaction, so it leaves the runtime tables as they were. The
+`physician-migrate` job then fails, and the release stops at that failed
+migration.
+
+[`runtime.sql`](/crates/local-product/src/runtime.sql) is the first migration of
+the [runtime chain](/crates/local-product/src/runtime/migration/mod.rs). The
+chain records each applied migration in `physician_runtime_migrations`, like the
+physician-auth, front-door and clinical-library chains, and `Store::migrate`
+applies only the migrations not recorded there. A later schema change is a new
+migration in the chain. Existing permanent records are not rewritten to add
+fields. Once a practice holds real data, storage changes must neither refuse to
+start nor wipe it, as the
+<a href="/intent/physician%2Emd">physician intent</a> requires.
 
 ## Current execution paths
 
@@ -18,21 +89,20 @@ The page, identity, clinical execution and delivery each have an owner:
 | Physician screens, navigation and command feedback | [`physician-app`](/crates/physician-app/src/lib.rs), through [`physician-client`](/crates/physician-client/src/lib.rs) and [`physician-wire`](/crates/physician-wire) |
 | Sign-in, practice membership and panel access | [`physician-auth`](/crates/physician-auth/src/lib.rs), enforced at the site routes |
 | Serving projections and accepting chat commands | [`physician-sample`](/crates/physician-sample/src/lib.rs) and its [`live`](/crates/physician-sample/src/live.rs) adapter |
-| Physician model execution and conversation state | [`local-product`](/crates/local-product/src/lib.rs): `PhysicianSession` for inline execution; Postgres `runtime::Store` for queued execution |
+| Physician model execution and conversation state | [`local-product`](/crates/local-product/src/lib.rs): Postgres `runtime::Store` for every accepted job |
 | Waking accepted queued turns and executing them | [`durable`](/crates/physician-sample/src/durable.rs) and [`physician-worker`](/crates/physician-sample/src/bin/physician-worker.rs), through Pub/Sub |
 | Telling open pages to reread changed state | [`physician-bus`](/crates/physician-bus/src/lib.rs), using a local bus or Redis fan-out |
 
-With `PHYSICIAN_CHAT_TOPIC` unset, `live` opens
-[`PhysicianSession`](/crates/local-product/src/execution.rs) for chat and reply
-work, using a local session file outside test fixtures. The model mode selects
-Codex CLI, cassette recording/replay or opt-in Responses API execution; see
-<a href="/README%2Emd#physician-chat-codex-cli">local chat setup</a>.
-
-With `PHYSICIAN_CHAT_TOPIC` set, the site accepts and reads chat through the
-Postgres [`runtime::Store`](/crates/local-product/src/runtime.rs), and the worker
-runs the accepted turn. This requires `PHYSICIAN_DATABASE_URL`; setting the
-database alone still leaves chat inline. [Scaling across instances](#scaling-across-instances)
-describes acceptance, recovery, fan-out and the current reply-revision limit.
+Chat, saved drafts and reply revisions use the Postgres
+[`runtime::Store`](/crates/local-product/src/runtime.rs) and the same worker locally
+and when hosted. The site requires `PHYSICIAN_CHAT_TOPIC`, `PHYSICIAN_DATABASE_URL`
+and `PHYSICIAN_AUTH=required` for this path. A hosted site refuses missing queue
+configuration. Without a topic, a local site can render fixtures or proxy another
+server, but cannot execute chat. The worker selects API-key or local developer-plan
+Responses transport; credentials are worker configuration, outside the durable job.
+[Local chat setup](/README%2Emd#local-physician-chat) describes the plan grant, which
+refreshes before each request. [Scaling across instances](#scaling-across-instances)
+describes acceptance, recovery and fan-out.
 
 ### Patients and the local practice
 
@@ -43,7 +113,8 @@ is how a patient is read: the auth store says who belongs to the practice and wh
 panel they are on, and each source's last pull says who they are and when their
 records were refreshed. With no database the practice holds no patients.
 [`scripts/local-practice.sh`](/scripts/local-practice.sh) runs the practice on a local
-Postgres database.
+Postgres database with its worker, Valkey and Pub/Sub emulator. The database persists
+between runs; the worker uses the same notes, windows, history and chart tools as staging.
 
 ### Choose the proof for the claim
 
@@ -75,30 +146,30 @@ Hosted `message.submit` accepts the turn in Postgres and publishes `{scope, inpu
 
 When a push cannot claim its turn, the worker answers from the saved conversation. It acknowledges a turn that is committed, stopped, replaced by a newer message, or running under another live claim. It answers 500 for a turn that is still waiting and for one that recovery gave up on. The second case is what lets Pub/Sub dead-letter the message: it counts each message's own deliveries, so a message the sweep republished under a new ID still reaches the dead-letter topic.
 
+When a newer message steers an executing answer, running calls finish
+before settlement releases the old claim. Settlement makes the waiting
+message due at once, so the site's recovery sweep publishes its wakeup on its
+next pass and the answer does not wait for broker backoff.
+
 The worker publishes `workspace_changed` after each committed reply and each failed attempt, including a provider that cannot start and a push that finds the turn already failed. That last case covers a turn whose worker leases all ran out: the claim records the fifth failure and nothing is left to run. A held page then refetches and shows "Coda couldn't finish". The site's recovery sweep republishes accepted turns whose wakeup never reached the topic, so a turn accepted by an instance that died is finished by whichever instance is still up. [`tests/instance_loss.rs`](/crates/physician-sample/tests/instance_loss.rs) proves both against the emulator, Valkey and Postgres.
 
-An intentional Stop is `work.stop`. It holds that turn until `work.resume` or a newer message, including across a worker restart, and the site publishes `workspace_changed` so another open tab refetches. The snapshot shows Stop while the turn is still pending or active, and Resume once it is held. Each Stop press is its own command, so Stop after Resume holds the resumed run again, even before a worker claims it; each hold names its own run for Resume. Another press on work that is already held is answered as accepted and changes nothing. A newer message releases the hold and is answered, and the stopped run loses its Resume. A late model result cannot publish over Stop or over the newer message. An infrastructure failure does not end the turn by itself: the worker counts it with `retry_delivery`, and a crash before that write leaves the attempt leased so expiry starts a successor. Five failures still end the turn as "couldn't finish". A turn that reaches a model-call or tool bound ends as "couldn't finish" at once, because running it again would reach the same bound; only Try again reopens it. [`tests/stop.rs`](/crates/physician-sample/tests/stop.rs) proves Stop, the held readback after a worker restart, a second Stop after Resume, and one answer to a message sent while held.
+An intentional Stop is `work.stop`. It holds that turn until `work.resume` or a newer message, including across a worker restart, and the site publishes `workspace_changed` so another open tab refetches. The snapshot shows Stop while the turn is still pending or active, and Resume once it is held. Each Stop press is its own command, so Stop after Resume holds the resumed run again, even before a worker claims it; each hold names its own run for Resume. Another press on work that is already held is answered as accepted and changes nothing. A newer message releases the hold and is answered, and the stopped run loses its Resume. A late model result cannot publish over Stop or over the newer message. An infrastructure failure does not end the turn by itself: the worker settles it using the harness failure classification, and a crash before that write leaves the attempt leased so expiry starts a successor. The harness owns the five-failure ceiling. Reached limits and intentional interruptions never consume that allowance. At the run limit, the final request may leave a partial answer. Try again continues the work with a fresh allowance. A structured job keeps its handoff in the run record until its own finish operation publishes. [`tests/stop.rs`](/crates/physician-sample/tests/stop.rs) proves Stop, the held readback after a worker restart, a second Stop after Resume, and one answer to a message sent while held.
 
 Outside hosting, `PUBSUB_EMULATOR_HOST` turns off push-token checks, because the emulator sends no token. The worker then starts only on a loopback listener (`127.0.0.1` or `[::1]`). `PORT` alone binds `0.0.0.0`, so it, a wildcard, or any other address refuses to start. Hosted runs refuse the emulator setting altogether.
 
-The site queues turns only when `PHYSICIAN_CHAT_TOPIC` is set. Without it, hosted or not, chat runs inline in the site process as it did before the worker, and a hosted start logs a warning. `PHYSICIAN_CHAT_TOPIC` without `PHYSICIAN_DATABASE_URL` refuses to start, because the turn is accepted in Postgres.
+Chat acceptance requires the topic, database and required sign-in configuration together.
+Missing queue configuration refuses hosted startup; local fixture pages
+remain display-only.
 
-| `PHYSICIAN_CHAT_TOPIC` | `PHYSICIAN_DATABASE_URL` | Startup |
-| --- | --- | --- |
-| unset | unset | Chat runs inline. Hosted logs a warning. |
-| unset | set | Chat runs inline. Hosted logs a warning. |
-| set | unset | Refuses to start. |
-| set | set | Turns go to Postgres and the topic. The worker runs the model. |
+Reply revision runs in the worker. Drafts live in `physician_runtime_reply_drafts`, one JSONB row per practice, physician, workspace and reply, which [`Store::migrate`](/crates/local-product/src/runtime.rs) creates from the fixed runtime baseline. `GET` and `PUT /replies/{id}` read and save that row; a save must name the current revision, and a `PUT` never creates a draft. `reply.revise` checks the session and workspace, then `Store::accept_revision` records the instruction, the saved text it applies to and the workspace's current source revisions with their version, read in its own transaction, and the site publishes a `reply_revision` delivery on the chat-turn topic. The same command id returns the same acceptance and publishes nothing new. A draft that is missing, belongs to another physician, has moved past the command's expected revision, or already has a revision in progress refuses with 409.
 
-With the topic set, reply revision also runs in the worker. Drafts live in `physician_runtime_reply_drafts`, one JSONB row per practice, physician, workspace and reply, which [`Store::migrate`](/crates/local-product/src/runtime.rs) creates from its SeaORM entity. `GET` and `PUT /replies/{id}` read and save that row; a save must name the current revision, and a `PUT` never creates a draft. `reply.revise` checks the session and workspace, then `Store::accept_revision` records the instruction, the saved text it applies to and the workspace's current source revisions with their version, read in its own transaction, and the site publishes a `reply_revision` delivery on the chat-turn topic. The same command id returns the same acceptance and publishes nothing new. A draft that is missing, belongs to another physician, has moved past the command's expected revision, or already has a revision in progress refuses with 409.
+The worker claims the draft and runs [`revision.rs`](/crates/physician-sample/src/bin/physician-worker/revision.rs) through the shared harness recovery and execution path with the physician product's frozen recipe. Revisions offer the shared working-note, fresh-window, history, skill and retained-result paging capabilities. The accepted draft owns its skill package and events; a successor keeps both. Notes are private work records, never saved reply text. History lists and reads this draft's accepted physician instructions and completed model revisions under current authority. `read_patient_sources` answers from the attempt's pinned sources, and only `finish_reply_revision` can publish the revised draft. Each model exchange is saved before the next one. A retry reuses the same instruction and base text, pins the newest sources when claimed, and restores the request count and usage already spent, so the shared backstops cover the whole revision.
 
-The worker claims the draft and runs [`revision.rs`](/crates/physician-sample/src/bin/physician-worker/revision.rs) through `harness::execution::run`. It has two tools: `read_patient_sources`, which answers only from the attempt's pinned sources, and `finish_reply_revision`. Each model exchange is saved on the draft before the next one. A retry reuses the same instruction and base text, pins the newest sources when it is claimed, and starts from the calls and tokens its revision's earlier attempts already spent, so the eight-call bound covers the whole revision.
+Anything Coda is still working on takes in what arrives before it finishes, so nothing it produces rests on an older reading. A reply under revision is still a draft; its history is fixed only once something is said or sent. `Store::commit_revision` therefore compares the attempt's source version with the workspace's current one in the transaction that would publish, under the draft lock, the auth owner's locks and a shared lock on the source version row. If they differ, nothing is published. The attempt records a `SourceRefresh` (from and to version, added, corrected with the earlier revision kept, and withdrawn sources), the draft re-pins, and the model receives a `sources_changed` result naming those references. It reads them and finishes again in the same run, under the same request bound; a catch-up is not a failed attempt. A finish whose context does not yet hold an exact read of every added or corrected source, at its current revision, gets `sources_unread` instead. If the chart keeps changing until the bound runs out, the revision stays held with its handoff in the run record and the saved draft is unchanged. The attempt's `sources` stays what it claimed and its `refreshes` show what it could read afterwards, so the record lists only sources Coda could actually read.
 
-Anything Coda is still working on takes in what arrives before it finishes, so nothing it produces rests on an older reading. A reply under revision is still a draft; its history is fixed only once something is said or sent. `Store::commit_revision` therefore compares the attempt's source version with the workspace's current one in the transaction that would publish, under the draft lock, the auth owner's locks and a shared lock on the source version row. If they differ, nothing is published. The attempt records a `SourceRefresh` (from and to version, added, corrected with the earlier revision kept, and withdrawn sources), the draft re-pins, and the model receives a `sources_changed` result naming those references. It reads them and finishes again in the same run, under the same eight-call bound; a catch-up is not a failed attempt. A finish whose context does not yet hold an exact read of every added or corrected source, at its current revision, gets `sources_unread` instead. If the chart keeps changing until the bound runs out, the revision ends as failed and the saved draft is unchanged. The attempt's `sources` stays what it claimed and its `refreshes` show what it could read afterwards, so the record lists only sources Coda could actually read. Inline sites apply the same rule in `LiveOwner::finish`, over a versioned in-memory observation under the publication guard.
+Hosted sources live in `physician_runtime_sources` and `physician_runtime_source_versions` ([`runtime/sources.rs`](/crates/local-product/src/runtime/sources.rs)). Charts arrive through `Store::record_chart`, which lands a patient's whole delivery in one transaction, as one version, with the records the source no longer holds withdrawn. A delivery says what the source holds now, so an earlier revision delivered again becomes current. A site also imports the `CODA_PHYSICIAN_SOURCE_SNAPSHOT` file at startup through `Store::import_sources` when one is set; a correction or withdrawal is a new row, never a rewrite, and the workspace's version moves only when what can be read changes. A revision identity is immutable within its workspace and candidate: different content or provenance under an already recorded identity is refused, including after correction or withdrawal. Replaying any identical historical revision is a no-op, so an older instance's startup snapshot cannot roll back a correction or resurrect a withdrawal. Restoring a withdrawn candidate requires a previously unseen revision identity; opaque revision strings are not sorted to infer age. Catch-up checks compare the exact native content, hash and provenance as well as revision identity, not just a matching revision label. `Store::record_source` owns individual immutable revisions and is also used by the startup import. Projection prose and model output never become sources. Completion commits under the physician's current session authority and the draft revision accepted with the command. If the physician saved a newer draft in between, the late completion is refused and their text stays. A failed attempt returns the revision to pending and answers 500, so Pub/Sub keeps counting toward the dead-letter topic; the fifth failure ends the revision as failed. The draft `GET` returns `revision_run`, the latest accepted command id and its status (pending, active, completed, failed or superseded), so a failed revision is visible, not only stored. Accepting another revision moves the previous one, with its sources and every attempt's records, into `physician_runtime_reply_revisions` in the same transaction, one row per earlier revision. The draft row holds only the current revision, so its size does not grow with history. A history row changes only when a superseded attempt's worker records a late exchange, observation or failure; that record is appended to the archived attempt and cannot publish or alter the current draft. Each row carries a per-draft ordinal assigned under the draft lock, and `Store::earlier_revisions` reads one physician's draft oldest first by that ordinal. The recovery sweep republishes due revisions just as it does turns.
 
-Hosted sources live in `physician_runtime_sources` and `physician_runtime_source_versions` ([`runtime/sources.rs`](/crates/local-product/src/runtime/sources.rs)). Charts arrive through `Store::record_chart`, which lands a patient's whole delivery in one transaction, as one version, with the records the source no longer holds withdrawn. A delivery says what the source holds now, so an earlier revision delivered again becomes current. A site also imports the `CODA_PHYSICIAN_SOURCE_SNAPSHOT` file at startup through `Store::import_sources` when one is set; a correction or withdrawal is a new row, never a rewrite, and the workspace's version moves only when what can be read changes. A revision identity is immutable within its workspace and candidate: different content or provenance under an already recorded identity is refused, including after correction or withdrawal. Replaying any identical historical revision is a no-op, so an older instance's startup snapshot cannot roll back a correction or resurrect a withdrawal. Restoring a withdrawn candidate requires a previously unseen revision identity; opaque revision strings are not sorted to infer age. The inline observation follows the same rules for its process lifetime. Catch-up checks compare the exact native content, hash and provenance as well as revision identity, not just a matching revision label. `Store::record_source` and `Store::withdraw_source` are its only other entry points, used by tests. Projection prose and model output never become sources. Completion commits under the physician's current session authority and the draft revision accepted with the command. If the physician saved a newer draft in between, the late completion is refused and their text stays. A failed attempt returns the revision to pending and answers 500, so Pub/Sub keeps counting toward the dead-letter topic; the fifth failure ends the revision as failed. The draft `GET` returns `revision_run`, the latest accepted command id and its status (pending, active, completed, failed or superseded), so a failed revision is visible, not only stored. Accepting another revision moves the previous one, with its sources and every attempt's records, into `physician_runtime_reply_revisions` in the same transaction, one row per earlier revision. The draft row holds only the current revision, so its size does not grow with history. A history row changes only when a superseded attempt's worker records a late exchange, observation or failure; that record is appended to the archived attempt and cannot publish or alter the current draft. Each row carries a per-draft ordinal assigned under the draft lock, and `Store::earlier_revisions` reads one physician's draft oldest first by that ordinal. The recovery sweep republishes due revisions just as it does turns.
-
-The composer saves the physician's unsent chat text through `GET` and `PUT /physician-state/drafts/{workspace}/{chat}`. With no chat open the page saves under the chat id `draft`. [`chat_draft.rs`](/crates/physician-sample/src/chat_draft.rs) serves both. On a hosted site the draft is a row of `physician_runtime_chat_drafts`, keyed by practice, physician, workspace and chat, with typed `text` and `revision` columns, which `Store::migrate` creates from its SeaORM entity. [`Store::save_chat_draft`](/crates/local-product/src/runtime/chat_draft.rs) checks the physician's session and panel in the save's own transaction. It inserts revision 1 only when the page names revision 0, and otherwise updates only the revision the page names. A stale save writes nothing and answers 409 with `{outcome: "conflict", current}`, so one instance's save is read and fenced by every other instance. Inline sites keep the same draft in `PhysicianSession`, under a target key that cannot collide with a chat's or a reply's own target, so a saved draft never fences the chat's turns. On a hosted site a missing session answers 401; an inline site with sign-in off keeps one anonymous local draft, as it does for anonymous chats. A patient outside the physician's panel answers 404, and another physician on the same patient has a separate draft. The recorded and simulation routers still answer 409, because their projections are read-only.
+The composer saves the physician's unsent chat text through `GET` and `PUT /physician-state/drafts/{workspace}/{chat}`. With no chat open the page saves under the chat id `draft`. [`chat_draft.rs`](/crates/physician-sample/src/chat_draft.rs) serves both. The draft is a row of `physician_runtime_chat_drafts`, keyed by practice, physician, workspace and chat, with typed `text` and `revision` columns, which `Store::migrate` creates from the fixed runtime baseline. [`Store::save_chat_draft`](/crates/local-product/src/runtime/chat_draft.rs) checks the physician's session and panel in the save's own transaction. It inserts revision 1 only when the page names revision 0, and otherwise updates only the revision the page names. A stale save writes nothing and answers 409 with `{outcome: "conflict", current}`, so one instance's save is read and fenced by every other instance. A missing session answers 401. A patient outside the physician's panel answers 404, and another physician on the same patient has a separate draft. The fixture router answers 409 because its projections are read-only.
 
 [`composer.rs`](/crates/physician-app/src/composer.rs) holds the page's draft state as pure, unit-tested transitions: autosave, one save in flight per draft, and the conflict choices, where the physician either retries over exactly the revision shown or takes the newer text. A bare or malformed 409 is an ordinary failure and never authorizes an overwrite.
 
@@ -106,23 +177,69 @@ The Send button and Cmd/Ctrl+Enter share one path. Acceptance removes only the s
 
 [`local_draft.rs`](/crates/physician-app/src/local_draft.rs) keeps unsent text across a reload of the same tab, in `sessionStorage` only.
 
-`PHYSICIAN_SYNTHETIC_REPLY=<patient workspace id>` turns on a synthetic reply source in [`synthetic_reply.rs`](/crates/physician-sample/src/synthetic_reply.rs). It is off by default and applies only to a signed-in physician of the synthetic practice (`roger-synthetic-practice`) on that patient. The workspace read then carries one fixed-ready reply with a stable server-owned id and non-PHI wording. If the physician has no draft for it, the site opens revision 1: on a hosted site through `Store::open_draft_authorized`, which holds the physician's session, account and panel locks in the insert's own transaction; inline under the same publication fence that guards chat turns. Opening again, from any instance and concurrently, keeps the saved text and revision history. `PUT /replies/{id}` and `reply.revise` still refuse a reply that has no opened draft, and nothing is created from a browser payload. The reply card shows the saved text, its exact `draft_revision` and the latest revision run's status: pending, active, completed, failed (the saved draft is unchanged) or superseded (a newer saved edit won). Ask Coda to revise names the revision on screen. The hosted worker announces `workspace_changed` after completing or failing an attempt, and the page rereads the workspace; a missed notice is recovered by the existing resync after the bus reconnects. The card does not offer Send to the patient, and closing it is not supported in this mode. With the switch off, no reply appears.
+`PHYSICIAN_SYNTHETIC_REPLY=<patient workspace id>` turns on a synthetic reply source in [`synthetic_reply.rs`](/crates/physician-sample/src/synthetic_reply.rs). It is off by default and applies only to a signed-in physician of the synthetic practice (`roger-synthetic-practice`) on that patient. The workspace read then carries one fixed-ready reply with a stable server-owned id and non-PHI wording. If the physician has no draft for it, the site opens revision 1: through `Store::open_draft_authorized`, which holds the physician's session, account and panel locks in the insert's own transaction. Opening again, from any instance and concurrently, keeps the saved text and revision history. `PUT /replies/{id}` and `reply.revise` still refuse a reply that has no opened draft, and nothing is created from a browser payload. The reply card shows the saved text, its exact `draft_revision` and the latest revision run's status: pending, active, completed, failed (the saved draft is unchanged) or superseded (a newer saved edit won). Ask Coda to revise names the revision on screen. The hosted worker announces `workspace_changed` after completing or failing an attempt, and the page rereads the workspace; a missed notice is recovered by the existing resync after the bus reconnects. The card does not offer Send to the patient, and closing it is not supported in this mode. With the switch off, no reply appears.
 
-`GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Postgres orders them by latest activity, then chat id, before taking the newest 200, so a chat that just got a message lists however many older chats the workspace has. Inline chats use the same practice and physician identity in `PhysicianSession`. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id. The navigation owner keeps `?patient=` and `?chat=` aligned with the selected conversation, including sidebar selection and patient changes, and removes both when leaving the patient page. A chat is listed after a reload once its first message is accepted.
+`GET /patient-workspaces/{id}` lists the signed-in physician's runtime chats for that workspace, newest activity first, each titled by its first physician message (cut to about 60 characters). Durable chats come from `Store::chats` over `physician_runtime_conversations`, scoped by practice, physician and workspace. Postgres orders them by latest activity, then chat id, before taking the newest 200, so a chat that just got a message lists however many older chats the workspace has. The page's `New conversation` button, in the Conversations sidebar and the empty Conversation region, opens a new `chat-…` id. The navigation owner keeps `?patient=` and `?chat=` aligned with the selected conversation, including sidebar selection and patient changes, and removes both when leaving the patient page. A chat is listed after a reload once its first message is accepted.
 
 The physician site sets `cpu_idle = false` so the Redis subscriber and the Postgres listener keep running between requests. The worker stays on request-based CPU: the push request is the turn. Duet has no Redis instance and no chat-turn topic.
 
 `nix develop` provides `valkey` and the Pub/Sub emulator.
 
-## Skills in hosted chat
+## Skills in physician chat
 
-Hosted chat in `physician-worker` offers one tool, `skill_view`. At startup the worker loads the clinical skill catalog in [`skills/`](/skills) once through [`physician_chat::PhysicianSkills`](/crates/local-product/src/physician_chat.rs), which wraps `harness::Harness` and adds no reader of its own. Hosted startup requires `PHYSICIAN_SKILLS_DIR`; the worker image sets it to a store path holding only `skills/`. A local worker defaults to this workspace's `skills/`. A missing or invalid catalog stops startup, so the worker never serves with an empty one. Every turn shares that one in-memory copy.
+Chat in `physician-worker` offers `skill_view`, working notes, fresh windows, history and result paging, together with `search_patient_information` and `read_patient_sources`. Discovery searches retained source content, decoded text and metadata within the authorized workspace. A blank query browses records. The model receives references and dates on demand and opens a specific revision for evidence. A changed or withdrawn revision requires a new search. Large reads return exact UTF-8 passages with a continuation into the same revision, including its decoded text. Local developer-plan chart calls are restricted to the synthetic bank. The physician site loads its [skill catalog](/skills) from `PHYSICIAN_SKILLS_DIR` at startup. A local site defaults to the workspace catalog. Hosted admission requires a complete packaged catalog. The site saves the selected package with accepted work so each attempt or replacement worker opens exactly the bodies and resources named in that work’s index.
 
-Each model request carries the physician-owned instructions `physician_chat::INSTRUCTIONS`, versioned by `INSTRUCTIONS_VERSION`, followed by the catalog metadata: names, descriptions, version ids and resource paths, but no bodies. The model reads a body or a listed supporting resource with `skill_view(name, file_path, max_result_bytes)`. `name` is required, `file_path` must be present and is `null` for `SKILL.md`, and `max_result_bytes` is 4096 to 65536. An unknown tool or malformed arguments come back to the model as `{"executed": false, "error": ...}` without running; an unknown skill comes back `unavailable` and a result that does not fit comes back `over_budget`, never partial. A bad call does not stop a valid read in the same turn. A skill is guidance only; it grants no tool, patient read or action. The local Codex CLI path keeps `codex::PHYSICIAN_CHAT_INSTRUCTIONS` and offers no tools.
+Each model request carries the physician-owned system prompt followed by its job’s catalog metadata: names, descriptions and resource paths, but no bodies. Chat selects patient record retrieval and patient communication; revision selects patient communication. The accepted work retains that exact package and recipe. The model opens an approved skill by name. An optional `file_path` opens a registered supporting resource. The exact body is retained; large results use the shared preview and range reader. An unknown tool or malformed arguments come back to the model as `{"executed": false, "error": ...}` without running; an unknown skill comes back `unavailable`. An unknown skill name also returns the names of the skills the job has. A bad call does not stop a valid read in the same turn. A skill is guidance only; it grants no tool, patient read or action. The Responses request carries an opaque cache key scoped to the conversation.
 
-A turn may make up to 8 model calls and 16 tool calls, 8 per model response. One result may be 65536 bytes and a turn's results 262144 bytes. Every request (with its exact instructions and tools) and every tool result (with the skill's `version_id`) is saved on the attempt before the next step, as for other runtime events.
+Chords uses the shared <a href="/intent/harness%2Emd#how-it-is-built-today">run budgets</a>. Each work retains one frozen recipe. A provider dispatch references saved items, records its new input or send-time projections and carries the IDs of newly included physician messages. Recovery reconstructs the exact request from those parts; a transport retry records a separate attempt to send it unchanged. New steering or source feedback makes a new request. A large source result stays with the work and can be read in pages.
 
-The engine's candidate text joins assistant text from every round, including narration before a tool call. `Store::commit_authorized` does not publish it. It publishes the text of the attempt's last recorded model response, which must contain no tool call and some text; several text parts in that response are joined in order. A blank final response publishes nothing and fails the commit, rather than falling back to earlier narration. The authorization, lease, revision and stale-commit checks are unchanged. Reply revision keeps its own tools and is not affected.
+Chat and revision events are appended to `physician_runtime_events`, scoped to
+their product owner and attempt. Status, revision, accepted session and attempt
+leases use typed control columns. Appending execution evidence does not rewrite
+authored history; status transitions update their own control state. Readback and
+recovery join the event rows to their attempts;
+archiving a revision keeps those same rows, including evidence that arrives late.
+
+The worker streams provider events through the shared Responses adapter. The run
+record retains usage and completed messages; reply fragments use the live-text
+callback and Chords neither saves nor displays them. Chords publishes the assembled
+whole answer. The provider's silence timeout
+measures gaps between complete events, so a stream that stops making progress
+can retry within the run before an answer is published.
+
+Hosted chat supplies its retained authored messages to the harness's shared history
+tools. The model can list in either order, search exact text and read a message in
+character chunks. List and search previews leave the stored originals unchanged;
+each chunk carries its original message identity, offset and full length. Result
+paging also applies to history reads, under the same current physician authority.
+
+### Model settings
+
+Every enabled Chords runtime requires `CODA_<ROLE>_MODEL`, `CODA_<ROLE>_EFFORT`,
+`CODA_<ROLE>_CONTEXT_WINDOW_TOKENS` and `CODA_<ROLE>_INPUT_LIMIT_TOKENS` for `CHAT` and
+`BACKGROUND`. Missing or invalid settings refuse startup.
+Hosted revisions select the background role. The site freezes each recipe when
+it accepts the work: model settings, system prompt, tools and skills.
+Workers read that saved recipe through retries, steers and recovery.
+
+Local process settings and the product's hosted Doppler configuration own the
+values. The synthetic stack declares its settings in
+[`scripts/physician-scale-stack.py`](../../scripts/physician-scale-stack.py).
+
+The shared token backstop counts output plus input not reported as cached. Missing
+counts use the existing context and content estimate; recorded provider usage
+stays distinct from those estimates. Billing belongs to the provider's usage
+records. The budget survives recovery through the product's retained run events.
+
+The working window is separate from the provider input limit. The harness estimates the first request and each fresh window, then uses reported input and output usage plus an estimate for added content. It requests a handoff near its named threshold, reserving room for the reply. Chords sets no output-token cap. Dispatch events retain those counts. When context is full, or the provider refuses it as too long, the harness opens a fresh window from exact accepted inputs and pending results. The fresh window carries the exact text of the newest note saved in this work, says when work done after that note is not in it, and points to earlier notes in the order saved. A refused fresh window gets one retry with smaller pending results, then the run is held at a limit. The shared response transport bound is separate from context pressure.
+
+Large tool results appear as short previews of their start and end. The exact
+original stays in the product's run record. `read_tool_result` reads a byte range
+or finds a literal match under current authority. Previously sent results stay
+unchanged within their window, and a partial read never establishes full source
+coverage. The harness owns presentation bounds; those bounds do not reject writes.
+
+Chords publishes the text from the final answer after checking the saved candidate, current lease, input revision and physician authority. Earlier tool narration stays in the run record. An empty ordinary model turn gets feedback. At a run limit, Chords keeps the handoff text as a partial reply and offers Try again. A revision that reaches its limit stays held with its handoff in the run record. Only its explicit finish operation can update the draft.
 
 ## Retention
 

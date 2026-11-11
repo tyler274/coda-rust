@@ -51,6 +51,7 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "sha2 0.11.0",
+ "thiserror 2.0.21",
 ]
 
 [[package]]
@@ -4081,10 +4082,12 @@ version = "0.1.0"
 dependencies = [
  "agent-skills",
  "async-trait",
+ "httpdate",
  "reqwest 0.12.28",
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "thiserror 2.0.21",
  "tokio",
 ]
 
@@ -5251,12 +5254,18 @@ name = "local-product"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "axum",
+ "base64 0.23.1",
  "harness",
+ "jsonwebtoken 11.1.0",
  "physician-auth",
+ "reqwest 0.12.28",
  "sea-orm",
+ "sea-orm-migration",
  "serde",
  "serde_json",
  "sha2 0.11.0",
+ "thiserror 2.0.21",
  "tokio",
  "tracing",
  "uuid",

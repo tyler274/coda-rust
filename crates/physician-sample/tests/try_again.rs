@@ -1,11 +1,12 @@
 //! A chat turn the worker gives up on, then Try again.
 //!
 //! One site and one worker share a disposable Postgres, Valkey and the Pub/Sub
-//! emulator. The worker's fixed provider fails five times, so the delivery
-//! goes to the dead-letter topic and the turn ends as failed. A stream held on
-//! the site is told to refetch, and the snapshot then shows the reference
-//! "couldn't finish" line with the run Try again resumes. `work.resume` for
-//! that run is accepted, and the reply arrives.
+//! emulator. The worker's fixed provider sends five responses that break the
+//! stream contract, so five attempts fail, the delivery goes to the
+//! dead-letter topic and the turn ends as failed. A stream held on the site is
+//! told to refetch, and the snapshot then shows the reference "couldn't
+//! finish" line with the run Try again resumes. `work.resume` for that run is
+//! accepted, and the reply arrives.
 
 use std::path::PathBuf;
 use std::time::{Duration, Instant};
@@ -50,6 +51,7 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
     let topic = support::topic();
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_listen = format!("127.0.0.1:{site_port}");
+    let stub = support::ResponsesStub::start(&home.0, 5, 0, "[]").await;
     let mut worker = support::Process::spawn(
         "worker",
         support::worker_bin(),
@@ -59,10 +61,7 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
             ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
-            // Exactly the subscription's delivery budget: every first-round
-            // delivery fails, and the resumed one succeeds.
-            ("PHYSICIAN_WORKER_FIXED_FAILURES", "5"),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
         &home.0,
     );
@@ -186,7 +185,7 @@ async fn a_dead_lettered_turn_shows_couldnt_finish_and_try_again_gets_the_reply(
         .to_owned();
     assert_eq!(
         failed["runs"],
-        json!([{ "run_id": run, "state": "failed" }]),
+        json!([{ "run_id": run, "state": "failed", "hold_reason": null }]),
         "{failed}"
     );
 

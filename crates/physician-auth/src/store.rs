@@ -165,7 +165,27 @@ impl PostgresAuthStore {
         identity: &PhysicianIdentity,
         workspace: &str,
     ) -> Result<(), DbErr> {
-        let expires = authority_query(session_hash, identity, workspace, LockType::Share)
+        Self::runtime_authority(tx, session_hash, identity, workspace, Some(LockType::Share)).await
+    }
+
+    /// Read current runtime authority without taking locks or changing session state.
+    pub async fn check_runtime_authority(
+        tx: &sea_orm::DatabaseTransaction,
+        session_hash: &[u8],
+        identity: &PhysicianIdentity,
+        workspace: &str,
+    ) -> Result<(), DbErr> {
+        Self::runtime_authority(tx, session_hash, identity, workspace, None).await
+    }
+
+    async fn runtime_authority(
+        tx: &sea_orm::DatabaseTransaction,
+        session_hash: &[u8],
+        identity: &PhysicianIdentity,
+        workspace: &str,
+        lock: Option<LockType>,
+    ) -> Result<(), DbErr> {
+        let expires = authority_query(session_hash, identity, workspace, lock)
             .into_tuple::<i64>()
             .one(tx)
             .await?
@@ -205,14 +225,14 @@ impl PostgresAuthStore {
     }
 }
 
-/// A single statement both proves authority and locks every participating row.
+/// One authority query, optionally locking participating rows for publication.
 /// Do not split these joins into independent lookups: revocation/reassignment
 /// must conflict with the same four-row fence held through publication.
 fn authority_query(
     session_hash: &[u8],
     identity: &PhysicianIdentity,
     workspace: &str,
-    lock: LockType,
+    lock: Option<LockType>,
 ) -> sea_orm::Select<Sessions> {
     use crate::migration::{account, membership, patient, session};
     use sea_orm::sea_query::ExprTrait;
@@ -259,10 +279,12 @@ fn authority_query(
                     Expr::col((Patients, patient::Column::PracticeId))
                         .eq(Expr::col((Accounts, account::Column::PracticeId))),
                 ),
-        )
-        // No outer joins or subqueries: an unqualified lock locks exactly the
-        // session, account, membership and patient rows, as the original OF list.
-        .lock(lock);
+        );
+    // Publication locks exactly the session, account, membership and patient rows.
+    // A currency preflight uses the same authority query without a lock.
+    if let Some(lock) = lock {
+        QueryTrait::query(&mut query).lock(lock);
+    }
     query
 }
 
@@ -469,12 +491,17 @@ impl AuthStore for PostgresAuthStore {
         publish: &mut (dyn FnMut() -> Result<(), String> + Send),
     ) -> Result<(), String> {
         let txn = self.db.begin().await.map_err(|e| e.to_string())?;
-        let row = authority_query(&token_hash(token), identity, workspace, LockType::Update)
-            .filter(crate::migration::session::Column::ExpiresAt.gt(now as i64))
-            .into_tuple::<i64>()
-            .one(&txn)
-            .await
-            .map_err(|e| e.to_string())?;
+        let row = authority_query(
+            &token_hash(token),
+            identity,
+            workspace,
+            Some(LockType::Update),
+        )
+        .filter(crate::migration::session::Column::ExpiresAt.gt(now as i64))
+        .into_tuple::<i64>()
+        .one(&txn)
+        .await
+        .map_err(|e| e.to_string())?;
         if row.is_none() {
             return Err("physician authority changed".into());
         }
@@ -1270,7 +1297,7 @@ mod query_tests {
             (LockType::Share, "FOR SHARE"),
             (LockType::Update, "FOR UPDATE"),
         ] {
-            let statement = authority_query(b"session-hash", &identity, "workspace", lock)
+            let statement = authority_query(b"session-hash", &identity, "workspace", Some(lock))
                 .build(DbBackend::Postgres);
             assert_eq!(
                 statement.sql,

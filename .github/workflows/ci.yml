@@ -308,20 +308,27 @@ jobs:
         run: cargo test --workspace
       - name: Test the extension's worker against simulated Chrome
         run: node extension/sandbox/test_connector.mjs
+      - name: Install Nix for requested browser dependencies
+        if: github.event_name == 'workflow_dispatch'
+        uses: cachix/install-nix-action@v31
       - name: Run explicitly requested browser qualification
         if: github.event_name == 'workflow_dispatch'
         env:
           CHROMIUM: ${{ steps.chrome.outputs.chrome-path }}
           PUBLIC_SITE_SCREENSHOTS: ${{ runner.temp }}/public-site-screenshots
         # Select browser targets only; other ignored tests have their own jobs.
+        # Nix supplies the Pub/Sub emulator, Valkey and Chromium for hosted chat.
         # React comparison still requires a separate practice on port 8787.
         # backend_process is a child-only helper, launched by its parent proof.
         run: |
-          cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states -- --ignored
-          cargo test -p public-site --test site -- --ignored
-          cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
-          cargo test -p ui-gallery --test sections -- --ignored
-          cargo test -p extension-popup --test popup -- --ignored
+          export PHYSICIAN_DATABASE_URL="$PHYSICIAN_TEST_DATABASE_URL"
+          nix develop .#agent --command bash -euo pipefail -c '
+            cargo test -p physician-sample --test site --test auth_browser --test sign_in_states --test shell_states --test reply_revision --test sign_in_model -- --ignored
+            cargo test -p public-site --test site -- --ignored
+            cargo test -p mobile --test browser --test duet_journey --test mode -- --ignored --skip backend_process
+            cargo test -p ui-gallery --test sections -- --ignored
+            cargo test -p extension-popup --test popup -- --ignored
+          '
       - name: Upload public-site browser screenshots
         if: always() && github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v7

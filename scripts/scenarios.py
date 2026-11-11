@@ -5,11 +5,11 @@
 
 P1 runs over HTTP against scripts/physician-scale-stack.py: two physician-sample
 sites, physician-worker, Postgres, Valkey and the Pub/Sub emulator, with the
-worker's fixed reply. D1 migrates a fresh database on that same disposable
-Postgres through duet-migrate, drives the duet-api binary over HTTP with its
-local identity stand-in (killing and restarting it after a write), then runs
-the duet-api Postgres suites. Nothing reads Doppler, Google credentials or a
-model key.
+worker answering through the local Responses stub. D1 migrates a fresh database
+on that same disposable Postgres through duet-migrate, drives the duet-api
+binary over HTTP with its local identity stand-in (killing and restarting it
+after a write), then runs the duet-api Postgres suites. Nothing reads Doppler,
+Google credentials or a model key.
 
 receipt.json records the git revision, binary and chart digests, each step's
 command identity and observation, and each capability the journey needs that
@@ -108,8 +108,7 @@ def sources(bin_dir):
         "physician_page_wasm_sha256": digest(page),
         "image_digests": None,
         "image_digests_note": "local binaries built from git_sha; no container image was built or deployed",
-        "model_execution": f"physician-worker PHYSICIAN_WORKER_FIXED_TEXT={stack.FIXED_TEXT!r}; "
-                           "duet-api controlled providers inside its test suites",
+        "model_execution": f"physician-worker PHYSICIAN_RESPONSES_STUB_PORT, scripts/physician-responses-stub.py answering {stack.FIXED_TEXT!r}",
     }
 
 
@@ -222,13 +221,13 @@ def p1(receipt, state, out):
 
     cited = any(key in json.dumps(body) for key in ("citation", "sources", "basis"))
     receipt.gap("P1", "chart-grounded answer with citations, Sources and Basis",
-                f"the reply carries {'' if cited else 'no '}citation fields; the hosted worker's only "
-                "tool is skill_view, so it cannot read the chart",
-                "crates/local-product/src/physician_chat.rs, crates/physician-sample/src/bin/physician-worker.rs")
+                f"the reply carries {'' if cited else 'no '}citation fields; chat offers the chart tools, but "
+                "the local Responses stub answers with fixed text and calls none of them",
+                "scripts/physician-scale-stack.py, scripts/physician-responses-stub.py")
     receipt.gap("P1", "reopen a cited source in the side panel",
                 "no citation exists to open", "crates/physician-sample/src/live.rs, crates/physician-app/src/lib.rs")
     receipt.gap("P1", "real-model answer",
-                "this runner answers with the worker's fixed text; real-model proof needs staging "
+                "this runner answers with the local Responses stub's fixed text; real-model proof needs staging "
                 "or CODA_LOCAL_MODEL_EXECUTION=api with an authorized key", "crates/physician-sample/src/bin/physician-worker.rs")
     receipt.gap("P1", "site and worker restart inside the scenario",
                 "the stack restarts only Valkey; process restart is held by the instance_loss, "

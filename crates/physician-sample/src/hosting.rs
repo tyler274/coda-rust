@@ -23,6 +23,9 @@ pub fn validate_startup(get: impl Fn(&str) -> Option<String>) -> Result<(), Stri
     if !is_hosted(&get) {
         return Ok(());
     }
+    if get("CODA_LOCAL_MODEL_EXECUTION").as_deref() == Some("subscription") {
+        return Err("Developer ChatGPT plans are available only in local execution".into());
+    }
     // Emulator credentials are intentionally absent. Presence alone is enough
     // to refuse: an empty value or "false" must not turn hosted authentication
     // into a local-development exception.

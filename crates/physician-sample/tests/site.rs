@@ -34,8 +34,7 @@ fn test_lock() -> &'static Mutex<()> {
 async fn the_practice_and_its_patients_are_visible() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    // A temporary physician session and offline replay: never the operator's
-    // XDG session, never Codex or OpenAI.
+    // Static fixtures have no model transport or operator state.
     let server = common::serve_isolated(|| {
         // SAFETY: tests in this binary hold `test_lock()` before mutating
         // process env, and `serve_isolated` holds its start lock here.
@@ -110,21 +109,13 @@ async fn the_practice_and_its_patients_are_visible() {
 async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = common::serve_isolated(|| {
-        // SAFETY: tests in this binary hold `test_lock()` before mutating
-        // process env, and `serve_isolated` holds its start lock here.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::remove_var("PHYSICIAN_AUTH");
-            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-        }
-    })
-    .await;
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
     let address = server.address;
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let workspace_url = format!("http://{address}/?patient={patient}");
     let mut browser = Tab::open(&workspace_url);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
     browser.wait_for_text("This workspace has no chats.", Duration::from_secs(20));
 
     // The empty state and the sidebar both offer it; use the sidebar's.
@@ -164,7 +155,7 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
     assert_eq!(edited, "", "an edit left the Saved mark: {edited}");
     browser.type_composer(message);
     browser.click_named(".composer-toolbar button", "Send");
-    // The inline session saves the turn before calling the (empty) replay.
+    // Acceptance saves the turn before the worker calls the provider.
     browser.wait_for_text(message, Duration::from_secs(15));
 
     browser.navigate(&workspace_url);
@@ -242,25 +233,19 @@ async fn a_new_conversation_is_listed_after_a_reload_without_its_address() {
 async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = common::serve_isolated(|| {
-        // SAFETY: tests in this binary hold `test_lock()` before mutating
-        // process env, and `serve_isolated` holds its start lock here.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::remove_var("PHYSICIAN_AUTH");
-            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-        }
-    })
-    .await;
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
     let address = server.address;
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-draft-fence";
     let chat_url = format!("http://{address}/?patient={patient}&chat={chat}");
+    let bearer = scale::sign_in(&address.to_string()).await;
+    let http = reqwest::Client::new();
     let server_draft = || async {
-        reqwest::get(format!(
+        http.get(format!(
             "http://{address}/physician-state/drafts/{patient}/{chat}"
         ))
+        .bearer_auth(&bearer)
+        .send()
         .await
         .unwrap()
         .json::<serde_json::Value>()
@@ -270,6 +255,8 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
     let mut tab_a = Tab::open(&chat_url);
     let mut tab_b = Tab::open(&chat_url);
     for tab in [&mut tab_a, &mut tab_b] {
+        tab.wait_for_text("Work email", Duration::from_secs(20));
+        tab.request_sign_in("physician@codahealth.test");
         tab.wait_for_text(
             "What would you like Coda to review?",
             Duration::from_secs(20),
@@ -459,18 +446,7 @@ async fn a_stale_tab_is_not_saved_and_a_save_never_marks_another_chat() {
 async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = common::serve_isolated(|| {
-        // SAFETY: tests in this binary hold `test_lock()` before mutating
-        // process env, and `serve_isolated` holds its start lock here.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::set_var("PHYSICIAN_AUTH", "required");
-            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-            env::remove_var("PHYSICIAN_DATABASE_URL");
-        }
-    })
-    .await;
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
     let address = server.address;
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-recovery";
@@ -684,18 +660,7 @@ async fn a_reloaded_tab_recovers_unsent_text_and_sign_out_forgets_it() {
 async fn keyboard_send_clears_only_the_sent_text_and_a_reload_reasks_the_same_command() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = common::serve_isolated(|| {
-        // SAFETY: tests in this binary hold `test_lock()` before mutating
-        // process env, and `serve_isolated` holds its start lock here.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::set_var("PHYSICIAN_AUTH", "required");
-            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-            env::remove_var("PHYSICIAN_DATABASE_URL");
-        }
-    })
-    .await;
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
     let address = server.address;
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-keyboard-send";
@@ -1023,20 +988,19 @@ fn new_chat(browser: &mut Tab) -> String {
 async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let server = common::serve_isolated(|| {
-        // SAFETY: this binary holds test_lock and serve_isolated's start lock.
-        unsafe {
-            env::set_var("PHYSICIAN_SITE_DIR", &site);
-            env::remove_var("PHYSICIAN_AUTH");
-            env::remove_var("PHYSICIAN_AUTH_PROOF_TOKENS");
-            env::remove_var("PHYSICIAN_UPSTREAM");
-        }
-    })
-    .await;
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
     let base = format!("http://{}", server.address);
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let chat = "chat-before-events";
-    let mut browser = Tab::open("about:blank");
+    let mut browser = Tab::open(&base);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    let bearer = browser
+        .eval("localStorage.getItem('coda.physician.session')")
+        .as_str()
+        .unwrap()
+        .to_owned();
     // Hold the actual first event request before it reaches the server. The
     // initial snapshot can complete, then another client saves a turn while
     // this page has no subscription. No synthetic event or refresh is sent.
@@ -1051,7 +1015,7 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
     );
     let message = "Review the update accepted before this page subscribed";
     let client = reqwest::Client::new();
-    let accepted: serde_json::Value = client.post(format!("{base}/commands"))
+    let accepted: serde_json::Value = client.post(format!("{base}/commands")).bearer_auth(&bearer)
         .json(&serde_json::json!({"type":"message.submit","idempotency_key":"before-events",
             "payload":{"patient_workspace_id":patient,"chat_id":chat,"text":message,"physician_time_zone":"UTC"}}))
         .send().await.unwrap().json().await.unwrap();
@@ -1060,6 +1024,7 @@ async fn the_first_event_connection_reads_changes_after_the_initial_snapshot() {
         .get(format!(
             "{base}/patient-workspaces/{patient}/chats/{chat}/snapshot"
         ))
+        .bearer_auth(&bearer)
         .send()
         .await
         .unwrap()
@@ -1567,114 +1532,6 @@ async fn authenticated_practice_isolation_clinic_demographics_and_panel_assignme
     }
 }
 
-#[tokio::test]
-#[ignore = "browser qualification; run explicitly with --ignored"]
-async fn the_local_simulation_panel_scenarios_and_investor_metric_render_and_interact() {
-    let _guard = test_lock().lock().await;
-    let site = build_site();
-    unsafe {
-        env::set_var("PHYSICIAN_SITE_DIR", &site);
-    }
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move {
-        axum::serve(listener, physician_sample::simulation_router())
-            .await
-            .unwrap();
-    });
-    wait_until_ready(address).await;
-
-    let chrome = chromium();
-    let today_dom = dump_dom(&chrome, &format!("http://{address}/")).await;
-    assert!(
-        today_dom.contains("Simulated practice walk — Connected care walk")
-            && today_dom.contains("Items the physician touched per 100 patients per week")
-            && today_dom.contains("20.0")
-            && today_dom.contains("1 physician touches across 5 patients")
-            && today_dom.contains("Critical lab arrival (ED reply)")
-            && today_dom.contains("Lab correction supersedes ED reply")
-            && today_dom.contains("Undecided medication guard")
-            && today_dom.contains("Jake Smith (MRN 00000001)")
-            && today_dom.contains("Tanvir Chowdhury (MRN 00000003)")
-            && today_dom.contains("Dan Cohen (MRN 00000002)")
-            && today_dom.contains("Teresa Hayes (MRN 00000004)")
-            && today_dom.contains("Mary Louis (MRN 00000005)")
-            && !today_dom.contains("Urgent potassium 6.3 mmol/L"),
-        "Simulated Today did not render panel, scenarios, and investor metric:\n{today_dom}"
-    );
-
-    let jake_url = format!("http://{address}/?patient=pw-82c44e9b-58c0-4af1-bd21-771bf77e101d");
-    let jake_dom = dump_dom(&chrome, &jake_url).await;
-    assert!(
-        jake_dom.contains("Jake Smith")
-            && jake_dom.contains("Patient replies")
-            && jake_dom.contains("Superseded by corrected labs")
-            && jake_dom.contains("prior K+ 6.3 mmol/L entered in error")
-            && jake_dom.contains("Active plan")
-            && jake_dom.contains("Record home blood-pressure log for 1 week")
-            && jake_dom.contains("Undecided medication recommendations")
-            && jake_dom.contains("Losartan 50 mg daily — Held (undecided)")
-            && jake_dom.contains("Approve into plan")
-            && !jake_dom.contains("data-plan-item=\"plan-rec-jake-losartan-50\""),
-        "Jake workspace did not guard undecided Losartan or show superseded ED reply:\n{jake_dom}"
-    );
-
-    // Switch to `lab-arrives-ed-reply` (pre-correction) and verify the urgent ED reply is active on Today.
-    let http = reqwest::Client::new();
-    let resp = http
-        .post(format!("http://{address}/commands"))
-        .json(&serde_json::json!({
-            "type": "simulation.run",
-            "payload": { "scenario": "lab-arrives-ed-reply" }
-        }))
-        .send()
-        .await
-        .expect("run lab-arrives-ed-reply");
-    assert!(resp.status().is_success());
-
-    let pre_correction_today = dump_dom(&chrome, &format!("http://{address}/")).await;
-    assert!(
-        pre_correction_today.contains("Urgent potassium 6.3 mmol/L — advise ED evaluation")
-            && pre_correction_today.contains("Critical lab arrival (ED reply)"),
-        "Pre-correction scenario did not surface urgent ED reply on Today:\n{pre_correction_today}"
-    );
-
-    // Admit corrected labs and approve undecided Losartan, then verify the UI reflects both transitions and updates the investor metric.
-    let resp = http
-        .post(format!("http://{address}/commands"))
-        .json(&serde_json::json!({
-            "type": "simulation.admit_corrected_labs",
-            "payload": { "patient_workspace_id": "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d" }
-        }))
-        .send()
-        .await
-        .expect("admit corrected labs");
-    assert!(resp.status().is_success());
-
-    let resp = http
-        .post(format!("http://{address}/commands"))
-        .json(&serde_json::json!({
-            "type": "plan.decide_recommendation",
-            "payload": {
-                "patient_workspace_id": "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
-                "recommendation_id": "rec-jake-losartan-50"
-            }
-        }))
-        .send()
-        .await
-        .expect("decide recommendation");
-    assert!(resp.status().is_success());
-
-    let jake_after_dom = dump_dom(&chrome, &jake_url).await;
-    assert!(
-        jake_after_dom.contains("Superseded by corrected labs")
-            && jake_after_dom.contains("data-plan-item=\"plan-rec-jake-losartan-50\"")
-            && jake_after_dom.contains("No undecided medication recommendations.")
-            && jake_after_dom.contains("40.0"),
-        "Jake workspace after lab correction + recommendation approval did not update:\n{jake_after_dom}"
-    );
-}
-
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 #[ignore = "browser qualification; run explicitly with --ignored"]
 async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
@@ -1750,19 +1607,6 @@ async fn a_read_asked_a_new_question_shows_loading_until_that_answer_lands() {
 /// brackets, a citation marker the page doesn't draw yet, and code and a table too wide for a phone.
 const RICH_REPLY: &str = "Potassium is **5.4** today.\nRecheck on Friday.\n\n- Hold the supplement\n- Repeat the panel\n\nThe order reads <clinic-note> and cites [[patient_source|a|b]].\n\n```sql\nselect patient, potassium, collected_at, reported_at, ordering_physician, performing_laboratory from basic_metabolic_panel;\n```\n\n| Collected | Potassium | Reference range | Performing laboratory | Ordering physician |\n| --- | --- | --- | --- | --- |\n| Tuesday morning | 5.4 mmol/L | 3.5 to 5.0 mmol/L | Synthetic Regional Laboratory | Synthetic Physician |\n";
 
-struct RichReply;
-
-impl local_product::codex::CodexExecutor for RichReply {
-    fn run(
-        &mut self,
-        _request: &local_product::codex::CodexRequest,
-    ) -> Result<local_product::codex::CodexProcessResult, String> {
-        Ok(local_product::codex::CodexProcessResult::authored(
-            RICH_REPLY,
-        ))
-    }
-}
-
 /// What the next conversation read meets, so the page's loading and error states can be reached.
 #[derive(Clone, Copy, PartialEq)]
 enum SnapshotGate {
@@ -1796,8 +1640,7 @@ async fn gate_snapshot(
     next.run(request).await
 }
 
-/// Adds a ready reply holding `RICH_REPLY` to a workspace read: the simulation's own drafts are
-/// fixed wording and carry no revision, so they can't show code, a table or the revision field.
+/// Adds a saved reply to the fixture workspace to exercise rendering and revision controls.
 async fn with_rich_draft(
     request: axum::extract::Request,
     next: axum::middleware::Next,
@@ -1877,6 +1720,202 @@ fn assert_rich(reply: &serde_json::Value, body_font: &str) {
     );
 }
 
+struct ChatBrowserServer {
+    address: std::net::SocketAddr,
+    worker: scale::Process,
+    site_task: tokio::task::JoinHandle<()>,
+    _stub: scale::ResponsesStub,
+    _emulator: scale::Emulator,
+    _valkey: scale::Valkey,
+    _database: scale::Database,
+}
+
+impl Drop for ChatBrowserServer {
+    fn drop(&mut self) {
+        self.worker.kill_now();
+        self.site_task.abort();
+    }
+}
+
+async fn serve_chat_browser(site: &std::path::Path, reply: &str) -> ChatBrowserServer {
+    let state = env::temp_dir().join(format!("coda-chat-browser-{}", uuid::Uuid::new_v4()));
+    let _ = fs::remove_dir_all(&state);
+    fs::create_dir_all(&state).unwrap();
+    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
+    unsafe {
+        env::set_var("PHYSICIAN_SITE_DIR", site);
+        for key in [
+            "PHYSICIAN_AUTH",
+            "PHYSICIAN_AUTH_PROOF_TOKENS",
+            "PHYSICIAN_UPSTREAM",
+        ] {
+            env::remove_var(key);
+        }
+    }
+    let database = scale::Database::create("browser_chat")
+        .await
+        .expect("browser proof database");
+    scale::staging_account(&database.url).await;
+    let store = local_product::runtime::Store::connect(&database.url)
+        .await
+        .unwrap();
+    let emulator = scale::Emulator::start().await;
+    let worker_port = scale::free_port();
+    emulator.provision(worker_port).await;
+    let valkey = scale::Valkey::start().await;
+    let redis = valkey.url();
+    let stub = scale::ResponsesStub::start_with_reply(&state, 0, 0, "[]", reply).await;
+    let listen = format!("127.0.0.1:{worker_port}");
+    let mut worker = scale::Process::spawn(
+        "worker",
+        scale::worker_bin(),
+        &[],
+        &[
+            ("PHYSICIAN_DATABASE_URL", &database.url),
+            ("PUBSUB_EMULATOR_HOST", &emulator.host),
+            ("PHYSICIAN_WORKER_LISTEN_ADDR", &listen),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
+            ("PHYSICIAN_REDIS_URL", &redis),
+        ],
+        &state,
+    );
+    scale::wait_ready(&mut worker, worker_port).await;
+    let bus: Arc<dyn physician_bus::Bus> = Arc::new(
+        physician_bus::RedisBus::connect(&redis, None)
+            .await
+            .unwrap(),
+    );
+    let queue =
+        physician_sample::queue::PubSubQueue::connect(&scale::topic(), Some(&emulator.host), false)
+            .await
+            .unwrap();
+    let chat = Arc::new(physician_sample::durable::DurableChat::new(
+        store,
+        Arc::new(queue),
+        local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+        &scale::models::roles(),
+    ));
+    let auth = physician_auth::PostgresAuthStore::connect_without_migrations(&database.url)
+        .await
+        .unwrap();
+    let front = front_door::PostgresFrontDoorStore::connect_without_migrations(&database.url)
+        .await
+        .unwrap();
+    set_snapshot_gate(SnapshotGate::Open);
+    let app = physician_sample::authed_router_on(
+        physician_sample::durable_site(chat, bus),
+        Arc::new(auth),
+        Arc::new(front),
+    )
+    .await
+    .layer(axum::middleware::from_fn(gate_snapshot));
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let address = listener.local_addr().unwrap();
+    let site_task = tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
+    wait_until_ready(address).await;
+
+    ChatBrowserServer {
+        address,
+        worker,
+        site_task,
+        _stub: stub,
+        _emulator: emulator,
+        _valkey: valkey,
+        _database: database,
+    }
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[ignore = "browser qualification; run explicitly with --ignored"]
+async fn held_limits_and_provider_blocks_render_without_a_partial_answer() {
+    use harness::engine::{AttemptFailure, Event, EventKind};
+    use local_product::runtime::{Input, Scope, Store};
+    let _guard = test_lock().lock().await;
+    let site = build_site();
+    let server = serve_chat_browser(&site, scale::FIXED_TEXT).await;
+    let base = format!("http://{}", server.address);
+    let store = Store::connect(&server._database.url).await.unwrap();
+    let mut browser = Tab::open(&base);
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
+    browser.wait_for_text("Nothing needs you right now.", Duration::from_secs(20));
+    let bearer = browser
+        .eval("localStorage.getItem('coda.physician.session')")
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let patient = physician_sample::WORKSPACE_IDS[0];
+    for (blocked, expected, picture) in [
+        (
+            false,
+            "Coda reached its limit for this response. Choose Try again to continue.",
+            "held-limit-no-partial",
+        ),
+        (
+            true,
+            "Coda couldn’t respond right now. Your message is saved.",
+            "held-provider-blocked",
+        ),
+    ] {
+        let scope = Scope {
+            practice: physician_sample::STAGING_PRACTICE_ID.into(),
+            physician: "staging-physician".into(),
+            workspace: patient.into(),
+            chat: uuid::Uuid::new_v4().to_string(),
+        };
+        store
+            .accept_authorized(
+                &scope,
+                &Input {
+                    key: format!("held-input-{picture}"),
+                    text: "Review this synthetic question.".into(),
+                    timezone: "UTC".into(),
+                    scenario: None,
+                },
+                physician_auth::PostgresAuthStore::session_reference(&bearer),
+                &local_product::physician_chat::PhysicianSkills::configured(None, false).unwrap(),
+                &scale::models::chat_recipe(),
+            )
+            .await
+            .unwrap();
+        let claim = store.claim(&scope, 60).await.unwrap().unwrap();
+        if blocked {
+            store
+                .persist(
+                    &claim,
+                    Event {
+                        attempt_id: claim.attempt.clone(),
+                        sequence: 1,
+                        ordinal: 1,
+                        kind: EventKind::ProviderBlocked {
+                            reason: "raw-provider-diagnostic-739".into(),
+                        },
+                    },
+                )
+                .await
+                .unwrap();
+        } else {
+            store
+                .settle_chat_attempt(&claim, AttemptFailure::Limit)
+                .await
+                .unwrap();
+        }
+        assert_eq!(store.conversation(&scope).await.unwrap().messages.len(), 1);
+        browser.navigate(&format!("{base}/?patient={patient}&chat={}", scope.chat));
+        browser.wait_for_text(expected, Duration::from_secs(20));
+        assert_eq!(
+            browser.step(
+                "readText",
+                serde_json::json!([".conversation-mechanical button"])
+            ),
+            serde_json::json!("Try again")
+        );
+        let dom = browser.dom();
+        assert!(!dom.contains("Partial response") && !dom.contains("raw-provider-diagnostic-739"));
+        browser.save_picture(picture);
+    }
+}
+
 /// In a real turn, a reply draws its code and table, and each scrolls by key where it can't fit.
 /// The conversation's empty, loading, error and recovery states are walked around it.
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
@@ -1884,38 +1923,13 @@ fn assert_rich(reply: &serde_json::Value, body_font: &str) {
 async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
     let _guard = test_lock().lock().await;
     let site = build_site();
-    let state = env::temp_dir().join(format!("coda-rich-reply-{}", std::process::id()));
-    let _ = fs::remove_dir_all(&state);
-    fs::create_dir_all(&state).unwrap();
-    // SAFETY: tests in this binary hold `test_lock()` before mutating process env.
-    unsafe {
-        env::set_var("PHYSICIAN_SITE_DIR", &site);
-        env::set_var("CODA_PHYSICIAN_SESSION_PATH", state.join("session.json"));
-        for key in [
-            "PHYSICIAN_AUTH",
-            "PHYSICIAN_AUTH_PROOF_TOKENS",
-            "PHYSICIAN_UPSTREAM",
-            "CODA_LOCAL_SIMULATION",
-        ] {
-            env::remove_var(key);
-        }
-    }
-    let transport = local_product::codex::CodexTransport::recording(
-        Box::new(RichReply),
-        "synthetic reply rendering test",
-        state.join("cassette.json"),
-    )
-    .unwrap();
-    set_snapshot_gate(SnapshotGate::Open);
-    let app = physician_sample::codex_chat_site(transport)
-        .layer(axum::middleware::from_fn(gate_snapshot));
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
-    let address = listener.local_addr().unwrap();
-    tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
-    wait_until_ready(address).await;
+    let server = serve_chat_browser(&site, RICH_REPLY).await;
+    let address = server.address;
 
     let patient = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
     let mut browser = Tab::open(&format!("http://{address}/?patient={patient}"));
+    browser.wait_for_text("Work email", Duration::from_secs(20));
+    browser.request_sign_in("physician@codahealth.test");
     browser.wait_for_text("This workspace has no chats.", Duration::from_secs(20));
     browser.step(
         "click",
@@ -1985,7 +1999,6 @@ async fn a_reply_draws_code_and_a_table_that_scroll_by_key() {
         browser.press_key(Key::ARROW_LEFT);
         browser.wait_for_scroll(&target, |left| left == 0.0);
     }
-    let _ = fs::remove_dir_all(&state);
 }
 
 /// A threshold at the start of a line reads as written, so the physician reviews what Copy sends.
@@ -1998,8 +2011,8 @@ async fn a_draft_keeps_a_threshold_that_markdown_would_read_as_a_quote() {
     unsafe {
         env::set_var("PHYSICIAN_SITE_DIR", &site);
     }
-    let app = physician_sample::simulation_router()
-        .layer(axum::middleware::from_fn(with_threshold_draft));
+    let app =
+        physician_sample::fixture_site().layer(axum::middleware::from_fn(with_threshold_draft));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
@@ -2032,8 +2045,7 @@ async fn a_reply_draft_reads_as_written_and_copies_its_own_words() {
     unsafe {
         env::set_var("PHYSICIAN_SITE_DIR", &site);
     }
-    let app =
-        physician_sample::simulation_router().layer(axum::middleware::from_fn(with_rich_draft));
+    let app = physician_sample::fixture_site().layer(axum::middleware::from_fn(with_rich_draft));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
@@ -2150,7 +2162,7 @@ async fn the_sidebar_is_a_closed_drawer_on_a_phone_and_a_rail_beside_the_page_ot
     }
     let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
     let address = listener.local_addr().unwrap();
-    let app = physician_sample::simulation_router();
+    let app = physician_sample::fixture_site();
     tokio::spawn(async move { axum::serve(listener, app).await.unwrap() });
     wait_until_ready(address).await;
 

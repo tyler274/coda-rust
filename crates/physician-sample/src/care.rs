@@ -13,7 +13,7 @@ use axum::response::{IntoResponse, Response};
 use serde::Deserialize;
 use serde_json::{Value, json};
 
-use local_product::codex::format_rfc3339;
+use crate::timestamp::format_rfc3339;
 use local_product::{ApprovedDoctorPlan, DoctorPlanDraft, DoctorPlanStore, PlanItemInput};
 use physician_auth::{
     AuthStore, Cadence, Membership, MemoryAuthStore, PatientLink, PhysicianIdentity,

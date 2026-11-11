@@ -465,15 +465,13 @@ async fn a_site_with_no_load_is_ready_and_empty_until_a_load_fills_it() {
         .unwrap();
     let state = std::env::temp_dir().join(format!("coda-site-start-{database}"));
     fs::create_dir_all(&state).unwrap();
-    fs::write(state.join("cassette.json"), common::EMPTY_CASSETTE).unwrap();
     let mut site = Site(
         Command::new(env!("CARGO_BIN_EXE_physician-sample"))
             .env("PHYSICIAN_DATABASE_URL", &url)
             .env("PHYSICIAN_AUTH", "required")
             .env("PHYSICIAN_LISTEN_ADDR", address.to_string())
-            .env("CODA_PHYSICIAN_SESSION_PATH", state.join("session.json"))
-            .env("CODA_LOCAL_MODEL_EXECUTION", "replay")
-            .env("CODA_CASSETTE_PATH", state.join("cassette.json"))
+            .env_remove("CODA_LOCAL_MODEL_EXECUTION")
+            .env_remove("PHYSICIAN_CHAT_TOPIC")
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()

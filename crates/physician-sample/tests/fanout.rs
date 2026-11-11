@@ -64,6 +64,7 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
     let worker_listen = format!("127.0.0.1:{worker_port}");
     let site_a_listen = format!("127.0.0.1:{site_a_port}");
     let site_b_listen = format!("127.0.0.1:{site_b_port}");
+    let stub = support::ResponsesStub::start(&home.0, 0, 0, "[]").await;
     let mut worker = support::Process::spawn(
         "worker",
         support::worker_bin(),
@@ -73,7 +74,7 @@ async fn cross_instance_turn_is_visible_on_the_other_sse_stream_and_valkey_resta
             ("PHYSICIAN_REDIS_URL", redis.as_str()),
             ("PUBSUB_EMULATOR_HOST", emulator.host.as_str()),
             ("PHYSICIAN_WORKER_LISTEN_ADDR", worker_listen.as_str()),
-            ("PHYSICIAN_WORKER_FIXED_TEXT", support::FIXED_TEXT),
+            ("PHYSICIAN_RESPONSES_STUB_PORT", &stub.port),
         ],
         &home.0,
     );

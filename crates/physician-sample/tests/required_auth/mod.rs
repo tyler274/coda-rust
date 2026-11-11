@@ -17,7 +17,7 @@ pub const END_THE_SESSION: &str = "fetch('/auth/sign-out', { method: 'POST', hea
 
 /// Boots the recorded practice with `PHYSICIAN_AUTH=required`. The server
 /// seeds its staging account and panel itself on the memory store. Its
-/// physician session is a temporary file and its execution is offline replay.
+/// routes display fixture data without a model transport.
 pub async fn spawn_required_server() -> common::IsolatedServer {
     let site = shared_site();
     common::serve_isolated(|| {

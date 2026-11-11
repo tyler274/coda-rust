@@ -1,13 +1,10 @@
 //! The physician site for the synthetic practice.
 //!
 //! Patients come from [`patients`]: the practice's registered patients and what
-//! their sources delivered. Unset `CODA_LOCAL_MODEL_EXECUTION` is `live`:
-//! `message.submit` runs through the Codex CLI (`codex login`) and does not
-//! read an API key. `record` and `replay` use a cassette on that same path.
-//! `api` answers `message.submit` through OpenAI Responses.
-//! `PHYSICIAN_UPSTREAM` still forwards physician routes to the Node server when
-//! api mode is unset. `--simulate` serves the fixtures under `fixtures/` through
-//! the local simulation. The same server serves the Dioxus page, which mounts
+//! their sources delivered. Postgres owns chat and revisions; the worker selects
+//! local subscription or API inference. The site never runs a model.
+//! `PHYSICIAN_UPSTREAM` forwards fixture routes to another server.
+//! The same server serves the Dioxus page, which mounts
 //! into `#main`.
 //! Book: `book/src/physician-site.md`.
 #![deny(missing_docs)]
@@ -27,15 +24,12 @@ mod live;
 #[cfg(test)]
 mod live_tests;
 pub mod patients;
-mod publication;
-#[cfg(test)]
-mod publication_tests;
 pub mod queue;
 pub mod rehearsal;
 mod reply;
-mod simulation;
 pub mod synthetic_chart;
 mod synthetic_reply;
+mod timestamp;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
 pub use auth::{STAGING_PRACTICE_ID, authed_router, authed_router_on};
@@ -60,12 +54,7 @@ const INDEX: &str = include_str!("../../physician-app/index.html");
 const LOGO: &[u8] = include_bytes!("../../physician-app/assets/coda-health-logo-transparent.png");
 const FAVICON: &[u8] = include_bytes!("../../physician-app/assets/favicon.svg");
 
-const PRACTICE_DAY: &str = include_str!("../fixtures/practice-day.json");
-const UPDATES: &str = include_str!("../fixtures/updates.json");
-const RECENT: &str = include_str!("../fixtures/recent-conversations.json");
-const WORKSPACES: &str = include_str!("../fixtures/patient-workspaces.json");
-
-/// The fixture patients the local simulation and the tests read.
+/// The fixture patients the tests read.
 pub const WORKSPACE_IDS: [&str; 5] = [
     "pw-67305f4a-7d91-462c-9cc5-1bb30ade34ee",
     "pw-82c44e9b-58c0-4af1-bd21-771bf77e101d",
@@ -74,77 +63,9 @@ pub const WORKSPACE_IDS: [&str; 5] = [
     "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e",
 ];
 
-/// Builds the HTTP router. `PHYSICIAN_UPSTREAM` forwards physician routes;
-/// `CODA_LOCAL_SIMULATION` activates the local simulation engine.
+/// Builds the HTTP router. `PHYSICIAN_UPSTREAM` forwards physician routes.
 pub fn router() -> Router {
-    if let Some(scenario) = simulation_scenario_from_env() {
-        return simulation_router_with_scenario(&scenario);
-    }
     router_with(upstream_from_env())
-}
-
-/// Builds the interactive local simulation router initialized with `connected-walk`.
-pub fn simulation_router() -> Router {
-    simulation_router_with_scenario(local_product::DEFAULT_SIMULATION_SCENARIO)
-}
-
-/// Builds the interactive local simulation router initialized with `scenario`.
-pub fn simulation_router_with_scenario(scenario: &str) -> Router {
-    let state = simulation::SimulationState::new(scenario);
-    Router::new()
-        .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
-        .route("/today", get(simulation::today))
-        .route("/practice-day", get(|| async { json_body(PRACTICE_DAY) }))
-        .route("/updates", get(|| async { json_body(UPDATES) }))
-        .route("/recent-conversations", get(|| async { json_body(RECENT) }))
-        .route(
-            "/patient-workspaces",
-            get(|| async { json_body(WORKSPACES) }),
-        )
-        .route("/patient-workspaces/{id}", get(simulation::workspace))
-        .route(
-            "/patient-workspaces/{id}/chats/{chat}/snapshot",
-            get(simulation::snapshot),
-        )
-        .route("/patient-roster", get(simulation::roster))
-        .route("/commands", post(simulation::command))
-        .route(
-            "/local-proof/simulations",
-            get(simulation::simulations_index),
-        )
-        .route(
-            "/local-proof/simulations/run",
-            post(simulation::run_scenario_endpoint),
-        )
-        .route("/dictation", post(|| async { dictation_unavailable() }))
-        .route(
-            "/physician-state/drafts/{workspace}/{chat}",
-            get(empty_draft).put(draft_not_saved),
-        )
-        .route("/", get(site_index))
-        .route("/index.html", get(site_index))
-        .route("/assets/coda-health-logo-transparent.png", get(logo))
-        .route("/favicon.svg", get(favicon))
-        .fallback(site_file)
-        .with_state(state)
-        .layer(middleware::from_fn(cors))
-}
-
-pub(crate) fn simulation_scenario_from_env() -> Option<String> {
-    simulation_scenario(|key| env::var(key).ok())
-}
-
-fn simulation_scenario(get: impl Fn(&str) -> Option<String>) -> Option<String> {
-    let raw = get("CODA_LOCAL_SIMULATION")?;
-    let trimmed = raw.trim();
-    if trimmed.is_empty() || trimmed == "0" || trimmed.eq_ignore_ascii_case("false") {
-        return None;
-    }
-    if trimmed == "1" || trimmed.eq_ignore_ascii_case("true") {
-        Some(local_product::DEFAULT_SIMULATION_SCENARIO.to_owned())
-    } else {
-        Some(trimmed.to_owned())
-    }
 }
 
 fn router_with(upstream: Option<String>) -> Router {
@@ -172,15 +93,13 @@ pub fn fixture_site() -> Router {
         .layer(axum::Extension(care::ConnectedCare::fixture()))
 }
 
-fn live_router(model: live::ChatModel) -> Router {
-    live_router_on(live::Live::new(model))
-}
-
-fn live_router_on(live: std::sync::Arc<live::Live>) -> Router {
-    live_router_over(live, care::ConnectedCare::new())
-}
-
-fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::ConnectedCare) -> Router {
+/// The physician routes over the durable chat owner and its invalidation bus.
+/// The caller supplies the same authenticated stores used to accept work.
+pub fn durable_site(
+    chat: std::sync::Arc<durable::DurableChat>,
+    bus: std::sync::Arc<dyn physician_bus::Bus>,
+) -> Router {
+    let live = live::Live::new(std::sync::Arc::clone(&bus), chat);
     site()
         .route("/commands", post(live::submit))
         .route(
@@ -195,10 +114,14 @@ fn live_router_over(live: std::sync::Arc<live::Live>, connected: care::Connected
             "/patient-workspaces/{id}/chats/{chat}/snapshot",
             get(live::snapshot),
         )
-        .route("/patient-workspaces/events", get(live::events))
+        // The bus carries invalidations; chat state remains in Postgres.
+        .route(
+            "/patient-workspaces/events",
+            get(live::events).with_state(bus),
+        )
         // The shared workspace route lists this server's chats through it.
         .layer(axum::Extension(std::sync::Arc::clone(&live)))
-        .layer(axum::Extension(connected))
+        .layer(axum::Extension(care::ConnectedCare::new()))
         .with_state(live)
 }
 
@@ -405,7 +328,7 @@ async fn empty_snapshot(
         return StatusCode::NOT_FOUND.into_response();
     }
     Json(json!({
-        "snapshot": { "conversation": [] }
+        "snapshot": { "conversation": [], "runs": [] }
     }))
     .into_response()
 }
@@ -464,7 +387,7 @@ fn site_mime(file: &Path) -> Option<&'static str> {
 /// One process-wide bus is shared by chat execution and auth. When both
 /// `PHYSICIAN_DATABASE_URL` and `PHYSICIAN_CHAT_TOPIC` are set, `message.submit`
 /// is accepted in Postgres and woken on Pub/Sub; this process does not run
-/// the model. Without the topic, chat runs inline, hosted or not. Recovery is
+/// the model. A hosted site requires the topic. Recovery is
 /// aborted after graceful shutdown.
 pub async fn serve(listener: tokio::net::TcpListener) {
     serve_holding(listener, std::sync::Arc::default()).await;
@@ -508,25 +431,39 @@ async fn site_from_env(
     let topic = configured(&get, "PHYSICIAN_CHAT_TOPIC");
     let database = configured(&get, "PHYSICIAN_DATABASE_URL");
     if hosted && topic.is_none() {
-        // Merging ahead of the infrastructure plan is safe: until the plan sets
-        // the topic, the hosted site keeps running chat inline as before.
-        tracing::warn!(
-            "PHYSICIAN_CHAT_TOPIC is unset; hosted physician chat runs inline in this process"
-        );
+        return Err("hosted physician chat requires PHYSICIAN_CHAT_TOPIC".into());
     }
     if topic.is_some() && database.is_none() {
         return Err("PHYSICIAN_CHAT_TOPIC requires PHYSICIAN_DATABASE_URL".into());
     }
-    let required = configured(&get, "PHYSICIAN_AUTH").as_deref() == Some("required");
-    // Their patients are not the practice's, so access has nothing to enforce.
-    if required {
-        if configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
-            return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
-        }
-        if simulation_scenario(&get).is_some() {
-            return Err("the local simulation cannot run with required sign-in".into());
-        }
+    if topic.is_none()
+        && local_product::model_execution(
+            configured(&get, "CODA_LOCAL_MODEL_EXECUTION").as_deref(),
+        )? != local_product::ModelExecution::Disabled
+    {
+        return Err(
+            "model execution requires the Postgres chat worker; start scripts/local-practice.sh"
+                .into(),
+        );
     }
+    let required = configured(&get, "PHYSICIAN_AUTH").as_deref() == Some("required");
+    if topic.is_some() && !required {
+        return Err("durable physician chat requires PHYSICIAN_AUTH=required".into());
+    }
+    // Their patients are not the practice's, so access has nothing to enforce.
+    if required && configured(&get, "PHYSICIAN_UPSTREAM").is_some() {
+        return Err("PHYSICIAN_UPSTREAM cannot run with required sign-in".into());
+    }
+    let durable = topic
+        .map(|topic| {
+            local_product::physician_chat::PhysicianSkills::configured(
+                configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
+                hosted,
+            )
+            .map_err(|error| error.to_string())
+            .map(|skills| (topic, skills))
+        })
+        .transpose()?;
     let rehearsal = hosting::RehearsalSignIn::from_env(&get)?;
     if rehearsal.is_some() && !required {
         return Err("the rehearsal sign-in needs PHYSICIAN_AUTH=required".into());
@@ -534,14 +471,24 @@ async fn site_from_env(
     let bus = physician_bus::from_env(&get, hosted).await?;
     // One pool per process: durable chat and the patient directory share it.
     let runtime = match &database {
-        Some(url) if required || topic.is_some() => Some(
+        Some(url) if required || durable.is_some() => Some(
             local_product::runtime::Store::connect(url)
                 .await
                 .map_err(|_| "physician runtime store unavailable".to_string())?,
         ),
         _ => None,
     };
-    let (base, chat) = if let (Some(topic), Some(store)) = (topic, runtime.clone()) {
+    let (base, chat) = if let (Some((topic, skills)), Some(store)) = (durable, runtime.clone()) {
+        let settings: Vec<_> = local_product::MODEL_SETTING_KEYS
+            .into_iter()
+            .filter_map(|key| configured(&get, key).map(|value| (key, value)))
+            .collect();
+        let environment: Vec<_> = settings
+            .iter()
+            .map(|(key, value)| (*key, value.as_str()))
+            .collect();
+        let roles = local_product::model_roles("responses", &environment)
+            .map_err(|error| error.to_string())?;
         // The retained snapshot is the stand-in source owner's only import
         // path. Importing it again changes nothing, so every instance can.
         store
@@ -551,19 +498,19 @@ async fn site_from_env(
         let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
         let queue = queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted).await?;
         let chat = std::sync::Arc::new(
-            durable::DurableChat::new(store, std::sync::Arc::new(queue))
+            durable::DurableChat::new(store, std::sync::Arc::new(queue), skills, &roles)
                 .with_simulation_practices(hosting::SimulationPractices::from_env(&get)?),
         );
-        let live = live::Live::durable(std::sync::Arc::clone(&bus), std::sync::Arc::clone(&chat))?;
         tracing::info!(
             "physician chat accepts turns onto the configured topic; this process does not run the model"
         );
         (
-            live_router_on(live).layer(middleware::from_fn(cors)),
+            durable_site(std::sync::Arc::clone(&chat), std::sync::Arc::clone(&bus))
+                .layer(middleware::from_fn(cors)),
             Some(chat),
         )
     } else {
-        (router_from_env(std::sync::Arc::clone(&bus))?, None)
+        (router(), None)
     };
     let postgres = database.as_deref().zip(runtime);
     let router =
@@ -626,34 +573,6 @@ pub fn traced(router: Router) -> Router {
     router.layer(telemetry::http_layer())
 }
 
-/// The chat router on one Codex transport (record or a scripted executor),
-/// traced like `serve`. For integration tests.
-#[doc(hidden)]
-pub fn codex_chat_router(transport: local_product::codex::CodexTransport) -> Router {
-    let roles = local_product::model_roles("codex-exec", &[]).expect("default roles");
-    traced(
-        live_router(live::ChatModel::Codex {
-            binding: roles.chat,
-            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
-        })
-        .layer(middleware::from_fn(cors)),
-    )
-}
-
-/// The site over five fixture patients with chat on one Codex transport, so a browser test can
-/// read a real reply in a patient's conversation.
-#[doc(hidden)]
-pub fn codex_chat_site(transport: local_product::codex::CodexTransport) -> Router {
-    let roles = local_product::model_roles("codex-exec", &[]).expect("default roles");
-    live_router_over(
-        live::Live::new(live::ChatModel::Codex {
-            binding: roles.chat,
-            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
-        }),
-        care::ConnectedCare::fixture(),
-    )
-}
-
 /// Serves the fixture site on `listener` with authentication required
 /// against the given `store`.
 pub async fn serve_with_store(
@@ -663,158 +582,6 @@ pub async fn serve_with_store(
     let base = router();
     let app = traced(auth::authed_router_with_store(base, store).await);
     axum::serve(listener, app).await.expect("sample server");
-}
-
-fn router_from_env(bus: std::sync::Arc<dyn physician_bus::Bus>) -> Result<Router, String> {
-    let execution =
-        local_product::model_execution(env::var("CODA_LOCAL_MODEL_EXECUTION").ok().as_deref())?;
-    if execution != local_product::ModelExecution::Api
-        && (simulation_scenario_from_env().is_some() || upstream_from_env().is_some())
-    {
-        return Ok(router());
-    }
-    let allow = env::var("CODA_ALLOW_MODEL_CALLS").ok();
-    let key = env::var("OPENAI_API_KEY").ok();
-    let authorization = env::var("CODA_CASSETTE_AUTHORIZATION").ok();
-    let output = env::var("CODA_CASSETTE_OUTPUT").ok();
-    let cassette = env::var("CODA_CASSETTE_PATH").ok();
-    let owned = role_environment();
-    let environment: Vec<(&str, &str)> = owned
-        .iter()
-        .map(|(key, value)| (*key, value.as_str()))
-        .collect();
-    model_router_on(
-        execution,
-        allow.as_deref(),
-        key.as_deref(),
-        local_product::codex::CodexSettings {
-            cassette_authorization: authorization.as_deref(),
-            cassette_output: output.as_deref(),
-            cassette_path: cassette.as_deref(),
-        },
-        &environment,
-        bus,
-    )
-}
-
-#[cfg(test)]
-fn model_router(
-    execution: local_product::ModelExecution,
-    allow: Option<&str>,
-    key: Option<&str>,
-    settings: local_product::codex::CodexSettings<'_>,
-    environment: &[(&str, &str)],
-) -> Result<Router, String> {
-    model_router_on(
-        execution,
-        allow,
-        key,
-        settings,
-        environment,
-        std::sync::Arc::new(physician_bus::LocalBus::new(64)),
-    )
-}
-
-fn mount_chat(model: live::ChatModel, bus: &std::sync::Arc<dyn physician_bus::Bus>) -> Router {
-    live_router_on(live::Live::with_bus(model, std::sync::Arc::clone(bus)))
-}
-
-fn model_router_on(
-    execution: local_product::ModelExecution,
-    allow: Option<&str>,
-    key: Option<&str>,
-    settings: local_product::codex::CodexSettings<'_>,
-    environment: &[(&str, &str)],
-    bus: std::sync::Arc<dyn physician_bus::Bus>,
-) -> Result<Router, String> {
-    if execution == local_product::ModelExecution::Api {
-        let key = local_product::open_ai_api_key(allow, key)?;
-        let roles = local_product::model_roles("openai-responses", environment)?;
-        tracing::info!(
-            "Model execution: api via OpenAI Responses (chat {} {}; background {} {}; worker {} {}; linking {} {})",
-            roles.chat.model,
-            roles.chat.effort,
-            roles.background.model,
-            roles.background.effort,
-            roles.worker.model,
-            roles.worker.effort,
-            roles.linking.model,
-            roles.linking.effort,
-        );
-        return Ok(mount_chat(
-            live::ChatModel::OpenAi {
-                key,
-                binding: roles.chat,
-            },
-            &bus,
-        )
-        .layer(middleware::from_fn(cors)));
-    }
-    if execution == local_product::ModelExecution::Replay
-        && let Some(path) = settings.cassette_path
-    {
-        let bytes = fs::read(path).map_err(|_| "could not read replay cassette")?;
-        let value: Value = serde_json::from_slice(&bytes).map_err(|_| "invalid replay cassette")?;
-        if value.get("schema_version").and_then(Value::as_u64) == Some(2) {
-            let cassette =
-                serde_json::from_value(value).map_err(|_| "invalid structured cassette")?;
-            let replay = harness::transport::Replay::new(cassette)?;
-            let roles = local_product::model_roles("structured-replay", environment)?;
-            return Ok(mount_chat(
-                live::ChatModel::StructuredReplay {
-                    binding: roles.chat,
-                    replay: tokio::sync::Mutex::new(replay),
-                },
-                &bus,
-            ));
-        }
-    }
-    let transport = local_product::codex::open_codex(execution, settings)?;
-    let roles = local_product::model_roles("codex-exec", environment)?;
-    match execution {
-        local_product::ModelExecution::Live => tracing::info!(
-            "Model execution: live via Codex CLI (chat {} {}). Sign in with `codex login`. No API key is read.",
-            roles.chat.model,
-            roles.chat.effort
-        ),
-        local_product::ModelExecution::Record => tracing::info!(
-            "Model execution: record via Codex CLI (chat {} {}). Sign in with `codex login`. Cassette: {}.",
-            roles.chat.model,
-            roles.chat.effort,
-            settings.cassette_output.unwrap_or("")
-        ),
-        local_product::ModelExecution::Replay => tracing::info!(
-            "Model execution: replay via Codex cassette (chat {} {}). Cassette: {}. No CLI call and no API key.",
-            roles.chat.model,
-            roles.chat.effort,
-            settings.cassette_path.unwrap_or("")
-        ),
-        local_product::ModelExecution::Api => unreachable!("api is handled above"),
-    }
-    Ok(mount_chat(
-        live::ChatModel::Codex {
-            binding: roles.chat,
-            transport: std::sync::Arc::new(std::sync::Mutex::new(transport)),
-        },
-        &bus,
-    )
-    .layer(middleware::from_fn(cors)))
-}
-
-fn role_environment() -> Vec<(&'static str, String)> {
-    const KEYS: [&str; 8] = [
-        "CODA_CHAT_MODEL",
-        "CODA_CHAT_EFFORT",
-        "CODA_BACKGROUND_MODEL",
-        "CODA_BACKGROUND_EFFORT",
-        "CODA_WORKER_MODEL",
-        "CODA_WORKER_EFFORT",
-        "CODA_LINKING_MODEL",
-        "CODA_LINKING_EFFORT",
-    ];
-    KEYS.into_iter()
-        .filter_map(|key| env::var(key).ok().map(|value| (key, value)))
-        .collect()
 }
 
 /// The practice's calendar day, as `/today` and `/updates` carry it. It is the
@@ -995,15 +762,6 @@ fn dictation_unavailable() -> Response {
         .into_response()
 }
 
-fn json_body(body: &'static str) -> Response {
-    (
-        StatusCode::OK,
-        [(axum::http::header::CONTENT_TYPE, "application/json")],
-        body,
-    )
-        .into_response()
-}
-
 #[derive(Deserialize)]
 pub(crate) struct RosterQuery {
     pub(crate) query: Option<String>,
@@ -1080,12 +838,12 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn hosted_site_without_a_chat_topic_runs_chat_inline() {
+    async fn hosted_site_requires_the_chat_topic() {
         let hosted = |name: &str| (name == "K_SERVICE").then(|| "physician".into());
-        let (_, recovery) = site_from_env(hosted, std::sync::Arc::default())
+        let error = site_from_env(hosted, std::sync::Arc::default())
             .await
-            .expect("hosted without a topic starts");
-        assert!(recovery.is_none(), "no durable chat, so no recovery sweep");
+            .expect_err("hosted chat requires its durable owner");
+        assert!(error.contains("PHYSICIAN_CHAT_TOPIC"), "{error}");
     }
 
     #[tokio::test]
@@ -1102,18 +860,13 @@ mod tests {
 
     #[tokio::test]
     async fn required_sign_in_serves_only_the_practice() {
-        for (other_routes, named) in [
-            ("PHYSICIAN_UPSTREAM", "PHYSICIAN_UPSTREAM"),
-            ("CODA_LOCAL_SIMULATION", "simulation"),
-        ] {
-            let environment = |name: &str| {
-                (name == "PHYSICIAN_AUTH" || name == other_routes).then(|| "required".to_owned())
-            };
-            let error = site_from_env(environment, std::sync::Arc::default())
-                .await
-                .expect_err("required sign-in over other routes");
-            assert!(error.contains(named), "{error}");
-        }
+        let environment = |name: &str| {
+            matches!(name, "PHYSICIAN_AUTH" | "PHYSICIAN_UPSTREAM").then(|| "required".to_owned())
+        };
+        let error = site_from_env(environment, std::sync::Arc::default())
+            .await
+            .expect_err("required sign-in over other routes");
+        assert!(error.contains("PHYSICIAN_UPSTREAM"), "{error}");
     }
 
     #[tokio::test]
@@ -1261,136 +1014,6 @@ mod tests {
         let body: Value = serde_json::from_slice(&bytes).unwrap();
         assert_eq!(body["outcome"], "rejected");
         assert_eq!(body["message"], "Coda couldn’t resume that work.");
-    }
-
-    #[tokio::test]
-    async fn a_chat_message_is_answered_without_calling_openai() {
-        let app = live_router(live::ChatModel::Fixed("Noted.".to_owned()))
-            .layer(middleware::from_fn(cors));
-        let submit = r#"{"type":"message.submit","idempotency_key":"k1","payload":{"patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","chat_id":"chat-1","text":"Hello","physician_time_zone":"America/New_York"}}"#;
-        let (status, accepted) =
-            request(app.clone(), "POST", "/commands", Body::from(submit)).await;
-        assert_eq!(status, StatusCode::OK);
-        assert!(accepted.contains("\"outcome\":\"accepted\""));
-        let snapshot_path =
-            "/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/chat-1/snapshot";
-        let mut snapshot = String::new();
-        for _ in 0..20 {
-            let (status, body) = request(app.clone(), "GET", snapshot_path, Body::empty()).await;
-            assert_eq!(status, StatusCode::OK);
-            snapshot = body;
-            if snapshot.contains("Noted.") {
-                break;
-            }
-            tokio::task::yield_now().await;
-        }
-        assert!(snapshot.contains("Hello"), "{snapshot}");
-        assert!(snapshot.contains("Noted."), "{snapshot}");
-        let (status, again) = request(app.clone(), "POST", "/commands", Body::from(submit)).await;
-        assert_eq!(status, StatusCode::OK);
-        assert!(again.contains("\"outcome\":\"accepted\""));
-        tokio::task::yield_now().await;
-        let (_, snapshot) = request(app, "GET", snapshot_path, Body::empty()).await;
-        assert_eq!(snapshot.matches("Noted.").count(), 1, "{snapshot}");
-        let (status, rejected) = request(
-            live_router(live::ChatModel::Fixed("Noted.".to_owned())),
-            "POST",
-            "/commands",
-            Body::from(r#"{"type":"work.resume","idempotency_key":"k2"}"#),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK);
-        assert!(rejected.contains("Coda couldn’t resume that work."));
-    }
-
-    #[tokio::test]
-    async fn replay_answers_chat_from_a_cassette_without_an_api_key() {
-        let dir =
-            std::env::temp_dir().join(format!("coda-physician-cassette-{}", std::process::id()));
-        let _ = std::fs::remove_dir_all(&dir);
-        std::fs::create_dir_all(&dir).unwrap();
-        let path = dir.join("cassette.json");
-        let roles = local_product::model_roles("codex-exec", &[]).unwrap();
-        let mut session = local_product::ChatSession::new(roles.chat);
-        let recorded = match session.submit("record-1", "pw", "chat", "Hello") {
-            local_product::Submit::Accepted { request } => request,
-            other => panic!("expected a recorded turn, got {other:?}"),
-        };
-        let mut recording = local_product::codex::CodexTransport::recording(
-            Box::new(ScriptedReply("Noted from the cassette.")),
-            "synthetic test",
-            path.clone(),
-        )
-        .unwrap();
-        assert_eq!(
-            recording.complete(&recorded).unwrap(),
-            "Noted from the cassette."
-        );
-        let app = model_router(
-            local_product::ModelExecution::Replay,
-            None,
-            None,
-            local_product::codex::CodexSettings {
-                cassette_authorization: None,
-                cassette_output: None,
-                cassette_path: Some(path.to_str().unwrap()),
-            },
-            &[],
-        )
-        .unwrap()
-        .layer(middleware::from_fn(cors));
-        let live = model_router(
-            local_product::ModelExecution::Live,
-            None,
-            None,
-            local_product::codex::CodexSettings::default(),
-            &[],
-        )
-        .unwrap();
-        let (status, health) = request(live, "GET", "/health", Body::empty()).await;
-        assert_eq!(status, StatusCode::OK, "{health}");
-        assert!(
-            model_router(
-                local_product::ModelExecution::Api,
-                None,
-                None,
-                local_product::codex::CodexSettings::default(),
-                &[],
-            )
-            .unwrap_err()
-            .contains("CODA_ALLOW_MODEL_CALLS=1")
-        );
-        let submit = r#"{"type":"message.submit","idempotency_key":"k-replay","payload":{"patient_workspace_id":"pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e","chat_id":"chat-1","text":"Hello","physician_time_zone":"America/New_York"}}"#;
-        let (status, accepted) =
-            request(app.clone(), "POST", "/commands", Body::from(submit)).await;
-        assert_eq!(status, StatusCode::OK, "{accepted}");
-        assert!(accepted.contains("\"outcome\":\"accepted\""));
-        let snapshot_path =
-            "/patient-workspaces/pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e/chats/chat-1/snapshot";
-        let mut snapshot = String::new();
-        for _ in 0..50 {
-            let (status, body) = request(app.clone(), "GET", snapshot_path, Body::empty()).await;
-            assert_eq!(status, StatusCode::OK);
-            snapshot = body;
-            if snapshot.contains("Noted from the cassette.") {
-                break;
-            }
-            tokio::time::sleep(std::time::Duration::from_millis(10)).await;
-        }
-        assert!(snapshot.contains("Hello"), "{snapshot}");
-        assert!(snapshot.contains("Noted from the cassette."), "{snapshot}");
-        let _ = std::fs::remove_dir_all(&dir);
-    }
-
-    struct ScriptedReply(&'static str);
-
-    impl local_product::codex::CodexExecutor for ScriptedReply {
-        fn run(
-            &mut self,
-            _request: &local_product::codex::CodexRequest,
-        ) -> Result<local_product::codex::CodexProcessResult, String> {
-            Ok(local_product::codex::CodexProcessResult::authored(self.0))
-        }
     }
 
     #[tokio::test]
@@ -1566,67 +1189,5 @@ mod tests {
         assert_eq!(approved_v2_json["version"], 2);
         assert_eq!(approved_v2_json["last_diff"].as_array().unwrap().len(), 1);
         assert_eq!(approved_v2_json["last_diff"][0]["item_id"], "plan-1");
-    }
-
-    #[tokio::test]
-    async fn simulation_router_serves_scenarios_investor_metric_and_guards_invariants() {
-        let app = simulation_router();
-
-        // 1. Default connected-walk scenario exposes investor metric on /today and clears stale ED reply.
-        let (status, today_body) = request(app.clone(), "GET", "/today", Body::empty()).await;
-        assert_eq!(status, StatusCode::OK);
-        let today: Value = serde_json::from_str(&today_body).unwrap();
-        assert_eq!(today["simulation"]["active_scenario_key"], "connected-walk");
-        assert_eq!(
-            today["simulation"]["investor_metric"]["items_per_100_patients_per_week"],
-            json!(20.0)
-        );
-        assert!(
-            today["rows"].as_array().unwrap().is_empty(),
-            "stale ED reply must be cleared after corrected BMP in connected-walk"
-        );
-
-        // 2. Jake Smith's workspace holds undecided Losartan out of active_plan_items and records superseded ED reply.
-        let jake_path = "/patient-workspaces/pw-82c44e9b-58c0-4af1-bd21-771bf77e101d";
-        let (status, jake_body) = request(app.clone(), "GET", jake_path, Body::empty()).await;
-        assert_eq!(status, StatusCode::OK);
-        let jake: Value = serde_json::from_str(&jake_body).unwrap();
-        assert!(jake["replies"].as_array().unwrap().is_empty());
-        assert_eq!(jake["superseded_replies"].as_array().unwrap().len(), 1);
-        assert_eq!(
-            jake["undecided_recommendations"].as_array().unwrap().len(),
-            1
-        );
-        let plan_titles: Vec<&str> = jake["active_plan_items"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .filter_map(|item| item["title"].as_str())
-            .collect();
-        assert!(!plan_titles.iter().any(|title| title.contains("Losartan")));
-
-        // 3. Running lab-arrives-ed-reply surfaces the urgent ED reply before correction, then admitting corrected labs clears it.
-        let run_cmd = r#"{"type":"simulation.run","payload":{"scenario":"lab-arrives-ed-reply"}}"#;
-        let (status, _) = request(app.clone(), "POST", "/commands", Body::from(run_cmd)).await;
-        assert_eq!(status, StatusCode::OK);
-        let (_, today_before) = request(app.clone(), "GET", "/today", Body::empty()).await;
-        assert!(today_before.contains("Urgent potassium 6.3 mmol/L"));
-
-        let correct_cmd = r#"{"type":"simulation.admit_corrected_labs","payload":{"patient_workspace_id":"pw-82c44e9b-58c0-4af1-bd21-771bf77e101d"}}"#;
-        let (status, _) = request(app.clone(), "POST", "/commands", Body::from(correct_cmd)).await;
-        assert_eq!(status, StatusCode::OK);
-        let (_, today_after) = request(app.clone(), "GET", "/today", Body::empty()).await;
-        assert!(!today_after.contains("Urgent potassium 6.3 mmol/L"));
-
-        // 4. Physician approving an undecided recommendation moves it into active_plan_items and updates the investor metric.
-        let decide_cmd = r#"{"type":"plan.decide_recommendation","payload":{"patient_workspace_id":"pw-82c44e9b-58c0-4af1-bd21-771bf77e101d","recommendation_id":"rec-jake-losartan-50"}}"#;
-        let (status, decide_resp) =
-            request(app.clone(), "POST", "/commands", Body::from(decide_cmd)).await;
-        assert_eq!(status, StatusCode::OK);
-        let decide_json: Value = serde_json::from_str(&decide_resp).unwrap();
-        assert_eq!(
-            decide_json["simulation"]["investor_metric"]["items_per_100_patients_per_week"],
-            json!(40.0)
-        );
     }
 }

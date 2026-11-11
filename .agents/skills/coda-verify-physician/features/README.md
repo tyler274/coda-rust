@@ -10,7 +10,7 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 - The binaries in `target/stream-e/debug` (or the `--bin-dir` you pass) were built from
   the current worktree, `target/physician-web` holds the current page, and
   `target/patient-bank/bank` holds the current charts.
-- `scripts/physician-scale-stack.py --bin-dir target/stream-e/debug --worker-fail-marker`
+- `scripts/physician-scale-stack.py --bin-dir target/stream-e/debug`
   is running in its own terminal and has printed `Sites: http://127.0.0.1:<a> and http://127.0.0.1:<b>`.
 - `RUN=$(ls -td target/verification/runs/physician-scale-stack-* | head -1)` names that
   stack, and every [doctor](../SKILL.md#doctor) check passes.
@@ -22,7 +22,8 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 
 ## Driving conventions
 
-- Every feature starts a new chat, `C=chat-$(uuidgen | tr -d -)`. The browser opens it
+- Every feature starts a new chat,
+  `C=chat-$(python3 -c 'import uuid; print(uuid.uuid4().hex)')`. The browser opens it
   at `$D page-url --chat "$C"` (`?patient=…&chat=…`; see [../SKILL.md](../SKILL.md#drive)).
   The page's `Send` or `$D send` creates it.
 - Send on one site and read on the other. A pass on a single instance proves nothing
@@ -30,9 +31,8 @@ the matching feature file as the recipe. Launch, doctor, evidence and cleanup li
 - Wait on a state (`--wait-text`, `--wait-failed`, `watch --until`), never a fixed sleep.
   The only exception is Pub/Sub backoff, which the recipe names.
 - Use `--out "$RUN/<feature-id>"` on every call whose result is proof.
-- One stack serves every feature. With `--worker-fail-marker`, a message containing
-  `[fail:K]` fails its first K attempts, counted from its saved attempts; unmarked messages never
-  fail. Retry uses `[fail:1]`, Try again uses `[fail:5]`, and both leave `fixed_failures` 0.
+- The local Responses stub answers normal messages. Retry and Try again set the stub's
+  remaining failures immediately before sending, so run these journeys one at a time.
 
 ## Proof and skip reporting
 

@@ -55,21 +55,22 @@ pub(super) enum TurnState {
     Failed(String),
 }
 
-/// Reads a `GET .../snapshot` answer. The snapshot names the latest attempt
-/// once the turn failed, was held or was answered; a turn counts as answered
-/// only when its reply and its `completed` attempt are both there.
+/// Reads a `GET .../snapshot` answer. The snapshot names the run once the
+/// turn failed, was held or was answered, and an answered run names the
+/// attempt that answered it; a turn counts as answered only when its reply
+/// and its `completed` attempt are both there.
 pub(super) fn turn_state(body: &Value) -> TurnState {
     let snapshot = &body["snapshot"];
-    let latest = |state: &str| {
+    let latest = |state: &str, id: &str| {
         snapshot["runs"]
             .as_array()
             .into_iter()
             .flatten()
             .find(|run| run["state"] == state)
-            .and_then(|run| run["run_id"].as_str())
+            .and_then(|run| run[id].as_str())
             .map(str::to_owned)
     };
-    if let Some(run) = latest("failed") {
+    if let Some(run) = latest("failed", "run_id") {
         return TurnState::Failed(run);
     }
     let items = snapshot["conversation"].as_array();
@@ -77,7 +78,7 @@ pub(super) fn turn_state(body: &Value) -> TurnState {
         .and_then(|items| items.last())
         .filter(|item| item["kind"] == "model")
         .and_then(|item| item["text"].as_str());
-    match (reply, latest("completed")) {
+    match (reply, latest("completed", "attempt_id")) {
         (Some(text), Some(attempt)) => TurnState::Answered(Answer {
             text: text.to_owned(),
             attempt,
@@ -288,7 +289,7 @@ mod tests {
         assert_eq!(
             turn_state(&snapshot(
                 answered.clone(),
-                json!([{ "run_id": "a-1", "state": "completed" }])
+                json!([{ "run_id": "r-1", "state": "completed", "attempt_id": "a-1" }])
             )),
             TurnState::Answered(Answer {
                 text: "Hello".into(),

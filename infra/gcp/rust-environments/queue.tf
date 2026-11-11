@@ -122,7 +122,11 @@ resource "google_pubsub_subscription" "chat_turns" {
     maximum_backoff = "600s"
   }
   dead_letter_policy {
-    dead_letter_topic     = google_pubsub_topic.chat_turns_dead_letter[each.key].id
+    dead_letter_topic = google_pubsub_topic.chat_turns_dead_letter[each.key].id
+    # Pub/Sub's minimum (5) routes persistently rejected wakeups to operator
+    # inspection promptly. It bounds delivery, not the harness's failed attempts;
+    # accepted work remains in Postgres and its recovery sweep can republish it.
+    # https://cloud.google.com/pubsub/docs/dead-letter-topics
     max_delivery_attempts = 5
   }
   expiration_policy { ttl = "" }

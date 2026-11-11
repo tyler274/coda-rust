@@ -167,6 +167,17 @@ failure can prevent the new revision from serving.
   bounded flush through `TelemetryGuard` and the sidecar flushes on `SIGTERM`
   within Cloud Run's 10-second grace period; remaining queued telemetry is lost.
 
+## Working-window timing
+
+The shared harness retains the opening time in Unix milliseconds on each
+`WindowOpened` event, alongside its reason and optional note reference.
+`ProviderStarted` retains the request's admission time. Products store both
+in their existing run journals. These wall-clock timestamps let inspection
+relate a window opening to surrounding requests without a second timing store.
+Cross-process comparisons depend on the hosts' clock synchronization. The
+records contain model context and stay with the product; they are not exported
+to Datadog as raw logs.
+
 ## Content policy
 
 The policy applies identically to both backends: it lives in the shared
@@ -248,8 +259,7 @@ scripts/observability-up.sh --datadog  # adds the Datadog Agent, DD_API_KEY from
 scripts/observability-up.sh --grafana  # adds Tempo, Loki, Prometheus, Grafana and a webhook sink; no secrets
 
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 DD_ENV=local CODA_TELEMETRY_CONTENT=full \
-  CODA_LOCAL_MODEL_EXECUTION=replay CODA_CASSETTE_PATH=/absolute/path/cassette.json \
-  PHYSICIAN_DATABASE_URL=postgres://user@127.0.0.1:5432/physician scripts/local-practice.sh
+  CODA_LOCAL_MODEL_EXECUTION=subscription scripts/local-practice.sh
 ```
 
 With `--grafana`, also set `CODA_TELEMETRY_BACKEND=grafana` on the service.
@@ -405,9 +415,10 @@ readiness until those observations exist. Production is outside this procedure.
 
 `workspace-tools observability-drill langfuse alert-to-run` walks steps 2 and 4
 on a rehearsal turn it sends itself. The chat snapshot names the attempt that
-answered (`runs` holds the latest attempt once a turn is answered, held or
-failed); the drill finds that attempt's span in Datadog by `coda.run_id`, reads
-its trace's generation span, then the Langfuse trace, and fails unless the
+answered (`runs` holds the run once a turn is answered, held or failed, and an
+answered run's `attempt_id` names the attempt); the drill finds that attempt's
+span in Datadog by `coda.run_id`, reads its trace's generation span, then the
+Langfuse trace, and fails unless the
 attempt id and the trace id (Datadog's 64-bit id is the low half of the
 128-bit one) agree across all four.
 

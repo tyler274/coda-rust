@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-"""Disposable synthetic physician stack. No cloud credentials or hosted auth bypass.
+"""Local synthetic physician stack. No cloud credentials or hosted auth bypass.
 
-Two physician-sample sites and one physician-worker share a throwaway Postgres,
+Two physician-sample sites and one physician-worker share a local Postgres,
 Valkey and Pub/Sub emulator on loopback ports. Sites run PHYSICIAN_AUTH=required
 with local proof sign-in for the synthetic physician@codahealth.test account.
 --dependencies-only --check proves Valkey, Postgres and Pub/Sub provisioning,
-NOT the application journey. The coda-verify-physician recipe drives the rest.
+NOT the application journey. --practice-dir preserves Postgres between runs;
+--model-execution subscription uses the developer plan on this same worker. The coda-verify-physician recipe drives the rest.
 
 While running, SIGUSR1 restarts Valkey on the same port (the resync journey),
 and SIGTERM or Ctrl-C stops every owned process. Logs and stack.json are kept
 in the evidence directory under target/verification/runs/.
 """
 import argparse
+import sys
 import contextlib
 import datetime
 import http.client
@@ -301,7 +303,6 @@ def load_numbers(stack, database, ports, evidence, idle_seconds, worker_failures
                                        "transactions": after - before - 1,
                                        "streams": ["site-a", "site-b"]}
 
-    # --worker-fail-marker alone keeps this turn: its text carries no [fail:K].
     if worker_failures:
         result["one_turn"] = {"skipped": f"--worker-failures {worker_failures} makes turns fail"}
     else:
@@ -348,12 +349,17 @@ def load_numbers(stack, database, ports, evidence, idle_seconds, worker_failures
 
 def run(args, root, evidence):
     stack = Stack(root)
+    if args.practice_dir:
+        # Practice runs keep the caller's explicit observability configuration.
+        # Disposable qualification keeps its isolated environment.
+        stack.env.update({key: value for key, value in os.environ.items()
+                          if key.startswith(("OTEL_", "DD_", "CODA_TELEMETRY_"))})
     restart = threading.Event()
     signal.signal(signal.SIGUSR1, lambda _signal, _frame: restart.set())
     # Ports remain loopback-only; an allocation race fails startup, never falls
     # back to a public interface or an existing ambient service.
-    pg, redis, emulator, site_a, site_b, worker = [free_port() for _ in range(6)]
-    if len({pg, redis, emulator, site_a, site_b, worker}) != 6:
+    pg, redis, emulator, site_a, site_b, worker, provider = [free_port() for _ in range(7)]
+    if len({pg, redis, emulator, site_a, site_b, worker, provider}) != 7:
         raise RuntimeError("port allocation collided; retry the command")
     host = f"127.0.0.1:{emulator}"
     database = f"postgresql://postgres@127.0.0.1:{pg}/postgres"
@@ -362,7 +368,7 @@ def run(args, root, evidence):
         "PHYSICIAN_DATABASE_URL": database,
         "PHYSICIAN_REDIS_URL": f"redis://127.0.0.1:{redis}",
         "PUBSUB_EMULATOR_HOST": host, "GOOGLE_CLOUD_PROJECT": PROJECT,
-        "PHYSICIAN_CHAT_TOPIC": TOPIC, "CODA_LOCAL_MODEL_EXECUTION": "replay",
+        "PHYSICIAN_CHAT_TOPIC": TOPIC,
     }
     state = {
         "pid": os.getpid(), "root": str(root), "evidence": str(evidence) if evidence else None,
@@ -370,7 +376,7 @@ def run(args, root, evidence):
         "pubsub": {"host": host, "project": PROJECT, "topic": TOPIC, "dead_letter": DLQ},
         "worker": {"url": f"http://127.0.0.1:{worker}", "fixed_text": FIXED_TEXT,
                    "fixed_failures": args.worker_failures,
-                   "fail_marker": args.worker_fail_marker},
+                   "failures_file": str(root / "provider-failures")},
         "sites": {"a": f"http://127.0.0.1:{site_a}", "b": f"http://127.0.0.1:{site_b}"},
         "account": {"email": EMAIL, "practice": PRACTICE, "physician": PHYSICIAN},
         "workspace": WORKSPACE,
@@ -381,6 +387,8 @@ def run(args, root, evidence):
         "pubsub_emulator_host": host,
         "started_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
         "dependencies_only": args.dependencies_only,
+        "model_execution": args.model_execution,
+        "practice_dir": str(args.practice_dir.resolve()) if args.practice_dir else None,
     }
 
     def write_state(**extra):
@@ -389,10 +397,13 @@ def run(args, root, evidence):
             (evidence / "stack.json").write_text(json.dumps(state, indent=2) + "\n")
 
     try:
-        subprocess.run(["initdb", "-D", str(root / "pg"), "-U", "postgres", "--auth=trust"],
-                       env=stack.env, check=True, stdout=subprocess.DEVNULL)
-        stack.start("postgres", ["postgres", "-D", str(root / "pg"), "-h", "127.0.0.1",
-                                 "-p", str(pg), "-k", str(root), "-c", "fsync=off"])
+        data = (args.practice_dir.resolve() if args.practice_dir else root) / "pg"
+        data.parent.mkdir(parents=True, exist_ok=True)
+        if not (data / "PG_VERSION").exists():
+            subprocess.run(["initdb", "-D", str(data), "-U", "postgres", "--auth=trust"],
+                           env=stack.env, check=True, stdout=subprocess.DEVNULL)
+        stack.start("postgres", ["postgres", "-D", str(data), "-h", "127.0.0.1",
+                                 "-p", str(pg), "-k", str(root)])
         stack.start("valkey", valkey_argv(redis))
         # gcloud writes env.yaml into --data-dir and does not create it.
         (root / "pubsub").mkdir()
@@ -423,21 +434,36 @@ def run(args, root, evidence):
                 "PHYSICIAN_SYNTHETIC_CHARTS": str(args.charts.resolve())})
             worker_env = shared | {
                 "PHYSICIAN_WORKER_LISTEN_ADDR": f"127.0.0.1:{worker}",
-                "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}",
-                # The local stack is not API mode. The worker refuses to start
-                # without a provider; this fixed reply never leaves the process.
-                "PHYSICIAN_WORKER_FIXED_TEXT": FIXED_TEXT}
-            if args.worker_failures:
-                # Non-hosted proof only: the first N provider calls of this
-                # worker process fail, then the fixed text answers.
-                worker_env["PHYSICIAN_WORKER_FIXED_FAILURES"] = str(args.worker_failures)
-            if args.worker_fail_marker:
-                # Non-hosted proof only: a message containing [fail:K] fails
-                # its first K attempts; every other turn answers at once.
-                worker_env["PHYSICIAN_WORKER_FIXED_FAIL_MARKER"] = "1"
-            stack.start("worker", [str(binary / "physician-worker")], worker_env)
+                "PHYSICIAN_LISTEN_ADDR": f"127.0.0.1:{worker}"}
+            if args.model_execution == "stub":
+                failures = root / "provider-failures"
+                failures.write_text(str(args.worker_failures))
+                stack.start("responses", [sys.executable, str(Path(__file__).with_name("physician-responses-stub.py")),
+                                          "--port", str(provider), "--failures", str(failures)])
+                stack.wait(lambda: healthy(provider), "local Responses stub readiness")
+                worker_env["PHYSICIAN_RESPONSES_STUB_PORT"] = str(provider)
+            else:
+                worker_env["CODA_LOCAL_MODEL_EXECUTION"] = args.model_execution
+                if args.model_execution == "subscription":
+                    # Mount or reuse the grant directory; never copy refresh tokens.
+                    config = Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config"))
+                    worker_env["XDG_CONFIG_HOME"] = str(config.resolve())
+                else:
+                    for key in ("CODA_ALLOW_MODEL_CALLS", "OPENAI_API_KEY"):
+                        if key in os.environ:
+                            worker_env[key] = os.environ[key]
+            model_settings = {}
+            for role, model, effort in (("CHAT", "gpt-6.1-sol", "high"),
+                                        ("BACKGROUND", "gpt-6-luna", "max")):
+                model_settings.update({f"CODA_{role}_MODEL": model,
+                                   f"CODA_{role}_EFFORT": effort,
+                                   f"CODA_{role}_CONTEXT_WINDOW_TOKENS": "272000",
+                                   f"CODA_{role}_INPUT_LIMIT_TOKENS": "922000"})
+            stack.start("worker", [str(binary / "physician-worker")], worker_env | model_settings)
             stack.wait(lambda: healthy(worker), f"worker readiness on {worker}")
-            site_env = dict(shared)
+            site_env = shared | model_settings
+            if args.practice_dir and os.environ.get("PHYSICIAN_SYNTHETIC_REPLY"):
+                site_env["PHYSICIAN_SYNTHETIC_REPLY"] = os.environ["PHYSICIAN_SYNTHETIC_REPLY"]
             if args.site_dir:
                 site_env["PHYSICIAN_SITE_DIR"] = str(args.site_dir.resolve())
             for name, port in (("site-a", site_a), ("site-b", site_b)):
@@ -447,9 +473,7 @@ def run(args, root, evidence):
             stack.wait(lambda: subscribers(stack, redis) >= 3, "both sites and the worker on Valkey")
             print(f"Site A: http://127.0.0.1:{site_a} (port {site_a})", flush=True)
             print(f"Site B: http://127.0.0.1:{site_b} (port {site_b})", flush=True)
-            print(f"Worker: http://127.0.0.1:{worker} (port {worker}); fixed failures "
-                  f"{args.worker_failures}; fail marker "
-                  f"{'on' if args.worker_fail_marker else 'off'}", flush=True)
+            print(f"Worker: http://127.0.0.1:{worker} (port {worker}); {args.model_execution}", flush=True)
             print(f"Sites: http://127.0.0.1:{site_a} and http://127.0.0.1:{site_b}", flush=True)
         print(f"Dependencies ready; emulator {host}, Redis {redis}, Postgres {pg}. Logs: {root}", flush=True)
         write_state(ready_at=datetime.datetime.now(datetime.timezone.utc).isoformat())
@@ -506,6 +530,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--dependencies-only", action="store_true")
+    parser.add_argument("--practice-dir", type=Path, help="keep the local Postgres data in this directory")
+    parser.add_argument("--model-execution", choices=("stub", "subscription", "api"), default="stub",
+                        help="worker transport; subscription and api use real models")
     parser.add_argument("--check", action="store_true", help="start, check readiness, stop (not a journey proof)")
     parser.add_argument("--bin-dir", type=Path, default=Path("target/debug"),
                         help="directory holding physician-sample, physician-worker and physician-migrate")
@@ -515,12 +542,8 @@ def main():
     parser.add_argument("--charts", type=Path, default=Path("target/patient-bank/bank"),
                         help="built synthetic charts (cargo run -p patient-bank -- build)")
     parser.add_argument("--worker-failures", type=int, default=0, metavar="N",
-                        help="PHYSICIAN_WORKER_FIXED_FAILURES: the worker's first N provider calls "
+                        help="the local provider's first N calls "
                              "fail; 5 dead-letters the first turn")
-    parser.add_argument("--worker-fail-marker", action="store_true",
-                        help="PHYSICIAN_WORKER_FIXED_FAIL_MARKER: a message containing [fail:K] "
-                             "fails its first K attempts, counted from its saved attempts; unmarked turns "
-                             "answer, so one stack drives retry, Try again and the happy paths")
     parser.add_argument("--load-numbers", action="store_true",
                         help="after readiness, record Postgres transactions (idle, two streams, one "
                              "turn) and stream-close time to <evidence>/load-numbers.json")
@@ -533,11 +556,13 @@ def main():
     args = parser.parse_args()
     if args.command[:1] == ["--"]:
         args.command = args.command[1:]
+    if args.model_execution != "stub" and (args.worker_failures or args.load_numbers):
+        parser.error("--worker-failures and --load-numbers require the stub transport")
     if args.worker_failures < 0:
         parser.error("--worker-failures must be zero or more")
-    if args.dependencies_only and (args.worker_failures or args.worker_fail_marker
+    if args.dependencies_only and (args.worker_failures
                                    or args.load_numbers):
-        parser.error("--worker-failures, --worker-fail-marker and --load-numbers need the "
+        parser.error("--worker-failures and --load-numbers need the "
                      "application processes")
     environment(os.environ, Path("/unused"))  # Refuse hosted before allocating anything.
 

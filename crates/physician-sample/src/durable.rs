@@ -10,6 +10,9 @@ use local_product::runtime::{
 use std::sync::Arc;
 use tracing::Instrument;
 
+// Give a published wakeup one minute to claim work before the recovery sweep republishes it.
+const DISPATCH_RETRY_SECONDS: i64 = 60;
+
 /// Receipts reduced per compaction transaction.
 const RECEIPT_BATCH: u64 = 100;
 /// Compaction transactions per sweep, so one sweep stays bounded.
@@ -22,6 +25,9 @@ const COMPACTION_TICKS: u64 = 360;
 pub struct DurableChat {
     /// Existing authoritative Postgres runtime.
     pub store: Store,
+    skills: local_product::physician_chat::PhysicianSkills,
+    chat_recipe: harness::engine::recipe::RequestRecipe,
+    revision_recipe: harness::engine::recipe::RequestRecipe,
     queue: Arc<dyn ChatQueue>,
     /// Practices whose sessions may tag their inputs with a rehearsal scenario.
     simulation_practices: SimulationPractices,
@@ -29,10 +35,22 @@ pub struct DurableChat {
 impl DurableChat {
     /// Does not migrate schemas or start background work. No practice is a
     /// rehearsal practice until [`Self::with_simulation_practices`] names one.
-    pub fn new(store: Store, queue: Arc<dyn ChatQueue>) -> Self {
+    pub fn new(
+        store: Store,
+        queue: Arc<dyn ChatQueue>,
+        skills: local_product::physician_chat::PhysicianSkills,
+        roles: &local_product::ModelRoles,
+    ) -> Self {
         Self {
             store,
             queue,
+            chat_recipe: local_product::physician_chat::recipe(
+                &roles.chat,
+                local_product::physician_chat::INSTRUCTIONS,
+                &skills,
+            ),
+            revision_recipe: local_product::runtime::reply::recipe(&roles.background, &skills),
+            skills,
             simulation_practices: SimulationPractices::default(),
         }
     }
@@ -69,7 +87,7 @@ impl DurableChat {
     ) -> Result<Accepted, String> {
         let accepted = self
             .store
-            .accept_authorized(scope, input, session_hash)
+            .accept_authorized(scope, input, session_hash, &self.skills, &self.chat_recipe)
             .await
             .map_err(|e| e.to_string())?;
         // A duplicate receipt is already accepted. Publishing again would run
@@ -80,7 +98,7 @@ impl DurableChat {
         let delivery = Delivery::chat_turn(scope.clone(), input.key.clone());
         if self.queue.publish(&delivery).await.is_ok() {
             self.store
-                .dispatched(&delivery, 60)
+                .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
                 .await
                 .map_err(|e| e.to_string())?;
         } else {
@@ -101,7 +119,13 @@ impl DurableChat {
     ) -> Result<RevisionAccepted, String> {
         let accepted = self
             .store
-            .accept_revision(scope, input, session_hash)
+            .accept_revision(
+                scope,
+                input,
+                session_hash,
+                &self.skills,
+                &self.revision_recipe,
+            )
             .await
             .map_err(|e| e.to_string())?;
         if accepted != RevisionAccepted::New {
@@ -111,7 +135,12 @@ impl DurableChat {
         if self.queue.publish(&delivery).await.is_ok() {
             // Acceptance is committed already. Even a dispatch-marker failure
             // must not report accepted work as rejected; recovery can republish.
-            if self.store.dispatched(&delivery, 60).await.is_err() {
+            if self
+                .store
+                .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
+                .await
+                .is_err()
+            {
                 tracing::error!(
                     event = "physician.queue.dispatch_failed",
                     error.type = "database",
@@ -141,13 +170,12 @@ impl DurableChat {
             .resume_authorized(scope, key, session_hash, work_item_id, expected_run_id)
             .await
             .map_err(|e| e.to_string())?;
-        let Resumed::Pending { input_id } = &resumed else {
+        let Resumed::Pending { delivery } = &resumed else {
             return Ok(resumed);
         };
-        let delivery = Delivery::chat_turn(scope.clone(), input_id.clone());
-        if self.queue.publish(&delivery).await.is_ok() {
+        if self.queue.publish(delivery).await.is_ok() {
             self.store
-                .dispatched(&delivery, 60)
+                .dispatched(delivery, DISPATCH_RETRY_SECONDS)
                 .await
                 .map_err(|e| e.to_string())?;
         } else {
@@ -199,7 +227,7 @@ impl DurableChat {
                 if self.queue.publish(&delivery).await.is_ok() {
                     republished += 1;
                     self.store
-                        .dispatched(&delivery, 60)
+                        .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
                         .await
                         .inspect_err(|_| record_recovery_failure("database"))
                         .map_err(|e| e.to_string())?;
@@ -232,7 +260,7 @@ impl DurableChat {
                 if self.queue.publish(&delivery).await.is_ok() {
                     republished += 1;
                     self.store
-                        .dispatched(&delivery, 60)
+                        .dispatched(&delivery, DISPATCH_RETRY_SECONDS)
                         .await
                         .inspect_err(|_| record_recovery_failure("database"))
                         .map_err(|e| e.to_string())?;
@@ -342,19 +370,27 @@ fn record_recovery_failure(class: &'static str) {
         "physician recovery failed");
 }
 
-/// Uses the auth owner's transaction locks, never a cached session projection.
-pub struct RuntimeAuthority {
-    /// Runtime used to acquire the same conversation/publication transaction.
-    pub store: Store,
-}
+/// Uses the auth owner's read check and transactional publication fence.
+pub struct RuntimeAuthority;
 #[local_product::runtime::async_trait]
 impl Authority for RuntimeAuthority {
-    async fn check(&mut self, scope: &Scope) -> Result<(), String> {
-        self.store
-            .clone()
-            .authorize(scope, self)
-            .await
-            .map_err(|e| e.to_string())
+    async fn check(
+        &mut self,
+        tx: &local_product::runtime::PublicationTransaction,
+        scope: &Scope,
+        hash: Option<&[u8]>,
+    ) -> Result<(), String> {
+        physician_auth::PostgresAuthStore::check_runtime_authority(
+            tx,
+            hash.ok_or("accepted session reference missing")?,
+            &physician_auth::PhysicianIdentity {
+                practice_id: scope.practice.clone(),
+                physician_id: scope.physician.clone(),
+            },
+            &scope.workspace,
+        )
+        .await
+        .map_err(|error| error.to_string())
     }
     async fn lock_publication(
         &mut self,

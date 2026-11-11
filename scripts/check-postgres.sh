@@ -28,8 +28,9 @@ pg_test() { cargo test --locked "${packages[@]}" "$@"; }
 shard_1_targets=(--lib --test migrations_postgres --test postgres
   --test front_door_postgres --test identity --test luna_journal
   --test database_foundation --test pg_moments
-  --test runtime_postgres --test runtime_publication --test runtime_recovery
-  --test redis --test fanout --test worker --test recovery --test try_again)
+  --test runtime_postgres --test runtime_publication --test runtime_recovery --test runtime_quota
+  --test redis --test fanout --test worker --test recovery --test try_again
+  --bin physician-worker)
 shard_2_targets=(--test stop --test chat_draft --test reply_revision
   --test instance_loss --test emulator --test push_wake)
 
@@ -50,12 +51,19 @@ shard_1() {
   # Exercises fixed GCS transport against loopback HTTP plus the real journal owner.
   pg_test --lib privacy_archive::tests::gcs_transport_and_postgres_recovery_reconcile_same_receipt_after_restart -- --exact
   # Explicitly select ignored real-database proofs; serial execution prevents
-  # migration and recovery scans racing other suites. Cluster crash/restart is
-  # deliberately excluded: it requires an independently owned disposable cluster.
+  # migration and recovery scans racing other suites. Crash/restart runs below
+  # against its own disposable cluster, separate from these shared databases.
   pg_test --lib runtime::tests -- --ignored --test-threads=1
   pg_test --test runtime_postgres -- --ignored --skip database_crash_restart --test-threads=1
+  local restart_binary
+  restart_binary="$(pg_test --test runtime_postgres --no-run --message-format=json |
+    python3 -c 'import json,sys; rows=(json.loads(line) for line in sys.stdin); binaries=[row["executable"] for row in rows if row.get("executable") and row["target"]["name"]=="runtime_postgres"]; [binary]=binaries; print(binary)')"
+  python3 scripts/check-crash-restart.py "$restart_binary"
   pg_test --test runtime_publication -- --ignored --test-threads=1
   pg_test --test runtime_recovery -- --ignored --test-threads=1
+  pg_test --test runtime_quota -- --ignored --test-threads=1
+  # The worker's source boundary: a developer plan refuses non-synthetic sources.
+  pg_test --bin physician-worker -- --ignored --test-threads=1
   # Physician scale proofs. Valkey and the Pub/Sub emulator come from the nix
   # dev shell; each test creates its own database on PHYSICIAN_DATABASE_URL.
   # The bus suite needs Valkey only. The workspace CI job has no Nix shell, so
@@ -76,12 +84,10 @@ shard_2() {
   # Composer chat drafts: cross-site reads, stale-revision conflicts and physician
   # ownership, without a worker. The runtime draft-fence proof runs in shard 1.
   pg_test --test chat_draft -- --test-threads=1
-  # Hosted reply revisions: duplicate acceptance, retries re-pinning the newest
-  # sources, a source arriving mid-revision read before publishing, a chart that
-  # keeps changing exhausting the call bound, cross-site reads, physician-save
-  # fencing, missing/foreign draft isolation, earlier revisions' evidence kept in
-  # their own history table, and a failed revision visible over HTTP.
-  # Receipt compaction and the pre-accepted_at upgrade proof run with runtime::tests.
+  # Hosted reply revisions: duplicate acceptance, frozen recipes, retries
+  # re-pinning the newest sources, physician-save fencing, draft isolation,
+  # synthetic opening and failed/held Try again over HTTP. Source currency
+  # and revision history run at their storage owners in runtime::tests.
   pg_test --test reply_revision -- --test-threads=1
   # A site instance that dies before its publish lands: another instance's sweep
   # finishes the turn. Exhausted worker leases fail the turn, announce it and

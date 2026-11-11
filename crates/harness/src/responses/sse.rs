@@ -1,22 +1,119 @@
-//! Bounded Responses SSE framing and identity validation. No tool dispatch here.
-use std::collections::{BTreeMap, HashSet};
+//! Bounded Responses SSE framing and the stream contract. No tool dispatch here.
+//!
+//! The completed output items (`response.output_item.done`) of a response that
+//! completed are the turn. Streamed text deltas are a live preview only and are
+//! never compared with anything. Codex, Pi, OpenClaw and Hermes all take the
+//! completed item as the truth and ignore event and item types they do not use.
+//! The checks here protect only the turn: one item for each output position, and
+//! that every announced item completed. The first terminal event ends the stream.
+use std::collections::BTreeMap;
 
 use serde_json::Value;
 
-use crate::engine::{DeltaSink, Failure, TextDelta, Turn};
+use crate::engine::{
+    DeltaLocation, Failure, TextDelta, Turn,
+    recipe::{Observer, StreamEvent},
+};
 
 fn protocol(message: &str) -> Failure {
     Failure::Protocol(message.into())
 }
-fn string(value: &Value, key: &str) -> Result<String, Failure> {
-    super::string(value, key).map_err(Failure::Protocol)
-}
-fn index(value: &Value, key: &str) -> Result<usize, Failure> {
+fn position(value: &Value, key: &str) -> Option<usize> {
     value
         .get(key)
         .and_then(Value::as_u64)
         .and_then(|n| usize::try_from(n).ok())
-        .ok_or_else(|| protocol("missing stream index"))
+}
+fn index(value: &Value, key: &str) -> Result<usize, Failure> {
+    position(value, key).ok_or_else(|| protocol("missing stream index"))
+}
+
+/// The item types the turn is built from. Other items are ignored.
+fn used(item: &Value) -> bool {
+    match item.get("type").and_then(Value::as_str) {
+        Some("function_call" | "reasoning") => true,
+        Some("message") => item.get("role").and_then(Value::as_str) == Some("assistant"),
+        _ => false,
+    }
+}
+
+/// The provider location of a live text delta, when it supplied every coordinate.
+fn location(response: Option<&str>, event: &Value) -> Option<DeltaLocation> {
+    Some(DeltaLocation {
+        response_id: response?.to_owned(),
+        item_id: event.get("item_id")?.as_str()?.to_owned(),
+        sequence: event.get("sequence_number")?.as_u64()?,
+        output_index: position(event, "output_index")?,
+        content_index: position(event, "content_index")?,
+    })
+}
+
+fn stream_failure(event: &Value) -> Failure {
+    let provider_error = event
+        .pointer("/response/error")
+        .or_else(|| event.get("error"));
+    let error = provider_error.unwrap_or(event);
+    // An incomplete response names its reason in place of an error code,
+    // such as a reply the provider filtered.
+    let code = error.get("code").and_then(Value::as_str).or_else(|| {
+        event
+            .pointer("/response/incomplete_details/reason")
+            .and_then(Value::as_str)
+    });
+    // A top-level SSE event uses `type` for the event kind. Provider error
+    // identity only occupies `type` inside the nested error envelope.
+    let error_type = provider_error
+        .and_then(|error| error.get("type"))
+        .and_then(Value::as_str);
+    let header = error
+        .get("headers")
+        .and_then(Value::as_object)
+        .and_then(|headers| {
+            headers
+                .iter()
+                .find(|(key, _)| key.eq_ignore_ascii_case("retry-after"))
+                .and_then(|(_, value)| value.as_str())
+        });
+    let mut hint = super::retry_after(header, std::time::SystemTime::now());
+    if matches!(code, Some("rate_limit_exceeded" | "slow_down")) {
+        hint = hint.or_else(|| {
+            error
+                .get("message")
+                .and_then(Value::as_str)
+                .and_then(retry_delay)
+        });
+    }
+    // As for an HTTP error, the saved error text is the code, never the
+    // provider's message.
+    Failure::Provider(super::classify_error(
+        code,
+        error_type,
+        code.unwrap_or("provider stream failed or incomplete")
+            .into(),
+        hint,
+        true,
+    ))
+}
+
+// Codex uses provider prose for delays only on rate-limit errors. Keep this
+// parsing at the wire boundary; provider prose never enters model feedback.
+fn retry_delay(message: &str) -> Option<std::time::Duration> {
+    let message = message.to_ascii_lowercase();
+    let (_, delay) = message.split_once("try again in")?;
+    let delay = delay.trim_start();
+    let number = delay
+        .find(|c: char| !c.is_ascii_digit() && c != '.')
+        .unwrap_or(delay.len());
+    let value = delay[..number].parse::<f64>().ok()?;
+    let unit = delay[number..].trim_start();
+    let seconds = if unit.starts_with("ms") {
+        value / 1000.0
+    } else if unit.starts_with('s') {
+        value
+    } else {
+        return None;
+    };
+    std::time::Duration::try_from_secs_f64(seconds).ok()
 }
 
 pub(super) struct Frame {
@@ -78,7 +175,7 @@ impl Decoder {
                     match field {
                         "data" => self.data.push(value.into()),
                         "event" => self.event = Some(value.into()),
-                        "id" | "retry" => (), // Never reconnect; JSON sequence owns identity.
+                        "id" | "retry" => (), // Never reconnect.
                         _ => (),
                     }
                 }
@@ -88,289 +185,176 @@ impl Decoder {
         }
         Ok(frames)
     }
-    pub fn finish(&self) -> Result<(), Failure> {
-        if !self.line.is_empty() || !self.data.is_empty() || self.event.is_some() {
-            return Err(protocol("truncated SSE frame"));
-        }
-        Ok(())
-    }
 }
 
+/// One output position. The announcement holds the position and registers its
+/// tool call; the completed item is the turn.
 #[derive(Default)]
 struct Output {
-    added: Value,
+    added: Option<Value>,
     done: Option<Value>,
-    parts: BTreeMap<usize, String>,
-    closed_parts: HashSet<usize>,
-    finished_parts: HashSet<usize>,
-    arguments: String,
-    arguments_done: bool,
 }
 #[derive(Default)]
 pub(super) struct Stream {
+    authorization: super::Authorization,
+    /// The first created response's id. It only locates live text.
     response: Option<String>,
-    sequence: Option<u64>,
     outputs: BTreeMap<usize, Output>,
-    ids: HashSet<String>,
-    calls: HashSet<String>,
     terminal: Option<Turn>,
 }
 impl Stream {
-    pub async fn accept(&mut self, frame: Frame, sink: &mut dyn DeltaSink) -> Result<(), Failure> {
+    pub fn new(authorization: super::Authorization) -> Self {
+        Self {
+            authorization,
+            ..Self::default()
+        }
+    }
+
+    pub async fn accept(&mut self, frame: Frame, sink: &mut dyn Observer) -> Result<(), Failure> {
+        // The first terminal event ends the stream; later frames are ignored.
         if self.terminal.is_some() {
-            return Err(protocol("event after terminal response"));
-        }
-        let event: Value =
-            serde_json::from_str(&frame.data).map_err(|_| protocol("invalid SSE JSON"))?;
-        let kind = string(&event, "type")?;
-        if frame.event.as_ref().is_some_and(|name| name != &kind) {
-            return Err(protocol("SSE event type mismatch"));
-        }
-        let sequence = event
-            .get("sequence_number")
-            .and_then(Value::as_u64)
-            .ok_or_else(|| protocol("missing event sequence"))?;
-        if self.sequence.is_some_and(|prior| sequence <= prior) {
-            return Err(protocol("repeated or reordered event sequence"));
-        }
-        if let Some(prior) = self.sequence
-            && prior.checked_add(1) != Some(sequence)
-        {
-            return Err(protocol("gap in event sequence"));
-        }
-        self.sequence = Some(sequence);
-        if kind == "response.created" {
-            if self.response.is_some() {
-                return Err(protocol("repeated response creation"));
-            }
-            let id = string(&event["response"], "id")?;
-            if id.is_empty() {
-                return Err(protocol("empty response identity"));
-            }
-            self.response = Some(id);
             return Ok(());
         }
-        let response = self
-            .response
-            .clone()
-            .ok_or_else(|| protocol("event before response creation"))?;
-        if event
-            .get("response_id")
+        // A `[DONE]` marker carries nothing, wherever it appears.
+        if frame.event.is_none() && frame.data == "[DONE]" {
+            return Ok(());
+        }
+        // A frame that is not a JSON event is skipped and the stream goes on, as
+        // Codex skips a frame it cannot parse. The completion rules still catch
+        // a skipped frame the turn needed.
+        let Ok(event) = serde_json::from_str::<Value>(&frame.data) else {
+            return Ok(());
+        };
+        // The JSON `type` names the event; the SSE `event:` name is not read.
+        let Some(kind) = event.get("type").and_then(Value::as_str) else {
+            return Ok(());
+        };
+        match kind {
+            "response.created" => self.created(&event, sink).await,
+            "response.output_item.added" => self.added(&event),
+            "response.output_item.done" => self.done(&event),
+            "response.output_text.delta" => self.text(&event, sink).await,
+            "response.completed" => self.completed(&event, sink).await,
+            "response.failed" | "response.incomplete" => self.ended(kind, &event, sink).await,
+            "error" => Err(stream_failure(&event)),
+            // The completed items carry what the turn needs. Other events, such
+            // as argument and part deltas, reasoning summaries, metadata and
+            // heartbeats, are ignored, as the references do.
+            _ => Ok(()),
+        }
+    }
+
+    /// The first created response supplies the id that locates live text. A
+    /// later creation event is ignored.
+    async fn created(&mut self, event: &Value, sink: &mut dyn Observer) -> Result<(), Failure> {
+        if self.response.is_some() {
+            return Ok(());
+        }
+        let response = &event["response"];
+        self.response = response
+            .get("id")
             .and_then(Value::as_str)
-            .is_some_and(|id| id != response)
-        {
-            return Err(protocol("response identity changed"));
+            .map(str::to_owned);
+        sink.emit(super::observation(response, self.authorization))
+            .await
+            .map_err(Failure::Host)
+    }
+
+    fn added(&mut self, event: &Value) -> Result<(), Failure> {
+        let item = &event["item"];
+        if !used(item) {
+            return Ok(());
         }
-        match kind.as_str() {
-            "response.in_progress" => {
-                if string(&event["response"], "id")? != response {
-                    return Err(protocol("response identity changed"));
-                }
-            }
-            "response.output_item.added" => {
-                let position = index(&event, "output_index")?;
-                let item = &event["item"];
-                let id = string(item, "id")?;
-                if id.is_empty() || !self.ids.insert(id) || self.outputs.contains_key(&position) {
-                    return Err(protocol("duplicate output item identity/index"));
-                }
-                match item.get("type").and_then(Value::as_str) {
-                    Some("message")
-                        if item.get("role").and_then(Value::as_str) == Some("assistant") => {}
-                    Some("function_call") => {
-                        let call = string(item, "call_id")?;
-                        if call.is_empty()
-                            || !self.calls.insert(call)
-                            || string(item, "name")?.is_empty()
-                        {
-                            return Err(protocol("duplicate or empty tool identity"));
-                        }
-                    }
-                    Some("reasoning") => (),
-                    _ => return Err(protocol("unsupported stream output item")),
-                }
-                self.outputs.insert(
-                    position,
-                    Output {
-                        added: item.clone(),
-                        ..Output::default()
-                    },
-                );
-            }
-            "response.completed" => {
-                let terminal = &event["response"];
-                if string(terminal, "id")? != response {
-                    return Err(protocol("terminal response identity changed"));
-                }
-                let items = terminal["output"]
-                    .as_array()
-                    .ok_or_else(|| protocol("missing terminal output"))?;
-                if items.len() != self.outputs.len() {
-                    return Err(protocol("terminal output count mismatch"));
-                }
-                for (position, item) in items.iter().enumerate() {
-                    if self
-                        .outputs
-                        .get(&position)
-                        .and_then(|output| output.done.as_ref())
-                        != Some(item)
-                    {
-                        return Err(protocol("terminal output differs from acknowledged stream"));
-                    }
-                }
-                self.terminal = Some(
-                    super::decode(
-                        &serde_json::to_vec(terminal).map_err(|_| protocol("invalid terminal"))?,
-                    )
-                    .map_err(Failure::Protocol)?,
-                );
-            }
-            "error" | "response.failed" | "response.incomplete" => {
-                return Err(Failure::Provider(
-                    "provider stream failed/incomplete; no retry".into(),
-                ));
-            }
-            "response.content_part.added"
-            | "response.output_text.delta"
-            | "response.output_text.done"
-            | "response.content_part.done"
-            | "response.function_call_arguments.delta"
-            | "response.function_call_arguments.done"
-            | "response.output_item.done" => {
-                let position = index(&event, "output_index")?;
-                let output = self
-                    .outputs
-                    .get_mut(&position)
-                    .ok_or_else(|| protocol("unknown output index"))?;
-                if output.done.is_some() {
-                    return Err(protocol("event after output item done"));
-                }
-                let item_id = if kind == "response.output_item.done" {
-                    string(&event["item"], "id")?
-                } else {
-                    string(&event, "item_id")?
-                };
-                if output.added["id"].as_str() != Some(&item_id) {
-                    return Err(protocol("output item identity changed"));
-                }
-                match kind.as_str() {
-                    "response.content_part.added" => {
-                        let part = index(&event, "content_index")?;
-                        if output.added["type"] != "message"
-                            || event["part"]["type"] != "output_text"
-                            || output.parts.insert(part, String::new()).is_some()
-                        {
-                            return Err(protocol("invalid or duplicate text part"));
-                        }
-                    }
-                    "response.output_text.delta"
-                    | "response.output_text.done"
-                    | "response.content_part.done" => {
-                        let part = index(&event, "content_index")?;
-                        let text = output
-                            .parts
-                            .get_mut(&part)
-                            .ok_or_else(|| protocol("unknown text part"))?;
-                        if kind == "response.output_text.delta" {
-                            if output.closed_parts.contains(&part) {
-                                return Err(protocol("delta after text done"));
-                            }
-                            let delta = string(&event, "delta")?;
-                            text.push_str(&delta);
-                            sink.deliver(TextDelta {
-                                response_id: response,
-                                item_id,
-                                sequence,
-                                output_index: position,
-                                content_index: part,
-                                text: delta,
-                            })
-                            .await?;
-                        } else if kind == "response.output_text.done" {
-                            if !output.closed_parts.insert(part) || string(&event, "text")? != *text
-                            {
-                                return Err(protocol("text done differs from deltas"));
-                            }
-                        } else if !output.finished_parts.insert(part)
-                            || !output.closed_parts.contains(&part)
-                            || event["part"]["type"] != "output_text"
-                            || string(&event["part"], "text")? != *text
-                        {
-                            return Err(protocol("content done differs from deltas"));
-                        }
-                    }
-                    "response.function_call_arguments.delta" => {
-                        if output.added["type"] != "function_call" || output.arguments_done {
-                            return Err(protocol("invalid arguments delta"));
-                        }
-                        output.arguments.push_str(&string(&event, "delta")?);
-                    }
-                    "response.function_call_arguments.done" => {
-                        if output.added["type"] != "function_call"
-                            || output.arguments_done
-                            || string(&event, "arguments")? != output.arguments
-                        {
-                            return Err(protocol("arguments done differs from deltas"));
-                        }
-                        output.arguments_done = true;
-                    }
-                    "response.output_item.done" => {
-                        let item = &event["item"];
-                        if item["type"] != output.added["type"] {
-                            return Err(protocol("output type changed"));
-                        }
-                        if item["type"] == "function_call" {
-                            if !output.arguments_done
-                                || item["call_id"] != output.added["call_id"]
-                                || item["name"] != output.added["name"]
-                                || string(item, "arguments")? != output.arguments
-                            {
-                                return Err(protocol("tool completion identity/arguments changed"));
-                            }
-                        } else if item["type"] == "message" {
-                            if item["role"] != "assistant" {
-                                return Err(protocol("message role changed"));
-                            }
-                            let parts = item["content"]
-                                .as_array()
-                                .ok_or_else(|| protocol("missing message content"))?;
-                            if parts.len() != output.parts.len() {
-                                return Err(protocol("message part count changed"));
-                            }
-                            for (part, value) in parts.iter().enumerate() {
-                                if !output.finished_parts.contains(&part)
-                                    || output.parts.get(&part) != Some(&string(value, "text")?)
-                                    || value["type"] != "output_text"
-                                {
-                                    return Err(protocol("message differs from streamed text"));
-                                }
-                            }
-                        }
-                        output.done = Some(item.clone());
-                    }
-                    _ => unreachable!(),
-                }
-            }
-            // Reasoning is not public prose. Preserve its terminal opaque item,
-            // but refuse unfamiliar event types rather than silently losing data.
-            "response.reasoning_summary_part.added"
-            | "response.reasoning_summary_text.delta"
-            | "response.reasoning_summary_text.done"
-            | "response.reasoning_summary_part.done" => {
-                let output = self
-                    .outputs
-                    .get(&index(&event, "output_index")?)
-                    .ok_or_else(|| protocol("unknown reasoning output"))?;
-                if output.done.is_some()
-                    || output.added["type"] != "reasoning"
-                    || string(&event, "item_id")? != string(&output.added, "id")?
-                {
-                    return Err(protocol("invalid reasoning item identity"));
-                }
-            }
-            _ => return Err(protocol("unsupported Responses stream event")),
+        let output = self
+            .outputs
+            .entry(index(event, "output_index")?)
+            .or_default();
+        if output.added.is_some() || output.done.is_some() {
+            return Err(protocol("output index already holds an item"));
         }
+        output.added = Some(item.clone());
         Ok(())
+    }
+
+    /// The completed item is the truth for the turn. It may arrive without an
+    /// announcement.
+    fn done(&mut self, event: &Value) -> Result<(), Failure> {
+        let item = &event["item"];
+        if !used(item) {
+            return Ok(());
+        }
+        let output = self
+            .outputs
+            .entry(index(event, "output_index")?)
+            .or_default();
+        if output.done.is_some() {
+            return Err(protocol("output index already done"));
+        }
+        output.done = Some(item.clone());
+        Ok(())
+    }
+
+    /// Each text delta goes to the observer as it arrives. It is a preview
+    /// only; the completed message is the turn's text.
+    async fn text(&self, event: &Value, sink: &mut dyn Observer) -> Result<(), Failure> {
+        let Some(delta) = event.get("delta").and_then(Value::as_str) else {
+            return Ok(());
+        };
+        sink.emit(StreamEvent::Text(TextDelta {
+            location: location(self.response.as_deref(), event),
+            text: delta.to_owned(),
+        }))
+        .await
+        .map_err(Failure::Host)
+    }
+
+    /// The turn is the completed items in output order. The terminal `output`
+    /// array is not read, because the completed items are already the
+    /// provider's final values.
+    async fn completed(&mut self, event: &Value, sink: &mut dyn Observer) -> Result<(), Failure> {
+        let terminal = &event["response"];
+        let items = self
+            .outputs
+            .values()
+            .map(|output| {
+                output
+                    .done
+                    .as_ref()
+                    .ok_or_else(|| protocol("unfinished output item"))
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        sink.emit(super::observation(terminal, self.authorization))
+            .await
+            .map_err(Failure::Host)?;
+        self.terminal = Some(
+            super::decode_items(terminal, self.authorization, items).map_err(Failure::Protocol)?,
+        );
+        Ok(())
+    }
+
+    /// A failed or incomplete response yields no turn, except the cut-off turn
+    /// of a response that reached its output token limit.
+    async fn ended(
+        &mut self,
+        kind: &str,
+        event: &Value,
+        sink: &mut dyn Observer,
+    ) -> Result<(), Failure> {
+        let response = &event["response"];
+        sink.emit(super::observation(response, self.authorization))
+            .await
+            .map_err(Failure::Host)?;
+        if kind == "response.incomplete"
+            && let Some(turn) = super::cut_off(response, self.authorization)
+        {
+            self.terminal = Some(turn);
+            return Ok(());
+        }
+        Err(stream_failure(event))
+    }
+
+    pub fn has_terminal(&self) -> bool {
+        self.terminal.is_some()
     }
     pub fn finish(self) -> Result<Turn, Failure> {
         self.terminal
@@ -390,7 +374,6 @@ mod tests {
         for byte in bytes {
             frames.extend(decoder.push(&[*byte]).unwrap());
         }
-        decoder.finish().unwrap();
         assert_eq!(frames.len(), 1);
         assert_eq!(frames[0].event.as_deref(), Some("test"));
         let value: Value = serde_json::from_str(&frames[0].data).unwrap();
@@ -398,13 +381,348 @@ mod tests {
     }
 
     #[test]
-    fn malformed_utf8_truncated_frames_and_bounds_are_rejected() {
+    fn malformed_utf8_and_bounds_are_rejected() {
         let mut decoder = Decoder::new(100);
         assert!(decoder.push(b"data: \xff\n\n").is_err());
-        let mut decoder = Decoder::new(100);
-        decoder.push(b"data: {}\n").unwrap();
-        assert!(decoder.finish().is_err());
         let mut decoder = Decoder::new(4);
         assert!(decoder.push(b"12345").is_err());
+    }
+
+    use super::super::Authorization;
+    use crate::engine::{Cause, Invocation, Item};
+    use serde_json::json;
+
+    /// Frames each payload as SSE and feeds it through the decoder and the
+    /// validator as `Client::stream` does, stopping at the terminal event.
+    async fn run(
+        authorization: Authorization,
+        payloads: &[String],
+    ) -> (Result<Turn, Failure>, Vec<TextDelta>) {
+        let bytes: String = payloads
+            .iter()
+            .map(|payload| format!("data: {payload}\n\n"))
+            .collect();
+        let mut live = Vec::new();
+        let result = {
+            let mut sink = |event: StreamEvent| -> Result<(), Cause> {
+                if let StreamEvent::Text(delta) = event {
+                    live.push(delta);
+                }
+                Ok(())
+            };
+            let mut decoder = Decoder::new(bytes.len());
+            let mut stream = Stream::new(authorization);
+            async {
+                for frame in decoder.push(bytes.as_bytes())? {
+                    stream.accept(frame, &mut sink).await?;
+                    if stream.has_terminal() {
+                        break;
+                    }
+                }
+                stream.finish()
+            }
+            .await
+        };
+        (result, live)
+    }
+    async fn plan(events: &[Value]) -> (Result<Turn, Failure>, Vec<TextDelta>) {
+        run(Authorization::ChatGptPlan, &payloads(events)).await
+    }
+    /// Numbers events from zero, as a provider does.
+    fn numbered(mut events: Vec<Value>) -> Vec<Value> {
+        for (index, event) in events.iter_mut().enumerate() {
+            event["sequence_number"] = json!(index);
+        }
+        events
+    }
+    fn payloads(events: &[Value]) -> Vec<String> {
+        events.iter().map(Value::to_string).collect()
+    }
+    fn protocol_error(result: Result<Turn, Failure>) -> String {
+        match result {
+            Err(Failure::Protocol(message)) => message,
+            other => panic!("expected a protocol failure, got {other:?}"),
+        }
+    }
+    fn created() -> Value {
+        json!({"type":"response.created","response":{"id":"r"}})
+    }
+    /// A completion without the terminal `output` array.
+    fn completed() -> Value {
+        json!({"type":"response.completed","response":{"id":"r","status":"completed","usage":{"input_tokens":5,"output_tokens":3}}})
+    }
+    fn added(index: usize, item: Value) -> Value {
+        json!({"type":"response.output_item.added","output_index":index,"item":item})
+    }
+    fn done(index: usize, item: Value) -> Value {
+        json!({"type":"response.output_item.done","output_index":index,"item":item})
+    }
+    fn message(text: &str) -> Value {
+        json!({"type":"message","id":"m","role":"assistant","status":"completed","content":[{"type":"output_text","text":text,"annotations":[]}]})
+    }
+    fn call(id: &str, call_id: &str, name: &str) -> Value {
+        json!({"type":"function_call","id":id,"call_id":call_id,"name":name,"arguments":"{}","status":"completed"})
+    }
+    fn invocation(id: &str, name: &str) -> Item {
+        Item::Call(Invocation {
+            id: id.into(),
+            name: name.into(),
+            arguments: "{}".into(),
+        })
+    }
+
+    #[tokio::test]
+    async fn final_message_text_wins_over_streamed_preview() {
+        let piece = |delta: &str| json!({"type":"response.output_text.delta","output_index":0,"item_id":"m","content_index":0,"delta":delta});
+        let events = numbered(vec![
+            created(),
+            added(
+                0,
+                json!({"type":"message","id":"m","role":"assistant","content":[]}),
+            ),
+            json!({"type":"response.content_part.added","output_index":0,"item_id":"m","content_index":0,"part":{"type":"output_text","text":""}}),
+            piece("Hel"),
+            piece("lo"),
+            json!({"type":"response.output_text.done","output_index":0,"item_id":"m","content_index":0,"text":"Hello"}),
+            json!({"type":"response.content_part.done","output_index":0,"item_id":"m","content_index":0,"part":{"type":"output_text","text":"Hello"}}),
+            done(0, message("Hello, corrected")),
+            completed(),
+        ]);
+        let (result, live) = plan(&events).await;
+        assert_eq!(result.unwrap().text(), "Hello, corrected");
+        let texts: Vec<_> = live.iter().map(|delta| delta.text.as_str()).collect();
+        assert_eq!(texts, ["Hel", "lo"]);
+        assert_eq!(
+            live[1].location,
+            Some(crate::engine::DeltaLocation {
+                response_id: "r".into(),
+                item_id: "m".into(),
+                sequence: 4,
+                output_index: 0,
+                content_index: 0,
+            })
+        );
+    }
+
+    #[tokio::test]
+    async fn unknown_item_types_are_left_out_of_the_turn() {
+        let search = json!({"type":"web_search_call","id":"ws","status":"completed"});
+        let events = numbered(vec![
+            created(),
+            added(0, search.clone()),
+            done(0, search),
+            added(1, call("f", "c", "save")),
+            done(1, call("f", "c", "save")),
+            completed(),
+        ]);
+        let (result, _) = plan(&events).await;
+        assert_eq!(result.unwrap().items, vec![invocation("c", "save")]);
+    }
+
+    #[tokio::test]
+    async fn sequence_numbers_do_not_decide_acceptance() {
+        let base = numbered(vec![
+            created(),
+            added(0, call("f", "c", "save")),
+            done(0, call("f", "c", "save")),
+            completed(),
+        ]);
+        let mut repeated = base.clone();
+        repeated[2]["sequence_number"] = json!(1);
+        let mut skipped = base.clone();
+        skipped[2]["sequence_number"] = json!(7);
+        let mut absent = base.clone();
+        absent[1].as_object_mut().unwrap().remove("sequence_number");
+        absent.insert(2, json!({"type":"keepalive"}));
+        let mut refused = Vec::new();
+        for (case, events) in [
+            ("repeated", repeated),
+            ("skipped", skipped),
+            ("absent", absent),
+        ] {
+            match plan(&events).await.0 {
+                Ok(turn) => assert_eq!(turn.items, vec![invocation("c", "save")]),
+                Err(failure) => refused.push(format!("{case}: {failure:?}")),
+            }
+        }
+        assert!(refused.is_empty(), "{refused:?}");
+    }
+
+    #[tokio::test]
+    async fn call_item_id_may_change_between_its_events() {
+        let events = numbered(vec![
+            created(),
+            added(0, call("fc_a", "c", "save")),
+            json!({"type":"response.function_call_arguments.delta","output_index":0,"item_id":"fc_a","delta":"{}"}),
+            json!({"type":"response.function_call_arguments.done","output_index":0,"item_id":"fc_a","arguments":"{}"}),
+            done(0, call("fc_b", "c", "save")),
+            completed(),
+        ]);
+        let (result, _) = plan(&events).await;
+        assert_eq!(result.unwrap().items, vec![invocation("c", "save")]);
+    }
+
+    #[tokio::test]
+    async fn completed_items_need_no_announcement() {
+        let events = numbered(vec![
+            created(),
+            done(0, message("Saved.")),
+            done(1, call("f", "c", "save")),
+            completed(),
+        ]);
+        let (result, _) = plan(&events).await;
+        assert_eq!(
+            result.unwrap().items,
+            vec![
+                Item::Message {
+                    role: "assistant".into(),
+                    text: "Saved.".into()
+                },
+                invocation("c", "save")
+            ]
+        );
+    }
+
+    #[tokio::test]
+    async fn api_turn_comes_from_completed_items_not_the_terminal_echo() {
+        let reasoning =
+            json!({"type":"reasoning","id":"rs","summary":[],"encrypted_content":"streamed"});
+        let mut echoed = reasoning.clone();
+        echoed["encrypted_content"] = json!("different");
+        let differing = json!({"id":"r","status":"completed","usage":{},"output":[echoed]});
+        let omitted = json!({"id":"r","status":"completed","usage":{}});
+        let mut refused = Vec::new();
+        for (case, terminal) in [("differing", differing), ("omitted", omitted)] {
+            let events = numbered(vec![
+                created(),
+                added(0, reasoning.clone()),
+                done(0, reasoning.clone()),
+                json!({"type":"response.completed","response":terminal}),
+            ]);
+            match run(Authorization::Api, &payloads(&events)).await.0 {
+                Ok(turn) => assert_eq!(turn.items, vec![Item::Opaque(reasoning.clone())]),
+                Err(failure) => refused.push(format!("{case}: {failure:?}")),
+            }
+        }
+        assert!(refused.is_empty(), "{refused:?}");
+    }
+
+    #[tokio::test]
+    async fn frames_that_are_not_typed_json_are_skipped() {
+        let events = numbered(vec![
+            created(),
+            added(0, call("f", "c", "save")),
+            done(0, call("f", "c", "save")),
+            completed(),
+        ]);
+        let clean = plan(&events).await.0.unwrap();
+        assert_eq!(clean.items, vec![invocation("c", "save")]);
+        let mut noisy = payloads(&events);
+        noisy.insert(1, "{not json".into());
+        noisy.insert(3, json!({"output_index":0}).to_string());
+        noisy.insert(5, json!({"type":7,"output_index":0}).to_string());
+        let (result, _) = run(Authorization::ChatGptPlan, &noisy).await;
+        assert_eq!(result.unwrap(), clean);
+    }
+
+    #[tokio::test]
+    async fn done_marker_is_ignored_wherever_it_appears() {
+        let mut events = payloads(&numbered(vec![
+            created(),
+            added(0, call("f", "c", "save")),
+            done(0, call("f", "c", "save")),
+            completed(),
+        ]));
+        events.insert(0, "[DONE]".into());
+        events.insert(3, "[DONE]".into());
+        events.push("[DONE]".into());
+        let (result, _) = run(Authorization::ChatGptPlan, &events).await;
+        assert_eq!(result.unwrap().items, vec![invocation("c", "save")]);
+    }
+
+    #[tokio::test]
+    async fn used_items_must_name_their_output_index() {
+        for event in [
+            json!({"type":"response.output_item.added","item":call("f", "c", "save")}),
+            json!({"type":"response.output_item.done","item":message("Hi")}),
+            json!({"type":"response.output_item.done","item":{"type":"reasoning","id":"rs","summary":[]}}),
+        ] {
+            let (result, _) = plan(&numbered(vec![created(), event, completed()])).await;
+            assert_eq!(protocol_error(result), "missing stream index");
+        }
+    }
+
+    #[tokio::test]
+    async fn calls_with_empty_or_repeated_ids_and_empty_names_reach_the_engine() {
+        for announced in [true, false] {
+            let mut events = vec![created()];
+            for (index, item) in [
+                call("f", "", "save"),
+                call("g", "c", ""),
+                call("h", "c", "save"),
+            ]
+            .into_iter()
+            .enumerate()
+            {
+                if announced {
+                    events.push(added(index, item.clone()));
+                }
+                events.push(done(index, item));
+            }
+            events.push(completed());
+            let (result, _) = plan(&numbered(events)).await;
+            assert_eq!(
+                result.unwrap().items,
+                vec![
+                    invocation("", "save"),
+                    invocation("c", ""),
+                    invocation("c", "save")
+                ],
+                "announced: {announced}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn calls_with_missing_fields_reach_the_engine_as_empty() {
+        for announced in [true, false] {
+            let item = json!({"type":"function_call","id":"f","status":"completed"});
+            let mut events = vec![created()];
+            if announced {
+                events.push(added(0, item.clone()));
+            }
+            events.push(done(0, item));
+            events.push(completed());
+            let (result, _) = plan(&numbered(events)).await;
+            assert_eq!(
+                result.unwrap().items,
+                vec![Item::Call(Invocation {
+                    id: String::new(),
+                    name: String::new(),
+                    arguments: String::new(),
+                })],
+                "announced: {announced}"
+            );
+        }
+    }
+
+    #[tokio::test]
+    async fn an_output_index_holds_one_item() {
+        let twice_added = numbered(vec![
+            created(),
+            added(0, call("f", "c", "save")),
+            added(0, call("g", "d", "save")),
+            completed(),
+        ]);
+        let twice_done = numbered(vec![
+            created(),
+            done(0, call("f", "c", "save")),
+            done(0, call("g", "d", "save")),
+            completed(),
+        ]);
+        let (result, _) = plan(&twice_added).await;
+        assert_eq!(protocol_error(result), "output index already holds an item");
+        let (result, _) = plan(&twice_done).await;
+        assert_eq!(protocol_error(result), "output index already done");
     }
 }
