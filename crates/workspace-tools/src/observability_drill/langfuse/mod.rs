@@ -19,6 +19,7 @@ use chrono::{DateTime, Utc};
 use reqwest::blocking::Client;
 use serde_json::{Value, json};
 use sha2::{Digest, Sha256};
+use url::Url;
 
 use super::live::{STAGING_PROJECT, Secret, fetch_secret};
 use super::model::{DrillRoute, EvalKind, Exercise, SignalError, SignalKind};
@@ -120,7 +121,7 @@ pub(super) enum DrillError {
     #[error("kubectl port-forward to {0} printed no local port")]
     NotForwarded(&'static str),
     #[error("LANGFUSE_BASE_URL is not a bare https origin")]
-    LangfuseHost,
+    LangfuseHost(#[source] LangfuseHostError),
     #[error("{what} could not run")]
     Tool {
         what: &'static str,
@@ -531,14 +532,14 @@ fn send_turn(request: &Request, report: &mut Report, watch: &Watch) -> Result<Se
 /// `LANGFUSE_BASE_URL`.
 struct Langfuse {
     client: Client,
-    base: String,
+    base: Url,
 }
 
 impl Langfuse {
     fn open(report: &mut Report) -> Result<Self, DrillError> {
         let base = secret("LANGFUSE_BASE_URL")?;
-        let base = langfuse_origin(base.expose()).ok_or(DrillError::LangfuseHost)?;
-        report.put("langfuse_host", &base);
+        let base = langfuse_origin(base.expose()).map_err(DrillError::LangfuseHost)?;
+        report.put("langfuse_host", base.origin().ascii_serialization());
         Ok(Self {
             client: client()?,
             base,
@@ -555,10 +556,19 @@ impl Langfuse {
     }
 }
 
+/// Why `LANGFUSE_BASE_URL` is not a usable Langfuse origin.
+#[derive(Debug, thiserror::Error)]
+pub(super) enum LangfuseHostError {
+    #[error("it does not parse as a URL")]
+    Parse(#[source] url::ParseError),
+    #[error("it carries more than an https scheme and a domain")]
+    NotBare,
+}
+
 /// `value` as a bare https origin, the shape the observability root's
-/// `langfuse_host` takes; a trailing slash is dropped.
-fn langfuse_origin(value: &str) -> Option<String> {
-    let url = reqwest::Url::parse(value.trim()).ok()?;
+/// `langfuse_host` takes; a trailing slash is allowed.
+fn langfuse_origin(value: &str) -> Result<Url, LangfuseHostError> {
+    let url = Url::parse(value.trim()).map_err(LangfuseHostError::Parse)?;
     let bare = url.scheme() == "https"
         && url.domain().is_some()
         && url.port().is_none()
@@ -567,7 +577,11 @@ fn langfuse_origin(value: &str) -> Option<String> {
         && url.path() == "/"
         && url.query().is_none()
         && url.fragment().is_none();
-    bare.then(|| url.origin().ascii_serialization())
+    if bare {
+        Ok(url)
+    } else {
+        Err(LangfuseHostError::NotBare)
+    }
 }
 
 fn json_body(
@@ -595,14 +609,16 @@ struct LangfuseApi<'a> {
 impl LangfuseApi<'_> {
     fn get(
         &self,
-        path: &str,
+        path: &'static str,
         query: &[(&str, &str)],
         what: &'static str,
     ) -> Result<Value, DrillError> {
+        let mut url = self.langfuse.base.clone();
+        url.set_path(path);
         chat::send_json(
             self.langfuse
                 .client
-                .get(format!("{}{path}", self.langfuse.base))
+                .get(url)
                 .basic_auth(self.public.expose(), Some(self.secret.expose()))
                 .query(query),
             what,
@@ -623,7 +639,10 @@ impl LangfuseApi<'_> {
             ],
             "Langfuse observations",
         )?;
-        Ok(readback::session_generations(&observations, &sent.canary))
+        readback::session_generations(&observations, &sent.canary).ok_or(DrillError::Shape {
+            what: "Langfuse observations",
+            field: "a data list whose generations carry traceId",
+        })
     }
 
     /// Waits for the chat's newest generation.
@@ -1438,21 +1457,36 @@ mod tests {
 
     #[test]
     fn the_langfuse_host_is_a_bare_https_origin() {
+        let origin = |value| {
+            langfuse_origin(value)
+                .ok()
+                .map(|url| url.origin().ascii_serialization())
+        };
         assert_eq!(
-            langfuse_origin("https://hipaa.cloud.langfuse.com").as_deref(),
+            origin("https://hipaa.cloud.langfuse.com").as_deref(),
             Some("https://hipaa.cloud.langfuse.com")
         );
         assert_eq!(
-            langfuse_origin("https://hipaa.cloud.langfuse.com/\n").as_deref(),
+            origin("https://hipaa.cloud.langfuse.com/\n").as_deref(),
             Some("https://hipaa.cloud.langfuse.com")
         );
-        assert!(langfuse_origin("http://hipaa.cloud.langfuse.com").is_none());
-        assert!(langfuse_origin("https://hipaa.cloud.langfuse.com/langfuse").is_none());
-        assert!(langfuse_origin("https://127.0.0.1:3000").is_none());
-        assert!(langfuse_origin("https://").is_none());
-        assert!(langfuse_origin("https://hipaa.cloud.langfuse.com:8443").is_none());
-        assert!(langfuse_origin("https://user@hipaa.cloud.langfuse.com").is_none());
-        assert!(langfuse_origin("https://hipaa.cloud.langfuse.com/?x=1").is_none());
+        assert!(matches!(
+            langfuse_origin("https://"),
+            Err(LangfuseHostError::Parse(_))
+        ));
+        for refused in [
+            "http://hipaa.cloud.langfuse.com",
+            "https://hipaa.cloud.langfuse.com/langfuse",
+            "https://127.0.0.1:3000",
+            "https://hipaa.cloud.langfuse.com:8443",
+            "https://user@hipaa.cloud.langfuse.com",
+            "https://hipaa.cloud.langfuse.com/?x=1",
+        ] {
+            assert!(
+                matches!(langfuse_origin(refused), Err(LangfuseHostError::NotBare)),
+                "{refused}"
+            );
+        }
     }
 
     #[test]

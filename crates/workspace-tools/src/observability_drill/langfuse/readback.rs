@@ -59,12 +59,12 @@ pub(super) struct LangfuseTurn {
 
 /// The generations in a `GET /api/public/v2/observations?sessionId=` answer,
 /// newest first: a redelivered attempt's generation comes before the one it
-/// replaced.
-pub(super) fn session_generations(body: &Value, canary: &str) -> Vec<LangfuseTurn> {
+/// replaced. `None` when the answer has no `data` list or a generation in it
+/// has no `traceId`: a malformed answer, not an empty session.
+pub(super) fn session_generations(body: &Value, canary: &str) -> Option<Vec<LangfuseTurn>> {
     let mut generations: Vec<&Value> = body["data"]
-        .as_array()
-        .into_iter()
-        .flatten()
+        .as_array()?
+        .iter()
         .filter(|observation| observation["name"] == GENERATION)
         .collect();
     generations.sort_by_key(|observation| {
@@ -77,7 +77,7 @@ pub(super) fn session_generations(body: &Value, canary: &str) -> Vec<LangfuseTur
     });
     generations
         .into_iter()
-        .filter_map(|generation| langfuse_turn(generation, canary))
+        .map(|generation| langfuse_turn(generation, canary))
         .collect()
 }
 
@@ -540,7 +540,9 @@ mod tests {
     }
 
     fn turn_of(item: Value) -> LangfuseTurn {
-        session_generations(&observations(&[item]), "canary-123").remove(0)
+        session_generations(&observations(&[item]), "canary-123")
+            .unwrap()
+            .remove(0)
     }
 
     #[test]
@@ -572,8 +574,15 @@ mod tests {
 
     #[test]
     fn a_session_without_its_generation_has_no_turn() {
-        assert!(session_generations(&observations(&[]), "c").is_empty());
-        assert!(session_generations(&json!({}), "c").is_empty());
+        assert_eq!(session_generations(&observations(&[]), "c"), Some(vec![]));
+    }
+
+    #[test]
+    fn a_malformed_answer_is_not_an_empty_session() {
+        assert_eq!(session_generations(&json!({}), "c"), None);
+        let mut item = generation();
+        item["traceId"] = Value::Null;
+        assert_eq!(session_generations(&observations(&[item]), "c"), None);
     }
 
     #[test]
@@ -583,7 +592,8 @@ mod tests {
         let mut redelivered = generation();
         redelivered["traceId"] = json!("redelivered");
         redelivered["startTime"] = json!("2026-11-09T10:00:12.000Z");
-        let turns = session_generations(&observations(&[first, redelivered]), "canary-123");
+        let turns =
+            session_generations(&observations(&[first, redelivered]), "canary-123").unwrap();
         let traces: Vec<&str> = turns.iter().map(|turn| turn.trace_id.as_str()).collect();
         assert_eq!(traces, ["redelivered", "first"]);
     }
