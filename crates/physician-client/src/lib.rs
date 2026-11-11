@@ -7,7 +7,8 @@ use physician_wire::{
     ChatSnapshotResponse, HealthResponse, PanelAssignmentResponse, PatientSearchResponse,
     PatientWorkspaceResponse, PatientWorkspacesResponse, PhysicianDraft, PracticeDayResponse,
     RecentConversationsResponse, ReplyDraftWire, ResponseFeedback, ResponseId, SaveFeedback,
-    SignInResponse, TodayListResponse, UpdatesResponse, VerifyResponse, WhoamiResponse,
+    SignInResponse, SourceEvidence, TodayListResponse, UpdatesResponse, VerifyResponse,
+    WhoamiResponse,
 };
 use std::sync::Arc;
 
@@ -301,6 +302,19 @@ impl PhysicianClient {
     ) -> Result<ChatSnapshotResponse, http::HttpError> {
         self.get(&format!(
             "/patient-workspaces/{workspace_id}/chats/{chat_id}/snapshot"
+        ))
+        .await
+    }
+
+    /// Reads the evidence one citation in a chat retained.
+    pub async fn citation_evidence(
+        &self,
+        workspace_id: &str,
+        chat_id: &str,
+        citation_id: &str,
+    ) -> Result<SourceEvidence, http::HttpError> {
+        self.get(&format!(
+            "/patient-workspaces/{workspace_id}/chats/{chat_id}/citations/{citation_id}"
         ))
         .await
     }
