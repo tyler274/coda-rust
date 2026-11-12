@@ -3822,21 +3822,35 @@ async fn spawn_mock_responses_server(
                         (status, headers, body.to_string()).into_response()
                     }
                     MockResponsesReply::CompletedText(text) => {
+                        let item = json!({
+                            "type": "message",
+                            "id": "msg-mock-ok",
+                            "role": "assistant",
+                            "status": "completed",
+                            "content": [{ "type": "output_text", "text": text }],
+                        });
                         let response = json!({
                             "id": "resp-mock-ok",
                             "model": "recovery-chat-lane",
                             "status": "completed",
-                            "output": [{
-                                "type": "message",
-                                "role": "assistant",
-                                "status": "completed",
-                                "content": [{ "type": "output_text", "text": text }],
-                            }],
-                            "usage": { "input_tokens": 120, "output_tokens": 30 }
+                            "output": [item.clone()],
+                            "usage": { "input_tokens": 120, "output_tokens": 30, "total_tokens": 150 }
                         });
                         let sse = format!(
-                            "event: response.completed\ndata: {}\n\n",
-                            json!({ "type": "response.completed", "response": response })
+                            "data: {}\n\ndata: {}\n\ndata: {}\n\n",
+                            json!({
+                                "type": "response.created",
+                                "response": { "id": "resp-mock-ok", "status": "in_progress" }
+                            }),
+                            json!({
+                                "type": "response.output_item.done",
+                                "output_index": 0,
+                                "item": item
+                            }),
+                            json!({
+                                "type": "response.completed",
+                                "response": response
+                            })
                         );
                         let mut headers = HeaderMap::new();
                         headers.insert(

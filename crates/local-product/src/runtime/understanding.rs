@@ -887,6 +887,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_desc(practice_job::Column::CreatedAt)
+            .order_by_desc(practice_job::Column::SourcesVersion)
+            .order_by_desc(practice_job::Column::JobId)
             .all(&tx)
             .await?;
         tx.commit().await?;
@@ -1159,6 +1161,8 @@ impl Store {
                     .add(practice_job::Column::Kind.eq(PracticeJobKind::InitialUnderstanding)),
             )
             .order_by_asc(practice_job::Column::UpdatedAt)
+            .order_by_asc(practice_job::Column::SourcesVersion)
+            .order_by_asc(practice_job::Column::JobId)
             .all(&self.db)
             .await?;
         let mut latest_by_workspace: BTreeMap<String, practice_job::Model> = BTreeMap::new();
