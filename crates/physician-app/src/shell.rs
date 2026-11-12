@@ -55,29 +55,55 @@ pub const REPLY_REVISION_SUPERSEDED: &str =
 pub const REPLY_REVISION_STALE: &str =
     "Coda couldn’t take that revision. The current draft is shown; review it and ask again.";
 
-/// Whether the signed-in physician has already opened a Today item once.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+/// Whether the signed-in physician has already opened a Today item at its current version.
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum ItemOpenStanding {
     /// Not yet opened by this physician.
     #[default]
     Unopened,
-    /// Opened at least once by this physician.
+    /// Opened at least once by this physician at its current version.
     Opened,
+    /// Opened at an earlier version and revised since then; carries what changed.
+    ChangedSinceOpened {
+        /// Physician-facing summary of what changed since the item was last opened.
+        what_changed: String,
+    },
+}
+
+impl ItemOpenStanding {
+    /// Whether this item needs the physician's eye (`Unopened` or `ChangedSinceOpened`).
+    pub fn needs_eye(&self) -> bool {
+        matches!(self, Self::Unopened | Self::ChangedSinceOpened { .. })
+    }
+
+    /// Summary of what changed since the item was last opened, if any.
+    pub fn changed_summary(&self) -> Option<&str> {
+        match self {
+            Self::ChangedSinceOpened { what_changed } => Some(what_changed.as_str()),
+            Self::Unopened | Self::Opened => None,
+        }
+    }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct TodayLine {
     pub item_id: String,
+    pub version_id: String,
     pub workspace_id: String,
     pub patient: String,
     pub kind: String,
+    pub title: String,
     pub reason: String,
     pub did: String,
     pub waiting_since: String,
     /// Coda marked the concern as needing the physician now, not just today.
     pub now: bool,
-    /// Whether this physician has already opened the item once.
+    /// Whether this physician has already opened the item at its current version.
     pub standing: ItemOpenStanding,
+    /// Whether this Today row can be cleared via `Done`.
+    pub can_mark_done: bool,
+    /// Linked conversation identifier when opening an active chat response.
+    pub linked_chat_id: Option<String>,
     pub resume_work_item_id: Option<String>,
     pub resume_run_id: Option<String>,
 }
@@ -141,29 +167,52 @@ pub fn today_lines(list: &TodayListResponse) -> Vec<TodayLine> {
         .collect()
 }
 
-/// Returns the first urgent (`now`) concern that has not yet been opened once.
+/// Returns the first urgent (`now`) concern that has not yet been opened at its current version.
 pub fn active_now_concern(lines: &[TodayLine]) -> Option<&TodayLine> {
     lines
         .iter()
-        .find(|line| line.now && line.standing == ItemOpenStanding::Unopened)
+        .find(|line| line.now && line.standing.needs_eye())
 }
 
 fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
-    let opened = row.seen || seen_ids.iter().any(|seen| seen == &row.item_id);
+    let standing = match &row.standing {
+        Some(physician_wire::today_updates::SeenStandingWire::ChangedSinceSeen {
+            what_changed,
+            ..
+        }) => ItemOpenStanding::ChangedSinceOpened {
+            what_changed: what_changed.clone(),
+        },
+        Some(physician_wire::today_updates::SeenStandingWire::Seen { .. }) => {
+            ItemOpenStanding::Opened
+        }
+        Some(physician_wire::today_updates::SeenStandingWire::Unseen) | None => {
+            if row.seen || seen_ids.iter().any(|seen| seen == &row.item_id) {
+                ItemOpenStanding::Opened
+            } else {
+                ItemOpenStanding::Unopened
+            }
+        }
+    };
+    let reason = row.reason.clone().unwrap_or_default();
+    let title = row
+        .title
+        .clone()
+        .filter(|value| !value.trim().is_empty())
+        .unwrap_or_else(|| reason.clone());
     TodayLine {
         item_id: row.item_id.clone(),
+        version_id: row.version_id.clone(),
         workspace_id: row.patient_workspace_id.clone(),
         patient: row.patient_display_name.clone(),
         kind: row.kind.clone(),
-        reason: row.reason.clone().unwrap_or_default(),
+        title,
+        reason,
         did: row_did(row),
         waiting_since: row.waiting_since.clone(),
         now: row.urgency == "now",
-        standing: if opened {
-            ItemOpenStanding::Opened
-        } else {
-            ItemOpenStanding::Unopened
-        },
+        standing,
+        can_mark_done: row.can_mark_done,
+        linked_chat_id: row.linked_chat_id.clone(),
         resume_work_item_id: row
             .resume_target
             .as_ref()
@@ -179,8 +228,8 @@ fn today_line(row: &TodayRow, seen_ids: &[String]) -> TodayLine {
 /// a drafted reply is ready, a review that couldn't finish failed, and anything else is neutral.
 pub fn row_tone(kind: &str) -> ui::Tone {
     match kind {
-        "concern" => ui::Tone::Warning,
-        "reply" => ui::Tone::Primary,
+        "concern" | "visit_nudge" => ui::Tone::Warning,
+        "reply" | "running_work" => ui::Tone::Primary,
         "failed_review" => ui::Tone::Error,
         _ => ui::Tone::Neutral,
     }
@@ -190,7 +239,9 @@ pub fn row_tone(kind: &str) -> ui::Tone {
 pub fn row_icon(kind: &str) -> Option<ui::IconName> {
     Some(match kind {
         "concern" => ui::IconName::Flag,
+        "visit_nudge" => ui::IconName::Calendar,
         "reply" => ui::IconName::Reply,
+        "running_work" => ui::IconName::Message,
         _ => ui::IconName::Alert,
     })
 }
@@ -199,6 +250,13 @@ pub fn row_icon(kind: &str) -> Option<ui::IconName> {
 pub fn row_did(row: &TodayRow) -> String {
     if row.kind == "failed_review" {
         return format!("{} couldn’t finish", work_subject(row.work_kind.as_deref()));
+    }
+    if let Some(title) = row
+        .title
+        .as_deref()
+        .filter(|value| !value.trim().is_empty())
+    {
+        return title.to_owned();
     }
     row.reason.clone().unwrap_or_default()
 }
@@ -749,10 +807,6 @@ pub fn workspace_event_rereads(event: &str, data: &str, selected: Option<&str>) 
         _ => return false,
     };
     matches!((patient, selected), (Some(patient), Some(selected)) if patient == selected)
-}
-
-pub fn opens_reader(kind: &str) -> bool {
-    kind == "concern" || kind == "reply"
 }
 
 pub fn format_calendar_date(day: &str) -> String {
@@ -1622,8 +1676,6 @@ mod tests {
             format_clock("2026-08-27T19:30:00.000Z", "America/New_York").as_deref(),
             Some("3:30 PM")
         );
-        assert!(opens_reader("concern"));
-        assert!(!opens_reader("failed_review"));
         assert_eq!(
             keyboard_command(&KeyInput {
                 key: "/".to_owned(),

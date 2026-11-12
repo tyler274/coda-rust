@@ -2774,6 +2774,7 @@ mod runtime_tables {
         Recipes,
         SkillPackages,
         TodayUpdatesSeen,
+        TodayWorkDismissals,
     }
 
     impl Iden for PracticeTable {
@@ -2810,6 +2811,7 @@ mod runtime_tables {
                 Self::Recipes => "physician_runtime_recipes",
                 Self::SkillPackages => "physician_runtime_skill_packages",
                 Self::TodayUpdatesSeen => "physician_runtime_today_updates_seen",
+                Self::TodayWorkDismissals => "physician_runtime_today_work_dismissals",
             }
         }
     }
@@ -2867,25 +2869,6 @@ mod runtime_tables {
         }
     }
 
-    #[derive(Clone, Copy)]
-    pub(super) enum InfoSchema {
-        Schema,
-        Tables,
-        TableSchema,
-        TableName,
-    }
-
-    impl Iden for InfoSchema {
-        fn unquoted(&self) -> &'static str {
-            match self {
-                Self::Schema => "information_schema",
-                Self::Tables => "tables",
-                Self::TableSchema => "table_schema",
-                Self::TableName => "table_name",
-            }
-        }
-    }
-
     pub(super) const ALL_PRACTICE_TABLES: &[PracticeTable] = &[
         PracticeTable::Events,
         PracticeTable::ChatAttempts,
@@ -2915,6 +2898,8 @@ mod runtime_tables {
         PracticeTable::Commands,
         PracticeTable::Recipes,
         PracticeTable::SkillPackages,
+        PracticeTable::TodayUpdatesSeen,
+        PracticeTable::TodayWorkDismissals,
     ];
 
     pub(super) const ALL_WORKSPACE_TABLES: &[WorkspaceTable] = &[
@@ -2955,11 +2940,12 @@ async fn purge_practice_runtime_state(
     workspaces: &[String],
 ) -> Result<(), DbErr> {
     use runtime_tables::{
-        ALL_AUTH_PRACTICE_TABLES, ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES, InfoSchema,
-        PracticeTable, RuntimeCol,
+        ALL_AUTH_PRACTICE_TABLES, ALL_PRACTICE_TABLES, ALL_WORKSPACE_TABLES, PracticeTable,
+        RuntimeCol,
     };
     use sea_orm::sea_query::ExprTrait as _;
 
+    let _ = PracticeTable::TodayUpdatesSeen;
     let tx = db.begin().await?;
 
     for table in ALL_PRACTICE_TABLES {
@@ -2968,22 +2954,6 @@ async fn purge_practice_runtime_state(
             .and_where(Expr::col(RuntimeCol::Practice).eq(practice_id))
             .to_owned();
         tx.execute(&delete).await?;
-    }
-
-    // Clear `physician_runtime_today_updates_seen` as well when the seen-state
-    // migration is present in the schema.
-    let check_seen_table = Query::select()
-        .column(InfoSchema::TableName)
-        .from((InfoSchema::Schema, InfoSchema::Tables))
-        .and_where(Expr::col(InfoSchema::TableSchema).eq("public"))
-        .and_where(Expr::col(InfoSchema::TableName).eq("physician_runtime_today_updates_seen"))
-        .to_owned();
-    if tx.query_one(&check_seen_table).await?.is_some() {
-        let delete_seen = Query::delete()
-            .from_table(PracticeTable::TodayUpdatesSeen)
-            .and_where(Expr::col(RuntimeCol::Practice).eq(practice_id))
-            .to_owned();
-        tx.execute(&delete_seen).await?;
     }
 
     let workspace_set: BTreeSet<String> = workspaces

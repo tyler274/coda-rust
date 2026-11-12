@@ -35,6 +35,7 @@ pub mod synthetic_chart;
 pub mod synthetic_control;
 mod synthetic_reply;
 mod timestamp;
+pub mod today_updates;
 
 /// The staging practice id and the auth/front-door wiring, for tests.
 pub use auth::{STAGING_PRACTICE_ID, authed_router, authed_router_on};
@@ -155,6 +156,114 @@ impl SampleFeed {
             .map(|items| items.iter().cloned().collect())
             .unwrap_or_default()
     }
+
+    pub(crate) fn find_fixture_evidence(
+        &self,
+        workspace_id: &str,
+        item_id: &str,
+        now_str: &str,
+    ) -> Option<physician_wire::today_updates::ItemWorkEvidenceWire> {
+        use physician_wire::today_updates::{ItemWorkEvidenceWire, SeenStandingWire};
+
+        if let Some(row) = self
+            .today_rows
+            .lock()
+            .expect("sample today rows")
+            .iter()
+            .find(|row| {
+                row.get("item_id").and_then(Value::as_str) == Some(item_id)
+                    && row
+                        .get("patient_workspace_id")
+                        .and_then(Value::as_str)
+                        .is_none_or(|ws| ws == workspace_id)
+            })
+            .cloned()
+        {
+            let patient_display_name = row
+                .get("patient_display_name")
+                .and_then(Value::as_str)
+                .unwrap_or(workspace_id)
+                .to_owned();
+            let reason = row
+                .get("reason")
+                .and_then(Value::as_str)
+                .unwrap_or("Opened item.")
+                .to_owned();
+            let headline = row
+                .get("title")
+                .and_then(Value::as_str)
+                .filter(|title| !title.is_empty())
+                .unwrap_or(&reason)
+                .to_owned();
+            let version_id = row
+                .get("version_id")
+                .and_then(Value::as_str)
+                .unwrap_or("v1")
+                .to_owned();
+            return Some(ItemWorkEvidenceWire {
+                item_id: item_id.to_owned(),
+                version_id,
+                patient_workspace_id: workspace_id.to_owned(),
+                patient_display_name,
+                kind_label: "Concern".to_owned(),
+                headline,
+                narrative: reason,
+                basis_and_limitations: None,
+                citations: Vec::new(),
+                linked_chat_id: row
+                    .get("linked_chat_id")
+                    .and_then(Value::as_str)
+                    .map(str::to_owned),
+                standing: SeenStandingWire::Seen {
+                    seen_at: now_str.to_owned(),
+                },
+            });
+        }
+
+        let row = self
+            .update_rows
+            .lock()
+            .expect("sample update rows")
+            .iter()
+            .find(|row| {
+                row.get("item_id").and_then(Value::as_str) == Some(item_id)
+                    && row
+                        .get("patient_workspace_id")
+                        .and_then(Value::as_str)
+                        .is_none_or(|ws| ws == workspace_id)
+            })
+            .cloned()?;
+        let patient_display_name = row
+            .get("patient_display_name")
+            .and_then(Value::as_str)
+            .unwrap_or(workspace_id)
+            .to_owned();
+        let headline = row
+            .get("headline")
+            .and_then(Value::as_str)
+            .unwrap_or("Update")
+            .to_owned();
+        let narrative = row
+            .get("summary")
+            .and_then(Value::as_str)
+            .unwrap_or(&headline)
+            .to_owned();
+        Some(ItemWorkEvidenceWire {
+            item_id: item_id.to_owned(),
+            version_id: "v1".to_owned(),
+            patient_workspace_id: workspace_id.to_owned(),
+            patient_display_name,
+            kind_label: "Update".to_owned(),
+            headline,
+            narrative,
+            basis_and_limitations: None,
+            citations: Vec::new(),
+            linked_chat_id: None,
+            standing: SeenStandingWire::Seen {
+                seen_at: now_str.to_owned(),
+            },
+        })
+    }
 }
 
 /// The site over five fixture patients, for integration tests. It runs no
@@ -263,6 +372,8 @@ where
     Router::new()
         .route("/health", get(|| async { Json(json!({"status": "ok"})) }))
         .route("/today", get(today))
+        .route("/today-updates/open", post(today_updates::open_route))
+        .route("/today-updates/done", post(today_updates::done_route))
         .route("/practice-day", get(schedule::practice_day))
         .route(
             "/practice-day/refresh",
@@ -316,9 +427,10 @@ fn upstream_from_env() -> Option<String> {
 }
 
 pub(crate) fn physician_route(path: &str) -> bool {
-    const PREFIXES: [&str; 14] = [
+    const PREFIXES: [&str; 15] = [
         "/health",
         "/today",
+        "/today-updates",
         "/practice-day",
         "/updates",
         "/recent-conversations",
@@ -872,15 +984,29 @@ async fn today(
     let Ok(now) = connected.practice_now(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let identity = care::ConnectedCare::identity(extensions);
-    let panel = connected.auth_store(extensions).panel(&identity).await;
-    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
     let target_workspace = query
         .patient_workspace_id
         .as_deref()
         .map(str::trim)
         .filter(|ws| !ws.is_empty());
-    let (mut rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
+    if let (Some(store), Some(ctx)) = (
+        extensions.get::<local_product::runtime::Store>(),
+        extensions.get::<auth::AuthContext>(),
+    ) {
+        return today_updates::serve_durable_today(
+            store,
+            ctx,
+            &connected,
+            extensions,
+            &now,
+            target_workspace,
+        )
+        .await;
+    }
+    let identity = care::ConnectedCare::identity(extensions);
+    let panel = connected.auth_store(extensions).panel(&identity).await;
+    let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
+    let (rows, seen) = match extensions.get::<std::sync::Arc<SampleFeed>>() {
         Some(feed) => {
             let seen = feed.seen_for(&identity.practice_id, &identity.physician_id);
             let seen_set: std::collections::BTreeSet<&str> =
@@ -912,19 +1038,6 @@ async fn today(
         }
         None => (Vec::new(), Vec::new()),
     };
-    if rows.is_empty()
-        && let Some(store) = extensions.get::<local_product::runtime::Store>()
-    {
-        rows = patients::runtime_open_concern_rows(
-            store,
-            &connected,
-            extensions,
-            &identity,
-            &panel,
-            target_workspace,
-        )
-        .await;
-    }
     Json(json!({
         "date": practice_date(&now),
         "rows": rows,
@@ -945,6 +1058,13 @@ async fn updates(
     let Ok(now) = connected.practice_now(extensions).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
+    if let (Some(store), Some(ctx)) = (
+        extensions.get::<local_product::runtime::Store>(),
+        extensions.get::<auth::AuthContext>(),
+    ) {
+        return today_updates::serve_durable_updates(store, ctx, &connected, extensions, &now)
+            .await;
+    }
     let identity = care::ConnectedCare::identity(extensions);
     let panel = connected.auth_store(extensions).panel(&identity).await;
     let panel_set: std::collections::BTreeSet<&str> = panel.iter().map(String::as_str).collect();
@@ -1181,6 +1301,7 @@ struct ItemOpenPayload {
 }
 
 pub(crate) async fn accept_item_open(
+    runtime_store: Option<&local_product::runtime::Store>,
     auth_ctx: Option<auth::AuthContext>,
     feed: Option<std::sync::Arc<SampleFeed>>,
     bus: Option<&std::sync::Arc<dyn physician_bus::Bus>>,
@@ -1197,7 +1318,6 @@ pub(crate) async fn accept_item_open(
         )
             .into_response();
     };
-    let _ = key;
     let Some(payload) = payload.and_then(|p| serde_json::from_value::<ItemOpenPayload>(p).ok())
     else {
         return (
@@ -1218,6 +1338,16 @@ pub(crate) async fn accept_item_open(
             })),
         )
             .into_response();
+    }
+    if let (Some(store), Some(ctx)) = (runtime_store, auth_ctx.as_ref()) {
+        today_updates::record_durable_item_open(
+            store,
+            ctx,
+            &payload.patient_workspace_id,
+            &payload.item_id,
+            &key,
+        )
+        .await;
     }
     let identity = match auth_ctx {
         Some(ctx) => ctx.identity,
@@ -1244,6 +1374,7 @@ pub(crate) async fn accept_item_open(
 }
 
 async fn reject_command(
+    runtime_store: Option<axum::Extension<local_product::runtime::Store>>,
     auth_ctx: Option<axum::Extension<auth::AuthContext>>,
     sample_feed: Option<axum::Extension<std::sync::Arc<SampleFeed>>>,
     body: Option<Json<Value>>,
@@ -1264,6 +1395,7 @@ async fn reject_command(
             .and_then(|json| json.0.get("payload"))
             .cloned();
         return accept_item_open(
+            runtime_store.as_ref().map(|axum::Extension(store)| store),
             auth_ctx.map(|axum::Extension(ctx)| ctx),
             sample_feed.map(|axum::Extension(feed)| feed),
             None,
