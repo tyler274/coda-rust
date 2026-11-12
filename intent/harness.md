@@ -106,7 +106,7 @@ README.md holds Coda's shared principles, and they apply here. The principles be
 - The product marks which of its tools are read-only.
 - Before a call runs, it passes its authority check and is recorded as started.
 - **A tool call is in one of six states:** requested, refused before it starts, not run, running, ended with a result, or started with no recorded outcome. The model gets exactly one result for every call it issued, and the harness never runs a call again by itself. Codex, Hermes, OpenClaw and Pi share these states and both rules.
-- **Source labels.** The model sees short labels that map back to each source, and citations use those labels. Citations never depend on parsing model text.
+- **Source labels.** The model sees a short label on each source it reads, and cites by writing that label beside the claim. The label is the only part of a citation read from the model's text. Previews, passages and links never come from it, and the product's finish refuses a label the model was never given.
 - **Correctable errors** come back to the model under the original call ID:
   - bad arguments;
   - an unknown tool, with the names of the tools the job has, as Hermes does;
