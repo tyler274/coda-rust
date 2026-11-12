@@ -660,6 +660,23 @@ impl Worker {
             .collect();
         let roles = local_product::model_roles(transport.adapter(), &environment)
             .map_err(|error| error.to_string())?;
+        let wake_roles = roles.clone();
+        let wake_skills = local_product::physician_chat::PhysicianSkills::configured(
+            configured(&get, "PHYSICIAN_SKILLS_DIR").as_deref(),
+            hosted,
+        )
+        .ok();
+        let wake_queue: Option<Arc<dyn physician_sample::queue::ChatQueue>> = if let Some(topic) =
+            configured(&get, "PHYSICIAN_CHAT_TOPIC")
+        {
+            let emulator = configured(&get, "PUBSUB_EMULATOR_HOST");
+            let connected =
+                physician_sample::queue::PubSubQueue::connect(&topic, emulator.as_deref(), hosted)
+                    .await?;
+            Some(Arc::new(connected))
+        } else {
+            None
+        };
         let model = ModelSource { transport, roles };
         let database = configured(&get, "PHYSICIAN_DATABASE_URL")
             .ok_or("PHYSICIAN_DATABASE_URL is required")?;
@@ -677,6 +694,9 @@ impl Worker {
             handler: Arc::new(StoreWakeHandler {
                 store: store.clone(),
                 auth: auth.clone(),
+                roles: wake_roles,
+                skills: wake_skills,
+                queue: wake_queue,
             }),
             clinical_library,
         });
@@ -773,6 +793,7 @@ struct WakeTick {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 struct WakeReport {
     due_patients_checked: usize,
+    reviews_started: usize,
 }
 
 #[derive(Debug)]
@@ -780,6 +801,8 @@ enum WakeError {
     Rehearsed,
     RuntimeStore(sea_orm::DbErr),
     AuthStore(sea_orm::DbErr),
+    SkillsUnavailable(local_product::physician_chat::SkillsError),
+    Dispatch(local_product::runtime::dispatch::DispatchError),
 }
 
 impl WakeError {
@@ -788,6 +811,8 @@ impl WakeError {
             Self::Rehearsed => "rehearsed_failure",
             Self::RuntimeStore(_) => "runtime_store_unavailable",
             Self::AuthStore(_) => "auth_store_unavailable",
+            Self::SkillsUnavailable(_) => "skills_unavailable",
+            Self::Dispatch(_) => "dispatch_failed",
         }
     }
 }
@@ -798,6 +823,8 @@ impl std::fmt::Display for WakeError {
             Self::Rehearsed => f.write_str("rehearsed schedule wake failure"),
             Self::RuntimeStore(source) => write!(f, "runtime store check failed: {source}"),
             Self::AuthStore(source) => write!(f, "auth store check failed: {source}"),
+            Self::SkillsUnavailable(source) => write!(f, "physician skills unavailable: {source}"),
+            Self::Dispatch(source) => write!(f, "patient dispatch wake failed: {source}"),
         }
     }
 }
@@ -807,6 +834,8 @@ impl std::error::Error for WakeError {
         match self {
             Self::Rehearsed => None,
             Self::RuntimeStore(source) | Self::AuthStore(source) => Some(source),
+            Self::SkillsUnavailable(source) => Some(source),
+            Self::Dispatch(source) => Some(source),
         }
     }
 }
@@ -820,6 +849,58 @@ trait WakeHandler: Send + Sync {
 struct StoreWakeHandler {
     store: Store,
     auth: PostgresAuthStore,
+    roles: local_product::ModelRoles,
+    skills: Option<local_product::physician_chat::PhysicianSkills>,
+    queue: Option<Arc<dyn physician_sample::queue::ChatQueue>>,
+}
+
+impl StoreWakeHandler {
+    async fn dispatch_due_patient_reviews(
+        &self,
+        now_unix: i64,
+    ) -> Result<(usize, usize), WakeError> {
+        let practices = self
+            .store
+            .registered_dispatch_practices()
+            .await
+            .map_err(WakeError::RuntimeStore)?;
+        if practices.is_empty() {
+            return Ok((0, 0));
+        }
+        let skills = self.skills.as_ref().ok_or_else(|| {
+            WakeError::SkillsUnavailable(local_product::physician_chat::SkillsError::Unconfigured)
+        })?;
+        let checker =
+            local_product::runtime::dispatch::StoredObservationChecker::new(self.store.clone());
+        let mut due_patients_checked = 0_usize;
+        let mut reviews_started = 0_usize;
+        for practice in practices {
+            let receiver = local_product::runtime::reviews::PatientReviewReceiver::new(
+                &self.store,
+                &self.roles,
+                skills,
+                &self.auth,
+            );
+            let summary = self
+                .store
+                .wake_practice_dispatch(&self.auth, &practice, now_unix, &checker, &receiver)
+                .await
+                .map_err(WakeError::Dispatch)?;
+            due_patients_checked = due_patients_checked
+                .saturating_add(summary.checked_patients.len())
+                .saturating_add(summary.failed_checks.len());
+            reviews_started = reviews_started.saturating_add(summary.started_reviews.len());
+            let deliveries = receiver.take_deliveries().await;
+            if let Some(queue) = &self.queue {
+                for delivery in deliveries {
+                    if queue.publish(&delivery).await.is_ok() {
+                        let _ = self.store.dispatched(&delivery, 60).await;
+                    }
+                }
+            }
+        }
+        Ok((due_patients_checked, reviews_started))
+    }
 }
 
 #[async_trait::async_trait]
@@ -842,8 +923,16 @@ impl WakeHandler for StoreWakeHandler {
             .check_schema()
             .await
             .map_err(WakeError::AuthStore)?;
+        let now_unix = self
+            .store
+            .current_unix_seconds()
+            .await
+            .map_err(WakeError::RuntimeStore)?;
+        let (due_patients_checked, reviews_started) =
+            self.dispatch_due_patient_reviews(now_unix).await?;
         Ok(WakeReport {
-            due_patients_checked: 0,
+            due_patients_checked,
+            reviews_started,
         })
     }
 }
@@ -940,6 +1029,7 @@ async fn schedule_wake(
                 scheduler.schedule_time = tick.schedule_time.as_deref().unwrap_or(""),
                 scheduler.retry_count = u64::from(tick.retry_count),
                 due_patients_checked = report.due_patients_checked as u64,
+                reviews_started = report.reviews_started as u64,
                 clinical_library_configured = wake.clinical_library.is_some(),
                 "accepted physician schedule wake"
             );
@@ -948,6 +1038,7 @@ async fn schedule_wake(
                 Json(json!({
                     "status": "ok",
                     "due_patients_checked": report.due_patients_checked,
+                    "reviews_started": report.reviews_started,
                     "clinical_library_configured": wake.clinical_library.is_some(),
                 })),
             )
@@ -2061,6 +2152,7 @@ mod tests {
             }
             Ok(WakeReport {
                 due_patients_checked: 3,
+                reviews_started: 1,
             })
         }
     }

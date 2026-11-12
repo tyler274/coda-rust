@@ -279,7 +279,11 @@ mod tests {
             "id": "resp_practice_1",
             "status": "completed",
             "output": [item],
-            "usage": {"input_tokens": 24, "output_tokens": 12},
+            "usage": {
+                "input_tokens": 24,
+                "input_tokens_details": {"cached_tokens": 8},
+                "output_tokens": 12
+            },
         });
         let events = [
             json!({"type": "response.created", "response": {"id": "resp_practice_1"}}),
@@ -436,6 +440,9 @@ mod tests {
             handler: Arc::new(crate::StoreWakeHandler {
                 store: store.clone(),
                 auth: auth.clone(),
+                roles: roles.clone(),
+                skills: Some(skills),
+                queue: None,
             }),
             clinical_library: None,
         });
@@ -512,6 +519,353 @@ mod tests {
             .unwrap();
         assert_eq!(resp2.status(), StatusCode::NO_CONTENT);
         assert_eq!(observed_models.lock().unwrap().len(), 1);
+
+        stub_task.abort();
+    }
+
+    fn sse_function_calls(resp_id: &str, calls: &[(&str, &str, Value)]) -> String {
+        let mut events = vec![json!({"type": "response.created", "response": {"id": resp_id}})];
+        let mut output = Vec::with_capacity(calls.len());
+        for (idx, (call_id, name, args)) in calls.iter().enumerate() {
+            let item_id = format!("fc_{call_id}");
+            let args_str = args.to_string();
+            let completed_item = json!({
+                "id": item_id,
+                "type": "function_call",
+                "status": "completed",
+                "call_id": call_id,
+                "name": name,
+                "arguments": args_str,
+            });
+            events.push(json!({
+                "type": "response.output_item.added",
+                "output_index": idx,
+                "item": {
+                    "id": item_id,
+                    "type": "function_call",
+                    "call_id": call_id,
+                    "name": name,
+                }
+            }));
+            events.push(json!({
+                "type": "response.function_call_arguments.delta",
+                "output_index": idx,
+                "item_id": item_id,
+                "delta": args_str,
+            }));
+            events.push(json!({
+                "type": "response.function_call_arguments.done",
+                "output_index": idx,
+                "item_id": item_id,
+                "arguments": args_str,
+            }));
+            events.push(json!({
+                "type": "response.output_item.done",
+                "output_index": idx,
+                "item": completed_item,
+            }));
+            output.push(completed_item);
+        }
+        let response = json!({
+            "id": resp_id,
+            "status": "completed",
+            "output": output,
+            "usage": {
+                "input_tokens": 310,
+                "input_tokens_details": {"cached_tokens": 120},
+                "output_tokens": 65
+            },
+        });
+        events.push(json!({"type": "response.completed", "response": response}));
+        events
+            .iter()
+            .enumerate()
+            .map(|(seq, ev)| {
+                let mut map = ev.as_object().unwrap().clone();
+                map.insert("sequence_number".into(), json!(seq));
+                format!("data: {}\n\n", Value::Object(map))
+            })
+            .collect()
+    }
+
+    struct RecordingQueue(Mutex<Vec<local_product::runtime::delivery::Delivery>>);
+
+    #[local_product::runtime::async_trait]
+    impl physician_sample::queue::ChatQueue for RecordingQueue {
+        async fn publish(
+            &self,
+            delivery: &local_product::runtime::delivery::Delivery,
+        ) -> Result<(), String> {
+            self.0.lock().unwrap().push(delivery.clone());
+            Ok(())
+        }
+    }
+
+    #[tokio::test]
+    async fn schedule_wake_dispatches_due_patient_reviews_and_pubsub_push_commits_saved_review() {
+        let url = match std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+        {
+            Ok(v) if !v.trim().is_empty() => v,
+            _ => {
+                assert!(
+                    std::env::var_os("CODA_REQUIRE_POSTGRES_TESTS").is_none(),
+                    "PHYSICIAN_RUNTIME_TEST_DATABASE_URL is required when CODA_REQUIRE_POSTGRES_TESTS=1"
+                );
+                return;
+            }
+        };
+
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let auth = PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+
+        let practice = format!("practice-wake-e2e-{}", Uuid::new_v4().simple());
+        let workspace = format!("pw-wake-e2e-{}", Uuid::new_v4().simple());
+        auth.ensure_practice(&practice, PracticeClock::RealTime)
+            .await
+            .unwrap();
+        auth.register_patient(&practice, &workspace).await.unwrap();
+
+        // Register dispatch baseline at t=1_000_000, then deliver a new abnormal potassium record!
+        store
+            .register_patient_dispatch(&auth, &practice, &workspace, 1_000_000)
+            .await
+            .unwrap();
+        let content = "Serum potassium 6.0 mmol/L (critical high) on spironolactone.";
+        let record = local_product::physician_sources::SourceRevision {
+            workspace: workspace.clone(),
+            source_id: "synthetic-practice".into(),
+            candidate_id: "Observation/k-wake-1".into(),
+            revision: "rev-1".into(),
+            record_type: "Observation".into(),
+            dates: vec![local_product::physician_sources::RecordDate {
+                name: "effectiveDateTime".into(),
+                value: "2026-10-20".into(),
+            }],
+            content: content.into(),
+            sha256: local_product::sha256_hex(content.as_bytes()),
+            readable_parts: vec![local_product::physician_sources::ReadablePart {
+                label: "STAT Potassium".into(),
+                text: content.into(),
+            }],
+            provenance: json!({ "title": "STAT Potassium" }),
+        };
+        let pull = local_product::runtime::sources::SourcePull {
+            source_id: "synthetic-practice".into(),
+            source_label: "Synthetic Chart".into(),
+            patient: local_product::physician_sources::SourcePatient {
+                source_patient_id: "pt-wake-1".into(),
+                display_name: "Evelyn Carter".into(),
+                birth_date: Some("1965-03-11".into()),
+                sex_or_gender: Some("female".into()),
+                medical_record_numbers: vec![],
+            },
+            pulled_at: 1_100_000,
+        };
+        store
+            .record_chart(&workspace, &[record], &pull)
+            .await
+            .unwrap();
+
+        let turn_counter = Arc::new(Mutex::new(0_usize));
+        let counter_ref = turn_counter.clone();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let port = listener.local_addr().unwrap().port();
+        let stub = Router::new().route(
+            "/responses",
+            post(move |_body: axum::body::Bytes| {
+                let counter_ref = counter_ref.clone();
+                async move {
+                    let step = {
+                        let mut g = counter_ref.lock().unwrap();
+                        *g += 1;
+                        *g
+                    };
+                    let sse = match step {
+                        1 => sse_function_calls(
+                            "resp_wake_1",
+                            &[(
+                                "call_read_k",
+                                local_product::physician_sources::READ_TOOL,
+                                json!({
+                                    "references": [{
+                                        "candidate_id": "Observation/k-wake-1",
+                                        "revision": "rev-1",
+                                        "cursor": null
+                                    }],
+                                    "max_result_bytes": 16_384
+                                }),
+                            )],
+                        ),
+                        2 => sse_function_calls(
+                            "resp_wake_2",
+                            &[
+                                (
+                                    "call_raise_k",
+                                    local_product::runtime::concerns::CONCERN_TOOL,
+                                    json!({
+                                        "operation": "raise",
+                                        "concern_id": "concern-wake-k",
+                                        "urgency": "now",
+                                        "reason": "Critical potassium 6.0 mmol/L on spironolactone; prompt physician review required.",
+                                        "records": [{
+                                            "candidate_id": "Observation/k-wake-1",
+                                            "revision": "rev-1"
+                                        }]
+                                    }),
+                                ),
+                                (
+                                    "call_complete_k",
+                                    local_product::patient_reviews::COMPLETE_PATIENT_REVIEW_TOOL,
+                                    json!({
+                                        "disposition": "assessed",
+                                        "summary": "Critical potassium 6.0 mmol/L; raised urgent concern.",
+                                        "citations": [{
+                                            "candidate_id": "Observation/k-wake-1",
+                                            "revision": "rev-1"
+                                        }],
+                                        "basis_and_limitations": "Synthetic Chart STAT Potassium (2026-10-20).",
+                                        "unfinished_work": []
+                                    }),
+                                ),
+                            ],
+                        ),
+                        3 => sse_assistant_reply("Completed scheduled wake patient review."),
+                        other => panic!("unexpected SSE step {other}"),
+                    };
+                    (
+                        StatusCode::OK,
+                        [("content-type", "text/event-stream")],
+                        sse,
+                    )
+                }
+            }),
+        );
+        let stub_task = tokio::spawn(async move {
+            axum::serve(listener, stub).await.unwrap();
+        });
+
+        let roles = ModelRoles {
+            chat: ModelBinding {
+                model: "chat-interactive-lane".into(),
+                effort: "low".into(),
+                context_window_tokens: 128_000,
+                max_input_tokens: 100_000,
+                adapter: "openai-responses".into(),
+            },
+            background: ModelBinding {
+                model: "background-worker-lane".into(),
+                effort: "high".into(),
+                context_window_tokens: 272_000,
+                max_input_tokens: 250_000,
+                adapter: "openai-responses".into(),
+            },
+        };
+        let skills_root = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../skills");
+        let skills = PhysicianSkills::load(&skills_root).unwrap();
+        let queue = Arc::new(RecordingQueue(Mutex::new(Vec::new())));
+
+        let wake = Arc::new(crate::WakeService {
+            auth: crate::WakeAuth::LoopbackEmulator,
+            mode: crate::WakeMode::RehearsalAllowed,
+            handler: Arc::new(crate::StoreWakeHandler {
+                store: store.clone(),
+                auth: auth.clone(),
+                roles: roles.clone(),
+                skills: Some(skills),
+                queue: Some(queue.clone()),
+            }),
+            clinical_library: None,
+        });
+        let worker = Arc::new(Worker {
+            store: store.clone(),
+            auth,
+            bus: physician_bus::from_env(|_| None, false).await.unwrap(),
+            model: ModelSource {
+                transport: ModelTransport::Responses {
+                    endpoint: format!("http://127.0.0.1:{port}/responses"),
+                    key: "local-proof".into(),
+                },
+                roles,
+            },
+            quota: Arc::new(store.clone()),
+            verifier: None,
+            wake,
+            origin: telemetry::genai::Origin::Simulation,
+            simulation_practices: physician_sample::hosting::SimulationPractices::from_env(|_| {
+                None
+            })
+            .unwrap(),
+        });
+        let app = router(worker);
+
+        // 1. Hit `POST /schedule/wake` -> dispatches our due patient's review and publishes to `ChatQueue`!
+        let wake_resp = app
+            .clone()
+            .oneshot(
+                HttpRequest::builder()
+                    .method("POST")
+                    .uri("/schedule/wake")
+                    .header("content-type", "application/json")
+                    .body(Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(wake_resp.status(), StatusCode::OK);
+        let wake_bytes = axum::body::to_bytes(wake_resp.into_body(), 64 * 1024)
+            .await
+            .unwrap();
+        let wake_json: Value = serde_json::from_slice(&wake_bytes).unwrap();
+        assert_eq!(wake_json["status"], "ok");
+        assert!(wake_json["due_patients_checked"].as_u64().unwrap() >= 1);
+        assert!(wake_json["reviews_started"].as_u64().unwrap() >= 1);
+
+        let our_delivery = queue
+            .0
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|d| d.scope.practice == practice && d.scope.workspace == workspace)
+            .cloned()
+            .expect("published practice-job wakeup for our workspace");
+        assert_eq!(our_delivery.kind, DeliveryKind::PracticeJob);
+
+        // 2. Deliver the published wakeup to `POST /pubsub/chat-turn`!
+        let push_bytes = serde_json::to_vec(&json!({
+            "message": {
+                "data": base64::engine::general_purpose::STANDARD
+                    .encode(serde_json::to_vec(&our_delivery).unwrap()),
+                "messageId": "msg-wake-review-1",
+            },
+            "deliveryAttempt": 1,
+        }))
+        .unwrap();
+        let push_resp = app
+            .oneshot(
+                HttpRequest::builder()
+                    .method("POST")
+                    .uri("/pubsub/chat-turn")
+                    .header("content-type", "application/json")
+                    .body(Body::from(push_bytes))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(push_resp.status(), StatusCode::NO_CONTENT);
+
+        // 3. Verify `SavedPatientReview` is durably Completed with Known usage!
+        let reviews = store.patient_reviews(&practice, &workspace).await.unwrap();
+        assert_eq!(reviews.len(), 1);
+        assert_eq!(reviews[0].state.status_str(), "completed");
+        assert_eq!(reviews[0].actions.len(), 1);
+        assert!(matches!(
+            reviews[0].usage,
+            local_product::runtime::reviews::ReviewUsage::Known { exchanges: 3, .. }
+        ));
 
         stub_task.abort();
     }
