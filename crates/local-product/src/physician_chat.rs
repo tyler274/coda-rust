@@ -46,6 +46,7 @@ impl PhysicianJob {
                     "references/reviews-and-briefings.md",
                 ),
                 SkillTarget::body("patient-memory-maintenance"),
+                SkillTarget::body("patient-record-retrieval"),
             ],
             Self::VisitBriefing => vec![
                 SkillTarget::body("clinical-communication"),
@@ -54,6 +55,7 @@ impl PhysicianJob {
                     "physician-clinical-communication",
                     "references/reviews-and-briefings.md",
                 ),
+                SkillTarget::body("patient-record-retrieval"),
             ],
             Self::ReplyRevision => vec![
                 SkillTarget::body("clinical-communication"),
@@ -146,8 +148,9 @@ Treat new physician input as part of a continuing relationship. Reconcile correc
 with prior understanding, and explain a material disagreement rather than silently accepting or dismissing it. \
 Honor clear physician direction within available authority.
 
-Use the tools offered in this conversation. For patient-specific chart facts, search the patient workspace \
-to identify candidates and open exact revisions with read_patient_sources.
+Use the tools offered in this conversation. For patient-specific facts across chart records, earlier work, \
+and durable memory, discover candidates with search_patient_information and open exact chart revisions with \
+read_patient_sources.
 
 The approved skill catalog describes reusable capability guidance and exact packaged resources. Review it \
 when a task begins and whenever the task scope changes. Before relying on a matching, materially \
@@ -166,20 +169,22 @@ answer the physician reads, so do not leave part of the answer only in earlier t
 /// Assignment guidance for unattended Chords patient reviews.
 pub const REVIEW_INSTRUCTIONS: &str = "\
 Review new patient workspace evidence and messages for the physician, applying the preloaded clinical, \
-physician communication, and patient memory maintenance guidance. Read durable patient memory with \
-read_patient_memory, search the patient workspace, and open exact revisions with read_patient_sources \
-before drawing conclusions or updating memory. When the review also requires guidance that is not \
-preloaded — such as drafting a patient-facing reply — open that skill from the catalog with skill_view. \
-Requesting tools continues work; your final response without tool calls records the completed review.";
+physician communication, patient memory maintenance, and patient record retrieval guidance. Read durable \
+patient memory with read_patient_memory, discover items with search_patient_information, and open exact \
+revisions with read_patient_sources before drawing conclusions or updating memory. When the review also \
+requires guidance that is not preloaded — such as drafting a patient-facing reply — open that skill from \
+the catalog with skill_view. Requesting tools continues work; your final response without tool calls \
+records the completed review.";
 
 /// Assignment guidance for Chords pre-visit briefings.
 pub const BRIEFING_INSTRUCTIONS: &str = "\
 Prepare a pre-visit briefing for the physician ahead of the upcoming encounter, applying the preloaded \
-clinical and physician communication guidance. Search the patient workspace and open exact revisions with \
-read_patient_sources before synthesizing the patient's trajectory and visit decisions, and open \
-patient-memory-maintenance with skill_view when reading or updating durable patient memory. Open additional \
-catalog skills with skill_view only when the task calls for them. Requesting tools continues work; your \
-final response without tool calls delivers the completed briefing.";
+clinical, physician communication, and patient record retrieval guidance. Discover relevant items with \
+search_patient_information and open exact revisions with read_patient_sources before synthesizing the \
+patient's trajectory and visit decisions, and open patient-memory-maintenance with skill_view when reading \
+or updating durable patient memory. Open additional catalog skills with skill_view only when the task \
+calls for them. Requesting tools continues work; your final response without tool calls delivers the \
+completed briefing.";
 
 /// Capabilities shared by every ordinary Chords chat request.
 pub fn tools() -> Vec<Tool> {

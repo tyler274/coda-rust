@@ -805,6 +805,11 @@ async fn ac2_initial_contexts_and_discovered_traces_isolate_audience_guidance_ac
                 Some("references/reviews-and-briefings.md"),
                 &SkillLoadOrigin::Preloaded
             ),
+            (
+                "patient-record-retrieval",
+                None,
+                &SkillLoadOrigin::Preloaded
+            ),
         ]
     );
 
@@ -890,6 +895,11 @@ async fn ac2_initial_contexts_and_discovered_traces_isolate_audience_guidance_ac
                 target: SkillTarget::body("patient-memory-maintenance"),
                 origin: SkillLoadOrigin::Preloaded,
                 version_id: file_digest("patient-memory-maintenance/SKILL.md"),
+            },
+            SkillLoadRecord {
+                target: SkillTarget::body("patient-record-retrieval"),
+                origin: SkillLoadOrigin::Preloaded,
+                version_id: file_digest("patient-record-retrieval/SKILL.md"),
             },
             SkillLoadRecord {
                 target: SkillTarget::body("patient-communication"),
