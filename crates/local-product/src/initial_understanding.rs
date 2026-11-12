@@ -20,7 +20,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
 use crate::ModelBinding;
-use crate::physician_chat::{PhysicianSkills, work_tools};
+use crate::physician_chat::PhysicianSkills;
 use crate::runtime::concerns::ExactRecordReference;
 use crate::runtime::jobs::{Assignment, AssignmentError, PracticeJobKind, PreloadedSkill};
 
@@ -524,12 +524,7 @@ pub fn understanding_tools() -> Vec<Tool> {
 
 /// Complete tool set offered to a patient understanding background run.
 pub fn tools() -> Vec<Tool> {
-    let mut offered = vec![PhysicianSkills::tool(), harness::engine::results::tool()];
-    offered.extend(work_tools());
-    offered.push(crate::physician_sources::search_tool());
-    offered.push(crate::physician_sources::read_tool(
-        crate::physician_sources::ChartScope::Chat,
-    ));
+    let mut offered = crate::runtime::jobs::tools();
     offered.extend(understanding_tools());
     offered
 }
@@ -713,7 +708,14 @@ mod tests {
         assert!(names.contains(&SAVE_UNDERSTANDING_TOOL));
         assert!(names.contains(&crate::physician_sources::SEARCH_TOOL));
         assert!(names.contains(&crate::physician_sources::READ_TOOL));
+        assert!(names.contains(&crate::runtime::refresh::REFRESH_TOOL));
         assert!(names.contains(&crate::physician_chat::SKILL_VIEW));
+        let unique: std::collections::BTreeSet<&str> = names.iter().copied().collect();
+        assert_eq!(
+            names.len(),
+            unique.len(),
+            "duplicate tool names in {names:?}"
+        );
     }
 
     #[test]
