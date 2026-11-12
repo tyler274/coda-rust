@@ -1670,7 +1670,7 @@ fn PhysicianShell(
                 action: UNDO.to_owned(),
                 on_action: move |_| {
                     // Undo is its own command, under a new key.
-                    let command = archive_command("conversation.restore", &workspace, &chat);
+                    let command = archive_command(ArchiveAction::Restore, &workspace, &chat);
                     restore_slot.run(client.read().clone(), command, move || {
                         *workspace_attempt.write() += 1;
                     });
@@ -2261,7 +2261,7 @@ fn PhysicianShell(
                                 let (Some(workspace), Some(chat)) = (selected(), open_chat()) else {
                                     return;
                                 };
-                                let command = archive_command("conversation.archive", &workspace, &chat);
+                                let command = archive_command(ArchiveAction::Archive, &workspace, &chat);
                                 archive_slot.run(client.read().clone(), command, move || {
                                     offer_undo(workspace.clone(), chat.clone());
                                 });
@@ -2445,7 +2445,7 @@ impl Command {
     /// The patient and chat an Archive names, so its Undo can name them too.
     #[cfg(any(target_arch = "wasm32", test))]
     fn archive_target(&self) -> Option<(String, String)> {
-        if self.0.get("type")?.as_str()? != "conversation.archive" {
+        if self.0.get("type")?.as_str()? != ArchiveAction::Archive.wire() {
             return None;
         }
         let payload = self.0.get("payload")?;
@@ -5009,12 +5009,30 @@ fn conversation_lines(snapshot: &ChatSnapshot) -> Vec<ConversationLine> {
         .collect()
 }
 
-/// Archive (`conversation.archive`) or its Undo (`conversation.restore`) on
-/// one chat. Each press is its own command, so an Archive asked again after a
-/// lost answer never undoes a later Undo.
-fn archive_command(kind: &str, workspace_id: &str, chat_id: &str) -> Command {
+/// Archive or its Undo on one chat.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum ArchiveAction {
+    /// `conversation.archive`: the chat leaves the list.
+    Archive,
+    /// `conversation.restore`: Undo brings it back.
+    Restore,
+}
+
+impl ArchiveAction {
+    /// The command type the server names this action by.
+    fn wire(self) -> &'static str {
+        match self {
+            Self::Archive => "conversation.archive",
+            Self::Restore => "conversation.restore",
+        }
+    }
+}
+
+/// Archive or its Undo on one chat. Each press is its own command, so an
+/// Archive asked again after a lost answer never undoes a later Undo.
+fn archive_command(action: ArchiveAction, workspace_id: &str, chat_id: &str) -> Command {
     Command::new(
-        kind,
+        action.wire(),
         serde_json::json!({
             "patient_workspace_id": workspace_id,
             "chat_id": chat_id,
@@ -5186,7 +5204,7 @@ fn now_millis() -> u128 {
 #[cfg(test)]
 mod conversation_line_tests {
     use super::{
-        ConversationLine, archive_command, chat_resume_command, chat_stop_command,
+        ArchiveAction, ConversationLine, archive_command, chat_resume_command, chat_stop_command,
         conversation_lines, conversation_running, message_command, new_chat_id,
         queued_edit_command, queued_withdraw_command,
     };
@@ -5490,12 +5508,14 @@ mod conversation_line_tests {
 
     #[test]
     fn a_recovered_archive_names_the_chat_its_undo_restores() {
-        let archive = archive_command("conversation.archive", "pw-1", "chat-1");
+        let archive = archive_command(ArchiveAction::Archive, "pw-1", "chat-1");
+        assert_eq!(archive.0["type"], "conversation.archive");
         assert_eq!(
             archive.archive_target(),
             Some(("pw-1".to_owned(), "chat-1".to_owned()))
         );
-        let undo = archive_command("conversation.restore", "pw-1", "chat-1");
+        let undo = archive_command(ArchiveAction::Restore, "pw-1", "chat-1");
+        assert_eq!(undo.0["type"], "conversation.restore");
         assert_eq!(undo.archive_target(), None);
     }
 
