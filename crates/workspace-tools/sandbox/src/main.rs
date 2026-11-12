@@ -103,7 +103,7 @@ fn worktree_command(config: &Config, command: &Worktree) -> Result<(), Error> {
 }
 
 /// The controller reads its own environment, not the sandbox config, and
-/// exits 143 on SIGTERM as the Python controller did.
+/// exits 143 on SIGTERM.
 fn ci_controller(mode: Option<ControllerMode>) -> ExitCode {
     use coda_sandbox::ci_controller::{self as ctl, Controller, Mode};
     use ctl::termination::{TERMINATED_EXIT, Termination};

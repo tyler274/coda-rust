@@ -106,7 +106,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn reads_the_units_variables_with_the_python_defaults() {
+    fn reads_the_units_variables_with_their_defaults() {
         let config = ControllerConfig::from_lookup(|name| match name {
             "CODA_CI_ROOT" => Some("/agents/coda/ci".into()),
             "CODA_CI_RUNNER" => Some("/nix/store/x/bin/microvm-run".into()),

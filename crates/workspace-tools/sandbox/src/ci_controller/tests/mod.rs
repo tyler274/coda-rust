@@ -1,5 +1,5 @@
-//! Behavior tests ported from the Python controller's `test_coda_ci.py`,
-//! against temp directories, fixture memory reports and a fake GitHub API.
+//! Behavior tests of the controller against temp directories, fixture memory
+//! reports and a fake GitHub API.
 
 mod cleanup;
 mod fake_github;
