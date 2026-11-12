@@ -358,7 +358,9 @@ resource "google_cloud_run_v2_service" "physician_worker" {
     # connection limit together with the site (2 x 4 + 2 x 4 pooled).
     max_instance_request_concurrency = 4
     scaling {
-      min_instance_count = 0
+      # One worker instance stays up, so the worker runs whether or not a
+      # push is in flight.
+      min_instance_count = 1
       max_instance_count = var.max_instances
     }
     vpc_access {
@@ -374,11 +376,12 @@ resource "google_cloud_run_v2_service" "physician_worker" {
       ports { container_port = 8080 }
       resources {
         limits = { cpu = "1", memory = "1Gi" }
-        # Request-based CPU is enough: every unit of work is a push request held
-        # open until the turn commits, and the worker keeps no listener or
-        # subscriber between requests (it only PUBLISHes to Redis). The
-        # sidecar does not change that; see the app services above.
-        cpu_idle          = true
+        # The worker keeps CPU allocated for the instance lifetime
+        # (instance-based billing), so it keeps running between requests and
+        # its work does not depend on an open push request. Pub/Sub pushes
+        # still deliver each turn. The sidecar does not change that; see the
+        # app services above.
+        cpu_idle          = false
         startup_cpu_boost = false
       }
       env {
@@ -447,8 +450,10 @@ resource "google_cloud_run_v2_service" "physician_worker" {
         image = containers.value.image
         args  = containers.value.args
         resources {
-          limits            = { cpu = "1", memory = "256Mi" }
-          cpu_idle          = true
+          limits = { cpu = "1", memory = "256Mi" }
+          # Same CPU allocation as the worker container: Cloud Run bills and
+          # throttles the instance as a whole.
+          cpu_idle          = false
           startup_cpu_boost = false
         }
         env {

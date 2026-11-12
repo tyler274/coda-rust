@@ -149,12 +149,13 @@ class Contract(unittest.TestCase):
         # Only physician is ever handed the chat topic; Duet has no PHYSICIAN_* env.
         workloads = config_text("workloads.tf")
         self.assertIn('for_each = each.key == "physician" ? google_pubsub_topic.chat_turns : {}', workloads)
-        # Only physician keeps CPU between requests, with or without the
-        # otel-collector sidecar: telemetry never makes Duet or the worker
-        # bill for idle instance time.
+        # Of the two sites, only physician keeps CPU between requests, with or
+        # without the otel-collector sidecar: telemetry never decides CPU
+        # allocation, so it never makes Duet bill for idle instance time.
         self.assertEqual(workloads.count('cpu_idle          = each.key != "physician"'), 2)
         self.assertNotRegex(workloads, r"cpu_idle\s+=.*observability")
-        # Only physician keeps a minimum instance, and only while its queue exists.
+        # Of the two sites, only physician keeps a minimum instance, and only
+        # while its queue exists.
         self.assertIn('min_instance_count = each.key == "physician" && length(google_pubsub_topic.chat_turns) > 0 ? 1 : 0', workloads)
 
     def test_worker_is_internal_and_invoked_only_by_push_and_probe(self):
@@ -163,7 +164,11 @@ class Contract(unittest.TestCase):
         self.assertRegex(worker, r'ingress\s+= "INGRESS_TRAFFIC_INTERNAL_ONLY"')
         self.assertRegex(worker, r"invoker_iam_disabled\s+= false")
         self.assertRegex(worker, r"iap_enabled\s+= false")
-        self.assertEqual(len(re.findall(r"cpu_idle\s+= true\n", worker)), 2)
+        # The worker stays running between requests: one instance, with CPU
+        # allocated on the worker container and its sidecar alike.
+        self.assertEqual(len(re.findall(r"cpu_idle\s+= false\n", worker)), 2)
+        self.assertNotRegex(worker, r"cpu_idle\s+= true")
+        self.assertRegex(worker, r"min_instance_count = 1\n")
         invoker = resource_blocks(workloads, "google_cloud_run_v2_service_iam_binding")["physician_worker_invoker"]
         members = invoker.split("members", 1)[1]
         self.assertEqual(
