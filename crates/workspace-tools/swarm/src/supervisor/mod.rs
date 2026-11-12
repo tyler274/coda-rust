@@ -2,16 +2,16 @@
 //! working, run one turn through the [`WorkerAdapter`], park it waiting, and
 //! poll the board until [`policy::rings`] admits a post for it.
 //!
-//! The supervisor owns every member it spawned and every worktree it
-//! created. A worktree whose removal failed stays owned as pending cleanup
-//! and is retried on the next [`Supervisor::kill`] or
-//! [`Supervisor::shutdown`].
+//! The MCP server owns the roster and briefs; the supervisor runs the
+//! members it is asked to start, as the coordinator's [`Spawner`]. It owns
+//! every member it started and every worktree it created. A worktree whose
+//! removal failed stays owned as pending cleanup and is retried on the next
+//! [`Supervisor::kill`] or [`Supervisor::shutdown`].
 
 mod keys;
 mod workspaces;
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::num::NonZeroUsize;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 use std::thread::{self, JoinHandle};
@@ -20,15 +20,16 @@ use std::time::{Duration, Instant};
 use chrono::{DateTime, Utc};
 
 pub use keys::{KeyError, KeySource, SandboxKeys, Secret};
-pub use workspaces::{SandboxWorkspaces, WorkspaceError, WorkspaceMode, Workspaces, WorktreeMode};
+pub use workspaces::{SandboxWorkspaces, WorkspaceError, Workspaces, WorktreeMode};
 
 pub use crate::adapter::KeyEnv;
 use crate::adapter::{Cancel, Catalog, ForkError, TurnOutcome, TurnRequest, WorkerAdapter};
-use crate::message::{Control, Draft, Message, MessageKind, Seq};
-use crate::names::{ChannelName, MemberName, NameError};
+use crate::mcp::{SpawnError, SpawnSpec, Spawner, Workspace};
+use crate::message::{Draft, Message, Seq};
+use crate::names::MemberName;
 use crate::policy;
-use crate::roster::{Member, MemberState, Role, RosterError, WakeMode};
-use crate::store::{AppendError, Store, StoreError, UpdateError};
+use crate::roster::{MemberState, RosterError, WakeMode};
+use crate::store::{Store, StoreError, UpdateError};
 
 #[derive(Debug, Clone)]
 pub struct SupervisorConfig {
@@ -79,20 +80,6 @@ impl SupervisorConfig {
         }
     }
 }
-
-/// One spawn call: `count` members named `name` or `name-1..count`.
-#[derive(Debug, Clone)]
-pub struct SpawnSpec {
-    pub name: String,
-    pub brief: String,
-    pub model: Option<String>,
-    pub workspace: WorkspaceMode,
-    pub channels: Vec<ChannelName>,
-    pub count: NonZeroUsize,
-    /// A member whose history each new member starts from.
-    pub fork: Option<MemberName>,
-}
-
 /// What the supervisor last saw of a member's run.
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct MemberStatus {
@@ -112,40 +99,19 @@ pub struct KillReport {
 }
 
 #[derive(Debug, thiserror::Error)]
-pub enum SpawnError {
-    #[error(transparent)]
-    Name(#[from] NameError),
-    #[error("{0} already exists; member names are never reused")]
-    Exists(MemberName),
-    #[error("fork {from} into {to}")]
+pub enum StartError {
+    #[error("fork {from}")]
     Fork {
         from: MemberName,
-        to: MemberName,
         #[source]
         source: ForkError,
     },
-    #[error("post brief")]
-    Brief(#[source] AppendError),
     #[error("create worktree {slug}")]
     Workspace {
         slug: String,
         #[source]
         source: WorkspaceError,
     },
-    #[error("add members")]
-    Roster(#[source] UpdateError<RosterError>),
-    #[error(transparent)]
-    Store(#[from] StoreError),
-}
-
-#[derive(Debug, thiserror::Error)]
-pub enum KillError {
-    #[error("{0} is the coordinator and cannot be killed")]
-    Coordinator(MemberName),
-    #[error("{0} is already killed")]
-    AlreadyKilled(MemberName),
-    #[error("no member or group spawned by this supervisor is named {0}")]
-    Unknown(String),
     #[error(transparent)]
     Store(#[from] StoreError),
 }
@@ -183,6 +149,7 @@ struct Run {
 
 /// An owned worktree and the members still using it.
 struct Hold {
+    path: PathBuf,
     holders: BTreeSet<MemberName>,
 }
 
@@ -217,226 +184,115 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         &self.shared.store
     }
 
-    /// Adds `spec.count` workers added by `by`, posts the brief from `by`,
-    /// and starts each member's loop. Returns the new names.
-    pub fn spawn(&self, by: &MemberName, spec: SpawnSpec) -> Result<Vec<MemberName>, SpawnError> {
+    /// Runs `spec.name`, which the caller has already put on the roster and
+    /// briefed: seeds its session from `spec.fork`, gives it a directory and
+    /// starts its loop. Starting a member that already runs does nothing.
+    pub fn start(&self, spec: &SpawnSpec) -> Result<(), StartError> {
         let mut owned = lock(&self.owned);
-        let names = MemberName::group(&spec.name, spec.count)?;
-        let roster = self.shared.store.roster()?;
-        if let Some(taken) = names.iter().find(|name| roster.members.contains_key(*name)) {
-            return Err(SpawnError::Exists(taken.clone()));
+        if owned.runs.contains_key(&spec.name) {
+            return Ok(());
         }
         if let Some(from) = &spec.fork {
-            for to in &names {
-                self.shared
-                    .adapter
-                    .fork(from, to, spec.model.as_deref())
-                    .map_err(|source| SpawnError::Fork {
-                        from: from.clone(),
-                        to: to.clone(),
-                        source,
-                    })?;
-            }
+            self.shared
+                .adapter
+                .fork(from, &spec.name, spec.model.as_deref())
+                .map_err(|source| StartError::Fork {
+                    from: from.clone(),
+                    source,
+                })?;
         }
-        let brief = Draft {
-            author: by.clone(),
-            text: format!("@{} {}", spec.name, spec.brief),
-            channel: None,
-            kind: MessageKind::Brief,
-            request_id: None,
-        };
-        let since = self
-            .shared
-            .store
-            .append(brief, Utc::now())
-            .map_err(SpawnError::Brief)?
-            .seq;
-
-        let places = self.create_worktrees(&mut owned, &spec, &names)?;
-        let added = self.shared.store.update_roster(|roster| {
-            for name in &names {
-                let mut member = Member::new(Role::Worker, Some(by.clone()));
-                member.model.clone_from(&spec.model);
-                roster.add_member(name.clone(), member)?;
-            }
-            Ok::<_, RosterError>(())
-        });
-        let added = added.and_then(|()| {
-            spec.channels.iter().try_for_each(|channel| {
-                let control = Control::Subscribe {
-                    channel: channel.clone(),
-                    members: names.clone(),
-                };
-                self.shared
-                    .store
-                    .record(by.clone(), control, Utc::now())
-                    .map(drop)
-            })
-        });
-        if let Err(error) = added {
-            let slugs: BTreeSet<String> = places.into_iter().filter_map(|(_, slug)| slug).collect();
-            for slug in slugs {
-                if let Some(hold) = owned.worktrees.get_mut(&slug) {
-                    hold.holders.retain(|holder| !names.contains(holder));
-                }
-                self.release(&mut owned, &slug, None);
-            }
-            return Err(SpawnError::Roster(error));
-        }
-
-        for (name, (cwd, slug)) in names.iter().zip(places) {
-            let cancel = Cancel::default();
+        let since = self.shared.store.head()?;
+        let (cwd, worktree) = self.place(&mut owned, spec)?;
+        let cancel = Cancel::default();
+        let thread = {
             let shared = Arc::clone(&self.shared);
+            let name = spec.name.clone();
             let prompt = spec.brief.clone();
-            let thread = {
-                let name = name.clone();
-                let cancel = cancel.clone();
-                thread::spawn(move || shared.run_member(&name, cwd, prompt, since, &cancel))
-            };
-            lock(&self.shared.status).insert(name.clone(), MemberStatus::default());
-            owned.runs.insert(
-                name.clone(),
-                Run {
-                    cancel,
-                    thread,
-                    worktree: slug,
-                },
-            );
-        }
-        Ok(names)
+            let cancel = cancel.clone();
+            thread::spawn(move || shared.run_member(&name, cwd, prompt, since, &cancel))
+        };
+        lock(&self.shared.status).insert(spec.name.clone(), MemberStatus::default());
+        owned.runs.insert(
+            spec.name.clone(),
+            Run {
+                cancel,
+                thread,
+                worktree,
+            },
+        );
+        Ok(())
     }
 
-    /// The directory and owned worktree slug for each name, in order.
-    fn create_worktrees(
+    /// The member's directory and the owned worktree slug it holds. A
+    /// `share` worktree is keyed by the group, so later members reuse it.
+    fn place(
         &self,
         owned: &mut Owned,
         spec: &SpawnSpec,
-        names: &[MemberName],
-    ) -> Result<Vec<(PathBuf, Option<String>)>, SpawnError> {
-        let Some(mode) = spec.workspace.worktree() else {
-            return Ok(names
-                .iter()
-                .map(|_| (self.shared.config.cwd.clone(), None))
-                .collect());
-        };
+    ) -> Result<(PathBuf, Option<String>), StartError> {
         let prefix = &self.shared.config.slug_prefix;
-        let slugs: Vec<String> = match mode {
-            WorktreeMode::Share => vec![format!("{prefix}-{}", spec.name)],
-            WorktreeMode::Branch => names
-                .iter()
-                .map(|name| format!("{prefix}-{name}"))
-                .collect(),
+        let (slug, mode) = match spec.workspace {
+            Workspace::Inherit => return Ok((self.shared.config.cwd.clone(), None)),
+            Workspace::Share => (format!("{prefix}-{}", spec.group), WorktreeMode::Share),
+            Workspace::Branch => (format!("{prefix}-{}", spec.name), WorktreeMode::Branch),
         };
-        let mut paths = Vec::with_capacity(slugs.len());
-        for slug in &slugs {
-            match self.workspaces.create(slug, mode) {
-                Ok(path) => paths.push(path),
-                Err(source) => {
-                    for created in &slugs[..paths.len()] {
-                        self.release(owned, created, None);
-                    }
-                    return Err(SpawnError::Workspace {
+        let path = match owned.worktrees.get(&slug) {
+            Some(hold) => hold.path.clone(),
+            None => {
+                self.workspaces
+                    .create(&slug, mode)
+                    .map_err(|source| StartError::Workspace {
                         slug: slug.clone(),
                         source,
-                    });
-                }
+                    })?
             }
-        }
-        let places = names
-            .iter()
-            .enumerate()
-            .map(|(index, name)| {
-                let at = if mode == WorktreeMode::Share {
-                    0
-                } else {
-                    index
-                };
-                let slug = slugs[at].clone();
-                owned
-                    .worktrees
-                    .entry(slug.clone())
-                    .or_insert_with(|| Hold {
-                        holders: BTreeSet::new(),
-                    })
-                    .holders
-                    .insert(name.clone());
-                (paths[at].clone(), Some(slug))
+        };
+        owned
+            .worktrees
+            .entry(slug.clone())
+            .or_insert_with(|| Hold {
+                path: path.clone(),
+                holders: BTreeSet::new(),
             })
-            .collect();
-        Ok(places)
+            .holders
+            .insert(spec.name.clone());
+        Ok((path, Some(slug)))
     }
 
-    /// Kills the member `target`, or every member of the group `target`
-    /// (`target-1`, `target-2`, ...). Members they added keep running.
-    pub fn kill(&self, target: &str) -> Result<KillReport, KillError> {
+    /// Kills `name`. A member this supervisor does not run has nothing to
+    /// stop.
+    pub fn kill(&self, name: &MemberName) -> Result<KillReport, StoreError> {
         let mut owned = lock(&self.owned);
-        let names = self.resolve(&owned, target)?;
         let mut report = KillReport::default();
         self.retry_pending(&mut owned, &mut report);
-        for name in names {
-            self.stop(&mut owned, &name, &mut report)?;
-        }
+        self.stop(&mut owned, name, MemberState::Killed, &mut report)?;
         report.pending_cleanup = owned.pending.iter().cloned().collect();
         Ok(report)
     }
 
-    /// Kills every member this supervisor runs and retries pending cleanup.
-    pub fn shutdown(&self) -> Result<KillReport, KillError> {
+    /// Stops every member this supervisor runs, leaves them stopped on the
+    /// board and retries pending cleanup.
+    pub fn shutdown(&self) -> Result<KillReport, StoreError> {
         let mut owned = lock(&self.owned);
         let mut report = KillReport::default();
         self.retry_pending(&mut owned, &mut report);
         let names: Vec<MemberName> = owned.runs.keys().cloned().collect();
         for name in names {
-            self.stop(&mut owned, &name, &mut report)?;
+            self.stop(&mut owned, &name, MemberState::Stopped, &mut report)?;
         }
         report.pending_cleanup = owned.pending.iter().cloned().collect();
         Ok(report)
     }
 
-    fn resolve(&self, owned: &Owned, target: &str) -> Result<Vec<MemberName>, KillError> {
-        let roster = self.shared.store.roster()?;
-        let named = |name: &MemberName| {
-            name.as_str() == target
-                || name
-                    .as_str()
-                    .strip_prefix(target)
-                    .and_then(|rest| rest.strip_prefix('-'))
-                    .is_some_and(|index| {
-                        !index.is_empty() && index.bytes().all(|b| b.is_ascii_digit())
-                    })
-        };
-        for (name, member) in roster.members.iter().filter(|(name, _)| named(name)) {
-            if *name == self.shared.coordinator || member.role == Role::Coordinator {
-                return Err(KillError::Coordinator(name.clone()));
-            }
-        }
-        let names: Vec<MemberName> = owned
-            .runs
-            .keys()
-            .filter(|name| named(name))
-            .cloned()
-            .collect();
-        if names.is_empty() {
-            let killed = roster
-                .members
-                .iter()
-                .find(|(name, member)| named(name) && member.state == MemberState::Killed);
-            return Err(match killed {
-                Some((name, _)) => KillError::AlreadyKilled(name.clone()),
-                None => KillError::Unknown(target.to_owned()),
-            });
-        }
-        Ok(names)
-    }
-
     /// Stops the member's turn (SIGTERM, then SIGKILL after the adapter's
-    /// grace), releases its worktree and marks it killed.
+    /// grace), releases its worktree and leaves it in `state`.
     fn stop(
         &self,
         owned: &mut Owned,
         name: &MemberName,
+        state: MemberState,
         report: &mut KillReport,
-    ) -> Result<(), KillError> {
+    ) -> Result<(), StoreError> {
         let Some(run) = owned.runs.remove(name) else {
             return Ok(());
         };
@@ -444,10 +300,10 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         // A panicked member loop has nothing left running to stop.
         let _ = run.thread.join();
         if let Some(slug) = &run.worktree {
-            self.release(owned, slug, Some((name, report)));
+            self.release(owned, slug, name, report);
         }
         let marked = self.shared.store.update_roster(|roster| {
-            roster.member_mut(name)?.state = MemberState::Killed;
+            roster.member_mut(name)?.state = state;
             Ok::<_, RosterError>(())
         });
         match marked {
@@ -458,7 +314,7 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
                     .or_default()
                     .last_error = Some(other.to_string());
             }
-            Err(UpdateError::Store(error)) => return Err(KillError::Store(error)),
+            Err(UpdateError::Store(error)) => return Err(error),
         }
         if let Some(status) = lock(&self.shared.status).get_mut(name) {
             status.paused_until = None;
@@ -469,20 +325,9 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
 
     /// Drops `holder` from the worktree and removes it once no one holds it.
     /// A failed removal keeps the slug as pending cleanup.
-    fn release(
-        &self,
-        owned: &mut Owned,
-        slug: &str,
-        holder: Option<(&MemberName, &mut KillReport)>,
-    ) {
-        let (name, report) = match holder {
-            Some((name, report)) => (Some(name), Some(report)),
-            None => (None, None),
-        };
+    fn release(&self, owned: &mut Owned, slug: &str, holder: &MemberName, report: &mut KillReport) {
         if let Some(hold) = owned.worktrees.get_mut(slug) {
-            if let Some(name) = name {
-                hold.holders.remove(name);
-            }
+            hold.holders.remove(holder);
             if !hold.holders.is_empty() {
                 return;
             }
@@ -490,9 +335,7 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
         }
         if let Err(error) = self.workspaces.remove(slug) {
             owned.pending.insert(slug.to_owned());
-            if let Some(report) = report {
-                report.cleanup_errors.push((slug.to_owned(), error));
-            }
+            report.cleanup_errors.push((slug.to_owned(), error));
         }
     }
 
@@ -504,18 +347,6 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
                 owned.pending.insert(slug);
             }
         }
-    }
-
-    /// Sets the model the member's next turn uses.
-    pub fn set_model(
-        &self,
-        name: &MemberName,
-        model: Option<String>,
-    ) -> Result<(), UpdateError<RosterError>> {
-        self.shared.store.update_roster(|roster| {
-            roster.member_mut(name)?.model = model;
-            Ok(())
-        })
     }
 
     /// The models members can run.
@@ -538,6 +369,43 @@ impl<S: Store + Send + Sync + 'static> Supervisor<S> {
 
     pub fn status(&self, name: &MemberName) -> Option<MemberStatus> {
         lock(&self.shared.status).get(name).cloned()
+    }
+}
+
+/// Roster entries, briefs and model checks stay with the server. A model
+/// change needs nothing here: each turn reads the member's model from the
+/// roster.
+impl<S: Store + Send + Sync + 'static> Spawner for Supervisor<S> {
+    fn models(&self) -> Catalog {
+        Supervisor::models(self)
+    }
+
+    fn spawn(&self, spec: &SpawnSpec) -> Result<(), SpawnError> {
+        self.start(spec).map_err(|source| SpawnError::Failed {
+            action: "start",
+            member: spec.name.clone(),
+            source: Box::new(source),
+        })
+    }
+
+    fn kill(&self, name: &MemberName) -> Result<(), SpawnError> {
+        let report = Supervisor::kill(self, name).map_err(|source| SpawnError::Failed {
+            action: "kill",
+            member: name.clone(),
+            source: Box::new(source),
+        })?;
+        match report.cleanup_errors.into_iter().next() {
+            None => Ok(()),
+            Some((_, source)) => Err(SpawnError::Failed {
+                action: "remove the worktree of",
+                member: name.clone(),
+                source: Box::new(source),
+            }),
+        }
+    }
+
+    fn set_model(&self, _name: &MemberName, _model: &str) -> Result<(), SpawnError> {
+        Ok(())
     }
 }
 

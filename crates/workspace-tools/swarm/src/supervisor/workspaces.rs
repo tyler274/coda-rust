@@ -4,29 +4,8 @@
 use std::path::PathBuf;
 use std::process::Command;
 
-/// How a spawned member gets its working directory.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum WorkspaceMode {
-    /// The caller's directory. Never created or removed.
-    Inherit,
-    /// One worktree for the whole spawned group, removed once every member
-    /// of the group is killed.
-    Share,
-    /// One worktree per member, removed when that member is killed.
-    Branch,
-}
-
-impl WorkspaceMode {
-    pub fn worktree(self) -> Option<WorktreeMode> {
-        match self {
-            Self::Inherit => None,
-            Self::Share => Some(WorktreeMode::Share),
-            Self::Branch => Some(WorktreeMode::Branch),
-        }
-    }
-}
-
-/// The modes that own a worktree.
+/// The workspaces that own a worktree. `Share` is one worktree for a whole
+/// `add` group, removed after its last member; `Branch` is one per member.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WorktreeMode {
     Share,

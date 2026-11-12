@@ -6,25 +6,34 @@ use serde_json::{Value, json};
 
 struct Client {
     child: Child,
-    stdin: ChildStdin,
+    stdin: Option<ChildStdin>,
     stdout: BufReader<ChildStdout>,
     next_id: u64,
 }
 
 impl Client {
-    fn start(dir: &Path, agent: &str, create: bool) -> Self {
+    fn command(dir: &Path, agent: &str, create: bool) -> Command {
         let mut command = Command::new(env!("CARGO_BIN_EXE_coda-swarm"));
         command
             .arg("mcp")
             .env("CODA_SWARM_DIR", dir)
             .env("CODA_SWARM_AGENT", agent)
+            .env_remove("CODA_SWARM_MODELS")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped());
         if create {
             command.arg("--create");
         }
+        command
+    }
+
+    fn start(dir: &Path, agent: &str, create: bool) -> Self {
+        Self::connect(Self::command(dir, agent, create))
+    }
+
+    fn connect(mut command: Command) -> Self {
         let mut child = command.spawn().expect("spawn coda-swarm");
-        let stdin = child.stdin.take().expect("stdin");
+        let stdin = Some(child.stdin.take().expect("stdin"));
         let stdout = BufReader::new(child.stdout.take().expect("stdout"));
         let mut client = Self {
             child,
@@ -45,17 +54,23 @@ impl Client {
         self.next_id += 1;
         let line =
             json!({ "jsonrpc": "2.0", "id": self.next_id, "method": method, "params": params });
-        writeln!(self.stdin, "{line}").expect("write request");
+        writeln!(self.input(), "{line}").expect("write request");
         self.next_id
     }
 
     fn notify(&mut self, method: &str) {
-        writeln!(
-            self.stdin,
-            "{}",
-            json!({ "jsonrpc": "2.0", "method": method })
-        )
-        .expect("write");
+        let line = json!({ "jsonrpc": "2.0", "method": method });
+        writeln!(self.input(), "{line}").expect("write");
+    }
+
+    fn input(&mut self) -> &mut ChildStdin {
+        self.stdin.as_mut().expect("stdin is open")
+    }
+
+    /// Closes stdin and waits for the server to exit on its own.
+    fn hang_up(mut self) -> std::process::ExitStatus {
+        drop(self.stdin.take());
+        self.child.wait().expect("wait for server")
     }
 
     fn receive(&mut self, id: u64) -> Value {
@@ -374,4 +389,119 @@ fn channel_changes_are_board_rows_every_process_replays() {
         json!({ "action": "channel", "op": "create", "channel": "Ops" }),
     );
     assert!(refused.contains("invalid arguments"), "{refused}");
+}
+
+/// A worker turn: posts through its own `coda-swarm mcp`, then hangs with a
+/// background child whose pid it writes to `$dir/<member>.child`.
+const STUB_WORKER: &str = r#"#!/bin/sh
+bin="$1"
+dir="$2"
+cat > /dev/null
+printf '%s\n' \
+  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"stub","version":"0"}}}' \
+  "{\"jsonrpc\":\"2.0\",\"id\":2,\"method\":\"tools/call\",\"params\":{\"name\":\"post_message\",\"arguments\":{\"text\":\"@lead $CODA_SWARM_AGENT is up\"}}}" \
+  | "$bin" mcp > "$dir/$CODA_SWARM_AGENT.out"
+sleep 30 &
+echo $! > "$dir/$CODA_SWARM_AGENT.child"
+wait
+"#;
+
+fn eventually(what: &str, mut done: impl FnMut() -> bool) {
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(10);
+    while !done() {
+        assert!(
+            std::time::Instant::now() < deadline,
+            "timed out waiting for {what}"
+        );
+        std::thread::sleep(std::time::Duration::from_millis(20));
+    }
+}
+
+fn child_pid(dir: &Path, member: &str) -> nix::unistd::Pid {
+    let file = dir.join(format!("{member}.child"));
+    eventually("worker turn to start", || {
+        std::fs::read_to_string(&file).is_ok_and(|pid| pid.ends_with('\n'))
+    });
+    let pid = std::fs::read_to_string(&file).expect("pid file");
+    nix::unistd::Pid::from_raw(pid.trim().parse().expect("pid"))
+}
+
+fn gone(pid: nix::unistd::Pid) -> bool {
+    nix::sys::signal::kill(pid, None).is_err()
+}
+
+fn member<'a>(status: &'a Value, name: &str) -> &'a Value {
+    status["members"]
+        .as_array()
+        .expect("members")
+        .iter()
+        .find(|m| m["name"] == name)
+        .expect("member on roster")
+}
+
+#[test]
+fn coordinator_with_a_registry_runs_and_stops_workers() {
+    use std::os::unix::fs::PermissionsExt;
+
+    let dir = tempfile::tempdir().expect("tempdir");
+    let swarm = dir.path().join("swarm");
+    let stub = dir.path().join("worker.sh");
+    std::fs::write(&stub, STUB_WORKER).expect("stub");
+    std::fs::set_permissions(&stub, std::fs::Permissions::from_mode(0o755)).expect("chmod");
+    let registry = dir.path().join("models.json");
+    let entry = json!({
+        "adapter": "command",
+        "program": stub,
+        "args": [env!("CARGO_BIN_EXE_coda-swarm"), dir.path()],
+        "model": "stub",
+    });
+    std::fs::write(
+        &registry,
+        json!({ "models": { "stub": entry } }).to_string(),
+    )
+    .expect("registry");
+
+    // Set through the env so workers' servers inherit it and must ignore it.
+    let mut command = Client::command(&swarm, "lead", true);
+    command.env("CODA_SWARM_MODELS", &registry);
+    let mut lead = Client::connect(command);
+    let models = lead.ok("swarm", json!({ "action": "models" }));
+    assert_eq!(models["models"][0]["name"], "stub", "{models}");
+
+    let added = lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "scout", "brief": "report in", "model": "stub" }),
+    );
+    let since = added["added"][0]["brief_seq"].clone();
+    let woke = lead.ok("swarm_wait", json!({ "since": since, "timeout": 30 }));
+    assert_eq!(woke["woken"], true, "{woke}");
+    assert_eq!(woke["messages"][0]["text"], "@lead scout is up");
+    assert_eq!(woke["messages"][0]["agent"], "scout");
+    let scout_out = std::fs::read_to_string(dir.path().join("scout.out")).expect("scout replies");
+    assert!(scout_out.contains("\"isError\":false"), "{scout_out}");
+
+    let scout = child_pid(dir.path(), "scout");
+    assert!(!gone(scout), "scout's turn is still running");
+    let killed = lead.ok("swarm", json!({ "action": "kill", "name": "scout" }));
+    assert_eq!(killed["killed"], json!(["scout"]));
+    eventually("kill to take scout's process group", || gone(scout));
+
+    lead.ok(
+        "swarm",
+        json!({ "action": "add", "name": "keeper", "brief": "stay", "model": "stub" }),
+    );
+    let keeper = child_pid(dir.path(), "keeper");
+    assert!(!gone(keeper));
+    assert!(lead.hang_up().success());
+    eventually("hang-up to take keeper's process group", || gone(keeper));
+
+    let mut command = Client::command(&swarm, "lead", false);
+    command.arg("--models").arg(dir.path().join("absent.json"));
+    let mut after = Client::connect(command);
+    let status = after.ok("swarm", json!({ "action": "status" }));
+    assert_eq!(member(&status, "scout")["state"], "killed");
+    assert_eq!(member(&status, "keeper")["state"], "stopped");
+    let unregistered = after.ok("swarm", json!({ "action": "models" }));
+    let note = unregistered["note"].as_str().expect("note");
+    assert!(note.contains("no model registry"), "{note}");
 }

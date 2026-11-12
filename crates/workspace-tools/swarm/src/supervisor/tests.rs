@@ -1,4 +1,5 @@
 use std::fs;
+use std::num::NonZeroUsize;
 use std::os::unix::fs::PermissionsExt;
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
@@ -11,7 +12,7 @@ use super::*;
 use crate::adapter::CommandAdapter;
 use crate::file_store::FileStore;
 use crate::policy::Policy;
-use crate::roster::Member;
+use crate::roster::{Member, Role};
 use crate::store::SwarmId;
 
 /// Behavior by member name. Every turn appends `<member> <prompt>` to
@@ -134,21 +135,34 @@ fn harness(configure: impl FnOnce(&mut CommandAdapter)) -> Harness {
 }
 
 impl Harness {
-    fn spawn(&self, base: &str, workspace: WorkspaceMode, count: usize) -> Vec<MemberName> {
+    /// Adds the group to the roster, as the MCP server does, then starts it.
+    fn spawn(&self, base: &str, workspace: Workspace, count: usize) -> Vec<MemberName> {
+        let names =
+            MemberName::group(base, NonZeroUsize::new(count).expect("nonzero")).expect("names");
         self.supervisor
-            .spawn(
-                &name("lead"),
-                SpawnSpec {
-                    name: base.into(),
+            .store()
+            .update_roster(|roster| {
+                names.iter().try_for_each(|member| {
+                    let mut entry = Member::new(Role::Worker, Some(name("lead")));
+                    entry.model = Some("stub-model".into());
+                    roster.add_member(member.clone(), entry)
+                })
+            })
+            .expect("roster");
+        for member in &names {
+            self.supervisor
+                .start(&SpawnSpec {
+                    name: member.clone(),
+                    group: base.into(),
                     brief: "do the thing".into(),
                     model: Some("stub-model".into()),
                     workspace,
                     channels: Vec::new(),
                     fork: None,
-                    count: NonZeroUsize::new(count).expect("nonzero"),
-                },
-            )
-            .expect("spawned")
+                })
+                .expect("started");
+        }
+        names
     }
 
     fn turns(&self) -> Vec<String> {
@@ -202,7 +216,7 @@ fn process_gone(pid_file: &Path) -> bool {
 #[test]
 fn spawn_names_a_group_and_runs_each_member_once_in_its_worktree() {
     let h = harness(|_| {});
-    let names = h.spawn("scout", WorkspaceMode::Branch, 3);
+    let names = h.spawn("scout", Workspace::Branch, 3);
     assert_eq!(names, [name("scout-1"), name("scout-2"), name("scout-3")]);
     for who in ["scout-1", "scout-2", "scout-3"] {
         eventually("member to park", || is_waiting(h.state(who)));
@@ -225,14 +239,14 @@ fn spawn_names_a_group_and_runs_each_member_once_in_its_worktree() {
         ["new sw-scout-1", "new sw-scout-2", "new sw-scout-3"]
     );
 
-    let single = h.spawn("solo", WorkspaceMode::Inherit, 1);
+    let single = h.spawn("solo", Workspace::Inherit, 1);
     assert_eq!(single, [name("solo")]);
 }
 
 #[test]
 fn each_turn_reaches_the_board_as_its_own_member() {
     let h = harness(|_| {});
-    h.spawn("scout", WorkspaceMode::Inherit, 1);
+    h.spawn("scout", Workspace::Inherit, 1);
     eventually("member to park", || is_waiting(h.state("scout")));
     let swarm = h.dir.path().join("swarm");
     let board = fs::read_to_string(h.dir.path().join("scout.board")).expect("board env");
@@ -254,9 +268,9 @@ fn each_turn_reaches_the_board_as_its_own_member() {
 #[test]
 fn mixed_outcomes_complete_crash_and_time_out() {
     let h = harness(|adapter| adapter.limits.turn_timeout = Some(Duration::from_millis(500)));
-    h.spawn("done", WorkspaceMode::Inherit, 1);
-    h.spawn("crash", WorkspaceMode::Inherit, 1);
-    h.spawn("hang", WorkspaceMode::Inherit, 1);
+    h.spawn("done", Workspace::Inherit, 1);
+    h.spawn("crash", Workspace::Inherit, 1);
+    h.spawn("hang", Workspace::Inherit, 1);
     for who in ["done", "crash", "hang"] {
         eventually("member to park", || is_waiting(h.state(who)));
     }
@@ -280,11 +294,11 @@ fn mixed_outcomes_complete_crash_and_time_out() {
 #[test]
 fn kill_during_child_cleanup_escalates_to_sigkill() {
     let h = harness(|_| {});
-    h.spawn("stubborn", WorkspaceMode::Share, 1);
+    h.spawn("stubborn", Workspace::Share, 1);
     let child = h.dir.path().join("stubborn.child");
     eventually("turn to start", || child.exists());
     let started = Instant::now();
-    let report = h.supervisor.kill("stubborn").expect("killed");
+    let report = h.supervisor.kill(&name("stubborn")).expect("killed");
     assert_eq!(report.killed, [name("stubborn")]);
     assert!(started.elapsed() < Duration::from_secs(5));
     // The child was still in its SIGTERM handler when SIGKILL arrived.
@@ -292,25 +306,23 @@ fn kill_during_child_cleanup_escalates_to_sigkill() {
     assert!(process_gone(&child));
     assert_eq!(h.state("stubborn"), MemberState::Killed);
     assert_eq!(h.calls(), ["new sw-stubborn", "rm sw-stubborn"]);
-    assert!(matches!(
-        h.supervisor.kill("stubborn"),
-        Err(KillError::AlreadyKilled(_))
-    ));
+    let again = h.supervisor.kill(&name("stubborn")).expect("kill again");
+    assert!(again.killed.is_empty());
 }
 
 #[test]
 fn failed_worktree_removal_stays_owned_and_is_retried() {
     let h = harness(|_| {});
-    h.spawn("a", WorkspaceMode::Branch, 1);
-    h.spawn("b", WorkspaceMode::Inherit, 1);
+    h.spawn("a", Workspace::Branch, 1);
+    h.spawn("b", Workspace::Inherit, 1);
     *lock(&h.workspaces.fail_removals) = 1;
-    let first = h.supervisor.kill("a").expect("kill a");
+    let first = h.supervisor.kill(&name("a")).expect("kill a");
     assert_eq!(first.killed, [name("a")]);
     assert_eq!(first.pending_cleanup, ["sw-a"]);
     assert_eq!(first.cleanup_errors.len(), 1);
     assert_eq!(h.state("a"), MemberState::Killed);
 
-    let second = h.supervisor.kill("b").expect("kill b");
+    let second = h.supervisor.kill(&name("b")).expect("kill b");
     assert!(second.pending_cleanup.is_empty());
     assert_eq!(h.calls(), ["new sw-a", "rm sw-a", "rm sw-a"]);
 }
@@ -318,10 +330,10 @@ fn failed_worktree_removal_stays_owned_and_is_retried() {
 #[test]
 fn shutdown_retries_pending_cleanup() {
     let h = harness(|_| {});
-    h.spawn("a", WorkspaceMode::Branch, 1);
+    h.spawn("a", Workspace::Branch, 1);
     *lock(&h.workspaces.fail_removals) = 1;
     assert_eq!(
-        h.supervisor.kill("a").expect("kill").pending_cleanup,
+        h.supervisor.kill(&name("a")).expect("kill").pending_cleanup,
         ["sw-a"]
     );
     let report = h.supervisor.shutdown().expect("shutdown");
@@ -332,17 +344,17 @@ fn shutdown_retries_pending_cleanup() {
 #[test]
 fn shared_worktree_is_removed_after_its_last_member() {
     let h = harness(|_| {});
-    h.spawn("pair", WorkspaceMode::Share, 2);
-    h.supervisor.kill("pair-1").expect("kill one");
+    h.spawn("pair", Workspace::Share, 2);
+    h.supervisor.kill(&name("pair-1")).expect("kill one");
     assert_eq!(h.calls(), ["new sw-pair"]);
-    h.supervisor.kill("pair-2").expect("kill other");
+    h.supervisor.kill(&name("pair-2")).expect("kill other");
     assert_eq!(h.calls(), ["new sw-pair", "rm sw-pair"]);
 }
 
 #[test]
 fn waiting_member_wakes_for_a_mention() {
     let h = harness(|_| {});
-    h.spawn("scout", WorkspaceMode::Inherit, 1);
+    h.spawn("scout", Workspace::Inherit, 1);
     eventually("member to park", || is_waiting(h.state("scout")));
     h.supervisor
         .store()
@@ -354,73 +366,19 @@ fn waiting_member_wakes_for_a_mention() {
         .expect("mention");
     // The wake prompt is two lines: the header, then the post text.
     eventually("second turn", || h.turns().len() == 3);
-    assert_eq!(h.turns()[1], "scout New post #3 from lead in #main:");
+    assert_eq!(h.turns()[1], "scout New post #2 from lead in #main:");
     assert_eq!(h.turns()[2], "@scout report");
     eventually("member to park again", || is_waiting(h.state("scout")));
     let MemberState::Waiting { wait_since, .. } = h.state("scout") else {
         unreachable!("checked above");
     };
-    assert_eq!(wait_since, Seq(3));
-}
-
-#[test]
-fn kill_rules_protect_the_coordinator_names_and_helpers() {
-    let h = harness(|_| {});
-    assert!(matches!(
-        h.supervisor.kill("lead"),
-        Err(KillError::Coordinator(_))
-    ));
-    h.spawn("boss", WorkspaceMode::Inherit, 1);
-    h.supervisor
-        .spawn(
-            &name("boss"),
-            SpawnSpec {
-                name: "helper".into(),
-                brief: "help".into(),
-                model: None,
-                workspace: WorkspaceMode::Inherit,
-                channels: Vec::new(),
-                count: NonZeroUsize::MIN,
-                fork: None,
-            },
-        )
-        .expect("helper");
-    h.supervisor.kill("boss").expect("kill boss");
-    assert_ne!(h.state("helper"), MemberState::Killed);
-    assert!(matches!(
-        h.supervisor.spawn(
-            &name("lead"),
-            SpawnSpec {
-                name: "boss".into(),
-                brief: "again".into(),
-                model: None,
-                workspace: WorkspaceMode::Inherit,
-                channels: Vec::new(),
-                count: NonZeroUsize::MIN,
-                fork: None,
-            },
-        ),
-        Err(SpawnError::Exists(_))
-    ));
-}
-
-#[test]
-fn set_model_applies_to_the_next_turn() {
-    let h = harness(|_| {});
-    h.spawn("scout", WorkspaceMode::Inherit, 1);
-    h.supervisor
-        .set_model(&name("scout"), Some("other".into()))
-        .expect("set");
-    assert_eq!(
-        h.supervisor.member_models().expect("models")[&name("scout")].as_deref(),
-        Some("other")
-    );
+    assert_eq!(wait_since, Seq(2));
 }
 
 #[test]
 fn quota_exhaustion_pauses_and_posts_a_notice() {
     let h = harness(|_| {});
-    h.spawn("quota", WorkspaceMode::Inherit, 1);
+    h.spawn("quota", Workspace::Inherit, 1);
     eventually("pause", || {
         h.supervisor
             .status(&name("quota"))
@@ -441,6 +399,8 @@ fn quota_exhaustion_pauses_and_posts_a_notice() {
             .any(|m| m.agent == name("quota") && m.text.contains("quota exhausted"))
     });
     assert_eq!(h.state("quota"), MemberState::Stopped);
-    h.supervisor.kill("quota").expect("kill while paused");
+    h.supervisor
+        .kill(&name("quota"))
+        .expect("kill while paused");
     assert_eq!(h.state("quota"), MemberState::Killed);
 }

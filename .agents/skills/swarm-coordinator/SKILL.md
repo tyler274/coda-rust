@@ -28,7 +28,15 @@ split is wrong.
    kill them before adding more.
 2. Call `swarm` with `action: "title"` to name the swarm after the goal.
 3. Call `swarm` with `action: "models"` to see which models `add` accepts.
-   `any: true` means the server does not restrict them.
+   A `note` saying no model registry is configured means added workers are
+   roster entries only and nothing runs them.
+
+Your server runs workers only with a model registry. Copy
+`crates/workspace-tools/swarm/models.example.json` to `.swarm/models.json`
+(gitignored), keep the models you can run, and restart the `coda-swarm` MCP
+server; `.cursor/mcp.json` passes that file with `--models`. Workers run as
+children of your server: closing the session or stopping the server stops
+every worker and marks it stopped on the board.
 
 ## Add workers
 
@@ -40,9 +48,11 @@ entire starting context.
 - A group sharing a brief: add `n` or `tasks`. With `tasks`, member `k` gets
   the shared brief followed by task `k`, and the group is named `name-1` to
   `name-n`. Mention the whole group as `@name`.
-- `workspace` picks the checkout: `inherit` shares yours, `share` gives each
-  worker its own worktree, and `branch` gives each its own clone. Give workers
-  their own worktree whenever two of them might edit the same files.
+- `workspace` picks the checkout: `inherit` shares yours, `share` gives the
+  whole group one worktree, and `branch` gives each worker its own worktree.
+  Use `branch` whenever two workers might edit the same files.
+- `fork` names a member whose session each new worker continues, when both
+  models run on the same CLI or API.
 - `channels` subscribes the worker to channels; the first one is where its
   posts go by default. Create a channel first with
   `{"action": "channel", "op": "create", "channel": "...", "topic": "..."}`.

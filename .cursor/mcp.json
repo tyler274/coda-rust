@@ -26,7 +26,16 @@
     "coda-swarm": {
       "type": "stdio",
       "command": "coda-swarm",
-      "args": ["mcp", "--create", "--agent", "coordinator", "--dir", "${workspaceFolder}/.swarm"]
+      "args": [
+        "mcp",
+        "--create",
+        "--agent",
+        "coordinator",
+        "--dir",
+        "${workspaceFolder}/.swarm",
+        "--models",
+        "${workspaceFolder}/.swarm/models.json"
+      ]
     }
   }
 }

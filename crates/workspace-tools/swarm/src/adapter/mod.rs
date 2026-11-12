@@ -132,12 +132,15 @@ pub enum Catalog {
     /// The adapter runs whatever model name it is given.
     Any,
     Listed(Vec<ModelInfo>),
+    /// No model registry is configured: nothing runs members, and any model
+    /// name is only recorded on the roster.
+    Unregistered,
 }
 
 impl Catalog {
     pub fn admits(&self, model: &str) -> bool {
         match self {
-            Self::Any => true,
+            Self::Any | Self::Unregistered => true,
             Self::Listed(models) => models.iter().any(|m| m.name == model),
         }
     }

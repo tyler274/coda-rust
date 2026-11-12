@@ -87,7 +87,7 @@ impl Tool {
                     "workspace": {
                         "type": "string",
                         "enum": ["inherit", "share", "branch"],
-                        "description": "add: inherit your checkout (default), or give each member its own worktree (share) or clone (branch)."
+                        "description": "add: inherit your checkout (default), one worktree for the whole group (share), or one worktree per member (branch)."
                     },
                     "channels": {
                         "type": "array",
@@ -101,6 +101,7 @@ impl Tool {
                         "minItems": 1,
                         "description": "add: one task per group member, appended to the shared brief."
                     },
+                    "fork": { "type": "string", "description": "add: a member whose session each new member continues, when both models run on the same CLI or API." },
                     "title": { "type": "string", "description": "title: the swarm's display title." },
                     "op": {
                         "type": "string",

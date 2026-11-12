@@ -12,7 +12,8 @@ use serde::{Deserialize, Serialize};
 use super::cli::{Cli, CliAdapter, Sessions};
 use super::http::{Api, Histories, HttpAdapter};
 use super::{
-    Cancel, Catalog, ForkError, KeyEnv, ModelInfo, TurnOutcome, TurnRequest, WorkerAdapter,
+    Cancel, Catalog, CommandAdapter, ForkError, KeyEnv, ModelInfo, TurnOutcome, TurnRequest,
+    WorkerAdapter,
 };
 use crate::names::MemberName;
 
@@ -41,6 +42,12 @@ impl fmt::Display for ModelId {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "adapter", rename_all = "kebab-case")]
 pub enum AdapterKind {
+    /// Any program speaking the [`CommandAdapter`] protocol.
+    Command {
+        program: PathBuf,
+        #[serde(default)]
+        args: Vec<String>,
+    },
     ClaudeCli,
     CodexCli,
     GeminiCli,
@@ -166,6 +173,11 @@ impl RegistryAdapter {
                 let model = entry.model.clone();
                 let key_env = entry.key.as_ref().map(|key| key.var.clone());
                 let adapter: Box<dyn WorkerAdapter> = match &entry.kind {
+                    AdapterKind::Command { program, args } => {
+                        let mut adapter = CommandAdapter::new(program);
+                        adapter.args.clone_from(args);
+                        Box::new(adapter)
+                    }
                     AdapterKind::ClaudeCli => Box::new(CliAdapter::with_sessions(
                         Cli::Claude,
                         model,

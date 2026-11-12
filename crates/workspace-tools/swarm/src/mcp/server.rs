@@ -124,6 +124,7 @@ struct AddArgs {
     n: Option<NonZeroUsize>,
     #[serde(default)]
     tasks: Vec<String>,
+    fork: Option<MemberName>,
 }
 
 #[derive(Deserialize)]
@@ -264,6 +265,12 @@ impl<S: Store, P: Spawner> Server<S, P> {
             SwarmAction::Models {} => Ok(match self.spawner.models() {
                 Catalog::Any => json!({ "any": true, "models": [] }),
                 Catalog::Listed(models) => json!({ "any": false, "models": models }),
+                Catalog::Unregistered => json!({
+                    "any": true,
+                    "models": [],
+                    "note": "no model registry is configured, so added members are roster entries \
+                             only; start the coordinator's `coda-swarm mcp` with --models <path> to run them",
+                }),
             }),
             SwarmAction::Add(args) => self.add(args),
             SwarmAction::Model { name, model } => self.set_model(name, model),
@@ -347,10 +354,12 @@ impl<S: Store, P: Spawner> Server<S, P> {
                 };
                 specs.push(SpawnSpec {
                     name: name.clone(),
+                    group: args.name.clone(),
                     brief,
                     model: model.clone(),
                     workspace: args.workspace,
                     channels: args.channels.clone(),
+                    fork: args.fork.clone(),
                 });
             }
             Ok(specs)
