@@ -4,7 +4,9 @@
 //! A connection gets [`REQUEST_DEADLINE`] to send its whole request, however
 //! slowly it writes, and each door serves at most [`MAX_CONNECTIONS`] at
 //! once, so a caller that stalls or floods one door holds a bounded number
-//! of threads and never the other door.
+//! of threads and never the other door. The owner has slots of its own on
+//! the agent door, so a container that fills it cannot stop `broker store`
+//! from reloading the cache, nor `doctor` from asking.
 
 use std::io::{Read as _, Write as _};
 use std::os::unix::fs::{FileTypeExt as _, PermissionsExt as _};
@@ -17,7 +19,7 @@ use super::audit::Record;
 use super::core::Broker;
 use super::error::BrokerError;
 use super::limit::LOG_EVERY;
-use super::peer::{self, Door};
+use super::peer::{self, Door, Peer, Principal};
 use super::wire::{Denied, MAX_REQUEST, Reply};
 
 /// How long a client gets to send its whole request, measured from the
@@ -76,6 +78,25 @@ struct Open {
     full_logged: Option<Instant>,
 }
 
+/// Which of a door's two sets of slots a connection takes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Pool {
+    /// The callers the door serves, and strangers.
+    Callers,
+    /// The host user the broker runs as, whose `broker store` reloads the
+    /// cache through the agent door.
+    Owner,
+}
+
+impl Pool {
+    fn of(principal: Principal) -> Self {
+        match principal {
+            Principal::Owner => Self::Owner,
+            Principal::Agent | Principal::Ci | Principal::Stranger => Self::Callers,
+        }
+    }
+}
+
 /// One connection's place among a door's [`MAX_CONNECTIONS`], given back
 /// when dropped.
 struct Slot(Arc<Slots>);
@@ -123,6 +144,7 @@ pub fn serve(
 ) -> std::io::Error {
     let door = listener.door;
     let slots = Arc::new(Slots::default());
+    let owner_slots = Arc::new(Slots::default());
     loop {
         let stream = match listener.socket.accept() {
             Ok((stream, _)) => stream,
@@ -130,7 +152,20 @@ pub fn serve(
             Err(error) => return error,
         };
         let accepted = Instant::now();
-        let slot = match slots.take(accepted) {
+        // The kernel recorded the peer at connect, so this does not wait on
+        // the client.
+        let peer = match peer::of(&stream) {
+            Ok(peer) => peer,
+            Err(error) => {
+                eprintln!("broker: cannot read a connection's peer: {error}");
+                continue;
+            }
+        };
+        let pool = match Pool::of(broker.classify(peer)) {
+            Pool::Owner => &owner_slots,
+            Pool::Callers => &slots,
+        };
+        let slot = match pool.take(accepted) {
             Ok(slot) => slot,
             Err(full) => {
                 refuse(door, &stream, &full);
@@ -141,7 +176,7 @@ pub fn serve(
         let audit = Arc::clone(audit);
         std::thread::spawn(move || {
             let _slot = slot;
-            if let Err(error) = connection(door, &stream, accepted, &broker, audit.as_ref()) {
+            if let Err(error) = connection(door, peer, &stream, accepted, &broker, audit.as_ref()) {
                 eprintln!("broker: connection failed: {error}");
             }
         });
@@ -181,12 +216,12 @@ pub fn reload_on_sighup(broker: &Arc<Broker>) -> Result<(), BrokerError> {
 
 fn connection(
     door: Door,
+    peer: Peer,
     stream: &UnixStream,
     accepted: Instant,
     broker: &Broker,
     audit: &(dyn Fn(&Record) + Send + Sync),
 ) -> std::io::Result<()> {
-    let peer = peer::of(stream)?;
     // A client that timed out, vanished or sent too much still counts as a
     // malformed request, so it shows in the audit log.
     let line = read_request(stream, accepted + REQUEST_DEADLINE).unwrap_or_default();
@@ -233,4 +268,34 @@ fn write_reply(mut stream: &UnixStream, reply: &Reply) -> std::io::Result<()> {
     bytes.push(b'\n');
     stream.write_all(&bytes)?;
     stream.flush()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn only_the_owner_has_slots_a_full_door_leaves_open() {
+        assert_eq!(Pool::of(Principal::Owner), Pool::Owner);
+        for principal in [Principal::Agent, Principal::Ci, Principal::Stranger] {
+            assert_eq!(Pool::of(principal), Pool::Callers, "{principal:?}");
+        }
+    }
+
+    #[test]
+    fn a_full_pool_refuses_until_a_slot_is_given_back() {
+        let slots = Arc::new(Slots::default());
+        let now = Instant::now();
+        let held: Vec<Slot> = (0..MAX_CONNECTIONS)
+            .map(|_| slots.take(now).ok().expect("a free slot"))
+            .collect();
+        let first = slots.take(now).err().expect("full");
+        assert!(first.log, "the first refusal is logged");
+        let second = slots.take(now).err().expect("still full");
+        assert!(!second.log, "a flood is logged once a minute");
+        let other = Arc::new(Slots::default());
+        assert!(other.take(now).is_ok(), "another pool is unaffected");
+        drop(held);
+        assert!(slots.take(now).is_ok());
+    }
 }

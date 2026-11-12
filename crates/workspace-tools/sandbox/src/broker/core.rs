@@ -127,6 +127,11 @@ impl Broker {
         Item::AGENT.into_iter().chain(ci)
     }
 
+    /// Who `peer` is to this broker.
+    pub fn classify(&self, peer: Peer) -> Principal {
+        self.peers.classify(peer)
+    }
+
     /// Answers one request line that `peer` sent through `door`.
     pub fn handle(&self, door: Door, peer: Peer, line: &[u8], now: Instant) -> Answer {
         let principal = self.peers.classify(peer);

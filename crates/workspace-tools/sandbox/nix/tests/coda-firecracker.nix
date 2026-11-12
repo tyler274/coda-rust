@@ -241,6 +241,10 @@ in
         machine.succeed("systemctl stop coda-ci.timer coda-ci.service", ": > /var/log/github-stub.log")
         warned = int(machine.succeed(local_only))
         machine.succeed("systemctl start coda-ci.timer")
+        out = machine.succeed(as_alice("cd repo && timeout 900 coda-ci act . ci") + " 2>&1")
+        assert "CODA_JOB_EXIT=0" in out, out
+        assert int(machine.succeed(local_only)) > warned, "no local-only warning"
+        assert machine.succeed("cat /var/log/github-stub.log") == "", "GitHub was asked without a token"
 
     with subtest("an invalid request is rejected without a guest"):
         machine.succeed(
@@ -250,7 +254,5 @@ in
         machine.wait_until_succeeds("test -e /agents/coda/ci/spool/results/abcdefabcdef/status", timeout=120)
         machine.succeed("grep -qx 125 /agents/coda/ci/spool/results/abcdefabcdef/status")
         machine.succeed("grep -q 'job name' /agents/coda/ci/spool/results/abcdefabcdef/log")
-        assert int(machine.succeed(local_only)) > warned, "no local-only warning"
-        assert machine.succeed("cat /var/log/github-stub.log") == "", "GitHub was asked without a token"
   '';
 }

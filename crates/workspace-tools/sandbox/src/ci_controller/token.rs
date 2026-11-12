@@ -27,7 +27,7 @@ pub enum NoToken {
     /// requests.
     #[error("CODA_CI_BROKER_SOCKET is not set")]
     NoSocket,
-    /// No broker listens: the host user's session has not started one.
+    /// No broker listens: its socket is missing or nothing accepts on it.
     #[error("the token broker is not running")]
     NotRunning(#[source] BrokerError),
     /// The broker answered, and has no token to give now.
@@ -42,14 +42,27 @@ pub fn fetch(socket: Option<&Path>) -> Result<Access, BrokerError> {
     };
     match client::ci_token(socket) {
         Ok(secret) => Ok(Access::Granted(secret)),
-        Err(error @ BrokerError::Connect { .. }) => {
-            Ok(Access::LocalOnly(NoToken::NotRunning(error)))
-        }
+        // Only an absent listener means no broker. Any other failure to
+        // connect, such as a directory the controller may not enter, is a
+        // misconfigured host and fails the pass.
+        Err(error) if no_listener(&error) => Ok(Access::LocalOnly(NoToken::NotRunning(error))),
         Err(error @ BrokerError::Unavailable { .. }) => {
             Ok(Access::LocalOnly(NoToken::NotServed(error)))
         }
         Err(error) => Err(error),
     }
+}
+
+/// Whether connecting failed because no broker listens: the socket is
+/// missing, or nothing accepts on it.
+fn no_listener(error: &BrokerError) -> bool {
+    matches!(
+        error,
+        BrokerError::Connect { source, .. } if matches!(
+            source.kind(),
+            std::io::ErrorKind::NotFound | std::io::ErrorKind::ConnectionRefused
+        )
+    )
 }
 
 #[cfg(test)]
@@ -132,6 +145,27 @@ mod tests {
                 ..
             }))
         ));
+    }
+
+    #[test]
+    fn a_socket_the_controller_may_not_reach_fails_the_pass() {
+        use std::os::unix::fs::PermissionsExt as _;
+        let memory = Arc::new(Memory::with([(Item::GithubCi, "ci-token")]));
+        let dir = broker(&memory, me());
+        let closed = std::fs::Permissions::from_mode(0o000);
+        std::fs::set_permissions(dir.path(), closed).expect("chmod");
+        let result = fetch(Some(&dir.path().join("broker.sock")));
+        std::fs::set_permissions(dir.path(), std::fs::Permissions::from_mode(0o700))
+            .expect("chmod back");
+        if me() == 0 {
+            // Root enters any directory; there is nothing to refuse.
+            return;
+        }
+        let error = result.expect_err("permission denied");
+        assert!(
+            matches!(&error, BrokerError::Connect { source, .. } if source.kind() == std::io::ErrorKind::PermissionDenied),
+            "{error:?}"
+        );
     }
 
     #[test]
