@@ -5,11 +5,13 @@
 use std::fmt::{self, Write as _};
 
 use super::Source;
-use super::peer::{Peer, Principal};
+use super::peer::{Door, Peer, Principal};
 
 /// What a request led to, as the audit line records it.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Record {
+    /// The socket the request arrived on.
+    pub door: Door,
     pub peer: Peer,
     pub comm: String,
     pub principal: Principal,
@@ -31,9 +33,10 @@ pub struct Served {
 impl fmt::Display for Record {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut line = format!(
-            "broker {} {} peer={} uid={} pid={} comm={:?}",
+            "broker {} {} socket={} peer={} uid={} pid={} comm={:?}",
             self.kind,
             self.outcome,
+            self.door.name(),
             self.principal.name(),
             self.peer.uid,
             self.peer.pid,

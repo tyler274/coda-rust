@@ -9,8 +9,8 @@ use super::error::BrokerError;
 use super::wire::{GitHost, Protocol, Reply, Report, Request};
 use super::{Item, Secret};
 
-/// The broker's socket on the host and, through the container's bind of
-/// its directory, inside the container.
+/// The broker's agent socket on the host and, through the container's bind
+/// of its directory, inside the container.
 pub const SOCKET: &str = "/run/coda-sandbox/agent/broker.sock";
 
 /// How long the client waits for the broker; a keyring read may take up to
@@ -80,6 +80,24 @@ pub fn secret(socket: &Path, want: Want) -> Result<Secret, BrokerError> {
     match exchange(socket, &request)? {
         Reply::Granted { secret } => Ok(secret),
         Reply::Unavailable { reason } => Err(BrokerError::Unavailable { item, reason }),
+        Reply::Denied { reason } => Err(BrokerError::Denied(reason)),
+        other @ (Reply::Report { .. } | Reply::Reloaded) => Err(BrokerError::UnexpectedReply {
+            expected: request.kind(),
+            got: other.outcome(),
+        }),
+    }
+}
+
+/// Asks the CI door for the controller's GitHub token; every reply but
+/// `granted` is an error naming why.
+pub fn ci_token(socket: &Path) -> Result<Secret, BrokerError> {
+    let request = Request::CiToken;
+    match exchange(socket, &request)? {
+        Reply::Granted { secret } => Ok(secret),
+        Reply::Unavailable { reason } => Err(BrokerError::Unavailable {
+            item: Item::GithubCi,
+            reason,
+        }),
         Reply::Denied { reason } => Err(BrokerError::Denied(reason)),
         other @ (Reply::Report { .. } | Reply::Reloaded) => Err(BrokerError::UnexpectedReply {
             expected: request.kind(),

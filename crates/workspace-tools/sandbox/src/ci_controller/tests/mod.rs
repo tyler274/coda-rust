@@ -20,11 +20,12 @@ use tempfile::TempDir;
 use super::config::ControllerConfig;
 use super::disk::{DiskSize, Disks};
 use super::error::Error;
-use super::github::{Api, Token};
+use super::github::Api;
 use super::guest::Timers;
 use super::memory::{MIB, MemoryFiles};
 use super::termination::Termination;
 use super::{Controller, Queues};
+use crate::broker::Secret;
 
 /// Tests that write a script and run it hold this, so no other test forks
 /// while the script is still open for writing (ETXTBSY).
@@ -73,6 +74,7 @@ impl Setup {
             max_bundle_bytes: 1024,
             work_disk_size: "1G".parse().expect("size"),
             api: "http://127.0.0.1:9".to_owned(),
+            broker_socket: None,
         };
         for directory in [
             config.jobs(),
@@ -133,7 +135,7 @@ pub fn github(base: &str) -> Queues {
 }
 
 pub fn api(base: &str) -> Api {
-    Api::new(base, Token::new("token").expect("token"))
+    Api::new(base, Secret::new("token").expect("token"))
 }
 
 /// Write a request as a client does: the bundle, then the sidecar.

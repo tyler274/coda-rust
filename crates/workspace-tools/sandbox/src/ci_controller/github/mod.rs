@@ -1,11 +1,12 @@
 //! The GitHub calls the controller makes: the queue, JIT runners, cleanup.
 
-use std::fmt;
 use std::time::Duration;
 
 use serde::de::DeserializeOwned;
 
 mod wire;
+
+use crate::broker::Secret;
 
 pub use self::wire::{Job, JobId, JobStatus, RegisteredRunner, Registration, Runner, RunnerId};
 use self::wire::{JobState, Jobs, Runners, Runs};
@@ -30,24 +31,6 @@ fn unique_suffix() -> String {
 
 fn runners_path() -> String {
     format!("repos/{REPO}/actions/runners")
-}
-
-/// A GitHub token. Its `Debug` never shows the value.
-#[derive(Clone)]
-pub struct Token(String);
-
-impl Token {
-    /// `None` for an empty or whitespace-only token.
-    pub fn new(text: &str) -> Option<Self> {
-        let text = text.trim();
-        (!text.is_empty()).then(|| Self(text.to_owned()))
-    }
-}
-
-impl fmt::Debug for Token {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.write_str("Token(..)")
-    }
 }
 
 #[derive(Debug, thiserror::Error)]
@@ -94,11 +77,11 @@ pub fn is_controller_runner(name: &str) -> bool {
 pub struct Api {
     agent: ureq::Agent,
     base: String,
-    token: Token,
+    token: Secret,
 }
 
 impl Api {
-    pub fn new(base: &str, token: Token) -> Self {
+    pub fn new(base: &str, token: Secret) -> Self {
         let agent = ureq::Agent::config_builder()
             .timeout_global(Some(Duration::from_secs(30)))
             .http_status_as_error(false)
@@ -121,7 +104,7 @@ impl Api {
         let request = ureq::http::Request::builder()
             .method(method)
             .uri(&url)
-            .header("Authorization", format!("Bearer {}", self.token.0))
+            .header("Authorization", format!("Bearer {}", self.token.expose()))
             .header("Accept", "application/vnd.github+json")
             .header("X-GitHub-Api-Version", "2022-11-28");
         let transport = |source| ApiError::Transport {

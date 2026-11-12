@@ -1,11 +1,14 @@
 # Regression test for Coda CI in Firecracker:
-#   nix build ./sandbox#checks.x86_64-linux.coda-firecracker -L
+#   nix build ./crates/workspace-tools/sandbox#checks.x86_64-linux.coda-firecracker -L
 # Runs the real ci.nix in a throwaway VM with nested KVM and no internet: a
-# stub stands in for the GitHub API, an XFS disk for the agents pool (both
+# stub stands in for the GitHub API, a stub `secret-tool` for the keyring
+# the token broker reads, an XFS disk for the agents pool (both
 # clone with reflinks), and an image built here for the job image.
 { sandboxModule }:
 { pkgs, lib, ... }:
 let
+  keyring = "/var/lib/fake-keyring";
+
   # Enough of a runner image for act's run steps, built offline.
   jobImage = pkgs.dockerTools.buildImage {
     name = "coda-test";
@@ -53,7 +56,7 @@ let
     class Handler(http.server.BaseHTTPRequestHandler):
         def do_GET(self):
             with open("/var/log/github-stub.log", "a") as log:
-                log.write(self.path + "\n")
+                log.write(f"{self.path} {self.headers.get('Authorization')}\n")
             body = {"runners": []} if "/actions/runners" in self.path else {"workflow_runs": []}
             data = json.dumps(body).encode()
             self.send_response(200)
@@ -95,7 +98,6 @@ in
       };
       services.coda-sandbox.ci = {
         enable = true;
-        tokenFile = "/etc/coda-ci-test-token";
         apiUrl = "http://127.0.0.1:8099";
         # The stub listens on loopback, which Cyrene's controller may not use.
         controllerAddressDeny = [ "10.0.0.0/8" "100.64.0.0/10" ];
@@ -111,10 +113,10 @@ in
           };
         };
       };
-      environment.etc."coda-ci-test-token" = {
-        text = "test-token";
-        mode = "0400";
-      };
+      # No desktop session runs a Secret Service here; the stub keeps items
+      # as files the broker's user owns.
+      services.coda-sandbox.broker.keyringPackage = pkgs.callPackage ./fake-secret-tool.nix { dir = keyring; };
+      systemd.tmpfiles.rules = [ "d ${keyring} 0700 alice users -" ];
 
       # Stands in for the agents pool: a reflink-capable disk at the CI path.
       systemd.services.agents-pool = {
@@ -145,7 +147,11 @@ in
       };
       networking.firewall.allowedTCPPorts = [ 8080 ];
 
-      users.users.alice.isNormalUser = true;
+      # Lingering, as on Cyrene, so the broker runs without a login.
+      users.users.alice = {
+        isNormalUser = true;
+        linger = true;
+      };
       environment.systemPackages = [ pkgs.git ];
     };
 
@@ -154,6 +160,11 @@ in
 
     def as_alice(cmd):
         return f"su - alice -c '{cmd}'"
+
+    def broker(cmd):
+        return machine.succeed(as_alice("export XDG_RUNTIME_DIR=/run/user/$(id -u); " + cmd))
+
+    local_only = "journalctl -u coda-ci --no-pager | grep -c 'no GitHub token, so only local requests run' || true"
 
     machine.start()
     machine.wait_for_unit("multi-user.target")
@@ -168,6 +179,18 @@ in
         machine.wait_for_unit("agents-pool.service")
         machine.wait_for_unit("coda-ci-spool.service")
         machine.succeed("test \"$(stat -c %a /agents/coda/ci/spool/requests)\" = 1733")
+
+    with subtest("the broker serves the CI token on a socket only coda-ci reaches"):
+        machine.wait_for_unit("coda-sandbox-broker.service", "alice")
+        machine.wait_for_file("/run/coda-sandbox/ci/broker.sock")
+        mode = machine.succeed("stat -c '%a %U %G' /run/coda-sandbox/ci").strip()
+        assert mode == "750 alice coda-ci", mode
+        machine.fail("su -s /bin/sh nobody -c 'test -e /run/coda-sandbox/ci/broker.sock'")
+        machine.succeed("grep -q '^Environment=.*CODA_CI_BROKER_SOCKET=/run/coda-sandbox/ci/broker.sock' /etc/systemd/system/coda-ci.service")
+        machine.fail("grep -q LoadCredential /etc/systemd/system/coda-ci.service")
+        out = broker("printf %s test-token | coda-sandbox broker store github-ci")
+        assert "running broker" in out, out
+        machine.succeed("test \"$(cat ${keyring}/github-ci)\" = test-token")
 
     with subtest("seed: a fresh work disk with the job image"):
         machine.succeed("systemctl start coda-ci-seed.service")
@@ -202,6 +225,8 @@ in
         requests = machine.succeed("cat /var/log/github-stub.log")
         assert "actions/runners?per_page=100" in requests, requests
         assert "actions/runs?status=queued" in requests, requests
+        assert "Bearer test-token" in requests, requests
+        assert "test-token" not in machine.succeed("journalctl --no-pager"), "the token reached the journal"
 
     with subtest("nothing of the job is left, and the seed is unchanged"):
         machine.succeed("test -z \"$(ls -A /agents/coda/ci/jobs)\"")
@@ -210,6 +235,16 @@ in
 
     with subtest("a failing job reports failure"):
         machine.succeed(as_alice("cd repo && rc=0; timeout 900 coda-ci act . fails || rc=$?; test $rc -eq 1"))
+
+    with subtest("without a stored token only local requests run"):
+        broker("coda-sandbox broker delete github-ci")
+        machine.succeed("systemctl stop coda-ci.timer coda-ci.service", ": > /var/log/github-stub.log")
+        warned = int(machine.succeed(local_only))
+        machine.succeed("systemctl start coda-ci.timer")
+        out = machine.succeed(as_alice("cd repo && timeout 900 coda-ci act . ci") + " 2>&1")
+        assert "CODA_JOB_EXIT=0" in out, out
+        assert int(machine.succeed(local_only)) > warned, "no local-only warning"
+        assert machine.succeed("cat /var/log/github-stub.log") == "", "GitHub was asked without a token"
 
     with subtest("an invalid request is rejected without a guest"):
         machine.succeed(

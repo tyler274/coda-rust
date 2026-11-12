@@ -7,19 +7,26 @@ use super::audit::Record;
 use super::core::Broker;
 use super::error::BrokerError;
 use super::keyring::{GhCli, Keyring, SecretTool};
-use super::peer::PeerMap;
+use super::peer::{Door, PeerMap};
 use super::{Item, Secret, client, serve};
 use crate::config::Config;
 
-/// Runs the broker on the config's socket until the listener fails.
+/// Runs the broker on the config's sockets until a listener fails.
 pub fn serve(config: &Config) -> Result<(), BrokerError> {
     // No core dump can write a cached token to disk, and other processes
     // of the same user cannot ptrace the broker or read its memory.
     rustix::process::set_dumpable_behavior(rustix::process::DumpableBehavior::NotDumpable)
         .map_err(|errno| BrokerError::NotDumpable(errno.into()))?;
+    let ci = config
+        .broker
+        .ci
+        .as_ref()
+        .map(|ci| uid_of(&ci.user).map(|uid| (ci, uid)))
+        .transpose()?;
     let peers = PeerMap {
         agent_uid: config.container.agent_uid,
         owner_uid: rustix::process::getuid().as_raw(),
+        ci_uid: ci.map(|(_, uid)| uid),
     };
     let broker = Arc::new(Broker::new(
         peers,
@@ -27,21 +34,61 @@ pub fn serve(config: &Config) -> Result<(), BrokerError> {
         Arc::new(GhCli::default()),
         config.broker.gh_fallback,
     ));
-    let socket = &config.broker.socket;
-    let listener = serve::bind(socket)?;
+    let mut doors = vec![(Door::Agent, config.broker.socket.clone())];
+    if let Some((ci, _)) = ci {
+        doors.push((Door::Ci, ci.socket.clone()));
+    }
+    // Every socket is bound before any is served, so a broker that cannot
+    // open one of its doors serves none.
+    let listeners = doors
+        .into_iter()
+        .map(|(door, socket)| serve::bind(door, &socket).map(|listener| (listener, socket)))
+        .collect::<Result<Vec<_>, _>>()?;
     serve::reload_on_sighup(&broker)?;
     println!(
         "broker listening on {} for agent uid {} (gh fallback {:?})",
-        socket.display(),
+        config.broker.socket.display(),
         peers.agent_uid,
         config.broker.gh_fallback
     );
+    if let Some((ci, uid)) = ci {
+        println!(
+            "broker listening on {} for CI user {} uid {uid}",
+            ci.socket.display(),
+            ci.user
+        );
+    }
     let audit: Arc<dyn Fn(&Record) + Send + Sync> = Arc::new(|record| println!("{record}"));
-    let source = serve::serve(&listener, &broker, &audit);
-    Err(BrokerError::Listen {
-        socket: socket.clone(),
-        source,
-    })
+    // The first door to fail ends the broker, and systemd restarts it with
+    // all of them.
+    let (failed, failure) = std::sync::mpsc::channel();
+    for (listener, socket) in listeners {
+        let broker = Arc::clone(&broker);
+        let audit = Arc::clone(&audit);
+        let failed = failed.clone();
+        std::thread::spawn(move || {
+            let source = serve::serve(&listener, &broker, &audit);
+            // The receiver outlives every sender, so this send lands.
+            let _ = failed.send(BrokerError::Listen { socket, source });
+        });
+    }
+    drop(failed);
+    Err(failure
+        .recv()
+        .expect("a door's thread sends its failure before it ends"))
+}
+
+fn uid_of(user: &str) -> Result<u32, BrokerError> {
+    let found = nix::unistd::User::from_name(user).map_err(|errno| BrokerError::UserLookup {
+        user: user.to_owned(),
+        source: errno.into(),
+    })?;
+    match found {
+        Some(found) => Ok(found.uid.as_raw()),
+        None => Err(BrokerError::NoSuchUser {
+            user: user.to_owned(),
+        }),
+    }
 }
 
 /// What `store` did besides writing the keyring.

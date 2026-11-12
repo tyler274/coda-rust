@@ -36,6 +36,12 @@ let
     broker = {
       socket = cfg.broker.socket;
       gh_fallback = if cfg.broker.ghFallback then "on" else "off";
+    }
+    // lib.optionalAttrs cfg.ci.enable {
+      ci = {
+        socket = cfg.broker.ciSocket;
+        user = "coda-ci";
+      };
     };
   };
 

@@ -40,15 +40,29 @@ pub struct Config {
     pub broker: Broker,
 }
 
-/// The token broker: its socket, the same path on the host and in the
-/// container, and whether `gh auth token` may stand in for a
-/// `github-agent` the keyring does not hold.
+/// The token broker: the agent's socket, the same path on the host and in
+/// the container, whether `gh auth token` may stand in for a `github-agent`
+/// the keyring does not hold, and the CI controller's socket on a host that
+/// runs the CI.
 #[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
 pub struct Broker {
     #[serde(default = "default_broker_socket")]
     pub socket: PathBuf,
     #[serde(default)]
     pub gh_fallback: GhFallback,
+    /// Only a host whose CI controller takes GitHub jobs has one.
+    #[serde(default)]
+    pub ci: Option<BrokerCi>,
+}
+
+/// The socket the broker serves the CI controller's GitHub token on. It is
+/// host only: nothing binds it into the container.
+#[derive(Debug, Clone, PartialEq, Eq, Deserialize)]
+pub struct BrokerCi {
+    pub socket: PathBuf,
+    /// The host user the controller runs as; the broker serves the token
+    /// to that user's uid and no other.
+    pub user: String,
 }
 
 impl Default for Broker {
@@ -56,6 +70,7 @@ impl Default for Broker {
         Self {
             socket: default_broker_socket(),
             gh_fallback: GhFallback::Off,
+            ci: None,
         }
     }
 }

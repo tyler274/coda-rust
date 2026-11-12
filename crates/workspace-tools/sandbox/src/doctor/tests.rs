@@ -109,18 +109,18 @@ fn permission_denied_is_cannot_check_and_makes_the_verdict_incomplete() {
 }
 
 #[test]
-fn present_legacy_token_dirs_warn_and_only_the_agent_one_says_remove() {
+fn present_legacy_token_dirs_warn_and_say_revoke_then_remove() {
     let mut probe = healthy();
     probe.dirs.push(PathBuf::from("/var/lib/coda-ci"));
     let findings = run(&probe, &config());
-    let Outcome::Warn { fix, .. } = outcome(&findings, &Check::LegacyToken(LegacyTokenDir::Ci))
+    let Outcome::Warn { fix, detail } = outcome(&findings, &Check::LegacyToken(LegacyTokenDir::Ci))
     else {
         panic!("expected Warn")
     };
-    assert_eq!(
-        fix,
-        &Fix::command("sudo", ["ls", "-la", "/var/lib/coda-ci"])
-    );
+    assert!(detail.contains("broker"), "{detail}");
+    let fix = fix.to_string();
+    assert!(fix.contains("github-ci"), "{fix}");
+    assert!(fix.contains("sudo rm -rf /var/lib/coda-ci"), "{fix}");
     let agent = Check::LegacyToken(LegacyTokenDir::Agent);
     assert!(matches!(outcome(&findings, &agent), Outcome::Pass { .. }));
     assert_eq!(verdict(&findings), Verdict::Healthy);
@@ -163,7 +163,7 @@ fn broker_reports_source_and_warns_on_fallback() {
     let findings = run(&healthy(), &config());
     assert!(matches!(
         outcome(&findings, &Check::Broker),
-        Outcome::Pass { detail } if detail == "github-agent: keyring; doppler: keyring"
+        Outcome::Pass { detail } if detail == "github-agent: keyring; doppler: keyring; github-ci: keyring"
     ));
 
     let mut probe = healthy();

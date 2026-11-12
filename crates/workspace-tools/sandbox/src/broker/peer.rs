@@ -7,6 +7,11 @@
 //! container root as `uidBase`. Container root can become the agent, so
 //! the check keeps out other host users and other containers; it does not
 //! split the container.
+//!
+//! The CI controller is a host system user outside every container, so its
+//! uid arrives as it is. It has a socket of its own, a second [`Door`]: the
+//! agent's door never answers for the CI token, whoever asks, and the CI's
+//! door answers for nothing else.
 
 use std::os::fd::AsFd;
 
@@ -19,6 +24,35 @@ pub struct PeerMap {
     pub agent_uid: u32,
     /// The host user the broker runs as.
     pub owner_uid: u32,
+    /// The host's CI controller user; `None` on a host without the CI.
+    pub ci_uid: Option<u32>,
+}
+
+/// The socket a connection arrived on. A request for an audience the door
+/// does not serve is refused whoever sent it.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum Door {
+    /// Bound into the container: the agent's secrets, and the owner's
+    /// report and reload.
+    Agent,
+    /// Reachable only by the CI controller's user: its GitHub token.
+    Ci,
+}
+
+impl Door {
+    pub fn serves(self, audience: Audience) -> bool {
+        matches!(
+            (self, audience),
+            (Self::Agent, Audience::Agent | Audience::Owner) | (Self::Ci, Audience::Ci)
+        )
+    }
+
+    pub fn name(self) -> &'static str {
+        match self {
+            Self::Agent => "agent",
+            Self::Ci => "ci",
+        }
+    }
 }
 
 /// A connected peer, as the kernel names it on the host.
@@ -33,6 +67,7 @@ pub struct Peer {
 pub enum Principal {
     Agent,
     Owner,
+    Ci,
     Stranger,
 }
 
@@ -42,6 +77,8 @@ impl PeerMap {
             Principal::Agent
         } else if peer.uid == self.owner_uid {
             Principal::Owner
+        } else if self.ci_uid == Some(peer.uid) {
+            Principal::Ci
         } else {
             Principal::Stranger
         }
@@ -53,7 +90,9 @@ impl Principal {
     pub fn may_ask(self, audience: Audience) -> bool {
         matches!(
             (self, audience),
-            (Self::Agent, Audience::Agent) | (Self::Owner, Audience::Owner)
+            (Self::Agent, Audience::Agent)
+                | (Self::Owner, Audience::Owner)
+                | (Self::Ci, Audience::Ci)
         )
     }
 
@@ -61,6 +100,7 @@ impl Principal {
         match self {
             Self::Agent => "agent",
             Self::Owner => "owner",
+            Self::Ci => "ci",
             Self::Stranger => "stranger",
         }
     }
@@ -87,9 +127,11 @@ mod tests {
     use super::*;
 
     const UID_BASE: u32 = 655_360;
+    const CI_UID: u32 = 993;
     const MAP: PeerMap = PeerMap {
         agent_uid: UID_BASE + 1000,
         owner_uid: 1000,
+        ci_uid: Some(CI_UID),
     };
 
     fn peer(uid: u32) -> Peer {
@@ -100,6 +142,26 @@ mod tests {
     fn container_agent_maps_through_uid_base() {
         assert_eq!(MAP.classify(peer(656_360)), Principal::Agent);
         assert_eq!(MAP.classify(peer(1000)), Principal::Owner);
+        assert_eq!(MAP.classify(peer(CI_UID)), Principal::Ci);
+    }
+
+    #[test]
+    fn a_host_without_the_ci_has_no_ci_principal() {
+        let map = PeerMap {
+            ci_uid: None,
+            ..MAP
+        };
+        assert_eq!(map.classify(peer(CI_UID)), Principal::Stranger);
+    }
+
+    #[test]
+    fn each_door_serves_only_its_audiences() {
+        assert!(Door::Agent.serves(Audience::Agent));
+        assert!(Door::Agent.serves(Audience::Owner));
+        assert!(!Door::Agent.serves(Audience::Ci));
+        assert!(Door::Ci.serves(Audience::Ci));
+        assert!(!Door::Ci.serves(Audience::Agent));
+        assert!(!Door::Ci.serves(Audience::Owner));
     }
 
     #[test]
@@ -116,7 +178,13 @@ mod tests {
         assert!(!Principal::Agent.may_ask(Audience::Owner));
         assert!(Principal::Owner.may_ask(Audience::Owner));
         assert!(!Principal::Owner.may_ask(Audience::Agent));
-        assert!(!Principal::Stranger.may_ask(Audience::Agent));
-        assert!(!Principal::Stranger.may_ask(Audience::Owner));
+        assert!(Principal::Ci.may_ask(Audience::Ci));
+        assert!(!Principal::Ci.may_ask(Audience::Agent));
+        assert!(!Principal::Ci.may_ask(Audience::Owner));
+        assert!(!Principal::Agent.may_ask(Audience::Ci));
+        assert!(!Principal::Owner.may_ask(Audience::Ci));
+        for audience in [Audience::Agent, Audience::Owner, Audience::Ci] {
+            assert!(!Principal::Stranger.may_ask(audience));
+        }
     }
 }
