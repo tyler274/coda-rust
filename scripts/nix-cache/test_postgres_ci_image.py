@@ -237,6 +237,56 @@ class WorkflowTests(unittest.TestCase):
         self.assertIn("nix/postgres-ci-image.nix", cache["with"]["key"])
 
 
+class UnprivilegedJobTests(unittest.TestCase):
+    """initdb in the crash-restart proof refuses root, so the job must not run as uid 0."""
+
+    def setUp(self):
+        self.jobs = yaml.safe_load((ROOT / ".github/workflows/ci.yml").read_text())["jobs"]
+        self.setup = next(s["run"] for s in self.jobs["postgres"]["steps"]
+                          if s.get("name") == "Prepare container workspace")
+
+    def test_image_declares_the_runner_account_as_its_user(self):
+        recipe = (ROOT / "nix/postgres-ci-image.nix").read_text()
+        self.assertRegex(recipe, r'user = \{ name = "runner"; uid = 1001; gid = 1001; \};')
+        self.assertIn('User = "${toString user.uid}:${toString user.gid}";', recipe)
+        contents = recipe.split("contents = [", 1)[1].split("];", 1)[0]
+        self.assertRegex(contents, r"(?m)^\s*passwd$")
+        self.assertNotRegex(contents, r"dockerTools\.fakeNss")
+
+    def test_job_keeps_the_image_user(self):
+        container = self.jobs["postgres"]["container"]
+        self.assertNotIn("options", container)
+
+    def run_setup(self, uid, owner):
+        with tempfile.TemporaryDirectory() as directory:
+            bin_dir = Path(directory) / "bin"
+            bin_dir.mkdir()
+            (bin_dir / "id").write_text(f"#!/bin/sh\necho {uid}\n")
+            (bin_dir / "stat").write_text(f"#!/bin/sh\necho {owner}\n")
+            (bin_dir / "git").write_text("#!/bin/sh\necho git \"$@\" >> \"$GITHUB_ENV\"\n")
+            for tool in bin_dir.iterdir():
+                tool.chmod(0o755)
+            env_file = Path(directory) / "env"
+            result = subprocess.run(["bash", "-eo", "pipefail", "-c", self.setup], cwd=directory,
+                                    env={"PATH": f"{bin_dir}:/usr/bin:/bin", "GITHUB_ENV": str(env_file)},
+                                    capture_output=True, text=True)
+            return result, env_file.read_text() if env_file.exists() else ""
+
+    def test_setup_refuses_root_and_foreign_owner_before_any_work(self):
+        for uid, owner in (("0", "0"), ("0", "1001"), ("1001", "0")):
+            with self.subTest(uid=uid, owner=owner):
+                result, written = self.run_setup(uid, owner)
+                self.assertEqual(result.returncode, 1, result)
+                self.assertIn("needs the unprivileged owner", result.stdout)
+                self.assertEqual(written, "")
+
+    def test_setup_proceeds_as_the_workspace_owner(self):
+        result, written = self.run_setup("1001", "1001")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("safe.directory", written)
+        self.assertIn("CARGO_HOME=", written)
+
+
 class EmulatorJavaTests(unittest.TestCase):
     """The Pub/Sub emulator launcher needs `which java` under a PATH-only env."""
 

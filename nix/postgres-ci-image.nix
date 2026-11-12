@@ -4,6 +4,15 @@
 # No evaluation, Nix daemon, or mutable second image layer is needed at runtime.
 { pkgs, shell }:
 let
+  # The job runs as the runner account that owns the mounted workspace, temp
+  # and HOME directories (uid 1001 on GitHub-hosted and Blacksmith runners), so
+  # checkout, cache restore and target/ need no root. initdb, which the
+  # crash-restart proof calls, refuses to run as root.
+  user = { name = "runner"; uid = 1001; gid = 1001; };
+  passwd = pkgs.dockerTools.fakeNss.override {
+    extraPasswdLines = [ "${user.name}:x:${toString user.uid}:${toString user.gid}:${user.name}:/tmp:/bin/bash" ];
+    extraGroupLines = [ "${user.name}:x:${toString user.gid}:" ];
+  };
   fhsLibs = pkgs.lib.makeLibraryPath [ pkgs.stdenv.cc.cc.lib pkgs.glibc ];
   # Reuse the shell derivation's inputs, env and stdenv initialization. Capture
   # after setup (as print-dev-env does), but emit only runtime exports. This
@@ -45,7 +54,7 @@ pkgs.dockerTools.streamLayeredImage {
     # helper's cleared environment drops JAVA_HOME.
     pkgs.which
     pkgs.dockerTools.caCertificates
-    pkgs.dockerTools.fakeNss
+    passwd
     pkgs.dockerTools.usrBinEnv
     pkgs.dockerTools.binSh
   ];
@@ -55,6 +64,7 @@ pkgs.dockerTools.streamLayeredImage {
     ln -s ${pkgs.nix-ld}/libexec/nix-ld lib64/ld-linux-x86-64.so.2
   '';
   config = {
+    User = "${toString user.uid}:${toString user.gid}";
     Labels."org.opencontainers.image.source" = "https://github.com/Coda-Health/coda-rust";
     Env = [
       "PATH=/bin:/usr/bin"

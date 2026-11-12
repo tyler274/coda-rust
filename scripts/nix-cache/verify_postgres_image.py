@@ -10,7 +10,9 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
+import tempfile
 
 
 # pubsub::testing clears the emulator's environment and keeps PATH but not
@@ -74,23 +76,36 @@ def main():
     for key in names | {"PATH", "HOME", "PWD", "TMPDIR"}:
         assert nested.get(key) == actual.get(key), f"nested bash changed {key}"
     print("PASS: runner context, ordered PATH and nested bash preserved")
-    # The root container sees the host-owned checkout as dubious. Reproduce the
-    # hosted failure before applying the exact setup used by both container jobs.
-    rejected = subprocess.run(shell + ["git ls-files"], text=True, capture_output=True)
-    assert rejected.returncode == 128 and "dubious ownership" in rejected.stderr, rejected.stderr
+    # The image runs as its unprivileged runner account, which initdb accepts
+    # (the crash-restart proof calls it and refuses root).
+    subprocess.run(docker + ["--network", "none", args.image, "bash", "--noprofile", "--norc", "-eo", "pipefail", "-c",
+                             'test "$(id -u)" != 0 && test "$(id -un)" = runner && '
+                             'initdb -U postgres -A trust -D /tmp/initdb-smoke >/dev/null && '
+                             'test -f /tmp/initdb-smoke/PG_VERSION'], check=True)
+    print("PASS: image runs as the unprivileged runner account and initdb accepts it")
     import yaml
     workflow = yaml.safe_load((root / ".github/workflows/ci.yml").read_text())
     setup = next(step["run"] for step in workflow["jobs"]["postgres"]["steps"]
                  if step.get("name") == "Prepare container workspace")
-    subprocess.run(shell + [
-        'mkdir -p "$HOME"; ' + setup + '\n'
+    # A checkout owned by another uid must stop the job before any build.
+    if os.getuid() != 1001:
+        refused = subprocess.run(shell + [setup], text=True, capture_output=True)
+        assert refused.returncode == 1 and "needs the unprivileged owner" in refused.stdout, refused
+        print("PASS: workspace setup refuses a job uid that does not own the checkout")
+    # On the runner the job's uid owns the checkout and the mounted HOME.
+    # Replay that locally as the checkout's owner with a writable HOME.
+    home = Path(tempfile.mkdtemp(prefix="postgres-ci-home-"))
+    owner = docker + ["--user", f"{os.getuid()}:{os.getgid()}", "-v", f"{home}:/github/home"]
+    subprocess.run(owner + [args.image, "bash", "--noprofile", "--norc", "-eo", "pipefail", "-c",
+        setup + '\n'
         'source "$GITHUB_ENV"; export CARGO_HOME; '
         'test "$CARGO_HOME" = "$PWD/.ci-cargo" && '
         'test "$(git config --global --get-all safe.directory)" = "$PWD" && '
         'bash -c \'test "$HOME" = /github/home && test "$CARGO_HOME" = "$PWD/.ci-cargo" && git ls-files --error-unmatch Cargo.toml\' && '
         'test -r "$SSL_CERT_FILE" && python scripts/check-sql.py && cargo --version && rustc --version && createdb --version && pkg-config --modversion openssl && java -version && git --version'
     ], check=True)
-    print("PASS: reproduced dubious ownership; workflow setup repairs exact trust and Cargo path across nested BASH_ENV")
+    shutil.rmtree(home)
+    print("PASS: workflow setup as the checkout owner sets exact trust and Cargo path across nested BASH_ENV")
     subprocess.run(shell + [EMULATOR_JAVA_CHECK], check=True)
     print("PASS: `which java` resolves under the Pub/Sub emulator's cleared environment")
     # Preserve native build capability and archive tools used by Actions cache.

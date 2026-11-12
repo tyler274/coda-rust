@@ -408,7 +408,8 @@ class WarmRunTests(unittest.TestCase):
         self.assertIn("merge_group", self.workflow[True])
         self.assertEqual(self.workflow["concurrency"]["cancel-in-progress"],
                          "${{ github.event_name == 'pull_request' }}")
-        saves = [(name, step) for name, job in self.jobs.items() for step in job["steps"]
+        # A reusable-workflow call (`uses:`) has no steps of its own.
+        saves = [(name, step) for name, job in self.jobs.items() for step in job.get("steps", ())
                  if step.get("uses", "").startswith("actions/cache/save@")]
         self.assertTrue(saves)
         for name, step in saves:

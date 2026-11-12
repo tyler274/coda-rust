@@ -953,8 +953,15 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
+      # The image's User is the runner account (nix/postgres-ci-image.nix):
+      # initdb in the crash-restart proof refuses root, and the workspace stays
+      # writable only if the job's uid owns it.
       - name: Prepare container workspace
         run: |
+          if [ "$(id -u)" = 0 ] || [ "$(stat -c %u "$PWD")" != "$(id -u)" ]; then
+            echo "::error::Postgres job runs as uid $(id -u); it needs the unprivileged owner of $PWD (uid $(stat -c %u "$PWD"))"
+            exit 1
+          fi
           git config --global --add safe.directory "$PWD"
           printf 'CARGO_HOME=%s/.ci-cargo\n' "$PWD" >> "$GITHUB_ENV"
       - name: Restore Postgres proof build
