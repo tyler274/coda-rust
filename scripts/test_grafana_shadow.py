@@ -86,7 +86,7 @@ def fixture_server():
     http.server.ThreadingHTTPServer(("127.0.0.1", 9099), Handler).serve_forever()
 
 
-def provision(enabled):
+def provision(enabled, label=None):
     variables = {**VARS, "grafana_test_notifications_enabled": enabled,
                  "grafana_cloud_monitoring_enabled": enabled,
                  "grafana_compatibility_metrics_url": "http://127.0.0.1:9090" if enabled else ""}
@@ -103,10 +103,10 @@ def provision(enabled):
             if 'backend "gcs"' in text:
                 source.write_text(re.sub(r'backend "gcs"\s*\{[^}]*\}', 'backend "local" {}', text))
         run("tofu", f"-chdir={harness}", "init", "-input=false")
-    expression = 'jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items, contact=jsondecode(jsonencode(yamldecode(local.grafana_contact_config))), rules=yamldecode(file("${local.grafana_config_dir}/compatibility-rules.yaml")), synthetic=yamldecode(local.grafana_synthetic_rules)})'
+    expression = 'jsonencode({data=local.grafana_components.grafana.config_data, paths=local.grafana_components.grafana.config_items, contact=jsondecode(jsonencode(yamldecode(local.grafana_contact_config))), rules=yamldecode(file("${local.grafana_config_dir}/compatibility-rules.yaml")), synthetic=yamldecode(local.grafana_synthetic_rules), cloud=yamldecode(local.grafana_cloud_rules)})'
     result = run("tofu", f"-chdir={harness}", "console", f"-var-file={vf}", input=expression)
     config = json.loads(json.loads(result))
-    folder = OUT / ("enabled" if enabled else "disabled")
+    folder = OUT / (label or ("enabled" if enabled else "disabled"))
     for key, value in config["data"].items():
         path = folder / config["paths"][key]
         path.parent.mkdir(parents=True, exist_ok=True)
@@ -143,7 +143,36 @@ def provision(enabled):
             group["rules"].append(rule)
         (folder / "alerting/compatibility.yaml").write_text(json.dumps(rules))
         (folder / "datasources/compatibility.yaml").write_text(json.dumps({"apiVersion": 1, "datasources": [{"name": "Compatibility metrics", "uid": "compatibility", "type": "prometheus", "access": "proxy", "url": "http://127.0.0.1:9090", "jsonData": {"httpMethod": "GET"}}]}))
-    return folder
+    return folder, config["cloud"]
+
+
+def cloud_uids(cloud):
+    """The rendered cloud rule file's provisioned UIDs and the UIDs it deletes
+    that it does not provision: retired rules, or every rule when disabled."""
+    provisioned = [r["uid"] for g in cloud["groups"] for r in g["rules"]]
+    deleted = [d["uid"] for d in cloud["deleteRules"] if d["uid"] not in provisioned]
+    return provisioned, deleted
+
+
+def seed_retired(volume):
+    """Provision the rules a deployed Grafana could still hold under retired
+    UIDs, on the volume the later passes reuse, so their deletion is real."""
+    folder, cloud = provision(True, "retired")
+    provisioned, retired = cloud_uids(cloud)
+    assert retired, "the enabled cloud rule file names no retired UIDs"
+    group = cloud["groups"][0]
+    for uid in retired:
+        rule = copy.deepcopy(group["rules"][0])
+        rule.update(uid=uid, title=f"Retired {uid}")
+        group["rules"].append(rule)
+    del cloud["deleteRules"]
+    (folder / "alerting/cloud-rules.yaml").write_text(json.dumps(cloud))
+    start(folder, volume)
+    present = {r["uid"] for r in api("/api/v1/provisioning/alert-rules")}
+    assert set(retired) <= present, f"retired rules not seeded: {sorted(set(retired) - present)}"
+    print(f"PASS seeded retired cloud rules {sorted(retired)} beside {len(provisioned)} current ones", flush=True)
+    stop("retired")
+    return retired
 
 
 def api(path):
@@ -290,9 +319,13 @@ def main():
     volume = NAME + "-data"
     print(f"revision {run('git', 'rev-parse', 'HEAD').strip()}; artifacts {OUT}", flush=True)
     try:
+        retired = seed_retired(volume)
         for enabled in (True, False):
             label = "enabled" if enabled else "disabled"
-            start(provision(enabled), volume)
+            folder, cloud = provision(enabled)
+            provisioned, deleted = cloud_uids(cloud)
+            assert set(retired) <= set(deleted), "a retired cloud rule UID is no longer deleted"
+            start(folder, volume)
             policy = api("/api/v1/provisioning/policies")
             contacts = api("/api/v1/provisioning/contact-points")
             rules = api("/api/v1/provisioning/alert-rules")
@@ -305,7 +338,9 @@ def main():
             assert (any(d["uid"] == "compatibility" for d in datasources)) == enabled
             assert (any(d["uid"] == "cloud-monitoring" for d in datasources)) == enabled
             cloud_rules = [r for r in rules if r["uid"].startswith("gcp-")]
-            assert len(cloud_rules) == (20 if enabled else 0)
+            assert sorted(r["uid"] for r in cloud_rules) == sorted(provisioned)
+            assert bool(provisioned) == enabled
+            assert not {r["uid"] for r in rules} & set(deleted), "a deleted cloud rule is still provisioned"
             assert all(r["labels"]["mode"] == "shadow" for r in cloud_rules)
             assert len([r for r in rules if r["uid"] in ("coda-readiness-shadow", "coda-dependency-shadow", "coda-signal-freshness-shadow")]) == (3 if enabled else 0)
             if enabled:
@@ -313,7 +348,7 @@ def main():
             else:
                 assert len(policy["routes"]) == 1
                 assert not any(r["uid"] == "coda-synthetic-notification-test" for r in rules)
-            print(f"PASS {label}: real rendered rules/datasources/contact/policy reconciled; operational catch-all muted", flush=True)
+            print(f"PASS {label}: real rendered rules/datasources/contact/policy reconciled ({len(provisioned)} cloud rules; {len(deleted)} deleted UIDs absent); operational catch-all muted", flush=True)
             if enabled:
                 native_query_boundary(cloud_rules)
                 evaluate()
