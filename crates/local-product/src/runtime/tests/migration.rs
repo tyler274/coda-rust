@@ -53,10 +53,14 @@ async fn a_second_migrate_records_nothing_new() {
     assert_eq!(
         names(
             &store.db,
-            "SELECT version AS name FROM physician_runtime_migrations"
+            "SELECT version AS name FROM physician_runtime_migrations ORDER BY version"
         )
         .await,
-        ["m20261111_init", "m20261111_response_feedback"]
+        [
+            "m20261111_init",
+            "m20261111_response_feedback",
+            "m20261112_source_pull_missing_candidates"
+        ]
     );
 }
 
@@ -88,5 +92,39 @@ async fn leftover_runtime_tables_fail_the_migration_and_record_nothing() {
         )
         .await,
         ["physician_runtime_conversations"]
+    );
+}
+
+#[tokio::test]
+#[ignore = "requires explicit local Postgres"]
+async fn source_pull_missing_candidates_migration_refuses_down_rollback() {
+    use sea_orm_migration::{MigrationTrait, SchemaManager};
+
+    let store = Store::connect(&database("runtime_down_refused").await)
+        .await
+        .unwrap();
+    store.migrate().await.unwrap();
+
+    let manager = SchemaManager::new(&store.db);
+    let error = migration::m20261112_source_pull_missing_candidates::Migration
+        .down(&manager)
+        .await
+        .expect_err("forward-only runtime migration must refuse rollback")
+        .to_string();
+    assert!(
+        str::contains(
+            &error,
+            "the physician runtime's records can't be rolled back"
+        ),
+        "{error}"
+    );
+    assert!(
+        names(
+            &store.db,
+            "SELECT column_name::text AS name FROM information_schema.columns WHERE table_name = 'physician_runtime_source_pulls' ORDER BY column_name"
+        )
+        .await
+        .iter()
+        .any(|n| n == "missing_candidates")
     );
 }

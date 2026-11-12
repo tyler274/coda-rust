@@ -310,20 +310,21 @@ async fn second_made_up_source_persists_in_store_and_serves_tools() {
     let ws = format!("pw-nw-{}", uuid::Uuid::new_v4());
     let patient = source.patient("NW-900").await.unwrap();
     let records = source.records(&patient, &ws).await.unwrap();
-    let changed = store
-        .record_chart(
+    let receipt = store
+        .record_chart_with_receipt(
             &ws,
             &records,
             &SourcePull {
                 source_id: source.source_id().into(),
                 source_label: source.source_label().into(),
                 patient,
-                pulled_at: 1_760_000_000,
+                pulled_at: Some(1_760_000_000),
             },
         )
         .await
         .unwrap();
-    assert_eq!(changed, 6);
+    assert_eq!(receipt.changed, 6);
+    assert!(receipt.missing_candidates.is_empty());
 
     let search = ChartRequest::parse(
         SEARCH_TOOL,
@@ -397,35 +398,36 @@ async fn distinct_sources_with_colliding_native_ids_coexist_in_workspace_and_too
         medical_record_numbers: Vec::new(),
     };
 
-    let changed_a = store
-        .record_chart(
+    let receipt_a = store
+        .record_chart_with_receipt(
             &ws,
             &a_records,
             &SourcePull {
                 source_id: "hospital-a".into(),
                 source_label: "Hospital A".into(),
                 patient: patient_a,
-                pulled_at: 1_760_000_100,
+                pulled_at: Some(1_760_000_100),
             },
         )
         .await
         .unwrap();
-    assert_eq!(changed_a, 2);
+    assert_eq!(receipt_a.changed, 2);
 
-    let changed_b = store
-        .record_chart(
+    let receipt_b = store
+        .record_chart_with_receipt(
             &ws,
             &b_records,
             &SourcePull {
                 source_id: "clinic-b".into(),
                 source_label: "Clinic B".into(),
                 patient: patient_b,
-                pulled_at: 1_760_000_200,
+                pulled_at: Some(1_760_000_200),
             },
         )
         .await
         .unwrap();
-    assert_eq!(changed_b, 2);
+    assert_eq!(receipt_b.changed, 2);
+    assert!(receipt_b.missing_candidates.is_empty());
 
     let search = ChartRequest::parse(
         SEARCH_TOOL,

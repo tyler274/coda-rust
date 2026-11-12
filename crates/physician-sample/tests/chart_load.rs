@@ -176,7 +176,7 @@ async fn a_loaded_chart_is_a_patient_of_the_practice_and_loading_again_changes_n
         pulls[&workspace][0].patient.display_name,
         format!("Mary {run}-a")
     );
-    assert_eq!(pulls[&workspace][0].pulled_at, 1_787_846_400);
+    assert_eq!(pulls[&workspace][0].pulled_at, Some(1_787_846_400));
 
     let again = load_synthetic_practice(&bank, &auth, &runtime)
         .await
