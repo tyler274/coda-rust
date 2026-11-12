@@ -120,7 +120,7 @@ Signing in, staying signed in and signing out of a phone, with their model, live
 
 ### D4. For my doctor
 
-In the MVP, For my doctor is in Shared.
+In the MVP, For my doctor is in Shared. The states, steps and rules of marks, notes and sends live in [shared](../verification/duet/shared/README.md).
 
 1. The person opens anything in You and marks it for their doctor. Marking is one tap and needs no writing.
 2. The person writes notes in their own words, as many as they want. A note needs no record. A note written from a record points at that record, shows the record's own label, and takes the record with it when sent.
@@ -128,7 +128,7 @@ In the MVP, For my doctor is in Shared.
 4. All of this works without a practice or an appointment, and none of it is shared.
 5. While connected, Send names the practice and sends the marked records and notes the person chooses. One send can hold several. From a record, the person can also send that one record straight away. Without a live connection there is no Send. With more than one connected practice, the person picks one.
 6. Before sending, Duet says that a send can't be taken back, and that it isn't for urgent needs or for questions that need an answer.
-7. A send clears the marks it carried. The person can mark the same record again later and send it again.
+7. A send clears the marks it carried and takes the notes it carried out of the list. The person can mark the same record again later and send it again.
 8. Shared lists each send with its date and status: Sent, then Received by the care team once the practice's agents have picked it up. Sends show as a list, never as a chat thread, so nothing suggests a reply is coming. The person can open a send and see exactly what went. No status claims that a physician looked at it. Nothing else comes back into Duet from a send in the MVP.
 9. The practice's agents review a send like any shared record and judge whether a physician needs to see it.
 10. Joining a practice sends nothing from For my doctor and asks nothing about it. What was marked stays marked, and Send becomes available.
