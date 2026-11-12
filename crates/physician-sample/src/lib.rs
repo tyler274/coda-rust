@@ -145,15 +145,6 @@ where
         )
         .route("/patient-workspaces", get(patient_list))
         .route("/patient-workspaces/{id}", get(workspace))
-        .route("/patient-workspaces/{id}/plan", get(care::get_plan))
-        .route(
-            "/patient-workspaces/{id}/plan/draft",
-            axum::routing::put(care::put_plan_draft),
-        )
-        .route(
-            "/patient-workspaces/{id}/plan/approve",
-            post(care::post_approve_plan),
-        )
         .route("/patient-roster", get(roster))
         .route("/dictation", post(|| async { dictation_unavailable() }))
         .route("/", get(site_index))
@@ -1022,7 +1013,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn connected_care_patient_link_and_exact_text_plan() {
+    async fn connected_care_patient_link() {
         use physician_auth::{AuthStore, MemoryAuthStore};
         let patient_id = "pw-39e51534-6ce4-43cf-b5f8-7c1ca6252d8e";
         let store = MemoryAuthStore::new();
@@ -1080,119 +1071,5 @@ mod tests {
         assert_eq!(ws_json["patient_link"]["linked"], true);
         assert_eq!(ws_json["patient_link"]["sharing_consented"], true);
         assert!(ws_json.get("duet_records").is_none());
-
-        // 4. Physician drafts a plan, approves exact text (v1), edits (invalidating approval),
-        //    and approves batched item diffs (v2).
-        let draft_v1 = serde_json::json!({
-            "items": [
-                {
-                    "id": "plan-1",
-                    "title": "Continue statin",
-                    "body": "Continue rosuvastatin 10 mg nightly."
-                },
-                {
-                    "id": "plan-2",
-                    "title": "Daily walking",
-                    "body": "Walk 30 minutes daily after dinner."
-                }
-            ]
-        });
-        let (status, draft_body) = request(
-            app.clone(),
-            "PUT",
-            &format!("/patient-workspaces/{patient_id}/plan/draft"),
-            Body::from(serde_json::to_vec(&draft_v1).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{draft_body}");
-        let draft_json: Value = serde_json::from_str(&draft_body).unwrap();
-        assert_eq!(draft_json["currently_approved"], false);
-        assert_eq!(draft_json["approved_version"], 0);
-
-        // Mismatched exact text is rejected with 400 BAD_REQUEST.
-        let wrong_approve = serde_json::json!({
-            "approved_items": [
-                {
-                    "id": "plan-1",
-                    "title": "Continue statin",
-                    "body": "Wrong text"
-                }
-            ]
-        });
-        let (status, _) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/plan/approve"),
-            Body::from(serde_json::to_vec(&wrong_approve).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::BAD_REQUEST);
-
-        // Exact-text approval of full first version succeeds -> v1.
-        let approve_v1 = serde_json::json!({
-            "approved_items": draft_v1["items"]
-        });
-        let (status, approved_v1_body) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/plan/approve"),
-            Body::from(serde_json::to_vec(&approve_v1).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{approved_v1_body}");
-        let approved_v1_json: Value = serde_json::from_str(&approved_v1_body).unwrap();
-        assert_eq!(approved_v1_json["version"], 1);
-        assert_eq!(approved_v1_json["label"], "your doctor's plan");
-
-        // Any edit invalidates prior approval and marks only the edited item as needing approval.
-        let draft_v2 = serde_json::json!({
-            "items": [
-                {
-                    "id": "plan-1",
-                    "title": "Continue statin",
-                    "body": "Increase rosuvastatin to 20 mg nightly."
-                },
-                {
-                    "id": "plan-2",
-                    "title": "Daily walking",
-                    "body": "Walk 30 minutes daily after dinner."
-                }
-            ]
-        });
-        let (status, draft_v2_body) = request(
-            app.clone(),
-            "PUT",
-            &format!("/patient-workspaces/{patient_id}/plan/draft"),
-            Body::from(serde_json::to_vec(&draft_v2).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{draft_v2_body}");
-        let draft_v2_json: Value = serde_json::from_str(&draft_v2_body).unwrap();
-        assert_eq!(draft_v2_json["currently_approved"], false);
-        assert_eq!(draft_v2_json["items"][0]["needs_approval"], true);
-        assert_eq!(draft_v2_json["items"][1]["needs_approval"], false);
-
-        // Approve v2 via batched item diff (only the changed item needs to be approved).
-        let approve_v2 = serde_json::json!({
-            "approved_items": [
-                {
-                    "id": "plan-1",
-                    "title": "Continue statin",
-                    "body": "Increase rosuvastatin to 20 mg nightly."
-                }
-            ]
-        });
-        let (status, approved_v2_body) = request(
-            app.clone(),
-            "POST",
-            &format!("/patient-workspaces/{patient_id}/plan/approve"),
-            Body::from(serde_json::to_vec(&approve_v2).unwrap()),
-        )
-        .await;
-        assert_eq!(status, StatusCode::OK, "{approved_v2_body}");
-        let approved_v2_json: Value = serde_json::from_str(&approved_v2_body).unwrap();
-        assert_eq!(approved_v2_json["version"], 2);
-        assert_eq!(approved_v2_json["last_diff"].as_array().unwrap().len(), 1);
-        assert_eq!(approved_v2_json["last_diff"][0]["item_id"], "plan-1");
     }
 }

@@ -1974,20 +1974,20 @@ mod tests {
             .register_patient("northside-clinic", "pw-elsewhere")
             .await
             .unwrap();
-        let plan = async |workspace: &str| {
-            let path = format!("/patient-workspaces/{workspace}/plan");
+        let snapshot = async |workspace: &str| {
+            let path = format!("/patient-workspaces/{workspace}/chats/none/snapshot");
             send(&app, Method::GET.as_str(), &path, Some(&session), None)
                 .await
                 .0
         };
 
-        assert_eq!(plan("pw-chart").await, StatusCode::NOT_FOUND);
-        assert_eq!(plan("pw-elsewhere").await, StatusCode::NOT_FOUND);
+        assert_eq!(snapshot("pw-chart").await, StatusCode::NOT_FOUND);
+        assert_eq!(snapshot("pw-elsewhere").await, StatusCode::NOT_FOUND);
         store
             .register_patient(STAGING_PRACTICE_ID, "pw-chart")
             .await
             .unwrap();
-        assert_eq!(plan("pw-chart").await, StatusCode::OK);
+        assert_eq!(snapshot("pw-chart").await, StatusCode::OK);
     }
 
     #[tokio::test]

@@ -441,9 +441,6 @@ pub struct PatientWorkspaceResponse {
     #[serde(default)]
     /// The patient front-door link, versioned consent state, and review cadence (`ENG-44`).
     pub patient_link: Option<PatientLinkWire>,
-    #[serde(default)]
-    /// The physician-authored patient plan draft and exact-text approval state (`ENG-53`).
-    pub doctor_plan: Option<DoctorPlanDraftWire>,
 }
 
 impl PatientWorkspaceResponse {
@@ -947,95 +944,6 @@ pub struct PatientLinkWire {
     #[serde(default)]
     /// The per-patient review cadence exposed to Agents (`"weekly"` or `"daily_when_changed"`).
     pub cadence: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// One item in a physician-authored or approved patient plan (`ENG-53` / `ENG-54`).
-pub struct PlanItemWire {
-    /// Stable item identifier within the plan.
-    pub id: String,
-    /// Item heading.
-    pub title: String,
-    /// Exact clinical guidance text visible to the patient.
-    pub body: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// One drafted item in the physician's plan with exact-text approval tracking (`ENG-53`).
-pub struct DoctorPlanItemWire {
-    /// Stable item identifier within the plan.
-    pub id: String,
-    /// Item heading.
-    pub title: String,
-    /// Current drafted body text.
-    pub body: String,
-    #[serde(default)]
-    /// Previously approved exact title, if any.
-    pub approved_title: Option<String>,
-    #[serde(default)]
-    /// Previously approved exact body text, if any.
-    pub approved_body: Option<String>,
-    #[serde(default)]
-    /// Whether this item is new or edited since the last approval.
-    pub needs_approval: bool,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// One batched item diff approved by the physician (`ENG-53`).
-pub struct PlanDiffEntryWire {
-    /// Stable item identifier.
-    pub item_id: String,
-    /// Approved item title.
-    pub title: String,
-    #[serde(default)]
-    /// Previous approved body text (`None` when newly added).
-    pub previous_body: Option<String>,
-    /// Newly approved exact body text.
-    pub approved_body: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// The physician-approved patient plan displayed read-only in Duet as `"your doctor's plan"` (`ENG-54`).
-pub struct ApprovedDoctorPlanWire {
-    /// Patient workspace identifier.
-    pub patient_workspace_id: String,
-    /// Practice identifier.
-    pub practice_id: String,
-    /// Approving physician's display name.
-    pub physician_name: String,
-    /// Patient-facing section label (`"your doctor's plan"`).
-    pub label: String,
-    /// Monotonically increasing approved version (`1` for full first version, `2+` for batched diffs).
-    pub version: u32,
-    /// Timestamp or date string when approved.
-    pub approved_at: String,
-    #[serde(default)]
-    /// Full list of exact-text approved items in the plan.
-    pub items: Vec<PlanItemWire>,
-    #[serde(default)]
-    /// The exact-text items approved in this version.
-    pub last_diff: Vec<PlanDiffEntryWire>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-/// Physician workspace state for drafting and approving a patient plan (`ENG-53`).
-pub struct DoctorPlanDraftWire {
-    /// Patient workspace identifier.
-    pub patient_workspace_id: String,
-    /// Practice identifier.
-    pub practice_id: String,
-    /// Authoring physician's display name.
-    pub physician_name: String,
-    /// Highest approved version (`0` before the first approval).
-    pub approved_version: u32,
-    /// Whether the current draft's exact text is approved with zero unapproved edits.
-    pub currently_approved: bool,
-    #[serde(default)]
-    /// Current drafted items and their per-item approval state.
-    pub items: Vec<DoctorPlanItemWire>,
-    #[serde(default)]
-    /// Latest approved snapshot delivered to Duet, if any.
-    pub latest_approved: Option<ApprovedDoctorPlanWire>,
 }
 
 #[cfg(test)]
