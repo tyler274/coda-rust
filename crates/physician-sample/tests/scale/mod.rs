@@ -951,7 +951,14 @@ pub async fn answered_chat(
             scenario: None,
         };
         store
-            .accept_authorized(&scope, &input, vec![7; 32], &skills, &models::chat_recipe())
+            .accept_authorized(
+                &scope,
+                &input,
+                vec![7; 32],
+                &skills,
+                &models::chat_recipe(),
+                None,
+            )
             .await
             .expect("accept question");
         let claim = store
