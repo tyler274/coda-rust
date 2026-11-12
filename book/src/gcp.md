@@ -371,8 +371,8 @@ GiB-second, instance-based) for an instance kept warm for a month:
 
 - `physician` with the sidecar: 2 vCPU and 1.25 GiB, about $101 a month instead
   of about $53 without it. Only scaling's minimum instance keeps it warm all month.
-- `physician-worker` has the same shape and its own minimum instance, so it
-  costs the same again: about $101 a month with the sidecar, about $53 without.
+- `physician-worker` has the same shape, instance-based CPU and its own minimum
+  instance, so it is kept warm all month as well.
 - `duet` stays on request-based billing and scales to zero, so idle time costs
   nothing. Instance-based CPU would have billed each warm instance for up to 15
   idle minutes after every request, up to about $101 a month at continuous low
