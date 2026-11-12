@@ -80,7 +80,7 @@ Inside the container, git asks `coda-sandbox credential` for `https://github.com
 
 With `ci.enable`, the broker also listens on `/run/coda-sandbox/ci/broker.sock`, in a directory only you and the `coda-ci` user can enter, and serves the `github-ci` token there to the CI controller's user alone. Each socket answers only for its own tokens: the container cannot ask for the CI token, even on its own socket, and the controller cannot ask for the container's. Each socket serves at most 16 connections at once, with separate room for you, and gives a caller two seconds to send its request, so a stalled caller on one socket cannot hold up the other, nor stop `broker store` from reaching the running broker. If the socket the controller would use exists but it may not reach it, its pass fails instead of quietly skipping GitHub.
 
-The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`.
+The module's polkit rule lets `user` start, stop and restart `container@<name>.service` and the `coda-ci` units without sudo, so doctor's fixes for them are plain `systemctl`. A switch never restarts the container, so it cannot cut off an agent's work; a change to the container's own configuration takes effect at `systemctl restart container@<name>.service`.
 
 ### Working in the sandbox from an editor or agent CLI
 
