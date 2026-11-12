@@ -747,8 +747,139 @@ async fn off_panel_colleague_sees_practice_outage_without_patient_failure_string
         "duplicate idempotency_key replay must not re-run reconnect side effects"
     );
 
-    // Reusing the same `idempotency_key` with a different `source_id` returns `rejected`.
-    let (status, conflict_cmd) = post_json(
+    // Restore healthy mode and run a SECOND reconnect under a fresh key at `t3` (advancing
+    // `practice_source_access.connected_at` to `t3`), then verify replaying `idem_key` STILL
+    // returns its original `reconnected_at == t1` rather than reconstructing `t3`!
+    let t3 = t1 + 7_200;
+    let (status, _) = post_json(
+        &base,
+        &owner_session,
+        "/local-proof/sources/synthetic-charts/mode",
+        json!({
+            "practice_id": practice_id,
+            "mode": "healthy",
+        }),
+    )
+    .await;
+    assert_eq!(status, 200);
+    advance_practice_clock(&db_url, &practice_id, t3).await;
+
+    let idem_key_2 = format!("idem-reconn-2-{run}");
+    let (status, second_cmd) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem_key_2,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{second_cmd}");
+    assert_eq!(second_cmd["outcome"], "accepted");
+    assert_eq!(second_cmd["receipt"]["reconnected_at"], t3 as i64);
+
+    let (status, replay_after_later) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": idem_key,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{replay_after_later}");
+    assert_eq!(replay_after_later["outcome"], "accepted");
+    assert_eq!(
+        replay_after_later["receipt"]["reconnected_at"], t1 as i64,
+        "replaying an older key after a later reconnect must return its original persisted receipt"
+    );
+
+    // Record a durable command receipt for a second source (`clinic-b-ehr`) under `other_source_key`,
+    // then reuse `other_source_key` over HTTP `/commands` targeting the VALID, REGISTERED `SOURCE_ID`
+    // (`synthetic-charts`) while `synthetic-charts` is healthy: must reject via receipt comparison!
+    struct SecondEhr;
+    #[async_trait::async_trait]
+    impl local_product::physician_sources::PatientSource for SecondEhr {
+        fn source_id(&self) -> &str {
+            "clinic-b-ehr"
+        }
+        fn source_label(&self) -> &str {
+            "Clinic B EHR"
+        }
+        async fn patient_ids(
+            &self,
+        ) -> Result<Vec<String>, local_product::physician_sources::SourceAdapterError> {
+            Ok(Vec::new())
+        }
+        async fn patient(
+            &self,
+            id: &str,
+        ) -> Result<
+            local_product::physician_sources::SourcePatient,
+            local_product::physician_sources::SourceAdapterError,
+        > {
+            Ok(local_product::physician_sources::SourcePatient {
+                source_patient_id: id.to_owned(),
+                display_name: id.to_owned(),
+                birth_date: None,
+                sex_or_gender: None,
+                medical_record_numbers: Vec::new(),
+            })
+        }
+        async fn records(
+            &self,
+            _patient: &local_product::physician_sources::SourcePatient,
+            _workspace: &str,
+        ) -> Result<
+            Vec<local_product::physician_sources::SourceRevision>,
+            local_product::physician_sources::SourceAdapterError,
+        > {
+            Ok(Vec::new())
+        }
+    }
+
+    let other_source_key = format!("idem-other-src-{run}");
+    let seeded = local_product::source_status::SourceCoordinator::reconnect_source_command(
+        &runtime,
+        local_product::source_status::ReconnectCommand {
+            practice_id: &practice_id,
+            physician_id: &run,
+            idempotency_key: &other_source_key,
+            source_id: "clinic-b-ehr",
+            source: Some(&SecondEhr),
+            now: t3 as i64,
+        },
+    )
+    .await
+    .unwrap();
+    assert!(matches!(
+        seeded,
+        local_product::source_status::ReconnectCommandOutcome::Accepted { .. }
+    ));
+
+    let (status, conflict_valid_source) = post_json(
+        &base,
+        &owner_session,
+        "/commands",
+        json!({
+            "type": "reconnect_source",
+            "idempotency_key": other_source_key,
+            "payload": { "source_id": SOURCE_ID }
+        }),
+    )
+    .await;
+    assert_eq!(status, 200, "{conflict_valid_source}");
+    assert_eq!(
+        conflict_valid_source["outcome"], "rejected",
+        "reusing an existing command key against a valid registered source must reject via receipt comparison"
+    );
+
+    // Also verify reusing `idem_key` against an unregistered source rejects via receipt comparison.
+    let (status, conflict_unregistered) = post_json(
         &base,
         &owner_session,
         "/commands",
@@ -759,6 +890,6 @@ async fn off_panel_colleague_sees_practice_outage_without_patient_failure_string
         }),
     )
     .await;
-    assert_eq!(status, 200, "{conflict_cmd}");
-    assert_eq!(conflict_cmd["outcome"], "rejected");
+    assert_eq!(status, 200, "{conflict_unregistered}");
+    assert_eq!(conflict_unregistered["outcome"], "rejected");
 }

@@ -1,11 +1,12 @@
-//! Additive schema for pull missing-record receipts, practice-scoped source
-//! patient links, practice source access state, and per-patient pull status.
+//! Additive schema for pull missing-record receipts, nullable partial-pull
+//! timestamps, practice-scoped source patient links, practice source access
+//! state, per-patient pull status, and durable reconnect command execution.
 
 use sea_orm_migration::prelude::*;
 
 use super::super::entities::{
-    patient_source_status, practice_source_access, source_patient_link, source_pull,
-    workspace_practice,
+    patient_source_status, practice_source_access, reconnect_command, source_patient_link,
+    source_pull, workspace_practice,
 };
 
 #[derive(DeriveMigrationName)]
@@ -23,6 +24,11 @@ impl MigrationTrait for Migration {
                             .json_binary()
                             .not_null()
                             .default(Expr::cust("'[]'::jsonb")),
+                    )
+                    .modify_column(
+                        ColumnDef::new(source_pull::Column::PulledAt)
+                            .big_integer()
+                            .null(),
                     )
                     .to_owned(),
             )
@@ -160,6 +166,52 @@ impl MigrationTrait for Migration {
                             .col(patient_source_status::Column::Practice)
                             .col(patient_source_status::Column::Workspace)
                             .col(patient_source_status::Column::SourceId),
+                    )
+                    .to_owned(),
+            )
+            .await?;
+
+        manager
+            .create_table(
+                Table::create()
+                    .table(reconnect_command::Entity)
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::Practice)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::Physician)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::Key)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::SourceId)
+                            .text()
+                            .not_null(),
+                    )
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::State)
+                            .json_binary()
+                            .not_null(),
+                    )
+                    .col(ColumnDef::new(reconnect_command::Column::LeaseOwner).text())
+                    .col(ColumnDef::new(reconnect_command::Column::LeaseUntil).big_integer())
+                    .col(
+                        ColumnDef::new(reconnect_command::Column::UpdatedAt)
+                            .big_integer()
+                            .not_null(),
+                    )
+                    .primary_key(
+                        Index::create()
+                            .col(reconnect_command::Column::Practice)
+                            .col(reconnect_command::Column::Physician)
+                            .col(reconnect_command::Column::Key),
                     )
                     .to_owned(),
             )

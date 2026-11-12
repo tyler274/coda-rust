@@ -10,6 +10,8 @@
 //! - [`SourceCoordinator`] executes patient checks, practice checks, and
 //!   reconnect operations through [`PatientSource`] over [`Store`].
 
+use std::time::Duration;
+
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 
@@ -20,8 +22,7 @@ pub use crate::physician_sources::{
     FailedPart, PullOutcome, ReconnectReceipt, SourceAdapterError, SourcePullOutput,
 };
 use crate::runtime::Store;
-use crate::runtime::receipt::{ExistingReceipt, Receipt};
-use crate::runtime::sources::SourcePull;
+use crate::runtime::source_status::release_reconnect_command_lease_db;
 
 /// Errors returned by source patient linking, status persistence, and connector operations.
 #[derive(Debug, thiserror::Error)]
@@ -505,7 +506,27 @@ pub struct PracticeCheckReport {
     pub patients: Vec<PatientCheckReport>,
 }
 
-/// Inputs for persisting the succeeded portion of a partial source pull.
+/// Inputs for atomically persisting a complete source pull and its [`PullOutcome::Succeeded`] status.
+#[derive(Clone, Copy, Debug)]
+pub struct CompleteDelivery<'a> {
+    /// Practice owning the workspace.
+    pub practice_id: &'a str,
+    /// Bound patient workspace identifier.
+    pub workspace_id: &'a str,
+    /// Source adapter identifier.
+    pub source_id: &'a str,
+    /// Physician-facing source label.
+    pub source_label: &'a str,
+    /// Patient identity reported by the source.
+    pub patient: &'a SourcePatient,
+    /// Admitted source revisions from the complete pull.
+    pub records: &'a [SourceRevision],
+    /// Practice-clock Unix second when the complete pull finished.
+    pub pulled_at: i64,
+}
+
+/// Inputs for atomically persisting the succeeded portion of a partial source pull
+/// and its [`PullOutcome::Partial`] status.
 #[derive(Clone, Copy, Debug)]
 pub struct PartialDelivery<'a> {
     /// Practice owning the workspace.
@@ -522,6 +543,10 @@ pub struct PartialDelivery<'a> {
     pub succeeded_kinds: &'a [SourceRecordKind],
     /// Admitted source revisions from the parts that succeeded.
     pub records: &'a [SourceRevision],
+    /// Resource families or parts that failed.
+    pub failed_parts: &'a [FailedPart],
+    /// Practice-clock Unix second when the partial pull ran.
+    pub attempted_at: i64,
 }
 
 /// Result of reconnecting a practice's source and catching up linked patients.
@@ -535,20 +560,134 @@ pub struct ReconnectReport {
     pub check: PracticeCheckReport,
 }
 
-/// Outcome of an idempotent `reconnect_source` command backed by `physician_runtime_commands`.
+/// Inputs to [`SourceCoordinator::reconnect_source_command`].
+#[derive(Clone, Copy)]
+pub struct ReconnectCommand<'a> {
+    /// Practice owning the command.
+    pub practice_id: &'a str,
+    /// Physician submitting the command.
+    pub physician_id: &'a str,
+    /// Client-supplied command idempotency key.
+    pub idempotency_key: &'a str,
+    /// Requested source adapter identifier.
+    pub source_id: &'a str,
+    /// Registered adapter for `source_id`, if present.
+    pub source: Option<&'a dyn PatientSource>,
+    /// Practice-clock Unix second when the command is evaluated.
+    pub now: i64,
+}
+
+/// Outcome of an idempotent `reconnect_source` command backed by `physician_runtime_commands`
+/// and `physician_runtime_reconnect_commands`.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum ReconnectCommandOutcome {
     /// Newly executed reconnect and catch-up check, or a duplicate replay of the same command.
     Accepted {
-        /// Adapter confirmation receipt.
+        /// Original adapter confirmation receipt persisted for this command key.
         receipt: ReconnectReceipt,
-        /// Practice-level source access state.
+        /// Practice-level source access state recorded by this command.
         access: SourceAccessState,
-        /// Practice-level source summary.
+        /// Practice-level source summary recorded when this command completed.
         summary: PracticeSourceSummary,
     },
     /// The caller's `idempotency_key` already belongs to a different command or source.
     ConflictingKey,
+    /// The requested `source_id` is not registered for execution.
+    UnregisteredSource,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum AdapterPresence {
+    Registered,
+    Unregistered,
+}
+
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "phase", rename_all = "snake_case")]
+pub(crate) enum ReconnectCommandState {
+    Claimed {
+        source_id: String,
+    },
+    Reconnected {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+    },
+    Completed {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+}
+
+pub(crate) enum ReconnectCommandClaim {
+    Execute {
+        lease_owner: String,
+        state: ReconnectCommandState,
+    },
+    AlreadyCompleted {
+        receipt: ReconnectReceipt,
+        access: SourceAccessState,
+        summary: PracticeSourceSummary,
+    },
+    WaitForActiveLease,
+    ConflictingKey,
+    UnregisteredSource,
+}
+
+struct ReconnectLeaseGuard {
+    armed: bool,
+    db: sea_orm::DatabaseConnection,
+    practice_id: String,
+    physician_id: String,
+    key: String,
+    lease_owner: String,
+}
+
+impl ReconnectLeaseGuard {
+    fn disarm(&mut self) {
+        self.armed = false;
+    }
+
+    async fn release_now(&mut self) {
+        if !self.armed {
+            return;
+        }
+        self.armed = false;
+        let _ = release_reconnect_command_lease_db(
+            &self.db,
+            &self.practice_id,
+            &self.physician_id,
+            &self.key,
+            &self.lease_owner,
+        )
+        .await;
+    }
+}
+
+impl Drop for ReconnectLeaseGuard {
+    fn drop(&mut self) {
+        if !self.armed {
+            return;
+        }
+        self.armed = false;
+        if let Ok(handle) = tokio::runtime::Handle::try_current() {
+            let db = self.db.clone();
+            let practice_id = self.practice_id.clone();
+            let physician_id = self.physician_id.clone();
+            let key = self.key.clone();
+            let lease_owner = self.lease_owner.clone();
+            handle.spawn(async move {
+                let _ = release_reconnect_command_lease_db(
+                    &db,
+                    &practice_id,
+                    &physician_id,
+                    &key,
+                    &lease_owner,
+                )
+                .await;
+            });
+        }
+    }
 }
 
 /// Coordinates patient-link resolution, chart pulling, status recording, and reconnects
@@ -591,9 +730,10 @@ impl SourceCoordinator {
     }
 
     /// Loads or refreshes one patient from `source` during bulk onboarding:
-    /// reuses an existing link when present, refuses cross-practice workspaces before pulling,
-    /// and links a brand-new patient only when the adapter delivers usable (`Complete` or `Partial`)
-    /// records so an unreadable initial chart does not create an orphan link.
+    /// resolves or creates the practice-scoped source-patient link so failed, lapsed, or
+    /// identity-less initial pulls remain addressable by [`Self::check_practice`] and
+    /// [`Self::reconnect_source`], while keeping directory identity (`source_pulls`) withheld
+    /// until `source` delivers a [`SourcePatient`].
     pub async fn onboard_or_check_patient(
         store: &Store,
         source: &dyn PatientSource,
@@ -602,176 +742,7 @@ impl SourceCoordinator {
         target: LinkTarget<'_>,
         now: i64,
     ) -> Result<PatientCheckReport, SourceStatusError> {
-        let key = SourcePatientKey {
-            practice_id: practice_id.to_owned(),
-            source_id: source.source_id().to_owned(),
-            source_patient_id: source_patient_id.to_owned(),
-        };
-        if let Some(existing) = store.source_patient_link(&key).await? {
-            if let LinkTarget::Exact(requested) = target
-                && requested != existing.workspace_id
-            {
-                return Err(SourceStatusError::ConflictingWorkspaceLink {
-                    practice_id: key.practice_id,
-                    source_id: key.source_id,
-                    source_patient_id: key.source_patient_id,
-                    existing_workspace_id: existing.workspace_id,
-                    requested_workspace_id: requested.to_owned(),
-                });
-            }
-            store
-                .verify_workspace_practice(practice_id, &existing.workspace_id)
-                .await?;
-            let output = source
-                .pull_patient(practice_id, source_patient_id, &existing.workspace_id)
-                .await;
-            return apply_pull_output(
-                store,
-                source,
-                practice_id,
-                source_patient_id,
-                existing.workspace_id,
-                output,
-                now,
-            )
-            .await;
-        }
-
-        let candidate_workspace = target.workspace();
-        store
-            .verify_workspace_practice(practice_id, candidate_workspace)
-            .await?;
-
-        let output = source
-            .pull_patient(practice_id, source_patient_id, candidate_workspace)
-            .await;
-        match output {
-            SourcePullOutput::Complete { .. } => {
-                let link = store
-                    .resolve_or_link_patient(&key, LinkTarget::Exact(candidate_workspace), now)
-                    .await?;
-                apply_pull_output(
-                    store,
-                    source,
-                    practice_id,
-                    source_patient_id,
-                    link.workspace_id,
-                    output,
-                    now,
-                )
-                .await
-            }
-            SourcePullOutput::Partial {
-                ref patient,
-                ref failed_parts,
-                ..
-            } => {
-                let has_prior_identity = store
-                    .source_pulls(&[candidate_workspace.to_owned()])
-                    .await?
-                    .get(candidate_workspace)
-                    .is_some_and(|pulls| !pulls.is_empty());
-                if patient.is_some() || has_prior_identity {
-                    let link = store
-                        .resolve_or_link_patient(&key, LinkTarget::Exact(candidate_workspace), now)
-                        .await?;
-                    apply_pull_output(
-                        store,
-                        source,
-                        practice_id,
-                        source_patient_id,
-                        link.workspace_id,
-                        output,
-                        now,
-                    )
-                    .await
-                } else {
-                    let attempt = PullAttempt {
-                        attempted_at: now,
-                        outcome: PullOutcome::Partial {
-                            failed_parts: failed_parts.clone(),
-                            missing_candidates: Vec::new(),
-                        },
-                    };
-                    let status = store
-                        .record_pull_status(
-                            practice_id,
-                            candidate_workspace,
-                            source.source_id(),
-                            &attempt,
-                        )
-                        .await?;
-                    let access = store
-                        .practice_source_access(practice_id, source.source_id())
-                        .await?;
-                    let standing = derive_standing(access.as_ref(), Some(&status));
-                    Ok(PatientCheckReport {
-                        workspace_id: candidate_workspace.to_owned(),
-                        source_patient_id: source_patient_id.to_owned(),
-                        standing,
-                        changed: 0,
-                        records_delivered: 0,
-                        missing_candidates: Vec::new(),
-                    })
-                }
-            }
-            SourcePullOutput::Failed { error } => {
-                let attempt = PullAttempt {
-                    attempted_at: now,
-                    outcome: PullOutcome::Failed {
-                        reason: error.to_string(),
-                    },
-                };
-                let status = store
-                    .record_pull_status(
-                        practice_id,
-                        candidate_workspace,
-                        source.source_id(),
-                        &attempt,
-                    )
-                    .await?;
-                let access = store
-                    .practice_source_access(practice_id, source.source_id())
-                    .await?;
-                let standing = derive_standing(access.as_ref(), Some(&status));
-                Ok(PatientCheckReport {
-                    workspace_id: candidate_workspace.to_owned(),
-                    source_patient_id: source_patient_id.to_owned(),
-                    standing,
-                    changed: 0,
-                    records_delivered: 0,
-                    missing_candidates: Vec::new(),
-                })
-            }
-            SourcePullOutput::LapsedAccess { error } => {
-                let attempt = PullAttempt {
-                    attempted_at: now,
-                    outcome: PullOutcome::LapsedAccess {
-                        reason: error.to_string(),
-                    },
-                };
-                let status = store
-                    .record_pull_status(
-                        practice_id,
-                        candidate_workspace,
-                        source.source_id(),
-                        &attempt,
-                    )
-                    .await?;
-                let access = store
-                    .practice_source_access(practice_id, source.source_id())
-                    .await?;
-                let standing = derive_standing(access.as_ref(), Some(&status));
-                Ok(PatientCheckReport {
-                    workspace_id: candidate_workspace.to_owned(),
-                    source_patient_id: source_patient_id.to_owned(),
-                    standing,
-                    changed: 0,
-                    records_delivered: 0,
-                    missing_candidates: Vec::new(),
-                })
-            }
-        }
+        Self::check_patient(store, source, practice_id, source_patient_id, target, now).await
     }
 
     /// Checks every patient linked to `(practice_id, source.source_id())` and computes
@@ -839,73 +810,160 @@ impl SourceCoordinator {
     }
 
     /// Executes an idempotent `reconnect_source` command scoped to `(practice_id, physician_id)`
-    /// and persisted in `physician_runtime_commands`.
+    /// and coordinated durably in `physician_runtime_commands` + `physician_runtime_reconnect_commands`.
     ///
-    /// A duplicate retry with the same `idempotency_key` and `source_id` returns the stored
-    /// state without invoking `source.reconnect` or `check_practice` again; reusing the key
-    /// for a different command or source returns [`ReconnectCommandOutcome::ConflictingKey`].
+    /// - Conflicting key reuse is detected before adapter lookup or side effects.
+    /// - Concurrent duplicate calls serialize on a durable lease so `source.reconnect` runs once.
+    /// - Interrupted execution after `source.reconnect` resumes at `check_practice` without
+    ///   re-invoking `source.reconnect`.
+    /// - Replaying an accepted key returns its original persisted [`ReconnectReceipt`].
     pub async fn reconnect_source_command(
         store: &Store,
-        source: &dyn PatientSource,
-        practice_id: &str,
-        physician_id: &str,
-        idempotency_key: &str,
-        now: i64,
+        cmd: ReconnectCommand<'_>,
     ) -> Result<ReconnectCommandOutcome, SourceStatusError> {
-        validate_non_empty("practice_id", practice_id)?;
-        validate_non_empty("physician_id", physician_id)?;
-        validate_non_empty("idempotency_key", idempotency_key)?;
+        validate_non_empty("practice_id", cmd.practice_id)?;
+        validate_non_empty("physician_id", cmd.physician_id)?;
+        validate_non_empty("idempotency_key", cmd.idempotency_key)?;
+        validate_non_empty("source_id", cmd.source_id)?;
 
-        let source_id = source.source_id();
-        let command = json!({
+        let command_payload = json!({
             "scope": {
-                "practice": practice_id,
-                "physician": physician_id,
+                "practice": cmd.practice_id,
+                "physician": cmd.physician_id,
             },
             "reconnect_source": {
-                "source_id": source_id,
+                "source_id": cmd.source_id,
             },
         });
+        let presence = if cmd.source.is_some() {
+            AdapterPresence::Registered
+        } else {
+            AdapterPresence::Unregistered
+        };
 
-        match store
-            .inspect_command_receipt(practice_id, physician_id, idempotency_key, &command)
-            .await?
-        {
-            ExistingReceipt::Different => return Ok(ReconnectCommandOutcome::ConflictingKey),
-            ExistingReceipt::Same => {
-                let snapshot = store.practice_source_report(practice_id, source_id).await?;
-                let reconnected_at = match &snapshot.access {
-                    Some(SourceAccessState::Connected { connected_at }) => *connected_at,
-                    Some(SourceAccessState::ReconnectNeeded { since, .. }) => *since,
-                    None => now,
-                };
-                let access = snapshot
-                    .access
-                    .unwrap_or(SourceAccessState::Connected { connected_at: now });
-                return Ok(ReconnectCommandOutcome::Accepted {
-                    receipt: ReconnectReceipt {
-                        source_id: source_id.to_owned(),
-                        practice_id: practice_id.to_owned(),
-                        reconnected_at,
-                    },
+        let (lease_owner, state) = loop {
+            match store
+                .claim_reconnect_command(
+                    cmd.practice_id,
+                    cmd.physician_id,
+                    cmd.idempotency_key,
+                    cmd.source_id,
+                    presence,
+                    &command_payload,
+                )
+                .await?
+            {
+                ReconnectCommandClaim::ConflictingKey => {
+                    return Ok(ReconnectCommandOutcome::ConflictingKey);
+                }
+                ReconnectCommandClaim::UnregisteredSource => {
+                    return Ok(ReconnectCommandOutcome::UnregisteredSource);
+                }
+                ReconnectCommandClaim::AlreadyCompleted {
+                    receipt,
                     access,
-                    summary: snapshot.summary,
-                });
+                    summary,
+                } => {
+                    return Ok(ReconnectCommandOutcome::Accepted {
+                        receipt,
+                        access,
+                        summary,
+                    });
+                }
+                ReconnectCommandClaim::WaitForActiveLease => {
+                    tokio::time::sleep(Duration::from_millis(20)).await;
+                }
+                ReconnectCommandClaim::Execute { lease_owner, state } => {
+                    break (lease_owner, state);
+                }
             }
-            ExistingReceipt::Absent => {}
-        }
+        };
 
-        let report = Self::reconnect_source(store, source, practice_id, now).await?;
-        match store
-            .record_command_receipt(practice_id, physician_id, idempotency_key, &command)
-            .await?
-        {
-            Receipt::New | Receipt::Same => Ok(ReconnectCommandOutcome::Accepted {
-                receipt: report.receipt,
-                access: report.access,
-                summary: report.check.summary,
-            }),
-            Receipt::Different => Ok(ReconnectCommandOutcome::ConflictingKey),
+        let Some(source) = cmd.source else {
+            return Ok(ReconnectCommandOutcome::UnregisteredSource);
+        };
+
+        let mut guard = ReconnectLeaseGuard {
+            armed: true,
+            db: store.connection().clone(),
+            practice_id: cmd.practice_id.to_owned(),
+            physician_id: cmd.physician_id.to_owned(),
+            key: cmd.idempotency_key.to_owned(),
+            lease_owner: lease_owner.clone(),
+        };
+
+        let run: Result<ReconnectCommandOutcome, SourceStatusError> = async {
+            let (receipt, access) = match state {
+                ReconnectCommandState::Claimed { .. } => {
+                    let receipt =
+                        source
+                            .reconnect(cmd.practice_id, cmd.now)
+                            .await
+                            .map_err(|error| SourceStatusError::SourceAdapter {
+                                source_id: source.source_id().to_owned(),
+                                source: error,
+                            })?;
+                    let access = SourceAccessState::Connected {
+                        connected_at: receipt.reconnected_at,
+                    };
+                    store
+                        .record_reconnect_command_reconnected(
+                            cmd.practice_id,
+                            cmd.physician_id,
+                            cmd.idempotency_key,
+                            &lease_owner,
+                            &receipt,
+                            &access,
+                        )
+                        .await?;
+                    (receipt, access)
+                }
+                ReconnectCommandState::Reconnected { receipt, access } => (receipt, access),
+                ReconnectCommandState::Completed {
+                    receipt,
+                    access,
+                    summary,
+                } => {
+                    return Ok(ReconnectCommandOutcome::Accepted {
+                        receipt,
+                        access,
+                        summary,
+                    });
+                }
+            };
+
+            let check = Self::check_practice(store, source, cmd.practice_id, cmd.now).await?;
+            let summary = check.summary;
+            store
+                .complete_reconnect_command(
+                    cmd.practice_id,
+                    cmd.physician_id,
+                    cmd.idempotency_key,
+                    &lease_owner,
+                    ReconnectCommandState::Completed {
+                        receipt: receipt.clone(),
+                        access: access.clone(),
+                        summary: summary.clone(),
+                    },
+                )
+                .await?;
+            Ok(ReconnectCommandOutcome::Accepted {
+                receipt,
+                access,
+                summary,
+            })
+        }
+        .await;
+
+        match run {
+            Ok(outcome) => {
+                guard.disarm();
+                Ok(outcome)
+            }
+            Err(error) => {
+                guard.release_now().await;
+                Err(error)
+            }
         }
     }
 }
@@ -932,26 +990,22 @@ async fn apply_pull_output(
     match output {
         SourcePullOutput::Complete { patient, records } => {
             let records_delivered = records.len();
-            let pull = SourcePull {
-                source_id: source.source_id().to_owned(),
-                source_label: source.source_label().to_owned(),
-                patient,
-                pulled_at: now,
-            };
-            let ChartPullReceipt {
-                changed,
-                missing_candidates,
-            } = store
-                .record_chart_with_receipt(&workspace_id, &records, &pull)
-                .await?;
-            let attempt = PullAttempt {
-                attempted_at: now,
-                outcome: PullOutcome::Succeeded {
-                    missing_candidates: missing_candidates.clone(),
+            let (
+                ChartPullReceipt {
+                    changed,
+                    missing_candidates,
                 },
-            };
-            let status = store
-                .record_pull_status(practice_id, &workspace_id, source.source_id(), &attempt)
+                status,
+            ) = store
+                .record_complete_pull(CompleteDelivery {
+                    practice_id,
+                    workspace_id: &workspace_id,
+                    source_id: source.source_id(),
+                    source_label: source.source_label(),
+                    patient: &patient,
+                    records: &records,
+                    pulled_at: now,
+                })
                 .await?;
             let access = store
                 .practice_source_access(practice_id, source.source_id())
@@ -973,8 +1027,14 @@ async fn apply_pull_output(
             failed_parts,
         } => {
             let records_delivered = records.len();
-            let (changed, missing_candidates) = store
-                .record_partial_records(PartialDelivery {
+            let (
+                ChartPullReceipt {
+                    changed,
+                    missing_candidates,
+                },
+                status,
+            ) = store
+                .record_partial_pull(PartialDelivery {
                     practice_id,
                     workspace_id: &workspace_id,
                     source_id: source.source_id(),
@@ -982,17 +1042,9 @@ async fn apply_pull_output(
                     patient: patient.as_ref(),
                     succeeded_kinds: &succeeded_kinds,
                     records: &records,
+                    failed_parts: &failed_parts,
+                    attempted_at: now,
                 })
-                .await?;
-            let attempt = PullAttempt {
-                attempted_at: now,
-                outcome: PullOutcome::Partial {
-                    failed_parts,
-                    missing_candidates: missing_candidates.clone(),
-                },
-            };
-            let status = store
-                .record_pull_status(practice_id, &workspace_id, source.source_id(), &attempt)
                 .await?;
             let access = store
                 .practice_source_access(practice_id, source.source_id())

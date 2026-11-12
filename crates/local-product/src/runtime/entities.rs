@@ -221,8 +221,9 @@ pub(super) mod source_pull {
         /// The patient as this source identifies them.
         #[sea_orm(column_type = "JsonBinary")]
         pub patient: Json,
-        /// The practice clock's Unix second when the pull finished.
-        pub pulled_at: i64,
+        /// The practice clock's Unix second when a complete pull last finished,
+        /// or `None` when only partial records have landed.
+        pub pulled_at: Option<i64>,
         /// Previously saved candidate IDs from this source absent on this pull.
         #[sea_orm(column_type = "JsonBinary")]
         pub missing_candidates: Json,
@@ -315,6 +316,35 @@ pub(super) mod patient_source_status {
         pub last_good_read_at: Option<i64>,
         #[sea_orm(column_type = "JsonBinary")]
         pub attempt: Option<Json>,
+    }
+
+    #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
+    pub enum Relation {}
+
+    impl ActiveModelBehavior for ActiveModel {}
+}
+
+/// Durable execution state and persisted receipt for an idempotent `reconnect_source` command.
+pub(super) mod reconnect_command {
+    use sea_orm::entity::prelude::*;
+
+    #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
+    #[sea_orm(table_name = "physician_runtime_reconnect_commands")]
+    pub struct Model {
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub practice: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub physician: String,
+        #[sea_orm(primary_key, auto_increment = false, column_type = "Text")]
+        pub key: String,
+        #[sea_orm(column_type = "Text")]
+        pub source_id: String,
+        #[sea_orm(column_type = "JsonBinary")]
+        pub state: Json,
+        #[sea_orm(column_type = "Text")]
+        pub lease_owner: Option<String>,
+        pub lease_until: Option<i64>,
+        pub updated_at: i64,
     }
 
     #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]

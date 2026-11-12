@@ -32,17 +32,6 @@ pub(crate) enum Receipt {
     Different,
 }
 
-/// Whether a command key has already been recorded prior to executing side effects.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub(crate) enum ExistingReceipt {
-    /// Key has not been used yet for `(practice, physician)`.
-    Absent,
-    /// Key already holds this exact command.
-    Same,
-    /// Key already holds a different command.
-    Different,
-}
-
 /// Object keys sorted at every level, so the digest never depends on the
 /// order JSONB or a `serde_json` feature happens to keep them in.
 fn canonical(value: &Value, out: &mut String) {
@@ -133,45 +122,6 @@ pub(super) async fn record(
 }
 
 impl Store {
-    /// Checks whether `(practice, physician, key)` already holds a command receipt.
-    pub(crate) async fn inspect_command_receipt(
-        &self,
-        practice: &str,
-        physician: &str,
-        key: &str,
-        command: &Value,
-    ) -> Result<ExistingReceipt, DbErr> {
-        let existing = command::Entity::find_by_id((
-            practice.to_owned(),
-            physician.to_owned(),
-            key.to_owned(),
-        ))
-        .one(&self.db)
-        .await?;
-        let Some(row) = existing else {
-            return Ok(ExistingReceipt::Absent);
-        };
-        Ok(if matches(&row.command, command) {
-            ExistingReceipt::Same
-        } else {
-            ExistingReceipt::Different
-        })
-    }
-
-    /// Durably records `command` under `(practice, physician, key)` in `physician_runtime_commands`.
-    pub(crate) async fn record_command_receipt(
-        &self,
-        practice: &str,
-        physician: &str,
-        key: &str,
-        command: &Value,
-    ) -> Result<Receipt, DbErr> {
-        let tx = self.db.begin().await?;
-        let outcome = record(&tx, practice, physician, key, command).await?;
-        tx.commit().await?;
-        Ok(outcome)
-    }
-
     /// Reduces up to `limit` full receipts accepted at least
     /// `max_age_seconds` ago to a salted digest, oldest first, and returns
     /// how many it reduced. Rows another sweep holds are skipped, not waited

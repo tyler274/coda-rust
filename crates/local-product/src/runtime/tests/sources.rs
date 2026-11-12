@@ -217,7 +217,7 @@ fn pull(source_id: &str, pulled_at: i64) -> SourcePull {
             sex_or_gender: None,
             medical_record_numbers: vec![],
         },
-        pulled_at,
+        pulled_at: Some(pulled_at),
     }
 }
 

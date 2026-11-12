@@ -44,6 +44,45 @@ pub async fn load_synthetic_practice(
     load_practice_from_source(STAGING_PRACTICE_ID, &source, auth, runtime).await
 }
 
+/// Registers any `workspaces` that hold patient directory identity in `runtime` into
+/// `practice_id` (and fills blank panel places on the synthetic practice), withholding
+/// workspaces whose source pulls have not yet delivered a [`local_product::physician_sources::SourcePatient`].
+pub(crate) async fn enroll_identified_patients(
+    practice_id: &str,
+    auth: &dyn AuthStore,
+    runtime: &Store,
+    workspaces: &[String],
+) -> Result<(), String> {
+    if workspaces.is_empty() {
+        return Ok(());
+    }
+    let pulls = runtime
+        .source_pulls(workspaces)
+        .await
+        .map_err(|error| error.to_string())?;
+    let panel = if practice_id == STAGING_PRACTICE_ID {
+        staging_panel(auth)
+            .await
+            .map_err(|_| "read the staging panel".to_owned())?
+    } else {
+        Vec::new()
+    };
+    for workspace in workspaces {
+        if pulls.get(workspace).is_none_or(Vec::is_empty) {
+            continue;
+        }
+        auth.register_patient(practice_id, workspace)
+            .await
+            .map_err(|_| "register the patient".to_owned())?;
+        for identity in &panel {
+            auth.place_on_panel(identity, workspace)
+                .await
+                .map_err(|_| "place the patient on the panel".to_owned())?;
+        }
+    }
+    Ok(())
+}
+
 /// Loads all patients exposed by `source` into `practice_id`, recording durable
 /// source-patient links and pull status in `runtime`.
 pub async fn load_practice_from_source(
@@ -57,13 +96,6 @@ pub async fn load_practice_from_source(
             .await
             .map_err(|_| "create the synthetic practice".to_owned())?;
     }
-    let panel = if practice_id == STAGING_PRACTICE_ID {
-        staging_panel(auth)
-            .await
-            .map_err(|_| "read the staging panel".to_owned())?
-    } else {
-        Vec::new()
-    };
     let mut summary = LoadSummary {
         patients: 0,
         records: 0,
@@ -133,14 +165,13 @@ pub async fn load_practice_from_source(
                     return Err("source check produced no records".to_owned());
                 }
             }
-            auth.register_patient(practice_id, &report.workspace_id)
-                .await
-                .map_err(|_| "register the patient".to_owned())?;
-            for identity in &panel {
-                auth.place_on_panel(identity, &report.workspace_id)
-                    .await
-                    .map_err(|_| "place the patient on the panel".to_owned())?;
-            }
+            enroll_identified_patients(
+                practice_id,
+                auth,
+                runtime,
+                std::slice::from_ref(&report.workspace_id),
+            )
+            .await?;
             summary.records += report.records_delivered;
             summary.patients += 1;
             Ok(())

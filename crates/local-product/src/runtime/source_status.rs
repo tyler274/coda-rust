@@ -4,22 +4,29 @@
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 use sea_orm::{
-    ColumnTrait, ConnectionTrait, DbErr, EntityTrait, QueryFilter, QueryOrder, QuerySelect, Set,
-    TransactionTrait, sea_query::OnConflict,
+    ActiveModelTrait, ColumnTrait, ConnectionTrait, DatabaseConnection, DbErr, EntityTrait,
+    QueryFilter, QueryOrder, QuerySelect, Set, TransactionTrait, Unchanged, sea_query::OnConflict,
 };
+use serde_json::Value;
+use uuid::Uuid;
 
 use super::entities::{
-    patient_source_status, practice_source_access, source_patient_link, source_pull,
-    workspace_practice,
+    command, patient_source_status, practice_source_access, reconnect_command, source_patient_link,
+    source_pull, workspace_practice,
 };
+use super::receipt::Receipt;
 use super::sources::{MissingScope, apply_source_delivery_tx};
-use super::{Store, conversion_error, error};
-use crate::physician_sources::PullOutcome;
+use super::{Store, conversion_error, error, now};
+use crate::physician_sources::{ChartPullReceipt, PullOutcome, ReconnectReceipt};
 use crate::source_status::{
-    LinkTarget, PartialDelivery, PatientSourceRecordStatus, PracticeSourceReport, PullAttempt,
+    AdapterPresence, CompleteDelivery, LinkTarget, PartialDelivery, PatientSourceRecordStatus,
+    PracticeSourceReport, PullAttempt, ReconnectCommandClaim, ReconnectCommandState,
     SourceAccessState, SourcePatientKey, SourcePatientLink, SourceStanding, SourceStatusError,
     derive_standing, summarize_practice_source, validate_non_empty,
 };
+
+/// Lease window in seconds protecting an in-flight `reconnect_source` command across instances.
+const RECONNECT_COMMAND_LEASE_SECONDS: i64 = 30;
 
 async fn ensure_workspace_practice_tx(
     tx: &impl ConnectionTrait,
@@ -113,7 +120,151 @@ fn decode_link(row: source_patient_link::Model) -> SourcePatientLink {
     }
 }
 
+fn decode_reconnect_state(value: Value) -> Result<ReconnectCommandState, DbErr> {
+    serde_json::from_value(value).map_err(conversion_error("Json", "ReconnectCommandState"))
+}
+
+async fn record_pull_status_tx(
+    tx: &impl ConnectionTrait,
+    practice_id: &str,
+    workspace_id: &str,
+    source_id: &str,
+    attempt: &PullAttempt,
+) -> Result<PatientSourceRecordStatus, SourceStatusError> {
+    ensure_workspace_practice_tx(tx, practice_id, workspace_id).await?;
+
+    let attempt_json =
+        serde_json::to_value(attempt).map_err(conversion_error("PullAttempt", "Json"))?;
+
+    let existing = patient_source_status::Entity::find_by_id((
+        practice_id.to_owned(),
+        workspace_id.to_owned(),
+        source_id.to_owned(),
+    ))
+    .lock_exclusive()
+    .one(tx)
+    .await?;
+
+    let prior_good = match existing.as_ref() {
+        Some(row) => row.last_good_read_at,
+        None => source_pull::Entity::find_by_id((workspace_id.to_owned(), source_id.to_owned()))
+            .one(tx)
+            .await?
+            .and_then(|pull| pull.pulled_at),
+    };
+    let last_good_read_at = match &attempt.outcome {
+        PullOutcome::Succeeded { .. } => Some(attempt.attempted_at),
+        PullOutcome::Partial { .. }
+        | PullOutcome::Failed { .. }
+        | PullOutcome::LapsedAccess { .. } => prior_good,
+    };
+
+    patient_source_status::Entity::insert(patient_source_status::ActiveModel {
+        practice: Set(practice_id.to_owned()),
+        workspace: Set(workspace_id.to_owned()),
+        source_id: Set(source_id.to_owned()),
+        last_good_read_at: Set(last_good_read_at),
+        attempt: Set(Some(attempt_json)),
+    })
+    .on_conflict(
+        OnConflict::columns([
+            patient_source_status::Column::Practice,
+            patient_source_status::Column::Workspace,
+            patient_source_status::Column::SourceId,
+        ])
+        .update_columns([
+            patient_source_status::Column::LastGoodReadAt,
+            patient_source_status::Column::Attempt,
+        ])
+        .to_owned(),
+    )
+    .exec_without_returning(tx)
+    .await?;
+
+    if matches!(
+        attempt.outcome,
+        PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. }
+    ) {
+        let existing_access = practice_source_access::Entity::find_by_id((
+            practice_id.to_owned(),
+            source_id.to_owned(),
+        ))
+        .one(tx)
+        .await?
+        .map(decode_access)
+        .transpose()?;
+        let should_set_connected = match existing_access {
+            None => true,
+            Some(SourceAccessState::ReconnectNeeded { since, .. }) => attempt.attempted_at > since,
+            Some(SourceAccessState::Connected { .. }) => false,
+        };
+        if should_set_connected {
+            let connected = SourceAccessState::Connected {
+                connected_at: attempt.attempted_at,
+            };
+            let access_json = serde_json::to_value(&connected)
+                .map_err(conversion_error("SourceAccessState", "Json"))?;
+            practice_source_access::Entity::insert(practice_source_access::ActiveModel {
+                practice: Set(practice_id.to_owned()),
+                source_id: Set(source_id.to_owned()),
+                access: Set(access_json),
+                updated_at: Set(attempt.attempted_at),
+            })
+            .on_conflict(
+                OnConflict::columns([
+                    practice_source_access::Column::Practice,
+                    practice_source_access::Column::SourceId,
+                ])
+                .update_columns([
+                    practice_source_access::Column::Access,
+                    practice_source_access::Column::UpdatedAt,
+                ])
+                .to_owned(),
+            )
+            .exec_without_returning(tx)
+            .await?;
+        }
+    }
+
+    Ok(PatientSourceRecordStatus {
+        practice_id: practice_id.to_owned(),
+        workspace_id: workspace_id.to_owned(),
+        source_id: source_id.to_owned(),
+        last_good_read_at,
+        latest_attempt: Some(attempt.clone()),
+    })
+}
+
+pub(crate) async fn release_reconnect_command_lease_db(
+    db: &DatabaseConnection,
+    practice_id: &str,
+    physician_id: &str,
+    key: &str,
+    lease_owner: &str,
+) -> Result<(), DbErr> {
+    reconnect_command::Entity::update_many()
+        .col_expr(
+            reconnect_command::Column::LeaseOwner,
+            sea_orm::sea_query::Expr::value(Option::<String>::None),
+        )
+        .col_expr(
+            reconnect_command::Column::LeaseUntil,
+            sea_orm::sea_query::Expr::value(Option::<i64>::None),
+        )
+        .filter(reconnect_command::Column::Practice.eq(practice_id))
+        .filter(reconnect_command::Column::Physician.eq(physician_id))
+        .filter(reconnect_command::Column::Key.eq(key))
+        .filter(reconnect_command::Column::LeaseOwner.eq(lease_owner))
+        .exec(db)
+        .await?;
+    Ok(())
+}
+
 impl Store {
+    pub(crate) fn connection(&self) -> &DatabaseConnection {
+        &self.db
+    }
+
     /// Binds `workspace_id` to `practice_id`, refusing if `workspace_id` already belongs
     /// to another practice.
     pub async fn bind_workspace_practice(
@@ -360,124 +511,89 @@ impl Store {
         validate_non_empty("workspace_id", workspace_id)?;
         validate_non_empty("source_id", source_id)?;
 
-        let attempt_json =
-            serde_json::to_value(attempt).map_err(conversion_error("PullAttempt", "Json"))?;
+        let tx = self.db.begin().await?;
+        let status =
+            record_pull_status_tx(&tx, practice_id, workspace_id, source_id, attempt).await?;
+        tx.commit().await?;
+        Ok(status)
+    }
+
+    /// Atomically commits a complete chart delivery (`physician_runtime_sources`,
+    /// `physician_runtime_source_pulls` with `pulled_at = Some(delivery.pulled_at)`)
+    /// and its [`PullOutcome::Succeeded`] status row in one Postgres transaction.
+    pub async fn record_complete_pull(
+        &self,
+        delivery: CompleteDelivery<'_>,
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
+        validate_non_empty("practice_id", delivery.practice_id)?;
+        validate_non_empty("workspace_id", delivery.workspace_id)?;
+        validate_non_empty("source_id", delivery.source_id)?;
 
         let tx = self.db.begin().await?;
-        ensure_workspace_practice_tx(&tx, practice_id, workspace_id).await?;
-
-        let existing = patient_source_status::Entity::find_by_id((
-            practice_id.to_owned(),
-            workspace_id.to_owned(),
-            source_id.to_owned(),
-        ))
-        .lock_exclusive()
-        .one(&tx)
+        ensure_workspace_practice_tx(&tx, delivery.practice_id, delivery.workspace_id).await?;
+        let receipt = apply_source_delivery_tx(
+            &tx,
+            delivery.workspace_id,
+            delivery.source_id,
+            delivery.records,
+            MissingScope::FullChart,
+        )
         .await?;
-
-        let prior_good = match existing.as_ref() {
-            Some(row) => row.last_good_read_at,
-            None => {
-                source_pull::Entity::find_by_id((workspace_id.to_owned(), source_id.to_owned()))
-                    .one(&tx)
-                    .await?
-                    .and_then(|pull| (pull.pulled_at > 0).then_some(pull.pulled_at))
-            }
-        };
-        let last_good_read_at = match &attempt.outcome {
-            PullOutcome::Succeeded { .. } => Some(attempt.attempted_at),
-            PullOutcome::Partial { .. }
-            | PullOutcome::Failed { .. }
-            | PullOutcome::LapsedAccess { .. } => prior_good,
-        };
-
-        patient_source_status::Entity::insert(patient_source_status::ActiveModel {
-            practice: Set(practice_id.to_owned()),
-            workspace: Set(workspace_id.to_owned()),
-            source_id: Set(source_id.to_owned()),
-            last_good_read_at: Set(last_good_read_at),
-            attempt: Set(Some(attempt_json)),
+        let patient_json = serde_json::to_value(delivery.patient)
+            .map_err(conversion_error("SourcePatient", "source pull patient"))?;
+        let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
+            conversion_error("Vec<String>", "source pull missing candidates"),
+        )?;
+        source_pull::Entity::insert(source_pull::ActiveModel {
+            workspace: Set(delivery.workspace_id.to_owned()),
+            source_id: Set(delivery.source_id.to_owned()),
+            source_label: Set(delivery.source_label.to_owned()),
+            patient: Set(patient_json),
+            pulled_at: Set(Some(delivery.pulled_at)),
+            missing_candidates: Set(missing_json),
         })
         .on_conflict(
             OnConflict::columns([
-                patient_source_status::Column::Practice,
-                patient_source_status::Column::Workspace,
-                patient_source_status::Column::SourceId,
+                source_pull::Column::Workspace,
+                source_pull::Column::SourceId,
             ])
             .update_columns([
-                patient_source_status::Column::LastGoodReadAt,
-                patient_source_status::Column::Attempt,
+                source_pull::Column::SourceLabel,
+                source_pull::Column::Patient,
+                source_pull::Column::PulledAt,
+                source_pull::Column::MissingCandidates,
             ])
             .to_owned(),
         )
         .exec_without_returning(&tx)
         .await?;
 
-        if matches!(
-            attempt.outcome,
-            PullOutcome::Succeeded { .. } | PullOutcome::Partial { .. }
-        ) {
-            let existing_access = practice_source_access::Entity::find_by_id((
-                practice_id.to_owned(),
-                source_id.to_owned(),
-            ))
-            .one(&tx)
-            .await?
-            .map(decode_access)
-            .transpose()?;
-            let should_set_connected = match existing_access {
-                None => true,
-                Some(SourceAccessState::ReconnectNeeded { since, .. }) => {
-                    attempt.attempted_at > since
-                }
-                Some(SourceAccessState::Connected { .. }) => false,
-            };
-            if should_set_connected {
-                let connected = SourceAccessState::Connected {
-                    connected_at: attempt.attempted_at,
-                };
-                let access_json = serde_json::to_value(&connected)
-                    .map_err(conversion_error("SourceAccessState", "Json"))?;
-                practice_source_access::Entity::insert(practice_source_access::ActiveModel {
-                    practice: Set(practice_id.to_owned()),
-                    source_id: Set(source_id.to_owned()),
-                    access: Set(access_json),
-                    updated_at: Set(attempt.attempted_at),
-                })
-                .on_conflict(
-                    OnConflict::columns([
-                        practice_source_access::Column::Practice,
-                        practice_source_access::Column::SourceId,
-                    ])
-                    .update_columns([
-                        practice_source_access::Column::Access,
-                        practice_source_access::Column::UpdatedAt,
-                    ])
-                    .to_owned(),
-                )
-                .exec_without_returning(&tx)
-                .await?;
-            }
-        }
-
+        let attempt = PullAttempt {
+            attempted_at: delivery.pulled_at,
+            outcome: PullOutcome::Succeeded {
+                missing_candidates: receipt.missing_candidates.clone(),
+            },
+        };
+        let status = record_pull_status_tx(
+            &tx,
+            delivery.practice_id,
+            delivery.workspace_id,
+            delivery.source_id,
+            &attempt,
+        )
+        .await?;
         tx.commit().await?;
-        Ok(PatientSourceRecordStatus {
-            practice_id: practice_id.to_owned(),
-            workspace_id: workspace_id.to_owned(),
-            source_id: source_id.to_owned(),
-            last_good_read_at,
-            latest_attempt: Some(attempt.clone()),
-        })
+        Ok((receipt, status))
     }
 
-    /// Saves the records that succeeded during a partial pull without withdrawing
-    /// records from failed parts or advancing `source_pull.pulled_at`. When `delivery.patient`
-    /// is present, ensures `physician_runtime_source_pulls` holds the patient's directory
-    /// identity without fabricating a complete-pull timestamp.
-    pub async fn record_partial_records(
+    /// Atomically commits the succeeded portion of a partial pull (`physician_runtime_sources`,
+    /// optional `physician_runtime_source_pulls` directory identity with `pulled_at = None`
+    /// on fresh insert while preserving any existing complete `pulled_at`) and its
+    /// [`PullOutcome::Partial`] status row in one Postgres transaction.
+    pub async fn record_partial_pull(
         &self,
         delivery: PartialDelivery<'_>,
-    ) -> Result<(usize, Vec<String>), SourceStatusError> {
+    ) -> Result<(ChartPullReceipt, PatientSourceRecordStatus), SourceStatusError> {
         validate_non_empty("practice_id", delivery.practice_id)?;
         validate_non_empty("workspace_id", delivery.workspace_id)?;
         validate_non_empty("source_id", delivery.source_id)?;
@@ -492,18 +608,34 @@ impl Store {
             MissingScope::SucceededKinds(delivery.succeeded_kinds),
         )
         .await?;
+        let attempt = PullAttempt {
+            attempted_at: delivery.attempted_at,
+            outcome: PullOutcome::Partial {
+                failed_parts: delivery.failed_parts.to_vec(),
+                missing_candidates: receipt.missing_candidates.clone(),
+            },
+        };
+        let status = record_pull_status_tx(
+            &tx,
+            delivery.practice_id,
+            delivery.workspace_id,
+            delivery.source_id,
+            &attempt,
+        )
+        .await?;
+
+        let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
+            conversion_error("Vec<String>", "source pull missing candidates"),
+        )?;
         if let Some(source_patient) = delivery.patient {
             let patient_json = serde_json::to_value(source_patient)
                 .map_err(conversion_error("SourcePatient", "source pull patient"))?;
-            let missing_json = serde_json::to_value(&receipt.missing_candidates).map_err(
-                conversion_error("Vec<String>", "source pull missing candidates"),
-            )?;
             source_pull::Entity::insert(source_pull::ActiveModel {
                 workspace: Set(delivery.workspace_id.to_owned()),
                 source_id: Set(delivery.source_id.to_owned()),
                 source_label: Set(delivery.source_label.to_owned()),
                 patient: Set(patient_json),
-                pulled_at: Set(0),
+                pulled_at: Set(None),
                 missing_candidates: Set(missing_json),
             })
             .on_conflict(
@@ -520,9 +652,284 @@ impl Store {
             )
             .exec_without_returning(&tx)
             .await?;
+        } else if let Some(existing_pull) = source_pull::Entity::find_by_id((
+            delivery.workspace_id.to_owned(),
+            delivery.source_id.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        {
+            source_pull::ActiveModel {
+                workspace: Unchanged(existing_pull.workspace),
+                source_id: Unchanged(existing_pull.source_id),
+                source_label: Unchanged(existing_pull.source_label),
+                patient: Unchanged(existing_pull.patient),
+                pulled_at: Unchanged(existing_pull.pulled_at),
+                missing_candidates: Set(missing_json),
+            }
+            .update(&tx)
+            .await?;
         }
         tx.commit().await?;
-        Ok((receipt.changed, receipt.missing_candidates))
+        Ok((receipt, status))
+    }
+
+    pub(crate) async fn claim_reconnect_command(
+        &self,
+        practice_id: &str,
+        physician_id: &str,
+        key: &str,
+        source_id: &str,
+        presence: AdapterPresence,
+        command_payload: &Value,
+    ) -> Result<ReconnectCommandClaim, SourceStatusError> {
+        let tx = self.db.begin().await?;
+        let existing_cmd = command::Entity::find_by_id((
+            practice_id.to_owned(),
+            physician_id.to_owned(),
+            key.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?;
+
+        if let Some(existing_cmd) = existing_cmd {
+            if !super::receipt::matches(&existing_cmd.command, command_payload) {
+                tx.commit().await?;
+                return Ok(ReconnectCommandClaim::ConflictingKey);
+            }
+            let existing_state = reconnect_command::Entity::find_by_id((
+                practice_id.to_owned(),
+                physician_id.to_owned(),
+                key.to_owned(),
+            ))
+            .lock_exclusive()
+            .one(&tx)
+            .await?;
+
+            if let Some(row) = existing_state {
+                let state = decode_reconnect_state(row.state.clone())?;
+                if let ReconnectCommandState::Completed {
+                    receipt,
+                    access,
+                    summary,
+                } = state
+                {
+                    tx.commit().await?;
+                    return Ok(ReconnectCommandClaim::AlreadyCompleted {
+                        receipt,
+                        access,
+                        summary,
+                    });
+                }
+                let db_now = now(&tx).await?;
+                if row.lease_until.is_some_and(|until| until > db_now) {
+                    tx.commit().await?;
+                    return Ok(ReconnectCommandClaim::WaitForActiveLease);
+                }
+                if matches!(presence, AdapterPresence::Unregistered) {
+                    tx.commit().await?;
+                    return Ok(ReconnectCommandClaim::UnregisteredSource);
+                }
+                let lease_owner = Uuid::new_v4().to_string();
+                let lease_until = db_now + RECONNECT_COMMAND_LEASE_SECONDS;
+                reconnect_command::ActiveModel {
+                    practice: Unchanged(row.practice),
+                    physician: Unchanged(row.physician),
+                    key: Unchanged(row.key),
+                    source_id: Unchanged(row.source_id),
+                    state: Unchanged(row.state),
+                    lease_owner: Set(Some(lease_owner.clone())),
+                    lease_until: Set(Some(lease_until)),
+                    updated_at: Set(db_now),
+                }
+                .update(&tx)
+                .await?;
+                tx.commit().await?;
+                return Ok(ReconnectCommandClaim::Execute { lease_owner, state });
+            }
+
+            if matches!(presence, AdapterPresence::Unregistered) {
+                tx.commit().await?;
+                return Ok(ReconnectCommandClaim::UnregisteredSource);
+            }
+            let db_now = now(&tx).await?;
+            let lease_owner = Uuid::new_v4().to_string();
+            let state = ReconnectCommandState::Claimed {
+                source_id: source_id.to_owned(),
+            };
+            let state_json = serde_json::to_value(&state)
+                .map_err(conversion_error("ReconnectCommandState", "Json"))?;
+            reconnect_command::Entity::insert(reconnect_command::ActiveModel {
+                practice: Set(practice_id.to_owned()),
+                physician: Set(physician_id.to_owned()),
+                key: Set(key.to_owned()),
+                source_id: Set(source_id.to_owned()),
+                state: Set(state_json),
+                lease_owner: Set(Some(lease_owner.clone())),
+                lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+                updated_at: Set(db_now),
+            })
+            .exec_without_returning(&tx)
+            .await?;
+            tx.commit().await?;
+            return Ok(ReconnectCommandClaim::Execute { lease_owner, state });
+        }
+
+        if matches!(presence, AdapterPresence::Unregistered) {
+            return Ok(ReconnectCommandClaim::UnregisteredSource);
+        }
+
+        match super::receipt::record(&tx, practice_id, physician_id, key, command_payload).await? {
+            Receipt::Different => {
+                tx.commit().await?;
+                Ok(ReconnectCommandClaim::ConflictingKey)
+            }
+            Receipt::Same => {
+                tx.commit().await?;
+                Ok(ReconnectCommandClaim::WaitForActiveLease)
+            }
+            Receipt::New => {
+                let db_now = now(&tx).await?;
+                let lease_owner = Uuid::new_v4().to_string();
+                let state = ReconnectCommandState::Claimed {
+                    source_id: source_id.to_owned(),
+                };
+                let state_json = serde_json::to_value(&state)
+                    .map_err(conversion_error("ReconnectCommandState", "Json"))?;
+                reconnect_command::Entity::insert(reconnect_command::ActiveModel {
+                    practice: Set(practice_id.to_owned()),
+                    physician: Set(physician_id.to_owned()),
+                    key: Set(key.to_owned()),
+                    source_id: Set(source_id.to_owned()),
+                    state: Set(state_json),
+                    lease_owner: Set(Some(lease_owner.clone())),
+                    lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+                    updated_at: Set(db_now),
+                })
+                .exec_without_returning(&tx)
+                .await?;
+                tx.commit().await?;
+                Ok(ReconnectCommandClaim::Execute { lease_owner, state })
+            }
+        }
+    }
+
+    pub(crate) async fn record_reconnect_command_reconnected(
+        &self,
+        practice_id: &str,
+        physician_id: &str,
+        key: &str,
+        lease_owner: &str,
+        receipt: &ReconnectReceipt,
+        access: &SourceAccessState,
+    ) -> Result<(), SourceStatusError> {
+        let tx = self.db.begin().await?;
+        let row = reconnect_command::Entity::find_by_id((
+            practice_id.to_owned(),
+            physician_id.to_owned(),
+            key.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| error("missing reconnect command state"))?;
+
+        if row.lease_owner.as_deref() != Some(lease_owner) {
+            return Err(error("reconnect command lease superseded").into());
+        }
+
+        let access_json =
+            serde_json::to_value(access).map_err(conversion_error("SourceAccessState", "Json"))?;
+        practice_source_access::Entity::insert(practice_source_access::ActiveModel {
+            practice: Set(practice_id.to_owned()),
+            source_id: Set(receipt.source_id.clone()),
+            access: Set(access_json),
+            updated_at: Set(receipt.reconnected_at),
+        })
+        .on_conflict(
+            OnConflict::columns([
+                practice_source_access::Column::Practice,
+                practice_source_access::Column::SourceId,
+            ])
+            .update_columns([
+                practice_source_access::Column::Access,
+                practice_source_access::Column::UpdatedAt,
+            ])
+            .to_owned(),
+        )
+        .exec_without_returning(&tx)
+        .await?;
+
+        let db_now = now(&tx).await?;
+        let next_state = ReconnectCommandState::Reconnected {
+            receipt: receipt.clone(),
+            access: access.clone(),
+        };
+        let state_json = serde_json::to_value(&next_state)
+            .map_err(conversion_error("ReconnectCommandState", "Json"))?;
+        reconnect_command::ActiveModel {
+            practice: Unchanged(row.practice),
+            physician: Unchanged(row.physician),
+            key: Unchanged(row.key),
+            source_id: Unchanged(row.source_id),
+            state: Set(state_json),
+            lease_owner: Unchanged(row.lease_owner),
+            lease_until: Set(Some(db_now + RECONNECT_COMMAND_LEASE_SECONDS)),
+            updated_at: Set(db_now),
+        }
+        .update(&tx)
+        .await?;
+        tx.commit().await?;
+        Ok(())
+    }
+
+    pub(crate) async fn complete_reconnect_command(
+        &self,
+        practice_id: &str,
+        physician_id: &str,
+        key: &str,
+        lease_owner: &str,
+        completed: ReconnectCommandState,
+    ) -> Result<(), SourceStatusError> {
+        let tx = self.db.begin().await?;
+        let row = reconnect_command::Entity::find_by_id((
+            practice_id.to_owned(),
+            physician_id.to_owned(),
+            key.to_owned(),
+        ))
+        .lock_exclusive()
+        .one(&tx)
+        .await?
+        .ok_or_else(|| error("missing reconnect command state"))?;
+
+        let existing = decode_reconnect_state(row.state.clone())?;
+        if matches!(existing, ReconnectCommandState::Completed { .. }) {
+            tx.commit().await?;
+            return Ok(());
+        }
+        if row.lease_owner.as_deref() != Some(lease_owner) {
+            return Err(error("reconnect command lease superseded").into());
+        }
+
+        let db_now = now(&tx).await?;
+        let state_json = serde_json::to_value(&completed)
+            .map_err(conversion_error("ReconnectCommandState", "Json"))?;
+        reconnect_command::ActiveModel {
+            practice: Unchanged(row.practice),
+            physician: Unchanged(row.physician),
+            key: Unchanged(row.key),
+            source_id: Unchanged(row.source_id),
+            state: Set(state_json),
+            lease_owner: Set(None),
+            lease_until: Set(None),
+            updated_at: Set(db_now),
+        }
+        .update(&tx)
+        .await?;
+        tx.commit().await?;
+        Ok(())
     }
 
     /// Reads all stored source status rows for `(practice_id, workspace_id)`, refusing

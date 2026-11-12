@@ -130,7 +130,7 @@ pub(crate) fn fixture_pull(workspace: &str) -> SourcePull {
                 })
                 .collect(),
         },
-        pulled_at: 1_787_846_400,
+        pulled_at: Some(1_787_846_400),
     }
 }
 
@@ -283,20 +283,34 @@ impl Patient {
         self.pulls
             .iter()
             .map(|pull| match self.standings.get(&pull.source_id) {
-                None | Some(SourceStanding::NotYetRead) => {
-                    let synchronized_at = unix_to_rfc3339(pull.pulled_at);
-                    json!({
+                None | Some(SourceStanding::NotYetRead) => match pull.pulled_at {
+                    Some(pulled_at) => {
+                        let synchronized_at = unix_to_rfc3339(pulled_at);
+                        json!({
+                            "source_id": pull.source_id,
+                            "source_label": pull.source_label,
+                            "standing": "up_to_date",
+                            "reconnect_needed": false,
+                            "last_good_read_at": synchronized_at,
+                            "state": {
+                                "state": "usable",
+                                "synchronized_at": synchronized_at,
+                            },
+                        })
+                    }
+                    None => json!({
                         "source_id": pull.source_id,
                         "source_label": pull.source_label,
-                        "standing": "up_to_date",
+                        "standing": "partial",
                         "reconnect_needed": false,
-                        "last_good_read_at": synchronized_at,
+                        "last_good_read_at": null,
                         "state": {
-                            "state": "usable",
-                            "synchronized_at": synchronized_at,
+                            "state": "failed",
+                            "synchronized_at": null,
+                            "usable_snapshot": null,
                         },
-                    })
-                }
+                    }),
+                },
                 Some(SourceStanding::UpToDate {
                     last_good_read_at,
                     missing_candidates,

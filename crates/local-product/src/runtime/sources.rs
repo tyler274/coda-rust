@@ -48,8 +48,9 @@ pub struct SourcePull {
     pub source_label: String,
     /// The patient as this source identifies them.
     pub patient: SourcePatient,
-    /// The practice clock's Unix second when the pull finished.
-    pub pulled_at: i64,
+    /// The practice clock's Unix second when a complete pull last finished, or
+    /// `None` when only partial records have landed.
+    pub pulled_at: Option<i64>,
 }
 
 fn version_of(value: i64) -> Result<u64, DbErr> {
@@ -374,6 +375,9 @@ impl Store {
         records: &[SourceRevision],
         pull: &SourcePull,
     ) -> Result<ChartPullReceipt, DbErr> {
+        let Some(pulled_at) = pull.pulled_at else {
+            return Err(error("complete chart delivery requires pulled_at"));
+        };
         let tx = self.db.begin().await?;
         let receipt = apply_source_delivery_tx(
             &tx,
@@ -393,7 +397,7 @@ impl Store {
             source_id: Set(pull.source_id.clone()),
             source_label: Set(pull.source_label.clone()),
             patient: Set(patient),
-            pulled_at: Set(pull.pulled_at),
+            pulled_at: Set(Some(pulled_at)),
             missing_candidates: Set(missing_json),
         })
         .on_conflict(

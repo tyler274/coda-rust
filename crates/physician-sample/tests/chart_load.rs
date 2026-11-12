@@ -176,7 +176,7 @@ async fn a_loaded_chart_is_a_patient_of_the_practice_and_loading_again_changes_n
         pulls[&workspace][0].patient.display_name,
         format!("Mary {run}-a")
     );
-    assert_eq!(pulls[&workspace][0].pulled_at, 1_787_846_400);
+    assert_eq!(pulls[&workspace][0].pulled_at, Some(1_787_846_400));
     let link = runtime
         .source_patient_link(&local_product::source_status::SourcePatientKey {
             practice_id: STAGING_PRACTICE_ID.to_owned(),
@@ -674,11 +674,14 @@ async fn initial_partial_chart_opens_cleanly_while_initial_missing_identity_or_f
         .await
         .unwrap();
 
+    let bank_for_server = bank_dir.clone();
     let server = common::serve_isolated(move || {
         // SAFETY: `serve_isolated` holds its start lock around this call.
         unsafe {
             std::env::set_var("PHYSICIAN_DATABASE_URL", &url);
             std::env::set_var("PHYSICIAN_AUTH", "required");
+            std::env::set_var("PHYSICIAN_LOCAL_PROOF", "1");
+            std::env::set_var("PHYSICIAN_SYNTHETIC_CHARTS", &bank_for_server);
         }
     })
     .await;
@@ -703,4 +706,51 @@ async fn initial_partial_chart_opens_cleanly_while_initial_missing_identity_or_f
         page["connected_sources"][0]["state"]["usable_snapshot"],
         Value::Null
     );
+
+    // Clear synthetic failure modes on the running server via local-proof endpoint and run
+    // `/commands` `reconnect_source`: all 3 previously unidentified patients (p2, p3, p4) recover
+    // via their pending source-patient links, register into `auth`, and clear practice outage to `healthy`!
+    let client = reqwest::Client::new();
+    for suffix in ["p1", "p2", "p3", "p4"] {
+        let resp = client
+            .post(format!("{base}/local-proof/sources/synthetic-charts/mode"))
+            .bearer_auth(&session)
+            .json(&json!({
+                "practice_id": practice_id,
+                "source_patient_id": format!("{run}-{suffix}"),
+                "mode": "healthy"
+            }))
+            .send()
+            .await
+            .unwrap();
+        assert_eq!(resp.status(), 200);
+    }
+
+    let reconn_resp = client
+        .post(format!("{base}/commands"))
+        .bearer_auth(&session)
+        .json(&json!({
+            "type": "reconnect_source",
+            "idempotency_key": format!("recover-init-{run}"),
+            "payload": { "source_id": "synthetic-charts" }
+        }))
+        .send()
+        .await
+        .unwrap();
+    assert_eq!(reconn_resp.status(), 200);
+    let reconn_body: Value = reconn_resp.json().await.unwrap();
+    assert_eq!(reconn_body["outcome"], "accepted", "{reconn_body}");
+    assert_eq!(reconn_body["summary"]["scope"], "healthy", "{reconn_body}");
+    assert_eq!(reconn_body["summary"]["total_patients"], 4, "{reconn_body}");
+
+    for now_registered in [&ws1, &ws2, &ws3, &ws4] {
+        assert_eq!(
+            auth.patient_practice(now_registered)
+                .await
+                .unwrap()
+                .as_deref(),
+            Some(practice_id.as_str()),
+            "{now_registered} must be registered in auth after check/reconnect delivers identity"
+        );
+    }
 }

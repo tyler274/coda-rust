@@ -17,7 +17,7 @@ use axum::routing::post;
 use local_product::physician_sources::{PatientSource, workspace_id};
 use local_product::runtime::Store;
 use local_product::source_status::{
-    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary,
+    LinkTarget, PracticeOutageKind, PracticeSourceReport, PracticeSourceSummary, ReconnectCommand,
     ReconnectCommandOutcome, SourceCoordinator, SourcePatientKey, SourceStatusError,
 };
 use physician_auth::{AuthStore, Membership, PhysicianIdentity};
@@ -26,6 +26,7 @@ use serde_json::{Value, json};
 
 use crate::auth;
 use crate::care::ConnectedCare;
+use crate::chart_load::enroll_identified_patients;
 use crate::synthetic_chart::{self, SyntheticCharts, SyntheticSourceMode};
 
 const BODY_LIMIT: usize = 1_000_000;
@@ -121,6 +122,25 @@ async fn panel_workspaces(
 ) -> Option<HashSet<String>> {
     let auth_store = extensions.get::<Arc<dyn AuthStore>>()?;
     Some(auth_store.panel(identity).await.into_iter().collect())
+}
+
+async fn sync_practice_enrollments(
+    extensions: &Extensions,
+    store: &Store,
+    practice_id: &str,
+    source_id: &str,
+) -> Result<(), StatusCode> {
+    let Some(auth_store) = extensions.get::<Arc<dyn AuthStore>>() else {
+        return Ok(());
+    };
+    let links = store
+        .practice_source_links(practice_id, source_id)
+        .await
+        .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)?;
+    let workspaces: Vec<String> = links.into_iter().map(|link| link.workspace_id).collect();
+    enroll_identified_patients(practice_id, &**auth_store, store, &workspaces)
+        .await
+        .map_err(|_| StatusCode::SERVICE_UNAVAILABLE)
 }
 
 fn scope_summary_to_panel(
@@ -451,6 +471,11 @@ pub(crate) async fn post_check(Path(source_id): Path<String>, request: Request<B
         }
         Err(_) => return StatusCode::SERVICE_UNAVAILABLE.into_response(),
     };
+    if let Err(code) =
+        sync_practice_enrollments(&parts.extensions, store, &practice_id, &source_id).await
+    {
+        return code.into_response();
+    }
 
     let Ok(practice_report) = store.practice_source_report(&practice_id, &source_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
@@ -494,16 +519,23 @@ pub(crate) async fn post_reconnect(
     let Ok(now) = practice_now_seconds(extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let panel = panel_workspaces(extensions, &identity).await;
 
     match SourceCoordinator::reconnect_source(store, &*adapter, &practice_id, now).await {
-        Ok(report) => Json(json!({
-            "outcome": "reconnected",
-            "receipt": report.receipt,
-            "access": report.access,
-            "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
-        }))
-        .into_response(),
+        Ok(report) => {
+            if let Err(code) =
+                sync_practice_enrollments(extensions, store, &practice_id, &source_id).await
+            {
+                return code.into_response();
+            }
+            let panel = panel_workspaces(extensions, &identity).await;
+            Json(json!({
+                "outcome": "reconnected",
+                "receipt": report.receipt,
+                "access": report.access,
+                "summary": scope_summary_to_panel(&report.check.summary, panel.as_ref()),
+            }))
+            .into_response()
+        }
         Err(SourceStatusError::SourceAdapter { source, .. }) => (
             StatusCode::BAD_GATEWAY,
             Json(json!({
@@ -575,9 +607,7 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
     let Some(store) = registry.runtime() else {
         return reject();
     };
-    let Some(adapter) = registry.adapter(source_id) else {
-        return reject();
-    };
+    let adapter = registry.adapter(source_id);
 
     let identity = ConnectedCare::identity(&parts.extensions);
     let practice_id = identity.practice_id.clone();
@@ -585,15 +615,17 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
     let Ok(now) = practice_now_seconds(&parts.extensions, &practice_id).await else {
         return StatusCode::SERVICE_UNAVAILABLE.into_response();
     };
-    let panel = panel_workspaces(&parts.extensions, &identity).await;
 
     match SourceCoordinator::reconnect_source_command(
         store,
-        &*adapter,
-        &practice_id,
-        &physician_id,
-        idempotency_key,
-        now,
+        ReconnectCommand {
+            practice_id: &practice_id,
+            physician_id: &physician_id,
+            idempotency_key,
+            source_id,
+            source: adapter.as_deref(),
+            now,
+        },
     )
     .await
     {
@@ -601,15 +633,39 @@ pub(crate) async fn intercept_reconnect_command(request: Request<Body>, next: Ne
             receipt,
             access,
             summary,
-        }) => Json(json!({
-            "outcome": "accepted",
-            "type": "reconnect_source",
-            "receipt": receipt,
-            "access": access,
-            "summary": scope_summary_to_panel(&summary, panel.as_ref()),
-        }))
-        .into_response(),
-        Ok(ReconnectCommandOutcome::ConflictingKey) | Err(_) => reject(),
+        }) => {
+            if let Err(code) =
+                sync_practice_enrollments(&parts.extensions, store, &practice_id, source_id).await
+            {
+                return code.into_response();
+            }
+            let panel = panel_workspaces(&parts.extensions, &identity).await;
+            Json(json!({
+                "outcome": "accepted",
+                "type": "reconnect_source",
+                "receipt": receipt,
+                "access": access,
+                "summary": scope_summary_to_panel(&summary, panel.as_ref()),
+            }))
+            .into_response()
+        }
+        Ok(
+            ReconnectCommandOutcome::ConflictingKey | ReconnectCommandOutcome::UnregisteredSource,
+        )
+        | Err(SourceStatusError::EmptyIdentity { .. }) => reject(),
+        Err(SourceStatusError::SourceAdapter { source, .. }) => (
+            StatusCode::BAD_GATEWAY,
+            Json(json!({
+                "outcome": "failed",
+                "detail": source.to_string(),
+            })),
+        )
+            .into_response(),
+        Err(
+            SourceStatusError::Database(_)
+            | SourceStatusError::PracticeMismatch { .. }
+            | SourceStatusError::ConflictingWorkspaceLink { .. },
+        ) => StatusCode::SERVICE_UNAVAILABLE.into_response(),
     }
 }
 
