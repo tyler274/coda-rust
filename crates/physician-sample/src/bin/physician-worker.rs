@@ -24,6 +24,9 @@ use local_product::runtime::delivery::{Delivery, DeliveryKind, DeliveryState};
 
 #[path = "physician-worker/attempt.rs"]
 mod attempt;
+#[cfg(test)]
+#[path = "../../tests/common/disposable.rs"]
+mod disposable;
 #[path = "physician-worker/practice_job.rs"]
 mod practice_job;
 #[path = "physician-worker/revision.rs"]
@@ -671,12 +674,22 @@ impl Worker {
             .map_err(|_| "physician auth store unavailable".to_string())?;
         let bus = physician_bus::from_env(&get, hosted).await?;
         let quota: Arc<dyn harness::provider::QuotaGate> = Arc::new(store.clone());
+        let skills_dir = configured(&get, "PHYSICIAN_SKILLS_DIR");
+        if let Some(dir) = skills_dir.as_deref() {
+            local_product::physician_chat::PhysicianSkills::load(std::path::Path::new(dir))
+                .map_err(|err| format!("invalid PHYSICIAN_SKILLS_DIR: {err}"))?;
+        }
+        let calendar = physician_sample::schedule::SyntheticBankCalendar::from_env(&get);
         let wake = Arc::new(WakeService {
             auth: schedule_auth,
             mode: wake_mode,
-            handler: Arc::new(StoreWakeHandler {
+            handler: Arc::new(VisitPrepWakeHandler {
                 store: store.clone(),
                 auth: auth.clone(),
+                model: model.clone(),
+                quota: quota.clone(),
+                skills_dir,
+                calendar,
             }),
             clinical_library,
         });
@@ -770,9 +783,12 @@ struct WakeTick {
     directive: WakeDirective,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 struct WakeReport {
     due_patients_checked: usize,
+    practices_checked: usize,
+    briefings_prepared: usize,
+    concerns_retired: usize,
 }
 
 #[derive(Debug)]
@@ -780,6 +796,11 @@ enum WakeError {
     Rehearsed,
     RuntimeStore(sea_orm::DbErr),
     AuthStore(sea_orm::DbErr),
+    AuthUnavailable(physician_auth::StoreUnavailable),
+    ModelProvider(harness::engine::Cause),
+    DeveloperPlanBoundary(String),
+    ScheduleSync(local_product::runtime::schedule::ScheduleError),
+    VisitPreparation(local_product::runtime::briefings::BriefingError),
 }
 
 impl WakeError {
@@ -787,7 +808,11 @@ impl WakeError {
         match self {
             Self::Rehearsed => "rehearsed_failure",
             Self::RuntimeStore(_) => "runtime_store_unavailable",
-            Self::AuthStore(_) => "auth_store_unavailable",
+            Self::AuthStore(_) | Self::AuthUnavailable(_) => "auth_store_unavailable",
+            Self::ModelProvider(_) => "model_provider_unavailable",
+            Self::DeveloperPlanBoundary(_) => "developer_plan_boundary",
+            Self::ScheduleSync(_) => "schedule_sync_failed",
+            Self::VisitPreparation(_) => "visit_preparation_failed",
         }
     }
 }
@@ -798,6 +823,13 @@ impl std::fmt::Display for WakeError {
             Self::Rehearsed => f.write_str("rehearsed schedule wake failure"),
             Self::RuntimeStore(source) => write!(f, "runtime store check failed: {source}"),
             Self::AuthStore(source) => write!(f, "auth store check failed: {source}"),
+            Self::AuthUnavailable(source) => write!(f, "auth store unavailable: {source}"),
+            Self::ModelProvider(source) => {
+                write!(f, "model provider initialization failed: {source}")
+            }
+            Self::DeveloperPlanBoundary(reason) => f.write_str(reason),
+            Self::ScheduleSync(source) => write!(f, "schedule sync failed: {source}"),
+            Self::VisitPreparation(source) => write!(f, "visit preparation wake failed: {source}"),
         }
     }
 }
@@ -805,8 +837,12 @@ impl std::fmt::Display for WakeError {
 impl std::error::Error for WakeError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            Self::Rehearsed => None,
+            Self::Rehearsed | Self::DeveloperPlanBoundary(_) => None,
             Self::RuntimeStore(source) | Self::AuthStore(source) => Some(source),
+            Self::AuthUnavailable(source) => Some(source),
+            Self::ModelProvider(source) => Some(source.as_ref()),
+            Self::ScheduleSync(source) => Some(source),
+            Self::VisitPreparation(source) => Some(source),
         }
     }
 }
@@ -822,12 +858,8 @@ struct StoreWakeHandler {
     auth: PostgresAuthStore,
 }
 
-#[async_trait::async_trait]
-impl WakeHandler for StoreWakeHandler {
-    async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
-        if tick.directive == WakeDirective::RehearseFailure {
-            return Err(WakeError::Rehearsed);
-        }
+impl StoreWakeHandler {
+    async fn check_stores(&self) -> Result<(), WakeError> {
         let probe = Scope {
             practice: "schedule-wake".into(),
             physician: "schedule-wake".into(),
@@ -842,9 +874,134 @@ impl WakeHandler for StoreWakeHandler {
             .check_schema()
             .await
             .map_err(WakeError::AuthStore)?;
-        Ok(WakeReport {
-            due_patients_checked: 0,
-        })
+        Ok(())
+    }
+}
+
+#[async_trait::async_trait]
+impl WakeHandler for StoreWakeHandler {
+    async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
+        if tick.directive == WakeDirective::RehearseFailure {
+            return Err(WakeError::Rehearsed);
+        }
+        self.check_stores().await?;
+        Ok(WakeReport::default())
+    }
+}
+
+struct VisitPrepWakeHandler {
+    store: Store,
+    auth: PostgresAuthStore,
+    model: ModelSource,
+    quota: Arc<dyn harness::provider::QuotaGate>,
+    skills_dir: Option<String>,
+    calendar: Option<physician_sample::schedule::SyntheticBankCalendar>,
+}
+
+#[async_trait::async_trait]
+impl WakeHandler for VisitPrepWakeHandler {
+    async fn wake(&self, tick: &WakeTick) -> Result<WakeReport, WakeError> {
+        use physician_auth::AuthStore as _;
+
+        if tick.directive == WakeDirective::RehearseFailure {
+            return Err(WakeError::Rehearsed);
+        }
+        StoreWakeHandler {
+            store: self.store.clone(),
+            auth: self.auth.clone(),
+        }
+        .check_stores()
+        .await?;
+
+        let mut practices = self
+            .store
+            .scheduled_practices()
+            .await
+            .map_err(WakeError::RuntimeStore)?;
+        if self.calendar.is_some()
+            && !practices
+                .iter()
+                .any(|id| id == physician_sample::STAGING_PRACTICE_ID)
+            && !self
+                .auth
+                .practice_patients(physician_sample::STAGING_PRACTICE_ID)
+                .await
+                .map_err(WakeError::AuthUnavailable)?
+                .is_empty()
+        {
+            practices.push(physician_sample::STAGING_PRACTICE_ID.to_owned());
+        }
+        if practices.is_empty() {
+            return Ok(WakeReport::default());
+        }
+
+        let skills = self
+            .store
+            .resolve_worker_skills(self.skills_dir.as_deref())
+            .await
+            .map_err(WakeError::VisitPreparation)?;
+        let mut provider = self
+            .model
+            .provider(self.quota.clone())
+            .await
+            .map_err(WakeError::ModelProvider)?;
+        let authority = self.model.authority(self.store.clone());
+        let real_now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0, |d| d.as_secs());
+
+        let mut report = WakeReport::default();
+        for practice in practices {
+            if let Some(cal) = &self.calendar {
+                physician_sample::schedule::sync_synthetic_schedule(
+                    cal,
+                    &self.auth,
+                    &self.store,
+                    &practice,
+                )
+                .await
+                .map_err(WakeError::ScheduleSync)?;
+            }
+            let roster = self
+                .auth
+                .practice_patients(&practice)
+                .await
+                .map_err(WakeError::AuthUnavailable)?;
+            for workspace in &roster {
+                authority
+                    .check_source_boundary(&Scope {
+                        practice: practice.clone(),
+                        physician: local_product::runtime::jobs::PRACTICE_OWNER.into(),
+                        workspace: workspace.clone(),
+                        chat: "schedule-wake".into(),
+                    })
+                    .await
+                    .map_err(WakeError::DeveloperPlanBoundary)?;
+            }
+            let clock = self
+                .auth
+                .practice_clock(&practice)
+                .await
+                .map_err(WakeError::AuthUnavailable)?;
+            let now_unix = clock.now(real_now) as i64;
+            let summary = self
+                .store
+                .wake_visit_preparation(
+                    &self.auth,
+                    &practice,
+                    &self.model.roles,
+                    &skills,
+                    &mut provider,
+                    now_unix,
+                )
+                .await
+                .map_err(WakeError::VisitPreparation)?;
+            report.practices_checked += 1;
+            report.due_patients_checked += roster.len();
+            report.briefings_prepared += summary.completed_briefings.len();
+            report.concerns_retired += summary.retired_concerns.len();
+        }
+        Ok(report)
     }
 }
 
@@ -940,6 +1097,9 @@ async fn schedule_wake(
                 scheduler.schedule_time = tick.schedule_time.as_deref().unwrap_or(""),
                 scheduler.retry_count = u64::from(tick.retry_count),
                 due_patients_checked = report.due_patients_checked as u64,
+                practices_checked = report.practices_checked as u64,
+                briefings_prepared = report.briefings_prepared as u64,
+                concerns_retired = report.concerns_retired as u64,
                 clinical_library_configured = wake.clinical_library.is_some(),
                 "accepted physician schedule wake"
             );
@@ -948,6 +1108,9 @@ async fn schedule_wake(
                 Json(json!({
                     "status": "ok",
                     "due_patients_checked": report.due_patients_checked,
+                    "practices_checked": report.practices_checked,
+                    "briefings_prepared": report.briefings_prepared,
+                    "concerns_retired": report.concerns_retired,
                     "clinical_library_configured": wake.clinical_library.is_some(),
                 })),
             )
@@ -1133,6 +1296,7 @@ fn role_environment(get: &impl Fn(&str) -> Option<String>) -> Vec<(String, Strin
 }
 
 /// Credentials stay in the worker; both choices run the same durable job.
+#[derive(Clone)]
 enum ModelTransport {
     Responses { endpoint: String, key: String },
     DeveloperPlan,
@@ -1148,6 +1312,7 @@ impl ModelTransport {
 }
 
 /// Transport and model configuration shared by chat and reply revision.
+#[derive(Clone)]
 struct ModelSource {
     transport: ModelTransport,
     roles: local_product::ModelRoles,
@@ -2061,6 +2226,7 @@ mod tests {
             }
             Ok(WakeReport {
                 due_patients_checked: 3,
+                ..WakeReport::default()
             })
         }
     }
@@ -2533,5 +2699,349 @@ mod tests {
             .is_err(),
             "emulator bypass on non-loopback listener must fail"
         );
+    }
+
+    #[tokio::test]
+    async fn schedule_wake_executes_visit_preparation_against_synthetic_calendar_and_responses_stub()
+     {
+        use local_product::physician_sources::{
+            MedicalRecordNumber, READ_TOOL, ReadablePart, RecordDate, SourcePatient,
+            SourceRevision, workspace_id,
+        };
+        use local_product::runtime::briefings::VisitSlotKey;
+        use local_product::runtime::concerns::ExactRecordReference;
+        use local_product::runtime::schedule::AppointmentWindow;
+        use local_product::runtime::sources::SourcePull;
+        use local_product::visit_preparation::{
+            BriefingClaimInput, BriefingDecisionInput, SAVE_BRIEFING_TOOL, SELECT_VISITS_TOOL,
+            SaveBriefingArgs,
+        };
+        use physician_auth::{AuthStore, PracticeClock};
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
+        use tower::ServiceExt;
+
+        let Some(gate_url) = std::env::var("PHYSICIAN_RUNTIME_TEST_DATABASE_URL")
+            .or_else(|_| std::env::var("PHYSICIAN_DATABASE_URL"))
+            .ok()
+            .map(|v| v.trim().to_owned())
+            .filter(|v| !v.is_empty())
+        else {
+            assert!(
+                std::env::var("CODA_REQUIRE_POSTGRES_TESTS").as_deref() != Ok("1"),
+                "CODA_REQUIRE_POSTGRES_TESTS=1 requires PHYSICIAN_RUNTIME_TEST_DATABASE_URL"
+            );
+            return;
+        };
+
+        let (server, _) = gate_url.rsplit_once('/').expect("database URL");
+        let admin_url = format!("{server}/postgres");
+        let db_name = format!(
+            "worker_wake_vp_{}",
+            &uuid::Uuid::new_v4().simple().to_string()[..12]
+        );
+        let admin = sea_orm::Database::connect(&admin_url).await.unwrap();
+        super::disposable::replace_database(&admin, &db_name).await;
+        admin.close().await.unwrap();
+        let url = format!("{server}/{db_name}");
+
+        let store = Store::connect(&url).await.unwrap();
+        store.migrate().await.unwrap();
+        let auth = PostgresAuthStore::connect_with_migrations(&url)
+            .await
+            .unwrap();
+
+        let practice = format!("practice-worker-wake-{}", uuid::Uuid::new_v4().simple());
+        let fixed_now: u64 = 1_787_846_400; // 2026-08-27T16:00:00Z
+        auth.ensure_practice(&practice, PracticeClock::Fixed(fixed_now))
+            .await
+            .unwrap();
+
+        let mrn = format!(
+            "MRN-WKR-{}",
+            &uuid::Uuid::new_v4().simple().to_string()[..8]
+        );
+        let ws = workspace_id(physician_sample::synthetic_chart::SOURCE_ID, &mrn);
+        let note_text = "Stage 3a CKD (eGFR 51 mL/min) and A1c 8.1% ahead of tomorrow's follow-up.";
+        store
+            .record_chart(
+                &ws,
+                &[SourceRevision {
+                    workspace: ws.clone(),
+                    source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                    candidate_id: "Observation/ckd-a1c-1".into(),
+                    revision: "rev-wkr-1".into(),
+                    record_type: "Observation".into(),
+                    dates: vec![RecordDate {
+                        name: "effectiveDateTime".into(),
+                        value: "2026-08-26".into(),
+                    }],
+                    sha256: local_product::sha256_hex(note_text.as_bytes()),
+                    content: note_text.into(),
+                    readable_parts: vec![ReadablePart {
+                        label: "Renal & A1c".into(),
+                        text: note_text.into(),
+                    }],
+                    provenance: json!({ "title": "Renal & A1c" }),
+                }],
+                &SourcePull {
+                    source_id: physician_sample::synthetic_chart::SOURCE_ID.into(),
+                    source_label: "Synthetic chart".into(),
+                    patient: SourcePatient {
+                        source_patient_id: mrn.clone(),
+                        display_name: "Worker Wake Patient".into(),
+                        birth_date: Some("1965-09-12".into()),
+                        sex_or_gender: Some("male".into()),
+                        medical_record_numbers: vec![MedicalRecordNumber {
+                            system: "urn:mrn".into(),
+                            value: mrn.clone(),
+                        }],
+                    },
+                    pulled_at: fixed_now as i64 - 600,
+                },
+            )
+            .await
+            .unwrap();
+        auth.register_patient(&practice, &ws).await.unwrap();
+
+        // Write a temporary synthetic bank calendar file with a visit booked for tomorrow:
+        let temp_dir = std::env::temp_dir().join(format!(
+            "coda-worker-wake-cal-{}",
+            uuid::Uuid::new_v4().simple()
+        ));
+        std::fs::create_dir_all(temp_dir.join("calendar")).unwrap();
+        let appt_line = format!(
+            r#"{{"resourceType":"Appointment","id":"appt-wkr-tomorrow","meta":{{"versionId":"1","lastUpdated":"2026-08-27T00:00:00+00:00"}},"status":"booked","description":"CKD & diabetes follow-up","start":"2026-08-28T15:00:00+00:00","end":"2026-08-28T15:30:00+00:00","participant":[{{"actor":{{"reference":"Patient/{mrn}"}},"status":"accepted"}}]}}"#
+        );
+        let cal_file = temp_dir.join("calendar/Appointment.ndjson");
+        std::fs::write(&cal_file, format!("{appt_line}\n")).unwrap();
+        let calendar = physician_sample::schedule::SyntheticBankCalendar::open(&temp_dir);
+        physician_sample::schedule::sync_synthetic_schedule(&calendar, &auth, &store, &practice)
+            .await
+            .unwrap();
+
+        let starts_at_unix =
+            AppointmentWindow::parse("2026-08-28T15:00:00+00:00", "2026-08-28T15:30:00+00:00")
+                .unwrap()
+                .starts_at_unix();
+
+        // Spin up local HTTP SSE Responses stub for VisitPrepWakeHandler:
+        let sel_args = serde_json::to_string(&json!({
+            "decisions": [{
+                "source_id": physician_sample::schedule::SOURCE_ID,
+                "appointment_id": "appt-wkr-tomorrow",
+                "starts_at_unix": starts_at_unix,
+                "action": "prepare_now",
+                "reason": "Tomorrow's CKD & diabetes visit has A1c 8.1% ready for review."
+            }]
+        }))
+        .unwrap();
+        let read_args = serde_json::to_string(&json!({
+            "references": [{ "candidate_id": "Observation/ckd-a1c-1", "revision": "rev-wkr-1", "cursor": null }],
+            "max_result_bytes": 16_384
+        }))
+        .unwrap();
+        let save_args = serde_json::to_string(&SaveBriefingArgs {
+            visit_card_orientation:
+                "CKD 3a (eGFR 51) and A1c 8.1% ahead of tomorrow's follow-up; SGLT2i option open."
+                    .into(),
+            trajectory: vec![BriefingClaimInput {
+                text: "Stage 3a CKD (eGFR 51 mL/min) with A1c 8.1% on 2026-08-26.".into(),
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-a1c-1".into(),
+                    revision: "rev-wkr-1".into(),
+                }],
+            }],
+            meaningful_changes: vec![BriefingClaimInput {
+                text: "Pre-visit A1c is above target at 8.1%.".into(),
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-a1c-1".into(),
+                    revision: "rev-wkr-1".into(),
+                }],
+            }],
+            unresolved_issues: vec![BriefingClaimInput {
+                text: "Urine albumin-to-creatinine ratio is not in the connected chart.".into(),
+                uncertainty: Some("Albuminuria severity is unconfirmed pending spot UACR.".into()),
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-a1c-1".into(),
+                    revision: "rev-wkr-1".into(),
+                }],
+            }],
+            visit_decisions: vec![BriefingDecisionInput {
+                decision: "Glycemic and renal protective therapy review".into(),
+                clinical_rationale:
+                    "eGFR 51 mL/min with A1c 8.1% supports discussing an SGLT2 inhibitor.".into(),
+                options_or_questions: vec![
+                    "Discuss adding an SGLT2 inhibitor and ordering spot UACR.".into(),
+                ],
+                uncertainty: None,
+                citations: vec![ExactRecordReference {
+                    candidate_id: "Observation/ckd-a1c-1".into(),
+                    revision: "rev-wkr-1".into(),
+                }],
+            }],
+            basis_and_limitations: "Prepared from synthetic chart observation 2026-08-26.".into(),
+            basis_citations: Vec::new(),
+            limits: Vec::new(),
+            visit_concern: None,
+        })
+        .unwrap();
+
+        let sse_frame = |mut response: Value| -> String {
+            let mut events =
+                vec![json!({"type":"response.created","response":{"id":response["id"]}})];
+            for (idx, item) in response["output"]
+                .as_array_mut()
+                .unwrap()
+                .iter_mut()
+                .enumerate()
+            {
+                item["id"] = json!(format!("item-{idx}"));
+                let id = item["id"].clone();
+                events.push(
+                    json!({"type":"response.output_item.added","output_index":idx,"item":item}),
+                );
+                if item["type"] == "function_call" {
+                    events.push(json!({"type":"response.function_call_arguments.delta","output_index":idx,"item_id":id,"delta":item["arguments"]}));
+                    events.push(json!({"type":"response.function_call_arguments.done","output_index":idx,"item_id":id,"arguments":item["arguments"]}));
+                } else if item["type"] == "message" {
+                    let text = item["content"][0]["text"].clone();
+                    events.push(json!({"type":"response.content_part.added","output_index":idx,"item_id":id,"content_index":0,"part":{"type":"output_text","text":""}}));
+                    events.push(json!({"type":"response.output_text.delta","output_index":idx,"item_id":id,"content_index":0,"delta":text}));
+                    events.push(json!({"type":"response.output_text.done","output_index":idx,"item_id":id,"content_index":0,"text":text}));
+                    events.push(json!({"type":"response.content_part.done","output_index":idx,"item_id":id,"content_index":0,"part":item["content"][0]}));
+                }
+                events.push(
+                    json!({"type":"response.output_item.done","output_index":idx,"item":item}),
+                );
+            }
+            events.push(json!({"type":"response.completed","response":response}));
+            events
+                .into_iter()
+                .enumerate()
+                .map(|(i, mut ev)| {
+                    ev["sequence_number"] = json!(i);
+                    format!("data: {ev}\n\n")
+                })
+                .collect()
+        };
+
+        let payloads = vec![
+            json!({"id":"r1","status":"completed","output":[{"type":"function_call","status":"completed","call_id":"c1","name":SELECT_VISITS_TOOL,"arguments":sel_args}],"usage":{"input_tokens":50,"output_tokens":20}}),
+            json!({"id":"r2","status":"completed","output":[{"type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Selected."}]}],"usage":{"input_tokens":60,"output_tokens":5}}),
+            json!({"id":"r3","status":"completed","output":[{"type":"function_call","status":"completed","call_id":"c2","name":READ_TOOL,"arguments":read_args}],"usage":{"input_tokens":80,"output_tokens":15}}),
+            json!({"id":"r4","status":"completed","output":[{"type":"function_call","status":"completed","call_id":"c3","name":SAVE_BRIEFING_TOOL,"arguments":save_args}],"usage":{"input_tokens":100,"output_tokens":60}}),
+            json!({"id":"r5","status":"completed","output":[{"type":"message","role":"assistant","status":"completed","content":[{"type":"output_text","text":"Briefing saved."}]}],"usage":{"input_tokens":120,"output_tokens":5}}),
+        ];
+
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let endpoint = format!("http://{}/responses", listener.local_addr().unwrap());
+        let stub_task = tokio::spawn(async move {
+            for payload in payloads {
+                let body = sse_frame(payload);
+                let (mut sock, _) = listener.accept().await.unwrap();
+                let mut buf = Vec::new();
+                let (off, clen) = loop {
+                    let mut chunk = [0_u8; 2048];
+                    let n = sock.read(&mut chunk).await.unwrap();
+                    buf.extend_from_slice(&chunk[..n]);
+                    if let Some(end) = buf.windows(4).position(|p| p == b"\r\n\r\n") {
+                        let hdr = String::from_utf8_lossy(&buf[..end]);
+                        let len = hdr
+                            .lines()
+                            .find_map(|l| {
+                                let (k, v) = l.split_once(':')?;
+                                k.eq_ignore_ascii_case("content-length")
+                                    .then(|| v.trim().parse::<usize>().unwrap())
+                            })
+                            .unwrap();
+                        break (end + 4, len);
+                    }
+                };
+                while buf.len() < off + clen {
+                    let mut chunk = [0_u8; 2048];
+                    let n = sock.read(&mut chunk).await.unwrap();
+                    buf.extend_from_slice(&chunk[..n]);
+                }
+                let reply = format!(
+                    "HTTP/1.1 200 OK\r\nContent-Type: text/event-stream\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{body}",
+                    body.len()
+                );
+                sock.write_all(reply.as_bytes()).await.unwrap();
+            }
+        });
+
+        let binding = local_product::ModelBinding {
+            model: "worker-wake-bg-model".into(),
+            context_window_tokens: 272_000,
+            max_input_tokens: 250_000,
+            effort: "medium".into(),
+            adapter: "openai-responses".into(),
+        };
+        let app = wake_router(Arc::new(WakeService {
+            auth: WakeAuth::LoopbackEmulator,
+            mode: WakeMode::RehearsalAllowed,
+            handler: Arc::new(VisitPrepWakeHandler {
+                store: store.clone(),
+                auth: auth.clone(),
+                model: ModelSource {
+                    transport: ModelTransport::Responses {
+                        endpoint,
+                        key: "local-proof".into(),
+                    },
+                    roles: local_product::ModelRoles {
+                        chat: binding.clone(),
+                        background: binding,
+                    },
+                },
+                quota: Arc::new(store.clone()),
+                skills_dir: None,
+                calendar: Some(calendar),
+            }),
+            clinical_library: None,
+        }));
+
+        let resp = app
+            .oneshot(
+                axum::http::Request::builder()
+                    .method("POST")
+                    .uri("/schedule/wake")
+                    .header(axum::http::header::CONTENT_TYPE, "application/json")
+                    .body(axum::body::Body::from("{}"))
+                    .unwrap(),
+            )
+            .await
+            .unwrap();
+        assert_eq!(resp.status(), StatusCode::OK);
+        let resp_bytes = axum::body::to_bytes(resp.into_body(), BODY_LIMIT)
+            .await
+            .unwrap();
+        let body: Value = serde_json::from_slice(&resp_bytes).unwrap();
+        assert_eq!(body["status"], "ok");
+        assert!(body["briefings_prepared"].as_u64().unwrap() >= 1);
+
+        stub_task.await.unwrap();
+        let saved = store
+            .visit_briefing(
+                &VisitSlotKey {
+                    practice,
+                    source_id: physician_sample::schedule::SOURCE_ID.into(),
+                    appointment_id: "appt-wkr-tomorrow".into(),
+                    starts_at_unix,
+                },
+                &auth,
+            )
+            .await
+            .unwrap()
+            .expect("POST /schedule/wake saved tomorrow's visit briefing");
+        assert!(saved.visit_card_orientation.contains("CKD 3a"));
+
+        drop(store);
+        drop(auth);
+        let cleanup = sea_orm::Database::connect(&admin_url).await.unwrap();
+        super::disposable::drop_database(&cleanup, &db_name).await;
+        let _ = cleanup.close().await;
+        let _ = std::fs::remove_dir_all(&temp_dir);
     }
 }

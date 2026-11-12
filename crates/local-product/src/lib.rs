@@ -20,6 +20,8 @@ pub mod physician_chat;
 pub mod physician_sources;
 /// Physician-owned durable conversations and execution authority.
 pub mod runtime;
+/// Recipe, context, and tool descriptors for visit selection and visit briefings.
+pub mod visit_preparation;
 
 /// How this process runs a model. A process without a selection does not run models.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
