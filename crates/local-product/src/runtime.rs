@@ -30,6 +30,8 @@ use uuid::Uuid;
 
 /// Hosted chat drafts: the physician's unsent composer text per chat.
 pub mod chat_draft;
+/// Patient concerns raised, revised, and retired by Coda, and cleared `Done` by physicians.
+pub mod concerns;
 mod control;
 pub use control::Lease;
 /// Queue delivery recovery uses the conversation owner, not a parallel ledger.
@@ -568,6 +570,7 @@ pub enum Stopped {
 #[derive(Clone)]
 pub struct Store {
     db: DatabaseConnection,
+    clinical_library: crate::clinical_library::ClinicalLibraryClient,
 }
 
 fn error(message: &str) -> DbErr {
@@ -732,7 +735,24 @@ impl Store {
 
     /// Uses an existing pool without applying migrations or changing its limits.
     pub fn from_connection(db: DatabaseConnection) -> Self {
-        Self { db }
+        Self {
+            db,
+            clinical_library: crate::clinical_library::ClinicalLibraryClient::from_env(),
+        }
+    }
+
+    /// Returns a clone bound to an explicit [`crate::clinical_library::ClinicalLibraryClient`].
+    pub fn with_clinical_library(
+        mut self,
+        clinical_library: crate::clinical_library::ClinicalLibraryClient,
+    ) -> Self {
+        self.clinical_library = clinical_library;
+        self
+    }
+
+    /// Clinical library client configured for chat tool execution.
+    pub fn clinical_library(&self) -> &crate::clinical_library::ClinicalLibraryClient {
+        &self.clinical_library
     }
 
     // Display readback now joins several authoritative rows. One read-only
@@ -1841,6 +1861,12 @@ impl<A: Authority> Product for PhysicianHost<A> {
                 return chart
                     .run(workspace, observation.version, &observation.sources)
                     .map_err(Into::into);
+            }
+            if crate::clinical_library::is_library_tool(&call.name) {
+                return Ok(store
+                    .clinical_library()
+                    .execute(&call.name, &arguments)
+                    .await);
             }
             let skills = store.frozen_skills(&claim.scope, &state.skills).await?;
             Ok(skills.execute(&call.name, &arguments))
